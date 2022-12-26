@@ -306,6 +306,7 @@
                         line-height: 18px;
                         font-size: 14px;
                         color: $bw6-2;
+                        user-select: none;
 
                         &::-moz-selection {
                             color: $bw6-2;

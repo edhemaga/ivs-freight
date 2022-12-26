@@ -52,47 +52,45 @@
 
                     <div class="line-container">
                         <app-ta-upload-files
-                            *ngIf="
-                                selectedMode === 'APPLICANT_MODE' ||
-                                selectedMode === 'FEEDBACK_MODE'
-                            "
                             [files]="documents"
                             [size]="'medium'"
-                            [hasNumberOfPages]="true"
+                            [showDropzone]="selectedMode === 'APPLICANT_MODE'"
                             [isRequired]="true"
                             [showRequired]="displayDocumentsRequiredNote"
+                            [isReview]="selectedMode === 'REVIEW_MODE'"
+                            [reviewMode]="
+                                selectedMode === 'REVIEW_MODE' && 'REVIEW_MODE'
+                            "
                             (onFileEvent)="onFilesAction($event)"
                         ></app-ta-upload-files>
 
                         <!-- REVIEW AND FEEDBACK -->
 
-                        <div
-                            class="review-feedback-container"
-                            *ngIf="
-                                selectedMode === 'REVIEW_MODE' ||
-                                selectedMode === 'FEEDBACK_MODE'
-                            "
-                        >
-                            <app-applicant-review-feedback
-                                formControlName="firstRowReview"
-                                [displayAnnotationButton]="
-                                    openAnnotationArray[0]
-                                        .displayAnnotationButton
-                                "
-                                [displayAnnotationTextArea]="
-                                    openAnnotationArray[0]
-                                        .displayAnnotationTextArea
-                                "
-                                [lineIndex]="0"
-                                [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
-                                [feedbackText]="
-                                    'Check the routing number one more time (one number missing)!!!'
-                                "
-                                (annotationBtnClickEvent)="
-                                    getAnnotationBtnClickValue($event)
-                                "
-                            ></app-applicant-review-feedback>
-                        </div>
+                        <ng-container *ngIf="selectedMode !== 'APPLICANT_MODE'">
+                            <div class="review-feedback-container">
+                                <app-applicant-review-feedback
+                                    formControlName="firstRowReview"
+                                    [displayAnnotationButton]="
+                                        openAnnotationArray[0]
+                                            .displayAnnotationButton
+                                    "
+                                    [displayAnnotationTextArea]="
+                                        openAnnotationArray[0]
+                                            .displayAnnotationTextArea
+                                    "
+                                    [lineIndex]="0"
+                                    [isFeedback]="
+                                        selectedMode === 'FEEDBACK_MODE'
+                                    "
+                                    [feedbackText]="
+                                        'Check the routing number one more time (one number missing)!!!'
+                                    "
+                                    (annotationBtnClickEvent)="
+                                        getAnnotationBtnClickValue($event)
+                                    "
+                                ></app-applicant-review-feedback>
+                            </div>
+                        </ng-container>
                     </div>
                 </div>
 

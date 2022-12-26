@@ -77,6 +77,7 @@ export class SsnCardComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe((res: ApplicantResponse) => {
                 this.applicantId = res.id;
+                console.log('res', res);
 
                 /* this.stepHasValues = true; */
             });
@@ -170,10 +171,7 @@ export class SsnCardComponent implements OnInit, OnDestroy {
 
     public onStepAction(event: any): void {
         if (event.action === 'next-step') {
-            if (
-                this.selectedMode === SelectedMode.APPLICANT ||
-                this.selectedMode === SelectedMode.FEEDBACK
-            ) {
+            if (this.selectedMode !== SelectedMode.REVIEW) {
                 this.onSubmit();
             }
 
@@ -194,7 +192,12 @@ export class SsnCardComponent implements OnInit, OnDestroy {
             return;
         }
 
-        const documents = this.documents.map((item) => item.realFile);
+        let documents = [];
+        this.documents.map((item) => {
+            if (item.realFile) {
+                documents.push(item.realFile);
+            }
+        });
 
         const saveData: any = {
             applicantId: this.applicantId,

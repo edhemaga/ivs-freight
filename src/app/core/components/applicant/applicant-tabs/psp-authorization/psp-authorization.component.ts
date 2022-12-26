@@ -16,6 +16,7 @@ import { ApplicantStore } from '../../state/store/applicant.store';
 
 import {
     ApplicantResponse,
+    CreatePspAuthReviewCommand,
     PspAuthFeedbackResponse,
     UpdatePspAuthCommand,
 } from 'appcoretruckassist';
@@ -30,7 +31,7 @@ import { SelectedMode } from '../../state/enum/selected-mode.enum';
 export class PspAuthorizationComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
 
-    public selectedMode: string = SelectedMode.REVIEW;
+    public selectedMode: string = SelectedMode.APPLICANT;
 
     public pspAuthorizationForm: FormGroup;
 
@@ -115,10 +116,7 @@ export class PspAuthorizationComponent implements OnInit, OnDestroy {
     }
 
     public handleCheckboxParagraphClick(type: string): void {
-        if (
-            this.selectedMode === SelectedMode.FEEDBACK ||
-            this.selectedMode === SelectedMode.REVIEW
-        ) {
+        if (this.selectedMode !== SelectedMode.APPLICANT) {
             return;
         }
 
@@ -174,10 +172,7 @@ export class PspAuthorizationComponent implements OnInit, OnDestroy {
 
     public onStepAction(event: any): void {
         if (event.action === 'next-step') {
-            if (
-                this.selectedMode === SelectedMode.APPLICANT ||
-                this.selectedMode === SelectedMode.FEEDBACK
-            ) {
+            if (this.selectedMode !== SelectedMode.REVIEW) {
                 this.onSubmit();
             }
 
@@ -254,7 +249,36 @@ export class PspAuthorizationComponent implements OnInit, OnDestroy {
             });
     }
 
-    public onSubmitReview(): void {}
+    public onSubmitReview(): void {
+        const saveData: CreatePspAuthReviewCommand = {
+            applicantId: this.applicantId,
+        };
+
+        this.applicantActionsService
+            .createPspAuthorizationReview(saveData)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: () => {
+                    this.router.navigate([`/sph/${this.applicantId}`]);
+
+                    this.applicantStore.update((store) => {
+                        return {
+                            ...store,
+                            applicant: {
+                                ...store.applicant,
+                                pspAuth: {
+                                    ...store.applicant.pspAuth,
+                                    reviewed: true,
+                                },
+                            },
+                        };
+                    });
+                },
+                error: (err) => {
+                    console.log(err);
+                },
+            });
+    }
 
     ngOnDestroy(): void {
         this.destroy$.next();

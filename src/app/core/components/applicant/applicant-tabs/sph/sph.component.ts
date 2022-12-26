@@ -19,6 +19,7 @@ import { ApplicantStore } from '../../state/store/applicant.store';
 
 import {
     ApplicantResponse,
+    CreateSphReviewCommand,
     SphFeedbackResponse,
     UpdateSphCommand,
 } from 'appcoretruckassist';
@@ -90,7 +91,6 @@ export class SphComponent implements OnInit, OnDestroy {
     }
 
     public patchStepValues(stepValues: SphFeedbackResponse): void {
-        console.log('stepValues', stepValues);
         const { authorize, hasReadAndUnderstood, signature } = stepValues;
 
         this.sphForm.patchValue({
@@ -103,10 +103,7 @@ export class SphComponent implements OnInit, OnDestroy {
     }
 
     public handleCheckboxParagraphClick(type: string): void {
-        if (
-            this.selectedMode === SelectedMode.FEEDBACK ||
-            this.selectedMode === SelectedMode.REVIEW
-        ) {
+        if (this.selectedMode !== SelectedMode.APPLICANT) {
             return;
         }
 
@@ -149,10 +146,7 @@ export class SphComponent implements OnInit, OnDestroy {
 
     public onStepAction(event: any): void {
         if (event.action === 'next-step') {
-            if (
-                this.selectedMode === SelectedMode.APPLICANT ||
-                SelectedMode.FEEDBACK
-            ) {
+            if (this.selectedMode !== SelectedMode.REVIEW) {
                 this.onSubmit();
             }
 
@@ -217,7 +211,36 @@ export class SphComponent implements OnInit, OnDestroy {
             });
     }
 
-    public onSubmitReview(): void {}
+    public onSubmitReview(): void {
+        const saveData: CreateSphReviewCommand = {
+            applicantId: this.applicantId,
+        };
+
+        this.applicantActionsService
+            .createSphReview(saveData)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: () => {
+                    this.router.navigate([`/hos-rules/${this.applicantId}`]);
+
+                    this.applicantStore.update((store) => {
+                        return {
+                            ...store,
+                            applicant: {
+                                ...store.applicant,
+                                sph: {
+                                    ...store.applicant.sph,
+                                    reviewed: true,
+                                },
+                            },
+                        };
+                    });
+                },
+                error: (err) => {
+                    console.log(err);
+                },
+            });
+    }
 
     ngOnDestroy(): void {
         this.destroy$.next();

@@ -134,7 +134,6 @@ export class ApplicantHeaderComponent implements OnInit, OnChanges {
         this.applicantQuery.applicant$
             .pipe(takeUntil(this.destroy$))
             .subscribe((res: ApplicantResponse) => {
-                console.log('RES', res);
                 this.applicantId = res.id;
 
                 if (this.selectedMode === SelectedMode.APPLICANT) {
@@ -222,15 +221,30 @@ export class ApplicantHeaderComponent implements OnInit, OnChanges {
                     this.isTabReviewedArray = this.isTabReviewedArray.map(
                         (item, index) => {
                             if (index === 4) {
-                                /*  const pspAutorizationReview =
-                                    res?.pspAuth?.reviewed;
-
                                 return {
                                     ...item,
-                                    isReviewed: pspAutorizationReview
+                                    isReviewed: res?.pspAuth?.reviewed
                                         ? true
                                         : false,
-                                }; */
+                                };
+                            }
+
+                            if (index === 5) {
+                                return {
+                                    ...item,
+                                    isReviewed: res?.sph?.reviewed
+                                        ? true
+                                        : false,
+                                };
+                            }
+
+                            if (index === 6) {
+                                return {
+                                    ...item,
+                                    isReviewed: res?.hosRule?.reviewed
+                                        ? true
+                                        : false,
+                                };
                             }
 
                             return item;

@@ -23,7 +23,6 @@ import {
     CreateMedicalCertificateReviewCommand,
     MedicalCertificateFeedbackResponse,
 } from 'appcoretruckassist';
-import { UploadFile } from '../../../shared/ta-upload-files/ta-upload-file/ta-upload-file.component';
 
 @Component({
     selector: 'app-medical-certificate',
@@ -33,7 +32,7 @@ import { UploadFile } from '../../../shared/ta-upload-files/ta-upload-file/ta-up
 export class MedicalCertificateComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
 
-    public selectedMode: string = SelectedMode.REVIEW;
+    public selectedMode: string = SelectedMode.APPLICANT;
 
     public medicalCertificateForm: FormGroup;
 
@@ -124,7 +123,6 @@ export class MedicalCertificateComponent implements OnInit, OnDestroy {
     }
 
     public onFilesAction(event: any): void {
-        console.log('event', event);
         this.documents = event.files;
 
         this.displayDocumentsRequiredNote = false;
@@ -153,13 +151,6 @@ export class MedicalCertificateComponent implements OnInit, OnDestroy {
             default:
                 break;
         }
-    }
-
-    public onFilesReviewAction(event: {
-        file: UploadFile;
-        message: string;
-    }): void {
-        console.log('reviewEvent', event);
     }
 
     public incorrectInput(
@@ -248,10 +239,7 @@ export class MedicalCertificateComponent implements OnInit, OnDestroy {
 
     public onStepAction(event: any): void {
         if (event.action === 'next-step') {
-            if (
-                this.selectedMode === SelectedMode.APPLICANT ||
-                this.selectedMode === SelectedMode.FEEDBACK
-            ) {
+            if (this.selectedMode !== SelectedMode.REVIEW) {
                 this.onSubmit();
             }
 
@@ -276,7 +264,12 @@ export class MedicalCertificateComponent implements OnInit, OnDestroy {
 
         const { fromDate, toDate } = this.medicalCertificateForm.value;
 
-        const documents = this.documents.map((item) => item.realFile);
+        let documents = [];
+        this.documents.map((item) => {
+            if (item.realFile) {
+                documents.push(item.realFile);
+            }
+        });
 
         const saveData: any = {
             applicantId: this.applicantId,
@@ -289,6 +282,8 @@ export class MedicalCertificateComponent implements OnInit, OnDestroy {
                 filesForDeleteIds: this.documentsForDeleteIds,
             }),
         };
+
+        console.log('saveData', saveData);
 
         const selectMatchingBackendMethod = () => {
             if (

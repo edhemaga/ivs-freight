@@ -14,54 +14,61 @@
 
                 <!-- APPLICANT CARD -->
 
-                <div
-                    class="d-flex flex-column justify-content-center applicant-card-container"
-                    *ngIf="applicantCardInfo.ssn"
-                >
+                <ng-container *ngIf="applicantCardInfo.ssn">
                     <div
-                        class="d-flex align-items-center"
-                        [ngClass]="
-                            selectedMode === 'FEEDBACK_MODE'
-                                ? 'title-container title-container-feedback'
-                                : 'title-container'
-                        "
+                        class="d-flex flex-column justify-content-center applicant-card-container"
                     >
-                        <div class="d-flex align-items-center name-title-box">
-                            <p class="m-0 ta-font-bold">APPLICANT NAME</p>
+                        <div
+                            class="d-flex align-items-center"
+                            [ngClass]="
+                                selectedMode === 'FEEDBACK_MODE'
+                                    ? 'title-container title-container-feedback'
+                                    : 'title-container'
+                            "
+                        >
+                            <div
+                                class="d-flex align-items-center name-title-box"
+                            >
+                                <p class="m-0 ta-font-bold">APPLICANT NAME</p>
+                            </div>
+                            <div
+                                class="d-flex align-items-center ssn-title-box"
+                            >
+                                <p class="m-0 ta-font-bold">SSN</p>
+                            </div>
+                            <div
+                                class="d-flex align-items-center dob-title-box"
+                            >
+                                <p class="m-0 ta-font-bold">DOB</p>
+                            </div>
                         </div>
-                        <div class="d-flex align-items-center ssn-title-box">
-                            <p class="m-0 ta-font-bold">SSN</p>
-                        </div>
-                        <div class="d-flex align-items-center dob-title-box">
-                            <p class="m-0 ta-font-bold">DOB</p>
-                        </div>
-                    </div>
 
-                    <div
-                        class="d-flex align-items-center"
-                        [ngClass]="
-                            selectedMode === 'FEEDBACK_MODE'
-                                ? 'applicant-card-info-container applicant-card-info-container-feedback'
-                                : 'applicant-card-info-container'
-                        "
-                    >
-                        <div class="d-flex align-items-center driver-box">
-                            <p class="m-0 ta-font-regular">
-                                {{ applicantCardInfo.name }}
-                            </p>
-                        </div>
-                        <div class="d-flex align-items-center ssn-box">
-                            <p class="m-0 ta-font-regular">
-                                {{ applicantCardInfo.ssn }}
-                            </p>
-                        </div>
-                        <div class="d-flex align-items-center date-box">
-                            <p class="m-0 ta-font-regular">
-                                {{ applicantCardInfo.dob }}
-                            </p>
+                        <div
+                            class="d-flex align-items-center"
+                            [ngClass]="
+                                selectedMode === 'FEEDBACK_MODE'
+                                    ? 'applicant-card-info-container applicant-card-info-container-feedback'
+                                    : 'applicant-card-info-container'
+                            "
+                        >
+                            <div class="d-flex align-items-center driver-box">
+                                <p class="m-0 ta-font-regular">
+                                    {{ applicantCardInfo.name }}
+                                </p>
+                            </div>
+                            <div class="d-flex align-items-center ssn-box">
+                                <p class="m-0 ta-font-regular">
+                                    {{ applicantCardInfo.ssn }}
+                                </p>
+                            </div>
+                            <div class="d-flex align-items-center date-box">
+                                <p class="m-0 ta-font-regular">
+                                    {{ applicantCardInfo.dob }}
+                                </p>
+                            </div>
                         </div>
                     </div>
-                </div>
+                </ng-container>
 
                 <!-- AUTHORIZE CHECKBOX -->
 
@@ -77,8 +84,7 @@
                         "
                         [customClass]="'bold-12'"
                         [disabledStillCheckMark]="
-                            selectedMode === 'REVIEW_MODE' ||
-                            selectedMode === 'FEEDBACK_MODE'
+                            selectedMode !== 'APPLICANT_MODE'
                         "
                     >
                     </app-ta-checkbox>
@@ -152,8 +158,7 @@
                         "
                         [customClass]="'bold-12'"
                         [disabledStillCheckMark]="
-                            selectedMode === 'REVIEW_MODE' ||
-                            selectedMode === 'FEEDBACK_MODE'
+                            selectedMode !== 'APPLICANT_MODE'
                         "
                     >
                     </app-ta-checkbox>

@@ -150,15 +150,26 @@ export class MvrAuthorizationComponent implements OnInit, OnDestroy {
             isPeriodicallyObtained,
             isInformationCorrect,
             licenseCheck: onlyLicense,
-            files: JSON.stringify(files),
+            files: files ? JSON.stringify(files) : null,
         });
-
-        this.dontHaveMvrForm.get('dontHaveMvr').patchValue(dontHaveMvr);
 
         this.signatureImgSrc = signature;
         this.signature = signature;
 
         this.documents = files;
+
+        this.dontHaveMvrForm.get('dontHaveMvr').patchValue(dontHaveMvr);
+
+        if (dontHaveMvr) {
+            this.inputService.changeValidators(
+                this.mvrAuthorizationForm.get('files'),
+                false
+            );
+        } else {
+            this.inputService.changeValidators(
+                this.mvrAuthorizationForm.get('files')
+            );
+        }
     }
 
     public requestDrivingRecordFromEmployer(): void {
@@ -194,10 +205,7 @@ export class MvrAuthorizationComponent implements OnInit, OnDestroy {
     }
 
     public handleCheckboxParagraphClick(type: string): void {
-        if (
-            this.selectedMode === SelectedMode.FEEDBACK ||
-            this.selectedMode === SelectedMode.REVIEW
-        ) {
+        if (this.selectedMode !== SelectedMode.APPLICANT) {
             return;
         }
 
@@ -338,10 +346,7 @@ export class MvrAuthorizationComponent implements OnInit, OnDestroy {
 
     public onStepAction(event: any): void {
         if (event.action === 'next-step') {
-            if (
-                this.selectedMode === SelectedMode.APPLICANT ||
-                this.selectedMode === SelectedMode.FEEDBACK
-            ) {
+            if (this.selectedMode !== SelectedMode.REVIEW) {
                 this.onSubmit();
             }
 
@@ -377,7 +382,12 @@ export class MvrAuthorizationComponent implements OnInit, OnDestroy {
 
         const { dontHaveMvr } = this.dontHaveMvrForm.value;
 
-        const documents = this.documents.map((item) => item.realFile);
+        let documents = [];
+        this.documents.map((item) => {
+            if (item.realFile) {
+                documents.push(item.realFile);
+            }
+        });
 
         const saveData: any = {
             applicantId: this.applicantId,

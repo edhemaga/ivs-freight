@@ -13,6 +13,7 @@ import { ApplicantQuery } from '../../state/store/applicant.query';
 import { SelectedMode } from '../../state/enum/selected-mode.enum';
 import {
     ApplicantResponse,
+    CreateHosRulesReviewCommand,
     HosRuleFeedbackResponse,
     UpdatePspAuthCommand,
 } from 'appcoretruckassist';
@@ -74,10 +75,7 @@ export class HosRulesComponent implements OnInit, OnDestroy {
 
     public onStepAction(event: any): void {
         if (event.action === 'next-step') {
-            if (
-                this.selectedMode === SelectedMode.APPLICANT ||
-                this.selectedMode === SelectedMode.FEEDBACK
-            ) {
+            if (this.selectedMode !== SelectedMode.REVIEW) {
                 this.onSubmit();
             }
 
@@ -126,7 +124,36 @@ export class HosRulesComponent implements OnInit, OnDestroy {
             });
     }
 
-    public onSubmitReview(): void {}
+    public onSubmitReview(): void {
+        const saveData: CreateHosRulesReviewCommand = {
+            applicantId: this.applicantId,
+        };
+
+        this.applicantActionsService
+            .createHosRulesReview(saveData)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: () => {
+                    this.router.navigate([`/ssn-card/${this.applicantId}`]);
+
+                    this.applicantStore.update((store) => {
+                        return {
+                            ...store,
+                            applicant: {
+                                ...store.applicant,
+                                hosRule: {
+                                    ...store.applicant.hosRule,
+                                    reviewed: true,
+                                },
+                            },
+                        };
+                    });
+                },
+                error: (err) => {
+                    console.log(err);
+                },
+            });
+    }
 
     ngOnDestroy(): void {
         this.destroy$.next();

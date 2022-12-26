@@ -62,6 +62,8 @@ import {
     CreateMedicalCertificateReviewCommand,
     CreateCdlCardReviewCommand,
     CreatePersonalInfoCommand,
+    CreateSphReviewCommand,
+    CreateHosRulesReviewCommand,
 } from 'appcoretruckassist/model/models';
 
 @Injectable({
@@ -152,7 +154,7 @@ export class ApplicantActionsService {
     public createSsnCard(data: any): Observable<CreateWithUploadsResponse> {
         this.formDataService.extractFormDataFromFunction(data);
 
-        return this.applicantService.apiApplicantSsnPost(data);
+        return this.applicantService.apiApplicantSsnPost();
     }
 
     public createCdlCard(data: any): Observable<CreateWithUploadsResponse> {
@@ -353,6 +355,18 @@ export class ApplicantActionsService {
         data: CreatePspAuthReviewCommand
     ): Observable<CreateResponse> {
         return this.applicantService.apiApplicantPspReviewPost(data);
+    }
+
+    public createSphReview(
+        data: CreateSphReviewCommand
+    ): Observable<CreateResponse> {
+        return this.applicantService.apiApplicantSphReviewPost(data);
+    }
+
+    public createHosRulesReview(
+        data: CreateHosRulesReviewCommand
+    ): Observable<CreateResponse> {
+        return this.applicantService.apiApplicantHosrulesReviewPost(data);
     }
 
     public createCdlCardReview(

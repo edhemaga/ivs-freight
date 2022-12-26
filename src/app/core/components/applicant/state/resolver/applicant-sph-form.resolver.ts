@@ -17,6 +17,8 @@ export class ApplicantSphFormResolver implements Resolve<ApplicantState> {
         private applicantStore: ApplicantStore
     ) {}
     resolve(route: ActivatedRouteSnapshot): Observable<ApplicantState> {
+        console.log('route.queryParams', route.queryParams);
+
         const applicantSphForm$ =
             this.applicantActionsService.verifyPreviousEmployerSphForm({
                 inviteCode: route.queryParams.InviteCode?.split(' ').join('+'),

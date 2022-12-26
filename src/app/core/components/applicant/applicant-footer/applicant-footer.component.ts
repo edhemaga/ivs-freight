@@ -312,7 +312,7 @@ export class ApplicantFooterComponent implements OnInit, OnDestroy, OnChanges {
                         });
                 }
             }
-        }, 100);
+        }, 50);
     }
 
     public onHidePopupBox(type: string): void {

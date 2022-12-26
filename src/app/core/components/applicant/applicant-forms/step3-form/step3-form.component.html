@@ -303,10 +303,13 @@
                         <app-ta-upload-files
                             [files]="documents"
                             [size]="'medium'"
-                            [hasNumberOfPages]="true"
-                            [showDropzone]="true"
+                            [showDropzone]="selectedMode === 'APPLICANT_MODE'"
                             [isRequired]="true"
                             [showRequired]="displayDocumentsRequiredNote"
+                            [isReview]="selectedMode === 'REVIEW_MODE'"
+                            [reviewMode]="
+                                selectedMode === 'REVIEW_MODE' && 'REVIEW_MODE'
+                            "
                             (onFileEvent)="onFilesAction($event)"
                         ></app-ta-upload-files>
 

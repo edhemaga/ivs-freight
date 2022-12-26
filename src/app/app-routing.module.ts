@@ -371,7 +371,7 @@ const routes: Routes = [
         resolve: { applicant: ApplicantResolver },
     },
     {
-        path: 'sph-form/1',
+        path: 'sph-form',
         loadChildren: () =>
             import(
                 './core/components/applicant/applicant-tabs/sph/sph-form/sph-form.module'
