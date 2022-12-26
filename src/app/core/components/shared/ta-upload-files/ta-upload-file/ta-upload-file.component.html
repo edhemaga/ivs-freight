@@ -219,11 +219,6 @@
             [alt]="file?.fileName"
         />
 
-        <!-- Number of pages -->
-        <div *ngIf="hasNumberOfPages" class="ta-upload-file-number-of-pages">
-            <p>{{ numberOfFilePages }}</p>
-        </div>
-
         <!-- Tag Content -->
         <div
             *ngIf="(hasTagsDropdown || categoryTag) && file?.tags && file?.tags != '' && file?.tags != 'No Tag'"

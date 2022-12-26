@@ -17,11 +17,15 @@ export interface ITaInput {
     name: string;
     type: string;
     label?: string;
+    labelInInput?: boolean;
     placeholder?: string; // only for dropdown, otherwise placeholder is label !!!
     placeholderIcon?: string;
     placeholderIconRightSide?: string;
+    placeholderIconFolllowTextOnRightSide?: string;
+    placeholderIconColor?: string;
     placeholderText?: string;
     placeholderInsteadOfLabel?: boolean;
+    inputCursorOnRightSide?: boolean;
     hideDropdownArrow?: boolean;
     connectDropdown?: boolean;
     isRequired?: boolean;
@@ -44,6 +48,8 @@ export interface ITaInput {
     hideClear?: boolean;
     hideRequiredCheck?: boolean;
     hideErrorMessage?: boolean;
+    removeInput?: boolean;
+    readOnly?: boolean;
     thousandSeparator?: boolean; // type of input must be 'text'
     loadingSpinner?: {
         size?: string; // small, big

@@ -14,7 +14,7 @@
         background-color: #f3f3f3;
     }
 
-    &:hover {
+    &:hover, &.keep_open {
         transition: all 0.3s ease-in-out;
         background-color: #f3f3f3;
 
@@ -1178,6 +1178,17 @@
         .ta-upload-file-delete-template {
             width: 370px;
             height: 370px;
+        }
+    }
+
+    &.keep_open {
+        .ta-upload-file-footer {
+            opacity: 1;
+            border-radius: 1px;
+        }
+
+        .ta-upload-file-tag {
+            opacity: 1;
         }
     }
 }

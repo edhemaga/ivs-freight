@@ -107,6 +107,7 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
                     }
                 });
             });
+
         this.brokerInitConfig(this.activated_route.snapshot.data.broker);
     }
 
@@ -284,14 +285,14 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
                 },
                 {
                     title: 'Add Contact',
-                    name: 'add-contact',
+                    name: 'Contact',
                     svg: 'assets/svg/truckassist-table/customer/contact-column-avatar.svg',
                     show: true,
                     iconName: 'add-contact'
                 },
                 {
                     title: 'Write Review',
-                    name: 'write-review',
+                    name: 'Review',
                     svg: 'assets/svg/common/review-pen.svg',
                     show: true,
                     iconName: 'write-review'
@@ -392,12 +393,47 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
             });
     }
     public onDropActions(event: any) {
+
+       let eventType = '';
+       if ( event.type == 'Contact' || event.type == 'edit' || event.type == 'Review'){
+            eventType = 'edit'
+       } else {
+            eventType = event.type;
+       }
+
+        let eventObject = {
+            data: undefined,
+            id: this.brokerId,
+            type: eventType,
+            openedTab: event.type,
+        }
+
         this.dropDownService.dropActionsHeaderShipperBroker(
-            event,
+            eventObject,
             this.brokerObject,
             'broker'
         );
     }
+
+    public onModalAction(event: any){
+        if ( event == 'Load' ){
+            return false;
+        }
+        let eventObject = {
+            data: undefined,
+            id: this.brokerId,
+            type: 'edit',
+            openedTab: event,
+        }
+        setTimeout(() => {
+            this.dropDownService.dropActionsHeaderShipperBroker(
+                eventObject,
+                this.brokerObject,
+                'broker'
+            );
+        }, 100);
+    }
+
     /**Function return id */
     public identity(index: number, item: any): number {
         return item.id;

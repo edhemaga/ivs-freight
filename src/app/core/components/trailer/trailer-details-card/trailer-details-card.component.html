@@ -350,7 +350,25 @@
                     </div>
                 </div>
             </app-ta-custom-card>
-
+            <app-ta-custom-card
+                *ngIf="trailer?.files.length"
+                [cardName]="'Document'"
+                [isCardOpen]="false"
+                [hasCounter]="trailer?.files?.length ? trailer?.files.length : 0"
+                class="item-cards"
+                [bodyTemplate]="'card'"
+            >
+                <div class="card_files_holder" [class.active]="trailer?.files?.length > 1">
+                    <app-ta-upload-files
+                        [files]="trailer?.files"
+                        [customClassName]="'driver-card-pdf'"
+                        [hasCarouselBottomTabs]="true"
+                        [type]="'details'"
+                        [slideWidth]="440"
+                        [reviewMode]="'REVIEW_MODE'"
+                    ></app-ta-upload-files>
+                </div>
+            </app-ta-custom-card>
             <!-- Note  -->
             <div class="divider"></div>
             <div class="note-cards">
