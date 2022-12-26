@@ -77,13 +77,20 @@ export class MapListCardComponent implements OnInit, OnDestroy {
     }
 
     callBodyAction(action) {
-        if (action.type == 'delete') {
+        if (action.type == 'delete' || action.type == 'delete-repair') {
+            var name =
+                this.type == 'repairShop'
+                    ? action.data.name
+                    : this.type == 'shipper'
+                    ? action.data.name
+                    : '';
+
             var shipperData = {
                 id: action.id,
                 type: 'delete-item',
                 data: {
                     ...action.data,
-                    name: action.data.businessName,
+                    name: name,
                 },
             };
 

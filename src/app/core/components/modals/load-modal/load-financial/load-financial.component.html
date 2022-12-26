@@ -4,15 +4,25 @@
         <div class="load-financial-header">
             <p class="load-financial-title">{{ firstHeaderTitle }}</p>
             <div class="load-financial-value-action-container">
-                <p class="load-financial-value">
-                    {{ (billing?.baseRate ? billing?.baseRate : 0) | currency }}
-                </p>
+                <div [ngClass]="{ 'with-adjusted': adjusted }">
+                    <p class="load-financial-value">
+                        {{ billing }}
+                    </p>
+                    <p *ngIf="adjusted" class="load-financial-adjusted">
+                        {{ adjusted?.replaceAll(',', '') | currency }}
+                    </p>
+                </div>
+                <!--      (billing?.baseRate
+                                ? billing?.baseRate?.replaceAll(',', '')
+                                : 0
+                            ) | currency -->
                 <div
                     ngbTooltip
                     [mainTooltip]="'Add Billing'"
                     [tooltipBackground]="'#3074d3'"
                     position="top"
                     class="load-financial-action"
+                    [ngClass]="{ disabled: disableBillAction }"
                     (click)="onAction($event, 'first-header-action')"
                 >
                     <svg-icon
@@ -34,7 +44,8 @@
                     [tooltipBackground]="'#3074d3'"
                     position="top"
                     class="load-financial-action"
-                    (click)="onAction($event, 'first-header-action')"
+                    [ngClass]="{ disabled: disablePaymentAction }"
+                    (click)="onAction($event, 'second-header-action')"
                 >
                     <svg-icon
                         class="load-financial-action-svg"

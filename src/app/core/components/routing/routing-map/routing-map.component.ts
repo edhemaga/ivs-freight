@@ -596,7 +596,8 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
                     switch (res.type) {
                         case 'delete': {
                             if (res.template === 'route') {
-                                //this.deleteRoute(res.id);
+                                this.deleteRouteLine(res.data);
+
                                 this.routingService
                                     .deleteRouteById(res.id)
                                     .pipe(takeUntil(this.destroy$))
@@ -630,8 +631,6 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
                 } else if (res.type == 'route') {
                     this.addRoute(res.mapId);
                 } else if (res.type == 'edit-route') {
-                    console.log('edit-route res', res);
-
                     const routeIndex = this.tableData[
                         this.selectedMapIndex
                     ].routes.findIndex((item) => {
@@ -670,6 +669,8 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
                                 routeIndex
                             ]
                         );
+                    } else {
+                        this.deleteRouteLine(this.tableData[this.selectedMapIndex].routes[routeIndex]);
                     }
 
                     // this.getRouteList(
@@ -1049,6 +1050,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
                             longitude: stop.long,
                             latitude: stop.lat,
                             orderNumber: stop.orderNumber,
+                            shape: stop.shape ? stop.shape : ''
                         };
 
                         stopArr.push(stopObj);
@@ -1300,6 +1302,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
                         longitude: stop.long,
                         latitude: stop.lat,
                         orderNumber: stopIndex + 1,
+                        shape: stop.shape ? stop.shape : ''
                     };
 
                     stopArr.push(stopObj);
@@ -2925,28 +2928,29 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
                             leg: stop.leg,
                             total: stop.total,
                             orderNumber: stop.orderNumber,
+                            shape: stop.shape ? stop.shape : ''
                         };
 
                         stopsArr.push(stopObj);
                     });
 
-                    // var newRoute = {
-                    //     id: route.id,
-                    //     name: route.name,
-                    //     hidden: false,
-                    //     expanded: false,
-                    //     routeType: 'Practical',
-                    //     truckId: '',
-                    //     stopTime: '',
-                    //     mpg: '',
-                    //     fuelPrice: '',
-                    //     shape: route.shape,
-                    //     stops: stopsArr,
-                    //     color: this.findRouteColor(),
-                    //     isFocused: this.focusedRouteIndex == index,
-                    // };
+                    var newRoute = {
+                        id: route.id,
+                        name: route.name,
+                        hidden: false,
+                        expanded: false,
+                        routeType: 'Practical',
+                        truckId: '',
+                        stopTime: '',
+                        mpg: '',
+                        fuelPrice: '',
+                        shape: '',
+                        stops: stopsArr,
+                        color: this.findRouteColor(),
+                        isFocused: this.focusedRouteIndex == index,
+                    };
 
-                    // this.tableData[mapIndex].routes.push(newRoute);
+                    this.tableData[mapIndex].routes.push(newRoute);
                 });
 
                 if (this.selectedMapIndex == mapIndex) {
@@ -3062,6 +3066,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
                 orderNumber: stop.orderNumber
                     ? stop.orderNumber
                     : stopIndex + 1,
+                shape: ''
             };
 
             stopArr.push(stopObj);
@@ -3077,7 +3082,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
                 // hazMat
             )
             .pipe(takeUntil(this.destroy$))
-            .subscribe((routing) => {
+            .subscribe((routing: any) => {
                 var totalMiles = 0;
                 var totalTime = 0;
                 var totalPrice = 0;
@@ -3097,15 +3102,17 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
                     stopArr[index + 1].totalPrice = totalPrice;
                     stopArr[index + 1].time = leg.hours + ':' + leg.minutes;
                     stopArr[index + 1].totalTime = hours + ':' + minutes;
+                    stopArr[index + 1].shape = leg.shape;
                 });
 
                 stopArr[0].leg = 0;
                 stopArr[0].total = 0;
+                stopArr[0].shape = '';
 
                 var updateRouteObj = {
                     id: route.id,
                     name: route.name,
-                    shape: routing.shape,
+                    shape: '',
                     stops: stopArr,
                 };
 

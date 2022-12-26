@@ -89,8 +89,9 @@
 
 .load-financial-container {
     display: grid;
-    grid-template-columns: repeat(2, 184px) 1fr;
-    column-gap: 19px;
+    grid-template-columns: 198px 196px 1fr;
+    -moz-column-gap: 13px;
+    column-gap: 13px;
     align-items: flex-start;
     justify-content: flex-start;
 

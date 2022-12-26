@@ -66,6 +66,7 @@ export class TruckassistTableToolbarComponent
             svgPath: 'assets/svg/truckassist-table/import-new.svg',
             active: false,
             hide: false,
+            hasTopBorder: true,
         },
         {
             text: 'Export',
@@ -302,7 +303,7 @@ export class TruckassistTableToolbarComponent
     }
 
     // Toolbar Select Action
-    onToolBarSelectAction(actionType: string){
+    onToolBarSelectAction(actionType: string) {
         this.toolBarAction.emit({
             action: 'select-action',
             data: actionType,
@@ -371,7 +372,7 @@ export class TruckassistTableToolbarComponent
                 const tableConfig = localStorage.getItem(
                     `table-${this.tableConfigurationType}-Configuration`
                 );
-
+ 
                 this.tableService
                     .sendTableConfig({
                         tableType: this.tableConfigurationType,
@@ -382,7 +383,7 @@ export class TruckassistTableToolbarComponent
         } else if (action.text === 'Columns') {
             action.active = !action.active;
 
-            console.log(action.active);
+            this.checkAreAllSelectedInGroup();
 
             this.optionsPopupContent.map((option) => {
                 if (option.text !== 'Columns') {
@@ -396,6 +397,27 @@ export class TruckassistTableToolbarComponent
         } else {
             alert('Treba da se odradi!');
         }
+    }
+
+    checkAreAllSelectedInGroup() {
+        this.columnsOptionsWithGroups = this.columnsOptionsWithGroups.map(
+            (columns) => {
+                if (columns.isGroup) {
+                    let numOfSelected = 0;
+
+                    columns.group.map((c) => {
+                        if (!c.hidden) {
+                            numOfSelected++;
+                        }
+                    });
+
+                    columns.areAllActive =
+                        numOfSelected === columns.group.length;
+                }
+
+                return columns;
+            }
+        );
     }
 
     // Reset Table
@@ -419,17 +441,7 @@ export class TruckassistTableToolbarComponent
             if (!column.isPined) {
                 column.hidden = !column.hidden;
 
-                localStorage.setItem(
-                    `table-${this.tableConfigurationType}-Configuration`,
-                    JSON.stringify(this.columns)
-                );
-
-                this.tableService.sendToaggleColumn({
-                    column: column,
-                    index: index,
-                });
-
-                this.getActiveTableData();
+                this.setTableConfig(column, index);
             }
         }, 10);
     }
@@ -467,17 +479,7 @@ export class TruckassistTableToolbarComponent
                     if (column.title === c.title) {
                         column.hidden = columnGroup.areAllActive ? false : true;
 
-                        localStorage.setItem(
-                            `table-${this.tableConfigurationType}-Configuration`,
-                            JSON.stringify(this.columns)
-                        );
-
-                        this.tableService.sendToaggleColumn({
-                            column: column,
-                            index: index,
-                        });
-
-                        this.getActiveTableData();
+                        this.setTableConfig(column, index);
                     }
                 });
             }
@@ -496,21 +498,28 @@ export class TruckassistTableToolbarComponent
                     if (column.title === columnGroup.title) {
                         column.hidden = !column.hidden;
 
-                        localStorage.setItem(
-                            `table-${this.tableConfigurationType}-Configuration`,
-                            JSON.stringify(this.columns)
-                        );
+                        this.checkAreAllSelectedInGroup();
 
-                        this.tableService.sendToaggleColumn({
-                            column: column,
-                            index: index,
-                        });
-
-                        this.getActiveTableData();
+                        this.setTableConfig(column, index);
                     }
                 });
             }
         }, 10);
+    }
+
+    // Set Table Configuration
+    setTableConfig(column: any, index: number) {
+        localStorage.setItem(
+            `table-${this.tableConfigurationType}-Configuration`,
+            JSON.stringify(this.columns)
+        );
+
+        this.tableService.sendToaggleColumn({
+            column: column,
+            index: index,
+        });
+
+        this.getActiveTableData();
     }
 
     // --------------------------------ON DESTROY---------------------------------

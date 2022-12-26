@@ -938,7 +938,7 @@
                                         <div
                                             class="img-style img-margin"
                                             [class]="
-                                                row[column.field][0].active
+                                                row[column.field][0]?.active
                                                     ? 'truck-active'
                                                     : 'truck'
                                             "
@@ -946,7 +946,7 @@
                                         <div
                                             class="img-style img-margin"
                                             [class]="
-                                                row[column.field][1].active
+                                                row[column.field][1]?.active
                                                     ? 'trailer-active'
                                                     : 'trailer'
                                             "
@@ -954,7 +954,7 @@
                                         <div
                                             class="img-style img-margin"
                                             [class]="
-                                                row[column.field][2].active
+                                                row[column.field][2]?.active
                                                     ? 'mobile-active'
                                                     : 'mobile'
                                             "
@@ -962,7 +962,7 @@
                                         <div
                                             class="img-style img-margin"
                                             [class]="
-                                                row[column.field][3].active
+                                                row[column.field][3]?.active
                                                     ? 'shop-active'
                                                     : 'shop'
                                             "
@@ -970,7 +970,7 @@
                                         <div
                                             class="img-style img-margin"
                                             [class]="
-                                                row[column.field][4].active
+                                                row[column.field][4]?.active
                                                     ? 'towing-active'
                                                     : 'towing'
                                             "
@@ -978,7 +978,7 @@
                                         <div
                                             class="img-style img-margin"
                                             [class]="
-                                                row[column.field][5].active
+                                                row[column.field][5]?.active
                                                     ? 'parts-active'
                                                     : 'parts'
                                             "
@@ -986,7 +986,7 @@
                                         <div
                                             class="img-style img-margin"
                                             [class]="
-                                                row[column.field][6].active
+                                                row[column.field][6]?.active
                                                     ? 'tire-active'
                                                     : 'tire'
                                             "
@@ -994,7 +994,7 @@
                                         <div
                                             class="img-style"
                                             [class]="
-                                                row[column.field][7].active
+                                                row[column.field][7]?.active
                                                     ? 'dealer-active'
                                                     : 'dealer'
                                             "
@@ -2456,7 +2456,7 @@
                                         <div
                                             class="img-style img-margin"
                                             [class]="
-                                                row[column.field][0].active
+                                                row[column.field][0]?.active
                                                     ? 'truck-active'
                                                     : 'truck'
                                             "
@@ -2464,7 +2464,7 @@
                                         <div
                                             class="img-style img-margin"
                                             [class]="
-                                                row[column.field][1].active
+                                                row[column.field][1]?.active
                                                     ? 'trailer-active'
                                                     : 'trailer'
                                             "
@@ -2472,7 +2472,7 @@
                                         <div
                                             class="img-style img-margin"
                                             [class]="
-                                                row[column.field][2].active
+                                                row[column.field][2]?.active
                                                     ? 'mobile-active'
                                                     : 'mobile'
                                             "
@@ -2480,7 +2480,7 @@
                                         <div
                                             class="img-style img-margin"
                                             [class]="
-                                                row[column.field][3].active
+                                                row[column.field][3]?.active
                                                     ? 'shop-active'
                                                     : 'shop'
                                             "
@@ -2488,7 +2488,7 @@
                                         <div
                                             class="img-style img-margin"
                                             [class]="
-                                                row[column.field][4].active
+                                                row[column.field][4]?.active
                                                     ? 'towing-active'
                                                     : 'towing'
                                             "
@@ -2496,7 +2496,7 @@
                                         <div
                                             class="img-style img-margin"
                                             [class]="
-                                                row[column.field][5].active
+                                                row[column.field][5]?.active
                                                     ? 'parts-active'
                                                     : 'parts'
                                             "
@@ -2504,7 +2504,7 @@
                                         <div
                                             class="img-style img-margin"
                                             [class]="
-                                                row[column.field][6].active
+                                                row[column.field][6]?.active
                                                     ? 'tire-active'
                                                     : 'tire'
                                             "
@@ -2512,7 +2512,7 @@
                                         <div
                                             class="img-style"
                                             [class]="
-                                                row[column.field][7].active
+                                                row[column.field][7]?.active
                                                     ? 'dealer-active'
                                                     : 'dealer'
                                             "
@@ -3768,7 +3768,12 @@
                                 <!-- Title -->
                                 <div class="document-title">
                                     <div class="document-count-title">
-                                        {{row?.tableAttachments?.length}} {{row?.tableAttachments?.length > 1 ? 'DOCUMENTS' : 'DOCUMENT'}}
+                                        {{ row?.tableAttachments?.length }}
+                                        {{
+                                            row?.tableAttachments?.length > 1
+                                                ? 'DOCUMENTS'
+                                                : 'DOCUMENT'
+                                        }}
                                     </div>
                                     <div class="download-document-btn">
                                         <svg-icon
@@ -3782,7 +3787,14 @@
                                             }"
                                         ></svg-icon>
 
-                                        <div class="title" (click)="tableFiles?.downloadAllFiles()">Download All</div>
+                                        <div
+                                            class="title"
+                                            (click)="
+                                                tableFiles?.downloadAllFiles()
+                                            "
+                                        >
+                                            Download All
+                                        </div>
                                     </div>
                                 </div>
 

@@ -27,11 +27,14 @@
     .ta-upload-carousel-control-bg {
         position: absolute;
         width: 24px;
-        height: 100%;
         border-radius: 2px;
         text-align: center;
         display: none;
         transition: all 0.3s ease-in-out;
+        height: 32px;
+        top: 50%;
+        transform: translateY(-50%);
+        cursor: pointer;
 
         &.show {
             display: flex !important;
@@ -54,9 +57,8 @@
                 path {
                     stroke-linejoin: round;
                     paint-order: stroke;
-                    filter: drop-shadow(0 0 4px rgb(0 0 0 / 10%));
+                    filter: drop-shadow(0 0 4px rgb(0 0 0 / 15%));
                     fill: rgba(255, 255, 255, 0.7) !important;
-                    cursor:  pointer;
                 }
             }
 
@@ -65,21 +67,6 @@
                     display: flex;
                     width: 24px;
                     height: 32px;
-                    path {
-                        cursor:  pointer;
-                    }
-                }
-            }
-        }
-
-        &:hover {
-            transition: all 0.3s ease-in-out;
-
-            .ta-upload-files-control {
-                svg {
-                    path {
-                        fill: rgba(255, 255, 255, 1) !important;
-                    }
                 }
             }
         }

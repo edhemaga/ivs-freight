@@ -31,6 +31,7 @@ import {
 } from '../../../../../assets/utils/settings/customer-columns';
 import { TaThousandSeparatorPipe } from '../../../pipes/taThousandSeparator.pipe';
 import { ReviewsRatingService } from '../../../services/reviews-rating/reviewsRating.service';
+import { DatePipe } from '@angular/common';
 
 @Component({
     selector: 'app-customer-table',
@@ -103,7 +104,8 @@ export class CustomerTableComponent
         private thousandSeparator: TaThousandSeparatorPipe,
         private reviewRatingService: ReviewsRatingService,
         private DetailsDataService: DetailsDataService,
-        private ref: ChangeDetectorRef
+        private ref: ChangeDetectorRef,
+        public datePipe: DatePipe
     ) {}
 
     ngOnInit(): void {
@@ -383,7 +385,7 @@ export class CustomerTableComponent
             },
         ];
 
-        console.log('Shipper Data');
+        console.log('Broker Data');
         console.log(this.tableData[1].data);
 
         const td = this.tableData.find((t) => t.field === this.selectedTab);
@@ -437,31 +439,61 @@ export class CustomerTableComponent
         return {
             ...data,
             isSelected: false,
-            textInvAgeing: {
+            tableAddressPhysical: data?.mainAddress?.address
+                ? data.mainAddress.address
+                : data?.mainPoBox?.poBox
+                ? // ? data.mainPoBox.poBox + ' ' + data.mainPoBox.city + ' ' + data.mainPoBox.state + ' ' + data.mainPoBox.zipCode
+                  'Treba da se postavo odgovarajuci redosled za po box address'
+                : '',
+            tableAddressBilling: data?.billingAddress?.address
+                ? data.billingAddress.address
+                : data?.billingPoBox?.poBox
+                ? // ? data.mainPoBox.poBox + ' ' + data.mainPoBox.city + ' ' + data.mainPoBox.state + ' ' + data.mainPoBox.zipCode
+                  'Treba da se postavo odgovarajuci redosled za po box address'
+                : '',
+            tablePaymentDetailAvailCredit:
+                'Nema apodatka sa beka, progres je u pitanju',
+            tablePaymentDetailCreditLimit: data?.creditLimit
+                ? '$' + this.thousandSeparator.transform(data.creditLimit)
+                : '',
+            tablePaymentDetailTerm: data?.payTerm?.name
+                ? data.payTerm.name
+                : '',
+            tablePaymentDetailDTP: data?.daysToPay
+                ? data.daysToPay + ' days'
+                : '',
+            tablePaymentDetailInvAgeing: {
                 bfb: 0,
                 dnu: 0,
-                amount: 'Nije Povezano',
+                amount: 'Template se promenio',
             },
-            textContact: data?.brokerContacts?.length
-                ? data.brokerContacts.length
-                : 0,
-            textAddress: data?.mainAddress
-                ? data.mainAddress.city + ', ' + data.mainAddress.state
-                : '',
-            loadCount: data?.loadCount
+            tableLoads: data?.loadCount
                 ? this.thousandSeparator.transform(data.loadCount)
                 : '',
-            textTotal: data?.total
-                ? '$' + this.thousandSeparator.transform(data.total)
+            tableMiles: data?.miles
+                ? this.thousandSeparator.transform(data.miles)
                 : '',
-            textUnpaid: 'Nije Povezano',
-            textOnetoTwentyDays: 'Nije Povezano',
-            raiting: {
+            tablePPM: data?.pricePerMile
+                ? '$' + this.thousandSeparator.transform(data.pricePerMile)
+                : '',
+            tableRevenue: data?.revenue
+                ? '$' + this.thousandSeparator.transform(data.revenue)
+                : '',
+            tableRaiting: {
                 hasLiked: data.currentCompanyUserRating === 1,
                 hasDislike: data.currentCompanyUserRating === -1,
                 likeCount: data?.upCount ? data.upCount : '0',
                 dislikeCount: data?.downCount ? data.downCount : '0',
             },
+            tableContact: data?.brokerContacts?.length
+                ? data.brokerContacts.length
+                : 0,
+            tableAdded: data.createdAt
+                ? this.datePipe.transform(data.createdAt, 'MM/dd/yy')
+                : '',
+            tableEdited: data.updatedAt
+                ? this.datePipe.transform(data.updatedAt, 'MM/dd/yy')
+                : '',
         };
     }
 
@@ -470,22 +502,46 @@ export class CustomerTableComponent
         return {
             ...data,
             isSelected: false,
-            textShipWorkHour: 'Nije Povezano',
-            textReceWorkHour: 'Nije Povezano',
-            textContact: data?.shipperContacts?.length
-                ? data.shipperContacts.length
-                : 0,
-            textDbaName: '',
-            textAddress: data?.address?.address ? data.address.address : '',
-            mcNumber: '',
-            loadCount: '',
-            total: '',
-            raiting: {
+            tableAddress: data?.address?.address ? data.address.address : '',
+            tableLoads: 'Nema podatak sa beka',
+            tableAverageWatingTimePickup: data?.avgPickupTime
+                ? data.avgPickupTime
+                : '',
+            tableAverageWatingTimeDelivery: data?.avgDeliveryTime
+                ? data.avgDeliveryTime
+                : '',
+
+            tableAvailableHoursShipping:
+                data?.shippingFrom && data?.shippingTo
+                    ? data?.shippingFrom +
+                      ' Treba AM ili PM' +
+                      ' - ' +
+                      data?.shippingTo +
+                      ' Treba AM ili PM'
+                    : '',
+            tableAvailableHoursReceiving:
+                data?.receivingFrom && data?.receivingTo
+                    ? data?.receivingFrom +
+                      ' Treba AM ili PM' +
+                      ' - ' +
+                      data?.receivingTo +
+                      ' Treba AM ili PM'
+                    : '',
+            tableRaiting: {
                 hasLiked: data.currentCompanyUserRating === 1,
                 hasDislike: data.currentCompanyUserRating === -1,
                 likeCount: data?.upCount ? data.upCount : '0',
                 dislikeCount: data?.downCount ? data.downCount : '0',
             },
+            tableContact: data?.shipperContacts?.length
+                ? data.shipperContacts.length
+                : 0,
+            tableAdded: data.createdAt
+                ? this.datePipe.transform(data.createdAt, 'MM/dd/yy')
+                : '',
+            tableEdited: 'Nema podatak sa beka', // data.updatedAt
+                //? this.datePipe.transform(data.updatedAt, 'MM/dd/yy')
+                //: '',
         };
     }
 
