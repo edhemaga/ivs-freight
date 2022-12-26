@@ -11,7 +11,14 @@ import {
     ChangeDetectorRef,
     HostListener,
 } from '@angular/core';
-import { distinctUntilChanged, filter, Subject, switchMap, takeUntil, throttleTime } from 'rxjs';
+import {
+    distinctUntilChanged,
+    filter,
+    Subject,
+    switchMap,
+    takeUntil,
+    throttleTime,
+} from 'rxjs';
 import { AddressService } from 'src/app/core/services/shared/address.service';
 import { AddressEntity } from 'appcoretruckassist';
 import {
@@ -120,7 +127,7 @@ export class InputAddressDropdownComponent
                 filter((term: string) => {
                     if (!term) {
                         this.inputConfig.loadingSpinner = {
-                            isLoading: false
+                            isLoading: false,
                         };
                         this.addresList = [];
                     } else if (
@@ -149,7 +156,7 @@ export class InputAddressDropdownComponent
                     this.inputConfig.loadingSpinner = {
                         size: 'small',
                         color: 'white',
-                        isLoading: true
+                        isLoading: true,
                     };
 
                     return this.addressService.getAddresses(
@@ -161,16 +168,16 @@ export class InputAddressDropdownComponent
             )
             .subscribe((res) => {
                 this.inputConfig.loadingSpinner = {
-                    isLoading: false
+                    isLoading: false,
                 };
 
-                this.addresList = res.addresses.map((item, indx) => {
-                    return {
-                        ...item,
-                        name: item.address.address,
-                        id: indx,
-                    };
-                });
+                // this.addresList = res.addresses.map((item, indx) => {
+                //     return {
+                //         ...item,
+                //         name: item.address.address,
+                //         id: indx,
+                //     };
+                // });
 
                 this.ref.detectChanges();
             });
