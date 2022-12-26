@@ -15,6 +15,7 @@ import { BrokerMinimalListQuery } from '../state/broker-details-state/broker-min
 import { BrokerMinimalListStore } from '../state/broker-details-state/broker-minimal-list-state/broker-minimal.store';
 import { BrokerDetailsListQuery } from '../state/broker-details-state/broker-details-list-state/broker-details-list.query';
 import { BrokerDetailsListStore } from '../state/broker-details-state/broker-details-list-state/broker-details-list.store';
+import { BrokerDetailsStore } from '../state/broker-details-state/broker-details.store';
 
 @Component({
     selector: 'app-broker-details',
@@ -30,6 +31,7 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
     public brokerObject: any;
     public currentIndex: number = 0;
     public brokerList: any = this.brokerMimialQuery.getAll();
+    public newBrokerId: any = 0;
     constructor(
         private activated_route: ActivatedRoute,
         private router: Router,
@@ -45,8 +47,20 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
         private brokerMinimalStore: BrokerMinimalListStore,
         private bdlq: BrokerDetailsListQuery,
         private DetailsDataService: DetailsDataService,
-        private BrokerItemStore: BrokerDetailsListStore,
-    ) {}
+        private BrokerItemStore: BrokerDetailsStore,
+    ) {
+
+        let storeData$ = this.BrokerItemStore._select(state => state);
+        storeData$.subscribe(state => {
+
+            let newBrokerData = {...state.entities[this.newBrokerId]};
+            if ( !this.isEmpty(newBrokerData) ) {  
+                this.brokerInitConfig(newBrokerData);
+            }
+           
+        })
+
+    }
 
     ngOnInit(): void {
         // Confirmation Subscribe
@@ -94,6 +108,9 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe((id) => {
                 let query;
+
+               
+
                 if (this.bdlq.hasEntity(id)) {
                     query = this.bdlq.selectEntity(id).pipe(take(1));
                 } else {
@@ -103,9 +120,11 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
                 query.pipe(takeUntil(this.destroy$)).subscribe({
                     next: (res: BrokerResponse) => {
                         this.brokerInitConfig(res);
+                        this.newBrokerId = res.id;
                         this.router.navigate([
                             `/customer/${res.id}/broker-details`,
                         ]);
+                        this.cdRef.detectChanges();
                     }
                 });
             });
@@ -116,6 +135,10 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
         };    
         this.brokerInitConfig(brokerData);
     }
+
+    public isEmpty(obj: Record<string, any>): boolean {
+        return Object.keys(obj).length === 0;
+      }
 
     public deleteBrokerById(id: number) {
         let last = this.brokerList.at(-1);
