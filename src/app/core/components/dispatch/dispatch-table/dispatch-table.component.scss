@@ -91,7 +91,7 @@
 
                             svg {
                                 path {
-                                    fill: #fff;
+                                    fill: #3074D3;
                                 }
                             }
                         }
@@ -249,6 +249,20 @@
                                 color: #919191;
                             }
                         }
+
+                        &.c-pointer{
+                            cursor: pointer;
+                        }
+
+                        &.driver-on-vacation{
+                            svg-icon{
+                                svg{
+                                    path{
+                                        fill: #3074D3;
+                                    }
+                                }
+                            }
+                        }
                     }
 
                     .circles-holder {
@@ -302,11 +316,27 @@
                 }
 
                 &.addNew {
-                    background-color: #98b9ea;
-
+                    background-color: #F7F7F7;
+                    .text{
+                        color: #2F2F2F !important;
+                    }
                     &:hover {
                         cursor: pointer;
                         background-color: #3074d3;
+
+                        .text{
+                            color: #fff !important;
+                        }
+
+                        .add_new{
+                            svg-icon{
+                                svg{
+                                    path{
+                                        fill: #fff !important;
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
 
@@ -401,9 +431,9 @@
             }
 
             &.parking-field {
-                min-width: 130px;
-                max-width: 130px;
-                width: 130px;
+                min-width: 100px;
+                max-width: 100px;
+                width: 100px;
             }
 
             &.note-field {
@@ -549,6 +579,48 @@
                         }
                     }
                 }
+            }
+        }
+    }
+
+    .table-info{
+        justify-content: space-between;
+        margin-top: 2px;
+
+        .table-inside-info{
+            display: flex;
+            height: 26px;
+            padding: 0 10px;
+            align-items: center;
+        }
+
+        .table-info-field{
+            &, & span{
+                font-size: 11px;
+                font-weight: 600;
+                color: #424242;
+
+                &::selection{
+                    background-color: #42424233;
+                }
+            }
+
+            &.truck-filed, &.trailer-field{
+                width: 100px;
+            }
+
+            &.taken-field{
+                width: 116px;
+                text-transform: uppercase;
+            }
+
+            &.dispatcher-field{
+                width: 226px;
+                font-size: 14px;
+                font-weight: 700;
+                text-transform: uppercase;
+                text-align: right;
+                visibility: hidden;
             }
         }
     }

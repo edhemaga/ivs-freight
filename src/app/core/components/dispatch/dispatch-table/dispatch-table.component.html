@@ -15,6 +15,7 @@
                 <th>TRAILER</th>
                 <th>DRIVER</th>
                 <th class="empty"></th>
+                <th class="empty"></th>
                 <th>LAST LOCATION</th>
                 <th class="text-center">STATUS</th>
                 <th class="pick-delivery">
@@ -436,6 +437,29 @@
                     </div>
                 </td>
                 <td class="box-item">
+                    <div class="main_inside" [class.filled]="item.driver">
+                        <div class="padding-inside">
+                            <div
+                                *ngIf="item.driver"
+                                class="info-item c-pointer"
+                                [class.driver-on-vacation]="
+                                    item.driver.vacation
+                                "
+                                [mainTooltip]="'Vacation'"
+                                [tooltipBackground]="'#424242'"
+                                ngbTooltip
+                                position="right"
+                            >
+                                <svg-icon
+                                    [src]="
+                                        'assets/svg/dispatchboard/vacation.svg'
+                                    "
+                                ></svg-icon>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+                <td class="box-item">
                     <div class="main_inside filled">
                         <div class="padding-inside">
                             <div
@@ -683,7 +707,7 @@
                 </td>
             </tr>
 
-            <tr>
+            <tr *ngIf="!__isBoardLocked">
                 <td class="truck-field">
                     <div class="main_inside" [class.addNew]="truckList.length">
                         <div
@@ -840,6 +864,11 @@
                         <div class="padding-inside"></div>
                     </div>
                 </td>
+                <td class="box-item">
+                    <div class="main_inside">
+                        <div class="padding-inside"></div>
+                    </div>
+                </td>
                 <td class="location-field">
                     <div
                         class="main_inside"
@@ -914,6 +943,39 @@
             </tr>
         </tbody>
     </table>
+    <div class="table-info d-flex">
+        <div class="table-inside-info">
+            <div class="table-info-field truck-filed">
+                {{ dData.truckCount }}
+                <span
+                    [innerHTML]="dData.truckCount == 1 ? 'TRUCK' : 'TRUCKS'"
+                ></span>
+            </div>
+            <div class="table-info-field trailer-field">
+                {{ dData.trailerCount }}
+                <span
+                    [innerHTML]="
+                        dData.trailerCount == 1 ? 'TRAILER' : 'TRAILERS'
+                    "
+                ></span>
+            </div>
+            <div class="table-info-field driver-field">
+                {{ dData.driverCount }}
+                <span
+                    [innerHTML]="dData.driverCount == 1 ? 'DRIVER' : 'DRIVERS'"
+                ></span>
+            </div>
+        </div>
+        <div class="table-inside-info">
+            <div class="table-info-field taken-field">2 of 24 Assigned</div>
+            <div
+                class="table-info-field dispatcher-field"
+                [innerHTML]="
+                    dData.dispatcher ? dData.dispatcher.fullName : 'Team Board'
+                "
+            ></div>
+        </div>
+    </div>
 </div>
 
 <!-- Popover for HOS -->
