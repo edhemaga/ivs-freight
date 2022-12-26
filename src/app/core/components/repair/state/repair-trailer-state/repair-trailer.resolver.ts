@@ -27,6 +27,7 @@ export class RepairTrailerResolver implements Resolve<RepairTrailerState> {
                 undefined,
                 undefined,
                 undefined,
+                undefined,
                 1,
                 25
             )
