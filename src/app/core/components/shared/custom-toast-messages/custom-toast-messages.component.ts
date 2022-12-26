@@ -437,8 +437,13 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
                 }
                 break;
             case 'REVIEW':
-                this.actionTitle =
-                    this.toastrType == 'toast-error' ? 'REVIEW' : 'REVIEWED';
+                this.actionTitle = this.toastrType == 'toast-error' ? 'REVIEW' : 'REVIEWED';
+                
+                if ( this.httpRequest.body?.id ) {
+                    this.actionTitle = this.toastrType == 'toast-error' ? 'UPDATE' : 'UPDATED';
+                    this.message = this.httpRequest.body ? this.httpRequest.body?.comment : '';
+                }
+                
                 switch (this.httpRequest.body?.entityTypeReviewId) {
                     case 1:
                         this.actionType = 'BROKER';
