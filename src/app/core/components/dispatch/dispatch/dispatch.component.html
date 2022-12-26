@@ -7,9 +7,13 @@
         [columns]="columns"
         [tableContainerWidth]="tableContainerWidth"
         [selectedDispatcher]="selectedDispatcher"
+        [dispathcboardTableLocked]="isBoardLocked"
     ></app-truckassist-table-toolbar>
 
-    <div class="dispatch-tables">
+    <div
+        class="dispatch-tables"
+        [class.multiple-tables]="(dispatchTableList | async).length > 1"
+    >
         <div
             class="dipsatch_groups"
             *ngFor="let item of dispatchTableList | async; let indx = index"

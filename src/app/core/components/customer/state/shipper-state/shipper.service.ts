@@ -18,7 +18,6 @@ import { TruckassistTableService } from '../../../../services/truckassist-table/
 import { ShipperMinimalListQuery } from './shipper-details-state/shipper-minimal-list-state/shipper-minimal.query';
 import { ShipperDetailsListStore } from './shipper-details-state/shipper-details-list-state/shipper-details-list.store';
 import { FormDataService } from 'src/app/core/services/formData/form-data.service';
-import { GetRepairShopClustersQuery } from 'appcoretruckassist/model/getRepairShopClustersQuery';
 import { ShipperItemStore } from '../shipper-state/shipper-details-state/shipper-details.store';
 
 @Injectable({

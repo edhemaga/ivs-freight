@@ -72,7 +72,7 @@ export class ApplicantTService {
         applicantSpecParamsSearch?: string,
         applicantSpecParamsSearch1?: string,
         applicantSpecParamsSearch2?: string
-    ): Observable<any /*GetApplicantListResponse*/> {
+    ): Observable<any> {
         return this.applicantService.apiApplicantAdminListGet(
             applicantSpecParamsArchived,
             applicantSpecParamsHired,

@@ -58,7 +58,7 @@ export interface ApplicantResponse {
     pspAuth?: PspAuthFeedbackResponse;
     sph?: SphFeedbackResponse;
     hosRule?: HosRuleFeedbackResponse;
-    ssn?: SsnFeedbackResponse;
+    ssnCard?: SsnFeedbackResponse;
     cdlCard?: CdlCardFeedbackResponse;
     companyInfo?: ApplicantCompanyInfoResponse;
     requests?: Array<PreviousEmployerRequestResponse> | null;
