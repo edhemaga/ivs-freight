@@ -455,6 +455,7 @@
                                     </div>
                                     <div
                                         class="link"
+                                        *ngIf="item?.url"
                                         [class.closed]="!item.linkActive"
                                     >
                                         {{ item.url }}
