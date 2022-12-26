@@ -9,10 +9,9 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { AddressResponse } from './addressResponse';
 
 
 export interface AddressListResponse { 
-    addresses?: Array<AddressResponse> | null;
+    addresses?: Array<string> | null;
 }
 
