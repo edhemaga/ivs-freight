@@ -64,6 +64,7 @@ export class ReviewsRatingService {
     }
 
     public deleteReview(id: number): Observable<any> {
+        console.log('--deleteReview--')
         return this.reviewRatingService.apiRatingReviewReviewIdDelete(id);
     }
 
@@ -72,10 +73,12 @@ export class ReviewsRatingService {
     }
 
     public addReview(data: CreateReviewCommand): Observable<CreateResponse> {
+        console.log('--addReview--')
         return this.reviewRatingService.apiRatingReviewReviewPost(data);
     }
 
     public updateReview(data: UpdateReviewCommand): Observable<any> {
+        console.log('--updateReview--')
         return this.reviewRatingService.apiRatingReviewReviewPut(data);
     }
 }

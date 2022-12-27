@@ -30,9 +30,10 @@ export class ShipperDetailsSingleComponent implements OnInit, OnChanges {
             this.shipperContacts =
                 changes.shipper.currentValue[0].data.shipperContacts;
             this.shipperLikes =
-                changes.shipper.currentValue[0].data.upRatingCount;
+                changes.shipper.currentValue[0].data.upCount;
             this.shipperDislike =
-                changes.shipper.currentValue[0].data.downRatingCount;
+                changes.shipper.currentValue[0].data.downCount;
+        
             this.getReviews(changes.shipper.currentValue[0].data);
         }
     }
