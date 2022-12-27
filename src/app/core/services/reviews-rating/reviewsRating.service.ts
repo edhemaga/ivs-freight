@@ -14,6 +14,7 @@ import { ShipperStore } from '../../components/customer/state/shipper-state/ship
 import { ShopStore } from '../../components/repair/state/shop-state/shop.store';
 import { Router } from '@angular/router';
 import { BrokerTService } from '../../components/customer/state/broker-state/broker.service';
+import { ShipperTService } from '../../components/customer/state/shipper-state/shipper.service';
 
 @Injectable({
     providedIn: 'root',
@@ -26,6 +27,7 @@ export class ReviewsRatingService {
         private shopStore: ShopStore,
         private router: Router,
         private BrokerTService: BrokerTService,
+        private ShipperTService: ShipperTService,
     ) {}
 
     public getReviewRatingModal(): Observable<GetRatingReviewModalResponse> {
@@ -69,7 +71,18 @@ export class ReviewsRatingService {
 
     public deleteReview(id: number): Observable<any> {
         console.log('--deleteReview--')
-        return this.reviewRatingService.apiRatingReviewReviewIdDelete(id);
+        return this.reviewRatingService.apiRatingReviewReviewIdDelete(id).pipe(
+            tap(() => {
+                let splitUrl = this.router.url.split('/');
+                let customerId = parseInt(splitUrl[2]);
+                if ( this.router.url.indexOf('broker') > -1 ){
+                    this.BrokerTService.deleteReview(id, customerId);
+                } 
+
+                if ( this.router.url.indexOf('shipper') > -1 ){
+                    this.ShipperTService.deleteReview(id, customerId);
+                }
+            }));
     }
 
     public getReviewById(id: number): Observable<ReviewResponse> {
@@ -101,6 +114,10 @@ export class ReviewsRatingService {
                 let customerId = parseInt(splitUrl[2]);
                 if ( this.router.url.indexOf('broker') > -1 ){
                     this.BrokerTService.updatedReviewNew(data, customerId);
+                }
+
+                if ( this.router.url.indexOf('shipper') > -1 ){
+                    this.ShipperTService.updatedReviewNew(data, customerId); 
                 }
             }));
     }

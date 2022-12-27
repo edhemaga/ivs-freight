@@ -344,26 +344,24 @@ export class BrokerTService implements OnDestroy {
 
 
     public updatedReviewNew(data, currentId){
-        console.log('---data---', data);
-        //console.log('---currentId---', currentId);
 
-        let brokerData = {
-            ...this.brokerItemStore?.getValue()?.entities[currentId],
-        };
+        let brokerData = JSON.parse(JSON.stringify(this.brokerItemStore?.getValue()?.entities[currentId]));
 
-        let brokerDataNew = brokerData;
-        brokerDataNew?.reviews.map((item: any) => {
+        brokerData?.reviews.map((item: any) => {
             if ( item.id == data.id ){
-                console.log('--here---', item)
-                item.comment = 'aaaaaaaa';
-                console.log('--here2---', item)
-                //item.comment = data.comment;
+                item.comment = data.comment;
             }
            
         });
         
-        console.log('brokerData---', brokerData);
-        console.log('brokerDataNew---', brokerDataNew);
+        this.brokerStore.add(brokerData);
+        this.brokerMinimalStore.add(brokerData);
+        this.tableService.sendActionAnimation({
+            animation: 'update',
+            tab: 'broker',
+            data: brokerData,
+            id: brokerData.id,
+        });
     }
 
     public addNewReview(data, currentId){
@@ -383,6 +381,26 @@ export class BrokerTService implements OnDestroy {
             id: brokerData.id,
         });
         */
+    }
+
+    public deleteReview(reviewId, brokerId){
+
+        let brokerData = JSON.parse(JSON.stringify(this.brokerItemStore?.getValue()?.entities[brokerId]));
+
+        brokerData?.reviews.map((item: any, index: any) => {
+            if ( item.id == reviewId ){
+                brokerData?.reviews.splice(index, 1);
+            }})
+        
+        this.brokerStore.add(brokerData);
+        this.brokerMinimalStore.add(brokerData);
+        this.tableService.sendActionAnimation({
+            animation: 'update',
+            tab: 'broker',
+            data: brokerData,
+            id: brokerData.id,
+        });
+
     }
 
     public getBrokerLoads(
