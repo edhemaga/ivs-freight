@@ -25,21 +25,6 @@ export class RepairDResolver implements Resolve<RepairDState> {
 
         const repairList$ = this.repairDService.getRepairList(
             repairShopId,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null
         );
 
         const repairShopMinimalList$ =
@@ -62,7 +47,8 @@ export class RepairDResolver implements Resolve<RepairDState> {
                     data.repairedVehicleList;
                 this.repairDService.updateRepairShopMinimal =
                     data.repairShopMinimalList;
-            })
+                
+                })
         );
     }
 }
