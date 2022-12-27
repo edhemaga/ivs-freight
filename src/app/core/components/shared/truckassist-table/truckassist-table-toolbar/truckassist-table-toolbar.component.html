@@ -30,9 +30,7 @@
                         [inputConfig]="data.inputConfig"
                         [options]="data.dropdownData"
                         [activeItem]="data.selectedDispatcher"
-                        (selectedItem)="
-                            onToolBarSelectAction($event)
-                        "
+                        (selectedItem)="onToolBarSelectAction($event)"
                     ></app-ta-input-dropdown>
                 </div>
                 <div
@@ -137,6 +135,7 @@
 
             <!-- Options -->
             <div
+                *ngIf="!options.toolbarActions.hideListColumn"
                 #op="ngbPopover"
                 (click)="onShowOptions(op)"
                 [autoClose]="true"
@@ -152,6 +151,39 @@
                 <svg-icon
                     [svgStyle]="{ 'width.px': 18, 'height.px': 17 }"
                     [src]="'assets/svg/truckassist-table/burger-icon.svg'"
+                ></svg-icon>
+            </div>
+
+            <!-- Dispatchboard table options -->
+
+            <div
+                class="lock-unlock-dispatch"
+                *ngIf="options.toolbarActions.showDispatchSettings"
+                (click)="onToolBarAction('toggle-locked')"
+            >
+                <svg-icon [src]="dispathcboardTableLocked ? 'assets/svg/common/ic_lock.svg' : 'assets/svg/common/ic_unlock.svg'"></svg-icon>
+            </div>
+            <!-- BORDER -->
+            <div
+                class="border-container"
+                *ngIf="options.toolbarActions.showDispatchSettings"
+            >
+                <div class="border"></div>
+            </div>
+            <div
+                class="settings-dispatch"
+                *ngIf="options.toolbarActions.showDispatchSettings"
+            >
+                <svg-icon
+                    [src]="'assets/svg/common/ic_settings.svg'"
+                ></svg-icon>
+            </div>
+            <div
+                class="new-load"
+                *ngIf="options.toolbarActions.showDispatchAdd"
+            >
+                <svg-icon
+                    [src]="'assets/svg/dispatchboard/add-load.svg'"
                 ></svg-icon>
             </div>
         </div>
@@ -194,7 +226,7 @@
                 <div class="option-border"></div>
             </div>
 
-             <!-- Option -->
+            <!-- Option -->
             <div
                 (click)="onOptions(option)"
                 [ngClass]="{

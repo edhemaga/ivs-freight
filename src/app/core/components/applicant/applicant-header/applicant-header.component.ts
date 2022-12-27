@@ -133,7 +133,7 @@ export class ApplicantHeaderComponent implements OnInit, OnChanges {
     public getStepValuesFromStore(): void {
         this.applicantQuery.applicant$
             .pipe(takeUntil(this.destroy$))
-            .subscribe((res: ApplicantResponse) => {
+            .subscribe((res: any) => {
                 console.log('RES', res);
                 this.applicantId = res.id;
 
