@@ -2,7 +2,6 @@
     *ngIf="isNavItemHovered && isActiveSubroute && !route.isRouteActive"
     class="nav-item-hover"
 ></div>
-
 <div
     class="nav-item"
     [ngClass]="{
@@ -24,6 +23,7 @@
     <svg-icon
         class="nav-item-img nav-item-img-active"
         src="{{ route.image }}"
+        [ngClass]="{'route-clicked-svg': route.isRouteActive && route.arrow}"
     ></svg-icon>
 
     <div
@@ -33,9 +33,11 @@
         <p
             *ngIf="isNavigationHovered"
             class="nav-item-name nav-item-name-active"
+            [ngClass]="{'route-clicked': route.isRouteActive && route.arrow}"
         >
             {{ route.name }}
         </p>
+           
         <svg-icon
             class="nav-item-arrow nav-item-arrow-active"
             [ngClass]="{
@@ -46,5 +48,10 @@
             *ngIf="route.arrow && isNavigationHovered"
             src="{{ route.arrow }}"
         ></svg-icon>
+        <svg-icon
+        *ngIf="isNavigationHovered && !route.arrow"
+        class="nav-item-arrow_top"
+        src="assets/svg/common/arrow_top_right.svg"
+    ></svg-icon>
     </div>
 </div>

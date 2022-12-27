@@ -38,7 +38,7 @@ export const navigation_magic_line = (type: string) =>
         state(
             'true',
             style({
-                width: '178px',
+                width: '238px',
                 overflow: 'visible',
                 opacity: '1',
             })

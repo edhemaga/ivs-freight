@@ -26,10 +26,11 @@ export class NavigationSubrouteComponent {
     @Output() onSubrouteActiveEvent = new EventEmitter<NavigationSubRoutes>();
 
     public isMagicLineActive: boolean = false;
-
     constructor(private router: Router) {}
 
     public onSubrouteAction(subroute: NavigationSubRoutes) {
+        console.log(this.subroute);
+        
         if (this.subroute.id === subroute.activeRouteFlegId) {
             localStorage.setItem(
                 'subroute_active',
@@ -42,7 +43,7 @@ export class NavigationSubrouteComponent {
             });
         }
     }
-
+    
     public isActiveRouteOnReload(route: string): boolean {
         if (this.router.url.includes(route)) {
             this.isMagicLineActive = true;

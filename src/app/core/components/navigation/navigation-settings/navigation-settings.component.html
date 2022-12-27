@@ -1,0 +1,26 @@
+<div class="holder">
+    <div class="parent" 
+    
+    *ngIf="showItems && isNavigationHovered"></div>
+    <div *ngIf="showItems && isNavigationHovered">
+        
+    <div  class="items" *ngFor="let item of footer[0].route">
+        <svg-icon
+        src="{{ item.image }}"
+        ></svg-icon>
+        <p  >{{item.name}}</p>
+        <svg-icon
+        class="nav-item-arrow_top"
+        src="assets/svg/common/arrow_top_right.svg"
+        ></svg-icon>
+    </div>
+</div>
+
+<div class="footer-item" (click)="showItems = !showItems">
+    <svg-icon
+    src="{{ footer[0].image }}"
+    ></svg-icon>
+    <p>Settings</p>
+</div>
+
+</div>

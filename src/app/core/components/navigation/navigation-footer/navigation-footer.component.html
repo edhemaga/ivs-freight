@@ -1,5 +1,9 @@
 <div class="nav-footer" [ngClass]="{ 'nav-footer-width': isNavigationHovered }">
-    <div
+    
+    <app-navigation-settings 
+        [isNavigationHovered]="isNavigationHovered"
+    ></app-navigation-settings>
+    <!-- <!-- <div 
         *ngFor="let item of footerData; trackBy: identity; let ind = index"
         class="nav-footer-item"
         [ngClass]="{
@@ -10,6 +14,8 @@
         [routerLink]="item.route"
         routerLinkActive="{{ ind !== 2 ? 'nav-footer-item-active' : '' }}"
     >
+    
+    
         <div
             class="nav-footer-hover"
             [ngClass]="{ 'nav-footer-hover-user': ind === 2 }"
@@ -19,24 +25,25 @@
             *ngIf="isActiveFooterRoute(item)"
             class="nav-item-active-box"
         ></div>
-
-        <img
+         <img
             class="nav-footer-image"
             [ngClass]="{ 'nav-footer-image-user': ind === 2 }"
             [src]="item.image"
             [alt]="item.text.userName"
-        />
+        /> 
         <div
             class="nav-footer-rightSide"
             [@showHideDetails]="isNavigationHovered ? 'true' : 'false'"
         >
+        
             <p
-                class="nav-footer-text"
+                class="nav-footer-text ta-font-regular"
                 *ngIf="!(item.text | userData) && isNavigationHovered"
             >
                 {{ item.text }}
+               
             </p>
-
+           
             <div
                 class="nav-footer-user"
                 *ngIf="(item.text | userData) && isNavigationHovered"
@@ -62,5 +69,13 @@
                 class="status-marker"
             ></div>
         </div>
-    </div>
+    </div>  -->
+    <!-- <div 
+        *ngFor="let item of footerData;  let ind = index"
+        class="nav-footer-item">
+        <div *ngIf="ind !== 2">
+
+            {{item.route}}
+        </div>
+    </div> -->
 </div>

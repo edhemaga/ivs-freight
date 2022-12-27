@@ -6,8 +6,8 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class ChangeLogoPipe implements PipeTransform {
     transform(value: boolean): string {
         if (!value) {
-            return 'assets/svg/common/ic_truckassist_logo_short.svg';
+            return 'assets/svg/applicant/ic_logo-light.svg';
         }
-        return 'assets/svg/common/ic_truckassist_logo_long.svg';
+        return 'assets/svg/common/ic_logo-dark.svg';
     }
 }

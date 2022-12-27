@@ -3,6 +3,7 @@ import {
     Navigation,
     NavigationModal,
     NavigationUserPanel,
+    Settings
 } from './navigation.model';
 
 export const navigationData: Navigation[] = [
@@ -474,16 +475,69 @@ export const footerData: FooterData[] = [
     // ROUTE WHAT'S NEW ?
     {
         id: 32,
-        image: 'assets/svg/common/ic_info.svg',
-        text: "What's New",
-        route: '/whatsnew',
+        image: 'assets/svg/common/ic_bell.svg',
+        text: "Notifications",
         isRouteActive: false,
+        route: '/notification'
     },
+];
+export const settings: Settings[] = [
     {
         id: 33,
         image: 'assets/svg/common/ic_settings.svg',
         text: 'Settings',
-        route: '/settings',
+        arrow: 'assets/svg/common/ic_arrow-down.svg',
         isRouteActive: false,
+        isSubrouteActive: false,
+         route: [
+            {
+                name: 'Company',
+                image: 'assets/svg/common/ic_company.svg',
+                route: '/settings/company',
+                activeRouteFlegId: 33,
+            },
+            {
+                name: 'Location',
+                image: 'assets/svg/common/ic_location.svg',
+                route: '/settings/location',
+                activeRouteFlegId: 33,
+            },
+            {
+                name: 'Document',
+                image: 'assets/svg/common/ic_document.svg',
+                route: '/settings/document',
+                activeRouteFlegId: 33,
+            },
+            {
+                name: 'User',
+                image: 'assets/svg/common/ic_user.svg',
+                route: '/settings/user',
+                activeRouteFlegId: 33,
+            },
+            {
+                name: 'Custom Agreement',
+                image: 'assets/svg/applicant/case.svg',
+                route: '/settings/custom_agreement',
+                activeRouteFlegId: 33,
+            },
+            {
+                name: 'Training Material',
+                image: 'assets/svg/applicant/case.svg',
+                route: '/settings/training_material',
+                activeRouteFlegId: 33,
+            },
+            {
+                name: 'Billing',
+                image: 'assets/svg/common/ic_billing.svg',
+                route: '/settings/billing',
+                activeRouteFlegId: 33,
+            },
+            {
+                name: 'Integration',
+                image: 'assets/svg/common/ic_integration.svg',
+                route: '/settings/integration',
+                activeRouteFlegId: 33,
+            },
+        ],
     },
-];
+]

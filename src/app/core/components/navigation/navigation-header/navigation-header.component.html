@@ -9,16 +9,21 @@
         class="nav-header-bottom"
         [ngClass]="{ 'expand-width': isNavigationHovered }"
     >
+        <div class="nav-header-bottom-leftSide">
+
         <div
             class="nav-header-bottom-plus"
             (click)="onAction('Open Panel')"
-            ngbTooltip
-            mainTooltip="Add New"
-            tooltipBackground="#6c6c6c"
-            position="right"
+            [ngStyle]="isNavigationHovered == true && { 'background': '#3074D3' }"
         >
-            <svg-icon src="assets/svg/common/ic_plus.svg"></svg-icon>
+            <svg-icon 
+            [ngClass]="{ 'light-svg': isNavigationHovered }"
+            src="assets/svg/common/ic_plus.svg"></svg-icon>
         </div>
+        <p [@showHideDetails]="isNavigationHovered ? 'true' : 'false'" 
+        class="ta-font-bold">Add New
+    </p>
+    </div>
 
         <div
             class="nav-header-bottom-rightSide"
@@ -34,7 +39,7 @@
             >
                 <svg-icon src="assets/svg/common/ic_search.svg"></svg-icon>
             </div>
-            <div
+            <!-- <div
                 class="nav-header-bottom-rightSide-notes"
                 (click)="onAction('Notes')"
                 ngbTooltip
@@ -43,8 +48,8 @@
                 position="top"
             >
                 <svg-icon src="assets/svg/common/ic_note.svg"></svg-icon>
-            </div>
-            <div
+            </div> -->
+            <!-- <div
                 class="nav-header-bottom-rightSide-bell"
                 (click)="onAction('Bell')"
                 ngbTooltip
@@ -53,7 +58,7 @@
                 position="top"
             >
                 <svg-icon src="assets/svg/common/ic_bell.svg"></svg-icon>
-            </div>
+            </div> -->
         </div>
     </div>
 </div>

@@ -33,5 +33,15 @@ export interface FooterData {
     image: string | any;
     text: string | {};
     route?: string;
+    arrow?: string;
     isRouteActive?: boolean;
+}
+export interface Settings {
+    id: number;
+    image: string | any;
+    text: string | {};
+    route?: any;
+    arrow?: string;
+    isRouteActive?: boolean;
+    isSubrouteActive?: boolean;
 }

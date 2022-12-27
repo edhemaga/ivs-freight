@@ -45,6 +45,7 @@ export class NavigationFooterComponent implements OnInit, OnDestroy {
     ) {}
 
     ngOnInit() {
+        console.log(this.footerData)
         this.isActiveFooterRouteOnReload(window.location.pathname);
 
         // ----------------------- PRODUCSTION MODE ----------------------------

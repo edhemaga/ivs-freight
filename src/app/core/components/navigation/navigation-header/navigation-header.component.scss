@@ -11,9 +11,10 @@
     user-select: none;
 
     .nav-header-top {
+        padding: 0 4px;
         .nav-header-top-logo {
             svg {
-                margin-left: -3.5px;
+                // margin-left: -3.5px;
             }
         }
     }
@@ -26,62 +27,70 @@
         justify-content: space-between;
         width: 0px;
         position: relative;
-        right: 4px;
+        // right: 4px;
 
         &.expand-width {
-            width: 177px;
+            // width: 177px;
+            width: 100%;
         }
-
+        .nav-header-bottom-leftSide{
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            padding-left: 2px;
+            p{
+                transition: $nav-transition;
+                color: $nav-text-color-darker;
+                margin: 0;
+                display: flex;
+            }
         .nav-header-bottom-plus {
-            background: #ffffff;
+            background: rgb(48 116 211 / 20%);;
             border-radius: 50%;
             padding: 0 8px;
-            width: 32px;
-            height: 32px;
-            box-shadow: 0 0 4px rgb(0 0 0 / 15%);
+            width: 36px;
+            height: 36px;
+            left: -1px;
             position: relative;
             display: flex;
             align-items: center;
             justify-content: center;
-
+           
             &:hover {
                 cursor: pointer;
-                transition: $nav-transition;
-                background-image: linear-gradient($nav-blue-3, $nav-active);
+                // transition: $nav-transition;
                 svg {
                     path {
+                        fill: #FFFFFF ;
+                    }
+                }
+            }
+            .light-svg{
+                svg{
+                    path{
                         fill: $nav-white;
                     }
                 }
             }
         }
+    }
 
         .nav-header-bottom-rightSide {
             display: flex;
             align-items: center;
             justify-content: space-between;
-
+            padding-right: 8px;
             &-search {
-                background: $nav-hover-darker;
                 border-radius: 50%;
-                padding: 7px;
+                padding: 8px;
                 position: relative;
-                width: 32px;
-                height: 32px;
                 svg {
                     position: absolute;
                     top: 50%;
                     left: 50%;
                     transform: translate(-50%, -50%);
-                }
-                &:hover {
-                    transition: $nav-transition;
-                    background-color: $nav-hover-lightcolor;
-                    svg {
-                        #Path_35719 {
-                            fill: $nav-svg-hover !important;
-                        }
-                    }
+                    width: 19px;
+                    height: 19px;
                 }
             }
 

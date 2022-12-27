@@ -5,43 +5,52 @@
     top: 0;
     left: 0;
     z-index: 1000;
-
+    border-radius: 3px;
     height: 100%;
-    width: 56px;
-
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    padding: 12px;
 
-    padding: 18px 12px;
-
-    background-color: $nav-white;
+    // background-color: $nav-white;
     color: $nav-text-color;
     font-size: $nav-font-size;
     font-weight: $nav-font-medium;
 
     transition: $nav-transition;
     overflow: hidden;
-
-    &:hover {
-        width: 200px;
-        box-shadow: $nav-boxshadow;
-        transition: $nav-transition;
-        cursor: pointer;
-    }
-
-    .navigation-top,
-    .navigation-middle,
-    .navigation-bottom {
-        padding-left: 5px;
-    }
+    .nav-holder{
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        background: $nav-white;
+        padding: 0 6px;
+        width: 48px;
+        padding: 10px 6px;
+        border-radius: 3px;
+        z-index: -1;
+    // &:hover {
+    //     width: 250px;
+    //     background: $nav-dark;
+    //     box-shadow: $nav-boxshadow;
+    //     transition: $nav-transition;
+    //     cursor: pointer;
+    // }
+}
+.dark-nav{
+    background: $nav-dark !important;
+    width: 250px !important;
+    transition: $nav-transition;
+}
 
     .navigation-middle {
         flex: 1;
         overflow-y: scroll;
         overflow-x: hidden;
     }
-
+    .navigation-bottom{
+        overflow: hidden;
+    }
     .wrapper-line {
         @media only screen and (min-width: 300px) {
             display: inline;
@@ -58,9 +67,9 @@
 
     .navigation-routes-container {
         position: relative;
-
+        
         .navigation-routes {
-            margin-left: 1px;
+            padding-left: 9px;
             padding-bottom: 1px;
             padding-top: 1px;
         }
@@ -78,7 +87,7 @@
         .new-magic-line {
             display: inline-block;
             position: absolute;
-            left: -6px;
+            left: 0px;
             top: 0px;
             content: '';
             height: 28px;
@@ -200,3 +209,4 @@
         }
     }
 }
+
