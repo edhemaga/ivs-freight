@@ -12,6 +12,8 @@ import { Observable, tap } from 'rxjs';
 import { BrokerStore } from '../../components/customer/state/broker-state/broker.store';
 import { ShipperStore } from '../../components/customer/state/shipper-state/shipper.store';
 import { ShopStore } from '../../components/repair/state/shop-state/shop.store';
+import { Router } from '@angular/router';
+import { BrokerTService } from '../../components/customer/state/broker-state/broker.service';
 
 @Injectable({
     providedIn: 'root',
@@ -21,7 +23,9 @@ export class ReviewsRatingService {
         private reviewRatingService: RatingReviewService,
         private brokerStore: BrokerStore,
         private shipperStore: ShipperStore,
-        private shopStore: ShopStore
+        private shopStore: ShopStore,
+        private router: Router,
+        private BrokerTService: BrokerTService,
     ) {}
 
     public getReviewRatingModal(): Observable<GetRatingReviewModalResponse> {
@@ -69,16 +73,35 @@ export class ReviewsRatingService {
     }
 
     public getReviewById(id: number): Observable<ReviewResponse> {
+        console.log('---here---')
         return this.reviewRatingService.apiRatingReviewReviewIdGet(id);
     }
 
     public addReview(data: CreateReviewCommand): Observable<CreateResponse> {
         console.log('--addReview--')
-        return this.reviewRatingService.apiRatingReviewReviewPost(data);
+        return this.reviewRatingService.apiRatingReviewReviewPost(data).pipe(
+            tap(() => {
+
+                let splitUrl = this.router.url.split('/');
+                let customerId = parseInt(splitUrl[2]);
+
+                console.log('--this.router', this.router);
+                if ( this.router.url.indexOf('broker') > -1 ){
+                    this.BrokerTService.addNewReview(data, customerId);
+                }
+            }));;
     }
 
     public updateReview(data: UpdateReviewCommand): Observable<any> {
-        console.log('--updateReview--')
-        return this.reviewRatingService.apiRatingReviewReviewPut(data);
+       
+        return this.reviewRatingService.apiRatingReviewReviewPut(data).pipe(
+            tap(() => {
+                console.log('--update review--')
+                let splitUrl = this.router.url.split('/');
+                let customerId = parseInt(splitUrl[2]);
+                if ( this.router.url.indexOf('broker') > -1 ){
+                    this.BrokerTService.updatedReviewNew(data, customerId);
+                }
+            }));
     }
 }

@@ -17,6 +17,7 @@ import { TruckassistTableService } from '../../../../services/truckassist-table/
 import { BrokerMinimalListStore } from '../broker-details-state/broker-minimal-list-state/broker-minimal.store';
 import { BrokerDetailsListStore } from '../broker-details-state/broker-details-list-state/broker-details-list.store';
 import { FormDataService } from 'src/app/core/services/formData/form-data.service';
+import { BrokerDetailsStore } from '../broker-details-state/broker-details.store';
 
 @Injectable({
     providedIn: 'root',
@@ -34,7 +35,8 @@ export class BrokerTService implements OnDestroy {
         private brokerMinimalStore: BrokerMinimalListStore,
         private brokerMinimalQuery: BrokerMinimalListQuery,
         private bls: BrokerDetailsListStore,
-        private formDataService: FormDataService
+        private formDataService: FormDataService,
+        private brokerItemStore: BrokerDetailsStore,
     ) {}
 
     // Add Broker
@@ -338,6 +340,49 @@ export class BrokerTService implements OnDestroy {
 
     public updateReview(review: UpdateReviewCommand): Observable<any> {
         return this.ratingReviewService.apiRatingReviewReviewPut(review);
+    }
+
+
+    public updatedReviewNew(data, currentId){
+        console.log('---data---', data);
+        //console.log('---currentId---', currentId);
+
+        let brokerData = {
+            ...this.brokerItemStore?.getValue()?.entities[currentId],
+        };
+
+        let brokerDataNew = brokerData;
+        brokerDataNew?.reviews.map((item: any) => {
+            if ( item.id == data.id ){
+                console.log('--here---', item)
+                item.comment = 'aaaaaaaa';
+                console.log('--here2---', item)
+                //item.comment = data.comment;
+            }
+           
+        });
+        
+        console.log('brokerData---', brokerData);
+        console.log('brokerDataNew---', brokerDataNew);
+    }
+
+    public addNewReview(data, currentId){
+        console.log('----data', data);
+        /*
+        let brokerData = {
+            ...this.brokerItemStore?.getValue()?.entities[currentId],
+        };
+
+        brokerData?.reviews.push(data);
+        this.brokerStore.add(brokerData);
+        this.brokerMinimalStore.add(brokerData);
+        this.tableService.sendActionAnimation({
+            animation: 'update',
+            tab: 'broker',
+            data: brokerData,
+            id: brokerData.id,
+        });
+        */
     }
 
     public getBrokerLoads(
