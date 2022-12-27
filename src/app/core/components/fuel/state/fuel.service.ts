@@ -15,7 +15,6 @@ import { FuelDispatchHistoryResponse } from '../../../../../../appcoretruckassis
 import { FuelStopFranchiseResponse } from '../../../../../../appcoretruckassist/model/fuelStopFranchiseResponse';
 import { FuelTransactionResponse } from '../../../../../../appcoretruckassist/model/fuelTransactionResponse';
 import { FormDataService } from 'src/app/core/services/formData/form-data.service';
-import { GetRepairShopClustersQuery } from '../../../../../../appcoretruckassist/model/getRepairShopClustersQuery';
 import { ClusterResponse } from '../../../../../../appcoretruckassist/model/clusterResponse';
 
 @Injectable({

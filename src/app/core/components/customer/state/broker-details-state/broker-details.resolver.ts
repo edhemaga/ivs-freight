@@ -2,7 +2,7 @@ import { BrokerResponse } from 'appcoretruckassist';
 
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Resolve, Router } from '@angular/router';
-import { Observable, of } from 'rxjs';
+import { Observable, of, forkJoin } from 'rxjs';
 import { catchError, tap, take } from 'rxjs/operators';
 import { BrokerTService } from '../broker-state/broker.service';
 import { BrokerDetailsStore } from './broker-details.store';
@@ -25,10 +25,34 @@ export class BrokerDetailsResolver implements Resolve<BrokerResponse[]> {
     ): Observable<BrokerResponse[]> | Observable<any> {
         const broker_id = route.paramMap.get('id');
         let ids = parseInt(broker_id);
+
+
+
+        const brokerData$ = this.brokerService.getBrokerById(
+            ids,
+        );
+
+        const brokerLoads$ = this.brokerService.getBrokerLoads(ids);
+
+        return forkJoin({
+            brokerData: brokerData$,
+            brokerLoads: brokerLoads$,
+        }).pipe(
+            tap((data) => {
+                let brokerRespone = data.brokerData;
+                brokerRespone.loadStops = data.brokerLoads;
+                this.bls.add(brokerRespone);
+                this.brokerDetailsStore.set([brokerRespone]);
+            })
+        );  
+
+
+        /*    
         if (this.blq.hasEntity(ids)) {
             return this.blq.selectEntity(ids).pipe(
                 tap((brokerResponse: BrokerResponse) => {
                     this.brokerDetailsStore.set([brokerResponse]);
+                    console.log('----brokerRespon', brokerResponse);
                 }),
                 take(1)
             );
@@ -39,10 +63,12 @@ export class BrokerDetailsResolver implements Resolve<BrokerResponse[]> {
                     return of('No broker data for...' + ids);
                 }),
                 tap((brokerRespon: BrokerResponse) => {
+                    console.log('----brokerRespon', brokerRespon);
                     this.bls.add(brokerRespon);
                     this.brokerDetailsStore.set([brokerRespon]);
                 })
             );
         }
+        */
     }
 }

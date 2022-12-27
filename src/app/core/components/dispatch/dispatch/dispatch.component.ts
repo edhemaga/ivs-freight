@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, SimpleChanges, Input, ChangeDetectorRef, DoCheck } from '@angular/core';
+import { Component, OnInit, AfterViewInit, SimpleChanges, Input, ChangeDetectorRef, DoCheck, ViewEncapsulation } from '@angular/core';
 import { Observable, Subject, takeUntil } from 'rxjs';
 import { Titles } from 'src/app/core/utils/application.decorators';
 import { DispatcherQuery } from '../state/dispatcher.query';
@@ -9,6 +9,7 @@ import { DispatcherStoreService } from '../state/dispatcher.service';
     selector: 'app-dispatch',
     templateUrl: './dispatch.component.html',
     styleUrls: ['./dispatch.component.scss'],
+    encapsulation: ViewEncapsulation.None,
 })
 export class DispatchComponent implements OnInit, AfterViewInit, DoCheck {
     @Input() test: any = "test";
@@ -22,7 +23,7 @@ export class DispatchComponent implements OnInit, AfterViewInit, DoCheck {
     resizeObserver: ResizeObserver;
     private destroy$ = new Subject<void>();
     dispatcherItems: any[];
-
+    isBoardLocked = true;
 
     selectedDispatcher = localStorage.getItem('dispatchUserSelect') ? JSON.parse(localStorage.getItem('dispatchUserSelect')) : -1;
 
@@ -53,6 +54,9 @@ export class DispatchComponent implements OnInit, AfterViewInit, DoCheck {
             case 'select-action':
                 this.changeDisparcher(event.data);
                 break;
+            case 'toggle-locked': 
+                this.isBoardLocked = !this.isBoardLocked;
+            break;
         }
     }
 
@@ -97,6 +101,9 @@ export class DispatchComponent implements OnInit, AfterViewInit, DoCheck {
                 showTruckFilter: true,
                 showTrailerFilter: true,
                 hideOpenModalButton: true,
+                showDispatchAdd: true,
+                hideListColumn: true,
+                showDispatchSettings: true
             },
         };
     }
