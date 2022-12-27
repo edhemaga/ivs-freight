@@ -768,7 +768,6 @@ export class TaInputDropdownComponent
     }
 
     public onActiveItem(option: any, group?: any): void {
-        console.log('option: ', option, group);
         // Prevent user to pick franchise, without group
         if (
             this.template === 'fuel-franchise' &&
