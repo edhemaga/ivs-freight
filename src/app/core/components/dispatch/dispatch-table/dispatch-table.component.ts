@@ -114,13 +114,9 @@ export class DispatchTableComponent implements OnInit {
         this.__isBoardLocked = isLocked;
     }
 
-    hosHelper = {
-        hos: [],
-    };
+    hosHelper = [];
 
-    openedHosData = {
-        hos: [],
-    };
+    openedHosData = [];
 
     tooltip: any;
 
@@ -214,6 +210,7 @@ export class DispatchTableComponent implements OnInit {
     }
 
     handleInputSelect(e: any) {
+        console.log('ADRESS SELECT');
         if (e.valid) {
             this.updateOrAddDispatchBoardAndSend(
                 'location',
@@ -231,7 +228,7 @@ export class DispatchTableComponent implements OnInit {
             this.showAddAddressField = -1;
             this.savedTruckData = null;
             this.chd.detectChanges();
-        }, 200);
+        }, 1000);
     }
 
     addDriver(e) {
@@ -286,7 +283,7 @@ export class DispatchTableComponent implements OnInit {
             driverId: oldData.driver ? oldData.driver?.id : null,
             coDriverId: oldData.coDriver ? oldData.coDriver?.id : null,
             location: oldData.location?.address ? oldData.location : null,
-            // hourOfService: 0,
+            // hoursOfService: 0,
             note: oldData.note,
             loadIds: [],
         };
@@ -392,21 +389,16 @@ export class DispatchTableComponent implements OnInit {
     }
 
     toggleHos(tooltip: NgbTooltip, data: any, id: number) {
-        console.log(data);
-        this.hosHelper.hos = [];
-        if (!data.hos || data.hos.length === 0) {
-            data = {
-                hos: [
-                    {
-                        start: 0,
-                        end:
-                            new Date().getHours() * 60 +
-                            new Date().getMinutes(),
-                        flag: 'off',
-                        indx: 0,
-                    },
-                ],
-            };
+        this.hosHelper = [];
+        if (!data || data.length === 0) {
+            data = [
+                {
+                    start: 0,
+                    end: new Date().getHours() * 60 + new Date().getMinutes(),
+                    flag: 'off',
+                    indx: 0,
+                },
+            ];
         }
 
         this.tooltip = tooltip;
@@ -421,8 +413,12 @@ export class DispatchTableComponent implements OnInit {
     }
 
     saveHosData(hos, indx) {
+        this.openedHosData = this.openedHosData.map((item) => {
+            item.flag = item.flag?.name ? item.flag.name : item.flag;
+            return item;
+        });
         this.updateOrAddDispatchBoardAndSend(
-            'hourOfService',
+            'hoursOfService',
             this.openedHosData,
             indx
         );
@@ -431,7 +427,7 @@ export class DispatchTableComponent implements OnInit {
     userChangeEnd(event, item) {
         const index = item.indx;
         const nextHos = index + 1;
-        if (this.openedHosData.hos[nextHos]) {
+        if (this.openedHosData[nextHos]) {
             clearTimeout(this.testTimeout);
             this.testTimeout = setTimeout(() => {
                 this.changeHosDataPositions(event, index);
@@ -441,25 +437,23 @@ export class DispatchTableComponent implements OnInit {
 
     changeHosDataPositions(event, index) {
         const nextHos = index + 1;
-        if (this.openedHosData.hos[nextHos]) {
-            this.openedHosData.hos[nextHos].start =
-                this.openedHosData.hos[index].end;
+        if (this.openedHosData[nextHos]) {
+            this.openedHosData[nextHos].start = this.openedHosData[index].end;
         }
     }
 
     addHOS(hosType) {
-        this.openedHosData.hos = [...this.openedHosData.hos];
-        this.openedHosData.hos.push({
-            start: this.openedHosData.hos[this.openedHosData.hos.length - 1]
-                .end,
+        this.openedHosData = [...this.openedHosData];
+        this.openedHosData.push({
+            start: this.openedHosData[this.openedHosData.length - 1].end,
             end: new Date().getHours() * 60 + new Date().getMinutes(),
-            flag: hosType,
-            indx: this.openedHosData.hos.length,
+            flag: { name: hosType },
+            indx: this.openedHosData.length,
         });
     }
 
     removeHos(item) {
-        this.openedHosData.hos = this.openedHosData.hos.filter(
+        this.openedHosData = this.openedHosData.filter(
             (it) => it.indx !== item.indx
         );
     }
@@ -474,6 +468,21 @@ export class DispatchTableComponent implements OnInit {
 
     openIndex(indx: number) {
         this.statusOpenedIndex = indx;
+    }
+
+    changeDriverVacation(data) {
+        this.__change_in_proggress = true;
+        
+        this.dss.changeDriverVacation(data.driver.id).subscribe((res) => {
+            this.dss
+                .updateDispatchboardRowById(
+                    data.id,
+                    this.dData.id
+                )
+                .subscribe((res) => {
+                    this.__change_in_proggress = false;
+                });
+        });
     }
 
     // CDL DRAG AND DROP
@@ -509,11 +518,13 @@ export class DispatchTableComponent implements OnInit {
             )
             .subscribe((res) => {
                 this.__change_in_proggress = false;
+                this.chd.detectChanges();
             });
     }
 
     dropTrailer(event, finalIndx) {
         if (finalIndx === this.startIndexTrailer) return;
+        if (finalIndx == -1) return; // TODO
         const finalIndexData = this.getDataForUpdate(
             this.dData.dispatches[finalIndx]
         );
@@ -560,6 +571,7 @@ export class DispatchTableComponent implements OnInit {
 
     dropDriver(event, finalIndx) {
         if (finalIndx === this.startIndexDriver) return;
+        if (finalIndx == -1) return; // Todo
         const finalIndexData = this.getDataForUpdate(
             this.dData.dispatches[finalIndx]
         );
@@ -621,4 +633,15 @@ export class DispatchTableComponent implements OnInit {
     cdkDragStartedDriver(event, indx) {
         this.startIndexDriver = indx;
     }
+
+    dropHosList(event: any, data: any) {
+        console.log(event);
+        console.log(data);
+    }
+
+    // USE ARROW FUNCTION NOTATION TO ACCESS COMPONENT "THIS"
+    trailerPositionPrediction = (index: number) => {
+        console.log("trailerPred", index);
+        return true;
+    };
 }
