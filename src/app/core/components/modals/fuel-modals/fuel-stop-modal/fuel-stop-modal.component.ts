@@ -49,6 +49,9 @@ export class FuelStopModalComponent implements OnInit, OnDestroy {
 
     public disableCardAnimation: boolean = false;
 
+    public longitude: number;
+    public latitude: number;
+
     constructor(
         private formBuilder: FormBuilder,
         private inputService: TaInputService,
@@ -175,8 +178,13 @@ export class FuelStopModalComponent implements OnInit, OnDestroy {
     public onHandleAddress(event: {
         address: AddressEntity | any;
         valid: boolean;
+        longLat: any;
     }): void {
-        if (event.valid) this.selectedAddress = event.address;
+        if (event.valid) {
+            this.selectedAddress = event.address;
+            this.longitude = event.longLat.longitude;
+            this.latitude = event.longLat.latitude;
+        }
 
         if (this.selectedAddress) {
             this.trackFuelStopAddress(this.selectedAddress);
@@ -281,6 +289,8 @@ export class FuelStopModalComponent implements OnInit, OnDestroy {
                 : null,
             files: documents ? documents : this.fuelStopForm.value.files,
             filesForDeleteIds: this.filesForDelete,
+            longitude: this.longitude,
+            latitude: this.latitude,
         };
 
         this.fuelService
@@ -307,6 +317,8 @@ export class FuelStopModalComponent implements OnInit, OnDestroy {
                 ? this.selectedFuelStop.id
                 : null,
             files: documents,
+            longitude: this.longitude,
+            latitude: this.latitude,
         };
 
         this.fuelService

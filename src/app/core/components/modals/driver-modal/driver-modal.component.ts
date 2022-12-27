@@ -151,6 +151,9 @@ export class DriverModalComponent implements OnInit, OnDestroy {
         globalDropZone: false,
     };
 
+    public longitude: number;
+    public latitude: number;
+
     constructor(
         private formBuilder: FormBuilder,
         private inputService: TaInputService,
@@ -426,11 +429,14 @@ export class DriverModalComponent implements OnInit, OnDestroy {
     }
 
     public onHandleAddress(event: {
-        address: AddressEntity | any;
+        address: AddressEntity;
         valid: boolean;
+        longLat: any;
     }): void {
         if (event.valid) {
             this.selectedAddress = event.address;
+            this.longitude = event.longLat.longitude;
+            this.latitude = event.longLat.latitude;
         }
     }
 
@@ -1285,6 +1291,8 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                     : false
                 : null,
             files: documents,
+            longitude: this.longitude,
+            latitude: this.latitude,
         };
 
         this.driverTService
@@ -1666,6 +1674,8 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                 : null,
             files: documents ? documents : this.driverForm.value.files,
             filesForDeleteIds: this.filesForDelete,
+            longitude: this.longitude,
+            latitude: this.latitude,
         };
 
         this.driverTService
@@ -1850,6 +1860,10 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                     this.onHandleAddress({
                         address: res.address,
                         valid: !!res.address,
+                        longLat: {
+                            longitude: res.longitude,
+                            latitude: res.latitude,
+                        },
                     });
 
                     this.modalService.changeModalStatus({
