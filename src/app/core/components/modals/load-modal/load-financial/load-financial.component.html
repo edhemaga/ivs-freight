@@ -7,7 +7,7 @@
                 <div [ngClass]="{ 'with-adjusted': adjusted }">
                     <p
                         class="load-financial-value"
-                        [ngClass]="{ active: billing > 0 }"
+                        [ngClass]="{ active: billing !== '$0.00' }"
                     >
                         {{ billing }}
                     </p>
@@ -15,10 +15,6 @@
                         {{ adjusted?.replaceAll(',', '') | currency }}
                     </p>
                 </div>
-                <!--      (billing?.baseRate
-                                ? billing?.baseRate?.replaceAll(',', '')
-                                : 0
-                            ) | currency -->
                 <div
                     ngbTooltip
                     [mainTooltip]="'Add Billing'"
@@ -38,8 +34,15 @@
         <div class="load-financial-header">
             <p class="load-financial-title">{{ secondHeaderTitle }}</p>
             <div class="load-financial-value-action-container">
-                <p class="load-financial-value">
-                    {{ (payment?.advance ? payment?.advance : 0) | currency }}
+                <p
+                    class="load-financial-value"
+                    [ngClass]="{
+                        minus: (paymentDifference | currency)
+                            ?.toString()
+                            ?.includes('-')
+                    }"
+                >
+                    {{ paymentDifference | currency }}
                 </p>
                 <div
                     ngbTooltip

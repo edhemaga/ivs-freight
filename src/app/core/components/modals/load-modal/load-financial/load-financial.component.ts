@@ -2,14 +2,16 @@ import {
     Component,
     EventEmitter,
     Input,
+    OnChanges,
     Output,
+    SimpleChanges,
     ViewEncapsulation,
 } from '@angular/core';
 import { card_modal_animation } from '../../../shared/animations/card-modal.animation';
+import { convertThousanSepInNumber } from '../../../../utils/methods.calculations';
 
 export interface IBilling {
     baseRate: number;
-    adjusted: number;
     advance: number;
     layover: number;
     lumper: number;
@@ -20,13 +22,8 @@ export interface IBilling {
 
 export interface IPayment {
     advance: number;
-    paidInFull: number;
-    shortPaid: [
-        {
-            id: number;
-            value: number;
-        }
-    ];
+    paidInFull?: number;
+    shortPaid?: [];
 }
 
 @Component({
@@ -36,13 +33,13 @@ export interface IPayment {
     animations: [card_modal_animation('showHideCardBody')],
     encapsulation: ViewEncapsulation.None,
 })
-export class LoadFinancialComponent {
+export class LoadFinancialComponent implements OnChanges {
     @Input() firstHeaderTitle: string;
     @Input() secondHeaderTitle: string;
     @Input() thirdHeaderTitle: string;
-    @Input() billing: number;
+    @Input() billing: string;
     @Input() adjusted: number;
-    @Input() payment: IPayment;
+    @Input() payment: string;
     @Input() disableBillAction: boolean = false;
     @Input() disablePaymentAction: boolean = false;
     @Input() set isCardOpen(value: boolean) {
@@ -65,6 +62,21 @@ export class LoadFinancialComponent {
     public _isCardOpen: any = 'null';
     public noActive: string;
     public zoneTriger: boolean = false;
+
+    public paymentDifference: number = 0;
+
+    ngOnChanges(changes: SimpleChanges): void {
+        if (changes.payment?.currentValue !== changes.payment?.previousValue) {
+            console.log(changes.payment?.currentValue);
+            const pay = convertThousanSepInNumber(
+                changes.payment?.currentValue.substring(1)
+            );
+
+            const bill = convertThousanSepInNumber(this.billing.substring(1));
+            console.log('bill - pay: ', bill, pay);
+            this.paymentDifference = pay - bill;
+        }
+    }
 
     public onAction(event: any, action: string) {
         switch (action) {

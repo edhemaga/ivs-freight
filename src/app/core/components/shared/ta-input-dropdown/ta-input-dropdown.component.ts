@@ -138,6 +138,7 @@ export class TaInputDropdownComponent
                             name: 'ADD NEW',
                         });
                     }
+
                     this.originalOptions = this.options;
                     break;
                 }
@@ -584,6 +585,8 @@ export class TaInputDropdownComponent
                         : searchText.toLowerCase()
                 );
 
+                console.log(this.options, searchText);
+
                 if (
                     ['truck', 'trailer'].includes(
                         this.inputConfig?.dropdownImageInput?.template
@@ -633,7 +636,7 @@ export class TaInputDropdownComponent
         else {
             if (
                 searchText?.length &&
-                this.activeItem?.name !== this.getSuperControl.value
+                this.getSuperControl.value?.toLowerCase()
             ) {
                 if (this.template === 'groups') {
                     this.options = this.originalOptions
@@ -654,10 +657,12 @@ export class TaInputDropdownComponent
                     this.options = this.originalOptions.map((element) => {
                         return {
                             ...element,
-                            contacts: element?.contacts?.filter((subElement) =>
-                                subElement?.fullName
-                                    .toLowerCase()
-                                    .includes(searchText.toLowerCase())
+                            contacts: element?.contacts?.filter(
+                                (subElement) => {
+                                    return subElement?.fullName
+                                        .toLowerCase()
+                                        .includes(searchText?.toLowerCase());
+                                }
                             ),
                         };
                     });
@@ -678,18 +683,21 @@ export class TaInputDropdownComponent
                 }
 
                 if (this.template === 'load-dispatches-ttd') {
-                    this.options = this.originalOptions.filter((item) =>
-                        item.name
-                            ? item.name
-                                  .toLowerCase()
-                                  .includes(searchText.toLowerCase())
-                            : item.code
-                            ? item.code
-                                  .concat(' - ', item.description)
-                                  .toLowerCase()
-                                  .includes(searchText.toLowerCase())
-                            : searchText.toLowerCase()
-                    );
+                    console.log('origin options: ', this.originalOptions);
+                    this.options = this.originalOptions.filter((item) => {
+                        console.log(
+                            item.fullName.toLowerCase(),
+                            searchText.toLowerCase()
+                        );
+                        if (
+                            item.fullName?.toLowerCase() ===
+                            searchText.toLowerCase()
+                        ) {
+                            return item;
+                        }
+                    });
+
+                    console.log('after filter: ', this.options);
                 }
 
                 if (!this.options.length) {

@@ -5,17 +5,29 @@ import { convertThousanSepInNumber } from '../../../../utils/methods.calculation
     name: 'financialCalculation',
 })
 export class FinancialCalculationPipe implements PipeTransform {
-    transform(item: any, args?: any): any {
+    transform(item: any, type: string): number {
         let sum = 0;
-        console.log('pipe: ', item);
+        if (type === 'billing') {
+            Object.values(item).map((val: string) => {
+                if (val) {
+                    sum += val == '0' ? 0 : convertThousanSepInNumber(val);
+                }
+            });
+        }
 
-        Object.values(item).map((val: string) => {
-            if (val) {
-                sum += convertThousanSepInNumber(val);
-            }
-        });
-
-        console.log('sum: ', sum);
+        if (type === 'payment') {
+            Object.entries(item).map((key1: any, _: any) => {
+                if (key1[0] === 'shortPaid') {
+                    if (key1[1]?.length) {
+                        for (const [key2, _] of Object.entries(item[key1[0]])) {
+                        }
+                    }
+                } else {
+                    sum +=
+                        key1[1] == '0' ? 0 : convertThousanSepInNumber(key1[1]);
+                }
+            });
+        }
         return sum;
     }
 }

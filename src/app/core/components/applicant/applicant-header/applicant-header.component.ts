@@ -204,7 +204,7 @@ export class ApplicantHeaderComponent implements OnInit, OnChanges {
                             if (index === 7) {
                                 return {
                                     ...item,
-                                    isCompleted: res.ssn ? true : false,
+                                    // isCompleted: res.ssn ? true : false,
                                 };
                             }
 

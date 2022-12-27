@@ -570,7 +570,7 @@
                         <div
                             class="load-dispatch-trailer"
                             [innerHtml]="
-                                option.trailer.name
+                                option?.trailer?.name
                                     | taHighlight
                                         : [
                                               {
@@ -585,11 +585,11 @@
                     <!-- Driver -->
                     <div class="load-dispatches-container">
                         <img
-                            *ngIf="option.driver.logoName"
+                            *ngIf="option?.driver?.logoName"
                             class="svg-template-logo"
                             [ngClass]="{
                                 active:
-                                    option.driver.id === activeItem?.driver?.id
+                                    option.driver?.id === activeItem?.driver?.id
                             }"
                             [ngStyle]="{
                                 position: 'relative',
@@ -597,13 +597,13 @@
                             }"
                             [src]="
                                 this.imageBase64Service.sanitizer(
-                                    option.driver.logoName
+                                    option?.driver?.logoName
                                 )
                             "
-                            [alt]="option.driver.name"
+                            [alt]="option?.driver?.name"
                         />
                         <div
-                            *ngIf="!option.driver.logoName"
+                            *ngIf="!option.driver?.logoName"
                             class="no-profile-image"
                             [ngStyle]="{
                                 position: 'relative',
@@ -613,14 +613,14 @@
                             <app-profile-images
                                 [indx]="0"
                                 [size]="'small'"
-                                [name]="option.driver.name"
+                                [name]="option.driver?.name"
                             >
                             </app-profile-images>
                         </div>
                         <div
                             class="load-dispatch-driver"
                             [innerHtml]="
-                                option.driver.name
+                                option.driver?.name
                                     | taHighlight
                                         : [
                                               {
@@ -696,7 +696,10 @@
                             "
                         ></div>
                     </div>
-                    <div *ngIf="indx !== 0" class="load-broker-progress-status">
+                    <div
+                        *ngIf="!['ADD NEW', 'No Results'].includes(option.name)"
+                        class="load-broker-progress-status"
+                    >
                         <app-load-modal-progress-bar
                             [totalAmount]="option.creditLimit"
                             [availableCredit]="
@@ -710,7 +713,7 @@
                         ></app-load-modal-progress-bar>
                     </div>
                     <div
-                        *ngIf="indx !== 0"
+                        *ngIf="!['ADD NEW', 'No Results'].includes(option.name)"
                         class="load-broker-load-counter"
                         [ngClass]="{ active: option.id === activeItem?.id }"
                     >
@@ -739,7 +742,7 @@
                         [ngClass]="{
                             'add-new': option.name === 'ADD NEW'
                         }"
-                        (click)="onActiveItem(item)"
+                        (click)="onActiveItem(option)"
                     >
                         {{
                             option.name === 'ADD NEW'
@@ -847,7 +850,7 @@
                         ></div>
                     </div>
                     <div
-                        *ngIf="indx !== 0"
+                        *ngIf="!['ADD NEW', 'No Results'].includes(option.name)"
                         [ngClass]="{ active: option.id === activeItem?.id }"
                         [innerHtml]="
                             option.address
@@ -862,7 +865,7 @@
                     ></div>
 
                     <div
-                        *ngIf="indx !== 0"
+                        *ngIf="!['ADD NEW', 'No Results'].includes(option.name)"
                         class="load-shipper-load-counter"
                         [ngClass]="{ active: option.id === activeItem?.id }"
                     >

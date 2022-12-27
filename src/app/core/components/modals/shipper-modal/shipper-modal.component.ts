@@ -19,7 +19,6 @@ import {
     AddressEntity,
     CreateRatingCommand,
     CreateReviewCommand,
-    ShipperResponse,
     SignInResponse,
     UpdateReviewCommand,
 } from 'appcoretruckassist';
@@ -39,6 +38,7 @@ import { debounceTime, Subject, takeUntil } from 'rxjs';
 import { ReviewsRatingService } from '../../../services/reviews-rating/reviewsRating.service';
 import { FormService } from '../../../services/form/form.service';
 import { convertTimeFromBackend } from '../../../utils/methods.calculations';
+import { LoadModalComponent } from '../load-modal/load-modal.component';
 
 @Component({
     selector: 'app-shipper-modal',
@@ -125,6 +125,21 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
             this.ratingChanges();
         }
 
+        if (this.editData?.extraPayload?.type === 'edit-contact') {
+            this.disableCardAnimation = true;
+            this.editShipperById(this.editData.extraPayload.data.id);
+            setTimeout(() => {
+                this.tabs = this.tabs.map((item, index) => {
+                    return {
+                        ...item,
+                        disabled: index === 0,
+                        checked: index === 1,
+                    };
+                });
+                this.selectedTab = 2;
+            }, 50);
+        }
+
         this.companyUser = JSON.parse(localStorage.getItem('user'));
     }
 
@@ -169,6 +184,25 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
 
     public onModalAction(data: { action: string; bool: boolean }) {
         if (data.action === 'close') {
+            switch (this.editData?.key) {
+                case 'load-modal': {
+                    this.modalService.setProjectionModal({
+                        action: 'close',
+                        payload: {
+                            key: this.editData?.key,
+                            value: null,
+                        },
+                        component: LoadModalComponent,
+                        size: 'small',
+                        closing: 'fastest',
+                    });
+                    break;
+                }
+
+                default: {
+                    break;
+                }
+            }
             return;
         }
         // Save And Add New
@@ -501,6 +535,27 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
+                    if (this.editData?.canOpenModal) {
+                        switch (this.editData?.key) {
+                            case 'load-modal': {
+                                this.modalService.setProjectionModal({
+                                    action: 'close',
+                                    payload: {
+                                        key: this.editData?.key,
+                                        value: null,
+                                    },
+                                    component: LoadModalComponent,
+                                    size: 'small',
+                                    closing: 'slowlest',
+                                });
+                                break;
+                            }
+
+                            default: {
+                                break;
+                            }
+                        }
+                    }
                     if (this.addNewAfterSave) {
                         this.modalService.setModalSpinner({
                             action: 'save and add new',
@@ -586,7 +641,32 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
         this.shipperModalService
             .updateShipper(newData)
             .pipe(takeUntil(this.destroy$))
-            .subscribe();
+            .subscribe({
+                next: () => {
+                    if (this.editData?.canOpenModal) {
+                        switch (this.editData?.key) {
+                            case 'load-modal': {
+                                this.modalService.setProjectionModal({
+                                    action: 'close',
+                                    payload: {
+                                        key: this.editData?.key,
+                                        value: null,
+                                    },
+                                    component: LoadModalComponent,
+                                    size: 'small',
+                                    closing: 'slowlest',
+                                });
+                                break;
+                            }
+
+                            default: {
+                                break;
+                            }
+                        }
+                    }
+                },
+                error: () => {},
+            });
     }
 
     private deleteShipperById(id: number) {
