@@ -966,7 +966,10 @@
                     !loadForm.get('baseRate').value ||
                     !additionalBillingTypes?.length
                 "
-                [adjusted]="loadForm.get('adjustedRate').value"
+                [adjusted]="
+                    loadForm.get('adjustedRate').value ||
+                    loadForm.get('driverRate').value
+                "
                 [secondHeaderTitle]="'Payment'"
                 [payment]="
                     loadModalPayment
@@ -1118,8 +1121,10 @@
                                 hideRequiredCheck: true,
                                 hideDangerMark: true,
                                 customClass: 'dollar-placeholderIcon',
-                                thousandSeparator: true
+                                thousandSeparator: true,
+                                removeInput: true
                             }"
+                            (clear)="removeAdditionalPayment()"
                         ></app-ta-input>
                     </div>
                     <div class="load-financial-invoice">

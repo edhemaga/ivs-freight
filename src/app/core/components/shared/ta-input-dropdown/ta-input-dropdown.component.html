@@ -513,8 +513,26 @@
                     }"
                     (click)="onActiveItem(option)"
                 >
+                    <!-- No Results -->
+                    <div
+                        *ngIf="
+                            options.length === 1 &&
+                            options[0].name === 'No Results'
+                        "
+                        [innerHtml]="
+                            option?.name
+                                | taHighlight
+                                    : [
+                                          {
+                                              index: 45632,
+                                              text: getSuperControl.value
+                                          }
+                                      ]
+                        "
+                    ></div>
                     <!-- Truck -->
                     <div
+                        *ngIf="options[0].name !== 'No Results'"
                         class="load-dispatches-container  {{
                             option?.truck?.subFolder
                         }} {{
@@ -555,6 +573,7 @@
 
                     <!-- Trailer -->
                     <div
+                        *ngIf="options[0].name !== 'No Results'"
                         class="load-dispatches-container {{
                             option?.trailer?.subFolder
                         }} {{
@@ -583,7 +602,10 @@
                     </div>
 
                     <!-- Driver -->
-                    <div class="load-dispatches-container">
+                    <div
+                        *ngIf="options[0].name !== 'No Results'"
+                        class="load-dispatches-container"
+                    >
                         <img
                             *ngIf="option?.driver?.logoName"
                             class="svg-template-logo"
@@ -631,14 +653,20 @@
                             "
                         ></div>
                         <svg-icon
-                            *ngIf="option.driver?.owner"
+                            *ngIf="
+                                options[0].name !== 'No Results' &&
+                                option.driver?.owner
+                            "
                             class="load-dipstaches-owner-flag"
                             src="assets/svg/common/load/ic_load_driver_owner.svg"
                         ></svg-icon>
                     </div>
                     <!-- Percentage is not driver owner -->
                     <span
-                        *ngIf="!option.driver?.owner"
+                        *ngIf="
+                            options[0].name !== 'No Results' &&
+                            !option.driver?.owner
+                        "
                         class="load-dispatch-driver-rate"
                         [ngClass]="{
                             active: indx === activeItem?.itemIndex

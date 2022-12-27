@@ -417,7 +417,6 @@ export class TaInputDropdownComponent
                         }
                         selectedItem = null;
                     }
-
                     // Normal Pick Dropdown
                     else {
                         const existItem = this.options
@@ -436,6 +435,18 @@ export class TaInputDropdownComponent
                                         longLat: item.longLat,
                                     };
                                 }
+
+                                // Load Dispatches TTD
+                                else if (
+                                    [
+                                        'load-dispatches-ttd',
+                                        'load-broker',
+                                        'load-shipper',
+                                    ].includes(this.template)
+                                ) {
+                                    return { ...item };
+                                }
+
                                 // Image (must be before type code, because color has same prop like other dropdown pop)
                                 else if (item.logoName) {
                                     return { ...item };
@@ -469,26 +480,67 @@ export class TaInputDropdownComponent
                                 }
                             })
                             .find((item) => {
+                                // Dropdown Label
                                 if (
-                                    item?.dropLabel ||
-                                    this.inputConfig.dropdownLabel
-                                        ? selectedItem.substring(
-                                              0,
-                                              selectedItem.lastIndexOf(' ')
-                                          )
-                                        : selectedItem?.toLowerCase() ===
-                                          item?.name.toLowerCase()
-                                )
-                                    return (
-                                        item?.name.toLowerCase() ===
-                                        (item?.dropLabel ||
-                                        this.inputConfig.dropdownLabel
-                                            ? selectedItem.substring(
-                                                  0,
-                                                  selectedItem?.lastIndexOf(' ')
-                                              )
-                                            : selectedItem?.toLowerCase())
-                                    );
+                                    (item?.dropLabel ||
+                                        this.inputConfig.dropdownLabel) &&
+                                    selectedItem.substring(
+                                        0,
+                                        selectedItem.lastIndexOf(' ')
+                                    ) === item?.name.toLowerCase()
+                                ) {
+                                    return item;
+                                }
+
+                                // Dropdown Load Dispatcher, Broker
+                                if (
+                                    [
+                                        'load-broker',
+                                        'load-dispatcher',
+                                        'load-shipper',
+                                    ].includes(this.template) &&
+                                    selectedItem
+                                        ?.toLowerCase()
+                                        .includes(item?.name?.toLowerCase())
+                                ) {
+                                    return item;
+                                }
+                                // Dropdown Load Dispatches
+                                if (
+                                    this.template === 'load-dispatches-ttd' &&
+                                    selectedItem
+                                        ?.toLowerCase()
+                                        .includes(
+                                            item?.trailer?.trailerNumber.toLowerCase()
+                                        ) &&
+                                    selectedItem
+                                        ?.toLowerCase()
+                                        .includes(
+                                            item?.truck?.truckNumber.toLowerCase()
+                                        ) &&
+                                    selectedItem
+                                        ?.toLowerCase()
+                                        .includes(
+                                            item?.driver?.firstName
+                                                .concat(
+                                                    ' ',
+                                                    item?.driver?.lastName
+                                                )
+                                                .toLowerCase()
+                                        )
+                                ) {
+                                    return item;
+                                }
+
+                                // Default
+                                if (
+                                    !this.inputConfig.dropdownLabel &&
+                                    this.template !== 'load-dispatches-ttd' &&
+                                    selectedItem?.toLowerCase() ===
+                                        item?.name.toLowerCase()
+                                ) {
+                                    return item;
+                                }
                             });
 
                         // MultiSelect Dropdown
@@ -585,8 +637,6 @@ export class TaInputDropdownComponent
                         : searchText.toLowerCase()
                 );
 
-                console.log(this.options, searchText);
-
                 if (
                     ['truck', 'trailer'].includes(
                         this.inputConfig?.dropdownImageInput?.template
@@ -651,6 +701,17 @@ export class TaInputDropdownComponent
                             };
                         })
                         .filter((item) => item.groups.length);
+
+                    if (!this.options.length) {
+                        this.options.push({
+                            groups: [
+                                {
+                                    id: 7654,
+                                    name: 'No Results',
+                                },
+                            ],
+                        });
+                    }
                 }
 
                 if (this.template === 'load-broker-contact') {
@@ -683,32 +744,22 @@ export class TaInputDropdownComponent
                 }
 
                 if (this.template === 'load-dispatches-ttd') {
-                    console.log('origin options: ', this.originalOptions);
                     this.options = this.originalOptions.filter((item) => {
-                        console.log(
-                            item.fullName.toLowerCase(),
-                            searchText.toLowerCase()
-                        );
                         if (
-                            item.fullName?.toLowerCase() ===
-                            searchText.toLowerCase()
+                            item.fullName
+                                ?.toLowerCase()
+                                .includes(searchText.toLowerCase())
                         ) {
                             return item;
                         }
                     });
 
-                    console.log('after filter: ', this.options);
-                }
-
-                if (!this.options.length) {
-                    this.options.push({
-                        groups: [
-                            {
-                                id: 7654,
-                                name: 'No Results',
-                            },
-                        ],
-                    });
+                    if (!this.options.length) {
+                        this.options.push({
+                            id: 7654,
+                            name: 'No Results',
+                        });
+                    }
                 }
             } else {
                 this.options = this.originalOptions;
@@ -717,6 +768,7 @@ export class TaInputDropdownComponent
     }
 
     public onActiveItem(option: any, group?: any): void {
+        console.log('option: ', option, group);
         // Prevent user to pick franchise, without group
         if (
             this.template === 'fuel-franchise' &&

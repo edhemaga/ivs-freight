@@ -34,11 +34,12 @@ import { MapRouteModel } from '../../shared/model/map-route';
 import { BrokerModalComponent } from '../broker-modal/broker-modal.component';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { ShipperModalComponent } from '../shipper-modal/shipper-modal.component';
+import { FinancialCalculationPipe } from './load-financial/financialCalculation.pipe';
 @Component({
     selector: 'app-load-modal',
     templateUrl: './load-modal.component.html',
     styleUrls: ['./load-modal.component.scss'],
-    providers: [ModalService, FormService],
+    providers: [ModalService, FormService, FinancialCalculationPipe],
 })
 export class LoadModalComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
@@ -340,7 +341,6 @@ export class LoadModalComponent implements OnInit, OnDestroy {
     // Billing part
     public loadModalBill: IBilling = {
         baseRate: 0,
-        advance: 0,
         layover: 0,
         lumper: 0,
         fuelSurcharge: 0,
@@ -366,7 +366,8 @@ export class LoadModalComponent implements OnInit, OnDestroy {
         private routingService: RoutingService,
         private loadService: LoadTService,
         private modalService: ModalService,
-        private ngbActiveModal: NgbActiveModal
+        private ngbActiveModal: NgbActiveModal,
+        private financialCalculationPipe: FinancialCalculationPipe
     ) {}
 
     ngOnInit() {
@@ -683,6 +684,11 @@ export class LoadModalComponent implements OnInit, OnDestroy {
 
                     // Draw Stop on map between deadhead driver and first pickup
                     if (this.selectedPickupShipper && this.selectedDispatches) {
+                        console.log(
+                            'dispatche - pickup: ',
+                            this.selectedDispatches.currentLocationCoordinates,
+                            this.selectedPickupShipper
+                        );
                         this.drawStopOnMap(
                             {
                                 longitude:
@@ -987,6 +993,13 @@ export class LoadModalComponent implements OnInit, OnDestroy {
 
                         // Draw Stop on map between deadhead driver and first pickup
                         if (this.selectedDispatches) {
+                            console.log(
+                                'pickup - dispatche: ',
+
+                                this.selectedPickupShipper,
+                                this.selectedDispatches
+                                    .currentLocationCoordinates
+                            );
                             this.drawStopOnMap(
                                 {
                                     longitude:
@@ -1182,6 +1195,13 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                         }
 
                         if (this.loadExtraStops().length) {
+                            console.log(
+                                'extra stop - delivery: ',
+                                this.loadExtraStops().at(
+                                    this.loadExtraStops().length - 1
+                                ).value,
+                                this.selectedDeliveryShipper
+                            );
                             this.drawStopOnMap(
                                 {
                                     longitude: this.loadExtraStops()
@@ -1203,6 +1223,11 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                             );
                         } else {
                             if (this.selectedPickupShipper) {
+                                console.log(
+                                    'pickup - delivery: ',
+                                    this.selectedPickupShipper,
+                                    this.selectedDeliveryShipper
+                                );
                                 this.drawStopOnMap(
                                     {
                                         longitude:
@@ -1687,6 +1712,10 @@ export class LoadModalComponent implements OnInit, OnDestroy {
             switch (data.type) {
                 case 'billing': {
                     this.isVisibleBillDropdown = true;
+                    this.inputService.changeValidators(
+                        this.loadForm.get('advancePay')
+                    );
+
                     break;
                 }
                 case 'payment': {
@@ -1730,16 +1759,41 @@ export class LoadModalComponent implements OnInit, OnDestroy {
             .subscribe((value) => {
                 if (value) {
                     if (
+                        !this.loadForm.get('baseRate').value ||
                         convertThousanSepInNumber(value) >
-                        convertThousanSepInNumber(
-                            this.loadForm.get('baseRate').value
-                        )
+                            convertThousanSepInNumber(
+                                this.loadForm.get('baseRate').value
+                            )
                     ) {
+                        this.loadForm.get('adjustedRate').reset();
                         this.loadForm
                             .get('adjustedRate')
                             .setErrors({ invalid: true });
                     } else {
                         this.loadForm.get('adjustedRate').setErrors(null);
+                    }
+                }
+            });
+
+        // Driver Rate
+        this.loadForm
+            .get('driverRate')
+            .valueChanges.pipe(takeUntil(this.destroy$))
+            .subscribe((value) => {
+                if (value) {
+                    if (
+                        !this.loadForm.get('baseRate').value ||
+                        convertThousanSepInNumber(value) >
+                            convertThousanSepInNumber(
+                                this.loadForm.get('baseRate').value
+                            )
+                    ) {
+                        this.loadForm.get('driverRate').reset();
+                        this.loadForm
+                            .get('driverRate')
+                            .setErrors({ invalid: true });
+                    } else {
+                        this.loadForm.get('driverRate').setErrors(null);
                     }
                 }
             });
@@ -1754,10 +1808,12 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                         ...this.loadModalPayment,
                         advance: value,
                     };
+
                     if (
                         convertThousanSepInNumber(value) >
-                        convertThousanSepInNumber(
-                            this.loadForm.get('baseRate').value
+                        this.financialCalculationPipe.transform(
+                            this.loadModalBill,
+                            'billing'
                         )
                     ) {
                         this.loadForm
@@ -1809,6 +1865,14 @@ export class LoadModalComponent implements OnInit, OnDestroy {
 
                 this.loadModalBill = Object.assign({}, this.loadModalBill);
             });
+    }
+
+    public removeAdditionalPayment() {
+        this.isVisibleBillDropdown = false;
+        this.inputService.changeValidators(
+            this.loadForm.get('advancePay'),
+            false
+        );
     }
 
     // **************** end ****************

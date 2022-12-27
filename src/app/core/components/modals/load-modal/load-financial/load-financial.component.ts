@@ -12,7 +12,6 @@ import { convertThousanSepInNumber } from '../../../../utils/methods.calculation
 
 export interface IBilling {
     baseRate: number;
-    advance: number;
     layover: number;
     lumper: number;
     fuelSurcharge: number;

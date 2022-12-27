@@ -985,6 +985,7 @@ export class TaInputComponent
                 'detention-rate',
                 'fuel per miles',
                 'fuel price map',
+                'amount',
             ].includes(this.inputConfig.name.toLowerCase())
         ) {
             if (
