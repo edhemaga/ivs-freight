@@ -150,6 +150,9 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
 
     public disableCardAnimation: boolean = false;
 
+    public longitude: number;
+    public latitude: number;
+
     constructor(
         private formBuilder: FormBuilder,
         private inputService: TaInputService,
@@ -503,16 +506,25 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
         event: {
             address: AddressEntity;
             valid: boolean;
+            longLat: any;
         },
         action: string
     ) {
         switch (action) {
             case 'physical-address': {
-                if (event.valid) this.selectedPhysicalAddress = event.address;
+                if (event.valid) {
+                    this.selectedPhysicalAddress = event.address;
+                    this.longitude = event.longLat.longitude;
+                    this.latitude = event.longLat.latitude;
+                }
                 break;
             }
             case 'physical-pobox': {
-                if (event.valid) this.selectedPhysicalPoBox = event.address;
+                if (event.valid) {
+                    this.selectedPhysicalPoBox = event.address;
+                    this.longitude = event.longLat.longitude;
+                    this.latitude = event.longLat.latitude;
+                }
                 break;
             }
             case 'billing-address': {
@@ -764,6 +776,8 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                 : null,
             payTerm: this.selectedPayTerm ? this.selectedPayTerm.id : null,
             files: documents,
+            longitude: this.longitude,
+            latitude: this.latitude,
         };
 
         for (let index = 0; index < brokerContacts.length; index++) {
@@ -893,6 +907,8 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
             payTerm: this.selectedPayTerm ? this.selectedPayTerm.id : null,
             files: documents ? documents : this.brokerForm.value.files,
             filesForDeleteIds: this.filesForDelete,
+            longitude: this.longitude,
+            latitude: this.latitude,
         };
 
         for (let index = 0; index < brokerContacts.length; index++) {

@@ -78,6 +78,9 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
 
     public addNewAfterSave: boolean = false;
 
+    public longitude: number;
+    public latitude: number;
+
     constructor(
         private formBuilder: FormBuilder,
         private inputService: TaInputService,
@@ -294,8 +297,16 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
         }
     }
 
-    public onHandleAddress(event: { address: AddressEntity; valid: boolean }) {
-        if (event.valid) this.selectedAddress = event.address;
+    public onHandleAddress(event: {
+        address: AddressEntity;
+        valid: boolean;
+        longLat: any;
+    }) {
+        if (event.valid) {
+            this.selectedAddress = event.address;
+            this.longitude = event.longLat.longitude;
+            this.latitude = event.longLat.latitude;
+        }
     }
 
     public onSelectBank(event: any): void {
@@ -372,6 +383,8 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
             bankId: this.selectedBank ? this.selectedBank.id : null,
             files: documents ? documents : this.ownerForm.value.files,
             filesForDeleteIds: this.filesForDelete,
+            longitude: this.longitude,
+            latitude: this.latitude,
         };
 
         this.ownerModalService
@@ -416,6 +429,8 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
             address: { ...this.selectedAddress, addressUnit: addressUnit },
             bankId: this.selectedBank ? this.selectedBank.id : null,
             files: documents,
+            longitude: this.longitude,
+            latitude: this.latitude,
         };
 
         this.ownerModalService
@@ -508,6 +523,7 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
                     this.selectedAddress = res.address;
                     this.selectedBank = res.bank;
                     this.documents = res.files;
+
                     this.tabChange(
                         this.tabs.find((item) => item.id === res.ownerType.id)
                     );
