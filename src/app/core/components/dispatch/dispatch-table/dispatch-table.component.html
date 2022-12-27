@@ -1,5 +1,6 @@
 <div
-    class="dispatch-table locked"
+    class="dispatch-table"
+    [ngClass]="{ locked: __isBoardLocked, unlocked: !__isBoardLocked }"
     cdkDropList
     (cdkDropListDropped)="dropList($event)"
 >
@@ -90,7 +91,9 @@
                                             'height.px': '16'
                                         }"
                                     ></svg-icon>
-                                    <span>{{ item.truck.truckNumber }}</span>
+                                    <span class="truck-trailer-number">{{
+                                        item.truck.truckNumber
+                                    }}</span>
                                 </div>
                             </div>
                         </div>
@@ -124,6 +127,7 @@
                         [class.addNew]="!item.trailer && trailerList.length"
                         [class.filled]="item.trailer"
                         cdkDropList
+                        [cdkDropListSortPredicate]="trailerPositionPrediction"
                         (cdkDropListDropped)="dropTrailer($event, rowIndex)"
                         id="{{ rowIndex | cdkid: gridIndex:'trailer' }}"
                         [cdkDropListData]="dData"
@@ -206,7 +210,7 @@
                                                 'height.px': '16'
                                             }"
                                         ></svg-icon>
-                                        <span>{{
+                                        <span class="truck-trailer-number">{{
                                             item.trailer.trailerNumber
                                         }}</span>
                                     </div>
@@ -445,8 +449,9 @@
                                 [class.driver-on-vacation]="
                                     item.driver.vacation
                                 "
-                                [mainTooltip]="'Vacation'"
-                                [tooltipBackground]="'#424242'"
+                                (click)="changeDriverVacation(item)"
+                                [mainTooltip]="item.driver.vacation ? 'Remove Vacation' : 'Put on Vacation'"
+                                [tooltipBackground]="item.driver.vacation ? '#EF5350' : '#2F2F2F'"
                                 ngbTooltip
                                 position="right"
                             >
@@ -475,11 +480,34 @@
                                 [ngbPopover]="hos"
                                 autoClose="outside"
                                 class="hos-column"
+                                [ngClass]="
+                                    item.hoursOfService &&
+                                    item.hoursOfService[
+                                        item.hoursOfService.length - 1
+                                    ]?.flag.name === 'On'
+                                        ? 'active_hos'
+                                        : 'innactive_hos'
+                                "
                                 placement="bottom"
                                 triggers="manual"
                                 container="body"
                                 popoverClass="hos-ngb-popover"
                             >
+                                <div class="hos-img">
+                                    <svg-icon
+                                        [src]="
+                                            'assets/svg/dispatchboard/hos-arrow.svg'
+                                        "
+                                    ></svg-icon>
+                                </div>
+                                <div class="hos-number">
+                                    {{
+                                        (item.hoursOfService !== null
+                                            ? item.hoursOfService
+                                            : []
+                                        ) | hosTime
+                                    }}
+                                </div>
                                 <!-- <span
                                     *ngIf="item.driverName !== null && !item.isEmpty"
                                     [ngClass]="
@@ -659,7 +687,7 @@
                     </div>
                 </td>
                 <td class="note-field">
-                    <div class="main_inside" [class.filled]="item.note">
+                    <div class="main_inside" [class.filled]="item.truck">
                         <div class="padding-inside">
                             <div
                                 class="dispatcher-table-cell-container note-container"
@@ -762,100 +790,139 @@
                     <div
                         class="main_inside"
                         [class.addNew]="trailerList.length"
+                        cdkDropList
+                        [cdkDropListSortPredicate]="trailerPositionPrediction"
+                        (cdkDropListDropped)="dropTrailer($event, -1)"
+                        id="{{ -1 | cdkid: gridIndex:'trailer' }}"
+                        [cdkDropListData]="dData"
+                        [cdkDropListConnectedTo]="
+                            -1
+                                | cdkconnect
+                                    : dData.dispatches.length
+                                    : gridIndex
+                                    : 'trailer'
+                        "
                     >
-                        <div
-                            class="padding-inside"
-                            *ngIf="
-                                openedTrailerDropdown != -2 &&
-                                trailerList.length
-                            "
-                        >
+                        <div class="drag-hold-between">
                             <div
-                                class="add_new"
-                                *ngIf="openedTrailerDropdown != -2"
-                                (click)="showTrailerDropdown(-2)"
+                                *cdkDragPlaceholder
+                                class="custom-dispatch-placeholder"
+                            ></div>
+                            <div
+                                class="padding-inside"
+                                *ngIf="
+                                    openedTrailerDropdown != -2 &&
+                                    trailerList.length
+                                "
                             >
-                                <div class="text">Add</div>
-                                <svg-icon
-                                    [src]="
-                                        'assets/svg/truckassist-table/dropdown/content/add.svg'
-                                    "
-                                    [svgStyle]="{
-                                        'width.px': '18',
-                                        'height.px': '18'
-                                    }"
-                                ></svg-icon>
+                                <div
+                                    class="add_new"
+                                    *ngIf="openedTrailerDropdown != -2"
+                                    (click)="showTrailerDropdown(-2)"
+                                >
+                                    <div class="text">Add</div>
+                                    <svg-icon
+                                        [src]="
+                                            'assets/svg/truckassist-table/dropdown/content/add.svg'
+                                        "
+                                        [svgStyle]="{
+                                            'width.px': '18',
+                                            'height.px': '18'
+                                        }"
+                                    ></svg-icon>
+                                </div>
                             </div>
-                        </div>
-                        <div
-                            class="drop-item"
-                            *ngIf="openedTrailerDropdown == -2"
-                        >
-                            <app-ta-input-dropdown
-                                [formControl]="truckFormControll"
-                                [template]="'svgtext-template'"
-                                [inputConfig]="{
-                                    name: 'Input Dropdown',
-                                    type: 'text',
-                                    label: 'Unit No',
-                                    isDropdown: true,
-                                    dropdownWidthClass: 'w-col-98',
-                                    placeholderInsteadOfLabel: true,
-                                    hideDropdownArrow: true,
-                                    autoFocus: true
-                                }"
-                                [options]="trailerList"
-                                [activeItem]="null"
-                                (selectedItem)="addTrailer($event)"
-                            ></app-ta-input-dropdown>
+                            <div
+                                class="drop-item"
+                                *ngIf="openedTrailerDropdown == -2"
+                            >
+                                <app-ta-input-dropdown
+                                    [formControl]="truckFormControll"
+                                    [template]="'svgtext-template'"
+                                    [inputConfig]="{
+                                        name: 'Input Dropdown',
+                                        type: 'text',
+                                        label: 'Unit No',
+                                        isDropdown: true,
+                                        dropdownWidthClass: 'w-col-98',
+                                        placeholderInsteadOfLabel: true,
+                                        hideDropdownArrow: true,
+                                        autoFocus: true
+                                    }"
+                                    [options]="trailerList"
+                                    [activeItem]="null"
+                                    (selectedItem)="addTrailer($event)"
+                                ></app-ta-input-dropdown>
+                            </div>
                         </div>
                     </div>
                 </td>
                 <td class="driver-field">
-                    <div class="main_inside" [class.addNew]="driverList.length">
-                        <div
-                            class="padding-inside"
-                            *ngIf="
-                                openedDriverDropdown != -2 && driverList.length
-                            "
-                        >
+                    <div
+                        class="main_inside"
+                        cdkDropList
+                        (cdkDropListDropped)="dropDriver($event, -1)"
+                        id="{{ -1 | cdkid: gridIndex:'driver' }}"
+                        [cdkDropListData]="dData"
+                        [cdkDropListConnectedTo]="
+                            -1
+                                | cdkconnect
+                                    : dData.dispatches.length
+                                    : gridIndex
+                                    : 'driver'
+                        "
+                        [class.addNew]="driverList.length"
+                    >
+                        <div class="drag-hold-between">
                             <div
-                                class="add_new"
-                                (click)="showDriverDropdown(-2)"
+                                *cdkDragPlaceholder
+                                class="custom-dispatch-placeholder"
+                            ></div>
+                            <div
+                                class="padding-inside"
+                                *ngIf="
+                                    openedDriverDropdown != -2 &&
+                                    driverList.length
+                                "
                             >
-                                <div class="text">Add</div>
-                                <svg-icon
-                                    [src]="
-                                        'assets/svg/truckassist-table/dropdown/content/add.svg'
-                                    "
-                                    [svgStyle]="{
-                                        'width.px': '18',
-                                        'height.px': '18'
-                                    }"
-                                ></svg-icon>
+                                <div
+                                    class="add_new"
+                                    (click)="showDriverDropdown(-2)"
+                                >
+                                    <div class="text">Add</div>
+                                    <svg-icon
+                                        [src]="
+                                            'assets/svg/truckassist-table/dropdown/content/add.svg'
+                                        "
+                                        [svgStyle]="{
+                                            'width.px': '18',
+                                            'height.px': '18'
+                                        }"
+                                    ></svg-icon>
+                                </div>
                             </div>
-                        </div>
-                        <div
-                            class="drop-item"
-                            *ngIf="openedDriverDropdown == -2"
-                        >
-                            <app-ta-input-dropdown
-                                [formControl]="truckFormControll"
-                                [template]="'svgtext-template'"
-                                [inputConfig]="{
-                                    name: 'Input Dropdown',
-                                    type: 'text',
-                                    label: 'Unit No',
-                                    isDropdown: true,
-                                    dropdownWidthClass: 'w-col-200',
-                                    placeholderInsteadOfLabel: true,
-                                    hideDropdownArrow: true,
-                                    autoFocus: true
-                                }"
-                                [options]="driverList"
-                                [activeItem]="null"
-                                (selectedItem)="addDriver($event)"
-                            ></app-ta-input-dropdown>
+                            <div
+                                class="drop-item"
+                                *ngIf="openedDriverDropdown == -2"
+                            >
+                                <app-ta-input-dropdown
+                                    [formControl]="truckFormControll"
+                                    [template]="'svgtext-template'"
+                                    [inputConfig]="{
+                                        name: 'Input Dropdown',
+                                        type: 'text',
+                                        label: 'Unit No',
+                                        isDropdown: true,
+                                        dropdownWidthClass: 'w-col-200',
+                                        placeholderInsteadOfLabel: true,
+                                        hideDropdownArrow: true,
+                                        autoFocus: true
+                                    }"
+                                    [options]="driverList"
+                                    [activeItem]="null"
+                                    (selectedItem)="addDriver($event)"
+                                ></app-ta-input-dropdown>
+                            </div>
                         </div>
                     </div>
                 </td>
@@ -1000,7 +1067,7 @@
                 #firstList="cdkDropList"
                 (cdkDropListDropped)="dropHosList($event, data)"
                 [cdkDropListConnectedTo]="[secondList]"
-                [cdkDropListData]="openedHosData.hos | hosFilter: 'off'"
+                [cdkDropListData]="openedHosData | hosFilter: 'off'"
                 cdkDropList
                 class="ngx-slider-list"
             >
@@ -1010,7 +1077,7 @@
                     cdkDragPreviewContainer="parent"
                     class="ngx-slider-item off-items"
                     *ngFor="
-                        let item of openedHosData.hos | hosFilter: 'off';
+                        let item of openedHosData | hosFilter: 'off';
                         let i = index
                     "
                 >
@@ -1028,7 +1095,7 @@
                             class="remove_hos"
                             *ngIf="
                                 item.indx !== 0 &&
-                                item.indx == openedHosData.hos.length - 1
+                                item.indx == openedHosData.length - 1
                             "
                         >
                             <svg-icon
@@ -1048,8 +1115,8 @@
                 </div>
                 <div
                     *ngIf="
-                        openedHosData.hos[openedHosData.hos.length - 1].flag ==
-                        'on'
+                        openedHosData[openedHosData.length - 1].flag.name ==
+                        'On'
                     "
                     class="add-new off"
                 >
@@ -1064,7 +1131,7 @@
                 #secondList="cdkDropList"
                 (cdkDropListDropped)="dropHosList($event, data)"
                 [cdkDropListConnectedTo]="[firstList]"
-                [cdkDropListData]="openedHosData.hos | hosFilter: 'on'"
+                [cdkDropListData]="openedHosData | hosFilter: 'on'"
                 cdkDropList
                 class="ngx-slider-list"
             >
@@ -1074,7 +1141,7 @@
                     cdkDragPreviewContainer="parent"
                     class="ngx-slider-item on-items"
                     *ngFor="
-                        let item of openedHosData.hos | hosFilter: 'on';
+                        let item of openedHosData | hosFilter: 'on';
                         let i = index
                     "
                 >
@@ -1092,7 +1159,7 @@
                             class="remove_hos"
                             *ngIf="
                                 item.indx !== 0 &&
-                                item.indx == openedHosData.hos.length - 1
+                                item.indx == openedHosData.length - 1
                             "
                         >
                             <svg-icon
@@ -1112,8 +1179,8 @@
                 </div>
                 <div
                     *ngIf="
-                        openedHosData.hos[openedHosData.hos.length - 1].flag ==
-                        'off'
+                        openedHosData[openedHosData.length - 1].flag.name ==
+                        'Off'
                     "
                     class="add-new on"
                 >

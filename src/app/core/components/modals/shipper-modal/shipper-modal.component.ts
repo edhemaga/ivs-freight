@@ -96,6 +96,8 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
     public documents: any[] = [];
     public fileModified: boolean = false;
     public filesForDelete: any[] = [];
+    public longitude: number;
+    public latitude: number;
 
     public addNewAfterSave: boolean = false;
 
@@ -348,8 +350,16 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
         this.isContactCardsScrolling = event.target.scrollLeft > 1;
     }
 
-    public onHandleAddress(event: { address: AddressEntity; valid: boolean }) {
-        if (event.valid) this.selectedAddress = event.address;
+    public onHandleAddress(event: {
+        address: AddressEntity;
+        valid: boolean;
+        longLat: any;
+    }) {
+        if (event.valid) {
+            this.selectedAddress = event.address;
+            this.longitude = event.longLat.longitude;
+            this.latitude = event.longLat.latitude;
+        }
     }
 
     public onSelectContactDepartment(event: any, ind: number) {
@@ -518,6 +528,8 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
             shippingFrom: receivingShipping.shipping.shippingFrom,
             shippingTo: receivingShipping.shipping.shippingTo,
             files: documents,
+            longitude: this.longitude,
+            latitude: this.latitude,
         };
 
         for (let index = 0; index < shipperContacts.length; index++) {
@@ -626,6 +638,8 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
             shippingTo: receivingShipping.shipping.shippingTo,
             files: documents ? documents : this.shipperForm.value.files,
             filesForDeleteIds: this.filesForDelete,
+            longitude: this.longitude,
+            latitude: this.latitude,
         };
 
         for (let index = 0; index < shipperContacts.length; index++) {
@@ -724,6 +738,8 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
                     this.selectedAddress = res.address;
                     this.isPhoneExtExist = !!res.phoneExt;
                     this.documents = res.files;
+                    this.longitude = res.longitude;
+                    this.latitude = res.latitude;
 
                     if (res.phoneExt) {
                         this.isPhoneExtExist = true;
