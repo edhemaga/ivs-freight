@@ -120,6 +120,7 @@ import { LoadModalProgressBarComponent } from '../modals/load-modal/load-modal-p
 import { LoadStopComponent } from '../modals/load-modal/load-stop/load-stop.component';
 import { GpsProgressbarComponent } from './gps-progressbar/gps-progressbar.component';
 import { LoadFinancialComponent } from '../modals/load-modal/load-financial/load-financial.component';
+import { TaPickupDeliveryComponent } from './ta-pickup-delivery/ta-pickup-delivery.component';
 
 export function playerFactory() {
     return import('lottie-web');
@@ -227,6 +228,7 @@ export function playerFactory() {
         PayrollStatusesComponent,
         TaCheckboxCardComponent,
         GpsProgressbarComponent,
+        TaPickupDeliveryComponent,
     ],
     imports: [
         CommonModule,
