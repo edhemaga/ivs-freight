@@ -138,6 +138,7 @@ export class TaInputDropdownComponent
                             name: 'ADD NEW',
                         });
                     }
+
                     this.originalOptions = this.options;
                     break;
                 }
@@ -416,7 +417,6 @@ export class TaInputDropdownComponent
                         }
                         selectedItem = null;
                     }
-
                     // Normal Pick Dropdown
                     else {
                         const existItem = this.options
@@ -435,6 +435,18 @@ export class TaInputDropdownComponent
                                         longLat: item.longLat,
                                     };
                                 }
+
+                                // Load Dispatches TTD
+                                else if (
+                                    [
+                                        'load-dispatches-ttd',
+                                        'load-broker',
+                                        'load-shipper',
+                                    ].includes(this.template)
+                                ) {
+                                    return { ...item };
+                                }
+
                                 // Image (must be before type code, because color has same prop like other dropdown pop)
                                 else if (item.logoName) {
                                     return { ...item };
@@ -468,26 +480,67 @@ export class TaInputDropdownComponent
                                 }
                             })
                             .find((item) => {
+                                // Dropdown Label
                                 if (
-                                    item?.dropLabel ||
-                                    this.inputConfig.dropdownLabel
-                                        ? selectedItem.substring(
-                                              0,
-                                              selectedItem.lastIndexOf(' ')
-                                          )
-                                        : selectedItem?.toLowerCase() ===
-                                          item?.name.toLowerCase()
-                                )
-                                    return (
-                                        item?.name.toLowerCase() ===
-                                        (item?.dropLabel ||
-                                        this.inputConfig.dropdownLabel
-                                            ? selectedItem.substring(
-                                                  0,
-                                                  selectedItem?.lastIndexOf(' ')
-                                              )
-                                            : selectedItem?.toLowerCase())
-                                    );
+                                    (item?.dropLabel ||
+                                        this.inputConfig.dropdownLabel) &&
+                                    selectedItem.substring(
+                                        0,
+                                        selectedItem.lastIndexOf(' ')
+                                    ) === item?.name.toLowerCase()
+                                ) {
+                                    return item;
+                                }
+
+                                // Dropdown Load Dispatcher, Broker
+                                if (
+                                    [
+                                        'load-broker',
+                                        'load-dispatcher',
+                                        'load-shipper',
+                                    ].includes(this.template) &&
+                                    selectedItem
+                                        ?.toLowerCase()
+                                        .includes(item?.name?.toLowerCase())
+                                ) {
+                                    return item;
+                                }
+                                // Dropdown Load Dispatches
+                                if (
+                                    this.template === 'load-dispatches-ttd' &&
+                                    selectedItem
+                                        ?.toLowerCase()
+                                        .includes(
+                                            item?.trailer?.trailerNumber.toLowerCase()
+                                        ) &&
+                                    selectedItem
+                                        ?.toLowerCase()
+                                        .includes(
+                                            item?.truck?.truckNumber.toLowerCase()
+                                        ) &&
+                                    selectedItem
+                                        ?.toLowerCase()
+                                        .includes(
+                                            item?.driver?.firstName
+                                                .concat(
+                                                    ' ',
+                                                    item?.driver?.lastName
+                                                )
+                                                .toLowerCase()
+                                        )
+                                ) {
+                                    return item;
+                                }
+
+                                // Default
+                                if (
+                                    !this.inputConfig.dropdownLabel &&
+                                    this.template !== 'load-dispatches-ttd' &&
+                                    selectedItem?.toLowerCase() ===
+                                        item?.name.toLowerCase()
+                                ) {
+                                    return item;
+                                }
                             });
 
                         // MultiSelect Dropdown
@@ -633,7 +686,7 @@ export class TaInputDropdownComponent
         else {
             if (
                 searchText?.length &&
-                this.activeItem?.name !== this.getSuperControl.value
+                this.getSuperControl.value?.toLowerCase()
             ) {
                 if (this.template === 'groups') {
                     this.options = this.originalOptions
@@ -648,16 +701,29 @@ export class TaInputDropdownComponent
                             };
                         })
                         .filter((item) => item.groups.length);
+
+                    if (!this.options.length) {
+                        this.options.push({
+                            groups: [
+                                {
+                                    id: 7654,
+                                    name: 'No Results',
+                                },
+                            ],
+                        });
+                    }
                 }
 
                 if (this.template === 'load-broker-contact') {
                     this.options = this.originalOptions.map((element) => {
                         return {
                             ...element,
-                            contacts: element?.contacts?.filter((subElement) =>
-                                subElement?.fullName
-                                    .toLowerCase()
-                                    .includes(searchText.toLowerCase())
+                            contacts: element?.contacts?.filter(
+                                (subElement) => {
+                                    return subElement?.fullName
+                                        .toLowerCase()
+                                        .includes(searchText?.toLowerCase());
+                                }
                             ),
                         };
                     });
@@ -678,29 +744,22 @@ export class TaInputDropdownComponent
                 }
 
                 if (this.template === 'load-dispatches-ttd') {
-                    this.options = this.originalOptions.filter((item) =>
-                        item.name
-                            ? item.name
-                                  .toLowerCase()
-                                  .includes(searchText.toLowerCase())
-                            : item.code
-                            ? item.code
-                                  .concat(' - ', item.description)
-                                  .toLowerCase()
-                                  .includes(searchText.toLowerCase())
-                            : searchText.toLowerCase()
-                    );
-                }
-
-                if (!this.options.length) {
-                    this.options.push({
-                        groups: [
-                            {
-                                id: 7654,
-                                name: 'No Results',
-                            },
-                        ],
+                    this.options = this.originalOptions.filter((item) => {
+                        if (
+                            item.fullName
+                                ?.toLowerCase()
+                                .includes(searchText.toLowerCase())
+                        ) {
+                            return item;
+                        }
                     });
+
+                    if (!this.options.length) {
+                        this.options.push({
+                            id: 7654,
+                            name: 'No Results',
+                        });
+                    }
                 }
             } else {
                 this.options = this.originalOptions;

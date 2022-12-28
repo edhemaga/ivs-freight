@@ -1,0 +1,30 @@
+.limited-row {
+    display: grid;
+    grid-template-columns: 73px 232px 113px;
+    -moz-column-gap: 12px;
+    column-gap: 12px;
+    margin-bottom: 22px;
+    align-items: center;
+    padding-left: 5px;
+
+    .number-of-payments-container {
+        display: grid;
+        grid-template-columns: 117px 100px;
+        -moz-column-gap: 16px;
+        column-gap: 16px;
+        align-items: center;
+
+        .no-of-payments {
+            margin: 0;
+            padding: 0;
+            font-size: 14px;
+            font-weight: 500;
+            line-height: 18px;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            color: #919191;
+        }
+    }
+}
