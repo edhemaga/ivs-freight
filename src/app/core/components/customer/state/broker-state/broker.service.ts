@@ -354,8 +354,9 @@ export class BrokerTService implements OnDestroy {
            
         });
         
-        this.brokerStore.add(brokerData);
-        this.brokerMinimalStore.add(brokerData);
+        this.brokerItemStore.update(brokerData.id, { reviews: brokerData.reviews });
+        this.brokerStore.update(brokerData.id, { reviews: brokerData.reviews });
+        
         this.tableService.sendActionAnimation({
             animation: 'update',
             tab: 'broker',
@@ -365,23 +366,18 @@ export class BrokerTService implements OnDestroy {
     }
 
     public addNewReview(data, currentId){
-        console.log('----data', data);
-        console.log('----currentId', currentId);
-        
-        /*
         let brokerData = JSON.parse(JSON.stringify(this.brokerItemStore?.getValue()?.entities[currentId]));
         brokerData?.reviews.push(data);
 
-        this.brokerStore.add(brokerData);
-        this.brokerMinimalStore.add(brokerData);
+        this.brokerItemStore.update(brokerData.id, { reviews: brokerData.reviews });
+        this.brokerStore.update(brokerData.id, { reviews: brokerData.reviews });
+
         this.tableService.sendActionAnimation({
             animation: 'update',
             tab: 'broker',
             data: brokerData,
             id: brokerData.id,
         });
-
-        */
     }
 
     public deleteReview(reviewId, brokerId){
@@ -393,8 +389,9 @@ export class BrokerTService implements OnDestroy {
                 brokerData?.reviews.splice(index, 1);
             }})
         
-        this.brokerStore.add(brokerData);
-        this.brokerMinimalStore.add(brokerData);
+        this.brokerItemStore.update(brokerData.id, { reviews: brokerData.reviews });
+        this.brokerStore.update(brokerData.id, { reviews: brokerData.reviews });
+
         this.tableService.sendActionAnimation({
             animation: 'update',
             tab: 'broker',
