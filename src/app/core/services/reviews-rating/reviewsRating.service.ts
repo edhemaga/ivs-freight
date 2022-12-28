@@ -71,7 +71,6 @@ export class ReviewsRatingService {
     }
 
     public deleteReview(id: number): Observable<any> {
-        console.log('--deleteReview--')
         return this.reviewRatingService.apiRatingReviewReviewIdDelete(id).pipe(
             tap(() => {
                 let splitUrl = this.router.url.split('/');
@@ -91,7 +90,6 @@ export class ReviewsRatingService {
     }
 
     public addReview(data: CreateReviewCommand): Observable<CreateResponse> {
-        console.log('--addReview--', data)
         return this.reviewRatingService.apiRatingReviewReviewPost(data).pipe(
             tap((res: any) => {
 
@@ -116,10 +114,8 @@ export class ReviewsRatingService {
     }
 
     public updateReview(data: UpdateReviewCommand): Observable<any> {
-       console.log('--updateReview', data);
         return this.reviewRatingService.apiRatingReviewReviewPut(data).pipe(
             tap(() => {
-                console.log('--update review--')
                 let splitUrl = this.router.url.split('/');
                 let customerId = parseInt(splitUrl[2]);
                 if ( this.router.url.indexOf('broker') > -1 ){
