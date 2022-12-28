@@ -48,6 +48,7 @@ export interface ITaInput {
     hideClear?: boolean;
     hideRequiredCheck?: boolean;
     hideErrorMessage?: boolean;
+    hideDangerMark?: boolean;
     removeInput?: boolean;
     readOnly?: boolean;
     thousandSeparator?: boolean; // type of input must be 'text'

@@ -47,6 +47,14 @@
                     -moz-user-select: none;
                     -ms-user-select: none;
                     user-select: none;
+
+                    &.active {
+                        color: #2f2f2f;
+                    }
+
+                    &.minus {
+                        color: #ef5350;
+                    }
                 }
 
                 .load-financial-action {

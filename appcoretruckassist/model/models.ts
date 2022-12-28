@@ -455,6 +455,7 @@ export * from './repairedVehicleListResponse';
 export * from './repairedVehicleResponse';
 export * from './repairedVehicleResponsePagination';
 export * from './resendInviteCommand';
+export * from './resendSignUpCompanyCommand';
 export * from './reviewByEntityTypeListResponse';
 export * from './reviewResponse';
 export * from './reviewResponsePagination';

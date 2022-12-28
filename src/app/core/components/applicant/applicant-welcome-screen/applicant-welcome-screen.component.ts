@@ -4,14 +4,13 @@ import { ActivatedRoute, Router } from '@angular/router';
 import moment from 'moment';
 import { convertDateFromBackend } from 'src/app/core/utils/methods.calculations';
 
-import { Subject, takeUntil } from 'rxjs';
+import { of, Subject, switchMap, takeUntil } from 'rxjs';
 
 import { ApplicantActionsService } from './../state/services/applicant-actions.service';
 
 import {
     AcceptApplicationCommand,
     ApplicantCompanyInfoResponse,
-    VerifyApplicantCommand,
 } from 'appcoretruckassist';
 
 @Component({
@@ -22,7 +21,7 @@ import {
 export class ApplicantWelcomeScreenComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
 
-    private verifyData: VerifyApplicantCommand;
+    // private verifyData: VerifyApplicantCommand;
 
     public dateOfApplication: string;
     public copyrightYear: string;
@@ -41,33 +40,34 @@ export class ApplicantWelcomeScreenComponent implements OnInit, OnDestroy {
         this.copyrightYear = moment().format('YYYY');
 
         this.getQueryParams();
-
-        this.applicantActionsService
-            .verifyApplicant(this.verifyData)
-            .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: (res: any) => {
-                    this.dateOfApplication = convertDateFromBackend(
-                        res.inviteDate
-                    ).replace(/-/g, '/');
-
-                    this.companyInfo = res.companyInfo;
-
-                    this.applicantId = { id: res.personalInfo.applicantId };
-                },
-                error: (err) => {
-                    console.log(err);
-                },
-            });
     }
 
     public getQueryParams() {
         this.route.queryParams
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((params) => {
-                this.verifyData = {
-                    inviteCode: params['InviteCode'].split(' ').join('+'),
-                };
+            .pipe(
+                takeUntil(this.destroy$),
+                switchMap((params) => {
+                    if (params['InviteCode']) {
+                        return this.applicantActionsService.verifyApplicant({
+                            inviteCode: params['InviteCode']
+                                .split(' ')
+                                .join('+'),
+                        });
+                    } else {
+                        return of(null);
+                    }
+                })
+            )
+            .subscribe((res) => {
+                if (!res) {
+                    this.router.navigate(['/auth']);
+                } else {
+                    this.dateOfApplication = convertDateFromBackend(
+                        res.inviteDate
+                    ).replace(/-/g, '/');
+                    this.companyInfo = res.companyInfo;
+                    this.applicantId = { id: res.personalInfo.applicantId };
+                }
             });
     }
 

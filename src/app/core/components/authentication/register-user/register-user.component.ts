@@ -80,6 +80,10 @@ export class RegisterUserComponent implements OnInit, OnDestroy {
         this.authStoreService.getSignUpUserInfo$
             .pipe(takeUntil(this.destroy$))
             .subscribe((signUpUserInfo: SignUpUserInfo) => {
+                if (!signUpUserInfo) {
+                    this.router.navigate(['/auth']);
+                    return;
+                }
                 this.registerUserForm.patchValue({
                     firstName: signUpUserInfo.firstName,
                     lastName: signUpUserInfo.lastName,
