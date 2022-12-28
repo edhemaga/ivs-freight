@@ -3,7 +3,7 @@
     <app-navigation-settings 
         [isNavigationHovered]="isNavigationHovered"
     ></app-navigation-settings>
-    <!-- <!-- <div 
+    <div 
         *ngFor="let item of footerData; trackBy: identity; let ind = index"
         class="nav-footer-item"
         [ngClass]="{
@@ -13,9 +13,12 @@
         (click)="onAction(ind, 'Open User Panel')"
         [routerLink]="item.route"
         routerLinkActive="{{ ind !== 2 ? 'nav-footer-item-active' : '' }}"
-    >
-    
-    
+    >   
+    <div [ngClass]="{'notification' : item.notification }">
+        <div *ngIf="ind !== hide">
+
+        <div *ngIf="item.text !== ''">
+
         <div
             class="nav-footer-hover"
             [ngClass]="{ 'nav-footer-hover-user': ind === 2 }"
@@ -25,12 +28,16 @@
             *ngIf="isActiveFooterRoute(item)"
             class="nav-item-active-box"
         ></div>
+        <div *ngIf="item.notification" class="status-marker-container-notification-1">
+            <div class="status-marker-notification-1"></div>
+        </div>
          <img
             class="nav-footer-image"
             [ngClass]="{ 'nav-footer-image-user': ind === 2 }"
             [src]="item.image"
             [alt]="item.text.userName"
         /> 
+       
         <div
             class="nav-footer-rightSide"
             [@showHideDetails]="isNavigationHovered ? 'true' : 'false'"
@@ -43,7 +50,7 @@
                 {{ item.text }}
                
             </p>
-           
+            <div *ngIf="item.notification" class="notification-message">{{item.notification}}</div>
             <div
                 class="nav-footer-user"
                 *ngIf="(item.text | userData) && isNavigationHovered"
@@ -69,13 +76,8 @@
                 class="status-marker"
             ></div>
         </div>
-    </div>  -->
-    <!-- <div 
-        *ngFor="let item of footerData;  let ind = index"
-        class="nav-footer-item">
-        <div *ngIf="ind !== 2">
-
-            {{item.route}}
-        </div>
-    </div> -->
+    </div>
+</div>
+    </div> 
+</div>
 </div>

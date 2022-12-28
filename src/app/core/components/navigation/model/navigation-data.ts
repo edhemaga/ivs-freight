@@ -243,6 +243,7 @@ export const navigationData: Navigation[] = [
         image: 'ic_chat.svg',
         route: '/communicator',
         isRouteActive: false,
+        messages: 5
     },
     {
         id: 11,
@@ -466,7 +467,7 @@ export const userNavigationData: NavigationUserPanel[] = [
     {
         id: 31,
         name: 'Logout',
-        image: 'ic_logout.svg',
+        image: 'assets/svg/common/ic_exit.svg',
         action: 'logout',
     },
 ];
@@ -478,7 +479,15 @@ export const footerData: FooterData[] = [
         image: 'assets/svg/common/ic_bell.svg',
         text: "Notifications",
         isRouteActive: false,
-        route: '/notification'
+        route: '/notification',
+        notification: 50
+    },
+    {
+        id: 34,
+        image: '',
+        text: "",
+        isRouteActive: false,
+        route: ''
     },
 ];
 export const settings: Settings[] = [

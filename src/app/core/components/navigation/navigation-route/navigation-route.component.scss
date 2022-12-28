@@ -15,6 +15,23 @@
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
+    .message-container{
+        position: relative;
+    }
+    .message{
+        width: 18px;
+    height: 18px;
+    background: rgba(229, 115, 115, 10%);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: $notification;
+    font-weight: 700;
+    font-size: 11px;
+    position: absolute;
+    right: 8px;
+    }
     .nav-item-arrow_top{
         opacity: 0;
         margin-right: 8px;

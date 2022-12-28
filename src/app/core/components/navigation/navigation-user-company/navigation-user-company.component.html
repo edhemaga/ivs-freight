@@ -1,10 +1,16 @@
 <div class="user-company" *ngIf="isNavigationHoveredAndPanelOpen">
     <div class="user-company-header" (click)="onAction()">
+        <div class="header-left">
+            <svg-icon
+            class="user-company-header-svg"
+            src="assets/svg/common/ic_company.svg"
+        ></svg-icon>
+            <p class="user-company-header-text">Switch Company</p>
+        </div>
         <svg-icon
             class="user-company-header-svg"
             src="assets/svg/common/ic_x.svg"
         ></svg-icon>
-        <p class="user-company-header-text">Switch Company</p>
     </div>
     <div
         class="user-company-content"

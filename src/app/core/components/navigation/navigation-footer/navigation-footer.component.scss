@@ -12,6 +12,7 @@
     left: 1px;
     width: 100%;
     padding-left: 9px;
+    padding-bottom: 15px;
     p {
         color: $nav-white;
         font-weight: $nav-font-medium;
@@ -27,13 +28,62 @@
     .nav-footer-item-scaleWidth {
         width: 0px !important;
     }
-
+    .notification{
+        position: relative;
+        .status-marker-container-notification-1{
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            background: #2F2F2F;
+            border-radius: 50%;
+            left: 9px;
+            bottom: 11px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            .status-marker-notification-1 {
+                width: 8px;
+                height: 8px;
+                border-radius: 8px;
+                border: 0 solid #ffffff;
+                background: #E57373;
+            }
+        }
+        .nav-footer-rightSide{
+            width: 100%;
+        }
+    }
+    &:nth-child(1){
+        
+        div{
+            display: flex;
+            align-items: center;
+            width: 230px;
+            .notification-message{
+                width: 18px;
+                height: 18px;
+                background: rgba(229, 115, 115, 0.1);
+                border-radius: 50%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                color: #E57373;
+                font-weight: 700;
+                font-size: 11px;
+                position: absolute;
+                right: 8px;
+            }
+        }
+    }
     .nav-footer-item {
         height: 28px;
         display: flex;
         align-items: center;
-
+       
         &:nth-last-child(2) {
+            display: none;
+        }
+        &:nth-last-child(3) {
             margin: 6px 0px;
             margin-bottom: 12px;
         }
@@ -48,6 +98,7 @@
         .nav-footer-user {
             position: relative;
             top: 1px;
+            display: grid;
             p {
                 margin-left: 6px;
                 text-overflow: ellipsis;
@@ -75,8 +126,11 @@
         }
 
         .status-marker-container {
-            bottom: -4px;
+            bottom: 12px;
             left: 17px;
+            width: 12px;
+            height: 12px;
+            background: $nav-dark;
         }
 
         .nav-footer-hover {

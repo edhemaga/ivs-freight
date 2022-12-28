@@ -22,8 +22,8 @@ import { DetailsDataService } from '../../services/details-data/details-data.ser
 export class NavigationComponent implements OnInit, OnDestroy {
     public navigation: Navigation[] = navigationData;
 
-    public isNavigationHovered: boolean = false;
-
+    public isNavigationHovered: boolean = true;
+    public isNavigationOpenend: boolean = false;
     public isModalPanelOpen: boolean = false;
     public isUserPanelOpen: boolean = false;
     public isUserCompanyDetailsOpen: boolean = false;
@@ -84,7 +84,6 @@ export class NavigationComponent implements OnInit, OnDestroy {
                 }
             });
     }
-
     public onRouteEvent(subroute: NavigationSubRoutes): void {
         const index = this.navigation.findIndex(
             (item) => item.id === subroute.routeId

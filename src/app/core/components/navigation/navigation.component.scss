@@ -44,9 +44,11 @@
 }
 
     .navigation-middle {
-        flex: 1;
         overflow-y: scroll;
         overflow-x: hidden;
+    }
+    .open-navigation{
+        flex: 1;
     }
     .navigation-bottom{
         overflow: hidden;

@@ -33,7 +33,7 @@ export class NavigationFooterComponent implements OnInit, OnDestroy {
     public currentUserStatus: string = 'online';
 
     public footerData: FooterData[] = footerData;
-
+    public hide:number;
     public loggedUser: any = null;
 
     constructor(
@@ -45,7 +45,7 @@ export class NavigationFooterComponent implements OnInit, OnDestroy {
     ) {}
 
     ngOnInit() {
-        console.log(this.footerData)
+        console.log(this.footerData, 'ovo')
         this.isActiveFooterRouteOnReload(window.location.pathname);
 
         // ----------------------- PRODUCSTION MODE ----------------------------
@@ -67,7 +67,7 @@ export class NavigationFooterComponent implements OnInit, OnDestroy {
                 ? this.imageBase64Service.sanitizer(this.loggedUser.avatar)
                 : 'assets/svg/common/ic_profile.svg',
         };
-
+        
         this.footerData[2] = {
             id: this.loggedUser.userId,
             image: this.loggedUser.avatar,
@@ -79,22 +79,22 @@ export class NavigationFooterComponent implements OnInit, OnDestroy {
                 ),
             },
         };
-
+        
         this.userService.updateUserProfile$
-            .pipe(debounceTime(1000), takeUntil(this.destroy$))
-            .subscribe((val: boolean) => {
-                if (val) {
-                    this.loggedUser = JSON.parse(localStorage.getItem('user'));
-
-                    this.loggedUser = {
-                        ...this.loggedUser,
-                        avatar: this.loggedUser.avatar
-                            ? this.imageBase64Service.sanitizer(
-                                  this.loggedUser.avatar
-                              )
-                            : 'assets/svg/common/ic_profile.svg',
+        .pipe(debounceTime(1000), takeUntil(this.destroy$))
+        .subscribe((val: boolean) => {
+            if (val) {
+                this.loggedUser = JSON.parse(localStorage.getItem('user'));
+                
+                this.loggedUser = {
+                    ...this.loggedUser,
+                    avatar: this.loggedUser.avatar
+                    ? this.imageBase64Service.sanitizer(
+                        this.loggedUser.avatar
+                        )
+                        : 'assets/svg/common/ic_profile.svg',
                     };
-
+                    
                     this.footerData[2] = {
                         id: this.loggedUser.userId,
                         image: this.loggedUser.avatar,
@@ -113,6 +113,12 @@ export class NavigationFooterComponent implements OnInit, OnDestroy {
     }
 
     public onAction(index: number, action: string) {
+        console.log(index, action)
+        if(this.hide === index){
+            this.hide = -1
+        }else{
+            this.hide = index;
+        }
         switch (action) {
             case 'Open User Panel': {
                 if (index === 2) {
@@ -134,6 +140,7 @@ export class NavigationFooterComponent implements OnInit, OnDestroy {
     }
 
     public isActiveFooterRoute(item: FooterData): boolean {
+
         if (item.id !== 3) {
             return this.router.url.includes(item.route);
         }

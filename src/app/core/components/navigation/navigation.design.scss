@@ -5,6 +5,7 @@ $nav-dark: #2F2F2F;
 $nav-svg: #b7b7b7;
 $nav-svg-hover: #919191;
 $nav-svg-active: #3074D3;
+$nav-svg-darker:#AAAAAA;
 
 $nav-text-color-dadada: #dadada;
 $nav-text-color-lighter: #b7b7b7;
@@ -46,6 +47,8 @@ $nav-font-semibold: 600;
 $nav-font-bold: 700;
 $nav-font-extrabold: 800;
 
+$nav-transparent: rgba(170, 170, 170, 10%);
+
 $wrapper-line: #b7b7b7;
 $magic-line-transition: all 0.2s ease-in;
 
@@ -54,6 +57,7 @@ $user-busy-status-hover: #ffa726;
 $user-active-status: #4db6a2;
 $user-active-status-hover: #26a690;
 
+$notification:#E57373;
 @keyframes showMagicLine {
     0% {
         opacity: 0;
@@ -90,7 +94,7 @@ $user-active-status-hover: #26a690;
 
     .status-online {
         border: 3px solid $user-active-status;
-        background: $nav-white !important;
+        background: $nav-dark !important;
     }
 
     .status-active {
@@ -101,6 +105,25 @@ $user-active-status-hover: #26a690;
     .status-busy {
         border: 2px solid $user-busy-status;
         background: #ffffff !important;
+    }
+}
+.status-marker-container-notification{
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    bottom: -2px;
+    left: -8px;
+    background: $nav-dark;
+    .status-marker-notification{
+        width: 8px;
+        height: 8px;
+        border-radius: 8px;
+        border: 0 solid $nav-white;
+        background: $notification;
     }
 }
 // ------------ end

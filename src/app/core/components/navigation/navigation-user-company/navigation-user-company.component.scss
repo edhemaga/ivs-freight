@@ -2,36 +2,37 @@
 
 .user-company {
     height: 171px;
-    width: 184px;
-    border-radius: 3px;
-    border-top-left-radius: 20px;
+    width: 238px;
+    border-radius: 2px;
     font-weight: $nav-font-medium;
     font-size: $nav-font-size;
     color: $nav-text-color;
-    background-color: $nav-white;
+    background-color: $nav-transparent;
     box-shadow: $nav-boxshadow;
-    position: absolute;
-    bottom: 11px;
-    right: 8px;
+    position: relative;
+    // bottom: 18px;
+    // left: 18px;
     z-index: 99;
 
     padding: 4px;
 
     p {
         margin: 0;
+        color: $nav-white;
     }
 
     .user-company-header {
         display: flex;
         align-items: center;
         margin-bottom: 6px;
-
+        justify-content: space-between;
+        .header-left{
+            display: flex;
+            align-items: center;
         .user-company-header-svg {
             transition: all 0.3s ease-in-out;
             height: 32px;
             width: 32px;
-            background: $nav-hover-darker;
-            border-radius: 50%;
 
             svg {
                 position: relative;
@@ -39,19 +40,20 @@
                 left: 50%;
                 transform: translate(-50%, -50%);
                 path {
-                    fill: $nav-svg;
+                    fill: $nav-svg-darker;
                 }
             }
         }
 
         .user-company-header-text {
             font-weight: $nav-font-bold;
-            color: $nav-text-color-darker;
+            color: $nav-white;
             margin-left: 6px;
             -webkit-user-select: none;
             -moz-user-select: none;
             -ms-user-select: none;
             user-select: none;
+
         }
 
         &:hover {
@@ -67,13 +69,15 @@
         }
     }
 
+    }
+
     .user-company-content {
         padding: 5px 14px 5px 8px;
         width: 100%;
 
         .user-company-text {
-            font-size: 14px;
-            font-weight: 500;
+            font-size: $nav-font-size;
+            font-weight: $nav-font-regular;
             line-height: 18px;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -85,7 +89,8 @@
         }
 
         .user-company-text-active {
-            color: $nav-active-lighter !important;
+            color: $nav-white !important;
+            font-weight: $nav-font-bold;
         }
 
         &:hover {

@@ -20,6 +20,7 @@ export class NavigationRouteComponent implements OnInit {
     @Input() route: Navigation;
     @Input() isNavigationHovered: boolean = false;
     @Input() isActiveSubroute: boolean = false;
+    @Input() message: number;
 
     @Output() onRouteEvent = new EventEmitter<NavigationSubRoutes>();
 

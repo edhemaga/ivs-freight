@@ -6,6 +6,7 @@ export interface Navigation {
     arrow?: string;
     isRouteActive: boolean;
     isSubrouteActive?: boolean;
+    messages?: number;
 }
 export interface NavigationSubRoute {
     name: string;
@@ -35,6 +36,7 @@ export interface FooterData {
     route?: string;
     arrow?: string;
     isRouteActive?: boolean;
+    notification?: number;
 }
 export interface Settings {
     id: number;

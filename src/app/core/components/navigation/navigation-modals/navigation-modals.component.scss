@@ -1,14 +1,14 @@
 @import '../navigation.design.scss';
 .modal-nav-panel {
     position: absolute;
-    top: 53px;
+    top: 65px;
     z-index: 99;
     height: auto;
     padding: 10px 6px;
     border-radius: 3px;
     box-shadow: $nav-boxshadow;
-    left: 4px;
-    right: 4px;
+    left: 16px;
+    width: 242px;
     background-color:$nav-svg-active;
     -webkit-user-select: none;
     -moz-user-select: none;

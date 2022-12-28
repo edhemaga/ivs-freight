@@ -1,16 +1,16 @@
 @import '../navigation.design.scss';
 
 .user-panel {
-    position: absolute;
-    bottom: 10px;
-    left: 7px;
+    position: relative;
+    // bottom: 18px;
+    // left: 18px;
     z-index: 99;
-    width: 184px;
+    width: 238px;
     height: 202px;
     padding: 2px 4px;
-    border-radius: 3px 3px 3px 20px;
+    border-radius: 2px;
     box-shadow: $nav-boxshadow;
-    background-color: $nav-white;
+    background-color: $nav-transparent;
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
@@ -20,7 +20,7 @@
         margin: 0;
         font-size: $nav-font-size;
         font-weight: $nav-font-medium;
-        color: $nav-text-color;
+        color: $nav-white;
     }
 
     .user-content {
@@ -45,7 +45,7 @@
         }
 
         .user-content-logout {
-            color: $nav-important;
+            // color: $nav-important;
         }
 
         &:nth-child(1) {
@@ -56,7 +56,7 @@
             .user-content-hover {
                 display: inline;
                 height: 28px;
-                width: 176px;
+                width: 230px;
                 content: '';
                 background: $nav-hover-color;
                 position: absolute;
@@ -94,9 +94,9 @@
                 }
             }
 
-            .user-content-text {
-                color: $nav-text-color-hover;
-            }
+            // .user-content-text {
+            //     color: $nav-text-color-hover;
+            // }
         }
     }
 
