@@ -1,5 +1,5 @@
 import { animate, style, transition, trigger } from '@angular/animations';
-import { moveItemInArray } from '@angular/cdk/drag-drop';
+import { CdkDrag, CdkDropList, moveItemInArray } from '@angular/cdk/drag-drop';
 import {
     ChangeDetectionStrategy,
     ChangeDetectorRef,
@@ -84,7 +84,21 @@ export class DispatchTableComponent implements OnInit {
 
     @Input() set _dData(value) {
         this.dData = JSON.parse(JSON.stringify(value));
-        console.log(this.dData);
+
+        this.dData.dispatches = this.dData.dispatches.map((item) => {
+            let i = 0;
+            item.hoursOfService = item.hoursOfService
+                .sort((a, b): number => {
+                    return a.id < b.id ? -1 : 0;
+                })
+                .map((it) => {
+                    it.indx = i;
+                    i++;
+                    return it;
+                });
+
+            return item;
+        });
     }
 
     @Input() dDataIndx: number;
@@ -128,24 +142,6 @@ export class DispatchTableComponent implements OnInit {
         hideLimitLabels: true,
         animate: false,
         maxLimit: new Date().getHours() * 60 + new Date().getMinutes(),
-        translate: (value: number, label: LabelType): string => {
-            const minutes = value;
-            const m = minutes % 60;
-            const h = (minutes - m) / 60;
-            const suffix = h >= 12 ? 'PM' : 'AM';
-            const formatedH = h > 12 ? h - 12 : h;
-            return `${formatedH.toString()}:${
-                m < 10 ? '0' : ''
-            }${m.toString()}`;
-            return (
-                formatedH.toString() +
-                ':' +
-                (m < 10 ? '0' : '') +
-                m.toString() +
-                ' ' +
-                suffix
-            );
-        },
     };
 
     constructor(
@@ -417,6 +413,8 @@ export class DispatchTableComponent implements OnInit {
             item.flag = item.flag?.name ? item.flag.name : item.flag;
             return item;
         });
+
+        console.log(this.openedHosData);
         this.updateOrAddDispatchBoardAndSend(
             'hoursOfService',
             this.openedHosData,
@@ -438,6 +436,7 @@ export class DispatchTableComponent implements OnInit {
     changeHosDataPositions(event, index) {
         const nextHos = index + 1;
         if (this.openedHosData[nextHos]) {
+            console.log('CHANGING DATA');
             this.openedHosData[nextHos].start = this.openedHosData[index].end;
         }
     }
@@ -472,13 +471,10 @@ export class DispatchTableComponent implements OnInit {
 
     changeDriverVacation(data) {
         this.__change_in_proggress = true;
-        
+
         this.dss.changeDriverVacation(data.driver.id).subscribe((res) => {
             this.dss
-                .updateDispatchboardRowById(
-                    data.id,
-                    this.dData.id
-                )
+                .updateDispatchboardRowById(data.id, this.dData.id)
                 .subscribe((res) => {
                     this.__change_in_proggress = false;
                 });
@@ -640,8 +636,12 @@ export class DispatchTableComponent implements OnInit {
     }
 
     // USE ARROW FUNCTION NOTATION TO ACCESS COMPONENT "THIS"
-    trailerPositionPrediction = (index: number) => {
-        console.log("trailerPred", index);
+    trailerPositionPrediction = (
+        index: number,
+        drag: CdkDrag,
+        drop: CdkDropList
+    ) => {
+        console.log('trailerPred', drop.element);
         return true;
     };
 }
