@@ -8,7 +8,7 @@ import {
     ReviewResponse,
     UpdateReviewCommand,
 } from 'appcoretruckassist';
-import { Observable, tap } from 'rxjs';
+import { Observable, tap, Subject, takeUntil } from 'rxjs';
 import { BrokerStore } from '../../components/customer/state/broker-state/broker.store';
 import { ShipperStore } from '../../components/customer/state/shipper-state/shipper.store';
 import { ShopStore } from '../../components/repair/state/shop-state/shop.store';
@@ -20,6 +20,7 @@ import { ShipperTService } from '../../components/customer/state/shipper-state/s
     providedIn: 'root',
 })
 export class ReviewsRatingService {
+    private destroy$ = new Subject<void>();
     constructor(
         private reviewRatingService: RatingReviewService,
         private brokerStore: BrokerStore,
@@ -86,27 +87,36 @@ export class ReviewsRatingService {
     }
 
     public getReviewById(id: number): Observable<ReviewResponse> {
-        console.log('---here---')
         return this.reviewRatingService.apiRatingReviewReviewIdGet(id);
     }
 
     public addReview(data: CreateReviewCommand): Observable<CreateResponse> {
-        console.log('--addReview--')
+        console.log('--addReview--', data)
         return this.reviewRatingService.apiRatingReviewReviewPost(data).pipe(
-            tap(() => {
+            tap((res: any) => {
 
-                let splitUrl = this.router.url.split('/');
-                let customerId = parseInt(splitUrl[2]);
+                const reviewDataNew = this.reviewRatingService.apiRatingReviewReviewIdGet(res.id)
+                    .pipe(takeUntil(this.destroy$))
+                    .subscribe({
+                        next: (resp: any) => {
+                            let splitUrl = this.router.url.split('/');
+                            let customerId = parseInt(splitUrl[2]);
 
-                console.log('--this.router', this.router);
-                if ( this.router.url.indexOf('broker') > -1 ){
-                    this.BrokerTService.addNewReview(data, customerId);
-                }
-            }));;
+                            if ( this.router.url.indexOf('broker') > -1 ){
+                                this.BrokerTService.addNewReview(resp, customerId);
+                            }
+                            if ( this.router.url.indexOf('shipper') > -1 ){
+                                this.ShipperTService.addNewReview(resp, customerId);
+                            }
+                            reviewDataNew.unsubscribe();
+                        },
+                    });
+            
+            }));
     }
 
     public updateReview(data: UpdateReviewCommand): Observable<any> {
-       
+       console.log('--updateReview', data);
         return this.reviewRatingService.apiRatingReviewReviewPut(data).pipe(
             tap(() => {
                 console.log('--update review--')

@@ -133,7 +133,7 @@ export class BrokerDetailsSingleComponent implements OnInit, OnChanges {
         };
     }
     public changeReviewsEvent(reviews: ReviewCommentModal) {
-        console.log('--here----', reviews);
+        console.log('--here----1111', reviews);
          switch (reviews.action) {
            case 'delete': {
              this.deleteReview(reviews);
@@ -158,6 +158,8 @@ export class BrokerDetailsSingleComponent implements OnInit, OnChanges {
             id: reviews.data.id,
             comment: reviews.data.commentContent,
         };
+
+        console.log('---here-----------')
 
         this.reviewRatingService
             .updateReview(review)

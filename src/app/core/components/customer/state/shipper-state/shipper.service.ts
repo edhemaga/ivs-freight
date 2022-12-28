@@ -416,6 +416,26 @@ export class ShipperTService implements OnDestroy {
         }); 
     }
 
+    public addNewReview(data, currentId){
+        console.log('----data', data);
+        console.log('----currentId', currentId);
+        
+        /*
+        let shipperData = JSON.parse(JSON.stringify(this.ShipperItemStore?.getValue()?.entities[currentId]));
+        shipperData?.reviews.push(data);
+
+        this.shipperStore.add(shipperData);
+        this.shipperMinimalStore.add(shipperData);
+        this.tableService.sendActionAnimation({
+            animation: 'update',
+            tab: 'shipper',
+            data: shipperData,
+            id: shipperData.id,
+        }); 
+
+        */
+    }
+
     ngOnDestroy(): void {
         this.destroy$.next();
         this.destroy$.complete();

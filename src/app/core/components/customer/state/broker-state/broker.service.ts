@@ -366,12 +366,12 @@ export class BrokerTService implements OnDestroy {
 
     public addNewReview(data, currentId){
         console.log('----data', data);
+        console.log('----currentId', currentId);
+        
         /*
-        let brokerData = {
-            ...this.brokerItemStore?.getValue()?.entities[currentId],
-        };
-
+        let brokerData = JSON.parse(JSON.stringify(this.brokerItemStore?.getValue()?.entities[currentId]));
         brokerData?.reviews.push(data);
+
         this.brokerStore.add(brokerData);
         this.brokerMinimalStore.add(brokerData);
         this.tableService.sendActionAnimation({
@@ -380,6 +380,7 @@ export class BrokerTService implements OnDestroy {
             data: brokerData,
             id: brokerData.id,
         });
+
         */
     }
 
