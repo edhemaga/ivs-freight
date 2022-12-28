@@ -42,7 +42,7 @@
                 <td class="truck-field" cdkDragHandle>
                     <div
                         class="main_inside"
-                        [class.addNew]="!item.truck && truckList.length"
+                        [class.addNew]="!item.truck && truckList.length && !__isBoardLocked"
                         [class.filled]="item.truck"
                     >
                         <div
@@ -53,7 +53,8 @@
                                 *ngIf="
                                     openedTruckDropdown != rowIndex &&
                                     !item.truck &&
-                                    truckList.length
+                                    truckList.length &&
+                                    !__isBoardLocked
                                 "
                                 class="add_new"
                                 (click)="showTruckDropdown(rowIndex)"
@@ -124,7 +125,7 @@
                 <td class="trailer-field">
                     <div
                         class="main_inside"
-                        [class.addNew]="!item.trailer && trailerList.length"
+                        [class.addNew]="!item.trailer && trailerList.length && !__isBoardLocked"
                         [class.filled]="item.trailer"
                         cdkDropList
                         [cdkDropListSortPredicate]="trailerPositionPrediction"
@@ -168,7 +169,8 @@
                                     *ngIf="
                                         openedTrailerDropdown != rowIndex &&
                                         !item.trailer &&
-                                        trailerList.length
+                                        trailerList.length &&
+                                        !__isBoardLocked
                                     "
                                     (click)="showTrailerDropdown(rowIndex)"
                                 >
@@ -244,7 +246,7 @@
                 <td class="driver-field">
                     <div
                         class="main_inside"
-                        [class.addNew]="!item.driver && driverList.length"
+                        [class.addNew]="!item.driver && driverList.length && !__isBoardLocked"
                         [class.filled]="item.driver"
                         cdkDropList
                         (cdkDropListDropped)="dropDriver($event, rowIndex)"
@@ -279,7 +281,7 @@
                             >
                                 <div
                                     class="add_new"
-                                    *ngIf="!item.driver && driverList.length"
+                                    *ngIf="!item.driver && driverList.length && !__isBoardLocked"
                                     (click)="showDriverDropdown(rowIndex)"
                                 >
                                     <div class="text">Add</div>
