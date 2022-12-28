@@ -30,17 +30,19 @@ export class ApplicantResolver implements Resolve<ApplicantState> {
             applicantDropdownList: applicantDropdownList$,
         }).pipe(
             tap((res: any) => {
-                console.log('resolver: ', res);
-                this.applicantStore.update((store) => {
-                    return {
-                        ...store,
-                        applicant: res.applicantData,
-                        applicantDropdownLists: res.applicantDropdownList,
-                    };
-                });
+                if (res) {
+                    this.applicantStore.update((store) => {
+                        return {
+                            ...store,
+                            applicant: res.applicantData,
+                            applicantDropdownLists: res.applicantDropdownList,
+                        };
+                    });
+                } else {
+                    this.router.navigate(['/auth']);
+                }
             }),
             catchError((error: any) => {
-                console.log('error applicant: ', error);
                 this.router.navigate(['/auth']);
                 // TODO: MILADIN: uhvati error.error i obavesti korisnika da ne poostoji applicant sa tim id-em
                 return throwError(() => error);
