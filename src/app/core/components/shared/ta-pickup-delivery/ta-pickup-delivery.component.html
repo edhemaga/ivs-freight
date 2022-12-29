@@ -1,1 +1,24 @@
-<p>ta-pickup-delivery works!</p>
+<div class="main_pickup_container" [ngStyle]="{ width: customWidth + 'px' }">
+    <!--<div class="no_load">NO ACTIVE OR PENDING LOAD</div>-->
+    <div class="load_holder">
+        <div class="load_main_hold">
+            <div class="load_title_hold">
+                <div class="load_number_hold">
+                    <div class="load_number">107</div>
+                    <div class="load_shuffle"></div>
+                </div>
+                <div class="load_name">KSKA FREIGHT, INC</div>
+            </div>
+            <div class="load_info_hold"></div>
+        </div>
+        <div class="load_arrow"></div>
+    </div>
+    <div class="pickup_border"></div>
+    <div class="tabs_hold">
+        <app-ta-tab-switch
+            [tabs]="pickupDeliveryTabs"
+            [type]="'dark'"
+            (switchClicked)="changeTabs($event)"
+        ></app-ta-tab-switch>
+    </div>
+</div>

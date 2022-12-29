@@ -621,4 +621,9 @@ export class DispatchTableComponent implements OnInit {
     cdkDragStartedDriver(event, indx) {
         this.startIndexDriver = indx;
     }
+
+    showPickupDelivery(popup: any) {
+        console.log(popup, 'open popup')
+        popup.open();
+    }
 }

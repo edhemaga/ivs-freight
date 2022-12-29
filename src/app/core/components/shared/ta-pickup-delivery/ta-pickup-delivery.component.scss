@@ -1,0 +1,66 @@
+.main_pickup_container {
+    padding: 4px 4px 8px 4px;
+
+    background-color: #2F2F2F;
+    border-radius: 3px;
+
+    .load_holder {
+        display: flex;
+
+        width: 100%;
+        padding: 4px;
+        border-radius: 2px;
+
+        &:hover {
+            background-color: #1D1D1D;
+        }
+
+        .load_main_hold {
+            flex: 1;
+            .load_title_hold {
+                display: flex;
+                justify-content: space-between;
+
+                margin-bottom: 8px;
+                .load_number_hold {
+                    .load_number {
+                        color: #FFFFFF;
+                        font-size: 14px;
+                        font-weight: 700;
+                        line-height: 18px;
+                    }
+                }
+
+                .load_name {
+                    color: #FFFFFF;
+                    font-size: 14px;
+                    line-height: 18px; 
+                }
+            }
+        }
+    }
+
+    .no_load {
+        padding: 0px 6px;
+        margin-bottom: 4px;
+
+        color: #919191;
+        font-size: 11px;
+        line-height: 26px;
+        user-select: none;
+    }
+
+    .pickup_border {
+        height: 1px;
+        width: 100%;
+        margin: 4px 0px 8px 0px;
+
+        background-color: #424242;
+        border-radius: 1px;
+    }
+
+    .tabs_hold {
+        width: 100%;
+        padding: 0px 4px;
+    }
+}

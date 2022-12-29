@@ -597,23 +597,23 @@
                 <td class="pickup-delivery-field">
                     <div
                         class="main_inside"
-                        [class.filled]="
-                            item.driver &&
-                            item.trailer &&
-                            item.truck &&
-                            item.location.address
-                        "
                     >
                         <div class="padding-inside">
                             <div
                                 class="info-item"
-                                *ngIf="
-                                    item.driver && item.trailer && item.truck
-                                "
+                                #t3="ngbPopover"
+                                [ngbPopover]="pickupPopover"
+                                [autoClose]="'outside'"
+                                container="body"
+                                [placement]="'bottom-center'"
+                                popoverClass="pickup-delivery-popover"
+                                triggers="manual"
+                                (click)="showPickupDelivery(t3)"
                             >
-                                <div class="no-delpickup">
+                                
+                                <!-- <div class="no-delpickup">
                                     No Active or Pending Load
-                                </div>
+                                </div> -->
                             </div>
                         </div>
                     </div>
@@ -1126,4 +1126,10 @@
             </div>
         </div>
     </div>
+</ng-template>
+
+<!-- Pickup and Delivery popover -->
+
+<ng-template #pickupPopover let-data="data">
+    <app-ta-pickup-delivery [customWidth]="300"></app-ta-pickup-delivery>
 </ng-template>

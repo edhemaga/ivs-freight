@@ -387,6 +387,7 @@ export function playerFactory() {
         PayrollStatusesComponent,
 
         TaCheckboxCardComponent,
+        TaPickupDeliveryComponent,
     ],
     providers: [],
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
