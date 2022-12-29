@@ -24,18 +24,22 @@ import { ReviewCommentModal } from '../../shared/ta-user-review/ta-user-review.c
 import { ITaInput } from '../../shared/ta-input/ta-input.config';
 
 import { Subject, takeUntil } from 'rxjs';
-import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { debounceTime } from 'rxjs/operators';
 import { descriptionValidation } from '../../shared/ta-input/ta-input.regex-validations';
 import { convertThousanSepInNumber } from '../../../utils/methods.calculations';
 import moment from 'moment';
 import { CreateLoadTemplateCommand } from '../../../../../../appcoretruckassist/model/createLoadTemplateCommand';
-import { IBilling } from './load-financial/load-financial.component';
+import { IBilling, IPayment } from './load-financial/load-financial.component';
 import { MapRouteModel } from '../../shared/model/map-route';
+import { BrokerModalComponent } from '../broker-modal/broker-modal.component';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { ShipperModalComponent } from '../shipper-modal/shipper-modal.component';
+import { FinancialCalculationPipe } from './load-financial/financialCalculation.pipe';
 @Component({
     selector: 'app-load-modal',
     templateUrl: './load-modal.component.html',
     styleUrls: ['./load-modal.component.scss'],
-    providers: [ModalService, FormService],
+    providers: [ModalService, FormService, FinancialCalculationPipe],
 })
 export class LoadModalComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
@@ -337,16 +341,22 @@ export class LoadModalComponent implements OnInit, OnDestroy {
     // Billing part
     public loadModalBill: IBilling = {
         baseRate: 0,
-        adjusted: 0,
-        advance: 0,
         layover: 0,
         lumper: 0,
         fuelSurcharge: 0,
         escort: 0,
         detention: 0,
     };
-
+    public selectedAdditionalBillings: any[] = [];
     public isVisibleBillDropdown: boolean = false;
+
+    // Payment part
+    public loadModalPayment: IPayment = {
+        advance: 0,
+        paidInFull: 0,
+        shortPaid: [],
+    };
+    public isVisiblePayment: boolean = false;
 
     constructor(
         private formBuilder: FormBuilder,
@@ -355,7 +365,9 @@ export class LoadModalComponent implements OnInit, OnDestroy {
         private commentsService: CommentsService,
         private routingService: RoutingService,
         private loadService: LoadTService,
-        private modalService: ModalService
+        private modalService: ModalService,
+        private ngbActiveModal: NgbActiveModal,
+        private financialCalculationPipe: FinancialCalculationPipe
     ) {}
 
     ngOnInit() {
@@ -602,7 +614,6 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                 break;
             }
             case 'dispatches': {
-                console.log('dispatches: ', event);
                 if (event) {
                     this.selectedDispatches = {
                         ...event,
@@ -674,8 +685,8 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                     // Draw Stop on map between deadhead driver and first pickup
                     if (this.selectedPickupShipper && this.selectedDispatches) {
                         console.log(
-                            'dispatches: ',
-                            this.selectedDispatches,
+                            'dispatche - pickup: ',
+                            this.selectedDispatches.currentLocationCoordinates,
                             this.selectedPickupShipper
                         );
                         this.drawStopOnMap(
@@ -715,203 +726,465 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                         false
                     );
                 }
+
                 break;
             }
             case 'broker': {
-                this.selectedBroker = event;
+                if (event?.canOpenModal) {
+                    this.ngbActiveModal.close();
 
-                if (this.selectedBroker) {
-                    this.loadBrokerInputConfig = {
-                        ...this.loadBrokerInputConfig,
-                        multipleInputValues: {
-                            options: [
-                                {
-                                    value: this.selectedBroker.businessName,
-                                    logoName: null,
-                                },
-                                {
-                                    value: this.selectedBroker.availableCredit,
-                                    second_value:
-                                        this.selectedBroker.creditLimit,
-                                    logoName: null,
-                                    isProgressBar: true,
-                                },
-                                {
-                                    value: this.selectedBroker.loadsCount,
-                                    logoName: null,
-                                    isCounter: true,
-                                },
-                            ],
-                            customClass: 'load-broker',
+                    this.modalService.setProjectionModal({
+                        action: 'open',
+                        payload: {
+                            key: 'load-modal',
+                            value: {},
                         },
-                    };
+                        extraPayload: {
+                            data: this.selectedBroker,
+                            type: 'new',
+                        },
+                        component: BrokerModalComponent,
+                        size: 'small',
+                    });
+                } else {
+                    this.selectedBroker = event;
 
-                    this.labelsBrokerContacts = this.originBrokerContacts.map(
-                        (el) => {
-                            return {
-                                ...el,
-                                contacts: el?.contacts?.filter(
-                                    (subEl) =>
-                                        subEl.brokerId ===
-                                        this.selectedBroker.id
-                                ),
+                    if (this.selectedBroker) {
+                        this.loadBrokerInputConfig = {
+                            ...this.loadBrokerInputConfig,
+                            multipleInputValues: {
+                                options: [
+                                    {
+                                        value: this.selectedBroker.businessName,
+                                        logoName: null,
+                                    },
+                                    {
+                                        value: this.selectedBroker
+                                            .availableCredit,
+                                        second_value:
+                                            this.selectedBroker.creditLimit,
+                                        logoName: null,
+                                        isProgressBar: true,
+                                    },
+                                    {
+                                        value: this.selectedBroker.loadsCount,
+                                        logoName: null,
+                                        isCounter: true,
+                                    },
+                                ],
+                                customClass: 'load-broker',
+                            },
+                        };
+
+                        this.labelsBrokerContacts =
+                            this.originBrokerContacts.map((el) => {
+                                return {
+                                    ...el,
+                                    contacts: el?.contacts?.filter(
+                                        (subEl) =>
+                                            subEl.brokerId ===
+                                            this.selectedBroker.id
+                                    ),
+                                };
+                            });
+
+                        this.selectedBrokerContact =
+                            this.labelsBrokerContacts[1].contacts[0];
+
+                        if (this.selectedBrokerContact) {
+                            this.loadForm
+                                .get('brokerContactId')
+                                .patchValue(
+                                    this.selectedBrokerContact.fullName
+                                );
+
+                            this.loadBrokerContactsInputConfig = {
+                                ...this.loadBrokerContactsInputConfig,
+                                multipleInputValues: {
+                                    options: [
+                                        {
+                                            value: this.selectedBrokerContact
+                                                .name,
+                                            logoName: null,
+                                        },
+                                        {
+                                            value: this.selectedBrokerContact
+                                                .originalPhone,
+                                            second_value: `#${this.selectedBrokerContact.phoneExtension}`,
+                                            logoName: null,
+                                        },
+                                    ],
+                                    customClass: 'load-broker-contact',
+                                },
+                                isDisabled: false,
+                                blackInput: false,
                             };
                         }
-                    );
+                    }
+                    // restart value if clear
+                    else {
+                        this.labelsBrokerContacts = this.originBrokerContacts;
+                        this.loadBrokerInputConfig = {
+                            ...this.loadBrokerInputConfig,
+                            multipleInputValues: null,
+                        };
 
-                    this.selectedBrokerContact =
-                        this.labelsBrokerContacts[1].contacts[0];
+                        this.selectedBrokerContact = null;
 
-                    if (this.selectedBrokerContact) {
-                        this.loadForm
-                            .get('brokerContactId')
-                            .patchValue(this.selectedBrokerContact.fullName);
+                        this.loadForm.get('brokerContactId').patchValue(null);
 
+                        this.loadBrokerContactsInputConfig = {
+                            ...this.loadBrokerContactsInputConfig,
+                            multipleInputValues: null,
+                            isDisabled: true,
+                        };
+                    }
+                }
+
+                break;
+            }
+            case 'broker-contact': {
+                if (event?.canOpenModal) {
+                    this.ngbActiveModal.close();
+
+                    this.modalService.setProjectionModal({
+                        action: 'open',
+                        payload: {
+                            key: 'load-modal',
+                            value: {},
+                        },
+                        type: 'edit',
+                        extraPayload: {
+                            data: this.selectedBroker,
+                            type: 'edit-contact',
+                        },
+                        component: BrokerModalComponent,
+                        size: 'small',
+                    });
+                } else {
+                    if (event) {
+                        this.selectedBrokerContact = {
+                            ...event,
+                            name: event?.name?.concat(' ', event?.phone),
+                        };
                         this.loadBrokerContactsInputConfig = {
                             ...this.loadBrokerContactsInputConfig,
                             multipleInputValues: {
                                 options: [
                                     {
-                                        value: this.selectedBrokerContact.name,
+                                        value: event.name,
                                         logoName: null,
                                     },
                                     {
-                                        value: this.selectedBrokerContact
-                                            .originalPhone,
-                                        second_value: `#${this.selectedBrokerContact.phoneExtension}`,
+                                        value: event.originalPhone,
+                                        second_value: `#${event.phoneExtension}`,
                                         logoName: null,
                                     },
                                 ],
                                 customClass: 'load-broker-contact',
                             },
                             isDisabled: false,
-                            blackInput: false,
+                        };
+                    } else {
+                        this.loadBrokerContactsInputConfig = {
+                            ...this.loadBrokerContactsInputConfig,
+                            multipleInputValues: null,
                         };
                     }
                 }
-                // restart value if clear
-                else {
-                    this.labelsBrokerContacts = this.originBrokerContacts;
-                    this.loadBrokerInputConfig = {
-                        ...this.loadBrokerInputConfig,
-                        multipleInputValues: null,
-                    };
 
-                    this.selectedBrokerContact = null;
-
-                    this.loadForm.get('brokerContactId').patchValue(null);
-
-                    this.loadBrokerContactsInputConfig = {
-                        ...this.loadBrokerContactsInputConfig,
-                        multipleInputValues: null,
-                        isDisabled: true,
-                    };
-                }
-                break;
-            }
-            case 'broker-contact': {
-                if (event) {
-                    this.selectedBrokerContact = {
-                        ...event,
-                        name: event?.name?.concat(' ', event?.phone),
-                    };
-                    this.loadBrokerContactsInputConfig = {
-                        ...this.loadBrokerContactsInputConfig,
-                        multipleInputValues: {
-                            options: [
-                                {
-                                    value: event.name,
-                                    logoName: null,
-                                },
-                                {
-                                    value: event.originalPhone,
-                                    second_value: `#${event.phoneExtension}`,
-                                    logoName: null,
-                                },
-                            ],
-                            customClass: 'load-broker-contact',
-                        },
-                        isDisabled: false,
-                    };
-                } else {
-                    this.loadBrokerContactsInputConfig = {
-                        ...this.loadBrokerContactsInputConfig,
-                        multipleInputValues: null,
-                    };
-                }
                 break;
             }
             case 'shipper-pickup': {
-                this.selectedPickupShipper = event;
-                console.log(
-                    'why is undefined: ',
-                    event,
-                    this.selectedPickupShipper
-                );
-                if (this.selectedPickupShipper) {
-                    this.loadPickupShipperInputConfig = {
-                        ...this.loadPickupShipperInputConfig,
-                        multipleInputValues: {
-                            options: [
-                                {
-                                    value: this.selectedPickupShipper
-                                        .businessName,
-                                    logoName: null,
-                                },
-                                {
-                                    value: this.selectedPickupShipper.address,
-                                    logoName: null,
-                                },
-                                {
-                                    value: this.selectedPickupShipper
-                                        .loadsCount,
-                                    logoName: null,
-                                    isCounter: true,
-                                },
-                            ],
-                            customClass: 'load-shipper',
+                if (event?.canOpenModal) {
+                    this.ngbActiveModal.close();
+
+                    this.modalService.setProjectionModal({
+                        action: 'open',
+                        payload: {
+                            key: 'load-modal',
+                            value: {},
                         },
-                    };
+                        extraPayload: {
+                            data: this.selectedBroker,
+                            type: 'new',
+                        },
+                        component: ShipperModalComponent,
+                        size: 'small',
+                    });
+                } else {
+                    this.selectedPickupShipper = event;
 
-                    this.labelsShipperContacts = this.originShipperContacts.map(
-                        (el) => {
-                            return {
-                                ...el,
-                                contacts: el?.contacts?.filter(
-                                    (subEl) =>
-                                        subEl.shipperId ===
-                                        this.selectedPickupShipper.id
-                                ),
-                            };
+                    if (this.selectedPickupShipper) {
+                        this.loadPickupShipperInputConfig = {
+                            ...this.loadPickupShipperInputConfig,
+                            multipleInputValues: {
+                                options: [
+                                    {
+                                        value: this.selectedPickupShipper
+                                            .businessName,
+                                        logoName: null,
+                                    },
+                                    {
+                                        value: this.selectedPickupShipper
+                                            .address,
+                                        logoName: null,
+                                    },
+                                    {
+                                        value: this.selectedPickupShipper
+                                            .loadsCount,
+                                        logoName: null,
+                                        isCounter: true,
+                                    },
+                                ],
+                                customClass: 'load-shipper',
+                            },
+                        };
+
+                        this.labelsShipperContacts =
+                            this.originShipperContacts.map((el) => {
+                                return {
+                                    ...el,
+                                    contacts: el?.contacts?.filter(
+                                        (subEl) =>
+                                            subEl.shipperId ===
+                                            this.selectedPickupShipper.id
+                                    ),
+                                };
+                            });
+
+                        if (this.labelsShipperContacts.length) {
+                            this.selectedPickupShipperContact =
+                                this.labelsShipperContacts[1].contacts[0];
+
+                            if (this.selectedPickupShipperContact) {
+                                this.loadForm
+                                    .get('pickupShipperContactId')
+                                    .patchValue(
+                                        this.selectedPickupShipperContact
+                                            .fullName
+                                    );
+
+                                this.loadPickupShipperContactsInputConfig = {
+                                    ...this
+                                        .loadPickupShipperContactsInputConfig,
+                                    multipleInputValues: {
+                                        options: [
+                                            {
+                                                value: this
+                                                    .selectedPickupShipperContact
+                                                    .name,
+                                                logoName: null,
+                                            },
+                                            {
+                                                value: this
+                                                    .selectedPickupShipperContact
+                                                    .originalPhone,
+                                                second_value: `#${this.selectedPickupShipperContact.phoneExtension}`,
+                                                logoName: null,
+                                            },
+                                        ],
+                                        customClass: 'load-shipper-contact',
+                                    },
+                                    isDisabled: false,
+                                };
+                            }
                         }
-                    );
 
-                    if (this.labelsShipperContacts.length) {
-                        this.selectedPickupShipperContact =
+                        // Draw Stop on map between deadhead driver and first pickup
+                        if (this.selectedDispatches) {
+                            console.log(
+                                'pickup - dispatche: ',
+
+                                this.selectedPickupShipper,
+                                this.selectedDispatches
+                                    .currentLocationCoordinates
+                            );
+                            this.drawStopOnMap(
+                                {
+                                    longitude:
+                                        this.selectedDispatches
+                                            .currentLocationCoordinates
+                                            .longitude,
+                                    latitude:
+                                        this.selectedDispatches
+                                            .currentLocationCoordinates
+                                            .latitude,
+                                    pickup: false,
+                                    delivery: false,
+                                },
+                                {
+                                    longitude:
+                                        this.selectedPickupShipper.longitude,
+                                    latitude:
+                                        this.selectedPickupShipper.latitude,
+                                    pickup: true,
+                                    delivery: false,
+                                },
+                                'dispatche-pickup-route'
+                            );
+                        }
+                    }
+                    // Restart value if clear
+                    else {
+                        this.labelsShipperContacts = this.originShipperContacts;
+
+                        this.loadPickupShipperInputConfig = {
+                            ...this.loadPickupShipperInputConfig,
+                            multipleInputValues: null,
+                        };
+
+                        this.selectedPickupShipperContact = null;
+
+                        this.loadForm
+                            .get('pickupShipperContactId')
+                            .patchValue(null);
+
+                        this.loadPickupShipperContactsInputConfig = {
+                            ...this.loadPickupShipperContactsInputConfig,
+                            multipleInputValues: null,
+                            isDisabled: true,
+                        };
+                    }
+                }
+
+                break;
+            }
+            case 'shipper-contact-pickup': {
+                if (event?.canOpenModal) {
+                    this.ngbActiveModal.close();
+
+                    this.modalService.setProjectionModal({
+                        action: 'open',
+                        payload: {
+                            key: 'load-modal',
+                            value: {},
+                        },
+                        type: 'edit',
+                        extraPayload: {
+                            data: this.selectedPickupShipper,
+                            type: 'edit-contact',
+                        },
+                        component: ShipperModalComponent,
+                        size: 'small',
+                    });
+                } else {
+                    if (event) {
+                        this.selectedPickupShipperContact = {
+                            ...event,
+                            name: event?.name?.concat(' ', event?.phone),
+                        };
+
+                        this.loadPickupShipperContactsInputConfig = {
+                            ...this.loadPickupShipperContactsInputConfig,
+                            multipleInputValues: {
+                                options: [
+                                    {
+                                        value: event.name,
+                                        logoName: null,
+                                    },
+                                    {
+                                        value: event.originalPhone,
+                                        second_value: `#${event.phoneExtension}`,
+                                        logoName: null,
+                                    },
+                                ],
+                                customClass: 'load-shipper-contact',
+                            },
+                            isDisabled: false,
+                        };
+                    } else {
+                        this.loadPickupShipperContactsInputConfig = {
+                            ...this.loadPickupShipperContactsInputConfig,
+                            multipleInputValues: null,
+                        };
+                    }
+                }
+
+                break;
+            }
+            case 'shipper-delivery': {
+                if (event?.canOpenModal) {
+                    this.ngbActiveModal.close();
+
+                    this.modalService.setProjectionModal({
+                        action: 'open',
+                        payload: {
+                            key: 'load-modal',
+                            value: {},
+                        },
+                        extraPayload: {
+                            data: this.selectedBroker,
+                            type: 'new',
+                        },
+                        component: ShipperModalComponent,
+                        size: 'small',
+                    });
+                } else {
+                    this.selectedDeliveryShipper = event;
+                    if (this.selectedDeliveryShipper) {
+                        this.loadDeliveryShipperInputConfig = {
+                            ...this.loadDeliveryShipperInputConfig,
+                            multipleInputValues: {
+                                options: [
+                                    {
+                                        value: this.selectedDeliveryShipper
+                                            .businessName,
+                                        logoName: null,
+                                    },
+                                    {
+                                        value: this.selectedDeliveryShipper
+                                            .address,
+                                        logoName: null,
+                                    },
+                                    {
+                                        value: this.selectedDeliveryShipper
+                                            .loadsCount,
+                                        logoName: null,
+                                        isCounter: true,
+                                    },
+                                ],
+                                customClass: 'load-shipper',
+                            },
+                        };
+
+                        this.labelsShipperContacts =
+                            this.originShipperContacts.map((el) => {
+                                return {
+                                    ...el,
+                                    contacts: el?.contacts?.filter(
+                                        (subEl) =>
+                                            subEl.shipperId ===
+                                            this.selectedDeliveryShipper.id
+                                    ),
+                                };
+                            });
+
+                        this.selectedDeliveryShipperContact =
                             this.labelsShipperContacts[1].contacts[0];
 
-                        if (this.selectedPickupShipperContact) {
+                        if (this.selectedDeliveryShipperContact) {
                             this.loadForm
-                                .get('pickupShipperContactId')
+                                .get('deliveryShipperContactId')
                                 .patchValue(
-                                    this.selectedPickupShipperContact.fullName
+                                    this.selectedDeliveryShipperContact.fullName
                                 );
 
-                            this.loadPickupShipperContactsInputConfig = {
-                                ...this.loadPickupShipperContactsInputConfig,
+                            this.loadDeliveryShipperContactsInputConfig = {
+                                ...this.loadDeliveryShipperContactsInputConfig,
                                 multipleInputValues: {
                                     options: [
                                         {
                                             value: this
-                                                .selectedPickupShipperContact
+                                                .selectedDeliveryShipperContact
                                                 .name,
                                             logoName: null,
                                         },
                                         {
                                             value: this
-                                                .selectedPickupShipperContact
+                                                .selectedDeliveryShipperContact
                                                 .originalPhone,
-                                            second_value: `#${this.selectedPickupShipperContact.phoneExtension}`,
+                                            second_value: `#${this.selectedDeliveryShipperContact.phoneExtension}`,
                                             logoName: null,
                                         },
                                     ],
@@ -920,196 +1193,23 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                                 isDisabled: false,
                             };
                         }
-                    }
 
-                    // Draw Stop on map between deadhead driver and first pickup
-                    if (this.selectedDispatches) {
-                        console.log(
-                            'pickup shipper: ',
-                            this.selectedDispatches,
-                            this.selectedPickupShipper
-                                .currentLocationCoordinates
-                        );
-                        this.drawStopOnMap(
-                            {
-                                longitude:
-                                    this.selectedDispatches
-                                        .currentLocationCoordinates.longitude,
-                                latitude:
-                                    this.selectedDispatches
-                                        .currentLocationCoordinates.latitude,
-                                pickup: false,
-                                delivery: false,
-                            },
-                            {
-                                longitude: this.selectedPickupShipper.longitude,
-                                latitude: this.selectedPickupShipper.latitude,
-                                pickup: true,
-                                delivery: false,
-                            },
-                            'dispatche-pickup-route'
-                        );
-                    }
-                }
-                // Restart value if clear
-                else {
-                    this.labelsShipperContacts = this.originShipperContacts;
-
-                    this.loadPickupShipperInputConfig = {
-                        ...this.loadPickupShipperInputConfig,
-                        multipleInputValues: null,
-                    };
-
-                    this.selectedPickupShipperContact = null;
-
-                    this.loadForm
-                        .get('pickupShipperContactId')
-                        .patchValue(null);
-
-                    this.loadPickupShipperContactsInputConfig = {
-                        ...this.loadPickupShipperContactsInputConfig,
-                        multipleInputValues: null,
-                        isDisabled: true,
-                    };
-                }
-                break;
-            }
-            case 'shipper-contact-pickup': {
-                if (event) {
-                    this.selectedPickupShipperContact = {
-                        ...event,
-                        name: event?.name?.concat(' ', event?.phone),
-                    };
-
-                    this.loadPickupShipperContactsInputConfig = {
-                        ...this.loadPickupShipperContactsInputConfig,
-                        multipleInputValues: {
-                            options: [
-                                {
-                                    value: event.name,
-                                    logoName: null,
-                                },
-                                {
-                                    value: event.originalPhone,
-                                    second_value: `#${event.phoneExtension}`,
-                                    logoName: null,
-                                },
-                            ],
-                            customClass: 'load-shipper-contact',
-                        },
-                        isDisabled: false,
-                    };
-                } else {
-                    this.loadPickupShipperContactsInputConfig = {
-                        ...this.loadPickupShipperContactsInputConfig,
-                        multipleInputValues: null,
-                    };
-                }
-                break;
-            }
-            case 'shipper-delivery': {
-                this.selectedDeliveryShipper = event;
-                if (this.selectedDeliveryShipper) {
-                    this.loadDeliveryShipperInputConfig = {
-                        ...this.loadDeliveryShipperInputConfig,
-                        multipleInputValues: {
-                            options: [
-                                {
-                                    value: this.selectedDeliveryShipper
-                                        .businessName,
-                                    logoName: null,
-                                },
-                                {
-                                    value: this.selectedDeliveryShipper.address,
-                                    logoName: null,
-                                },
-                                {
-                                    value: this.selectedDeliveryShipper
-                                        .loadsCount,
-                                    logoName: null,
-                                    isCounter: true,
-                                },
-                            ],
-                            customClass: 'load-shipper',
-                        },
-                    };
-
-                    this.labelsShipperContacts = this.originShipperContacts.map(
-                        (el) => {
-                            return {
-                                ...el,
-                                contacts: el?.contacts?.filter(
-                                    (subEl) =>
-                                        subEl.shipperId ===
-                                        this.selectedDeliveryShipper.id
-                                ),
-                            };
-                        }
-                    );
-
-                    this.selectedDeliveryShipperContact =
-                        this.labelsShipperContacts[1].contacts[0];
-
-                    if (this.selectedDeliveryShipperContact) {
-                        this.loadForm
-                            .get('deliveryShipperContactId')
-                            .patchValue(
-                                this.selectedDeliveryShipperContact.fullName
+                        if (this.loadExtraStops().length) {
+                            console.log(
+                                'extra stop - delivery: ',
+                                this.loadExtraStops().at(
+                                    this.loadExtraStops().length - 1
+                                ).value,
+                                this.selectedDeliveryShipper
                             );
-
-                        this.loadDeliveryShipperContactsInputConfig = {
-                            ...this.loadDeliveryShipperContactsInputConfig,
-                            multipleInputValues: {
-                                options: [
-                                    {
-                                        value: this
-                                            .selectedDeliveryShipperContact
-                                            .name,
-                                        logoName: null,
-                                    },
-                                    {
-                                        value: this
-                                            .selectedDeliveryShipperContact
-                                            .originalPhone,
-                                        second_value: `#${this.selectedDeliveryShipperContact.phoneExtension}`,
-                                        logoName: null,
-                                    },
-                                ],
-                                customClass: 'load-shipper-contact',
-                            },
-                            isDisabled: false,
-                        };
-                    }
-
-                    if (this.loadExtraStops().length) {
-                        this.drawStopOnMap(
-                            {
-                                longitude: this.loadExtraStops()
-                                    .at(this.loadExtraStops().length - 1)
-                                    .get('longitude').value,
-                                latitude: this.loadExtraStops()
-                                    .at(this.loadExtraStops().length - 1)
-                                    .get('latitude').value,
-                            },
-                            {
-                                longitude:
-                                    this.selectedDeliveryShipper.longitude,
-                                latitude: this.selectedDeliveryShipper.latitude,
-                                pickup: false,
-                                delivery: true,
-                            },
-                            'extraLoad-delivery-route'
-                        );
-                    } else {
-                        if (this.selectedPickupShipper) {
                             this.drawStopOnMap(
                                 {
-                                    longitude:
-                                        this.selectedPickupShipper.longitude,
-                                    latitude:
-                                        this.selectedPickupShipper.latitude,
-                                    pickup: true,
-                                    delivery: false,
+                                    longitude: this.loadExtraStops()
+                                        .at(this.loadExtraStops().length - 1)
+                                        .get('longitude').value,
+                                    latitude: this.loadExtraStops()
+                                        .at(this.loadExtraStops().length - 1)
+                                        .get('latitude').value,
                                 },
                                 {
                                     longitude:
@@ -1119,70 +1219,120 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                                     pickup: false,
                                     delivery: true,
                                 },
-                                'pickup-delivery-route'
+                                'extraLoad-delivery-route'
                             );
+                        } else {
+                            if (this.selectedPickupShipper) {
+                                console.log(
+                                    'pickup - delivery: ',
+                                    this.selectedPickupShipper,
+                                    this.selectedDeliveryShipper
+                                );
+                                this.drawStopOnMap(
+                                    {
+                                        longitude:
+                                            this.selectedPickupShipper
+                                                .longitude,
+                                        latitude:
+                                            this.selectedPickupShipper.latitude,
+                                        pickup: true,
+                                        delivery: false,
+                                    },
+                                    {
+                                        longitude:
+                                            this.selectedDeliveryShipper
+                                                .longitude,
+                                        latitude:
+                                            this.selectedDeliveryShipper
+                                                .latitude,
+                                        pickup: false,
+                                        delivery: true,
+                                    },
+                                    'pickup-delivery-route'
+                                );
+                            }
                         }
                     }
+                    // Restart value if clear
+                    else {
+                        this.labelsShipperContacts = this.originShipperContacts;
+
+                        this.loadPickupShipperInputConfig = {
+                            ...this.loadPickupShipperInputConfig,
+                            multipleInputValues: null,
+                        };
+
+                        this.selectedDeliveryShipperContact = null;
+
+                        this.loadForm
+                            .get('deliveryShipperContactId')
+                            .patchValue(null);
+
+                        this.loadDeliveryShipperContactsInputConfig = {
+                            ...this.loadDeliveryShipperContactsInputConfig,
+                            multipleInputValues: null,
+                            isDisabled: true,
+                        };
+                    }
                 }
-                // Restart value if clear
-                else {
-                    this.labelsShipperContacts = this.originShipperContacts;
 
-                    this.loadPickupShipperInputConfig = {
-                        ...this.loadPickupShipperInputConfig,
-                        multipleInputValues: null,
-                    };
-
-                    this.selectedDeliveryShipperContact = null;
-
-                    this.loadForm
-                        .get('deliveryShipperContactId')
-                        .patchValue(null);
-
-                    this.loadDeliveryShipperContactsInputConfig = {
-                        ...this.loadDeliveryShipperContactsInputConfig,
-                        multipleInputValues: null,
-                        isDisabled: true,
-                    };
-                }
                 break;
             }
             case 'shipper-contact-delivery': {
-                if (event) {
-                    this.selectedDeliveryShipperContact = {
-                        ...event,
-                        name: event?.name?.concat(' ', event?.phone),
-                    };
+                if (event?.canOpenModal) {
+                    this.ngbActiveModal.close();
 
-                    this.selectedDeliveryShipperContact = {
-                        ...this.selectedDeliveryShipperContact,
-                        multipleInputValues: {
-                            options: [
-                                {
-                                    value: event.name,
-                                    logoName: null,
-                                },
-                                {
-                                    value: event.originalPhone,
-                                    second_value: `#${event.phoneExtension}`,
-                                    logoName: null,
-                                },
-                            ],
-                            customClass: 'load-shipper-contact',
+                    this.modalService.setProjectionModal({
+                        action: 'open',
+                        payload: {
+                            key: 'load-modal',
+                            value: {},
                         },
-                        isDisabled: false,
-                    };
+                        type: 'edit',
+                        extraPayload: {
+                            data: this.selectedDeliveryShipper,
+                            type: 'edit-contact',
+                        },
+                        component: ShipperModalComponent,
+                        size: 'small',
+                    });
                 } else {
-                    this.selectedDeliveryShipperContact = {
-                        ...this.selectedDeliveryShipperContact,
-                        multipleInputValues: null,
-                    };
+                    if (event) {
+                        this.selectedDeliveryShipperContact = {
+                            ...event,
+                            name: event?.name?.concat(' ', event?.phone),
+                        };
+
+                        this.selectedDeliveryShipperContact = {
+                            ...this.selectedDeliveryShipperContact,
+                            multipleInputValues: {
+                                options: [
+                                    {
+                                        value: event.name,
+                                        logoName: null,
+                                    },
+                                    {
+                                        value: event.originalPhone,
+                                        second_value: `#${event.phoneExtension}`,
+                                        logoName: null,
+                                    },
+                                ],
+                                customClass: 'load-shipper-contact',
+                            },
+                            isDisabled: false,
+                        };
+                    } else {
+                        this.selectedDeliveryShipperContact = {
+                            ...this.selectedDeliveryShipperContact,
+                            multipleInputValues: null,
+                        };
+                    }
                 }
+
                 break;
             }
             case 'shipper-extra-stops': {
                 this.selectedExtraStopShipper[index] = event;
-                console.log(this.selectedExtraStopShipper);
 
                 // 4. If Load Stop Exist (shipper), just return
                 const existLoadStop = this.selectedExtraStopShipper.find(
@@ -1485,7 +1635,6 @@ export class LoadModalComponent implements OnInit, OnDestroy {
         });
     }
 
-    public selectedAdditionalBillings: any[] = [];
     public addAdditionalBilling(event: any) {
         if (event) {
             this.selectedAdditionalBillings.push(
@@ -1527,6 +1676,34 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                     item.name !== this.additionalBillings().at(index).value.name
             );
 
+        switch (this.additionalBillings().at(index).value.name) {
+            case 'Layover': {
+                this.loadModalBill.layover = 0;
+                break;
+            }
+            case 'Lumper': {
+                this.loadModalBill.lumper = 0;
+                break;
+            }
+            case 'Fuel Surcharge': {
+                this.loadModalBill.fuelSurcharge = 0;
+                break;
+            }
+            case 'Escort': {
+                this.loadModalBill.escort = 0;
+                break;
+            }
+            case 'Detention': {
+                this.loadModalBill.detention = 0;
+                break;
+            }
+            default: {
+                break;
+            }
+        }
+
+        this.loadModalBill = Object.assign({}, this.loadModalBill);
+
         this.additionalBillings().removeAt(index);
     }
 
@@ -1535,9 +1712,14 @@ export class LoadModalComponent implements OnInit, OnDestroy {
             switch (data.type) {
                 case 'billing': {
                     this.isVisibleBillDropdown = true;
+                    this.inputService.changeValidators(
+                        this.loadForm.get('advancePay')
+                    );
+
                     break;
                 }
                 case 'payment': {
+                    this.isVisiblePayment = true;
                     break;
                 }
                 default: {
@@ -1550,71 +1732,147 @@ export class LoadModalComponent implements OnInit, OnDestroy {
     public trackBillingPayment() {
         this.loadForm
             .get('baseRate')
-            .valueChanges.pipe(takeUntil(this.destroy$), distinctUntilChanged())
+            .valueChanges.pipe(takeUntil(this.destroy$))
             .subscribe((value) => {
                 if (!value) {
                     this.isAvailableAdjustedRate = false;
                     this.isAvailableAdvanceRate = false;
-
+                    this.loadModalBill = {
+                        ...this.loadModalBill,
+                        baseRate: 0,
+                    };
                     this.loadForm.get('adjustedRate').reset();
                     this.loadForm.get('driverRate').reset();
                     this.loadForm.get('advancePay').reset();
                 } else {
                     this.loadModalBill = {
                         ...this.loadModalBill,
-                        baseRate: value.replaceAll(',', ''),
+                        baseRate: value,
                     };
                 }
             });
 
+        // Adjusted Rate
         this.loadForm
-            .get('additionalBillings')
+            .get('adjustedRate')
             .valueChanges.pipe(takeUntil(this.destroy$))
-            .subscribe((item) => {
-                switch (item.name) {
-                    case 'Layover': {
-                        this.loadModalBill = {
-                            ...this.loadModalBill,
-                            layover: item.billingValue.replaceAll(',', ''),
-                        };
-                        break;
-                    }
-                    case 'Lumper': {
-                        this.loadModalBill = {
-                            ...this.loadModalBill,
-                            lumper: item.billingValue.replaceAll(',', ''),
-                        };
-                        break;
-                    }
-                    case 'Fuel Surcharge': {
-                        this.loadModalBill = {
-                            ...this.loadModalBill,
-                            fuelSurcharge: item.billingValue.replaceAll(
-                                ',',
-                                ''
-                            ),
-                        };
-                        break;
-                    }
-                    case 'Escort': {
-                        this.loadModalBill = {
-                            ...this.loadModalBill,
-                            escort: item.billingValue.replaceAll(',', ''),
-                        };
-                        break;
-                    }
-                    case 'Detention': {
-                        this.loadModalBill = {
-                            ...this.loadModalBill,
-                            detention: item.billingValue.replaceAll(',', ''),
-                        };
-                        break;
-                    }
-                    default: {
-                        break;
+            .subscribe((value) => {
+                if (value) {
+                    if (
+                        !this.loadForm.get('baseRate').value ||
+                        convertThousanSepInNumber(value) >
+                            convertThousanSepInNumber(
+                                this.loadForm.get('baseRate').value
+                            )
+                    ) {
+                        this.loadForm.get('adjustedRate').reset();
+                        this.loadForm
+                            .get('adjustedRate')
+                            .setErrors({ invalid: true });
+                    } else {
+                        this.loadForm.get('adjustedRate').setErrors(null);
                     }
                 }
             });
+
+        // Driver Rate
+        this.loadForm
+            .get('driverRate')
+            .valueChanges.pipe(takeUntil(this.destroy$))
+            .subscribe((value) => {
+                if (value) {
+                    if (
+                        !this.loadForm.get('baseRate').value ||
+                        convertThousanSepInNumber(value) >
+                            convertThousanSepInNumber(
+                                this.loadForm.get('baseRate').value
+                            )
+                    ) {
+                        this.loadForm.get('driverRate').reset();
+                        this.loadForm
+                            .get('driverRate')
+                            .setErrors({ invalid: true });
+                    } else {
+                        this.loadForm.get('driverRate').setErrors(null);
+                    }
+                }
+            });
+
+        // Advance Rate
+        this.loadForm
+            .get('advancePay')
+            .valueChanges.pipe(takeUntil(this.destroy$))
+            .subscribe((value) => {
+                if (value) {
+                    this.loadModalPayment = {
+                        ...this.loadModalPayment,
+                        advance: value,
+                    };
+
+                    if (
+                        convertThousanSepInNumber(value) >
+                        this.financialCalculationPipe.transform(
+                            this.loadModalBill,
+                            'billing'
+                        )
+                    ) {
+                        this.loadForm
+                            .get('advancePay')
+                            .setErrors({ invalid: true });
+                    } else {
+                        this.loadForm.get('advancePay').setErrors(null);
+                    }
+                } else {
+                    this.loadModalPayment = {
+                        ...this.loadModalPayment,
+                        advance: 0,
+                    };
+                }
+            });
+
+        // Additional Billings
+        this.additionalBillings()
+            .valueChanges.pipe(takeUntil(this.destroy$))
+            .subscribe((arr) => {
+                arr.forEach((value) => {
+                    switch (value.name) {
+                        case 'Layover': {
+                            this.loadModalBill.layover = value.billingValue;
+                            break;
+                        }
+                        case 'Lumper': {
+                            this.loadModalBill.lumper = value.billingValue;
+                            break;
+                        }
+                        case 'Fuel Surcharge': {
+                            this.loadModalBill.fuelSurcharge =
+                                value.billingValue;
+                            break;
+                        }
+                        case 'Escort': {
+                            this.loadModalBill.escort = value.billingValue;
+                            break;
+                        }
+                        case 'Detention': {
+                            this.loadModalBill.detention = value.billingValue;
+                            break;
+                        }
+                        default: {
+                            break;
+                        }
+                    }
+                });
+
+                this.loadModalBill = Object.assign({}, this.loadModalBill);
+            });
+    }
+
+    public removeAdditionalPayment() {
+        this.isVisibleBillDropdown = false;
+        this.inputService.changeValidators(
+            this.loadForm.get('advancePay'),
+            false
+        );
     }
 
     // **************** end ****************
@@ -1933,13 +2191,6 @@ export class LoadModalComponent implements OnInit, OnDestroy {
             .subscribe({
                 next: (res: RoutingResponse) => {
                     // TODO: Populate lat and long with routesPoints
-                    console.log('start position: ', start);
-                    console.log('end position: ', end);
-                    console.log(
-                        'coordinate dispatchers: ',
-                        this.selectedDispatches?.currentLocationCoordinates
-                    );
-                    console.log('coordinate response = ', res);
 
                     if (!this.loadStopRoutes[0]) {
                         this.loadStopRoutes[0] = {
@@ -1995,8 +2246,6 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                             ],
                         };
                     }
-
-                    console.log('draw on map: ', this.loadStopRoutes);
 
                     // this.loadExtraStops().controls.forEach(
                     //     (element: FormGroup, index: number) => {
@@ -2160,17 +2409,15 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                                     subFolder: 'trailers',
                                 },
                                 itemIndex: index,
-                                fullName: item.driver?.firstName
-                                    ?.concat(' ', item.driver?.lastName)
+                                fullName: item.truck?.truckNumber
+                                    .concat(' ', item.trailer?.trailerNumber)
                                     .concat(
                                         ' ',
-                                        item.coDriver?.firstName?.concat(
+                                        item.driver?.firstName.concat(
                                             ' ',
-                                            item.coDriver?.lastName
+                                            item.driver?.lastName
                                         )
-                                    )
-                                    .concat(' ', item.truck?.truckNumber)
-                                    .concat(' ', item.trailer?.trailerNumber),
+                                    ),
                             };
                         });
 
