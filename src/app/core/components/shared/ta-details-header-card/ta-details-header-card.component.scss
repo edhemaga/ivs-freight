@@ -320,18 +320,16 @@ $border-radius: 3px;
 }
 
 .ta-input-dropdown {
-    
     .dropdown-options {
-        text-overflow: ellipsis !important;
-        overflow: hidden !important;
-        white-space: nowrap !important;
         .dropdown-option{
-            position: static !important;
-            max-width: 90%;
-            padding-right: 10px !important;
-            text-overflow: ellipsis !important;
-            overflow: hidden !important;
-            white-space: nowrap !important;
+           
+            .details-template-text{
+                width: 100%;
+                text-overflow: ellipsis;
+                overflow: hidden;
+                white-space: nowrap;
+            }
+            
         }
     }
 }
