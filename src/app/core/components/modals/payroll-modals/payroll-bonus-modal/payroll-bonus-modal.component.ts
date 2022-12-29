@@ -25,6 +25,8 @@ export class PayrollBonusModalComponent implements OnInit {
 
     public isFormDirty: boolean = false;
 
+    public addNewAfterSave: boolean = false;
+
     constructor(
         private formBuilder: FormBuilder,
         private inputService: TaInputService,
@@ -54,6 +56,19 @@ export class PayrollBonusModalComponent implements OnInit {
     public onModalAction(data: { action: string; bool: boolean }) {
         switch (data.action) {
             case 'close': {
+                break;
+            }
+            case 'save and add new': {
+                if (this.payrollBonusForm.invalid || !this.isFormDirty) {
+                    this.inputService.markInvalid(this.payrollBonusForm);
+                    return;
+                }
+                this.addBonus();
+                this.modalService.setModalSpinner({
+                    action: 'save and add new',
+                    status: true,
+                });
+                this.addNewAfterSave = true;
                 break;
             }
             case 'save': {
@@ -94,7 +109,9 @@ export class PayrollBonusModalComponent implements OnInit {
         }
     }
 
-    public addBonus() {}
+    public addBonus() {
+        // TODO: dodati addNewAfterSave
+    }
 
     public updateBonus(id: number) {}
 
