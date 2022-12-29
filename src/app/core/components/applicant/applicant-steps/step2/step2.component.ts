@@ -23,7 +23,7 @@ import { ApplicantStore } from '../../state/store/applicant.store';
 import { ApplicantQuery } from '../../state/store/applicant.query';
 
 import { SelectedMode } from '../../state/enum/selected-mode.enum';
-import { WorkHistoryModel } from '../../state/model/work-history.model';
+import { WorkExpereienceModel } from '../../state/model/work-experience.model';
 import {
     EnumValue,
     TrailerLengthResponse,
@@ -54,7 +54,7 @@ export class Step2Component implements OnInit, OnDestroy {
     public markFormInvalid: boolean;
     public markInnerFormInvalid: boolean;
 
-    public workExperienceArray: WorkHistoryModel[] = [];
+    public workExperienceArray: WorkExpereienceModel[] = [];
 
     public stepValues: any;
     public stepHasValues: boolean = false;
@@ -63,14 +63,15 @@ export class Step2Component implements OnInit, OnDestroy {
     public lastWorkExperienceCard: any;
 
     public selectedWorkExperienceIndex: number;
-    public helperIndex: number = 2;
 
     public isEditing: boolean = false;
     public isEditingClassOfEquipment: boolean = false;
     public isReviewingCard: boolean = false;
 
+    public displayButtonInsteadOfForm: boolean = false;
+    public hideFormOnEdit: boolean = false;
+
     public formValuesToPatch: any;
-    public previousFormValuesOnEdit: any;
     public annotationMessagesOnReview: any;
 
     public vehicleType: TruckTypeResponse[] = [];
@@ -175,7 +176,7 @@ export class Step2Component implements OnInit, OnDestroy {
                     return {
                         id: item.id,
                         reviewId: item.workExperienceItemReview?.id,
-                        isEditingWorkHistory: false,
+                        isEditingWorkExperience: false,
                         employer: item.employer,
                         jobDescription: item.jobDescription,
                         fromDate: convertDateFromBackend(item.from).replace(
@@ -229,7 +230,7 @@ export class Step2Component implements OnInit, OnDestroy {
                 id: lastItemInWorkExperienceArray.id,
                 reviewId:
                     lastItemInWorkExperienceArray.workExperienceItemReview?.id,
-                isEditingWorkHistory: false,
+                isEditingWorkExperience: false,
                 employer: lastItemInWorkExperienceArray.employer,
                 jobDescription: lastItemInWorkExperienceArray.jobDescription,
                 fromDate: convertDateFromBackend(
@@ -299,24 +300,6 @@ export class Step2Component implements OnInit, OnDestroy {
             this.formValuesToPatch = filteredLastItemInWorkExperienceArray;
             this.previousFormValuesOnReview =
                 filteredLastItemInWorkExperienceArray;
-            this.previousFormValuesOnEdit = this.workExperienceArray.length
-                ? filteredLastItemInWorkExperienceArray
-                : {
-                      employer: null,
-                      jobDescription: null,
-                      fromDate: null,
-                      toDate: null,
-                      employerPhone: null,
-                      employerEmail: null,
-                      employerFax: null,
-                      employerAddress: null,
-                      employerAddressUnit: null,
-                      isDrivingPosition: null,
-                      cfrPart: null,
-                      fmCSA: null,
-                      reasonForLeaving: null,
-                      accountForPeriod: null,
-                  };
         } else {
             this.formStatus = 'VALID';
         }
@@ -512,42 +495,17 @@ export class Step2Component implements OnInit, OnDestroy {
             this.isEditing = false;
             this.workExperienceArray[
                 this.selectedWorkExperienceIndex
-            ].isEditingWorkHistory = false;
+            ].isEditingWorkExperience = false;
 
-            this.helperIndex = 2;
             this.selectedWorkExperienceIndex = -1;
         }
 
-        this.helperIndex = index;
         this.selectedWorkExperienceIndex = index;
 
         this.isEditing = true;
-        this.workExperienceArray[index].isEditingWorkHistory = true;
+        this.workExperienceArray[index].isEditingWorkExperience = true;
 
         const selectedWorkExperience = this.workExperienceArray[index];
-
-        if (this.lastWorkExperienceCard) {
-            this.previousFormValuesOnEdit = {
-                employer: this.lastWorkExperienceCard?.employer,
-                jobDescription: this.lastWorkExperienceCard?.jobDescription,
-                fromDate: this.lastWorkExperienceCard?.fromDate,
-                toDate: this.lastWorkExperienceCard?.toDate,
-                employerPhone: this.lastWorkExperienceCard?.employerPhone,
-                employerEmail: this.lastWorkExperienceCard?.employerEmail,
-                employerFax: this.lastWorkExperienceCard?.employerFax,
-                employerAddress: this.lastWorkExperienceCard?.employerAddress,
-                employerAddressUnit:
-                    this.lastWorkExperienceCard?.employerAddressUnit,
-                isDrivingPosition:
-                    this.lastWorkExperienceCard?.isDrivingPosition,
-                classesOfEquipment:
-                    this.lastWorkExperienceCard?.classesOfEquipment,
-                cfrPart: this.lastWorkExperienceCard?.cfrPart,
-                fmCSA: this.lastWorkExperienceCard?.fmCSA,
-                reasonForLeaving: this.lastWorkExperienceCard?.reasonForLeaving,
-                accountForPeriod: this.lastWorkExperienceCard?.accountForPeriod,
-            };
-        }
 
         this.formValuesToPatch = selectedWorkExperience;
 
@@ -561,12 +519,9 @@ export class Step2Component implements OnInit, OnDestroy {
         this.isEditing = false;
         this.workExperienceArray[
             this.selectedWorkExperienceIndex
-        ].isEditingWorkHistory = false;
+        ].isEditingWorkExperience = false;
 
-        this.helperIndex = 2;
         this.selectedWorkExperienceIndex = -1;
-
-        this.formValuesToPatch = this.previousFormValuesOnEdit;
 
         if (this.selectedMode === SelectedMode.FEEDBACK) {
             this.feedbackValuesToPatch =
@@ -578,17 +533,14 @@ export class Step2Component implements OnInit, OnDestroy {
         this.isEditing = false;
         this.workExperienceArray[
             this.selectedWorkExperienceIndex
-        ].isEditingWorkHistory = false;
+        ].isEditingWorkExperience = false;
 
         this.workExperienceArray[this.selectedWorkExperienceIndex] = {
             ...this.workExperienceArray[this.selectedWorkExperienceIndex],
             ...event,
         };
 
-        this.helperIndex = 2;
         this.selectedWorkExperienceIndex = -1;
-
-        this.formValuesToPatch = this.previousFormValuesOnEdit;
 
         if (this.selectedMode === SelectedMode.FEEDBACK) {
             this.feedbackValuesToPatch =
@@ -609,8 +561,6 @@ export class Step2Component implements OnInit, OnDestroy {
                 null;
         }
 
-        this.helperIndex = 2;
-
         const firstEmptyObjectInList = this.openAnnotationArray.find(
             (item) => Object.keys(item).length === 0
         );
@@ -625,6 +575,24 @@ export class Step2Component implements OnInit, OnDestroy {
             displayAnnotationButton: false,
             displayAnnotationTextArea: false,
         };
+    }
+
+    public onGetBtnClickValue(event: any): void {
+        /*   if (event.notDisabledClick) {
+            this.isEditing = true;
+
+            this.displayButtonInsteadOfForm = false;
+
+            this.formValuesToPatch = {
+                licenseNumber: null,
+                country: null,
+                state: null,
+                classType: null,
+                expDate: null,
+                restrictions: null,
+                endorsments: null,
+            };
+        } */
     }
 
     public onGetFormStatus(status: string): void {
@@ -688,7 +656,7 @@ export class Step2Component implements OnInit, OnDestroy {
 
         this.workExperienceArray[
             this.selectedWorkExperienceIndex
-        ].isEditingWorkHistory = false;
+        ].isEditingWorkExperience = false;
 
         this.workExperienceArray[
             this.selectedWorkExperienceIndex
@@ -733,7 +701,6 @@ export class Step2Component implements OnInit, OnDestroy {
             this.hasIncorrectFields = false;
         }
 
-        this.helperIndex = 2;
         this.selectedWorkExperienceIndex = -1;
 
         const lastWorkExperienceCard = this.lastWorkExperienceCard;
@@ -785,9 +752,8 @@ export class Step2Component implements OnInit, OnDestroy {
 
         this.workExperienceArray[
             this.selectedWorkExperienceIndex
-        ].isEditingWorkHistory = false;
+        ].isEditingWorkExperience = false;
 
-        this.helperIndex = 2;
         this.selectedWorkExperienceIndex = -1;
 
         const lastWorkExperienceCard = this.lastWorkExperienceCard;
@@ -888,10 +854,9 @@ export class Step2Component implements OnInit, OnDestroy {
             return;
         }
 
-        this.helperIndex = index;
         this.selectedWorkExperienceIndex = index;
 
-        this.workExperienceArray[index].isEditingWorkHistory = true;
+        this.workExperienceArray[index].isEditingWorkExperience = true;
 
         this.isReviewingCard = true;
 

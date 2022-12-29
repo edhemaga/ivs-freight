@@ -120,6 +120,7 @@ import { LoadModalProgressBarComponent } from '../modals/load-modal/load-modal-p
 import { LoadStopComponent } from '../modals/load-modal/load-stop/load-stop.component';
 import { GpsProgressbarComponent } from './gps-progressbar/gps-progressbar.component';
 import { LoadFinancialComponent } from '../modals/load-modal/load-financial/load-financial.component';
+import { TaInputSwitchOnOffComponent } from './ta-input-switch-on-off/ta-input-switch-on-off.component';
 
 export function playerFactory() {
     return import('lottie-web');
@@ -171,6 +172,7 @@ export function playerFactory() {
         ApplicantReviewFeedbackComponent,
         TaTimePeriodComponent,
         AutoclosePopoverComponent,
+        TaInputSwitchOnOffComponent,
 
         // Modals Components
         ApplicantModalComponent,
@@ -312,6 +314,7 @@ export function playerFactory() {
         TaInputArrowsComponent,
         CustomScrollbarComponent,
         GpsProgressbarComponent,
+        TaInputSwitchOnOffComponent,
 
         DetailsDropdownComponent,
         TaReCardComponent,

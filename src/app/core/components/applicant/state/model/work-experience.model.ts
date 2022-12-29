@@ -1,4 +1,4 @@
-export interface WorkHistoryModel {
+export interface WorkExpereienceModel {
     id?: number;
     reviewId?: number;
     applicantId?: string;
@@ -20,7 +20,7 @@ export interface WorkHistoryModel {
     fmCSA?: boolean;
     reasonForLeaving: string;
     accountForPeriod: string;
-    isEditingWorkHistory: boolean;
+    isEditingWorkExperience: boolean;
     workExperienceItemReview: any;
 }
 

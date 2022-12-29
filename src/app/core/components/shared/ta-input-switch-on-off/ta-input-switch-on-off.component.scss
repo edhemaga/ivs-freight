@@ -1,0 +1,111 @@
+@import 'src/theme/variables.scss';
+
+.switch-main-container {
+    display: grid;
+    grid-template-columns: 32px auto;
+    grid-gap: 10px;
+
+    .switch-box {
+        .switch {
+            width: 32px;
+            position: relative;
+            background: $ta-light-grey-6;
+            height: 8px;
+            border-radius: 2px;
+            cursor: pointer;
+            transition: background 0.2s ease-in-out;
+
+            .switch-button {
+                position: absolute;
+                left: 7px;
+                top: -5px;
+                background: $white;
+                width: 18px;
+                height: 18px;
+                border-radius: 50%;
+                transition: transform 0.2s ease-in-out;
+            }
+
+            .switch-off,
+            .switch-on {
+                height: 8px;
+                width: 50%;
+            }
+
+            &.switch-inactive {
+                &:hover {
+                    background: $bw5;
+                }
+            }
+
+            &.switch-active-on {
+                background: $ta-blue-8;
+
+                &:hover {
+                    background: $ta-blue-7;
+
+                    .switch-button {
+                        background: $ta-blue-9;
+                    }
+                }
+
+                .switch-button {
+                    background: $ta-blue-5;
+                    transform: translate(8px);
+                }
+            }
+
+            &.switch-active-off {
+                background: $bw5;
+
+                &:hover {
+                    background: $bw6-2;
+
+                    .switch-button {
+                        .x-icon {
+                            svg {
+                                path {
+                                    fill: $bw6-2;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                .switch-button {
+                    transform: translate(-8px);
+
+                    .x-icon {
+                        svg {
+                            path {
+                                transition: fill 0.2s ease-in-out;
+                                fill: $bw5;
+                            }
+                        }
+                    }
+                }
+            }
+
+            &.switch-required {
+                background: $ta-red;
+
+                &:hover {
+                    background: $ta-red-2;
+                }
+            }
+        }
+    }
+
+    .title-box {
+        p {
+            font-size: 14px;
+            line-height: 18px;
+            color: $ta-black;
+            user-select: none;
+
+            span {
+                color: $ta-red-3;
+            }
+        }
+    }
+}

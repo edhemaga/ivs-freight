@@ -4,59 +4,217 @@
     <!-- TOP SECTION -->
 
     <div
-        class="d-flex justify-content-center text-center"
-        [ngClass]="
-            selectedMode === 'FEEDBACK_MODE'
-                ? 'top-section-feedback'
-                : 'top-section'
-        "
+        class="d-flex justify-content-center text-center top-section"
+        [ngStyle]="{
+            color: selectedMode === 'FEEDBACK_MODE' ? '#919191' : '#2F2F2F'
+        }"
     >
         <p class="m-0 ta-font-regular">
             In accordance with 391.21 & .23 of the Federal Motor Carrier Safety
-            Regulations (FMCSR), an applicant must list all<br />previous work
-            experience for the three (3) years prior to the date of application
-            shown on page one, as well as all<br />commercial driving experience
-            for seven (7) years prior to those three years, for a total of 10
-            years.
+            Regulations (FMCSR),<br />an applicant must list all previous work
+            experience for the three (3) years prior to the<br />date of
+            application shown on page one, as well as all commercial driving
+            experience for<br />seven (7) years prior to those three years, for
+            a total of 10 years.
         </p>
     </div>
 
     <!-- MID SECTION -->
 
-    <div
-        class="d-flex justify-content-center text-center mid-section"
-        [ngStyle]="{
-            'margin-bottom': workExperienceArray.length ? '22px' : '32px'
-        }"
-    >
+    <div class="d-flex justify-content-center text-center mid-section">
         <h5
             class="m-0 ta-font-bold"
-            [ngClass]="
-                selectedMode === 'FEEDBACK_MODE'
-                    ? 'step-subtitle step-subtitle-feedback'
-                    : 'step-subtitle'
-            "
+            [ngStyle]="{
+                color: selectedMode === 'FEEDBACK_MODE' ? '#919191' : '#2F2F2F'
+            }"
         >
             Please list starting with most recent employer, use add employer
             link if needed
         </h5>
     </div>
 
-    <!-- FORM SECTION -->
+    <ng-container *ngIf="!workExperienceForm.get('noWorkExperience').value">
+        <div class="d-flex flex-column justify-content-center">
+            <!-- CREATED WORK EXPERIENCE DATA -->
 
-    <div
-        class="d-flex justify-content-center"
-        *ngIf="!workExperienceForm.get('noWorkExperience').value"
-        [formGroup]="workExperienceForm"
-    >
-        <div class="d-flex justify-content-center flex-column">
+            <ng-container *ngIf="workExperienceArray.length">
+                <div
+                    class="d-flex flex-column justify-content-center work-experiences-container"
+                    [formGroup]="workExperienceForm"
+                >
+                    <div class="align-items-center title-container">
+                        <div class="align-items-center employer-box">
+                            <p class="m-0 ta-font-bold">EMPLOYER</p>
+                        </div>
+
+                        <div class="align-items-center job-description-box">
+                            <p class="m-0 ta-font-bold">JOB DESCRIPTION</p>
+                        </div>
+
+                        <div class="align-items-center equipment-box">
+                            <p class="m-0 ta-font-bold">EQUIPMENT</p>
+                        </div>
+                    </div>
+
+                    <ng-container
+                        *ngFor="
+                            let workExperience of workExperienceArray;
+                            let i = index;
+                            trackBy: trackByIdentity
+                        "
+                    >
+                        <ng-container
+                            *ngIf="!workExperience.isEditingWorkExperience"
+                        >
+                            <div
+                                class="d-flex align-items-center work-experience-info-container line-container"
+                            >
+                                <div
+                                    class="align-items-center info-btn-container"
+                                    (click)="
+                                        selectedMode === 'REVIEW_MODE'
+                                            ? onCardReview(i)
+                                            : onEditWorkExperience(i)
+                                    "
+                                >
+                                    <div
+                                        class="d-flex flex-column justify-content-center"
+                                    >
+                                        <div
+                                            class="d-flex align-items-center employer-box"
+                                        >
+                                            <p
+                                                class="m-0 ta-font-bold d-inline-block text-truncate"
+                                                style="max-width: 180px"
+                                                ngbTooltip
+                                                [mainTooltip]="
+                                                    workExperience.employer
+                                                "
+                                                tooltipBackground="#2F2F2F"
+                                                position="bottom-left"
+                                            >
+                                                {{ workExperience.employer }}
+                                            </p>
+                                        </div>
+
+                                        <div
+                                            class="d-flex align-items-center date-box"
+                                        >
+                                            <p class="m-0 ta-font-medium">
+                                                {{ workExperience.fromDate }} -
+                                                {{ workExperience.toDate }}
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                    <div
+                                        class="d-flex flex-column justify-content-center"
+                                    >
+                                        <div
+                                            class="d-flex align-items-center job-description-box"
+                                        >
+                                            <p class="m-0 ta-font-semi-bold">
+                                                {{
+                                                    workExperience.jobDescription
+                                                }}
+                                            </p>
+                                        </div>
+
+                                        <ng-container
+                                            *ngIf="
+                                                workExperience.isDrivingPosition
+                                            "
+                                        >
+                                            <div
+                                                class="d-flex align-items-center driving-position-box"
+                                            >
+                                                <p class="m-0 ta-font-medium">
+                                                    Driving Position
+                                                </p>
+                                            </div>
+                                        </ng-container>
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-container>
+                    </ng-container>
+                </div>
+            </ng-container>
+
+            <!-- FORM SECTION -->
+
+            <ng-container
+                *ngIf="
+                    (selectedMode !== 'REVIEW_MODE' &&
+                        !hideFormOnEdit &&
+                        !displayButtonInsteadOfForm) ||
+                    (selectedMode === 'REVIEW_MODE' && !isReviewingCard)
+                "
+            >
+                <div
+                    [ngStyle]="{
+                        'border-top': !isEditing ? '1px solid #DADADA' : 0
+                    }"
+                >
+                    <app-step2-form
+                        [mode]="selectedMode"
+                        [isEditing]="isEditing"
+                        [markFormInvalid]="markFormInvalid"
+                        [markInnerFormInvalid]="markInnerFormInvalid"
+                        [formValuesToPatch]="formValuesToPatch"
+                        [isReviewingCard]="isReviewingCard"
+                        [stepFeedbackValues]="feedbackValuesToPatch"
+                        [checkIsRadioUnchecked]="checkIsRadioUnchecked"
+                        [displayRadioRequiredNoteArray]="
+                            displayRadioRequiredNoteArray
+                        "
+                        (formValuesEmitter)="
+                            getWorkExperienceFormValues($event)
+                        "
+                        (formStatusEmitter)="onGetFormStatus($event)"
+                        (innerFormStatusEmitter)="onGetInnerFormStatus($event)"
+                        (markInvalidEmitter)="onMarkInvalidEmit($event)"
+                        (markInnerFormInvalidEmitter)="
+                            onMarkInnerInvalidEmit($event)
+                        "
+                        (lastFormValuesEmitter)="onGetLastFormValues($event)"
+                        (hasIncorrectFieldsEmitter)="
+                            onHasIncorrectFields($event)
+                        "
+                        (openAnnotationArrayValuesEmitter)="
+                            onGetOpenAnnotationArrayValues($event)
+                        "
+                        (radioRequiredNoteEmitter)="
+                            onGetRadioRequiredNoteEmit($event)
+                        "
+                        (classOfEquipmentformValuesEmitter)="
+                            onGetClassOfEquipmentValues($event)
+                        "
+                        (isEditingClassOfEquipmentEmitter)="
+                            onGetIsEditingClassOfEquipmentStatus($event)
+                        "
+                    ></app-step2-form>
+                </div>
+            </ng-container>
+
+            <ng-container *ngIf="displayButtonInsteadOfForm">
+                <div class="d-flex justify-content-center align-items-center">
+                    <app-applicant-add-save-btn
+                        [addBtn]="true"
+                        [btnText]="'Add Second Or Last Employer'"
+                        (clickValueEmitter)="onGetBtnClickValue($event)"
+                    ></app-applicant-add-save-btn>
+                </div>
+            </ng-container>
+        </div>
+    </ng-container>
+
+    <!-- <div class="d-flex justify-content-center flex-column">
             <div
                 class="d-flex flex-column history-panel-container"
                 *ngIf="workExperienceArray.length"
                 [ngStyle]="{ 'margin-bottom': isReviewingCard ? 0 : '32px' }"
             >
-                <!-- CREATED WORK HISTORY DATA -->
-
                 <div
                     class="d-flex flex-column"
                     *ngFor="
@@ -270,7 +428,7 @@
                             </div>
                         </div>
 
-                        <!-- REVIEW AND FEEDBACK -->
+                        REVIEW AND FEEDBACK
 
                         <div
                             class="review-feedback-container"
@@ -356,68 +514,13 @@
                     </div>
                 </div>
             </div>
+        </div> -->
 
-            <div
-                *ngIf="
-                    ((selectedMode === 'APPLICANT_MODE' ||
-                        selectedMode === 'FEEDBACK_MODE') &&
-                        !isEditing) ||
-                    (selectedMode === 'REVIEW_MODE' && !isReviewingCard)
-                "
-            >
-                <app-step2-form
-                    [mode]="selectedMode"
-                    [isEditing]="isEditing"
-                    [markFormInvalid]="markFormInvalid"
-                    [markInnerFormInvalid]="markInnerFormInvalid"
-                    [formValuesToPatch]="formValuesToPatch"
-                    [isReviewingCard]="isReviewingCard"
-                    [stepFeedbackValues]="feedbackValuesToPatch"
-                    [checkIsRadioUnchecked]="checkIsRadioUnchecked"
-                    [displayRadioRequiredNoteArray]="
-                        displayRadioRequiredNoteArray
-                    "
-                    (formValuesEmitter)="getWorkExperienceFormValues($event)"
-                    (formStatusEmitter)="onGetFormStatus($event)"
-                    (innerFormStatusEmitter)="onGetInnerFormStatus($event)"
-                    (markInvalidEmitter)="onMarkInvalidEmit($event)"
-                    (markInnerFormInvalidEmitter)="
-                        onMarkInnerInvalidEmit($event)
-                    "
-                    (lastFormValuesEmitter)="onGetLastFormValues($event)"
-                    (hasIncorrectFieldsEmitter)="onHasIncorrectFields($event)"
-                    (openAnnotationArrayValuesEmitter)="
-                        onGetOpenAnnotationArrayValues($event)
-                    "
-                    (radioRequiredNoteEmitter)="
-                        onGetRadioRequiredNoteEmit($event)
-                    "
-                    (classOfEquipmentformValuesEmitter)="
-                        onGetClassOfEquipmentValues($event)
-                    "
-                    (isEditingClassOfEquipmentEmitter)="
-                        onGetIsEditingClassOfEquipmentStatus($event)
-                    "
-                ></app-step2-form>
-            </div>
-        </div>
-    </div>
-
-    <!-- WORK EXPERIENCE CHECKBOX -->
+    <!-- DONT HAVE WORK EXPERIENCE CHECKBOX -->
 
     <div
         class="d-flex justify-content-center work-experience-group"
         [formGroup]="workExperienceForm"
-        [ngStyle]="{
-            'margin-top':
-                selectedMode === 'APPLICANT_MODE'
-                    ? '12px'
-                    : selectedMode === 'REVIEW_MODE' &&
-                      workExperienceArray[workExperienceArray.length - 1]
-                          ?.isEditingWorkHistory
-                    ? 0
-                    : '22px'
-        }"
         *ngIf="!isEditing"
     >
         <app-ta-checkbox
@@ -425,10 +528,7 @@
             [name]="'noWorkExperience'"
             [label]="'I don’t have work experience'"
             [customClass]="'bold-12'"
-            [disabledStillCheckMark]="
-                selectedMode === 'REVIEW_MODE' ||
-                selectedMode === 'FEEDBACK_MODE'
-            "
+            [disabledStillCheckMark]="selectedMode !== 'APPLICANT_MODE'"
         ></app-ta-checkbox>
     </div>
 </div>

@@ -1,5 +1,33 @@
 @import 'src/theme/variables.scss';
 
+.work-experience-border-container {
+    border: 1px solid #2f2f2f;
+    border-radius: 2px;
+    padding: 4px 4px 12px 4px;
+}
+
+.work-experience-header {
+    padding: 8px;
+    border-radius: 2px;
+    background: $ta-black-2;
+
+    p {
+        font-size: 14px;
+        line-height: 18px;
+        color: $white;
+
+        &::-moz-selection {
+            color: $white;
+            background: rgb(255, 255, 255, 0.2);
+        }
+
+        &::selection {
+            color: $white;
+            background: rgb(255, 255, 255, 0.2);
+        }
+    }
+}
+
 .step-form {
     .line-container {
         position: relative;
@@ -13,39 +41,36 @@
         }
     }
 
-    .group {
-        margin-bottom: 32px;
-        margin-right: 12px;
-        width: 616px;
+    .details-title-box {
+        padding-left: 6px;
+        margin-bottom: 28px;
 
-        &:last-child {
-            margin-right: 0 !important;
+        p {
+            font-size: 14px;
+            line-height: 18px;
+
+            &::-moz-selection {
+                color: $ta-black-2;
+                background: rgb(47, 47, 47, 0.2);
+            }
+
+            &::selection {
+                color: $ta-black-2;
+                background: rgb(47, 47, 47, 0.2);
+            }
         }
     }
 
-    .employer-group {
-        width: 616px;
-        margin-right: 0;
-    }
+    .group {
+        margin-bottom: 32px;
 
-    .job-description-group {
-        width: 292px;
-    }
-
-    .date-group {
-        width: 150px;
-    }
-
-    .date-to-group {
-        margin-right: 0 !important;
+        &:last-child {
+            margin-right: 0;
+        }
     }
 
     .phone-group {
         width: 169px;
-    }
-
-    .email-group {
-        width: 254px;
     }
 
     .fax-group {
@@ -54,21 +79,234 @@
     }
 
     .address-group {
-        width: 481px;
         margin-bottom: 22px !important;
     }
 
     .address-unit-group {
         width: 123px;
+        margin-right: 0 !important;
         margin-bottom: 22px !important;
+    }
+
+    .job-details-box {
+        padding-top: 8px;
+        border-top: 1px solid $bw-9;
+    }
+
+    .date-group {
+        width: 150px;
+    }
+
+    .reason-for-leaving-group {
         margin-right: 0 !important;
     }
 
-    .driving-position-group {
-        margin-bottom: 22px;
+    .account-for-period-group {
+        margin-right: 0 !important;
+        margin-bottom: 22px !important;
     }
 
-    .equipment-container {
+    .driving-position-group {
+        margin-bottom: 12px;
+        border-top: 1px solid $bw-9;
+        border-bottom: 1px solid $bw-9;
+        padding: 8px 0;
+    }
+
+    .class-of-equipment-container {
+        margin-top: 28px;
+
+        .class-of-equipment-cards-container {
+            width: 616px;
+
+            .cards-title-box {
+                width: 100%;
+                margin-bottom: 4px;
+                padding-left: 10px;
+                display: grid;
+                grid-template-columns: 208px 218px 49px;
+                grid-gap: 24px;
+
+                .vehicle-box,
+                .trailer-box,
+                .length-box {
+                    p {
+                        color: $ta-black-2;
+                        font-size: 11px;
+
+                        &::-moz-selection {
+                            color: $ta-black-2;
+                            background: rgb(47, 47, 47, 0.2);
+                        }
+
+                        &::selection {
+                            color: $ta-black-2;
+                            background: rgb(47, 47, 47, 0.2);
+                        }
+
+                        span {
+                            color: $ta-red-3;
+
+                            &::-moz-selection {
+                                color: $ta-black-2;
+                                background: rgb(47, 47, 47, 0.2);
+                            }
+
+                            &::selection {
+                                color: $ta-black-2;
+                                background: rgb(47, 47, 47, 0.2);
+                            }
+                        }
+                    }
+                }
+            }
+
+            .class-of-equipment-card {
+                width: 100%;
+                height: 69px;
+                border-radius: 2px;
+                margin-bottom: 4px;
+                padding: 4px 10px 8px 10px;
+                background: $bw2;
+
+                .input-container {
+                    border-bottom: 1px solid $bw-9;
+                    padding-bottom: 4px;
+
+                    .card-vehicle-type-group {
+                        width: 220px;
+                        margin-right: 12px;
+                    }
+
+                    .card-trailer-type-group {
+                        width: 230px;
+                        margin-right: 12px;
+                    }
+
+                    .card-length-group {
+                        width: 100px;
+                    }
+                }
+
+                .switch-container {
+                    padding: 8px 0 0 6px;
+                    display: grid;
+                    grid-template-columns: 210px 179px;
+                    grid-gap: 22px;
+                }
+            }
+        }
+
+        .vehicle-type-group {
+            width: 251px;
+            margin: 0 12px 22px 0;
+        }
+
+        .trailer-type-group {
+            width: 211px;
+            margin: 0 12px 22px 0;
+        }
+
+        .length-group {
+            width: 130px;
+            margin: 0 0 22px 0;
+        }
+
+        .questions-container {
+            .question-box {
+                margin-right: 22px;
+
+                .question-title-box {
+                    margin-right: 12px;
+
+                    .required {
+                        font-size: 11px;
+                        color: $ta-red-2;
+
+                        &::-moz-selection {
+                            color: $ta-red-2;
+                            background: rgb(239, 83, 80, 0.2);
+                        }
+
+                        &::selection {
+                            color: $ta-red-2;
+                            background: rgb(239, 83, 80, 0.2);
+                        }
+                    }
+
+                    .question-title {
+                        color: $bw6-2;
+                        font-size: 14px;
+                        line-height: 18px;
+
+                        &::-moz-selection {
+                            color: $bw6-2;
+                            background: rgb(108, 108, 108, 0.2);
+                        }
+
+                        &::selection {
+                            color: $bw6-2;
+                            background: rgb(108, 108, 108, 0.2);
+                        }
+
+                        span {
+                            color: $progress-danger;
+
+                            &::-moz-selection {
+                                color: $bw6-2;
+                                background: rgb(108, 108, 108, 0.2);
+                            }
+
+                            &::selection {
+                                color: $bw6-2;
+                                background: rgb(108, 108, 108, 0.2);
+                            }
+                        }
+                    }
+
+                    .question-title-feedback {
+                        color: $bw5;
+                        font-size: 14px;
+                        line-height: 18px;
+
+                        &::-moz-selection {
+                            color: $bw5;
+                            background: rgb(145, 145, 145, 0.2);
+                        }
+
+                        &::selection {
+                            color: $bw5;
+                            background: rgb(145, 145, 145, 0.2);
+                        }
+
+                        span {
+                            color: $bw5;
+
+                            &::-moz-selection {
+                                color: $bw5;
+                                background: rgb(145, 145, 145, 0.2);
+                            }
+
+                            &::selection {
+                                color: $bw5;
+                                background: rgb(145, 145, 145, 0.2);
+                            }
+                        }
+                    }
+                }
+
+                .question-radios-box {
+                    width: 86px;
+
+                    .ta-input-radiobutons {
+                        width: 100%;
+                    }
+                }
+            }
+        }
+    }
+
+    /* .equipment-container {
         width: 616px;
 
         .line-container {
@@ -246,125 +484,5 @@
         .equipment-view-form {
             margin: 32px auto 0 auto;
         }
-    }
-
-    .vehicle-type-group {
-        width: 251px;
-        margin-bottom: 22px;
-    }
-
-    .trailer-type-group {
-        width: 211px;
-        margin-bottom: 22px;
-    }
-
-    .length-group {
-        width: 130px;
-        margin-bottom: 22px;
-        margin-right: 0 !important;
-    }
-
-    .questions-container {
-        margin-bottom: 36px;
-
-        .question-box {
-            margin-right: 22px;
-
-            .question-title-box {
-                margin-right: 12px;
-
-                .required {
-                    font-size: 11px;
-                    color: $ta-red-2;
-
-                    &::-moz-selection {
-                        color: $ta-red-2;
-                        background: rgb(239, 83, 80, 0.2);
-                    }
-
-                    &::selection {
-                        color: $ta-red-2;
-                        background: rgb(239, 83, 80, 0.2);
-                    }
-                }
-
-                .question-title {
-                    color: $bw6-2;
-                    font-size: 14px;
-                    line-height: 18px;
-
-                    &::-moz-selection {
-                        color: $bw6-2;
-                        background: rgb(108, 108, 108, 0.2);
-                    }
-
-                    &::selection {
-                        color: $bw6-2;
-                        background: rgb(108, 108, 108, 0.2);
-                    }
-
-                    span {
-                        color: $progress-danger;
-
-                        &::-moz-selection {
-                            color: $bw6-2;
-                            background: rgb(108, 108, 108, 0.2);
-                        }
-
-                        &::selection {
-                            color: $bw6-2;
-                            background: rgb(108, 108, 108, 0.2);
-                        }
-                    }
-                }
-
-                .question-title-feedback {
-                    color: $bw5;
-                    font-size: 14px;
-                    line-height: 18px;
-
-                    &::-moz-selection {
-                        color: $bw5;
-                        background: rgb(145, 145, 145, 0.2);
-                    }
-
-                    &::selection {
-                        color: $bw5;
-                        background: rgb(145, 145, 145, 0.2);
-                    }
-
-                    span {
-                        color: $bw5;
-
-                        &::-moz-selection {
-                            color: $bw5;
-                            background: rgb(145, 145, 145, 0.2);
-                        }
-
-                        &::selection {
-                            color: $bw5;
-                            background: rgb(145, 145, 145, 0.2);
-                        }
-                    }
-                }
-            }
-
-            .question-radios-box {
-                width: 86px;
-
-                .ta-input-radiobutons {
-                    width: 100%;
-                }
-            }
-        }
-    }
-
-    .reason-for-leaving-group {
-        width: 616px;
-        margin-right: 0 !important;
-    }
-
-    .account-for-period-group {
-        margin-right: 0 !important;
-    }
+    } */
 }

@@ -114,7 +114,9 @@
                                 !licenseForm.get('country').value) ||
                             selectedMode !== 'APPLICANT_MODE',
                         isDropdown: true,
-                        dropdownWidthClass: 'w-col-246'
+                        dropdownWidthClass: isEditing
+                            ? 'w-col-238'
+                            : 'w-col-246'
                     }"
                     [activeItem]="selectedStateType"
                     [options]="stateTypes"
@@ -218,7 +220,9 @@
                         label: 'Restrictions',
                         isDropdown: true,
                         multiselectDropdown: true,
-                        dropdownWidthClass: 'w-col-616',
+                        dropdownWidthClass: isEditing
+                            ? 'w-col-600'
+                            : 'w-col-616',
                         isDisabled: selectedMode !== 'APPLICANT_MODE'
                     }"
                     [options]="restrictionsList"
@@ -248,7 +252,9 @@
                         label: 'Endorsments',
                         isDropdown: true,
                         multiselectDropdown: true,
-                        dropdownWidthClass: 'w-col-616',
+                        dropdownWidthClass: isEditing
+                            ? 'w-col-600'
+                            : 'w-col-616',
                         isDisabled: selectedMode !== 'APPLICANT_MODE'
                     }"
                     [options]="endorsmentsList"
