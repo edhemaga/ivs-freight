@@ -1042,6 +1042,15 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
             });
     }
 
+    getGpsHistory(deviceId, date?) {
+        this.telematicService
+            .getDeviceHistory(deviceId, date)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((gpsData: any) => {
+                console.log('getGpsHistory gpsData', gpsData);
+            });
+    }
+
     ngOnDestroy(): void {
         this.telematicService.stopGpsConnection();
         this.destroy$.next();
