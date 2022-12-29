@@ -66,6 +66,7 @@ $border-radius: 3px;
             }
         }
     }
+
     .details-header-wrapper-switcher-name {
         font-size: $font-size20;
         font-weight: $font-bold;
@@ -225,6 +226,10 @@ $border-radius: 3px;
         z-index: 50;
         svg {
             display: flex;
+            
+            path {
+                fill: #6D82C7;
+            }
         }
         cursor: pointer;
     }
@@ -240,7 +245,7 @@ $border-radius: 3px;
         .current-active-owner {
             svg {
                 path {
-                    fill: #536bc2;
+                    fill: #536BC2;
                 }
             }
         }
@@ -263,7 +268,7 @@ $border-radius: 3px;
     .current-active-name {
         color: #6c6c6c !important;
         &:hover {
-            color: #6c6c6c !important;
+            color: #ff0000 !important;
             cursor: default;
         }
     }
@@ -281,3 +286,53 @@ $border-radius: 3px;
         background: rgb(108, 108, 108, 0.2);
     }
 }
+
+.disabedPreviousArrow{
+    .arrows {
+        .previousArrow {
+            &:hover {
+                //background: #ff0000 !important;
+                opacity: 0.5;
+                cursor: default !important ;
+
+                svg-icon{
+                    cursor: default !important;
+                }
+            }
+        }
+    }
+}
+
+.disableNextArrow{
+    .arrows {
+        .nextArrow {
+            &:hover {
+                //background: #ff0000 !important;
+                opacity: 0.5;
+                cursor: default !important ;
+
+                svg-icon{
+                    cursor: default !important;
+                }
+            }
+        }
+    }
+}
+
+.ta-input-dropdown {
+    
+    .dropdown-options {
+        text-overflow: ellipsis !important;
+        overflow: hidden !important;
+        white-space: nowrap !important;
+        .dropdown-option{
+            position: static !important;
+            max-width: 90%;
+            padding-right: 10px !important;
+            text-overflow: ellipsis !important;
+            overflow: hidden !important;
+            white-space: nowrap !important;
+        }
+    }
+}
+

@@ -218,6 +218,8 @@ export class BrokerCardViewComponent implements OnInit, OnChanges {
         },
     };
 
+    public brokerIndex: any;
+
     constructor(
         private brokerQuery: BrokerQuery,
         private brokerMinimalQuery: BrokerMinimalListQuery,
@@ -233,6 +235,11 @@ export class BrokerCardViewComponent implements OnInit, OnChanges {
     }
     ngOnInit(): void {
         this.tabsButton();
+
+        let currentIndex = this.brokerList.findIndex(
+            (brokerId) => brokerId.id === this.broker.id
+        );
+        this.brokerIndex = currentIndex;
     }
     public tabsButton() {
         this.tabsBroker = [
@@ -304,13 +311,15 @@ export class BrokerCardViewComponent implements OnInit, OnChanges {
     }
 
     public onChangeBroker(action: string) {
+
         let currentIndex = this.brokerList.findIndex(
             (brokerId) => brokerId.id === this.broker.id
         );
-
+        
         switch (action) {
             case 'previous': {
                 currentIndex = --currentIndex;
+
                 if (currentIndex != -1) {
                     this.detailsPageDriverSer.getDataDetailId(
                         this.brokerList[currentIndex].id
@@ -318,11 +327,13 @@ export class BrokerCardViewComponent implements OnInit, OnChanges {
                     this.onSelectBroker({
                         id: this.brokerList[currentIndex].id,
                     });
+                    this.brokerIndex = currentIndex;
                 }
                 break;
             }
             case 'next': {
                 currentIndex = ++currentIndex;
+
                 if (
                     currentIndex !== -1 &&
                     this.brokerList.length > currentIndex
@@ -333,6 +344,7 @@ export class BrokerCardViewComponent implements OnInit, OnChanges {
                     this.onSelectBroker({
                         id: this.brokerList[currentIndex].id,
                     });
+                    this.brokerIndex = currentIndex;
                 }
                 break;
             }

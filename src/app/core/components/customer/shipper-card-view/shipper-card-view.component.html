@@ -1,8 +1,9 @@
 <div class="cards-item-wrapper-1">
     <app-ta-details-header-card
+        [ngClass]="{ 'disabedPreviousArrow': shipperIndex == 0, 'disableNextArrow': shipperIndex == (shipperList.length -1 ) }"
         [cardDetailsDate]="shipper?.createdAt | formatDateP"
-        [tooltipNext]="'Next Shipper'"
-        [tooltipPrevious]="'Previous Shipper'"
+        [tooltipNext]=" shipperIndex == (shipperList.length -1 )  ?  'Disabled' : 'Next Shipper' "
+        [tooltipPrevious]=" shipperIndex == 0 ? 'Disabled' : 'Previous Shipper' "
         [searchInputName]="'Search Shipper'"
         [dateChecked]="'5 days ago'"
         [options]="shipperDropdowns"

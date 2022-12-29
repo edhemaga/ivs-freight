@@ -1,8 +1,9 @@
 <div class="cards-item-wrapper-1">
     <app-ta-details-header-card
+        [ngClass]="{ 'disabedPreviousArrow': shopIndex == 0, 'disableNextArrow': shopIndex == (shopsDropdowns.length -1 ) }"
         [cardDetailsDate]="repairShopCardViewData?.createdAt | formatDateP"
-        [tooltipNext]="'Next Repair'"
-        [tooltipPrevious]="'Previous Repair'"
+        [tooltipNext]=" shopIndex == (shopsDropdowns.length -1 )  ?  'Disabled' : 'Next Repair' "
+        [tooltipPrevious]=" shopIndex == 0 ? 'Disabled' : 'Previous Repair' "
         [searchInputName]="'Search Repair Shop'"
         [searchName]="'Listed to Favourites'"
         [options]="shopsDropdowns"
