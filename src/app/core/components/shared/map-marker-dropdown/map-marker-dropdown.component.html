@@ -306,19 +306,19 @@
                         ></svg-icon>
                         <span
                             class="unit-number-text marker-bold-text mg-left-6"
-                            >{{ item?.unitNumber }}</span
+                            >{{ item?.truckNumber }}</span
                         >
                     </div>
 
                     <div class="marker-like-text mg-top-6">
                         {{
-                            item?.unitType == 'Truck'
+                            item?.truckNumber
                                 ? 'Device ID'
                                 : 'No GPS Device'
                         }}
                         <span
                             class="marker-bold-text"
-                            *ngIf="item?.unitType == 'Truck'"
+                            *ngIf="item?.truckNumber"
                             >{{ item?.deviceId }}</span
                         >
                     </div>
@@ -332,19 +332,19 @@
                         ></svg-icon>
                         <span
                             class="unit-number-text marker-bold-text mg-left-6"
-                            >{{ item?.unitNumber }}</span
+                            >{{ item?.trailerNumber }}</span
                         >
                     </div>
 
                     <div class="marker-like-text mg-top-6">
                         {{
-                            item?.unitType == 'Trailer'
+                            item?.trailerNumber
                                 ? 'Device ID'
                                 : 'No GPS Device'
                         }}
                         <span
                             class="marker-bold-text"
-                            *ngIf="item?.unitType == 'Trailer'"
+                            *ngIf="item?.trailerNumber"
                             >{{ item?.deviceId }}</span
                         >
                     </div>
@@ -396,7 +396,7 @@
                 </div>
             </div>
             <div class="marker-divider"></div>
-            <div>
+            <div class="mg-left-4">
                 <div class="marker-dual-info-container">
                     <div class="marker-info-container">
                         <div>
@@ -426,7 +426,7 @@
                         <span class="marker-info-text"
                             >Ignition
                             <span class="marker-bold-text">{{
-                                item?.ignition == 'ON' ? 'ON' : 'OFF'
+                                item?.ignition ? 'ON' : 'OFF'
                             }}</span></span
                         >
                     </div>

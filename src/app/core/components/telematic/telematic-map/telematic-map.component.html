@@ -53,14 +53,15 @@
                         <div
                             class="gps-marker-container marker-icon"
                             [ngClass]="{
-                                'selected-marker': location.isFocused,
-                                'trailer-marker': location.unitType == 'Trailer'
+                                'selected-marker':
+                                    focusedDeviceId == location.deviceId,
+                                'trailer-marker': location.trailerNumber
                             }"
-                            (click)="markerClick(i)"
+                            (click)="markerClick(location)"
                         >
                             <svg
                                 *ngIf="
-                                    location.unitType != 'Trailer' &&
+                                    !location.trailerNumber &&
                                     location.motionStatus == 'MOTION'
                                 "
                                 [ngStyle]="{
@@ -152,7 +153,7 @@
                             </svg>
                             <svg
                                 *ngIf="
-                                    location.unitType == 'Trailer' &&
+                                    location.trailerNumber &&
                                     location.motionStatus == 'MOTION'
                                 "
                                 [ngStyle]="{
@@ -228,12 +229,12 @@
                             <svg-icon
                                 *ngIf="location.motionStatus != 'MOTION'"
                                 [src]="
-                                    location.unitType != 'Trailer'
-                                        ? location.ignition == 'ON'
+                                    !location.trailerNumber
+                                        ? location.ignition
                                             ? 'assets/svg/common/telematics/ic_marker-truck-ignition-on.svg'
                                             : 'assets/svg/common/telematics/ic_marker-truck-ignition-off.svg'
-                                        : location.unitType == 'Trailer' &&
-                                          location.ignition == 'ON'
+                                        : location.trailerNumber &&
+                                          location.ignition
                                         ? 'assets/svg/common/telematics/ic_marker-trailer-ignition-on.svg'
                                         : 'assets/svg/common/telematics/ic_marker-trailer-ignition-off.svg'
                                 "
@@ -254,7 +255,7 @@
                             class="gps-marker-dropdown marker-dropdown"
                             [ngClass]="{
                                 'show-marker-dropdown marker-dropdown-animation':
-                                    location.isFocused
+                                    focusedDeviceId == location.deviceId
                             }"
                         >
                             <app-map-marker-dropdown
@@ -267,83 +268,6 @@
                                 [type]="'gps'"
                             ></app-map-marker-dropdown>
                         </div>
-
-                        <!-- <svg
-                xmlns="http://www.w3.org/2000/svg"
-                xmlns:xlink="http://www.w3.org/1999/xlink"
-                width="56"
-                height="56"
-                viewBox="0 0 56 56"
-                >
-                <defs>
-                    <filter
-                    id="Union_851"
-                    x="0"
-                    y="0"
-                    width="56"
-                    height="56"
-                    filterUnits="userSpaceOnUse"
-                    >
-                    <feOffset input="SourceAlpha" />
-                    <feGaussianBlur stdDeviation="2" result="blur" />
-                    <feFlood flood-opacity="0.149" />
-                    <feComposite operator="in" in2="blur" />
-                    <feComposite in="SourceGraphic" />
-                    </filter>
-                </defs>
-                <g
-                    id="Group_96982"
-                    data-name="Group 96982"
-                    transform="translate(-300 -490)"
-                >
-                    <g
-                    transform="matrix(1, 0, 0, 1, 300, 490)"
-                    filter="url(#Union_851)"
-                    >
-                    <path
-                        id="Union_851-2"
-                        data-name="Union 851"
-                        d="M22,0A22,22,0,1,1,0,22,22,22,0,0,1,22,0Z"
-                        transform="translate(6 6)"
-                        fill="#fff"
-                    />
-                    </g>
-                    <circle
-                    id="Ellipse_7898"
-                    data-name="Ellipse 7898"
-                    cx="18"
-                    cy="18"
-                    r="18"
-                    transform="translate(310 500)"
-                    fill="#536bc2"
-                    />
-                    <g
-                    id="Group_93423"
-                    data-name="Group 93423"
-                    transform="translate(3628 -10432.999)"
-                    >
-                    <path
-                        id="Path_33425"
-                        data-name="Path 33425"
-                        d="M18,9A9,9,0,1,1,9,0a9,9,0,0,1,9,9"
-                        transform="translate(-3309 10942)"
-                        fill="#fff"
-                        opacity="0"
-                    />
-                    <path
-                        id="Path_33426"
-                        data-name="Path 33426"
-                        d="M8.416.468,1.869,13.458a.85.85,0,0,0,1.237,1.086l5.112-3.475a1.7,1.7,0,0,1,1.912,0l5.117,3.476a.85.85,0,0,0,1.238-1.086L9.935.468a.851.851,0,0,0-1.519,0"
-                        transform="translate(-3309.177 10942)"
-                        fill="#fff"
-                        [ngStyle]="{
-                        'transform-origin': '16% 15%',
-                        transform: location.transform
-                        }"
-                    />
-                    </g>
-                </g>
-                </svg> -->
                     </ng-template>
                 </agm-snazzy-info-window>
             </agm-marker>
@@ -466,24 +390,24 @@
             </agm-marker>
 
             <!-- <div *ngFor="let route of driverDestinations; let i = index">
-        <agm-direction
-            [renderOptions]="{
-            preserveViewport: true,
-            polylineOptions: routeLineOptions,
-            suppressMarkers: true
-            }"
-            [optimizeWaypoints]="false"
-            [origin]="{ lat: driverLocations[i].latitude, lng: driverLocations[i].longitude }"
-            [destination]="{
-            lat: route.latitude,
-            lng: route.longitude
-            }"
-            [visible]="!route.hidden"
-        ></agm-direction>
-        </div> -->
+                <agm-direction
+                    [renderOptions]="{
+                    preserveViewport: true,
+                    polylineOptions: routeLineOptions,
+                    suppressMarkers: true
+                    }"
+                    [optimizeWaypoints]="false"
+                    [origin]="{ lat: driverLocations[i].latitude, lng: driverLocations[i].longitude }"
+                    [destination]="{
+                    lat: route.latitude,
+                    lng: route.longitude
+                    }"
+                    [visible]="!route.hidden"
+                ></agm-direction>
+            </div> -->
         </agm-map>
 
-        <div *ngIf="driverLocations?.length" class="gps-devices-list">
+        <div *ngIf="gpsAssignedData?.length" class="gps-devices-list">
             <div class="gps-devices-header">
                 <div class="map-list-search" [formGroup]="searchForm">
                     <app-ta-input
@@ -495,68 +419,84 @@
                             placeholderIcon: 'ic_search',
                             placeholderInsteadOfLabel: true
                         }"
+                        (clear)="clearAssignedSearchInput()"
                     ></app-ta-input>
                 </div>
-                <div class="legend-svg-holder">
+                <div
+                    class="legend-svg-holder"
+                    [ngClass]="{ 'manage-device-active': showManageDevice }"
+                >
                     <svg-icon
                         src="assets/svg/common/telematics/ic_coordinates.svg"
                         [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
+                        (click)="manageDeviceToggle()"
                     ></svg-icon>
                     <div class="svg-divider"></div>
+                    <div
+                        *ngIf="showManageDevice"
+                        class="marker-info-text marker-bold-text"
+                    >
+                        Manage Device
+                    </div>
                     <svg-icon
-                        src="assets/svg/applicant/close-x.svg"
+                        *ngIf="!showManageDevice"
+                        src="assets/svg/common/telematics/ic_menu.svg"
                         [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
+                        #op2="ngbPopover"
+                        [ngbPopover]="columnsMenu"
+                        [placement]="'right-top'"
+                        (click)="onShowColumsMenuPopover(op2)"
+                        [autoClose]="'outside'"
+                        [ngClass]="{ 'active-options-maps': columnsMenuOpen }"
+                        triggers="manual"
+                        (hidden)="columnsMenuOpen = false"
                     ></svg-icon>
                 </div>
             </div>
             <div class="devices-list-header">
-                <div class="header-text-container">
+                <div class="header-text-container align-columns">
                     <ng-container *ngFor="let column of columns">
-                        <div
-                            *ngIf="!column.iconInsteadOfText"
-                            class="column-container marker-like-text marker-bold-text uppercase"
-                            [ngStyle]="{
-                                width:
-                                    column.expandedOnly && !showExpandedView
+                        <ng-container>
+                            <div
+                                *ngIf="!column.iconInsteadOfText"
+                                class="column-container marker-like-text marker-bold-text uppercase"
+                                [ngStyle]="{
+                                    width: column.hidden
                                         ? '0px'
+                                        : column.manageWidth && showManageDevice
+                                        ? column.manageWidth + 'px'
                                         : column.expandedWidth &&
                                           showExpandedView
                                         ? column.expandedWidth + 'px'
                                         : column.width + 'px',
-                                'margin-right':
-                                    column.expandedOnly && !showExpandedView
+                                    'margin-right': column.hidden
                                         ? '0px'
+                                        : column.manageMarginRight &&
+                                          showManageDevice
+                                        ? column.manageMarginRight + 'px'
                                         : column.expandedMarginRight &&
                                           showExpandedView
                                         ? column.expandedMarginRight + 'px'
                                         : column.marginRight + 'px'
-                            }"
-                        >
-                            {{ column.title }}
-                        </div>
-                        <svg-icon
-                            *ngIf="
-                                column.iconInsteadOfText &&
-                                (!column.expandedOnly ||
-                                    (column.expandedOnly && showExpandedView))
-                            "
-                            [src]="column.iconUrl"
-                            [svgStyle]="{ 'width.px': 14, 'height.px': 14 }"
-                            [ngStyle]="{
-                                width: column.width + 'px',
-                                'margin-right': column.marginRight + 'px'
-                            }"
-                        ></svg-icon>
+                                }"
+                            >
+                                {{ column.title }}
+                            </div>
+                            <svg-icon
+                                *ngIf="column.iconInsteadOfText"
+                                [src]="column.iconUrl"
+                                [svgStyle]="{ 'width.px': 14, 'height.px': 14 }"
+                                [ngStyle]="{
+                                    width: column.hidden
+                                        ? '0px'
+                                        : column.width + 'px',
+                                    'margin-right': column.hidden
+                                        ? '0px'
+                                        : column.marginRight + 'px'
+                                }"
+                            ></svg-icon>
+                        </ng-container>
                     </ng-container>
-                    <!-- <div
-                        class="marker-like-text marker-bold-text uppercase"
-                        [ngStyle]="{ 'margin-right': '50px' }"
-                    >
-                        Truck
-                    </div>
-                    <div class="marker-like-text marker-bold-text uppercase">
-                        Driver
-                    </div> -->
                 </div>
             </div>
             <div
@@ -565,172 +505,297 @@
             ></div>
             <div class="gps-devices-scroll">
                 <ng-container
-                    *ngFor="let location of gpsUnassignedData; let i = index"
+                    *ngFor="
+                        let location of filteredAssignedDevices;
+                        let i = index
+                    "
                 >
                     <div
                         class="gps-list-row"
-                        (click)="markerClick(i)"
-                        [ngClass]="{ 'selected-row': location.isFocused }"
+                        (click)="markerClick(location)"
+                        [ngClass]="{
+                            'selected-row': focusedDeviceId == location.deviceId
+                        }"
+                        [formGroup]="$any(deviceInputs)"
                     >
-                        <div class="truck-unit-container">
+                        <div
+                            class="truck-unit-container align-columns"
+                            [formGroupName]="i"
+                        >
                             <ng-container *ngFor="let column of columns">
-                                <div
-                                    *ngIf="!column.iconInsteadOfValue"
-                                    class="column-container column-text marker-like-text"
-                                    [ngClass]="{
-                                        'd-flex': column.showMotionIcon,
-                                        'marker-bold-text': column.boldText
-                                    }"
-                                    [ngStyle]="{
-                                        width:
-                                            column.expandedOnly &&
-                                            !showExpandedView
+                                <ng-container>
+                                    <div
+                                        *ngIf="!column.iconInsteadOfValue"
+                                        class="column-container column-text marker-like-text"
+                                        [ngClass]="{
+                                            'd-flex': column.showMotionIcon,
+                                            'marker-bold-text':
+                                                column.boldText &&
+                                                !(
+                                                    column.manageDevicePlaceholder &&
+                                                    showManageDevice &&
+                                                    !location[column.value]
+                                                ),
+                                            'no-data-text':
+                                                !location[column.value] &&
+                                                column.manageDevicePlaceholder &&
+                                                showManageDevice
+                                        }"
+                                        [ngStyle]="{
+                                            width: column.hidden
                                                 ? '0px'
+                                                : column.manageWidth &&
+                                                  showManageDevice
+                                                ? column.manageWidth + 'px'
                                                 : column.expandedWidth &&
                                                   showExpandedView
                                                 ? column.expandedWidth + 'px'
                                                 : column.width + 'px',
-                                        'margin-right':
-                                            column.expandedOnly &&
-                                            !showExpandedView
+                                            'margin-right': column.hidden
                                                 ? '0px'
+                                                : column.manageMarginRight &&
+                                                  showManageDevice
+                                                ? column.manageMarginRight +
+                                                  'px'
                                                 : column.expandedMarginRight &&
                                                   showExpandedView
                                                 ? column.expandedMarginRight +
                                                   'px'
                                                 : column.marginRight + 'px'
-                                    }"
-                                >
-                                    <svg-icon
-                                        *ngIf="column.showMotionIcon"
-                                        [src]="
-                                            location.motionStatus == 'MOTION'
-                                                ? 'assets/svg/common/telematics/ic_unassigned-motion.svg'
-                                                : location.motionStatus !=
-                                                      'MOTION' &&
-                                                  location.ignition == 'ON'
-                                                ? 'assets/svg/common/telematics/ic_unassigned-ignition-on.svg'
-                                                : 'assets/svg/common/telematics/ic_unassigned-ignition-off.svg'
-                                        "
-                                        class="motion-status-icon"
-                                        [ngClass]="{
-                                            'short-stop-color':
-                                                location.motionStatus ==
-                                                'SHORT_STOP',
-                                            'ext-stop-color':
-                                                location.motionStatus ==
-                                                'EXTENDED_STOP',
-                                            'parking-color':
-                                                location.motionStatus ==
-                                                'PARKING'
-                                        }"
-                                        [ngStyle]="{
-                                            transform:
-                                                location.motionStatus ==
-                                                'MOTION'
-                                                    ? 'rotate(' +
-                                                      location.heading +
-                                                      'deg)'
-                                                    : '',
-                                            'margin-right': '4px'
                                         }"
                                     >
-                                    </svg-icon>
-                                    <app-gps-progressbar *ngIf="column.progressComponent"></app-gps-progressbar>
-                                    <ng-container *ngIf="!column.progressComponent">
-                                        {{
-                                            location[column.value] != null
-                                                ? location[column.value] +
-                                                  (column.valueAddText
-                                                      ? ' ' + column.valueAddText
-                                                      : '')
-                                                : column.placeholderText
-                                                ? column.placeholderText
-                                                : 'No data'
-                                        }}
-                                    </ng-container>
-                                </div>
-                                <svg-icon
-                                    *ngIf="
-                                        column.iconInsteadOfValue &&
-                                        (!column.expandedOnly ||
-                                            (column.expandedOnly &&
-                                                showExpandedView))
-                                    "
-                                    [src]="column.valueIconUrl"
-                                    [svgStyle]="{
-                                        'width.px': 14,
-                                        'height.px': 14
-                                    }"
-                                    class="column-svg"
-                                    [ngStyle]="{
-                                        width: column.width + 'px',
-                                        'margin-right':
-                                            column.marginRight + 'px'
-                                    }"
-                                ></svg-icon>
+                                        <svg-icon
+                                            *ngIf="
+                                                column.showMotionIcon &&
+                                                !showManageDevice &&
+                                                ((column.name == 'truck' &&
+                                                    location.truckNumber) ||
+                                                    (location.trailerNumber &&
+                                                        !showExpandedView &&
+                                                        regularViewColumnIndex !=
+                                                            column.replacementColumnIndex) ||
+                                                    (column.name == 'trailer' &&
+                                                        location.trailerNumber))
+                                            "
+                                            [src]="
+                                                column.name == 'truck' &&
+                                                location.truckNumber
+                                                    ? location.motionStatus ==
+                                                      'MOTION'
+                                                        ? 'assets/svg/common/telematics/ic_unassigned-motion.svg'
+                                                        : location.motionStatus !=
+                                                              'MOTION' &&
+                                                          location.ignition
+                                                        ? 'assets/svg/common/telematics/ic_unassigned-ignition-on.svg'
+                                                        : 'assets/svg/common/telematics/ic_unassigned-ignition-off.svg'
+                                                    : location.motionStatus ==
+                                                      'MOTION'
+                                                    ? 'assets/svg/common/telematics/ic_unassigned-trailer-motion.svg'
+                                                    : location.motionStatus !=
+                                                          'MOTION' &&
+                                                      location.ignition
+                                                    ? 'assets/svg/common/telematics/ic_unassigned-trailer-ignition-on.svg'
+                                                    : 'assets/svg/common/telematics/ic_unassigned-trailer-ignition-off.svg'
+                                            "
+                                            class="motion-status-icon"
+                                            [ngClass]="{
+                                                'short-stop-color-assigned':
+                                                    location.motionStatus ==
+                                                    'SHORT_STOP',
+                                                'ext-stop-color-assigned':
+                                                    location.motionStatus ==
+                                                    'EXTENDED_STOP',
+                                                'parking-color-assigned':
+                                                    location.motionStatus ==
+                                                    'PARKING',
+                                                'motion-color-assigned':
+                                                    location.motionStatus ==
+                                                    'MOTION'
+                                            }"
+                                            [ngStyle]="{
+                                                transform:
+                                                    location.motionStatus ==
+                                                    'MOTION'
+                                                        ? 'rotate(' +
+                                                          location.heading +
+                                                          'deg)'
+                                                        : '',
+                                                'margin-right': '4px'
+                                            }"
+                                        >
+                                        </svg-icon>
+                                        <app-gps-progressbar
+                                            *ngIf="column.progressComponent"
+                                        ></app-gps-progressbar>
+                                        <ng-container
+                                            *ngIf="
+                                                !column.progressComponent &&
+                                                (!column.showDeviceDropdown ||
+                                                    (column.showDeviceDropdown &&
+                                                        ((column.name ==
+                                                            'truckDeviceId' &&
+                                                            !location.truckNumber) ||
+                                                            (column.name ==
+                                                                'trailerDeviceId' &&
+                                                                !location.trailerNumber)))) &&
+                                                column.value != 'ignition'
+                                            "
+                                        >
+                                            {{
+                                                location[column.value] != null
+                                                    ? location[column.value] +
+                                                      (column.valueAddText
+                                                          ? ' ' +
+                                                            column.valueAddText
+                                                          : '')
+                                                    : column.replacementColumnIndex !=
+                                                          null &&
+                                                      location[
+                                                          columns[
+                                                              column
+                                                                  .replacementColumnIndex
+                                                          ].value
+                                                      ] != null &&
+                                                      !showExpandedView &&
+                                                      !showManageDevice &&
+                                                      regularViewColumnIndex !=
+                                                          column.replacementColumnIndex
+                                                    ? location[
+                                                          columns[
+                                                              column
+                                                                  .replacementColumnIndex
+                                                          ].value
+                                                      ]
+                                                    : column.manageDevicePlaceholder &&
+                                                      showManageDevice
+                                                    ? column.manageDevicePlaceholder
+                                                    : column.placeholderText
+                                                    ? column.placeholderText
+                                                    : 'No data'
+                                            }}
+                                        </ng-container>
+                                        <ng-container
+                                            *ngIf="column.value == 'ignition'"
+                                        >
+                                            {{
+                                                location.ignition ? 'ON' : 'OFF'
+                                            }}
+                                        </ng-container>
+                                        <ng-container
+                                            *ngIf="
+                                                (column.showDeviceDropdown &&
+                                                    column.name ==
+                                                        'truckDeviceId' &&
+                                                    location.truckNumber) ||
+                                                (column.name ==
+                                                    'trailerDeviceId' &&
+                                                    location.trailerNumber)
+                                            "
+                                        >
+                                            <div
+                                                *ngIf="
+                                                    (column.name ==
+                                                        'truckDeviceId' &&
+                                                        !location.truckDeviceDropdown) ||
+                                                    (column.name ==
+                                                        'trailerDeviceId' &&
+                                                        !location.trailerDeviceDropdown)
+                                                "
+                                                class="assign-truck-container"
+                                                (click)="
+                                                    showDeviceDropdown(
+                                                        $event,
+                                                        location,
+                                                        column
+                                                    )
+                                                "
+                                            >
+                                                <svg-icon
+                                                    src="assets/svg/common/ic_plus.svg"
+                                                    [svgStyle]="{
+                                                        'width.px': 14,
+                                                        'height.px': 14
+                                                    }"
+                                                    class="add-truck-svg"
+                                                ></svg-icon>
+                                                <div
+                                                    class="marker-like-text marker-semibold-text blue-text"
+                                                >
+                                                    Add Device
+                                                </div>
+                                            </div>
+
+                                            <app-ta-input-dropdown
+                                                *ngIf="
+                                                    (column.name ==
+                                                        'truckDeviceId' &&
+                                                        location.truckDeviceDropdown) ||
+                                                    (column.name ==
+                                                        'trailerDeviceId' &&
+                                                        location.trailerDeviceDropdown)
+                                                "
+                                                [formControlName]="column.name"
+                                                [template]="'svgtext-template'"
+                                                [inputConfig]="{
+                                                    name: 'Input Dropdown',
+                                                    type: 'text',
+                                                    label: 'Device',
+                                                    isRequired: true,
+                                                    isDropdown: true,
+                                                    dropdownWidthClass:
+                                                        'w-col-124',
+                                                    placeholderIcon:
+                                                        'ic_coordinates',
+                                                    customClass:
+                                                        'truck-trailer-dropdown line-input-26 device-dropdown',
+                                                    placeholderInsteadOfLabel: true
+                                                }"
+                                                [options]="gpsDevicesList"
+                                                [activeItem]="
+                                                    selectedDeviceUnit
+                                                "
+                                                (saveItem)="
+                                                    saveDeviceSelection(
+                                                        $event,
+                                                        location,
+                                                        column
+                                                    )
+                                                "
+                                                (selectedItem)="
+                                                    handleDeviceInputSelect(
+                                                        $event,
+                                                        column.name,
+                                                        location
+                                                    )
+                                                "
+                                            ></app-ta-input-dropdown>
+                                        </ng-container>
+                                    </div>
+                                    <svg-icon
+                                        *ngIf="
+                                            column.iconInsteadOfValue &&
+                                            !column.hidden
+                                        "
+                                        [src]="column.valueIconUrl"
+                                        [svgStyle]="{
+                                            'width.px': 14,
+                                            'height.px': 14
+                                        }"
+                                        class="column-svg"
+                                        [ngStyle]="{
+                                            width: column.width + 'px',
+                                            'margin-right':
+                                                column.marginRight + 'px'
+                                        }"
+                                    ></svg-icon>
+                                </ng-container>
                             </ng-container>
-
-                            <!-- <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="14"
-                            height="14"
-                            viewBox="0 0 14 14"
-                            [ngStyle]="{
-                                transform: 'rotate(' + location.heading + 'deg)'
-                            }"
-                        >
-                            <circle
-                                id="Ellipse_8366"
-                                data-name="Ellipse 8366"
-                                cx="7"
-                                cy="7"
-                                r="7"
-                                fill="#6d82c7"
-                            />
-                            <g
-                                id="Group_97149"
-                                data-name="Group 97149"
-                                transform="translate(3312 -10938.999)"
-                            >
-                                <path
-                                    id="Path_33425"
-                                    data-name="Path 33425"
-                                    d="M8,4A4,4,0,1,1,4,0,4,4,0,0,1,8,4"
-                                    transform="translate(-3309 10942)"
-                                    fill="#fff"
-                                    opacity="0"
-                                />
-                                <path
-                                    id="Path_33426"
-                                    data-name="Path 33426"
-                                    d="M4.726.208,1.816,5.981a.378.378,0,0,0,.55.483L4.638,4.92a.756.756,0,0,1,.85,0L7.762,6.465a.378.378,0,0,0,.55-.483L5.4.208a.378.378,0,0,0-.675,0"
-                                    transform="translate(-3310.064 10942)"
-                                    fill="#fff"
-                                />
-                            </g>
-                        </svg>
-                        <div
-                            class="truck-unit-text marker-like-text marker-bold-text"
-                        >
-                            {{ location.unitNumber }}
-                        </div> -->
                         </div>
-
-                        <!-- <div class="driver-container">
-                        <div class="marker-like-text">
-                            {{ location.driver }}
-                        </div>
-
-                        <svg-icon
-                            src="assets/svg/common/telematics/ic_eye-open.svg"
-                            [svgStyle]="{ 'width.px': 14, 'height.px': 14 }"
-                        ></svg-icon>
-                    </div> -->
                     </div>
                 </ng-container>
             </div>
             <div
+                *ngIf="!showManageDevice && !columnsMenuOpen"
                 class="route-card-resize-button"
                 (click)="toggleExpandedView()"
             >
@@ -1012,7 +1077,7 @@
                             placeholderIcon: 'ic_search',
                             placeholderInsteadOfLabel: true
                         }"
-                        (clear)="clearSearchInput()"
+                        (clear)="clearUnassignedSearchInput()"
                     ></app-ta-input>
                 </div>
                 <div class="legend-svg-holder">
@@ -1042,11 +1107,17 @@
             ></div>
             <div class="gps-list-scroll">
                 <ng-container
-                    *ngFor="let location of gpsUnassignedData; let i = index"
+                    *ngFor="
+                        let location of filteredUnassignedDevices;
+                        let i = index
+                    "
                 >
                     <div
                         class="gps-list-row"
-                        [ngClass]="{ 'selected-row': location.isFocused }"
+                        (click)="markerClick(location)"
+                        [ngClass]="{
+                            'selected-row': focusedDeviceId == location.deviceId
+                        }"
                     >
                         <div class="truck-unit-container">
                             <span>
@@ -1055,8 +1126,7 @@
                                         location.motionStatus == 'MOTION'
                                             ? 'assets/svg/common/telematics/ic_unassigned-motion.svg'
                                             : location.motionStatus !=
-                                                  'MOTION' &&
-                                              location.ignition == 'ON'
+                                                  'MOTION' && location.ignition
                                             ? 'assets/svg/common/telematics/ic_unassigned-ignition-on.svg'
                                             : 'assets/svg/common/telematics/ic_unassigned-ignition-off.svg'
                                     "
@@ -1073,64 +1143,26 @@
                                     }"
                                     [ngStyle]="{
                                         transform:
-                                            'rotate(' +
-                                            location.heading +
-                                            'deg)'
+                                            location.motionStatus == 'MOTION'
+                                                ? 'rotate(' +
+                                                  location.heading +
+                                                  'deg)'
+                                                : ''
                                     }"
                                 >
                                 </svg-icon>
                             </span>
-
-                            <!-- <svg
-                                *ngIf="location.motionStatus == 'MOTION'"
-                                xmlns="http://www.w3.org/2000/svg"
-                                width="14"
-                                height="14"
-                                viewBox="0 0 14 14"
-                                [ngStyle]="{
-                                    transform:
-                                        'rotate(' + location.heading + 'deg)'
-                                }"
-                            >
-                                <circle
-                                    id="Ellipse_8366"
-                                    data-name="Ellipse 8366"
-                                    cx="7"
-                                    cy="7"
-                                    r="7"
-                                    fill="#6d82c7"
-                                />
-                                <g
-                                    id="Group_97149"
-                                    data-name="Group 97149"
-                                    transform="translate(3312 -10938.999)"
-                                >
-                                    <path
-                                        id="Path_33425"
-                                        data-name="Path 33425"
-                                        d="M8,4A4,4,0,1,1,4,0,4,4,0,0,1,8,4"
-                                        transform="translate(-3309 10942)"
-                                        fill="#fff"
-                                        opacity="0"
-                                    />
-                                    <path
-                                        id="Path_33426"
-                                        data-name="Path 33426"
-                                        d="M4.726.208,1.816,5.981a.378.378,0,0,0,.55.483L4.638,4.92a.756.756,0,0,1,.85,0L7.762,6.465a.378.378,0,0,0,.55-.483L5.4.208a.378.378,0,0,0-.675,0"
-                                        transform="translate(-3310.064 10942)"
-                                        fill="#fff"
-                                    />
-                                </g>
-                            </svg> -->
                             <div
                                 class="truck-unit-text marker-like-text marker-bold-text"
                             >
                                 {{ location.deviceId }}
-                                <!-- <span class="marker-bold-text">{{ location.deviceId }}</span> -->
                             </div>
                         </div>
 
-                        <div class="assign-truck-container">
+                        <div
+                            class="assign-truck-container"
+                            (click)="clickOnDrop($event)"
+                        >
                             <div
                                 *ngIf="!location.addTruckShown"
                                 class="assign-truck-container"
@@ -1161,9 +1193,10 @@
                                     label: 'Truck',
                                     isRequired: true,
                                     isDropdown: true,
-                                    dropdownWidthClass: 'w-col-110',
+                                    dropdownWidthClass: 'w-col-158',
                                     placeholderIcon: 'ic_truck',
-                                    customClass: 'truck-trailer-dropdown',
+                                    customClass:
+                                        'truck-trailer-dropdown line-input-26',
                                     placeholderInsteadOfLabel: true,
                                     commands: {
                                         active: true,
@@ -1200,29 +1233,32 @@
                 </ng-container>
             </div>
             <!-- Trailer list -->
-            <!-- <div
-                class="marker-divider"
-                [ngStyle]="{ 'margin': '6px 0px' }"
-            ></div>
-            <div class="gps-list-scroll">
+            <div class="marker-divider" [ngStyle]="{ margin: '6px 0px' }"></div>
+            <div class="gps-list-scroll trailer-list">
                 <ng-container
-                    *ngFor="let location of gpsUnassignedData; let i = index"
+                    *ngFor="
+                        let location of filteredUnassignedDevices;
+                        let i = index
+                    "
                 >
                     <div
                         class="gps-list-row"
-                        [ngClass]="{ 'selected-row': location.isFocused }"
+                        (click)="markerClick(location)"
+                        [ngClass]="{
+                            'selected-row': focusedDeviceId == location.deviceId
+                        }"
                     >
                         <div class="truck-unit-container">
                             <span>
                                 <svg-icon
                                     [src]="
                                         location.motionStatus == 'MOTION'
-                                            ? 'assets/svg/common/telematics/ic_unassigned-motion.svg'
+                                            ? 'assets/svg/common/telematics/ic_unassigned-trailer-motion.svg'
                                             : location.motionStatus !=
                                                   'MOTION' &&
                                               location.ignition == 'ON'
-                                            ? 'assets/svg/common/telematics/ic_unassigned-ignition-on.svg'
-                                            : 'assets/svg/common/telematics/ic_unassigned-ignition-off.svg'
+                                            ? 'assets/svg/common/telematics/ic_unassigned-trailer-ignition-on.svg'
+                                            : 'assets/svg/common/telematics/ic_unassigned-trailer-ignition-off.svg'
                                     "
                                     class="motion-status-icon"
                                     [ngClass]="{
@@ -1237,9 +1273,11 @@
                                     }"
                                     [ngStyle]="{
                                         transform:
-                                            'rotate(' +
-                                            location.heading +
-                                            'deg)'
+                                            location.motionStatus == 'MOTION'
+                                                ? 'rotate(' +
+                                                  location.heading +
+                                                  'deg)'
+                                                : ''
                                     }"
                                 >
                                 </svg-icon>
@@ -1251,7 +1289,10 @@
                             </div>
                         </div>
 
-                        <div class="assign-truck-container">
+                        <div
+                            class="assign-truck-container"
+                            (click)="clickOnDrop($event)"
+                        >
                             <div
                                 *ngIf="!location.addTruckShown"
                                 class="assign-truck-container"
@@ -1282,7 +1323,7 @@
                                     label: 'Trailer',
                                     isRequired: true,
                                     isDropdown: true,
-                                    dropdownWidthClass: 'w-col-110',
+                                    dropdownWidthClass: 'w-col-158',
                                     placeholderIcon: 'ic_trailer',
                                     customClass: 'truck-trailer-dropdown',
                                     placeholderInsteadOfLabel: true,
@@ -1319,7 +1360,97 @@
                         </div>
                     </div>
                 </ng-container>
-            </div> -->
+            </div>
         </div>
     </div>
 </div>
+
+<ng-template #columnsMenu>
+    <div class="columns-menu-container">
+        <div class="columns-menu-row" (click)="manageDeviceToggle()">
+            <div class="columns-align">
+                <svg-icon
+                    class="columns-menu-svg"
+                    src="assets/svg/common/telematics/ic_coordinates.svg"
+                    [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
+                ></svg-icon>
+                <div class="marker-info-text">Manage Devices</div>
+            </div>
+        </div>
+        <div
+            class="columns-menu-row"
+            (click)="columnsDropdownShown = !columnsDropdownShown"
+        >
+            <div class="columns-align">
+                <svg-icon
+                    class="columns-menu-svg"
+                    src="assets/svg/common/telematics/ic_menu_columns.svg"
+                    [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
+                ></svg-icon>
+                <div class="marker-info-text">Columns</div>
+            </div>
+            <svg-icon
+                class="columns-menu-arrow"
+                [ngClass]="{ rotate: columnsDropdownShown }"
+                src="assets/svg/common/fill_arrow_down.svg"
+                [svgStyle]="{ 'width.px': 12, 'height.px': 12 }"
+            ></svg-icon>
+        </div>
+    </div>
+    <div
+        class="columns-menu-container side-menu"
+        [ngClass]="{ 'hide-menu': !columnsDropdownShown }"
+    >
+        <ng-container *ngFor="let column of columns; let i = index">
+            <ng-container
+                *ngIf="
+                    column.showInMenu ||
+                    (showExpandedView && column.showInExpandedMenu)
+                "
+            >
+                <div
+                    *ngIf="!showExpandedView && !column.disabled"
+                    class="columns-menu-row"
+                    (click)="selectColumnsToShow(column, i)"
+                >
+                    <div class="columns-align">
+                        <svg-icon
+                            class="columns-menu-svg"
+                            [src]="
+                                column.alwaysShown
+                                    ? 'assets/svg/common/ic_disable.svg'
+                                    : column.showInRegularView
+                                    ? 'assets/svg/detail-cards/circle-active.svg'
+                                    : 'assets/svg/common/colors/ic_circle.svg'
+                            "
+                            [svgStyle]="{ 'width.px': 14, 'height.px': 14 }"
+                        ></svg-icon>
+                        <div class="text-container marker-info-text">
+                            {{ column.menuTitle }}
+                        </div>
+                    </div>
+                </div>
+
+                <div
+                    *ngIf="showExpandedView"
+                    class="columns-menu-row"
+                    [formGroup]="$any(columnCheckboxes)"
+                >
+                    <div class="columns-align" [formGroupName]="i">
+                        <app-ta-checkbox
+                            formControlName="columnActive"
+                            [name]="'checkbox' + i"
+                            [customClass]="'medium'"
+                            [disabled]="column.alwaysShown"
+                            [label]="
+                                column.expandedMenuTitle
+                                    ? column.expandedMenuTitle
+                                    : column.menuTitle
+                            "
+                        ></app-ta-checkbox>
+                    </div>
+                </div>
+            </ng-container>
+        </ng-container>
+    </div>
+</ng-template>

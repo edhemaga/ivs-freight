@@ -117,7 +117,7 @@
     top: 62px;
 
     width: max-content;
-    min-width: 300px;
+    //min-width: 300px;
     padding: 6px;
 
     background: #fff;
@@ -185,16 +185,6 @@
             .truck-unit-text {
                 width: 80px;
                 margin-right: 16px;
-            }
-        }
-
-        .assign-truck-container {
-            display: flex;
-            align-items: center;
-
-            .add-truck-svg {
-                margin-left: 6px;
-                margin-right: 8px;
             }
         }
     }
@@ -296,6 +286,34 @@
         line-height: 18px;
         cursor: pointer;
     }
+
+    &.manage-device-active {
+        height: 26px;
+        width: 161px;
+        background: #6C6C6C;
+        border-radius: 2px;
+        padding-left: 6px;
+        padding-right: 12px;
+
+        .svg-divider {
+            height: 14px;
+            background: #919191;
+            margin: 0px 4px;
+        }
+
+        .marker-info-text {
+            color: #FFFFFF;
+
+            &::-moz-selection {
+                color: #FFFFFF;
+                background: #FFFFFF33;
+            }
+            &::selection {
+                color: #FFFFFF;
+                background: #FFFFFF33;
+            }
+        }
+    }
 }
 
 .devices-list-header {
@@ -308,6 +326,7 @@
 
     .header-text-container {
         display: flex;
+        height: 14px;
     }
 
     svg-icon {
@@ -318,7 +337,11 @@
 
 .gps-list-scroll {
     overflow: auto;
-    max-height: calc( 100vh - 156px );
+    max-height: calc( 100vh - 336px ); //calc( 100vh - 156px );
+
+    &.trailer-list {
+        max-height: 161px;
+    }
 }
 
 .gps-list-row {
@@ -399,20 +422,44 @@
     align-items: center;
 
     &.short-stop-color {
-        #Ellipse_8454, #Ellipse_8450 {
+        #Ellipse_8454, #Ellipse_8450, #Path_41075, #Path_41047 {
             fill: #FFCC80;
         }
     }
 
+    &.short-stop-color-assigned {
+        #Ellipse_8454, #Ellipse_8450, #Path_41075, #Path_41047 {
+            fill: #FFB74D;
+        }
+    }
+
     &.ext-stop-color {
-        #Ellipse_8454, #Ellipse_8450 {
+        #Ellipse_8454, #Ellipse_8450, #Path_41075, #Path_41047 {
             fill: #EF9A9A;
         }
     }
 
+    &.ext-stop-color-assigned {
+        #Ellipse_8454, #Ellipse_8450, #Path_41075, #Path_41047 {
+            fill: #E57373;
+        }
+    }
+
     &.parking-color {
-        #Ellipse_8454, #Ellipse_8450 {
+        #Ellipse_8454, #Ellipse_8450, #Path_41075, #Path_41047 {
             fill: #CCCCCC;
+        }
+    }
+
+    &.parking-color-assigned {
+        #Ellipse_8454, #Ellipse_8450, #Path_41075, #Path_41047 {
+            fill: #B7B7B7;
+        }
+    }
+
+    &.motion-color-assigned {
+        #Path_51255 {
+            fill: #6D82C7;
         }
     }
 }
@@ -500,7 +547,10 @@
 
     // overflow-y: scroll;
     // transition: 0.2s;
-    overflow: hidden;
+    
+    //overflow: hidden;
+    overflow: auto;
+    max-height: calc( 100vh - 156px );
 
     &::-webkit-scrollbar {
         width: 4px;
@@ -605,4 +655,60 @@
 .column-container {
     transition: all 0.2s ease-in-out;
     overflow: hidden;
+
+    &.no-data-text {
+        color: #B7B7B7;
+
+        &::-moz-selection {
+            color: #B7B7B7;
+            background: #B7B7B733;
+        }
+        &::selection {
+            color: #B7B7B7;
+            background: #B7B7B733;
+        }
+    }
+}
+
+.assign-truck-container {
+    display: flex;
+    align-items: center;
+
+    .add-truck-svg {
+        margin-left: 6px;
+        margin-right: 8px;
+    }
+}
+
+.device-dropdown {
+    .input-control {
+        padding-left: 28px !important;
+        font-size: 11px !important;
+    }
+     
+    .input-label {
+        left: 28px !important;
+        font-size: 11px !important;
+    }
+
+    .input-icon {
+        svg-icon {
+            position: absolute;
+            top: 3px;
+
+            svg {
+                width: 14px !important;
+                height: 14px !important;
+            }
+        }
+        
+        &::after {
+            left: 18px !important;
+        }
+    }
+}
+
+.align-columns {
+    justify-content: space-between;
+    width: 100%;
 }

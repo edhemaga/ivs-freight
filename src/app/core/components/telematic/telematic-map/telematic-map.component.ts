@@ -1,17 +1,23 @@
-import { Component, OnInit, OnDestroy, ViewEncapsulation } from '@angular/core';
+import {
+    Component,
+    OnInit,
+    OnDestroy,
+    ViewEncapsulation,
+    SecurityContext,
+    ViewChild,
+    ChangeDetectorRef,
+} from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
 import * as AppConst from '../../../../const';
 import { SignalRService } from './../../../services/dispatchboard/app-signalr.service';
 import { MapsService } from '../../../services/shared/maps.service';
 import { TelematicStateService } from '../state/telematic-state.service';
 import { GpsServiceService } from '../../../../global/services/gps-service.service';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { TruckTService } from '../../truck/state/truck.service';
 import { TrailerTService } from '../../trailer/state/trailer.service';
-import {
-    TruckListResponse,
-    TrailerListResponse
-} from 'appcoretruckassist';
+import { TruckListResponse, TrailerListResponse } from 'appcoretruckassist';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
     selector: 'app-telematic-map',
@@ -24,6 +30,8 @@ import {
 })
 export class TelematicMapComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
+
+    @ViewChild('op2') columnsMenuPopover: any;
 
     agmMap: any;
     styles = AppConst.GOOGLE_MAP_STYLES;
@@ -103,20 +111,58 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
             name: 'truck',
             width: 68,
             marginRight: 22,
-            value: 'truckUnit',
+            value: 'truckNumber',
+            replacementColumnIndex: 2,
             showMotionIcon: true,
             boldText: true,
-            placeholderText: 15678
+            placeholderText: ' ',
+            manageWidth: 53,
+            manageMarginRight: 9,
+            manageDevicePlaceholder: 'No Truck',
+            menuTitle: 'Truck Unit',
+            alwaysShown: true,
+            showInMenu: true,
+            showInRegularView: true,
+            showInManage: true,
+            showInExpand: true,
+        },
+        {
+            title: 'Device Id',
+            name: 'truckDeviceId',
+            width: 124,
+            marginRight: 22,
+            showDeviceDropdown: true,
+            hidden: true,
+            placeholderText: ' ',
+            showInManage: true,
         },
         {
             title: 'Trailer',
             name: 'trailer',
             width: 66,
             marginRight: 22,
-            expandedOnly: true,
-            value: 'trailerUnit',
+            value: 'trailerNumber',
+            showMotionIcon: true,
             boldText: true,
-            placeholderText: 99875
+            manageWidth: 53,
+            manageMarginRight: 9,
+            placeholderText: ' ',
+            manageDevicePlaceholder: 'No Trailer',
+            menuTitle: 'Trailer Name',
+            hidden: true,
+            showInMenu: true,
+            showInManage: true,
+            showInExpand: true,
+        },
+        {
+            title: 'Device Id',
+            name: 'trailerDeviceId',
+            width: 124,
+            marginRight: 22,
+            showDeviceDropdown: true,
+            hidden: true,
+            placeholderText: ' ',
+            showInManage: true,
         },
         {
             title: 'Driver',
@@ -126,61 +172,92 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
             expandedWidth: 130,
             expandedMarginRight: 22,
             value: 'driver',
-            placeholderText: 'Aleksandar Djordjevic'
+            placeholderText: ' ',
+            manageWidth: 130,
+            manageMarginRight: 22,
+            manageDevicePlaceholder: 'No Driver',
+            menuTitle: 'Drivers Name',
+            showInMenu: true,
+            showInRegularView: true,
+            showInManage: true,
+            showInExpand: true,
         },
         {
             title: 'Speed',
             name: 'speed',
             width: 50,
             marginRight: 22,
-            expandedOnly: true,
             value: 'speed',
-            valueAddText: 'mph'
+            valueAddText: 'mph',
+            menuTitle: 'Speed/Ignition',
+            hidden: true,
+            showInMenu: true,
+            showInExpand: true,
+            expandedMenuTitle: 'Speed',
         },
         {
             title: null,
             name: 'ignition',
             width: 24,
             marginRight: 22,
-            expandedOnly: true,
             iconInsteadOfText: true,
             iconUrl: 'assets/svg/common/telematics/ic_ignition.svg',
             value: 'ignition',
-            placeholderText: 'ON'
+            placeholderText: 'ON',
+            menuTitle: 'Ignition',
+            hidden: true,
+            showInExpand: true,
+            showInExpandedMenu: true,
+            expandedMenuTitle: 'Ignition',
         },
         {
             title: 'Location',
             name: 'location',
             width: 140,
             marginRight: 22,
-            expandedOnly: true,
-            value: 'location'
+            value: 'location',
+            manageMarginRight: 12,
+            manageDevicePlaceholder: 'No Address',
+            menuTitle: 'Location',
+            hidden: true,
+            showInMenu: true,
+            showInManage: true,
+            showInExpand: true,
         },
         {
             title: 'Destination',
             name: 'destination',
             width: 140,
             marginRight: 22,
-            expandedOnly: true,
-            value: 'location' //destination
+            value: 'destination',
+            menuTitle: 'Destination',
+            hidden: true,
+            showInMenu: true,
+            showInExpand: true,
         },
         {
             title: 'Status',
             name: 'status',
             width: 92,
             marginRight: 22,
-            expandedOnly: true,
             value: 'dispatchStatus',
             placeholderText: 'LOADED',
-            boldText: true
+            boldText: true,
+            menuTitle: 'Dispatch Status',
+            hidden: true,
+            showInMenu: true,
+            showInExpand: true,
         },
         {
             title: 'Progress',
             name: 'progress',
             width: 195,
             marginRight: 17,
-            expandedOnly: true,
-            progressComponent: true
+            progressComponent: true,
+            menuTitle: 'Progress',
+            hidden: true,
+            showInMenu: true,
+            showInExpand: true,
         },
         {
             title: null,
@@ -191,12 +268,32 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
             iconUrl: 'assets/svg/common/telematics/ic_eye-open.svg',
             value: 'hidden',
             iconInsteadOfValue: true,
-            valueIconUrl: 'assets/svg/common/telematics/ic_eye-open.svg'
-        }
+            valueIconUrl: 'assets/svg/common/telematics/ic_eye-open.svg',
+            alwaysShown: true,
+            showInRegularView: true,
+            showInExpand: true,
+        },
     ];
 
     showExpandedView: boolean = false;
     expandFinished: boolean = false;
+    showManageDevice: boolean = false;
+    gpsDevicesList: any[] = [];
+    selectedDeviceUnit: any = {};
+
+    deviceInputs: FormArray = this.formBuilder.array([]);
+    filteredAssignedDevices: any[] = [];
+    filteredUnassignedDevices: any[] = [];
+    searchAssignedText: string = '';
+    searchIsActive: boolean = false;
+    searchUnassignedIsActive: boolean = false;
+
+    columnsMenuOpen: boolean = false;
+    columnsDropdownShown: boolean = false;
+    columnCheckboxes: FormArray = this.formBuilder.array([]);
+
+    focusedDeviceId: number = 0;
+    regularViewColumnIndex: number = null;
 
     constructor(
         private signalRService: SignalRService,
@@ -205,29 +302,14 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
         private gpsService: GpsServiceService,
         private formBuilder: FormBuilder,
         private truckService: TruckTService,
-        private trailerService: TrailerTService
+        private trailerService: TrailerTService,
+        private sanitizer: DomSanitizer,
+        private ref: ChangeDetectorRef
     ) {}
 
     ngOnInit(): void {
         this.telematicService.startGpsConnection();
-        this.gpsService.gpsStatusChange
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((data) => {
-                console.log('gpsStatusChange', data);
-                let driverIndex = this.driverLocations.findIndex(
-                    (device) => device.deviceId === data.deviceId
-                );
-
-                if (driverIndex == -1) {
-                    this.driverLocations.push(data);
-                } else {
-                    this.driverLocations[driverIndex] = data;
-                    console.log(
-                        'update device',
-                        this.driverLocations[driverIndex]
-                    );
-                }
-            });
+        this.addGpsListener();
 
         // this.driverLocations = [
         //     {
@@ -301,6 +383,7 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
         this.createSearchForm();
         this.getTrucks();
         this.getTrailers();
+        this.initColumnsForm();
     }
 
     zoomChange(event) {
@@ -329,16 +412,12 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
         });
     }
 
-    markerClick(index) {
-        this.driverLocations.map((location, i) => {
-            if (i == index) {
-                location.isFocused = !location.isFocused;
-                this.mapLatitude = location.latitude;
-                this.mapLongitude = location.longitude;
-            } else {
-                location.isFocused = false;
-            }
-        });
+    markerClick(device) {
+        if (this.focusedDeviceId != device.deviceId) {
+            this.focusedDeviceId = device.deviceId;
+        } else {
+            this.focusedDeviceId = 0;
+        }
     }
 
     getGpsData() {
@@ -356,7 +435,15 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
                     ...this.driverLocations,
                     ...gpsData.data,
                 ];
-                console.log('driverLocations', this.driverLocations);
+
+                var devicesArr = this.gpsUnassignedData.map((device) => {
+                    return { id: device.deviceId, name: device.deviceId };
+                });
+
+                this.gpsDevicesList = [...this.gpsDevicesList, ...devicesArr];
+
+                this.initDeviceFields();
+                this.filterAssignedDevices();
             });
     }
 
@@ -375,16 +462,14 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
                     ...this.driverLocations,
                     ...gpsData.data,
                 ];
-                console.log('driverLocations', this.driverLocations);
-                // var deviceIds = { ids: [1275164307,
-                //     1275164387,
-                //     1275164311] };
-                // // deviceIds.ids = this.gpsUnassignedData.map((device) => {
-                // //     return parseInt(device.deviceId);
-                // // });
-                // console.log('deviceIds', deviceIds);
-                // this.assignDevicesToCompany(deviceIds);
-                // this.assignDeviceToTruck(this.gpsUnassignedData[0].deviceId, 1);
+
+                var devicesArr = this.gpsUnassignedData.map((device) => {
+                    return { id: device.deviceId, name: device.deviceId };
+                });
+
+                this.gpsDevicesList = [...this.gpsDevicesList, ...devicesArr];
+
+                this.filterUnassignedDevices();
             });
     }
 
@@ -425,41 +510,56 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
             search: '',
             searchUnassigned: '',
             truckUnit: null,
-            trailerUnit: null
+            trailerUnit: null,
+            truckDeviceId: null,
+            trailerDeviceId: null,
         });
 
         this.searchForm.valueChanges
             .pipe(takeUntil(this.destroy$))
             .subscribe((changes) => {
-                console.log('search input changes', changes);
                 if (changes.search) {
+                    this.searchAssignedText = changes.search;
+
+                    this.onSearchAssigned();
                 } else if (changes.searchUnassigned) {
                     this.searchUnassignedText = changes.searchUnassigned;
+
+                    this.onSearchUnassigned();
                 } else if (changes.truckUnit) {
                     console.log('truckUnit changes', changes.truckUnit);
                 } else if (changes.trailerUnit) {
                     console.log('trailerUnit changes', changes.trailerUnit);
+                } else if (changes.truckDeviceId) {
+                    console.log('truckDeviceId changes', changes.truckDeviceId);
+                } else if (changes.trailerDeviceId) {
+                    console.log(
+                        'trailerDeviceId changes',
+                        changes.trailerDeviceId
+                    );
                 }
             });
     }
 
     assignDeviceToTruck(deviceId, truckId) {
-        console.log('assignDeviceToTruck', deviceId, truckId);
         this.telematicService
             .assignDeviceToTruck({ deviceId: deviceId, truckId: truckId })
             .pipe(takeUntil(this.destroy$))
             .subscribe((res: any) => {
                 console.log('assignDeviceToTruck res', res);
+                this.getGpsData();
+                this.getUnassignedGpsData();
             });
     }
 
     assignDeviceToTrailer(deviceId, trailerId) {
-        console.log('assignDeviceToTrailer', deviceId, trailerId);
         this.telematicService
             .assignDeviceToTrailer({ deviceId: deviceId, trailerId: trailerId })
             .pipe(takeUntil(this.destroy$))
             .subscribe((res: any) => {
                 console.log('assignDeviceToTrailer res', res);
+                this.getGpsData();
+                this.getUnassignedGpsData();
             });
     }
 
@@ -473,7 +573,6 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
     }
 
     onToolBarAction(event: any) {
-        console.log('onToolBarAction event', event);
         if (event.action == 'show-hide-unassigned') {
             this.showHideUnassigned();
         } else if (event.action == 'open-route-info') {
@@ -487,15 +586,23 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
         this.legendActive = false;
     }
 
-    clearSearchInput() {
+    clearUnassignedSearchInput() {
         this.searchForm.get('searchUnassigned').patchValue('');
         this.searchUnassignedText = '';
+
+        this.filterUnassignedDevices();
         //this.mapsService.searchTextChanged('');
     }
 
+    clearAssignedSearchInput() {
+        this.searchForm.get('search').patchValue('');
+        this.searchAssignedText = '';
+
+        this.filterAssignedDevices();
+    }
+
     handleInputSelect(event, type) {
-        console.log('handleInputSelect', event, type);
-        if ( type == 'TRUCK' ) {
+        if (type == 'TRUCK') {
             this.selectedTruckUnit = event;
         } else {
             this.selectedTrailerUnit = event;
@@ -503,7 +610,6 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
     }
 
     saveTruckSelection(event, item) {
-        console.log('saveTruckSelection', event, item);
         if (event.action === 'cancel') {
             this.selectedTruckUnit = {};
             this.searchForm.get('truckUnit').patchValue(null);
@@ -515,12 +621,11 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
     }
 
     saveTrailerSelection(event, item) {
-        console.log('saveTrailerSelection', event, item);
-        if ( event.action === ' cancel' ) {
+        if (event.action === 'cancel') {
             this.selectedTrailerUnit = {};
             this.searchForm.get('trailerUnit').patchValue(null);
         } else {
-            this.assignDeviceToTrailer(item.deviceId, event.data.id)
+            this.assignDeviceToTrailer(item.deviceId, event.data.id);
         }
     }
 
@@ -534,9 +639,9 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
                     return {
                         id: truck.id,
                         name: truck.truckNumber,
-                        logoName: 'ic_truck',
+                        logoName: truck.truckType.logoName,
                         folder: 'common',
-                        subFolder: 'violation-details',
+                        subFolder: 'trucks',
                     };
                 });
             });
@@ -548,15 +653,15 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe((trailers: TrailerListResponse) => {
                 console.log('getTrailers', trailers);
-                // this.truckUnits = trucks.pagination.data.map((truck) => {
-                //     return {
-                //         id: truck.id,
-                //         name: truck.truckNumber,
-                //         logoName: 'ic_truck',
-                //         folder: 'common',
-                //         subFolder: 'violation-details',
-                //     };
-                // });
+                this.trailerUnits = trailers.pagination.data.map((trailer) => {
+                    return {
+                        id: trailer.id,
+                        name: trailer.trailerNumber,
+                        logoName: trailer.trailerType.logoName,
+                        folder: 'common',
+                        subFolder: 'trailers',
+                    };
+                });
             });
     }
 
@@ -570,7 +675,7 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
 
     toggleExpandedView() {
         this.showExpandedView = !this.showExpandedView;
-        this.calculateListSize();
+        this.showHideColumns();
 
         setTimeout(() => {
             this.expandFinished = !this.expandFinished;
@@ -585,34 +690,356 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
         this.gpsAssignedData.map((location) => {
             location.isFocused = false;
         });
-        
+
         this.gpsUnassignedData.map((location) => {
             location.isFocused = false;
         });
+
+        this.focusedDeviceId = 0;
     }
 
-    calculateListSize() {
-        var listElement =
-            document.querySelectorAll<HTMLElement>('.gps-devices-list')[0];
+    manageDeviceToggle() {
+        this.showManageDevice = !this.showManageDevice;
 
-        // var mapListContainer = document.querySelectorAll<HTMLElement>(
-        //     '.map-list-container'
-        // )[0];
+        this.showHideColumns();
+    }
 
-        // var containerHeight = mapListContainer.clientHeight; // total height - padding
+    showDeviceDropdown(event, location, column) {
+        event.preventDefault();
+        event.stopPropagation();
 
-        var listWidth = listElement.clientWidth;
-        listElement.style.width = listWidth + 'px';
+        this.gpsUnassignedData.map((data) => {
+            data.truckDeviceDropdown = false;
+            data.trailerDeviceDropdown = false;
+        });
 
-        if (this.showExpandedView) {
-            setTimeout(() => {
-                listElement.style.width = 1144 + 'px';
-            }, 10);
+        if (column.name == 'truckDeviceId') {
+            location.truckDeviceDropdown = true;
         } else {
-            setTimeout(() => {
-                listElement.style.width = 300 + 'px';
-            }, 10);
+            location.trailerDeviceDropdown = true;
         }
+    }
+
+    handleDeviceInputSelect(event, type, location) {
+        this.selectedDeviceUnit = event;
+
+        if (type == 'truckDeviceId') {
+            let truck = this.truckUnits.find(
+                (truck) => truck.name === location.truckNumber
+            );
+
+            this.assignDeviceToTruck(this.selectedDeviceUnit.name, truck.id);
+        } else {
+            this.selectedTrailerUnit = event;
+        }
+    }
+
+    saveDeviceSelection(event, location, column) {
+        console.log('saveDeviceSelection event', event);
+        console.log('saveDeviceSelection location', location);
+        console.log('saveDeviceSelection column', column);
+        // if (event.action === 'cancel') {
+        //     this.selectedDeviceUnit = {};
+        //     this.searchForm.get('truckUnit').patchValue(null);
+        // } else {
+        //     this.assignDeviceToTruck(item.deviceId, event.data.id);
+        // }
+    }
+
+    initDeviceFields() {
+        this.gpsAssignedData.map((data) => {
+            data.truckDeviceDropdown = data.truckNumber ? true : false;
+            data.trailerDeviceDropdown = data.trailerNumber ? true : false;
+
+            this.deviceInputs.push(
+                this.formBuilder.group({
+                    truckDeviceId: data.truckNumber ? data.deviceId : null,
+                    trailerDeviceId: data.trailerNumber ? data.deviceId : null,
+                })
+            );
+        });
+    }
+
+    get addressFields() {
+        return this.deviceInputs;
+    }
+
+    filterAssignedDevices() {
+        this.filteredAssignedDevices = this.gpsAssignedData.filter(
+            (item) =>
+                item?.deviceId?.includes(this.searchAssignedText) ||
+                item?.driver?.includes(this.searchAssignedText) ||
+                item?.location?.includes(this.searchAssignedText) ||
+                item?.trailerNumber?.includes(this.searchAssignedText) ||
+                item?.truckNumber?.includes(this.searchAssignedText)
+        );
+
+        console.log('filteredAssignedDevices', this.filteredAssignedDevices);
+    }
+
+    filterUnassignedDevices() {
+        this.filteredUnassignedDevices = this.gpsUnassignedData.filter((item) =>
+            item?.deviceId?.includes(this.searchUnassignedText)
+        );
+
+        console.log(
+            'filteredUnassignedDevices',
+            this.filteredUnassignedDevices
+        );
+    }
+
+    onSearchAssigned() {
+        if (this.searchAssignedText?.length >= 3) {
+            this.searchIsActive = true;
+
+            this.filterAssignedDevices();
+            //this.highlightSearchedText();
+        } else if (this.searchIsActive && this.searchAssignedText?.length < 3) {
+            this.searchIsActive = false;
+            this.searchAssignedText = '';
+
+            this.filterAssignedDevices();
+            //this.highlightSearchedText();
+        }
+    }
+
+    onSearchUnassigned() {
+        if (this.searchUnassignedText?.length >= 3) {
+            this.searchUnassignedIsActive = true;
+
+            this.filterUnassignedDevices();
+            //this.highlightSearchedText();
+        } else if (
+            this.searchUnassignedIsActive &&
+            this.searchUnassignedText?.length < 3
+        ) {
+            this.searchUnassignedIsActive = false;
+            this.searchUnassignedText = '';
+
+            this.filterUnassignedDevices();
+            //this.highlightSearchedText();
+        }
+    }
+
+    highlightSearchedText() {
+        document
+            .querySelectorAll<HTMLElement>('.column-text')
+            .forEach((title: HTMLElement) => {
+                var text = title.textContent;
+                console.log('textContent', text);
+
+                const regex = new RegExp(this.searchAssignedText, 'gi');
+                const newText = text.replace(regex, (match: string) => {
+                    if (match.length >= 3) {
+                        return `<mark class='highlighted-text'>${match}</mark>`;
+                    } else {
+                        return match;
+                    }
+                });
+                const sanitzed = this.sanitizer.sanitize(
+                    SecurityContext.HTML,
+                    newText
+                );
+
+                title.innerHTML = sanitzed;
+            });
+    }
+
+    onShowColumsMenuPopover(columnsPopup: any) {
+        this.columnsMenuPopover = columnsPopup;
+
+        if (columnsPopup.isOpen()) {
+            columnsPopup.close();
+        } else {
+            columnsPopup.open({});
+        }
+
+        this.columnsMenuOpen = columnsPopup.isOpen();
+        this.columnsDropdownShown = false;
+    }
+
+    selectColumnsToShow(column, index) {
+        if (!column.alwaysShown) {
+            this.columns.map((item) => {
+                if (!item.alwaysShown) {
+                    item.showInRegularView = false;
+                }
+
+                if (
+                    column.menuTitle == 'Speed/Ignition' &&
+                    item.name == 'ignition'
+                ) {
+                    item.showInRegularView = true;
+                }
+            });
+
+            column.showInRegularView = true;
+            this.regularViewColumnIndex = index;
+
+            this.showHideColumns();
+        }
+
+        this.columnsMenuPopover.close();
+    }
+
+    showHideColumns() {
+        this.columns.map((column) => {
+            if (this.showManageDevice) {
+                if (column.showInManage && !column.disabled) {
+                    column.hidden = false;
+                } else {
+                    column.hidden = true;
+                }
+            } else if (this.showExpandedView) {
+                if (column.showInExpand && !column.disabled) {
+                    column.hidden = false;
+                } else {
+                    column.hidden = true;
+                }
+            } else {
+                if (column.showInRegularView && !column.disabled) {
+                    column.hidden = false;
+                } else {
+                    column.hidden = true;
+                }
+            }
+        });
+
+        setTimeout(() => {
+            this.ref.detectChanges();
+        }, 200);
+    }
+
+    initColumnsForm() {
+        this.columns.map(() => {
+            this.columnCheckboxes.push(
+                this.formBuilder.group({
+                    columnActive: true,
+                })
+            );
+        });
+
+        this.columnCheckboxes.valueChanges
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((changes) => {
+                changes.map((change, index) => {
+                    this.columns[index].disabled = !change.columnActive;
+                });
+
+                this.showHideColumns();
+            });
+    }
+
+    clickOnDrop(event) {
+        event.preventDefault();
+        event.stopPropagation();
+    }
+
+    addGpsListener() {
+        this.gpsService.gpsStatusChange
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((data) => {
+                data.speed = Math.round(data.speed);
+
+                let driverIndex = this.driverLocations.findIndex(
+                    (device) => device.deviceId === data.deviceId
+                );
+
+                if (driverIndex == -1) {
+                    this.driverLocations.push(data);
+                } else {
+                    var previousMotionStatus =
+                        this.driverLocations[driverIndex].motionStatus;
+                    this.driverLocations[driverIndex] = {
+                        ...this.driverLocations[driverIndex],
+                        ...data,
+                    };
+                    if (!this.driverLocations[driverIndex].motionStatus)
+                        this.driverLocations[driverIndex].motionStatus =
+                            previousMotionStatus;
+                }
+
+                let gpsAssignedIndex = this.gpsAssignedData.findIndex(
+                    (device) => device.deviceId === data.deviceId
+                );
+
+                if (gpsAssignedIndex > -1) {
+                    var previousMotionStatus =
+                        this.gpsAssignedData[gpsAssignedIndex].motionStatus;
+                    this.gpsAssignedData[gpsAssignedIndex] = {
+                        ...this.gpsAssignedData[gpsAssignedIndex],
+                        ...data,
+                    };
+                    if (!this.gpsAssignedData[gpsAssignedIndex].motionStatus)
+                        this.gpsAssignedData[gpsAssignedIndex].motionStatus =
+                            previousMotionStatus;
+                }
+
+                let filterAssignedIndex =
+                    this.filteredAssignedDevices.findIndex(
+                        (device) => device.deviceId === data.deviceId
+                    );
+
+                if (filterAssignedIndex > -1) {
+                    var previousMotionStatus =
+                        this.filteredAssignedDevices[filterAssignedIndex]
+                            .motionStatus;
+                    this.filteredAssignedDevices[filterAssignedIndex] = {
+                        ...this.filteredAssignedDevices[filterAssignedIndex],
+                        ...data,
+                    };
+                    if (
+                        !this.filteredAssignedDevices[filterAssignedIndex]
+                            .motionStatus
+                    )
+                        this.filteredAssignedDevices[
+                            filterAssignedIndex
+                        ].motionStatus = previousMotionStatus;
+                }
+
+                let gpsUnassignedIndex = this.gpsUnassignedData.findIndex(
+                    (device) => device.deviceId === data.deviceId
+                );
+
+                if (gpsUnassignedIndex > -1) {
+                    var previousMotionStatus =
+                        this.gpsUnassignedData[gpsUnassignedIndex].motionStatus;
+                    this.gpsUnassignedData[gpsUnassignedIndex] = {
+                        ...this.gpsUnassignedData[gpsUnassignedIndex],
+                        ...data,
+                    };
+                    if (
+                        !this.gpsUnassignedData[gpsUnassignedIndex].motionStatus
+                    )
+                        this.gpsUnassignedData[
+                            gpsUnassignedIndex
+                        ].motionStatus = previousMotionStatus;
+                }
+
+                let filterUnassignedIndex =
+                    this.filteredUnassignedDevices.findIndex(
+                        (device) => device.deviceId === data.deviceId
+                    );
+
+                if (filterUnassignedIndex > -1) {
+                    var previousMotionStatus =
+                        this.filteredUnassignedDevices[filterUnassignedIndex]
+                            .motionStatus;
+                    this.filteredUnassignedDevices[filterUnassignedIndex] = {
+                        ...this.filteredUnassignedDevices[
+                            filterUnassignedIndex
+                        ],
+                        ...data,
+                    };
+                    if (
+                        !this.filteredUnassignedDevices[filterUnassignedIndex]
+                            .motionStatus
+                    )
+                        this.filteredUnassignedDevices[
+                            filterUnassignedIndex
+                        ].motionStatus = previousMotionStatus;
+                }
+            });
     }
 
     ngOnDestroy(): void {
