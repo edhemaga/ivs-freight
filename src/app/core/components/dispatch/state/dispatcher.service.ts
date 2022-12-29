@@ -5,6 +5,7 @@ import {
     DispatchBoardListResponse,
     DispatchBoardResponse,
     DispatchService,
+    DriverService,
     ReorderDispatchesCommand,
     SwitchDispatchesCommand,
     UpdateDispatchCommand,
@@ -18,7 +19,8 @@ export class DispatcherStoreService {
 
     constructor(
         private dispatcherStore: DispatcherStore,
-        private dispatchService: DispatchService
+        private dispatchService: DispatchService,
+        private driverService: DriverService
     ) {}
     getDispatcherList() {
         return this.dispatchService.apiDispatchModalGet();
@@ -60,6 +62,10 @@ export class DispatcherStoreService {
 
     getDispatchBoardRowById(id: number) {
         return this.dispatchService.apiDispatchIdGet(id);
+    }
+
+    changeDriverVacation(id: number) {
+        return this.driverService.apiDriverVacationIdPatch(id);
     }
 
     reorderDispatchboard(reorder: ReorderDispatchesCommand) {

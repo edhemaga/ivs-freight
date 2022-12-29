@@ -25,9 +25,9 @@ export function Titles(): <T extends TFunction>(constructor: T) => T {
             ngOnChanges(changes) {
                 if (!this.pageTitle) {
                     const router = StaticInjectorService.Injector.get(Router);
-                    console.log(router.url);
+
                     this.pageTitle = router.url.replace(/[/0-9/]/g, '');
-                    console.log('WHAT IS PAGE TITLE', this.pageTitle);
+
                     this.titleChangeFnc = this.handleTitle(
                         `/${this.pageTitle}`
                     );

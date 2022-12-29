@@ -20,6 +20,7 @@ import { ShipperDetailsListStore } from './shipper-details-state/shipper-details
 import { FormDataService } from 'src/app/core/services/formData/form-data.service';
 import { ShipperItemStore } from '../shipper-state/shipper-details-state/shipper-details.store';
 
+
 @Injectable({
     providedIn: 'root',
 })
@@ -374,6 +375,64 @@ export class ShipperTService implements OnDestroy {
         shipperId: number
     ){
         return this.shipperService.apiShipperLoadsGet(undefined, undefined, undefined, undefined, undefined, undefined, shipperId);
+    }
+
+    public deleteReview(reviewId, shipperId){
+        let shipperData = JSON.parse(JSON.stringify(this.ShipperItemStore?.getValue()?.entities[shipperId]));
+
+        shipperData?.reviews.map((item: any, index: any) => {
+            if ( item.id == reviewId ){
+                shipperData?.reviews.splice(index, 1);
+            }})
+
+        this.shipperStore.update(shipperData.id, { reviews: shipperData.reviews });    
+        this.ShipperItemStore.update(shipperData.id, { reviews: shipperData.reviews });    
+        
+        this.tableService.sendActionAnimation({
+            animation: 'update',
+            tab: 'shipper',
+            data: shipperData,
+            id: shipperData.id,
+        });
+    }
+
+    public updatedReviewNew(data, currentId){
+
+        let shipperData = JSON.parse(JSON.stringify(this.ShipperItemStore?.getValue()?.entities[currentId]));
+
+        shipperData?.reviews.map((item: any) => {
+            if ( item.id == data.id ){
+                item.comment = data.comment;
+            }
+           
+        });
+        
+        this.shipperStore.update(shipperData.id, { reviews: shipperData.reviews });    
+        this.ShipperItemStore.update(shipperData.id, { reviews: shipperData.reviews }); 
+        
+        this.tableService.sendActionAnimation({
+            animation: 'update',
+            tab: 'shipper',
+            data: shipperData,
+            id: shipperData.id,
+        }); 
+    }
+
+    public addNewReview(data, currentId){
+
+        let shipperData = JSON.parse(JSON.stringify(this.ShipperItemStore?.getValue()?.entities[currentId]));
+        shipperData?.reviews.push(data);
+
+        this.shipperStore.update(shipperData.id, { reviews: shipperData.reviews });  
+        this.ShipperItemStore.update(shipperData.id, { reviews: shipperData.reviews });  
+
+        this.tableService.sendActionAnimation({
+            animation: 'update',
+            tab: 'shipper',
+            data: shipperData,
+            id: shipperData.id,
+        }); 
+
     }
 
     ngOnDestroy(): void {

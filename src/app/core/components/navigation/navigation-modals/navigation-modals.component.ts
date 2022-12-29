@@ -30,6 +30,9 @@ import { ApplicantModalComponent } from '../../modals/applicant-modal/applicant-
 import { DriverMvrModalComponent } from '../../modals/driver-modal/driver-mvr-modal/driver-mvr-modal.component';
 import { DriverMedicalModalComponent } from '../../modals/driver-modal/driver-medical-modal/driver-medical-modal.component';
 import { DriverDrugAlcoholModalComponent } from '../../modals/driver-modal/driver-drugAlcohol-modal/driver-drugAlcohol-modal.component';
+import { PayrollDeducationModalComponent } from '../../modals/payroll-modals/payroll-deducation-modal/payroll-deducation-modal.component';
+import { PayrollBonusModalComponent } from '../../modals/payroll-modals/payroll-bonus-modal/payroll-bonus-modal.component';
+import { PayrollCreditBonusComponent } from '../../modals/payroll-modals/payroll-credit-bonus/payroll-credit-bonus.component';
 
 @Component({
     selector: 'app-navigation-modals',
@@ -195,6 +198,24 @@ export class NavigationModalsComponent {
             }
             case 'medical': {
                 this.modalService.openModal(DriverMedicalModalComponent, {
+                    size: 'small',
+                });
+                break;
+            }
+            case 'credit': {
+                this.modalService.openModal(PayrollCreditBonusComponent, {
+                    size: 'small',
+                });
+                break;
+            }
+            case 'bonus': {
+                this.modalService.openModal(PayrollBonusModalComponent, {
+                    size: 'small',
+                });
+                break;
+            }
+            case 'deduction': {
+                this.modalService.openModal(PayrollDeducationModalComponent, {
                     size: 'small',
                 });
                 break;

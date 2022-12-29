@@ -163,6 +163,9 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
         },
     };
 
+    public longitude: number;
+    public latitude: number;
+
     constructor(
         private formBuilder: FormBuilder,
         private inputService: TaInputService,
@@ -320,12 +323,17 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
         event: {
             address: AddressEntity | any;
             valid: boolean;
+            longLat: any;
         },
         action: string
     ) {
         switch (action) {
             case 'address-authority': {
-                if (event.valid) this.selectedAuthorityAddress = event.address;
+                if (event.valid) {
+                    this.selectedAuthorityAddress = event.address;
+                    this.longitude = event.longLat.longitude;
+                    this.latitude = event.longLat.latitude;
+                }
                 break;
             }
             case 'address-origin': {
@@ -421,6 +429,8 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
             specialChecks: this.premmapedSpecialChecks(),
             files: documents ? documents : this.violationForm.value.files,
             filesForDeleteIds: this.filesForDelete,
+            longitude: this.longitude,
+            latitude: this.latitude,
         };
 
         this.roadsideService

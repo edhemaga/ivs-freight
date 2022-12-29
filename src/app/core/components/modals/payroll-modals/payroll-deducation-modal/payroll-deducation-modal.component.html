@@ -1,0 +1,191 @@
+<app-ta-modal
+    [modalTitle]="
+        editData?.type !== 'edit' ? 'Add Deducation' : 'Edit Deducation'
+    "
+    [editData]="editData"
+    [isModalValid]="payrollDeducationForm.valid && isFormDirty"
+    (action)="onModalAction($event)"
+>
+    <div origin>
+        <app-ta-tab-switch
+            [tabs]="tabs"
+            (switchClicked)="tabChange($event, 'main-tabs')"
+            [type]="'type2-modal-popup'"
+        >
+        </app-ta-tab-switch>
+        <form
+            [formGroup]="payrollDeducationForm"
+            class="form-container form-container-without-mb"
+        >
+            <div class="row">
+                <div class="col-7" *ngIf="selectedTab === 1">
+                    <app-ta-input-dropdown
+                        formControlName="driverId"
+                        [inputConfig]="{
+                            name: 'Input Dropdown',
+                            type: 'text',
+                            label: 'Driver',
+                            isDropdown: true,
+                            dropdownImageInput: {
+                                withText: true,
+                                svg: false,
+                                image: true,
+                                url: selectedDriver?.logoName,
+                                nameInitialsInsteadUrl:
+                                    !selectedDriver?.logoName
+                                        ? selectedDriver?.name
+                                        : null,
+                                template: 'user'
+                            },
+                            isRequired: true,
+                            textTransform: 'capitalize',
+                            dropdownWidthClass: 'w-col-256'
+                        }"
+                        [options]="labelsDriver"
+                        [activeItem]="selectedDriver"
+                        (selectedItem)="onSelectDropdown($event, 'driver')"
+                    ></app-ta-input-dropdown>
+                </div>
+                <div class="col-7" *ngIf="selectedTab === 2">
+                    <app-ta-input-dropdown
+                        formControlName="truckId"
+                        [inputConfig]="{
+                            name: 'Input Dropdown',
+                            type: 'text',
+                            label: 'Truck',
+                            isDropdown: true,
+                            dropdownImageInput: {
+                                withText: true,
+                                svg: false,
+                                image: true,
+                                url: selectedDriver?.logoName,
+                                nameInitialsInsteadUrl:
+                                    !selectedDriver?.logoName
+                                        ? selectedDriver?.name
+                                        : null,
+                                template: 'user'
+                            },
+                            isRequired: true,
+                            textTransform: 'capitalize',
+                            dropdownWidthClass: 'w-col-256'
+                        }"
+                        [options]="labelsTrucks"
+                        [activeItem]="selectedTruck"
+                        (selectedItem)="onSelectDropdown($event, 'truck')"
+                    ></app-ta-input-dropdown>
+                </div>
+                <div class="col-5">
+                    <app-ta-input
+                        formControlName="date"
+                        [inputConfig]="{
+                            name: 'datepicker',
+                            label: 'Date',
+                            type: 'text',
+                            isDropdown: true,
+                            placeholderIcon: 'date',
+                            isRequired: true,
+                            customClass: 'datetimeclass'
+                        }"
+                    ></app-ta-input>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-7">
+                    <app-ta-input
+                        formControlName="description"
+                        [inputConfig]="{
+                            name: 'Description',
+                            label: 'Description',
+                            type: 'text',
+                            minLength: 2,
+                            maxLength: 160,
+                            textTransform: 'capitalize',
+                            isRequired: true,
+                            customClass: 'line-input-26-in-card'
+                        }"
+                    ></app-ta-input>
+                </div>
+                <div class="col-5">
+                    <app-ta-input
+                        formControlName="amount"
+                        [inputConfig]="{
+                            name: 'Amount',
+                            label: 'Amount',
+                            type: 'text',
+                            minLength: 4,
+                            maxLength: 11,
+                            isRequired: true,
+                            thousandSeparator: true
+                        }"
+                    ></app-ta-input>
+                </div>
+            </div>
+            <div class="row" style="padding-left: 5px">
+                <div class="col-3">
+                    <app-ta-checkbox
+                        formControlName="isRecurring"
+                        [name]="'Recurring'"
+                        [label]="'Recurring'"
+                        [customClass]="'regular'"
+                    ></app-ta-checkbox>
+                </div>
+                <div class="col-9">
+                    <app-ta-tab-switch
+                        [tabs]="tabs2"
+                        (switchClicked)="tabChange($event, 'week-mon-tabs')"
+                        [type]="'type2-modal-popup'"
+                    >
+                    </app-ta-tab-switch>
+                </div>
+            </div>
+            <div class="limited-row">
+                <app-ta-checkbox
+                    formControlName="isLimited"
+                    [name]="'Limited'"
+                    [label]="'Limited'"
+                    [customClass]="'regular'"
+                ></app-ta-checkbox>
+
+                <div class="number-of-payments-container">
+                    <p class="no-of-payments">No. of Payments</p>
+                    <app-ta-input
+                        formControlName="numberOfPayments"
+                        [inputConfig]="{
+                            name: 'numberOfPayment',
+                            type: 'text',
+                            isDisabled:
+                                !payrollDeducationForm.get('isLimited').value,
+                            thousandSeparator: true,
+                            commands: {
+                                active: true,
+                                type: 'months',
+                                firstCommand: {
+                                    name: 'minus',
+                                    svg: 'assets/svg/common/ic_pm_decrement.svg'
+                                },
+                                secondCommand: {
+                                    name: 'plus',
+                                    svg: 'assets/svg/common/ic_pm_increment.svg'
+                                }
+                            }
+                        }"
+                    ></app-ta-input>
+                </div>
+
+                <app-ta-input
+                    formControlName="limitedAmount"
+                    [inputConfig]="{
+                        name: 'Amount',
+                        label: 'Amount',
+                        type: 'text',
+                        minLength: 4,
+                        maxLength: 11,
+                        isDisabled:
+                            !payrollDeducationForm.get('isLimited').value,
+                        thousandSeparator: true
+                    }"
+                ></app-ta-input>
+            </div>
+        </form>
+    </div>
+</app-ta-modal>
