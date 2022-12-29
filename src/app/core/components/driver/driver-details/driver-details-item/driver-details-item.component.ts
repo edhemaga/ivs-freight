@@ -485,9 +485,7 @@ export class DriverDetailsItemComponent
                 this.drivers[0].data.id,
                 null,
                 null,
-                null,
-                null,
-                this.drivers[0].data
+                this.drivers[0].data, 
             );
         }, 100);
     }

@@ -1,45 +1,33 @@
 import { Pipe, PipeTransform } from '@angular/core';
+import { convertThousanSepInNumber } from '../../../../utils/methods.calculations';
 
 @Pipe({
     name: 'financialCalculation',
 })
 export class FinancialCalculationPipe implements PipeTransform {
-    transform(item: any, args?: any): any {
+    transform(item: any, type: string): number {
         let sum = 0;
-        switch (item.name) {
-            case 'baseRate': {
-                sum += item.billingValue;
-                break;
-            }
-            case 'adjusted': {
-                sum += item.billingValue;
-                break;
-            }
-            case 'layover': {
-                sum += item.billingValue;
-                break;
-            }
-            case 'lumper': {
-                sum += item.billingValue;
-                break;
-            }
-            case 'fuelSurcharge': {
-                sum += item.billingValue;
-                break;
-            }
-            case 'escort': {
-                sum += item.billingValue;
-                break;
-            }
-            case 'detention': {
-                sum += item.billingValue;
-                break;
-            }
-            default: {
-                break;
-            }
+        if (type === 'billing') {
+            Object.values(item).map((val: string) => {
+                if (val) {
+                    sum += val == '0' ? 0 : convertThousanSepInNumber(val);
+                }
+            });
         }
-        console.log('sum: ', sum);
+
+        if (type === 'payment') {
+            Object.entries(item).map((key1: any, _: any) => {
+                if (key1[0] === 'shortPaid') {
+                    if (key1[1]?.length) {
+                        for (const [key2, _] of Object.entries(item[key1[0]])) {
+                        }
+                    }
+                } else {
+                    sum +=
+                        key1[1] == '0' ? 0 : convertThousanSepInNumber(key1[1]);
+                }
+            });
+        }
         return sum;
     }
 }

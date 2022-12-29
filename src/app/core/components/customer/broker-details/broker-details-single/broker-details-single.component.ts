@@ -8,6 +8,11 @@ import {
 } from '@angular/core';
 import { ReviewCommentModal } from '../../../shared/ta-user-review/ta-user-review.component';
 import { Titles } from 'src/app/core/utils/application.decorators';
+import { ReviewsRatingService } from '../../../../services/reviews-rating/reviewsRating.service';
+import { debounceTime, Subject, takeUntil } from 'rxjs';
+import {
+    UpdateReviewCommand,
+} from 'appcoretruckassist';
 
 @Titles()
 @Component({
@@ -16,6 +21,7 @@ import { Titles } from 'src/app/core/utils/application.decorators';
     styleUrls: ['./broker-details-single.component.scss'],
 })
 export class BrokerDetailsSingleComponent implements OnInit, OnChanges {
+    private destroy$ = new Subject<void>();
     @Input() brokerData: BrokerResponse | any;
     public brokerContacts: any;
     public brokerLikes: number;
@@ -24,7 +30,7 @@ export class BrokerDetailsSingleComponent implements OnInit, OnChanges {
     public dotsData: any;
     public stopsDataPickup: any;
     public stopsDataDelivery: any;
-    constructor() {}
+    constructor(private reviewRatingService: ReviewsRatingService,) {}
     ngOnChanges(changes: SimpleChanges) {
         if (
             changes.brokerData?.currentValue !=
@@ -127,22 +133,46 @@ export class BrokerDetailsSingleComponent implements OnInit, OnChanges {
         };
     }
     public changeReviewsEvent(reviews: ReviewCommentModal) {
-        // switch (reviews.action) {
-        //   case 'delete': {
-        //     this.deleteReview(reviews);
-        //     break;
-        //   }
-        //   case 'add': {
-        //     this.addReview(reviews);
-        //     break;
-        //   }
-        //   case 'update': {
-        //     this.updateReview(reviews);
-        //     break;
-        //   }
-        //   default: {
-        //     break;
-        //   }
-        // }
+         switch (reviews.action) {
+           case 'delete': {
+             this.deleteReview(reviews);
+             break;
+           }
+           case 'add': {
+             //this.addReview(reviews);
+             break;
+           }
+           case 'update': {
+             this.updateReview(reviews);
+             break;
+           }
+           default: {
+            break;
+            }
+        }
+    }
+
+    private updateReview(reviews: ReviewCommentModal) {
+        const review: UpdateReviewCommand = {
+            id: reviews.data.id,
+            comment: reviews.data.commentContent,
+        };
+        this.reviewRatingService
+            .updateReview(review)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: () => {},
+                error: () => {},
+            });
+    }
+
+    private deleteReview(reviews: ReviewCommentModal) {
+        this.reviewRatingService
+            .deleteReview(reviews.data)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: () => {},
+                error: () => {},
+            });
     }
 }

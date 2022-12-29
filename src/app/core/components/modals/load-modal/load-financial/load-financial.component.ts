@@ -8,11 +8,10 @@ import {
     ViewEncapsulation,
 } from '@angular/core';
 import { card_modal_animation } from '../../../shared/animations/card-modal.animation';
+import { convertThousanSepInNumber } from '../../../../utils/methods.calculations';
 
 export interface IBilling {
     baseRate: number;
-    adjusted: number;
-    advance: number;
     layover: number;
     lumper: number;
     fuelSurcharge: number;
@@ -22,13 +21,8 @@ export interface IBilling {
 
 export interface IPayment {
     advance: number;
-    paidInFull: number;
-    shortPaid: [
-        {
-            id: number;
-            value: number;
-        }
-    ];
+    paidInFull?: number;
+    shortPaid?: [];
 }
 
 @Component({
@@ -44,7 +38,7 @@ export class LoadFinancialComponent implements OnChanges {
     @Input() thirdHeaderTitle: string;
     @Input() billing: string;
     @Input() adjusted: number;
-    @Input() payment: IPayment;
+    @Input() payment: string;
     @Input() disableBillAction: boolean = false;
     @Input() disablePaymentAction: boolean = false;
     @Input() set isCardOpen(value: boolean) {
@@ -68,8 +62,19 @@ export class LoadFinancialComponent implements OnChanges {
     public noActive: string;
     public zoneTriger: boolean = false;
 
+    public paymentDifference: number = 0;
+
     ngOnChanges(changes: SimpleChanges): void {
-        console.log(changes.billing?.currentValue);
+        if (changes.payment?.currentValue !== changes.payment?.previousValue) {
+            console.log(changes.payment?.currentValue);
+            const pay = convertThousanSepInNumber(
+                changes.payment?.currentValue.substring(1)
+            );
+
+            const bill = convertThousanSepInNumber(this.billing.substring(1));
+            console.log('bill - pay: ', bill, pay);
+            this.paymentDifference = pay - bill;
+        }
     }
 
     public onAction(event: any, action: string) {

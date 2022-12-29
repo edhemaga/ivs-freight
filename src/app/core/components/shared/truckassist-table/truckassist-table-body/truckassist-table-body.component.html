@@ -3176,7 +3176,15 @@
                                     }"
                                 >
                                     <div
-                                        (click)="onShowAttachments(row)"
+                                        #t3="ngbPopover"
+                                        (hidden)="activeAttachment = -1"
+                                        [ngbPopover]="filesPopover"
+                                        [autoClose]="'outside'"
+                                        container="body"
+                                        [placement]="'bottom-left'"
+                                        popoverClass="files-popover"
+                                        triggers="manual"
+                                        (click)="onShowAttachments(row, t3)"
                                         [ngClass]="{
                                             'action-active':
                                                 activeAttachment === row.id
@@ -3434,7 +3442,7 @@
                         class="attachemnt-dropdown"
                         [ngClass]="{
                             'attachemnt-dropdown-active':
-                                activeAttachment === row.id
+                                activeAttachment === row.id && row.tableAttachments?.length > 1
                         }"
                     >
                         <div class="attachemnt-dropdown-content">
@@ -4014,4 +4022,15 @@
             Active
         </div>
     </div>
+</ng-template>
+
+<!-- FILES -->
+<ng-template #filesPopover let-data="data">
+    <app-ta-upload-files
+        [customClassName]="'table-details'"
+        [files]="data"
+        [size]="'extralarge'"
+        [reviewMode]="'REVIEW_MODE'"
+        [slideWidth]="209"
+    ></app-ta-upload-files>
 </ng-template>

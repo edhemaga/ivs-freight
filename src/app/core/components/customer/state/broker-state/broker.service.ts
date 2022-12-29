@@ -17,6 +17,7 @@ import { TruckassistTableService } from '../../../../services/truckassist-table/
 import { BrokerMinimalListStore } from '../broker-details-state/broker-minimal-list-state/broker-minimal.store';
 import { BrokerDetailsListStore } from '../broker-details-state/broker-details-list-state/broker-details-list.store';
 import { FormDataService } from 'src/app/core/services/formData/form-data.service';
+import { BrokerDetailsStore } from '../broker-details-state/broker-details.store';
 
 @Injectable({
     providedIn: 'root',
@@ -34,7 +35,8 @@ export class BrokerTService implements OnDestroy {
         private brokerMinimalStore: BrokerMinimalListStore,
         private brokerMinimalQuery: BrokerMinimalListQuery,
         private bls: BrokerDetailsListStore,
-        private formDataService: FormDataService
+        private formDataService: FormDataService,
+        private brokerItemStore: BrokerDetailsStore,
     ) {}
 
     // Add Broker
@@ -339,6 +341,72 @@ export class BrokerTService implements OnDestroy {
     public updateReview(review: UpdateReviewCommand): Observable<any> {
         return this.ratingReviewService.apiRatingReviewReviewPut(review);
     }
+
+
+    public updatedReviewNew(data, currentId){
+
+        let brokerData = JSON.parse(JSON.stringify(this.brokerItemStore?.getValue()?.entities[currentId]));
+
+        brokerData?.reviews.map((item: any) => {
+            if ( item.id == data.id ){
+                item.comment = data.comment;
+            }
+           
+        });
+        
+        this.brokerItemStore.update(brokerData.id, { reviews: brokerData.reviews });
+        this.brokerStore.update(brokerData.id, { reviews: brokerData.reviews });
+        
+        this.tableService.sendActionAnimation({
+            animation: 'update',
+            tab: 'broker',
+            data: brokerData,
+            id: brokerData.id,
+        });
+    }
+
+    public addNewReview(data, currentId){
+        let brokerData = JSON.parse(JSON.stringify(this.brokerItemStore?.getValue()?.entities[currentId]));
+        brokerData?.reviews.push(data);
+
+        this.brokerItemStore.update(brokerData.id, { reviews: brokerData.reviews });
+        this.brokerStore.update(brokerData.id, { reviews: brokerData.reviews });
+
+        this.tableService.sendActionAnimation({
+            animation: 'update',
+            tab: 'broker',
+            data: brokerData,
+            id: brokerData.id,
+        });
+    }
+
+    public deleteReview(reviewId, brokerId){
+
+        let brokerData = JSON.parse(JSON.stringify(this.brokerItemStore?.getValue()?.entities[brokerId]));
+
+        brokerData?.reviews.map((item: any, index: any) => {
+            if ( item.id == reviewId ){
+                brokerData?.reviews.splice(index, 1);
+            }})
+        
+        this.brokerItemStore.update(brokerData.id, { reviews: brokerData.reviews });
+        this.brokerStore.update(brokerData.id, { reviews: brokerData.reviews });
+
+        this.tableService.sendActionAnimation({
+            animation: 'update',
+            tab: 'broker',
+            data: brokerData,
+            id: brokerData.id,
+        });
+
+    }
+
+    public getBrokerLoads(
+        brokerId: number
+    ){
+        return this.brokerService.apiBrokerLoadsGet(undefined, undefined, undefined, undefined, undefined, brokerId);
+    }public getBrokerLoa
+
     ngOnDestroy(): void {
         this.destroy$.next();
         this.destroy$.complete();

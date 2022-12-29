@@ -985,6 +985,7 @@ export class TaInputComponent
                 'detention-rate',
                 'fuel per miles',
                 'fuel price map',
+                'amount',
             ].includes(this.inputConfig.name.toLowerCase())
         ) {
             if (
@@ -2189,7 +2190,7 @@ export class TaInputComponent
                     this.span3.nativeElement.innerHTML = 'yy';
                     this.dateTimeInputDate = new Date();
                     this.showDateInput = false;
-                    this.resetForms();
+                    //this.resetForms(); // PITANJE STO SE OVO SKLANJA I UOPSTE STO JE TREBALO
                 }
             } else {
                 if (
@@ -2204,7 +2205,7 @@ export class TaInputComponent
                     this.span2.nativeElement.innerHTML = 'MM';
                     this.dateTimeInputDate = new Date();
                     this.showDateInput = false;
-                    this.resetForms();
+                    //this.resetForms(); // PITANJE STO SE OVO SKLANJA I UOPSTE STO JE TREBALO
                 }
             }
 

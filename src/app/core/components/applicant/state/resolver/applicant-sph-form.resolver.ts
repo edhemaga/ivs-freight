@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, Resolve } from '@angular/router';
+import { ActivatedRouteSnapshot, Resolve, Router } from '@angular/router';
 
-import { forkJoin, Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { forkJoin, Observable, throwError } from 'rxjs';
+import { catchError, tap } from 'rxjs/operators';
 
 import { ApplicantActionsService } from '../services/applicant-actions.service';
 
@@ -14,7 +14,8 @@ import { ApplicantState, ApplicantStore } from '../store/applicant.store';
 export class ApplicantSphFormResolver implements Resolve<ApplicantState> {
     constructor(
         private applicantActionsService: ApplicantActionsService,
-        private applicantStore: ApplicantStore
+        private applicantStore: ApplicantStore,
+        private router: Router
     ) {}
     resolve(route: ActivatedRouteSnapshot): Observable<ApplicantState> {
         console.log('route.queryParams', route.queryParams);
@@ -32,13 +33,22 @@ export class ApplicantSphFormResolver implements Resolve<ApplicantState> {
             applicantDropdownList: applicantDropdownList$,
         }).pipe(
             tap((res: any) => {
-                this.applicantStore.update((store) => {
-                    return {
-                        ...store,
-                        applicantDropdownLists: res.applicantDropdownList,
-                        applicantSphForm: res.applicantSphForm,
-                    };
-                });
+                if (res) {
+                    this.applicantStore.update((store) => {
+                        return {
+                            ...store,
+                            applicantDropdownLists: res.applicantDropdownList,
+                            applicantSphForm: res.applicantSphForm,
+                        };
+                    });
+                } else {
+                    this.router.navigate(['/auth']);
+                }
+            }),
+            catchError((error: any) => {
+                this.router.navigate(['/auth']);
+                // TODO: MILADIN: uhvati error.error i obavesti korisnika da ne poostoji applicant sa tim id-em
+                return throwError(() => error);
             })
         );
     }

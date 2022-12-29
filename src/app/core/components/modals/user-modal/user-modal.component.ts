@@ -337,6 +337,10 @@ export class UserModalComponent implements OnInit, OnDestroy {
                     );
                 } else {
                     this.inputService.changeValidators(
+                        this.userForm.get('paymentType'),
+                        false
+                    );
+                    this.inputService.changeValidators(
                         this.userForm.get('salary'),
                         false
                     );

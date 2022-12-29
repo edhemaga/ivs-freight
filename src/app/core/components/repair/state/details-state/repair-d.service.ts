@@ -41,29 +41,29 @@ export class RepairDService {
         pageIndex?: number,
         pageSize?: number,
         companyId?: number,
-        sort?: string,
+        sort?: any,
         search?: string,
         search1?: string,
         search2?: string
     ): Observable<RepairListResponse> {
-        // return this.repairService.apiRepairListGet(
-        //     repairShopId,
-        //     unitType,
-        //     dateFrom,
-        //     dateTo,
-        //     isPM,
-        //     categoryIds,
-        //     pmTruckTitles,
-        //     pmTrailerTitles,
-        //     isOrder,
-        //     pageIndex,
-        //     pageSize,
-        //     companyId,
-        //     sort,
-        //     search,
-        //     search1,
-        //     search2
-        // );
+        return this.repairService.apiRepairListGet(
+            repairShopId,
+            unitType,
+            dateFrom,
+            dateTo,
+            isPM,
+            categoryIds,
+            pmTruckTitles,
+            pmTrailerTitles,
+            isOrder,
+            pageIndex,
+            pageSize,
+            companyId,
+            sort,
+            search,
+            search1,
+            search2
+        );
         return of();
     }
 
