@@ -4,7 +4,8 @@ import { Component, Input } from '@angular/core';
     templateUrl: './navigation-subroute-card.component.html',
     styleUrls: ['./navigation-subroute-card.component.scss'],
 })
-export class NavigationSubrouteCardComponent {
+export class NavigationSubrouteCardComponent  {
     @Input() isNavigationCardActive: boolean = false;
     @Input() contentHeight: number = 0;
+  
 }

@@ -3,6 +3,7 @@ import {
     ChangeDetectionStrategy,
     Input,
     OnInit,
+    Output,
 } from '@angular/core';
 import { SelectCompanyResponse } from 'appcoretruckassist';
 import { AuthStoreService } from '../../authentication/state/auth.service';
@@ -17,7 +18,6 @@ import { SignInResponse } from '../../../../../../appcoretruckassist/model/signI
 })
 export class NavigationUserCompanyComponent implements OnInit {
     @Input() isNavigationHoveredAndPanelOpen: boolean = false;
-
     public userCompanies: any[];
 
     constructor(
@@ -40,6 +40,8 @@ export class NavigationUserCompanyComponent implements OnInit {
     }
 
     public onAction() {
+        console.log('click')
+
         this.navigationService.onDropdownActivation({
             name: 'User Company Details',
             type: false,

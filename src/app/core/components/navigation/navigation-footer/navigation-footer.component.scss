@@ -9,10 +9,8 @@
     user-select: none;
     width: auto;
     position: relative;
-    left: 1px;
+    left: 8px;
     width: 100%;
-    padding-left: 9px;
-    padding-bottom: 15px;
     p {
         color: $nav-white;
         font-weight: $nav-font-medium;
@@ -24,56 +22,69 @@
         position: relative;
         top: 1px;
     }
-
+    
     .nav-footer-item-scaleWidth {
         width: 0px !important;
     }
-    .notification{
-        position: relative;
-        .status-marker-container-notification-1{
-            position: absolute;
-            width: 12px;
-            height: 12px;
-            background: #2F2F2F;
-            border-radius: 50%;
-            left: 9px;
-            bottom: 11px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            .status-marker-notification-1 {
-                width: 8px;
-                height: 8px;
-                border-radius: 8px;
-                border: 0 solid #ffffff;
-                background: #E57373;
+    
+    &:nth-child(1){
+        .hide-user{
+            display: none;
+            div{
+                height: fit-content;
             }
         }
-        .nav-footer-rightSide{
+        .notification{
             width: 100%;
+            div{
+                width: 100%;
+                .nav-footer-rightSide{
+                    width: 100%;
+                }
+            }
         }
-    }
-    &:nth-child(1){
-        
+        .notification{
+            position: relative;
+            .status-marker-container-notification-1{
+                position: absolute;
+                width: 12px;
+                height: 12px;
+                left: 9px;
+                bottom: 11px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                .status-marker-notification-1 {
+                    width: 8px;
+                    height: 8px;
+                }
+            }
+            .nav-footer-rightSide{
+                width: 100%;
+            }
+        }
         div{
             display: flex;
             align-items: center;
-            width: 230px;
+            height: fit-content;
             .notification-message{
-                width: 18px;
+                padding: 0 5px;
+                width: auto;
                 height: 18px;
                 background: rgba(229, 115, 115, 0.1);
                 border-radius: 50%;
                 display: flex;
                 justify-content: center;
                 align-items: center;
-                color: #E57373;
+                color:  $notification;
                 font-weight: 700;
                 font-size: 11px;
                 position: absolute;
-                right: 8px;
+                right: 14px;
+                opacity: 0;
             }
         }
+        
     }
     .nav-footer-item {
         height: 28px;
@@ -89,16 +100,17 @@
         }
 
         .nav-footer-image-user {
-            width: 32px;
-            height: 32px;
+            width: 28px;
+            height: 28px;
             object-fit: fill;
-            margin-left: -6px;
+            margin-left: -4px;
         }
 
         .nav-footer-user {
             position: relative;
-            top: 1px;
-            display: grid;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1px;
             p {
                 margin-left: 6px;
                 text-overflow: ellipsis;
@@ -106,10 +118,12 @@
                 width: 140px;
                 overflow: hidden;
                 &:nth-child(1) {
-                    font-weight: $nav-font-semibold;
+                    line-height: 17px;
+                    font-size: 14px;
+                    font-weight: 700;
                 }
                 &:nth-child(2) {
-                    font-size: $nav-font-size-small;
+                    font-size: 11px;
                     font-weight: $nav-font-regular;
                 }
             }
@@ -126,11 +140,11 @@
         }
 
         .status-marker-container {
-            bottom: 12px;
-            left: 17px;
+            bottom: 0px;
+            left: 11px;
             width: 12px;
-            height: 12px;
-            background: $nav-dark;
+            height: 12px !important;
+            background: transparent;
         }
 
         .nav-footer-hover {
@@ -258,4 +272,5 @@
 
 .nav-footer-width {
     width: 238px;
+   
 }

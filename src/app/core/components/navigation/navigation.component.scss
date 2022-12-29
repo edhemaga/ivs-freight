@@ -11,7 +11,7 @@
     flex-direction: column;
     justify-content: space-between;
     padding: 12px;
-
+    cursor: pointer;
     // background-color: $nav-white;
     color: $nav-text-color;
     font-size: $nav-font-size;
@@ -41,6 +41,9 @@
     background: $nav-dark !important;
     width: 250px !important;
     transition: $nav-transition;
+    .new-magic-line{
+        background: $nav-hover-color !important;
+    }
 }
 
     .navigation-middle {
@@ -71,7 +74,10 @@
         position: relative;
         
         .navigation-routes {
-            padding-left: 9px;
+            // padding-left: 9px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
             padding-bottom: 1px;
             padding-top: 1px;
         }
@@ -93,7 +99,7 @@
             top: 0px;
             content: '';
             height: 28px;
-            background: $nav-hover-color;
+            background:$nav-hover-ligh;
             border-radius: 3px;
             transition: $magic-line-transition;
             z-index: -1;

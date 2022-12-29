@@ -26,9 +26,16 @@
         [ngClass]="{'route-clicked-svg': route.isRouteActive && route.arrow}"
     ></svg-icon>
     <div *ngIf="message > 0" class="message-container">
-        <div class="status-marker-container-notification">
-            <div class="status-marker-notification"></div>
-        </div>
+        <svg-icon 
+        *ngIf="!isNavigationHovered"
+        class="notification-img"
+        src="../../../../../assets/svg/applicant/notification-light.svg"
+        ></svg-icon>
+        <svg-icon 
+        *ngIf="isNavigationHovered"
+        class="notification-img"
+        src="../../../../../assets/svg/applicant/notification.svg"
+        ></svg-icon>
     </div>
     <div
         class="nav-item-rightSide"
@@ -45,6 +52,7 @@
         <div
         class="message" 
         *ngIf="message"
+        [@showHideDetails]="isNavigationHovered ? 'true' : 'false'"
         >
         {{message}}
     </div> 
@@ -59,7 +67,7 @@
             src="{{ route.arrow }}"
         ></svg-icon>
         <svg-icon
-        *ngIf="isNavigationHovered && !route.arrow"
+        *ngIf="isNavigationHovered && !route.arrow && !message"
         class="nav-item-arrow_top"
         src="assets/svg/common/arrow_top_right.svg"
     ></svg-icon>

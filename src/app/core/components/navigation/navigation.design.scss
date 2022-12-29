@@ -80,22 +80,15 @@ $notification:#E57373;
     justify-content: center;
     align-items: center;
     position: absolute;
-    bottom: 2px;
-    left: 23px;
-    background: $nav-white;
+    bottom: 5px;
+    left: 15px;
 
     .status-marker {
         width: 10px;
         height: 10px;
-        border-radius: 6px;
-        border: 0 solid $nav-white;
-        background: $nav-white;
     }
 
-    .status-online {
-        border: 3px solid $user-active-status;
-        background: $nav-dark !important;
-    }
+   
 
     .status-active {
         border: 0 solid $nav-white;

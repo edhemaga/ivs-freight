@@ -1,24 +1,25 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit} from '@angular/core';
+import { Router } from '@angular/router';
 import { settings } from '../model/navigation-data';
-import { FooterData } from '../model/navigation.model';
-import { navigation_magic_line } from '../navigation.animation';
+import { FooterData, Settings } from '../model/navigation.model';
+import { navigation_route_animation } from '../navigation.animation';
 @Component({
   selector: 'app-navigation-settings',
   templateUrl: './navigation-settings.component.html',
   styleUrls: ['./navigation-settings.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-    animations: [navigation_magic_line('showHideDetails')],
+  animations: [navigation_route_animation('showHideDetails')]
 })
 export class NavigationSettingsComponent implements OnInit {
   @Input() isNavigationHovered: boolean = false;
   public footer: FooterData[] = settings;
   public showItems = false;
-  constructor() { }
+  constructor(private router: Router) { }
 
   ngOnInit(): void {
-    console.log(this.isNavigationHovered);
-    
-    console.log(this.footer)
+  
   }
-
+  public changeRouteSettings(subroute: Settings): void {
+    this.router.navigate([subroute.route]);
+  }
 }

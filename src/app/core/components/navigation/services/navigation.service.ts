@@ -20,4 +20,5 @@ export class NavigationService {
     public onDropdownActivation(data: { name: string; type: boolean }) {
         this.navigationDropdownActivationSubject.next(data);
     }
+
 }

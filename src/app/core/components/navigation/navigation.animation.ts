@@ -15,8 +15,9 @@ export const navigation_route_animation = (type: string) =>
                 opacity: 1,
             })
         ),
-        state('false', style({ transform: 'translateX(-35px)', opacity: 0 })),
-        transition('false <=> true', [animate('0.3s ease-in-out')]),
+        state('false', style({ transform: 'translateX(-20px)', opacity: 0 })),
+        transition('true => false', [animate('0s ease-in-out')]),
+        transition('false => true', [animate('0.3s ease-in-out')]),
     ]);
 
 export const navigation_header_animation = (type: string) =>
@@ -28,7 +29,7 @@ export const navigation_header_animation = (type: string) =>
                 opacity: 1,
             })
         ),
-        state('false', style({ transform: 'translateX(-20px)', opacity: 0 })),
+        state('true', style({ transform: 'translateX(-20px)', opacity: 0 })),
         transition('true => false', [animate('0s ease-in-out')]),
         transition('false => true', [animate('0.3s ease-in-out')]),
     ]);

@@ -43,6 +43,8 @@
                 color: $nav-text-color-darker;
                 margin: 0;
                 display: flex;
+                width: 70px;
+                opacity: 0;
             }
         .nav-header-bottom-plus {
             background: rgb(48 116 211 / 20%);;
@@ -50,12 +52,16 @@
             padding: 0 8px;
             width: 36px;
             height: 36px;
-            left: -1px;
+            left: -2px;
             position: relative;
             display: flex;
             align-items: center;
             justify-content: center;
-           
+            svg{
+                position: relative;
+                top: -1px;
+                left: -0.1px;
+            }
             &:hover {
                 cursor: pointer;
                 // transition: $nav-transition;
@@ -67,6 +73,7 @@
             }
             .light-svg{
                 svg{
+                   
                     path{
                         fill: $nav-white;
                     }

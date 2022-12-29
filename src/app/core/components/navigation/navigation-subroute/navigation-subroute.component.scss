@@ -45,7 +45,7 @@
 
             svg {
                 path {
-                    // fill: $nav-svg-active;
+                    fill: $nav-svg-active;
                 }
             }
         }
@@ -96,12 +96,12 @@
     .new-magic-line {
         display: inline-block;
         position: absolute;
-        left: -4px;
+        left: 0px;
         right: 4px;
         top: 1px;
         content: '';
         height: 27px;
-        width: 230px;
+        width: 231px;
         background: $nav-hover-color;
         border-radius: 2px;
         transition: $magic-line-transition;

@@ -29,8 +29,6 @@ export class NavigationSubrouteComponent {
     constructor(private router: Router) {}
 
     public onSubrouteAction(subroute: NavigationSubRoutes) {
-        console.log(this.subroute);
-        
         if (this.subroute.id === subroute.activeRouteFlegId) {
             localStorage.setItem(
                 'subroute_active',

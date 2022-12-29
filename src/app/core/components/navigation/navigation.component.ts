@@ -1,9 +1,11 @@
-import { Navigation, NavigationSubRoutes } from './model/navigation.model';
+import {  Navigation, NavigationSubRoutes } from './model/navigation.model';
 import {
     ChangeDetectionStrategy,
     Component,
+    ElementRef,
     OnDestroy,
     OnInit,
+    ViewChild,
 } from '@angular/core';
 import { navigationData } from './model/navigation-data';
 import { Router } from '@angular/router';
@@ -18,32 +20,42 @@ import { DetailsDataService } from '../../services/details-data/details-data.ser
     styleUrls: ['./navigation.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
     animations: [navigation_magic_line('showHideDetails')],
+    host: {
+        '(document:click)': 'closeNavbar($event)',
+      },
 })
 export class NavigationComponent implements OnInit, OnDestroy {
     public navigation: Navigation[] = navigationData;
 
-    public isNavigationHovered: boolean = true;
+    public isNavigationHovered: boolean = false;
     public isNavigationOpenend: boolean = false;
     public isModalPanelOpen: boolean = false;
     public isUserPanelOpen: boolean = false;
     public isUserCompanyDetailsOpen: boolean = false;
-
     private isActiveSubrouteIndex: number = -1;
-    public isActiveSubroute: boolean = false;
+    public isActiveSubroute: boolean = true;
     public activeSubrouteFleg: boolean = false;
 
     public isActiveFooterRoute: boolean = false;
 
     public isActiveMagicLine: boolean = false;
-
+    public hideMagicLine: boolean = false
     private destroy$ = new Subject<void>();
 
+    @ViewChild('navbar') navbar: ElementRef;
     constructor(
         private router: Router,
         private navigationService: NavigationService,
         private DetailsDataService: DetailsDataService
     ) {}
-
+        test(){
+            if(this.isNavigationHovered && this.isActiveSubroute){
+                this.hideMagicLine = false
+                console.log(this.isModalPanelOpen,this.isNavigationHovered, this.isActiveSubroute);
+            }
+            
+            
+        }
     ngOnInit(): void {
         this.navigationService.navigationDropdownActivation$
             .pipe(takeUntil(this.destroy$))
@@ -84,26 +96,38 @@ export class NavigationComponent implements OnInit, OnDestroy {
                 }
             });
     }
+    //On outside of navbar close navbar
+    closeNavbar(event) {
+        if(this.navbar.nativeElement.contains(event.target || 'panel-user') || event.target.classList.contains('modal-nav-close') || event.target.classList.contains('panel-user') || event.target.classList.contains('nav-footer-user-company') || event.target.classList.contains('panel-image') || event.target.classList.contains('status-marker') || event.target.classList.contains('nav-footer-user-name') || event.target.classList.contains('nav-footer-user-name') || event.target.classList.contains('user-content-text') || event.target.classList.contains('modal-nav-close-text') || event.target.classList.contains('user-company-header')){
+            this.isNavigationHovered = true;
+            this.isNavigationOpenend = true;
+        }else{
+            this.isNavigationHovered = false;
+            this.isNavigationOpenend = false;
+        }
+       }
     public onRouteEvent(subroute: NavigationSubRoutes): void {
+
         const index = this.navigation.findIndex(
             (item) => item.id === subroute.routeId
-        );
-        this.onActivateFooterRoute(false);
-        this.isModalPanelOpen = false;
-        this.isUserPanelOpen = false;
-        this.isUserCompanyDetailsOpen = false;
-
-        if (Array.isArray(subroute.routes)) {
-            this.activationSubRoute(index, subroute);
-        } else if (index > -1) {
-            this.activationMainRoute(index);
+            );
+            this.onActivateFooterRoute(false);
+            this.isModalPanelOpen = false;
+            this.isUserPanelOpen = false;
+            this.isUserCompanyDetailsOpen = false;
+            
+            if (Array.isArray(subroute.routes)) {
+                this.activationSubRoute(index, subroute);
+            } else if (index > -1) {
+                this.activationMainRoute(index);
+            }
         }
-    }
-
-    private activationSubRoute(
-        index: number,
-        subroute: NavigationSubRoutes
-    ): void {
+        
+        private activationSubRoute(
+            index: number,
+            subroute: NavigationSubRoutes
+            ): void {
+                
         if (index === this.isActiveSubrouteIndex) {
             this.navigation[index].isRouteActive =
                 !this.navigation[index].isRouteActive;
@@ -160,19 +184,20 @@ export class NavigationComponent implements OnInit, OnDestroy {
         }
     }
 
-    public onHoveredRoutesContainer(type: boolean): void {
-        if (type) {
-            this.onActivateFooterRoute(false);
-            this.isActiveMagicLine = true;
-        } else {
-            const index = this.navigation.findIndex(
-                (item) => item.isRouteActive || item.isSubrouteActive
-            );
-            if (index === -1) {
-                this.isActiveMagicLine = false;
-            }
-        }
-    }
+    // public onHoveredRoutesContainer(type: boolean): void {
+    //     console.log(type)
+    //     if (type) {
+    //         this.onActivateFooterRoute(false);
+    //         this.isActiveMagicLine = true;
+    //     } else {
+    //         const index = this.navigation.findIndex(
+    //             (item) => item.isRouteActive || item.isSubrouteActive
+    //         );
+    //         if (index === -1) {
+    //             this.isActiveMagicLine = false;
+    //         }
+    //     }
+    // }
 
     public onHoveredNavigation(type: boolean): void {
         if (type) {
@@ -182,11 +207,11 @@ export class NavigationComponent implements OnInit, OnDestroy {
                 (item) => item.isRouteActive || item.isSubrouteActive
             );
             if (index > -1) {
-                this.isActiveMagicLine = true;
+                this.isActiveMagicLine = false;
             }
         } else {
             this.isNavigationHovered = false;
-            this.isActiveMagicLine = false;
+            this.isActiveMagicLine = true;
             this.DetailsDataService.updateLeftMenuStatus(false);
         }
     }

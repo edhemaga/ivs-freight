@@ -27,9 +27,8 @@ import { TaUserService } from '../../../services/user/user.service';
 export class NavigationFooterComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
     @Input() isNavigationHovered: boolean = false;
-
+    @Input() isUserPanelOpen: boolean = false;
     @Output() onActivateFooterRoutes = new EventEmitter<boolean>();
-
     public currentUserStatus: string = 'online';
 
     public footerData: FooterData[] = footerData;
@@ -43,9 +42,8 @@ export class NavigationFooterComponent implements OnInit, OnDestroy {
         private userService: TaUserService,
         private cdRef: ChangeDetectorRef
     ) {}
-
+        
     ngOnInit() {
-        console.log(this.footerData, 'ovo')
         this.isActiveFooterRouteOnReload(window.location.pathname);
 
         // ----------------------- PRODUCSTION MODE ----------------------------
@@ -111,14 +109,8 @@ export class NavigationFooterComponent implements OnInit, OnDestroy {
                 }
             });
     }
-
     public onAction(index: number, action: string) {
-        console.log(index, action)
-        if(this.hide === index){
-            this.hide = -1
-        }else{
-            this.hide = index;
-        }
+        console.log(index === 2)
         switch (action) {
             case 'Open User Panel': {
                 if (index === 2) {

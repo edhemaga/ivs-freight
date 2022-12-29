@@ -15,7 +15,7 @@
         routerLinkActive="{{ ind !== 2 ? 'nav-footer-item-active' : '' }}"
     >   
     <div [ngClass]="{'notification' : item.notification }">
-        <div *ngIf="ind !== hide">
+        <div [ngClass]="{'hide-user' : isUserPanelOpen === true && ind === 2}">
 
         <div *ngIf="item.text !== ''">
 
@@ -28,12 +28,25 @@
             *ngIf="isActiveFooterRoute(item)"
             class="nav-item-active-box"
         ></div>
-        <div *ngIf="item.notification" class="status-marker-container-notification-1">
-            <div class="status-marker-notification-1"></div>
+        <div  class="status-marker-container-notification-1">
+            <svg-icon
+            *ngIf="item.notification && !isNavigationHovered"
+                class="notification-svg"
+                src="../../../../../assets/svg/applicant/notification-light.svg"
+            >
+
+            </svg-icon>
+            <svg-icon
+            *ngIf="item.notification && isNavigationHovered"
+                class="notification-svg"
+                src="../../../../../assets/svg/applicant/notification.svg"
+            >
+
+            </svg-icon>
         </div>
          <img
             class="nav-footer-image"
-            [ngClass]="{ 'nav-footer-image-user': ind === 2 }"
+            [ngClass]="{ 'nav-footer-image-user': ind === 2}"
             [src]="item.image"
             [alt]="item.text.userName"
         /> 
@@ -50,7 +63,11 @@
                 {{ item.text }}
                
             </p>
-            <div *ngIf="item.notification" class="notification-message">{{item.notification}}</div>
+            <div [@showHideDetails]="isNavigationHovered ? 'true' : 'false'" *ngIf="item.notification" class="notification-message">
+                <span>
+                    {{item.notification}}
+                </span>
+            </div>
             <div
                 class="nav-footer-user"
                 *ngIf="(item.text | userData) && isNavigationHovered"
@@ -74,7 +91,11 @@
                     'status-offline': currentUserStatus === 'offline'
                 }"
                 class="status-marker"
-            ></div>
+            >
+            <svg-icon src="../../../../../assets/svg/applicant/user-active.svg">
+
+            </svg-icon>
+        </div>
         </div>
     </div>
 </div>

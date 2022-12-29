@@ -1,14 +1,15 @@
 @import '../navigation.design.scss';
 .holder{
     padding: 4px 0;
+        position: relative;
     .parent{
         z-index: -1;
         position: absolute;
-        left: 0;
+        left: -9px;
         top: 0;
         bottom: 0;
         right: 0;
-        width: 238px;
+        width: 247px;
         border-radius: 2px;
         background: rgba(170, 170, 170, 10%);
     }
@@ -27,6 +28,11 @@
     position: relative;
     padding-left: 6px;
     border-radius: 2px;
+    .item{
+        display: flex;
+        align-items: center;
+        width: 100%;
+    }
     p{
         margin: 0px;
     margin-left: 9px;

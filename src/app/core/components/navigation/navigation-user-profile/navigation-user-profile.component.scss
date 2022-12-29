@@ -6,8 +6,8 @@
     // left: 18px;
     z-index: 99;
     width: 238px;
-    height: 202px;
-    padding: 2px 4px;
+    height: 190px;
+    padding: 0px 4px;
     border-radius: 2px;
     box-shadow: $nav-boxshadow;
     background-color: $nav-transparent;
@@ -103,20 +103,23 @@
     .panel-user {
         display: flex;
         align-items: center;
-        height: 40px;
+        // height: 34px;
         position: relative;
-        top: 8px;
-        right: -1px;
+        top: 5px;
 
         .panel-image {
-            width: 32px;
-            height: 32px;
+            width: 28px;
+            height: 28px;
             object-fit: fill;
+            position: relative;
         }
 
         .panel-name {
             position: relative;
-            top: 1px;
+            display: flex;
+            flex-wrap: wrap;
+            grid-gap: 1px;
+            gap: 1px;
             p {
                 margin-left: 6px;
                 text-overflow: ellipsis;
@@ -125,11 +128,13 @@
                 overflow: hidden;
 
                 &:nth-child(1) {
-                    font-weight: $nav-font-semibold;
+                    line-height: 17px;
+                    font-size: 14px;
+                    font-weight: 700;
                 }
                 &:nth-child(2) {
-                    font-size: $nav-font-size-small;
-                    font-weight: $nav-font-regular;
+                    font-size: 11px;
+                    font-weight: 400;
                 }
             }
 

@@ -1,21 +1,22 @@
 <!-- (mouseenter)="onHoveredNavigation(true)"
 (mouseleave)="onHoveredNavigation(false)" -->
 <div
-
-    class="navigation"
-    (mouseleave)="onHoveredNavigation(false)"
+class="navigation"
+#navbar
+(click)="test();"
 >
-    <div class="nav-holder"
-    [ngClass]="{'dark-nav': isNavigationHovered || isNavigationOpenend}"
+<div class="nav-holder"
+    [ngClass]="{'dark-nav': isNavigationHovered }"
     >
 
     <div class="navigation-top">
         <app-navigation-header
-        (mouseenter)="onHoveredNavigation(true)"
-            [isNavigationHovered]="isNavigationHovered || isNavigationOpenend"
+        (click)="onHoveredNavigation(true)"
+            [isNavigationHovered]="isNavigationHovered "
         ></app-navigation-header>
 
         <app-navigation-modals
+        (click)="onHoveredNavigation(true)"
             [isNavigationHoveredAndPanelOpen]="
             isModalPanelOpen && isNavigationHovered
             "
@@ -25,7 +26,7 @@
     <div class="navigation-middle">
         <div
             class="navigation-routes-container"
-           
+            
         >
             <div
                 class="navigation-routes"
@@ -46,8 +47,8 @@
                     [route]="item"
                     [isNavigationHovered]="isNavigationHovered || isNavigationOpenend"
                     [isActiveSubroute]="isActiveSubroute"
+                  
                     (onRouteEvent)="onRouteEvent($event)"
-                    (mouseleave)="onHoveredNavigation(false)"
                 >
                 </app-navigation-route>
                 <!-- Messages -->
@@ -58,10 +59,10 @@
                 [isNavigationHovered]="isNavigationHovered || isNavigationOpenend"
                 [isActiveSubroute]="isActiveSubroute"
                 (onRouteEvent)="onRouteEvent($event)"
-                (mouseleave)="onHoveredNavigation(false)"
             ></app-navigation-route>
                 <!-- If route has subroutes -->
                 <app-navigation-subroute-card
+                (click)="onHoveredNavigation(true)"
                     *ngIf="item.arrow"
                     [isNavigationCardActive]="
                         item.isRouteActive &&
@@ -70,13 +71,13 @@
                         !isUserPanelOpen &&
                         !isUserCompanyDetailsOpen
                     "
-                    (mouseenter)="onHoveredNavigation(true)"
                     [contentHeight]="item.route.length"
+             
                 >   
 
                     <app-navigation-route
+                   
                         [route]="item"
-                        (mouseenter)="onHoveredNavigation(true)"
                         [isNavigationHovered]="isNavigationHovered || isNavigationOpenend"
                         [isActiveSubroute]="isActiveSubroute"
                         (onRouteEvent)="onRouteEvent($event)"
@@ -84,6 +85,7 @@
                     </app-navigation-route>
 
                     <app-navigation-subroute
+                   
                         *ngIf="
                             isNavigationHovered &&
                             item.isRouteActive &&
@@ -101,13 +103,16 @@
                 </app-navigation-subroute-card>
             </div>
             <div
+                *ngIf="!isActiveSubroute"
                 [@showHideDetails]="
-                    isNavigationHovered || isNavigationOpenend &&
+                    isNavigationHovered &&
                     !isActiveSubroute &&
                     !isActiveFooterRoute &&
+                    isModalPanelOpen &&
+                  
                     isActiveMagicLine
-                        ? 'true'
-                        : 'false'
+                        ? 'false'
+                        : 'true'
                 "
                 class="new-magic-line"
             ></div>
@@ -115,21 +120,22 @@
     </div>
     <!-- Open nav on click -->
     <div class="open-navigation" 
-        (click)="isNavigationOpenend = !isNavigationOpenend"
+    (click)="isNavigationHovered = true"
     ></div>
     <div
         class="navigation-bottom"
-        (mouseenter)="onHoveredRoutesContainer(false)"
-        (mouseenter)="onHoveredNavigation(true)"
         
     >
         <app-navigation-footer
+        (click)="onHoveredNavigation(true)"
             [isNavigationHovered]="
                 isNavigationHovered || isNavigationOpenend || isNavigationOpenend  && !isUserCompanyDetailsOpen
             "
+            [isUserPanelOpen]="isUserPanelOpen"
             (onActivateFooterRoutes)="onActivateFooterRoute($event)"
         ></app-navigation-footer>
         <app-navigation-user-profile
+        (click)="onHoveredNavigation(true)"
             [isNavigationHovered]="
                 isNavigationHovered || isNavigationOpenend && !isUserCompanyDetailsOpen
             "
@@ -138,6 +144,7 @@
         </app-navigation-user-profile>
 
         <app-navigation-user-company
+        (click)="onHoveredNavigation(true)"
             [isNavigationHoveredAndPanelOpen]="
                 isUserCompanyDetailsOpen && isNavigationHovered
             "

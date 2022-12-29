@@ -26,6 +26,21 @@
         align-items: center;
         margin-bottom: 6px;
         justify-content: space-between;
+        .user-company-header-svg{
+            &:nth-child(2){
+
+                svg{
+                    
+                    height: 12px;
+                    width: 12px;
+                    left: -10px;
+                    position: relative;
+                    path{
+                        fill: $nav-svg-darker;
+                    }
+                }
+            }
+        }
         .header-left{
             display: flex;
             align-items: center;
@@ -33,7 +48,8 @@
             transition: all 0.3s ease-in-out;
             height: 32px;
             width: 32px;
-
+            display: flex;
+            align-items: flex-start;
             svg {
                 position: relative;
                 top: 50%;
@@ -43,8 +59,9 @@
                     fill: $nav-svg-darker;
                 }
             }
+           
         }
-
+       
         .user-company-header-text {
             font-weight: $nav-font-bold;
             color: $nav-white;
@@ -58,11 +75,11 @@
 
         &:hover {
             .user-company-header-svg {
-                transition: $nav-transition;
-                background-color: $nav-hover-lightcolor;
+                // transition: $nav-transition;
+                // background-color: $nav-hover-lightcolor;
                 svg {
                     path {
-                        fill: $nav-svg-hover;
+                        // fill: $nav-svg-hover;
                     }
                 }
             }
@@ -91,15 +108,25 @@
         .user-company-text-active {
             color: $nav-white !important;
             font-weight: $nav-font-bold;
+            padding-left: 10px;
+            svg{
+                height: 20px;
+                width: 20px;
+                position: relative;
+                left: -10px;
+                path{
+                    fill: $nav-active-lighter;
+                }
+            }
         }
 
         &:hover {
             background-color: $nav-hover-color;
-            color: $nav-text-color-hover;
+            color: $nav-white;
             border-radius: 3px;
 
             .user-company-text-active {
-                color: $nav-active !important;
+                color: $nav-white !important;
             }
         }
     }
