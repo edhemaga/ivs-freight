@@ -1,12 +1,13 @@
-.load-hazardous-container {
-    padding: 12px !important;
-    padding-left: 0px !important;
-}
-
 .load-map-container {
     width: 640px;
     height: 100%;
     padding: 0px;
+
+    &.load-hazardous-container {
+        padding: 12px !important;
+        padding-left: 0px !important;
+        height: 781px;
+    }
 }
 
 .stops-header-bar {
@@ -51,13 +52,14 @@
         display: flex;
         align-items: center;
         gap: 6px;
+        height: 18px;
 
         .stops-footer-bar-text {
             margin: 0;
             padding: 0;
             font-size: 11px;
             font-weight: 700;
-            line-height: 14;
+            line-height: 14px;
             color: #919191;
             -webkit-user-select: none;
             -moz-user-select: none;
@@ -71,7 +73,7 @@
             padding: 0;
             font-size: 11px;
             font-weight: 600;
-            line-height: 14;
+            line-height: 14px;
             color: #2f2f2f;
             height: 100%;
             -webkit-user-select: none;

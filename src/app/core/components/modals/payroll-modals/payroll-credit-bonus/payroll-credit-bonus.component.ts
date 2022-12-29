@@ -37,6 +37,8 @@ export class PayrollCreditBonusComponent implements OnInit {
 
     private destroy$ = new Subject<void>();
 
+    public addNewAfterSave: boolean = false;
+
     public isFormDirty: boolean = false;
 
     constructor(
@@ -72,6 +74,19 @@ export class PayrollCreditBonusComponent implements OnInit {
             case 'close': {
                 break;
             }
+            case 'save and add new': {
+                if (this.payrollCreditForm.invalid || !this.isFormDirty) {
+                    this.inputService.markInvalid(this.payrollCreditForm);
+                    return;
+                }
+                this.addCredit();
+                this.modalService.setModalSpinner({
+                    action: 'save and add new',
+                    status: true,
+                });
+                this.addNewAfterSave = true;
+                break;
+            }
             case 'save': {
                 if (this.payrollCreditForm.invalid || !this.isFormDirty) {
                     this.inputService.markInvalid(this.payrollCreditForm);
@@ -100,7 +115,9 @@ export class PayrollCreditBonusComponent implements OnInit {
 
     public updateCredit(id: number) {}
 
-    public addCredit() {}
+    public addCredit() {
+        // TODO: dodati addNewAfterSave
+    }
 
     public getByIdCredit(id: number) {}
 

@@ -39,11 +39,11 @@ $tab-colors: '26A690', 'EF5350', '3074D3';
             color: #919191;
         }
 
-        &.disabled{
+        &.disabled {
             pointer-events: none !important;
 
-            .tab-switch-text{
-                color: #AAAAAA33;
+            .tab-switch-text {
+                color: #aaaaaa33;
             }
         }
     }
@@ -62,7 +62,7 @@ $tab-colors: '26A690', 'EF5350', '3074D3';
     &.type1-modal-popup {
         margin-top: 12px;
         height: 34px;
-        background-color: #EEEEEE;
+        background-color: #eeeeee;
         line-height: 34px;
         padding: 4px;
 
@@ -89,11 +89,11 @@ $tab-colors: '26A690', 'EF5350', '3074D3';
 
     &.type2-modal-popup {
         height: 26px;
-        background-color: #EEEEEE;
+        background-color: #eeeeee;
         line-height: 26px;
         padding: 4px;
 
-        .tab-switch-text{
+        .tab-switch-text {
             font-size: 11px;
             font-weight: 700;
             text-transform: uppercase;
@@ -118,14 +118,6 @@ $tab-colors: '26A690', 'EF5350', '3074D3';
             background-color: #fff;
             box-shadow: 0 0 2px #ffffff1a;
             height: calc(100% - 8px);
-        }
-    }
-
-    &.load-type2-modal-popup {
-        .tab-switch-items-holder {
-            &.active {
-                color: #26a690 !important;
-            }
         }
     }
 
@@ -281,11 +273,11 @@ $tab-colors: '26A690', 'EF5350', '3074D3';
 }
 
 @each $col in $tab-colors {
-    .tab-switch-#{$col}.active{
-        & ~ .slide-active-holder{ 
+    .tab-switch-#{$col}.active {
+        & ~ .slide-active-holder {
             background-color: unquote('#' + $col + '33') !important;
         }
-        .tab-switch-text{
+        .tab-switch-text {
             color: unquote('#' + $col) !important;
         }
     }
