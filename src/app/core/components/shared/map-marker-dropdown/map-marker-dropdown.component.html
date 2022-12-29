@@ -805,7 +805,7 @@
 </div>
 
 <div class="cluster-list" *ngIf="type == 'cluster'">
-    <div class="cluster-list-header">
+    <!-- <div class="cluster-list-header">
         <div class="header-content">
             <app-ta-counter
                 [count]="item.count"
@@ -816,15 +816,12 @@
                 [countBorderRadius]="'11px'"
                 [marginLeft]="'4px'"
             ></app-ta-counter>
-            <!-- <div class="cluster-count">
-                <div class="header-text">{{ item.count }}</div>
-            </div> -->
             <div class="header-text" [style]="{ 'margin-left': '4px' }">
                 {{ title }}
             </div>
         </div>
         <div class="divider"></div>
-    </div>
+    </div> -->
     <div class="cluster-list-content" (scroll)="clusterListScroll($event)">
         <div
             class="cluster-list-item"
