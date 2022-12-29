@@ -419,6 +419,8 @@
         max-height: 216px;
         padding-top: 4px;
         overflow-y: scroll;
+        padding-top: 0px; 
+        max-height: 206px;
 
         &::-webkit-scrollbar {
             width: 4px;
