@@ -1,15 +1,11 @@
+/* eslint-disable no-unused-vars */
+
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { HttpResponseBase } from '@angular/common/http';
 
-import { AuthStoreService } from '../../state/auth.service';
-import { NotificationService } from '../../../../services/notification/notification.service';
-import { TaInputService } from '../../../shared/ta-input/ta-input.service';
-
-import moment from 'moment';
-
-import { AddressEntity, SignUpCompanyCommand } from 'appcoretruckassist';
+import { Subject, takeUntil } from 'rxjs';
 
 import {
     addressUnitValidation,
@@ -20,7 +16,14 @@ import {
     passwordValidation,
     phoneFaxRegex,
 } from '../../../shared/ta-input/ta-input.regex-validations';
-import { Subject, takeUntil } from 'rxjs';
+
+import { AuthStoreService } from '../../state/auth.service';
+import { NotificationService } from '../../../../services/notification/notification.service';
+import { TaInputService } from '../../../shared/ta-input/ta-input.service';
+
+import moment from 'moment';
+
+import { AddressEntity, SignUpCompanyCommand } from 'appcoretruckassist';
 
 @Component({
     selector: 'app-register',
@@ -29,7 +32,9 @@ import { Subject, takeUntil } from 'rxjs';
 })
 export class RegisterComponent implements OnInit, OnDestroy {
     @ViewChild('inputAddress', { static: false }) public inputAddress: any;
+
     private destroy$ = new Subject<void>();
+
     public registerForm!: FormGroup;
 
     public copyrightYear!: number;
@@ -107,6 +112,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
         ) {
             return;
         }
+
         if (this.registerForm.invalid) {
             this.inputService.markInvalid(this.registerForm);
             return;
