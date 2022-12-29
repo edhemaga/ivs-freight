@@ -18,7 +18,7 @@
         [haveDropSVG]="true"
     >
         <div class="repair-information-wrapper">
-            <div class="repair-information-item">
+            <div class="repair-information-item" *ngIf="repairShopCardViewData?.phone">
                 <svg-icon
                     class="repair-icon"
                     src="assets/svg/common/ic_phone.svg"
@@ -40,7 +40,7 @@
                     [copyValue]="repairShopCardViewData?.email"
                 ></app-ta-copy>
             </div>
-            <div class="repair-information-item">
+            <div class="repair-information-item address-cont" *ngIf="repairShopCardViewData?.address?.address">
                 <svg-icon
                     class="repair-icon"
                     src="assets/svg/common/ic_address.svg"

@@ -14,7 +14,7 @@
             <div class="repair-information-item">
                 <span class="header-bottom">{{ broker?.dbaName }}</span>
             </div>
-            <div class="repair-information-item">
+            <div class="repair-information-item" *ngIf="broker?.phone">
                 <span
                     tooltipBackground="#6c6c6c"
                     ngbTooltip
@@ -44,7 +44,7 @@
                 </span>
                 <app-ta-copy [copyValue]="broker?.email"></app-ta-copy>
             </div>
-            <div class="repair-information-item">
+            <div class="repair-information-item address-cont">
                 <svg-icon
                     class="repair-icon"
                     src="assets/svg/common/ic_address.svg"
