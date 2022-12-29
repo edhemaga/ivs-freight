@@ -54,7 +54,6 @@ export class TelematicsService {
     public defaultHeaders = new HttpHeaders();
     public configuration = new Configuration();
     public encoder: HttpParameterCodec;
-    public gpsPath: string = 'https://api-stage.carrierassist.io';
 
     constructor(protected httpClient: HttpClient, @Optional()@Inject(BASE_PATH) basePath: string|string[], @Optional() configuration: Configuration) {
         if (configuration) {
@@ -172,7 +171,7 @@ export class TelematicsService {
         }
 
         let localVarPath = `/api/telematics/assign/company`;
-        return this.httpClient.request<object>('post', `${this.gpsPath}${localVarPath}`,
+        return this.httpClient.request<object>('post', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 body: assignGpsDevicesToCompanyCommand,
@@ -247,7 +246,7 @@ export class TelematicsService {
         }
 
         let localVarPath = `/api/telematics/assign/trailer`;
-        return this.httpClient.request<object>('post', `${this.gpsPath}${localVarPath}`,
+        return this.httpClient.request<object>('post', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 body: assignGpsDevicesToTrailerCommand,
@@ -322,7 +321,7 @@ export class TelematicsService {
         }
 
         let localVarPath = `/api/telematics/assign/truck`;
-        return this.httpClient.request<object>('post', `${this.gpsPath}${localVarPath}`,
+        return this.httpClient.request<object>('post', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 body: assignGpsDevicesToTruckCommand,
@@ -437,7 +436,7 @@ export class TelematicsService {
         }
 
         let localVarPath = `/api/telematics/data/all`;
-        return this.httpClient.request<LiveTrackingResponse>('get', `${this.gpsPath}${localVarPath}`,
+        return this.httpClient.request<LiveTrackingResponse>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 params: localVarQueryParameters,
@@ -507,7 +506,7 @@ export class TelematicsService {
         }
 
         let localVarPath = `/api/telematics/data`;
-        return this.httpClient.request<LiveTrackingItemResponse>('get', `${this.gpsPath}${localVarPath}`,
+        return this.httpClient.request<LiveTrackingItemResponse>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 params: localVarQueryParameters,
@@ -582,7 +581,7 @@ export class TelematicsService {
         }
 
         let localVarPath = `/api/telematics/history`;
-        return this.httpClient.request<LiveTrackingHistoryResponse>('get', `${this.gpsPath}${localVarPath}`,
+        return this.httpClient.request<LiveTrackingHistoryResponse>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 params: localVarQueryParameters,
@@ -657,7 +656,7 @@ export class TelematicsService {
         }
 
         let localVarPath = `/api/telematics/mobile`;
-        return this.httpClient.request<object>('post', `${this.gpsPath}${localVarPath}`,
+        return this.httpClient.request<object>('post', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 body: mobileGpsDataCommand,
@@ -722,9 +721,9 @@ export class TelematicsService {
                 responseType_ = 'blob';
             }
         }
-        let localVarPath = `/api/telematics/unassign/all`;
 
-        return this.httpClient.request<LiveTrackingSignalResponse>('get', `${this.gpsPath}${localVarPath}`,
+        let localVarPath = `/api/telematics/unassign/all`;
+        return this.httpClient.request<LiveTrackingSignalResponse>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,
@@ -790,7 +789,7 @@ export class TelematicsService {
         }
 
         let localVarPath = `/api/telematics/unassign/company`;
-        return this.httpClient.request<LiveTrackingSignalResponse>('get', `${this.gpsPath}${localVarPath}`,
+        return this.httpClient.request<LiveTrackingSignalResponse>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,
