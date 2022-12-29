@@ -86,15 +86,6 @@ const routes: Routes = [
         resolve: { dashboard: DashboardResolverService },
     },
     {
-        path: 'ads',
-        loadChildren: () =>
-            import('./core/components/dispatcher/dispatcher.module').then(
-                (m) => m.DispatcherModule
-            ),
-        canActivate: [AuthGuard],
-        resolve: { dispatcher: DispatcherResolverService },
-    },
-    {
         path: 'dispatcher',
         loadChildren: () =>
             import('./core/components/dispatch/dispatch.module').then(
