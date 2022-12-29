@@ -14,7 +14,8 @@
         background-color: #f3f3f3;
     }
 
-    &:hover, &.keep_open {
+    &:hover,
+    &.keep_open {
         transition: all 0.3s ease-in-out;
         background-color: #f3f3f3;
 
@@ -288,7 +289,7 @@
                 &.active {
                     transition: all 0.1s ease-in-out;
                     background-color: #424242;
-                    
+
                     svg {
                         path {
                             fill: #ffffff;
@@ -365,7 +366,14 @@
                 box-shadow: 0 0 4px rgb(0, 0, 0, 0.15);
             }
 
-            .textLayer span {
+            .textLayer span,
+            .textLayer input,
+            .textLayer textarea,
+            .annotationLayer section,
+            .annotationLayer section input,
+            .annotationLayer section textarea {
+                background-image: none !important;
+                pointer-events: none !important;
                 user-select: none !important;
                 cursor: default !important;
             }
@@ -723,7 +731,7 @@
     .ta-upload-file-footer {
         position: relative;
         height: 26px;
-        
+
         p {
             margin: 0;
         }
@@ -871,10 +879,10 @@
             .ta-upload-file-name {
                 background-color: rgba(255, 255, 255, 0.7) !important;
                 transition: 0.1s all ease-in-out;
-    
+
                 &:hover {
                     transition: 0.1s all ease-in-out;
-                    background-color: rgba(255, 255, 255, 0.9) !important; 
+                    background-color: rgba(255, 255, 255, 0.9) !important;
                 }
             }
 
@@ -889,10 +897,10 @@
                             background-color: #ffb74de6;
                         }
                     }
-    
+
                     &-pdf {
                         background-color: #ef535080;
-    
+
                         &:hover {
                             background-color: #ef5350e6;
                         }
@@ -901,11 +909,11 @@
 
                 .document_info_hold {
                     transition: 0.1s all ease-in-out;
-                    background-color: #6C6C6C80 !important;
+                    background-color: #6c6c6c80 !important;
 
                     &:hover {
                         transition: 0.1s all ease-in-out;
-                        background-color: #6C6C6CE6 !important;
+                        background-color: #6c6c6ce6 !important;
                     }
                 }
             }
@@ -914,11 +922,11 @@
         .ta-upload-file-tag {
             opacity: 0;
             transition: 0.1s all ease-in-out;
-            background-color: #3074D380;
+            background-color: #3074d380;
 
             &:hover {
                 transition: 0.1s all ease-in-out;
-                background-color: #3074D3E6;
+                background-color: #3074d3e6;
             }
         }
 
@@ -1016,10 +1024,10 @@
         height: 332px;
         grid-template-rows: 332px;
 
-        background-color: #DADADA !important;
+        background-color: #dadada !important;
 
         &:hover {
-            background-color: #CCCCCC !important;
+            background-color: #cccccc !important;
         }
 
         .ta-upload-file-footer {
@@ -1197,7 +1205,7 @@
     min-width: 172px;
     padding: 4px;
 
-    background-color: #2F2F2F;
+    background-color: #2f2f2f;
     border-radius: 3px;
     box-shadow: 0 0 4px rgb(0, 0, 0, 0.15);
 
@@ -1208,11 +1216,11 @@
         border-radius: 2px;
 
         &:hover {
-            background-color: #1D1D1D;
+            background-color: #1d1d1d;
         }
 
         .remove_tag {
-            color: #E57373;
+            color: #e57373;
             font-weight: 700;
             font-size: 11px;
             line-height: 14px;
@@ -1228,7 +1236,7 @@
             width: 100%;
             height: 1px;
 
-            background-color: #AAAAAA;
+            background-color: #aaaaaa;
         }
     }
 
@@ -1289,7 +1297,7 @@
         }
 
         &:hover {
-            background-color: #1D1D1D;
+            background-color: #1d1d1d;
 
             .tag_options_holder {
                 .checked_icon {

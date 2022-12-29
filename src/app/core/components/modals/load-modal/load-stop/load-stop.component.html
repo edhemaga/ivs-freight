@@ -64,7 +64,7 @@
                 >
                     <p>
                         {{ isEmptyLoad ? 'DEADHEAD' : 'LEG' }}
-                        <span>{{ legMile }} mi</span>
+                        <span>{{ legMile | number: '1.2-2' }} mi</span>
                     </p>
                 </div>
                 <div

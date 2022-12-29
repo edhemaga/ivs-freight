@@ -45,6 +45,8 @@ import { ApplicantTableResolver } from './core/components/driver/state/applicant
 import { ApplicantSphFormResolver } from './core/components/applicant/state/resolver/applicant-sph-form.resolver';
 import { MilesResolverService } from './core/components/miles/state/miles-resolver.service';
 import { DispatcherResolverService } from './core/components/dispatch/state/dispatcher-resolver.service';
+import { HideContentGuard } from './core/guards/hideContent.guard';
+import { ApplicantGuard } from './core/guards/applicant.guard';
 
 const routes: Routes = [
     // Auth Routes
@@ -54,21 +56,25 @@ const routes: Routes = [
             import('./core/components/authentication/auth.module').then(
                 (m) => m.AuthModule
             ),
+        canActivate: [HideContentGuard],
     },
     {
         path: 'api/account/signupuser',
         component: HelperSignupUserComponent,
         data: { title: 'Helper Component Route' },
+        canActivate: [HideContentGuard],
     },
     {
         path: 'api/account/verifyowner',
         component: HelperComponent,
         data: { title: 'Helper Component Route' },
+        canActivate: [HideContentGuard],
     },
     {
         path: 'api/account/verifyforgotpassword',
         component: HelperForgotPasswordComponent,
         data: { title: 'Helper Component Route' },
+        canActivate: [HideContentGuard],
     },
     {
         path: 'dashboard',
@@ -78,15 +84,6 @@ const routes: Routes = [
             ),
         canActivate: [AuthGuard],
         resolve: { dashboard: DashboardResolverService },
-    },
-    {
-        path: 'ads',
-        loadChildren: () =>
-            import('./core/components/dispatcher/dispatcher.module').then(
-                (m) => m.DispatcherModule
-            ),
-        canActivate: [AuthGuard],
-        resolve: { dispatcher: DispatcherResolverService },
     },
     {
         path: 'dispatcher',
@@ -112,6 +109,7 @@ const routes: Routes = [
                 (m) => m.UserModule
             ),
         data: { title: 'User' },
+        canActivate: [AuthGuard],
         resolve: {
             user: UserResolver,
         },
@@ -313,15 +311,11 @@ const routes: Routes = [
         canActivate: [AuthGuard],
         resolve: { todo: TodoResolverService },
     },
+    // ------- Applicant Section
     {
         path: 'applicant/welcome',
         component: ApplicantWelcomeScreenComponent,
         data: { title: 'Welcome Screen' },
-    },
-    {
-        path: 'applicant/end',
-        component: ApplicantEndScreenComponent,
-        data: { title: 'End Screen' },
     },
     {
         path: 'application/:id',
@@ -329,16 +323,6 @@ const routes: Routes = [
             import('./core/components/applicant/applicant.module').then(
                 (m) => m.ApplicantModule
             ),
-        canActivate: [AuthGuard],
-        resolve: { applicant: ApplicantResolver },
-    },
-    {
-        path: 'owner-info/:id',
-        loadChildren: () =>
-            import(
-                './core/components/applicant/applicant-tabs/owner-info/owner-info.module'
-            ).then((m) => m.OwnerInfoModule),
-        canActivate: [AuthGuard],
         resolve: { applicant: ApplicantResolver },
     },
     {
@@ -347,8 +331,7 @@ const routes: Routes = [
             import(
                 './core/components/applicant/applicant-tabs/medical-certificate/medical-certificate.module'
             ).then((m) => m.MedicalCertificateModule),
-        canActivate: [AuthGuard],
-        resolve: { applicant: ApplicantResolver },
+        canActivate: [ApplicantGuard],
     },
     {
         path: 'mvr-authorization/:id',
@@ -356,8 +339,7 @@ const routes: Routes = [
             import(
                 './core/components/applicant/applicant-tabs/mvr-authorization/mvr-authorization.module'
             ).then((m) => m.MvrAuthorizationModule),
-        canActivate: [AuthGuard],
-        resolve: { applicant: ApplicantResolver },
+        canActivate: [ApplicantGuard],
     },
     {
         path: 'psp-authorization/:id',
@@ -365,8 +347,7 @@ const routes: Routes = [
             import(
                 './core/components/applicant/applicant-tabs/psp-authorization/psp-authorization.module'
             ).then((m) => m.PspAuthorizationModule),
-        canActivate: [AuthGuard],
-        resolve: { applicant: ApplicantResolver },
+        canActivate: [ApplicantGuard],
     },
     {
         path: 'sph/:id',
@@ -374,9 +355,7 @@ const routes: Routes = [
             import(
                 './core/components/applicant/applicant-tabs/sph/sph.module'
             ).then((m) => m.SphModule),
-
-        canActivate: [AuthGuard],
-        resolve: { applicant: ApplicantResolver },
+        canActivate: [ApplicantGuard],
     },
     {
         path: 'sph-form/1',
@@ -384,8 +363,6 @@ const routes: Routes = [
             import(
                 './core/components/applicant/applicant-tabs/sph/sph-form/sph-form.module'
             ).then((m) => m.SphFormModule),
-
-        canActivate: [AuthGuard],
         resolve: { applicantSphForm: ApplicantSphFormResolver },
     },
     {
@@ -400,8 +377,7 @@ const routes: Routes = [
             import(
                 './core/components/applicant/applicant-tabs/hos-rules/hos-rules.module'
             ).then((m) => m.HosRulesModule),
-        canActivate: [AuthGuard],
-        resolve: { applicant: ApplicantResolver },
+        canActivate: [ApplicantGuard],
     },
     {
         path: 'ssn-card/:id',
@@ -409,8 +385,7 @@ const routes: Routes = [
             import(
                 './core/components/applicant/applicant-tabs/ssn-card/ssn-card.module'
             ).then((m) => m.SsnCardModule),
-        canActivate: [AuthGuard],
-        resolve: { applicant: ApplicantResolver },
+        canActivate: [ApplicantGuard],
     },
     {
         path: 'cdl-card/:id',
@@ -418,6 +393,21 @@ const routes: Routes = [
             import(
                 './core/components/applicant/applicant-tabs/cdl-card/cdl-card.module'
             ).then((m) => m.CdlCardModule),
+        canActivate: [ApplicantGuard],
+    },
+    {
+        path: 'applicant/end',
+        component: ApplicantEndScreenComponent,
+        data: { title: 'End Screen' },
+        canActivate: [ApplicantGuard],
+    },
+    // ------- Applicant End
+    {
+        path: 'owner-info/:id',
+        loadChildren: () =>
+            import(
+                './core/components/applicant/applicant-tabs/owner-info/owner-info.module'
+            ).then((m) => m.OwnerInfoModule),
         canActivate: [AuthGuard],
         resolve: { applicant: ApplicantResolver },
     },

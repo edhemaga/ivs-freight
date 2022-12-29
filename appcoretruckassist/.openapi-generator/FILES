@@ -521,6 +521,7 @@ model/repairedVehicleListResponse.ts
 model/repairedVehicleResponse.ts
 model/repairedVehicleResponsePagination.ts
 model/resendInviteCommand.ts
+model/resendSignUpCompanyCommand.ts
 model/reviewByEntityTypeListResponse.ts
 model/reviewResponse.ts
 model/reviewResponsePagination.ts
