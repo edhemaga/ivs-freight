@@ -170,6 +170,11 @@ export const descriptionValidation = [
     Validators.maxLength(160),
 ];
 
+export const descriptionPayrollBonusValidation = [
+    Validators.minLength(2),
+    Validators.maxLength(40),
+];
+
 //---------------- Label
 export const labelValidation = [
     Validators.minLength(1),

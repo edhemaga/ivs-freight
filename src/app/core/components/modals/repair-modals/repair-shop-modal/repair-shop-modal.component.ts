@@ -123,6 +123,9 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
 
     public disableCardAnimation: boolean = false;
 
+    public longitude: number;
+    public latitude: number;
+
     constructor(
         private formBuilder: FormBuilder,
         private inputService: TaInputService,
@@ -434,11 +437,14 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
     }
 
     public onHandleAddress(event: {
-        address: AddressEntity | any;
+        address: AddressEntity;
         valid: boolean;
-    }): void {
+        longLat: any;
+    }) {
         if (event.valid) {
             this.selectedAddress = event.address;
+            this.longitude = event.longLat.longitude;
+            this.latitude = event.longLat.latitude;
         }
     }
 
@@ -537,6 +543,8 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
                     this.isPhoneExtExist = !!res.phoneExt;
                     this.isRepairShopFavourite = res.pinned;
                     this.documents = res.files;
+                    this.longitude = res.longitude;
+                    this.latitude = res.latitude;
 
                     this.services = res.serviceTypes.map((item) => {
                         return {
@@ -697,6 +705,8 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
                 };
             }),
             files: documents,
+            longitude: this.longitude,
+            latitude: this.latitude,
         };
 
         for (let index = 0; index < contacts.length; index++) {
@@ -837,6 +847,8 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
                 };
             }),
             files: documents,
+            longitude: this.longitude,
+            latitude: this.latitude,
         };
 
         for (let index = 0; index < contacts.length; index++) {
