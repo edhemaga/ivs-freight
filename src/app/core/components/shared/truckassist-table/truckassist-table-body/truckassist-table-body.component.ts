@@ -41,7 +41,7 @@ import { FilesService } from 'src/app/core/services/shared/files.service';
     ],
 })
 export class TruckassistTableBodyComponent
-    implements OnInit, OnChanges, AfterViewInit, OnDestroy,AfterContentInit
+    implements OnInit, OnChanges, AfterViewInit, OnDestroy, AfterContentInit
 {
     private destroy$ = new Subject<void>();
     @ViewChild('tableScrollRef', { static: false })
@@ -196,7 +196,6 @@ export class TruckassistTableBodyComponent
 
     // --------------------------------NgOnChanges---------------------------------
     ngOnChanges(changes: SimpleChanges): void {
-        console.log("CHANGES INSIDE BODY");
         if (!changes?.viewData?.firstChange && changes?.viewData) {
             clearTimeout(this.viewDataTimeOut);
 
@@ -522,17 +521,24 @@ export class TruckassistTableBodyComponent
     }
 
     // Show Attachments
-    onShowAttachments(row: any) {
+    onShowAttachments(row: any, popup) {
         if (this.activeAttachment !== row.id) {
-            this.activeAttachment = row.id;
             let entity = this.activeTableData?.gridNameTitle;
 
-            if(entity == 'Repair' && this.selectedTab == 'repair-shop') {
+            if (entity == 'Repair' && this.selectedTab == 'repair-shop') {
                 entity = 'Repair-Shop';
             }
 
             this.filesService.getFiles(entity, row.id).subscribe((res) => {
+                this.activeAttachment = row.id;
                 row.tableAttachments = res;
+                if(res?.length == 1) {
+                    if (popup.isOpen()) {
+                        popup.close();
+                    } else {
+                        popup.open({ data: res });
+                    }
+                }
                 this.changeDetectorRef.detectChanges();
             });
         } else {

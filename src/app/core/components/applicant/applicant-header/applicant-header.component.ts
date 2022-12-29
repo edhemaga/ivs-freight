@@ -133,7 +133,7 @@ export class ApplicantHeaderComponent implements OnInit, OnChanges {
     public getStepValuesFromStore(): void {
         this.applicantQuery.applicant$
             .pipe(takeUntil(this.destroy$))
-            .subscribe((res: ApplicantResponse) => {
+            .subscribe((res: any) => {
                 console.log('RES', res);
                 this.applicantId = res.id;
 
@@ -204,7 +204,7 @@ export class ApplicantHeaderComponent implements OnInit, OnChanges {
                             if (index === 7) {
                                 return {
                                     ...item,
-                                    isCompleted: res.ssn ? true : false,
+                                    // isCompleted: res.ssn ? true : false,
                                 };
                             }
 

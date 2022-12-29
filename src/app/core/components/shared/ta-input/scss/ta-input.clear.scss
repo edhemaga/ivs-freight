@@ -275,13 +275,33 @@
         }
 
         &.invalid-focus-out {
+            .input-clear-x {
+                svg {
+                    path {
+                        fill: #e57373;
+                    }
+                    rect {
+                        fill: #e57373;
+                    }
+                }
+                &:hover {
+                    svg {
+                        path {
+                            fill: #f44336;
+                        }
+                        rect {
+                            fill: #f44336;
+                        }
+                    }
+                }
+            }
             &::before {
                 content: '';
                 display: block;
                 height: 16px;
                 width: 1px;
                 border-radius: 3px;
-                background-color: $input-text-color-invalid-focus-out;
+                background-color: #ffcdd2;
                 position: absolute;
                 right: 22px;
                 top: 5px;

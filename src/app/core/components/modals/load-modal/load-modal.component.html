@@ -65,7 +65,7 @@
                 <!------------------ Companies Cassses ------------------>
                 <!-- Only One Company -->
                 <app-ta-input
-                    *ngIf="labelsCompanies.length === 1"
+                    *ngIf="labelsCompanies.length <= 1"
                     formControlName="companyId"
                     [inputConfig]="{
                         name: 'Company',
@@ -394,7 +394,7 @@
                             | loadDatetimeRange
                                 : loadForm.get('pickupTimeTo').value
                     "
-                    [legMile]="null"
+                    [legMile]="loadForm.get('pickuplegMiles').value"
                     [isEmptyLoad]="true"
                     [shipperContact]="{
                         fullName: selectedPickupShipperContact?.name
@@ -577,7 +577,10 @@
                                                   .at(indx)
                                                   .get('dateTo').value
                                 "
-                                [legMile]="''"
+                                [legMile]="
+                                    loadExtraStops().at(indx).get('legMiles')
+                                        .value
+                                "
                                 [isEmptyLoad]="false"
                                 [shipperContact]="{
                                     fullName:
@@ -609,9 +612,7 @@
                                                     indx
                                                 )
                                             "
-                                            [type]="
-                                                'type2-modal-popup load-type2-modal-popup'
-                                            "
+                                            [type]="'type2-modal-popup'"
                                         ></app-ta-tab-switch>
                                     </div>
                                 </div>
@@ -799,13 +800,22 @@
                     [isDelivery]="true"
                     [shipper]="selectedDeliveryShipper?.name"
                     [shipperAddress]="selectedDeliveryShipper?.address"
-                    [dateRange]="loadForm.get('deliveryDateFrom').value"
-                    [timeRange]="loadForm.get('deliveryDateTo').value"
-                    [legMile]="null"
-                    [isEmptyLoad]="true"
+                    [dateRange]="
+                        loadForm.get('deliveryDateFrom').value
+                            | loadDatetimeRange
+                                : loadForm.get('deliveryDateTo').value
+                    "
+                    [timeRange]="
+                        loadForm.get('deliveryTimeFrom').value
+                            | loadDatetimeRange
+                                : loadForm.get('deliveryTimeTo').value
+                    "
+                    [legMile]="loadForm.get('deliverylegMiles').value"
+                    [isEmptyLoad]="false"
                     [shipperContact]="{
                         fullName: selectedDeliveryShipperContact?.name
                     }"
+                    [disabledCard]="!selectedPickupShipper"
                     [isOpen]="isActiveDeliveryStop"
                     (toggle)="toggleStopActivity($event, 'first-delivery')"
                 >
@@ -948,25 +958,46 @@
                 <div class="stops-footer-bar">
                     <div class="stops-footer-bar-left-side">
                         <p class="stops-footer-bar-text">LOADED MILES</p>
-                        <span class="loaded-miles-value">78.8 mi</span>
+                        <span class="loaded-miles-value"
+                            >{{
+                                loadForm.get('loadMiles').value
+                                    | number: '1.2-2'
+                            }}
+                            mi</span
+                        >
                     </div>
                     <div class="stops-footer-bar-right-side">
                         <p class="stops-footer-bar-text">TOTAL MILES</p>
-                        <span class="total-miles-value">245.5 mi</span>
+                        <span class="total-miles-value"
+                            >{{
+                                loadForm.get('totalMiles').value
+                                    | number: '1.2-2'
+                            }}
+                            mi</span
+                        >
                     </div>
                 </div>
             </app-ta-custom-card>
 
             <app-load-financial
                 [firstHeaderTitle]="'Billing'"
-                [billing]="loadModalBill | financialCalculation | currency"
+                [billing]="
+                    loadModalBill | financialCalculation: 'billing' | currency
+                "
                 [disableBillAction]="
                     !loadForm.get('baseRate').value ||
                     !additionalBillingTypes?.length
                 "
-                [adjusted]="loadForm.get('adjustedRate').value"
+                [adjusted]="
+                    loadForm.get('adjustedRate').value ||
+                    loadForm.get('driverRate').value
+                "
                 [secondHeaderTitle]="'Payment'"
-                [payment]="0"
+                [payment]="
+                    loadModalPayment
+                        | financialCalculation: 'payment'
+                        | currency
+                "
                 [disablePaymentAction]="!loadForm.get('baseRate').value"
                 [thirdHeaderTitle]="'Invoice Ageing'"
                 [isCardOpen]="true"
@@ -978,6 +1009,7 @@
                 (action)="onFinancialAction($event)"
             >
                 <div class="load-financial-container">
+                    <!-- =============================== Billing =============================== -->
                     <div class="load-financial-billing">
                         <!-- Base Rate -->
                         <app-ta-input
@@ -1037,6 +1069,7 @@
                                 inputCursorOnRightSide: true,
                                 hideErrorMessage: true,
                                 hideRequiredCheck: true,
+                                hideDangerMark: true,
                                 customClass: 'dollar-placeholderIcon',
                                 thousandSeparator: true
                             }"
@@ -1095,16 +1128,25 @@
                     </div>
                     <div class="load-financial-payment">
                         <app-ta-input
+                            *ngIf="isVisiblePayment"
                             formControlName="advancePay"
                             [inputConfig]="{
                                 name: 'base-rate',
                                 type: 'text',
                                 label: 'Advance',
+                                labelInInput: true,
                                 isRequired: true,
-                                placeholderIcon: 'dollar',
+                                placeholderIconRightSide: 'dollar',
+                                placeholderIconColor: 'purple',
+                                inputCursorOnRightSide: true,
+                                hideErrorMessage: true,
+                                hideRequiredCheck: true,
+                                hideDangerMark: true,
                                 customClass: 'dollar-placeholderIcon',
-                                thousandSeparator: true
+                                thousandSeparator: true,
+                                removeInput: true
                             }"
+                            (clear)="removeAdditionalPayment()"
                         ></app-ta-input>
                     </div>
                     <div class="load-financial-invoice">
