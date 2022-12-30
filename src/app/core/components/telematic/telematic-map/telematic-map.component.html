@@ -55,7 +55,8 @@
                             [ngClass]="{
                                 'selected-marker':
                                     focusedDeviceId == location.deviceId,
-                                'trailer-marker': location.trailerNumber
+                                'trailer-marker': location.trailerNumber,
+                                'hide-marker': location.hidden
                             }"
                             (click)="markerClick(location)"
                         >
@@ -512,9 +513,10 @@
                 >
                     <div
                         class="gps-list-row"
-                        (click)="markerClick(location)"
+                        (click)="location.hidden ? showHideDevice($event, location) : markerClick(location)"
                         [ngClass]="{
-                            'selected-row': focusedDeviceId == location.deviceId
+                            'selected-row': focusedDeviceId == location.deviceId,
+                            'hidden-row': location.hidden
                         }"
                         [formGroup]="$any(deviceInputs)"
                     >
@@ -776,7 +778,7 @@
                                             column.iconInsteadOfValue &&
                                             !column.hidden
                                         "
-                                        [src]="column.valueIconUrl"
+                                        [src]="location[column.value] ? column.activeValueIconUrl : column.inactiveValueIconUrl"
                                         [svgStyle]="{
                                             'width.px': 14,
                                             'height.px': 14
@@ -787,6 +789,7 @@
                                             'margin-right':
                                                 column.marginRight + 'px'
                                         }"
+                                        (click)="column.name == 'hidden' ? showHideDevice($event, location) : ''"
                                     ></svg-icon>
                                 </ng-container>
                             </ng-container>
