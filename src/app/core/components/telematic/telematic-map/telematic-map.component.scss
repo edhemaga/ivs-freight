@@ -50,6 +50,8 @@
     
     pointer-events: auto;
     transform: translateX(-16px);
+    transition: 0.2s;
+    opacity: 1;
 
     &.trailer-marker {
         svg {
@@ -99,6 +101,10 @@
 
     &.smaller-marker {
         transform: translate(-50%, 0%) scale(0.5) !important;
+    }
+
+    &.hide-marker {
+        opacity: 0;
     }
 }
 
@@ -711,4 +717,8 @@
 .align-columns {
     justify-content: space-between;
     width: 100%;
+}
+
+.hidden-row {
+    opacity: 0.4;
 }

@@ -268,7 +268,8 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
             iconUrl: 'assets/svg/common/telematics/ic_eye-open.svg',
             value: 'hidden',
             iconInsteadOfValue: true,
-            valueIconUrl: 'assets/svg/common/telematics/ic_eye-open.svg',
+            activeValueIconUrl: 'assets/svg/common/ic_eye-visible.svg',
+            inactiveValueIconUrl: 'assets/svg/common/telematics/ic_eye-open.svg',
             alwaysShown: true,
             showInRegularView: true,
             showInExpand: true,
@@ -1049,6 +1050,31 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
             .subscribe((gpsData: any) => {
                 console.log('getGpsHistory gpsData', gpsData);
             });
+    }
+
+    showHideDevice(event, device) {
+        event.preventDefault();
+        event.stopPropagation();
+
+        var showHide = !device.hidden;
+
+        this.driverLocations.map((item) => {
+            if ( item.deviceId == device.deviceId ) {
+                item.hidden = showHide;
+            }
+        });
+
+        this.gpsAssignedData.map((item) => {
+            if ( item.deviceId == device.deviceId ) {
+                item.hidden = showHide;
+            }
+        });
+
+        this.filteredAssignedDevices.map((item) => {
+            if ( item.deviceId == device.deviceId ) {
+                item.hidden = showHide;
+            }
+        });
     }
 
     ngOnDestroy(): void {
