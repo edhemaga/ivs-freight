@@ -696,7 +696,7 @@
                                         ? route.routeColor
                                         : routeColors[0],
                                     strokeWeight: 6,
-                                    zIndex: 1
+                                    zIndex: route.stops[j].zIndex ? route.stops[j].zIndex : 1
                                 },
                                 suppressMarkers: true
                             }"
@@ -718,7 +718,7 @@
                                 polylineOptions: {
                                     strokeColor: '#fff',
                                     strokeWeight: 3,
-                                    zIndex: 2
+                                    zIndex: route.stops[j].zIndex ? route.stops[j].zIndex : 2
                                 },
                                 suppressMarkers: true
                             }"
