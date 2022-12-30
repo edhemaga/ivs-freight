@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="64.162" height="52.326" viewBox="0 0 64.162 52.326">
+  <defs>
+    <linearGradient id="gradient1" x1="0.5" x2="0.5" y2="1" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#536bc2" stop-opacity="0"/>
+      <stop offset="1" stop-color="#536bc2"/>
+    </linearGradient>
+    <filter id="Path_41072" x="21" y="9.163" width="33.999" height="34" filterUnits="userSpaceOnUse">
+      <feOffset input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="2" result="blur"/>
+      <feFlood flood-opacity="0.149"/>
+      <feComposite operator="in" in2="blur"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+    <filter id="Path_41072-2" x="9" y="9.163" width="34" height="33.999" filterUnits="userSpaceOnUse">
+      <feOffset input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="2" result="blur-2"/>
+      <feFlood flood-opacity="0.149"/>
+      <feComposite operator="in" in2="blur-2"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+  </defs>
+  <g id="Group_98025" data-name="Group 98025" transform="translate(13.999 17.163)">
+    <path id="Path_41079" data-name="Path 41079" d="M0,0H18L14,28H4Z" transform="translate(50.163 22.435) rotate(135)" fill="url(#gradient1)"/>
+    <g id="Group_98027" data-name="Group 98027" transform="translate(11303 -11236) rotate(90)">
+      <g transform="matrix(0, -1, 1, 0, 11218.84, 11317)" filter="url(#Path_41072)">
+        <path id="Path_41072-3" data-name="Path 41072" d="M44.015.921l7.857,7.857a3.142,3.142,0,0,1,0,4.444l-7.857,7.857a3.142,3.142,0,0,1-4.444,0l-7.857-7.857a3.139,3.139,0,0,1,0-4.444L39.571.921a3.142,3.142,0,0,1,4.444,0" transform="translate(49 -15.63) rotate(90)" fill="#fff"/>
+      </g>
+      <path id="Path_41073" data-name="Path 41073" d="M43.206,3.586l6,6a2,2,0,0,1,0,2.828l-6,6a2,2,0,0,1-2.828,0l-6-6a2,2,0,0,1,0-2.828l6-6a2,2,0,0,1,2.828,0" transform="translate(11203.207 11268)" fill="#97a8dc"/>
+    </g>
+  </g>
+  <g id="Group_98024" data-name="Group 98024" transform="translate(2.163 17.163)">
+    <path id="Path_41080" data-name="Path 41080" d="M0,0H18L14,28H4Z" transform="translate(-2.163 -4.435) rotate(-45)" fill="url(#gradient1)"/>
+    <g id="Group_98026" data-name="Group 98026" transform="translate(-11221.163 -11270)">
+      <g transform="matrix(1, 0, 0, 1, 11219, 11252.84)" filter="url(#Path_41072-2)">
+        <path id="Path_41072-4" data-name="Path 41072" d="M44.015.921l7.857,7.857a3.142,3.142,0,0,1,0,4.444l-7.857,7.857a3.142,3.142,0,0,1-4.444,0l-7.857-7.857a3.139,3.139,0,0,1,0-4.444L39.571.921a3.142,3.142,0,0,1,4.444,0" transform="translate(-15.79 15.16)" fill="#fff"/>
+      </g>
+      <path id="Path_41073-2" data-name="Path 41073" d="M43.206,3.586l6,6a2,2,0,0,1,0,2.828l-6,6a2,2,0,0,1-2.828,0l-6-6a2,2,0,0,1,0-2.828l6-6a2,2,0,0,1,2.828,0" transform="translate(11203.207 11268)" fill="#536bc2"/>
+    </g>
+  </g>
+</svg>

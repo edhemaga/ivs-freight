@@ -50,6 +50,7 @@ import { ApplicantGuard } from './core/guards/applicant.guard';
 
 const routes: Routes = [
     // Auth Routes
+
     {
         path: 'auth',
         loadChildren: () =>
@@ -76,6 +77,9 @@ const routes: Routes = [
         data: { title: 'Helper Component Route' },
         canActivate: [HideContentGuard],
     },
+
+    // Auth Routes
+
     {
         path: 'dashboard',
         loadChildren: () =>
@@ -252,6 +256,14 @@ const routes: Routes = [
             ),
         canActivate: [AuthGuard],
     },
+    {
+        path: 'gpstracking',
+        loadChildren: () =>
+          import('./core/components/telematic/telematic.module').then(
+            (m) => m.TelematicModule
+          ),
+        canActivate: [AuthGuard],
+      },
     {
         path: 'tools/calendar',
         loadChildren: () =>

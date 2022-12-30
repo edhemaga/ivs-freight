@@ -44,6 +44,12 @@ export class MapToolbarComponent implements OnInit, OnChanges, OnDestroy {
     @Input() isTimeZoneActive: boolean = false;
     @Input() isDopplerOn: boolean = false;
     @Input() trafficLayerShow: boolean = false;
+    @Input() unassignedDevicesActive: boolean = false;
+    @Input() unassignedDevices: any = {};
+    @Input() truckFilterActive: boolean = false;
+    @Input() trailerFilterActive: boolean = false;
+    @Input() driverFilterActive: boolean = false;
+    @Input() infoActive: boolean = false;
     listName: string = '';
     mapSettingsPopupOpen: boolean = false;
     addRoutePopupOpen: boolean = false;
@@ -743,5 +749,20 @@ export class MapToolbarComponent implements OnInit, OnChanges, OnDestroy {
                     });
                 });
             });
+    }
+
+    showHideUnassignedDevices() {
+        this.toolBarAction.emit({
+            action: 'show-hide-unassigned'
+        });
+    }
+
+    setFilterEvent(event) {
+        console.log('setFilterEvent event', event);
+
+        // this.toolBarAction.emit({
+        //     action: 'activate-filter',
+        //     data: filter
+        // });
     }
 }

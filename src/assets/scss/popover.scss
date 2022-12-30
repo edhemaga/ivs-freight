@@ -1917,3 +1917,70 @@
     .ngx-slider-item:not(.cdk-drag-placeholder) {
     transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
 }
+
+.columns-menu-container {
+    width: 160px;
+    padding: 2px;
+    margin-left: 12px;
+    background: #fff;
+    border-radius: 3px;
+    box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.15);
+
+    .columns-menu-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        height: 26px;
+        padding: 4px;
+        border-radius: 2px;
+
+        &:hover {
+            background: #F3F3F3;
+            cursor: pointer;
+        }
+        
+        .columns-menu-svg {
+            margin-right: 6px;
+        }
+
+        .columns-menu-arrow {
+            transition: all 0.2s ease-in-out;
+            transform: rotate(270deg);
+
+            &.rotate {
+                transform: rotate(90deg);
+            }
+        }
+
+        .columns-align {
+            display: flex;
+            align-items: center;
+        }
+    }
+
+    &.side-menu {
+        position: relative;
+        left: 164px;
+        top: -30px;
+        width: 151px;
+        transition: 0.2s;
+
+        &.hide-menu {
+            width: 0px;
+            padding: 0px;
+            overflow: hidden;
+
+            .text-container, .ta-checkbox-label {
+                width: 0%;
+            }
+        }
+
+        .text-container, .ta-checkbox-label {
+            width: 100%;
+            height: 18px;
+            transition: 0.2s;
+            overflow: hidden;
+        }
+    }
+}

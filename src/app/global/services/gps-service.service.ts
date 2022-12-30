@@ -10,6 +10,7 @@ import { environment } from 'src/environments/environment';
 export class GpsServiceService {
     private hubConnection: signalR.HubConnection;
     private destroy$ = new Subject<void>();
+    public gpsStatusChange = new Subject<any>();
     constructor(private router: Router) {
         this.router.events
             .pipe(
@@ -34,6 +35,7 @@ export class GpsServiceService {
 
             this.hubConnection.on('GpsData', (gps) => {
                 console.log(gps);
+                this.gpsStatusChange.next(gps);
             });
 
             this.hubConnection
