@@ -603,6 +603,8 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
                             if (res.template === 'route') {
                                 this.deleteRouteLine(res.data);
 
+                                this.focusedRouteIndex = null;
+
                                 this.routingService
                                     .deleteRouteById(res.id)
                                     .pipe(takeUntil(this.destroy$))
