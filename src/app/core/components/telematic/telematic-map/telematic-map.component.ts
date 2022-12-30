@@ -416,6 +416,9 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
     markerClick(device) {
         if (this.focusedDeviceId != device.deviceId) {
             this.focusedDeviceId = device.deviceId;
+
+            this.mapLatitude = device.latitude;
+            this.mapLongitude = device.longitude; 
         } else {
             this.focusedDeviceId = 0;
         }
