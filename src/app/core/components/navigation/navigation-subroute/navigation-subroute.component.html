@@ -1,6 +1,5 @@
 <div class="subroutes-container">
     <div
-        [@showHideDetails]="isNavigationHovered ? 'true' : 'false'"
         *ngFor="let item of subroute.route; trackBy: identity"
         class="subroutes"
         [ngClass]="{

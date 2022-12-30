@@ -32,9 +32,11 @@ export class NavigationFooterComponent implements OnInit, OnDestroy {
     public currentUserStatus: string = 'online';
 
     public footerData: FooterData[] = footerData;
-    public hide:number;
     public loggedUser: any = null;
 
+
+    isModalPanelOpen
+    isUserCompanyDetailsOpen
     constructor(
         private router: Router,
         private navigationService: NavigationService,
@@ -108,9 +110,47 @@ export class NavigationFooterComponent implements OnInit, OnDestroy {
                     this.cdRef.detectChanges();
                 }
             });
+
+            this.navigationService.navigationDropdownActivation$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((data) => {
+                switch (data.name) {
+                    case 'Modal Panel': {
+                        if (data.type) {
+                            this.isModalPanelOpen = data.type;
+                            this.isUserPanelOpen = false;
+                            this.isUserCompanyDetailsOpen = false;
+                        } else {
+                            this.isModalPanelOpen = data.type;
+                        }
+                        break;
+                    }
+                    case 'User Panel': {
+                        if (data.type) {
+                            this.isModalPanelOpen = false;
+                            this.isUserPanelOpen = data.type;
+                            this.isUserCompanyDetailsOpen = false;
+                        } else {
+                            this.isUserPanelOpen = data.type;
+                        }
+                        break;
+                    }
+                    case 'User Company Details': {
+                        if (data.type) {
+                            this.isModalPanelOpen = false;
+                            this.isUserPanelOpen = false;
+                            this.isUserCompanyDetailsOpen = data.type;
+                        } else {
+                            this.isUserCompanyDetailsOpen = data.type;
+                        }
+                        break;
+                    }
+                    default:
+                        break;
+                }
+            });
     }
     public onAction(index: number, action: string) {
-        console.log(index === 2)
         switch (action) {
             case 'Open User Panel': {
                 if (index === 2) {

@@ -40,6 +40,23 @@
     font-weight: 700;
     opacity: 0;
     }
+    .files{
+        position: absolute;
+        right: 8px;
+        display: flex;
+        gap: 4px;
+        span{
+            font-size: 11px;
+    color: $files;
+        }
+        svg{
+            bottom: 2px;
+    position: relative;
+            path{
+                fill: $files;
+            }
+        }
+    }
     .nav-item-arrow_top{
         opacity: 0;
         margin-right: 8px;

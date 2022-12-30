@@ -1,8 +1,9 @@
-<div class="holder">
+<div class="holder" (click)="status=!status"  
+[ngClass]="status ? 'success' : 'danger'">
     <div class="parent" 
     
     *ngIf="showItems && isNavigationHovered"></div>
-    <div *ngIf="showItems && isNavigationHovered">
+    <div *ngIf="showItems && isNavigationHovered" class="wrapper">
         
     <div  class="items" *ngFor="let item of footer[0].route"
     [route]="footer[0]"
@@ -11,12 +12,12 @@
     
     <div 
     (click)="changeRouteSettings(item)"
-    class="item"
+    class="item item-settings"
     >
 
             <svg-icon
             src="{{ item.image }}"
-            
+            class="svg-settings"
             ></svg-icon>
             <p  >{{item.name}}</p>
             <svg-icon
@@ -25,6 +26,20 @@
             ></svg-icon>
         </div>
     </div>
+    <div
+   
+    [@showHideDetails]="
+        true &&
+        !true &&
+        !true &&
+        true &&
+      
+        isActiveMagicLine
+            ? 'true'
+            : 'true'
+    "
+    class="new-magic-line"
+></div>
 </div>
 
 <div class="footer-item" (click)="showItems = !showItems">

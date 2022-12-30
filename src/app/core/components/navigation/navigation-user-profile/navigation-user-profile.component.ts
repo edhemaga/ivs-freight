@@ -15,12 +15,14 @@ import { AuthStoreService } from '../../authentication/state/auth.service';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { ProfileUpdateModalComponent } from '../../modals/profile-update-modal/profile-update-modal.component';
 import { TaUserService } from '../../../services/user/user.service';
+import { navigation_route_animation } from '../navigation.animation';
 
 @Component({
     selector: 'app-navigation-user-profile',
     templateUrl: './navigation-user-profile.component.html',
     styleUrls: ['./navigation-user-profile.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
+    animations: [navigation_route_animation('showHideDetails')]
 })
 export class NavigationUserProfileComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
@@ -31,7 +33,6 @@ export class NavigationUserProfileComponent implements OnInit, OnDestroy {
     public currentUserStatus: string = 'online';
 
     public loggedUser: any = null;
-
     constructor(
         public router: Router,
         private authService: AuthStoreService,
@@ -76,7 +77,6 @@ export class NavigationUserProfileComponent implements OnInit, OnDestroy {
                 }
             });
     }
-
     public onUserPanelClose() {
         this.navigationService.onDropdownActivation({
             name: 'User Panel',

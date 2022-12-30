@@ -14,9 +14,10 @@
         [routerLink]="item.route"
         routerLinkActive="{{ ind !== 2 ? 'nav-footer-item-active' : '' }}"
     >   
-    <div [ngClass]="{'notification' : item.notification }">
-        <div [ngClass]="{'hide-user' : isUserPanelOpen === true && ind === 2}">
-
+    
+    <div [ngClass]="{'hide-user' : isUserPanelOpen === true && ind === 2}" >
+        <div [ngClass]="{'hide-user' : isUserCompanyDetailsOpen && ind === 2}">
+            <div [ngClass]="{'notification' : item.notification }" >
         <div *ngIf="item.text !== ''">
 
         <div
@@ -45,6 +46,7 @@
             </svg-icon>
         </div>
          <img
+            
             class="nav-footer-image"
             [ngClass]="{ 'nav-footer-image-user': ind === 2}"
             [src]="item.image"

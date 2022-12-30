@@ -48,14 +48,7 @@ export class NavigationComponent implements OnInit, OnDestroy {
         private navigationService: NavigationService,
         private DetailsDataService: DetailsDataService
     ) {}
-        test(){
-            if(this.isNavigationHovered && this.isActiveSubroute){
-                this.hideMagicLine = false
-                console.log(this.isModalPanelOpen,this.isNavigationHovered, this.isActiveSubroute);
-            }
-            
-            
-        }
+     
     ngOnInit(): void {
         this.navigationService.navigationDropdownActivation$
             .pipe(takeUntil(this.destroy$))
@@ -98,16 +91,17 @@ export class NavigationComponent implements OnInit, OnDestroy {
     }
     //On outside of navbar close navbar
     closeNavbar(event) {
-        if(this.navbar.nativeElement.contains(event.target || 'panel-user') || event.target.classList.contains('modal-nav-close') || event.target.classList.contains('panel-user') || event.target.classList.contains('nav-footer-user-company') || event.target.classList.contains('panel-image') || event.target.classList.contains('status-marker') || event.target.classList.contains('nav-footer-user-name') || event.target.classList.contains('nav-footer-user-name') || event.target.classList.contains('user-content-text') || event.target.classList.contains('modal-nav-close-text') || event.target.classList.contains('user-company-header')){
+        if(event.target.classList.contains('subroute') || event.target.classList.contains('modal-nav-close') || this.navbar.nativeElement.contains(event.target || 'panel-user') || event.target.classList.contains('modal-nav-close') || event.target.classList.contains('panel-user') || event.target.classList.contains('nav-footer-user-company') || event.target.classList.contains('panel-image') || event.target.classList.contains('status-marker') || event.target.classList.contains('nav-footer-user-name') || event.target.classList.contains('nav-footer-user-name') || event.target.classList.contains('user-content-text') || event.target.classList.contains('modal-nav-close-text') || event.target.classList.contains('user-company-header') || event.target.parentElement?.parentElement.classList.contains('modal-nav-close-svg') || event.target.parentElement?.parentElement.classList.contains('user-company-header-svg') || event.target.classList.contains('user-company-header-text')){
+           if(event.target.parentElement?.classList.contains('close') || event.target.parentElement?.parentElement.parentElement.classList.contains('close')){
+           return this.isNavigationHovered = false;
+
+           }
             this.isNavigationHovered = true;
-            this.isNavigationOpenend = true;
         }else{
             this.isNavigationHovered = false;
-            this.isNavigationOpenend = false;
         }
        }
     public onRouteEvent(subroute: NavigationSubRoutes): void {
-
         const index = this.navigation.findIndex(
             (item) => item.id === subroute.routeId
             );

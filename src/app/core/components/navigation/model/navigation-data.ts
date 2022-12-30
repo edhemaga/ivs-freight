@@ -265,6 +265,7 @@ export const navigationData: Navigation[] = [
         image: 'ic_file_manager-new.svg',
         route: '/filemanager',
         isRouteActive: false,
+        files: 83
     },
 ];
 

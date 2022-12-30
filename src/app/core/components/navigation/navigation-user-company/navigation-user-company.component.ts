@@ -24,7 +24,7 @@ export class NavigationUserCompanyComponent implements OnInit {
         private navigationService: NavigationService,
         private accountStoreService: AuthStoreService
     ) {}
-
+ 
     ngOnInit(): void {
         // ----------------------- PRODUCSTION MODE ----------------------------
         // if(this.authQuery.getEntity(1)) {
@@ -40,8 +40,6 @@ export class NavigationUserCompanyComponent implements OnInit {
     }
 
     public onAction() {
-        console.log('click')
-
         this.navigationService.onDropdownActivation({
             name: 'User Company Details',
             type: false,

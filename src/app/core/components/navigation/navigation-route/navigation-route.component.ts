@@ -1,11 +1,12 @@
 import { NavigationSubRoutes } from '../model/navigation.model';
 import { Router } from '@angular/router';
 import { Navigation } from '../model/navigation.model';
-import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, Injector } from '@angular/core';
 import {
     navigation_magic_line,
     navigation_route_animation,
 } from '../navigation.animation';
+import { StaticInjectorService } from 'src/app/core/utils/application.decorators';
 
 @Component({
     selector: 'app-navigation-route',
@@ -21,15 +22,27 @@ export class NavigationRouteComponent implements OnInit {
     @Input() isNavigationHovered: boolean = false;
     @Input() isActiveSubroute: boolean = false;
     @Input() message: number;
-
+    @Input() files: number;
+    @Input() class: string;
+    public activeRouteName: string;
     @Output() onRouteEvent = new EventEmitter<NavigationSubRoutes>();
 
     public isNavItemHovered: boolean = false;
     private timeout = null;
 
-    constructor(public router: Router) {}
-
+    constructor(public router: Router, injector: Injector) {
+        StaticInjectorService.Injector = injector;
+    }
+    ngOnChanges(){
+        console.log(this.route, 'sehbesdrhnjrtd');
+        const router = StaticInjectorService.Injector.get(Router);
+        this.activeRouteName = router.url.slice(1, 10);
+        
+    }
     ngOnInit() {
+        if(this.route.isSubrouteActive){
+
+        }
         this.timeout = setTimeout(() => {
             this.isActiveRouteOnReload(window.location.pathname);
             clearTimeout(this.timeout);

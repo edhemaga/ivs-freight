@@ -3,6 +3,7 @@
     class="nav-item-hover"
 ></div>
 <div
+    class="{{class}}"
     class="nav-item"
     [ngClass]="{
         'nav-item-active': route.isRouteActive || route.isSubrouteActive,
@@ -21,23 +22,28 @@
     ></div>
 
     <svg-icon
+    class="{{class}}"
         class="nav-item-img nav-item-img-active"
         src="{{ route.image }}"
         [ngClass]="{'route-clicked-svg': route.isRouteActive && route.arrow}"
     ></svg-icon>
     <div *ngIf="message > 0" class="message-container">
         <svg-icon 
+        class="{{class}}"
         *ngIf="!isNavigationHovered"
         class="notification-img"
         src="../../../../../assets/svg/applicant/notification-light.svg"
         ></svg-icon>
         <svg-icon 
+        class="{{class}}"
         *ngIf="isNavigationHovered"
         class="notification-img"
         src="../../../../../assets/svg/applicant/notification.svg"
         ></svg-icon>
     </div>
+    
     <div
+    class="{{class}}"
         class="nav-item-rightSide"
         [@showHideDetails]="isNavigationHovered ? 'true' : 'false'"
     >   
@@ -48,6 +54,9 @@
             [ngClass]="{'route-clicked': route.isRouteActive && route.arrow}"
         >
             {{ route.name }}
+            <span class="subroute" *ngIf="route.isSubrouteActive">
+                [{{activeRouteName | titlecase}}]
+            </span>
         </p>
         <div
         class="message" 
@@ -56,6 +65,11 @@
         >
         {{message}}
     </div> 
+    <div *ngIf="files" class="files"  [@showHideDetails]="isNavigationHovered ? 'true' : 'false'">
+        
+        <span>{{files}}% full</span>
+        <svg-icon src="assets/svg/common/ic_danger_white.svg"></svg-icon>
+    </div>
         <svg-icon
             class="nav-item-arrow nav-item-arrow-active"
             [ngClass]="{

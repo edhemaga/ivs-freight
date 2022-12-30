@@ -7,6 +7,7 @@ export interface Navigation {
     isRouteActive: boolean;
     isSubrouteActive?: boolean;
     messages?: number;
+    files?: number;
 }
 export interface NavigationSubRoute {
     name: string;

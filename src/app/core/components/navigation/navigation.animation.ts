@@ -5,7 +5,7 @@ import {
     transition,
     trigger,
 } from '@angular/animations';
-
+  
 export const navigation_route_animation = (type: string) =>
     trigger(type, [
         state(

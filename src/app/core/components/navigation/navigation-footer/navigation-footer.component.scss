@@ -19,8 +19,8 @@
         margin: 0;
         margin-left: 12px;
 
-        position: relative;
-        top: 1px;
+        position: absolute;
+        top: -12px;
     }
     
     .nav-footer-item-scaleWidth {
@@ -35,15 +35,16 @@
             }
         }
         .notification{
-            width: 100%;
+            width: 230px;
             div{
-                width: 100%;
+                width: 230px;
                 .nav-footer-rightSide{
-                    width: 100%;
+                    width: 230px;
                 }
             }
         }
         .notification{
+            width: 230px;
             position: relative;
             .status-marker-container-notification-1{
                 position: absolute;
@@ -80,7 +81,7 @@
                 font-weight: 700;
                 font-size: 11px;
                 position: absolute;
-                right: 14px;
+                right: 8px;
                 opacity: 0;
             }
         }
@@ -107,7 +108,7 @@
         }
 
         .nav-footer-user {
-            position: relative;
+            position: absolute;
             display: flex;
             flex-wrap: wrap;
             gap: 1px;
