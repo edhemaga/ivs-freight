@@ -6,7 +6,7 @@
     class="{{class}}"
     class="nav-item"
     [ngClass]="{
-        'nav-item-active': route.isRouteActive || route.isSubrouteActive,
+        'nav-item-active': route.id === activeRouteIdFromLocalStorage,
         'nav-width': isNavigationHovered
     }"
     (mouseenter)="onNavItemHover(true)"
@@ -46,15 +46,15 @@
     class="{{class}}"
         class="nav-item-rightSide"
         [@showHideDetails]="isNavigationHovered ? 'true' : 'false'"
-    >   
+        >   
         
         <p
-            *ngIf="isNavigationHovered"
-            class="nav-item-name nav-item-name-active"
-            [ngClass]="{'route-clicked': route.isRouteActive && route.arrow}"
+        *ngIf="isNavigationHovered"
+        class="nav-item-name "
+        [ngClass]="{'nav-item-name-active': route.id === activeRouteIdFromLocalStorage}"
         >
             {{ route.name }}
-            <span class="subroute" *ngIf="route.isSubrouteActive">
+            <span class="subroute" *ngIf="route.id === activeRouteIdFromLocalStorage">
                 [{{activeRouteName | titlecase}}]
             </span>
         </p>

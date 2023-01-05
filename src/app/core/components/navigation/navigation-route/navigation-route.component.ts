@@ -24,25 +24,34 @@ export class NavigationRouteComponent implements OnInit {
     @Input() message: number;
     @Input() files: number;
     @Input() class: string;
-    public activeRouteName: string;
     @Output() onRouteEvent = new EventEmitter<NavigationSubRoutes>();
-
+    
+    public activeRouteName: string;
+    public activeRouteIdFromLocalStorage: number;
     public isNavItemHovered: boolean = false;
     private timeout = null;
 
     constructor(public router: Router, injector: Injector) {
         StaticInjectorService.Injector = injector;
     }
+    //Get subroute name
     ngOnChanges(){
-        console.log(this.route, 'sehbesdrhnjrtd');
         const router = StaticInjectorService.Injector.get(Router);
-        this.activeRouteName = router.url.slice(1, 10);
+        const n = router.url.split("/");
+        this.activeRouteIdFromLocalStorage = parseInt(localStorage.getItem('subroute_active'))
+        // console.log(this.route, parseInt(localStorage.getItem('subroute_active')));
+        if(parseInt(localStorage.getItem('subroute_active')) === this.route.id){
+            console.log(this.route)
+        }
         
+            if(n[2]){
+                this.activeRouteName = n[2]
+            }else{
+                this.activeRouteName = n[1]
+            }
     }
     ngOnInit() {
-        if(this.route.isSubrouteActive){
-
-        }
+       
         this.timeout = setTimeout(() => {
             this.isActiveRouteOnReload(window.location.pathname);
             clearTimeout(this.timeout);

@@ -31,6 +31,7 @@ export class NavigationComponent implements OnInit, OnDestroy {
     public isNavigationOpenend: boolean = false;
     public isModalPanelOpen: boolean = false;
     public isUserPanelOpen: boolean = false;
+    public isSettingsPanelOpen: boolean = false;
     public isUserCompanyDetailsOpen: boolean = false;
     private isActiveSubrouteIndex: number = -1;
     public isActiveSubroute: boolean = true;
@@ -58,15 +59,28 @@ export class NavigationComponent implements OnInit, OnDestroy {
                         if (data.type) {
                             this.isModalPanelOpen = data.type;
                             this.isUserPanelOpen = false;
+                            this.isSettingsPanelOpen = false;
                             this.isUserCompanyDetailsOpen = false;
                         } else {
                             this.isModalPanelOpen = data.type;
                         }
                         break;
                     }
+                    case 'Settings': {
+                        if (data.type) {
+                            this.isModalPanelOpen = false;
+                            this.isUserPanelOpen = false;
+                            this.isSettingsPanelOpen = data.type
+                            this.isUserCompanyDetailsOpen = false;
+                        } else {
+                            this.isSettingsPanelOpen = data.type;
+                        }
+                        break;
+                    }
                     case 'User Panel': {
                         if (data.type) {
                             this.isModalPanelOpen = false;
+                            this.isSettingsPanelOpen = false;
                             this.isUserPanelOpen = data.type;
                             this.isUserCompanyDetailsOpen = false;
                         } else {
@@ -78,6 +92,7 @@ export class NavigationComponent implements OnInit, OnDestroy {
                         if (data.type) {
                             this.isModalPanelOpen = false;
                             this.isUserPanelOpen = false;
+                            this.isSettingsPanelOpen = false;
                             this.isUserCompanyDetailsOpen = data.type;
                         } else {
                             this.isUserCompanyDetailsOpen = data.type;
@@ -91,7 +106,7 @@ export class NavigationComponent implements OnInit, OnDestroy {
     }
     //On outside of navbar close navbar
     closeNavbar(event) {
-        if(event.target.classList.contains('subroute') || event.target.classList.contains('modal-nav-close') || this.navbar.nativeElement.contains(event.target || 'panel-user') || event.target.classList.contains('modal-nav-close') || event.target.classList.contains('panel-user') || event.target.classList.contains('nav-footer-user-company') || event.target.classList.contains('panel-image') || event.target.classList.contains('status-marker') || event.target.classList.contains('nav-footer-user-name') || event.target.classList.contains('nav-footer-user-name') || event.target.classList.contains('user-content-text') || event.target.classList.contains('modal-nav-close-text') || event.target.classList.contains('user-company-header') || event.target.parentElement?.parentElement.classList.contains('modal-nav-close-svg') || event.target.parentElement?.parentElement.classList.contains('user-company-header-svg') || event.target.classList.contains('user-company-header-text')){
+        if(event.target.classList.contains('subroute') || this.navbar.nativeElement.contains(event.target || 'panel-user') || event.target.classList.contains('modal-nav-close') || event.target.classList.contains('panel-user') || event.target.classList.contains('nav-footer-user-company') || event.target.classList.contains('panel-image') || event.target.classList.contains('status-marker') || event.target.classList.contains('nav-footer-user-name') || event.target.classList.contains('nav-footer-user-name') || event.target.classList.contains('user-content-text') || event.target.classList.contains('modal-nav-close-text') || event.target.classList.contains('user-company-header') || event.target.parentElement?.parentElement.classList.contains('modal-nav-close-svg') || event.target.parentElement?.parentElement.classList.contains('user-company-header-svg') || event.target.classList.contains('user-company-header-text')){
            if(event.target.parentElement?.classList.contains('close') || event.target.parentElement?.parentElement.parentElement.classList.contains('close')){
            return this.isNavigationHovered = false;
 
@@ -108,6 +123,7 @@ export class NavigationComponent implements OnInit, OnDestroy {
             this.onActivateFooterRoute(false);
             this.isModalPanelOpen = false;
             this.isUserPanelOpen = false;
+            this.isSettingsPanelOpen = false;
             this.isUserCompanyDetailsOpen = false;
             
             if (Array.isArray(subroute.routes)) {
@@ -179,7 +195,6 @@ export class NavigationComponent implements OnInit, OnDestroy {
     }
 
     // public onHoveredRoutesContainer(type: boolean): void {
-    //     console.log(type)
     //     if (type) {
     //         this.onActivateFooterRoute(false);
     //         this.isActiveMagicLine = true;

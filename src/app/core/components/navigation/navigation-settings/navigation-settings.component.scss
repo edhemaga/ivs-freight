@@ -36,6 +36,10 @@
         display: flex;
         align-items: center;
         width: 100%;
+        svg{
+            height: 20px;
+            width: 20px;
+        }
     }
     p{
         margin: 0px;
@@ -72,6 +76,7 @@
     -webkit-user-select: none;
     user-select: none;
     p{
+        width: 100%;
         margin: 0px;
     margin-left: 9px;
     font-size: 14px;
@@ -89,7 +94,7 @@
     content: "";
     height: 28px;
     width: 232px;
-    background:$nav-dark;
+    background:$nav-hover-color;
     border-radius: 3px;
     transition: $magic-line-transition;
     z-index: -1;

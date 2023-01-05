@@ -2,9 +2,9 @@
 (mouseleave)="onHoveredNavigation(false)" -->
 <div
 class="navigation"
-#navbar
 >
 <div class="nav-holder"
+#navbar
 [ngClass]="isNavigationHovered == true ? 'dark-nav' : 'animation'"
     >
 
@@ -42,7 +42,6 @@ class="navigation"
                 }"
             >
                 <app-navigation-route
-                    (click)="isNavigationHovered = false"
                     *ngIf="!item.arrow && !item.messages && !item.files"
                     [class]="'close'"
                     [route]="item"
@@ -56,6 +55,7 @@ class="navigation"
                 <app-navigation-route
                 *ngIf="item.messages"
                 [route]="item"
+                [class]="'close'"
                 [message]="item.messages"
                 [isNavigationHovered]="isNavigationHovered"
                 [isActiveSubroute]="isActiveSubroute"
@@ -64,6 +64,7 @@ class="navigation"
             <app-navigation-route
                 *ngIf="item.files"
                 [route]="item"
+                [class]="'close'"
                 [files]="item.files"
                 [isNavigationHovered]="isNavigationHovered"
                 [isActiveSubroute]="isActiveSubroute"
@@ -72,34 +73,35 @@ class="navigation"
                 <!-- If route has subroutes -->
                 <app-navigation-subroute-card
                 (click)="onHoveredNavigation(true)"
-                    *ngIf="item.arrow"
-                    [isNavigationCardActive]="
+                *ngIf="item.arrow"
+                [isNavigationCardActive]="
                         item.isRouteActive &&
                         isNavigationHovered  &&
                         !isModalPanelOpen &&
                         !isUserPanelOpen &&
+                        !isSettingsPanelOpen &&
                         !isUserCompanyDetailsOpen
                     "
                     [contentHeight]="item.route.length"
-             
-                >   
+                    
+                    >   
 
                     <app-navigation-route
-                   
+                    class="subroute-item"
                         [route]="item"
                         [isNavigationHovered]="isNavigationHovered"
                         [isActiveSubroute]="isActiveSubroute"
                         (onRouteEvent)="onRouteEvent($event)"
-                    >
+                        >
                     </app-navigation-route>
-
+                    
                     <app-navigation-subroute
-                   
                         *ngIf="
                             isNavigationHovered &&
                             item.isRouteActive &&
                             !isModalPanelOpen &&
                             !isUserPanelOpen &&
+                            !isSettingsPanelOpen &&
                             !isUserCompanyDetailsOpen
                         "
                         [subroute]="item"
@@ -118,7 +120,6 @@ class="navigation"
                     !isActiveSubroute &&
                     !isActiveFooterRoute &&
                     isModalPanelOpen &&
-                  
                     isActiveMagicLine
                         ? 'false'
                         : 'true'
@@ -138,8 +139,10 @@ class="navigation"
         <app-navigation-footer
         (click)="onHoveredNavigation(true)"
             [isNavigationHovered]="
-                isNavigationHovered && !isUserCompanyDetailsOpen
+                isNavigationHovered
             "
+            [isUserCompanyDetailsOpen]="isUserCompanyDetailsOpen"
+            [isSettingsPanelOpen]="isSettingsPanelOpen"
             [isUserPanelOpen]="isUserPanelOpen"
             (onActivateFooterRoutes)="onActivateFooterRoute($event)"
         ></app-navigation-footer>

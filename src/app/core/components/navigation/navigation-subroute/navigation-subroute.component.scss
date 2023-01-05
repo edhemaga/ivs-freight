@@ -1,5 +1,4 @@
 @import '../navigation.design.scss';
-
 .subroutes-container {
     position: relative;
     .subroutes {
@@ -41,7 +40,7 @@
             opacity: 0;
             position: absolute;
             top: 4px;
-            left: 10px;
+            left: 16px;
 
             svg {
                 path {
@@ -52,7 +51,7 @@
 
         .subroutes-item {
             margin: 0;
-            margin-left: 36px;
+            margin-left: 43px;
             font-size: $nav-font-size;
             position: relative;
             top: 4px;
@@ -100,7 +99,7 @@
     .new-magic-line {
         display: inline-block;
         position: absolute;
-        left: -2px;
+        left: 4px;
         top: 1px;
         content: '';
         height: 27px;

@@ -1,10 +1,15 @@
 @import '../navigation.design.scss';
 .holder{
+    position: relative;
+    left: -8px;
     .parent {
         position: relative;
-    left: -24px;
+    left: -20px;
     transition: all 0.3s ease-in-out;
-    
+    .subroute-container{
+        padding-left: 8px;
+    }
+   
     .subroute-card {
         border-radius: 2px;
         background: rgba(170, 170, 170, 10%);

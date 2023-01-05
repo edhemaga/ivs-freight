@@ -15,6 +15,7 @@
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
+  
     .message-container{
         position: relative;
     }
@@ -82,6 +83,10 @@
             font-weight: 400;
            
         }
+        .nav-item-name-active{
+            font-weight: 700;
+            color: $nav-active-lighter;
+        }
         .nav-item-arrow {
             position: absolute;
             right: 8px;
@@ -90,10 +95,6 @@
             width: 12px;
             height: 12px;
             line-height: 9px;
-        }
-        
-        .nav-item-arrow-first {
-            // margin-right: 8px !important;
         }
 
         .nav-item-arrow-rotate {
@@ -137,16 +138,7 @@
             }
         }
     }
-    .nav-item-rightSide{
-
-        .nav-item-name-active{
-            font-weight: 700;
-            color: $nav-active-lighter;
-        }
-        }
     &:hover {
-        // color: $nav-active;
-        // transition: $nav-transition-5;
         .nav-item-img {
             svg {
                 path,
@@ -162,11 +154,11 @@
     }
 }
 .route-clicked-svg{
-    svg{
-        path{
-            fill: $nav-svg-hover !important;
-        }
-    }
+    // svg{
+    //     path{
+    //         fill: $nav-svg-hover !important;
+    //     }
+    // }
 }
 .route-clicked{
     color: $nav-white !important;
@@ -176,7 +168,14 @@
 .nav-width {
     width: 230px;
 }
-
+.subroute-item{
+    padding-left: 4px;
+    .nav-item-rightSide{
+        .nav-item-name{
+            margin-left: 5px;
+        }
+    }
+}
 .nav-item-active-box {
     width: 35px;
     height: 28px;
@@ -195,7 +194,6 @@
     position: absolute;
     left: 0px;
     content: '';
-    // background-color: $nav-hover-color;
     z-index: -1;
     border-radius: 3px;
     transition: all 0.3s ease-in-out;

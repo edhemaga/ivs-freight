@@ -150,9 +150,6 @@
     }
 }
 .wrapper{
-    .wrapper-elements{
-
-    }
 div{
 
     .new-magic-line {
@@ -163,7 +160,7 @@ div{
     content: "";
     height: 28px;
     width: 232px;
-    background:$nav-dark;
+    background:$nav-hover-color;
     border-radius: 3px;
     transition: $magic-line-transition;
     z-index: -1;

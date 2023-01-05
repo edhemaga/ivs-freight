@@ -27,16 +27,15 @@ import { TaUserService } from '../../../services/user/user.service';
 export class NavigationFooterComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
     @Input() isNavigationHovered: boolean = false;
+    @Input() isUserCompanyDetailsOpen: boolean = false;
     @Input() isUserPanelOpen: boolean = false;
+    @Input() isSettingsPanelOpen: boolean = false;
     @Output() onActivateFooterRoutes = new EventEmitter<boolean>();
     public currentUserStatus: string = 'online';
 
     public footerData: FooterData[] = footerData;
     public loggedUser: any = null;
 
-
-    isModalPanelOpen
-    isUserCompanyDetailsOpen
     constructor(
         private router: Router,
         private navigationService: NavigationService,
@@ -111,44 +110,6 @@ export class NavigationFooterComponent implements OnInit, OnDestroy {
                 }
             });
 
-            this.navigationService.navigationDropdownActivation$
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((data) => {
-                switch (data.name) {
-                    case 'Modal Panel': {
-                        if (data.type) {
-                            this.isModalPanelOpen = data.type;
-                            this.isUserPanelOpen = false;
-                            this.isUserCompanyDetailsOpen = false;
-                        } else {
-                            this.isModalPanelOpen = data.type;
-                        }
-                        break;
-                    }
-                    case 'User Panel': {
-                        if (data.type) {
-                            this.isModalPanelOpen = false;
-                            this.isUserPanelOpen = data.type;
-                            this.isUserCompanyDetailsOpen = false;
-                        } else {
-                            this.isUserPanelOpen = data.type;
-                        }
-                        break;
-                    }
-                    case 'User Company Details': {
-                        if (data.type) {
-                            this.isModalPanelOpen = false;
-                            this.isUserPanelOpen = false;
-                            this.isUserCompanyDetailsOpen = data.type;
-                        } else {
-                            this.isUserCompanyDetailsOpen = data.type;
-                        }
-                        break;
-                    }
-                    default:
-                        break;
-                }
-            });
     }
     public onAction(index: number, action: string) {
         switch (action) {

@@ -1,7 +1,9 @@
 <div class="nav-footer" [ngClass]="{ 'nav-footer-width': isNavigationHovered }">
     
     <app-navigation-settings 
-        [isNavigationHovered]="isNavigationHovered"
+        [isNavigationHovered]="isNavigationHovered" 
+        [isUserPanelOpen]="isUserPanelOpen"
+        [isSettingsPanelOpen]="isSettingsPanelOpen"
     ></app-navigation-settings>
     <div 
         *ngFor="let item of footerData; trackBy: identity; let ind = index"

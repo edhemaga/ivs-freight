@@ -52,6 +52,7 @@
     .navigation-middle {
         overflow-y: scroll;
         overflow-x: hidden;
+        max-height: 620px;
     }
     .open-navigation{
         flex: 1;
