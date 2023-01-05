@@ -49,7 +49,7 @@ export class NavigationComponent implements OnInit, OnDestroy {
         private navigationService: NavigationService,
         private DetailsDataService: DetailsDataService
     ) {}
-     
+    
     ngOnInit(): void {
         this.navigationService.navigationDropdownActivation$
             .pipe(takeUntil(this.destroy$))
@@ -104,6 +104,9 @@ export class NavigationComponent implements OnInit, OnDestroy {
                 }
             });
     }
+    test(test){
+        console.log(test)
+     }
     //On outside of navbar close navbar
     closeNavbar(event) {
         if(event.target.classList.contains('subroute') || this.navbar.nativeElement.contains(event.target || 'panel-user') || event.target.classList.contains('modal-nav-close') || event.target.classList.contains('panel-user') || event.target.classList.contains('nav-footer-user-company') || event.target.classList.contains('panel-image') || event.target.classList.contains('status-marker') || event.target.classList.contains('nav-footer-user-name') || event.target.classList.contains('nav-footer-user-name') || event.target.classList.contains('user-content-text') || event.target.classList.contains('modal-nav-close-text') || event.target.classList.contains('user-company-header') || event.target.parentElement?.parentElement.classList.contains('modal-nav-close-svg') || event.target.parentElement?.parentElement.classList.contains('user-company-header-svg') || event.target.classList.contains('user-company-header-text')){

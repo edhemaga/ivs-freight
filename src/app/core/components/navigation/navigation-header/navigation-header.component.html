@@ -3,6 +3,7 @@
         <svg-icon
             class="nav-header-top-logo"
             src="{{ isNavigationHovered | changeLogo }}"
+            (click)="test()"
         ></svg-icon>
     </div>
     <div
@@ -14,12 +15,12 @@
         <div
             class="nav-header-bottom-plus"
             (click)="onAction('Open Panel')"
-            [ngStyle]="isNavigationHovered == true && { 'background': '#3074D3' }"
+            [ngClass]="{'dark-svg': isNavigationHovered}"
         >
             <svg-icon 
             [ngClass]="{ 'light-svg': isNavigationHovered }"
             src="assets/svg/common/ic_plus.svg"></svg-icon>
-        </div>
+    </div>
         <p [@showHideDetails]="isNavigationHovered ? 'true' : 'false'" 
         class="ta-font-bold">Add New</p>
     </div>

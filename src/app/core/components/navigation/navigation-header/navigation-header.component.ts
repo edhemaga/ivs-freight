@@ -13,7 +13,9 @@ export class NavigationHeaderComponent {
     @Input() isNavigationHovered: boolean = false;
 
     constructor(private navigationService: NavigationService) {}
-
+    test(){
+        console.log('test')
+    }
     public onAction(type: string) {
         switch (type) {
             case 'Open Panel': {

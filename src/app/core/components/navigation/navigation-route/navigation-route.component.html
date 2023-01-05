@@ -84,6 +84,7 @@
         *ngIf="isNavigationHovered && !route.arrow && !message"
         class="nav-item-arrow_top"
         src="assets/svg/common/arrow_top_right.svg"
+        (click)="test(route.route)"
     ></svg-icon>
     </div>
 </div>

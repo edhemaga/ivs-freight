@@ -11,7 +11,6 @@
     flex-direction: column;
     justify-content: space-between;
     padding: 12px;
-    cursor: pointer;
     // background-color: $nav-white;
     color: $nav-text-color;
     font-size: $nav-font-size;
@@ -29,6 +28,7 @@
         padding: 10px 6px;
         border-radius: 3px;
         z-index: -1;
+        cursor: pointer;
     // &:hover {
     //     width: 250px;
     //     background: $nav-dark;
@@ -52,13 +52,14 @@
     .navigation-middle {
         overflow-y: scroll;
         overflow-x: hidden;
+        min-height: 400px;
         max-height: 620px;
     }
     .open-navigation{
         flex: 1;
     }
     .navigation-bottom{
-        overflow: hidden;
+        // overflow: hidden;
         position: absolute;
         bottom: 22px;
     }
@@ -108,7 +109,7 @@
             background:$nav-hover-ligh;
             border-radius: 3px;
             transition: $magic-line-transition;
-            z-index: -1;
+            z-index: 0;
         }
 
         .new-magic-line-selected {

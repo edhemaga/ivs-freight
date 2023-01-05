@@ -15,7 +15,8 @@
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
-  
+    position: relative;
+    z-index: 1;
     .message-container{
         position: relative;
     }
@@ -89,7 +90,7 @@
         }
         .nav-item-arrow {
             position: absolute;
-            right: 8px;
+            right: 0;
             transform: rotate(0deg);
             transition: $nav-transition;
             width: 12px;
@@ -114,8 +115,8 @@
         .nav-item-arrow {
             svg {
                 path {
-                    transition: $nav-transition-5;
-                    fill: $nav-svg-hover;
+                    // transition: $nav-transition-5;
+                    // fill: $nav-white;
                 }
             }
         }
@@ -139,18 +140,7 @@
         }
     }
     &:hover {
-        .nav-item-img {
-            svg {
-                path,
-                #Path_35308,
-                #Path_35313,
-                #Path_35314,
-                #Path_35315,
-                #Path_35316 {
-                    fill: $nav-active;
-                }
-            }
-        }
+    
     }
 }
 .route-clicked-svg{

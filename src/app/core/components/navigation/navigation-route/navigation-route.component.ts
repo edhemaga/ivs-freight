@@ -57,7 +57,10 @@ export class NavigationRouteComponent implements OnInit {
             clearTimeout(this.timeout);
         }, 1000);
     }
-
+    test(item){
+        window.open(item, '_blank');
+        console.log(item)
+    }
     public onRouteAction() {
         this.onRouteEvent.emit({
             routeId: this.route.id,
