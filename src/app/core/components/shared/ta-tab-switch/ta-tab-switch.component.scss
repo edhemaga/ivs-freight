@@ -57,6 +57,10 @@ $tab-colors: '26A690', 'EF5350', '3074D3';
         left: 2px;
         transition: all 0.25s ease-out;
         pointer-events: none;
+
+        &.dark {
+            background-color: #424242;
+        }
     }
 
     &.type1-modal-popup {
@@ -146,6 +150,19 @@ $tab-colors: '26A690', 'EF5350', '3074D3';
             background-color: #fff;
             box-shadow: 0 0 2px #ffffff1a;
             height: calc(100% - 4px);
+        }
+    }
+
+    &.dark {
+        background-color: #1D1D1D;
+        border-radius: 2px;
+
+        .tab-switch-items-holder {
+            color: #AAAAAA;
+
+            &.active {
+                color: #FFFFFF;
+            }
         }
     }
 }
