@@ -603,6 +603,8 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
                             if (res.template === 'route') {
                                 this.deleteRouteLine(res.data);
 
+                                this.focusedRouteIndex = null;
+
                                 this.routingService
                                     .deleteRouteById(res.id)
                                     .pipe(takeUntil(this.destroy$))
@@ -658,7 +660,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
                         stop.cityAddress =
                             stop.address.city +
                             ', ' +
-                            stop.address.state +
+                            stop.address.stateShortName +
                             ' ' +
                             (stop.address.zipCode ? stop.address.zipCode : '');
                         stop.lat = stop.latitude;
@@ -1235,7 +1237,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
                                         cityAddress:
                                             address.city +
                                             ', ' +
-                                            address.state +
+                                            address.stateShortName +
                                             ' ' +
                                             address.zipCode,
                                         lat: result.geometry.location.lat(),
@@ -1276,7 +1278,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
                 cityAddress:
                     event.address.city +
                     ', ' +
-                    event.address.state +
+                    event.address.stateShortName +
                     ' ' +
                     (event.address.zipCode ? event.address.zipCode : ''),
                 leg: 0,
@@ -2928,7 +2930,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
                             cityAddress:
                                 stop.address.city +
                                 ', ' +
-                                stop.address.state +
+                                stop.address.stateShortName +
                                 ' ' +
                                 (stop.address.zipCode
                                     ? stop.address.zipCode

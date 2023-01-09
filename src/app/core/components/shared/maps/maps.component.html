@@ -68,7 +68,7 @@
                             ? 'assets/svg/common/ic_marker_closed_big.svg'
                             : latlong?.status == 2
                             ? 'assets/svg/common/ic_marker_closed.svg'
-                            : latlong?.pinned
+                            : latlong?.pinned || latlong?.favourite || (latlong?.fuelStopExtensions && latlong?.fuelStopExtensions[0]?.favourite)
                             ? 'assets/svg/common/ic_marker_favorite.svg'
                             : latlong?.isSelected
                             ? 'assets/svg/common/ic_marker_selected.svg'
@@ -105,7 +105,7 @@
                                     'selected-marker': latlong.isSelected,
                                     'fuel-marker': mapType == 'fuelStop'
                                 }"
-                                *ngIf="latlong.status != 2 && !latlong.pinned"
+                                *ngIf="latlong.status != 2 && !latlong.pinned && !latlong.favourite && !(latlong?.fuelStopExtensions && latlong?.fuelStopExtensions[0]?.favourite)"
                             ></svg-icon>
                             <svg-icon
                                 class="marker-icon permanently-closed-icon"
@@ -121,7 +121,7 @@
                                 [ngClass]="{
                                     'selected-marker': latlong.isSelected
                                 }"
-                                *ngIf="latlong.pinned"
+                                *ngIf="latlong.pinned || latlong.favourite || (latlong?.fuelStopExtensions && latlong?.fuelStopExtensions[0]?.favourite)"
                             ></svg-icon>
                             <div
                                 [ngClass]="{
@@ -696,7 +696,7 @@
                                         ? route.routeColor
                                         : routeColors[0],
                                     strokeWeight: 6,
-                                    zIndex: 1
+                                    zIndex: route.stops[j].zIndex ? route.stops[j].zIndex : 1
                                 },
                                 suppressMarkers: true
                             }"
@@ -718,7 +718,7 @@
                                 polylineOptions: {
                                     strokeColor: '#fff',
                                     strokeWeight: 3,
-                                    zIndex: 2
+                                    zIndex: route.stops[j].zIndex ? route.stops[j].zIndex : 2
                                 },
                                 suppressMarkers: true
                             }"
