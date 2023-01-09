@@ -631,7 +631,6 @@ export class DispatchTableComponent implements OnInit {
     }
 
     showPickupDelivery(popup: any) {
-        console.log(popup, 'open popup')
         popup.open();
     }
     

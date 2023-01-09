@@ -690,21 +690,20 @@
                 </td>
                 <td class="note-field">
                     <div class="main_inside" [class.filled]="item.truck">
-                        <div class="padding-inside">
-                            <div
-                                class="dispatcher-table-cell-container note-container"
-                                [class.empty-box-field]="!item.note"
+                        <div
+                            class="dispatcher-table-cell-container note-container"
+                            [class.empty-box-field]="!item.note"
+                        >
+                            <app-ta-note
+                                [note]="item.note"
+                                [openedAll]="true"
+                                [dispatchIndex]="rowIndex"
+                                [parking]="false"
+                                [noteWidth]="213"
+                                [type]="'dark'"
+                                (saveNoteValue)="saveNoteValue($event)"
                             >
-                                <app-ta-note
-                                    [note]="item.note"
-                                    [openedAll]="true"
-                                    [dispatchIndex]="rowIndex"
-                                    [parking]="false"
-                                    [noteWidth]="182"
-                                    (saveNoteValue)="saveNoteValue($event)"
-                                >
-                                </app-ta-note>
-                            </div>
+                            </app-ta-note>
                         </div>
                     </div>
                 </td>
@@ -1200,5 +1199,5 @@
 <!-- Pickup and Delivery popover -->
 
 <ng-template #pickupPopover let-data="data">
-    <app-ta-pickup-delivery [customWidth]="300"></app-ta-pickup-delivery>
+    <app-ta-pickup-delivery [customWidth]="340"></app-ta-pickup-delivery>
 </ng-template>

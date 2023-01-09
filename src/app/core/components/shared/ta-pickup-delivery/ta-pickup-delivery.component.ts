@@ -8,6 +8,7 @@ import { Component, Input, OnInit } from '@angular/core';
 export class TaPickupDeliveryComponent implements OnInit {
 
   @Input() customWidth: number = 340;
+  showDetails: boolean = false;
 
   pickupDeliveryTabs = [
       {
@@ -30,6 +31,14 @@ export class TaPickupDeliveryComponent implements OnInit {
 
   changeTabs(ev: any) {
     console.log('tab switch');
+  }
+
+  extendLoadInfo() {
+    this.showDetails = true;
+  }
+
+  hideLoadInfo() {
+    this.showDetails = false;
   }
 
 }

@@ -1,17 +1,170 @@
 <div class="main_pickup_container" [ngStyle]="{ width: customWidth + 'px' }">
     <!--<div class="no_load">NO ACTIVE OR PENDING LOAD</div>-->
-    <div class="load_holder">
+    <div class="load_holder" *ngIf="!showDetails">
         <div class="load_main_hold">
             <div class="load_title_hold">
                 <div class="load_number_hold">
                     <div class="load_number">107</div>
-                    <div class="load_shuffle"></div>
+                    <div class="load_shuffle">
+                        <svg-icon src="assets/svg/common/ic_shuffle.svg">
+                        </svg-icon>
+                    </div>
                 </div>
-                <div class="load_name">KSKA FREIGHT, INC</div>
+                <div class="load_name">KSKA FREIGHT, INCOMING</div>
             </div>
-            <div class="load_info_hold"></div>
+            <div class="load_info_hold">
+                <div class="pickup_hold">
+                    <div class="counter_hold">
+                        <div class="counter">2</div>
+                    </div>
+                    <div class="pickup_info_hold">
+                        <div class="pickup_address">Phoenix, AZ</div>
+                        <div class="pickup_time">05/09/21 05:30 PM</div>
+                    </div>
+                </div>
+                <div class="pickup_hold">
+                    <div class="counter_hold delivery">
+                        <div class="counter">2</div>
+                    </div>
+                    <div class="pickup_info_hold">
+                        <div class="pickup_address">Phoenix, AZ</div>
+                        <div class="pickup_time">05/09/21 05:30 PM</div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="load_arrow"></div>
+        <div class="load_arrow" (click)="extendLoadInfo()" *ngIf="!showDetails">
+            <svg-icon
+                src="assets\svg\common\pickup-delivery-arrow.svg"
+            ></svg-icon>
+        </div>
+    </div>
+    <div class="load_holder" *ngIf="!showDetails">
+        <div class="load_main_hold">
+            <div class="load_title_hold">
+                <div class="load_number_hold">
+                    <div class="load_number">107</div>
+                    <div class="load_shuffle">
+                        <svg-icon src="assets/svg/common/ic_shuffle.svg">
+                        </svg-icon>
+                    </div>
+                </div>
+                <div class="load_name">KSKA FREIGHT, INCOMING</div>
+            </div>
+            <div class="load_info_hold">
+                <div class="pickup_hold">
+                    <div class="counter_hold">
+                        <div class="counter">2</div>
+                    </div>
+                    <div class="pickup_info_hold">
+                        <div class="pickup_address">Phoenix, AZ</div>
+                        <div class="pickup_time">05/09/21 05:30 PM</div>
+                    </div>
+                </div>
+                <div class="pickup_hold">
+                    <div class="counter_hold delivery">
+                        <div class="counter">2</div>
+                    </div>
+                    <div class="pickup_info_hold">
+                        <div class="pickup_address">Phoenix, AZ</div>
+                        <div class="pickup_time">05/09/21 05:30 PM</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="load_arrow" (click)="extendLoadInfo()" *ngIf="!showDetails">
+            <svg-icon
+                src="assets\svg\common\pickup-delivery-arrow.svg"
+            ></svg-icon>
+        </div>
+    </div>
+    <div class="load_details" *ngIf="showDetails">
+        <div class="load_details_header">
+            <div
+                class="back_arrow"
+                (click)="hideLoadInfo()"
+                ngbTooltip
+                mainTooltip="Back"
+                position="bottom"
+                tooltipBackground="#B7B7B7"
+                tooltipColor="#2F2F2F"
+            >
+                <svg-icon src="assets\svg\common\back-arrow.svg"></svg-icon>
+            </div>
+            <div class="load_main_hold">
+                <div class="load_info_hold">
+                    <div class="pickup_hold">
+                        <div class="counter_hold">
+                            <div class="counter">2</div>
+                        </div>
+                        <div class="pickup_info_hold">
+                            <div class="pickup_address">Phoenix, AZ</div>
+                            <div class="pickup_time">05/09/21 05:30 PM</div>
+                        </div>
+                    </div>
+                    <div class="pickup_hold">
+                        <div class="counter_hold delivery">
+                            <div class="counter">2</div>
+                        </div>
+                        <div class="pickup_info_hold">
+                            <div class="pickup_address">Phoenix, AZ</div>
+                            <div class="pickup_time">05/09/21 05:30 PM</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="pickup_border"></div>
+        <div class="pickup_details_hold">
+            <div class="pickup_details_load_hold">
+                <div class="pickup_details_load_inner">
+                    <div class="pickup_details_load">Load 107</div>
+                    <div class="load_shuffle">
+                        <svg-icon src="assets/svg/common/ic_shuffle.svg">
+                        </svg-icon>
+                    </div>
+                </div>
+                <div class="pickup_ammount">$1,235.00</div>
+            </div>
+            <div class="pickup_ref_hold">
+                <div class="pickup_ref">Ref. <span>3578895</span></div>
+                <div class="pickup_ammount">568.3 mi</div>
+            </div>
+            <div class="broker_contact_hold">
+                <div class="broker_contact">
+                    Broker <span>RIM MOLDING</span>
+                </div>
+                <div class="broker_info">
+                    <div class="broker_cellphone">
+                        <svg-icon
+                            src="assets/svg/common/ic_phone.svg"
+                        ></svg-icon>
+                    </div>
+                    <div class="broker_email">
+                        <svg-icon
+                            src="assets/svg/common/ic_email.svg"
+                        ></svg-icon>
+                    </div>
+                </div>
+            </div>
+            <div class="broker_contact_hold">
+                <div class="broker_contact">
+                    Contact <span>Angelo Trotter</span>
+                </div>
+                <div class="broker_info">
+                    <div class="broker_cellphone">
+                        <svg-icon
+                            src="assets/svg/common/ic_phone.svg"
+                        ></svg-icon>
+                    </div>
+                    <div class="broker_email">
+                        <svg-icon
+                            src="assets/svg/common/ic_email.svg"
+                        ></svg-icon>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
     <div class="pickup_border"></div>
     <div class="tabs_hold">

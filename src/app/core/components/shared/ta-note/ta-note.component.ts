@@ -46,6 +46,7 @@ export class TaNoteComponent implements OnInit, OnDestroy {
     @Input() parking: any = false;
     @Input() dispatchIndex: number = -1;
     @Input() noteWidth: number = 250;
+    @Input() type: string;
     @ViewChild('main_editor', { static: false }) public main_editor: any;
     @ViewChild('note_popover', { static: false }) note_popover: any;
     tooltip: any;
