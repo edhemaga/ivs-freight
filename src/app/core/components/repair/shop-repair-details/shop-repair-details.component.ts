@@ -138,11 +138,9 @@ export class ShopRepairDetailsComponent implements OnInit, OnDestroy {
                     (id ? id : +this.act_route.snapshot.params['id'])
             );
         
-        console.log('--this.repairDQuery.repairShop$---', this.repairDQuery.repairShop$)
         this.repairDQuery.repairShop$
             .pipe(take(1), takeUntil(this.destroy$), distinctUntilChanged())
             .subscribe((items: RepairShopResponse[]) => {
-                console.log('---items---', items);
                 const findedRepairShop = items.find(
                     (item) =>
                         item.id ===
@@ -150,7 +148,6 @@ export class ShopRepairDetailsComponent implements OnInit, OnDestroy {
                 );
 
                 if (findedRepairShop) {
-                    console.log('--findedRepairShop', findedRepairShop);
                     this.shopConf(findedRepairShop);
                 }
             });
@@ -248,10 +245,34 @@ export class ShopRepairDetailsComponent implements OnInit, OnDestroy {
         };
     }
     public dropActionRepair(event: any) {
+
+        if ( event.type == 'write-review' ){
+            event.type = 'edit';
+            event.openedTab = 'Review';
+        }
+
         this.dropDownService.dropActionsHeaderRepair(
             event,
             this.repairObject,
-            event.id
+            event.id,
+        );
+    }
+
+    public onModalAction(event: any){
+
+        let eventType = '';
+       if ( event == 'Contact' || event == 'Review'){
+            eventType = 'edit'
+       } else {
+            eventType = event;
+       }
+        let eventObject = {
+            id: this.repairObject.id,
+            type: eventType,
+            openedTab: event,
+        }
+        this.dropDownService.dropActionsHeaderRepair(
+            eventObject
         );
     }
 

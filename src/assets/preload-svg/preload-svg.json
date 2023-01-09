@@ -597,6 +597,18 @@
     {
       "iconName": "ic_load-broker-closed-business.svg",
       "iconPath": "assets/svg/common/load/ic_load-broker-closed-business.svg"
+    },
+    {
+      "iconName": "ic_truck",
+      "iconPath": "assets/svg/common/dropdown-truck.svg"
+    },
+    {
+      "iconName": "ic_trailer",
+      "iconPath": "assets/svg/common/dropdown-trailer.svg"
+    },
+    {
+      "iconName": "finish-order",
+      "iconPath": "assets/svg/common/dropdown-finish-order.svg"
     }
 
   ],
