@@ -65,6 +65,72 @@
         <div class="border"></div>
     </div>
 
+    <!-- TRUCK FILTER -->
+    <div
+        class="location-filter-container"
+        [ngClass]="{ 'active-option': truckFilterActive }"
+        *ngIf="!options.toolbarActions.hideTruckFilter"
+    >
+        <app-filter
+            [type]="'truckTypeFilter'"
+            [filterTitle]="
+                'Truck Type Legend'
+            "
+            [defFilterHolder]="true"
+            [icon]="'truck'"
+            [leftSideIcon]="true"
+            [largeLeftIcon]="true"
+            [svgCustom]="true"
+            [legendView]="true"
+            (setFilter)="setFilterEvent($event)"
+        >
+        </app-filter>
+    </div>
+
+    <!-- TRAILER FILTER -->
+    <div
+        class="location-filter-container"
+        [ngClass]="{ 'active-option': trailerFilterActive }"
+        *ngIf="!options.toolbarActions.hideTrailerFilter"
+    >
+        <app-filter
+            [type]="'trailerTypeFilter'"
+            [filterTitle]="
+                'Trailer Type Legend'
+            "
+            [defFilterHolder]="true"
+            [icon]="'trailer'"
+            [leftSideIcon]="true"
+            [largeLeftIcon]="true"
+            [svgCustom]="true"
+            [legendView]="true"
+            (setFilter)="setFilterEvent($event)"
+        >
+        </app-filter>
+    </div>
+
+    <!-- DRIVER FILTER -->
+    <div
+        class="location-filter-container"
+        [ngClass]="{ 'active-option': driverFilterActive }"
+        *ngIf="!options.toolbarActions.hideDriverFilter"
+    >
+        <app-filter
+            [type]="'driverFilter'"
+            [filterTitle]="
+                'Driver'
+            "
+            [defFilterHolder]="true"
+            [icon]="'ic_steering-wheel'"
+            [leftSideIcon]="true"
+            [largeLeftIcon]="true"
+            [svgCustom]="true"
+            [legendView]="true"
+            (setFilter)="setFilterEvent($event)"
+        >
+        </app-filter>
+    </div>
+
     <!-- BORDER -->
     <div
         class="border-container"
@@ -78,10 +144,14 @@
         class="location-filter-container"
         *ngIf="!options.toolbarActions.hideLocationFilter"
     >
-        <svg-icon
-            [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
-            [src]="'assets/svg/truckassist-table/location-icon.svg'"
-        ></svg-icon>
+        <app-filter
+            [type]="'locationFilter'"
+            [icon]="'address'"
+            [filterTitle]="'Location Filter'"
+            [locationDefType]="true"
+            (setFilter)="setFilterEvent($event)"
+        >
+        </app-filter>
     </div>
 
     <!-- TABLE ACTIONS -->
@@ -117,6 +187,7 @@
 
             <!-- Route Stop Picker -->
             <div
+                *ngIf="!options.toolbarActions.hideStopPicker"
                 class="action-div"
                 (click)="onToolBarAction('open-stop-picker')"
                 [ngClass]="{
@@ -137,6 +208,7 @@
 
             <!-- Route Compare -->
             <div
+                *ngIf="!options.toolbarActions.hideRouteCompare"
                 class="action-div"
                 (click)="onToolBarAction('open-route-compare')"
                 [ngClass]="{
@@ -156,6 +228,7 @@
 
             <!-- Route Keyboard Controls -->
             <div
+                *ngIf="!options.toolbarActions.hideKeyboardControls"
                 class="action-div"
                 #op4="ngbPopover"
                 (click)="onShowKeyboardShortcutsPopover(op4)"
@@ -177,7 +250,9 @@
 
             <!-- Route Info -->
             <div
+                *ngIf="!options.toolbarActions.hideInfo"
                 class="action-div"
+                [ngClass]="{ 'action-active' : infoActive }"
                 (click)="onToolBarAction('open-route-info')"
             >
                 <svg-icon
@@ -189,6 +264,7 @@
 
             <!-- OPEN MAP LAYERS BUTTON -->
             <div
+                *ngIf="!options.toolbarActions.hideMapLayers"
                 class="action-div general-pm-open-container map-layers-container"
                 #op3="ngbPopover"
                 (click)="onShowLayersPopover(op3)"
@@ -216,12 +292,16 @@
             </div>
 
             <!-- BORDER -->
-            <div class="border-container">
+            <div
+                *ngIf="!options.toolbarActions.hideAddRouteButton"
+                class="border-container"
+            >
                 <div class="border-line"></div>
             </div>
 
             <!-- Route Settings -->
             <div
+                *ngIf="!options.toolbarActions.hideRouteSettings"
                 class="action-div"
                 #op="ngbPopover"
                 (click)="onShowMapSettings()"
@@ -245,18 +325,47 @@
             <div
                 class="border-container"
                 [ngStyle]="{ width: '2px' }"
-                *ngIf="activeTableData?.length == 8"
+                *ngIf="
+                    !options.toolbarActions.hideAddRouteButton &&
+                    activeTableData?.length == 8
+                "
             >
                 <div class="border-line"></div>
             </div>
 
             <!-- Dummy action -->
-            <div class="action-div dummy-div"></div>
+            <div
+                *ngIf="!options.toolbarActions.hideAddRouteButton"
+                class="action-div dummy-div"
+            ></div>
+        </div>
+    </div>
+
+    <div
+        *ngIf="!options.toolbarActions.hideUnassignedDevicesButton"
+        class="tab-wrapper mg-left-4"
+    >
+        <div
+            class="tab-container"
+            [ngClass]="{
+                'tab-inactive': !unassignedDevicesActive,
+                'tab-active': unassignedDevicesActive
+            }"
+            (click)="showHideUnassignedDevices()"
+        >
+            <div class="tab">
+                <div class="data-count">{{ unassignedDevices?.length }}</div>
+                <svg-icon
+                    [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
+                    [src]="'assets/svg/common/telematics/ic_unlink.svg'"
+                ></svg-icon>
+            </div>
         </div>
     </div>
 
     <!-- OPEN MODAL BUTTON -->
     <div
+        *ngIf="!options.toolbarActions.hideAddRouteButton"
         class="modal-open-container"
         #op2="ngbPopover"
         (click)="onShowRoutePopover()"
@@ -287,6 +396,18 @@
             <svg-icon
                 [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
                 [src]="'assets/svg/truckassist-table/plus-icon.svg'"
+            ></svg-icon>
+        </div>
+    </div>
+
+    <div
+        *ngIf="!options.toolbarActions.hideCartButton"
+        class="modal-open-container cart-button"
+    >
+        <div class="svg-holder">
+            <svg-icon
+                [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
+                [src]="'assets/svg/common/telematics/ic_shopping-cart.svg'"
             ></svg-icon>
         </div>
     </div>

@@ -58,6 +58,8 @@ export class PayrollDeducationModalComponent implements OnInit {
 
     private destroy$ = new Subject<void>();
 
+    public addNewAfterSave: boolean = false;
+
     public isFormDirty: boolean = false;
 
     constructor(
@@ -109,6 +111,19 @@ export class PayrollDeducationModalComponent implements OnInit {
             case 'close': {
                 break;
             }
+            case 'save and add new': {
+                if (this.payrollDeducationForm.invalid || !this.isFormDirty) {
+                    this.inputService.markInvalid(this.payrollDeducationForm);
+                    return;
+                }
+                this.addDeducation();
+                this.modalService.setModalSpinner({
+                    action: 'save and add new',
+                    status: true,
+                });
+                this.addNewAfterSave = true;
+                break;
+            }
             case 'save': {
                 if (this.payrollDeducationForm.invalid || !this.isFormDirty) {
                     this.inputService.markInvalid(this.payrollDeducationForm);
@@ -137,7 +152,9 @@ export class PayrollDeducationModalComponent implements OnInit {
 
     public updateDeducation(id: number) {}
 
-    public addDeducation() {}
+    public addDeducation() {
+        // TODO: addNewAfterSave
+    }
 
     public getByIdDeducation(id: number) {}
 

@@ -2,6 +2,7 @@
     [modalTitle]="editData?.type !== 'edit' ? 'Add Bonus' : 'Edit Bonus'"
     [editData]="editData"
     [isModalValid]="payrollBonusForm.valid && isFormDirty"
+    [saveAndAddNew]="editData?.type !== 'edit'"
     (action)="onModalAction($event)"
 >
     <form origin [formGroup]="payrollBonusForm" class="form-container">

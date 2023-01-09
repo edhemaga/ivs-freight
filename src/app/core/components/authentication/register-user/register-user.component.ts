@@ -3,9 +3,9 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { HttpResponseBase } from '@angular/common/http';
 
-import moment from 'moment';
+import { Subject, takeUntil } from 'rxjs';
 
-import { SignupUserCommand } from 'appcoretruckassist/model/models';
+import moment from 'moment';
 
 import {
     addressUnitValidation,
@@ -18,9 +18,11 @@ import {
 
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
 import { AuthStoreService } from '../state/auth.service';
-import { Subject, takeUntil } from 'rxjs';
 import { NotificationService } from '../../../services/notification/notification.service';
+import { AuthSecurityService } from '../state/auth-security.service';
+
 import { SignUpUserInfo } from '../../../model/signUpUserInfo';
+import { SignupUserCommand } from 'appcoretruckassist/model/models';
 
 @Component({
     selector: 'app-register-user',
@@ -41,7 +43,8 @@ export class RegisterUserComponent implements OnInit, OnDestroy {
         private inputService: TaInputService,
         private authStoreService: AuthStoreService,
         private notification: NotificationService,
-        private router: Router
+        private router: Router,
+        private authSecurityService: AuthSecurityService
     ) {}
 
     ngOnInit(): void {
@@ -58,9 +61,9 @@ export class RegisterUserComponent implements OnInit, OnDestroy {
         this.registerUserForm = this.formBuilder.group({
             firstName: [null, [Validators.required, ...firstNameValidation]],
             lastName: [null, [Validators.required, ...lastNameValidation]],
-            address: [null, [Validators.required, ...addressValidation]],
+            address: [null, [...addressValidation]],
             addressUnit: [null, [...addressUnitValidation]],
-            phone: [null, [Validators.required, phoneFaxRegex]],
+            phone: [null, [phoneFaxRegex]],
             email: [null, [Validators.required]],
             password: [null, [Validators.required, ...passwordValidation]],
             confirmPassword: [
@@ -84,6 +87,7 @@ export class RegisterUserComponent implements OnInit, OnDestroy {
                     this.router.navigate(['/auth']);
                     return;
                 }
+
                 this.registerUserForm.patchValue({
                     firstName: signUpUserInfo.firstName,
                     lastName: signUpUserInfo.lastName,
@@ -145,6 +149,10 @@ export class RegisterUserComponent implements OnInit, OnDestroy {
                         this.router.navigate([
                             '/auth/register-user/account-activated',
                         ]);
+
+                        this.authSecurityService.updateAccountActivatedSubject(
+                            true
+                        );
                     }
                 },
                 error: (err) => {

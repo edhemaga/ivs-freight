@@ -394,7 +394,7 @@
                             | loadDatetimeRange
                                 : loadForm.get('pickupTimeTo').value
                     "
-                    [legMile]="null"
+                    [legMile]="loadForm.get('pickuplegMiles').value"
                     [isEmptyLoad]="true"
                     [shipperContact]="{
                         fullName: selectedPickupShipperContact?.name
@@ -577,7 +577,10 @@
                                                   .at(indx)
                                                   .get('dateTo').value
                                 "
-                                [legMile]="''"
+                                [legMile]="
+                                    loadExtraStops().at(indx).get('legMiles')
+                                        .value
+                                "
                                 [isEmptyLoad]="false"
                                 [shipperContact]="{
                                     fullName:
@@ -609,9 +612,7 @@
                                                     indx
                                                 )
                                             "
-                                            [type]="
-                                                'type2-modal-popup load-type2-modal-popup'
-                                            "
+                                            [type]="'type2-modal-popup'"
                                         ></app-ta-tab-switch>
                                     </div>
                                 </div>
@@ -799,13 +800,22 @@
                     [isDelivery]="true"
                     [shipper]="selectedDeliveryShipper?.name"
                     [shipperAddress]="selectedDeliveryShipper?.address"
-                    [dateRange]="loadForm.get('deliveryDateFrom').value"
-                    [timeRange]="loadForm.get('deliveryDateTo').value"
-                    [legMile]="null"
-                    [isEmptyLoad]="true"
+                    [dateRange]="
+                        loadForm.get('deliveryDateFrom').value
+                            | loadDatetimeRange
+                                : loadForm.get('deliveryDateTo').value
+                    "
+                    [timeRange]="
+                        loadForm.get('deliveryTimeFrom').value
+                            | loadDatetimeRange
+                                : loadForm.get('deliveryTimeTo').value
+                    "
+                    [legMile]="loadForm.get('deliverylegMiles').value"
+                    [isEmptyLoad]="false"
                     [shipperContact]="{
                         fullName: selectedDeliveryShipperContact?.name
                     }"
+                    [disabledCard]="!selectedPickupShipper"
                     [isOpen]="isActiveDeliveryStop"
                     (toggle)="toggleStopActivity($event, 'first-delivery')"
                 >
@@ -948,11 +958,23 @@
                 <div class="stops-footer-bar">
                     <div class="stops-footer-bar-left-side">
                         <p class="stops-footer-bar-text">LOADED MILES</p>
-                        <span class="loaded-miles-value">78.8 mi</span>
+                        <span class="loaded-miles-value"
+                            >{{
+                                loadForm.get('loadMiles').value
+                                    | number: '1.2-2'
+                            }}
+                            mi</span
+                        >
                     </div>
                     <div class="stops-footer-bar-right-side">
                         <p class="stops-footer-bar-text">TOTAL MILES</p>
-                        <span class="total-miles-value">245.5 mi</span>
+                        <span class="total-miles-value"
+                            >{{
+                                loadForm.get('totalMiles').value
+                                    | number: '1.2-2'
+                            }}
+                            mi</span
+                        >
                     </div>
                 </div>
             </app-ta-custom-card>
