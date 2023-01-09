@@ -193,8 +193,8 @@ export class TaNoteComponent implements OnInit, OnDestroy {
     }
 
     checkActiveItems() {
-        if(this.noteContainer && this.noteContainer?.checkActiveItems) {
-            this.noteContainer?.checkActiveItems();     
+        if (this.noteContainer && this.noteContainer?.checkActiveItems) {
+            this.noteContainer?.checkActiveItems();
         }
     }
 

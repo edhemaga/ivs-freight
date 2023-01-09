@@ -59,11 +59,7 @@ export class TaNoteContainerComponent implements OnInit {
         });
     }
 
-    executeEditor(
-        action: string,
-        color?: string,
-        indx?: number
-    ) {
+    executeEditor(action: string, color?: string, indx?: number) {
         if (indx || indx === 0) {
             this.selectedColorName = this.containerColors[indx];
         }

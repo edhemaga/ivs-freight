@@ -74,7 +74,11 @@
                 [style.backgroundColor]="paternCol.color"
                 [class.hide_elements]="indx != 0 && !showCollorPattern"
                 [tooltipBackground]="
-                    indx != 0 && !showCollorPattern ? '' : type == 'dark' ? '#2F2F2F' : '#6C6C6C'
+                    indx != 0 && !showCollorPattern
+                        ? ''
+                        : type == 'dark'
+                        ? '#2F2F2F'
+                        : '#6C6C6C'
                 "
                 ngbTooltip
                 [mainTooltip]="
