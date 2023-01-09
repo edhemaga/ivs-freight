@@ -1,4 +1,5 @@
 @import 'src/theme/variables.scss';
+@import 'src/assets/scss/applicant.scss';
 
 .work-experience-border-container {
     border: 1px solid #2f2f2f;
@@ -114,8 +115,6 @@
     }
 
     .class-of-equipment-container {
-        margin-top: 28px;
-
         .class-of-equipment-cards-container {
             width: 616px;
 
@@ -133,29 +132,10 @@
                     p {
                         color: $ta-black-2;
                         font-size: 11px;
-
-                        &::-moz-selection {
-                            color: $ta-black-2;
-                            background: rgb(47, 47, 47, 0.2);
-                        }
-
-                        &::selection {
-                            color: $ta-black-2;
-                            background: rgb(47, 47, 47, 0.2);
-                        }
+                        user-select: none;
 
                         span {
                             color: $ta-red-3;
-
-                            &::-moz-selection {
-                                color: $ta-black-2;
-                                background: rgb(47, 47, 47, 0.2);
-                            }
-
-                            &::selection {
-                                color: $ta-black-2;
-                                background: rgb(47, 47, 47, 0.2);
-                            }
                         }
                     }
                 }
@@ -168,10 +148,55 @@
                 margin-bottom: 4px;
                 padding: 4px 10px 8px 10px;
                 background: $bw2;
+                cursor: pointer;
+                transition: background 0.2s ease-in-out;
+
+                &:hover {
+                    background: $ta-light-grey;
+
+                    .input-container .delete-btn-group {
+                        opacity: 1;
+                        visibility: visible;
+                        display: flex;
+                    }
+                }
+
+                &.valid {
+                    background: $ta-blue-10;
+
+                    &:hover {
+                        background: $ta-blue-6;
+
+                        .input-container {
+                            border-bottom: 1px solid ta-blue-12;
+                        }
+                    }
+
+                    .input-container {
+                        border-bottom: 1px solid ta-blue-11;
+                    }
+                }
+
+                &.invalid {
+                    background: $ta-red-7;
+
+                    &:hover {
+                        background: $ta-red-8;
+
+                        .input-container {
+                            border-bottom: 1px solid $ta-red-6;
+                        }
+                    }
+
+                    .input-container {
+                        border-bottom: 1px solid $ta-red-7;
+                    }
+                }
 
                 .input-container {
                     border-bottom: 1px solid $bw-9;
                     padding-bottom: 4px;
+                    transition: border 0.2s ease-in-out;
 
                     .card-vehicle-type-group {
                         width: 220px;
@@ -186,6 +211,39 @@
                     .card-length-group {
                         width: 100px;
                     }
+
+                    .delete-btn-group {
+                        margin-left: 12px;
+                        opacity: 0;
+                        visibility: hidden;
+                        display: none;
+                        transition: opacity 0.3s ease-in-out,
+                            visibility 0.3s ease-in-out;
+
+                        .delete-icon {
+                            svg {
+                                path {
+                                    fill: $bw5;
+                                }
+                            }
+
+                            &.valid {
+                                svg {
+                                    path {
+                                        fill: $ta-blue-7;
+                                    }
+                                }
+                            }
+
+                            /* &.invalid {
+                                svg {
+                                    path {
+                                        fill: $ta-blue-7;
+                                    }
+                                }
+                            } */
+                        }
+                    }
                 }
 
                 .switch-container {
@@ -193,6 +251,19 @@
                     display: grid;
                     grid-template-columns: 210px 179px;
                     grid-gap: 22px;
+                    position: relative;
+
+                    .required-container {
+                        position: absolute;
+                        right: 0;
+                        top: 11px;
+
+                        p {
+                            font-size: 11px;
+                            line-height: 14px;
+                            color: $ta-red-3;
+                        }
+                    }
                 }
             }
         }

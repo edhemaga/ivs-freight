@@ -137,7 +137,9 @@ export class Step2FormComponent
     public selectedTrailerLength: any = null;
     public selectedReasonForLeaving: any = null;
 
-    selectedVehicleTypeArr: any = [];
+    public selectedVehicleTypeArr: any[] = [];
+    public selectedTrailerTypeArr: any[] = [];
+    public selectedTrailerLengthArr: any[] = [];
 
     public selectedClassOfEquipmentIndex: number;
     public classOfEquipmentHelperIndex: number = 2;
@@ -749,18 +751,49 @@ export class Step2FormComponent
         this.formService.resetForm(this.classOfEquipmentForm); */
     }
 
+    public onDeleteClassOfEquipment(index: number): void {
+        this.classesOfEquipment.removeAt(index);
+
+        /*    if (this.isEditingClassOfEquipment) {
+            return;
+        }
+
+        if (this.isEditing) {
+            this.classOfEquipmentArray.splice(index, 1);
+
+            this.helperClassOfEquipmentArray.splice(index, 1);
+        } else {
+            this.classOfEquipmentArray.splice(index, 1);
+
+            this.classOfEquipmentformValuesEmitter.emit({
+                itemDeleted: true,
+                index,
+            });
+        } */
+    }
+
     public handleInputSelect(
         event: any,
         action: string,
-        formGroupIndex?: number
+        formGroupIndex?: number,
+        type?: string
     ): void {
+        const inputsToValidate = [
+            'vehicleType',
+            'trailerType',
+            'trailerLength',
+            'employerAddress',
+            'cfrPart',
+            'fmCSA',
+        ];
+
         switch (action) {
             case InputSwitchActions.ADDRESS:
                 this.selectedAddress = event.address;
 
                 if (!event.valid) {
                     this.workExperienceForm
-                        .get('employerAddress')
+                        .get(inputsToValidate[3])
                         .setErrors({ invalid: true });
                 }
 
@@ -769,18 +802,16 @@ export class Step2FormComponent
                 this.selectedVehicleTypeArr[formGroupIndex] = event;
                 /*     this.selectedVehicleType= event; */
 
-                console.log('event', event);
-                console.log(
-                    'this.selectedVehicleTypeArr',
-                    this.selectedVehicleTypeArr
-                );
-
                 if (event) {
                     this.isTruckSelected = true;
                     this.isBoxTruckSelected = false;
 
-                    this.selectedTrailerType = null;
+                    /*             this.selectedTrailerType = null;
                     this.selectedTrailerLength = null;
+ */
+
+                    this.selectedTrailerTypeArr[formGroupIndex] = null;
+                    this.selectedTrailerLengthArr[formGroupIndex] = null;
 
                     this.filteredLengthType = this.trailerLengthType;
 
@@ -790,24 +821,14 @@ export class Step2FormComponent
                         trailerLength: null,
                     });
 
-                    this.inputService.changeValidators(
-                        this.classesOfEquipment
-                            .at(formGroupIndex)
-                            .get('vehicleType')
-                    );
-
-                    this.inputService.changeValidators(
-                        this.classesOfEquipment
-                            .at(formGroupIndex)
-                            .get('trailerType')
-                    );
-
-                    this.inputService.changeValidators(
-                        this.classesOfEquipment
-                            .at(formGroupIndex)
-                            .get('trailerLength')
-                    );
-
+                    /*      for (let i = 0; i < inputsToValidate.length; i++) {
+                        this.inputService.changeValidators(
+                            this.classesOfEquipment
+                                .at(formGroupIndex)
+                                .get(inputsToValidate[i])
+                        );
+                    }
+ */
                     switch (event.id) {
                         case 1:
                             this.filteredTrailerType = this.trailerType.filter(
@@ -823,7 +844,7 @@ export class Step2FormComponent
                             this.inputService.changeValidators(
                                 this.classesOfEquipment
                                     .at(formGroupIndex)
-                                    .get('trailerType'),
+                                    .get(inputsToValidate[1]),
                                 false
                             );
 
@@ -846,14 +867,14 @@ export class Step2FormComponent
                             this.inputService.changeValidators(
                                 this.classesOfEquipment
                                     .at(formGroupIndex)
-                                    .get('trailerType'),
+                                    .get(inputsToValidate[1]),
                                 false
                             );
 
                             this.inputService.changeValidators(
                                 this.classesOfEquipment
                                     .at(formGroupIndex)
-                                    .get('trailerLength'),
+                                    .get(inputsToValidate[2]),
                                 false
                             );
 
@@ -874,9 +895,13 @@ export class Step2FormComponent
                             break;
                     }
                 } else {
-                    this.selectedVehicleType = null;
+                    /*     this.selectedVehicleType = null;
                     this.selectedTrailerType = null;
-                    this.selectedTrailerLength = null;
+                    this.selectedTrailerLength = null; */
+
+                    this.selectedVehicleTypeArr[formGroupIndex] = null;
+                    this.selectedTrailerTypeArr[formGroupIndex] = null;
+                    this.selectedTrailerLengthArr[formGroupIndex] = null;
 
                     this.isTruckSelected = false;
                     this.isBoxTruckSelected = false;
@@ -890,7 +915,8 @@ export class Step2FormComponent
 
                 break;
             case InputSwitchActions.TRAILER_TYPE:
-                this.selectedTrailerType = event;
+                /*    this.selectedTrailerType = event; */
+                this.selectedTrailerTypeArr[formGroupIndex] = event;
 
                 if (event) {
                     this.classesOfEquipment
@@ -901,7 +927,8 @@ export class Step2FormComponent
 
                 break;
             case InputSwitchActions.TRAILER_LENGTH:
-                this.selectedTrailerLength = event;
+                /*      this.selectedTrailerLength = event; */
+                this.selectedTrailerLengthArr[formGroupIndex] = event;
 
                 if (event) {
                     this.classesOfEquipment
@@ -939,6 +966,36 @@ export class Step2FormComponent
                 break;
             case InputSwitchActions.REASON_FOR_LEAVING:
                 this.selectedReasonForLeaving = event;
+
+                break;
+            case InputSwitchActions.SWITCH:
+                if (type === inputsToValidate[4]) {
+                    if (event) {
+                        this.classesOfEquipment
+                            .at(formGroupIndex)
+                            .get(inputsToValidate[4])
+                            .patchValue(true);
+                    } else {
+                        this.classesOfEquipment
+                            .at(formGroupIndex)
+                            .get(inputsToValidate[4])
+                            .patchValue(false);
+                    }
+                }
+
+                if (type === inputsToValidate[5]) {
+                    if (event) {
+                        this.classesOfEquipment
+                            .at(formGroupIndex)
+                            .get(inputsToValidate[5])
+                            .patchValue(true);
+                    } else {
+                        this.classesOfEquipment
+                            .at(formGroupIndex)
+                            .get(inputsToValidate[5])
+                            .patchValue(false);
+                    }
+                }
 
                 break;
             default:
@@ -1772,25 +1829,6 @@ export class Step2FormComponent
 
         this.subscription?.unsubscribe();
         this.innerFormSubscription?.unsubscribe();
-    }
-
-    public onDeleteClassOfEquipment(index: number): void {
-        if (this.isEditingClassOfEquipment) {
-            return;
-        }
-
-        if (this.isEditing) {
-            this.classOfEquipmentArray.splice(index, 1);
-
-            this.helperClassOfEquipmentArray.splice(index, 1);
-        } else {
-            this.classOfEquipmentArray.splice(index, 1);
-
-            this.classOfEquipmentformValuesEmitter.emit({
-                itemDeleted: true,
-                index,
-            });
-        }
     }
 
     public onEditClassOfEquipment(index: number): void {

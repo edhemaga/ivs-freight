@@ -567,6 +567,12 @@
 
             <div
                 class="d-flex flex-column class-of-equipment-container"
+                [ngStyle]="{
+                    'margin-top':
+                        classesOfEquipment?.controls.length === 1
+                            ? '28px'
+                            : '12px'
+                }"
                 *ngIf="workExperienceForm.get('isDrivingPosition').value"
             >
                 <!-- CREATED CLASS OF EQUIPMENT DATA -->
@@ -606,9 +612,18 @@
                             "
                         >
                             <div
-                                class="d-flex flex-column justify-content-center class-of-equipment-card"
+                                class="d-flex flex-column justify-content-center class-of-equipment-card applicant-step-two-deep"
+                                [ngClass]="{
+                                    valid:
+                                        classesOfEquipment.controls[i]
+                                            .status === 'VALID'
+                                }"
                                 [formGroupName]="i"
                             >
+                                <!-- ,
+                                    invalid:
+                                        classesOfEquipment.controls[i]
+                                            .status === 'INVALID' -->
                                 <div
                                     class="d-flex align-items-center input-container"
                                 >
@@ -672,26 +687,39 @@
                                                     withText: true,
                                                     svg: true,
                                                     image: false,
-                                                    url: selectedTrailerType?.logoName,
+                                                    url: selectedTrailerTypeArr[
+                                                        i
+                                                    ]?.logoName,
                                                     template: 'trailer',
                                                     class: [
                                                         'Tanker',
                                                         'Tanker Pneumatic'
                                                     ].includes(
-                                                        selectedTrailerType?.name
+                                                        selectedTrailerTypeArr[
+                                                            i
+                                                        ]?.name
                                                     )
                                                         ? 'tanker'
-                                                        : selectedTrailerType?.name
+                                                        : selectedTrailerTypeArr[
+                                                              i
+                                                          ]?.name
                                                               ?.toLowerCase()
                                                               ?.includes('rgn')
                                                         ? 'low-boy-rgn'
-                                                        : selectedTrailerType?.name
+                                                        : selectedTrailerTypeArr[
+                                                              i
+                                                          ]?.name
                                                               ?.trim()
                                                               .replace(' ', '')
                                                               .toLowerCase()
-                                                }
+                                                },
+                                                hideErrorMessage: true,
+                                                hideRequiredCheck: true
                                             }"
                                             [options]="filteredTrailerType"
+                                            [activeItem]="
+                                                selectedTrailerTypeArr[i]
+                                            "
                                             (selectedItem)="
                                                 handleInputSelect(
                                                     $event,
@@ -709,9 +737,14 @@
                                                 name: 'Input Dropdown',
                                                 type: 'text',
                                                 isDropdown: true,
-                                                dropdownWidthClass: 'w-col-100'
+                                                dropdownWidthClass: 'w-col-100',
+                                                hideErrorMessage: true,
+                                                hideRequiredCheck: true
                                             }"
                                             [options]="filteredLengthType"
+                                            [activeItem]="
+                                                selectedTrailerLengthArr[i]
+                                            "
                                             (selectedItem)="
                                                 handleInputSelect(
                                                     $event,
@@ -721,6 +754,35 @@
                                             "
                                         ></app-ta-input-dropdown>
                                     </div>
+
+                                    <div
+                                        class="d-flex justfiy-content-center align-items-center delete-btn-group"
+                                    >
+                                        <div
+                                            ngbTooltip
+                                            mainTooltip="Delete"
+                                            tooltipBackground="#EF5350"
+                                            position="top"
+                                            (click)="
+                                                onDeleteClassOfEquipment(i)
+                                            "
+                                        >
+                                            <svg-icon
+                                                class="delete-icon"
+                                                [ngClass]="{
+                                                    valid:
+                                                        classesOfEquipment
+                                                            .controls[i]
+                                                            .status === 'VALID'
+                                                }"
+                                                src="assets/svg/truckassist-table/dropdown/content/delete.svg"
+                                                [svgStyle]="{
+                                                    'width.px': 18,
+                                                    'height.px': 18
+                                                }"
+                                            ></svg-icon>
+                                        </div>
+                                    </div>
                                 </div>
 
                                 <div
@@ -729,14 +791,41 @@
                                     <app-ta-input-switch-on-off
                                         [titleText]="'CFR Part 40?'"
                                         [isRequired]="true"
+                                        (switchStateEmitter)="
+                                            handleInputSelect(
+                                                $event,
+                                                'SWITCH',
+                                                i,
+                                                'cfrPart'
+                                            )
+                                        "
                                     ></app-ta-input-switch-on-off>
 
                                     <app-ta-input-switch-on-off
                                         [titleText]="'FMCSA Regulated'"
                                         [isRequired]="true"
+                                        (switchStateEmitter)="
+                                            handleInputSelect(
+                                                $event,
+                                                'SWITCH',
+                                                i,
+                                                'fmCSA'
+                                            )
+                                        "
                                     ></app-ta-input-switch-on-off>
-                                </div></div
-                        ></ng-container>
+
+                                    <ng-container *ngIf="false">
+                                        <div
+                                            class="d-flex align-items-center required-container"
+                                        >
+                                            <p class="m-0 ta-font-semi-bold">
+                                                Required
+                                            </p>
+                                        </div>
+                                    </ng-container>
+                                </div>
+                            </div></ng-container
+                        >
                     </div>
                 </ng-container>
 

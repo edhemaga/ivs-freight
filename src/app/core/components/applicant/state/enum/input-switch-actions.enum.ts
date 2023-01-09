@@ -55,4 +55,6 @@ export enum InputSwitchActions {
     TRUCK_COLOR = 'TRUCK-COLOR',
     TRAILER_MAKE = 'TRAILER-MAKE',
     TRAILER_COLOR = 'TRAILER-COLOR',
+
+    SWITCH = 'SWITCH',
 }
