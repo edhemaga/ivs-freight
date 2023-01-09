@@ -1,1 +1,44 @@
-<p>table-modal works!</p>
+<table>
+    <thead class="modal-table-head">
+        <!-- Fixed Columns -->
+        <tr class="tr-modal-table-fixed">
+            <th *ngFor="let column of tableHeadFixedColumns; let i = index">
+                <!-- Title -->
+                <div
+                    *ngIf="column.ngTemplate === 'text'"
+                    class="th-title"
+                    [ngStyle]="{
+                        'width.px': column.width
+                    }"
+                >
+                    {{ column.title }}
+                </div>
+            </th>
+        </tr>
+
+        <!-- Scrollable Columns -->
+        <tr class="tr-modal-table-fixed">
+            <th
+                *ngFor="let column of tableHeadScrollableColumns; let i = index"
+            >
+                <!-- Title -->
+                <div
+                    *ngIf="column.ngTemplate === 'text'"
+                    class="th-title"
+                    [ngStyle]="{
+                        'width.px': column.width
+                    }"
+                >
+                    {{ column.title }}
+                </div>
+            </th>
+        </tr> 
+
+        <!-- Action Columns -->
+        <tr class="tr-modal-table-fixed">
+            <th
+                *ngFor="let column of tableHeadActionColumns; let i = index"
+            ></th>
+        </tr>
+    </thead>
+</table>

@@ -34,6 +34,7 @@ import { getApplicantColumnsDefinition } from '../../../../../assets/utils/setti
 import { getDriverColumnsDefinition } from '../../../../../assets/utils/settings/driver-columns';
 import { ApplicantModalComponent } from '../../modals/applicant-modal/applicant-modal.component';
 import { ApplicantTableQuery } from '../state/applicant-state/applicant-table.query';
+import { getLoadModalColumnDefinition } from 'src/assets/utils/settings/modal-columns-configuration/table-load-modal-columns';
 
 @Component({
     selector: 'app-driver-table',
@@ -87,6 +88,8 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
     ) {}
 
     ngOnInit(): void {
+        this.modalTestInitialization();
+
         this.sendDriverData();
 
         // Confirmation Subscribe
@@ -331,6 +334,11 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.loadingPage = false;
     }
 
+    modalColumns: any[] = [];
+    modalTestInitialization(){
+        this.modalColumns = getLoadModalColumnDefinition();
+    }
+
     ngAfterViewInit(): void {
         setTimeout(() => {
             this.observTableContainer();
@@ -360,6 +368,8 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
             actions: this.getTableActions(),
         };
     }
+
+
 
     getTableActions() {
         return this.selectedTab === 'applicants'
