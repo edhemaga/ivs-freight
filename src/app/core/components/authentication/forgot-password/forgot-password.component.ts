@@ -3,6 +3,8 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
+import { Subject, takeUntil } from 'rxjs';
+
 import moment from 'moment';
 
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
@@ -10,7 +12,6 @@ import { AuthStoreService } from '../state/auth.service';
 import { NotificationService } from '../../../services/notification/notification.service';
 
 import { ForgotPasswordCommand } from 'appcoretruckassist/model/forgotPasswordCommand';
-import { Subject, takeUntil } from 'rxjs';
 
 @Component({
     selector: 'app-forgot-password',

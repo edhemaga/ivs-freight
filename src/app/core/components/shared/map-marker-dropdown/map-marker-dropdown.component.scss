@@ -161,6 +161,7 @@
 }
 
 .marker-info-svg {
+    display: flex;
     margin-right: 6px;
 }
 
@@ -213,6 +214,19 @@
     &::selection {
         color: #536bc2;
         background: #536bc233;
+    }
+}
+
+.pink-text {
+    color: #74BF97;
+
+    &::-moz-selection {
+        color: #74BF97;
+        background: #74BF9733;
+    }
+    &::selection {
+        color: #74BF97;
+        background: #74BF9733;
     }
 }
 
@@ -419,6 +433,8 @@
         max-height: 216px;
         padding-top: 4px;
         overflow-y: scroll;
+        padding-top: 0px; 
+        max-height: 206px;
 
         &::-webkit-scrollbar {
             width: 4px;
@@ -498,6 +514,19 @@
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
+}
+
+.unit-number-text {
+    font-size: 18px;
+    line-height: 22px;
+    color: #6C6C6C;
+}
+
+.unit-status-text {
+    font-size: 14px;
+    font-weight: 900;
+    line-height: 16px;
+    text-transform: uppercase;
 }
 
 .favorite-svg {

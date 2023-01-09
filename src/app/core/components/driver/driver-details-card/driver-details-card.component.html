@@ -1,7 +1,8 @@
 <div *ngIf="driver" class="cards-item-wrapper-1">
     <app-ta-details-header-card
-        [tooltipNext]="'Next Driver'"
-        [tooltipPrevious]="'Previous Driver'"
+        [ngClass]="{ 'disabedPreviousArrow': currentDriverIndex == 0, 'disableNextArrow': currentDriverIndex == (driversList.length -1 ) }"
+        [tooltipNext]=" currentDriverIndex == (driversList.length -1 )  ?  'Disabled' : 'Next Driver' "
+        [tooltipPrevious]=" currentDriverIndex == 0 ? 'Disabled' : 'Previous Driver' "
         [searchName]="'Driver is Owner'"
         [cardDetailsDate]="driver.hired | formatDateP"
         [cardDetailsDateTerminated]="driver.dateTerminated | formatDateP"

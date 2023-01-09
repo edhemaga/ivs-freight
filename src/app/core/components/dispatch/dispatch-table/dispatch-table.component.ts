@@ -18,7 +18,7 @@ import {
 } from 'appcoretruckassist';
 import { LabelType, Options } from 'ng5-slider';
 import { catchError, of } from 'rxjs';
-import { ColorFinderPipe } from '../../dispatcher/pipes/color-finder.pipe';
+import { ColorFinderPipe } from '../pipes/color-finder.pipe';
 import { DispatchBoardLocalResponse } from '../state/dispatcher.model';
 import { DispatcherStoreService } from '../state/dispatcher.service';
 

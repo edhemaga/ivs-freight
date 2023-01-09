@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { AuthStoreService } from '../state/auth.service';
+
 import { SignUpUserInfo } from '../../../model/signUpUserInfo';
 
 @Component({
@@ -19,7 +20,17 @@ export class HelperSignupUserComponent implements OnInit {
     ) {}
 
     ngOnInit(): void {
+        this.checkIsValidInit();
+    }
+
+    private checkIsValidInit(): void {
         this.route.queryParams.subscribe((params) => {
+            if (!params['FirstName']) {
+                this.router.navigate(['/auth']);
+
+                return;
+            }
+
             this.signUpUser = {
                 firstName: params['FirstName'],
                 lastName: params['LastName'],
