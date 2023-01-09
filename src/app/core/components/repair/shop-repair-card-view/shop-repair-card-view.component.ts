@@ -156,8 +156,11 @@ export class ShopRepairCardViewComponent
             );
             this.repairShopCardViewData =
                 changes.repairShopCardViewData?.currentValue;
+
+            console.log('--heree----', changes);    
         }
         this.getActiveServices(changes.repairShopCardViewData.currentValue);
+        this.getShopsDropdown();
     }
 
     ngOnInit(): void {
@@ -193,6 +196,7 @@ export class ShopRepairCardViewComponent
             .pipe(
                 takeUntil(this.destroy$),
                 map((data: RepairShopMinimalListResponse) => {
+                    console.log('heereee')
                     return data.pagination.data.map((item) => {
                         return {
                             id: item.id,
@@ -209,6 +213,7 @@ export class ShopRepairCardViewComponent
             )
             .subscribe((data) => {
                 this.shopsDropdowns = data;
+                console.log('---this.shopsDropdowns', this.shopsDropdowns);
             });
     }
 

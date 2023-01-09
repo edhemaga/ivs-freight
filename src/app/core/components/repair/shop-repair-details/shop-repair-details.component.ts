@@ -137,10 +137,12 @@ export class ShopRepairDetailsComponent implements OnInit, OnDestroy {
                     shop.id ===
                     (id ? id : +this.act_route.snapshot.params['id'])
             );
-
+        
+        console.log('--this.repairDQuery.repairShop$---', this.repairDQuery.repairShop$)
         this.repairDQuery.repairShop$
             .pipe(take(1), takeUntil(this.destroy$), distinctUntilChanged())
             .subscribe((items: RepairShopResponse[]) => {
+                console.log('---items---', items);
                 const findedRepairShop = items.find(
                     (item) =>
                         item.id ===
@@ -148,6 +150,7 @@ export class ShopRepairDetailsComponent implements OnInit, OnDestroy {
                 );
 
                 if (findedRepairShop) {
+                    console.log('--findedRepairShop', findedRepairShop);
                     this.shopConf(findedRepairShop);
                 }
             });

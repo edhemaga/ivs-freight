@@ -304,10 +304,27 @@ export class RepairTService implements OnDestroy {
                     .pipe(takeUntil(this.destroy$))
                     .subscribe({
                         next: (shop: RepairShopResponse | any) => {
-                            this.shopStore.remove(({ id }) => id === data.id);
-
+                            this.shopStore.remove(({ id }) => id === data.id);               
                             this.shopStore.add(shop);
 
+                            this.rDs.update((store) => {                         
+                                let ind;
+                                let shopStored = JSON.parse(JSON.stringify(store));
+                                shopStored.repairShop.map((data: any, index: any) => {
+                                    if (data.id == shop.id){
+                                        ind = index;
+                                    }
+                                });
+                                
+                                shopStored.repairShop[ind] = shop;
+                                
+                                return {
+                                    ...store,
+                                    repairShop: [...shopStored.repairShop],
+                                };
+                                
+                            });
+                            
                             this.tableService.sendActionAnimation({
                                 animation: 'update',
                                 tab: 'repair-shop',
