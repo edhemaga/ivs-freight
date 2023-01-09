@@ -182,6 +182,13 @@
                             font-size: 14px;
                             font-weight: 700;
                             color: #2f2f2f;
+                            white-space: nowrap;
+
+                            &.dr-span-left {
+                                max-width: calc(100% - 40px);
+                                text-overflow: ellipsis;
+                                overflow: hidden;
+                            }
 
                             &:not(.dr-span-left) {
                                 padding-left: 6px;
@@ -343,12 +350,12 @@
                                 }
                             }
 
-                            &:hover{
-                                background-color: #EF535033 !important;
+                            &:hover {
+                                background-color: #ef535033 !important;
                                 svg-icon {
                                     svg {
                                         path {
-                                            fill: #EF5350;
+                                            fill: #ef5350;
                                         }
                                     }
                                 }
@@ -712,16 +719,16 @@
                         }
                     }
 
-                    &:not(.truck-field):not(.trailer-field):not(.driver-field){
-                        .padding-inside{
-                            &:after{
-                                content: "";
+                    &:not(.truck-field):not(.trailer-field):not(.driver-field) {
+                        .padding-inside {
+                            &:after {
+                                content: '';
                                 position: absolute;
                                 top: 0;
                                 left: 0;
                                 width: 100%;
                                 height: 100%;
-                                background-color: rgba(255,255,255, 0.7);
+                                background-color: rgba(255, 255, 255, 0.7);
                                 z-index: 999;
                             }
                         }
@@ -867,8 +874,8 @@
         display: none !important;
     }
 
-    .padding-inside{
-        &:after{
+    .padding-inside {
+        &:after {
             display: none !important;
         }
     }

@@ -42,7 +42,9 @@
                 <td class="truck-field" cdkDragHandle>
                     <div
                         class="main_inside"
-                        [class.addNew]="!item.truck && truckList.length && !__isBoardLocked"
+                        [class.addNew]="
+                            !item.truck && truckList.length && !__isBoardLocked
+                        "
                         [class.filled]="item.truck"
                     >
                         <div
@@ -125,7 +127,11 @@
                 <td class="trailer-field">
                     <div
                         class="main_inside"
-                        [class.addNew]="!item.trailer && trailerList.length && !__isBoardLocked"
+                        [class.addNew]="
+                            !item.trailer &&
+                            trailerList.length &&
+                            !__isBoardLocked
+                        "
                         [class.filled]="item.trailer"
                         cdkDropList
                         [cdkDropListSortPredicate]="trailerPositionPrediction"
@@ -246,7 +252,11 @@
                 <td class="driver-field">
                     <div
                         class="main_inside"
-                        [class.addNew]="!item.driver && driverList.length && !__isBoardLocked"
+                        [class.addNew]="
+                            !item.driver &&
+                            driverList.length &&
+                            !__isBoardLocked
+                        "
                         [class.filled]="item.driver"
                         cdkDropList
                         (cdkDropListDropped)="dropDriver($event, rowIndex)"
@@ -281,7 +291,11 @@
                             >
                                 <div
                                     class="add_new"
-                                    *ngIf="!item.driver && driverList.length && !__isBoardLocked"
+                                    *ngIf="
+                                        !item.driver &&
+                                        driverList.length &&
+                                        !__isBoardLocked
+                                    "
                                     (click)="showDriverDropdown(rowIndex)"
                                 >
                                     <div class="text">Add</div>
@@ -302,53 +316,6 @@
                                     >
                                         COPIED
                                     </div>
-                                    <span
-                                        class="dr-span-left"
-                                        *ngIf="driverHover.indx != rowIndex"
-                                        >{{ item.driver.firstName }}
-                                        {{ item.driver.lastName }}</span
-                                    >
-                                    <div
-                                        class="copy_divs"
-                                        *ngIf="
-                                            driverHover.indx == rowIndex &&
-                                            driverHover.txt == 'phone'
-                                        "
-                                    >
-                                        {{ item.phone }}
-                                    </div>
-                                    <div
-                                        class="copy_divs"
-                                        *ngIf="
-                                            driverHover.indx == rowIndex &&
-                                            driverHover.txt == 'email'
-                                        "
-                                    >
-                                        {{ item.email }}
-                                    </div>
-                                    <span
-                                        class="dr-span"
-                                        ngbTooltip
-                                        mainTooltip="Owner"
-                                        tooltipBackground="#3074D3"
-                                        position="right"
-                                    >
-                                        <svg-icon
-                                            *ngIf="
-                                                item.driver.owner &&
-                                                driverHover.indx != rowIndex &&
-                                                driverHover.txt == ''
-                                            "
-                                            [src]="
-                                                'assets/svg/common/ic_driver-owner.svg'
-                                            "
-                                            [svgStyle]="{
-                                                'width.px': '13',
-                                                'height.px': '13'
-                                            }"
-                                            [fill]="'#ff0000'"
-                                        ></svg-icon>
-                                    </span>
                                     <div class="driver-buttons">
                                         <span
                                             [class.only_active_icon]="
@@ -415,6 +382,52 @@
                                             ></svg-icon>
                                         </span>
                                     </div>
+                                    <span
+                                        class="dr-span-left"
+                                        *ngIf="driverHover.indx != rowIndex"
+                                        >{{ item.driver.firstName }}
+                                        {{ item.driver.lastName }}</span
+                                    >
+                                    <div
+                                        class="copy_divs"
+                                        *ngIf="
+                                            driverHover.indx == rowIndex &&
+                                            driverHover.txt == 'phone'
+                                        "
+                                    >
+                                        {{ item.phone }}
+                                    </div>
+                                    <div
+                                        class="copy_divs"
+                                        *ngIf="
+                                            driverHover.indx == rowIndex &&
+                                            driverHover.txt == 'email'
+                                        "
+                                    >
+                                        {{ item.email }}
+                                    </div>
+                                    <span
+                                        class="dr-span"
+                                        ngbTooltip
+                                        mainTooltip="Owner"
+                                        tooltipBackground="#3074D3"
+                                        position="right"
+                                    >
+                                        <svg-icon
+                                            *ngIf="
+                                                item.driver.owner &&
+                                                driverHover.indx != rowIndex
+                                            "
+                                            [src]="
+                                                'assets/svg/common/ic_driver-owner.svg'
+                                            "
+                                            [svgStyle]="{
+                                                'width.px': '13',
+                                                'height.px': '13'
+                                            }"
+                                            [fill]="'#ff0000'"
+                                        ></svg-icon>
+                                    </span>
                                 </div>
                             </div>
                             <div
@@ -452,8 +465,14 @@
                                     item.driver.vacation
                                 "
                                 (click)="changeDriverVacation(item)"
-                                [mainTooltip]="item.driver.vacation ? 'Remove Vacation' : 'Put on Vacation'"
-                                [tooltipBackground]="item.driver.vacation ? '#EF5350' : '#2F2F2F'"
+                                [mainTooltip]="
+                                    item.driver.vacation
+                                        ? 'Remove Vacation'
+                                        : 'Put on Vacation'
+                                "
+                                [tooltipBackground]="
+                                    item.driver.vacation ? '#EF5350' : '#2F2F2F'
+                                "
                                 ngbTooltip
                                 position="right"
                             >
@@ -510,29 +529,6 @@
                                         ) | hosTime
                                     }}
                                 </div>
-                                <!-- <span
-                                    *ngIf="item.driverName !== null && !item.isEmpty"
-                                    [ngClass]="
-                                        (item.hosJson?.hos)[item.hosJson.hos.length - 1]?.flag === 'on'
-                                        ? 'active_hos'
-                                        : 'innactive_hos'
-                                    "
-                                    appTooltip="HOS"
-                                    class="hos_span"
-                                    position="bottom-right"
-                                    tooltipBackground="#919191"
-                                    >
-                                    <span>{{
-                                        (item.hosJson !== null ? item.hosJson?.hos : []) | hosTime
-                                        }}</span>
-                                    <svg-icon
-                                        name="{{
-                                        (item.hosJson?.hos)[item.hosJson.hos.length - 1]?.flag === 'on'
-                                            ? 'hosactive'
-                                            : 'hosinactive'
-                                        }}"
-                                    ></svg-icon>
-                                    </span> -->
                             </div>
                         </div>
                     </div>

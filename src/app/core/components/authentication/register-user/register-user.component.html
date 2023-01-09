@@ -1,4 +1,4 @@
-<div *ngIf="registerUserForm.value" class="container-fluid">
+<div class="container-fluid" *ngIf="registerUserForm.value">
     <div class="row">
         <div
             class="sign-up-user-container container-fluid d-flex flex-column justify-content-between"
@@ -43,8 +43,7 @@
                                     isRequired: true,
                                     minLength: 2,
                                     maxLength: 26,
-                                    textTransform: 'capitalize',
-                                    isDisabled: true
+                                    textTransform: 'capitalize'
                                 }"
                             ></app-ta-input>
                         </div>
@@ -58,8 +57,7 @@
                                     isRequired: true,
                                     minLength: 2,
                                     maxLength: 26,
-                                    textTransform: 'capitalize',
-                                    isDisabled: true
+                                    textTransform: 'capitalize'
                                 }"
                             ></app-ta-input>
                         </div>
@@ -75,13 +73,11 @@
                                     name: 'Address',
                                     type: 'text',
                                     label: 'Address, City, State Zip',
-                                    isRequired: true,
                                     placeholderIcon: 'address',
                                     textTransform: 'capitalize',
                                     dropdownWidthClass: 'w-col-503',
                                     minLength: 6,
-                                    maxLength: 256,
-                                    isDisabled: true
+                                    maxLength: 256
                                 }"
                                 [placeholderType]="'longAddress'"
                             ></app-input-address-dropdown>
@@ -95,8 +91,7 @@
                                     label: 'Unit #',
                                     textTransform: 'uppercase',
                                     minLength: 1,
-                                    maxLength: 10,
-                                    isDisabled: true
+                                    maxLength: 10
                                 }"
                             ></app-ta-input>
                         </div>
@@ -112,11 +107,9 @@
                                     name: 'Phone',
                                     type: 'text',
                                     label: 'Phone',
-                                    isRequired: true,
                                     placeholderIcon: 'phone',
                                     mask: '(000) 000-0000',
-                                    maxLength: 14,
-                                    isDisabled: true
+                                    maxLength: 14
                                 }"
                             ></app-ta-input>
                         </div>

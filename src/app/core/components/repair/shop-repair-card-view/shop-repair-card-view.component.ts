@@ -36,7 +36,7 @@ export class ShopRepairCardViewComponent
     public shopsDropdowns: any[] = [];
     public shopsList: any;
     public repairShopObject: any;
-
+    public shopIndex: any;
     barChartConfig: any = {
         dataProperties: [
             {
@@ -183,6 +183,9 @@ export class ShopRepairCardViewComponent
                     this.getShopsDropdown();
                 }
             });
+
+        let currentIndex = this.shopsDropdowns.findIndex((item) => item.active);
+        this.shopIndex = currentIndex;
     }
 
     public getShopsDropdown() {
@@ -234,6 +237,7 @@ export class ShopRepairCardViewComponent
                 currentIndex = --currentIndex;
                 if (currentIndex != -1) {
                     this.onSelectedShop(this.shopsDropdowns[currentIndex]);
+                    this.shopIndex = currentIndex;
                 }
                 break;
             }
@@ -246,6 +250,7 @@ export class ShopRepairCardViewComponent
                     this.onSelectedShop({
                         id: this.shopsDropdowns[currentIndex].id,
                     });
+                    this.shopIndex = currentIndex;
                 }
                 break;
             }

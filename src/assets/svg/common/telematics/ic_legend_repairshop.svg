@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="32.199" height="32.21" viewBox="0 0 32.199 32.21">
+  <defs>
+    <filter id="Path_40391" x="0" y="0" width="32.199" height="32.21" filterUnits="userSpaceOnUse">
+      <feOffset input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="2" result="blur"/>
+      <feFlood flood-opacity="0.149"/>
+      <feComposite operator="in" in2="blur"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+  </defs>
+  <g id="Group_97991" data-name="Group 97991" transform="translate(-813.905 -540.704)">
+    <rect id="Rectangle_80570" data-name="Rectangle 80570" width="22" height="22" transform="translate(819 545.813)" fill="#ab47bc" opacity="0"/>
+    <g transform="matrix(1, 0, 0, 1, 813.91, 540.7)" filter="url(#Path_40391)">
+      <path id="Path_40391-2" data-name="Path 40391" d="M20.667,132.694a8.3,8.3,0,0,1-7.85,5.62,8.389,8.389,0,0,1-1.41-.12L9.1,140.5a4.792,4.792,0,0,1-6.79,0,4.812,4.812,0,0,1,0-6.79l2.32-2.32a8.263,8.263,0,0,1,8.151-9.69,8.314,8.314,0,0,1,2,.25,2.483,2.483,0,0,1,1.189.67,2.515,2.515,0,0,1,0,3.57l-2.519,2.53.089.55.55.09,2.531-2.52a2.43,2.43,0,0,1,1.16-.67,2.711,2.711,0,0,1,.629-.08,2.523,2.523,0,0,1,2.44,1.91,8.236,8.236,0,0,1-.18,4.69" transform="translate(5.09 -115.7)" fill="#fff"/>
+    </g>
+    <path id="Path_40396" data-name="Path 40396" d="M18.913,128.492h0a.526.526,0,0,0-.881-.241l-3.258,3.262-2.974-.5-.5-2.974,3.258-3.258a.526.526,0,0,0-.248-.883,6.278,6.278,0,0,0-7.471,8.115l-3.118,3.114a2.8,2.8,0,0,0,3.965,3.965l3.11-3.11a6.287,6.287,0,0,0,8.117-7.489M5.7,138.159h0a1.051,1.051,0,1,1,1.056-1.047A1.052,1.052,0,0,1,5.7,138.159" transform="translate(819 425)" fill="#ab47bc"/>
+  </g>
+</svg>

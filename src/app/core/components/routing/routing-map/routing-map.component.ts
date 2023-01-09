@@ -233,6 +233,11 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
             hideLocationFilter: true,
             hideViewMode: true,
             showMapView: false,
+            hideCartButton: true,
+            hideTruckFilter: true,
+            hideTrailerFilter: true,
+            hideDriverFilter: true,
+            hideUnassignedDevicesButton: true
         },
         config: {
             showSort: true,
@@ -2037,6 +2042,11 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
                 hideLocationFilter: true,
                 hideViewMode: true,
                 showMapView: false,
+                hideCartButton: true,
+                hideTruckFilter: true,
+                hideTrailerFilter: true,
+                hideDriverFilter: true,
+                hideUnassignedDevicesButton: true
             },
             config: {
                 showSort: true,
