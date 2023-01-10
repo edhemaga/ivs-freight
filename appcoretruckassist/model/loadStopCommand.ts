@@ -9,7 +9,7 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { LoadStopType } from './loadStopType';
+import {LoadStopType} from './loadStopType';
 // import { LoadStopItemCommand } from './loadStopItemCommand';
 // import { TimeType } from './timeType';
 

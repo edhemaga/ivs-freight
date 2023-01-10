@@ -11,7 +11,6 @@
  */
 import { FileResponse } from './fileResponse';
 import { FuelTransactionResponse } from './fuelTransactionResponse';
-import { FuelStopExtensionResponse } from './fuelStopExtensionResponse';
 import { AddressEntity } from './addressEntity';
 import { FuelStopFranchiseMinimalResponse } from './fuelStopFranchiseMinimalResponse';
 
@@ -30,8 +29,12 @@ export interface FuelStopResponse {
     highestPricePerGallon?: number | null;
     longitude?: number | null;
     latitude?: number | null;
+    favourite?: boolean;
+    lastUsed?: string | null;
+    totalCost?: number | null;
+    note?: string | null;
+    isClosed?: boolean;
     fuelTransactions?: Array<FuelTransactionResponse> | null;
-    fuelStopExtensions?: Array<FuelStopExtensionResponse> | null;
     files?: Array<FileResponse> | null;
     createdAt?: string;
     updatedAt?: string;

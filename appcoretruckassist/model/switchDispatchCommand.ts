@@ -9,6 +9,7 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { DispatchHosCommand } from './dispatchHosCommand';
 import { AddressEntity } from './addressEntity';
 
 
@@ -19,6 +20,6 @@ export interface SwitchDispatchCommand {
     trailerId?: number | null;
     driverId?: number | null;
     coDriverId?: number | null;
-    hoursOfService?: number | null;
+    hoursOfService?: Array<DispatchHosCommand> | null;
 }
 
