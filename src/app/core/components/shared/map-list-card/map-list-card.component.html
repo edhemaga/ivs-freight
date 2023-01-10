@@ -22,13 +22,14 @@
             <div class="d-flex">
                 <svg-icon
                     class="favorite-svg"
-                    [ngClass]="{ 'active': item?.pinned || (item?.fuelStopExtensions && item?.fuelStopExtensions[0]?.favourite) }"
+                    [ngClass]="{ 'active': item?.pinned || item?.favourite }"
                     src="assets/svg/detail-cards/favorite.svg"
                     [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
                     (click)="onFavorite($event)"
                     *ngIf="
                         sortCategory.name == 'Favorites' ||
-                        sortCategory.name == 'Fuel Price'
+                        sortCategory.name == 'Fuel Price' ||
+                        (item?.pinned || item?.favourite)
                     "
                 ></svg-icon>
                 <div

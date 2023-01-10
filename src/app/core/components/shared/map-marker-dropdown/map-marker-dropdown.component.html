@@ -15,9 +15,7 @@
                 </div>
                 <span
                     *ngIf="
-                        item?.pinned ||
-                        (item?.fuelStopExtensions &&
-                            item?.fuelStopExtensions[0]?.favourite)
+                        item?.pinned || item?.favourite 
                     "
                 >
                     <svg-icon

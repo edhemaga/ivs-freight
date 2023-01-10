@@ -68,7 +68,7 @@
                             ? 'assets/svg/common/ic_marker_closed_big.svg'
                             : latlong?.status == 2
                             ? 'assets/svg/common/ic_marker_closed.svg'
-                            : latlong?.pinned || latlong?.favourite || (latlong?.fuelStopExtensions && latlong?.fuelStopExtensions[0]?.favourite)
+                            : latlong?.pinned || latlong?.favourite
                             ? 'assets/svg/common/ic_marker_favorite.svg'
                             : latlong?.isSelected
                             ? 'assets/svg/common/ic_marker_selected.svg'
@@ -105,7 +105,7 @@
                                     'selected-marker': latlong.isSelected,
                                     'fuel-marker': mapType == 'fuelStop'
                                 }"
-                                *ngIf="latlong.status != 2 && !latlong.pinned && !latlong.favourite && !(latlong?.fuelStopExtensions && latlong?.fuelStopExtensions[0]?.favourite)"
+                                *ngIf="latlong.status != 2 && !latlong.pinned && !latlong.favourite"
                             ></svg-icon>
                             <svg-icon
                                 class="marker-icon permanently-closed-icon"
@@ -119,9 +119,10 @@
                                 class="marker-icon"
                                 src="assets/svg/common/ic_marker_favorite.svg"
                                 [ngClass]="{
-                                    'selected-marker': latlong.isSelected
+                                    'selected-marker': latlong.isSelected,
+                                    'fuel-marker': mapType == 'fuelStop'
                                 }"
-                                *ngIf="latlong.pinned || latlong.favourite || (latlong?.fuelStopExtensions && latlong?.fuelStopExtensions[0]?.favourite)"
+                                *ngIf="latlong.pinned || latlong.favourite"
                             ></svg-icon>
                             <div
                                 [ngClass]="{
@@ -149,7 +150,7 @@
                                                 : mapType == 'repairShop'
                                                 ? latlong.name
                                                 : mapType == 'fuelStop'
-                                                ? latlong.businessName
+                                                ? latlong.name
                                                 : ''
                                         }}
                                     </div>
@@ -169,8 +170,8 @@
                                             mapType == 'inspection'
                                         "
                                     >
-                                        <div *ngIf="mapType == 'fuelStop'">
-                                            $3.15
+                                        <div *ngIf="mapType == 'fuelStop' && latlong?.pricePerGallon">
+                                            ${{ latlong?.pricePerGallon }}
                                         </div>
                                         <div *ngIf="mapType == 'inspection'">
                                             7 violations
