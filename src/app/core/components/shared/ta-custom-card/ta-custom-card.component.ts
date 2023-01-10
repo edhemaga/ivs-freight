@@ -1,9 +1,9 @@
 import { FormControl } from '@angular/forms';
 import {
     Component,
+    EventEmitter,
     Input,
     Output,
-    EventEmitter,
     ViewEncapsulation,
 } from '@angular/core';
 import { card_modal_animation } from '../animations/card-modal.animation';
@@ -43,45 +43,35 @@ export class TaCustomCardComponent {
     @Input() controlName: FormControl;
 
     @Input() tooltipName: string = '';
+    noActive: string;
+    @Input() isCommentData: boolean = false;
+    @Input() textBottomPossiton: string;
+    @Input() stayOpen: boolean = false;
+    @Input() disabledCard: boolean = false;
+    @Input() disableMultipleReviews: boolean = false;
+    @Input() animationMarginParams = {
+        marginTop: '12px',
+        marginBottom: '12px',
+    };
+    @Input() has24Hours: boolean = false;
+    @Input() is24Hours: boolean = false;
+    @Input() disableAnimation: boolean = false; // forward true for disable
+    @Output() onActionEvent: EventEmitter<{ check: boolean; action: string }> =
+        new EventEmitter<{ check: boolean; action: string }>(null);
+    @Output() onOpenCard: EventEmitter<boolean> = new EventEmitter<boolean>(
+        false
+    );
+    public zoneTriger: boolean = false;
+    public isHeaderHover: boolean = false;
+
+    constructor(private uploadFileService: TaUploadFileService) {}
 
     _isCardOpen: any = 'null';
-    noActive: string;
 
     @Input() set isCardOpen(value: boolean) {
         this.noActive = value ? 'active' : 'innactive';
         this._isCardOpen = value;
     }
-
-    @Input() isCommentData: boolean = false;
-    @Input() textBottomPossiton: string;
-
-    @Input() stayOpen: boolean = false;
-    @Input() disabledCard: boolean = false;
-
-    @Input() disableMultipleReviews: boolean = false;
-
-    @Input() animationMarginParams = {
-        marginTop: '12px',
-        marginBottom: '12px',
-    };
-
-    @Input() has24Hours: boolean = false;
-
-    @Input() disableAnimation: boolean = false; // forward true for disable
-
-    @Output() onActionEvent: EventEmitter<{ check: boolean; action: string }> =
-        new EventEmitter<{ check: boolean; action: string }>(null);
-
-    @Output() onOpenCard: EventEmitter<boolean> = new EventEmitter<boolean>(
-        false
-    );
-
-    public zoneTriger: boolean = false;
-    public isHeaderHover: boolean = false;
-
-    public is24Hours: boolean = false;
-
-    constructor(private uploadFileService: TaUploadFileService) {}
 
     public isCardOpenEvent(event: any) {
         if (!this.disabledCard) {
