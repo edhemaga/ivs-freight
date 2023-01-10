@@ -27,6 +27,8 @@ import { AccidentModalResponse } from '../model/accidentModalResponse';
 // @ts-ignore
 import { AccidentResponse } from '../model/accidentResponse';
 // @ts-ignore
+import { CitationCommand } from '../model/citationCommand';
+// @ts-ignore
 import { ClusterResponse } from '../model/clusterResponse';
 // @ts-ignore
 import { CreateWithUploadsResponse } from '../model/createWithUploadsResponse';
@@ -1053,11 +1055,6 @@ export class AccidentService {
 
     /**
      * @param report 
-     * @param injury 
-     * @param fatality 
-     * @param towing 
-     * @param hazMat 
-     * @param vehicloNo 
      * @param addressAccidentCity 
      * @param addressAccidentState 
      * @param addressAccidentCounty 
@@ -1072,31 +1069,18 @@ export class AccidentService {
      * @param latitude 
      * @param date 
      * @param time 
+     * @param vehicloNo 
+     * @param towing 
      * @param driverId 
      * @param truckId 
-     * @param trailerChecked 
      * @param trailerId 
+     * @param citations 
      * @param insuranceType 
      * @param roadwayTrafficway 
      * @param weatherCondition 
      * @param roadAccessControl 
      * @param roadSurfaceCondition 
      * @param lightCondition 
-     * @param reportingAgency 
-     * @param policeOfficer 
-     * @param bagdeNo 
-     * @param addressAuthorityCity 
-     * @param addressAuthorityState 
-     * @param addressAuthorityCounty 
-     * @param addressAuthorityAddress 
-     * @param addressAuthorityStreet 
-     * @param addressAuthorityStreetNumber 
-     * @param addressAuthorityCountry 
-     * @param addressAuthorityZipCode 
-     * @param addressAuthorityStateShortName 
-     * @param addressAuthorityAddressUnit 
-     * @param phoneOfficer 
-     * @param fax 
      * @param originCity 
      * @param originState 
      * @param originCounty 
@@ -1125,10 +1109,10 @@ export class AccidentService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiAccidentPost(report?: string, injury?: number, fatality?: number, towing?: boolean, hazMat?: boolean, vehicloNo?: number, addressAccidentCity?: string, addressAccidentState?: string, addressAccidentCounty?: string, addressAccidentAddress?: string, addressAccidentStreet?: string, addressAccidentStreetNumber?: string, addressAccidentCountry?: string, addressAccidentZipCode?: string, addressAccidentStateShortName?: string, addressAccidentAddressUnit?: string, longitude?: number, latitude?: number, date?: string, time?: string, driverId?: number, truckId?: number, trailerChecked?: boolean, trailerId?: number, insuranceType?: Array<InsuranceTypeCommand>, roadwayTrafficway?: string, weatherCondition?: string, roadAccessControl?: string, roadSurfaceCondition?: string, lightCondition?: string, reportingAgency?: string, policeOfficer?: string, bagdeNo?: string, addressAuthorityCity?: string, addressAuthorityState?: string, addressAuthorityCounty?: string, addressAuthorityAddress?: string, addressAuthorityStreet?: string, addressAuthorityStreetNumber?: string, addressAuthorityCountry?: string, addressAuthorityZipCode?: string, addressAuthorityStateShortName?: string, addressAuthorityAddressUnit?: string, phoneOfficer?: string, fax?: string, originCity?: string, originState?: string, originCounty?: string, originAddress?: string, originStreet?: string, originStreetNumber?: string, originCountry?: string, originZipCode?: string, originStateShortName?: string, originAddressUnit?: string, destinationCity?: string, destinationState?: string, destinationCounty?: string, destinationAddress?: string, destinationStreet?: string, destinationStreetNumber?: string, destinationCountry?: string, destinationZipCode?: string, destinationStateShortName?: string, destinationAddressUnit?: string, brokerId?: number, boL?: string, cargo?: string, files?: Array<Blob>, medies?: Array<Blob>, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<CreateWithUploadsResponse>;
-    public apiAccidentPost(report?: string, injury?: number, fatality?: number, towing?: boolean, hazMat?: boolean, vehicloNo?: number, addressAccidentCity?: string, addressAccidentState?: string, addressAccidentCounty?: string, addressAccidentAddress?: string, addressAccidentStreet?: string, addressAccidentStreetNumber?: string, addressAccidentCountry?: string, addressAccidentZipCode?: string, addressAccidentStateShortName?: string, addressAccidentAddressUnit?: string, longitude?: number, latitude?: number, date?: string, time?: string, driverId?: number, truckId?: number, trailerChecked?: boolean, trailerId?: number, insuranceType?: Array<InsuranceTypeCommand>, roadwayTrafficway?: string, weatherCondition?: string, roadAccessControl?: string, roadSurfaceCondition?: string, lightCondition?: string, reportingAgency?: string, policeOfficer?: string, bagdeNo?: string, addressAuthorityCity?: string, addressAuthorityState?: string, addressAuthorityCounty?: string, addressAuthorityAddress?: string, addressAuthorityStreet?: string, addressAuthorityStreetNumber?: string, addressAuthorityCountry?: string, addressAuthorityZipCode?: string, addressAuthorityStateShortName?: string, addressAuthorityAddressUnit?: string, phoneOfficer?: string, fax?: string, originCity?: string, originState?: string, originCounty?: string, originAddress?: string, originStreet?: string, originStreetNumber?: string, originCountry?: string, originZipCode?: string, originStateShortName?: string, originAddressUnit?: string, destinationCity?: string, destinationState?: string, destinationCounty?: string, destinationAddress?: string, destinationStreet?: string, destinationStreetNumber?: string, destinationCountry?: string, destinationZipCode?: string, destinationStateShortName?: string, destinationAddressUnit?: string, brokerId?: number, boL?: string, cargo?: string, files?: Array<Blob>, medies?: Array<Blob>, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<CreateWithUploadsResponse>>;
-    public apiAccidentPost(report?: string, injury?: number, fatality?: number, towing?: boolean, hazMat?: boolean, vehicloNo?: number, addressAccidentCity?: string, addressAccidentState?: string, addressAccidentCounty?: string, addressAccidentAddress?: string, addressAccidentStreet?: string, addressAccidentStreetNumber?: string, addressAccidentCountry?: string, addressAccidentZipCode?: string, addressAccidentStateShortName?: string, addressAccidentAddressUnit?: string, longitude?: number, latitude?: number, date?: string, time?: string, driverId?: number, truckId?: number, trailerChecked?: boolean, trailerId?: number, insuranceType?: Array<InsuranceTypeCommand>, roadwayTrafficway?: string, weatherCondition?: string, roadAccessControl?: string, roadSurfaceCondition?: string, lightCondition?: string, reportingAgency?: string, policeOfficer?: string, bagdeNo?: string, addressAuthorityCity?: string, addressAuthorityState?: string, addressAuthorityCounty?: string, addressAuthorityAddress?: string, addressAuthorityStreet?: string, addressAuthorityStreetNumber?: string, addressAuthorityCountry?: string, addressAuthorityZipCode?: string, addressAuthorityStateShortName?: string, addressAuthorityAddressUnit?: string, phoneOfficer?: string, fax?: string, originCity?: string, originState?: string, originCounty?: string, originAddress?: string, originStreet?: string, originStreetNumber?: string, originCountry?: string, originZipCode?: string, originStateShortName?: string, originAddressUnit?: string, destinationCity?: string, destinationState?: string, destinationCounty?: string, destinationAddress?: string, destinationStreet?: string, destinationStreetNumber?: string, destinationCountry?: string, destinationZipCode?: string, destinationStateShortName?: string, destinationAddressUnit?: string, brokerId?: number, boL?: string, cargo?: string, files?: Array<Blob>, medies?: Array<Blob>, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<CreateWithUploadsResponse>>;
-    public apiAccidentPost(report?: string, injury?: number, fatality?: number, towing?: boolean, hazMat?: boolean, vehicloNo?: number, addressAccidentCity?: string, addressAccidentState?: string, addressAccidentCounty?: string, addressAccidentAddress?: string, addressAccidentStreet?: string, addressAccidentStreetNumber?: string, addressAccidentCountry?: string, addressAccidentZipCode?: string, addressAccidentStateShortName?: string, addressAccidentAddressUnit?: string, longitude?: number, latitude?: number, date?: string, time?: string, driverId?: number, truckId?: number, trailerChecked?: boolean, trailerId?: number, insuranceType?: Array<InsuranceTypeCommand>, roadwayTrafficway?: string, weatherCondition?: string, roadAccessControl?: string, roadSurfaceCondition?: string, lightCondition?: string, reportingAgency?: string, policeOfficer?: string, bagdeNo?: string, addressAuthorityCity?: string, addressAuthorityState?: string, addressAuthorityCounty?: string, addressAuthorityAddress?: string, addressAuthorityStreet?: string, addressAuthorityStreetNumber?: string, addressAuthorityCountry?: string, addressAuthorityZipCode?: string, addressAuthorityStateShortName?: string, addressAuthorityAddressUnit?: string, phoneOfficer?: string, fax?: string, originCity?: string, originState?: string, originCounty?: string, originAddress?: string, originStreet?: string, originStreetNumber?: string, originCountry?: string, originZipCode?: string, originStateShortName?: string, originAddressUnit?: string, destinationCity?: string, destinationState?: string, destinationCounty?: string, destinationAddress?: string, destinationStreet?: string, destinationStreetNumber?: string, destinationCountry?: string, destinationZipCode?: string, destinationStateShortName?: string, destinationAddressUnit?: string, brokerId?: number, boL?: string, cargo?: string, files?: Array<Blob>, medies?: Array<Blob>, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+    public apiAccidentPost(report?: string, addressAccidentCity?: string, addressAccidentState?: string, addressAccidentCounty?: string, addressAccidentAddress?: string, addressAccidentStreet?: string, addressAccidentStreetNumber?: string, addressAccidentCountry?: string, addressAccidentZipCode?: string, addressAccidentStateShortName?: string, addressAccidentAddressUnit?: string, longitude?: number, latitude?: number, date?: string, time?: string, vehicloNo?: number, towing?: boolean, driverId?: number, truckId?: number, trailerId?: number, citations?: Array<CitationCommand>, insuranceType?: Array<InsuranceTypeCommand>, roadwayTrafficway?: string, weatherCondition?: string, roadAccessControl?: string, roadSurfaceCondition?: string, lightCondition?: string, originCity?: string, originState?: string, originCounty?: string, originAddress?: string, originStreet?: string, originStreetNumber?: string, originCountry?: string, originZipCode?: string, originStateShortName?: string, originAddressUnit?: string, destinationCity?: string, destinationState?: string, destinationCounty?: string, destinationAddress?: string, destinationStreet?: string, destinationStreetNumber?: string, destinationCountry?: string, destinationZipCode?: string, destinationStateShortName?: string, destinationAddressUnit?: string, brokerId?: number, boL?: string, cargo?: string, files?: Array<Blob>, medies?: Array<Blob>, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<CreateWithUploadsResponse>;
+    public apiAccidentPost(report?: string, addressAccidentCity?: string, addressAccidentState?: string, addressAccidentCounty?: string, addressAccidentAddress?: string, addressAccidentStreet?: string, addressAccidentStreetNumber?: string, addressAccidentCountry?: string, addressAccidentZipCode?: string, addressAccidentStateShortName?: string, addressAccidentAddressUnit?: string, longitude?: number, latitude?: number, date?: string, time?: string, vehicloNo?: number, towing?: boolean, driverId?: number, truckId?: number, trailerId?: number, citations?: Array<CitationCommand>, insuranceType?: Array<InsuranceTypeCommand>, roadwayTrafficway?: string, weatherCondition?: string, roadAccessControl?: string, roadSurfaceCondition?: string, lightCondition?: string, originCity?: string, originState?: string, originCounty?: string, originAddress?: string, originStreet?: string, originStreetNumber?: string, originCountry?: string, originZipCode?: string, originStateShortName?: string, originAddressUnit?: string, destinationCity?: string, destinationState?: string, destinationCounty?: string, destinationAddress?: string, destinationStreet?: string, destinationStreetNumber?: string, destinationCountry?: string, destinationZipCode?: string, destinationStateShortName?: string, destinationAddressUnit?: string, brokerId?: number, boL?: string, cargo?: string, files?: Array<Blob>, medies?: Array<Blob>, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<CreateWithUploadsResponse>>;
+    public apiAccidentPost(report?: string, addressAccidentCity?: string, addressAccidentState?: string, addressAccidentCounty?: string, addressAccidentAddress?: string, addressAccidentStreet?: string, addressAccidentStreetNumber?: string, addressAccidentCountry?: string, addressAccidentZipCode?: string, addressAccidentStateShortName?: string, addressAccidentAddressUnit?: string, longitude?: number, latitude?: number, date?: string, time?: string, vehicloNo?: number, towing?: boolean, driverId?: number, truckId?: number, trailerId?: number, citations?: Array<CitationCommand>, insuranceType?: Array<InsuranceTypeCommand>, roadwayTrafficway?: string, weatherCondition?: string, roadAccessControl?: string, roadSurfaceCondition?: string, lightCondition?: string, originCity?: string, originState?: string, originCounty?: string, originAddress?: string, originStreet?: string, originStreetNumber?: string, originCountry?: string, originZipCode?: string, originStateShortName?: string, originAddressUnit?: string, destinationCity?: string, destinationState?: string, destinationCounty?: string, destinationAddress?: string, destinationStreet?: string, destinationStreetNumber?: string, destinationCountry?: string, destinationZipCode?: string, destinationStateShortName?: string, destinationAddressUnit?: string, brokerId?: number, boL?: string, cargo?: string, files?: Array<Blob>, medies?: Array<Blob>, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<CreateWithUploadsResponse>>;
+    public apiAccidentPost(report?: string, addressAccidentCity?: string, addressAccidentState?: string, addressAccidentCounty?: string, addressAccidentAddress?: string, addressAccidentStreet?: string, addressAccidentStreetNumber?: string, addressAccidentCountry?: string, addressAccidentZipCode?: string, addressAccidentStateShortName?: string, addressAccidentAddressUnit?: string, longitude?: number, latitude?: number, date?: string, time?: string, vehicloNo?: number, towing?: boolean, driverId?: number, truckId?: number, trailerId?: number, citations?: Array<CitationCommand>, insuranceType?: Array<InsuranceTypeCommand>, roadwayTrafficway?: string, weatherCondition?: string, roadAccessControl?: string, roadSurfaceCondition?: string, lightCondition?: string, originCity?: string, originState?: string, originCounty?: string, originAddress?: string, originStreet?: string, originStreetNumber?: string, originCountry?: string, originZipCode?: string, originStateShortName?: string, originAddressUnit?: string, destinationCity?: string, destinationState?: string, destinationCounty?: string, destinationAddress?: string, destinationStreet?: string, destinationStreetNumber?: string, destinationCountry?: string, destinationZipCode?: string, destinationStateShortName?: string, destinationAddressUnit?: string, brokerId?: number, boL?: string, cargo?: string, files?: Array<Blob>, medies?: Array<Blob>, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -1183,21 +1167,6 @@ export class AccidentService {
         if (report !== undefined) {
             localVarFormParams = localVarFormParams.append('Report', <any>report) as any || localVarFormParams;
         }
-        if (injury !== undefined) {
-            localVarFormParams = localVarFormParams.append('Injury', <any>injury) as any || localVarFormParams;
-        }
-        if (fatality !== undefined) {
-            localVarFormParams = localVarFormParams.append('Fatality', <any>fatality) as any || localVarFormParams;
-        }
-        if (towing !== undefined) {
-            localVarFormParams = localVarFormParams.append('Towing', <any>towing) as any || localVarFormParams;
-        }
-        if (hazMat !== undefined) {
-            localVarFormParams = localVarFormParams.append('HazMat', <any>hazMat) as any || localVarFormParams;
-        }
-        if (vehicloNo !== undefined) {
-            localVarFormParams = localVarFormParams.append('VehicloNo', <any>vehicloNo) as any || localVarFormParams;
-        }
         if (addressAccidentCity !== undefined) {
             localVarFormParams = localVarFormParams.append('AddressAccident.City', <any>addressAccidentCity) as any || localVarFormParams;
         }
@@ -1240,17 +1209,25 @@ export class AccidentService {
         if (time !== undefined) {
             localVarFormParams = localVarFormParams.append('Time', <any>time) as any || localVarFormParams;
         }
+        if (vehicloNo !== undefined) {
+            localVarFormParams = localVarFormParams.append('VehicloNo', <any>vehicloNo) as any || localVarFormParams;
+        }
+        if (towing !== undefined) {
+            localVarFormParams = localVarFormParams.append('Towing', <any>towing) as any || localVarFormParams;
+        }
         if (driverId !== undefined) {
             localVarFormParams = localVarFormParams.append('DriverId', <any>driverId) as any || localVarFormParams;
         }
         if (truckId !== undefined) {
             localVarFormParams = localVarFormParams.append('TruckId', <any>truckId) as any || localVarFormParams;
         }
-        if (trailerChecked !== undefined) {
-            localVarFormParams = localVarFormParams.append('TrailerChecked', <any>trailerChecked) as any || localVarFormParams;
-        }
         if (trailerId !== undefined) {
             localVarFormParams = localVarFormParams.append('TrailerId', <any>trailerId) as any || localVarFormParams;
+        }
+        if (citations) {
+            citations.forEach((element) => {
+                localVarFormParams = localVarFormParams.append('Citations', <any>element) as any || localVarFormParams;
+            })
         }
         if (insuranceType) {
             insuranceType.forEach((element) => {
@@ -1271,51 +1248,6 @@ export class AccidentService {
         }
         if (lightCondition !== undefined) {
             localVarFormParams = localVarFormParams.append('LightCondition', <any>lightCondition) as any || localVarFormParams;
-        }
-        if (reportingAgency !== undefined) {
-            localVarFormParams = localVarFormParams.append('ReportingAgency', <any>reportingAgency) as any || localVarFormParams;
-        }
-        if (policeOfficer !== undefined) {
-            localVarFormParams = localVarFormParams.append('PoliceOfficer', <any>policeOfficer) as any || localVarFormParams;
-        }
-        if (bagdeNo !== undefined) {
-            localVarFormParams = localVarFormParams.append('BagdeNo', <any>bagdeNo) as any || localVarFormParams;
-        }
-        if (addressAuthorityCity !== undefined) {
-            localVarFormParams = localVarFormParams.append('AddressAuthority.City', <any>addressAuthorityCity) as any || localVarFormParams;
-        }
-        if (addressAuthorityState !== undefined) {
-            localVarFormParams = localVarFormParams.append('AddressAuthority.State', <any>addressAuthorityState) as any || localVarFormParams;
-        }
-        if (addressAuthorityCounty !== undefined) {
-            localVarFormParams = localVarFormParams.append('AddressAuthority.County', <any>addressAuthorityCounty) as any || localVarFormParams;
-        }
-        if (addressAuthorityAddress !== undefined) {
-            localVarFormParams = localVarFormParams.append('AddressAuthority.Address', <any>addressAuthorityAddress) as any || localVarFormParams;
-        }
-        if (addressAuthorityStreet !== undefined) {
-            localVarFormParams = localVarFormParams.append('AddressAuthority.Street', <any>addressAuthorityStreet) as any || localVarFormParams;
-        }
-        if (addressAuthorityStreetNumber !== undefined) {
-            localVarFormParams = localVarFormParams.append('AddressAuthority.StreetNumber', <any>addressAuthorityStreetNumber) as any || localVarFormParams;
-        }
-        if (addressAuthorityCountry !== undefined) {
-            localVarFormParams = localVarFormParams.append('AddressAuthority.Country', <any>addressAuthorityCountry) as any || localVarFormParams;
-        }
-        if (addressAuthorityZipCode !== undefined) {
-            localVarFormParams = localVarFormParams.append('AddressAuthority.ZipCode', <any>addressAuthorityZipCode) as any || localVarFormParams;
-        }
-        if (addressAuthorityStateShortName !== undefined) {
-            localVarFormParams = localVarFormParams.append('AddressAuthority.StateShortName', <any>addressAuthorityStateShortName) as any || localVarFormParams;
-        }
-        if (addressAuthorityAddressUnit !== undefined) {
-            localVarFormParams = localVarFormParams.append('AddressAuthority.AddressUnit', <any>addressAuthorityAddressUnit) as any || localVarFormParams;
-        }
-        if (phoneOfficer !== undefined) {
-            localVarFormParams = localVarFormParams.append('PhoneOfficer', <any>phoneOfficer) as any || localVarFormParams;
-        }
-        if (fax !== undefined) {
-            localVarFormParams = localVarFormParams.append('Fax', <any>fax) as any || localVarFormParams;
         }
         if (originCity !== undefined) {
             localVarFormParams = localVarFormParams.append('Origin.City', <any>originCity) as any || localVarFormParams;
@@ -1425,10 +1357,8 @@ export class AccidentService {
     /**
      * @param id 
      * @param report 
-     * @param injury 
-     * @param fatality 
+     * @param reported 
      * @param towing 
-     * @param hazMat 
      * @param vehicloNo 
      * @param addressAccidentCity 
      * @param addressAccidentState 
@@ -1446,8 +1376,8 @@ export class AccidentService {
      * @param time 
      * @param driverId 
      * @param truckId 
-     * @param trailerChecked 
      * @param trailerId 
+     * @param citations 
      * @param insuranceType 
      * @param roadwayTrafficway 
      * @param weatherCondition 
@@ -1499,10 +1429,10 @@ export class AccidentService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiAccidentPut(id?: number, report?: string, injury?: number, fatality?: number, towing?: boolean, hazMat?: boolean, vehicloNo?: number, addressAccidentCity?: string, addressAccidentState?: string, addressAccidentCounty?: string, addressAccidentAddress?: string, addressAccidentStreet?: string, addressAccidentStreetNumber?: string, addressAccidentCountry?: string, addressAccidentZipCode?: string, addressAccidentStateShortName?: string, addressAccidentAddressUnit?: string, longitude?: number, latitude?: number, date?: string, time?: string, driverId?: number, truckId?: number, trailerChecked?: boolean, trailerId?: number, insuranceType?: Array<InsuranceTypeCommand>, roadwayTrafficway?: string, weatherCondition?: string, roadAccessControl?: string, roadSurfaceCondition?: string, lightCondition?: string, reportingAgency?: string, policeOfficer?: string, bagdeNo?: string, addressAuthorityCity?: string, addressAuthorityState?: string, addressAuthorityCounty?: string, addressAuthorityAddress?: string, addressAuthorityStreet?: string, addressAuthorityStreetNumber?: string, addressAuthorityCountry?: string, addressAuthorityZipCode?: string, addressAuthorityStateShortName?: string, addressAuthorityAddressUnit?: string, phoneOfficer?: string, fax?: string, originCity?: string, originState?: string, originCounty?: string, originAddress?: string, originStreet?: string, originStreetNumber?: string, originCountry?: string, originZipCode?: string, originStateShortName?: string, originAddressUnit?: string, destinationCity?: string, destinationState?: string, destinationCounty?: string, destinationAddress?: string, destinationStreet?: string, destinationStreetNumber?: string, destinationCountry?: string, destinationZipCode?: string, destinationStateShortName?: string, destinationAddressUnit?: string, brokerId?: number, boL?: string, cargo?: string, files?: Array<Blob>, filesForDeleteIds?: Array<number>, medies?: Array<Blob>, mediesForDeleteIds?: Array<number>, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<CreateWithUploadsResponse>;
-    public apiAccidentPut(id?: number, report?: string, injury?: number, fatality?: number, towing?: boolean, hazMat?: boolean, vehicloNo?: number, addressAccidentCity?: string, addressAccidentState?: string, addressAccidentCounty?: string, addressAccidentAddress?: string, addressAccidentStreet?: string, addressAccidentStreetNumber?: string, addressAccidentCountry?: string, addressAccidentZipCode?: string, addressAccidentStateShortName?: string, addressAccidentAddressUnit?: string, longitude?: number, latitude?: number, date?: string, time?: string, driverId?: number, truckId?: number, trailerChecked?: boolean, trailerId?: number, insuranceType?: Array<InsuranceTypeCommand>, roadwayTrafficway?: string, weatherCondition?: string, roadAccessControl?: string, roadSurfaceCondition?: string, lightCondition?: string, reportingAgency?: string, policeOfficer?: string, bagdeNo?: string, addressAuthorityCity?: string, addressAuthorityState?: string, addressAuthorityCounty?: string, addressAuthorityAddress?: string, addressAuthorityStreet?: string, addressAuthorityStreetNumber?: string, addressAuthorityCountry?: string, addressAuthorityZipCode?: string, addressAuthorityStateShortName?: string, addressAuthorityAddressUnit?: string, phoneOfficer?: string, fax?: string, originCity?: string, originState?: string, originCounty?: string, originAddress?: string, originStreet?: string, originStreetNumber?: string, originCountry?: string, originZipCode?: string, originStateShortName?: string, originAddressUnit?: string, destinationCity?: string, destinationState?: string, destinationCounty?: string, destinationAddress?: string, destinationStreet?: string, destinationStreetNumber?: string, destinationCountry?: string, destinationZipCode?: string, destinationStateShortName?: string, destinationAddressUnit?: string, brokerId?: number, boL?: string, cargo?: string, files?: Array<Blob>, filesForDeleteIds?: Array<number>, medies?: Array<Blob>, mediesForDeleteIds?: Array<number>, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<CreateWithUploadsResponse>>;
-    public apiAccidentPut(id?: number, report?: string, injury?: number, fatality?: number, towing?: boolean, hazMat?: boolean, vehicloNo?: number, addressAccidentCity?: string, addressAccidentState?: string, addressAccidentCounty?: string, addressAccidentAddress?: string, addressAccidentStreet?: string, addressAccidentStreetNumber?: string, addressAccidentCountry?: string, addressAccidentZipCode?: string, addressAccidentStateShortName?: string, addressAccidentAddressUnit?: string, longitude?: number, latitude?: number, date?: string, time?: string, driverId?: number, truckId?: number, trailerChecked?: boolean, trailerId?: number, insuranceType?: Array<InsuranceTypeCommand>, roadwayTrafficway?: string, weatherCondition?: string, roadAccessControl?: string, roadSurfaceCondition?: string, lightCondition?: string, reportingAgency?: string, policeOfficer?: string, bagdeNo?: string, addressAuthorityCity?: string, addressAuthorityState?: string, addressAuthorityCounty?: string, addressAuthorityAddress?: string, addressAuthorityStreet?: string, addressAuthorityStreetNumber?: string, addressAuthorityCountry?: string, addressAuthorityZipCode?: string, addressAuthorityStateShortName?: string, addressAuthorityAddressUnit?: string, phoneOfficer?: string, fax?: string, originCity?: string, originState?: string, originCounty?: string, originAddress?: string, originStreet?: string, originStreetNumber?: string, originCountry?: string, originZipCode?: string, originStateShortName?: string, originAddressUnit?: string, destinationCity?: string, destinationState?: string, destinationCounty?: string, destinationAddress?: string, destinationStreet?: string, destinationStreetNumber?: string, destinationCountry?: string, destinationZipCode?: string, destinationStateShortName?: string, destinationAddressUnit?: string, brokerId?: number, boL?: string, cargo?: string, files?: Array<Blob>, filesForDeleteIds?: Array<number>, medies?: Array<Blob>, mediesForDeleteIds?: Array<number>, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<CreateWithUploadsResponse>>;
-    public apiAccidentPut(id?: number, report?: string, injury?: number, fatality?: number, towing?: boolean, hazMat?: boolean, vehicloNo?: number, addressAccidentCity?: string, addressAccidentState?: string, addressAccidentCounty?: string, addressAccidentAddress?: string, addressAccidentStreet?: string, addressAccidentStreetNumber?: string, addressAccidentCountry?: string, addressAccidentZipCode?: string, addressAccidentStateShortName?: string, addressAccidentAddressUnit?: string, longitude?: number, latitude?: number, date?: string, time?: string, driverId?: number, truckId?: number, trailerChecked?: boolean, trailerId?: number, insuranceType?: Array<InsuranceTypeCommand>, roadwayTrafficway?: string, weatherCondition?: string, roadAccessControl?: string, roadSurfaceCondition?: string, lightCondition?: string, reportingAgency?: string, policeOfficer?: string, bagdeNo?: string, addressAuthorityCity?: string, addressAuthorityState?: string, addressAuthorityCounty?: string, addressAuthorityAddress?: string, addressAuthorityStreet?: string, addressAuthorityStreetNumber?: string, addressAuthorityCountry?: string, addressAuthorityZipCode?: string, addressAuthorityStateShortName?: string, addressAuthorityAddressUnit?: string, phoneOfficer?: string, fax?: string, originCity?: string, originState?: string, originCounty?: string, originAddress?: string, originStreet?: string, originStreetNumber?: string, originCountry?: string, originZipCode?: string, originStateShortName?: string, originAddressUnit?: string, destinationCity?: string, destinationState?: string, destinationCounty?: string, destinationAddress?: string, destinationStreet?: string, destinationStreetNumber?: string, destinationCountry?: string, destinationZipCode?: string, destinationStateShortName?: string, destinationAddressUnit?: string, brokerId?: number, boL?: string, cargo?: string, files?: Array<Blob>, filesForDeleteIds?: Array<number>, medies?: Array<Blob>, mediesForDeleteIds?: Array<number>, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+    public apiAccidentPut(id?: number, report?: string, reported?: boolean, towing?: boolean, vehicloNo?: number, addressAccidentCity?: string, addressAccidentState?: string, addressAccidentCounty?: string, addressAccidentAddress?: string, addressAccidentStreet?: string, addressAccidentStreetNumber?: string, addressAccidentCountry?: string, addressAccidentZipCode?: string, addressAccidentStateShortName?: string, addressAccidentAddressUnit?: string, longitude?: number, latitude?: number, date?: string, time?: string, driverId?: number, truckId?: number, trailerId?: number, citations?: Array<CitationCommand>, insuranceType?: Array<InsuranceTypeCommand>, roadwayTrafficway?: string, weatherCondition?: string, roadAccessControl?: string, roadSurfaceCondition?: string, lightCondition?: string, reportingAgency?: string, policeOfficer?: string, bagdeNo?: string, addressAuthorityCity?: string, addressAuthorityState?: string, addressAuthorityCounty?: string, addressAuthorityAddress?: string, addressAuthorityStreet?: string, addressAuthorityStreetNumber?: string, addressAuthorityCountry?: string, addressAuthorityZipCode?: string, addressAuthorityStateShortName?: string, addressAuthorityAddressUnit?: string, phoneOfficer?: string, fax?: string, originCity?: string, originState?: string, originCounty?: string, originAddress?: string, originStreet?: string, originStreetNumber?: string, originCountry?: string, originZipCode?: string, originStateShortName?: string, originAddressUnit?: string, destinationCity?: string, destinationState?: string, destinationCounty?: string, destinationAddress?: string, destinationStreet?: string, destinationStreetNumber?: string, destinationCountry?: string, destinationZipCode?: string, destinationStateShortName?: string, destinationAddressUnit?: string, brokerId?: number, boL?: string, cargo?: string, files?: Array<Blob>, filesForDeleteIds?: Array<number>, medies?: Array<Blob>, mediesForDeleteIds?: Array<number>, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<CreateWithUploadsResponse>;
+    public apiAccidentPut(id?: number, report?: string, reported?: boolean, towing?: boolean, vehicloNo?: number, addressAccidentCity?: string, addressAccidentState?: string, addressAccidentCounty?: string, addressAccidentAddress?: string, addressAccidentStreet?: string, addressAccidentStreetNumber?: string, addressAccidentCountry?: string, addressAccidentZipCode?: string, addressAccidentStateShortName?: string, addressAccidentAddressUnit?: string, longitude?: number, latitude?: number, date?: string, time?: string, driverId?: number, truckId?: number, trailerId?: number, citations?: Array<CitationCommand>, insuranceType?: Array<InsuranceTypeCommand>, roadwayTrafficway?: string, weatherCondition?: string, roadAccessControl?: string, roadSurfaceCondition?: string, lightCondition?: string, reportingAgency?: string, policeOfficer?: string, bagdeNo?: string, addressAuthorityCity?: string, addressAuthorityState?: string, addressAuthorityCounty?: string, addressAuthorityAddress?: string, addressAuthorityStreet?: string, addressAuthorityStreetNumber?: string, addressAuthorityCountry?: string, addressAuthorityZipCode?: string, addressAuthorityStateShortName?: string, addressAuthorityAddressUnit?: string, phoneOfficer?: string, fax?: string, originCity?: string, originState?: string, originCounty?: string, originAddress?: string, originStreet?: string, originStreetNumber?: string, originCountry?: string, originZipCode?: string, originStateShortName?: string, originAddressUnit?: string, destinationCity?: string, destinationState?: string, destinationCounty?: string, destinationAddress?: string, destinationStreet?: string, destinationStreetNumber?: string, destinationCountry?: string, destinationZipCode?: string, destinationStateShortName?: string, destinationAddressUnit?: string, brokerId?: number, boL?: string, cargo?: string, files?: Array<Blob>, filesForDeleteIds?: Array<number>, medies?: Array<Blob>, mediesForDeleteIds?: Array<number>, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<CreateWithUploadsResponse>>;
+    public apiAccidentPut(id?: number, report?: string, reported?: boolean, towing?: boolean, vehicloNo?: number, addressAccidentCity?: string, addressAccidentState?: string, addressAccidentCounty?: string, addressAccidentAddress?: string, addressAccidentStreet?: string, addressAccidentStreetNumber?: string, addressAccidentCountry?: string, addressAccidentZipCode?: string, addressAccidentStateShortName?: string, addressAccidentAddressUnit?: string, longitude?: number, latitude?: number, date?: string, time?: string, driverId?: number, truckId?: number, trailerId?: number, citations?: Array<CitationCommand>, insuranceType?: Array<InsuranceTypeCommand>, roadwayTrafficway?: string, weatherCondition?: string, roadAccessControl?: string, roadSurfaceCondition?: string, lightCondition?: string, reportingAgency?: string, policeOfficer?: string, bagdeNo?: string, addressAuthorityCity?: string, addressAuthorityState?: string, addressAuthorityCounty?: string, addressAuthorityAddress?: string, addressAuthorityStreet?: string, addressAuthorityStreetNumber?: string, addressAuthorityCountry?: string, addressAuthorityZipCode?: string, addressAuthorityStateShortName?: string, addressAuthorityAddressUnit?: string, phoneOfficer?: string, fax?: string, originCity?: string, originState?: string, originCounty?: string, originAddress?: string, originStreet?: string, originStreetNumber?: string, originCountry?: string, originZipCode?: string, originStateShortName?: string, originAddressUnit?: string, destinationCity?: string, destinationState?: string, destinationCounty?: string, destinationAddress?: string, destinationStreet?: string, destinationStreetNumber?: string, destinationCountry?: string, destinationZipCode?: string, destinationStateShortName?: string, destinationAddressUnit?: string, brokerId?: number, boL?: string, cargo?: string, files?: Array<Blob>, filesForDeleteIds?: Array<number>, medies?: Array<Blob>, mediesForDeleteIds?: Array<number>, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<CreateWithUploadsResponse>>;
+    public apiAccidentPut(id?: number, report?: string, reported?: boolean, towing?: boolean, vehicloNo?: number, addressAccidentCity?: string, addressAccidentState?: string, addressAccidentCounty?: string, addressAccidentAddress?: string, addressAccidentStreet?: string, addressAccidentStreetNumber?: string, addressAccidentCountry?: string, addressAccidentZipCode?: string, addressAccidentStateShortName?: string, addressAccidentAddressUnit?: string, longitude?: number, latitude?: number, date?: string, time?: string, driverId?: number, truckId?: number, trailerId?: number, citations?: Array<CitationCommand>, insuranceType?: Array<InsuranceTypeCommand>, roadwayTrafficway?: string, weatherCondition?: string, roadAccessControl?: string, roadSurfaceCondition?: string, lightCondition?: string, reportingAgency?: string, policeOfficer?: string, bagdeNo?: string, addressAuthorityCity?: string, addressAuthorityState?: string, addressAuthorityCounty?: string, addressAuthorityAddress?: string, addressAuthorityStreet?: string, addressAuthorityStreetNumber?: string, addressAuthorityCountry?: string, addressAuthorityZipCode?: string, addressAuthorityStateShortName?: string, addressAuthorityAddressUnit?: string, phoneOfficer?: string, fax?: string, originCity?: string, originState?: string, originCounty?: string, originAddress?: string, originStreet?: string, originStreetNumber?: string, originCountry?: string, originZipCode?: string, originStateShortName?: string, originAddressUnit?: string, destinationCity?: string, destinationState?: string, destinationCounty?: string, destinationAddress?: string, destinationStreet?: string, destinationStreetNumber?: string, destinationCountry?: string, destinationZipCode?: string, destinationStateShortName?: string, destinationAddressUnit?: string, brokerId?: number, boL?: string, cargo?: string, files?: Array<Blob>, filesForDeleteIds?: Array<number>, medies?: Array<Blob>, mediesForDeleteIds?: Array<number>, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -1560,17 +1490,11 @@ export class AccidentService {
         if (report !== undefined) {
             localVarFormParams = localVarFormParams.append('Report', <any>report) as any || localVarFormParams;
         }
-        if (injury !== undefined) {
-            localVarFormParams = localVarFormParams.append('Injury', <any>injury) as any || localVarFormParams;
-        }
-        if (fatality !== undefined) {
-            localVarFormParams = localVarFormParams.append('Fatality', <any>fatality) as any || localVarFormParams;
+        if (reported !== undefined) {
+            localVarFormParams = localVarFormParams.append('Reported', <any>reported) as any || localVarFormParams;
         }
         if (towing !== undefined) {
             localVarFormParams = localVarFormParams.append('Towing', <any>towing) as any || localVarFormParams;
-        }
-        if (hazMat !== undefined) {
-            localVarFormParams = localVarFormParams.append('HazMat', <any>hazMat) as any || localVarFormParams;
         }
         if (vehicloNo !== undefined) {
             localVarFormParams = localVarFormParams.append('VehicloNo', <any>vehicloNo) as any || localVarFormParams;
@@ -1623,11 +1547,13 @@ export class AccidentService {
         if (truckId !== undefined) {
             localVarFormParams = localVarFormParams.append('TruckId', <any>truckId) as any || localVarFormParams;
         }
-        if (trailerChecked !== undefined) {
-            localVarFormParams = localVarFormParams.append('TrailerChecked', <any>trailerChecked) as any || localVarFormParams;
-        }
         if (trailerId !== undefined) {
             localVarFormParams = localVarFormParams.append('TrailerId', <any>trailerId) as any || localVarFormParams;
+        }
+        if (citations) {
+            citations.forEach((element) => {
+                localVarFormParams = localVarFormParams.append('Citations', <any>element) as any || localVarFormParams;
+            })
         }
         if (insuranceType) {
             insuranceType.forEach((element) => {

@@ -384,10 +384,10 @@ export class FuelService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiFuelEFSCardupdatePost(activateDeactivateEFSFuelCard?: ActivateDeactivateEFSFuelCard, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<string>;
-    public apiFuelEFSCardupdatePost(activateDeactivateEFSFuelCard?: ActivateDeactivateEFSFuelCard, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<string>>;
-    public apiFuelEFSCardupdatePost(activateDeactivateEFSFuelCard?: ActivateDeactivateEFSFuelCard, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<string>>;
-    public apiFuelEFSCardupdatePost(activateDeactivateEFSFuelCard?: ActivateDeactivateEFSFuelCard, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+    public apiFuelEfsCardupdatePost(activateDeactivateEFSFuelCard?: ActivateDeactivateEFSFuelCard, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<string>;
+    public apiFuelEfsCardupdatePost(activateDeactivateEFSFuelCard?: ActivateDeactivateEFSFuelCard, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<string>>;
+    public apiFuelEfsCardupdatePost(activateDeactivateEFSFuelCard?: ActivateDeactivateEFSFuelCard, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<string>>;
+    public apiFuelEfsCardupdatePost(activateDeactivateEFSFuelCard?: ActivateDeactivateEFSFuelCard, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -440,7 +440,7 @@ export class FuelService {
             }
         }
 
-        let localVarPath = `/api/fuel/EFS/cardupdate`;
+        let localVarPath = `/api/fuel/efs/cardupdate`;
         return this.httpClient.request<string>('post', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
@@ -459,10 +459,10 @@ export class FuelService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiFuelEFSGetavailablecreditPost(getAvailableCreditEFSQuery?: GetAvailableCreditEFSQuery, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<number>;
-    public apiFuelEFSGetavailablecreditPost(getAvailableCreditEFSQuery?: GetAvailableCreditEFSQuery, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<number>>;
-    public apiFuelEFSGetavailablecreditPost(getAvailableCreditEFSQuery?: GetAvailableCreditEFSQuery, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<number>>;
-    public apiFuelEFSGetavailablecreditPost(getAvailableCreditEFSQuery?: GetAvailableCreditEFSQuery, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+    public apiFuelEfsGetavailablecreditPost(getAvailableCreditEFSQuery?: GetAvailableCreditEFSQuery, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<number>;
+    public apiFuelEfsGetavailablecreditPost(getAvailableCreditEFSQuery?: GetAvailableCreditEFSQuery, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<number>>;
+    public apiFuelEfsGetavailablecreditPost(getAvailableCreditEFSQuery?: GetAvailableCreditEFSQuery, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<number>>;
+    public apiFuelEfsGetavailablecreditPost(getAvailableCreditEFSQuery?: GetAvailableCreditEFSQuery, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -515,7 +515,7 @@ export class FuelService {
             }
         }
 
-        let localVarPath = `/api/fuel/EFS/getavailablecredit`;
+        let localVarPath = `/api/fuel/efs/getavailablecredit`;
         return this.httpClient.request<number>('post', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
@@ -534,10 +534,10 @@ export class FuelService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiFuelEFSPulltransactionPost(getEFSTransactionCommand?: GetEFSTransactionCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<string>;
-    public apiFuelEFSPulltransactionPost(getEFSTransactionCommand?: GetEFSTransactionCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<string>>;
-    public apiFuelEFSPulltransactionPost(getEFSTransactionCommand?: GetEFSTransactionCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<string>>;
-    public apiFuelEFSPulltransactionPost(getEFSTransactionCommand?: GetEFSTransactionCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+    public apiFuelEfsPulltransactionPost(getEFSTransactionCommand?: GetEFSTransactionCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<string>;
+    public apiFuelEfsPulltransactionPost(getEFSTransactionCommand?: GetEFSTransactionCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<string>>;
+    public apiFuelEfsPulltransactionPost(getEFSTransactionCommand?: GetEFSTransactionCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<string>>;
+    public apiFuelEfsPulltransactionPost(getEFSTransactionCommand?: GetEFSTransactionCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -590,7 +590,7 @@ export class FuelService {
             }
         }
 
-        let localVarPath = `/api/fuel/EFS/pulltransaction`;
+        let localVarPath = `/api/fuel/efs/pulltransaction`;
         return this.httpClient.request<string>('post', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
@@ -613,10 +613,10 @@ export class FuelService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiFuelEFSTransactionPut(id?: number, truckId?: number, trailerId?: number, files?: Array<Blob>, filesForDeleteIds?: Array<number>, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<CreateWithUploadsResponse>;
-    public apiFuelEFSTransactionPut(id?: number, truckId?: number, trailerId?: number, files?: Array<Blob>, filesForDeleteIds?: Array<number>, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<CreateWithUploadsResponse>>;
-    public apiFuelEFSTransactionPut(id?: number, truckId?: number, trailerId?: number, files?: Array<Blob>, filesForDeleteIds?: Array<number>, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<CreateWithUploadsResponse>>;
-    public apiFuelEFSTransactionPut(id?: number, truckId?: number, trailerId?: number, files?: Array<Blob>, filesForDeleteIds?: Array<number>, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+    public apiFuelEfsTransactionPut(id?: number, truckId?: number, trailerId?: number, files?: Array<Blob>, filesForDeleteIds?: Array<number>, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<CreateWithUploadsResponse>;
+    public apiFuelEfsTransactionPut(id?: number, truckId?: number, trailerId?: number, files?: Array<Blob>, filesForDeleteIds?: Array<number>, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<CreateWithUploadsResponse>>;
+    public apiFuelEfsTransactionPut(id?: number, truckId?: number, trailerId?: number, files?: Array<Blob>, filesForDeleteIds?: Array<number>, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<CreateWithUploadsResponse>>;
+    public apiFuelEfsTransactionPut(id?: number, truckId?: number, trailerId?: number, files?: Array<Blob>, filesForDeleteIds?: Array<number>, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -696,7 +696,7 @@ export class FuelService {
             }
         }
 
-        let localVarPath = `/api/fuel/EFS/transaction`;
+        let localVarPath = `/api/fuel/efs/transaction`;
         return this.httpClient.request<CreateWithUploadsResponse>('put', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
@@ -2072,15 +2072,17 @@ export class FuelService {
      * @param addressAddressUnit 
      * @param favourite 
      * @param note 
+     * @param longitude 
+     * @param latitude 
      * @param files 
      * @param filesForDeleteIds 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiFuelFuelstopUpdatePut(id?: number, businessName?: string, fuelStopFranchiseId?: number, store?: string, phone?: string, fax?: string, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, favourite?: boolean, note?: string, files?: Array<Blob>, filesForDeleteIds?: Array<number>, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<CreateWithUploadsResponse>;
-    public apiFuelFuelstopUpdatePut(id?: number, businessName?: string, fuelStopFranchiseId?: number, store?: string, phone?: string, fax?: string, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, favourite?: boolean, note?: string, files?: Array<Blob>, filesForDeleteIds?: Array<number>, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<CreateWithUploadsResponse>>;
-    public apiFuelFuelstopUpdatePut(id?: number, businessName?: string, fuelStopFranchiseId?: number, store?: string, phone?: string, fax?: string, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, favourite?: boolean, note?: string, files?: Array<Blob>, filesForDeleteIds?: Array<number>, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<CreateWithUploadsResponse>>;
-    public apiFuelFuelstopUpdatePut(id?: number, businessName?: string, fuelStopFranchiseId?: number, store?: string, phone?: string, fax?: string, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, favourite?: boolean, note?: string, files?: Array<Blob>, filesForDeleteIds?: Array<number>, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+    public apiFuelFuelstopUpdatePut(id?: number, businessName?: string, fuelStopFranchiseId?: number, store?: string, phone?: string, fax?: string, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, favourite?: boolean, note?: string, longitude?: number, latitude?: number, files?: Array<Blob>, filesForDeleteIds?: Array<number>, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<CreateWithUploadsResponse>;
+    public apiFuelFuelstopUpdatePut(id?: number, businessName?: string, fuelStopFranchiseId?: number, store?: string, phone?: string, fax?: string, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, favourite?: boolean, note?: string, longitude?: number, latitude?: number, files?: Array<Blob>, filesForDeleteIds?: Array<number>, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<CreateWithUploadsResponse>>;
+    public apiFuelFuelstopUpdatePut(id?: number, businessName?: string, fuelStopFranchiseId?: number, store?: string, phone?: string, fax?: string, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, favourite?: boolean, note?: string, longitude?: number, latitude?: number, files?: Array<Blob>, filesForDeleteIds?: Array<number>, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<CreateWithUploadsResponse>>;
+    public apiFuelFuelstopUpdatePut(id?: number, businessName?: string, fuelStopFranchiseId?: number, store?: string, phone?: string, fax?: string, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, favourite?: boolean, note?: string, longitude?: number, latitude?: number, files?: Array<Blob>, filesForDeleteIds?: Array<number>, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -2182,6 +2184,12 @@ export class FuelService {
         }
         if (note !== undefined) {
             localVarFormParams = localVarFormParams.append('Note', <any>note) as any || localVarFormParams;
+        }
+        if (longitude !== undefined) {
+            localVarFormParams = localVarFormParams.append('Longitude', <any>longitude) as any || localVarFormParams;
+        }
+        if (latitude !== undefined) {
+            localVarFormParams = localVarFormParams.append('Latitude', <any>latitude) as any || localVarFormParams;
         }
         if (files) {
             files.forEach((element) => {

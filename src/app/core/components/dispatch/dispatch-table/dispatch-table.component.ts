@@ -630,6 +630,10 @@ export class DispatchTableComponent implements OnInit {
         this.startIndexDriver = indx;
     }
 
+    showPickupDelivery(popup: any) {
+        popup.open();
+    }
+    
     dropHosList(event: any, data: any) {
         console.log(event);
         console.log(data);
@@ -644,4 +648,5 @@ export class DispatchTableComponent implements OnInit {
         console.log('trailerPred', drop.element);
         return true;
     };
+    
 }
