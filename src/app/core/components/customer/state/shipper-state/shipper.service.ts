@@ -2,15 +2,14 @@ import { ShipperMinimalListStore } from './shipper-details-state/shipper-minimal
 import { ShipperService } from './../../../../../../../appcoretruckassist/api/shipper.service';
 import { Injectable, OnDestroy } from '@angular/core';
 import {
+    ClusterResponse,
     CreateRatingCommand,
     CreateResponse,
     RatingReviewService,
     ShipperListResponse,
     ShipperMinimalListResponse,
     ShipperModalResponse,
-    ShipperResponse,
     UpdateReviewCommand,
-    ClusterResponse,
 } from 'appcoretruckassist';
 import { Observable, of, Subject, takeUntil, tap } from 'rxjs';
 import { ShipperStore } from './shipper.store';
@@ -20,7 +19,6 @@ import { ShipperDetailsListStore } from './shipper-details-state/shipper-details
 import { FormDataService } from 'src/app/core/services/formData/form-data.service';
 import { ShipperItemStore } from '../shipper-state/shipper-details-state/shipper-details.store';
 
-
 @Injectable({
     providedIn: 'root',
 })
@@ -28,7 +26,9 @@ export class ShipperTService implements OnDestroy {
     public shipperId: number;
     public shipperList: any;
     public currentIndex: number;
+    x;
     private destroy$ = new Subject<void>();
+
     constructor(
         private shipperService: ShipperService,
         private tableService: TruckassistTableService,
@@ -38,7 +38,7 @@ export class ShipperTService implements OnDestroy {
         private shipperMinimalQuery: ShipperMinimalListQuery,
         private sListStore: ShipperDetailsListStore,
         private formDataService: FormDataService,
-        private ShipperItemStore: ShipperItemStore,
+        private ShipperItemStore: ShipperItemStore
     ) {}
 
     // Create Shipper
@@ -87,7 +87,7 @@ export class ShipperTService implements OnDestroy {
             tap(() => {
                 let shipperData = {
                     ...this.ShipperItemStore?.getValue()?.entities[data.id],
-                }; 
+                };
                 const subShipper = this.getShipperById(data.id)
                     .pipe(takeUntil(this.destroy$))
                     .subscribe({
@@ -98,7 +98,7 @@ export class ShipperTService implements OnDestroy {
                             this.shipperMinimalStore.remove(
                                 ({ id }) => id === data.id
                             );
-                            
+
                             shipper.loadStops = shipperData.loadStops;
 
                             this.shipperStore.add(shipper);
@@ -246,6 +246,7 @@ export class ShipperTService implements OnDestroy {
             })
         );
     }
+
     // Delete Shipper By Id
     public deleteShipperById(shipperId: number): Observable<any> {
         return this.shipperService.apiShipperIdDelete(shipperId).pipe(
@@ -269,7 +270,6 @@ export class ShipperTService implements OnDestroy {
             })
         );
     }
-    x;
 
     public getShipperDropdowns(): Observable<ShipperModalResponse> {
         return this.shipperService.apiShipperModalGet();
@@ -360,34 +360,49 @@ export class ShipperTService implements OnDestroy {
     public createReview(
         review: CreateRatingCommand
     ): Observable<CreateResponse> {
-        return this.ratingReviewService.apiRatingReviewReviewPost(review);
+        return this.ratingReviewService.apiRatingreviewReviewPost(review);
     }
 
     public deleteReviewById(id: number): Observable<any> {
-        return this.ratingReviewService.apiRatingReviewReviewIdDelete(id);
+        return this.ratingReviewService.apiRatingreviewReviewIdDelete(id);
     }
 
     public updateReview(review: UpdateReviewCommand): Observable<any> {
-        return this.ratingReviewService.apiRatingReviewReviewPut(review);
+        return this.ratingReviewService.apiRatingreviewReviewPut(review);
     }
 
-    public getShipperLoads(
-        shipperId: number
-    ){
-        return this.shipperService.apiShipperLoadsGet(undefined, undefined, undefined, undefined, undefined, undefined, shipperId);
+    public getShipperLoads(shipperId: number) {
+        return this.shipperService.apiShipperLoadsGet(
+            undefined,
+            undefined,
+            undefined,
+            undefined,
+            undefined,
+            undefined,
+            shipperId
+        );
     }
 
-    public deleteReview(reviewId, shipperId){
-        let shipperData = JSON.parse(JSON.stringify(this.ShipperItemStore?.getValue()?.entities[shipperId]));
+    public deleteReview(reviewId, shipperId) {
+        let shipperData = JSON.parse(
+            JSON.stringify(
+                this.ShipperItemStore?.getValue()?.entities[shipperId]
+            )
+        );
 
         shipperData?.reviews.map((item: any, index: any) => {
-            if ( item.id == reviewId ){
+            if (item.id == reviewId) {
                 shipperData?.reviews.splice(index, 1);
-            }})
+            }
+        });
 
-        this.shipperStore.update(shipperData.id, { reviews: shipperData.reviews });    
-        this.ShipperItemStore.update(shipperData.id, { reviews: shipperData.reviews });    
-        
+        this.shipperStore.update(shipperData.id, {
+            reviews: shipperData.reviews,
+        });
+        this.ShipperItemStore.update(shipperData.id, {
+            reviews: shipperData.reviews,
+        });
+
         this.tableService.sendActionAnimation({
             animation: 'update',
             tab: 'shipper',
@@ -396,43 +411,55 @@ export class ShipperTService implements OnDestroy {
         });
     }
 
-    public updatedReviewNew(data, currentId){
-
-        let shipperData = JSON.parse(JSON.stringify(this.ShipperItemStore?.getValue()?.entities[currentId]));
+    public updatedReviewNew(data, currentId) {
+        let shipperData = JSON.parse(
+            JSON.stringify(
+                this.ShipperItemStore?.getValue()?.entities[currentId]
+            )
+        );
 
         shipperData?.reviews.map((item: any) => {
-            if ( item.id == data.id ){
+            if (item.id == data.id) {
                 item.comment = data.comment;
             }
-           
         });
-        
-        this.shipperStore.update(shipperData.id, { reviews: shipperData.reviews });    
-        this.ShipperItemStore.update(shipperData.id, { reviews: shipperData.reviews }); 
-        
+
+        this.shipperStore.update(shipperData.id, {
+            reviews: shipperData.reviews,
+        });
+        this.ShipperItemStore.update(shipperData.id, {
+            reviews: shipperData.reviews,
+        });
+
         this.tableService.sendActionAnimation({
             animation: 'update',
             tab: 'shipper',
             data: shipperData,
             id: shipperData.id,
-        }); 
+        });
     }
 
-    public addNewReview(data, currentId){
-
-        let shipperData = JSON.parse(JSON.stringify(this.ShipperItemStore?.getValue()?.entities[currentId]));
+    public addNewReview(data, currentId) {
+        let shipperData = JSON.parse(
+            JSON.stringify(
+                this.ShipperItemStore?.getValue()?.entities[currentId]
+            )
+        );
         shipperData?.reviews.push(data);
 
-        this.shipperStore.update(shipperData.id, { reviews: shipperData.reviews });  
-        this.ShipperItemStore.update(shipperData.id, { reviews: shipperData.reviews });  
+        this.shipperStore.update(shipperData.id, {
+            reviews: shipperData.reviews,
+        });
+        this.ShipperItemStore.update(shipperData.id, {
+            reviews: shipperData.reviews,
+        });
 
         this.tableService.sendActionAnimation({
             animation: 'update',
             tab: 'shipper',
             data: shipperData,
             id: shipperData.id,
-        }); 
-
+        });
     }
 
     ngOnDestroy(): void {

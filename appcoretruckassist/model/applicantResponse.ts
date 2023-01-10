@@ -25,6 +25,7 @@ import { PersonalInfoFeedbackResponse } from './personalInfoFeedbackResponse';
 import { PreviousEmployerRequestResponse } from './previousEmployerRequestResponse';
 import { PspAuthFeedbackResponse } from './pspAuthFeedbackResponse';
 import { SsnFeedbackResponse } from './ssnFeedbackResponse';
+import { CompanyOwnerInfoFeedbackResponse } from './companyOwnerInfoFeedbackResponse';
 import { SevenDaysHosFeedbackResponse } from './sevenDaysHosFeedbackResponse';
 import { CdlCardFeedbackResponse } from './cdlCardFeedbackResponse';
 import { AccidentRecordFeedbackResponse } from './accidentRecordFeedbackResponse';
@@ -53,6 +54,7 @@ export interface ApplicantResponse {
     driverRight?: DriverRightsFeedbackResponse;
     disclosureRelease?: DisclosureReleaseFeedbackResponse;
     authorization?: AuthorizationFeedbackResponse;
+    companyOwnerInfo?: CompanyOwnerInfoFeedbackResponse;
     medicalCertificate?: MedicalCertificateFeedbackResponse;
     mvrAuth?: MvrAuthFeedbackResponse;
     pspAuth?: PspAuthFeedbackResponse;
