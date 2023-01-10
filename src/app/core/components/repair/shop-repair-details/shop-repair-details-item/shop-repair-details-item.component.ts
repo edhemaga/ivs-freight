@@ -18,6 +18,9 @@ import { RepairOrderModalComponent } from '../../../modals/repair-modals/repair-
 import { card_component_animation } from '../../../shared/animations/card-component.animations';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
 import { RepairDQuery } from '../../state/details-state/repair-d.query';
+import { UpdateReviewCommand } from '../../../../../../../appcoretruckassist';
+import { ReviewCommentModal } from '../../../shared/ta-user-review/ta-user-review.component';
+import { ReviewsRatingService } from '../../../../services/reviews-rating/reviewsRating.service';
 
 @Component({
     selector: 'app-shop-repair-details-item',
@@ -45,7 +48,8 @@ export class ShopRepairDetailsItemComponent implements OnInit, OnChanges {
         private modalService: ModalService,
         private confirmationService: ConfirmationService,
         private repairDQuery: RepairDQuery,
-        private cdr: ChangeDetectorRef
+        private cdr: ChangeDetectorRef,
+        private reviewRatingService: ReviewsRatingService
     ) {}
     ngOnChanges(changes: SimpleChanges): void {
         if (
@@ -249,8 +253,46 @@ export class ShopRepairDetailsItemComponent implements OnInit, OnChanges {
         return item.id;
     }
 
-    public changeReviewsEvent(reviews: { data: any[]; action: string }) {
-        this.reviewsRepair = [...reviews.data];
+    public changeReviewsEvent(reviews: { data: any; action: string }) {
+         if ( reviews.action == 'update' ) {
+            const review: UpdateReviewCommand = {
+                id: reviews.data.id,
+                comment: reviews.data.commentContent,
+            };
+           
+            this.reviewRatingService
+            .updateReview(review)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: () => {},
+                error: () => {},
+            });
+         } else if ( reviews.action == 'delete' ) {
+            this.reviewRatingService
+            .deleteReview(reviews.data)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: () => {},
+                error: () => {},
+            });
+         }
+        //this.reviewsRepair = [...reviews.data];
         // TODO: API CREATE OR DELETE
+    }
+
+
+    public openRepairDetail(repair){
+        if ( this.showRepairItems[repair.id] ) {
+            this.showRepairItems[repair.id] = false;
+        } else {
+            if ( repair?.items?.length > 0 ) {
+                this.showRepairItems[repair.id] = true;
+            }
+        }
+    }
+
+    public stopClick(ev){
+        ev.stopPropagation();
+        ev.preventDefault();
     }
 }

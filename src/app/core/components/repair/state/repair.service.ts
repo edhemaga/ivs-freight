@@ -596,6 +596,94 @@ export class RepairTService implements OnDestroy {
             };
         });
     }
+
+    public deleteReview(reviewId, shopId){
+        let shopStored = JSON.parse(JSON.stringify(this.rDs?.getValue()));
+        let shopData = shopStored?.repairShop;
+        let currentShop;
+        let shopIndex;
+        shopData.map(
+            (shop: any, ind: any) => { 
+                if ( shop.id == shopId ) {
+                    currentShop = shop;
+                    shopIndex = ind;
+                }
+            }
+        );
+
+        currentShop?.reviews.map((item: any, index: any) => {
+            if ( item.id == reviewId ){
+                currentShop?.reviews.splice(index, 1);
+            }})
+
+
+        
+        shopData[shopIndex] = currentShop;
+
+        this.shopStore.remove(({ id }) => id === shopId);               
+        this.shopStore.add(currentShop);
+
+        
+        this.rDs.update((store) => {                         
+            shopStored.repairShop[shopIndex] = currentShop;
+            
+            return {
+                ...store,
+                repairShop: [...shopStored.repairShop],
+            };
+            
+        });
+
+        this.tableService.sendActionAnimation({
+            animation: 'update',
+            tab: 'repair-shop',
+            data: currentShop,
+            id: currentShop.id,
+        });
+    }
+
+    public addNewReview(data, shopId){
+        console.log('--data', data);
+        console.log('--currentId', shopId);
+
+        let shopStored = JSON.parse(JSON.stringify(this.rDs?.getValue()));
+        let shopData = shopStored?.repairShop;
+        let currentShop;
+        let shopIndex;
+        shopData.map(
+            (shop: any, ind: any) => { 
+                if ( shop.id == shopId ) {
+                    currentShop = shop;
+                    shopIndex = ind;
+                }
+            }
+        );
+        currentShop?.reviews.push(data);
+
+        shopData[shopIndex] = currentShop;
+
+        this.shopStore.remove(({ id }) => id === shopId);               
+        this.shopStore.add(currentShop);
+
+        
+        this.rDs.update((store) => {                         
+            shopStored.repairShop[shopIndex] = currentShop;
+            
+            return {
+                ...store,
+                repairShop: [...shopStored.repairShop],
+            };
+            
+        });
+
+        this.tableService.sendActionAnimation({
+            animation: 'update',
+            tab: 'repair-shop',
+            data: currentShop,
+            id: currentShop.id,
+        });
+    }
+
     ngOnDestroy(): void {
         this.destroy$.next();
         this.destroy$.complete();

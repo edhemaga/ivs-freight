@@ -210,7 +210,9 @@ export class ShopRepairCardViewComponent
                 })
             )
             .subscribe((data) => {
-                data[0]['name'] = newData.name;
+                if ( newData ) {
+                    data[0]['name'] = newData.name;
+                }
                 this.shopsDropdowns = data;
             });
     }

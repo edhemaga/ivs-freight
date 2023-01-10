@@ -21,8 +21,7 @@
                     <span
                         *ngFor="let repairs of repairListData; let i = index"
                         (click)="
-                            showRepairItems[repairs?.id] =
-                                !showRepairItems[repairs?.id]
+                            openRepairDetail(repairs)
                         "
                         class="item-shop-wrapper"
                         [ngClass]="{
@@ -120,6 +119,7 @@
                                         (dropDownActions)="
                                             optionsEvent($event, 'repair')
                                         "
+                                        (click)="stopClick($event)"
                                     >
                                     </app-details-page-dropdown>
                                 </div>
@@ -207,9 +207,11 @@
                                             desc?.price | formatCurrency
                                         }}</span
                                     >
-                                    <span class="description-item-qty">{{
-                                        desc?.quantity
-                                    }}</span>
+                                    <span class="description-item-qty">
+                                        <span class="inner-qty-value">
+                                            {{ desc?.quantity }}
+                                        </span>
+                                    </span>
                                     <span
                                         *ngIf="desc.subtotal"
                                         class="description-item-total"

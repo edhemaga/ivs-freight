@@ -375,14 +375,15 @@ app-shop-repair-details-item {
         .repair-items {
             .items-header {
                 background-color: #fff3e0;
-                margin-bottom: 2px !important;
+                margin-bottom: 0px !important;
                 margin-top: 2px !important;
                 padding: 6px 4px;
                 padding-left: 10px;
                 border-radius: 2px;
                 grid-template-columns: 82px 86px 86px 0 415px !important;
                 &:hover {
-                    background-color: #ffecd1 !important;
+                    background-color: #FFECD1 !important;
+                    margin-bottom: 0px !important;
                 }
             }
         }
@@ -497,7 +498,7 @@ app-shop-repair-details-item {
         grid-template-columns: 33px 418px 80px 98px 58px;
         align-items: center;
         align-content: center;
-        padding: 0 10px;
+        padding: 6px 10px 0px 10px;
         .item-header {
             font-size: 12px;
             font-weight: $font-bold;
@@ -559,6 +560,11 @@ app-shop-repair-details-item {
             &::selection {
                 color: #6c6c6c;
                 background: rgb(108, 108, 108, 0.2);
+            }
+
+            .inner-qty-value{
+                min-width: 30px;
+                text-align: center;
             }
         }
 

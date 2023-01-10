@@ -15,6 +15,7 @@ import { ShopStore } from '../../components/repair/state/shop-state/shop.store';
 import { Router } from '@angular/router';
 import { BrokerTService } from '../../components/customer/state/broker-state/broker.service';
 import { ShipperTService } from '../../components/customer/state/shipper-state/shipper.service';
+import { RepairTService } from '../../components/repair/state/repair.service';
 
 @Injectable({
     providedIn: 'root',
@@ -29,6 +30,7 @@ export class ReviewsRatingService {
         private router: Router,
         private BrokerTService: BrokerTService,
         private ShipperTService: ShipperTService,
+        private RepairTService: RepairTService,
     ) {}
 
     public getReviewRatingModal(): Observable<GetRatingReviewModalResponse> {
@@ -82,6 +84,11 @@ export class ReviewsRatingService {
                 if ( this.router.url.indexOf('shipper') > -1 ){
                     this.ShipperTService.deleteReview(id, customerId);
                 }
+
+                if ( this.router.url.indexOf('shop-details') > -1 ){
+                    this.RepairTService.deleteReview(id, customerId);
+                }
+
             }));
     }
 
@@ -105,6 +112,9 @@ export class ReviewsRatingService {
                             }
                             if ( this.router.url.indexOf('shipper') > -1 ){
                                 this.ShipperTService.addNewReview(resp, customerId);
+                            }
+                            if ( this.router.url.indexOf('shop-details') > -1 ){
+                                this.RepairTService.addNewReview(resp, customerId);
                             }
                             reviewDataNew.unsubscribe();
                         },
