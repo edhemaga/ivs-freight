@@ -4,23 +4,37 @@
     </div>
     <div class="gps-progress-text">
         <div class="mileage-gps d-flex">
-            <div class="mileages">128.4 mi</div>
-            <div class="mileage-normal">86.7 mi</div>
+            <div class="mileages">{{ gpsTitle }}</div>
+            <div class="mileage-normal" *ngIf="!currentStopHovered">
+                86.7 mi
+            </div>
         </div>
         <div class="mileage-gps d-flex">
             <div class="gps-timeline">
-                <div class="gps-timeline-active" [ngStyle]="{ left: currentPosition + '%' }"></div>
+                <div
+                    class="gps-timeline-active"
+                    [ngStyle]="{ left: currentPosition + '%' }"
+                ></div>
                 <div
                     class="gps-stop"
                     *ngFor="let stop of gpsProgress"
+                    (mouseenter)="hoverStop(stop)"
+                    (mouseleave)="leaveStop()"
                     [ngClass]="{
                         'pickup-stop': stop.type == 'pickup',
                         'delivery-stop': stop.type == 'delivery'
                     }"
                     [ngStyle]="{ left: stop.position + '%' }"
                 ></div>
-                <div class="current-pos" [ngStyle]="{ left: currentPosition + '%' }">
-                    <svg-icon src="assets/svg/common/ic_pulse_circle.svg"></svg-icon>
+                <div
+                    class="current-pos"
+                    (mouseenter)="hoverStop(currentStop)"
+                    (mouseleave)="leaveStop()"
+                    [ngStyle]="{ left: currentPosition + '%' }"
+                >
+                    <svg-icon
+                        src="assets/svg/common/ic_pulse_circle.svg"
+                    ></svg-icon>
                 </div>
             </div>
             <div class="mileages">12%</div>
