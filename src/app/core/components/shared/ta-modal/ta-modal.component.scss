@@ -71,7 +71,6 @@
             position: absolute !important;
             top: 84% !important;
             text-align: center;
-            left: 40%;
             left: 50% !important;
             transform: translate(-50%, -50%);
         }
@@ -148,11 +147,13 @@
         &::-webkit-scrollbar {
             width: 2px;
         }
+
         &::-webkit-scrollbar-thumb {
             background-color: transparent;
             border: 6px solid transparent;
             border-radius: 1px;
         }
+
         &::-webkit-scrollbar-track {
             padding: 0;
             position: relative;
@@ -189,6 +190,7 @@
                     padding-left: 12px;
                     padding-right: 12px;
                 }
+
                 &:nth-child(even) {
                     padding-left: 0px;
                     padding-right: 12px;
@@ -206,7 +208,8 @@
         .ta-modal-footer-left-side {
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 12px;
+            padding-left: 1px;
         }
     }
 }

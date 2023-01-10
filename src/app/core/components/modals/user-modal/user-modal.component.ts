@@ -7,6 +7,7 @@ import {
     firstNameValidation,
     lastNameValidation,
     phoneExtension,
+    phoneFaxRegex,
     routingBankValidation,
     salaryValidation,
 } from '../../shared/ta-input/ta-input.regex-validations';
@@ -20,27 +21,26 @@ import {
 } from '@angular/core';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
 import { AddressEntity, CreateResponse, EnumValue } from 'appcoretruckassist';
-import { phoneFaxRegex } from '../../shared/ta-input/ta-input.regex-validations';
 import { tab_modal_animation } from '../../shared/animations/tabs-modal.animation';
-import { distinctUntilChanged, takeUntil, Subject } from 'rxjs';
+import { distinctUntilChanged, Subject, takeUntil } from 'rxjs';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { BankVerificationService } from '../../../services/BANK-VERIFICATION/bankVerification.service';
 import { FormService } from '../../../services/form/form.service';
 import { UserTService } from '../../user/state/user.service';
-import { CompanyUserModalResponse } from '../../../../../../appcoretruckassist/model/companyUserModalResponse';
+import {
+    CompanyUserModalResponse,
+    CompanyUserResponse,
+    CreateCompanyUserCommand,
+    UpdateCompanyUserCommand,
+} from '../../../../../../appcoretruckassist';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { SettingsOfficeModalComponent } from '../location-modals/settings-office-modal/settings-office-modal.component';
 import { Options } from 'ng5-slider';
-import { CreateCompanyUserCommand } from '../../../../../../appcoretruckassist/model/createCompanyUserCommand';
-import { CompanyUserResponse } from '../../../../../../appcoretruckassist/model/companyUserResponse';
-import { UpdateCompanyUserCommand } from '../../../../../../appcoretruckassist/model/updateCompanyUserCommand';
 import {
-    convertNumberInThousandSep,
     convertDateFromBackend,
-} from '../../../utils/methods.calculations';
-import {
-    convertThousanSepInNumber,
     convertDateToBackend,
+    convertNumberInThousandSep,
+    convertThousanSepInNumber,
 } from '../../../utils/methods.calculations';
 import { HttpResponseBase } from '@angular/common/http';
 
@@ -53,12 +53,8 @@ import { HttpResponseBase } from '@angular/common/http';
     providers: [ModalService, BankVerificationService],
 })
 export class UserModalComponent implements OnInit, OnDestroy {
-    private destroy$ = new Subject<void>();
-
     @Input() editData: any;
-
     public userForm: FormGroup;
-
     public selectedTab: number = 1;
     public tabs: any[] = [
         {
@@ -70,7 +66,6 @@ export class UserModalComponent implements OnInit, OnDestroy {
             name: 'Additional',
         },
     ];
-
     public typeOfEmploye = [
         {
             id: 3,
@@ -83,7 +78,6 @@ export class UserModalComponent implements OnInit, OnDestroy {
             checked: false,
         },
     ];
-
     public ownerType = [
         {
             id: 10,
@@ -91,7 +85,6 @@ export class UserModalComponent implements OnInit, OnDestroy {
             checked: true,
         },
     ];
-
     public typeOfPayroll = [
         {
             id: 5,
@@ -104,12 +97,10 @@ export class UserModalComponent implements OnInit, OnDestroy {
             checked: false,
         },
     ];
-
     public animationObject = {
         value: this.selectedTab,
         params: { height: '0px' },
     };
-
     public commissionOptions: Options = {
         floor: 2.5,
         ceil: 25,
@@ -117,41 +108,30 @@ export class UserModalComponent implements OnInit, OnDestroy {
         showSelectionBar: true,
         hideLimitLabels: true,
     };
-
     public labelsBank: any[] = [];
     public departments: any[] = [];
     public offices: any[] = [];
     public paymentOptions: any[] = [];
-
     public helperForManagers: any[] = [];
     public heleperForDispatchers: any[] = [];
-
     public selectedDepartment: any = null;
     public selectedOffice: any = null;
     public selectedBank: any = null;
     public selectedPayment: any = null;
     public selectedAddress: AddressEntity = null;
-
     public selectedUserType: EnumValue = null;
-
     public selectedUserAdmin: any = this.typeOfEmploye[0];
     public selectedW21099: any = this.typeOfPayroll[0];
-
     public isPhoneExtExist: boolean = false;
     public isBankSelected: boolean = false;
-
     public isFormDirty: boolean;
-
     public isPaymentTypeAvailable: boolean = false;
-
     public allowOnlyCommission: boolean = false;
     public allowPairCommissionBase: boolean = false;
-
     public userFullName: string = null;
-
     public userStatus: boolean = true;
-
     public disableCardAnimation: boolean = false;
+    private destroy$ = new Subject<void>();
 
     constructor(
         private formBuilder: FormBuilder,
@@ -174,59 +154,6 @@ export class UserModalComponent implements OnInit, OnDestroy {
         }
 
         this.trackUserPayroll();
-    }
-
-    private createForm() {
-        this.userForm = this.formBuilder.group({
-            firstName: [null, [Validators.required, ...firstNameValidation]],
-            lastName: [null, [Validators.required, ...lastNameValidation]],
-            address: [null, [...addressValidation]],
-            addressUnit: [null, [...addressUnitValidation]],
-            personalPhone: [null, [phoneFaxRegex]],
-            personalEmail: [null],
-            departmentId: [
-                null,
-                [Validators.required, ...departmentValidation],
-            ],
-            companyOfficeId: [null],
-            userType: [null],
-            isAdmin: [false],
-            phone: [null, [phoneFaxRegex]],
-            extensionPhone: [null, [...phoneExtension]],
-            email: [null, [Validators.required]],
-            //  Payroll part
-            includeInPayroll: [false],
-            paymentType: [null],
-            salary: [null, salaryValidation],
-            startDate: [null],
-            is1099: [null],
-            bankId: [null, [...bankValidation]],
-            routingNumber: [null, routingBankValidation],
-            accountNumber: [null, accountBankValidation],
-            base: [null],
-            commission: [null],
-            note: [null],
-        });
-
-        this.formService.checkFormChange(this.userForm);
-
-        this.formService.formValueChange$
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((isFormChange: boolean) => {
-                this.isFormDirty = isFormChange;
-            });
-
-        this.inputService.customInputValidator(
-            this.userForm.get('personalEmail'),
-            'email',
-            this.destroy$
-        );
-
-        this.inputService.customInputValidator(
-            this.userForm.get('email'),
-            'email',
-            this.destroy$
-        );
     }
 
     public onModalAction(data: { action: string; bool: boolean }): void {
@@ -292,100 +219,6 @@ export class UserModalComponent implements OnInit, OnDestroy {
         valid: boolean;
     }): void {
         if (event.valid) this.selectedAddress = event.address;
-    }
-
-    private trackUserPayroll() {
-        this.userForm
-            .get('includeInPayroll')
-            .valueChanges.pipe(takeUntil(this.destroy$))
-            .subscribe((value) => {
-                console.log('payroll: ', value);
-                if (value) {
-                    this.inputService.changeValidators(
-                        this.userForm.get('salary')
-                    );
-                    this.inputService.changeValidators(
-                        this.userForm.get('startDate')
-                    );
-                    if (
-                        ['Dispatch', 'Manager'].includes(
-                            this.selectedDepartment?.name
-                        )
-                    ) {
-                        this.isPaymentTypeAvailable = true;
-                        this.inputService.changeValidators(
-                            this.userForm.get('paymentType')
-                        );
-                        this.paymentOptions =
-                            this.selectedDepartment.name === 'Dispatch'
-                                ? this.heleperForDispatchers
-                                : this.helperForManagers;
-                    } else {
-                        this.isPaymentTypeAvailable = false;
-                        this.paymentOptions = [];
-                        this.allowOnlyCommission = false;
-                        this.allowPairCommissionBase = false;
-                        this.inputService.changeValidators(
-                            this.userForm.get('paymentType'),
-                            false
-                        );
-                        this.selectedPayment = null;
-                    }
-
-                    this.inputService.changeValidators(
-                        this.userForm.get('bankId')
-                    );
-                } else {
-                    this.inputService.changeValidators(
-                        this.userForm.get('paymentType'),
-                        false
-                    );
-                    this.inputService.changeValidators(
-                        this.userForm.get('salary'),
-                        false
-                    );
-                    this.inputService.changeValidators(
-                        this.userForm.get('base'),
-                        false
-                    );
-                    this.inputService.changeValidators(
-                        this.userForm.get('startDate'),
-                        false
-                    );
-                    this.inputService.changeValidators(
-                        this.userForm.get('bankId'),
-                        false
-                    );
-                    this.inputService.changeValidators(
-                        this.userForm.get('routingNumber'),
-                        false
-                    );
-                    this.inputService.changeValidators(
-                        this.userForm.get('accountNumber'),
-                        false
-                    );
-
-                    this.selectedBank = null;
-                    this.selectedPayment = null;
-                }
-            });
-    }
-
-    private onBankSelected(): void {
-        this.userForm
-            .get('bankId')
-            .valueChanges.pipe(distinctUntilChanged(), takeUntil(this.destroy$))
-            .subscribe(() => {
-                const timeout = setTimeout(async () => {
-                    this.isBankSelected =
-                        await this.bankVerificationService.onSelectBank(
-                            this.selectedBank ? this.selectedBank.name : null,
-                            this.userForm.get('routingNumber'),
-                            this.userForm.get('accountNumber')
-                        );
-                    clearTimeout(timeout);
-                }, 100);
-            });
     }
 
     public onSaveNewBank(bank: { data: any; action: string }) {
@@ -544,6 +377,158 @@ export class UserModalComponent implements OnInit, OnDestroy {
         }
     }
 
+    ngOnDestroy(): void {
+        this.destroy$.next();
+        this.destroy$.complete();
+    }
+
+    private createForm() {
+        this.userForm = this.formBuilder.group({
+            firstName: [null, [Validators.required, ...firstNameValidation]],
+            lastName: [null, [Validators.required, ...lastNameValidation]],
+            address: [null, [...addressValidation]],
+            addressUnit: [null, [...addressUnitValidation]],
+            personalPhone: [null, [phoneFaxRegex]],
+            personalEmail: [null],
+            departmentId: [
+                null,
+                [Validators.required, ...departmentValidation],
+            ],
+            companyOfficeId: [null],
+            userType: [null],
+            isAdmin: [false],
+            phone: [null, [phoneFaxRegex]],
+            extensionPhone: [null, [...phoneExtension]],
+            email: [null, [Validators.required]],
+            //  Payroll part
+            includeInPayroll: [false],
+            paymentType: [null],
+            salary: [null, salaryValidation],
+            startDate: [null],
+            is1099: [null],
+            bankId: [null, [...bankValidation]],
+            routingNumber: [null, routingBankValidation],
+            accountNumber: [null, accountBankValidation],
+            base: [null],
+            commission: [null],
+            note: [null],
+        });
+
+        this.formService.checkFormChange(this.userForm);
+
+        this.formService.formValueChange$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((isFormChange: boolean) => {
+                this.isFormDirty = isFormChange;
+            });
+
+        this.inputService.customInputValidator(
+            this.userForm.get('personalEmail'),
+            'email',
+            this.destroy$
+        );
+
+        this.inputService.customInputValidator(
+            this.userForm.get('email'),
+            'email',
+            this.destroy$
+        );
+    }
+
+    private trackUserPayroll() {
+        this.userForm
+            .get('includeInPayroll')
+            .valueChanges.pipe(takeUntil(this.destroy$))
+            .subscribe((value) => {
+                console.log('payroll: ', value);
+                if (value) {
+                    this.inputService.changeValidators(
+                        this.userForm.get('salary')
+                    );
+                    this.inputService.changeValidators(
+                        this.userForm.get('startDate')
+                    );
+                    if (
+                        ['Dispatch', 'Manager'].includes(
+                            this.selectedDepartment?.name
+                        )
+                    ) {
+                        this.isPaymentTypeAvailable = true;
+                        this.inputService.changeValidators(
+                            this.userForm.get('paymentType')
+                        );
+                        this.paymentOptions =
+                            this.selectedDepartment.name === 'Dispatch'
+                                ? this.heleperForDispatchers
+                                : this.helperForManagers;
+                    } else {
+                        this.isPaymentTypeAvailable = false;
+                        this.paymentOptions = [];
+                        this.allowOnlyCommission = false;
+                        this.allowPairCommissionBase = false;
+                        this.inputService.changeValidators(
+                            this.userForm.get('paymentType'),
+                            false
+                        );
+                        this.selectedPayment = null;
+                    }
+
+                    this.inputService.changeValidators(
+                        this.userForm.get('bankId')
+                    );
+                } else {
+                    this.inputService.changeValidators(
+                        this.userForm.get('paymentType'),
+                        false
+                    );
+                    this.inputService.changeValidators(
+                        this.userForm.get('salary'),
+                        false
+                    );
+                    this.inputService.changeValidators(
+                        this.userForm.get('base'),
+                        false
+                    );
+                    this.inputService.changeValidators(
+                        this.userForm.get('startDate'),
+                        false
+                    );
+                    this.inputService.changeValidators(
+                        this.userForm.get('bankId'),
+                        false
+                    );
+                    this.inputService.changeValidators(
+                        this.userForm.get('routingNumber'),
+                        false
+                    );
+                    this.inputService.changeValidators(
+                        this.userForm.get('accountNumber'),
+                        false
+                    );
+
+                    this.selectedBank = null;
+                    this.selectedPayment = null;
+                }
+            });
+    }
+
+    private onBankSelected(): void {
+        this.userForm
+            .get('bankId')
+            .valueChanges.pipe(distinctUntilChanged(), takeUntil(this.destroy$))
+            .subscribe(() => {
+                const timeout = setTimeout(async () => {
+                    this.isBankSelected =
+                        await this.bankVerificationService.onSelectBank(
+                            this.selectedBank ? this.selectedBank.name : null,
+                            this.userForm.get('routingNumber'),
+                            this.userForm.get('accountNumber')
+                        );
+                    clearTimeout(timeout);
+                }, 100);
+            });
+    }
+
     private updateUser(id: number) {
         const {
             addressUnit,
@@ -581,8 +566,6 @@ export class UserModalComponent implements OnInit, OnDestroy {
                 : 0,
             isAdmin: this.selectedUserAdmin
                 ? this.selectedUserAdmin.name === 'Admin'
-                    ? true
-                    : false
                 : false,
             includeInPayroll: includeInPayroll,
             paymentType: this.selectedPayment ? this.selectedPayment.id : null,
@@ -590,8 +573,6 @@ export class UserModalComponent implements OnInit, OnDestroy {
             startDate: startDate ? convertDateToBackend(startDate) : null,
             is1099: this.selectedW21099
                 ? this.selectedW21099.name === '1099'
-                    ? true
-                    : false
                 : false,
             bankId: this.selectedBank ? this.selectedBank.id : null,
             base: base ? convertThousanSepInNumber(base) : null,
@@ -636,8 +617,6 @@ export class UserModalComponent implements OnInit, OnDestroy {
             userType: null,
             isAdmin: this.selectedUserAdmin
                 ? this.selectedUserAdmin.name === 'Admin'
-                    ? true
-                    : false
                 : false,
             includeInPayroll: includeInPayroll,
             paymentType: this.selectedPayment ? this.selectedPayment.id : null,
@@ -645,8 +624,6 @@ export class UserModalComponent implements OnInit, OnDestroy {
             startDate: startDate ? convertDateToBackend(startDate) : null,
             is1099: this.selectedW21099
                 ? this.selectedW21099.name === '1099'
-                    ? true
-                    : false
                 : false,
             bankId: this.selectedBank ? this.selectedBank.id : null,
             base: base ? convertThousanSepInNumber(base) : null,
@@ -778,6 +755,8 @@ export class UserModalComponent implements OnInit, OnDestroy {
 
                     this.selectedBank = res.bank;
 
+                    this.isBankSelected = !!this.selectedBank;
+
                     this.userFullName = res.firstName?.concat(
                         ' ',
                         res.lastName
@@ -825,10 +804,5 @@ export class UserModalComponent implements OnInit, OnDestroy {
                 },
                 error: () => {},
             });
-    }
-
-    ngOnDestroy(): void {
-        this.destroy$.next();
-        this.destroy$.complete();
     }
 }

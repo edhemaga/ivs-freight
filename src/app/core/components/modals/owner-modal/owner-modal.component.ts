@@ -1,23 +1,5 @@
 import {
     accountBankValidation,
-    routingBankValidation,
-} from '../../shared/ta-input/ta-input.regex-validations';
-import { TruckModalComponent } from '../truck-modal/truck-modal.component';
-import { OwnerResponse } from '../../../../../../appcoretruckassist';
-import { OwnerModalResponse } from '../../../../../../appcoretruckassist';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import {
-    Component,
-    Input,
-    OnInit,
-    ViewEncapsulation,
-    OnDestroy,
-    ViewChild,
-} from '@angular/core';
-import { TaInputService } from '../../shared/ta-input/ta-input.service';
-import { AddressEntity, CreateResponse } from 'appcoretruckassist';
-import { TabSwitcherComponent } from '../../switchers/tab-switcher/tab-switcher.component';
-import {
     addressUnitValidation,
     addressValidation,
     bankValidation,
@@ -26,12 +8,30 @@ import {
     firstNameValidation,
     lastNameValidation,
     phoneFaxRegex,
+    routingBankValidation,
     ssnNumberRegex,
 } from '../../shared/ta-input/ta-input.regex-validations';
+import { TruckModalComponent } from '../truck-modal/truck-modal.component';
+import {
+    OwnerModalResponse,
+    OwnerResponse,
+} from '../../../../../../appcoretruckassist';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+    Component,
+    Input,
+    OnDestroy,
+    OnInit,
+    ViewChild,
+    ViewEncapsulation,
+} from '@angular/core';
+import { TaInputService } from '../../shared/ta-input/ta-input.service';
+import { AddressEntity, CreateResponse } from 'appcoretruckassist';
+import { TabSwitcherComponent } from '../../switchers/tab-switcher/tab-switcher.component';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { OwnerTService } from '../../owner/state/owner.service';
 import { TrailerModalComponent } from '../trailer-modal/trailer-modal.component';
-import { Subject, takeUntil, merge } from 'rxjs';
+import { merge, Subject, takeUntil } from 'rxjs';
 import { BankVerificationService } from '../../../services/BANK-VERIFICATION/bankVerification.service';
 import { FormService } from '../../../services/form/form.service';
 
@@ -43,16 +43,10 @@ import { FormService } from '../../../services/form/form.service';
     providers: [ModalService, BankVerificationService, FormService],
 })
 export class OwnerModalComponent implements OnInit, OnDestroy {
-    private destroy$ = new Subject<void>();
-
     @ViewChild(TabSwitcherComponent) tabSwitcher: any;
-
     @Input() editData: any;
-
     public isFormDirty: boolean;
-
     public ownerForm: FormGroup;
-
     public selectedTab: number = 1;
     public tabs: any[] = [
         {
@@ -64,22 +58,17 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
             name: 'Sole Proprietor',
         },
     ];
-
     public labelsBank: any[] = [];
-
     public selectedAddress: AddressEntity = null;
-
     public selectedBank: any = null;
     public isBankSelected: boolean = false;
-
     public documents: any[] = [];
     public fileModified: boolean = false;
     public filesForDelete: any[] = [];
-
     public addNewAfterSave: boolean = false;
-
     public longitude: number;
     public latitude: number;
+    private destroy$ = new Subject<void>();
 
     constructor(
         private formBuilder: FormBuilder,
@@ -100,41 +89,6 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
         }
     }
 
-    private createForm() {
-        this.ownerForm = this.formBuilder.group({
-            bussinesName: [
-                null,
-                [Validators.required, ...businessNameValidation],
-            ],
-            firstName: [null, [...firstNameValidation]],
-            lastName: [null, [...lastNameValidation]],
-            ssn: [null, ssnNumberRegex],
-            ein: [null, [Validators.required, einNumberRegex]],
-            address: [null, [Validators.required, ...addressValidation]],
-            addressUnit: [null, [...addressUnitValidation]],
-            phone: [null, [Validators.required, phoneFaxRegex]],
-            email: [null, [Validators.required]],
-            bankId: [null, [...bankValidation]],
-            accountNumber: [null, accountBankValidation],
-            routingNumber: [null, routingBankValidation],
-            note: [null],
-            files: [null],
-        });
-
-        this.inputService.customInputValidator(
-            this.ownerForm.get('email'),
-            'email',
-            this.destroy$
-        );
-
-        this.formService.checkFormChange(this.ownerForm);
-        this.formService.formValueChange$
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((isFormChange: boolean) => {
-                this.isFormDirty = isFormChange;
-            });
-    }
-
     public tabChange(event: any): void {
         this.selectedTab = event.id;
 
@@ -146,68 +100,6 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
         });
 
         this.manipulateWithOwnerInputs();
-    }
-
-    private manipulateWithOwnerInputs() {
-        if (this.selectedTab === 1) {
-            this.inputService.changeValidators(
-                this.ownerForm.get('bussinesName')
-            );
-            this.inputService.changeValidators(
-                this.ownerForm.get('ein'),
-                true,
-                [einNumberRegex]
-            );
-
-            merge(
-                this.ownerForm.get('bussinesName').valueChanges,
-                this.ownerForm.get('ein').valueChanges
-            )
-                .pipe(takeUntil(this.destroy$))
-                .subscribe((val: string) => {
-                    if (val) {
-                        this.inputService.changeValidators(
-                            this.ownerForm.get('firstName'),
-                            false
-                        );
-                        this.inputService.changeValidators(
-                            this.ownerForm.get('lastName'),
-                            false
-                        );
-                        this.inputService.changeValidators(
-                            this.ownerForm.get('ssn'),
-                            false
-                        );
-                    }
-                });
-        } else {
-            this.inputService.changeValidators(this.ownerForm.get('firstName'));
-            this.inputService.changeValidators(this.ownerForm.get('lastName'));
-            this.inputService.changeValidators(
-                this.ownerForm.get('ssn'),
-                true,
-                [ssnNumberRegex]
-            );
-
-            merge(
-                this.ownerForm.get('firstName').valueChanges,
-                this.ownerForm.get('lastName').valueChanges,
-                this.ownerForm.get('ssn').valueChanges
-            )
-                .pipe(takeUntil(this.destroy$))
-                .subscribe((val: string) => {
-                    if (val) {
-                        this.inputService.changeValidators(
-                            this.ownerForm.get('bussinesName'),
-                            false
-                        );
-                        this.inputService.changeValidators(
-                            this.ownerForm.get('ein'),
-                            false
-                        );
-                    }
-                });
-        }
     }
 
     public onModalAction(data: { action: string; bool: boolean }) {
@@ -333,6 +225,136 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
                 },
                 error: () => {},
             });
+    }
+
+    public onFilesEvent(event: any) {
+        this.documents = event.files;
+        switch (event.action) {
+            case 'add': {
+                this.ownerForm
+                    .get('files')
+                    .patchValue(JSON.stringify(event.files));
+                break;
+            }
+            case 'delete': {
+                this.ownerForm
+                    .get('files')
+                    .patchValue(
+                        event.files.length ? JSON.stringify(event.files) : null
+                    );
+                if (event.deleteId) {
+                    this.filesForDelete.push(event.deleteId);
+                }
+
+                this.fileModified = true;
+                break;
+            }
+            default: {
+                break;
+            }
+        }
+    }
+
+    ngOnDestroy(): void {
+        this.destroy$.next();
+        this.destroy$.complete();
+    }
+
+    private createForm() {
+        this.ownerForm = this.formBuilder.group({
+            bussinesName: [
+                null,
+                [Validators.required, ...businessNameValidation],
+            ],
+            firstName: [null, [...firstNameValidation]],
+            lastName: [null, [...lastNameValidation]],
+            ssn: [null, ssnNumberRegex],
+            ein: [null, [Validators.required, einNumberRegex]],
+            address: [null, [Validators.required, ...addressValidation]],
+            addressUnit: [null, [...addressUnitValidation]],
+            phone: [null, [Validators.required, phoneFaxRegex]],
+            email: [null, [Validators.required]],
+            bankId: [null, [...bankValidation]],
+            accountNumber: [null, accountBankValidation],
+            routingNumber: [null, routingBankValidation],
+            note: [null],
+            files: [null],
+        });
+
+        this.inputService.customInputValidator(
+            this.ownerForm.get('email'),
+            'email',
+            this.destroy$
+        );
+
+        this.formService.checkFormChange(this.ownerForm);
+        this.formService.formValueChange$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((isFormChange: boolean) => {
+                this.isFormDirty = isFormChange;
+            });
+    }
+
+    private manipulateWithOwnerInputs() {
+        if (this.selectedTab === 1) {
+            this.inputService.changeValidators(
+                this.ownerForm.get('bussinesName')
+            );
+            this.inputService.changeValidators(
+                this.ownerForm.get('ein'),
+                true,
+                [einNumberRegex]
+            );
+
+            merge(
+                this.ownerForm.get('bussinesName').valueChanges,
+                this.ownerForm.get('ein').valueChanges
+            )
+                .pipe(takeUntil(this.destroy$))
+                .subscribe((val: string) => {
+                    if (val) {
+                        this.inputService.changeValidators(
+                            this.ownerForm.get('firstName'),
+                            false
+                        );
+                        this.inputService.changeValidators(
+                            this.ownerForm.get('lastName'),
+                            false
+                        );
+                        this.inputService.changeValidators(
+                            this.ownerForm.get('ssn'),
+                            false
+                        );
+                    }
+                });
+        } else {
+            this.inputService.changeValidators(this.ownerForm.get('firstName'));
+            this.inputService.changeValidators(this.ownerForm.get('lastName'));
+            this.inputService.changeValidators(
+                this.ownerForm.get('ssn'),
+                true,
+                [ssnNumberRegex]
+            );
+
+            merge(
+                this.ownerForm.get('firstName').valueChanges,
+                this.ownerForm.get('lastName').valueChanges,
+                this.ownerForm.get('ssn').valueChanges
+            )
+                .pipe(takeUntil(this.destroy$))
+                .subscribe((val: string) => {
+                    if (val) {
+                        this.inputService.changeValidators(
+                            this.ownerForm.get('bussinesName'),
+                            false
+                        );
+                        this.inputService.changeValidators(
+                            this.ownerForm.get('ein'),
+                            false
+                        );
+                    }
+                });
+        }
     }
 
     private onBankSelected() {
@@ -522,6 +544,7 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
                     });
                     this.selectedAddress = res.address;
                     this.selectedBank = res.bank;
+                    this.isBankSelected = !!this.selectedBank;
                     this.documents = res.files;
 
                     this.tabChange(
@@ -542,38 +565,5 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
                 },
                 error: () => {},
             });
-    }
-
-    public onFilesEvent(event: any) {
-        this.documents = event.files;
-        switch (event.action) {
-            case 'add': {
-                this.ownerForm
-                    .get('files')
-                    .patchValue(JSON.stringify(event.files));
-                break;
-            }
-            case 'delete': {
-                this.ownerForm
-                    .get('files')
-                    .patchValue(
-                        event.files.length ? JSON.stringify(event.files) : null
-                    );
-                if (event.deleteId) {
-                    this.filesForDelete.push(event.deleteId);
-                }
-
-                this.fileModified = true;
-                break;
-            }
-            default: {
-                break;
-            }
-        }
-    }
-
-    ngOnDestroy(): void {
-        this.destroy$.next();
-        this.destroy$.complete();
     }
 }

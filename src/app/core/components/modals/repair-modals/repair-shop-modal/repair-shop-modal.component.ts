@@ -13,7 +13,7 @@ import {
     RepairShopModalResponse,
     RepairShopResponse,
 } from 'appcoretruckassist';
-import { distinctUntilChanged, takeUntil, Subject } from 'rxjs';
+import { distinctUntilChanged, Subject, takeUntil } from 'rxjs';
 import { RepairTService } from '../../../repair/state/repair.service';
 import {
     accountBankValidation,
@@ -35,13 +35,15 @@ import { tab_modal_animation } from '../../../shared/animations/tabs-modal.anima
 import { ReviewsRatingService } from 'src/app/core/services/reviews-rating/reviewsRating.service';
 import { ReviewCommentModal } from '../../../shared/ta-user-review/ta-user-review.component';
 import {
-    TaLikeDislikeService,
     LikeDislikeModel,
+    TaLikeDislikeService,
 } from '../../../shared/ta-like-dislike/ta-like-dislike.service';
-import { SignInResponse } from '../../../../../../../appcoretruckassist/model/signInResponse';
-import { CreateRatingCommand } from '../../../../../../../appcoretruckassist/model/createRatingCommand';
-import { CreateReviewCommand } from '../../../../../../../appcoretruckassist/model/createReviewCommand';
-import { UpdateReviewCommand } from '../../../../../../../appcoretruckassist/model/updateReviewCommand';
+import {
+    CreateRatingCommand,
+    CreateReviewCommand,
+    SignInResponse,
+    UpdateReviewCommand,
+} from '../../../../../../../appcoretruckassist';
 
 @Component({
     selector: 'app-repair-shop-modal',
@@ -52,11 +54,8 @@ import { UpdateReviewCommand } from '../../../../../../../appcoretruckassist/mod
     providers: [ModalService, BankVerificationService, FormService],
 })
 export class RepairShopModalComponent implements OnInit, OnDestroy {
-    private destroy$ = new Subject<void>();
-
     @Input() editData: any;
     public repairShopForm: FormGroup;
-
     public selectedTab: number = 1;
     public tabs: any[] = [
         {
@@ -73,23 +72,17 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             disabled: true,
         },
     ];
-
     public animationObject = {
         value: this.selectedTab,
         params: { height: '0px' },
     };
-
     public isRepairShopFavourite: boolean = false;
     public isPhoneExtExist: boolean = false;
-
     public selectedAddress: AddressEntity = null;
-
     public labelsBank: any[] = [];
     public selectedBank: any = null;
     public isBankSelected: boolean = false;
-
     public services: any[] = [];
-
     // DAYS
     public openHoursDays = [
         'MON - FRI',
@@ -102,29 +95,24 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
         'Sunday',
     ];
     public isDaysVisible: boolean = false;
-
     // Documents
     public documents: any[] = [];
     public fileModified: boolean = false;
     public filesForDelete: any[] = [];
-
     // Contact Tab
     public isContactCardsScrolling: boolean = false;
     public labelsDepartments: any[] = [];
     public selectedContractDepartmentFormArray: any[] = [];
-
     // Review
     public reviews: any[] = [];
     public companyUser: SignInResponse = null;
     public disableOneMoreReview: boolean = false;
-
     public addNewAfterSave: boolean = false;
     public isFormDirty: boolean;
-
     public disableCardAnimation: boolean = false;
-
     public longitude: number;
     public latitude: number;
+    private destroy$ = new Subject<void>();
 
     constructor(
         private formBuilder: FormBuilder,
@@ -136,6 +124,14 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
         private reviewRatingService: ReviewsRatingService,
         private taLikeDislikeService: TaLikeDislikeService
     ) {}
+
+    public get openHours(): FormArray {
+        return this.repairShopForm.get('openHours') as FormArray;
+    }
+
+    public get contacts(): FormArray {
+        return this.repairShopForm.get('contacts') as FormArray;
+    }
 
     ngOnInit() {
         this.companyUser = JSON.parse(localStorage.getItem('user'));
@@ -173,42 +169,6 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
                 );
             }
         }
-    }
-
-    private createForm() {
-        this.repairShopForm = this.formBuilder.group({
-            name: [null, [Validators.required, ...repairShopValidation]],
-            pinned: [null],
-            phone: [null, [Validators.required, phoneFaxRegex]],
-            phoneExt: [null, [...phoneExtension]],
-            email: [null],
-            address: [null, [Validators.required, ...addressValidation]],
-            addressUnit: [null, [...addressUnitValidation]],
-            openHours: this.formBuilder.array([]),
-            openHoursSameAllDays: [null],
-            startTimeAllDays: [null],
-            endTimeAllDays: [null],
-            openAlways: [null],
-            bankId: [null, [...bankValidation]],
-            routing: [null, routingBankValidation],
-            account: [null, accountBankValidation],
-            note: [null],
-            contacts: this.formBuilder.array([]),
-            files: [null],
-        });
-
-        this.inputService.customInputValidator(
-            this.repairShopForm.get('email'),
-            'email',
-            this.destroy$
-        );
-
-        this.formService.checkFormChange(this.repairShopForm);
-        this.formService.formValueChange$
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((isFormChange: boolean) => {
-                this.isFormDirty = isFormChange;
-            });
     }
 
     public tabChange(event: any): void {
@@ -296,26 +256,6 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
         }
     }
 
-    public get openHours(): FormArray {
-        return this.repairShopForm.get('openHours') as FormArray;
-    }
-
-    private createOpenHour(
-        day: string,
-        isDay: boolean,
-        dayOfWeek: number,
-        startTime?: any,
-        endTime?: any
-    ): FormGroup {
-        return this.formBuilder.group({
-            isDay: [isDay],
-            dayOfWeek: [dayOfWeek],
-            dayLabel: [day],
-            startTime: [startTime],
-            endTime: [endTime],
-        });
-    }
-
     public addOpenHours(
         day: string,
         isDay: boolean = false,
@@ -374,40 +314,6 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
 
     public pickedServices() {
         return this.services.filter((item) => item.active).length;
-    }
-
-    public get contacts(): FormArray {
-        return this.repairShopForm.get('contacts') as FormArray;
-    }
-
-    private createContacts(data?: {
-        id: number;
-        fullName: string;
-        departmentId: string;
-        phone: string;
-        phoneExt: string;
-        email: string;
-    }): FormGroup {
-        return this.formBuilder.group({
-            id: [data?.id ? data.id : null],
-            fullName: [
-                data?.fullName ? data.fullName : null,
-                Validators.required,
-            ],
-            departmentId: [
-                data?.departmentId ? data.departmentId : null,
-                [Validators.required, ...departmentValidation],
-            ],
-            phone: [
-                data?.phone ? data.phone : null,
-                [Validators.required, phoneFaxRegex],
-            ],
-            phoneExt: [
-                data?.phoneExt ? data.phoneExt : null,
-                [...phoneExtension],
-            ],
-            email: [data?.email ? data.email : null],
-        });
     }
 
     public addContacts(event: { check: boolean; action: string }) {
@@ -496,6 +402,175 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             });
     }
 
+    public onFilesEvent(event: any) {
+        this.documents = event.files;
+        switch (event.action) {
+            case 'add': {
+                this.repairShopForm
+                    .get('files')
+                    .patchValue(JSON.stringify(event.files));
+                break;
+            }
+            case 'delete': {
+                this.repairShopForm
+                    .get('files')
+                    .patchValue(
+                        event.files.length ? JSON.stringify(event.files) : null
+                    );
+                if (event.deleteId) {
+                    this.filesForDelete.push(event.deleteId);
+                }
+
+                this.fileModified = true;
+                break;
+            }
+            default: {
+                break;
+            }
+        }
+    }
+
+    // Reviews
+    public changeReviewsEvent(reviews: ReviewCommentModal) {
+        switch (reviews.action) {
+            case 'delete': {
+                this.deleteReview(reviews);
+                break;
+            }
+            case 'add': {
+                this.addReview(reviews);
+                break;
+            }
+            case 'update': {
+                this.updateReview(reviews);
+                break;
+            }
+            default: {
+                break;
+            }
+        }
+    }
+
+    public createReview() {
+        if (
+            this.reviews.some((item) => item.isNewReview) ||
+            this.disableOneMoreReview
+        ) {
+            return;
+        }
+        // ------------------------ PRODUCTION MODE -----------------------------
+        // this.reviews.unshift({
+        //   companyUser: {
+        //     fullName: this.companyUser.firstName.concat(' ', this.companyUser.lastName),
+        //     avatar: this.companyUser.avatar,
+        //   },
+        //   commentContent: '',
+        //   createdAt: new Date().toISOString(),
+        //   updatedAt: new Date().toISOString(),
+        //   isNewReview: true,
+        // });
+        // -------------------------- DEVELOP MODE --------------------------------
+        this.reviews.unshift({
+            companyUser: {
+                fullName: this.companyUser.firstName.concat(
+                    ' ',
+                    this.companyUser.lastName
+                ),
+                avatar: this.companyUser.avatar,
+            },
+            commentContent: '',
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString(),
+            isNewReview: true,
+        });
+    }
+
+    public toggleDays() {
+        this.isDaysVisible = !this.isDaysVisible;
+    }
+
+    private createForm() {
+        this.repairShopForm = this.formBuilder.group({
+            name: [null, [Validators.required, ...repairShopValidation]],
+            pinned: [null],
+            phone: [null, [Validators.required, phoneFaxRegex]],
+            phoneExt: [null, [...phoneExtension]],
+            email: [null],
+            address: [null, [Validators.required, ...addressValidation]],
+            addressUnit: [null, [...addressUnitValidation]],
+            openHours: this.formBuilder.array([]),
+            openHoursSameAllDays: [null],
+            startTimeAllDays: [null],
+            endTimeAllDays: [null],
+            openAlways: [null],
+            bankId: [null, [...bankValidation]],
+            routing: [null, routingBankValidation],
+            account: [null, accountBankValidation],
+            note: [null],
+            contacts: this.formBuilder.array([]),
+            files: [null],
+        });
+
+        this.inputService.customInputValidator(
+            this.repairShopForm.get('email'),
+            'email',
+            this.destroy$
+        );
+
+        this.formService.checkFormChange(this.repairShopForm);
+        this.formService.formValueChange$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((isFormChange: boolean) => {
+                this.isFormDirty = isFormChange;
+            });
+    }
+
+    private createOpenHour(
+        day: string,
+        isDay: boolean,
+        dayOfWeek: number,
+        startTime?: any,
+        endTime?: any
+    ): FormGroup {
+        return this.formBuilder.group({
+            isDay: [isDay],
+            dayOfWeek: [dayOfWeek],
+            dayLabel: [day],
+            startTime: [startTime],
+            endTime: [endTime],
+        });
+    }
+
+    private createContacts(data?: {
+        id: number;
+        fullName: string;
+        departmentId: string;
+        phone: string;
+        phoneExt: string;
+        email: string;
+    }): FormGroup {
+        return this.formBuilder.group({
+            id: [data?.id ? data.id : null],
+            fullName: [
+                data?.fullName ? data.fullName : null,
+                Validators.required,
+            ],
+            departmentId: [
+                data?.departmentId ? data.departmentId : null,
+                [Validators.required, ...departmentValidation],
+            ],
+            phone: [
+                data?.phone ? data.phone : null,
+                [Validators.required, phoneFaxRegex],
+            ],
+            phoneExt: [
+                data?.phoneExt ? data.phoneExt : null,
+                [...phoneExtension],
+            ],
+            email: [data?.email ? data.email : null],
+        });
+    }
+
     private onBankSelected(): void {
         this.repairShopForm
             .get('bankId')
@@ -540,6 +615,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
 
                     this.selectedAddress = res.address;
                     this.selectedBank = res.bank;
+                    this.isBankSelected = !!this.selectedBank;
                     this.isPhoneExtExist = !!res.phoneExt;
                     this.isRepairShopFavourite = res.pinned;
                     this.documents = res.files;
@@ -895,89 +971,6 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             });
     }
 
-    public onFilesEvent(event: any) {
-        this.documents = event.files;
-        switch (event.action) {
-            case 'add': {
-                this.repairShopForm
-                    .get('files')
-                    .patchValue(JSON.stringify(event.files));
-                break;
-            }
-            case 'delete': {
-                this.repairShopForm
-                    .get('files')
-                    .patchValue(
-                        event.files.length ? JSON.stringify(event.files) : null
-                    );
-                if (event.deleteId) {
-                    this.filesForDelete.push(event.deleteId);
-                }
-
-                this.fileModified = true;
-                break;
-            }
-            default: {
-                break;
-            }
-        }
-    }
-
-    // Reviews
-    public changeReviewsEvent(reviews: ReviewCommentModal) {
-        switch (reviews.action) {
-            case 'delete': {
-                this.deleteReview(reviews);
-                break;
-            }
-            case 'add': {
-                this.addReview(reviews);
-                break;
-            }
-            case 'update': {
-                this.updateReview(reviews);
-                break;
-            }
-            default: {
-                break;
-            }
-        }
-    }
-
-    public createReview() {
-        if (
-            this.reviews.some((item) => item.isNewReview) ||
-            this.disableOneMoreReview
-        ) {
-            return;
-        }
-        // ------------------------ PRODUCTION MODE -----------------------------
-        // this.reviews.unshift({
-        //   companyUser: {
-        //     fullName: this.companyUser.firstName.concat(' ', this.companyUser.lastName),
-        //     avatar: this.companyUser.avatar,
-        //   },
-        //   commentContent: '',
-        //   createdAt: new Date().toISOString(),
-        //   updatedAt: new Date().toISOString(),
-        //   isNewReview: true,
-        // });
-        // -------------------------- DEVELOP MODE --------------------------------
-        this.reviews.unshift({
-            companyUser: {
-                fullName: this.companyUser.firstName.concat(
-                    ' ',
-                    this.companyUser.lastName
-                ),
-                avatar: this.companyUser.avatar,
-            },
-            commentContent: '',
-            createdAt: new Date().toISOString(),
-            updatedAt: new Date().toISOString(),
-            isNewReview: true,
-        });
-    }
-
     private ratingChanges() {
         this.taLikeDislikeService.userLikeDislike$
             .pipe(takeUntil(this.destroy$))
@@ -1058,10 +1051,6 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             .updateReview(review)
             .pipe(takeUntil(this.destroy$))
             .subscribe();
-    }
-
-    public toggleDays() {
-        this.isDaysVisible = !this.isDaysVisible;
     }
 
     ngOnDestroy(): void {
