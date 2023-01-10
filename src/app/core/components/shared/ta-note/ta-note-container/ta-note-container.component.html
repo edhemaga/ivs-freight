@@ -2,6 +2,7 @@
     [class.active]="isExpanded"
     [class.parking_editor_menu]="parking"
     [class.opened_parking_editor]="parking && showCollorPattern"
+    [class.dark]="type == 'dark'"
     class="editor_menu"
 >
     <div
@@ -12,7 +13,7 @@
         <div
             (click)="executeEditor('bold')"
             [class.active]="activeOptions.bold"
-            [tooltipBackground]="'#6C6C6C'"
+            [tooltipBackground]="type == 'dark' ? '#2F2F2F' : '#6C6C6C'"
             ngbTooltip
             [mainTooltip]="'Bold'"
             position="bottom"
@@ -25,7 +26,7 @@
         <div
             (click)="executeEditor('italic')"
             [class.active]="activeOptions.italic"
-            [tooltipBackground]="'#6C6C6C'"
+            [tooltipBackground]="type == 'dark' ? '#2F2F2F' : '#6C6C6C'"
             ngbTooltip
             [mainTooltip]="'Italic'"
             position="bottom"
@@ -38,7 +39,7 @@
         <div
             (click)="executeEditor('underline')"
             [class.active]="activeOptions.underline"
-            [tooltipBackground]="'#6C6C6C'"
+            [tooltipBackground]="type == 'dark' ? '#2F2F2F' : '#6C6C6C'"
             ngbTooltip
             [mainTooltip]="'Underline'"
             position="bottom"
@@ -48,7 +49,11 @@
                 src="assets/svg/truckassist-table/note/underline-icon.svg"
             ></svg-icon>
         </div>
-        <div class="note_border_line" *ngIf="!parking"></div>
+        <div
+            class="note_border_line"
+            [class.dark]="type == 'dark'"
+            *ngIf="!parking"
+        ></div>
     </div>
     <div
         (click)="togglePattern()"
@@ -69,7 +74,11 @@
                 [style.backgroundColor]="paternCol.color"
                 [class.hide_elements]="indx != 0 && !showCollorPattern"
                 [tooltipBackground]="
-                    indx != 0 && !showCollorPattern ? '' : '#6C6C6C'
+                    indx != 0 && !showCollorPattern
+                        ? ''
+                        : type == 'dark'
+                        ? '#2F2F2F'
+                        : '#6C6C6C'
                 "
                 ngbTooltip
                 [mainTooltip]="
@@ -102,5 +111,9 @@
             </div>
         </div>
     </div>
-    <div class="note_border_line" *ngIf="!parking && !popoverNote && isVisibleArrow"></div>
+    <div
+        class="note_border_line"
+        [class.dark]="type == 'dark'"
+        *ngIf="!parking && !popoverNote && isVisibleArrow"
+    ></div>
 </div>

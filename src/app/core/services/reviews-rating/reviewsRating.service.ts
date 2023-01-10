@@ -8,7 +8,7 @@ import {
     ReviewResponse,
     UpdateReviewCommand,
 } from 'appcoretruckassist';
-import { Observable, tap, Subject, takeUntil } from 'rxjs';
+import { Observable, Subject, takeUntil, tap } from 'rxjs';
 import { BrokerStore } from '../../components/customer/state/broker-state/broker.store';
 import { ShipperStore } from '../../components/customer/state/shipper-state/shipper.store';
 import { ShopStore } from '../../components/repair/state/shop-state/shop.store';
@@ -22,6 +22,7 @@ import { RepairTService } from '../../components/repair/state/repair.service';
 })
 export class ReviewsRatingService {
     private destroy$ = new Subject<void>();
+
     constructor(
         private reviewRatingService: RatingReviewService,
         private brokerStore: BrokerStore,
@@ -34,11 +35,11 @@ export class ReviewsRatingService {
     ) {}
 
     public getReviewRatingModal(): Observable<GetRatingReviewModalResponse> {
-        return this.reviewRatingService.apiRatingReviewModalGet();
+        return this.reviewRatingService.apiRatingreviewModalGet();
     }
 
     public addRating(data: CreateRatingCommand): Observable<any> {
-        return this.reviewRatingService.apiRatingReviewRatingPost(data).pipe(
+        return this.reviewRatingService.apiRatingreviewRatingPost(data).pipe(
             tap((rating: any) => {
                 if (rating.entityType.name === 'Broker') {
                     this.brokerStore.update(
@@ -73,15 +74,15 @@ export class ReviewsRatingService {
     }
 
     public deleteReview(id: number): Observable<any> {
-        return this.reviewRatingService.apiRatingReviewReviewIdDelete(id).pipe(
+        return this.reviewRatingService.apiRatingreviewReviewIdDelete(id).pipe(
             tap(() => {
                 let splitUrl = this.router.url.split('/');
                 let customerId = parseInt(splitUrl[2]);
-                if ( this.router.url.indexOf('broker') > -1 ){
+                if (this.router.url.indexOf('broker') > -1) {
                     this.BrokerTService.deleteReview(id, customerId);
-                } 
+                }
 
-                if ( this.router.url.indexOf('shipper') > -1 ){
+                if (this.router.url.indexOf('shipper') > -1) {
                     this.ShipperTService.deleteReview(id, customerId);
                 }
 
@@ -93,25 +94,31 @@ export class ReviewsRatingService {
     }
 
     public getReviewById(id: number): Observable<ReviewResponse> {
-        return this.reviewRatingService.apiRatingReviewReviewIdGet(id);
+        return this.reviewRatingService.apiRatingreviewReviewIdGet(id);
     }
 
     public addReview(data: CreateReviewCommand): Observable<CreateResponse> {
-        return this.reviewRatingService.apiRatingReviewReviewPost(data).pipe(
+        return this.reviewRatingService.apiRatingreviewReviewPost(data).pipe(
             tap((res: any) => {
-
-                const reviewDataNew = this.reviewRatingService.apiRatingReviewReviewIdGet(res.id)
+                const reviewDataNew = this.reviewRatingService
+                    .apiRatingreviewReviewIdGet(res.id)
                     .pipe(takeUntil(this.destroy$))
                     .subscribe({
                         next: (resp: any) => {
                             let splitUrl = this.router.url.split('/');
                             let customerId = parseInt(splitUrl[2]);
 
-                            if ( this.router.url.indexOf('broker') > -1 ){
-                                this.BrokerTService.addNewReview(resp, customerId);
+                            if (this.router.url.indexOf('broker') > -1) {
+                                this.BrokerTService.addNewReview(
+                                    resp,
+                                    customerId
+                                );
                             }
-                            if ( this.router.url.indexOf('shipper') > -1 ){
-                                this.ShipperTService.addNewReview(resp, customerId);
+                            if (this.router.url.indexOf('shipper') > -1) {
+                                this.ShipperTService.addNewReview(
+                                    resp,
+                                    customerId
+                                );
                             }
                             if ( this.router.url.indexOf('shop-details') > -1 ){
                                 this.RepairTService.addNewReview(resp, customerId);
@@ -119,22 +126,23 @@ export class ReviewsRatingService {
                             reviewDataNew.unsubscribe();
                         },
                     });
-            
-            }));
+            })
+        );
     }
 
     public updateReview(data: UpdateReviewCommand): Observable<any> {
-        return this.reviewRatingService.apiRatingReviewReviewPut(data).pipe(
+        return this.reviewRatingService.apiRatingreviewReviewPut(data).pipe(
             tap(() => {
                 let splitUrl = this.router.url.split('/');
                 let customerId = parseInt(splitUrl[2]);
-                if ( this.router.url.indexOf('broker') > -1 ){
+                if (this.router.url.indexOf('broker') > -1) {
                     this.BrokerTService.updatedReviewNew(data, customerId);
                 }
 
-                if ( this.router.url.indexOf('shipper') > -1 ){
-                    this.ShipperTService.updatedReviewNew(data, customerId); 
+                if (this.router.url.indexOf('shipper') > -1) {
+                    this.ShipperTService.updatedReviewNew(data, customerId);
                 }
-            }));
+            })
+        );
     }
 }
