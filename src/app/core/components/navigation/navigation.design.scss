@@ -1,11 +1,11 @@
 //------------ Colors constants
 $nav-white: #ffffff;
-$nav-dark: #2F2F2F;
+$nav-dark: #2f2f2f;
 
 $nav-svg: #b7b7b7;
 $nav-svg-hover: #919191;
-$nav-svg-active: #3074D3;
-$nav-svg-darker:#AAAAAA;
+$nav-svg-active: #3074d3;
+$nav-svg-darker: #aaaaaa;
 
 $nav-text-color-dadada: #dadada;
 $nav-text-color-lighter: #b7b7b7;
@@ -16,13 +16,13 @@ $nav-text-color-hover: #3c3c3c;
 $nav-blue-1: #e0eaf8;
 $nav-blue-2: #97a8dc;
 $nav-blue-3: #6d82c7;
-$nav-active-lighter: #6F9EE0;
+$nav-active-lighter: #6f9ee0;
 $nav-active: #3551b7;
-$nav-hover-hover: #255BB9;
+$nav-hover-hover: #255bb9;
 
 $nav-hover-lightcolor: #f3f3f3;
-$nav-hover-ligh:#EEEEEE;
-$nav-hover-color: #1D1D1D;
+$nav-hover-ligh: #eeeeee;
+$nav-hover-color: #1d1d1d;
 
 $nav-hover-darker: #f9f9f9;
 
@@ -57,9 +57,9 @@ $user-busy-status-hover: #ffa726;
 $user-active-status: #4db6a2;
 $user-active-status-hover: #26a690;
 
-$files:#FFCC80;
+$files: #ffcc80;
 
-$notification:#E57373;
+$notification: #e57373;
 @keyframes showMagicLine {
     0% {
         opacity: 0;
@@ -82,15 +82,13 @@ $notification:#E57373;
     justify-content: center;
     align-items: center;
     position: absolute;
-    bottom: 6px;
+    bottom: 12px;
     left: 17px;
 
     .status-marker {
         width: 10px;
         height: 10px;
     }
-
-   
 
     .status-active {
         border: 0 solid $nav-white;
@@ -102,7 +100,7 @@ $notification:#E57373;
         background: #ffffff !important;
     }
 }
-.status-marker-container-notification{
+.status-marker-container-notification {
     width: 12px;
     height: 12px;
     border-radius: 50%;
@@ -113,7 +111,7 @@ $notification:#E57373;
     bottom: -2px;
     left: -8px;
     background: $nav-dark;
-    .status-marker-notification{
+    .status-marker-notification {
         width: 8px;
         height: 8px;
         border-radius: 8px;

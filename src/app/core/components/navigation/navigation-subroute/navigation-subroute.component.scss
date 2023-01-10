@@ -11,17 +11,15 @@
         color: $nav-text-color;
         font-weight: $nav-font-medium;
         font-size: $nav-font-size;
-        animation: append-animate .2s linear;
+        animation: append-animate 0.2s linear;
         -webkit-user-select: none;
         -moz-user-select: none;
         -ms-user-select: none;
         user-select: none;
 
         margin-bottom: 1px;
-        &:nth-child(1) {
-            margin-top: 2px;
-        }
-        .nav-item-arrow_top{
+
+        .nav-item-arrow_top {
             position: absolute;
             right: 0;
             opacity: 0;
@@ -29,11 +27,17 @@
             width: 12.6px;
             height: 12.6px;
             position: absolute;
-            top: 10px;
-            svg{
+            top: 8px;
+            svg {
                 width: 12.6px;
-            height: 12.6px;
-            display: flex;
+                height: 12.6px;
+                display: flex;
+            }
+        }
+        &:nth-child(1) {
+            margin-top: 2px;
+            .nav-item-arrow_top {
+                top: 10px;
             }
         }
         .subroutes-active-checkpoint {
@@ -57,11 +61,11 @@
             top: 4px;
             color: $nav-white;
         }
-       
+
         &:hover {
             transition: $nav-transition-5;
             color: $nav-text-color-hover;
-            .nav-item-arrow_top{
+            .nav-item-arrow_top {
                 opacity: 1;
             }
         }
@@ -85,12 +89,12 @@
         .subroutes-active-checkpoint {
             transition: $nav-transition;
             opacity: 1;
-            svg{
+            svg {
                 height: 18px;
                 width: 18px;
             }
         }
-        .subroutes-item{
+        .subroutes-item {
             font-weight: 700 !important;
             color: $nav-active-lighter;
         }
@@ -222,12 +226,12 @@
     }
 }
 @keyframes append-animate {
-	from {
-		transform: translateY(-100%);
-		opacity: 0;
-	}
-	to {
-		transform: translateY(0%);
-		opacity: 1;	
-	}
+    from {
+        transform: translateY(-100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0%);
+        opacity: 1;
+    }
 }

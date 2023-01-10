@@ -11,14 +11,20 @@ import {
     ChangeDetectionStrategy,
 } from '@angular/core';
 import { Router } from '@angular/router';
-import { navigation_route_animation } from '../navigation.animation';
+import {
+    DropDownAnimation,
+    navigation_route_animation,
+} from '../navigation.animation';
 
 @Component({
     selector: 'app-navigation-subroute',
     templateUrl: './navigation-subroute.component.html',
     styleUrls: ['./navigation-subroute.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    animations: [navigation_route_animation('showHideDetails')],
+    animations: [
+        navigation_route_animation('showHideDetails'),
+        DropDownAnimation,
+    ],
 })
 export class NavigationSubrouteComponent {
     @Input() subroute: Navigation;
@@ -41,7 +47,9 @@ export class NavigationSubrouteComponent {
             });
         }
     }
-    
+    public openLinkInNewWindow(route) {
+        window.open(route, '_blank');
+    }
     public isActiveRouteOnReload(route: string): boolean {
         if (this.router.url.includes(route)) {
             this.isMagicLineActive = true;

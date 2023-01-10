@@ -1,49 +1,50 @@
-<div class="holder" 
-(click)=" onUserPanelClose()"  
-[ngClass]="status ? 'success' : 'danger'"
->
-    <div class="parent" 
-    *ngIf="isSettingsPanelOpen && isNavigationHovered"></div>
-    <div *ngIf="isSettingsPanelOpen && isNavigationHovered" class="wrapper">
-        
-    <div  class="items" *ngFor="let item of footer[0].route"
-    [route]="footer[0]"
-
-    >
-    
-    <div 
-    (click)="changeRouteSettings(item)"
-    class="item item-settings"
-    >
-
-            <svg-icon
-            src="{{ item.image }}"
-            class="svg-settings"
-            ></svg-icon>
-            <p  >{{item.name}}</p>
-        </div>
-    </div>
+<div class="holder" (click)="onUserPanelClose()">
     <div
-   
-    [@showHideDetails]="
-        true &&
-        !true &&
-        !true &&
-        true &&
-      
-        isActiveMagicLine
-            ? 'true'
-            : 'true'
-    "
-    class="new-magic-line"
-></div>
-</div>
+        class="parent"
+        *ngIf="isSettingsPanelOpen && isNavigationHovered"
+    ></div>
+    <div
+        *ngIf="isSettingsPanelOpen && isNavigationHovered"
+        class="wrapper"
+        [@dropDownMenu]
+    >
+        <div
+            class="items"
+            *ngFor="let item of footer[0].route"
+            [route]="footer[0]"
+            (click)="routeAction(item)"
+            [ngClass]="{
+                'magic-line-selected': isActiveRouteOnReload(item.route)
+            }"
+        >
+            <div (click)="changeRouteSettings(item)" class="item item-settings">
+                <svg-icon
+                    src="{{ item.image }}"
+                    class="svg-settings"
+                ></svg-icon>
+                <p>{{ item.name }}</p>
+            </div>
+        </div>
+        <div
+            [@showHideDetails]="isActiveMagicLine ? 'false' : 'true'"
+            class="new-magic-line"
+        ></div>
+    </div>
 
-<div class="footer-item" >
-    <svg-icon
-    src="{{ footer[0].image }}"
-    ></svg-icon>
-    <p [@showHideDetails]="isNavigationHovered ? 'true' : 'false'" >Settings</p>
-</div>
-
+    <div class="footer-item">
+        <svg-icon src="{{ footer[0].image }}"></svg-icon>
+        <p
+            [@showHideDetails]="isNavigationHovered ? 'true' : 'false'"
+            [ngClass]="{ 'active-text': isSettingsPanelOpen }"
+        >
+            <span> Settings</span>
+            <svg-icon
+                class="nav-item-arrow nav-item-arrow-active"
+                [ngClass]="{
+                    'nav-item-arrow-rotate': isSettingsPanelOpen
+                }"
+                src="assets/svg/common/ic_arrow-down.svg"
+            ></svg-icon>
+        </p>
+    </div>
 </div>

@@ -24,7 +24,7 @@ export class NavigationUserCompanyComponent implements OnInit {
         private navigationService: NavigationService,
         private accountStoreService: AuthStoreService
     ) {}
- 
+
     ngOnInit(): void {
         // ----------------------- PRODUCSTION MODE ----------------------------
         // if(this.authQuery.getEntity(1)) {

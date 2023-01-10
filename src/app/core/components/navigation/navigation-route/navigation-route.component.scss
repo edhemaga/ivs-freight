@@ -17,56 +17,56 @@
     user-select: none;
     position: relative;
     z-index: 1;
-    .message-container{
+    .message-container {
         position: relative;
     }
-    .notification-img{
+    .notification-img {
         position: absolute;
         right: -1px;
         bottom: 10px;
         width: 10px;
         height: 10px;
     }
-    .message{
+    .message {
         width: 18px;
-    height: 18px;
-    position: absolute;
-    right: 8px;
-    background: rgba(229, 115, 115, 10%);
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    color: $notification;
-    font-size: 11px;
-    font-weight: 700;
-    opacity: 0;
+        height: 18px;
+        position: absolute;
+        right: 8px;
+        background: rgba(229, 115, 115, 20%);
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        color: $notification;
+        font-size: 11px;
+        font-weight: 700;
+        opacity: 0;
     }
-    .files{
+    .files {
         position: absolute;
         right: 8px;
         display: flex;
         gap: 4px;
-        span{
+        span {
             font-size: 11px;
-    color: $files;
+            color: $files;
         }
-        svg{
+        svg {
             bottom: 2px;
-    position: relative;
-            path{
+            position: relative;
+            path {
                 fill: $files;
             }
         }
     }
-    .nav-item-arrow_top{
+    .nav-item-arrow_top {
         opacity: 0;
         margin-right: 8px;
-        svg{
+        svg {
             width: 12px;
             height: 12px;
         }
-}
+    }
     .nav-item-rightSide {
         display: flex;
         justify-content: space-between;
@@ -74,7 +74,7 @@
         width: 100%;
         line-height: 16px;
         padding-top: 2px;
-       
+
         .nav-item-name {
             margin: 0px;
             margin-left: 9px;
@@ -82,9 +82,8 @@
             line-height: 17px;
             color: $nav-white;
             font-weight: 400;
-           
         }
-        .nav-item-name-active{
+        .nav-item-name-active {
             font-weight: 700;
             color: $nav-active-lighter;
         }
@@ -101,33 +100,33 @@
         .nav-item-arrow-rotate {
             transform: rotate(180deg);
             transition: $nav-transition;
+            right: 1.5px;
+            svg {
+                path {
+                    fill: $nav-white;
+                }
+            }
+        }
+        .active-text {
+            font-weight: $nav-font-bold;
+            color: $nav-white;
         }
     }
 
     &:hover {
         color: $nav-text-color-hover;
         transition: $nav-transition-5;
-        .nav-item-arrow_top{
+        .nav-item-arrow_top {
             opacity: 1;
             margin-bottom: 4px;
         }
-        .nav-item-img,
-        .nav-item-arrow {
-            svg {
-                path {
-                    // transition: $nav-transition-5;
-                    // fill: $nav-white;
-                }
-            }
-        }
-       
     }
 }
 
 .nav-item-active {
     color: $nav-active-lighter;
     border-radius: 3px;
-    .nav-item-img-active{
+    .nav-item-img-active {
         svg {
             path,
             #Path_35308,
@@ -139,45 +138,63 @@
             }
         }
     }
-    &:hover {
-    
+}
+.route-clicked-svg {
+    svg {
+        path {
+            fill: $nav-white !important;
+        }
     }
 }
-.route-clicked-svg{
-    // svg{
-    //     path{
-    //         fill: $nav-svg-hover !important;
-    //     }
-    // }
-}
-.route-clicked{
+.route-clicked {
     color: $nav-white !important;
     font-weight: 700 !important;
-
 }
 .nav-width {
     width: 230px;
+    &:hover {
+        .nav-item-img,
+        .nav-item-arrow {
+            svg {
+                path {
+                    transition: $nav-transition-5;
+                    fill: $nav-white;
+                }
+            }
+        }
+    }
 }
-.subroute-item{
+.subroute-item {
     padding-left: 4px;
-    .nav-item-rightSide{
-        .nav-item-name{
+    .nav-item-rightSide {
+        .nav-item-name {
             margin-left: 5px;
         }
     }
 }
 .nav-item-active-box {
-    width: 35px;
+    width: 36px;
     height: 28px;
     position: absolute;
-    left: 0px;
+    left: -8px;
     content: '';
     background-color: $nav-hover-ligh;
     z-index: -1;
     border-radius: 3px;
     padding: 5px 9px;
 }
-
+.subroute-item {
+    .nav-item-active-box {
+        left: 0px;
+    }
+}
+.nav-item-svg-active {
+    svg {
+        path {
+            fill: $nav-active-lighter;
+        }
+    }
+}
 .nav-item-hover {
     width: 238px;
     height: 28px;
@@ -187,7 +204,7 @@
     z-index: -1;
     border-radius: 3px;
     transition: all 0.3s ease-in-out;
-    .nav-item-arrow_top{
+    .nav-item-arrow_top {
         opacity: 1;
-}
+    }
 }

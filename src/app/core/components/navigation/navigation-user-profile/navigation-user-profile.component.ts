@@ -3,8 +3,10 @@ import {
     ChangeDetectionStrategy,
     Component,
     Input,
+    OnChanges,
     OnDestroy,
     OnInit,
+    SimpleChanges,
 } from '@angular/core';
 import { userNavigationData } from '../model/navigation-data';
 import { NavigationUserPanel } from '../model/navigation.model';
@@ -15,15 +17,22 @@ import { AuthStoreService } from '../../authentication/state/auth.service';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { ProfileUpdateModalComponent } from '../../modals/profile-update-modal/profile-update-modal.component';
 import { TaUserService } from '../../../services/user/user.service';
-import { navigation_route_animation } from '../navigation.animation';
+import {
+    DropDownAnimation,
+    navigation_route_animation,
+} from '../navigation.animation';
 
 @Component({
     selector: 'app-navigation-user-profile',
     templateUrl: './navigation-user-profile.component.html',
     styleUrls: ['./navigation-user-profile.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    animations: [navigation_route_animation('showHideDetails')]
+    animations: [
+        navigation_route_animation('showHideDetails'),
+        DropDownAnimation,
+    ],
 })
+// , OnChanges
 export class NavigationUserProfileComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
     @Input() isNavigationHovered: boolean = false;
@@ -41,7 +50,14 @@ export class NavigationUserProfileComponent implements OnInit, OnDestroy {
         private userService: TaUserService,
         private imageBase64Service: ImageBase64Service
     ) {}
-
+    ngOnChanges(changes: SimpleChanges): void {
+        if (!this.isNavigationHovered) {
+            this.navigationService.onDropdownActivation({
+                name: 'User Panel',
+                type: false,
+            });
+        }
+    }
     ngOnInit() {
         // ----------------------- PRODUCSTION MODE ----------------------------
         // if(this.authQuery.getEntity(1)) {

@@ -33,12 +33,12 @@
             // width: 177px;
             width: 100%;
         }
-        .nav-header-bottom-leftSide{
+        .nav-header-bottom-leftSide {
             display: flex;
             align-items: center;
             gap: 4px;
             padding-left: 2px;
-            p{
+            p {
                 transition: $nav-transition;
                 color: $nav-text-color-darker;
                 margin: 0;
@@ -46,51 +46,51 @@
                 width: 70px;
                 opacity: 0;
             }
-        .nav-header-bottom-plus {
-            border-radius: 50%;
-            padding: 0 8px;
-            width: 36px;
-            height: 36px;
-            left: -2px;
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 9;
-            svg{
+            .nav-header-bottom-plus {
+                border-radius: 50%;
+                padding: 0 8px;
+                width: 36px;
+                height: 36px;
+                left: -2px;
                 position: relative;
-                top: -1px;
-                left: -0.1px;
-              
-            }
-            &:hover {
-                background: $nav-svg-active;
-                cursor: pointer;
-                transition: background-color 0.2s linear;
-                    svg{
-                        path{
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                z-index: 9;
+                background: rgba(48, 116, 211, 0.1);
+                svg {
+                    position: relative;
+                    top: -1px;
+                    left: -0.1px;
+                }
+                &:hover {
+                    background: $nav-svg-active;
+                    cursor: pointer;
+                    transition: background-color 0.2s linear;
+                    svg {
+                        path {
                             fill: $nav-white;
                         }
                     }
-            }
-        }
-        .dark-svg{
-            background: $nav-svg-active;
-            svg{
-                path{
-                    fill: $nav-white;
                 }
             }
-            &:hover{
-                background: #c3d5ef;
-                svg{
-                    path{
-                        fill:  $nav-svg-active;
+            .dark-svg {
+                background: $nav-svg-active;
+                svg {
+                    path {
+                        fill: $nav-white;
+                    }
+                }
+                &:hover {
+                    background: $nav-white;
+                    svg {
+                        path {
+                            fill: $nav-svg-active;
+                        }
                     }
                 }
             }
         }
-    }
 
         .nav-header-bottom-rightSide {
             display: flex;
@@ -108,6 +108,11 @@
                     transform: translate(-50%, -50%);
                     width: 19px;
                     height: 19px;
+                    &:hover {
+                        path {
+                            fill: $nav-white;
+                        }
+                    }
                 }
             }
 

@@ -1,12 +1,15 @@
 <div
     *ngIf="isNavItemHovered && isActiveSubroute && !route.isRouteActive"
     class="nav-item-hover"
+    [ngClass]="{ 'route-hover': isNavigationHovered }"
 ></div>
 <div
-    class="{{class}}"
+    class="{{ class }}"
     class="nav-item"
     [ngClass]="{
-        'nav-item-active': route.id === activeRouteIdFromLocalStorage,
+        'nav-item-active':
+            route.id === activeRouteIdFromLocalStorage &&
+            activeRouteName === route_name,
         'nav-width': isNavigationHovered
     }"
     (mouseenter)="onNavItemHover(true)"
@@ -17,74 +20,113 @@
         [ngClass]="{
             'nav-item-active-box':
                 (route.isRouteActive || route.isSubrouteActive) &&
-                !isNavigationHovered
+                !isNavigationHovered &&
+                isSettingsPanelOpen &&
+                !isUserPanelOpen
         }"
     ></div>
 
     <svg-icon
-    class="{{class}}"
+        class="{{ class }}"
         class="nav-item-img nav-item-img-active"
         src="{{ route.image }}"
-        [ngClass]="{'route-clicked-svg': route.isRouteActive && route.arrow}"
+        [ngClass]="{
+            'route-clicked-svg':
+                route.isRouteActive &&
+                route.arrow &&
+                closeDropdownOnNavClose &&
+                !isSettingsPanelOpen &&
+                !isUserPanelOpen,
+            'nav-item-svg-active':
+                (route.id === activeRouteIdFromLocalStorage &&
+                    !settingsPage &&
+                    route.arrow &&
+                    !activeLink) ||
+                (activeLink && !settingsPage && !isUserPanelOpen)
+        }"
     ></svg-icon>
     <div *ngIf="message > 0" class="message-container">
-        <svg-icon 
-        class="{{class}}"
-        *ngIf="!isNavigationHovered"
-        class="notification-img"
-        src="../../../../../assets/svg/applicant/notification-light.svg"
+        <svg-icon
+            class="{{ class }}"
+            *ngIf="!isNavigationHovered"
+            class="notification-img"
+            src="../../../../../assets/svg/applicant/notification-light.svg"
         ></svg-icon>
-        <svg-icon 
-        class="{{class}}"
-        *ngIf="isNavigationHovered"
-        class="notification-img"
-        src="../../../../../assets/svg/applicant/notification.svg"
+        <svg-icon
+            class="{{ class }}"
+            *ngIf="isNavigationHovered"
+            class="notification-img"
+            src="../../../../../assets/svg/applicant/notification.svg"
         ></svg-icon>
     </div>
-    
+
     <div
-    class="{{class}}"
+        class="{{ class }}"
         class="nav-item-rightSide"
         [@showHideDetails]="isNavigationHovered ? 'true' : 'false'"
-        >   
-        
+    >
         <p
-        *ngIf="isNavigationHovered"
-        class="nav-item-name "
-        [ngClass]="{'nav-item-name-active': route.id === activeRouteIdFromLocalStorage}"
+            *ngIf="isNavigationHovered"
+            class="nav-item-name"
+            [ngClass]="{
+                'nav-item-name-active':
+                    (!settingsPage &&
+                        route.id === activeRouteIdFromLocalStorage) ||
+                    (!settingsPage && activeLink) ||
+                    (!settingsPage && activeRouteName === route_name),
+
+                'active-text':
+                    route.isRouteActive &&
+                    route.arrow &&
+                    closeDropdownOnNavClose &&
+                    !isSettingsPanelOpen &&
+                    !isUserPanelOpen &&
+                    !settingsPage
+            }"
         >
             {{ route.name }}
-            <span class="subroute" *ngIf="route.id === activeRouteIdFromLocalStorage">
-                [{{activeRouteName | titlecase}}]
+            <span
+                class="subroute"
+                *ngIf="route.id === activeRouteIdFromLocalStorage"
+            >
+                [{{ activeRouteName | titlecase }}]
             </span>
         </p>
         <div
-        class="message" 
-        *ngIf="message"
-        [@showHideDetails]="isNavigationHovered ? 'true' : 'false'"
+            class="message"
+            *ngIf="message"
+            [@showHideDetails]="isNavigationHovered ? 'true' : 'false'"
         >
-        {{message}}
-    </div> 
-    <div *ngIf="files" class="files"  [@showHideDetails]="isNavigationHovered ? 'true' : 'false'">
-        
-        <span>{{files}}% full</span>
-        <svg-icon src="assets/svg/common/ic_danger_white.svg"></svg-icon>
-    </div>
+            {{ message }}
+        </div>
+        <div
+            *ngIf="files"
+            class="files"
+            [@showHideDetails]="isNavigationHovered ? 'true' : 'false'"
+        >
+            <span>{{ files }}% full</span>
+            <svg-icon src="assets/svg/common/ic_danger_white.svg"></svg-icon>
+        </div>
         <svg-icon
             class="nav-item-arrow nav-item-arrow-active"
             [ngClass]="{
                 'nav-item-arrow-rotate':
-                    route.isRouteActive && !route.isSubrouteActive,
+                    route.isRouteActive &&
+                    !route.isSubrouteActive &&
+                    closeDropdownOnNavClose &&
+                    !isSettingsPanelOpen &&
+                    !isUserPanelOpen,
+
                 'nav-item-arrow-first': route.id === 3
             }"
             *ngIf="route.arrow && isNavigationHovered"
             src="{{ route.arrow }}"
         ></svg-icon>
         <svg-icon
-        *ngIf="isNavigationHovered && !route.arrow && !message"
-        class="nav-item-arrow_top"
-        src="assets/svg/common/arrow_top_right.svg"
-        (click)="test(route.route)"
-    ></svg-icon>
+            *ngIf="isNavigationHovered && !route.arrow && !message && !files"
+            class="nav-item-arrow_top"
+            src="assets/svg/common/arrow_top_right.svg"
+            (click)="openLinkInNewWindow(route.route)"
+        ></svg-icon>
     </div>
 </div>

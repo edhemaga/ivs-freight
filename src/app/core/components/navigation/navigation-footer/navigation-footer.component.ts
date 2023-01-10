@@ -43,7 +43,7 @@ export class NavigationFooterComponent implements OnInit, OnDestroy {
         private userService: TaUserService,
         private cdRef: ChangeDetectorRef
     ) {}
-        
+
     ngOnInit() {
         this.isActiveFooterRouteOnReload(window.location.pathname);
 
@@ -66,7 +66,7 @@ export class NavigationFooterComponent implements OnInit, OnDestroy {
                 ? this.imageBase64Service.sanitizer(this.loggedUser.avatar)
                 : 'assets/svg/common/ic_profile.svg',
         };
-        
+
         this.footerData[2] = {
             id: this.loggedUser.userId,
             image: this.loggedUser.avatar,
@@ -78,22 +78,22 @@ export class NavigationFooterComponent implements OnInit, OnDestroy {
                 ),
             },
         };
-        
+
         this.userService.updateUserProfile$
-        .pipe(debounceTime(1000), takeUntil(this.destroy$))
-        .subscribe((val: boolean) => {
-            if (val) {
-                this.loggedUser = JSON.parse(localStorage.getItem('user'));
-                
-                this.loggedUser = {
-                    ...this.loggedUser,
-                    avatar: this.loggedUser.avatar
-                    ? this.imageBase64Service.sanitizer(
-                        this.loggedUser.avatar
-                        )
-                        : 'assets/svg/common/ic_profile.svg',
+            .pipe(debounceTime(1000), takeUntil(this.destroy$))
+            .subscribe((val: boolean) => {
+                if (val) {
+                    this.loggedUser = JSON.parse(localStorage.getItem('user'));
+
+                    this.loggedUser = {
+                        ...this.loggedUser,
+                        avatar: this.loggedUser.avatar
+                            ? this.imageBase64Service.sanitizer(
+                                  this.loggedUser.avatar
+                              )
+                            : 'assets/svg/common/ic_profile.svg',
                     };
-                    
+
                     this.footerData[2] = {
                         id: this.loggedUser.userId,
                         image: this.loggedUser.avatar,
@@ -109,7 +109,6 @@ export class NavigationFooterComponent implements OnInit, OnDestroy {
                     this.cdRef.detectChanges();
                 }
             });
-
     }
     public onAction(index: number, action: string) {
         switch (action) {
@@ -122,6 +121,7 @@ export class NavigationFooterComponent implements OnInit, OnDestroy {
                 } else {
                     this.isActiveFooterRoute(this.footerData[index]);
                     localStorage.removeItem('subroute_active');
+                    localStorage.removeItem('settings_active');
                     this.onActivateFooterRoutes.emit(true);
                 }
                 break;
@@ -133,7 +133,6 @@ export class NavigationFooterComponent implements OnInit, OnDestroy {
     }
 
     public isActiveFooterRoute(item: FooterData): boolean {
-
         if (item.id !== 3) {
             return this.router.url.includes(item.route);
         }

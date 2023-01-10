@@ -18,7 +18,7 @@
 
     transition: $nav-transition;
     overflow: hidden;
-    .nav-holder{
+    .nav-holder {
         height: 100%;
         display: flex;
         flex-direction: column;
@@ -29,36 +29,36 @@
         border-radius: 3px;
         z-index: -1;
         cursor: pointer;
-    // &:hover {
-    //     width: 250px;
-    //     background: $nav-dark;
-    //     box-shadow: $nav-boxshadow;
-    //     transition: $nav-transition;
-    //     cursor: pointer;
-    // }
-}
-.dark-nav{
-    background: $nav-dark !important;
-    width: 250px !important;
-    transition: $nav-transition;
-    .new-magic-line{
-        background: $nav-hover-color !important;
+        // &:hover {
+        //     width: 250px;
+        //     background: $nav-dark;
+        //     box-shadow: $nav-boxshadow;
+        //     transition: $nav-transition;
+        //     cursor: pointer;
+        // }
     }
-}
-.animation{
-    transition: $nav-transition;
-    width: 48px;
-}
+    .dark-nav {
+        background: $nav-dark !important;
+        width: 250px !important;
+        transition: $nav-transition;
+        .new-magic-line {
+            background: $nav-hover-color !important;
+        }
+    }
+    .animation {
+        transition: $nav-transition;
+        width: 48px;
+    }
     .navigation-middle {
         overflow-y: scroll;
         overflow-x: hidden;
         min-height: 400px;
         max-height: 620px;
     }
-    .open-navigation{
+    .open-navigation {
         flex: 1;
     }
-    .navigation-bottom{
+    .navigation-bottom {
         // overflow: hidden;
         position: absolute;
         bottom: 22px;
@@ -79,7 +79,7 @@
 
     .navigation-routes-container {
         position: relative;
-        
+
         .navigation-routes {
             // padding-left: 9px;
             display: flex;
@@ -87,6 +87,8 @@
             padding-left: 8px;
             padding-bottom: 1px;
             padding-top: 1px;
+            z-index: 1;
+            position: relative;
         }
 
         .subroute-card {
@@ -106,7 +108,7 @@
             top: 0px;
             content: '';
             height: 28px;
-            background:$nav-hover-ligh;
+            background: $nav-hover-ligh;
             border-radius: 3px;
             transition: $magic-line-transition;
             z-index: 0;
@@ -224,4 +226,3 @@
         }
     }
 }
-

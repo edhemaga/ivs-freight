@@ -1,7 +1,14 @@
 import { NavigationSubRoutes } from '../model/navigation.model';
 import { Router } from '@angular/router';
 import { Navigation } from '../model/navigation.model';
-import { Component, Input, Output, EventEmitter, OnInit, Injector } from '@angular/core';
+import {
+    Component,
+    Input,
+    Output,
+    EventEmitter,
+    OnInit,
+    Injector,
+} from '@angular/core';
 import {
     navigation_magic_line,
     navigation_route_animation,
@@ -24,42 +31,52 @@ export class NavigationRouteComponent implements OnInit {
     @Input() message: number;
     @Input() files: number;
     @Input() class: string;
+    @Input() closeDropdownOnNavClose: boolean;
+    @Input() activeLink: boolean = false;
+    @Input() isSettingsPanelOpen: boolean = false;
+    @Input() isUserPanelOpen: boolean = false;
     @Output() onRouteEvent = new EventEmitter<NavigationSubRoutes>();
-    
+
     public activeRouteName: string;
     public activeRouteIdFromLocalStorage: number;
     public isNavItemHovered: boolean = false;
     private timeout = null;
-
+    public route_name: string;
+    public settingsPage: boolean;
     constructor(public router: Router, injector: Injector) {
         StaticInjectorService.Injector = injector;
     }
     //Get subroute name
-    ngOnChanges(){
+    ngOnChanges() {
         const router = StaticInjectorService.Injector.get(Router);
-        const n = router.url.split("/");
-        this.activeRouteIdFromLocalStorage = parseInt(localStorage.getItem('subroute_active'))
-        // console.log(this.route, parseInt(localStorage.getItem('subroute_active')));
-        if(parseInt(localStorage.getItem('subroute_active')) === this.route.id){
-            console.log(this.route)
+        const n = router.url.split('/');
+        this.activeRouteIdFromLocalStorage = parseInt(
+            localStorage.getItem('subroute_active')
+        );
+        this.route_name = this.route.route.slice(1, 20);
+        // if (
+        //     parseInt(localStorage.getItem('subroute_active')) === this.route.id
+        // ) {
+        //     console.log(this.route);
+        // }
+        const conditions = ['settings', 'user'];
+        if (n[2]) {
+            this.activeRouteName = n[2];
+        } else {
+            this.activeRouteName = n[1];
         }
-        
-            if(n[2]){
-                this.activeRouteName = n[2]
-            }else{
-                this.activeRouteName = n[1]
-            }
+        this.settingsPage = conditions.some((el) => router.url.includes(el));
+
+        console.log(this.activeLink);
     }
     ngOnInit() {
-       
         this.timeout = setTimeout(() => {
             this.isActiveRouteOnReload(window.location.pathname);
             clearTimeout(this.timeout);
         }, 1000);
     }
-    test(item){
+    openLinkInNewWindow(item) {
         window.open(item, '_blank');
-        console.log(item)
     }
     public onRouteAction() {
         this.onRouteEvent.emit({
@@ -76,6 +93,7 @@ export class NavigationRouteComponent implements OnInit {
     }
 
     public onReloadSubroute(flegId?: number) {
+        console.log(flegId);
         this.onRouteEvent.emit({
             routeId: this.route.id,
             routes: this.route.route,

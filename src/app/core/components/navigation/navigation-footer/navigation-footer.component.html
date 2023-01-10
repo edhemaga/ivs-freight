@@ -1,12 +1,12 @@
 <div class="nav-footer" [ngClass]="{ 'nav-footer-width': isNavigationHovered }">
-    <div class="settings">
-        <app-navigation-settings 
-        [isNavigationHovered]="isNavigationHovered" 
-        [isUserPanelOpen]="isUserPanelOpen"
-        [isSettingsPanelOpen]="isSettingsPanelOpen"
+    <div class="settings-footer">
+        <app-navigation-settings
+            [isNavigationHovered]="isNavigationHovered"
+            [isUserPanelOpen]="isUserPanelOpen"
+            [isSettingsPanelOpen]="isSettingsPanelOpen"
         ></app-navigation-settings>
     </div>
-    <div 
+    <div
         *ngFor="let item of footerData; trackBy: identity; let ind = index"
         class="nav-footer-item"
         [ngClass]="{
@@ -16,94 +16,119 @@
         (click)="onAction(ind, 'Open User Panel')"
         [routerLink]="item.route"
         routerLinkActive="{{ ind !== 2 ? 'nav-footer-item-active' : '' }}"
-    >   
-    
-    <div [ngClass]="{'hide-user' : isUserPanelOpen === true && ind === 2}" >
-        <div [ngClass]="{'hide-user' : isUserCompanyDetailsOpen && ind === 2}">
-            <div [ngClass]="{'notification' : item.notification }" >
-        <div *ngIf="item.text !== ''">
-
+    >
         <div
-            class="nav-footer-hover"
-            [ngClass]="{ 'nav-footer-hover-user': ind === 2 }"
-        ></div>
-
-        <div
-            *ngIf="isActiveFooterRoute(item)"
-            class="nav-item-active-box"
-        ></div>
-        <div  class="status-marker-container-notification-1">
-            <svg-icon
-            *ngIf="item.notification && !isNavigationHovered"
-                class="notification-svg"
-                src="../../../../../assets/svg/applicant/notification-light.svg"
-            >
-
-            </svg-icon>
-            <svg-icon
-            *ngIf="item.notification && isNavigationHovered"
-                class="notification-svg"
-                src="../../../../../assets/svg/applicant/notification.svg"
-            >
-
-            </svg-icon>
-        </div>
-         <img
-            
-            class="nav-footer-image"
-            [ngClass]="{ 'nav-footer-image-user': ind === 2}"
-            [src]="item.image"
-            [alt]="item.text.userName"
-        /> 
-       
-        <div
-            class="nav-footer-rightSide"
-            [@showHideDetails]="isNavigationHovered ? 'true' : 'false'"
-        >
-        
-            <p
-                class="nav-footer-text ta-font-regular"
-                *ngIf="!(item.text | userData) && isNavigationHovered"
-            >
-                {{ item.text }}
-               
-            </p>
-            <div [@showHideDetails]="isNavigationHovered ? 'true' : 'false'" *ngIf="item.notification" class="notification-message">
-                <span>
-                    {{item.notification}}
-                </span>
-            </div>
-            <div
-                class="nav-footer-user"
-                *ngIf="(item.text | userData) && isNavigationHovered"
-            >
-                <p class="nav-footer-user-company">
-                    {{ item.text.companyName }}
-                </p>
-                <p class="nav-footer-user-name">{{ item.text.userName }}</p>
-            </div>
-        </div>
-        <div
-            *ngIf="currentUserStatus && (item.text | userData)"
-            class="status-marker-container"
+            [ngClass]="{
+                'hide-user': isUserPanelOpen === true && ind === 2,
+                'user-profile': ind === 2
+            }"
         >
             <div
                 [ngClass]="{
-                    'status-active': currentUserStatus === 'active',
-                    'status-online': currentUserStatus === 'online',
-                    'status-away': currentUserStatus === 'away',
-                    'status-busy': currentUserStatus === 'busy',
-                    'status-offline': currentUserStatus === 'offline'
+                    'hide-user': isUserCompanyDetailsOpen && ind === 2
                 }"
-                class="status-marker"
             >
-            <svg-icon src="../../../../../assets/svg/applicant/user-active.svg">
+                <div [ngClass]="{ notification: item.notification }">
+                    <div *ngIf="item.text !== ''">
+                        <div
+                            class="nav-footer-hover"
+                            [ngClass]="{ 'nav-footer-hover-user': ind === 2 }"
+                        ></div>
 
-            </svg-icon>
-        </div>
+                        <div
+                            *ngIf="isActiveFooterRoute(item)"
+                            class="nav-item-active-box"
+                        ></div>
+                        <div class="status-marker-container-notification-1">
+                            <svg-icon
+                                *ngIf="
+                                    item.notification && !isNavigationHovered
+                                "
+                                class="notification-svg"
+                                src="../../../../../assets/svg/applicant/notification-light.svg"
+                            >
+                            </svg-icon>
+                            <svg-icon
+                                *ngIf="item.notification && isNavigationHovered"
+                                class="notification-svg"
+                                src="../../../../../assets/svg/applicant/notification.svg"
+                            >
+                            </svg-icon>
+                        </div>
+                        <img
+                            class="nav-footer-image"
+                            [ngClass]="{ 'nav-footer-image-user': ind === 2 }"
+                            [src]="item.image"
+                            [alt]="item.text.userName"
+                        />
+
+                        <div
+                            class="nav-footer-rightSide"
+                            [@showHideDetails]="
+                                isNavigationHovered ? 'true' : 'false'
+                            "
+                        >
+                            <p
+                                class="nav-footer-text ta-font-regular"
+                                *ngIf="
+                                    !(item.text | userData) &&
+                                    isNavigationHovered
+                                "
+                            >
+                                {{ item.text }}
+                            </p>
+                            <div
+                                [@showHideDetails]="
+                                    isNavigationHovered ? 'true' : 'false'
+                                "
+                                *ngIf="item.notification"
+                                class="notification-message"
+                            >
+                                <span>
+                                    {{ item.notification }}
+                                </span>
+                            </div>
+                            <div
+                                class="nav-footer-user"
+                                *ngIf="
+                                    (item.text | userData) &&
+                                    isNavigationHovered
+                                "
+                            >
+                                <p class="nav-footer-user-company">
+                                    {{ item.text.companyName }}
+                                </p>
+                                <p class="nav-footer-user-name">
+                                    {{ item.text.userName }}
+                                </p>
+                            </div>
+                        </div>
+                        <div
+                            *ngIf="currentUserStatus && (item.text | userData)"
+                            class="status-marker-container"
+                        >
+                            <div
+                                [ngClass]="{
+                                    'status-active':
+                                        currentUserStatus === 'active',
+                                    'status-online':
+                                        currentUserStatus === 'online',
+                                    'status-away': currentUserStatus === 'away',
+                                    'status-busy': currentUserStatus === 'busy',
+                                    'status-offline':
+                                        currentUserStatus === 'offline'
+                                }"
+                                class="status-marker"
+                            >
+                                <svg-icon
+                                    src="../../../../../assets/svg/applicant/user-active.svg"
+                                >
+                                </svg-icon>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-</div>
-    </div> 
-</div>
 </div>

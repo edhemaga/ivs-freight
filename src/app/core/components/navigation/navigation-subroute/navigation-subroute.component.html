@@ -8,7 +8,6 @@
         [routerLink]="item.route"
         routerLinkActive="subroute-active"
         (click)="onSubrouteAction(item)"
-      
     >
         <svg-icon
             class="subroutes-active-checkpoint"
@@ -16,9 +15,10 @@
         ></svg-icon>
         <p class="subroutes-item ta-font-regular">{{ item.name }}</p>
         <svg-icon
-        class="nav-item-arrow_top"
-        src="assets/svg/common/arrow_top_right.svg"
-    ></svg-icon>
+            class="nav-item-arrow_top"
+            (click)="openLinkInNewWindow(item.route)"
+            src="assets/svg/common/arrow_top_right.svg"
+        ></svg-icon>
     </div>
 
     <div class="new-magic-line"></div>

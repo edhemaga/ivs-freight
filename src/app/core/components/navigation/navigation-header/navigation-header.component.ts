@@ -1,20 +1,25 @@
 import { Component, Input } from '@angular/core';
-import { navigation_header_animation, navigation_route_animation } from '../navigation.animation';
+import { Router } from '@angular/router';
+import {
+    navigation_header_animation,
+    navigation_route_animation,
+} from '../navigation.animation';
 import { NavigationService } from '../services/navigation.service';
 @Component({
     selector: 'app-navigation-header',
     templateUrl: './navigation-header.component.html',
     styleUrls: ['./navigation-header.component.scss'],
-    animations: [
-    navigation_route_animation('showHideDetails')
-],
+    animations: [navigation_route_animation('showHideDetails')],
 })
 export class NavigationHeaderComponent {
     @Input() isNavigationHovered: boolean = false;
 
-    constructor(private navigationService: NavigationService) {}
-    test(){
-        console.log('test')
+    constructor(
+        private navigationService: NavigationService,
+        private router: Router
+    ) {}
+    redirectToDashboard() {
+        this.router.navigate(['/dashboard']);
     }
     public onAction(type: string) {
         switch (type) {

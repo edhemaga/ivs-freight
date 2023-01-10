@@ -3,7 +3,7 @@ import {
     Navigation,
     NavigationModal,
     NavigationUserPanel,
-    Settings
+    Settings,
 } from './navigation.model';
 
 export const navigationData: Navigation[] = [
@@ -243,7 +243,7 @@ export const navigationData: Navigation[] = [
         image: 'ic_chat.svg',
         route: '/communicator',
         isRouteActive: false,
-        messages: 5
+        messages: 5,
     },
     {
         id: 11,
@@ -265,7 +265,7 @@ export const navigationData: Navigation[] = [
         image: 'ic_file_manager-new.svg',
         route: '/filemanager',
         isRouteActive: false,
-        files: 83
+        files: 83,
     },
 ];
 
@@ -478,17 +478,17 @@ export const footerData: FooterData[] = [
     {
         id: 32,
         image: 'assets/svg/common/ic_bell.svg',
-        text: "Notifications",
+        text: 'Notifications',
         isRouteActive: false,
         route: '/notification',
-        notification: 50
+        notification: 50,
     },
     {
         id: 34,
         image: '',
-        text: "",
+        text: '',
         isRouteActive: false,
-        route: ''
+        route: '',
     },
 ];
 export const settings: Settings[] = [
@@ -499,7 +499,7 @@ export const settings: Settings[] = [
         arrow: 'assets/svg/common/ic_arrow-down.svg',
         isRouteActive: false,
         isSubrouteActive: false,
-         route: [
+        route: [
             {
                 name: 'Company',
                 image: 'assets/svg/common/ic_company.svg',
@@ -550,4 +550,4 @@ export const settings: Settings[] = [
             },
         ],
     },
-]
+];

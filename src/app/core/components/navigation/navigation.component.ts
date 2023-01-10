@@ -1,4 +1,4 @@
-import {  Navigation, NavigationSubRoutes } from './model/navigation.model';
+import { Navigation, NavigationSubRoutes } from './model/navigation.model';
 import {
     ChangeDetectionStrategy,
     Component,
@@ -22,7 +22,7 @@ import { DetailsDataService } from '../../services/details-data/details-data.ser
     animations: [navigation_magic_line('showHideDetails')],
     host: {
         '(document:click)': 'closeNavbar($event)',
-      },
+    },
 })
 export class NavigationComponent implements OnInit, OnDestroy {
     public navigation: Navigation[] = navigationData;
@@ -40,16 +40,16 @@ export class NavigationComponent implements OnInit, OnDestroy {
     public isActiveFooterRoute: boolean = false;
 
     public isActiveMagicLine: boolean = false;
-    public hideMagicLine: boolean = false
+    public hideMagicLine: boolean = false;
     private destroy$ = new Subject<void>();
-
+    closeDropdownOnNavClose: boolean;
     @ViewChild('navbar') navbar: ElementRef;
     constructor(
         private router: Router,
         private navigationService: NavigationService,
         private DetailsDataService: DetailsDataService
     ) {}
-    
+
     ngOnInit(): void {
         this.navigationService.navigationDropdownActivation$
             .pipe(takeUntil(this.destroy$))
@@ -70,8 +70,8 @@ export class NavigationComponent implements OnInit, OnDestroy {
                         if (data.type) {
                             this.isModalPanelOpen = false;
                             this.isUserPanelOpen = false;
-                            this.isSettingsPanelOpen = data.type
                             this.isUserCompanyDetailsOpen = false;
+                            this.isSettingsPanelOpen = data.type;
                         } else {
                             this.isSettingsPanelOpen = data.type;
                         }
@@ -104,43 +104,105 @@ export class NavigationComponent implements OnInit, OnDestroy {
                 }
             });
     }
-    test(test){
-        console.log(test)
-     }
     //On outside of navbar close navbar
     closeNavbar(event) {
-        if(event.target.classList.contains('subroute') || this.navbar.nativeElement.contains(event.target || 'panel-user') || event.target.classList.contains('modal-nav-close') || event.target.classList.contains('panel-user') || event.target.classList.contains('nav-footer-user-company') || event.target.classList.contains('panel-image') || event.target.classList.contains('status-marker') || event.target.classList.contains('nav-footer-user-name') || event.target.classList.contains('nav-footer-user-name') || event.target.classList.contains('user-content-text') || event.target.classList.contains('modal-nav-close-text') || event.target.classList.contains('user-company-header') || event.target.parentElement?.parentElement.classList.contains('modal-nav-close-svg') || event.target.parentElement?.parentElement.classList.contains('user-company-header-svg') || event.target.classList.contains('user-company-header-text')){
-           if(event.target.parentElement?.classList.contains('close') || event.target.parentElement?.parentElement.parentElement.classList.contains('close')){
-           return this.isNavigationHovered = false;
+        console.log(event.target.parentElement.parentElement);
 
-           }
+        if (
+            //If this elements keep open navigation
+            event.target.parentElement.classList.contains(
+                'nav-header-top-logo'
+            ) ||
+            event.target.classList.contains('subroute') ||
+            this.navbar.nativeElement.contains(event.target || 'panel-user') ||
+            event.target.classList.contains('modal-nav-close') ||
+            event.target.classList.contains('panel-user') ||
+            event.target.classList.contains('nav-footer-user-company') ||
+            event.target.classList.contains('panel-image') ||
+            event.target.classList.contains('status-marker') ||
+            event.target.classList.contains('nav-footer-user-name') ||
+            event.target.classList.contains('nav-footer-user-name') ||
+            event.target.classList.contains('user-content-text') ||
+            event.target.classList.contains('modal-nav-close-text') ||
+            event.target.classList.contains('user-company-header') ||
+            event.target.parentElement?.parentElement?.classList.contains(
+                'modal-nav-close-svg'
+            ) ||
+            event.target.parentElement?.parentElement?.classList.contains(
+                'user-company-header-svg'
+            ) ||
+            event.target.classList.contains('user-company-header-text')
+        ) {
+            //If this elements close navigation
+            if (
+                event.target.classList.contains('open-navigation') ||
+                event.target.classList.contains('item-settings') ||
+                event.target.parentElement?.classList.contains(
+                    'item-settings'
+                ) ||
+                event.target.parentElement?.parentElement?.classList.contains(
+                    'item-settings'
+                ) ||
+                event.target.classList.contains('nav-footer-image') ||
+                event.target.parentElement?.classList.contains(
+                    'notification'
+                ) ||
+                event.target.parentElement?.classList.contains(
+                    'nav-header-top-logo'
+                ) ||
+                event.target.classList.contains('notification-svg') ||
+                event.target?.parentElement?.parentElement.classList.contains(
+                    'nav-header-top-logo'
+                ) ||
+                event.target.parentElement?.classList.contains('close') ||
+                event.target.parentElement?.parentElement?.classList.contains(
+                    'close'
+                ) ||
+                event.target.parentElement?.parentElement?.parentElement?.classList.contains(
+                    'close'
+                )
+            ) {
+                this.isUserCompanyDetailsOpen = false;
+                this.closeDropdownOnNavClose = false;
+                this.isUserPanelOpen = false;
+                this.isActiveMagicLine = true;
+                this.isModalPanelOpen = false;
+                this.isActiveSubroute = false;
+                return (this.isNavigationHovered = false);
+            }
             this.isNavigationHovered = true;
-        }else{
+        } else {
+            this.isUserCompanyDetailsOpen = false;
+            this.closeDropdownOnNavClose = false;
+            this.isUserPanelOpen = false;
+            this.isActiveMagicLine = true;
+            this.isModalPanelOpen = false;
+            this.isActiveSubroute = false;
             this.isNavigationHovered = false;
         }
-       }
+    }
+
     public onRouteEvent(subroute: NavigationSubRoutes): void {
         const index = this.navigation.findIndex(
             (item) => item.id === subroute.routeId
-            );
-            this.onActivateFooterRoute(false);
-            this.isModalPanelOpen = false;
-            this.isUserPanelOpen = false;
-            this.isSettingsPanelOpen = false;
-            this.isUserCompanyDetailsOpen = false;
-            
-            if (Array.isArray(subroute.routes)) {
-                this.activationSubRoute(index, subroute);
-            } else if (index > -1) {
-                this.activationMainRoute(index);
-            }
+        );
+        this.onActivateFooterRoute(false);
+        this.isModalPanelOpen = false;
+        this.isUserPanelOpen = false;
+        this.isSettingsPanelOpen = false;
+        this.isUserCompanyDetailsOpen = false;
+
+        if (Array.isArray(subroute.routes)) {
+            this.activationSubRoute(index, subroute);
+        } else if (index > -1) {
+            this.activationMainRoute(index);
         }
-        
-        private activationSubRoute(
-            index: number,
-            subroute: NavigationSubRoutes
-            ): void {
-                
+    }
+
+    private activationSubRoute(
+        index: number,
+        subroute: NavigationSubRoutes
+    ): void {
         if (index === this.isActiveSubrouteIndex) {
             this.navigation[index].isRouteActive =
                 !this.navigation[index].isRouteActive;
@@ -183,6 +245,7 @@ export class NavigationComponent implements OnInit, OnDestroy {
         this.navigation.forEach((nav) => (nav.isRouteActive = false));
         this.navigation.forEach((nav) => (nav.isSubrouteActive = false));
         localStorage.removeItem('subroute_active');
+        localStorage.removeItem('settings_active');
         this.isActiveSubrouteIndex = -1;
         this.isActiveSubroute = false;
         this.activeSubrouteFleg = false;
@@ -219,6 +282,7 @@ export class NavigationComponent implements OnInit, OnDestroy {
                 (item) => item.isRouteActive || item.isSubrouteActive
             );
             if (index > -1) {
+                this.closeDropdownOnNavClose = true;
                 this.isActiveMagicLine = false;
             }
         } else {

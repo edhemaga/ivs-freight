@@ -11,17 +11,15 @@
     position: relative;
     left: 8px;
     width: 100%;
-    .settings{
+    .settings-footer {
         order: 2;
-        margin: 6px 0px;
-        margin-bottom: 12px;
+        margin-top: 6px;
     }
-    .nav-footer-item{
-
-        &:nth-child(1){
+    .nav-footer-item {
+        &:nth-child(1) {
             order: 1;
         }
-        &:nth-child(4){
+        &:nth-child(4) {
             order: 3;
         }
     }
@@ -36,31 +34,31 @@
         position: absolute;
         top: -12px;
     }
-    
+
     .nav-footer-item-scaleWidth {
         width: 0px !important;
     }
-    
-    &:nth-child(1){
-        .hide-user{
+
+    &:nth-child(1) {
+        .hide-user {
             display: none;
-            div{
+            div {
                 height: fit-content;
             }
         }
-        .notification{
+        .notification {
             width: 230px;
-            div{
+            div {
                 width: 230px;
-                .nav-footer-rightSide{
+                .nav-footer-rightSide {
                     width: 230px;
                 }
             }
         }
-        .notification{
+        .notification {
             width: 230px;
             position: relative;
-            .status-marker-container-notification-1{
+            .status-marker-container-notification-1 {
                 position: absolute;
                 width: 12px;
                 height: 12px;
@@ -74,38 +72,40 @@
                     height: 8px;
                 }
             }
-            .nav-footer-rightSide{
+            .nav-footer-rightSide {
                 width: 100%;
             }
         }
-        div{
+        div {
             display: flex;
             align-items: center;
             height: fit-content;
-            .notification-message{
+            .notification-message {
                 padding: 0 5px;
                 width: auto;
                 height: 18px;
-                background: rgba(229, 115, 115, 0.1);
+                background: rgba(229, 115, 115, 0.2);
                 border-radius: 50%;
                 display: flex;
                 justify-content: center;
                 align-items: center;
-                color:  $notification;
+                color: $notification;
                 font-weight: 700;
                 font-size: 11px;
                 position: absolute;
                 right: 8px;
                 opacity: 0;
             }
+            .user-profile {
+                padding: 8px 0;
+            }
         }
-        
     }
     .nav-footer-item {
         height: 28px;
         display: flex;
         align-items: center;
-        
+
         &:nth-last-child(2) {
             display: none;
             order: 3;
@@ -115,7 +115,8 @@
             height: 28px;
             object-fit: fill;
             margin-left: -4px;
-            margin-bottom: 1px;
+            bottom: -3px;
+            position: relative;
         }
 
         .nav-footer-user {
@@ -123,12 +124,12 @@
             display: flex;
             flex-wrap: wrap;
             gap: 1px;
+            top: -12px;
             p {
                 margin-left: 6px;
                 text-overflow: ellipsis;
                 white-space: nowrap;
                 width: 140px;
-                overflow: hidden;
                 &:nth-child(1) {
                     line-height: 17px;
                     font-size: 14px;
@@ -136,13 +137,14 @@
                 }
                 &:nth-child(2) {
                     font-size: 11px;
+                    line-height: 13px;
                     font-weight: $nav-font-regular;
                 }
             }
 
             .nav-footer-user-company {
                 position: relative;
-                top: 2px;
+                top: 1px;
             }
 
             .nav-footer-user-name {
@@ -152,7 +154,7 @@
         }
 
         .status-marker-container {
-            bottom: -2px;
+            bottom: 4px;
             left: 13px;
             width: 12px;
             height: 12px !important;
@@ -272,6 +274,4 @@
 
 .nav-footer-width {
     width: 238px;
-    
-    
 }

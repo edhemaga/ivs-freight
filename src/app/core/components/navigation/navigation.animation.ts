@@ -4,8 +4,11 @@ import {
     style,
     transition,
     trigger,
+    query,
+    sequence,
+    stagger,
 } from '@angular/animations';
-  
+
 export const navigation_route_animation = (type: string) =>
     trigger(type, [
         state(
@@ -30,8 +33,8 @@ export const navigation_header_animation = (type: string) =>
             })
         ),
         state('true', style({ transform: 'translateX(-20px)', opacity: 0 })),
-        transition('true => false', [animate('0s ease-in-out')]),
-        transition('false => true', [animate('0.3s ease-in-out')]),
+        // transition('true => false', [animate('0s ease-in-out')]),
+        transition('false <=> true', [animate('0.3s ease-in-out')]),
     ]);
 
 export const navigation_magic_line = (type: string) =>
@@ -50,3 +53,37 @@ export const navigation_magic_line = (type: string) =>
         ),
         transition('false <=> true', [animate('0.3s ease-in-out')]),
     ]);
+
+export const DropDownAnimation = trigger('dropDownMenu', [
+    transition(':enter', [
+        style({ height: 0, overflow: 'hidden' }),
+        query('.items', [style({ opacity: 0, transform: 'translateY(10px)' })]),
+        sequence([
+            animate('200ms', style({ height: '*' })),
+            query('.items', [
+                stagger(-10, [
+                    animate(
+                        '200ms ease',
+                        style({ opacity: 1, transform: 'none' })
+                    ),
+                ]),
+            ]),
+        ]),
+    ]),
+
+    transition(':leave', [
+        style({ height: '*', overflow: 'hidden' }),
+        query('.items', [style({ opacity: 1, top: 'none' })]),
+        sequence([
+            query('.items', [
+                stagger(0, [
+                    animate(
+                        '00ms ease',
+                        style({ opacity: 0, top: 'translateY(10px)' })
+                    ),
+                ]),
+            ]),
+            animate('00ms', style({ height: 0 })),
+        ]),
+    ]),
+]);
