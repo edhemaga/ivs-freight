@@ -183,6 +183,9 @@
                             [disableAnimation]="disableCardAnimation"
                             [has24Hours]="true"
                             [hasBodyData]="true"
+                            [is24Hours]="
+                                !!repairShopForm.get('openAlways').value
+                            "
                             [isCardOpen]="true"
                         >
                             <div
