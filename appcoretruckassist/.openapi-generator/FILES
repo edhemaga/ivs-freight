@@ -109,6 +109,8 @@ model/bankCardResponse.ts
 model/bankListResponse.ts
 model/bankResponse.ts
 model/bankResponsePagination.ts
+model/brokerAvailableCreditCommand.ts
+model/brokerAvailableCreditResponse.ts
 model/brokerContactGroupResponse.ts
 model/brokerContactResponse.ts
 model/brokerContactShortResponse.ts
@@ -168,6 +170,8 @@ model/companyOfficeModalResponse.ts
 model/companyOfficeResponse.ts
 model/companyOfficeResponsePagination.ts
 model/companyOfficeShortResponse.ts
+model/companyOwnerInfoFeedbackResponse.ts
+model/companyOwnerInfoReviewResponse.ts
 model/companyPayrollResponse.ts
 model/companyResponse.ts
 model/companySettingsDocumentsResponse.ts
@@ -201,12 +205,15 @@ model/createCompanyAccountLabelCommand.ts
 model/createCompanyContactCommand.ts
 model/createCompanyContactLabelCommand.ts
 model/createCompanyOfficeCommand.ts
+model/createCompanyOwnerInfoCommand.ts
+model/createCompanyOwnerInfoReviewCommand.ts
 model/createCompanyUserCommand.ts
 model/createContactEmailCommand.ts
 model/createContactPhoneCommand.ts
 model/createDisclosureReviewCommand.ts
 model/createDispatchCommand.ts
 model/createDivisionCompanyCommand.ts
+model/createDriverPasswordMobileCommand.ts
 model/createDriverRightsReviewCommand.ts
 model/createDrugAndAlcoholCommand.ts
 model/createDrugAndAlcoholReviewCommand.ts
@@ -220,6 +227,7 @@ model/createHosRulesReviewCommand.ts
 model/createLoadTemplateCommand.ts
 model/createMapCommand.ts
 model/createMedicalCertificateReviewCommand.ts
+model/createMobileAccountCommand.ts
 model/createMvrAuthReviewCommand.ts
 model/createParkingCommand.ts
 model/createPersonalInfoCommand.ts
@@ -291,6 +299,7 @@ model/editFuelCardCommand.ts
 model/editIntegrationCommand.ts
 model/educationFeedbackResponse.ts
 model/educationReviewResponse.ts
+model/efsIntegrationConnectDisconnectCommand.ts
 model/emergencyContactResponse.ts
 model/emergencyContactReviewResponse.ts
 model/employmentHistoryResponse.ts
@@ -315,7 +324,6 @@ model/fuelDispatchHistoryResponse.ts
 model/fuelItemResponse.ts
 model/fuelModalStopResponse.ts
 model/fuelModalStopResponsePagination.ts
-model/fuelStopExtensionResponse.ts
 model/fuelStopFranchiseListResponse.ts
 model/fuelStopFranchiseMinimalResponse.ts
 model/fuelStopFranchiseMinimalResponsePagination.ts
@@ -368,18 +376,18 @@ model/inspectionResponse.ts
 model/insurancePolicyAddonResponse.ts
 model/insurancePolicyModalResponse.ts
 model/insurancePolicyResponse.ts
+model/insurancePolicyShortResponse.ts
 model/insuranceTypeResponse.ts
 model/integrationConectedResponse.ts
-model/integrationConnectDisconnectCommand.ts
 model/integrationListResponse.ts
 model/integrationModalResponse.ts
-model/integrationProviderCommand.ts
 model/integrationProviderResponse.ts
 model/integrationProviderResponsePagination.ts
 model/inviteEmployerResponse.ts
 model/invitePreviousEmployerCommand.ts
 model/invoiceAgeingResponse.ts
 model/legResponse.ts
+model/liveTrackingBaseResponse.ts
 model/liveTrackingHistoryItemResponse.ts
 model/liveTrackingHistoryMotionTimeResponse.ts
 model/liveTrackingHistoryResponse.ts
@@ -389,8 +397,7 @@ model/liveTrackingItemResponse.ts
 model/liveTrackingLiteResponse.ts
 model/liveTrackingLoadStopResponse.ts
 model/liveTrackingResponse.ts
-model/liveTrackingSignalItemResponse.ts
-model/liveTrackingSignalResponse.ts
+model/liveTrackingUnassignResponse.ts
 model/loadBillingAdditionalCommand.ts
 model/loadBillingAdditionalResponse.ts
 model/loadBrokerDetailsResponse.ts
@@ -489,8 +496,6 @@ model/previousEmployerRequestResponse.ts
 model/problemDetails.ts
 model/pspAuthFeedbackResponse.ts
 model/ratingSetResponse.ts
-model/reSendSignUpUserCommand.ts
-model/reSendVerifyDriverCommand.ts
 model/refreshTokenCommand.ts
 model/registrationModalResponse.ts
 model/registrationResponse.ts
@@ -522,6 +527,8 @@ model/repairedVehicleResponse.ts
 model/repairedVehicleResponsePagination.ts
 model/resendInviteCommand.ts
 model/resendSignUpCompanyCommand.ts
+model/resendSignUpUserCommand.ts
+model/resendVerifyDriverCommand.ts
 model/reviewByEntityTypeListResponse.ts
 model/reviewResponse.ts
 model/reviewResponsePagination.ts
@@ -611,6 +618,7 @@ model/trailerShortResponse.ts
 model/trailerShortResponsePagination.ts
 model/trailerTypeFilterResponse.ts
 model/trailerTypeResponse.ts
+model/transferRegistrationCommand.ts
 model/transponderGroup.ts
 model/truckAccidentResponse.ts
 model/truckAutocompleteModelResponse.ts
@@ -650,6 +658,8 @@ model/updateCompanyCommand.ts
 model/updateCompanyContactCommand.ts
 model/updateCompanyContactLabelCommand.ts
 model/updateCompanyOfficeCommand.ts
+model/updateCompanyOwnerInfoCommand.ts
+model/updateCompanyOwnerInfoReviewCommand.ts
 model/updateCompanyPayrollCommand.ts
 model/updateCompanyUserCommand.ts
 model/updateContactEmailCommand.ts
