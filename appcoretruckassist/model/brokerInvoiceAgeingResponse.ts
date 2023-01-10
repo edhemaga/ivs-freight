@@ -22,6 +22,7 @@ export interface BrokerInvoiceAgeingResponse {
     creditType?: EnumValue;
     creditLimit?: number | null;
     availableCredit?: number | null;
+    percentage?: number | null;
     totalDebt?: number | null;
     averageRate?: number | null;
     highestRate?: number | null;

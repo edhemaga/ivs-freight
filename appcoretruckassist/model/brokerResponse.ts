@@ -32,6 +32,7 @@ export interface BrokerResponse {
     billingPoBox?: PoBoxEntity;
     creditLimit?: number | null;
     availableCredit?: number | null;
+    percentage?: number | null;
     payTerm?: EnumValue;
     latitude?: number;
     longitude?: number;

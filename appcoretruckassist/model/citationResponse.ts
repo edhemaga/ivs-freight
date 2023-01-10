@@ -10,6 +10,7 @@
  * Do not edit the class manually.
  */
 import { FileResponse } from './fileResponse';
+import { EnumValue } from './enumValue';
 
 
 export interface CitationResponse { 
@@ -18,7 +19,7 @@ export interface CitationResponse {
     cost?: number;
     description?: string | null;
     citationDate?: string;
-    paid?: boolean;
+    paid?: EnumValue;
     note?: string | null;
     files?: Array<FileResponse> | null;
     createdAt?: string;
