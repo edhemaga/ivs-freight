@@ -220,7 +220,7 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
                         id: res.id,
                         name: bank.data.name,
                     };
-                    console.log('selected bank: ', this.selectedBank);
+
                     this.labelsBank = [...this.labelsBank, this.selectedBank];
                 },
                 error: () => {},

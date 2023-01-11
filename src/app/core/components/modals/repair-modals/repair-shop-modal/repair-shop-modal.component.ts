@@ -127,41 +127,6 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
         private taLikeDislikeService: TaLikeDislikeService
     ) {}
 
-    public get openHours(): FormArray {
-        return this.repairShopForm.get('openHours') as FormArray;
-    }
-
-    public get contacts(): FormArray {
-        return this.repairShopForm.get('contacts') as FormArray;
-    }
-
-    public trackOpenHours() {
-        this.openHours.valueChanges
-            .pipe(debounceTime(2000), takeUntil(this.destroy$))
-            .subscribe((array: any[]) => {
-                array.forEach((item) => {
-                    if (item.startTime && item.endTime) {
-                        if (
-                            moment(array[0].startTime, 'HH:mm:ss').format(
-                                'HH:mm:ss'
-                            ) !== '00:00:00' &&
-                            moment(array[0].endTime, 'HH:mm:ss').format(
-                                'HH:mm:ss'
-                            ) !== '00:00:00'
-                        ) {
-                            this.repairShopForm
-                                .get('openAlways')
-                                .patchValue(false);
-                        } else {
-                            this.repairShopForm
-                                .get('openAlways')
-                                .patchValue(true);
-                        }
-                    }
-                });
-            });
-    }
-
     ngOnInit() {
         this.companyUser = JSON.parse(localStorage.getItem('user'));
         this.createForm();
@@ -197,6 +162,21 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             }
             this.openHours.removeAt(1);
             this.addOpenHours('Sunday', false, 0, null, null);
+        }
+
+        // Open Tab Position
+        if (this.editData?.openedTab) {
+            setTimeout(() => {
+                this.tabChange({
+                    id:
+                        this.editData?.openedTab === 'Contact'
+                            ? 2
+                            : this.editData?.openedTab === 'Review'
+                            ? 3
+                            : 1,
+                });
+                this.disableCardAnimation = true;
+            });
         }
     }
 
@@ -283,6 +263,41 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
                 break;
             }
         }
+    }
+
+    public get openHours(): FormArray {
+        return this.repairShopForm.get('openHours') as FormArray;
+    }
+
+    public get contacts(): FormArray {
+        return this.repairShopForm.get('contacts') as FormArray;
+    }
+
+    public trackOpenHours() {
+        this.openHours.valueChanges
+            .pipe(debounceTime(2000), takeUntil(this.destroy$))
+            .subscribe((array: any[]) => {
+                array.forEach((item) => {
+                    if (item.startTime && item.endTime) {
+                        if (
+                            moment(array[0].startTime, 'HH:mm:ss').format(
+                                'HH:mm:ss'
+                            ) !== '00:00:00' &&
+                            moment(array[0].endTime, 'HH:mm:ss').format(
+                                'HH:mm:ss'
+                            ) !== '00:00:00'
+                        ) {
+                            this.repairShopForm
+                                .get('openAlways')
+                                .patchValue(false);
+                        } else {
+                            this.repairShopForm
+                                .get('openAlways')
+                                .patchValue(true);
+                        }
+                    }
+                });
+            });
     }
 
     public addOpenHours(
@@ -801,8 +816,6 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
                 return item;
             });
 
-        console.log(formatOpenHours);
-
         let newData: any = {
             ...form,
             address: { ...this.selectedAddress, addressUnit: addressUnit },
@@ -834,7 +847,6 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             contacts: contacts,
         };
 
-        console.log('repair shop: ', newData);
         this.shopService
             .addRepairShop(newData)
             .pipe(takeUntil(this.destroy$))

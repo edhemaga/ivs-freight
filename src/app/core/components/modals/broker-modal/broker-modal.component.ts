@@ -196,7 +196,20 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
             }, 50);
         }
 
-        console.log('broker edit data: ', this.editData);
+        // Open Tab Position
+        if (this.editData?.openedTab) {
+            setTimeout(() => {
+                this.tabChange({
+                    id:
+                        this.editData?.openedTab === 'Contact'
+                            ? 2
+                            : this.editData?.openedTab === 'Review'
+                            ? 3
+                            : 1,
+                });
+                this.disableCardAnimation = true;
+            });
+        }
 
         this.companyUser = JSON.parse(localStorage.getItem('user'));
     }
@@ -248,8 +261,6 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe((isFormChange: boolean) => {
                 this.isFormDirty = isFormChange;
-                console.log('is form dirty: ', this.isFormDirty);
-                console.log('valid: ', this.brokerForm.valid);
             });
     }
 
@@ -467,6 +478,8 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
             value: this.selectedTab,
             params: { height: `${dotAnimation.getClientRects()[0].height}px` },
         };
+
+        console.log(this.selectedTab + ' :Select TAB: ');
     }
 
     public tabPhysicalAddressChange(event: any): void {
