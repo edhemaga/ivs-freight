@@ -311,8 +311,22 @@ export class ShopRepairDetailsItemComponent implements OnInit, OnChanges {
         }
     }
 
-    public stopClick(ev){
+    public stopClick(ev, data){
         ev.stopPropagation();
         ev.preventDefault();
+        
+        if ( data.truckId ) {
+            this.dummyData.actions[4]['iconName'] = 'ic_truck';
+        } else if ( data.trailerId ) {
+            this.dummyData.actions[4]['iconName'] = 'ic_trailer';
+        }
+
+        if ( data.repairType.name != 'Bill' ) {
+            this.dummyData.actions[3]['hide'] = false;
+            this.dummyData.actions[4]['title'] = 'All Orders';
+        } else {
+            this.dummyData.actions[3]['hide'] = true;
+            this.dummyData.actions[4]['title'] = 'All Bills';
+        }
     }
 }
