@@ -440,7 +440,6 @@ export class UserModalComponent implements OnInit, OnDestroy {
             .get('includeInPayroll')
             .valueChanges.pipe(takeUntil(this.destroy$))
             .subscribe((value) => {
-                console.log('payroll: ', value);
                 if (value) {
                     this.inputService.changeValidators(
                         this.userForm.get('salary')

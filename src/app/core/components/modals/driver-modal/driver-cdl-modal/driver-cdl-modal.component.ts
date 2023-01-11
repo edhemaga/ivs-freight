@@ -68,11 +68,12 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
 
         if (this.editData.type === 'edit-licence') {
             this.disableCardAnimation = true;
-            this.getCdlById();
+            this.getCdlById(this.editData.file_id);
         }
 
         if (this.editData.type === 'renew-licence') {
-            this.populateCdlFormOnRenew(this.editData.renewData);
+            this.disableCardAnimation = true;
+            this.populateCdlFormOnRenew(this.editData.renewData.id);
         }
     }
 
@@ -229,48 +230,72 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
             });
     }
 
-    public populateCdlFormOnRenew(res: any) {
-        this.cdlForm.patchValue({
-            cdlNumber: res.cdlNumber,
-            issueDate: null,
-            expDate: null,
-            classType: res.classType.name,
-            stateId: res.state.stateShortName,
-            restrictions: null,
-            restrictionsHelper: res.cdlRestrictions.length
-                ? JSON.stringify(res.cdlRestrictions)
-                : null,
-            endorsements: null,
-            endorsementsHelper: res.cdlEndorsements.length
-                ? JSON.stringify(res.cdlEndorsements)
-                : null,
-            note: res.note,
-            file: res.files ? res.files : null,
-        });
+    public populateCdlFormOnRenew(id: any) {
+        this.cdlService
+            .getCdlById(id)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: (res: CdlResponse) => {
+                    this.cdlForm.patchValue({
+                        cdlNumber: res.cdlNumber,
+                        issueDate: null,
+                        expDate: null,
+                        classType: res.classType.name,
+                        stateId: res.state.stateShortName,
+                        restrictions: null,
+                        restrictionsHelper: res.cdlRestrictions.length
+                            ? JSON.stringify(res.cdlRestrictions)
+                            : null,
+                        endorsements: null,
+                        endorsementsHelper: res.cdlEndorsements.length
+                            ? JSON.stringify(res.cdlEndorsements)
+                            : null,
+                        note: res.note,
+                        files: res.files.length
+                            ? JSON.stringify(res.files)
+                            : null,
+                    });
 
-        this.documents = res.files ? (res.files as any) : [];
+                    this.documents = res.files ? (res.files as any) : [];
 
-        this.selectedEndorsments = res.cdlEndorsements.map((item) => {
-            return {
-                ...item,
-                name: item.code.concat(' ', '-').concat(' ', item.description),
-            };
-        });
+                    this.selectedEndorsments = res.cdlEndorsements.map(
+                        (item) => {
+                            return {
+                                ...item,
+                                name: item.code
+                                    .concat(' ', '-')
+                                    .concat(' ', item.description),
+                            };
+                        }
+                    );
 
-        this.selectedRestrictions = res.cdlRestrictions.map((item) => {
-            return {
-                ...item,
-                name: item.code.concat(' ', '-').concat(' ', item.description),
-            };
-        });
+                    this.selectedRestrictions = res.cdlRestrictions.map(
+                        (item) => {
+                            return {
+                                ...item,
+                                name: item.code
+                                    .concat(' ', '-')
+                                    .concat(' ', item.description),
+                            };
+                        }
+                    );
 
-        this.selectedClassType = res.classType;
-        this.selectedStateType = res.state;
+                    this.selectedClassType = res.classType;
+                    this.selectedStateType = {
+                        ...res.state,
+                        name: res.state.stateShortName,
+                    };
+                    setTimeout(() => {
+                        this.disableCardAnimation = false;
+                    }, 1000);
+                },
+                error: () => {},
+            });
     }
 
-    public getCdlById() {
+    public getCdlById(id: number) {
         this.cdlService
-            .getCdlById(this.editData.file_id)
+            .getCdlById(id)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (res: CdlResponse) => {
@@ -398,7 +423,10 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
         if (this.editData.type === 'renew-licence') {
             const { driverId, ...renewData } = newData;
             this.cdlService
-                .renewCdlUpdate({ ...renewData, id: this.editData.file_id })
+                .renewCdlUpdate({
+                    ...renewData,
+                    id: this.editData.renewData.id,
+                })
                 .pipe(takeUntil(this.destroy$))
                 .subscribe();
         } else {
