@@ -38,73 +38,53 @@ export class TaInputDropdownComponent
         OnChanges,
         ControlValueAccessor
 {
-    private destroy$ = new Subject<void>();
     @ViewChild('input') inputRef: TaInputComponent;
     @ViewChild('t2') public popoverRef: NgbPopover;
-
     @Input() template: string; // different templates for body rendering
     @Input() multiselectTemplate: string;
-
     @Input() inputConfig: ITaInput;
     @Input() canAddNew: boolean; // ADD NEW item in options
     @Input() canOpenModal: boolean; // open modal with ADD NEW button
     @Input() sort: string; // sort-template for different options
-
     @Input() activeItem: any; // currently active item
     @Input() activeItemColor: any; // currently active color in dropdown
-
     @Input() labelMode: 'Label' | 'Color';
-
     @Input() options: any[] = []; // when send SVG, please premmaped object: add 'folder' | 'subfolder'
     @Input() preloadMultiselectItems: any[] = [];
-
     @Input() isDetailsPages: boolean; // only for details pages
     @Input() incorrectValue: boolean; // applicant review option
-
     @Output() selectedItem: EventEmitter<any> = new EventEmitter<any>();
     @Output() selectedItems: EventEmitter<any> = new EventEmitter<any>();
-
     @Output() selectedItemColor: EventEmitter<any> = new EventEmitter<any>();
     @Output() selectedLabelMode: EventEmitter<any> = new EventEmitter<any>();
     @Output() closeDropdown: EventEmitter<boolean> =
         new EventEmitter<boolean>();
-
     @Output() saveItem: EventEmitter<{ data: any; action: string }> =
         new EventEmitter<{ data: any; action: string }>();
-
     @Output() incorrectEvent: EventEmitter<boolean> =
         new EventEmitter<boolean>();
-
     @Output() placeholderIconEvent: EventEmitter<boolean> =
         new EventEmitter<boolean>();
-
     @Output('pagination') paginationEvent: EventEmitter<number> =
         new EventEmitter<number>();
-
     @Output('activeGroup') activeGroupEvent: EventEmitter<number> =
         new EventEmitter<number>();
-
     @Output('clearInputEvent') clearInputEvent: EventEmitter<boolean> =
         new EventEmitter<any>();
-
     public paginationNumber: number = 0;
-
     public originalOptions: any[] = [];
-
     // Multiselect dropdown options
     public multiselectItems: any[] = [];
     public isMultiSelectInputFocus: boolean = false;
     public multiSelectLabel: string = null;
     public lastActiveMultiselectItem: any = null;
-
     // Add mode
     public isInAddMode: boolean = false;
-
-    // Dropdown navigation with keyboard
-    private dropdownPosition: number = -1;
-
     // For Dispatchboard hover options
     public hoveredOption: number = -1;
+    private destroy$ = new Subject<void>();
+    // Dropdown navigation with keyboard
+    private dropdownPosition: number = -1;
 
     constructor(
         @Self() public superControl: NgControl,
@@ -113,6 +93,10 @@ export class TaInputDropdownComponent
         public imageBase64Service: ImageBase64Service
     ) {
         this.superControl.valueAccessor = this;
+    }
+
+    get getSuperControl() {
+        return this.superControl.control;
     }
 
     ngOnChanges(changes: SimpleChanges): void {
@@ -157,9 +141,14 @@ export class TaInputDropdownComponent
                 );
                 return;
             }
-            changes.preloadMultiselectItems?.currentValue?.forEach((item) => {
-                this.onMultiselectSelect(item);
-            });
+
+            if (changes.preloadMultiselectItems?.currentValue?.length) {
+                changes.preloadMultiselectItems?.currentValue?.forEach(
+                    (item) => {
+                        this.onMultiselectSelect(item);
+                    }
+                );
+            }
         }
 
         // Details Pages
@@ -242,530 +231,11 @@ export class TaInputDropdownComponent
         this.dropDownKeyboardNavigationEvent();
     }
 
-    get getSuperControl() {
-        return this.superControl.control;
-    }
-
     writeValue(_: any): void {}
+
     registerOnChange(_: any): void {}
+
     registerOnTouched(_: any): void {}
-
-    private dropDownShowHideEvent() {
-        this.inputService.dropDownShowHide$
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((action: boolean) => {
-                // Multiselect dropdown
-                if (this.inputConfig.multiselectDropdown) {
-                    this.isMultiSelectInputFocus = action;
-                }
-
-                if (this.labelMode !== 'Color') {
-                    // Focus Out
-                    if (!action) {
-                        if (this.template !== 'fuel-franchise') {
-                            this.popoverRef.open();
-                        }
-
-                        // Prevent user to typing dummmy data if activeItem doesn't exist
-                        if (this.activeItem) {
-                            this.getSuperControl.setValue(this.activeItem.name);
-                        } else {
-                            const index = this.originalOptions.findIndex(
-                                (item) =>
-                                    item.name === this.getSuperControl.value
-                            );
-
-                            if (index === -1) {
-                                this.onClearSearch();
-                            }
-                        }
-                        if (this.template !== 'fuel-franchise') {
-                            this.popoverRef.close();
-                        }
-                    }
-                    // Focus In
-                    else {
-                        this.inputConfig = {
-                            ...this.inputConfig,
-                            placeholder: this.getSuperControl.value
-                                ? this.getSuperControl.value
-                                : this.activeItem?.name,
-                        };
-
-                        this.getSuperControl.setValue(null);
-                        this.popoverRef.close();
-
-                        if (this.isInAddMode) {
-                            this.inputConfig = {
-                                ...this.inputConfig,
-                                placeholder: null,
-                            };
-                        }
-                    }
-                }
-
-                // Details pages
-                if (
-                    this.inputConfig.customClass?.includes('details-pages') &&
-                    !action
-                ) {
-                    this.selectedItem.emit(this.activeItem);
-                }
-            });
-    }
-
-    private dropDownKeyboardNavigationEvent() {
-        this.inputService.dropDownKeyNavigation$
-            .pipe(takeUntil(this.destroy$))
-            .subscribe(({ keyCode, data }) => {
-                // Navigate down
-                if (keyCode === 40) {
-                    this.dropdownNavigation(1);
-                }
-                // Navigate up
-                if (keyCode === 38) {
-                    this.dropdownNavigation(-1);
-                }
-
-                // Press Escape
-                if (keyCode === 27) {
-                    if (this.inputConfig?.commands?.active) {
-                        this.inputConfig.commands.active = false;
-                    }
-
-                    if (this.inputConfig.name === 'Input Dropdown Bank Name') {
-                        this.inputConfig.commands.active = false;
-                        this.inputRef.isVisibleCommands = false;
-                        this.inputRef.focusInput = false;
-                    }
-
-                    if (this.inputConfig.dropdownLabel) {
-                        this.getSuperControl.setErrors(null);
-                        this.inputConfig.dropdownLabelNew = false;
-                        this.inputConfig.commands.active = false;
-                        this.inputConfig.blackInput = false;
-                        this.inputRef.focusInput = false;
-                        this.inputRef.editInputMode = false;
-                        this.inputRef.input.nativeElement.blur();
-                        if (this.labelMode === 'Color') {
-                            this.getSuperControl.patchValue(null);
-                            this.selectedLabelMode.emit('Label');
-                        }
-                    }
-                }
-                // Press 'enter'
-                if (keyCode === 13) {
-                    let selectedItem = $('.dropdown-option-hovered')
-                        .text()
-                        .trim();
-
-                    // Address Select
-                    if (
-                        (this.inputConfig.name == 'Address' ||
-                            this.inputConfig.name == 'RoutingAddress') &&
-                        (!selectedItem || selectedItem == '')
-                    ) {
-                        selectedItem = this.options[0].name;
-                    }
-
-                    // Input Dropdown Bank Name
-                    if (
-                        !selectedItem &&
-                        this.inputConfig.name === 'Input Dropdown Bank Name'
-                    ) {
-                        this.addNewItem();
-                    }
-
-                    // Input Dropdown Label
-                    if (!selectedItem && this.inputConfig.dropdownLabel) {
-                        this.commandEvent({
-                            data: this.getSuperControl.value,
-                            action: 'confirm',
-                            mode: data.dropdownLabelNew ? 'new' : 'edit',
-                        });
-                        setTimeout(() => {
-                            this.getSuperControl.setErrors(null);
-                            this.inputConfig.dropdownLabelNew = false;
-                            this.inputConfig.commands.active = false;
-                            this.inputConfig.blackInput = false;
-                            this.inputRef.focusInput = false;
-                            this.inputRef.editInputMode = false;
-                            this.inputRef.input.nativeElement.blur();
-                        }, 150);
-                    }
-
-                    // ADD NEW Option
-                    if (selectedItem === 'ADD NEW') {
-                        this.addNewConfig();
-
-                        if (this.inputConfig.dropdownLabel) {
-                            // DropDown label
-                            if (this.inputConfig.dropdownLabel) {
-                                this.inputConfig.dropdownLabelNew = true;
-                                this.inputRef.editInputMode = true;
-                                this.selectedLabelMode.emit('Color');
-                                this.inputConfig.commands.active = true;
-                                this.inputRef.setInputCursorAtTheEnd(
-                                    this.inputRef.input.nativeElement
-                                );
-                                this.inputConfig.blackInput = true;
-                                this.selectedItem.emit({
-                                    id: 7655,
-                                    name: 'ADD NEW',
-                                });
-                            }
-                        }
-                        selectedItem = null;
-                    }
-                    // Normal Pick Dropdown
-                    else {
-                        const existItem = this.options
-                            .map((item) => {
-                                // Address
-                                if (
-                                    item.name &&
-                                    (this.inputConfig.name == 'Address' ||
-                                        this.inputConfig.name ==
-                                            'RoutingAddress')
-                                ) {
-                                    return {
-                                        id: item.id,
-                                        name: item.name,
-                                        address: item.address,
-                                        longLat: item.longLat,
-                                    };
-                                }
-
-                                // Load Dispatches TTD
-                                else if (
-                                    [
-                                        'load-dispatches-ttd',
-                                        'load-broker',
-                                        'load-shipper',
-                                    ].includes(this.template)
-                                ) {
-                                    return { ...item };
-                                }
-
-                                // Image (must be before type code, because color has same prop like other dropdown pop)
-                                else if (item.logoName) {
-                                    return { ...item };
-                                }
-
-                                // Code
-                                else if (item.code && item.description) {
-                                    return {
-                                        id: item.id,
-                                        name: item.code.concat(
-                                            ' - ',
-                                            item.description
-                                        ),
-                                    };
-                                }
-                                // Dropdown Labels
-                                else if (
-                                    item?.dropLabel ||
-                                    this.inputConfig.dropdownLabel
-                                ) {
-                                    return { ...item };
-                                }
-                                // Default
-                                else {
-                                    if (item.name) {
-                                        return {
-                                            id: item.id,
-                                            name: item.name,
-                                        };
-                                    }
-                                }
-                            })
-                            .find((item) => {
-                                // Dropdown Label
-                                if (
-                                    (item?.dropLabel ||
-                                        this.inputConfig.dropdownLabel) &&
-                                    selectedItem.substring(
-                                        0,
-                                        selectedItem.lastIndexOf(' ')
-                                    ) === item?.name.toLowerCase()
-                                ) {
-                                    return item;
-                                }
-
-                                // Dropdown Load Dispatcher, Broker
-                                if (
-                                    [
-                                        'load-broker',
-                                        'load-dispatcher',
-                                        'load-shipper',
-                                    ].includes(this.template) &&
-                                    selectedItem
-                                        ?.toLowerCase()
-                                        .includes(item?.name?.toLowerCase())
-                                ) {
-                                    return item;
-                                }
-                                // Dropdown Load Dispatches
-                                if (
-                                    this.template === 'load-dispatches-ttd' &&
-                                    selectedItem
-                                        ?.toLowerCase()
-                                        .includes(
-                                            item?.trailer?.trailerNumber.toLowerCase()
-                                        ) &&
-                                    selectedItem
-                                        ?.toLowerCase()
-                                        .includes(
-                                            item?.truck?.truckNumber.toLowerCase()
-                                        ) &&
-                                    selectedItem
-                                        ?.toLowerCase()
-                                        .includes(
-                                            item?.driver?.firstName
-                                                .concat(
-                                                    ' ',
-                                                    item?.driver?.lastName
-                                                )
-                                                .toLowerCase()
-                                        )
-                                ) {
-                                    return item;
-                                }
-
-                                // Default
-                                if (
-                                    !this.inputConfig.dropdownLabel &&
-                                    this.template !== 'load-dispatches-ttd' &&
-                                    selectedItem?.toLowerCase() ===
-                                        item?.name.toLowerCase()
-                                ) {
-                                    return item;
-                                }
-                            });
-
-                        // MultiSelect Dropdown
-                        if (this.inputConfig.multiselectDropdown) {
-                            this.onMultiselectSelect(existItem);
-                        }
-                        // Normal Dropdown
-                        else {
-                            this.inputConfig = {
-                                ...this.inputConfig,
-                                blackInput: true,
-                            };
-
-                            // Dropdown labels option selected
-                            if (this.inputConfig.dropdownLabel) {
-                                if (this.labelMode === 'Label') {
-                                    this.activeItem = existItem;
-                                    this.getSuperControl.setValue(
-                                        existItem.name
-                                    );
-                                    this.options = this.originalOptions;
-                                    this.selectedItem.emit(existItem);
-
-                                    this.inputService.dropDownItemSelectedOnEnter$.next(
-                                        {
-                                            action: true,
-                                            inputConfig: null,
-                                        }
-                                    );
-                                }
-
-                                if (this.labelMode === 'Color') {
-                                    this.activeItemColor = existItem;
-
-                                    this.selectedItemColor.emit(
-                                        this.activeItemColor
-                                    );
-                                }
-                            }
-                            // Normal
-                            else {
-                                this.getSuperControl.setValue(existItem?.name);
-                                this.selectedItem.emit(existItem);
-                                this.activeItem = existItem;
-                                this.inputRef.focusInput = false;
-                                this.inputRef.input.nativeElement.blur();
-                            }
-
-                            if (this.inputConfig.name !== 'RoutingAddress') {
-                                const timeout = setTimeout(() => {
-                                    this.inputConfig = {
-                                        ...this.inputConfig,
-                                        blackInput: false,
-                                    };
-                                    clearTimeout(timeout);
-                                }, 200);
-                            }
-                        }
-                        this.popoverRef.close();
-                    }
-                }
-
-                if (keyCode === 9) {
-                    this.popoverRef.open();
-                }
-            });
-    }
-
-    private search(searchText: string): void {
-        // Single Dropdown
-        if (
-            ![
-                'groups',
-                'load-broker-contact',
-                'fuel-franchise',
-                'load-dispatches-ttd',
-            ].includes(this.template)
-        ) {
-            if (
-                searchText?.length &&
-                this.getSuperControl.value &&
-                this.activeItem?.name !== this.getSuperControl.value
-            ) {
-                this.options = this.originalOptions.filter((item) =>
-                    item.name
-                        ? item.name
-                              .toLowerCase()
-                              .includes(searchText.toLowerCase())
-                        : item.code
-                        ? item.code
-                              .concat(' - ', item.description)
-                              .toLowerCase()
-                              .includes(searchText.toLowerCase())
-                        : searchText.toLowerCase()
-                );
-
-                if (
-                    ['truck', 'trailer'].includes(
-                        this.inputConfig?.dropdownImageInput?.template
-                    )
-                ) {
-                    this.inputConfig = {
-                        ...this.inputConfig,
-                        dropdownImageInput: {
-                            ...this.inputConfig?.dropdownImageInput,
-                            remove: true,
-                        },
-                    };
-                }
-
-                if (!this.options.length) {
-                    this.options.push({
-                        id: 7654,
-                        name: 'No Results',
-                    });
-
-                    if (
-                        this.inputConfig.name === 'Address' ||
-                        this.inputConfig.name === 'RoutingAddress'
-                    ) {
-                        this.popoverRef?.open();
-                    }
-                }
-            } else {
-                this.options = this.originalOptions;
-
-                if (
-                    ['truck', 'trailer'].includes(
-                        this.inputConfig?.dropdownImageInput?.template
-                    )
-                ) {
-                    this.inputConfig = {
-                        ...this.inputConfig,
-                        dropdownImageInput: {
-                            ...this.inputConfig?.dropdownImageInput,
-                            remove: false,
-                        },
-                    };
-                }
-            }
-        }
-        // Group Dropdown Items
-        else {
-            if (
-                searchText?.length &&
-                this.getSuperControl.value?.toLowerCase()
-            ) {
-                if (this.template === 'groups') {
-                    this.options = this.originalOptions
-                        .map((element) => {
-                            return {
-                                ...element,
-                                groups: element.groups.filter((subElement) =>
-                                    subElement.name
-                                        .toLowerCase()
-                                        .includes(searchText.toLowerCase())
-                                ),
-                            };
-                        })
-                        .filter((item) => item.groups.length);
-
-                    if (!this.options.length) {
-                        this.options.push({
-                            groups: [
-                                {
-                                    id: 7654,
-                                    name: 'No Results',
-                                },
-                            ],
-                        });
-                    }
-                }
-
-                if (this.template === 'load-broker-contact') {
-                    this.options = this.originalOptions.map((element) => {
-                        return {
-                            ...element,
-                            contacts: element?.contacts?.filter(
-                                (subElement) => {
-                                    return subElement?.fullName
-                                        .toLowerCase()
-                                        .includes(searchText?.toLowerCase());
-                                }
-                            ),
-                        };
-                    });
-                }
-
-                if (this.template === 'fuel-franchise') {
-                    this.options = this.originalOptions.map((element) => {
-                        return {
-                            ...element,
-                            stores: element?.stores?.filter((subElement) =>
-                                subElement.name
-                                    .toString()
-                                    .toLowerCase()
-                                    .includes(searchText.toLowerCase())
-                            ),
-                        };
-                    });
-                }
-
-                if (this.template === 'load-dispatches-ttd') {
-                    this.options = this.originalOptions.filter((item) => {
-                        if (
-                            item.fullName
-                                ?.toLowerCase()
-                                .includes(searchText.toLowerCase())
-                        ) {
-                            return item;
-                        }
-                    });
-
-                    if (!this.options.length) {
-                        this.options.push({
-                            id: 7654,
-                            name: 'No Results',
-                        });
-                    }
-                }
-            } else {
-                this.options = this.originalOptions;
-            }
-        }
-    }
 
     public onActiveItem(option: any, group?: any): void {
         // Prevent user to pick franchise, without group
@@ -788,6 +258,7 @@ export class TaInputDropdownComponent
         else if (option.id === 7655) {
             // Open New Modal
             if (this.canOpenModal) {
+                console.log(option);
                 this.selectedItem.emit({ ...option, canOpenModal: true });
             }
             // Work with current modal
@@ -1006,43 +477,6 @@ export class TaInputDropdownComponent
         }, 500);
     }
 
-    /**
-     * Navigate through dropdown with keyboard arrows
-     */
-    private dropdownNavigation(step: number) {
-        this.dropdownPosition += step;
-
-        if (this.dropdownPosition > this.options.length - 1) {
-            this.dropdownPosition = 0;
-        }
-
-        if (this.dropdownPosition < 0) {
-            this.dropdownPosition = this.options.length - 1;
-        }
-
-        let cssClass = 'dropdown-option-hovered';
-        let dropdownContainer: any = $('.dropdown-options');
-        let dropdownOption: any = $('.dropdown-option');
-
-        let elOffset =
-            dropdownOption.height() * this.dropdownPosition +
-            (this.dropdownPosition !== 0 ? this.dropdownPosition * 6 : 0);
-
-        let viewport =
-            dropdownContainer.scrollTop() + dropdownContainer.height();
-
-        if (
-            elOffset < dropdownContainer.scrollTop() ||
-            elOffset + dropdownOption.height() > viewport
-        )
-            $(dropdownContainer).scrollTop(elOffset);
-
-        dropdownOption
-            .removeClass(cssClass)
-            .eq(this.dropdownPosition)
-            .addClass(cssClass);
-    }
-
     public onIncorrectInput(event: boolean) {
         this.incorrectEvent.emit(event);
     }
@@ -1108,8 +542,11 @@ export class TaInputDropdownComponent
             .filter((item) => item.active)
             .slice(-1)[0];
 
-        this.inputRef.focusInput = false;
-        this.inputRef.input.nativeElement.blur();
+        if (this.inputRef) {
+            this.inputRef.focusInput = false;
+            this.inputRef.input.nativeElement.blur();
+        }
+
         this.inputConfig = {
             ...this.inputConfig,
             multiSelectDropdownActive: true,
@@ -1200,5 +637,588 @@ export class TaInputDropdownComponent
     ngOnDestroy(): void {
         this.destroy$.next();
         this.destroy$.complete();
+    }
+
+    private dropDownShowHideEvent() {
+        this.inputService.dropDownShowHide$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((action: boolean) => {
+                // Multiselect dropdown
+                if (this.inputConfig.multiselectDropdown) {
+                    this.isMultiSelectInputFocus = action;
+                }
+
+                if (this.labelMode !== 'Color') {
+                    // Focus Out
+                    if (!action) {
+                        if (this.template !== 'fuel-franchise') {
+                            this.popoverRef.open();
+                        }
+
+                        // Prevent user to typing dummmy data if activeItem doesn't exist
+                        if (this.activeItem) {
+                            this.getSuperControl.setValue(this.activeItem.name);
+                        } else {
+                            const index = this.originalOptions.findIndex(
+                                (item) =>
+                                    item.name === this.getSuperControl.value
+                            );
+
+                            if (index === -1) {
+                                this.onClearSearch();
+                            }
+                        }
+                        if (this.template !== 'fuel-franchise') {
+                            this.popoverRef.close();
+                        }
+                    }
+                    // Focus In
+                    else {
+                        this.inputConfig = {
+                            ...this.inputConfig,
+                            placeholder: this.getSuperControl.value
+                                ? this.getSuperControl.value
+                                : this.activeItem?.name,
+                        };
+
+                        this.getSuperControl.setValue(null);
+                        this.popoverRef.close();
+
+                        if (this.isInAddMode) {
+                            this.inputConfig = {
+                                ...this.inputConfig,
+                                placeholder: null,
+                            };
+                        }
+                    }
+                }
+
+                // Details pages
+                if (
+                    this.inputConfig.customClass?.includes('details-pages') &&
+                    !action
+                ) {
+                    this.selectedItem.emit(this.activeItem);
+                }
+            });
+    }
+
+    private dropDownKeyboardNavigationEvent() {
+        this.inputService.dropDownKeyNavigation$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe(({ keyCode, data }) => {
+                // Navigate down
+                if (keyCode === 40) {
+                    this.dropdownNavigation(1);
+                }
+                // Navigate up
+                if (keyCode === 38) {
+                    this.dropdownNavigation(-1);
+                }
+
+                // Press Escape
+                if (keyCode === 27) {
+                    if (this.inputConfig?.commands?.active) {
+                        this.inputConfig.commands.active = false;
+                    }
+
+                    if (this.inputConfig.name === 'Input Dropdown Bank Name') {
+                        this.inputConfig.commands.active = false;
+                        this.inputRef.isVisibleCommands = false;
+                        this.inputRef.focusInput = false;
+                    }
+
+                    if (this.inputConfig.dropdownLabel) {
+                        this.getSuperControl.setErrors(null);
+                        this.inputConfig.dropdownLabelNew = false;
+                        this.inputConfig.commands.active = false;
+                        this.inputConfig.blackInput = false;
+                        this.inputRef.focusInput = false;
+                        this.inputRef.editInputMode = false;
+                        this.inputRef.input.nativeElement.blur();
+                        if (this.labelMode === 'Color') {
+                            this.getSuperControl.patchValue(null);
+                            this.selectedLabelMode.emit('Label');
+                        }
+                    }
+                }
+                // Press 'enter'
+                if (keyCode === 13) {
+                    let selectedItem = $('.dropdown-option-hovered')
+                        .text()
+                        .trim();
+
+                    // // Open New Modal
+                    if (
+                        this.canOpenModal &&
+                        selectedItem.toLowerCase() === 'add new'
+                    ) {
+                        this.selectedItem.emit({
+                            id: 7655,
+                            name: 'ADD NEW',
+                            canOpenModal: true,
+                        });
+                    } else {
+                        if (this.options.length === 1 && !selectedItem) {
+                            if (this.template === 'fuel-franchise') {
+                                selectedItem = this.options[0]?.businessName
+                                    ? this.options[0]?.businessName
+                                    : this.options[0]?.name;
+                            }
+                            selectedItem = this.options[0]?.number
+                                ? this.options[0]?.number.toString().trim()
+                                : this.options[0].name.toString().trim();
+                        }
+
+                        // Address Select
+                        if (
+                            (this.inputConfig.name == 'Address' ||
+                                this.inputConfig.name == 'RoutingAddress') &&
+                            (!selectedItem || selectedItem == '')
+                        ) {
+                            selectedItem = this.options[0].name;
+                        }
+
+                        // Input Dropdown Bank Name
+                        if (
+                            !selectedItem &&
+                            this.inputConfig.name === 'Input Dropdown Bank Name'
+                        ) {
+                            this.addNewItem();
+                        }
+
+                        // Input Dropdown Label
+                        if (!selectedItem && this.inputConfig.dropdownLabel) {
+                            this.commandEvent({
+                                data: this.getSuperControl.value,
+                                action: 'confirm',
+                                mode: data.dropdownLabelNew ? 'new' : 'edit',
+                            });
+                            setTimeout(() => {
+                                this.getSuperControl.setErrors(null);
+                                this.inputConfig.dropdownLabelNew = false;
+                                this.inputConfig.commands.active = false;
+                                this.inputConfig.blackInput = false;
+                                this.inputRef.focusInput = false;
+                                this.inputRef.editInputMode = false;
+                                this.inputRef.input.nativeElement.blur();
+                            }, 150);
+                        }
+
+                        // ADD NEW Option
+                        if (selectedItem === 'ADD NEW') {
+                            this.addNewConfig();
+
+                            if (this.inputConfig.dropdownLabel) {
+                                // DropDown label
+                                if (this.inputConfig.dropdownLabel) {
+                                    this.inputConfig.dropdownLabelNew = true;
+                                    this.inputRef.editInputMode = true;
+                                    this.selectedLabelMode.emit('Color');
+                                    this.inputConfig.commands.active = true;
+                                    this.inputRef.setInputCursorAtTheEnd(
+                                        this.inputRef.input.nativeElement
+                                    );
+                                    this.inputConfig.blackInput = true;
+                                    this.selectedItem.emit({
+                                        id: 7655,
+                                        name: 'ADD NEW',
+                                    });
+                                }
+                            }
+                            selectedItem = null;
+                        }
+                        // Normal Pick Dropdown
+                        else {
+                            const existItem = this.options
+                                .map((item) => {
+                                    // Address
+                                    if (
+                                        item.name &&
+                                        (this.inputConfig.name == 'Address' ||
+                                            this.inputConfig.name ==
+                                                'RoutingAddress')
+                                    ) {
+                                        return {
+                                            id: item.id,
+                                            name: item.name,
+                                            address: item.address,
+                                            longLat: item.longLat,
+                                        };
+                                    }
+
+                                    // Load Dispatches TTD
+                                    else if (
+                                        [
+                                            'load-dispatches-ttd',
+                                            'load-broker',
+                                            'load-shipper',
+                                        ].includes(this.template)
+                                    ) {
+                                        return { ...item };
+                                    }
+
+                                    // Image (must be before type code, because color has same prop like other dropdown pop)
+                                    else if (item.logoName) {
+                                        return { ...item };
+                                    }
+
+                                    // Code
+                                    else if (item.code && item.description) {
+                                        return {
+                                            id: item.id,
+                                            name: item.code.concat(
+                                                ' - ',
+                                                item.description
+                                            ),
+                                        };
+                                    }
+                                    // Dropdown Labels
+                                    else if (
+                                        item?.dropLabel ||
+                                        this.inputConfig.dropdownLabel
+                                    ) {
+                                        return { ...item };
+                                    }
+                                    // Default
+                                    else {
+                                        if (item.name) {
+                                            return {
+                                                id: item.id,
+                                                name: item.name,
+                                            };
+                                        }
+                                    }
+                                })
+                                .find((item) => {
+                                    // Dropdown Label
+                                    if (
+                                        (item?.dropLabel ||
+                                            this.inputConfig.dropdownLabel) &&
+                                        selectedItem.substring(
+                                            0,
+                                            selectedItem.lastIndexOf(' ')
+                                        ) === item?.name.toLowerCase()
+                                    ) {
+                                        return item;
+                                    }
+
+                                    // Dropdown Load Dispatcher, Broker
+                                    if (
+                                        [
+                                            'load-broker',
+                                            'load-dispatcher',
+                                            'load-shipper',
+                                        ].includes(this.template) &&
+                                        selectedItem
+                                            ?.toLowerCase()
+                                            .includes(item?.name?.toLowerCase())
+                                    ) {
+                                        return item;
+                                    }
+                                    // Dropdown Load Dispatches
+                                    if (
+                                        this.template ===
+                                            'load-dispatches-ttd' &&
+                                        selectedItem
+                                            ?.toLowerCase()
+                                            .includes(
+                                                item?.trailer?.trailerNumber.toLowerCase()
+                                            ) &&
+                                        selectedItem
+                                            ?.toLowerCase()
+                                            .includes(
+                                                item?.truck?.truckNumber.toLowerCase()
+                                            ) &&
+                                        selectedItem
+                                            ?.toLowerCase()
+                                            .includes(
+                                                item?.driver?.firstName
+                                                    .concat(
+                                                        ' ',
+                                                        item?.driver?.lastName
+                                                    )
+                                                    .toLowerCase()
+                                            )
+                                    ) {
+                                        return item;
+                                    }
+
+                                    // Default
+                                    if (
+                                        !this.inputConfig.dropdownLabel &&
+                                        this.template !==
+                                            'load-dispatches-ttd' &&
+                                        selectedItem?.toLowerCase() ===
+                                            item?.name.toLowerCase()
+                                    ) {
+                                        return item;
+                                    }
+                                });
+
+                            // MultiSelect Dropdown
+                            if (this.inputConfig.multiselectDropdown) {
+                                this.onMultiselectSelect(existItem);
+                            }
+                            // Normal Dropdown
+                            else {
+                                this.inputConfig = {
+                                    ...this.inputConfig,
+                                    blackInput: true,
+                                };
+
+                                // Dropdown labels option selected
+                                if (this.inputConfig.dropdownLabel) {
+                                    if (this.labelMode === 'Label') {
+                                        this.activeItem = existItem;
+                                        this.getSuperControl.setValue(
+                                            existItem.name
+                                        );
+                                        this.options = this.originalOptions;
+                                        this.selectedItem.emit(existItem);
+
+                                        this.inputService.dropDownItemSelectedOnEnter$.next(
+                                            {
+                                                action: true,
+                                                inputConfig: null,
+                                            }
+                                        );
+                                    }
+
+                                    if (this.labelMode === 'Color') {
+                                        this.activeItemColor = existItem;
+
+                                        this.selectedItemColor.emit(
+                                            this.activeItemColor
+                                        );
+                                    }
+                                }
+                                // Normal
+                                else {
+                                    this.getSuperControl.setValue(
+                                        existItem?.name
+                                    );
+                                    this.selectedItem.emit(existItem);
+                                    this.activeItem = existItem;
+                                    this.inputRef.focusInput = false;
+                                    this.inputRef.input.nativeElement.blur();
+                                }
+
+                                if (
+                                    this.inputConfig.name !== 'RoutingAddress'
+                                ) {
+                                    const timeout = setTimeout(() => {
+                                        this.inputConfig = {
+                                            ...this.inputConfig,
+                                            blackInput: false,
+                                        };
+                                        clearTimeout(timeout);
+                                    }, 200);
+                                }
+                            }
+                            this.popoverRef.close();
+                        }
+                    }
+                }
+
+                if (keyCode === 9) {
+                    this.popoverRef.open();
+                }
+            });
+    }
+
+    private search(searchText: string): void {
+        // Single Dropdown
+        if (
+            ![
+                'groups',
+                'load-broker-contact',
+                'fuel-franchise',
+                'load-dispatches-ttd',
+            ].includes(this.template)
+        ) {
+            if (
+                searchText?.length &&
+                this.getSuperControl.value &&
+                this.activeItem?.name !== this.getSuperControl.value
+            ) {
+                this.options = this.originalOptions.filter((item) =>
+                    item.name
+                        ? item.name
+                              .toLowerCase()
+                              .includes(searchText.toLowerCase())
+                        : item.code
+                        ? item.code
+                              .concat(' - ', item.description)
+                              .toLowerCase()
+                              .includes(searchText.toLowerCase())
+                        : searchText.toLowerCase()
+                );
+
+                if (
+                    ['truck', 'trailer'].includes(
+                        this.inputConfig?.dropdownImageInput?.template
+                    )
+                ) {
+                    this.inputConfig = {
+                        ...this.inputConfig,
+                        dropdownImageInput: {
+                            ...this.inputConfig?.dropdownImageInput,
+                            remove: true,
+                        },
+                    };
+                }
+
+                if (!this.options.length) {
+                    this.options.push({
+                        id: 7654,
+                        name: 'No Results',
+                    });
+
+                    if (
+                        this.inputConfig.name === 'Address' ||
+                        this.inputConfig.name === 'RoutingAddress'
+                    ) {
+                        this.popoverRef?.open();
+                    }
+                }
+            } else {
+                this.options = this.originalOptions;
+
+                if (
+                    ['truck', 'trailer'].includes(
+                        this.inputConfig?.dropdownImageInput?.template
+                    )
+                ) {
+                    this.inputConfig = {
+                        ...this.inputConfig,
+                        dropdownImageInput: {
+                            ...this.inputConfig?.dropdownImageInput,
+                            remove: false,
+                        },
+                    };
+                }
+            }
+        }
+        // Group Dropdown Items
+        else {
+            if (
+                searchText?.length &&
+                this.getSuperControl.value?.toLowerCase()
+            ) {
+                if (this.template === 'groups') {
+                    this.options = this.originalOptions
+                        .map((element) => {
+                            return {
+                                ...element,
+                                groups: element.groups.filter((subElement) =>
+                                    subElement.name
+                                        .toLowerCase()
+                                        .includes(searchText.toLowerCase())
+                                ),
+                            };
+                        })
+                        .filter((item) => item.groups.length);
+
+                    if (!this.options.length) {
+                        this.options.push({
+                            groups: [
+                                {
+                                    id: 7654,
+                                    name: 'No Results',
+                                },
+                            ],
+                        });
+                    }
+                }
+
+                if (this.template === 'load-broker-contact') {
+                    this.options = this.originalOptions.map((element) => {
+                        return {
+                            ...element,
+                            contacts: element?.contacts?.filter(
+                                (subElement) => {
+                                    return subElement?.fullName
+                                        .toLowerCase()
+                                        .includes(searchText?.toLowerCase());
+                                }
+                            ),
+                        };
+                    });
+                }
+
+                if (this.template === 'fuel-franchise') {
+                    this.options = this.originalOptions.map((element) => {
+                        return {
+                            ...element,
+                            stores: element?.stores?.filter((subElement) =>
+                                subElement.name
+                                    .toString()
+                                    .toLowerCase()
+                                    .includes(searchText.toLowerCase())
+                            ),
+                        };
+                    });
+                }
+
+                if (this.template === 'load-dispatches-ttd') {
+                    this.options = this.originalOptions.filter((item) => {
+                        if (
+                            item.fullName
+                                ?.toLowerCase()
+                                .includes(searchText.toLowerCase())
+                        ) {
+                            return item;
+                        }
+                    });
+
+                    if (!this.options.length) {
+                        this.options.push({
+                            id: 7654,
+                            name: 'No Results',
+                        });
+                    }
+                }
+            } else {
+                this.options = this.originalOptions;
+            }
+        }
+    }
+
+    /**
+     * Navigate through dropdown with keyboard arrows
+     */
+    private dropdownNavigation(step: number) {
+        this.dropdownPosition += step;
+
+        if (this.dropdownPosition > this.options.length - 1) {
+            this.dropdownPosition = 0;
+        }
+
+        if (this.dropdownPosition < 0) {
+            this.dropdownPosition = this.options.length - 1;
+        }
+
+        let cssClass = 'dropdown-option-hovered';
+        let dropdownContainer: any = $('.dropdown-options');
+        let dropdownOption: any = $('.dropdown-option');
+
+        let elOffset =
+            dropdownOption.height() * this.dropdownPosition +
+            (this.dropdownPosition !== 0 ? this.dropdownPosition * 6 : 0);
+
+        let viewport =
+            dropdownContainer.scrollTop() + dropdownContainer.height();
+
+        if (
+            elOffset < dropdownContainer.scrollTop() ||
+            elOffset + dropdownOption.height() > viewport
+        )
+            $(dropdownContainer).scrollTop(elOffset);
+
+        dropdownOption
+            .removeClass(cssClass)
+            .eq(this.dropdownPosition)
+            .addClass(cssClass);
     }
 }
