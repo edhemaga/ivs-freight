@@ -258,6 +258,7 @@ export class TaInputDropdownComponent
         else if (option.id === 7655) {
             // Open New Modal
             if (this.canOpenModal) {
+                console.log(option);
                 this.selectedItem.emit({ ...option, canOpenModal: true });
             }
             // Work with current modal
@@ -747,258 +748,276 @@ export class TaInputDropdownComponent
                         .text()
                         .trim();
 
-                    if (this.options.length === 1 && !selectedItem) {
-                        if (this.template === 'fuel-franchise') {
-                            selectedItem = this.options[0]?.businessName
-                                ? this.options[0]?.businessName
-                                : this.options[0]?.name;
-                        }
-                        selectedItem = this.options[0]?.number
-                            ? this.options[0]?.number.toString().trim()
-                            : this.options[0].name.toString().trim();
-                    }
-
-                    // Address Select
+                    // // Open New Modal
                     if (
-                        (this.inputConfig.name == 'Address' ||
-                            this.inputConfig.name == 'RoutingAddress') &&
-                        (!selectedItem || selectedItem == '')
+                        this.canOpenModal &&
+                        selectedItem.toLowerCase() === 'add new'
                     ) {
-                        selectedItem = this.options[0].name;
-                    }
-
-                    // Input Dropdown Bank Name
-                    if (
-                        !selectedItem &&
-                        this.inputConfig.name === 'Input Dropdown Bank Name'
-                    ) {
-                        this.addNewItem();
-                    }
-
-                    // Input Dropdown Label
-                    if (!selectedItem && this.inputConfig.dropdownLabel) {
-                        this.commandEvent({
-                            data: this.getSuperControl.value,
-                            action: 'confirm',
-                            mode: data.dropdownLabelNew ? 'new' : 'edit',
+                        this.selectedItem.emit({
+                            id: 7655,
+                            name: 'ADD NEW',
+                            canOpenModal: true,
                         });
-                        setTimeout(() => {
-                            this.getSuperControl.setErrors(null);
-                            this.inputConfig.dropdownLabelNew = false;
-                            this.inputConfig.commands.active = false;
-                            this.inputConfig.blackInput = false;
-                            this.inputRef.focusInput = false;
-                            this.inputRef.editInputMode = false;
-                            this.inputRef.input.nativeElement.blur();
-                        }, 150);
-                    }
-
-                    // ADD NEW Option
-                    if (selectedItem === 'ADD NEW') {
-                        this.addNewConfig();
-
-                        if (this.inputConfig.dropdownLabel) {
-                            // DropDown label
-                            if (this.inputConfig.dropdownLabel) {
-                                this.inputConfig.dropdownLabelNew = true;
-                                this.inputRef.editInputMode = true;
-                                this.selectedLabelMode.emit('Color');
-                                this.inputConfig.commands.active = true;
-                                this.inputRef.setInputCursorAtTheEnd(
-                                    this.inputRef.input.nativeElement
-                                );
-                                this.inputConfig.blackInput = true;
-                                this.selectedItem.emit({
-                                    id: 7655,
-                                    name: 'ADD NEW',
-                                });
+                    } else {
+                        if (this.options.length === 1 && !selectedItem) {
+                            if (this.template === 'fuel-franchise') {
+                                selectedItem = this.options[0]?.businessName
+                                    ? this.options[0]?.businessName
+                                    : this.options[0]?.name;
                             }
+                            selectedItem = this.options[0]?.number
+                                ? this.options[0]?.number.toString().trim()
+                                : this.options[0].name.toString().trim();
                         }
-                        selectedItem = null;
-                    }
-                    // Normal Pick Dropdown
-                    else {
-                        const existItem = this.options
-                            .map((item) => {
-                                // Address
-                                if (
-                                    item.name &&
-                                    (this.inputConfig.name == 'Address' ||
-                                        this.inputConfig.name ==
-                                            'RoutingAddress')
-                                ) {
-                                    return {
-                                        id: item.id,
-                                        name: item.name,
-                                        address: item.address,
-                                        longLat: item.longLat,
-                                    };
-                                }
 
-                                // Load Dispatches TTD
-                                else if (
-                                    [
-                                        'load-dispatches-ttd',
-                                        'load-broker',
-                                        'load-shipper',
-                                    ].includes(this.template)
-                                ) {
-                                    return { ...item };
-                                }
+                        // Address Select
+                        if (
+                            (this.inputConfig.name == 'Address' ||
+                                this.inputConfig.name == 'RoutingAddress') &&
+                            (!selectedItem || selectedItem == '')
+                        ) {
+                            selectedItem = this.options[0].name;
+                        }
 
-                                // Image (must be before type code, because color has same prop like other dropdown pop)
-                                else if (item.logoName) {
-                                    return { ...item };
-                                }
+                        // Input Dropdown Bank Name
+                        if (
+                            !selectedItem &&
+                            this.inputConfig.name === 'Input Dropdown Bank Name'
+                        ) {
+                            this.addNewItem();
+                        }
 
-                                // Code
-                                else if (item.code && item.description) {
-                                    return {
-                                        id: item.id,
-                                        name: item.code.concat(
-                                            ' - ',
-                                            item.description
-                                        ),
-                                    };
+                        // Input Dropdown Label
+                        if (!selectedItem && this.inputConfig.dropdownLabel) {
+                            this.commandEvent({
+                                data: this.getSuperControl.value,
+                                action: 'confirm',
+                                mode: data.dropdownLabelNew ? 'new' : 'edit',
+                            });
+                            setTimeout(() => {
+                                this.getSuperControl.setErrors(null);
+                                this.inputConfig.dropdownLabelNew = false;
+                                this.inputConfig.commands.active = false;
+                                this.inputConfig.blackInput = false;
+                                this.inputRef.focusInput = false;
+                                this.inputRef.editInputMode = false;
+                                this.inputRef.input.nativeElement.blur();
+                            }, 150);
+                        }
+
+                        // ADD NEW Option
+                        if (selectedItem === 'ADD NEW') {
+                            this.addNewConfig();
+
+                            if (this.inputConfig.dropdownLabel) {
+                                // DropDown label
+                                if (this.inputConfig.dropdownLabel) {
+                                    this.inputConfig.dropdownLabelNew = true;
+                                    this.inputRef.editInputMode = true;
+                                    this.selectedLabelMode.emit('Color');
+                                    this.inputConfig.commands.active = true;
+                                    this.inputRef.setInputCursorAtTheEnd(
+                                        this.inputRef.input.nativeElement
+                                    );
+                                    this.inputConfig.blackInput = true;
+                                    this.selectedItem.emit({
+                                        id: 7655,
+                                        name: 'ADD NEW',
+                                    });
                                 }
-                                // Dropdown Labels
-                                else if (
-                                    item?.dropLabel ||
-                                    this.inputConfig.dropdownLabel
-                                ) {
-                                    return { ...item };
-                                }
-                                // Default
-                                else {
-                                    if (item.name) {
+                            }
+                            selectedItem = null;
+                        }
+                        // Normal Pick Dropdown
+                        else {
+                            const existItem = this.options
+                                .map((item) => {
+                                    // Address
+                                    if (
+                                        item.name &&
+                                        (this.inputConfig.name == 'Address' ||
+                                            this.inputConfig.name ==
+                                                'RoutingAddress')
+                                    ) {
                                         return {
                                             id: item.id,
                                             name: item.name,
+                                            address: item.address,
+                                            longLat: item.longLat,
                                         };
                                     }
-                                }
-                            })
-                            .find((item) => {
-                                // Dropdown Label
-                                if (
-                                    (item?.dropLabel ||
-                                        this.inputConfig.dropdownLabel) &&
-                                    selectedItem.substring(
-                                        0,
-                                        selectedItem.lastIndexOf(' ')
-                                    ) === item?.name.toLowerCase()
-                                ) {
-                                    return item;
-                                }
 
-                                // Dropdown Load Dispatcher, Broker
-                                if (
-                                    [
-                                        'load-broker',
-                                        'load-dispatcher',
-                                        'load-shipper',
-                                    ].includes(this.template) &&
-                                    selectedItem
-                                        ?.toLowerCase()
-                                        .includes(item?.name?.toLowerCase())
-                                ) {
-                                    return item;
-                                }
-                                // Dropdown Load Dispatches
-                                if (
-                                    this.template === 'load-dispatches-ttd' &&
-                                    selectedItem
-                                        ?.toLowerCase()
-                                        .includes(
-                                            item?.trailer?.trailerNumber.toLowerCase()
-                                        ) &&
-                                    selectedItem
-                                        ?.toLowerCase()
-                                        .includes(
-                                            item?.truck?.truckNumber.toLowerCase()
-                                        ) &&
-                                    selectedItem
-                                        ?.toLowerCase()
-                                        .includes(
-                                            item?.driver?.firstName
-                                                .concat(
-                                                    ' ',
-                                                    item?.driver?.lastName
-                                                )
-                                                .toLowerCase()
-                                        )
-                                ) {
-                                    return item;
-                                }
+                                    // Load Dispatches TTD
+                                    else if (
+                                        [
+                                            'load-dispatches-ttd',
+                                            'load-broker',
+                                            'load-shipper',
+                                        ].includes(this.template)
+                                    ) {
+                                        return { ...item };
+                                    }
 
-                                // Default
-                                if (
-                                    !this.inputConfig.dropdownLabel &&
-                                    this.template !== 'load-dispatches-ttd' &&
-                                    selectedItem?.toLowerCase() ===
-                                        item?.name.toLowerCase()
-                                ) {
-                                    return item;
-                                }
-                            });
+                                    // Image (must be before type code, because color has same prop like other dropdown pop)
+                                    else if (item.logoName) {
+                                        return { ...item };
+                                    }
 
-                        // MultiSelect Dropdown
-                        if (this.inputConfig.multiselectDropdown) {
-                            this.onMultiselectSelect(existItem);
-                        }
-                        // Normal Dropdown
-                        else {
-                            this.inputConfig = {
-                                ...this.inputConfig,
-                                blackInput: true,
-                            };
-
-                            // Dropdown labels option selected
-                            if (this.inputConfig.dropdownLabel) {
-                                if (this.labelMode === 'Label') {
-                                    this.activeItem = existItem;
-                                    this.getSuperControl.setValue(
-                                        existItem.name
-                                    );
-                                    this.options = this.originalOptions;
-                                    this.selectedItem.emit(existItem);
-
-                                    this.inputService.dropDownItemSelectedOnEnter$.next(
-                                        {
-                                            action: true,
-                                            inputConfig: null,
+                                    // Code
+                                    else if (item.code && item.description) {
+                                        return {
+                                            id: item.id,
+                                            name: item.code.concat(
+                                                ' - ',
+                                                item.description
+                                            ),
+                                        };
+                                    }
+                                    // Dropdown Labels
+                                    else if (
+                                        item?.dropLabel ||
+                                        this.inputConfig.dropdownLabel
+                                    ) {
+                                        return { ...item };
+                                    }
+                                    // Default
+                                    else {
+                                        if (item.name) {
+                                            return {
+                                                id: item.id,
+                                                name: item.name,
+                                            };
                                         }
-                                    );
-                                }
+                                    }
+                                })
+                                .find((item) => {
+                                    // Dropdown Label
+                                    if (
+                                        (item?.dropLabel ||
+                                            this.inputConfig.dropdownLabel) &&
+                                        selectedItem.substring(
+                                            0,
+                                            selectedItem.lastIndexOf(' ')
+                                        ) === item?.name.toLowerCase()
+                                    ) {
+                                        return item;
+                                    }
 
-                                if (this.labelMode === 'Color') {
-                                    this.activeItemColor = existItem;
+                                    // Dropdown Load Dispatcher, Broker
+                                    if (
+                                        [
+                                            'load-broker',
+                                            'load-dispatcher',
+                                            'load-shipper',
+                                        ].includes(this.template) &&
+                                        selectedItem
+                                            ?.toLowerCase()
+                                            .includes(item?.name?.toLowerCase())
+                                    ) {
+                                        return item;
+                                    }
+                                    // Dropdown Load Dispatches
+                                    if (
+                                        this.template ===
+                                            'load-dispatches-ttd' &&
+                                        selectedItem
+                                            ?.toLowerCase()
+                                            .includes(
+                                                item?.trailer?.trailerNumber.toLowerCase()
+                                            ) &&
+                                        selectedItem
+                                            ?.toLowerCase()
+                                            .includes(
+                                                item?.truck?.truckNumber.toLowerCase()
+                                            ) &&
+                                        selectedItem
+                                            ?.toLowerCase()
+                                            .includes(
+                                                item?.driver?.firstName
+                                                    .concat(
+                                                        ' ',
+                                                        item?.driver?.lastName
+                                                    )
+                                                    .toLowerCase()
+                                            )
+                                    ) {
+                                        return item;
+                                    }
 
-                                    this.selectedItemColor.emit(
-                                        this.activeItemColor
-                                    );
-                                }
+                                    // Default
+                                    if (
+                                        !this.inputConfig.dropdownLabel &&
+                                        this.template !==
+                                            'load-dispatches-ttd' &&
+                                        selectedItem?.toLowerCase() ===
+                                            item?.name.toLowerCase()
+                                    ) {
+                                        return item;
+                                    }
+                                });
+
+                            // MultiSelect Dropdown
+                            if (this.inputConfig.multiselectDropdown) {
+                                this.onMultiselectSelect(existItem);
                             }
-                            // Normal
+                            // Normal Dropdown
                             else {
-                                this.getSuperControl.setValue(existItem?.name);
-                                this.selectedItem.emit(existItem);
-                                this.activeItem = existItem;
-                                this.inputRef.focusInput = false;
-                                this.inputRef.input.nativeElement.blur();
-                            }
+                                this.inputConfig = {
+                                    ...this.inputConfig,
+                                    blackInput: true,
+                                };
 
-                            if (this.inputConfig.name !== 'RoutingAddress') {
-                                const timeout = setTimeout(() => {
-                                    this.inputConfig = {
-                                        ...this.inputConfig,
-                                        blackInput: false,
-                                    };
-                                    clearTimeout(timeout);
-                                }, 200);
+                                // Dropdown labels option selected
+                                if (this.inputConfig.dropdownLabel) {
+                                    if (this.labelMode === 'Label') {
+                                        this.activeItem = existItem;
+                                        this.getSuperControl.setValue(
+                                            existItem.name
+                                        );
+                                        this.options = this.originalOptions;
+                                        this.selectedItem.emit(existItem);
+
+                                        this.inputService.dropDownItemSelectedOnEnter$.next(
+                                            {
+                                                action: true,
+                                                inputConfig: null,
+                                            }
+                                        );
+                                    }
+
+                                    if (this.labelMode === 'Color') {
+                                        this.activeItemColor = existItem;
+
+                                        this.selectedItemColor.emit(
+                                            this.activeItemColor
+                                        );
+                                    }
+                                }
+                                // Normal
+                                else {
+                                    this.getSuperControl.setValue(
+                                        existItem?.name
+                                    );
+                                    this.selectedItem.emit(existItem);
+                                    this.activeItem = existItem;
+                                    this.inputRef.focusInput = false;
+                                    this.inputRef.input.nativeElement.blur();
+                                }
+
+                                if (
+                                    this.inputConfig.name !== 'RoutingAddress'
+                                ) {
+                                    const timeout = setTimeout(() => {
+                                        this.inputConfig = {
+                                            ...this.inputConfig,
+                                            blackInput: false,
+                                        };
+                                        clearTimeout(timeout);
+                                    }, 200);
+                                }
                             }
+                            this.popoverRef.close();
                         }
-                        this.popoverRef.close();
                     }
                 }
 
