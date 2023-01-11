@@ -19,8 +19,8 @@ import { card_component_animation } from '../../../shared/animations/card-compon
 import { ModalService } from '../../../shared/ta-modal/modal.service';
 import { RepairDQuery } from '../../state/details-state/repair-d.query';
 import { UpdateReviewCommand } from '../../../../../../../appcoretruckassist';
-import { ReviewCommentModal } from '../../../shared/ta-user-review/ta-user-review.component';
 import { ReviewsRatingService } from '../../../../services/reviews-rating/reviewsRating.service';
+import { TruckassistTableService } from '../../../../services/truckassist-table/truckassist-table.service';
 
 @Component({
     selector: 'app-shop-repair-details-item',
@@ -49,7 +49,8 @@ export class ShopRepairDetailsItemComponent implements OnInit, OnChanges {
         private confirmationService: ConfirmationService,
         private repairDQuery: RepairDQuery,
         private cdr: ChangeDetectorRef,
-        private reviewRatingService: ReviewsRatingService
+        private reviewRatingService: ReviewsRatingService,
+        private tableService: TruckassistTableService,
     ) {}
     ngOnChanges(changes: SimpleChanges): void {
         if (
@@ -102,8 +103,26 @@ export class ShopRepairDetailsItemComponent implements OnInit, OnChanges {
                     }
                 },
             });
-
+        
         this.initTableOptions();
+
+        this.tableService.currentActionAnimation
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res: any) => {
+                if (res.animation && res.tab === 'repair') {
+                    let index;
+                    this.repairListData.map((item, inx) => {
+                        if ( item.id == res.id ) {
+                            index = inx;
+
+                        }
+                    })
+
+                    if ( index ) {
+                        this.repairListData[index] = res.data;
+                    }
+                }
+            });
     }
 
     public deleteRepairByIdFunction(id: number) {

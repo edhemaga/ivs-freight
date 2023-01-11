@@ -138,7 +138,8 @@ export class RepairTService implements OnDestroy {
                             }
                             this.tableService.sendActionAnimation({
                                 animation: 'update',
-                                tab: repair?.truckId ? 'active' : 'inactive',
+                                tab: 'repair',
+                                //tab: repair?.truckId ? 'active' : 'inactive',
                                 data: repair,
                                 id: repair.id,
                             });
