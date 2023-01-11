@@ -1,4 +1,4 @@
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 import { FuelStopResponse } from './../../../../../../appcoretruckassist/model/fuelStopResponse';
 import { Injectable } from '@angular/core';
 import {
@@ -28,6 +28,24 @@ export class FuelTService {
     ) {}
 
     // **************** FUEL TRANSACTION ****************
+
+    set updateStoreFuelTransactionsList(data: FuelTransactionListResponse) {
+        this.fuelStore.update((store) => {
+            return {
+                ...store,
+                fuelTransactions: data,
+            };
+        });
+    }
+
+    set updateStoreFuelStopList(data: FuelStopListResponse) {
+        this.fuelStore.update((store) => {
+            return {
+                ...store,
+                fuelStops: data,
+            };
+        });
+    }
 
     public getFuelTransactionsList(
         fuelTransactionSpecParamsFuelStopStoreIds?: Array<number>,
@@ -79,15 +97,6 @@ export class FuelTService {
         );
     }
 
-    set updateStoreFuelTransactionsList(data: FuelTransactionListResponse) {
-        this.fuelStore.update((store) => {
-            return {
-                ...store,
-                fuelTransactions: data,
-            };
-        });
-    }
-
     public getFuelTransactionModalDropdowns(): Observable<GetFuelModalResponse> {
         return this.fuelService.apiFuelTransactionModalGet();
     }
@@ -127,16 +136,16 @@ export class FuelTService {
 
     public updateFuelTransactionEFS(data: any): Observable<CreateResponse> {
         this.formDataService.extractFormDataFromFunction(data);
-        return this.fuelService.apiFuelEFSTransactionPut();
+        return this.fuelService.apiFuelEfsTransactionPut();
     }
+
+    // **************** FUEL STOP ****************
 
     public getFuelTransactionById(
         id: number
     ): Observable<FuelTransactionResponse> {
         return this.fuelService.apiFuelTransactionIdGet(id);
     }
-
-    // **************** FUEL STOP ****************
 
     // Get Fule Stops
     public getFuelStopsList(
@@ -183,15 +192,6 @@ export class FuelTService {
             search1,
             search2
         );
-    }
-
-    set updateStoreFuelStopList(data: FuelStopListResponse) {
-        this.fuelStore.update((store) => {
-            return {
-                ...store,
-                fuelStops: data,
-            };
-        });
     }
 
     public getFuelStopById(fuelId: number): Observable<FuelStopResponse> {
@@ -264,22 +264,22 @@ export class FuelTService {
     // Map Clusters
 
     public getFuelStopClusters(
-        northEastLatitude?: number, 
-        northEastLongitude?: number, 
-        southWestLatitude?: number, 
-        southWestLongitude?: number, 
-        zoomLevel?: number, 
-        addedNew?: boolean, 
-        shipperLong?: number, 
-        shipperLat?: number, 
-        shipperDistance?: number, 
-        shipperStates?: Array<string>, 
-        pageIndex?: number, 
-        pageSize?: number, 
-        companyId?: number, 
-        sort?: string, 
-        search?: string, 
-        search1?: string, 
+        northEastLatitude?: number,
+        northEastLongitude?: number,
+        southWestLatitude?: number,
+        southWestLongitude?: number,
+        zoomLevel?: number,
+        addedNew?: boolean,
+        shipperLong?: number,
+        shipperLat?: number,
+        shipperDistance?: number,
+        shipperStates?: Array<string>,
+        pageIndex?: number,
+        pageSize?: number,
+        companyId?: number,
+        sort?: string,
+        search?: string,
+        search1?: string,
         search2?: string
     ): Observable<Array<ClusterResponse>> {
         return this.fuelService.apiFuelClustersGet(

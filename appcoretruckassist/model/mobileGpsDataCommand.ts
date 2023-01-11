@@ -18,5 +18,6 @@ export interface MobileGpsDataCommand {
     altitude?: number | null;
     speed?: number | null;
     heading?: number | null;
+    updateTime?: string;
 }
 

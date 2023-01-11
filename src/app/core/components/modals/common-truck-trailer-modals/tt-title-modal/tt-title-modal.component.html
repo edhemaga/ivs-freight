@@ -1,26 +1,25 @@
 <app-ta-modal
-    [modalTitle]="
-        editData?.type !== 'edit-title' ? 'Add New Title' : 'Edit Title'
-    "
+    (action)="onModalAction($event)"
     [editData]="editData"
     [editName]="
         editData?.modal === 'trailer'
             ? 'Trailer ' + editData?.payload?.trailerNumber
             : 'Truck ' + editData?.payload?.truckNumber
     "
-    [specificCaseModalName]="true"
     [isModalValid]="ttTitleForm.valid && isFormDirty"
-    (action)="onModalAction($event)"
+    [modalTitle]="
+        editData?.type !== 'edit-title' ? 'Add New Title' : 'Edit Title'
+    "
+    [specificCaseModalName]="true"
 >
     <form
-        origin
         [formGroup]="ttTitleForm"
         class="form-container form-container-without-mb"
+        origin
     >
         <div class="row">
             <div class="col-6">
                 <app-ta-input
-                    formControlName="number"
                     [inputConfig]="{
                         name: 'Title Number',
                         type: 'text',
@@ -29,29 +28,30 @@
                         textTransform: 'capitalize',
                         autoFocus: editData?.type !== 'edit-title'
                     }"
+                    formControlName="number"
                 ></app-ta-input>
             </div>
             <div class="col-6">
                 <app-ta-input-dropdown
-                    formControlName="stateId"
+                    (selectedItem)="onSelectDropdown($event, 'state')"
+                    [activeItem]="selectedStateType"
                     [inputConfig]="{
                         name: 'Input Dropdown',
                         type: 'text',
                         label: 'State',
+                        textTransform: 'uppercase',
                         isRequired: true,
                         isDropdown: true,
                         dropdownWidthClass: 'w-col-228'
                     }"
                     [options]="stateTypes"
-                    [activeItem]="selectedStateType"
-                    (selectedItem)="onSelectDropdown($event, 'state')"
+                    formControlName="stateId"
                 ></app-ta-input-dropdown>
             </div>
         </div>
         <div class="row last-row">
             <div class="col-6">
                 <app-ta-input
-                    formControlName="purchaseDate"
                     [inputConfig]="{
                         name: 'datepicker',
                         type: 'text',
@@ -61,11 +61,11 @@
                         isRequired: true,
                         customClass: 'datetimeclass'
                     }"
+                    formControlName="purchaseDate"
                 ></app-ta-input>
             </div>
             <div class="col-6">
                 <app-ta-input
-                    formControlName="issueDate"
                     [inputConfig]="{
                         name: 'datepicker',
                         type: 'text',
@@ -75,27 +75,27 @@
                         isRequired: true,
                         customClass: 'datetimeclass'
                     }"
+                    formControlName="issueDate"
                 ></app-ta-input>
             </div>
         </div>
         <div class="ta-card-body-overflow-none">
             <app-ta-custom-card
-                [hasCounter]="documents.length ? documents.length : 0"
                 [cardName]="'Documents'"
                 [disableAnimation]="disableCardAnimation"
+                [hasCounter]="documents.length ? documents.length : 0"
                 [isCardOpen]="documents.length > 0"
             >
                 <app-ta-upload-files
-                    [files]="documents"
-                    [showDropzone]="true"
                     (onFileEvent)="onFilesEvent($event)"
                     [customClassName]="'modals'"
+                    [files]="documents"
+                    [showDropzone]="true"
                 ></app-ta-upload-files>
             </app-ta-custom-card>
         </div>
 
         <app-ta-input-note
-            formControlName="note"
             [isVisibleNote]="
                 ttTitleForm.get('note').value &&
                 ttTitleForm.get('note').value != 'null'
@@ -108,6 +108,7 @@
                     ? ttTitleForm.get('note').value
                     : ''
             "
+            formControlName="note"
         ></app-ta-input-note>
     </form>
 </app-ta-modal>

@@ -1,22 +1,22 @@
 import {
+    addressValidation,
     businessNameValidation,
     fuelStopValidation,
+    fuelStoreValidation,
+    phoneFaxRegex,
 } from '../../../shared/ta-input/ta-input.regex-validations';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import {
-    addressValidation,
-    phoneFaxRegex,
-} from '../../../shared/ta-input/ta-input.regex-validations';
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { AddressEntity } from 'appcoretruckassist';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
 import { of, Subject, switchMap, takeUntil } from 'rxjs';
-import { fuelStoreValidation } from '../../../shared/ta-input/ta-input.regex-validations';
 import { FormService } from '../../../../services/form/form.service';
 import { FuelTService } from '../../../fuel/state/fuel.service';
-import { GetFuelStopModalResponse } from '../../../../../../../appcoretruckassist/model/getFuelStopModalResponse';
-import { FuelStopResponse } from '../../../../../../../appcoretruckassist/model/fuelStopResponse';
+import {
+    FuelStopResponse,
+    GetFuelStopModalResponse,
+} from '../../../../../../../appcoretruckassist';
 
 @Component({
     selector: 'app-fuel-stop-modal',
@@ -25,32 +25,22 @@ import { FuelStopResponse } from '../../../../../../../appcoretruckassist/model/
     providers: [ModalService],
 })
 export class FuelStopModalComponent implements OnInit, OnDestroy {
-    private destroy$ = new Subject<void>();
     @Input() editData: any;
-
     public fuelStopForm: FormGroup;
-
     public fuelStops: any[] = [];
-
     public selectedFuelStop: any = null;
     public selectedAddress: AddressEntity;
-
     public isFavouriteFuelStop: boolean = false;
-
     public isFormDirty: boolean;
-
     public fuelStopName: string = null;
-
     public companyId: number = null;
-
     public documents: any[] = [];
     public fileModified: boolean = false;
     public filesForDelete: any[] = [];
-
     public disableCardAnimation: boolean = false;
-
     public longitude: number;
     public latitude: number;
+    private destroy$ = new Subject<void>();
 
     constructor(
         private formBuilder: FormBuilder,
@@ -71,30 +61,6 @@ export class FuelStopModalComponent implements OnInit, OnDestroy {
 
         this.trackFuelStopPhone();
         this.trackFuelStopFranchise();
-    }
-
-    private createForm() {
-        this.fuelStopForm = this.formBuilder.group({
-            businessName: [null, [...businessNameValidation]],
-            fuelStopFranchiseId: [
-                null,
-                [Validators.required, ...fuelStopValidation],
-            ],
-            store: [null, fuelStoreValidation],
-            favourite: [false],
-            phone: [null, [Validators.required, phoneFaxRegex]],
-            fax: [null, phoneFaxRegex],
-            address: [null, [Validators.required, ...addressValidation]],
-            note: [null],
-            files: [null],
-        });
-
-        this.formService.checkFormChange(this.fuelStopForm);
-        this.formService.formValueChange$
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((isFormChange: boolean) => {
-                this.isFormDirty = isFormChange;
-            });
     }
 
     public onModalAction(data: { action: string; bool: boolean }) {
@@ -189,6 +155,67 @@ export class FuelStopModalComponent implements OnInit, OnDestroy {
         if (this.selectedAddress) {
             this.trackFuelStopAddress(this.selectedAddress);
         }
+    }
+
+    public paginationPage(pageIndex: number) {
+        this.getModalDropdowns(pageIndex, 25);
+    }
+
+    public onFilesEvent(event: any) {
+        this.documents = event.files;
+        switch (event.action) {
+            case 'add': {
+                this.fuelStopForm
+                    .get('files')
+                    .patchValue(JSON.stringify(event.files));
+                break;
+            }
+            case 'delete': {
+                this.fuelStopForm
+                    .get('files')
+                    .patchValue(
+                        event.files.length ? JSON.stringify(event.files) : null
+                    );
+                if (event.deleteId) {
+                    this.filesForDelete.push(event.deleteId);
+                }
+
+                this.fileModified = true;
+                break;
+            }
+            default: {
+                break;
+            }
+        }
+    }
+
+    ngOnDestroy(): void {
+        this.destroy$.next();
+        this.destroy$.complete();
+    }
+
+    private createForm() {
+        this.fuelStopForm = this.formBuilder.group({
+            businessName: [null, [...businessNameValidation]],
+            fuelStopFranchiseId: [
+                null,
+                [Validators.required, ...fuelStopValidation],
+            ],
+            store: [null, fuelStoreValidation],
+            favourite: [false],
+            phone: [null, [Validators.required, phoneFaxRegex]],
+            fax: [null, phoneFaxRegex],
+            address: [null, [Validators.required, ...addressValidation]],
+            note: [null],
+            files: [null],
+        });
+
+        this.formService.checkFormChange(this.fuelStopForm);
+        this.formService.formValueChange$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((isFormChange: boolean) => {
+                this.isFormDirty = isFormChange;
+            });
     }
 
     private trackFuelStopAddress(address: AddressEntity) {
@@ -338,14 +365,13 @@ export class FuelStopModalComponent implements OnInit, OnDestroy {
                         fuelStopFranchiseId: res.fuelStopFranchise
                             ? res.fuelStopFranchise.businessName
                             : null,
-                        favourite: res.fuelStopExtensions[0].favourite,
+                        favourite: res.favourite,
                         fax: res.fax,
                         address: res.address.address,
-                        note: res.fuelStopExtensions[0].note,
+                        note: res.note,
                     });
 
-                    this.isFavouriteFuelStop =
-                        res.fuelStopExtensions[0].favourite;
+                    this.isFavouriteFuelStop = res.favourite;
 
                     this.fuelStopForm
                         .get('phone')
@@ -385,10 +411,6 @@ export class FuelStopModalComponent implements OnInit, OnDestroy {
             });
     }
 
-    public paginationPage(pageIndex: number) {
-        this.getModalDropdowns(pageIndex, 25);
-    }
-
     private getModalDropdowns(pageIndex: number = 1, pageSize: number = 25) {
         this.fuelService
             .getFuelStopModalDropdowns(pageIndex, pageSize)
@@ -411,38 +433,5 @@ export class FuelStopModalComponent implements OnInit, OnDestroy {
                 },
                 error: () => {},
             });
-    }
-
-    public onFilesEvent(event: any) {
-        this.documents = event.files;
-        switch (event.action) {
-            case 'add': {
-                this.fuelStopForm
-                    .get('files')
-                    .patchValue(JSON.stringify(event.files));
-                break;
-            }
-            case 'delete': {
-                this.fuelStopForm
-                    .get('files')
-                    .patchValue(
-                        event.files.length ? JSON.stringify(event.files) : null
-                    );
-                if (event.deleteId) {
-                    this.filesForDelete.push(event.deleteId);
-                }
-
-                this.fileModified = true;
-                break;
-            }
-            default: {
-                break;
-            }
-        }
-    }
-
-    ngOnDestroy(): void {
-        this.destroy$.next();
-        this.destroy$.complete();
     }
 }

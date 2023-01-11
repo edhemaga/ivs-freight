@@ -154,7 +154,7 @@ export class EventService {
             }
         }
 
-        let localVarPath = `/api/Event/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int32"})}`;
+        let localVarPath = `/api/event/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int32"})}`;
         return this.httpClient.request<any>('delete', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
@@ -220,7 +220,7 @@ export class EventService {
             }
         }
 
-        let localVarPath = `/api/Event/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int32"})}`;
+        let localVarPath = `/api/event/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int32"})}`;
         return this.httpClient.request<EventResponse>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
@@ -324,7 +324,7 @@ export class EventService {
             }
         }
 
-        let localVarPath = `/api/Event/list`;
+        let localVarPath = `/api/event/list`;
         return this.httpClient.request<Array<EventResponse>>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
@@ -387,7 +387,7 @@ export class EventService {
             }
         }
 
-        let localVarPath = `/api/Event/modal`;
+        let localVarPath = `/api/event/modal`;
         return this.httpClient.request<EventModalResponse>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
@@ -461,7 +461,7 @@ export class EventService {
             }
         }
 
-        let localVarPath = `/api/Event`;
+        let localVarPath = `/api/event`;
         return this.httpClient.request<CreateResponse>('post', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
@@ -536,7 +536,7 @@ export class EventService {
             }
         }
 
-        let localVarPath = `/api/Event`;
+        let localVarPath = `/api/event`;
         return this.httpClient.request<object>('put', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,

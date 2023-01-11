@@ -1561,9 +1561,17 @@
         left: -96px;
         top: 4px;
         
-        box-shadow: 0 0 2px 0 rgb(0 0 0 / 30%);
+        box-shadow: 0 0 4px rgb(0 0 0 / 15%);
         border-radius: 3px;
         background-color: #ffffff;
+    }
+}
+
+.pickup-delivery-popover {
+    .popover-body {
+        position: relative;
+        bottom: 30px;
+        left: -12px;
     }
 }
 
