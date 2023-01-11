@@ -791,6 +791,10 @@
                                     <app-ta-input-switch-on-off
                                         [titleText]="'CFR Part 40?'"
                                         [isRequired]="true"
+                                        [selectedSwitchState]="
+                                            classesOfEquipment.controls[i].value
+                                                .cfrPart
+                                        "
                                         (switchStateEmitter)="
                                             handleInputSelect(
                                                 $event,
@@ -804,6 +808,10 @@
                                     <app-ta-input-switch-on-off
                                         [titleText]="'FMCSA Regulated'"
                                         [isRequired]="true"
+                                        [selectedSwitchState]="
+                                            classesOfEquipment.controls[i].value
+                                                .cfrPart
+                                        "
                                         (switchStateEmitter)="
                                             handleInputSelect(
                                                 $event,

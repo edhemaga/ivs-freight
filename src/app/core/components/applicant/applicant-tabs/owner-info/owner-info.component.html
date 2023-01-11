@@ -1,1090 +1,1103 @@
-<div class="container-fluid">
-    <div class="row">
-        <div
-            class="container-fluid d-flex flex-column justify-content-between owner-info-container"
-        >
-            <div class="d-flex flex-column align-items-center">
-                <app-applicant-header
-                    [mode]="selectedMode"
-                ></app-applicant-header>
-
-                <h1 class="m-0 text-center title ta-font-bold">Owner Info</h1>
-
-                <h2
-                    class="m-0 text-center subtitle ta-font-regular"
-                    [ngStyle]="{
-                        color:
-                            selectedMode === 'FEEDBACK_MODE'
-                                ? '#919191'
-                                : '#6C6C6C'
-                    }"
-                >
-                    Please enter your company informations. In case you are a<br />
-                    Sole Proprietor please contact us.
-                </h2>
-
-                <!-- TABS -->
-
-                <div class="owner-info-tabs">
-                    <app-ta-tab-switch
-                        [tabs]="ownerInfoTabs"
-                        (switchClicked)="onTabChange($event)"
-                        [type]="'type1-modal-popup'"
+<ng-container *ngIf="isValidLoad">
+    <div class="container-fluid">
+        <div class="row">
+            <div
+                class="container-fluid d-flex flex-column justify-content-between owner-info-container"
+            >
+                <div class="d-flex flex-column align-items-center">
+                    <app-applicant-header
+                        [mode]="selectedMode"
+                    ></app-applicant-header>
+    
+                    <h1 class="m-0 text-center title ta-font-bold">Owner Info</h1>
+    
+                    <h2
+                        class="m-0 text-center subtitle ta-font-regular"
+                        [ngStyle]="{
+                            color:
+                                selectedMode === 'FEEDBACK_MODE'
+                                    ? '#919191'
+                                    : '#6C6C6C'
+                        }"
                     >
-                    </app-ta-tab-switch>
-                </div>
-
-                <!-- FORM SECTION -->
-
-                <div class="d-flex form-section">
-                    <ng-container *ngIf="selectedTab === 1">
-                        <form [formGroup]="ownerInfoForm">
-                            <div class="d-flex flex-column align-items-center">
-                                <!-- BUSINESS NAME, EIN NUMBER -->
-
-                                <div class="d-flex line-container">
-                                    <div class="group business-name-group">
-                                        <app-ta-input
-                                            formControlName="businessName"
-                                            [inputConfig]="{
-                                                name: 'Company Name',
-                                                type: 'text',
-                                                label: 'Business Name',
-                                                isRequired: true,
-                                                textTransform: 'uppercase',
-                                                autoFocus: true,
-                                                incorrectInput:
-                                                    selectedMode ===
-                                                    'REVIEW_MODE'
-                                            }"
-                                            [incorrectValue]="
-                                                openAnnotationArray[0]
-                                                    .lineInputs[0]
+                        Please enter your company informations. In case you are a<br />
+                        Sole Proprietor please contact us.
+                    </h2>
+    
+                    <!-- TABS -->
+    
+                    <div class="owner-info-tabs">
+                        <app-ta-tab-switch
+                            [tabs]="ownerInfoTabs"
+                            (switchClicked)="onTabChange($event)"
+                            [type]="'type1-modal-popup'"
+                        >
+                        </app-ta-tab-switch>
+                    </div>
+    
+                    <!-- FORM SECTION -->
+    
+                    <div class="d-flex form-section">
+                        <ng-container *ngIf="selectedTab === 1">
+                            <form [formGroup]="ownerInfoForm">
+                                <div class="d-flex flex-column align-items-center">
+                                    <!-- BUSINESS NAME, EIN NUMBER -->
+    
+                                    <div class="d-flex line-container">
+                                        <div class="group business-name-group">
+                                            <app-ta-input
+                                                formControlName="businessName"
+                                                [inputConfig]="{
+                                                    name: 'Company Name',
+                                                    type: 'text',
+                                                    label: 'Business Name',
+                                                    isRequired: true,
+                                                    textTransform: 'uppercase',
+                                                    autoFocus: true,
+                                                    incorrectInput:
+                                                        selectedMode ===
+                                                        'REVIEW_MODE'
+                                                }"
+                                                [incorrectValue]="
+                                                    openAnnotationArray[0]
+                                                        .lineInputs[0]
+                                                "
+                                                (incorrectEvent)="
+                                                    incorrectInput($event, 0, 0)
+                                                "
+                                            ></app-ta-input>
+                                        </div>
+    
+                                        <div class="group ein-group">
+                                            <app-ta-input
+                                                formControlName="ein"
+                                                [inputConfig]="{
+                                                    name: 'EIN',
+                                                    type: 'text',
+                                                    label: 'EIN',
+                                                    mask: '00-0000000',
+                                                    maxLength: 10,
+                                                    isRequired: true,
+                                                    incorrectInput:
+                                                        selectedMode ===
+                                                        'REVIEW_MODE'
+                                                }"
+                                                [incorrectValue]="
+                                                    openAnnotationArray[0]
+                                                        .lineInputs[1]
+                                                "
+                                                (incorrectEvent)="
+                                                    incorrectInput($event, 1, 0)
+                                                "
+                                            ></app-ta-input>
+                                        </div>
+    
+                                        <!-- REVIEW AND FEEDBACK -->
+    
+                                        <ng-container
+                                            *ngIf="
+                                                selectedMode !== 'APPLICANT_MODE'
                                             "
-                                            (incorrectEvent)="
-                                                incorrectInput($event, 0, 0)
-                                            "
-                                        ></app-ta-input>
+                                        >
+                                            <div class="review-feedback-container">
+                                                <app-applicant-review-feedback
+                                                    formControlName="firstRowReview"
+                                                    [displayAnnotationButton]="
+                                                        selectedMode ===
+                                                            'REVIEW_MODE' &&
+                                                        openAnnotationArray[0]
+                                                            .displayAnnotationButton
+                                                    "
+                                                    [displayAnnotationTextArea]="
+                                                        selectedMode ===
+                                                            'REVIEW_MODE' &&
+                                                        openAnnotationArray[0]
+                                                            .displayAnnotationTextArea
+                                                    "
+                                                    [lineIndex]="0"
+                                                    [isFeedback]="
+                                                        selectedMode ===
+                                                        'FEEDBACK_MODE'
+                                                    "
+                                                    [feedbackText]="
+                                                        selectedMode ===
+                                                            'FEEDBACK_MODE' && ''
+                                                    "
+                                                    (annotationBtnClickEvent)="
+                                                        selectedMode ===
+                                                            'REVIEW_MODE' &&
+                                                            getAnnotationBtnClickValue(
+                                                                $event
+                                                            )
+                                                    "
+                                                ></app-applicant-review-feedback>
+                                            </div>
+                                        </ng-container>
                                     </div>
-
-                                    <div class="group ein-group">
-                                        <app-ta-input
-                                            formControlName="ein"
-                                            [inputConfig]="{
-                                                name: 'EIN',
-                                                type: 'text',
-                                                label: 'EIN',
-                                                mask: '00-0000000',
-                                                maxLength: 10,
-                                                isRequired: true,
-                                                incorrectInput:
-                                                    selectedMode ===
-                                                    'REVIEW_MODE'
-                                            }"
-                                            [incorrectValue]="
-                                                openAnnotationArray[0]
-                                                    .lineInputs[1]
+    
+                                    <!-- PHONE, EMAIL -->
+    
+                                    <div class="d-flex line-container">
+                                        <div class="group phone-group">
+                                            <app-ta-input
+                                                formControlName="phone"
+                                                [inputConfig]="{
+                                                    name: 'Phone',
+                                                    type: 'text',
+                                                    label: 'Phone',
+                                                    isRequired: true,
+                                                    placeholderIcon: 'phone',
+                                                    mask: '(000) 000-0000',
+                                                    maxLength: 14,
+                                                    incorrectInput:
+                                                        selectedMode ===
+                                                        'REVIEW_MODE'
+                                                }"
+                                                [incorrectValue]="
+                                                    openAnnotationArray[1]
+                                                        .lineInputs[0]
+                                                "
+                                                (incorrectEvent)="
+                                                    incorrectInput($event, 0, 1)
+                                                "
+                                            ></app-ta-input>
+                                        </div>
+    
+                                        <div class="group email-group">
+                                            <app-ta-input
+                                                formControlName="email"
+                                                [inputConfig]="{
+                                                    name: 'Email',
+                                                    type: 'text',
+                                                    label: 'Email',
+                                                    isRequired: true,
+                                                    placeholderIcon: 'email',
+                                                    autocomplete: 'off',
+                                                    minLength: 5,
+                                                    maxLength: 64,
+                                                    textTransform: 'lowercase',
+                                                    incorrectInput:
+                                                        selectedMode ===
+                                                        'REVIEW_MODE'
+                                                }"
+                                                [incorrectValue]="
+                                                    openAnnotationArray[1]
+                                                        .lineInputs[1]
+                                                "
+                                                (incorrectEvent)="
+                                                    incorrectInput($event, 1, 1)
+                                                "
+                                            ></app-ta-input>
+                                        </div>
+    
+                                        <!-- REVIEW AND FEEDBACK -->
+    
+                                        <ng-container
+                                            *ngIf="
+                                                selectedMode !== 'APPLICANT_MODE'
                                             "
-                                            (incorrectEvent)="
-                                                incorrectInput($event, 1, 0)
-                                            "
-                                        ></app-ta-input>
+                                        >
+                                            <div class="review-feedback-container">
+                                                <app-applicant-review-feedback
+                                                    formControlName="secondRowReview"
+                                                    [displayAnnotationButton]="
+                                                        selectedMode ===
+                                                            'REVIEW_MODE' &&
+                                                        openAnnotationArray[1]
+                                                            .displayAnnotationButton
+                                                    "
+                                                    [displayAnnotationTextArea]="
+                                                        selectedMode ===
+                                                            'REVIEW_MODE' &&
+                                                        openAnnotationArray[1]
+                                                            .displayAnnotationTextArea
+                                                    "
+                                                    [lineIndex]="1"
+                                                    [isFeedback]="
+                                                        selectedMode ===
+                                                        'FEEDBACK_MODE'
+                                                    "
+                                                    [feedbackText]="
+                                                        selectedMode ===
+                                                            'FEEDBACK_MODE' && ''
+                                                    "
+                                                    (annotationBtnClickEvent)="
+                                                        selectedMode ===
+                                                            'REVIEW_MODE' &&
+                                                            getAnnotationBtnClickValue(
+                                                                $event
+                                                            )
+                                                    "
+                                                ></app-applicant-review-feedback>
+                                            </div>
+                                        </ng-container>
                                     </div>
-
-                                    <!-- REVIEW AND FEEDBACK -->
-
-                                    <div
-                                        class="review-feedback-container"
-                                        *ngIf="
-                                            selectedMode === 'REVIEW_MODE' ||
-                                            selectedMode === 'FEEDBACK_MODE'
-                                        "
-                                    >
-                                        <app-applicant-review-feedback
-                                            formControlName="firstRowReview"
-                                            [displayAnnotationButton]="
-                                                selectedMode ===
-                                                    'REVIEW_MODE' &&
-                                                openAnnotationArray[0]
-                                                    .displayAnnotationButton
-                                            "
-                                            [displayAnnotationTextArea]="
-                                                selectedMode ===
-                                                    'REVIEW_MODE' &&
-                                                openAnnotationArray[0]
-                                                    .displayAnnotationTextArea
-                                            "
-                                            [lineIndex]="0"
-                                            [isFeedback]="
-                                                selectedMode === 'FEEDBACK_MODE'
-                                            "
-                                            [feedbackText]="
-                                                selectedMode ===
-                                                    'FEEDBACK_MODE' && ''
-                                            "
-                                            (annotationBtnClickEvent)="
-                                                selectedMode ===
-                                                    'REVIEW_MODE' &&
-                                                    getAnnotationBtnClickValue(
-                                                        $event
+    
+                                    <!-- ADDRESS, ADDRESS UNIT -->
+    
+                                    <div class="d-flex line-container">
+                                        <div class="group address-group">
+                                            <app-input-address-dropdown
+                                                formControlName="address"
+                                                [inputConfig]="{
+                                                    name: 'Address',
+                                                    type: 'text',
+                                                    label: 'Address, City, State Zip',
+                                                    isRequired: true,
+                                                    placeholderIcon: 'address',
+                                                    textTransform: 'capitalize',
+                                                    dropdownWidthClass: 'w-col-481',
+                                                    minLength: 12,
+                                                    maxLength: 256,
+                                                    incorrectInput:
+                                                        selectedMode ===
+                                                        'REVIEW_MODE'
+                                                }"
+                                                [incorrectValue]="
+                                                    openAnnotationArray[2]
+                                                        .lineInputs[0]
+                                                "
+                                                (incorrectEvent)="
+                                                    incorrectInput($event, 0, 2)
+                                                "
+                                                [placeholderType]="'longAddress'"
+                                                [activeAddress]="selectedAddress"
+                                                (selectedAddress)="
+                                                    handleInputSelect(
+                                                        $event,
+                                                        'ADDRESS'
                                                     )
+                                                "
+                                            ></app-input-address-dropdown>
+                                        </div>
+    
+                                        <div class="group address-unit-group">
+                                            <app-ta-input
+                                                formControlName="addressUnit"
+                                                [inputConfig]="{
+                                                    name: 'address-unit',
+                                                    type: 'text',
+                                                    label: 'Unit #',
+                                                    minLength: 1,
+                                                    maxLength: 10,
+                                                    textTransform: 'uppercase',
+                                                    incorrectInput:
+                                                        selectedMode ===
+                                                        'REVIEW_MODE'
+                                                }"
+                                                [incorrectValue]="
+                                                    openAnnotationArray[2]
+                                                        .lineInputs[1]
+                                                "
+                                                (incorrectEvent)="
+                                                    incorrectInput($event, 1, 2)
+                                                "
+                                            ></app-ta-input>
+                                        </div>
+    
+                                        <!-- REVIEW AND FEEDBACK -->
+    
+                                        <ng-container
+                                            *ngIf="
+                                                selectedMode !== 'APPLICANT_MODE'
                                             "
-                                        ></app-applicant-review-feedback>
+                                        >
+                                            <div class="review-feedback-container">
+                                                <app-applicant-review-feedback
+                                                    formControlName="thirdRowReview"
+                                                    [displayAnnotationButton]="
+                                                        selectedMode ===
+                                                            'REVIEW_MODE' &&
+                                                        openAnnotationArray[2]
+                                                            .displayAnnotationButton
+                                                    "
+                                                    [displayAnnotationTextArea]="
+                                                        selectedMode ===
+                                                            'REVIEW_MODE' &&
+                                                        openAnnotationArray[2]
+                                                            .displayAnnotationTextArea
+                                                    "
+                                                    [lineIndex]="2"
+                                                    [isFeedback]="
+                                                        selectedMode ===
+                                                        'FEEDBACK_MODE'
+                                                    "
+                                                    [feedbackText]="
+                                                        selectedMode ===
+                                                            'FEEDBACK_MODE' && ''
+                                                    "
+                                                    (annotationBtnClickEvent)="
+                                                        selectedMode ===
+                                                            'REVIEW_MODE' &&
+                                                            getAnnotationBtnClickValue(
+                                                                $event
+                                                            )
+                                                    "
+                                                ></app-applicant-review-feedback>
+                                            </div>
+                                        </ng-container>
                                     </div>
-                                </div>
-
-                                <!-- PHONE, EMAIL -->
-
-                                <div class="d-flex line-container">
-                                    <div class="group phone-group">
-                                        <app-ta-input
-                                            formControlName="phone"
-                                            [inputConfig]="{
-                                                name: 'Phone',
-                                                type: 'text',
-                                                label: 'Phone',
-                                                isRequired: true,
-                                                placeholderIcon: 'phone',
-                                                mask: '(000) 000-0000',
-                                                maxLength: 14,
-                                                incorrectInput:
-                                                    selectedMode ===
-                                                    'REVIEW_MODE'
-                                            }"
-                                            [incorrectValue]="
-                                                openAnnotationArray[1]
-                                                    .lineInputs[0]
-                                            "
-                                            (incorrectEvent)="
-                                                incorrectInput($event, 0, 1)
-                                            "
-                                        ></app-ta-input>
-                                    </div>
-
-                                    <div class="group email-group">
-                                        <app-ta-input
-                                            formControlName="email"
-                                            [inputConfig]="{
-                                                name: 'Email',
-                                                type: 'text',
-                                                label: 'Email',
-                                                isRequired: true,
-                                                placeholderIcon: 'email',
-                                                autocomplete: 'off',
-                                                minLength: 5,
-                                                maxLength: 64,
-                                                textTransform: 'lowercase',
-                                                incorrectInput:
-                                                    selectedMode ===
-                                                    'REVIEW_MODE'
-                                            }"
-                                            [incorrectValue]="
-                                                openAnnotationArray[1]
-                                                    .lineInputs[1]
-                                            "
-                                            (incorrectEvent)="
-                                                incorrectInput($event, 1, 1)
-                                            "
-                                        ></app-ta-input>
-                                    </div>
-
-                                    <!-- REVIEW AND FEEDBACK -->
-
-                                    <div
-                                        class="review-feedback-container"
-                                        *ngIf="
-                                            selectedMode === 'REVIEW_MODE' ||
-                                            selectedMode === 'FEEDBACK_MODE'
-                                        "
-                                    >
-                                        <app-applicant-review-feedback
-                                            formControlName="secondRowReview"
-                                            [displayAnnotationButton]="
-                                                selectedMode ===
-                                                    'REVIEW_MODE' &&
-                                                openAnnotationArray[1]
-                                                    .displayAnnotationButton
-                                            "
-                                            [displayAnnotationTextArea]="
-                                                selectedMode ===
-                                                    'REVIEW_MODE' &&
-                                                openAnnotationArray[1]
-                                                    .displayAnnotationTextArea
-                                            "
-                                            [lineIndex]="1"
-                                            [isFeedback]="
-                                                selectedMode === 'FEEDBACK_MODE'
-                                            "
-                                            [feedbackText]="
-                                                selectedMode ===
-                                                    'FEEDBACK_MODE' && ''
-                                            "
-                                            (annotationBtnClickEvent)="
-                                                selectedMode ===
-                                                    'REVIEW_MODE' &&
-                                                    getAnnotationBtnClickValue(
-                                                        $event
+    
+                                    <!-- BANK, ACCOUNT, ROUTING -->
+    
+                                    <div class="d-flex line-container">
+                                        <div class="group bank-group">
+                                            <app-ta-input-dropdown
+                                                formControlName="bank"
+                                                [template]="'svg-template'"
+                                                [inputConfig]="{
+                                                    name: 'Input Dropdown Bank Name',
+                                                    type: 'text',
+                                                    label: 'Bank Name',
+                                                    minLength: 2,
+                                                    maxLength: 64,
+                                                    textTransform: 'uppercase',
+                                                    isDropdown: true,
+                                                    dropdownWidthClass: 'w-col-202'
+                                                }"
+                                                [activeItem]="selectedBank"
+                                                [options]="banksDropdownList"
+                                                [canAddNew]="true"
+                                                (saveItem)="onSaveNewBank($event)"
+                                                (selectedItem)="
+                                                    handleInputSelect(
+                                                        $event,
+                                                        'BANK'
                                                     )
+                                                "
+                                            ></app-ta-input-dropdown>
+                                        </div>
+    
+                                        <div class="group account-group">
+                                            <app-ta-input
+                                                formControlName="accountNumber"
+                                                [inputConfig]="{
+                                                    name: 'account-bank',
+                                                    type: 'text',
+                                                    label: 'Account number',
+                                                    isDisabled:
+                                                        selectedMode ===
+                                                            'APPLICANT_MODE' &&
+                                                        !isBankSelected,
+                                                    isRequired: isBankSelected,
+                                                    maxLength: 17,
+                                                    minLength: 5,
+                                                    incorrectInput:
+                                                        selectedMode ===
+                                                        'REVIEW_MODE'
+                                                }"
+                                                [incorrectValue]="
+                                                    openAnnotationArray[3]
+                                                        .lineInputs[0]
+                                                "
+                                                (incorrectEvent)="
+                                                    incorrectInput($event, 0, 3)
+                                                "
+                                            ></app-ta-input>
+                                        </div>
+    
+                                        <div class="group routing-group">
+                                            <app-ta-input
+                                                formControlName="routingNumber"
+                                                [inputConfig]="{
+                                                    name: 'routing-bank',
+                                                    type: 'text',
+                                                    label: 'Routing number',
+                                                    isDisabled:
+                                                        selectedMode ===
+                                                            'APPLICANT_MODE' &&
+                                                        !isBankSelected,
+                                                    isRequired: isBankSelected,
+                                                    minLength: 9,
+                                                    maxLength: 9
+                                                }"
+                                            ></app-ta-input>
+                                        </div>
+    
+                                        <!-- REVIEW AND FEEDBACK -->
+    
+                                        <ng-container
+                                            *ngIf="
+                                                selectedMode !== 'APPLICANT_MODE'
                                             "
-                                        ></app-applicant-review-feedback>
+                                        >
+                                            <div class="review-feedback-container">
+                                                <app-applicant-review-feedback
+                                                    formControlName="fourthRowReview"
+                                                    [displayAnnotationButton]="
+                                                        selectedMode ===
+                                                            'REVIEW_MODE' &&
+                                                        openAnnotationArray[3]
+                                                            .displayAnnotationButton
+                                                    "
+                                                    [displayAnnotationTextArea]="
+                                                        selectedMode ===
+                                                            'REVIEW_MODE' &&
+                                                        openAnnotationArray[3]
+                                                            .displayAnnotationTextArea
+                                                    "
+                                                    [lineIndex]="3"
+                                                    [isFeedback]="
+                                                        selectedMode ===
+                                                        'FEEDBACK_MODE'
+                                                    "
+                                                    [feedbackText]="
+                                                        selectedMode ===
+                                                            'FEEDBACK_MODE' && ''
+                                                    "
+                                                    (annotationBtnClickEvent)="
+                                                        selectedMode ===
+                                                            'REVIEW_MODE' &&
+                                                            getAnnotationBtnClickValue(
+                                                                $event
+                                                            )
+                                                    "
+                                                ></app-applicant-review-feedback>
+                                            </div>
+                                        </ng-container>
                                     </div>
-                                </div>
-
-                                <!-- ADDRESS, ADDRESS UNIT -->
-
-                                <div class="d-flex line-container">
-                                    <div class="group address-group">
-                                        <app-input-address-dropdown
-                                            formControlName="address"
-                                            [inputConfig]="{
-                                                name: 'Address',
-                                                type: 'text',
-                                                label: 'Address, City, State Zip',
-                                                isRequired: true,
-                                                placeholderIcon: 'address',
-                                                textTransform: 'capitalize',
-                                                dropdownWidthClass: 'w-col-481',
-                                                minLength: 12,
-                                                maxLength: 256,
-                                                incorrectInput:
-                                                    selectedMode ===
-                                                    'REVIEW_MODE'
-                                            }"
-                                            [incorrectValue]="
-                                                openAnnotationArray[2]
-                                                    .lineInputs[0]
-                                            "
-                                            (incorrectEvent)="
-                                                incorrectInput($event, 0, 2)
-                                            "
-                                            [placeholderType]="'longAddress'"
-                                            [activeAddress]="selectedAddress"
-                                            (selectedAddress)="
-                                                handleInputSelect(
-                                                    $event,
-                                                    'ADDRESS'
-                                                )
-                                            "
-                                        ></app-input-address-dropdown>
-                                    </div>
-
-                                    <div class="group address-unit-group">
-                                        <app-ta-input
-                                            formControlName="addressUnit"
-                                            [inputConfig]="{
-                                                name: 'address-unit',
-                                                type: 'text',
-                                                label: 'Unit #',
-                                                minLength: 1,
-                                                maxLength: 10,
-                                                textTransform: 'uppercase',
-                                                incorrectInput:
-                                                    selectedMode ===
-                                                    'REVIEW_MODE'
-                                            }"
-                                            [incorrectValue]="
-                                                openAnnotationArray[2]
-                                                    .lineInputs[1]
-                                            "
-                                            (incorrectEvent)="
-                                                incorrectInput($event, 1, 2)
-                                            "
-                                        ></app-ta-input>
-                                    </div>
-
-                                    <!-- REVIEW AND FEEDBACK -->
-
+    
+                                    <!-- DIVIDER -->
+    
+                                    <div class="divider"></div>
+    
+                                    <!-- ADD TRUCK -->
+    
                                     <div
-                                        class="review-feedback-container"
-                                        *ngIf="
-                                            selectedMode === 'REVIEW_MODE' ||
-                                            selectedMode === 'FEEDBACK_MODE'
-                                        "
+                                        class="d-flex align-self-start add-truck-container"
                                     >
-                                        <app-applicant-review-feedback
-                                            formControlName="thirdRowReview"
-                                            [displayAnnotationButton]="
-                                                selectedMode ===
-                                                    'REVIEW_MODE' &&
-                                                openAnnotationArray[2]
-                                                    .displayAnnotationButton
-                                            "
-                                            [displayAnnotationTextArea]="
-                                                selectedMode ===
-                                                    'REVIEW_MODE' &&
-                                                openAnnotationArray[2]
-                                                    .displayAnnotationTextArea
-                                            "
-                                            [lineIndex]="2"
-                                            [isFeedback]="
-                                                selectedMode === 'FEEDBACK_MODE'
-                                            "
-                                            [feedbackText]="
-                                                selectedMode ===
-                                                    'FEEDBACK_MODE' && ''
-                                            "
-                                            (annotationBtnClickEvent)="
-                                                selectedMode ===
-                                                    'REVIEW_MODE' &&
-                                                    getAnnotationBtnClickValue(
-                                                        $event
-                                                    )
-                                            "
-                                        ></app-applicant-review-feedback>
-                                    </div>
-                                </div>
-
-                                <!-- BANK, ACCOUNT, ROUTING -->
-
-                                <div class="d-flex line-container">
-                                    <div class="group bank-group">
-                                        <app-ta-input-dropdown
-                                            formControlName="bank"
-                                            [template]="'svg-template'"
-                                            [inputConfig]="{
-                                                name: 'Input Dropdown Bank Name',
-                                                type: 'text',
-                                                label: 'Bank Name',
-                                                minLength: 2,
-                                                maxLength: 64,
-                                                textTransform: 'uppercase',
-                                                isDropdown: true,
-                                                dropdownWidthClass: 'w-col-202'
-                                            }"
-                                            [activeItem]="selectedBank"
-                                            [options]="banksDropdownList"
-                                            [canAddNew]="true"
-                                            (saveItem)="onSaveNewBank($event)"
-                                            (selectedItem)="
-                                                handleInputSelect(
-                                                    $event,
-                                                    'BANK'
-                                                )
-                                            "
-                                        ></app-ta-input-dropdown>
-                                    </div>
-
-                                    <div class="group account-group">
-                                        <app-ta-input
-                                            formControlName="accountNumber"
-                                            [inputConfig]="{
-                                                name: 'account-bank',
-                                                type: 'text',
-                                                label: 'Account number',
-                                                isDisabled:
-                                                    selectedMode ===
-                                                        'APPLICANT_MODE' &&
-                                                    !isBankSelected,
-                                                isRequired: isBankSelected,
-                                                maxLength: 17,
-                                                minLength: 5,
-                                                incorrectInput:
-                                                    selectedMode ===
-                                                    'REVIEW_MODE'
-                                            }"
-                                            [incorrectValue]="
-                                                openAnnotationArray[3]
-                                                    .lineInputs[0]
-                                            "
-                                            (incorrectEvent)="
-                                                incorrectInput($event, 0, 3)
-                                            "
-                                        ></app-ta-input>
-                                    </div>
-
-                                    <div class="group routing-group">
-                                        <app-ta-input
-                                            formControlName="routingNumber"
-                                            [inputConfig]="{
-                                                name: 'routing-bank',
-                                                type: 'text',
-                                                label: 'Routing number',
-                                                isDisabled:
-                                                    selectedMode ===
-                                                        'APPLICANT_MODE' &&
-                                                    !isBankSelected,
-                                                isRequired: isBankSelected,
-                                                minLength: 9,
-                                                maxLength: 9
-                                            }"
-                                        ></app-ta-input>
-                                    </div>
-
-                                    <!-- REVIEW AND FEEDBACK -->
-
-                                    <div
-                                        class="review-feedback-container"
-                                        *ngIf="
-                                            selectedMode === 'REVIEW_MODE' ||
-                                            selectedMode === 'FEEDBACK_MODE'
-                                        "
-                                    >
-                                        <app-applicant-review-feedback
-                                            formControlName="fourthRowReview"
-                                            [displayAnnotationButton]="
-                                                selectedMode ===
-                                                    'REVIEW_MODE' &&
-                                                openAnnotationArray[3]
-                                                    .displayAnnotationButton
-                                            "
-                                            [displayAnnotationTextArea]="
-                                                selectedMode ===
-                                                    'REVIEW_MODE' &&
-                                                openAnnotationArray[3]
-                                                    .displayAnnotationTextArea
-                                            "
-                                            [lineIndex]="3"
-                                            [isFeedback]="
-                                                selectedMode === 'FEEDBACK_MODE'
-                                            "
-                                            [feedbackText]="
-                                                selectedMode ===
-                                                    'FEEDBACK_MODE' && ''
-                                            "
-                                            (annotationBtnClickEvent)="
-                                                selectedMode ===
-                                                    'REVIEW_MODE' &&
-                                                    getAnnotationBtnClickValue(
-                                                        $event
-                                                    )
-                                            "
-                                        ></app-applicant-review-feedback>
-                                    </div>
-                                </div>
-
-                                <!-- DIVIDER -->
-
-                                <div class="divider"></div>
-
-                                <!-- ADD TRUCK -->
-
-                                <div
-                                    class="d-flex align-self-start add-truck-container"
-                                >
-                                    <p class="m-0 ta-font-extra-bold">
-                                        Add Truck
-                                    </p>
-                                </div>
-
-                                <!-- TYPE, VIN -->
-
-                                <div class="d-flex line-container">
-                                    <div class="group type-group">
-                                        <app-ta-input-dropdown
-                                            formControlName="truckType"
-                                            [template]="'svgtext-template'"
-                                            [inputConfig]="{
-                                                name: 'Input Dropdown',
-                                                type: 'text',
-                                                label: 'Type',
-                                                isRequired: true,
-                                                isDropdown: true,
-                                                dropdownImageInput: {
-                                                    withText: true,
-                                                    svg: true,
-                                                    image: false,
-                                                    url: selectedTruckType?.logoName,
-                                                    template: 'truck',
-                                                    class: selectedTruckType?.name
-                                                        ?.trim()
-                                                        .replace(' ', '')
-                                                        .toLowerCase()
-                                                },
-                                                dropdownWidthClass: 'w-col-364',
-                                                customClass:
-                                                    'truck-trailer-dropdown'
-                                            }"
-                                            [options]="truckType"
-                                            [activeItem]="selectedTruckType"
-                                            (selectedItem)="
-                                                handleInputSelect(
-                                                    $event,
-                                                    'TRUCK-TYPE'
-                                                )
-                                            "
-                                        ></app-ta-input-dropdown>
-                                    </div>
-
-                                    <div class="group vin-group">
-                                        <app-ta-input
-                                            formControlName="truckVin"
-                                            [inputConfig]="{
-                                                name: 'vin-number',
-                                                type: 'text',
-                                                label: 'VIN',
-                                                isRequired: true,
-                                                textTransform: 'uppercase',
-                                                maxLength: 17,
-                                                minLength: 5,
-                                                loadingSpinner: {
-                                                    size: 'small',
-                                                    color: 'white',
-                                                    isLoading:
-                                                        loadingTruckVinDecoder
-                                                },
-                                                incorrectInput:
-                                                    selectedMode ===
-                                                    'REVIEW_MODE'
-                                            }"
-                                            [incorrectValue]="
-                                                openAnnotationArray[4]
-                                                    .lineInputs[0]
-                                            "
-                                            (incorrectEvent)="
-                                                incorrectInput($event, 0, 4)
-                                            "
-                                        ></app-ta-input>
-                                    </div>
-
-                                    <!-- REVIEW AND FEEDBACK -->
-
-                                    <div
-                                        class="review-feedback-container"
-                                        *ngIf="
-                                            selectedMode === 'REVIEW_MODE' ||
-                                            selectedMode === 'FEEDBACK_MODE'
-                                        "
-                                    >
-                                        <app-applicant-review-feedback
-                                            formControlName="fifthRowReview"
-                                            [displayAnnotationButton]="
-                                                selectedMode ===
-                                                    'REVIEW_MODE' &&
-                                                openAnnotationArray[4]
-                                                    .displayAnnotationButton
-                                            "
-                                            [displayAnnotationTextArea]="
-                                                selectedMode ===
-                                                    'REVIEW_MODE' &&
-                                                openAnnotationArray[4]
-                                                    .displayAnnotationTextArea
-                                            "
-                                            [lineIndex]="4"
-                                            [isFeedback]="
-                                                selectedMode === 'FEEDBACK_MODE'
-                                            "
-                                            [feedbackText]="
-                                                selectedMode ===
-                                                    'FEEDBACK_MODE' && ''
-                                            "
-                                            (annotationBtnClickEvent)="
-                                                selectedMode ===
-                                                    'REVIEW_MODE' &&
-                                                    getAnnotationBtnClickValue(
-                                                        $event
-                                                    )
-                                            "
-                                        ></app-applicant-review-feedback>
-                                    </div>
-                                </div>
-
-                                <!-- MAKE, MODEL, YEAR, COLOR -->
-
-                                <div class="d-flex line-container">
-                                    <div class="group make-group">
-                                        <app-ta-input-dropdown
-                                            formControlName="truckMake"
-                                            [template]="'svg-template'"
-                                            [inputConfig]="{
-                                                name: 'Input Dropdown',
-                                                type: 'text',
-                                                label: 'Make',
-                                                isRequired: true,
-                                                isDropdown: true,
-                                                dropdownImageInput: {
-                                                    withText: false,
-                                                    svg: true,
-                                                    image: false,
-                                                    url: selectedTruckMake?.logoName
-                                                },
-                                                dropdownWidthClass: 'w-col-210'
-                                            }"
-                                            [options]="truckMakeType"
-                                            [activeItem]="selectedTruckMake"
-                                            (selectedItem)="
-                                                handleInputSelect(
-                                                    $event,
-                                                    'TRUCK-MAKE'
-                                                )
-                                            "
-                                        ></app-ta-input-dropdown>
-                                    </div>
-
-                                    <div class="group model-group">
-                                        <app-ta-input
-                                            formControlName="truckModel"
-                                            [inputConfig]="{
-                                                name: 'truck-trailer-model',
-                                                type: 'text',
-                                                label: 'Model',
-                                                isRequired: true,
-                                                textTransform: 'uppercase',
-                                                minLength: 1,
-                                                maxLength: 50,
-                                                incorrectInput:
-                                                    selectedMode ===
-                                                    'REVIEW_MODE'
-                                            }"
-                                            [incorrectValue]="
-                                                openAnnotationArray[5]
-                                                    .lineInputs[0]
-                                            "
-                                            (incorrectEvent)="
-                                                incorrectInput($event, 0, 5)
-                                            "
-                                        ></app-ta-input>
-                                    </div>
-
-                                    <div class="group year-group">
-                                        <app-ta-input
-                                            formControlName="truckYear"
-                                            [inputConfig]="{
-                                                name: 'Year',
-                                                type: 'text',
-                                                label: 'Year',
-                                                isRequired: true,
-                                                minLength: 4,
-                                                maxLength: 4
-                                            }"
-                                        ></app-ta-input>
-                                    </div>
-
-                                    <div class="group color-group">
-                                        <app-ta-input-dropdown
-                                            formControlName="truckColor"
-                                            [template]="'svgtext-template'"
-                                            [inputConfig]="{
-                                                name: 'Input Dropdown',
-                                                type: 'text',
-                                                label: 'Color',
-                                                isDropdown: true,
-                                                dropdownImageInput: {
-                                                    withText: true,
-                                                    svg: true,
-                                                    image: false,
-                                                    url: selectedTruckColor?.code
-                                                        ? 'ic_color.svg'
-                                                        : null,
-                                                    template: 'color',
-                                                    color: selectedTruckColor?.code
-                                                },
-                                                dropdownWidthClass: 'w-col-116'
-                                            }"
-                                            [options]="colorType"
-                                            [activeItem]="selectedTruckColor"
-                                            (selectedItem)="
-                                                handleInputSelect(
-                                                    $event,
-                                                    'TRUCK-COLOR'
-                                                )
-                                            "
-                                        ></app-ta-input-dropdown>
-                                    </div>
-
-                                    <!-- REVIEW AND FEEDBACK -->
-
-                                    <div
-                                        class="review-feedback-container"
-                                        *ngIf="
-                                            selectedMode === 'REVIEW_MODE' ||
-                                            selectedMode === 'FEEDBACK_MODE'
-                                        "
-                                    >
-                                        <app-applicant-review-feedback
-                                            formControlName="sixthRowReview"
-                                            [displayAnnotationButton]="
-                                                selectedMode ===
-                                                    'REVIEW_MODE' &&
-                                                openAnnotationArray[5]
-                                                    .displayAnnotationButton
-                                            "
-                                            [displayAnnotationTextArea]="
-                                                selectedMode ===
-                                                    'REVIEW_MODE' &&
-                                                openAnnotationArray[5]
-                                                    .displayAnnotationTextArea
-                                            "
-                                            [lineIndex]="5"
-                                            [isFeedback]="
-                                                selectedMode === 'FEEDBACK_MODE'
-                                            "
-                                            [feedbackText]="
-                                                selectedMode ===
-                                                    'FEEDBACK_MODE' && ''
-                                            "
-                                            (annotationBtnClickEvent)="
-                                                selectedMode ===
-                                                    'REVIEW_MODE' &&
-                                                    getAnnotationBtnClickValue(
-                                                        $event
-                                                    )
-                                            "
-                                        ></app-applicant-review-feedback>
-                                    </div>
-                                </div>
-
-                                <!-- DIVIDER -->
-
-                                <div class="divider"></div>
-
-                                <!-- ADD TRAILER -->
-
-                                <div
-                                    class="d-flex align-self-start add-trailer-container"
-                                >
-                                    <div class="d-flex align-items-center">
-                                        <app-ta-checkbox
-                                            formControlName="addTrailer"
-                                            [name]="'addTrailer'"
-                                        ></app-ta-checkbox>
-
                                         <p class="m-0 ta-font-extra-bold">
-                                            Add Trailer
+                                            Add Truck
                                         </p>
                                     </div>
-                                </div>
-
-                                <!-- TRAILER TYPE, VIN -->
-
-                                <div class="d-flex line-container">
-                                    <div class="group type-group">
-                                        <app-ta-input-dropdown
-                                            formControlName="trailerType"
-                                            [template]="'svgtext-template'"
-                                            [inputConfig]="{
-                                                name: 'Input Dropdown',
-                                                type: 'text',
-                                                label: 'Type',
-                                                isDropdown: true,
-                                                isDisabled:
-                                                    !isAddTrailerSelected,
-                                                isRequired:
-                                                    isAddTrailerSelected,
-                                                dropdownImageInput: {
-                                                    withText: true,
-                                                    svg: true,
-                                                    image: false,
-                                                    url: selectedTrailerType?.logoName,
-                                                    template: 'trailer',
-                                                    class: [
-                                                        'Tanker',
-                                                        'Tanker Pneumatic'
-                                                    ].includes(
-                                                        selectedTrailerType?.name
+    
+                                    <!-- TYPE, VIN -->
+    
+                                    <div class="d-flex line-container">
+                                        <div class="group type-group">
+                                            <app-ta-input-dropdown
+                                                formControlName="truckType"
+                                                [template]="'svgtext-template'"
+                                                [inputConfig]="{
+                                                    name: 'Input Dropdown',
+                                                    type: 'text',
+                                                    label: 'Type',
+                                                    isRequired: true,
+                                                    isDropdown: true,
+                                                    dropdownImageInput: {
+                                                        withText: true,
+                                                        svg: true,
+                                                        image: false,
+                                                        url: selectedTruckType?.logoName,
+                                                        template: 'truck',
+                                                        class: selectedTruckType?.name
+                                                            ?.trim()
+                                                            .replace(' ', '')
+                                                            .toLowerCase()
+                                                    },
+                                                    dropdownWidthClass: 'w-col-364',
+                                                    customClass:
+                                                        'truck-trailer-dropdown'
+                                                }"
+                                                [options]="truckType"
+                                                [activeItem]="selectedTruckType"
+                                                (selectedItem)="
+                                                    handleInputSelect(
+                                                        $event,
+                                                        'TRUCK-TYPE'
                                                     )
-                                                        ? 'tanker'
-                                                        : selectedTrailerType?.name
-                                                              ?.toLowerCase()
-                                                              ?.includes('rgn')
-                                                        ? 'low-boy-rgn'
-                                                        : selectedTrailerType?.name
-                                                              ?.trim()
-                                                              .replace(' ', '')
-                                                              .toLowerCase()
-                                                },
-                                                dropdownWidthClass: 'w-col-364',
-                                                customClass:
-                                                    'truck-trailer-dropdown'
-                                            }"
-                                            [options]="trailerType"
-                                            [activeItem]="selectedTrailerType"
-                                            (selectedItem)="
-                                                handleInputSelect(
-                                                    $event,
-                                                    'TRAILER-TYPE'
-                                                )
+                                                "
+                                            ></app-ta-input-dropdown>
+                                        </div>
+    
+                                        <div class="group vin-group">
+                                            <app-ta-input
+                                                formControlName="truckVin"
+                                                [inputConfig]="{
+                                                    name: 'vin-number',
+                                                    type: 'text',
+                                                    label: 'VIN',
+                                                    isRequired: true,
+                                                    textTransform: 'uppercase',
+                                                    maxLength: 17,
+                                                    minLength: 5,
+                                                    loadingSpinner: {
+                                                        size: 'small',
+                                                        color: 'white',
+                                                        isLoading:
+                                                            loadingTruckVinDecoder
+                                                    },
+                                                    incorrectInput:
+                                                        selectedMode ===
+                                                        'REVIEW_MODE'
+                                                }"
+                                                [incorrectValue]="
+                                                    openAnnotationArray[4]
+                                                        .lineInputs[0]
+                                                "
+                                                (incorrectEvent)="
+                                                    incorrectInput($event, 0, 4)
+                                                "
+                                            ></app-ta-input>
+                                        </div>
+    
+                                        <!-- REVIEW AND FEEDBACK -->
+    
+                                        <ng-container
+                                            *ngIf="
+                                                selectedMode !== 'APPLICANT_MODE'
                                             "
-                                        ></app-ta-input-dropdown>
+                                        >
+                                            <div class="review-feedback-container">
+                                                <app-applicant-review-feedback
+                                                    formControlName="fifthRowReview"
+                                                    [displayAnnotationButton]="
+                                                        selectedMode ===
+                                                            'REVIEW_MODE' &&
+                                                        openAnnotationArray[4]
+                                                            .displayAnnotationButton
+                                                    "
+                                                    [displayAnnotationTextArea]="
+                                                        selectedMode ===
+                                                            'REVIEW_MODE' &&
+                                                        openAnnotationArray[4]
+                                                            .displayAnnotationTextArea
+                                                    "
+                                                    [lineIndex]="4"
+                                                    [isFeedback]="
+                                                        selectedMode ===
+                                                        'FEEDBACK_MODE'
+                                                    "
+                                                    [feedbackText]="
+                                                        selectedMode ===
+                                                            'FEEDBACK_MODE' && ''
+                                                    "
+                                                    (annotationBtnClickEvent)="
+                                                        selectedMode ===
+                                                            'REVIEW_MODE' &&
+                                                            getAnnotationBtnClickValue(
+                                                                $event
+                                                            )
+                                                    "
+                                                ></app-applicant-review-feedback>
+                                            </div>
+                                        </ng-container>
                                     </div>
-
-                                    <div class="group vin-group">
-                                        <app-ta-input
-                                            formControlName="trailerVin"
-                                            [inputConfig]="{
-                                                name: 'vin-number',
-                                                type: 'text',
-                                                label: 'VIN',
-                                                textTransform: 'uppercase',
-                                                maxLength: 17,
-                                                minLength: 5,
-                                                isDisabled:
-                                                    !isAddTrailerSelected,
-                                                isRequired:
-                                                    isAddTrailerSelected,
-                                                loadingSpinner: {
-                                                    size: 'small',
-                                                    color: 'white',
-                                                    isLoading:
-                                                        loadingTrailerVinDecoder
-                                                },
-                                                incorrectInput:
-                                                    selectedMode ===
-                                                    'REVIEW_MODE'
-                                            }"
-                                            [incorrectValue]="
-                                                openAnnotationArray[6]
-                                                    .lineInputs[0]
+    
+                                    <!-- MAKE, MODEL, YEAR, COLOR -->
+    
+                                    <div class="d-flex line-container">
+                                        <div class="group make-group">
+                                            <app-ta-input-dropdown
+                                                formControlName="truckMake"
+                                                [template]="'svg-template'"
+                                                [inputConfig]="{
+                                                    name: 'Input Dropdown',
+                                                    type: 'text',
+                                                    label: 'Make',
+                                                    isRequired: true,
+                                                    isDropdown: true,
+                                                    dropdownImageInput: {
+                                                        withText: false,
+                                                        svg: true,
+                                                        image: false,
+                                                        url: selectedTruckMake?.logoName
+                                                    },
+                                                    dropdownWidthClass: 'w-col-210'
+                                                }"
+                                                [options]="truckMakeType"
+                                                [activeItem]="selectedTruckMake"
+                                                (selectedItem)="
+                                                    handleInputSelect(
+                                                        $event,
+                                                        'TRUCK-MAKE'
+                                                    )
+                                                "
+                                            ></app-ta-input-dropdown>
+                                        </div>
+    
+                                        <div class="group model-group">
+                                            <app-ta-input
+                                                formControlName="truckModel"
+                                                [inputConfig]="{
+                                                    name: 'truck-trailer-model',
+                                                    type: 'text',
+                                                    label: 'Model',
+                                                    isRequired: true,
+                                                    textTransform: 'uppercase',
+                                                    minLength: 1,
+                                                    maxLength: 50,
+                                                    incorrectInput:
+                                                        selectedMode ===
+                                                        'REVIEW_MODE'
+                                                }"
+                                                [incorrectValue]="
+                                                    openAnnotationArray[5]
+                                                        .lineInputs[0]
+                                                "
+                                                (incorrectEvent)="
+                                                    incorrectInput($event, 0, 5)
+                                                "
+                                            ></app-ta-input>
+                                        </div>
+    
+                                        <div class="group year-group">
+                                            <app-ta-input
+                                                formControlName="truckYear"
+                                                [inputConfig]="{
+                                                    name: 'Year',
+                                                    type: 'text',
+                                                    label: 'Year',
+                                                    isRequired: true,
+                                                    minLength: 4,
+                                                    maxLength: 4
+                                                }"
+                                            ></app-ta-input>
+                                        </div>
+    
+                                        <div class="group color-group">
+                                            <app-ta-input-dropdown
+                                                formControlName="truckColor"
+                                                [template]="'svgtext-template'"
+                                                [inputConfig]="{
+                                                    name: 'Input Dropdown',
+                                                    type: 'text',
+                                                    label: 'Color',
+                                                    isDropdown: true,
+                                                    dropdownImageInput: {
+                                                        withText: true,
+                                                        svg: true,
+                                                        image: false,
+                                                        url: selectedTruckColor?.code
+                                                            ? 'ic_color.svg'
+                                                            : null,
+                                                        template: 'color',
+                                                        color: selectedTruckColor?.code
+                                                    },
+                                                    dropdownWidthClass: 'w-col-116'
+                                                }"
+                                                [options]="colorType"
+                                                [activeItem]="selectedTruckColor"
+                                                (selectedItem)="
+                                                    handleInputSelect(
+                                                        $event,
+                                                        'TRUCK-COLOR'
+                                                    )
+                                                "
+                                            ></app-ta-input-dropdown>
+                                        </div>
+    
+                                        <!-- REVIEW AND FEEDBACK -->
+    
+                                        <ng-container
+                                            *ngIf="
+                                                selectedMode !== 'APPLICANT_MODE'
                                             "
-                                            (incorrectEvent)="
-                                                incorrectInput($event, 0, 6)
-                                            "
-                                        ></app-ta-input>
+                                        >
+                                            <div class="review-feedback-container">
+                                                <app-applicant-review-feedback
+                                                    formControlName="sixthRowReview"
+                                                    [displayAnnotationButton]="
+                                                        selectedMode ===
+                                                            'REVIEW_MODE' &&
+                                                        openAnnotationArray[5]
+                                                            .displayAnnotationButton
+                                                    "
+                                                    [displayAnnotationTextArea]="
+                                                        selectedMode ===
+                                                            'REVIEW_MODE' &&
+                                                        openAnnotationArray[5]
+                                                            .displayAnnotationTextArea
+                                                    "
+                                                    [lineIndex]="5"
+                                                    [isFeedback]="
+                                                        selectedMode ===
+                                                        'FEEDBACK_MODE'
+                                                    "
+                                                    [feedbackText]="
+                                                        selectedMode ===
+                                                            'FEEDBACK_MODE' && ''
+                                                    "
+                                                    (annotationBtnClickEvent)="
+                                                        selectedMode ===
+                                                            'REVIEW_MODE' &&
+                                                            getAnnotationBtnClickValue(
+                                                                $event
+                                                            )
+                                                    "
+                                                ></app-applicant-review-feedback>
+                                            </div>
+                                        </ng-container>
                                     </div>
-
-                                    <!-- REVIEW AND FEEDBACK -->
-
+    
+                                    <!-- DIVIDER -->
+    
+                                    <div class="divider"></div>
+    
+                                    <!-- ADD TRAILER -->
+    
                                     <div
-                                        class="review-feedback-container"
-                                        *ngIf="
-                                            selectedMode === 'REVIEW_MODE' ||
-                                            selectedMode === 'FEEDBACK_MODE'
-                                        "
+                                        class="d-flex align-self-start add-trailer-container"
                                     >
-                                        <app-applicant-review-feedback
-                                            formControlName="seventhRowReview"
-                                            [displayAnnotationButton]="
-                                                selectedMode ===
-                                                    'REVIEW_MODE' &&
-                                                openAnnotationArray[6]
-                                                    .displayAnnotationButton
-                                            "
-                                            [displayAnnotationTextArea]="
-                                                selectedMode ===
-                                                    'REVIEW_MODE' &&
-                                                openAnnotationArray[6]
-                                                    .displayAnnotationTextArea
-                                            "
-                                            [lineIndex]="6"
-                                            [isFeedback]="
-                                                selectedMode === 'FEEDBACK_MODE'
-                                            "
-                                            [feedbackText]="
-                                                selectedMode ===
-                                                    'FEEDBACK_MODE' && ''
-                                            "
-                                            (annotationBtnClickEvent)="
-                                                selectedMode ===
-                                                    'REVIEW_MODE' &&
-                                                    getAnnotationBtnClickValue(
-                                                        $event
+                                        <div class="d-flex align-items-center">
+                                            <app-ta-checkbox
+                                                formControlName="addTrailer"
+                                                [name]="'addTrailer'"
+                                            ></app-ta-checkbox>
+    
+                                            <p class="m-0 ta-font-extra-bold">
+                                                Add Trailer
+                                            </p>
+                                        </div>
+                                    </div>
+    
+                                    <!-- TRAILER TYPE, VIN -->
+    
+                                    <div class="d-flex line-container">
+                                        <div class="group type-group">
+                                            <app-ta-input-dropdown
+                                                formControlName="trailerType"
+                                                [template]="'svgtext-template'"
+                                                [inputConfig]="{
+                                                    name: 'Input Dropdown',
+                                                    type: 'text',
+                                                    label: 'Type',
+                                                    isDropdown: true,
+                                                    isDisabled:
+                                                        !isAddTrailerSelected,
+                                                    isRequired:
+                                                        isAddTrailerSelected,
+                                                    dropdownImageInput: {
+                                                        withText: true,
+                                                        svg: true,
+                                                        image: false,
+                                                        url: selectedTrailerType?.logoName,
+                                                        template: 'trailer',
+                                                        class: [
+                                                            'Tanker',
+                                                            'Tanker Pneumatic'
+                                                        ].includes(
+                                                            selectedTrailerType?.name
+                                                        )
+                                                            ? 'tanker'
+                                                            : selectedTrailerType?.name
+                                                                  ?.toLowerCase()
+                                                                  ?.includes('rgn')
+                                                            ? 'low-boy-rgn'
+                                                            : selectedTrailerType?.name
+                                                                  ?.trim()
+                                                                  .replace(' ', '')
+                                                                  .toLowerCase()
+                                                    },
+                                                    dropdownWidthClass: 'w-col-364',
+                                                    customClass:
+                                                        'truck-trailer-dropdown'
+                                                }"
+                                                [options]="trailerType"
+                                                [activeItem]="selectedTrailerType"
+                                                (selectedItem)="
+                                                    handleInputSelect(
+                                                        $event,
+                                                        'TRAILER-TYPE'
                                                     )
+                                                "
+                                            ></app-ta-input-dropdown>
+                                        </div>
+    
+                                        <div class="group vin-group">
+                                            <app-ta-input
+                                                formControlName="trailerVin"
+                                                [inputConfig]="{
+                                                    name: 'vin-number',
+                                                    type: 'text',
+                                                    label: 'VIN',
+                                                    textTransform: 'uppercase',
+                                                    maxLength: 17,
+                                                    minLength: 5,
+                                                    isDisabled:
+                                                        !isAddTrailerSelected,
+                                                    isRequired:
+                                                        isAddTrailerSelected,
+                                                    loadingSpinner: {
+                                                        size: 'small',
+                                                        color: 'white',
+                                                        isLoading:
+                                                            loadingTrailerVinDecoder
+                                                    },
+                                                    incorrectInput:
+                                                        selectedMode ===
+                                                        'REVIEW_MODE'
+                                                }"
+                                                [incorrectValue]="
+                                                    openAnnotationArray[6]
+                                                        .lineInputs[0]
+                                                "
+                                                (incorrectEvent)="
+                                                    incorrectInput($event, 0, 6)
+                                                "
+                                            ></app-ta-input>
+                                        </div>
+    
+                                        <!-- REVIEW AND FEEDBACK -->
+    
+                                        <ng-container
+                                            *ngIf="
+                                                selectedMode !== 'APPLICANT_MODE'
                                             "
-                                        ></app-applicant-review-feedback>
+                                        >
+                                            <div class="review-feedback-container">
+                                                <app-applicant-review-feedback
+                                                    formControlName="seventhRowReview"
+                                                    [displayAnnotationButton]="
+                                                        selectedMode ===
+                                                            'REVIEW_MODE' &&
+                                                        openAnnotationArray[6]
+                                                            .displayAnnotationButton
+                                                    "
+                                                    [displayAnnotationTextArea]="
+                                                        selectedMode ===
+                                                            'REVIEW_MODE' &&
+                                                        openAnnotationArray[6]
+                                                            .displayAnnotationTextArea
+                                                    "
+                                                    [lineIndex]="6"
+                                                    [isFeedback]="
+                                                        selectedMode ===
+                                                        'FEEDBACK_MODE'
+                                                    "
+                                                    [feedbackText]="
+                                                        selectedMode ===
+                                                            'FEEDBACK_MODE' && ''
+                                                    "
+                                                    (annotationBtnClickEvent)="
+                                                        selectedMode ===
+                                                            'REVIEW_MODE' &&
+                                                            getAnnotationBtnClickValue(
+                                                                $event
+                                                            )
+                                                    "
+                                                ></app-applicant-review-feedback>
+                                            </div>
+                                        </ng-container>
                                     </div>
-                                </div>
-
-                                <!-- TRAILER MAKE, MODEL -->
-
-                                <div class="d-flex line-container">
-                                    <div class="group trailer-make-group">
-                                        <app-ta-input-dropdown
-                                            formControlName="trailerMake"
-                                            [template]="'svg-template'"
-                                            [inputConfig]="{
-                                                name: 'Input Dropdown',
-                                                type: 'text',
-                                                label: 'Make',
-                                                isDropdown: true,
-                                                isDisabled:
-                                                    !isAddTrailerSelected,
-                                                isRequired:
-                                                    isAddTrailerSelected,
-                                                dropdownImageInput: {
-                                                    withText: false,
-                                                    svg: true,
-                                                    image: false,
-                                                    url: selectedTrailerMake?.logoName
-                                                },
-                                                placeholder:
-                                                    selectedTrailerMake?.name,
-                                                dropdownWidthClass: 'w-col-302'
-                                            }"
-                                            [options]="trailerMakeType"
-                                            [activeItem]="selectedTrailerMake"
-                                            (selectedItem)="
-                                                handleInputSelect(
-                                                    $event,
-                                                    'TRAILER-MAKE'
-                                                )
-                                            "
-                                        ></app-ta-input-dropdown>
-                                    </div>
-
-                                    <div class="group trailer-model-group">
-                                        <app-ta-input
-                                            formControlName="trailerModel"
-                                            [inputConfig]="{
-                                                name: 'truck-trailer-model',
-                                                type: 'text',
-                                                label: 'Model',
-                                                isDisabled:
-                                                    !isAddTrailerSelected,
-                                                textTransform: 'uppercase',
-                                                minLength: 1,
-                                                maxLength: 50,
-                                                incorrectInput:
-                                                    selectedMode ===
-                                                    'REVIEW_MODE'
-                                            }"
-                                            [incorrectValue]="
-                                                openAnnotationArray[7]
-                                                    .lineInputs[0]
-                                            "
-                                            (incorrectEvent)="
-                                                incorrectInput($event, 0, 7)
-                                            "
-                                        ></app-ta-input>
-                                    </div>
-
-                                    <!-- REVIEW AND FEEDBACK -->
-
-                                    <div
-                                        class="review-feedback-container"
-                                        *ngIf="
-                                            selectedMode === 'REVIEW_MODE' ||
-                                            selectedMode === 'FEEDBACK_MODE'
-                                        "
-                                    >
-                                        <app-applicant-review-feedback
-                                            formControlName="eightRowReview"
-                                            [displayAnnotationButton]="
-                                                selectedMode ===
-                                                    'REVIEW_MODE' &&
-                                                openAnnotationArray[7]
-                                                    .displayAnnotationButton
-                                            "
-                                            [displayAnnotationTextArea]="
-                                                selectedMode ===
-                                                    'REVIEW_MODE' &&
-                                                openAnnotationArray[7]
-                                                    .displayAnnotationTextArea
-                                            "
-                                            [lineIndex]="7"
-                                            [isFeedback]="
-                                                selectedMode === 'FEEDBACK_MODE'
-                                            "
-                                            [feedbackText]="
-                                                selectedMode ===
-                                                    'FEEDBACK_MODE' && ''
-                                            "
-                                            (annotationBtnClickEvent)="
-                                                selectedMode ===
-                                                    'REVIEW_MODE' &&
-                                                    getAnnotationBtnClickValue(
-                                                        $event
+    
+                                    <!-- TRAILER MAKE, MODEL -->
+    
+                                    <div class="d-flex line-container">
+                                        <div class="group trailer-make-group">
+                                            <app-ta-input-dropdown
+                                                formControlName="trailerMake"
+                                                [template]="'svg-template'"
+                                                [inputConfig]="{
+                                                    name: 'Input Dropdown',
+                                                    type: 'text',
+                                                    label: 'Make',
+                                                    isDropdown: true,
+                                                    isDisabled:
+                                                        !isAddTrailerSelected,
+                                                    isRequired:
+                                                        isAddTrailerSelected,
+                                                    dropdownImageInput: {
+                                                        withText: false,
+                                                        svg: true,
+                                                        image: false,
+                                                        url: selectedTrailerMake?.logoName
+                                                    },
+                                                    placeholder:
+                                                        selectedTrailerMake?.name,
+                                                    dropdownWidthClass: 'w-col-302'
+                                                }"
+                                                [options]="trailerMakeType"
+                                                [activeItem]="selectedTrailerMake"
+                                                (selectedItem)="
+                                                    handleInputSelect(
+                                                        $event,
+                                                        'TRAILER-MAKE'
                                                     )
+                                                "
+                                            ></app-ta-input-dropdown>
+                                        </div>
+    
+                                        <div class="group trailer-model-group">
+                                            <app-ta-input
+                                                formControlName="trailerModel"
+                                                [inputConfig]="{
+                                                    name: 'truck-trailer-model',
+                                                    type: 'text',
+                                                    label: 'Model',
+                                                    isDisabled:
+                                                        !isAddTrailerSelected,
+                                                    textTransform: 'uppercase',
+                                                    minLength: 1,
+                                                    maxLength: 50,
+                                                    incorrectInput:
+                                                        selectedMode ===
+                                                        'REVIEW_MODE'
+                                                }"
+                                                [incorrectValue]="
+                                                    openAnnotationArray[7]
+                                                        .lineInputs[0]
+                                                "
+                                                (incorrectEvent)="
+                                                    incorrectInput($event, 0, 7)
+                                                "
+                                            ></app-ta-input>
+                                        </div>
+    
+                                        <!-- REVIEW AND FEEDBACK -->
+    
+                                        <ng-container
+                                            *ngIf="
+                                                selectedMode !== 'APPLICANT_MODE'
                                             "
-                                        ></app-applicant-review-feedback>
+                                        >
+                                            <div class="review-feedback-container">
+                                                <app-applicant-review-feedback
+                                                    formControlName="eightRowReview"
+                                                    [displayAnnotationButton]="
+                                                        selectedMode ===
+                                                            'REVIEW_MODE' &&
+                                                        openAnnotationArray[7]
+                                                            .displayAnnotationButton
+                                                    "
+                                                    [displayAnnotationTextArea]="
+                                                        selectedMode ===
+                                                            'REVIEW_MODE' &&
+                                                        openAnnotationArray[7]
+                                                            .displayAnnotationTextArea
+                                                    "
+                                                    [lineIndex]="7"
+                                                    [isFeedback]="
+                                                        selectedMode ===
+                                                        'FEEDBACK_MODE'
+                                                    "
+                                                    [feedbackText]="
+                                                        selectedMode ===
+                                                            'FEEDBACK_MODE' && ''
+                                                    "
+                                                    (annotationBtnClickEvent)="
+                                                        selectedMode ===
+                                                            'REVIEW_MODE' &&
+                                                            getAnnotationBtnClickValue(
+                                                                $event
+                                                            )
+                                                    "
+                                                ></app-applicant-review-feedback>
+                                            </div>
+                                        </ng-container>
+                                    </div>
+    
+                                    <!-- TRAILER YEAR, COLOR, LENGTH -->
+    
+                                    <div class="d-flex line-container">
+                                        <div class="group trailer-year-group">
+                                            <app-ta-input
+                                                formControlName="trailerYear"
+                                                [inputConfig]="{
+                                                    name: 'Year',
+                                                    type: 'text',
+                                                    label: 'Year',
+                                                    isDisabled:
+                                                        !isAddTrailerSelected,
+                                                    isRequired:
+                                                        isAddTrailerSelected,
+                                                    minLength: 4,
+                                                    maxLength: 4
+                                                }"
+                                            ></app-ta-input>
+                                        </div>
+    
+                                        <div class="group trailer-color-group">
+                                            <app-ta-input-dropdown
+                                                formControlName="trailerColor"
+                                                [template]="'svgtext-template'"
+                                                [inputConfig]="{
+                                                    name: 'Input Dropdown',
+                                                    type: 'text',
+                                                    label: 'Color',
+                                                    isDropdown: true,
+                                                    isDisabled:
+                                                        !isAddTrailerSelected,
+                                                    dropdownImageInput: {
+                                                        withText: true,
+                                                        svg: true,
+                                                        image: false,
+                                                        url: selectedTrailerColor?.code
+                                                            ? 'ic_color.svg'
+                                                            : null,
+                                                        template: 'color',
+                                                        color: selectedTrailerColor?.code
+                                                    },
+                                                    dropdownWidthClass: 'w-col-216'
+                                                }"
+                                                [options]="colorType"
+                                                [activeItem]="selectedTrailerColor"
+                                                (selectedItem)="
+                                                    handleInputSelect(
+                                                        $event,
+                                                        'TRAILER-COLOR'
+                                                    )
+                                                "
+                                            ></app-ta-input-dropdown>
+                                        </div>
+    
+                                        <div class="group trailer-length-group">
+                                            <app-ta-input-dropdown
+                                                formControlName="trailerLength"
+                                                [inputConfig]="{
+                                                    name: 'Input Dropdown',
+                                                    type: 'text',
+                                                    label: 'Length',
+                                                    isDropdown: true,
+                                                    isDisabled:
+                                                        !isAddTrailerSelected,
+                                                    isRequired:
+                                                        isAddTrailerSelected,
+                                                    dropdownWidthClass: 'w-col-216'
+                                                }"
+                                                [options]="trailerLengthType"
+                                                [activeItem]="selectedTrailerLength"
+                                                (selectedItem)="
+                                                    handleInputSelect(
+                                                        $event,
+                                                        'TRAILER-LENGTH'
+                                                    )
+                                                "
+                                            ></app-ta-input-dropdown>
+                                        </div>
                                     </div>
                                 </div>
-
-                                <!-- TRAILER YEAR, COLOR, LENGTH -->
-
-                                <div class="d-flex line-container">
-                                    <div class="group trailer-year-group">
-                                        <app-ta-input
-                                            formControlName="trailerYear"
-                                            [inputConfig]="{
-                                                name: 'Year',
-                                                type: 'text',
-                                                label: 'Year',
-                                                isDisabled:
-                                                    !isAddTrailerSelected,
-                                                isRequired:
-                                                    isAddTrailerSelected,
-                                                minLength: 4,
-                                                maxLength: 4
-                                            }"
-                                        ></app-ta-input>
-                                    </div>
-
-                                    <div class="group trailer-color-group">
-                                        <app-ta-input-dropdown
-                                            formControlName="trailerColor"
-                                            [template]="'svgtext-template'"
-                                            [inputConfig]="{
-                                                name: 'Input Dropdown',
-                                                type: 'text',
-                                                label: 'Color',
-                                                isDropdown: true,
-                                                isDisabled:
-                                                    !isAddTrailerSelected,
-                                                dropdownImageInput: {
-                                                    withText: true,
-                                                    svg: true,
-                                                    image: false,
-                                                    url: selectedTrailerColor?.code
-                                                        ? 'ic_color.svg'
-                                                        : null,
-                                                    template: 'color',
-                                                    color: selectedTrailerColor?.code
-                                                },
-                                                dropdownWidthClass: 'w-col-216'
-                                            }"
-                                            [options]="colorType"
-                                            [activeItem]="selectedTrailerColor"
-                                            (selectedItem)="
-                                                handleInputSelect(
-                                                    $event,
-                                                    'TRAILER-COLOR'
-                                                )
-                                            "
-                                        ></app-ta-input-dropdown>
-                                    </div>
-
-                                    <div class="group trailer-length-group">
-                                        <app-ta-input-dropdown
-                                            formControlName="trailerLength"
-                                            [inputConfig]="{
-                                                name: 'Input Dropdown',
-                                                type: 'text',
-                                                label: 'Length',
-                                                isDropdown: true,
-                                                isDisabled:
-                                                    !isAddTrailerSelected,
-                                                isRequired:
-                                                    isAddTrailerSelected,
-                                                dropdownWidthClass: 'w-col-216'
-                                            }"
-                                            [options]="trailerLengthType"
-                                            [activeItem]="selectedTrailerLength"
-                                            (selectedItem)="
-                                                handleInputSelect(
-                                                    $event,
-                                                    'TRAILER-LENGTH'
-                                                )
-                                            "
-                                        ></app-ta-input-dropdown>
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
-                    </ng-container>
+                            </form>
+                        </ng-container>
+                    </div>
                 </div>
+    
+                <!-- FOOTER -->
+    
+                <app-applicant-footer [mode]="selectedMode"></app-applicant-footer>
             </div>
-
-            <!-- FOOTER -->
-
-            <app-applicant-footer [mode]="selectedMode"></app-applicant-footer>
         </div>
     </div>
-</div>
+    
+    <!-- NEXT BTN -->
+    
+    <div
+        class="d-flex justify-content-center align-items-center next-btn-container"
+    >
+        <app-applicant-next-back-btn
+            [nextStep]="true"
+            [lastStep]="true"
+            [filledCorrectly]="
+                selectedMode === 'APPLICANT_MODE' && ownerInfoForm.valid
+            "
+            [hasIncorrectFields]="
+                selectedMode === 'REVIEW_MODE' && hasIncorrectFields
+            "
+            [mode]="selectedMode"
+            (stepEvent)="onStepAction($event)"
+        ></app-applicant-next-back-btn>
+    </div>
+    
+</ng-container>
 
-<!-- NEXT BTN -->
 
-<div
-    class="d-flex justify-content-center align-items-center next-btn-container"
->
-    <app-applicant-next-back-btn
-        [nextStep]="true"
-        [lastStep]="true"
-        [filledCorrectly]="
-            selectedMode === 'APPLICANT_MODE' && ownerInfoForm.valid
-        "
-        [hasIncorrectFields]="
-            selectedMode === 'REVIEW_MODE' && hasIncorrectFields
-        "
-        [mode]="selectedMode"
-        (stepEvent)="onStepAction($event)"
-    ></app-applicant-next-back-btn>
-</div>

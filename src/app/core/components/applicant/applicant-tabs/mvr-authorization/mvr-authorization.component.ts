@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
-import { Router } from '@angular/router';
+import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 
 import { Subject, takeUntil } from 'rxjs';
 
@@ -30,11 +30,14 @@ export class MvrAuthorizationComponent implements OnInit, OnDestroy {
 
     public selectedMode: string = SelectedMode.APPLICANT;
 
+    public isValidLoad: boolean;
+
     public mvrAuthorizationForm: FormGroup;
     public dontHaveMvrForm: FormGroup;
 
     public applicantId: number;
     public mvrAuthId: number | null = null;
+    public queryParamId: number | string | null = null;
 
     public stepHasValues: boolean = false;
 
@@ -72,10 +75,13 @@ export class MvrAuthorizationComponent implements OnInit, OnDestroy {
         private applicantStore: ApplicantStore,
         private applicantQuery: ApplicantQuery,
         private applicantActionsService: ApplicantActionsService,
-        private imageBase64Service: ImageBase64Service
+        private imageBase64Service: ImageBase64Service,
+        private route: ActivatedRoute
     ) {}
 
     ngOnInit(): void {
+        this.getQueryParams();
+
         this.createForm();
 
         this.getStepValuesFromStore();
@@ -99,33 +105,49 @@ export class MvrAuthorizationComponent implements OnInit, OnDestroy {
         });
     }
 
+    public getQueryParams(): void {
+        this.route.paramMap.subscribe((params: ParamMap) => {
+            this.queryParamId = params.get('id');
+        });
+    }
+
     public getStepValuesFromStore(): void {
         this.applicantQuery.applicant$
             .pipe(takeUntil(this.destroy$))
             .subscribe((res: ApplicantResponse) => {
-                const personalInfo = res.personalInfo;
-                const cdlInformation = res.cdlInformation;
+                if (res && res.id == this.queryParamId) {
+                    this.isValidLoad = true;
 
-                const lastLicenseAdded =
-                    cdlInformation?.licences[
-                        cdlInformation.licences.length - 1
-                    ];
+                    const personalInfo = res.personalInfo;
+                    const cdlInformation = res.cdlInformation;
 
-                this.lastValidLicense = {
-                    license: lastLicenseAdded?.licenseNumber,
-                    state: lastLicenseAdded?.state?.stateShortName,
-                    classType: lastLicenseAdded?.classType?.name,
-                    expDate: convertDateFromBackend(lastLicenseAdded?.expDate),
-                };
+                    const lastLicenseAdded =
+                        cdlInformation?.licences[
+                            cdlInformation.licences.length - 1
+                        ];
 
-                this.lastValidLicense.name = personalInfo?.fullName;
+                    this.lastValidLicense = {
+                        license: lastLicenseAdded?.licenseNumber,
+                        state: lastLicenseAdded?.state?.stateShortName,
+                        classType: lastLicenseAdded?.classType?.name,
+                        expDate: convertDateFromBackend(
+                            lastLicenseAdded?.expDate
+                        ),
+                    };
 
-                this.applicantId = res.id;
+                    this.lastValidLicense.name = personalInfo?.fullName;
 
-                if (res.mvrAuth) {
-                    this.patchStepValues(res.mvrAuth);
+                    this.applicantId = res.id;
 
-                    this.stepHasValues = true;
+                    if (res.mvrAuth) {
+                        this.patchStepValues(res.mvrAuth);
+
+                        this.stepHasValues = true;
+                    }
+                } else {
+                    this.isValidLoad = false;
+
+                    this.router.navigate(['/load']);
                 }
             });
     }

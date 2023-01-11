@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
-import { Router } from '@angular/router';
+import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 
 import { Subject, takeUntil } from 'rxjs';
 
@@ -33,11 +33,14 @@ export class PspAuthorizationComponent implements OnInit, OnDestroy {
 
     public selectedMode: string = SelectedMode.APPLICANT;
 
+    public isValidLoad: boolean;
+
     public pspAuthorizationForm: FormGroup;
 
     public companyName: string;
 
     public applicantId: number;
+    public queryParamId: number | string | null = null;
 
     public signature: string;
     public signatureImgSrc: string;
@@ -52,10 +55,13 @@ export class PspAuthorizationComponent implements OnInit, OnDestroy {
         private applicantStore: ApplicantStore,
         private applicantQuery: ApplicantQuery,
         private applicantActionsService: ApplicantActionsService,
-        private imageBase64Service: ImageBase64Service
+        private imageBase64Service: ImageBase64Service,
+        private route: ActivatedRoute
     ) {}
 
     ngOnInit(): void {
+        this.getQueryParams();
+
         this.createForm();
 
         this.getStepValuesFromStore();
@@ -71,24 +77,38 @@ export class PspAuthorizationComponent implements OnInit, OnDestroy {
         });
     }
 
+    public getQueryParams(): void {
+        this.route.paramMap.subscribe((params: ParamMap) => {
+            this.queryParamId = params.get('id');
+        });
+    }
+
     public getStepValuesFromStore(): void {
         this.applicantQuery.applicant$
             .pipe(takeUntil(this.destroy$))
             .subscribe((res: ApplicantResponse) => {
-                const personalInfo = res.personalInfo;
+                if (res && res.id == this.queryParamId) {
+                    this.isValidLoad = true;
 
-                this.applicantCardInfo = {
-                    name: personalInfo?.fullName,
-                    ssn: personalInfo?.ssn,
-                    dob: convertDateFromBackend(personalInfo?.doB),
-                };
+                    const personalInfo = res.personalInfo;
 
-                this.applicantId = res.id;
+                    this.applicantCardInfo = {
+                        name: personalInfo?.fullName,
+                        ssn: personalInfo?.ssn,
+                        dob: convertDateFromBackend(personalInfo?.doB),
+                    };
 
-                this.companyName = res.companyInfo.name;
+                    this.applicantId = res.id;
 
-                if (res.pspAuth) {
-                    this.patchStepValues(res.pspAuth);
+                    this.companyName = res.companyInfo.name;
+
+                    if (res.pspAuth) {
+                        this.patchStepValues(res.pspAuth);
+                    }
+                } else {
+                    this.isValidLoad = false;
+
+                    this.router.navigate(['/auth']);
                 }
             });
     }

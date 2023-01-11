@@ -1,7 +1,11 @@
+/* eslint-disable no-unused-vars */
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 
 import { skip, Subject, takeUntil, tap } from 'rxjs';
+
+import { anyInputInLineIncorrect } from '../../state/utils/utils';
 
 import {
     accountBankValidation,
@@ -28,17 +32,16 @@ import { ApplicantQuery } from '../../state/store/applicant.query';
 import { SelectedMode } from '../../state/enum/selected-mode.enum';
 import {
     AddressEntity,
-    ApplicantModalResponse,
     BankResponse,
     CreateResponse,
     TruckTypeResponse,
     VinDecodeResponse,
     TrailerTypeResponse,
     TrailerLengthResponse,
+    ApplicantResponse,
 } from 'appcoretruckassist';
 import { InputSwitchActions } from '../../state/enum/input-switch-actions.enum';
 import { IdNameList } from '../../state/model/lists.model';
-import { anyInputInLineIncorrect } from '../../state/utils/utils';
 
 @Component({
     selector: 'app-owner-info',
@@ -48,7 +51,12 @@ import { anyInputInLineIncorrect } from '../../state/utils/utils';
 export class OwnerInfoComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
 
-    public selectedMode: string = SelectedMode.REVIEW;
+    public selectedMode: string = SelectedMode.APPLICANT;
+
+    public isValidLoad: boolean;
+
+    public applicantId: number;
+    public queryParamId: number | string | null = null;
 
     public ownerInfoForm: FormGroup;
 
@@ -156,13 +164,19 @@ export class OwnerInfoComponent implements OnInit, OnDestroy {
         private bankVerificationService: BankVerificationService,
         private vinDecoderService: VinDecoderService,
         private applicantStore: ApplicantStore,
-        private applicantQuery: ApplicantQuery
+        private applicantQuery: ApplicantQuery,
+        private router: Router,
+        private route: ActivatedRoute
     ) {}
 
     ngOnInit(): void {
+        this.getQueryParams();
+
         this.createForm();
 
         this.getDropdownLists();
+
+        this.getStepValuesFromStore();
 
         this.vinDecoder();
 
@@ -216,6 +230,36 @@ export class OwnerInfoComponent implements OnInit, OnDestroy {
             'email',
             this.destroy$
         );
+    }
+
+    public getQueryParams(): void {
+        this.route.paramMap.subscribe((params: ParamMap) => {
+            this.queryParamId = params.get('id');
+        });
+    }
+
+    public getStepValuesFromStore(): void {
+        this.applicantQuery.applicant$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res: ApplicantResponse) => {
+                if (res && res.id == this.queryParamId) {
+                    this.isValidLoad = true;
+
+                    this.applicantId = res.id;
+
+                    /* if (res.trafficViolation) {
+                    this.patchStepValues(res.trafficViolation);
+
+                    this.stepHasValues = true;
+                } */
+                } else {
+                    console.log('NIJE');
+                    this.isValidLoad = false;
+
+                    this.router.navigate(['/auth']);
+                }
+                this.applicantId = res.id;
+            });
     }
 
     public onTabChange(event: any): void {
@@ -443,6 +487,23 @@ export class OwnerInfoComponent implements OnInit, OnDestroy {
                             trailerColor,
                             trailerLength,
                         });
+
+                        this.selectedTrailerType = this.trailerType.find(
+                            (item) => item.name === trailerType
+                        );
+
+                        this.selectedTrailerMake = this.trailerMakeType.find(
+                            (item) => item.name === trailerMake
+                        );
+
+                        this.selectedTrailerColor = this.colorType.find(
+                            (item) => item.name === trailerColor
+                        );
+
+                        this.selectedTrailerLength =
+                            this.trailerLengthType.find(
+                                (item) => item.name === trailerLength
+                            );
                     }
 
                     for (let i = 0; i < inputsToValidate.length; i++) {
@@ -515,7 +576,7 @@ export class OwnerInfoComponent implements OnInit, OnDestroy {
     public getDropdownLists(): void {
         this.applicantQuery.applicantDropdownLists$
             .pipe(takeUntil(this.destroy$))
-            .subscribe((res: ApplicantModalResponse) => {
+            .subscribe((res: any /* ApplicantModalResponse */) => {
                 this.banksDropdownList = res.banks;
 
                 this.truckType = res.truckTypes.map((item) => {
@@ -526,6 +587,17 @@ export class OwnerInfoComponent implements OnInit, OnDestroy {
                     };
                 });
 
+                this.truckMakeType = res.truckMakes;
+
+                this.colorType = res.colors.map((item) => {
+                    return {
+                        ...item,
+                        folder: 'common',
+                        subFolder: 'colors',
+                        logoName: 'ic_color.svg',
+                    };
+                });
+
                 this.trailerType = res.trailerTypes.map((item) => {
                     return {
                         ...item,
@@ -533,6 +605,8 @@ export class OwnerInfoComponent implements OnInit, OnDestroy {
                         subFolder: 'trailers',
                     };
                 });
+
+                this.trailerMakeType = res.trailerMakes;
 
                 this.trailerLengthType = res.trailerLenghts;
             });
@@ -646,10 +720,7 @@ export class OwnerInfoComponent implements OnInit, OnDestroy {
 
     public onStepAction(event: any): void {
         if (event.action === 'next-step') {
-            if (
-                this.selectedMode === SelectedMode.APPLICANT ||
-                this.selectedMode === SelectedMode.FEEDBACK
-            ) {
+            if (this.selectedMode !== SelectedMode.REVIEW) {
                 this.onSubmit();
             }
 
@@ -664,6 +735,76 @@ export class OwnerInfoComponent implements OnInit, OnDestroy {
             this.inputService.markInvalid(this.ownerInfoForm);
             return;
         }
+
+        const {
+            address,
+            addressUnit,
+            bank,
+            truckType,
+            truckMake,
+            truckYear,
+            truckColor,
+            addTrailer,
+            trailerType,
+            trailerLength,
+            trailerVin,
+            trailerMake,
+            trailerModel,
+            trailerYear,
+            trailerColor,
+            firstRowReview,
+            secondRowReview,
+            thirdRowReview,
+            fourthRowReview,
+            fifthRowReview,
+            sixthRowReview,
+            seventhRowReview,
+            eightRowReview,
+            ...ownerInfoForm
+        } = this.ownerInfoForm.value;
+
+        const selectedAddress = {
+            ...this.selectedAddress,
+            addressUnit,
+            county: '',
+        };
+
+        const saveData: any = {
+            ...ownerInfoForm,
+            applicantId: this.applicantId,
+            address: selectedAddress,
+            bankId: this.selectedBank ? this.selectedBank.id : null,
+            truckTypeId: this.truckType.find((item) => item.name === truckType)
+                .id,
+            truckMakeId: this.truckMakeType.find(
+                (item) => item.name === truckMake
+            ).id,
+            truckYear: +truckYear,
+            truckColorId: this.colorType.find(
+                (item) => item.name === truckColor
+            ).id,
+            hasTrailer: addTrailer,
+            trailerTypeId: addTrailer
+                ? this.trailerType.find((item) => item.name === trailerType).id
+                : null,
+            trailerLengthId: addTrailer
+                ? this.trailerLengthType.find(
+                      (item) => item.name === trailerLength
+                  ).id
+                : null,
+            trailerVin: addTrailer ? trailerVin : null,
+            trailerMakeId: addTrailer
+                ? this.trailerMakeType.find((item) => item.name === trailerMake)
+                      .id
+                : null,
+            trailerModel: addTrailer ? trailerModel : null,
+            trailerYear: addTrailer ? +trailerYear : null,
+            trailerColorId: addTrailer
+                ? this.colorType.find((item) => item.name === trailerColor).id
+                : null,
+        };
+
+        console.log('saveData', saveData);
     }
 
     public onSubmitReview(): void {}

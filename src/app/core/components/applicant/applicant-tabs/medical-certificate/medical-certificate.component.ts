@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 
 import { Subject, takeUntil } from 'rxjs';
 
@@ -34,10 +34,13 @@ export class MedicalCertificateComponent implements OnInit, OnDestroy {
 
     public selectedMode: string = SelectedMode.APPLICANT;
 
+    public isValidLoad: boolean;
+
     public medicalCertificateForm: FormGroup;
 
     public applicantId: number;
     public medicalCertificateId: number | null = null;
+    public queryParamId: number | string | null = null;
 
     public stepHasValues: boolean = false;
 
@@ -67,6 +70,7 @@ export class MedicalCertificateComponent implements OnInit, OnDestroy {
     public hasIncorrectFields: boolean = false;
 
     constructor(
+        private route: ActivatedRoute,
         private formBuilder: FormBuilder,
         private inputService: TaInputService,
         private router: Router,
@@ -76,6 +80,8 @@ export class MedicalCertificateComponent implements OnInit, OnDestroy {
     ) {}
 
     ngOnInit(): void {
+        this.getQueryParams();
+
         this.createForm();
 
         this.getStepValuesFromStore();
@@ -92,16 +98,30 @@ export class MedicalCertificateComponent implements OnInit, OnDestroy {
         });
     }
 
+    public getQueryParams(): void {
+        this.route.paramMap.subscribe((params: ParamMap) => {
+            this.queryParamId = params.get('id');
+        });
+    }
+
     public getStepValuesFromStore(): void {
         this.applicantQuery.applicant$
             .pipe(takeUntil(this.destroy$))
             .subscribe((res: ApplicantResponse) => {
-                this.applicantId = res.id;
+                if (res && res.id == this.queryParamId) {
+                    this.isValidLoad = true;
 
-                if (res.medicalCertificate) {
-                    this.patchStepValues(res.medicalCertificate);
+                    this.applicantId = res.id;
 
-                    this.stepHasValues = true;
+                    if (res.medicalCertificate) {
+                        this.patchStepValues(res.medicalCertificate);
+
+                        this.stepHasValues = true;
+                    }
+                } else {
+                    this.isValidLoad = false;
+
+                    this.router.navigate(['/auth']);
                 }
             });
     }
@@ -109,6 +129,7 @@ export class MedicalCertificateComponent implements OnInit, OnDestroy {
     public patchStepValues(
         stepValues: MedicalCertificateFeedbackResponse
     ): void {
+        console.log('stepValues', stepValues);
         const { issueDate, expireDate, files, id } = stepValues;
 
         this.medicalCertificateId = id;
@@ -123,6 +144,7 @@ export class MedicalCertificateComponent implements OnInit, OnDestroy {
     }
 
     public onFilesAction(event: any): void {
+        console.log('event', event);
         this.documents = event.files;
 
         this.displayDocumentsRequiredNote = false;

@@ -9,6 +9,7 @@ export class TaInputSwitchOnOffComponent implements OnInit {
     @Input() titleText: string;
     @Input() isRequired?: boolean = false;
     @Input() displayRequiredState: boolean = false;
+    @Input() selectedSwitchState: boolean = null;
 
     @Output() switchStateEmitter = new EventEmitter<any>();
 
@@ -16,7 +17,9 @@ export class TaInputSwitchOnOffComponent implements OnInit {
 
     constructor() {}
 
-    ngOnInit(): void {}
+    ngOnInit(): void {
+        this.setSelectedSwitchState();
+    }
 
     public handleSwitchButton(action: boolean): void {
         if (action) {
@@ -26,5 +29,13 @@ export class TaInputSwitchOnOffComponent implements OnInit {
         }
 
         this.switchStateEmitter.emit(this.isSwitchOn);
+    }
+
+    public setSelectedSwitchState(): void {
+        if (this.selectedSwitchState === false) {
+            this.isSwitchOn = false;
+        } else {
+            this.isSwitchOn = true;
+        }
     }
 }

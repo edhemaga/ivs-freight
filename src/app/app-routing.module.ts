@@ -259,11 +259,11 @@ const routes: Routes = [
     {
         path: 'gpstracking',
         loadChildren: () =>
-          import('./core/components/telematic/telematic.module').then(
-            (m) => m.TelematicModule
-          ),
+            import('./core/components/telematic/telematic.module').then(
+                (m) => m.TelematicModule
+            ),
         canActivate: [AuthGuard],
-      },
+    },
     {
         path: 'tools/calendar',
         loadChildren: () =>
@@ -330,12 +330,21 @@ const routes: Routes = [
         resolve: { applicant: ApplicantResolver },
     },
     {
+        path: 'owner-info/:id',
+        loadChildren: () =>
+            import(
+                './core/components/applicant/applicant-tabs/owner-info/owner-info.module'
+            ).then((m) => m.OwnerInfoModule),
+        canActivate: [ApplicantGuard],
+    },
+    {
         path: 'medical-certificate/:id',
         loadChildren: () =>
             import(
                 './core/components/applicant/applicant-tabs/medical-certificate/medical-certificate.module'
             ).then((m) => m.MedicalCertificateModule),
         canActivate: [ApplicantGuard],
+        resolve: { applicant: ApplicantResolver },
     },
     {
         path: 'mvr-authorization/:id',
@@ -344,6 +353,7 @@ const routes: Routes = [
                 './core/components/applicant/applicant-tabs/mvr-authorization/mvr-authorization.module'
             ).then((m) => m.MvrAuthorizationModule),
         canActivate: [ApplicantGuard],
+        resolve: { applicant: ApplicantResolver },
     },
     {
         path: 'psp-authorization/:id',
@@ -390,6 +400,7 @@ const routes: Routes = [
                 './core/components/applicant/applicant-tabs/ssn-card/ssn-card.module'
             ).then((m) => m.SsnCardModule),
         canActivate: [ApplicantGuard],
+        resolve: { applicant: ApplicantResolver },
     },
     {
         path: 'cdl-card/:id',
@@ -398,6 +409,7 @@ const routes: Routes = [
                 './core/components/applicant/applicant-tabs/cdl-card/cdl-card.module'
             ).then((m) => m.CdlCardModule),
         canActivate: [ApplicantGuard],
+        resolve: { applicant: ApplicantResolver },
     },
     {
         path: 'applicant/end',
@@ -406,15 +418,6 @@ const routes: Routes = [
         canActivate: [ApplicantGuard],
     },
     // ------- Applicant End
-    {
-        path: 'owner-info/:id',
-        loadChildren: () =>
-            import(
-                './core/components/applicant/applicant-tabs/owner-info/owner-info.module'
-            ).then((m) => m.OwnerInfoModule),
-        canActivate: [AuthGuard],
-        resolve: { applicant: ApplicantResolver },
-    },
     {
         path: 'accounting',
         loadChildren: () =>

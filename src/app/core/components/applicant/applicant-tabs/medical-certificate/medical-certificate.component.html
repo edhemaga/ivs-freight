@@ -1,195 +1,215 @@
-<div class="container-fluid">
-    <div class="row">
-        <div
-            class="container-fluid d-flex flex-column justify-content-between medical-certificate-container"
-        >
-            <div class="d-flex flex-column align-items-center">
-                <app-applicant-header
-                    [mode]="selectedMode"
-                ></app-applicant-header>
+<ng-container *ngIf="isValidLoad">
+    <div class="container-fluid">
+        <div class="row">
+            <div
+                class="container-fluid d-flex flex-column justify-content-between medical-certificate-container"
+            >
+                <div class="d-flex flex-column align-items-center">
+                    <app-applicant-header
+                        [mode]="selectedMode"
+                    ></app-applicant-header>
 
-                <h1 class="m-0 text-center title ta-font-bold">
-                    Medical Examiner's Certificate
-                </h1>
+                    <h1 class="m-0 text-center title ta-font-bold">
+                        Medical Examiner's Certificate
+                    </h1>
 
-                <h2
-                    class="m-0 text-center subtitle ta-font-bold"
-                    [ngStyle]="{
-                        color:
-                            selectedMode === 'FEEDBACK_MODE'
-                                ? '#919191'
-                                : '#6C6C6C'
-                    }"
-                >
-                    Please fill fields and upload the examiner's certificate
-                    example as proof of validation.
-                </h2>
+                    <h2
+                        class="m-0 text-center subtitle ta-font-bold"
+                        [ngStyle]="{
+                            color:
+                                selectedMode === 'FEEDBACK_MODE'
+                                    ? '#919191'
+                                    : '#6C6C6C'
+                        }"
+                    >
+                        Please fill fields and upload the examiner's certificate
+                        example as proof of validation.
+                    </h2>
 
-                <!-- ISSUE DATE, EXP. DATE -->
+                    <!-- ISSUE DATE, EXP. DATE -->
 
-                <form [formGroup]="medicalCertificateForm">
-                    <div class="d-flex line-container">
-                        <div class="date-group">
-                            <app-ta-input
-                                formControlName="fromDate"
-                                [inputConfig]="{
-                                    name: 'datepicker',
-                                    type: 'text',
-                                    label: 'Issue date',
-                                    placeholderIcon: 'date',
-                                    isRequired: true,
-                                    customClass: 'datetimeclass',
-                                    isDisabled: selectedMode === 'REVIEW_MODE',
-                                    incorrectInput:
-                                        selectedMode === 'REVIEW_MODE'
-                                }"
-                                [incorrectValue]="
-                                    openAnnotationArray[0].lineInputs[0]
-                                "
-                                (incorrectEvent)="incorrectInput($event, 0, 0)"
-                            ></app-ta-input>
-                        </div>
-                        <div class="date-group date-exp-group">
-                            <app-ta-input
-                                formControlName="toDate"
-                                [inputConfig]="{
-                                    name: 'datepicker',
-                                    type: 'text',
-                                    label: 'Exp. date',
-                                    placeholderIcon: 'date',
-                                    isRequired: true,
-                                    customClass: 'datetimeclass',
-                                    isDisabled: selectedMode === 'REVIEW_MODE',
-                                    incorrectInput:
-                                        selectedMode === 'REVIEW_MODE'
-                                }"
-                                [incorrectValue]="
-                                    openAnnotationArray[0].lineInputs[1]
-                                "
-                                (incorrectEvent)="incorrectInput($event, 1, 0)"
-                            ></app-ta-input>
-                        </div>
-
-                        <!-- REVIEW AND FEEDBACK -->
-
-                        <ng-container *ngIf="selectedMode !== 'APPLICANT_MODE'">
-                            <div class="review-feedback-container">
-                                <app-applicant-review-feedback
-                                    formControlName="firstRowReview"
-                                    [displayAnnotationButton]="
-                                        openAnnotationArray[0]
-                                            .displayAnnotationButton
+                    <form [formGroup]="medicalCertificateForm">
+                        <div class="d-flex line-container">
+                            <div class="date-group">
+                                <app-ta-input
+                                    formControlName="fromDate"
+                                    [inputConfig]="{
+                                        name: 'datepicker',
+                                        type: 'text',
+                                        label: 'Issue date',
+                                        placeholderIcon: 'date',
+                                        isRequired: true,
+                                        customClass: 'datetimeclass',
+                                        isDisabled:
+                                            selectedMode === 'REVIEW_MODE',
+                                        incorrectInput:
+                                            selectedMode === 'REVIEW_MODE'
+                                    }"
+                                    [incorrectValue]="
+                                        openAnnotationArray[0].lineInputs[0]
                                     "
-                                    [displayAnnotationTextArea]="
-                                        openAnnotationArray[0]
-                                            .displayAnnotationTextArea
+                                    (incorrectEvent)="
+                                        incorrectInput($event, 0, 0)
                                     "
-                                    [lineIndex]="0"
-                                    [isFeedback]="
-                                        selectedMode === 'FEEDBACK_MODE'
-                                    "
-                                    [feedbackText]="
-                                        'Check the routing number one more time (one number missing)!!!'
-                                    "
-                                    (annotationBtnClickEvent)="
-                                        getAnnotationBtnClickValue($event)
-                                    "
-                                ></app-applicant-review-feedback>
+                                ></app-ta-input>
                             </div>
-                        </ng-container>
-                    </div>
-                </form>
-
-                <!-- FILES CONTAINER -->
-
-                <div
-                    class="d-flex flex-column files-container"
-                    [formGroup]="medicalCertificateForm"
-                >
-                    <div class="d-flex align-items-center files-header">
-                        <div
-                            class="d-flex align-items-center justify-content-center counter-container"
-                        >
-                            <p class="m-0 ta-font-extra-bold">
-                                {{ documents?.length }}
-                            </p>
-                        </div>
-                        <div
-                            class="d-flex align-items-center document-title-container"
-                        >
-                            <p class="m-0 ta-font-extra-bold documents-title">
-                                Documents
-                            </p>
-                        </div>
-                    </div>
-
-                    <div class="line-container">
-                        <app-ta-upload-files
-                            [files]="documents"
-                            [size]="'medium'"
-                            [showDropzone]="selectedMode === 'APPLICANT_MODE'"
-                            [isRequired]="true"
-                            [showRequired]="displayDocumentsRequiredNote"
-                            [isReview]="selectedMode === 'REVIEW_MODE'"
-                            [reviewMode]="
-                                selectedMode === 'REVIEW_MODE' && 'REVIEW_MODE'
-                            "
-                            (onFileEvent)="onFilesAction($event)"
-                        ></app-ta-upload-files>
-
-                        <!-- REVIEW AND FEEDBACK -->
-
-                        <ng-container *ngIf="selectedMode !== 'APPLICANT_MODE'">
-                            <div class="review-feedback-container">
-                                <app-applicant-review-feedback
-                                    formControlName="secondRowReview"
-                                    [displayAnnotationButton]="
-                                        openAnnotationArray[1]
-                                            .displayAnnotationButton
+                            <div class="date-group date-exp-group">
+                                <app-ta-input
+                                    formControlName="toDate"
+                                    [inputConfig]="{
+                                        name: 'datepicker',
+                                        type: 'text',
+                                        label: 'Exp. date',
+                                        placeholderIcon: 'date',
+                                        isRequired: true,
+                                        customClass: 'datetimeclass',
+                                        isDisabled:
+                                            selectedMode === 'REVIEW_MODE',
+                                        incorrectInput:
+                                            selectedMode === 'REVIEW_MODE'
+                                    }"
+                                    [incorrectValue]="
+                                        openAnnotationArray[0].lineInputs[1]
                                     "
-                                    [displayAnnotationTextArea]="
-                                        openAnnotationArray[1]
-                                            .displayAnnotationTextArea
+                                    (incorrectEvent)="
+                                        incorrectInput($event, 1, 0)
                                     "
-                                    [lineIndex]="1"
-                                    [isFeedback]="
-                                        selectedMode === 'FEEDBACK_MODE'
-                                    "
-                                    [feedbackText]="
-                                        'Check the routing number one more time (one number missing)!!!'
-                                    "
-                                    (annotationBtnClickEvent)="
-                                        getAnnotationBtnClickValue($event)
-                                    "
-                                ></app-applicant-review-feedback>
+                                ></app-ta-input>
                             </div>
-                        </ng-container>
+
+                            <!-- REVIEW AND FEEDBACK -->
+
+                            <ng-container
+                                *ngIf="selectedMode !== 'APPLICANT_MODE'"
+                            >
+                                <div class="review-feedback-container">
+                                    <app-applicant-review-feedback
+                                        formControlName="firstRowReview"
+                                        [displayAnnotationButton]="
+                                            openAnnotationArray[0]
+                                                .displayAnnotationButton
+                                        "
+                                        [displayAnnotationTextArea]="
+                                            openAnnotationArray[0]
+                                                .displayAnnotationTextArea
+                                        "
+                                        [lineIndex]="0"
+                                        [isFeedback]="
+                                            selectedMode === 'FEEDBACK_MODE'
+                                        "
+                                        [feedbackText]="
+                                            'Check the routing number one more time (one number missing)!!!'
+                                        "
+                                        (annotationBtnClickEvent)="
+                                            getAnnotationBtnClickValue($event)
+                                        "
+                                    ></app-applicant-review-feedback>
+                                </div>
+                            </ng-container>
+                        </div>
+                    </form>
+
+                    <!-- FILES CONTAINER -->
+
+                    <div
+                        class="d-flex flex-column files-container"
+                        [formGroup]="medicalCertificateForm"
+                    >
+                        <div class="d-flex align-items-center files-header">
+                            <div
+                                class="d-flex align-items-center justify-content-center counter-container"
+                            >
+                                <p class="m-0 ta-font-extra-bold">
+                                    {{ documents?.length }}
+                                </p>
+                            </div>
+                            <div
+                                class="d-flex align-items-center document-title-container"
+                            >
+                                <p
+                                    class="m-0 ta-font-extra-bold documents-title"
+                                >
+                                    Documents
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="line-container">
+                            <app-ta-upload-files
+                                [files]="documents"
+                                [size]="'medium'"
+                                [showDropzone]="
+                                    selectedMode === 'APPLICANT_MODE'
+                                "
+                                [isRequired]="true"
+                                [showRequired]="displayDocumentsRequiredNote"
+                                [isReview]="selectedMode === 'REVIEW_MODE'"
+                                [reviewMode]="
+                                    selectedMode === 'REVIEW_MODE' &&
+                                    'REVIEW_MODE'
+                                "
+                                (onFileEvent)="onFilesAction($event)"
+                            ></app-ta-upload-files>
+
+                            <!-- REVIEW AND FEEDBACK -->
+
+                            <ng-container
+                                *ngIf="selectedMode !== 'APPLICANT_MODE'"
+                            >
+                                <div class="review-feedback-container">
+                                    <app-applicant-review-feedback
+                                        formControlName="secondRowReview"
+                                        [displayAnnotationButton]="
+                                            openAnnotationArray[1]
+                                                .displayAnnotationButton
+                                        "
+                                        [displayAnnotationTextArea]="
+                                            openAnnotationArray[1]
+                                                .displayAnnotationTextArea
+                                        "
+                                        [lineIndex]="1"
+                                        [isFeedback]="
+                                            selectedMode === 'FEEDBACK_MODE'
+                                        "
+                                        [feedbackText]="
+                                            'Check the routing number one more time (one number missing)!!!'
+                                        "
+                                        (annotationBtnClickEvent)="
+                                            getAnnotationBtnClickValue($event)
+                                        "
+                                    ></app-applicant-review-feedback>
+                                </div>
+                            </ng-container>
+                        </div>
                     </div>
                 </div>
+
+                <!-- FOOTER -->
+
+                <app-applicant-footer
+                    [mode]="selectedMode"
+                ></app-applicant-footer>
             </div>
-
-            <!-- FOOTER -->
-
-            <app-applicant-footer [mode]="selectedMode"></app-applicant-footer>
         </div>
     </div>
-</div>
 
-<!-- NEXT BTN -->
+    <!-- NEXT BTN -->
 
-<div
-    class="d-flex justify-content-center align-items-center next-btn-container"
->
-    <app-applicant-next-back-btn
-        [nextStep]="true"
-        [lastStep]="true"
-        [filledCorrectly]="
-            selectedMode === 'APPLICANT_MODE' && medicalCertificateForm.valid
-        "
-        [hasIncorrectFields]="
-            selectedMode === 'REVIEW_MODE' && hasIncorrectFields
-        "
-        [mode]="selectedMode"
-        (stepEvent)="onStepAction($event)"
-    ></app-applicant-next-back-btn>
-</div>
+    <div
+        class="d-flex justify-content-center align-items-center next-btn-container"
+    >
+        <app-applicant-next-back-btn
+            [nextStep]="true"
+            [lastStep]="true"
+            [filledCorrectly]="
+                selectedMode === 'APPLICANT_MODE' &&
+                medicalCertificateForm.valid
+            "
+            [hasIncorrectFields]="
+                selectedMode === 'REVIEW_MODE' && hasIncorrectFields
+            "
+            [mode]="selectedMode"
+            (stepEvent)="onStepAction($event)"
+        ></app-applicant-next-back-btn>
+    </div>
+</ng-container>

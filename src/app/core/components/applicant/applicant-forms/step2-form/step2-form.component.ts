@@ -288,10 +288,6 @@ export class Step2FormComponent
         this.getDropdownLists();
 
         this.isDriverPosition();
-
-        this.classesOfEquipment.push(this.createClassOfEquipment());
-        this.classesOfEquipment.push(this.createClassOfEquipment());
-        this.classesOfEquipment.push(this.createClassOfEquipment());
     }
 
     ngAfterViewInit(): void {
@@ -673,7 +669,7 @@ export class Step2FormComponent
     }
 
     public onAddClassOfEquipment(): void {
-        this.selectedVehicleType = null;
+        /*   this.selectedVehicleType = null;
         this.selectedTrailerType = null;
         this.selectedTrailerLength = null;
 
@@ -683,7 +679,7 @@ export class Step2FormComponent
         this.cfrPartRadios[0].checked = false;
         this.cfrPartRadios[1].checked = false;
         this.fmcsaRadios[0].checked = false;
-        this.fmcsaRadios[1].checked = false;
+        this.fmcsaRadios[1].checked = false; */
 
         this.classesOfEquipment.push(this.createClassOfEquipment());
 

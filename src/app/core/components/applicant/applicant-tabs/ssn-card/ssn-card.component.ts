@@ -13,7 +13,7 @@ import { ApplicantStore } from '../../state/store/applicant.store';
 import { ApplicantQuery } from '../../state/store/applicant.query';
 
 import { SelectedMode } from '../../state/enum/selected-mode.enum';
-import { ApplicantResponse } from 'appcoretruckassist';
+import { ApplicantResponse, SsnFeedbackResponse } from 'appcoretruckassist';
 
 @Component({
     selector: 'app-ssn-card',
@@ -28,6 +28,7 @@ export class SsnCardComponent implements OnInit, OnDestroy {
     public ssnCardForm: FormGroup;
 
     public applicantId: number;
+    public ssnCardId: number | null = null;
 
     public stepHasValues: boolean = false;
 
@@ -77,10 +78,24 @@ export class SsnCardComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe((res: ApplicantResponse) => {
                 this.applicantId = res.id;
-                console.log('res', res);
 
-                /* this.stepHasValues = true; */
+                if (res.ssnCard) {
+                    this.patchStepValues(res.ssnCard);
+
+                    this.stepHasValues = true;
+                }
             });
+    }
+    public patchStepValues(stepValues: SsnFeedbackResponse): void {
+        const { files, id } = stepValues;
+
+        this.ssnCardId = id;
+
+        this.ssnCardForm.patchValue({
+            files: JSON.stringify(files),
+        });
+
+        this.documents = files;
     }
 
     public onFilesAction(event: any): void {
@@ -101,6 +116,11 @@ export class SsnCardComponent implements OnInit, OnDestroy {
                     .patchValue(
                         event.files.length ? JSON.stringify(event.files) : null
                     );
+
+                this.documentsForDeleteIds = [
+                    ...this.documentsForDeleteIds,
+                    event.deleteId,
+                ];
 
                 break;
 
@@ -202,9 +222,12 @@ export class SsnCardComponent implements OnInit, OnDestroy {
         const saveData: any = {
             applicantId: this.applicantId,
             files: documents,
+            ...((this.stepHasValues ||
+                this.selectedMode === SelectedMode.FEEDBACK) && {
+                id: this.ssnCardId,
+                filesForDeleteIds: this.documentsForDeleteIds,
+            }),
         };
-
-        console.log('saveData', saveData);
 
         const selectMatchingBackendMethod = () => {
             if (
@@ -228,6 +251,19 @@ export class SsnCardComponent implements OnInit, OnDestroy {
             .subscribe({
                 next: () => {
                     this.router.navigate([`/cdl-card/${this.applicantId}`]);
+
+                    this.applicantStore.update((store) => {
+                        return {
+                            ...store,
+                            applicant: {
+                                ...store.applicant,
+                                ssnCard: {
+                                    ...store.applicant.ssnCard,
+                                    files: saveData.files,
+                                },
+                            },
+                        };
+                    });
                 },
                 error: (err) => {
                     console.log(err);
