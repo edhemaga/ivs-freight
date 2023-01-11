@@ -5,15 +5,15 @@
     <div class="gps-progress-text">
         <div class="mileage-gps d-flex">
             <div class="mileages">{{ gpsTitle }}</div>
-            <div class="mileage-normal" *ngIf="!currentStopHovered">
-                86.7 mi
+            <div class="mileage-normal">
+                {{ mileageInfo }}
             </div>
         </div>
         <div class="mileage-gps d-flex">
             <div class="gps-timeline">
                 <div
                     class="gps-timeline-active"
-                    [ngStyle]="{ left: currentPosition + '%' }"
+                    [ngStyle]="{ width: currentPosition + '%' }"
                 ></div>
                 <div
                     class="gps-stop"

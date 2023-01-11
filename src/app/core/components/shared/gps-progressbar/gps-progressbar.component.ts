@@ -9,11 +9,12 @@ export class GpsProgressbarComponent implements OnInit {
     constructor() {}
 
     currentPosition: number = 50;
-    currentStopHovered: boolean = false;
+    mileageInfo: string = '226.3 mi';
     currentStop: any = {
         type: 'currentStop',
         position: 50,
-        location: 'Philadelphia, PA'
+        location: 'Philadelphia, PA',
+        mileage: '',
     };
     gpsTitle: string = '128.4 mi';
 
@@ -22,26 +23,31 @@ export class GpsProgressbarComponent implements OnInit {
             type: 'start',
             position: 0,
             location: 'Overland Park, KS',
+            mileage: '305.7 mi ago',
         },
         {
             type: 'pickup',
             position: 10,
             location: 'Chicago, IL',
+            mileage: '225.6 mi ago',
         },
         {
             type: 'pickup',
             position: 40,
             location: 'Los Angeles, CA',
+            mileage: '50.7 mi ago',
         },
         {
             type: 'delivery',
             position: 60,
             location: 'New York, NY',
+            mileage: 'in 20.8 mi',
         },
         {
             type: 'delivery',
             position: 100,
             location: 'Miami, FL',
+            mileage: 'in 202.4 mi',
         },
     ];
 
@@ -49,11 +55,11 @@ export class GpsProgressbarComponent implements OnInit {
 
     hoverStop(stop: any) {
         this.gpsTitle = stop.location;
-        this.currentStopHovered = stop.type == 'currentStop' ? true : false;
+        this.mileageInfo = stop.mileage;
     }
 
     leaveStop() {
         this.gpsTitle = '128.4 mi';
-        this.currentStopHovered = false;
+        this.mileageInfo = '226.3 mi';
     }
 }
