@@ -120,6 +120,7 @@ export class ShopRepairDetailsItemComponent implements OnInit, OnChanges {
 
                     if ( index ) {
                         this.repairListData[index] = res.data;
+                        this.cdr.detectChanges();
                     }
                 }
             });
