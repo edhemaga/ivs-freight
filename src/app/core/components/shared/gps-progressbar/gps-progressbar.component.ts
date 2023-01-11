@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
     selector: 'app-gps-progressbar',
@@ -7,6 +7,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class GpsProgressbarComponent implements OnInit {
     constructor() {}
+    @Input() isDropdown: boolean = false;
 
     currentPosition: number = 50;
     mileageInfo: string = '226.3 mi';
@@ -17,7 +18,7 @@ export class GpsProgressbarComponent implements OnInit {
         mileage: '',
     };
     gpsTitle: string = '128.4 mi';
-
+    hoveredGpsIcon: boolean = false;
     gpsProgress: any = [
         {
             type: 'start',

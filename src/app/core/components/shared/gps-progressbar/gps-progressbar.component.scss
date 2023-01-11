@@ -1,72 +1,70 @@
-.gps-progress-holder{
+.gps-progress-holder {
     height: 26px;
     padding: 2px;
     align-items: center;
-    .gps-progress-img{
-        svg-icon{
-            svg{
+    .gps-progress-img {
+        cursor: pointer;
+        svg-icon {
+            svg {
                 width: 22px;
                 height: 22px;
-                path{
-                    fill: #3074D3;
-                }
             }
         }
     }
 
-    .gps-progress-text{
+    .gps-progress-text {
         height: 26px;
         padding: 0 10px 0 8px;
         flex: 1;
-        .mileage-gps{
+        .mileage-gps {
             height: 12px;
-            
+
             justify-content: space-between;
 
-            &:last-child{
+            &:last-child {
                 align-items: center;
             }
-        
-            .mileages, .mileage-normal{
+
+            .mileages,
+            .mileage-normal {
                 font-size: 11px;
-                color: #2F2F2F;
+                color: #2f2f2f;
                 font-weight: 400;
 
                 user-select: none;
 
-                &.mileages{
+                &.mileages {
                     font-weight: 600;
                 }
             }
 
-            .gps-timeline{
+            .gps-timeline {
                 position: relative;
                 margin-right: 12px;
                 flex: 1;
                 height: 2px;
-                background-color: #DADADA;
+                background-color: #dadada;
 
-
-                .gps-stop{
+                .gps-stop {
                     position: absolute;
                     top: 50%;
                     width: 4px;
                     height: 6px;
                     border-radius: 1px;
-                    background-color: #AAAAAA;
+                    background-color: #aaaaaa;
                     transform: translateY(-50%);
                     cursor: pointer;
 
-                    &.pickup-stop{
-                        background-color: #80CBBA;
+                    &.pickup-stop {
+                        background-color: #80cbba;
                     }
 
-                    &.delivery-stop{
-                        background-color: #EF5350;
+                    &.delivery-stop {
+                        background-color: #ef5350;
                     }
                 }
 
-                .current-pos{
+                .current-pos {
                     position: absolute;
                     top: 50%;
                     left: 0%;
@@ -74,29 +72,53 @@
                     transform: translateY(-50%);
                     cursor: pointer;
 
-                    svg-icon{
-                        svg{
+                    svg-icon {
+                        svg {
                             width: 10px;
                             height: 10px;
-                            rect:first-child{
-                                fill: #3074D3;
+                            rect:first-child {
+                                fill: #3074d3;
                             }
 
-                            rect:last-child{
+                            rect:last-child {
                                 fill: #ffffff;
                             }
                         }
                     }
                 }
 
-                .gps-timeline-active{
+                .gps-timeline-active {
                     position: absolute;
                     height: 2px;
                     left: 0;
                     width: 0%;
-                    background-color: #6C6C6C;
+                    background-color: #6c6c6c;
                 }
             }
+        }
+    }
+
+    .gps_info_hold {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+
+        height: 26px;
+        padding: 0 10px 0 8px;
+        flex: 1;
+
+        .moving_side {
+            color: #3074D3;
+            font-weight: 900;
+            font-size: 11px;
+            line-height: 11px;
+        }
+
+        .moving_time {
+            color: #2F2F2F;
+            font-weight: 500;
+            font-size: 11px;
+            line-height: 11px;
         }
     }
 }

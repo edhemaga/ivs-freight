@@ -1,8 +1,12 @@
 <div class="gps-progress-holder d-flex">
-    <div class="gps-progress-img">
-        <svg-icon src="assets/svg/common/ic_gps.svg"></svg-icon>
+    <div
+        class="gps-progress-img"
+        (mouseenter)="hoveredGpsIcon = true"
+        (mouseleave)="hoveredGpsIcon = false"
+    >
+        <svg-icon src="assets/svg/common/gps_full.svg"></svg-icon>
     </div>
-    <div class="gps-progress-text">
+    <div class="gps-progress-text" *ngIf="!hoveredGpsIcon && !isDropdown">
         <div class="mileage-gps d-flex">
             <div class="mileages">{{ gpsTitle }}</div>
             <div class="mileage-normal">
@@ -39,5 +43,13 @@
             </div>
             <div class="mileages">12%</div>
         </div>
+    </div>
+    <div class="gps_info_hold" *ngIf="hoveredGpsIcon && !isDropdown">
+        <div class="moving_side">MOVING - SOUTH</div>
+        <div class="moving_time">03:47</div>
+    </div>
+    <div class="gps_info_hold" *ngIf="isDropdown">
+        <div class="moving_side">MOVING - SOUTH</div>
+        <div class="moving_time">03:47</div>
     </div>
 </div>
