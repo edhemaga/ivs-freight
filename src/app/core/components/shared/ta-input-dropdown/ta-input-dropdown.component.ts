@@ -141,9 +141,14 @@ export class TaInputDropdownComponent
                 );
                 return;
             }
-            changes.preloadMultiselectItems?.currentValue?.forEach((item) => {
-                this.onMultiselectSelect(item);
-            });
+
+            if (changes.preloadMultiselectItems?.currentValue?.length) {
+                changes.preloadMultiselectItems?.currentValue?.forEach(
+                    (item) => {
+                        this.onMultiselectSelect(item);
+                    }
+                );
+            }
         }
 
         // Details Pages
@@ -536,8 +541,11 @@ export class TaInputDropdownComponent
             .filter((item) => item.active)
             .slice(-1)[0];
 
-        this.inputRef.focusInput = false;
-        this.inputRef.input.nativeElement.blur();
+        if (this.inputRef) {
+            this.inputRef.focusInput = false;
+            this.inputRef.input.nativeElement.blur();
+        }
+
         this.inputConfig = {
             ...this.inputConfig,
             multiSelectDropdownActive: true,

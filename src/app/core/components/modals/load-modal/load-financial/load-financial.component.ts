@@ -66,13 +66,12 @@ export class LoadFinancialComponent implements OnChanges {
 
     ngOnChanges(changes: SimpleChanges): void {
         if (changes.payment?.currentValue !== changes.payment?.previousValue) {
-            console.log(changes.payment?.currentValue);
             const pay = convertThousanSepInNumber(
                 changes.payment?.currentValue.substring(1)
             );
 
             const bill = convertThousanSepInNumber(this.billing.substring(1));
-            console.log('bill - pay: ', bill, pay);
+
             this.paymentDifference = pay - bill;
         }
     }

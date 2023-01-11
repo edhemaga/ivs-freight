@@ -1,4 +1,11 @@
 <app-ta-modal
+    (action)="onModalAction($event)"
+    (onTabHeaderChange)="onModalHeaderTabChange($event)"
+    [customClass]="'modal-container-L'"
+    [disableDelete]="editData?.type?.includes('edit-fo')"
+    [editData]="editData"
+    [editName]="editData?.data?.textUnit"
+    [isModalValid]="repairOrderForm.valid && isFormDirty"
     [modalTitle]="
         !editData?.type?.includes('edit')
             ? 'Add Repair'
@@ -6,36 +13,32 @@
             ? 'Finish Order'
             : 'Edit Repair'
     "
-    [editData]="editData"
-    [editName]="editData?.data?.textUnit"
-    [isModalValid]="repairOrderForm.valid && isFormDirty"
+    [saveAndAddNew]="editData?.type !== 'edit'"
+    [tabChangePosition]="'right'"
     [tabChange]="
         (editData?.type?.includes('edit') && selectedRepairType === 'Bill') ||
         editData?.type?.includes('edit-fo')
             ? null
             : headerTabs
     "
-    [tabChangePosition]="'right'"
-    [disableDelete]="editData?.type?.includes('edit-fo')"
-    [customClass]="'modal-container-L'"
-    [saveAndAddNew]="editData?.type !== 'edit'"
-    (onTabHeaderChange)="onModalHeaderTabChange($event)"
-    (action)="onModalAction($event)"
 >
     <form
-        origin
         [formGroup]="repairOrderForm"
         class="form-container form-container-without-mb"
+        origin
     >
         <div class="repair-modal-bill-first-row">
             <app-ta-tab-switch
-                [tabs]="typeOfRepair"
                 (switchClicked)="onTypeOfRepair($event)"
+                [tabs]="typeOfRepair"
                 [type]="'type2-modal-popup'"
             ></app-ta-tab-switch>
 
             <app-ta-input-dropdown
-                formControlName="unit"
+                (selectedItem)="onSelectDropDown($event, 'repair-unit')"
+                [activeItem]="selectedUnit"
+                [canAddNew]="true"
+                [canOpenModal]="true"
                 [inputConfig]="{
                     name: 'Input Dropdown vehicle-unit',
                     type: 'text',
@@ -50,14 +53,10 @@
                         !editData?.type?.includes('edit') &&
                         !editData?.storageData?.unit
                 }"
-                [canAddNew]="true"
-                [canOpenModal]="true"
                 [options]="labelsUnit"
-                [activeItem]="selectedUnit"
-                (selectedItem)="onSelectDropDown($event, 'repair-unit')"
+                formControlName="unit"
             ></app-ta-input-dropdown>
             <app-ta-input
-                formControlName="odometer"
                 [inputConfig]="{
                     name: 'repair-odometer',
                     type: 'text',
@@ -68,9 +67,9 @@
                     minLength: 1,
                     maxLength: 9
                 }"
+                formControlName="odometer"
             ></app-ta-input>
             <app-ta-input
-                formControlName="date"
                 [inputConfig]="{
                     name: 'datepicker',
                     type: 'text',
@@ -81,9 +80,9 @@
                     isDisabled: selectedHeaderTab !== 2,
                     customClass: 'datetimeclass'
                 }"
+                formControlName="date"
             ></app-ta-input>
             <app-ta-input
-                formControlName="invoice"
                 [inputConfig]="{
                     name: 'Invoice',
                     type: 'text',
@@ -93,6 +92,7 @@
                     minLength: 1,
                     maxLength: 22
                 }"
+                formControlName="invoice"
             ></app-ta-input>
         </div>
         <div class="row last-row">
@@ -105,8 +105,8 @@
                     <p class="selected-item-name">
                         {{ selectedRepairShop?.name }}
                         <svg-icon
-                            class="selected-item-star"
                             [ngClass]="{ active: selectedRepairShop?.pinned }"
+                            class="selected-item-star"
                             src="assets/svg/common/ic_star.svg"
                         ></svg-icon>
                     </p>
@@ -147,25 +147,28 @@
                     </div>
                     <div class="clear-selected-item">
                         <div
-                            ngbTooltip
-                            mainTooltip="Clear"
-                            tooltipBackground="#6c6c6c"
-                            position="top"
-                            class="clear-x"
                             (click)="
                                 selectedRepairShop = null;
                                 repairOrderForm
                                     .get('repairShopId')
                                     .patchValue(null)
                             "
+                            class="clear-x"
+                            mainTooltip="Clear"
+                            ngbTooltip
+                            position="top"
+                            tooltipBackground="#6c6c6c"
                         >
                             <svg-icon src="assets/svg/ic_x.svg"></svg-icon>
                         </div>
                     </div>
                 </div>
                 <app-ta-input-dropdown
+                    (selectedItem)="onSelectDropDown($event, 'repair-shop')"
                     *ngIf="!selectedRepairShop"
-                    formControlName="repairShopId"
+                    [activeItem]="selectedRepairShop"
+                    [canAddNew]="true"
+                    [canOpenModal]="true"
                     [inputConfig]="{
                         name: 'Input Dropdown',
                         type: 'text',
@@ -174,38 +177,35 @@
                         isRequired: selectedHeaderTab === 2,
                         dropdownWidthClass: 'w-col-686'
                     }"
-                    [canAddNew]="true"
-                    [canOpenModal]="true"
                     [options]="labelsRepairShop"
-                    [activeItem]="selectedRepairShop"
-                    (selectedItem)="onSelectDropDown($event, 'repair-shop')"
+                    formControlName="repairShopId"
                 ></app-ta-input-dropdown>
             </div>
         </div>
         <!-- Fake Table Card -->
         <div [ngClass]="{ 'repair-order': selectedHeaderTab !== 2 }">
             <app-ta-custom-card
-                [hasCounter]="items.length ? items.length : 0"
+                (onActionEvent)="addItems($event)"
                 [cardName]="'Item'"
+                [disableAnimation]="disableCardAnimation"
+                [disabledCard]="!items.length"
                 [hasActionSvg]="'assets/svg/common/ic_plus.svg'"
                 [hasArrow]="false"
-                [isCommentData]="true"
-                [isCardOpen]="items.length > 0"
                 [hasBodyData]="items.length > 0"
+                [hasCounter]="items.length ? items.length : 0"
                 [hasScrollBody]="items.length > 10"
-                [disabledCard]="!items.length"
-                [disableAnimation]="disableCardAnimation"
-                (onActionEvent)="addItems($event)"
+                [isCardOpen]="items.length > 0"
+                [isCommentData]="true"
             >
                 <div
-                    formArrayName="items"
-                    class="common-fake-table-modal"
+                    *ngIf="items.length"
                     [ngClass]="
                         selectedHeaderTab === 2
                             ? 'common-fake-table-modal-repair-bill-item'
                             : 'common-fake-table-modal-repair-order-item'
                     "
-                    *ngIf="items.length"
+                    class="common-fake-table-modal"
+                    formArrayName="items"
                 >
                     <div class="common-fake-table-label">
                         <p></p>
@@ -226,20 +226,19 @@
                         >
                             <div
                                 [formGroupName]="ind"
-                                class="common-fake-table-card"
                                 [ngClass]="{
                                     'card-item-active':
                                         selectedPM[ind]?.logoName &&
                                         selectedPM[ind]?.logoName !==
                                             'assets/svg/common/repair-pm/ic_custom_pm.svg'
                                 }"
+                                class="common-fake-table-card"
                             >
                                 <p>
                                     {{ item.get('id').value }}
                                 </p>
                                 <div class="desc-pm-container">
                                     <app-ta-input
-                                        formControlName="description"
                                         [inputConfig]="{
                                             id: 'Description' + ind,
                                             name: 'Description',
@@ -259,17 +258,17 @@
                                             hideErrorMessage: true,
                                             blackInput: true
                                         }"
+                                        formControlName="description"
                                     ></app-ta-input>
                                     <!-- PMs -->
                                     <div
                                         #t2="ngbPopover"
+                                        [container]="'body'"
                                         [ngbPopover]="pmDropdownPopover"
                                         [placement]="['bottom-right']"
                                         popoverClass="ta-dropdown-popover"
-                                        [container]="'body'"
                                     >
                                         <svg-icon
-                                            class="pm-svg"
                                             [class.active]="
                                                 selectedPM.length
                                                     ? !selectedPM[
@@ -285,33 +284,38 @@
                                                     ? selectedPM[ind]?.logoName
                                                     : 'assets/svg/common/repair-pm/ic_custom_pm.svg'
                                             "
+                                            class="pm-svg"
                                         ></svg-icon>
                                     </div>
 
                                     <ng-template #pmDropdownPopover>
                                         <div
                                             *ngIf="pmOptions?.length"
-                                            class="options"
                                             [ngClass]="{
                                                 scroll: pmOptions?.length > 6
                                             }"
+                                            class="options"
                                         >
                                             <div
-                                                *ngFor="let action of pmOptions"
-                                                class="option"
+                                                (click)="
+                                                    onAction(pmOption, ind)
+                                                "
+                                                *ngFor="
+                                                    let pmOption of pmOptions
+                                                "
                                                 [ngClass]="{
                                                     'add-option':
-                                                        action.title ===
+                                                        pmOption.title ===
                                                         'Add New'
                                                 }"
-                                                (click)="onAction(action, ind)"
+                                                class="option"
                                             >
                                                 <svg-icon
+                                                    [src]="pmOption.logoName"
                                                     class="option-svg"
-                                                    [src]="action.logoName"
                                                 ></svg-icon>
                                                 <div class="option-text">
-                                                    {{ action.title }}
+                                                    {{ pmOption.title }}
                                                 </div>
                                             </div>
                                         </div>
@@ -320,8 +324,8 @@
                                 </div>
 
                                 <app-ta-input
+                                    (change)="onChange('price', ind)"
                                     *ngIf="selectedHeaderTab === 2"
-                                    formControlName="price"
                                     [inputConfig]="{
                                         id: 'Price' + ind,
                                         name: 'Price',
@@ -340,11 +344,11 @@
                                         hideErrorMessage: true,
                                         blackInput: true
                                     }"
-                                    (change)="onChange('price', ind)"
+                                    formControlName="price"
                                 ></app-ta-input>
 
                                 <app-ta-input
-                                    formControlName="quantity"
+                                    (change)="onChange('quantity', ind)"
                                     [inputConfig]="{
                                         id: 'QTY' + ind,
                                         name: 'QTY',
@@ -360,7 +364,7 @@
                                         hideErrorMessage: true,
                                         blackInput: true
                                     }"
-                                    (change)="onChange('quantity', ind)"
+                                    formControlName="quantity"
                                 ></app-ta-input>
 
                                 <p
@@ -371,12 +375,12 @@
                                 </p>
 
                                 <div
-                                    ngbTooltip
+                                    (click)="removeItems(ind)"
+                                    class="common-fake-table-delete"
                                     mainTooltip="Delete"
+                                    ngbTooltip
                                     position="top"
                                     tooltipBackground="#EF5350"
-                                    class="common-fake-table-delete"
-                                    (click)="removeItems(ind)"
                                 >
                                     <svg-icon
                                         src="assets/svg/common/ic_trash.svg"
@@ -396,17 +400,17 @@
         </div>
 
         <app-ta-custom-card
-            [hasCounter]="pickedServices() ? pickedServices() : 0"
             [cardName]="'Service'"
             [disableAnimation]="disableCardAnimation"
+            [hasCounter]="pickedServices() ? pickedServices() : 0"
             [isCardOpen]="true"
         >
             <div class="repair-shop-services">
                 <div
-                    *ngFor="let repair of services; trackBy: identity"
-                    class="repair-shop-service"
-                    [ngClass]="{ active: repair.active }"
                     (click)="repair.active = !repair.active"
+                    *ngFor="let repair of services; trackBy: identity"
+                    [ngClass]="{ active: repair.active }"
+                    class="repair-shop-service"
                 >
                     <svg-icon src="{{ repair.svg }}"></svg-icon>
                     <p>{{ repair.serviceType }}</p>
@@ -415,23 +419,22 @@
         </app-ta-custom-card>
         <div *ngIf="selectedHeaderTab === 2" class="ta-card-body-overflow-none">
             <app-ta-custom-card
-                [hasCounter]="documents.length ? documents.length : 0"
                 [cardName]="'Documents'"
                 [disableAnimation]="disableCardAnimation"
+                [hasCounter]="documents.length ? documents.length : 0"
                 [isCardOpen]="documents.length > 0"
             >
                 <app-ta-upload-files
-                    [files]="documents"
-                    [size]="'large'"
-                    [showDropzone]="true"
-                    [customClassName]="'modals'"
                     (onFileEvent)="onFilesEvent($event)"
+                    [customClassName]="'modals'"
+                    [files]="documents"
+                    [showDropzone]="true"
+                    [size]="'large'"
                 ></app-ta-upload-files>
             </app-ta-custom-card>
         </div>
         <!-- Note -->
         <app-ta-input-note
-            formControlName="note"
             [isVisibleNote]="
                 repairOrderForm.get('note').value &&
                 repairOrderForm.get('note').value != 'null'
@@ -444,6 +447,7 @@
                     ? repairOrderForm.get('note').value
                     : ''
             "
+            formControlName="note"
         ></app-ta-input-note>
     </form>
 </app-ta-modal>
