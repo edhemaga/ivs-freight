@@ -335,8 +335,31 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     modalColumns: any[] = [];
-    modalTestInitialization(){
+    modalViewData: any[] = [];
+    modalTestInitialization() {
         this.modalColumns = getLoadModalColumnDefinition();
+
+        for (let i = 0; i < 3; i++) {
+            this.modalViewData.push({
+                tableDescription: {
+                    text: 'Jaffa Cakes',
+                    extraText: '',
+                },
+                tableQuantity: {
+                    text: 230,
+                    extraText: 'Boxes',
+                },
+                tableBolNo: {
+                    text: 1598550,
+                    extraText: '',
+                },
+                tableWeight: {
+                    text: '2,360',
+                    extraText: 'lbs',
+                },
+                tableAction: 'delete',
+            });
+        }
     }
 
     ngAfterViewInit(): void {
@@ -368,8 +391,6 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
             actions: this.getTableActions(),
         };
     }
-
-
 
     getTableActions() {
         return this.selectedTab === 'applicants'
@@ -1084,6 +1105,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
             });
     }
 
+    
     private multipleDeleteDrivers(response: any[]) {
         this.driverTService
             .deleteDriverList(response)

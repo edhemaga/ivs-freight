@@ -15,15 +15,15 @@ export class TableModalComponent implements OnInit, OnChanges {
     @Input() columns: any[];
     @Input() viewData: any[];
 
-    tableHeadFixedColumns: any[] = [];
-    tableHeadScrollableColumns: any[] = [];
-    tableHeadActionColumns: any[] = [];
+    tableFixedColumns: any[] = [];
+    tableScrollableColumns: any[] = [];
+    tableActionColumns: any[] = [];
 
     constructor() {}
 
     ngOnInit(): void {
         console.log('ngOnInit');
-        console.log(this.columns);
+        console.log(this.viewData);
 
         this.setHeadColumns();
     }
@@ -39,25 +39,25 @@ export class TableModalComponent implements OnInit, OnChanges {
     setHeadColumns() {
         this.columns.map((column) => {
             if (column.isPined) {
-                this.tableHeadFixedColumns.push(column);
+                this.tableFixedColumns.push(column);
             }
 
             if (!column.isPined && !column.isAction) {
-                this.tableHeadScrollableColumns.push(column);
+                this.tableScrollableColumns.push(column);
             }
 
             if(column.isAction){
-              this.tableHeadActionColumns.push(column);
+              this.tableActionColumns.push(column);
             }
         });
 
         console.log('Table Head Fixed Columns');
-        console.log(this.tableHeadFixedColumns);
+        console.log(this.tableFixedColumns);
 
         console.log('Table Head Scrollable Columns');
-        console.log(this.tableHeadScrollableColumns);
+        console.log(this.tableScrollableColumns);
 
         console.log('Table Head Action Columns');
-        console.log(this.tableHeadActionColumns);
+        console.log(this.tableActionColumns);
     }
 }

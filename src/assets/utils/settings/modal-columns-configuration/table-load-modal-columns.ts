@@ -2,13 +2,13 @@
 export function getLoadModalColumnDefinition() {
     return [
         {
-            ngTemplate: 'text',
+            ngTemplate: 'num-count',
             title: '#',
             field: 'tableNumber',
             sortName: '',
             hidden: false,
             isPined: true,
-            width: 20,
+            width: 25,
             sortable: true,
             isAction: false
         },
@@ -57,8 +57,9 @@ export function getLoadModalColumnDefinition() {
             isAction: false
         },
         {
-            ngTemplate: 'text',
-            width: 200,
+            ngTemplate: 'action',
+            field: 'tableAction',
+            width: 34,
             isAction: true
         },
     ];

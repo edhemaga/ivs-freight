@@ -1,8 +1,19 @@
 <table>
     <thead class="modal-table-head">
         <!-- Fixed Columns -->
-        <tr class="tr-modal-table-fixed">
-            <th *ngFor="let column of tableHeadFixedColumns; let i = index">
+        <tr>
+            <th *ngFor="let column of tableFixedColumns; let i = index">
+                <!-- Number Count -->
+                <div
+                    *ngIf="column.ngTemplate === 'num-count'"
+                    class="th-num-count"
+                    [ngStyle]="{
+                        'width.px': column.width
+                    }"
+                >
+                    {{ column.title }}
+                </div>
+
                 <!-- Title -->
                 <div
                     *ngIf="column.ngTemplate === 'text'"
@@ -17,10 +28,8 @@
         </tr>
 
         <!-- Scrollable Columns -->
-        <tr class="tr-modal-table-fixed">
-            <th
-                *ngFor="let column of tableHeadScrollableColumns; let i = index"
-            >
+        <tr>
+            <th *ngFor="let column of tableScrollableColumns; let i = index">
                 <!-- Title -->
                 <div
                     *ngIf="column.ngTemplate === 'text'"
@@ -32,13 +41,108 @@
                     {{ column.title }}
                 </div>
             </th>
-        </tr> 
+        </tr>
 
         <!-- Action Columns -->
-        <tr class="tr-modal-table-fixed">
-            <th
-                *ngFor="let column of tableHeadActionColumns; let i = index"
-            ></th>
+        <tr>
+            <th *ngFor="let column of tableActionColumns; let i = index">
+                <!-- Icons -->
+                <div
+                    *ngIf="column.isAction"
+                    class="add-btn"
+                    [ngStyle]="{
+                        'width.px': column.width
+                    }"
+                >
+                    <svg-icon
+                        [svgStyle]="{
+                            'width.px': 14,
+                            'height.px': 14
+                        }"
+                        [src]="'assets/svg/table-modal/Modal-Add-BTN.svg'"
+                    ></svg-icon>
+                </div>
+            </th>
         </tr>
     </thead>
+
+    <tbody class="modal-table-body">
+        <tr
+            *ngFor="let row of viewData; let i = index"
+            [ngStyle]="{ 'margin-top.px': i !== 0 ? 4 : 0 }"
+        >
+            <!-- Fixed Columns -->
+            <div class="fixed-container">
+                <td *ngFor="let column of tableFixedColumns">
+                    <!-- Number Count -->
+                    <div
+                        class="td-num-count"
+                        *ngIf="column.ngTemplate === 'num-count'"
+                        [ngStyle]="{
+                            width: column.width + 'px'
+                        }"
+                    >
+                        {{ i + 1 }}
+                    </div>
+
+                    <!-- Text -->
+                    <div
+                        class="td-input-text"
+                        *ngIf="column.ngTemplate === 'text'"
+                        [ngStyle]="{
+                            width: column.width + 'px'
+                        }"
+                    >
+                        {{ row[column.field].text }}
+                        <div class="td-input-text-extraText">
+                            {{ row[column.field].extraText }}
+                        </div>
+                    </div> 
+                </td>
+            </div>
+
+            <!-- Scrollable Columns -->
+            <div class="scrollable-container">
+                <td *ngFor="let column of tableScrollableColumns">
+                    <!-- Text -->
+                    <div
+                        class="td-input-text"
+                        *ngIf="column.ngTemplate === 'text'"
+                        [ngStyle]="{
+                            width: column.width + 'px'
+                        }"
+                    >
+                        {{ row[column.field].text }}
+                        <div class="td-input-text-extraText">
+                            {{ row[column.field].extraText }}
+                        </div>
+                    </div>
+                </td>
+            </div>
+
+            <!-- Action Columns -->
+            <div class="action-container">
+                <td *ngFor="let column of tableActionColumns">
+                    <!-- Delete Action -->
+                    <div
+                        *ngIf="column.isAction"
+                        class="icon"
+                        [ngStyle]="{
+                            'width.px': column.width
+                        }"
+                    >
+                        <svg-icon
+                            [svgStyle]="{
+                                'width.px': 18,
+                                'height.px': 18
+                            }"
+                            [src]="
+                                'assets/svg/table-modal/Modal-Delete-BTN.svg'
+                            "
+                        ></svg-icon>
+                    </div>
+                </td>
+            </div>
+        </tr>
+    </tbody>
 </table>
