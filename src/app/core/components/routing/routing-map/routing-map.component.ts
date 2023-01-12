@@ -31,6 +31,7 @@ import { RoutingStateService } from '../state/routing-state/routing-state.servic
 import { GetMapListResponse, GetRouteListResponse } from 'appcoretruckassist';
 import { DetailsDataService } from '../../../services/details-data/details-data.service';
 import { NotificationService } from '../../../services/notification/notification.service';
+import { TaThousandSeparatorPipe } from '../../../pipes/taThousandSeparator.pipe';
 
 declare var google: any;
 declare const geoXML3: any;
@@ -43,6 +44,7 @@ declare const geoXML3: any;
         '../../../../../assets/scss/maps.scss',
     ],
     encapsulation: ViewEncapsulation.None,
+    providers: [TaThousandSeparatorPipe],
 })
 export class RoutingMapComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
@@ -571,7 +573,8 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
         private confirmationService: ConfirmationService,
         private routingService: RoutingStateService,
         private DetailsDataService: DetailsDataService,
-        private notificationService: NotificationService
+        private notificationService: NotificationService,
+        private thousandSeparator: TaThousandSeparatorPipe
     ) {}
 
     ngOnInit(): void {
@@ -674,7 +677,8 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
                         this.decodeRouteShape(
                             this.tableData[this.selectedMapIndex].routes[
                                 routeIndex
-                            ]
+                            ],
+                            routeIndex
                         );
                     } else {
                         this.deleteRouteLine(
@@ -826,6 +830,19 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
         }
 
         this.posInside = { source: null, x: 0, y: 0 };
+
+        this.tableData[this.selectedMapIndex].routes.map(
+            (route, routeIndex) => {
+                if (this.routePolylines[route.id]) {
+                    this.routePolylines[route.id].setOptions({
+                        zIndex: route.isFocused
+                            ? 999
+                            : this.tableData[this.selectedMapIndex].routes
+                                  .length - routeIndex,
+                    });
+                }
+            }
+        );
     }
 
     checkOverlap(movedCard, left, top, right, bottom) {
@@ -1637,6 +1654,11 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
             newRoute.nameHover = false;
             newRoute.stops.map((stop) => {
                 stop.id = 0;
+
+                if ( !stop.latitude ) {
+                    stop.latitude = stop.lat;
+                    stop.longitude = stop.long;
+                }
             });
 
             newRoute.color = this.findRouteColor();
@@ -1852,6 +1874,15 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
                     }
                 });
             }
+
+            if (this.routePolylines[route.id]) {
+                this.routePolylines[route.id].setOptions({
+                    zIndex: route.isFocused
+                        ? 999
+                        : this.tableData[this.selectedMapIndex].routes.length -
+                          index,
+                });
+            }
         });
     }
 
@@ -2023,15 +2054,17 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
                     ? 2
                     : 3;
 
-            this.tableData[this.selectedMapIndex].routes.map((item) => {
-                //this.calculateDistanceBetweenStops(index);
-                this.calculateRouteWidth(item);
-                if (item.stops?.length > 1) {
-                    this.decodeRouteShape(item);
-                } else {
-                    this.deleteRouteLine(item);
+            this.tableData[this.selectedMapIndex].routes.map(
+                (item, routeIndex) => {
+                    //this.calculateDistanceBetweenStops(index);
+                    this.calculateRouteWidth(item);
+                    if (item.stops?.length > 1) {
+                        this.decodeRouteShape(item, routeIndex);
+                    } else {
+                        this.deleteRouteLine(item);
+                    }
                 }
-            });
+            );
 
             this.mapToolbar.getSelectedTabTableData();
 
@@ -2970,11 +3003,11 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
                 });
 
                 if (this.selectedMapIndex == mapIndex) {
-                    this.tableData[mapIndex].routes.map((item) => {
+                    this.tableData[mapIndex].routes.map((item, routeIndex) => {
                         //this.calculateDistanceBetweenStops(index);
                         this.calculateRouteWidth(item);
                         if (item.stops?.length > 1) {
-                            this.decodeRouteShape(item);
+                            this.decodeRouteShape(item, routeIndex);
                         } else {
                             this.deleteRouteLine(item);
                         }
@@ -3023,32 +3056,40 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
         //     this.tableData[this.selectedMapIndex].routes.length;
     }
 
-    decodeRouteShape(route) {
+    decodeRouteShape(route, routeIndex) {
         this.routingService
             .decodeRouteShape(route.id)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (res) => {
-                    // const polyLineCoordinates = [];
-                    // if (this.routePolylines[route.id]) {
-                    //     this.routePolylines[route.id].setMap(null);
-                    // }
-                    // res.map((item) => {
-                    //     var coordinates = {
-                    //         lat: item.latitude,
-                    //         lng: item.longitude,
-                    //     };
-                    //     polyLineCoordinates.push(coordinates);
-                    // });
-                    // //const polyLineCoordinates = res;
-                    // this.routePolylines[route.id] = new google.maps.Polyline({
-                    //     path: polyLineCoordinates,
-                    //     geodesic: true,
-                    //     strokeColor: route.color,
-                    //     strokeOpacity: 1.0,
-                    //     strokeWeight: 6,
-                    // });
-                    // this.routePolylines[route.id].setMap(this.agmMap);
+                    const polyLineCoordinates = [];
+
+                    if (this.routePolylines[route.id]) {
+                        this.routePolylines[route.id].setMap(null);
+                    }
+
+                    res.map((item) => {
+                        var coordinates = {
+                            lat: item.latitude,
+                            lng: item.longitude,
+                        };
+                        polyLineCoordinates.push(coordinates);
+                    });
+
+                    //const polyLineCoordinates = res;
+                    this.routePolylines[route.id] = new google.maps.Polyline({
+                        path: polyLineCoordinates,
+                        geodesic: true,
+                        strokeColor: route.color,
+                        strokeOpacity: 1.0,
+                        strokeWeight: 6,
+                        zIndex: route.isFocused
+                            ? 999
+                            : this.tableData[this.selectedMapIndex].routes
+                                  .length - routeIndex,
+                    });
+
+                    this.routePolylines[route.id].setMap(this.agmMap);
                 },
                 error: () => {
                     console.log('decodeRouteShape error');
