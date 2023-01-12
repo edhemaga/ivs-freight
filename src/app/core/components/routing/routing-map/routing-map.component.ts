@@ -237,7 +237,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
             hideTruckFilter: true,
             hideTrailerFilter: true,
             hideDriverFilter: true,
-            hideUnassignedDevicesButton: true
+            hideUnassignedDevicesButton: true,
         },
         config: {
             showSort: true,
@@ -677,7 +677,11 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
                             ]
                         );
                     } else {
-                        this.deleteRouteLine(this.tableData[this.selectedMapIndex].routes[routeIndex]);
+                        this.deleteRouteLine(
+                            this.tableData[this.selectedMapIndex].routes[
+                                routeIndex
+                            ]
+                        );
                     }
 
                     // this.getRouteList(
@@ -1057,7 +1061,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
                             longitude: stop.long,
                             latitude: stop.lat,
                             orderNumber: stop.orderNumber,
-                            shape: stop.shape ? stop.shape : ''
+                            shape: stop.shape ? stop.shape : '',
                         };
 
                         stopArr.push(stopObj);
@@ -1309,7 +1313,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
                         longitude: stop.long,
                         latitude: stop.lat,
                         orderNumber: stopIndex + 1,
-                        shape: stop.shape ? stop.shape : ''
+                        shape: stop.shape ? stop.shape : '',
                     };
 
                     stopArr.push(stopObj);
@@ -2048,7 +2052,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
                 hideTruckFilter: true,
                 hideTrailerFilter: true,
                 hideDriverFilter: true,
-                hideUnassignedDevicesButton: true
+                hideUnassignedDevicesButton: true,
             },
             config: {
                 showSort: true,
@@ -2940,7 +2944,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
                             leg: stop.leg,
                             total: stop.total,
                             orderNumber: stop.orderNumber,
-                            shape: stop.shape ? stop.shape : ''
+                            shape: stop.shape ? stop.shape : '',
                         };
 
                         stopsArr.push(stopObj);
@@ -3025,30 +3029,26 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (res) => {
-                    const polyLineCoordinates = [];
-
-                    if (this.routePolylines[route.id]) {
-                        this.routePolylines[route.id].setMap(null);
-                    }
-
-                    res.map((item) => {
-                        var coordinates = {
-                            lat: item.latitude,
-                            lng: item.longitude,
-                        };
-                        polyLineCoordinates.push(coordinates);
-                    });
-
-                    //const polyLineCoordinates = res;
-                    this.routePolylines[route.id] = new google.maps.Polyline({
-                        path: polyLineCoordinates,
-                        geodesic: true,
-                        strokeColor: route.color,
-                        strokeOpacity: 1.0,
-                        strokeWeight: 6,
-                    });
-
-                    this.routePolylines[route.id].setMap(this.agmMap);
+                    // const polyLineCoordinates = [];
+                    // if (this.routePolylines[route.id]) {
+                    //     this.routePolylines[route.id].setMap(null);
+                    // }
+                    // res.map((item) => {
+                    //     var coordinates = {
+                    //         lat: item.latitude,
+                    //         lng: item.longitude,
+                    //     };
+                    //     polyLineCoordinates.push(coordinates);
+                    // });
+                    // //const polyLineCoordinates = res;
+                    // this.routePolylines[route.id] = new google.maps.Polyline({
+                    //     path: polyLineCoordinates,
+                    //     geodesic: true,
+                    //     strokeColor: route.color,
+                    //     strokeOpacity: 1.0,
+                    //     strokeWeight: 6,
+                    // });
+                    // this.routePolylines[route.id].setMap(this.agmMap);
                 },
                 error: () => {
                     console.log('decodeRouteShape error');
@@ -3078,7 +3078,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
                 orderNumber: stop.orderNumber
                     ? stop.orderNumber
                     : stopIndex + 1,
-                shape: ''
+                shape: '',
             };
 
             stopArr.push(stopObj);
