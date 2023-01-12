@@ -66,12 +66,22 @@
             <app-maps
                 [mapType]="'routing'"
                 [ngStyle]="{ width: '100%', height: '100%' }"
+                [darkMode]="true"
             ></app-maps>
         </div>
         <div class="gps_all_hold">
-            <div class="gps_info_hold">
-                <div class="moving_side">MOVING - SOUTH</div>
-                <div class="moving_time">03:47</div>
+            <div
+                class="gps_header"
+                (mouseenter)="hoveredGpsIcon = true"
+                (mouseleave)="hoveredGpsIcon = false"
+            >
+                <div class="gps-progress-img">
+                    <svg-icon src="assets/svg/common/gps_full.svg"></svg-icon>
+                </div>
+                <div class="gps_info_hold">
+                    <div class="moving_side">MOVING - SOUTH</div>
+                    <div class="moving_time">{{!hoveredGpsIcon ? 'Near Maplewood, MO' : '03:47'}}</div>
+                </div>
             </div>
         </div>
     </div>
