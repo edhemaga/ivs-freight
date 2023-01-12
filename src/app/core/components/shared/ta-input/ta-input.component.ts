@@ -380,6 +380,7 @@ export class TaInputComponent
                     this.inputConfig.name === 'timepicker'
                 ) {
                     this.focusBlur = setTimeout(() => {
+                        console.log('BLUR ON THISSS');
                         // this.focusInput = false;
                         this.blurOnDateTime();
                     }, 100);
@@ -1839,8 +1840,8 @@ export class TaInputComponent
                             this.dateTimeInputDate.setMonth(
                                 parseInt(
                                     this.span1.nativeElement.innerHTML +
-                                        (parseInt(e.key) - 1)
-                                )
+                                        parseInt(e.key)
+                                ) - 1
                             )
                         );
 
@@ -1852,6 +1853,7 @@ export class TaInputComponent
                                 parseInt(e.key)
                             ).slice(-2);
                         }
+
                         this.selectionInput = 1;
                         this.selectSpanByTabIndex(1, true);
                     }

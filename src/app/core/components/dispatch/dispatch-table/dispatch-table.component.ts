@@ -21,6 +21,10 @@ import { catchError, of } from 'rxjs';
 import { ColorFinderPipe } from '../pipes/color-finder.pipe';
 import { DispatchBoardLocalResponse } from '../state/dispatcher.model';
 import { DispatcherStoreService } from '../state/dispatcher.service';
+import { ModalService } from '../../shared/ta-modal/modal.service';
+import { TruckModalComponent } from '../../modals/truck-modal/truck-modal.component';
+import { TrailerModalComponent } from '../../modals/trailer-modal/trailer-modal.component';
+import { DriverModalComponent } from '../../modals/driver-modal/driver-modal.component';
 
 @Component({
     selector: 'app-dispatch-table',
@@ -78,14 +82,14 @@ export class DispatchTableComponent implements OnInit {
         const driversList = JSON.parse(JSON.stringify(value.drivers));
         this.driverList = driversList.map((item) => {
             item.name = `${item.firstName} ${item.lastName}`;
+            item.svg = item.owner ? 'ic_owner-status.svg' : null;
+            item.folder = 'common';
             return item;
         });
     }
 
     @Input() set _dData(value) {
         this.dData = JSON.parse(JSON.stringify(value));
-        console.log("DDATA");
-        console.log(this.dData);
 
         this.dData.dispatches = this.dData.dispatches.map((item) => {
             let i = 0;
@@ -149,7 +153,8 @@ export class DispatchTableComponent implements OnInit {
     constructor(
         private dss: DispatcherStoreService,
         private chd: ChangeDetectorRef,
-        private colorPipe: ColorFinderPipe
+        private colorPipe: ColorFinderPipe,
+        private modalService: ModalService
     ) {}
 
     ngOnInit(): void {}
@@ -187,9 +192,21 @@ export class DispatchTableComponent implements OnInit {
 
     addTruck(e) {
         if (e) {
-            if (this.openedTruckDropdown == -2) this.savedTruckId = e;
-            else this.dData.dispatches[this.openedTruckDropdown].truck = e;
-            this.showAddAddressField = this.openedTruckDropdown;
+            if (e.canOpenModal) {
+                this.modalService.setProjectionModal({
+                    action: 'open',
+                    payload: {
+                        key: 'truck-modal', // kljuc moze i ne mora, moze null
+                        value: null,
+                    },
+                    component: TruckModalComponent, // naziv komponente modala koji se otvara
+                    size: 'small',
+                });
+            } else {
+                if (this.openedTruckDropdown == -2) this.savedTruckId = e;
+                else this.dData.dispatches[this.openedTruckDropdown].truck = e;
+                this.showAddAddressField = this.openedTruckDropdown;
+            }
         }
 
         this.openedTruckDropdown = -1;
@@ -197,18 +214,29 @@ export class DispatchTableComponent implements OnInit {
 
     addTrailer(e) {
         if (e) {
-            this.updateOrAddDispatchBoardAndSend(
-                'trailerId',
-                e.id,
-                this.openedTrailerDropdown
-            );
+            if (e.canOpenModal) {
+                this.modalService.setProjectionModal({
+                    action: 'open',
+                    payload: {
+                        key: 'truck-modal', // kljuc moze i ne mora, moze null
+                        value: null,
+                    },
+                    component: TrailerModalComponent, // naziv komponente modala koji se otvara
+                    size: 'small',
+                });
+            } else {
+                this.updateOrAddDispatchBoardAndSend(
+                    'trailerId',
+                    e.id,
+                    this.openedTrailerDropdown
+                );
+            }
         }
 
         this.openedTrailerDropdown = -1;
     }
 
     handleInputSelect(e: any) {
-        console.log('ADRESS SELECT');
         if (e.valid) {
             this.updateOrAddDispatchBoardAndSend(
                 'location',
@@ -231,16 +259,28 @@ export class DispatchTableComponent implements OnInit {
 
     addDriver(e) {
         if (e) {
-            const driverOrCoDriver = !this.dData.dispatches[
-                this.openedDriverDropdown
-            ]?.driver
-                ? 'driverId'
-                : 'coDriverId';
-            this.updateOrAddDispatchBoardAndSend(
-                driverOrCoDriver,
-                e.id,
-                this.openedDriverDropdown
-            );
+            if (e.canOpenModal) {
+                this.modalService.setProjectionModal({
+                    action: 'open',
+                    payload: {
+                        key: 'truck-modal', // kljuc moze i ne mora, moze null
+                        value: null,
+                    },
+                    component: DriverModalComponent, // naziv komponente modala koji se otvara
+                    size: 'small',
+                });
+            } else {
+                const driverOrCoDriver = !this.dData.dispatches[
+                    this.openedDriverDropdown
+                ]?.driver
+                    ? 'driverId'
+                    : 'coDriverId';
+                this.updateOrAddDispatchBoardAndSend(
+                    driverOrCoDriver,
+                    e.id,
+                    this.openedDriverDropdown
+                );
+            }
         }
 
         this.openedDriverDropdown = -1;
@@ -635,7 +675,7 @@ export class DispatchTableComponent implements OnInit {
     showPickupDelivery(popup: any) {
         popup.open();
     }
-    
+
     dropHosList(event: any, data: any) {
         console.log(event);
         console.log(data);
@@ -647,8 +687,7 @@ export class DispatchTableComponent implements OnInit {
         drag: CdkDrag,
         drop: CdkDropList
     ) => {
-        console.log('trailerPred', drop.element);
+       // console.log('trailerPred', drop.element);
         return true;
     };
-    
 }
