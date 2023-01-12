@@ -98,20 +98,16 @@ export class RoutingService {
     }
 
     /**
-     * @param routeId2 
      * @param routeId 
      * @param loadId 
      * @param loadTemplateId 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiRoutingDecodeRouteIdGet(routeId2: string, routeId?: number, loadId?: number, loadTemplateId?: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<Array<LongLat>>;
-    public apiRoutingDecodeRouteIdGet(routeId2: string, routeId?: number, loadId?: number, loadTemplateId?: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<Array<LongLat>>>;
-    public apiRoutingDecodeRouteIdGet(routeId2: string, routeId?: number, loadId?: number, loadTemplateId?: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<Array<LongLat>>>;
-    public apiRoutingDecodeRouteIdGet(routeId2: string, routeId?: number, loadId?: number, loadTemplateId?: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
-        if (routeId2 === null || routeId2 === undefined) {
-            throw new Error('Required parameter routeId2 was null or undefined when calling apiRoutingDecodeRouteIdGet.');
-        }
+    public apiRoutingDecodeGet(routeId?: number, loadId?: number, loadTemplateId?: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<Array<LongLat>>;
+    public apiRoutingDecodeGet(routeId?: number, loadId?: number, loadTemplateId?: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<Array<LongLat>>>;
+    public apiRoutingDecodeGet(routeId?: number, loadId?: number, loadTemplateId?: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<Array<LongLat>>>;
+    public apiRoutingDecodeGet(routeId?: number, loadId?: number, loadTemplateId?: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
         if (routeId !== undefined && routeId !== null) {
@@ -167,7 +163,7 @@ export class RoutingService {
             }
         }
 
-        let localVarPath = `/api/routing/decode/${this.configuration.encodeParam({name: "routeId2", value: routeId, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: undefined})}`;
+        let localVarPath = `/api/routing/decode`;
         return this.httpClient.request<Array<LongLat>>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
