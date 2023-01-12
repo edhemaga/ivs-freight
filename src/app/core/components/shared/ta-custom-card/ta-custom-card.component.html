@@ -8,6 +8,7 @@
         class="ta-card-header"
         [class.no-data]="!hasBodyData"
         [class.disabled]="disabledCard"
+        [class.active]="hasPayrollStatus && _isCardOpen && _isCardOpen != 'null'"
         (mouseenter)="isHeaderHover = true"
         (mouseleave)="isHeaderHover = false"
         (click)="isCardOpenEvent($event)"
@@ -21,6 +22,11 @@
                 [label]="''"
             >
             </app-ta-checkbox>
+
+            <!-- Payroll left Counter -->
+            <div *ngIf="hasLeftCounter !== -1" class="payroll-left-counter">
+                {{ hasLeftCounter }}
+            </div>
 
             <!-- Name -->
             <span class="header-text">

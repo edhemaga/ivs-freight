@@ -80,6 +80,7 @@ ngb-modal-window[aria-hidden='true'] {
                         cursor: grabbing;
                     }
                 }
+
                 .modal-footer {
                     cursor: -webkit-grabbing;
                     cursor: grabbing;
@@ -135,6 +136,7 @@ ngb-modal-window[aria-hidden='true'] {
 
                         .radio-button-label {
                             height: 20px;
+
                             &:nth-child(1) {
                                 width: 44px;
                             }
@@ -211,7 +213,6 @@ ngb-modal-window[aria-hidden='true'] {
                                 background-color: #6c6c6c;
                                 color: #ffffff !important;
                                 margin: 0;
-                                padding: 0;
                                 font-size: 14px;
                                 font-weight: 600;
                                 line-height: 18px;
@@ -259,7 +260,6 @@ ngb-modal-window[aria-hidden='true'] {
                             background-color: #ef5350;
                             color: #ffffff !important;
                             margin: 0;
-                            padding: 0;
                             font-size: 14px;
                             font-weight: 600;
                             line-height: 18px;
@@ -373,6 +373,7 @@ ngb-modal-window[aria-hidden='true'] {
                         svg {
                             width: 26px;
                             height: 26px;
+
                             path {
                                 fill: #919191;
                             }
@@ -388,6 +389,7 @@ ngb-modal-window[aria-hidden='true'] {
                                 path {
                                     fill: #424242;
                                 }
+
                                 rect {
                                     fill: rgb(66, 66, 66, 0.2);
                                 }
@@ -399,6 +401,7 @@ ngb-modal-window[aria-hidden='true'] {
 
             .modal-body {
                 padding: 0 12px;
+
                 &:focus {
                     outline: none;
                 }
@@ -486,7 +489,7 @@ ngb-modal-window[aria-hidden='true'] {
                     color: #aaaaaa;
                     font-weight: 700;
                     font-size: 14px;
-                    min-width: 150px;
+                    min-width: 148px;
                     height: 32px;
                     text-align: center;
                     margin: 0;
@@ -519,7 +522,7 @@ ngb-modal-window[aria-hidden='true'] {
                 }
 
                 .modal-save-btn-add-new {
-                    min-width: 182px !important;
+                    min-width: 181px !important;
 
                     &.valid {
                         background-color: #eeeeee;
@@ -603,6 +606,7 @@ body.modal-open {
             }
         }
     }
+
     .modal-backdrop {
         &.fade {
             transition: background-color 2s ease-out !important;
@@ -722,6 +726,7 @@ body:not(.modal-open) {
 // STATUS CHANGE MODAL
 .ta_status_main_holder {
     position: relative;
+
     .status_change_wrapper {
         position: absolute;
         top: 0px;
@@ -835,6 +840,7 @@ body:not(.modal-open) {
 
                 &:hover {
                     background-color: unquote('#' + $col);
+
                     .switch_statuses {
                         color: #fff;
                     }
@@ -996,9 +1002,7 @@ ngb-modal-window.modal {
         margin: 0 !important;
 
         .modal-container {
-            margin: auto;
-            margin-top: 5px;
-            margin-bottom: 5px;
+            margin: 5px auto;
         }
 
         .custom-scrollbar-holder {
@@ -1008,7 +1012,7 @@ ngb-modal-window.modal {
             width: 100vw;
             height: 100vh;
 
-            transition: all 0.3s;
+            //transition: all 0.3s;
 
             .modal-container {
                 margin: 75px auto 60px auto;

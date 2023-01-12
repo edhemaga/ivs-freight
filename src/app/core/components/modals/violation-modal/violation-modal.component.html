@@ -1,23 +1,22 @@
 <app-ta-modal
-    [modalTitle]="'Edit Roadside Inspection'"
+    (action)="onModalAction($event)"
+    [customClass]="'modal-container-XL'"
+    [disableDelete]="true"
     [editData]="editData"
     [editName]="violationModalName"
     [isModalValid]="violationForm.valid && isFormDirty"
-    [customClass]="'modal-container-XL'"
-    [disableDelete]="true"
-    (action)="onModalAction($event)"
+    [modalTitle]="'Edit Roadside Inspection'"
 >
     <div origin>
         <app-ta-tab-switch
-            [tabs]="tabs"
             (switchClicked)="tabChange($event)"
+            [tabs]="tabs"
             [type]="'type1-modal-popup'"
         >
         </app-ta-tab-switch>
 
         <form
             [formGroup]="violationForm"
-            class="form-container"
             [ngClass]="{
                 'tab-2': selectedTab !== 1,
                 'form-container-without-mb':
@@ -25,45 +24,47 @@
                 'form-container-with-card':
                     selectedTab === 2 && isSpecialChecksOpen
             }"
+            class="form-container"
         >
             <div
-                class="animation-two-tabs"
                 [@animationTabsModal]="animationObject"
+                class="animation-two-tabs"
             >
                 <!-------------------------------- Basic Tab -------------------------------->
-                <div class="m-tab" *ngIf="selectedTab === 1">
+                <div *ngIf="selectedTab === 1" class="m-tab">
                     <div class="violation-modal-row-1">
                         <app-ta-input
-                            formControlName="report"
                             [inputConfig]="{
                                 name: 'Violation Report',
                                 type: 'text',
                                 label: 'Report',
                                 isDisabled: true
                             }"
+                            formControlName="report"
                         ></app-ta-input>
                         <app-ta-input
-                            formControlName="inspectionLevel"
                             [inputConfig]="{
                                 name: 'Inspection Level',
                                 type: 'text',
                                 label: 'Inspection Level',
                                 isDisabled: true
                             }"
+                            formControlName="inspectionLevel"
                         ></app-ta-input>
                         <app-ta-input
-                            formControlName="hmInspectionType"
                             [inputConfig]="{
                                 name: 'Inspection Level',
                                 type: 'text',
                                 label: 'HM Inspection Level',
                                 isDisabled: true
                             }"
+                            formControlName="hmInspectionType"
                         ></app-ta-input>
                     </div>
                     <div class="violation-modal-row-2 violation-modal-row-2-2">
                         <app-ta-input-dropdown
-                            formControlName="county"
+                            (selectedItem)="onSelectDropDown($event, 'county')"
+                            [activeItem]="selectedCounty"
                             [inputConfig]="{
                                 name: 'Input Dropdown',
                                 type: 'text',
@@ -72,22 +73,21 @@
                                 dropdownWidthClass: 'w-col-275'
                             }"
                             [options]="labelsCounty"
-                            [activeItem]="selectedCounty"
-                            (selectedItem)="onSelectDropdown($event, 'county')"
+                            formControlName="county"
                         ></app-ta-input-dropdown>
                         <app-ta-input-dropdown
-                            formControlName="state"
                             [inputConfig]="{
                                 name: 'Input Dropdown',
                                 type: 'text',
                                 label: 'State',
+                                textTransform: 'uppercase',
                                 isDisabled: true,
                                 isDropdown: true,
                                 dropdownWidthClass: 'w-col-148'
                             }"
+                            formControlName="state"
                         ></app-ta-input-dropdown>
                         <app-ta-input
-                            formControlName="date"
                             [inputConfig]="{
                                 name: 'datepicker',
                                 type: 'text',
@@ -97,10 +97,10 @@
                                 isDisabled: true,
                                 customClass: 'datetimeclass'
                             }"
+                            formControlName="date"
                         ></app-ta-input>
                         <!-- Time Picker -->
                         <app-ta-input
-                            formControlName="startTime"
                             [inputConfig]="{
                                 name: 'timepicker',
                                 type: 'text',
@@ -110,11 +110,11 @@
                                 customClass: 'datetimeclass',
                                 isDisabled: true
                             }"
+                            formControlName="startTime"
                         ></app-ta-input>
 
                         <!-- Time Picker -->
                         <app-ta-input
-                            formControlName="endTime"
                             [inputConfig]="{
                                 name: 'timepicker',
                                 type: 'text',
@@ -124,47 +124,48 @@
                                 customClass: 'datetimeclass',
                                 isDisabled: true
                             }"
+                            formControlName="endTime"
                         ></app-ta-input>
                     </div>
                     <app-ta-custom-card
-                        [cardName]="'Driver'"
-                        [isCardOpen]="true"
-                        [disableAnimation]="disableCardAnimation"
                         [animationMarginParams]="{
                             marginTop: '18px',
                             marginBottom: '22px'
                         }"
+                        [cardName]="'Driver'"
+                        [disableAnimation]="disableCardAnimation"
+                        [isCardOpen]="true"
                     >
                         <div class="violation-modal-row-3">
                             <app-ta-input
-                                formControlName="driverName"
                                 [inputConfig]="{
                                     name: 'Driver Name',
                                     type: 'text',
                                     label: 'Driver',
                                     isDisabled: true
                                 }"
+                                formControlName="driverName"
                             ></app-ta-input>
                             <app-ta-input
-                                formControlName="driverLicenceNumber"
                                 [inputConfig]="{
                                     name: 'Licence Number',
                                     type: 'text',
                                     label: 'Licence No.',
                                     isDisabled: true
                                 }"
+                                formControlName="driverLicenceNumber"
                             ></app-ta-input>
                             <app-ta-input
-                                formControlName="driverState"
                                 [inputConfig]="{
                                     name: 'State',
                                     type: 'text',
                                     label: 'State',
+                                    textTransform: 'uppercase',
                                     isDisabled: true
                                 }"
+                                formControlName="driverState"
                             ></app-ta-input>
                             <app-ta-input
-                                formControlName="driverDOB"
                                 [inputConfig]="{
                                     name: 'datepicker',
                                     type: 'text',
@@ -174,48 +175,49 @@
                                     isDisabled: true,
                                     customClass: 'datetimeclass'
                                 }"
+                                formControlName="driverDOB"
                             ></app-ta-input>
                         </div>
                     </app-ta-custom-card>
                     <app-ta-custom-card
-                        [cardName]="'Co-Driver'"
-                        [isCardOpen]="true"
-                        [disableAnimation]="disableCardAnimation"
                         [animationMarginParams]="{
                             marginTop: '18px',
                             marginBottom: '22px'
                         }"
+                        [cardName]="'Co-Driver'"
+                        [disableAnimation]="disableCardAnimation"
+                        [isCardOpen]="true"
                     >
                         <div class="violation-modal-row-4">
                             <app-ta-input
-                                formControlName="coDriverName"
                                 [inputConfig]="{
                                     name: 'Driver Name',
                                     type: 'text',
                                     label: 'Co-Driver',
                                     isDisabled: true
                                 }"
+                                formControlName="coDriverName"
                             ></app-ta-input>
                             <app-ta-input
-                                formControlName="coDriverLicenceNumber"
                                 [inputConfig]="{
                                     name: 'Licence Number',
                                     type: 'text',
                                     label: 'Licence No.',
                                     isDisabled: true
                                 }"
+                                formControlName="coDriverLicenceNumber"
                             ></app-ta-input>
                             <app-ta-input
-                                formControlName="coDriverState"
                                 [inputConfig]="{
                                     name: 'State',
                                     type: 'text',
                                     label: 'State',
+                                    textTransform: 'uppercase',
                                     isDisabled: true
                                 }"
+                                formControlName="coDriverState"
                             ></app-ta-input>
                             <app-ta-input
-                                formControlName="coDriverDOB"
                                 [inputConfig]="{
                                     name: 'datepicker',
                                     type: 'text',
@@ -225,61 +227,62 @@
                                     isDisabled: true,
                                     customClass: 'datetimeclass'
                                 }"
+                                formControlName="coDriverDOB"
                             ></app-ta-input>
                         </div>
                     </app-ta-custom-card>
                     <app-ta-custom-card
-                        [cardName]="'Truck'"
-                        [isCardOpen]="true"
-                        [disableAnimation]="disableCardAnimation"
                         [animationMarginParams]="{
                             marginTop: '18px',
                             marginBottom: '22px'
                         }"
+                        [cardName]="'Truck'"
+                        [disableAnimation]="disableCardAnimation"
+                        [isCardOpen]="true"
                     >
                         <div class="violation-modal-row-5">
                             <app-ta-input
-                                formControlName="truck_Unit"
                                 [inputConfig]="{
                                     name: 'Truck Number',
                                     type: 'text',
                                     label: 'Unit',
                                     isDisabled: true
                                 }"
+                                formControlName="truck_Unit"
                             ></app-ta-input>
                             <app-ta-input
-                                formControlName="truck_Type"
                                 [inputConfig]="truckTypeConfig"
+                                formControlName="truck_Type"
                             ></app-ta-input>
                             <app-ta-input
-                                formControlName="truck_Make"
                                 [inputConfig]="{
                                     name: 'Truck Make',
                                     type: 'text',
                                     label: 'Make',
                                     isDisabled: true
                                 }"
+                                formControlName="truck_Make"
                             ></app-ta-input>
                             <app-ta-input
-                                formControlName="truck_PlateNo"
                                 [inputConfig]="{
                                     name: 'Truck Plate Make',
                                     type: 'text',
                                     label: 'Plate No.',
                                     isDisabled: true
                                 }"
+                                formControlName="truck_PlateNo"
                             ></app-ta-input>
                             <app-ta-input
-                                formControlName="truck_State"
                                 [inputConfig]="{
                                     name: 'Truck State',
                                     type: 'text',
                                     label: 'State',
+                                    textTransform: 'uppercase',
                                     isDisabled: true
                                 }"
+                                formControlName="truck_State"
                             ></app-ta-input>
                             <app-ta-input
-                                formControlName="truck_VIN"
                                 [inputConfig]="{
                                     name: 'vin-number',
                                     type: 'text',
@@ -289,61 +292,62 @@
                                     textTransform: 'uppercase',
                                     isDisabled: true
                                 }"
+                                formControlName="truck_VIN"
                             ></app-ta-input>
                         </div>
                     </app-ta-custom-card>
                     <app-ta-custom-card
-                        [cardName]="'Trailer'"
-                        [isCardOpen]="true"
-                        [disableAnimation]="disableCardAnimation"
                         [animationMarginParams]="{
                             marginTop: '18px',
                             marginBottom: '22px'
                         }"
+                        [cardName]="'Trailer'"
+                        [disableAnimation]="disableCardAnimation"
+                        [isCardOpen]="true"
                     >
                         <div class="violation-modal-row-6">
                             <app-ta-input
-                                formControlName="trailer_Unit"
                                 [inputConfig]="{
                                     name: 'Trailer Number',
                                     type: 'text',
                                     label: 'Unit',
                                     isDisabled: true
                                 }"
+                                formControlName="trailer_Unit"
                             ></app-ta-input>
                             <app-ta-input
-                                formControlName="trailer_Type"
                                 [inputConfig]="trailerTypeConfig"
+                                formControlName="trailer_Type"
                             ></app-ta-input>
                             <app-ta-input
-                                formControlName="trailer_Make"
                                 [inputConfig]="{
                                     name: 'Trailer Make',
                                     type: 'text',
                                     label: 'Make',
                                     isDisabled: true
                                 }"
+                                formControlName="trailer_Make"
                             ></app-ta-input>
                             <app-ta-input
-                                formControlName="trailer_PlateNo"
                                 [inputConfig]="{
                                     name: 'Trailer Plate Make',
                                     type: 'text',
                                     label: 'Plate No.',
                                     isDisabled: true
                                 }"
+                                formControlName="trailer_PlateNo"
                             ></app-ta-input>
                             <app-ta-input
-                                formControlName="trailer_State"
                                 [inputConfig]="{
                                     name: 'Trailer State',
                                     type: 'text',
                                     label: 'State',
+                                    textTransform: 'uppercase',
                                     isDisabled: true
                                 }"
+                                formControlName="trailer_State"
                             ></app-ta-input>
                             <app-ta-input
-                                formControlName="trailer_VIN"
                                 [inputConfig]="{
                                     name: 'vin-number',
                                     type: 'text',
@@ -353,28 +357,29 @@
                                     textTransform: 'uppercase',
                                     isDisabled: true
                                 }"
+                                formControlName="trailer_VIN"
                             ></app-ta-input>
                         </div>
                     </app-ta-custom-card>
                     <div class="violation-card">
                         <app-ta-custom-card
-                            [hasCounter]="
-                                violations.length ? violations.length : 0
-                            "
-                            [cardName]="'Violation'"
-                            [isCardOpen]="violations.length > 0"
-                            [hasScrollBody]="violations.length > 10"
-                            [disabledCard]="!violations.length"
-                            [disableAnimation]="disableCardAnimation"
                             [animationMarginParams]="{
                                 marginTop: '18px',
                                 marginBottom: '5px'
                             }"
+                            [cardName]="'Violation'"
+                            [disableAnimation]="disableCardAnimation"
+                            [disabledCard]="!violations.length"
+                            [hasCounter]="
+                                violations.length ? violations.length : 0
+                            "
+                            [hasScrollBody]="violations.length > 10"
+                            [isCardOpen]="violations.length > 0"
                         >
                             <div
-                                formArrayName="violations"
-                                class="common-fake-table-modal common-fake-table-modal-violations"
                                 *ngIf="violations.length"
+                                class="common-fake-table-modal common-fake-table-modal-violations"
+                                formArrayName="violations"
                             >
                                 <div class="common-fake-table-label">
                                     <p>CODE <span>*</span></p>
@@ -424,28 +429,28 @@
                                                 }}
                                             </p>
                                             <p
-                                                class="violation-sw"
                                                 [ngClass]="{
                                                     'additional-position':
                                                         violation.get('oos')
                                                             .value
                                                 }"
+                                                class="violation-sw"
                                             >
                                                 {{ violation.get('sw').value }}
                                                 <span
-                                                    class="violation-sw-additional"
                                                     *ngIf="
                                                         violation.get('oos')
                                                             .value
                                                     "
+                                                    class="violation-sw-additional"
                                                     >+2</span
                                                 >
                                             </p>
                                             <svg-icon
-                                                class="violation-oos"
                                                 [class.active]="
                                                     violation.get('oos').value
                                                 "
+                                                class="violation-oos"
                                                 src="{{
                                                     violation.get('oos').value
                                                         ? 'assets/svg/common/ic_confirm.svg'
@@ -461,7 +466,6 @@
                                                 }}"
                                             ></svg-icon>
                                             <app-ta-input
-                                                formControlName="extraDescription"
                                                 [inputConfig]="{
                                                     name: 'Description',
                                                     type: 'text',
@@ -472,6 +476,7 @@
                                                     hideRequiredCheck: true,
                                                     blackInput: true
                                                 }"
+                                                formControlName="extraDescription"
                                             ></app-ta-input>
                                         </div>
                                     </div>
@@ -481,21 +486,20 @@
                     </div>
 
                     <app-ta-custom-card
-                        [hasCounter]="documents.length ? documents.length : 0"
                         [cardName]="'Documents'"
                         [disableAnimation]="disableCardAnimation"
+                        [hasCounter]="documents.length ? documents.length : 0"
                         [isCardOpen]="documents.length > 0"
                     >
                         <app-ta-upload-files
-                            [files]="documents"
-                            [size]="'large'"
-                            [showDropzone]="true"
                             (onFileEvent)="onFilesEvent($event)"
                             [customClassName]="'modals'"
+                            [files]="documents"
+                            [showDropzone]="true"
+                            [size]="'large'"
                         ></app-ta-upload-files>
                     </app-ta-custom-card>
                     <app-ta-input-note
-                        formControlName="note"
                         [isVisibleNote]="
                             violationForm.get('note').value &&
                             violationForm.get('note').value != 'null'
@@ -508,22 +512,22 @@
                                 ? violationForm.get('note').value
                                 : ''
                         "
+                        formControlName="note"
                     ></app-ta-input-note>
                 </div>
                 <!-------------------------------- Additional Tab -------------------------------->
-                <div class="m-tab" *ngIf="selectedTab === 2">
+                <div *ngIf="selectedTab === 2" class="m-tab">
                     <app-ta-custom-card
-                        [cardName]="'Authority Details'"
-                        [isCardOpen]="true"
-                        [disableAnimation]="disableCardAnimation"
                         [animationMarginParams]="{
                             marginTop: '18px',
                             marginBottom: '22px'
                         }"
+                        [cardName]="'Authority Details'"
+                        [disableAnimation]="disableCardAnimation"
+                        [isCardOpen]="true"
                     >
                         <div class="violation-modal-autority-details-row">
                             <app-ta-input
-                                formControlName="policeDepartment"
                                 [inputConfig]="{
                                     name: 'Department',
                                     label: 'Police Department',
@@ -532,30 +536,34 @@
                                     minLength: 2,
                                     maxLength: 36
                                 }"
+                                formControlName="policeDepartment"
                             ></app-ta-input>
                             <app-ta-input
-                                formControlName="policeOfficer"
                                 [inputConfig]="{
                                     name: 'Police Officer',
                                     type: 'text',
                                     label: 'Police Officer',
                                     textTransform: 'capitalize'
                                 }"
+                                formControlName="policeOfficer"
                             ></app-ta-input>
                             <app-ta-input
-                                formControlName="badgeNo"
                                 [inputConfig]="{
                                     name: 'Badge Number',
                                     type: 'text',
                                     label: 'Badge No.'
                                 }"
+                                formControlName="badgeNo"
                             ></app-ta-input>
                         </div>
                         <div
                             class="violation-modal-autority-details-row violation-modal-autority-details-row-second"
                         >
                             <app-input-address-dropdown
-                                formControlName="address"
+                                (selectedAddress)="
+                                    onHandleAddress($event, 'address-authority')
+                                "
+                                [activeAddress]="selectedAuthorityAddress"
                                 [inputConfig]="{
                                     name: 'Address',
                                     type: 'text',
@@ -567,13 +575,9 @@
                                     maxLength: 256
                                 }"
                                 [placeholderType]="'longAddress'"
-                                [activeAddress]="selectedAuthorityAddress"
-                                (selectedAddress)="
-                                    onHandleAddress($event, 'address-authority')
-                                "
+                                formControlName="address"
                             ></app-input-address-dropdown>
                             <app-ta-input
-                                formControlName="phone"
                                 [inputConfig]="{
                                     name: 'Phone',
                                     type: 'text',
@@ -582,9 +586,9 @@
                                     mask: '(000) 000-0000',
                                     maxLength: 14
                                 }"
+                                formControlName="phone"
                             ></app-ta-input>
                             <app-ta-input
-                                formControlName="fax"
                                 [inputConfig]="{
                                     name: 'Fax',
                                     type: 'text',
@@ -592,22 +596,22 @@
                                     mask: '(000) 000-0000',
                                     placeholderIcon: 'fax'
                                 }"
+                                formControlName="fax"
                             ></app-ta-input>
                         </div>
                     </app-ta-custom-card>
                     <app-ta-custom-card
-                        [cardName]="'Location & Shipping Info'"
-                        [isCardOpen]="true"
-                        [disableAnimation]="disableCardAnimation"
                         [animationMarginParams]="{
                             marginTop: '18px',
                             marginBottom: '22px'
                         }"
+                        [cardName]="'Location & Shipping Info'"
+                        [disableAnimation]="disableCardAnimation"
+                        [isCardOpen]="true"
                     >
                         <div class="row">
                             <div class="col-4">
                                 <app-ta-input
-                                    formControlName="facility"
                                     [inputConfig]="{
                                         name: 'Facility',
                                         type: 'text',
@@ -615,35 +619,42 @@
                                         isDisabled:
                                             violationForm.get('facility').value
                                     }"
+                                    formControlName="facility"
                                 ></app-ta-input>
                             </div>
                             <div class="col-4">
                                 <app-ta-input
-                                    formControlName="highway"
                                     [inputConfig]="{
                                         name: 'Highway',
                                         type: 'text',
                                         textTransform: 'capitalize',
                                         label: 'Highway'
                                     }"
+                                    formControlName="highway"
                                 ></app-ta-input>
                             </div>
                             <div class="col-4 no-p-left">
                                 <app-ta-input
-                                    formControlName="milePost"
                                     [inputConfig]="{
                                         name: 'Mile Post',
                                         type: 'text',
                                         textTransform: 'capitalize',
                                         label: 'Mile Post'
                                     }"
+                                    formControlName="milePost"
                                 ></app-ta-input>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-6">
                                 <app-input-address-dropdown
-                                    formControlName="origin"
+                                    (selectedAddress)="
+                                        onHandleAddress(
+                                            $event,
+                                            'address-origin'
+                                        )
+                                    "
+                                    [activeAddress]="selectedAuthorityOrigin"
                                     [inputConfig]="{
                                         name: 'Address',
                                         type: 'text',
@@ -655,18 +666,20 @@
                                         maxLength: 256
                                     }"
                                     [placeholderType]="'longAddress'"
-                                    [activeAddress]="selectedAuthorityOrigin"
-                                    (selectedAddress)="
-                                        onHandleAddress(
-                                            $event,
-                                            'address-origin'
-                                        )
-                                    "
+                                    formControlName="origin"
                                 ></app-input-address-dropdown>
                             </div>
                             <div class="col-6">
                                 <app-input-address-dropdown
-                                    formControlName="destination"
+                                    (selectedAddress)="
+                                        onHandleAddress(
+                                            $event,
+                                            'address-destination'
+                                        )
+                                    "
+                                    [activeAddress]="
+                                        selectedAuthorityDestination
+                                    "
                                     [inputConfig]="{
                                         name: 'Address',
                                         type: 'text',
@@ -678,15 +691,7 @@
                                         maxLength: 256
                                     }"
                                     [placeholderType]="'longAddress'"
-                                    [activeAddress]="
-                                        selectedAuthorityDestination
-                                    "
-                                    (selectedAddress)="
-                                        onHandleAddress(
-                                            $event,
-                                            'address-destination'
-                                        )
-                                    "
+                                    formControlName="destination"
                                 ></app-input-address-dropdown>
                             </div>
                         </div>
@@ -694,7 +699,10 @@
                             class="violation-modal-location-shipping-row-3 row-no-mb"
                         >
                             <app-ta-input-dropdown
-                                formControlName="customer"
+                                (selectedItem)="
+                                    onSelectDropDown($event, 'customer')
+                                "
+                                [activeItem]="selectedViolationCustomer"
                                 [inputConfig]="{
                                     name: 'Input Dropdown',
                                     type: 'text',
@@ -704,55 +712,52 @@
                                     dropdownWidthClass: 'w-col-272'
                                 }"
                                 [options]="labelsViolationCustomer"
-                                [activeItem]="selectedViolationCustomer"
-                                (selectedItem)="
-                                    onSelectDropDown($event, 'customer')
-                                "
+                                formControlName="customer"
                             ></app-ta-input-dropdown>
                             <app-ta-input
-                                formControlName="boL"
                                 [inputConfig]="{
                                     name: 'BoL',
                                     type: 'text',
                                     label: 'BoL',
                                     textTransform: 'capitalize'
                                 }"
+                                formControlName="boL"
                             ></app-ta-input>
                             <app-ta-input
-                                formControlName="cargo"
                                 [inputConfig]="{
                                     name: 'Cargo',
                                     type: 'text',
                                     label: 'Cargo',
                                     textTransform: 'capitalize'
                                 }"
+                                formControlName="cargo"
                             ></app-ta-input>
                         </div>
                     </app-ta-custom-card>
                     <app-ta-custom-card
-                        [hasCounter]="
-                            pickedSpecialChecks() ? pickedSpecialChecks() : 0
-                        "
-                        [cardName]="'Special Checks'"
-                        [isCardOpen]="isSpecialChecksOpen"
-                        [disableAnimation]="disableCardAnimation"
+                        (onOpenCard)="isSpecialChecksOpen = $event"
                         [animationMarginParams]="{
                             marginTop: '12px',
                             marginBottom: '0px'
                         }"
-                        (onOpenCard)="isSpecialChecksOpen = $event"
+                        [cardName]="'Special Checks'"
+                        [disableAnimation]="disableCardAnimation"
+                        [hasCounter]="
+                            pickedSpecialChecks() ? pickedSpecialChecks() : 0
+                        "
+                        [isCardOpen]="isSpecialChecksOpen"
                     >
                         <div class="violation-special-checks">
                             <div
+                                (click)="
+                                    specialCheck.active = !specialCheck.active
+                                "
                                 *ngFor="
                                     let specialCheck of specialChecks;
                                     trackBy: identity
                                 "
-                                class="violation-special-check"
                                 [class.active]="specialCheck.active"
-                                (click)="
-                                    specialCheck.active = !specialCheck.active
-                                "
+                                class="violation-special-check"
                             >
                                 <p>{{ specialCheck.name }}</p>
                             </div>

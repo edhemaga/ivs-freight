@@ -18,6 +18,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { AccountService } from '../../appcoretruckassist';
 import { configFactory } from './app.config';
 import { UserLoggedService } from './core/components/authentication/state/user-logged.service';
+import { debounceTime } from 'rxjs/operators';
 
 @Component({
     selector: 'app-root',
@@ -86,6 +87,7 @@ export class AppComponent implements OnInit {
                     refreshToken: user.refreshToken,
                 })
                 .pipe(
+                    debounceTime(2000),
                     switchMap((res: any) => {
                         user.token = res.token;
                         user.refreshToken = res.refreshToken;

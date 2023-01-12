@@ -5,8 +5,11 @@
         .ta-card-header {
             background-color: #fff;
             border-radius: 3px;
-            height: 32px !important;
+            height: 34px !important;
             transition: none !important;
+            .header-content {
+                left: 0 !important;
+            }
 
             &.active {
                 background-color: #424242;

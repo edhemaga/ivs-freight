@@ -361,7 +361,6 @@ export class AccidentModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (res: AccidentModalResponse) => {
-                    console.log('accident response: ', res);
                     this.labelsTrailerUnits = res.trailers.map((item) => {
                         return {
                             id: item.id,
