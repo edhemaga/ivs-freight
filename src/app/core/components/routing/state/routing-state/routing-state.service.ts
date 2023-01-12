@@ -282,13 +282,12 @@ export class RoutingStateService implements OnDestroy {
             );
     }
 
-    decodeRouteShape(routeId: number) {
-        return of();
-        // return this.routingService.apiRoutingDecodeRouteIdGet(routeId).pipe(
-        //     tap(() => {
-        //         console.log('decodeRouteShape', routeId);
-        //     })
-        // );
+    decodeRouteShape(routeId: any) {
+        return this.routingService.apiRoutingDecodeRouteIdGet(routeId).pipe(
+            tap(() => {
+                console.log('decodeRouteShape', routeId);
+            })
+        );
     }
 
     public sendUpdatedData(data: any) {

@@ -3062,34 +3062,34 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (res) => {
-                    // const polyLineCoordinates = [];
+                    const polyLineCoordinates = [];
 
-                    // if (this.routePolylines[route.id]) {
-                    //     this.routePolylines[route.id].setMap(null);
-                    // }
+                    if (this.routePolylines[route.id]) {
+                        this.routePolylines[route.id].setMap(null);
+                    }
 
-                    // res.map((item) => {
-                    //     var coordinates = {
-                    //         lat: item.latitude,
-                    //         lng: item.longitude,
-                    //     };
-                    //     polyLineCoordinates.push(coordinates);
-                    // });
+                    res.map((item) => {
+                        var coordinates = {
+                            lat: item.latitude,
+                            lng: item.longitude,
+                        };
+                        polyLineCoordinates.push(coordinates);
+                    });
 
-                    // //const polyLineCoordinates = res;
-                    // this.routePolylines[route.id] = new google.maps.Polyline({
-                    //     path: polyLineCoordinates,
-                    //     geodesic: true,
-                    //     strokeColor: route.color,
-                    //     strokeOpacity: 1.0,
-                    //     strokeWeight: 6,
-                    //     zIndex: route.isFocused
-                    //         ? 999
-                    //         : this.tableData[this.selectedMapIndex].routes
-                    //               .length - routeIndex,
-                    // });
+                    //const polyLineCoordinates = res;
+                    this.routePolylines[route.id] = new google.maps.Polyline({
+                        path: polyLineCoordinates,
+                        geodesic: true,
+                        strokeColor: route.color,
+                        strokeOpacity: 1.0,
+                        strokeWeight: 6,
+                        zIndex: route.isFocused
+                            ? 999
+                            : this.tableData[this.selectedMapIndex].routes
+                                  .length - routeIndex,
+                    });
 
-                    // this.routePolylines[route.id].setMap(this.agmMap);
+                    this.routePolylines[route.id].setMap(this.agmMap);
                 },
                 error: () => {
                     console.log('decodeRouteShape error');
