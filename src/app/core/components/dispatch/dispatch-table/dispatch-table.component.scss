@@ -87,6 +87,8 @@
                             align-items: center;
                             justify-content: center;
                             height: 100%;
+                            cursor: pointer;
+
                             svg-icon {
                                 display: flex;
                                 margin-left: 1px;
@@ -394,6 +396,7 @@
 
                         &.note-container {
                             display: block;
+                            height: 100%;
 
                             //background-color: #F7F7F7;
                             border-radius: 3px;
@@ -410,6 +413,34 @@
                             &:hover {
                                 // background-color: #f7f7f7;
                             }
+                        }
+                    }
+                }
+
+                .dispatcher-table-cell-container {
+                    display: flex;
+                    height: 26px;
+                    align-items: center;
+                    line-height: 1;
+
+                    &.note-container {
+                        display: block;
+                        height: 100%;
+
+                        //background-color: #F7F7F7;
+                        border-radius: 3px;
+                        padding-left: 6px;
+                    }
+
+                    .dispatcher-table-cell-holder {
+                        display: flex;
+                        height: 28px;
+                        width: 100%;
+                        align-items: center;
+                        padding-left: 6px;
+
+                        &:hover {
+                            // background-color: #f7f7f7;
                         }
                     }
                 }

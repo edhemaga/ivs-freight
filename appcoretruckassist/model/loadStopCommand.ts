@@ -17,6 +17,7 @@ export interface LoadStopCommand {
     id?: number | null;
     stopType?: LoadStopType;
     stopOrder?: number;
+    stopLoadOrder?: number;
     shipperId?: number;
     shipperContactId?: number | null;
     dateFrom?: string;
@@ -29,8 +30,6 @@ export interface LoadStopCommand {
     legMiles?: number | null;
     legHours?: number | null;
     legMinutes?: number | null;
-    totalLegMiles?: number | null;
-    totalLegHours?: number | null;
-    totalLegMinutes?: number | null;
+    shape?: string | null;
     items?: Array<any> | null;
 }

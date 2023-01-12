@@ -78,6 +78,16 @@
             &:has(.show-marker-dropdown) {
                 z-index: 999;
             }
+
+            &:has(.focused-route-wrapper) {
+                z-index: 999;
+            }
+
+            @for $i from 0 through 999 {
+                &:has(.route-zIndex-#{$i}) {
+                    z-index: $i;
+                }
+            }
         }
 
         .si-content-wrapper {

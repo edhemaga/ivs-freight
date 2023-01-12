@@ -42,10 +42,12 @@ export class TaUploadFilesComponent implements OnInit {
         files: UploadFile[] | UploadFile | any;
         action: string;
         deleteId?: number;
+        index?: number;
     }> = new EventEmitter<{
         files: UploadFile[] | UploadFile | any;
         action: string;
         deleteId?: number;
+        index?: number;
     }>(null);
 
     // Review
@@ -93,7 +95,8 @@ export class TaUploadFilesComponent implements OnInit {
                 this.files.map((item, index) => {
                     if (
                         item.fileName == data.file.fileName &&
-                        (index == this.files.length - 1 || index == this.files.length - 2)
+                        (index == this.files.length - 1 ||
+                            index == this.files.length - 2)
                     ) {
                         isLastDeleted = true;
                     }
@@ -158,16 +161,32 @@ export class TaUploadFilesComponent implements OnInit {
                 break;
             }
             case 'mark-incorrect': {
+                let incorrectIndx;
+                this.files.map((item, index) => {
+                    if (item.fileName == data.file.fileName) {
+                        incorrectIndx = index;
+                    }
+                });
+
                 this.onFileEvent.emit({
                     files: this.files,
                     action: data.action,
+                    index: incorrectIndx,
                 });
                 break;
             }
             case 'mark-correct': {
+                let correctIndx;
+                this.files.map((item, index) => {
+                    if (item.fileName == data.file.fileName) {
+                        correctIndx = index;
+                    }
+                });
+
                 this.onFileEvent.emit({
                     files: this.files,
                     action: data.action,
+                    index: correctIndx,
                 });
                 break;
             }
@@ -180,9 +199,11 @@ export class TaUploadFilesComponent implements OnInit {
     public onUploadFiles(data: { files: UploadFile[]; action: string }) {
         switch (data.action) {
             case 'add': {
-                data.files.map((files, i)=>{
-                    for(var a = 0; a<this.files.length; a++) {
-                        if(files.realFile?.name == this.files[a].realFile?.name) {
+                data.files.map((files, i) => {
+                    for (var a = 0; a < this.files.length; a++) {
+                        if (
+                            files.realFile?.name == this.files[a].realFile?.name
+                        ) {
                             data.files.splice(i);
                         }
                     }
@@ -190,7 +211,7 @@ export class TaUploadFilesComponent implements OnInit {
 
                 data.files.map((file) => {
                     let setName = '';
-                    const name = file.fileName.split('');
+                    const name = file.realFile?.name.split('');
                     name.map((item, i) => {
                         if (i < name.length - 4) {
                             setName = setName + item;
@@ -203,27 +224,27 @@ export class TaUploadFilesComponent implements OnInit {
                 this.files = [...oldFiles, ...data.files];
                 this.onFileEvent.emit({ files: this.files, action: 'add' });
                 const slideTo =
-                        this.modalCarousel?.customClass == 'large'
-                            ? 3
-                            : this.modalCarousel?.customClass == 'medium'
-                            ? 2
-                            : 1;
-                    const allowSlide =
-                        this.modalCarousel?.customClass == 'large' &&
-                        this.files.length > 2
-                            ? true
-                            : this.modalCarousel?.customClass == 'medium' &&
-                              this.files.length > 1
-                            ? true
-                            : this.modalCarousel?.customClass == 'small' &&
-                              this.files.length > 0
-                            ? true
-                            : false;
-                    if (allowSlide) {
-                        this.modalCarousel?.slideToFile(
-                            this.files.length - slideTo
-                        );
-                    }
+                    this.modalCarousel?.customClass == 'large'
+                        ? 3
+                        : this.modalCarousel?.customClass == 'medium'
+                        ? 2
+                        : 1;
+                const allowSlide =
+                    this.modalCarousel?.customClass == 'large' &&
+                    this.files.length > 2
+                        ? true
+                        : this.modalCarousel?.customClass == 'medium' &&
+                          this.files.length > 1
+                        ? true
+                        : this.modalCarousel?.customClass == 'small' &&
+                          this.files.length > 0
+                        ? true
+                        : false;
+                if (allowSlide) {
+                    this.modalCarousel?.slideToFile(
+                        this.files.length - slideTo
+                    );
+                }
                 break;
             }
         }

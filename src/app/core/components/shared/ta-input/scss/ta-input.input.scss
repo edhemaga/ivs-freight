@@ -478,6 +478,31 @@
         padding-right: 32px;
     }
 
+    &.merged-dropdown {
+        border-bottom-left-radius: 0px !important;
+        border-bottom-right-radius: 0px !important;
+
+        &::-webkit-input-placeholder {
+            color: rgb(255, 255, 255, 0.4) !important;
+        }
+
+        &::-moz-placeholder {
+            color: rgb(255, 255, 255, 0.4) !important;
+        }
+
+        &:-ms-input-placeholder {
+            color: rgb(255, 255, 255, 0.4) !important;
+        }
+
+        &::-ms-input-placeholder {
+            color: rgb(255, 255, 255, 0.4) !important;
+        }
+
+        &::placeholder {
+            color: rgb(255, 255, 255, 0.4) !important;
+        }
+    }
+
     //------------------------- Custom class -------------------------
     &.input-32 {
         height: 32px;
@@ -500,7 +525,7 @@
 
     &.details-pages {
         background-color: $input-background-color-normal-focus !important;
-        
+
         &::-webkit-input-placeholder {
             color: $input-placeholder-color-normal-focus !important;
         }

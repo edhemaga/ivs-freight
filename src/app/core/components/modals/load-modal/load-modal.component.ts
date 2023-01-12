@@ -2692,7 +2692,6 @@ export class LoadModalComponent implements OnInit, OnDestroy {
     }
 
     private premmapedAdditionalBillingRate() {
-        console.log(this.additionalBillingTypes);
         return this.additionalBillingTypes.map((item) => {
             return {
                 id: item.id ? item.id : null,

@@ -14,4 +14,5 @@ export interface MapStopModel {
     stopColor?: string;
     stopNumber?: string;
     orderNumber?: number;
+    zIndex?: number
 }

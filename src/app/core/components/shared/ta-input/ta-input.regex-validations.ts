@@ -1,4 +1,4 @@
-import { Validators } from '@angular/forms';
+import {Validators} from '@angular/forms';
 import moment from 'moment';
 
 //---------------- Bank Regex, Routing & Accounting Validation
@@ -161,7 +161,7 @@ export const mileageValidation = [
 //---------------- License plate
 export const licensePlateValidation = [
     Validators.minLength(5),
-    Validators.maxLength(7),
+    Validators.maxLength(9),
 ];
 
 //---------------- Description

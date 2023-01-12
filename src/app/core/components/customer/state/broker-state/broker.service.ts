@@ -11,7 +11,7 @@ import {
     RatingReviewService,
     UpdateReviewCommand,
 } from 'appcoretruckassist';
-import { Observable, tap, of, Subject, takeUntil } from 'rxjs';
+import { Observable, of, Subject, takeUntil, tap } from 'rxjs';
 import { BrokerStore } from './broker.store';
 import { TruckassistTableService } from '../../../../services/truckassist-table/truckassist-table.service';
 import { BrokerMinimalListStore } from '../broker-details-state/broker-minimal-list-state/broker-minimal.store';
@@ -27,6 +27,7 @@ export class BrokerTService implements OnDestroy {
     public brokerList: any;
     public currentIndex: number;
     private destroy$ = new Subject<void>();
+
     constructor(
         private brokerService: BrokerService,
         private brokerStore: BrokerStore,
@@ -36,7 +37,7 @@ export class BrokerTService implements OnDestroy {
         private brokerMinimalQuery: BrokerMinimalListQuery,
         private bls: BrokerDetailsListStore,
         private formDataService: FormDataService,
-        private brokerItemStore: BrokerDetailsStore,
+        private brokerItemStore: BrokerDetailsStore
     ) {}
 
     // Add Broker
@@ -331,32 +332,35 @@ export class BrokerTService implements OnDestroy {
     //  <--------------------------------- Review ---------------------------------->
 
     public createReview(review: CreateRatingCommand): Observable<any> {
-        return this.ratingReviewService.apiRatingReviewReviewPost(review);
+        return this.ratingReviewService.apiRatingreviewRatingPost(review);
     }
 
     public deleteReviewById(id: number): Observable<any> {
-        return this.ratingReviewService.apiRatingReviewReviewIdDelete(id);
+        return this.ratingReviewService.apiRatingreviewReviewIdDelete(id);
     }
 
     public updateReview(review: UpdateReviewCommand): Observable<any> {
-        return this.ratingReviewService.apiRatingReviewReviewPut(review);
+        return this.ratingReviewService.apiRatingreviewReviewPut(review);
     }
 
-
-    public updatedReviewNew(data, currentId){
-
-        let brokerData = JSON.parse(JSON.stringify(this.brokerItemStore?.getValue()?.entities[currentId]));
+    public updatedReviewNew(data, currentId) {
+        let brokerData = JSON.parse(
+            JSON.stringify(
+                this.brokerItemStore?.getValue()?.entities[currentId]
+            )
+        );
 
         brokerData?.reviews.map((item: any) => {
-            if ( item.id == data.id ){
+            if (item.id == data.id) {
                 item.comment = data.comment;
             }
-           
         });
-        
-        this.brokerItemStore.update(brokerData.id, { reviews: brokerData.reviews });
+
+        this.brokerItemStore.update(brokerData.id, {
+            reviews: brokerData.reviews,
+        });
         this.brokerStore.update(brokerData.id, { reviews: brokerData.reviews });
-        
+
         this.tableService.sendActionAnimation({
             animation: 'update',
             tab: 'broker',
@@ -365,11 +369,17 @@ export class BrokerTService implements OnDestroy {
         });
     }
 
-    public addNewReview(data, currentId){
-        let brokerData = JSON.parse(JSON.stringify(this.brokerItemStore?.getValue()?.entities[currentId]));
+    public addNewReview(data, currentId) {
+        let brokerData = JSON.parse(
+            JSON.stringify(
+                this.brokerItemStore?.getValue()?.entities[currentId]
+            )
+        );
         brokerData?.reviews.push(data);
 
-        this.brokerItemStore.update(brokerData.id, { reviews: brokerData.reviews });
+        this.brokerItemStore.update(brokerData.id, {
+            reviews: brokerData.reviews,
+        });
         this.brokerStore.update(brokerData.id, { reviews: brokerData.reviews });
 
         this.tableService.sendActionAnimation({
@@ -380,16 +390,20 @@ export class BrokerTService implements OnDestroy {
         });
     }
 
-    public deleteReview(reviewId, brokerId){
-
-        let brokerData = JSON.parse(JSON.stringify(this.brokerItemStore?.getValue()?.entities[brokerId]));
+    public deleteReview(reviewId, brokerId) {
+        let brokerData = JSON.parse(
+            JSON.stringify(this.brokerItemStore?.getValue()?.entities[brokerId])
+        );
 
         brokerData?.reviews.map((item: any, index: any) => {
-            if ( item.id == reviewId ){
+            if (item.id == reviewId) {
                 brokerData?.reviews.splice(index, 1);
-            }})
-        
-        this.brokerItemStore.update(brokerData.id, { reviews: brokerData.reviews });
+            }
+        });
+
+        this.brokerItemStore.update(brokerData.id, {
+            reviews: brokerData.reviews,
+        });
         this.brokerStore.update(brokerData.id, { reviews: brokerData.reviews });
 
         this.tableService.sendActionAnimation({
@@ -398,14 +412,20 @@ export class BrokerTService implements OnDestroy {
             data: brokerData,
             id: brokerData.id,
         });
-
     }
 
-    public getBrokerLoads(
-        brokerId: number
-    ){
-        return this.brokerService.apiBrokerLoadsGet(undefined, undefined, undefined, undefined, undefined, brokerId);
-    }public getBrokerLoa
+    public getBrokerLoads(brokerId: number) {
+        return this.brokerService.apiBrokerLoadsGet(
+            undefined,
+            undefined,
+            undefined,
+            undefined,
+            undefined,
+            brokerId
+        );
+    }
+
+    public getBrokerLoa;
 
     ngOnDestroy(): void {
         this.destroy$.next();
