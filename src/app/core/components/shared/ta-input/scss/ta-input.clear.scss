@@ -89,10 +89,8 @@
     &.dropdown-position-image,
     &.dropdown-label-position,
     &.repair-m-pm {
-        // OVDE JE NEKAD BIO SAMO TOP: 0, PA JE DODAT 50% PLUS TRANSFORM I DOLE ZA SVG-ICON DISPLAY FLEX
         right: 27px !important;
-        top: 50% !important;
-        transform: translateY(-50%);
+        top: 4px;
 
         svg-icon {
             display: flex;
@@ -305,6 +303,32 @@
                 position: absolute;
                 right: 22px;
                 top: 5px;
+            }
+        }
+    }
+
+    &.merged-dropdown {
+        display: inline-block;
+        right: 4px !important;
+
+        .input-clear-x {
+            svg {
+                path {
+                    fill: #aaaaaa !important;
+                }
+                rect {
+                    fill: transparent !important;
+                }
+            }
+            &:hover {
+                svg {
+                    path {
+                        fill: #dadada !important;
+                    }
+                    rect {
+                        fill: #1d1d1d !important;
+                    }
+                }
             }
         }
     }

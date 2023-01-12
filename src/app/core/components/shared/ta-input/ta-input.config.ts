@@ -26,7 +26,6 @@ export interface ITaInput {
     placeholderText?: string;
     placeholderInsteadOfLabel?: boolean;
     inputCursorOnRightSide?: boolean;
-    hideDropdownArrow?: boolean;
     connectDropdown?: boolean;
     isRequired?: boolean;
     isDisabled?: boolean;
@@ -49,6 +48,7 @@ export interface ITaInput {
     hideRequiredCheck?: boolean;
     hideErrorMessage?: boolean;
     hideDangerMark?: boolean;
+    hideDropdownArrow?: boolean;
     removeInput?: boolean;
     readOnly?: boolean;
     thousandSeparator?: boolean; // type of input must be 'text'
@@ -118,6 +118,7 @@ export interface ITaInput {
         class?: string; // colors store in front-end
         remove?: boolean; // remove svg in focus mode and when user are typing
     };
+    mergedDropdown?: boolean;
 
     // Label dropdown
     dropdownLabel?: boolean;
