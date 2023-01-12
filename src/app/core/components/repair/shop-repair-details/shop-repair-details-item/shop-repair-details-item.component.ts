@@ -110,16 +110,16 @@ export class ShopRepairDetailsItemComponent implements OnInit, OnChanges {
             .pipe(takeUntil(this.destroy$))
             .subscribe((res: any) => {
                 if (res.animation && res.tab === 'repair') {
-                    let index;
+                    let index = -1;
                     this.repairListData.map((item, inx) => {
                         if ( item.id == res.id ) {
                             index = inx;
 
                         }
                     })
-
-                    if ( index ) {
-                        this.repairListData[index] = res.data;
+                    
+                    if ( index > -1 ) {
+                        this.repairListData[index] = res.data; 
                         this.cdr.detectChanges();
                     }
                 }
