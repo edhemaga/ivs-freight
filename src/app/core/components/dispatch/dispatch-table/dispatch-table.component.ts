@@ -84,6 +84,8 @@ export class DispatchTableComponent implements OnInit {
 
     @Input() set _dData(value) {
         this.dData = JSON.parse(JSON.stringify(value));
+        console.log("DDATA");
+        console.log(this.dData);
 
         this.dData.dispatches = this.dData.dispatches.map((item) => {
             let i = 0;
