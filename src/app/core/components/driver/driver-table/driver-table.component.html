@@ -1,15 +1,15 @@
 <div class="table-container">
-    <!-- <app-truckassist-table-toolbar
+    <app-truckassist-table-toolbar
         (toolBarAction)="onToolBarAction($event)"
         [options]="tableOptions"
         [tableData]="tableData"
         [selectedTab]="selectedTab"
         [columns]="columns"
         [tableContainerWidth]="tableContainerWidth"
-    ></app-truckassist-table-toolbar> -->
+    ></app-truckassist-table-toolbar>
 
     <div *ngIf="activeViewMode == 'List'">
-        <!-- <app-truckassist-table-head
+        <app-truckassist-table-head
             [options]="tableOptions"
             [viewData]="viewData"
             [columns]="columns"
@@ -26,14 +26,14 @@
             (bodyActions)="onTableBodyActions($event)"
             [tableData]="tableData"
             [tableContainerWidth]="tableContainerWidth"
-        ></app-truckassist-table-body> -->
+        ></app-truckassist-table-body>
 
-        <app-table-modal
+        <!-- <app-table-modal
             [columns]="modalColumns"
             [viewData]="modalViewData"
             [midSectionWidth]="800"
             [formGroup]="testControl"
-        ></app-table-modal>
+        ></app-table-modal> -->
     </div>
 
     <div *ngIf="activeViewMode == 'Card'">
