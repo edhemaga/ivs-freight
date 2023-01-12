@@ -1,3 +1,4 @@
+import { CdkDragDrop } from '@angular/cdk/drag-drop';
 import {
     Component,
     Input,
@@ -5,6 +6,7 @@ import {
     OnChanges,
     SimpleChanges,
 } from '@angular/core';
+import { FormGroup } from '@angular/forms';
 
 @Component({
     selector: 'app-table-modal',
@@ -14,6 +16,8 @@ import {
 export class TableModalComponent implements OnInit, OnChanges {
     @Input() columns: any[];
     @Input() viewData: any[];
+    @Input() midSectionWidth: number;
+    @Input() formGroup: FormGroup;
 
     tableFixedColumns: any[] = [];
     tableScrollableColumns: any[] = [];
@@ -22,9 +26,6 @@ export class TableModalComponent implements OnInit, OnChanges {
     constructor() {}
 
     ngOnInit(): void {
-        console.log('ngOnInit');
-        console.log(this.viewData);
-
         this.setHeadColumns();
     }
 
@@ -37,27 +38,63 @@ export class TableModalComponent implements OnInit, OnChanges {
     }
 
     setHeadColumns() {
+        this.tableFixedColumns = [];
+        this.tableScrollableColumns = [];
+        this.tableActionColumns = [];
+
         this.columns.map((column) => {
-            if (column.isPined) {
-                this.tableFixedColumns.push(column);
+            if (column.isPined && !column.hidden) {
+                this.tableFixedColumns.push({
+                    ...column,
+                    formControl: this.formGroup.get(column.formControlName),
+                    columnFocusId: '',
+                });
             }
 
-            if (!column.isPined && !column.isAction) {
-                this.tableScrollableColumns.push(column);
+            if (!column.isPined && !column.isAction && !column.hidden) {
+                this.tableScrollableColumns.push({
+                    ...column,
+                    formControl: this.formGroup.get(column.formControlName),
+                    columnFocusId: '',
+                });
             }
 
-            if(column.isAction){
-              this.tableActionColumns.push(column);
+            if (column.isAction && !column.hidden) {
+                this.tableActionColumns.push(column);
             }
         });
+    }
 
-        console.log('Table Head Fixed Columns');
-        console.log(this.tableFixedColumns);
+    onFocusInput(column: any, i: number, j: number) {
+        column.columnFocusId = column.title + ' ' + i + ' ' + j;
+    }
 
-        console.log('Table Head Scrollable Columns');
-        console.log(this.tableScrollableColumns);
+    // Reorder
+    onReorder(event: CdkDragDrop<any>) {
+        // let previousIndex: number = null,
+        //     currentIndex: number = null;
 
-        console.log('Table Head Action Columns');
-        console.log(this.tableActionColumns);
+        // this.columns.map((c, i) => { 
+        //     if (this.notPinedColumns[event.previousIndex].field === c.field) {
+        //         previousIndex = i;
+        //     }
+
+        //     if (this.notPinedColumns[event.currentIndex].field === c.field) {
+        //         currentIndex = i;
+        //     }
+        // });
+
+        // let column: any[] = this.columns.splice(previousIndex, 1);
+
+        // this.columns.splice(currentIndex, 0, column[0]);
+
+        // localStorage.setItem(
+        //     `table-${this.tableConfigurationType}-Configuration`,
+        //     JSON.stringify(this.columns)
+        // );
+
+        // this.tableService.sendColumnsOrder({ columnsOrder: this.columns });
+
+        // this.setVisibleColumns();
     }
 }

@@ -28,7 +28,12 @@
             [tableContainerWidth]="tableContainerWidth"
         ></app-truckassist-table-body> -->
 
-        <app-table-modal [columns]="modalColumns" [viewData]="modalViewData"></app-table-modal>
+        <app-table-modal
+            [columns]="modalColumns"
+            [viewData]="modalViewData"
+            [midSectionWidth]="800"
+            [formGroup]="testControl"
+        ></app-table-modal>
     </div>
 
     <div *ngIf="activeViewMode == 'Card'">

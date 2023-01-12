@@ -28,8 +28,20 @@
         </tr>
 
         <!-- Scrollable Columns -->
-        <tr>
-            <th *ngFor="let column of tableScrollableColumns; let i = index">
+        <tr
+            class="head-scrollable-container"
+            [ngStyle]="{ 'max-width.px': midSectionWidth }"
+            cdkDropListOrientation="horizontal"
+            cdkDropList
+            (cdkDropListDropped)="onReorder($event)"
+        >
+            <th
+                *ngFor="let column of tableScrollableColumns; let i = index"
+                cdkDrag
+                [cdkDragDisabled]="locked || rezaizeing || column.isAction"
+                cdkDragBoundary="head-scrollable-container"
+                [cdkDragPreviewClass]="'cdk-drag-preview'"
+            >
                 <!-- Title -->
                 <div
                     *ngIf="column.ngTemplate === 'text'"
@@ -73,7 +85,7 @@
         >
             <!-- Fixed Columns -->
             <div class="fixed-container">
-                <td *ngFor="let column of tableFixedColumns">
+                <td *ngFor="let column of tableFixedColumns; let j = index">
                     <!-- Number Count -->
                     <div
                         class="td-num-count"
@@ -88,34 +100,93 @@
                     <!-- Text -->
                     <div
                         class="td-input-text"
-                        *ngIf="column.ngTemplate === 'text'"
+                        *ngIf="
+                            column.ngTemplate === 'text' &&
+                            column.columnFocusId !==
+                                column.title + ' ' + i + ' ' + j
+                        "
                         [ngStyle]="{
                             width: column.width + 'px'
                         }"
+                        (click)="onFocusInput(column, i, j)"
                     >
                         {{ row[column.field].text }}
                         <div class="td-input-text-extraText">
                             {{ row[column.field].extraText }}
                         </div>
-                    </div> 
+                    </div>
+
+                    <!-- Input -->
+                    <div
+                        *ngIf="
+                            column.columnFocusId ===
+                            column.title + ' ' + i + ' ' + j
+                        "
+                        class="ta-input-container"
+                        [ngStyle]="{
+                            width: column.width + 'px'
+                        }"
+                    >
+                        <app-ta-input
+                            *ngIf="column?.inputConfig"
+                            [formControl]="column.formControl"
+                            [inputConfig]="
+                                column.inputConfig
+                                    | tableModalInputConfig
+                                        : i + ' ' + column.title
+                            "
+                        ></app-ta-input>
+                    </div>
                 </td>
             </div>
 
             <!-- Scrollable Columns -->
-            <div class="scrollable-container">
-                <td *ngFor="let column of tableScrollableColumns">
+            <div
+                class="scrollable-container"
+                [ngStyle]="{ 'max-width.px': midSectionWidth }"
+            >
+                <td
+                    *ngFor="let column of tableScrollableColumns; let j = index"
+                >
                     <!-- Text -->
                     <div
                         class="td-input-text"
-                        *ngIf="column.ngTemplate === 'text'"
+                        *ngIf="
+                            column.ngTemplate === 'text' &&
+                            column.columnFocusId !==
+                                column.title + ' ' + i + ' ' + j
+                        "
                         [ngStyle]="{
                             width: column.width + 'px'
                         }"
+                        (click)="onFocusInput(column, i, j)"
                     >
                         {{ row[column.field].text }}
                         <div class="td-input-text-extraText">
                             {{ row[column.field].extraText }}
                         </div>
+                    </div>
+
+                    <!-- Input -->
+                    <div
+                        *ngIf="
+                            column.columnFocusId ===
+                            column.title + ' ' + i + ' ' + j
+                        "
+                        class="ta-input-container"
+                        [ngStyle]="{
+                            width: column.width + 'px'
+                        }"
+                    >
+                        <app-ta-input
+                            *ngIf="column?.inputConfig"
+                            [formControl]="column.formControl"
+                            [inputConfig]="
+                                column.inputConfig
+                                    | tableModalInputConfig
+                                        : i + ' ' + column.title
+                            "
+                        ></app-ta-input>
                     </div>
                 </td>
             </div>

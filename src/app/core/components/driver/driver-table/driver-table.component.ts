@@ -35,6 +35,7 @@ import { getDriverColumnsDefinition } from '../../../../../assets/utils/settings
 import { ApplicantModalComponent } from '../../modals/applicant-modal/applicant-modal.component';
 import { ApplicantTableQuery } from '../state/applicant-state/applicant-table.query';
 import { getLoadModalColumnDefinition } from 'src/assets/utils/settings/modal-columns-configuration/table-load-modal-columns';
+import { FormControl, FormGroup } from '@angular/forms';
 
 @Component({
     selector: 'app-driver-table',
@@ -43,6 +44,12 @@ import { getLoadModalColumnDefinition } from 'src/assets/utils/settings/modal-co
     providers: [NameInitialsPipe, TaThousandSeparatorPipe],
 })
 export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
+    public testControl: FormGroup = new FormGroup({
+        email: new FormControl(null),
+        password: new FormControl(null),
+        phone: new FormControl(null),
+    });
+
     private destroy$ = new Subject<void>();
 
     tableOptions: any = {};
@@ -338,6 +345,9 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
     modalViewData: any[] = [];
     modalTestInitialization() {
         this.modalColumns = getLoadModalColumnDefinition();
+
+        console.log('modalTestInitialization');
+        console.log(this.modalColumns);
 
         for (let i = 0; i < 3; i++) {
             this.modalViewData.push({
@@ -1105,7 +1115,6 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
             });
     }
 
-    
     private multipleDeleteDrivers(response: any[]) {
         this.driverTService
             .deleteDriverList(response)

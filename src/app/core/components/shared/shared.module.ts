@@ -403,6 +403,7 @@ export function playerFactory() {
 
         TaCheckboxCardComponent,
         TaPickupDeliveryComponent,
+        TableModalComponent
     ],
     providers: [],
     schemas: [CUSTOM_ELEMENTS_SCHEMA],

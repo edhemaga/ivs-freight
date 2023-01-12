@@ -1,3 +1,4 @@
+import { FormControl } from '@angular/forms';
 // Load Modal Column Definition
 export function getLoadModalColumnDefinition() {
     return [
@@ -10,57 +11,100 @@ export function getLoadModalColumnDefinition() {
             isPined: true,
             width: 25,
             sortable: true,
-            isAction: false
+            isAction: false,
         },
         {
             ngTemplate: 'text',
             title: 'Description',
             field: 'tableDescription',
+            formControlName: 'phone',
+            formControl: null,
+            inputConfig: {
+                name: 'Phone',
+                type: 'text',
+                label: 'Phone',
+                placeholderIcon: 'phone',
+                mask: '(000) 000-0000',
+                maxLength: 14,
+            },
             sortName: '',
             hidden: false,
             isPined: true,
             width: 200,
             sortable: true,
-            isAction: false
+            isAction: false,
         },
         {
             ngTemplate: 'text',
             title: 'Quantity',
             field: 'tableQuantity',
+            formControlName: 'email',
+            formControl: null,
+            inputConfig: {
+                name: 'Email',
+                type: 'text',
+                label: 'Email',
+                placeholderIcon: 'email',
+                minLength: 5,
+                maxLength: 64,
+                textTransform: 'lowercase',
+            },
             sortName: '',
             hidden: false,
             isPined: false,
             width: 200,
             sortable: true,
-            isAction: false
+            isAction: false,
         },
         {
             ngTemplate: 'text',
             title: 'Bol No.',
             field: 'tableBolNo',
+            formControlName: 'email',
+            formControl: null,
+            inputConfig: {
+                name: 'Email',
+                type: 'text',
+                label: 'Email',
+                placeholderIcon: 'email',
+                minLength: 5,
+                maxLength: 64,
+                textTransform: 'lowercase',
+            },
             sortName: '',
             hidden: false,
             isPined: false,
             width: 200,
             sortable: true,
-            isAction: false
+            isAction: false,
         },
         {
             ngTemplate: 'text',
             title: 'Weight',
             field: 'tableWeight',
+            formControlName: 'password',
+            formControl: null,
+            inputConfig: {
+                name: 'Email',
+                type: 'text',
+                label: 'Password',
+                placeholderIcon: 'email',
+                minLength: 5,
+                maxLength: 64,
+                textTransform: 'lowercase',
+            },
             sortName: '',
             hidden: false,
             isPined: false,
             width: 200,
             sortable: true,
-            isAction: false
+            isAction: false,
         },
         {
             ngTemplate: 'action',
             field: 'tableAction',
             width: 34,
-            isAction: true
+            isAction: true,
         },
     ];
 }
