@@ -135,7 +135,8 @@
                 inputConfig.dropdownLabel,
             'dropdown-image-input':
                 inputConfig?.dropdownImageInput?.url && !focusInput,
-            'remove-input-svg': inputConfig.removeInput
+            'remove-input-svg': inputConfig.removeInput,
+            'merged-dropdown': inputConfig.mergedDropdown && focusInput
         }"
         ngbTooltip
         [mainTooltip]="
@@ -841,12 +842,12 @@
         "
         [pattern]="inputConfig.pattern"
         [placeholder]="
-            (inputConfig.placeholder && focusInput
-                ? inputConfig.placeholder
-                : '') ||
             (inputConfig.placeholderInsteadOfLabel &&
             inputConfig.placeholder &&
             focusInput
+                ? inputConfig.placeholder
+                : '') ||
+            (inputConfig.placeholder && focusInput
                 ? inputConfig.placeholder
                 : '')
         "
@@ -977,7 +978,8 @@
             'hide-placeholder-in-multiple-placeholder-input':
                 inputConfig?.multipleInputValues?.options?.length && focusInput,
             connectedDropdown: inputConfig?.connectDropdown,
-            'cursor-on-right-side': inputConfig?.inputCursorOnRightSide
+            'cursor-on-right-side': inputConfig?.inputCursorOnRightSide,
+            'merged-dropdown': inputConfig.mergedDropdown
         }"
         (keypress)="manipulateWithInput($event)"
         (keyup)="onKeyUp($event)"

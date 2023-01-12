@@ -211,7 +211,7 @@ export class TaUploadFilesComponent implements OnInit {
 
                 data.files.map((file) => {
                     let setName = '';
-                    const name = file.fileName.split('');
+                    const name = file.realFile?.name.split('');
                     name.map((item, i) => {
                         if (i < name.length - 4) {
                             setName = setName + item;

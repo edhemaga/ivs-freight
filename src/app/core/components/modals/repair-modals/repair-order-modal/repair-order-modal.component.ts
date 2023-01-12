@@ -1,5 +1,7 @@
 import {
     convertDateFromBackend,
+    convertDateToBackend,
+    convertNumberInThousandSep,
     convertThousanSepInNumber,
 } from '../../../../utils/methods.calculations';
 import { SumArraysPipe } from '../../../../pipes/sum-arrays.pipe';
@@ -18,10 +20,6 @@ import { delay, Subject, takeUntil } from 'rxjs';
 import { FormService } from '../../../../services/form/form.service';
 import { RepairResponse } from '../../../../../../../appcoretruckassist/model/repairResponse';
 import {
-    convertDateToBackend,
-    convertNumberInThousandSep,
-} from '../../../../utils/methods.calculations';
-import {
     descriptionValidation,
     invoiceValidation,
     priceValidation,
@@ -36,14 +34,9 @@ import {
     providers: [SumArraysPipe, ModalService, FormService],
 })
 export class RepairOrderModalComponent implements OnInit, OnDestroy {
-    private destroy$ = new Subject<void>();
-
     @ViewChild('t2') public popoverRef: NgbPopover;
-
     @Input() editData: any;
-
     public disableCardAnimation: boolean = false;
-
     public repairOrderForm: FormGroup;
     public selectedHeaderTab: number = 1;
     public headerTabs = [
@@ -58,7 +51,6 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
             checked: false,
         },
     ];
-
     public typeOfRepair = [
         {
             id: 3,
@@ -71,37 +63,30 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
             checked: false,
         },
     ];
-
     // Unit
     public labelsUnit: any[] = [];
     public unitTrucks: any[] = [];
     public unitTrailers: any[] = [];
     public selectedUnit: any = null;
-
     // Repair Shop
     public labelsRepairShop: any = [];
     public selectedRepairShop: any = null;
-
     public services: any[] = [];
     public documents: any[] = [];
     public fileModified: boolean = false;
     public filesForDelete: any[] = [];
-
     // Sum of items
     public subtotal: { id: number; value: number }[] = [];
     public quantity: any[] = [];
     public itemsCounter: number = 0;
-
     // PMs
     public selectedPM: any[] = [];
     public selectedPMIndex: number;
     public pmOptions: any[] = []; // this array fill when truck/trailer switch change
-
     public isFormDirty: boolean;
-
     public selectedRepairType: any = null;
-
     public addNewAfterSave: boolean = false;
+    private destroy$ = new Subject<void>();
 
     constructor(
         private formBuilder: FormBuilder,
@@ -112,6 +97,10 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
         private sumArrayPipe: SumArraysPipe,
         private formService: FormService
     ) {}
+
+    public get items(): FormArray {
+        return this.repairOrderForm.get('items') as FormArray;
+    }
 
     ngOnInit() {
         this.createForm();
@@ -137,35 +126,6 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
         if (this.editData?.type?.includes('edit')) {
             this.disableCardAnimation = true;
             this.editRepairById(this.editData.id);
-        }
-    }
-
-    private createForm() {
-        this.repairOrderForm = this.formBuilder.group({
-            repairType: ['Order'],
-            unitType: ['Truck'],
-            unit: [null, [Validators.required, ...vehicleUnitValidation]],
-            odometer: [null, repairOdometerValidation],
-            date: [null],
-            invoice: [null, invoiceValidation],
-            repairShopId: [null],
-            items: this.formBuilder.array([]),
-            note: [null],
-            files: [null],
-        });
-
-        this.formService.checkFormChange(this.repairOrderForm);
-        this.formService.formValueChange$
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((isFormChange: boolean) => {
-                this.isFormDirty = isFormChange;
-            });
-
-        if (
-            !this.editData?.storageData &&
-            !this.editData?.type?.includes('edit')
-        ) {
-            this.addItems({ check: true, action: null });
         }
     }
 
@@ -222,29 +182,6 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                 break;
             }
         }
-    }
-    public get items(): FormArray {
-        return this.repairOrderForm.get('items') as FormArray;
-    }
-
-    private createItems(data?: {
-        id: number;
-        description?: any;
-        price?: any;
-        quantity?: any;
-        subtotal?: any;
-        pmTruckId?: any;
-        pmTrailerId?: any;
-    }): FormGroup {
-        return this.formBuilder.group({
-            id: [data.id],
-            description: [data.description, [...descriptionValidation]],
-            price: [data.price, priceValidation],
-            quantity: [data.quantity],
-            subtotal: [data.subtotal],
-            pmTruckId: [data.pmTruckId],
-            pmTrailerId: [data.pmTrailerId],
-        });
     }
 
     public addItems(event: { check: boolean; action: string }) {
@@ -542,7 +479,6 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                             });
                     }
                 }
-
                 break;
             }
             default: {
@@ -585,6 +521,107 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
 
     public identity(index: number, item: any): string {
         return item.value;
+    }
+
+    public onAction(action: any, index: number) {
+        if (action.title !== 'Add New' && this.selectedHeaderTab === 2) {
+            this.selectedPM[index] = action;
+            this.selectedPMIndex = index;
+            this.inputService.changeValidators(
+                this.repairOrderForm.get('odometer')
+            );
+        } else {
+            this.inputService.changeValidators(
+                this.repairOrderForm.get('odometer'),
+                false
+            );
+        }
+        if (action.title === 'Add New') {
+            if (!this.editData?.id && !this.selectedUnit?.id) {
+                return;
+            }
+            this.ngbActiveModal.close();
+            this.modalService.setProjectionModal({
+                action: 'open',
+                payload: {
+                    key: 'repair-modal',
+                    value: {
+                        ...this.repairOrderForm.value,
+                        selectedUnit: this.selectedUnit,
+                        services: this.services,
+                        selectedRepairShop: this.selectedRepairShop,
+                        headerTabs: this.headerTabs,
+                        selectedHeaderTab: this.selectedHeaderTab,
+                        typeOfRepair: this.typeOfRepair,
+                        items_array: this.items.value,
+                        subtotal: this.subtotal,
+                        selectedPM: this.selectedPM,
+                        selectedPMIndex: this.selectedPMIndex,
+                        id: this.editData?.id
+                            ? this.editData.id
+                            : this.selectedUnit.id,
+                    },
+                },
+                component: RepairPmModalComponent,
+                size: 'small',
+                type: this.repairOrderForm.get('unitType').value,
+            });
+        }
+        this.popoverRef.close();
+    }
+
+    ngOnDestroy(): void {
+        this.destroy$.next();
+        this.destroy$.complete();
+    }
+
+    private createForm() {
+        this.repairOrderForm = this.formBuilder.group({
+            repairType: ['Order'],
+            unitType: ['Truck'],
+            unit: [null, [Validators.required, ...vehicleUnitValidation]],
+            odometer: [null, repairOdometerValidation],
+            date: [null],
+            invoice: [null, invoiceValidation],
+            repairShopId: [null],
+            items: this.formBuilder.array([]),
+            note: [null],
+            files: [null],
+        });
+
+        this.formService.checkFormChange(this.repairOrderForm);
+        this.formService.formValueChange$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((isFormChange: boolean) => {
+                this.isFormDirty = isFormChange;
+            });
+
+        if (
+            !this.editData?.storageData &&
+            !this.editData?.type?.includes('edit')
+        ) {
+            this.addItems({ check: true, action: null });
+        }
+    }
+
+    private createItems(data?: {
+        id: number;
+        description?: any;
+        price?: any;
+        quantity?: any;
+        subtotal?: any;
+        pmTruckId?: any;
+        pmTrailerId?: any;
+    }): FormGroup {
+        return this.formBuilder.group({
+            id: [data.id],
+            description: [data.description, [...descriptionValidation]],
+            price: [data.price, priceValidation],
+            quantity: [data.quantity],
+            subtotal: [data.subtotal],
+            pmTruckId: [data.pmTruckId],
+            pmTrailerId: [data.pmTrailerId],
+        });
     }
 
     private getRepairDropdowns(
@@ -660,53 +697,6 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                 },
                 error: () => {},
             });
-    }
-
-    public onAction(action: any, index: number) {
-        if (action.title !== 'Add New' && this.selectedHeaderTab === 2) {
-            this.selectedPM[index] = action;
-            this.selectedPMIndex = index;
-            this.inputService.changeValidators(
-                this.repairOrderForm.get('odometer')
-            );
-        } else {
-            this.inputService.changeValidators(
-                this.repairOrderForm.get('odometer'),
-                false
-            );
-        }
-        if (action.title === 'Add New') {
-            if (!this.editData?.id && !this.selectedUnit?.id) {
-                return;
-            }
-            this.ngbActiveModal.close();
-            this.modalService.setProjectionModal({
-                action: 'open',
-                payload: {
-                    key: 'repair-modal',
-                    value: {
-                        ...this.repairOrderForm.value,
-                        selectedUnit: this.selectedUnit,
-                        services: this.services,
-                        selectedRepairShop: this.selectedRepairShop,
-                        headerTabs: this.headerTabs,
-                        selectedHeaderTab: this.selectedHeaderTab,
-                        typeOfRepair: this.typeOfRepair,
-                        items_array: this.items.value,
-                        subtotal: this.subtotal,
-                        selectedPM: this.selectedPM,
-                        selectedPMIndex: this.selectedPMIndex,
-                        id: this.editData?.id
-                            ? this.editData.id
-                            : this.selectedUnit.id,
-                    },
-                },
-                component: RepairPmModalComponent,
-                size: 'small',
-                type: this.repairOrderForm.get('unitType').value,
-            });
-        }
-        this.popoverRef.close();
     }
 
     private addRepair() {
@@ -1215,10 +1205,5 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                         : null,
             };
         });
-    }
-
-    ngOnDestroy(): void {
-        this.destroy$.next();
-        this.destroy$.complete();
     }
 }

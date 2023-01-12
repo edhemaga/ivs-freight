@@ -1,8 +1,9 @@
-<div class="d-flex flex-column step-form" [formGroup]="licenseForm">
+<div [formGroup]="licenseForm" class="d-flex flex-column step-form">
     <div class="d-flex line-container">
         <div class="group license-group">
             <app-ta-input
-                formControlName="licenseNumber"
+                (incorrectEvent)="incorrectInput($event, 0, 10)"
+                [incorrectValue]="openAnnotationArray[10].lineInputs[0]"
                 [inputConfig]="{
                     name: 'License',
                     type: 'text',
@@ -13,13 +14,13 @@
                     isDisabled: selectedMode === 'REVIEW_MODE',
                     incorrectInput: selectedMode === 'REVIEW_MODE'
                 }"
-                [incorrectValue]="openAnnotationArray[10].lineInputs[0]"
-                (incorrectEvent)="incorrectInput($event, 0, 10)"
+                formControlName="licenseNumber"
             ></app-ta-input>
         </div>
         <div class="group country-group">
             <app-ta-input-dropdown
-                formControlName="country"
+                (selectedItem)="handleInputSelect($event, 'COUNTRY-TYPE')"
+                [activeItem]="selectedCountryType"
                 [inputConfig]="{
                     name: 'Input Dropdown',
                     type: 'text',
@@ -29,36 +30,35 @@
                     dropdownWidthClass: 'w-col-234',
                     isDisabled: selectedMode === 'REVIEW_MODE'
                 }"
-                [activeItem]="selectedCountryType"
                 [options]="countryTypes"
-                (selectedItem)="handleInputSelect($event, 'COUNTRY-TYPE')"
+                formControlName="country"
             ></app-ta-input-dropdown>
         </div>
 
         <!-- REVIEW AND FEEDBACK -->
 
         <div
-            class="review-feedback-container"
             *ngIf="
                 (selectedMode === 'REVIEW_MODE' ||
                     selectedMode === 'FEEDBACK_MODE') &&
                 !isReviewingCard
             "
+            class="review-feedback-container"
         >
             <app-applicant-review-feedback
-                formControlName="firstRowReview"
+                (annotationBtnClickEvent)="getAnnotationBtnClickValue($event)"
                 [displayAnnotationButton]="
                     openAnnotationArray[10].displayAnnotationButton
                 "
                 [displayAnnotationTextArea]="
                     openAnnotationArray[10].displayAnnotationTextArea
                 "
-                [lineIndex]="10"
-                [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
                 [feedbackText]="
                     'Check the routing number one more time (one number missing)!!!'
                 "
-                (annotationBtnClickEvent)="getAnnotationBtnClickValue($event)"
+                [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
+                [lineIndex]="10"
+                formControlName="firstRowReview"
             ></app-applicant-review-feedback>
         </div>
     </div>
@@ -68,11 +68,13 @@
     <div class="d-flex line-container">
         <div class="group state-group">
             <app-ta-input-dropdown
-                formControlName="state"
+                (selectedItem)="handleInputSelect($event, 'STATE-TYPE')"
+                [activeItem]="selectedStateType"
                 [inputConfig]="{
                     name: 'Input Dropdown',
                     type: 'text',
                     label: 'State',
+                    textTransform: 'uppercase',
                     isRequired: true,
                     isDisabled:
                         (selectedMode === 'APPLICANT_MODE' &&
@@ -81,14 +83,14 @@
                     isDropdown: true,
                     dropdownWidthClass: 'w-col-246'
                 }"
-                [activeItem]="selectedStateType"
                 [options]="stateTypes"
-                (selectedItem)="handleInputSelect($event, 'STATE-TYPE')"
+                formControlName="state"
             ></app-ta-input-dropdown>
         </div>
         <div class="group class-group">
             <app-ta-input-dropdown
-                formControlName="classType"
+                (selectedItem)="handleInputSelect($event, 'CLASS-TYPE')"
+                [activeItem]="selectedClassType"
                 [inputConfig]="{
                     name: 'Input Dropdown',
                     type: 'text',
@@ -98,14 +100,14 @@
                     dropdownWidthClass: 'w-col-174',
                     isDisabled: selectedMode === 'REVIEW_MODE'
                 }"
-                [activeItem]="selectedClassType"
                 [options]="classTypes"
-                (selectedItem)="handleInputSelect($event, 'CLASS-TYPE')"
+                formControlName="classType"
             ></app-ta-input-dropdown>
         </div>
         <div class="group exp-date-group">
             <app-ta-input
-                formControlName="expDate"
+                (incorrectEvent)="incorrectInput($event, 2, 11)"
+                [incorrectValue]="openAnnotationArray[11].lineInputs[2]"
                 [inputConfig]="{
                     name: 'datepicker',
                     type: 'text',
@@ -116,35 +118,34 @@
                     isDisabled: selectedMode === 'REVIEW_MODE',
                     incorrectInput: selectedMode === 'REVIEW_MODE'
                 }"
-                [incorrectValue]="openAnnotationArray[11].lineInputs[2]"
-                (incorrectEvent)="incorrectInput($event, 2, 11)"
+                formControlName="expDate"
             ></app-ta-input>
         </div>
 
         <!-- REVIEW AND FEEDBACK -->
 
         <div
-            class="review-feedback-container"
             *ngIf="
                 (selectedMode === 'REVIEW_MODE' ||
                     selectedMode === 'FEEDBACK_MODE') &&
                 !isReviewingCard
             "
+            class="review-feedback-container"
         >
             <app-applicant-review-feedback
-                formControlName="secondRowReview"
+                (annotationBtnClickEvent)="getAnnotationBtnClickValue($event)"
                 [displayAnnotationButton]="
                     openAnnotationArray[11].displayAnnotationButton
                 "
                 [displayAnnotationTextArea]="
                     openAnnotationArray[11].displayAnnotationTextArea
                 "
-                [lineIndex]="11"
-                [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
                 [feedbackText]="
                     'Check the routing number one more time (one number missing)!!!'
                 "
-                (annotationBtnClickEvent)="getAnnotationBtnClickValue($event)"
+                [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
+                [lineIndex]="11"
+                formControlName="secondRowReview"
             ></app-applicant-review-feedback>
         </div>
     </div>
@@ -154,9 +155,7 @@
     <div class="d-flex line-container">
         <div class="restrictions-group">
             <app-ta-input-dropdown
-                formControlName="restrictions"
-                [template]="'multiselect'"
-                [multiselectTemplate]="'multiselect-3-columns'"
+                (selectedItems)="handleInputSelect($event, 'RESTRICTIONS')"
                 [inputConfig]="{
                     name: 'Input Dropdown',
                     type: 'text',
@@ -166,9 +165,11 @@
                     dropdownWidthClass: 'w-col-616',
                     isDisabled: selectedMode === 'REVIEW_MODE'
                 }"
+                [multiselectTemplate]="'multiselect-3-columns'"
                 [options]="restrictionsList"
                 [preloadMultiselectItems]="selectedRestrictions"
-                (selectedItems)="handleInputSelect($event, 'RESTRICTIONS')"
+                [template]="'multiselect'"
+                formControlName="restrictions"
             ></app-ta-input-dropdown>
         </div>
     </div>
@@ -178,9 +179,7 @@
     <div class="d-flex line-container">
         <div class="endorsments-group">
             <app-ta-input-dropdown
-                formControlName="endorsments"
-                [template]="'multiselect'"
-                [multiselectTemplate]="'multiselect-3-columns'"
+                (selectedItems)="handleInputSelect($event, 'ENDORSMENTS')"
                 [inputConfig]="{
                     name: 'Input Dropdown',
                     type: 'text',
@@ -190,9 +189,11 @@
                     dropdownWidthClass: 'w-col-616',
                     isDisabled: selectedMode === 'REVIEW_MODE'
                 }"
+                [multiselectTemplate]="'multiselect-3-columns'"
                 [options]="endorsmentsList"
                 [preloadMultiselectItems]="selectedEndorsments"
-                (selectedItems)="handleInputSelect($event, 'ENDORSMENTS')"
+                [template]="'multiselect'"
+                formControlName="endorsments"
             ></app-ta-input-dropdown>
         </div>
     </div>
@@ -206,10 +207,10 @@
             </h4>
 
             <app-applicant-add-save-btn
+                (clickValueEmitter)="onGetBtnClickValue($event)"
                 [addBtn]="true"
                 [btnText]="'Add License'"
                 [disabledValue]="licenseForm.invalid"
-                (clickValueEmitter)="onGetBtnClickValue($event)"
             ></app-applicant-add-save-btn>
         </div>
     </ng-container>
@@ -217,14 +218,14 @@
     <ng-container *ngIf="isEditing">
         <div class="d-flex align-items-center justify-content-center">
             <app-applicant-add-save-btn
-                [cancelBtn]="true"
                 (clickValueEmitter)="onGetBtnClickValue($event)"
+                [cancelBtn]="true"
             ></app-applicant-add-save-btn>
 
             <app-applicant-add-save-btn
-                [saveBtn]="true"
-                [disabledValue]="!isLicenseEdited || !licenseForm.valid"
                 (clickValueEmitter)="onGetBtnClickValue($event)"
+                [disabledValue]="!isLicenseEdited || !licenseForm.valid"
+                [saveBtn]="true"
             ></app-applicant-add-save-btn>
         </div>
     </ng-container>
@@ -232,16 +233,16 @@
     <ng-container *ngIf="isReviewingCard">
         <div class="d-flex align-items-center justify-content-center">
             <app-applicant-add-save-btn
+                (clickValueEmitter)="onGetBtnClickValue($event)"
                 [cancelBtn]="true"
                 [reviewBtn]="true"
-                (clickValueEmitter)="onGetBtnClickValue($event)"
             ></app-applicant-add-save-btn>
 
             <app-applicant-add-save-btn
-                [saveBtn]="true"
-                [reviewBtn]="true"
-                [disabledValue]="!isCardReviewedIncorrect"
                 (clickValueEmitter)="onGetBtnClickValue($event)"
+                [disabledValue]="!isCardReviewedIncorrect"
+                [reviewBtn]="true"
+                [saveBtn]="true"
             ></app-applicant-add-save-btn>
         </div>
     </ng-container>

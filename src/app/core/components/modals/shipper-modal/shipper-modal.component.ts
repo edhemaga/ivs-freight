@@ -117,7 +117,7 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
         this.createForm();
         this.getShipperDropdowns();
 
-        if (this.editData) {
+        if (this.editData?.id) {
             this.disableCardAnimation = true;
             this.editShipperById(this.editData.id);
             this.tabs.push({
@@ -127,6 +127,7 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
             this.ratingChanges();
         }
 
+        // From Another Modal Data
         if (this.editData?.extraPayload?.type === 'edit-contact') {
             this.disableCardAnimation = true;
             this.editShipperById(this.editData.extraPayload.data.id);
@@ -140,6 +141,21 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
                 });
                 this.selectedTab = 2;
             }, 50);
+        }
+
+        // Open Tab Position
+        if (this.editData?.openedTab) {
+            setTimeout(() => {
+                this.tabChange({
+                    id:
+                        this.editData?.openedTab === 'Contact'
+                            ? 2
+                            : this.editData?.openedTab === 'Review'
+                            ? 3
+                            : 1,
+                });
+                this.disableCardAnimation = true;
+            });
         }
 
         this.companyUser = JSON.parse(localStorage.getItem('user'));

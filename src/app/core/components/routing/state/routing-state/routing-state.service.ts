@@ -12,7 +12,7 @@ import {
     RouteResponse,
     UpdateRouteCommand,
 } from 'appcoretruckassist';
-import { takeUntil, Subject, Observable, tap, BehaviorSubject } from 'rxjs';
+import { takeUntil, Subject, Observable, tap, BehaviorSubject, of } from 'rxjs';
 import { MapResponse } from '../../../../../../../appcoretruckassist/model/mapResponse';
 import { NotificationService } from '../../../../services/notification/notification.service';
 
@@ -283,11 +283,12 @@ export class RoutingStateService implements OnDestroy {
     }
 
     decodeRouteShape(routeId: number) {
-        return this.routingService.apiRoutingDecodeRouteIdGet(routeId).pipe(
-            tap(() => {
-                console.log('decodeRouteShape', routeId);
-            })
-        );
+        return of();
+        // return this.routingService.apiRoutingDecodeRouteIdGet(routeId).pipe(
+        //     tap(() => {
+        //         console.log('decodeRouteShape', routeId);
+        //     })
+        // );
     }
 
     public sendUpdatedData(data: any) {

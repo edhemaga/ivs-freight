@@ -54,7 +54,6 @@ export class TaInputArrowsComponent
     }
 
     private changeValue(action: string) {
-        console.log('action', action);
         if (action === 'increment') {
             if (parseInt(this.getSuperControl.value) === this.maximum) {
                 return;

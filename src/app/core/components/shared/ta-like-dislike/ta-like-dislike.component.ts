@@ -36,12 +36,12 @@ export class TaLikeDislikeComponent implements OnInit, OnDestroy {
         this.taLikeDislikeService.populateLikeDislike$
             .pipe(takeUntil(this.destroy$))
             .subscribe((data: PopulateLikeDislikeModel) => {
-                this.taLikes = data.upRatingCount ? data.upRatingCount : 0;
-                this.taDislikes = data.downRatingCount
+                this.taLikes = data?.upRatingCount ? data.upRatingCount : 0;
+                this.taDislikes = data?.downRatingCount
                     ? data.downRatingCount
                     : 0;
-                this.isLiked = data.currentCompanyUserRating === 1;
-                this.isDisliked = data.currentCompanyUserRating === -1;
+                this.isLiked = data?.currentCompanyUserRating === 1;
+                this.isDisliked = data?.currentCompanyUserRating === -1;
             });
     }
 
