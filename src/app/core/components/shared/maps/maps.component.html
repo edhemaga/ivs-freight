@@ -38,8 +38,7 @@
         <div *ngFor="let latlong of viewData; let i = index">
             <agm-marker
                 *ngIf="
-                    !clusterMarkers?.length ||
-                    (clusterMarkers?.length && latlong.showMarker)
+                    latlong.showMarker
                 "
                 (markerClick)="clickedMarker(latlong.id, $event)"
                 [label]="

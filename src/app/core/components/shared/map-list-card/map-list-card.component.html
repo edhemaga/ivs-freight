@@ -107,7 +107,7 @@
                     ></svg-icon>
                 </span>
                 <span class="marker-like-text marker-medium-text"
-                    ><span class="marker-bold-text">$3.31</span> - 4 days
+                    ><span class="marker-bold-text">${{ item.pricePerGallon ? item.pricePerGallon : '3.31' }}</span> - 4 days
                     ago</span
                 >
             </div>
@@ -121,7 +121,7 @@
             </div>
             <div *ngIf="sortCategory.name == 'Last Used Date'">
                 <div class="marker-like-text marker-medium-text">
-                    Last Used <span class="marker-bold-text">10/09/21</span>
+                    Last Used <span class="marker-bold-text">{{ item.updatedAt ? (item.updatedAt | formatDateP) : '10/09/21' }}</span>
                 </div>
             </div>
             <div *ngIf="sortCategory.name == 'Pickups'">
@@ -185,14 +185,14 @@
             </div>
             <div *ngIf="sortCategory.name == 'Purchase'">
                 <div class="marker-like-text">
-                    <span class="marker-bold-text">2,473</span> Purchase
+                    <span class="marker-bold-text">{{ item.fuelTransactions ? item.fuelTransactions.length : '2,473' }}</span> Purchase
                 </div>
             </div>
             <div *ngIf="sortCategory.name == 'Total Cost'">
                 <div class="marker-like-text">
                     Total Cost
                     <span class="marker-bold-text"
-                        >${{ item.cost ? item.cost : '246.58' }}K</span
+                        >${{ item.totalCost != null ? item.totalCost : item.cost != null ? item.cost : '0' }}</span
                     >
                 </div>
             </div>

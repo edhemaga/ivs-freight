@@ -12,6 +12,7 @@
                 ></app-profile-images>
                 <div class="marker-business-name text-ellipsis">
                     {{ title }}
+                    <ng-container *ngIf="type == 'fuelStop'">- {{ item.store }}</ng-container>
                 </div>
                 <span
                     *ngIf="
@@ -833,7 +834,7 @@
                                     : type == 'accident' || type == 'inspection'
                                     ? '9'
                                     : type == 'fuelStop'
-                                    ? '769'
+                                    ? (item.fuelTransactions ? item.fuelTransactions.length : '769')
                                     : ''
                             "
                             [countBackground]="'#424242'"
@@ -850,7 +851,7 @@
                     *ngIf="type == 'repairShop' || type == 'fuelStop'"
                 >
                     <span class="marker-bold-text blue-text"
-                        >${{ item.cost ? item.cost : '137.56' }}K </span
+                        >${{ item.totalCost != null ? item.totalCost : item.cost != null ? item.cost : '0' }} </span
                     ><span class="load-text font-weight-normal">Cost</span>
                 </div>
             </div>
@@ -907,7 +908,7 @@
                     <div class="marker-like-text marker-bold-text mg-bottom-4">
                         {{ item?.status == 2 ? 'Perm. Closed' : 'Last Used' }}
                     </div>
-                    <div class="marker-info-text">137 days ago</div>
+                    <div class="marker-info-text">{{ item.lastUsed != null ? item.lastUsed : '&nbsp;' }}</div>
                 </div>
             </div>
         </div>

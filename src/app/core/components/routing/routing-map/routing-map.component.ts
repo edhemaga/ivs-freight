@@ -1654,6 +1654,11 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
             newRoute.nameHover = false;
             newRoute.stops.map((stop) => {
                 stop.id = 0;
+
+                if ( !stop.latitude ) {
+                    stop.latitude = stop.lat;
+                    stop.longitude = stop.long;
+                }
             });
 
             newRoute.color = this.findRouteColor();
