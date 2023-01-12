@@ -11,7 +11,14 @@ import {
     Validators,
     AbstractControl,
 } from '@angular/forms';
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import {
+    Component,
+    ElementRef,
+    Input,
+    OnDestroy,
+    OnInit,
+    Renderer2,
+} from '@angular/core';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 
@@ -319,6 +326,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
     public selectedExtraStopTime: any[] = [];
 
     // Billing
+    public originalAdditionalBillingTypes: any[] = [];
     public additionalBillingTypes: any[] = [];
     public isAvailableAdjustedRate: boolean = false;
     public isAvailableAdvanceRate: boolean = false;
@@ -383,8 +391,12 @@ export class LoadModalComponent implements OnInit, OnDestroy {
         private loadService: LoadTService,
         private modalService: ModalService,
         private ngbActiveModal: NgbActiveModal,
-        private financialCalculationPipe: FinancialCalculationPipe
+        private financialCalculationPipe: FinancialCalculationPipe,
+        private renderer: Renderer2,
+        private element: ElementRef
     ) {}
+
+    public originHeight: number;
 
     ngOnInit() {
         this.companyUser = JSON.parse(localStorage.getItem('user'));
@@ -392,6 +404,12 @@ export class LoadModalComponent implements OnInit, OnDestroy {
         this.getLoadDropdowns();
 
         this.trackBillingPayment();
+    }
+
+    ngAfterViewInit() {
+        this.renderer.listen(this.element.nativeElement, 'resize', (event) => {
+            this.originHeight = this.element.nativeElement.offsetHeight;
+        });
     }
 
     private createForm() {
@@ -727,7 +745,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                             value: {},
                         },
                         extraPayload: {
-                            data: this.selectedBroker,
+                            data: null,
                             type: 'new',
                         },
                         component: BrokerModalComponent,
@@ -774,38 +792,44 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                                     ),
                                 };
                             });
+                        if (this.labelsBrokerContacts[1]?.contacts[0]) {
+                            this.selectedBrokerContact =
+                                this.labelsBrokerContacts[1].contacts[0];
 
-                        this.selectedBrokerContact =
-                            this.labelsBrokerContacts[1].contacts[0];
+                            if (this.selectedBrokerContact) {
+                                this.loadForm
+                                    .get('brokerContactId')
+                                    .patchValue(
+                                        this.selectedBrokerContact.fullName
+                                    );
 
-                        if (this.selectedBrokerContact) {
-                            this.loadForm
-                                .get('brokerContactId')
-                                .patchValue(
-                                    this.selectedBrokerContact.fullName
-                                );
-
-                            this.loadBrokerContactsInputConfig = {
-                                ...this.loadBrokerContactsInputConfig,
-                                multipleInputValues: {
-                                    options: [
-                                        {
-                                            value: this.selectedBrokerContact
-                                                .name,
-                                            logoName: null,
-                                        },
-                                        {
-                                            value: this.selectedBrokerContact
-                                                .originalPhone,
-                                            second_value: `#${this.selectedBrokerContact.phoneExtension}`,
-                                            logoName: null,
-                                        },
-                                    ],
-                                    customClass: 'load-broker-contact',
-                                },
-                                isDisabled: false,
-                                blackInput: false,
-                            };
+                                this.loadBrokerContactsInputConfig = {
+                                    ...this.loadBrokerContactsInputConfig,
+                                    multipleInputValues: {
+                                        options: [
+                                            {
+                                                value: this
+                                                    .selectedBrokerContact.name,
+                                                logoName: null,
+                                            },
+                                            {
+                                                value: this
+                                                    .selectedBrokerContact
+                                                    .originalPhone,
+                                                second_value: this
+                                                    .selectedBrokerContact
+                                                    .phoneExtension
+                                                    ? `#${this.selectedBrokerContact.phoneExtension}`
+                                                    : null,
+                                                logoName: null,
+                                            },
+                                        ],
+                                        customClass: 'load-broker-contact',
+                                    },
+                                    isDisabled: false,
+                                    blackInput: false,
+                                };
+                            }
                         }
                     }
                     // restart value if clear
@@ -864,7 +888,9 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                                     },
                                     {
                                         value: event.originalPhone,
-                                        second_value: `#${event.phoneExtension}`,
+                                        second_value: event.phoneExtension
+                                            ? `#${event.phoneExtension}`
+                                            : null,
                                         logoName: null,
                                     },
                                 ],
@@ -893,7 +919,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                             value: {},
                         },
                         extraPayload: {
-                            data: this.selectedBroker,
+                            data: null,
                             type: 'new',
                         },
                         component: ShipperModalComponent,
@@ -967,7 +993,11 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                                             value: this
                                                 .selectedPickupShipperContact
                                                 .originalPhone,
-                                            second_value: `#${this.selectedPickupShipperContact.phoneExtension}`,
+                                            second_value: this
+                                                .selectedPickupShipperContact
+                                                .phoneExtension
+                                                ? `#${this.selectedPickupShipperContact.phoneExtension}`
+                                                : null,
                                             logoName: null,
                                         },
                                     ],
@@ -1037,7 +1067,9 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                                     },
                                     {
                                         value: event.originalPhone,
-                                        second_value: `#${event.phoneExtension}`,
+                                        second_value: event.phoneExtension
+                                            ? `#${event.phoneExtension}`
+                                            : null,
                                         logoName: null,
                                     },
                                 ],
@@ -1066,7 +1098,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                             value: {},
                         },
                         extraPayload: {
-                            data: this.selectedBroker,
+                            data: null,
                             type: 'new',
                         },
                         component: ShipperModalComponent,
@@ -1074,6 +1106,17 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                     });
                 } else {
                     this.selectedDeliveryShipper = event;
+
+                    const existLoadStop =
+                        this.selectedDeliveryShipper?.id ===
+                        this.selectedPickupShipper?.id;
+
+                    if (existLoadStop) {
+                        this.loadForm.get('deliveryShipper').patchValue(null);
+                        this.selectedDeliveryShipper = null;
+
+                        return;
+                    }
 
                     // Draw Stop on map
                     this.drawStopOnMap();
@@ -1140,7 +1183,11 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                                             value: this
                                                 .selectedDeliveryShipperContact
                                                 .originalPhone,
-                                            second_value: `#${this.selectedDeliveryShipperContact.phoneExtension}`,
+                                            second_value: this
+                                                .selectedDeliveryShipperContact
+                                                .phoneExtension
+                                                ? `#${this.selectedDeliveryShipperContact.phoneExtension}`
+                                                : null,
                                             logoName: null,
                                         },
                                     ],
@@ -1210,7 +1257,9 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                                     },
                                     {
                                         value: event.originalPhone,
-                                        second_value: `#${event.phoneExtension}`,
+                                        second_value: event.phoneExtension
+                                            ? `#${event.phoneExtension}`
+                                            : null,
                                         logoName: null,
                                     },
                                 ],
@@ -1336,7 +1385,12 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                                                 .selectedExtraStopShipperContact[
                                                 index
                                             ].originalPhone,
-                                            second_value: `#${this.selectedExtraStopShipperContact[index].phoneExtension}`,
+                                            second_value: this
+                                                .selectedExtraStopShipperContact[
+                                                index
+                                            ].phoneExtension
+                                                ? `#${this.selectedExtraStopShipperContact[index].phoneExtension}`
+                                                : null,
                                             logoName: null,
                                         },
                                     ],
@@ -1390,7 +1444,9 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                                 },
                                 {
                                     value: event.originalPhone,
-                                    second_value: `#${event.phoneExtension}`,
+                                    second_value: event.phoneExtension
+                                        ? `#${event.phoneExtension}`
+                                        : null,
                                     logoName: null,
                                 },
                             ],
@@ -2183,15 +2239,15 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                                     this.loadExtraStops()
                                         .at(index - 1)
                                         .get('legHours')
-                                        .patchValue(item.miles);
+                                        .patchValue(item.hours);
                                     this.loadExtraStops()
                                         .at(index - 1)
                                         .get('legMinutes')
-                                        .patchValue(item.miles);
+                                        .patchValue(item.minutes);
                                     this.loadExtraStops()
                                         .at(index - 1)
                                         .get('legCost')
-                                        .patchValue(item.miles);
+                                        .patchValue(item.cost);
                                 }
                                 // Delivery Stop
                                 else {
@@ -2533,6 +2589,10 @@ export class LoadModalComponent implements OnInit, OnDestroy {
 
                     // Additional Billing Types
                     this.additionalBillingTypes = res.additionalBillingTypes;
+                    this.originalAdditionalBillingTypes =
+                        res.additionalBillingTypes;
+
+                    console.log(res.additionalBillingTypes);
                 },
                 error: () => {},
             });
@@ -2607,16 +2667,22 @@ export class LoadModalComponent implements OnInit, OnDestroy {
             baseRate: convertThousanSepInNumber(form.baseRate),
             adjustedRate: convertThousanSepInNumber(form.adjustedRate),
             advancePay: convertThousanSepInNumber(form.advancePay),
-            additionalBillingRates: this.premmapedAdditionalBillingRate(),
+            additionalBillingRates:
+                this.premmapedAdditionalBillingRate('create'),
             stops: this.premmapedStops() as any,
             files: documents,
         };
 
         console.log('create load: ', newData);
-        // this.loadService
-        //     .createLoad(newData)
-        //     .pipe(takeUntil(this.destroy$))
-        //     .subscribe();
+        this.loadService
+            .createLoad(newData)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: () => {},
+                error: (error) => {
+                    console.log('load error: ', error);
+                },
+            });
     }
 
     private updateLoad(id: number) {}
@@ -2673,7 +2739,8 @@ export class LoadModalComponent implements OnInit, OnDestroy {
             baseRate: convertThousanSepInNumber(form.baseRate),
             adjustedRate: convertThousanSepInNumber(form.adjustedRate),
             advancePay: convertThousanSepInNumber(form.advancePay),
-            additionalBillingRates: this.premmapedAdditionalBillingRate(),
+            additionalBillingRates:
+                this.premmapedAdditionalBillingRate('update'),
             stops: this.premmapedStops() as any,
         };
 
@@ -2691,43 +2758,17 @@ export class LoadModalComponent implements OnInit, OnDestroy {
             });
     }
 
-    private premmapedAdditionalBillingRate() {
-        return this.additionalBillingTypes.map((item) => {
+    private premmapedAdditionalBillingRate(action: string) {
+        return this.originalAdditionalBillingTypes.map((item) => {
+            const biilingRate = this.additionalBillings().controls.find(
+                (control) => control.get('name').value === item.name
+            );
             return {
-                id: item.id ? item.id : null,
-                additionalBillingType: item.additionalBillingType,
-                rate:
-                    item.additionalBillingType === 1
-                        ? this.loadForm.get('layoverRate').value
-                            ? convertThousanSepInNumber(
-                                  this.loadForm.get('layoverRate').value
-                              )
-                            : null
-                        : item.additionalBillingType === 2
-                        ? this.loadForm.get('lumperRate').value
-                            ? convertThousanSepInNumber(
-                                  this.loadForm.get('lumperRate').value
-                              )
-                            : null
-                        : item.additionalBillingType === 3
-                        ? this.loadForm.get('fuelSurchargeRate').value
-                            ? convertThousanSepInNumber(
-                                  this.loadForm.get('fuelSurchargeRate').value
-                              )
-                            : null
-                        : item.additionalBillingType === 4
-                        ? this.loadForm.get('escortRate').value
-                            ? convertThousanSepInNumber(
-                                  this.loadForm.get('escortRate').value
-                              )
-                            : null
-                        : item.additionalBillingType === 5
-                        ? this.loadForm.get('detentionRate').value
-                            ? convertThousanSepInNumber(
-                                  this.loadForm.get('detentionRate').value
-                              )
-                            : null
-                        : null,
+                id: action === 'update' ? item.id : null,
+                additionalBillingType: item.id,
+                rate: biilingRate
+                    ? biilingRate.get('billingValue').value
+                    : null,
             };
         });
     }
@@ -2740,7 +2781,8 @@ export class LoadModalComponent implements OnInit, OnDestroy {
             stops.push({
                 id: null,
                 stopType: this.loadForm.get('pickupStop').value,
-                stopOrder: this.loadForm.get('pickupStopOrder').value,
+                stopOrder: stops.length + 1,
+                stopLoadOrder: this.loadForm.get('pickupStopOrder').value,
                 shipperId: this.selectedPickupShipper.id,
                 shipperContactId: this.selectedPickupShipperContact?.id
                     ? this.selectedPickupShipperContact.id
@@ -2839,8 +2881,9 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                 stops.push({
                     id: null,
                     stopType: item.get('stopType').value,
-                    stopOrder: item.get('stopOrder').value,
-                    shipperId: item.get('shipperId').value,
+                    stopOrder: stops.length + 1,
+                    stopLoadOrder: item.get('stopOrder').value,
+                    shipperId: this.selectedExtraStopShipper[index].id,
                     dateFrom: convertDateToBackend(item.get('dateFrom').value),
                     dateTo: item.get('dateTo').value
                         ? convertDateToBackend(item.get('dateTo').value)
@@ -2871,7 +2914,8 @@ export class LoadModalComponent implements OnInit, OnDestroy {
             stops.push({
                 id: null,
                 stopType: this.loadForm.get('deliveryStop').value,
-                stopOrder: this.loadForm.get('deliveryStopOrder').value,
+                stopOrder: stops.length + 1,
+                stopLoadOrder: this.loadForm.get('deliveryStopOrder').value,
                 shipperId: this.selectedDeliveryShipper.id,
                 shipperContactId: this.selectedDeliveryShipperContact?.id
                     ? this.selectedDeliveryShipperContact.id
@@ -3013,5 +3057,6 @@ export class LoadModalComponent implements OnInit, OnDestroy {
     ngOnDestroy(): void {
         this.destroy$.next();
         this.destroy$.complete();
+        this.renderer.destroy();
     }
 }

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, Input, Renderer2 } from '@angular/core';
 
 @Component({
     selector: 'app-load-modal-hazardous',
@@ -6,6 +6,7 @@ import { Component } from '@angular/core';
     styleUrls: ['./load-modal-hazardous.component.scss'],
 })
 export class LoadModalHazardousComponent {
+    @Input() originHeight: number;
     public hazardous_materials_section = [
         {
             type: '(a)',
@@ -175,6 +176,20 @@ export class LoadModalHazardousComponent {
             title: 'When Division 1.5 materials, compatibility group D, are transported in the same freight container as Division 1.2 (explosive)  materials, compatibility group D, the shipment must be transported as Division 1.1 (explosive) materials, compatibility group D.',
         },
     ];
+
+    constructor(private renderer: Renderer2, private element: ElementRef) {}
+
+    ngOnChanges() {
+        if (this.originHeight) {
+            this.renderer.setStyle(
+                this.element.nativeElement,
+                'height',
+                `${this.originHeight}px`
+            );
+
+            console.log('child height: ', this.element.nativeElement.height);
+        }
+    }
 
     public trackByIdentity = (index: number, item: any): number => item?.id;
 }
