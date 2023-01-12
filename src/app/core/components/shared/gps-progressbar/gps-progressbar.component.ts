@@ -63,4 +63,8 @@ export class GpsProgressbarComponent implements OnInit {
         this.gpsTitle = '128.4 mi';
         this.mileageInfo = '226.3 mi';
     }
+
+    showDropdown(t2: any) {
+        t2.open();
+    }
 }

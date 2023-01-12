@@ -1,4 +1,14 @@
-<div class="gps-progress-holder d-flex">
+<div
+    class="gps-progress-holder d-flex"
+    #t2="ngbPopover"
+    [ngbPopover]="gpsDropdownPopover"
+    [autoClose]="'outside'"
+    container="body"
+    [placement]="'left-top'"
+    popoverClass="gps_dropdown_popover"
+    triggers="manual"
+    (click)="showDropdown(t2)"
+>
     <div
         class="gps-progress-img"
         (mouseenter)="hoveredGpsIcon = true"
@@ -6,7 +16,7 @@
     >
         <svg-icon src="assets/svg/common/gps_full.svg"></svg-icon>
     </div>
-    <div class="gps-progress-text" *ngIf="!hoveredGpsIcon && !isDropdown">
+    <div class="gps-progress-text" *ngIf="!hoveredGpsIcon">
         <div class="mileage-gps d-flex">
             <div class="mileages">{{ gpsTitle }}</div>
             <div class="mileage-normal">
@@ -44,12 +54,25 @@
             <div class="mileages">12%</div>
         </div>
     </div>
-    <div class="gps_info_hold" *ngIf="hoveredGpsIcon && !isDropdown">
-        <div class="moving_side">MOVING - SOUTH</div>
-        <div class="moving_time">03:47</div>
-    </div>
-    <div class="gps_info_hold" *ngIf="isDropdown">
+    <div class="gps_info_hold" *ngIf="hoveredGpsIcon">
         <div class="moving_side">MOVING - SOUTH</div>
         <div class="moving_time">03:47</div>
     </div>
 </div>
+
+<ng-template #gpsDropdownPopover let-data="data">
+    <div class="main_dropdown_holder">
+        <div class="map_holder">
+            <app-maps
+                [mapType]="'routing'"
+                [ngStyle]="{ width: '100%', height: '100%' }"
+            ></app-maps>
+        </div>
+        <div class="gps_all_hold">
+            <div class="gps_info_hold">
+                <div class="moving_side">MOVING - SOUTH</div>
+                <div class="moving_time">03:47</div>
+            </div>
+        </div>
+    </div>
+</ng-template>

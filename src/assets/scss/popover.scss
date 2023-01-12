@@ -987,6 +987,14 @@
     }
 }
 
+.gps_dropdown_popover {
+    .popover-body {
+        position: relative;
+        top: 4px;
+        right: 32px;
+    }
+}
+
 .tags_popover_vertical {
     background-color: transparent !important;
     .popover-body {

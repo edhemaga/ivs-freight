@@ -108,17 +108,55 @@
         flex: 1;
 
         .moving_side {
-            color: #3074D3;
+            color: #3074d3;
             font-weight: 900;
             font-size: 11px;
             line-height: 11px;
         }
 
         .moving_time {
-            color: #2F2F2F;
+            color: #2f2f2f;
             font-weight: 500;
             font-size: 11px;
             line-height: 11px;
+        }
+    }
+}
+
+.main_dropdown_holder {
+    display: flex;
+    width: 555px;
+    height: 282px;
+    background-color: #2F2F2F;
+    border-radius: 3px;
+
+    .map_holder {
+        width: 50%;
+    }
+
+    .gps_all_hold {
+        width: 50%;
+
+        .gps_info_hold {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+
+            padding: 0 10px 0 8px;
+
+            .moving_side {
+                color: #3074d3;
+                font-weight: 900;
+                font-size: 11px;
+                line-height: 11px;
+            }
+
+            .moving_time {
+                color: #2f2f2f;
+                font-weight: 500;
+                font-size: 11px;
+                line-height: 11px;
+            }
         }
     }
 }
