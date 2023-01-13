@@ -9,12 +9,15 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { ParkingSlotType } from './parkingSlotType';
 
 
-export interface FuelStopExtensionResponse { 
-    favourite?: boolean;
-    lastUsed?: string | null;
-    totalCost?: number | null;
+export interface ParkingSlotCommand { 
+    id?: number | null;
+    slotNumber?: number;
+    parkingSlotType?: ParkingSlotType;
+    truckId?: number | null;
+    trailerId?: number | null;
     note?: string | null;
 }
 

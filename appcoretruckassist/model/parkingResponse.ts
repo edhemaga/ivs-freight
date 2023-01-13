@@ -9,6 +9,7 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { ParkingSlotResponse } from './parkingSlotResponse';
 import { EnumValue } from './enumValue';
 import { AddressEntity } from './addressEntity';
 
@@ -32,6 +33,7 @@ export interface ParkingResponse {
     parkingCount?: number | null;
     parkingSlotCount?: number | null;
     fullParkingSlotCount?: number | null;
+    parkingSlots?: Array<ParkingSlotResponse> | null;
     createdAt?: string;
     updatedAt?: string;
 }

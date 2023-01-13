@@ -9,10 +9,14 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { EnumValue } from './enumValue';
+import { ParkingShortResponse } from './parkingShortResponse';
 
 
-export interface IntegrationProviderCommand { 
+export interface ParkingSlotShortResponse { 
     id?: number;
-    title?: string | null;
+    parking?: ParkingShortResponse;
+    slotNumber?: number;
+    parkingSlotType?: EnumValue;
 }
 

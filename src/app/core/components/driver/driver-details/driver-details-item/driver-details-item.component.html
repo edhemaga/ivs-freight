@@ -31,6 +31,7 @@
                     [hasCopyIcon]="true"
                     [optionsId]="cdl.id"
                     [isCardOpen]="cdl.status == 1 ? true : false"
+                    [forcedOpen]="cdl.issueDate > currentDate ? true : false"
                     (clickedCard)="getNameForDrop($event, cdl.id)"
                     [cardNameCurrent]="'cdl'"
                     [noteIcons]="
@@ -178,7 +179,7 @@
                                 <div
                                     (click)="openCommand(cdl, 'renew-licence')"
                                     *ngIf="
-                                        !cdl.showButton && !cdl.dateDeactivated
+                                        !cdl.showButton && !cdl.dateDeactivated && cdl.issueDate < currentDate
                                     "
                                     class="activate-button"
                                 >
@@ -573,7 +574,7 @@
                                             mvr?.issueDate | formatDateP
                                         "
                                         [expireDate]="
-                                            mvr?.issueDate | setFutureYear
+                                            mvr?.expDate
                                         "
                                         [expiresSettings]="'details'"
                                     >

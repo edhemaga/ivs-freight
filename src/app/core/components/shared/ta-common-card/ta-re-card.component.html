@@ -1,9 +1,9 @@
-<div class="card-container-cmp" [ngClass]="{ 'card-flex': !isCardOpen }">
+<div class="card-container-cmp" [ngClass]="{ 'card-flex': !isCardOpen && !forcedOpen }">
     <div
         ngbTooltip
         [mainTooltip]="isCardOpen ? 'Close Card' : 'Open Card'"
         position="top"
-        [tooltipBackground]="isCardOpen ? 'rgba(0,0,0,0)' : '#6C6C6C'"
+        [tooltipBackground]="isCardOpen || forcedOpen ? 'rgba(0,0,0,0)' : '#6C6C6C'"
         class="tooltipClose"
     >
         <div
@@ -25,7 +25,7 @@
                     >
                         <div
                             *ngIf="shortName"
-                            [ngClass]="{ 'card-close-title': !isCardOpen }"
+                            [ngClass]="{ 'card-close-title': !isCardOpen && !forcedOpen}"
                             class="weekly-status"
                             [style.width.px]="weeklyWidth"
                         >
@@ -33,8 +33,8 @@
                         </div>
                     </span>
                     <span
-                        *ngIf="hasSvg && isCardOpen"
-                        [ngClass]="{ 'card-close-icon': !isCardOpen }"
+                        *ngIf="hasSvg && ( isCardOpen || forcedOpen )"
+                        [ngClass]="{ 'card-close-icon': !isCardOpen && !forcedOpen}"
                         class="icon-common"
                     >
                         <svg-icon
@@ -47,19 +47,19 @@
                         class="card-name-cmp"
                         [ngClass]="{
                             'has-svgIcon': hasSvg,
-                            'card-close-title': !isCardOpen
+                            'card-close-title': !isCardOpen && !forcedOpen
                         }"
                     >
                         <span
-                            *ngIf="isCardOpen || haveHeaderText"
+                            *ngIf="isCardOpen || haveHeaderText || forcedOpen"
                             class="open-name disable-selection"
                             >{{ cardNameCommon }}</span
                         >
 
                         <span
-                            [ngClass]="{ 'card-close-title': !isCardOpen }"
+                            [ngClass]="{ 'card-close-title': !isCardOpen && !forcedOpen}"
                             class="open-name"
-                            *ngIf="(!isCardOpen && expDateClose) || testDate"
+                            *ngIf="(!isCardOpen && expDateClose && !forcedOpen) || testDate"
                             ><span *ngIf="!isDeactivated && !testDate"
                                 >Expired on {{ expDateClose }}</span
                             >
@@ -75,7 +75,7 @@
                             [class.positiveResult]="cardSecondResult == 'Positive' ">
                             {{ cardSecondResult }}
                         </span>
-                        <span *ngIf="cardSecondName && !isCardOpen" class="second-name reason-span">
+                        <span *ngIf="cardSecondName && !isCardOpen && !forcedOpen" class="second-name reason-span">
                             {{ cardSecondName }}</span>
                     </span>
                     <span
@@ -90,7 +90,7 @@
                         "
                     >
                         <svg-icon
-                            *ngIf="isCardOpen && hasCopyIcon"
+                            *ngIf="(isCardOpen || forcedOpen) && hasCopyIcon"
                             (mouseleave)="copiedCommon = false"
                             class="card-icon-common"
                             src="assets/svg/common/ic_copy.svg"
@@ -138,7 +138,7 @@
     <div
         class="card-body-cmp"
         [@.disabled]="animationsDisabled"
-        [ngClass]="{ active: isCardOpen }"
+        [ngClass]="{ active: ( isCardOpen || forcedOpen )}"
         
     >
         <div [@cardOpenAnimation]="animationStarted ? 'true' : 'false'">

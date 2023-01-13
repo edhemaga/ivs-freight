@@ -708,6 +708,13 @@
                 class="{{ item?.subFolder }} {{
                     item?.logoType.trim().replace(' ', '').toLowerCase()
                 }}"
+                [ngClass]="{
+                    trailerContainer:
+                        item?.logoType.trim().replace(' ', '') === 'Container',
+                    lowboyrgn:
+                        item?.logoType.trim().replace(' ', '') ===
+                        'Low Boy / RGN'
+                }"
                 [src]="item?.logoName"
             ></svg-icon>
 
@@ -908,6 +915,10 @@
                         getSuperControl.invalid &&
                         !focusInput)) &&
                 !inputConfig.blackInput,
+            'invalid-focus-out-empty':
+                !getSuperControl.value &&
+                getSuperControl.invalid &&
+                (touchedInput || getSuperControl.touched),
             'password-eye':
                 inputConfig.type === 'password' &&
                 isVisiblePasswordEye &&
@@ -1068,9 +1079,8 @@
                 !inputConfig.dropdownLabel,
             invalid:
                 getSuperControl.invalid &&
-                touchedInput &&
-                !focusInput &&
-                !inputConfig.blackInput
+                (touchedInput || getSuperControl.touched) &&
+                !focusInput
         }"
         [style.left]="
             inputConfig.placeholderIconFolllowTextOnRightSide

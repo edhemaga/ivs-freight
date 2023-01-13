@@ -12,6 +12,7 @@
 import { TruckMinimalResponse } from './truckMinimalResponse';
 import { TrailerMinimalResponse } from './trailerMinimalResponse';
 import { DriverDispatchResponse } from './driverDispatchResponse';
+import { ParkingSlotShortResponse } from './parkingSlotShortResponse';
 import { EnumValue } from './enumValue';
 import { DispatchHosResponse } from './dispatchHosResponse';
 import { LoadShortResponse } from './loadShortResponse';
@@ -41,5 +42,6 @@ export interface DispatchResponse {
     note?: string | null;
     activeLoad?: LoadShortResponse;
     assignedLoads?: Array<LoadShortResponse> | null;
+    parkingSlot?: ParkingSlotShortResponse;
 }
 

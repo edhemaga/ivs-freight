@@ -16,9 +16,10 @@ import { RepairPmModalComponent } from '../repair-pm-modal/repair-pm-modal.compo
 import { TruckModalComponent } from '../../truck-modal/truck-modal.component';
 import { TrailerModalComponent } from '../../trailer-modal/trailer-modal.component';
 import { RepairShopModalComponent } from '../repair-shop-modal/repair-shop-modal.component';
-import { delay, Subject, takeUntil } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
 import { FormService } from '../../../../services/form/form.service';
 import { RepairResponse } from '../../../../../../../appcoretruckassist/model/repairResponse';
+import { RepairAutocompleteDescriptionResponse } from '../../../../../../../appcoretruckassist/model/repairAutocompleteDescriptionResponse';
 import {
     descriptionValidation,
     invoiceValidation,
@@ -26,6 +27,7 @@ import {
     repairOdometerValidation,
     vehicleUnitValidation,
 } from '../../../shared/ta-input/ta-input.regex-validations';
+import { DetailsDataService } from '../../../../services/details-data/details-data.service';
 
 @Component({
     selector: 'app-repair-order-modal',
@@ -95,7 +97,8 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
         private modalService: ModalService,
         private ngbActiveModal: NgbActiveModal,
         private sumArrayPipe: SumArraysPipe,
-        private formService: FormService
+        private formService: FormService,
+        private DetailsDataService: DetailsDataService,
     ) {}
 
     public get items(): FormArray {
@@ -380,6 +383,12 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
         const { items, ...form } = this.repairOrderForm.value;
         switch (action) {
             case 'repair-unit': {
+                if ( event.truckNumber ){
+                    this.DetailsDataService.setUnitValue(event.truckNumber);
+                } else if ( event.trailerNumber ) {
+                    this.DetailsDataService.setUnitValue(event.trailerNumber);
+                }
+
                 if (event?.canOpenModal) {
                     this.ngbActiveModal.close();
                     this.modalService.setProjectionModal({
@@ -1002,7 +1011,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
     private editRepairById(id: number) {
         this.repairService
             .getRepairById(id)
-            .pipe(delay(700), takeUntil(this.destroy$))
+            .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (res: RepairResponse) => {
                     // Header Tab
@@ -1205,5 +1214,23 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                         : null,
             };
         });
+    }
+
+    public onBlurDescription(ind: number) {
+        const description = this.items.at(ind).get('description').value;
+
+        if (description) {
+            this.repairService
+                .autocompleteRepairByDescription(description)
+                .pipe(takeUntil(this.destroy$))
+                .subscribe({
+                    next: (res: RepairAutocompleteDescriptionResponse) => {
+                        console.log('autocomplete: ', res);
+                    },
+                    error: (error) => {
+                        console.log(error);
+                    },
+                });
+        }
     }
 }

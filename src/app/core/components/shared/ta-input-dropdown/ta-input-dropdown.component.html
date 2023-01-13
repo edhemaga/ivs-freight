@@ -630,6 +630,16 @@
                                       .toLowerCase()
                                 : null
                         }}"
+                        [ngClass]="{
+                            trailerContainer:
+                                option?.trailer?.logoType
+                                    .trim()
+                                    .replace(' ', '') === 'Container',
+                            lowboyrgn:
+                                option?.trailer?.logoType
+                                    .trim()
+                                    .replace(' ', '') === 'Low Boy / RGN'
+                        }"
                     >
                         <svg-icon [src]="option?.trailer?.logoName"></svg-icon>
                         <div

@@ -155,9 +155,11 @@ export class ShopRepairCardViewComponent
                 changes.repairShopCardViewData.currentValue.note
             );
             this.repairShopCardViewData =
-                changes.repairShopCardViewData?.currentValue;
+                changes.repairShopCardViewData?.currentValue;  
         }
         this.getActiveServices(changes.repairShopCardViewData.currentValue);
+        this.getShopsDropdown(changes.repairShopCardViewData.currentValue);
+        this.cdRef.detectChanges();
     }
 
     ngOnInit(): void {
@@ -188,7 +190,7 @@ export class ShopRepairCardViewComponent
         this.shopIndex = currentIndex;
     }
 
-    public getShopsDropdown() {
+    public getShopsDropdown(newData?) {
         this.repairDQuery.repairShopMinimal$
             .pipe(
                 takeUntil(this.destroy$),
@@ -208,6 +210,9 @@ export class ShopRepairCardViewComponent
                 })
             )
             .subscribe((data) => {
+                if ( newData ) {
+                    data[0]['name'] = newData.name;
+                }
                 this.shopsDropdowns = data;
             });
     }
