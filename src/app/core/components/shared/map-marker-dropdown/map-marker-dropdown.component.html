@@ -1,5 +1,5 @@
 <div class="marker-tool-tip" *ngIf="type != 'cluster'">
-    <div class="marker-info-container-all">
+    <div class="marker-info-container-all" *ngIf="type != 'gps' || (type == 'gps' && title)">
         <div class="title-container">
             <div class="d-flex" [ngStyle]="{ overflow: 'hidden' }">
                 <app-profile-images
@@ -293,7 +293,7 @@
             </div>
         </div>
     </div>
-    <div class="marker-divider"></div>
+    <div class="marker-divider" *ngIf="type != 'gps' || (type == 'gps' && title)"></div>
     <div class="marker-info-container-all">
         <div *ngIf="type == 'gps'">
             <div>

@@ -30,7 +30,7 @@
             (mapClick)="mapClick()"
         >
             <agm-marker
-                *ngFor="let location of gpsAssignedData; let i = index"
+                *ngFor="let location of driverLocations; let i = index"
                 [agmFitBounds]="true"
                 [latitude]="location.latitude"
                 [longitude]="location.longitude"
@@ -264,8 +264,6 @@
                             <app-map-marker-dropdown
                                 [title]="
                                     location?.driver
-                                        ? location.driver
-                                        : 'Job Gaston'
                                 "
                                 [item]="location"
                                 [type]="'gps'"
