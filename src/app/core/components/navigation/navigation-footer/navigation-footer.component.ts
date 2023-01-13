@@ -29,7 +29,7 @@ import { TaUserService } from '../../../services/user/user.service';
     changeDetection: ChangeDetectionStrategy.OnPush,
     animations: [
         navigation_route_animation('showHideDetails'),
-        navigation_magic_line('showHideDetails'),
+        navigation_magic_line('showHideDetailsMagicLine'),
     ],
 })
 export class NavigationFooterComponent implements OnInit, OnChanges, OnDestroy {
@@ -165,11 +165,9 @@ export class NavigationFooterComponent implements OnInit, OnChanges, OnDestroy {
             this.userActivatedSettingsRoute.emit($event);
         }
     }
-    //On footer hover show/hide magic line
-    public onFooterHover(state) {
-        // this.navigationService.setValueNavHovered(false);
-    }
     public onAction(index: number, action: string) {
+        console.log(index, action);
+
         switch (action) {
             case 'Open User Panel': {
                 if (index === 2) {
@@ -188,6 +186,11 @@ export class NavigationFooterComponent implements OnInit, OnChanges, OnDestroy {
                 return;
             }
         }
+        this.navigationService.navigationDropdownActivation$.subscribe(
+            (res) => {
+                console.log(res);
+            }
+        );
     }
 
     public isActiveFooterRoute(item: FooterData): boolean {

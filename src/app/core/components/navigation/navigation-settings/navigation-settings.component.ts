@@ -3,7 +3,6 @@ import {
     Component,
     EventEmitter,
     Input,
-    OnChanges,
     OnInit,
     Output,
 } from '@angular/core';
@@ -25,38 +24,31 @@ import { NavigationService } from '../services/navigation.service';
         DropDownAnimation,
     ],
 })
-export class NavigationSettingsComponent implements OnInit, OnChanges {
+export class NavigationSettingsComponent implements OnInit {
     @Input() isNavigationHovered: boolean = false;
     @Input() isUserPanelOpen: boolean = false;
-    @Input() isSettingsPanelOpen: boolean = false;
+    @Input() isSettingsPanelOpen = false;
     @Input() settingsRouteActivated: boolean = false;
     @Input() isActiveFooterRouteClick: boolean = false;
     @Output() activatedSettingsRoute = new EventEmitter<any>();
-    // @Output() onRouteEvent: any = new EventEmitter();
     public footer: FooterData[] = settings;
-    public isMagicLineActive: boolean = false;
-    public activeLink: boolean = false;
-    status: boolean = false;
     constructor(
         private router: Router,
         private navigationService: NavigationService
     ) {}
-    ngOnChanges(): void {
-        if (!this.isNavigationHovered) {
-            this.isSettingsPanelOpen = false;
-        }
+
+    ngOnInit(): void {
+        this.navigationService.navigationDropdownActivation$.subscribe(
+            (res) => {
+                if (res.name === 'Settings') {
+                    this.isSettingsPanelOpen = res.type;
+                }
+            }
+        );
     }
     routeAction(route) {
         this.navigationService.setValueWhichNavIsOpen(false);
         this.activatedSettingsRoute.emit({ value: true, id: 34 });
-        this.activeLink = true;
-        // this.onRouteEvent.emit({
-        //     routeId: this.route.id,
-        //     routes: this.route.route,
-        //     activeRouteFlegId: JSON.parse(
-        //         localStorage.getItem('subroute_active')
-        //     ),
-        // });
         localStorage.setItem(
             'footer_active',
             route.activeRouteFlegId.toString()
@@ -65,16 +57,14 @@ export class NavigationSettingsComponent implements OnInit, OnChanges {
     }
     public isActiveRouteOnReload(route: string): boolean {
         if (this.router.url.includes(route)) {
-            this.isMagicLineActive = true;
         }
         return this.router.url.includes(route);
     }
-    ngOnInit(): void {}
+
     public onUserPanelClose() {
-        this.isSettingsPanelOpen = !this.isSettingsPanelOpen;
         this.navigationService.onDropdownActivation({
             name: 'Settings',
-            type: this.isSettingsPanelOpen,
+            type: !this.isSettingsPanelOpen,
         });
     }
     public changeRouteSettings(subroute: Settings): void {

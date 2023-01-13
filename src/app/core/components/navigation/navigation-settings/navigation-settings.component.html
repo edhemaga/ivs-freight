@@ -6,6 +6,14 @@
     }"
 >
     <div
+        *ngIf="!isNavigationHovered"
+        class="tooltip"
+        ngbTooltip
+        mainTooltip="Settings"
+        tooltipBackground="#2F2F2F"
+        position="right"
+    ></div>
+    <div
         class="parent"
         *ngIf="isSettingsPanelOpen && isNavigationHovered"
     ></div>
@@ -29,6 +37,13 @@
                     class="svg-settings"
                 ></svg-icon>
                 <p>{{ item.name }}</p>
+                <svg-icon
+                    class="mark-route"
+                    src="assets/svg/common/confirmation/ic_confirmation_hire.svg"
+                    [ngClass]="{
+                        'active-mark': isActiveRouteOnReload(item.route)
+                    }"
+                ></svg-icon>
             </div>
         </div>
         <div
@@ -43,8 +58,19 @@
             'active-text': isActiveFooterRouteClick
         }"
     >
-        <svg-icon class="image-footer" src="{{ footer[0].image }}"></svg-icon>
-        <p [@showHideDetails]="isNavigationHovered ? 'true' : 'false'">
+        <svg-icon
+            class="image-footer"
+            [ngClass]="{
+                'activated-svg': isSettingsPanelOpen
+            }"
+            src="{{ footer[0].image }}"
+        ></svg-icon>
+        <p
+            [@showHideDetails]="isNavigationHovered ? 'true' : 'false'"
+            [ngClass]="{
+                'activated-settings': isSettingsPanelOpen
+            }"
+        >
             <span class="item-name"> Settings</span>
             <svg-icon
                 class="nav-item-arrow nav-item-arrow-active"

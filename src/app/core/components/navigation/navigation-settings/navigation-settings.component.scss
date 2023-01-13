@@ -27,6 +27,12 @@
         transition: $nav-transition;
         background: rgba(170, 170, 170, 10%);
     }
+    .tooltip {
+        position: absolute;
+        width: 36px;
+        height: 28px;
+        left: -8px;
+    }
     // .wrapper{
     //     animation: append-animate .2s linear;
     // }
@@ -53,6 +59,14 @@
             svg {
                 width: 20px;
                 height: 20px;
+            }
+            .mark-route {
+                opacity: 0;
+                position: absolute;
+                right: 5px;
+            }
+            .active-mark {
+                opacity: 1;
             }
         }
         p {
@@ -119,9 +133,21 @@
         }
         .active-text {
             font-weight: $nav-font-bold;
+        }
+        .activated-svg {
+            svg {
+                path {
+                    fill: $nav-white;
+                }
+            }
+        }
+        .activated-settings {
+            span {
+                font-weight: $nav-font-bold;
+            }
             .nav-item-arrow-rotate {
-                transform: rotate(0deg);
-                transition: all 0.3s ease-in-out;
+                transform: rotate(0deg) !important;
+                transition: all 0.3s ease-in-out !important;
                 svg {
                     path {
                         fill: $nav-white;

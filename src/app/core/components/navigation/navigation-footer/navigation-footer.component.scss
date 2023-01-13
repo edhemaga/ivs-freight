@@ -123,6 +123,12 @@
                 padding: 8px 0;
             }
         }
+        .tooltip {
+            position: absolute;
+            width: 36px;
+            height: 28px;
+            left: -8px;
+        }
     }
     .nav-footer-item {
         height: 28px;
@@ -306,6 +312,10 @@
     border-radius: 3px;
     left: -8px;
 }
+.magic-line-not-hovered {
+    width: 38px !important;
+    left: -9px;
+}
 .nav-footer-width {
     width: 238px;
     .magic-line-footer {
@@ -325,6 +335,6 @@
     transform: translateY(-39px) !important;
 }
 
-.settings-footer:nth-child(2) ~ .magic-line-footer {
-    transform: translateY(-39px) !important;
+.activated-footer-route:nth-child(2) ~ .magic-line-footer {
+    transform: translateY(-39px);
 }

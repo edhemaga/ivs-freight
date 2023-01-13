@@ -45,25 +45,14 @@ export class NavigationRouteComponent implements OnInit {
     public activeRouteIdFromLocalStorage: number;
     public isNavItemHovered: boolean = false;
     private timeout = null;
-    public route_name: string;
     public settingsPage: boolean;
     public arrowHovered: boolean;
     public footerRouteActive: boolean;
-    compare: number;
-    active: number;
     constructor(
         public router: Router,
-        injector: Injector,
         public navigationService: NavigationService
-    ) {
-        StaticInjectorService.Injector = injector;
-    }
-    test(id) {
-        this.active = id;
-        if (this.compare !== this.active) {
-            this.compare = id;
-        }
-    }
+    ) {}
+
     //Get subroute name
     ngOnChanges() {
         const router = StaticInjectorService.Injector.get(Router);
@@ -71,22 +60,21 @@ export class NavigationRouteComponent implements OnInit {
         this.activeRouteIdFromLocalStorage = parseInt(
             localStorage.getItem('subroute_active')
         );
-
-        this.route_name = this.route.route.slice(1, 20);
-        // if (
-        //     parseInt(localStorage.getItem('subroute_active')) === this.route.id
-        // ) {
-        // }
-        const conditions = ['settings', 'user'];
+        // this.route_name = this.route.route.slice(1, 20);
+        // // if (
+        // //     parseInt(localStorage.getItem('subroute_active')) === this.route.id
+        // // ) {
+        // // }
+        // const conditions = ['settings', 'user'];
         if (n[2]) {
             this.activeRouteName = n[2];
         } else {
             this.activeRouteName = n[1];
         }
-
-        this.settingsPage = conditions.some((el) => router.url.includes(el));
+        // this.settingsPage = conditions.some((el) => router.url.includes(el));
         // console.log(this.activeRouteName, this.route_name, 'changes');
     }
+
     ngOnInit() {
         this.timeout = setTimeout(() => {
             this.isActiveRouteOnReload(window.location.pathname);
@@ -105,10 +93,6 @@ export class NavigationRouteComponent implements OnInit {
         this.arrowHovered = event;
     }
     public onRouteAction() {
-        console.log(
-            this.route.id === this.activeRouteIdFromLocalStorage,
-            this.activeRouteName === this.route_name
-        );
         this.onRouteEvent.emit({
             routeId: this.route.id,
             routes: this.route.route,

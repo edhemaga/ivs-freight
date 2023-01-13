@@ -3,10 +3,8 @@ import {
     ChangeDetectionStrategy,
     Component,
     Input,
-    OnChanges,
     OnDestroy,
     OnInit,
-    SimpleChanges,
 } from '@angular/core';
 import { userNavigationData } from '../model/navigation-data';
 import { NavigationUserPanel } from '../model/navigation.model';
@@ -32,7 +30,6 @@ import {
         DropDownAnimation,
     ],
 })
-// , OnChanges
 export class NavigationUserProfileComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
     @Input() isNavigationHovered: boolean = false;
@@ -50,14 +47,7 @@ export class NavigationUserProfileComponent implements OnInit, OnDestroy {
         private userService: TaUserService,
         private imageBase64Service: ImageBase64Service
     ) {}
-    ngOnChanges(changes: SimpleChanges): void {
-        if (!this.isNavigationHovered) {
-            this.navigationService.onDropdownActivation({
-                name: 'User Panel',
-                type: false,
-            });
-        }
-    }
+
     ngOnInit() {
         // ----------------------- PRODUCSTION MODE ----------------------------
         // if(this.authQuery.getEntity(1)) {

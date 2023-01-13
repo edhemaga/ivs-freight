@@ -184,6 +184,10 @@ export class NavigationComponent implements OnInit, OnDestroy {
                 this.isActiveMagicLine = true;
                 this.isModalPanelOpen = false;
                 this.isActiveSubroute = false;
+                this.navigationService.onDropdownActivation({
+                    name: 'Settings',
+                    type: false,
+                });
                 return (this.isNavigationHovered = false);
             }
             this.isNavigationHovered = true;
@@ -195,6 +199,10 @@ export class NavigationComponent implements OnInit, OnDestroy {
             this.isModalPanelOpen = false;
             this.isActiveSubroute = false;
             this.isNavigationHovered = false;
+            this.navigationService.onDropdownActivation({
+                name: 'Settings',
+                type: false,
+            });
         }
     }
 
