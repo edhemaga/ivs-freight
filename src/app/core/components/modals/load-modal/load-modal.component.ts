@@ -704,15 +704,21 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                         },
                     };
 
-                    if (
-                        this.selectedDispatches.driver.payType === 'Flat Rate'
-                    ) {
+                    if (this.selectedDispatches.payType === 'Flat Rate') {
                         this.inputService.changeValidators(
                             this.loadForm.get('driverRate')
+                        );
+                        this.inputService.changeValidators(
+                            this.loadForm.get('adjustedRate'),
+                            false
                         );
                     } else {
                         this.inputService.changeValidators(
                             this.loadForm.get('adjustedRate')
+                        );
+                        this.inputService.changeValidators(
+                            this.loadForm.get('driverRate'),
+                            false
                         );
                     }
                 } else {
@@ -2666,7 +2672,12 @@ export class LoadModalComponent implements OnInit, OnDestroy {
             },
             note: form.note,
             baseRate: convertThousanSepInNumber(form.baseRate),
-            adjustedRate: convertThousanSepInNumber(form.adjustedRate),
+            driverRate: form.driverRate
+                ? convertThousanSepInNumber(form.driverRate)
+                : null,
+            adjustedRate: form.adjustedRate
+                ? convertThousanSepInNumber(form.adjustedRate)
+                : null,
             advancePay: convertThousanSepInNumber(form.advancePay),
             additionalBillingRates:
                 this.premmapedAdditionalBillingRate('create'),
@@ -2674,7 +2685,6 @@ export class LoadModalComponent implements OnInit, OnDestroy {
             files: documents,
         };
 
-        console.log('create load: ', newData);
         this.loadService
             .createLoad(newData)
             .pipe(takeUntil(this.destroy$))
@@ -2691,7 +2701,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
     private saveLoadTemplate() {
         const { ...form } = this.loadForm.value;
         const newData: CreateLoadTemplateCommand = {
-            name: '',
+            name: 'Novi template',
             type: this.tabs.find((item) => item.id === this.selectedTab)
                 .name as any,
             dispatcherId: this.selectedDispatcher
@@ -2703,10 +2713,10 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                     : this.selectedCompany
                     ? this.selectedCompany.id
                     : null,
-            dateCreated: moment(new Date()).toISOString(true),
             dispatchId: this.selectedDispatches
                 ? this.selectedDispatches.id
                 : null,
+            dateCreated: moment(new Date()).toISOString(true),
             brokerId: this.selectedBroker ? this.selectedBroker.id : null,
             brokerContactId: this.selectedBrokerContact
                 ? this.selectedBrokerContact.id
@@ -2738,10 +2748,15 @@ export class LoadModalComponent implements OnInit, OnDestroy {
             },
             note: form.note,
             baseRate: convertThousanSepInNumber(form.baseRate),
-            adjustedRate: convertThousanSepInNumber(form.adjustedRate),
+            // driverRate: form.driverRate
+            //     ? convertThousanSepInNumber(form.driverRate)
+            //     : null,
+            adjustedRate: form.adjustedRate
+                ? convertThousanSepInNumber(form.adjustedRate)
+                : null,
             advancePay: convertThousanSepInNumber(form.advancePay),
             additionalBillingRates:
-                this.premmapedAdditionalBillingRate('update'),
+                this.premmapedAdditionalBillingRate('create'),
             stops: this.premmapedStops() as any,
         };
 
