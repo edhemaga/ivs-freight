@@ -2175,6 +2175,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                     this.numberOfLoadExtraStops().numberOfDeliveries + 1,
             });
         }
+        console.log('map routes: ', routes);
         if (routes.length > 1) {
             this.routingService
                 .apiRoutingGet(
@@ -2191,7 +2192,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 .subscribe({
                     next: (res: RoutingResponse) => {
                         // TODO: Populate lat and long with routesPoints
-
+                        console.log('res map: ', res);
                         // Render on map routes
                         this.loadStopRoutes[0] = {
                             routeColor: '#919191',
@@ -2209,6 +2210,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                                         this.selectedDispatches
                                             ?.currentLocationCoordinates &&
                                         index === 1,
+                                    zIndex: 99 + index,
                                 };
                             }),
                         };
@@ -2291,7 +2293,9 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                             this.totalLegCost = res.totalCost;
                         }
                     },
-                    error: () => {},
+                    error: (error) => {
+                        console.log('map error: ', error);
+                    },
                 });
         }
     }
