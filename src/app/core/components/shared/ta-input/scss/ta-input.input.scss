@@ -223,7 +223,8 @@
         background-color: $input-background-color-invalid-focus !important;
     }
 
-    &.invalid-focus-out-filled {
+    &.invalid-focus-out-filled,
+    &.invalid-focus-out-empty {
         background-color: $input-background-color-invalid-focus-out !important;
         color: $input-text-color-invalid-focus-out !important;
 
