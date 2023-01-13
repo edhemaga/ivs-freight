@@ -17,6 +17,7 @@
     <!-- Origin Tab -->
     <form
         origin
+        #originElement
         [formGroup]="loadForm"
         class="form-container form-container-without-mb"
     >
@@ -1239,12 +1240,12 @@
         }"
         [ngStyle]="{
             overflow: 'hidden',
-            'owerflow-y': 'scroll'
+            'owerflow-y': 'scroll',
+            height: originHeight + 130 + 'px'
         }"
     >
         <!-- Hazardous -->
         <app-load-modal-hazardous
-            [originHeight]="originHeight"
             *ngIf="isHazardousVisible"
         ></app-load-modal-hazardous>
 
