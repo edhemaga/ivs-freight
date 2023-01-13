@@ -20,6 +20,7 @@ import { TruckItemStore } from './truck-details-state/truck.details.store';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { TrucksDetailsListStore } from './truck-details-list-state/truck-details-list.store';
 import { FormDataService } from '../../../services/formData/form-data.service';
+import { TruckAutocompleteModelResponse } from '../../../../../../appcoretruckassist/model/truckAutocompleteModelResponse';
 
 @Injectable({ providedIn: 'root' })
 export class TruckTService implements OnDestroy {
@@ -75,8 +76,6 @@ export class TruckTService implements OnDestroy {
             search2
         );
     }
-
-    /* Observable<CreateTruckResponse> */
 
     public addTruck(data: any): Observable<any> {
         this.formDataService.extractFormDataFromFunction(data);
@@ -379,6 +378,12 @@ export class TruckTService implements OnDestroy {
 
     public getTruckTitleByTitleId(titleId: number) {
         return this.TitleService.apiTitleIdGet(titleId);
+    }
+
+    public autocompleteByTruckModel(
+        model: string
+    ): Observable<TruckAutocompleteModelResponse> {
+        return this.truckService.apiTruckAutocompleteModelModelGet(model);
     }
 
     ngOnDestroy(): void {

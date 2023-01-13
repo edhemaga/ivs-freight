@@ -44,6 +44,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { ShipperModalComponent } from '../shipper-modal/shipper-modal.component';
 import { FinancialCalculationPipe } from './load-financial/financialCalculation.pipe';
 import { RoutingResponse } from '../../../../../../appcoretruckassist/model/routingResponse';
+import { LoadStopItemAutocompleteDescriptionResponse } from '../../../../../../appcoretruckassist/model/loadStopItemAutocompleteDescriptionResponse';
 
 interface IStopRoutes {
     longitude: number;
@@ -545,7 +546,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
             }
             case 'stop-time-delivery': {
                 this.selectedStopTimeDelivery = event.id;
-                if (this.selectedStopTimePickup === 8) {
+                if (this.selectedStopTimeDelivery === 8) {
                     this.inputService.changeValidators(
                         this.loadForm.get('deliveryTimeTo'),
                         false
@@ -3052,6 +3053,80 @@ export class LoadModalComponent implements OnInit, OnDestroy {
 
     public identity(index: number, item: any): number {
         return item.id;
+    }
+
+    public onBlurDescription(action: string, ind?: number) {
+        switch (action) {
+            case 'pickup': {
+                const description = this.loadPickupStopItems()
+                    .at(ind)
+                    .get('description').value;
+
+                if (description) {
+                    this.loadService
+                        .autocompleteLoadByDescription(description)
+                        .pipe(takeUntil(this.destroy$))
+                        .subscribe({
+                            next: (
+                                res: LoadStopItemAutocompleteDescriptionResponse
+                            ) => {
+                                console.log('autocomplete pickup: ', res);
+                            },
+                            error: (error) => {
+                                console.log(error);
+                            },
+                        });
+                }
+
+                break;
+            }
+            case 'delivery': {
+                const description = this.loadDeliveryStopItems()
+                    .at(ind)
+                    .get('description').value;
+
+                if (description) {
+                    this.loadService
+                        .autocompleteLoadByDescription(description)
+                        .pipe(takeUntil(this.destroy$))
+                        .subscribe({
+                            next: (
+                                res: LoadStopItemAutocompleteDescriptionResponse
+                            ) => {
+                                console.log('autocomplete delivery: ', res);
+                            },
+                            error: (error) => {
+                                console.log(error);
+                            },
+                        });
+                }
+
+                break;
+            }
+            case 'extra-stop': {
+                const description = this.loadExtraStopItems(ind)
+                    .at(ind)
+                    .get('description').value;
+
+                if (description) {
+                    this.loadService
+                        .autocompleteLoadByDescription(description)
+                        .pipe(takeUntil(this.destroy$))
+                        .subscribe({
+                            next: (
+                                res: LoadStopItemAutocompleteDescriptionResponse
+                            ) => {
+                                console.log('autocomplete extra stop: ', res);
+                            },
+                            error: (error) => {
+                                console.log(error);
+                            },
+                        });
+                }
+
+                break;
+            }
+        }
     }
 
     ngOnDestroy(): void {

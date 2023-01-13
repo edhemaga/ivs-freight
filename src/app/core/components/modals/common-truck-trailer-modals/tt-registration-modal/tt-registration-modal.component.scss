@@ -1,0 +1,60 @@
+.registration-expiration-container {
+    gap: 6px;
+    .registartion-action {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 4px;
+        padding: 4px;
+        padding-left: 5px;
+        width: 26px;
+        height: 26px;
+        background-color: #f3f3f3;
+        cursor: pointer;
+        transition: all 0.3s ease-in-out;
+
+        .registartion-action-svg {
+            width: 17px;
+            height: 18px;
+            line-height: 18px;
+            svg {
+                path {
+                    fill: #b7b7b7;
+                }
+            }
+        }
+    }
+
+    .registration-action-text {
+        font-size: 14px;
+        font-weight: 500;
+        color: #919191;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        transition: all 0.3s ease-in;
+    }
+
+    &:hover {
+        .registartion-action {
+            &:hover {
+                background-color: #919191;
+
+                .registartion-action-svg {
+                    svg {
+                        path {
+                            fill: #ffffff;
+                        }
+                    }
+                }
+            }
+        }
+
+        .registration-action:hover {
+            .registration-action-text {
+                color: #6c6c6c;
+            }
+        }
+    }
+}
