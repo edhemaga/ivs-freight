@@ -564,6 +564,16 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             }
             case 'extra-stops-time': {
                 this.selectedExtraStopTime[indx] = event.id;
+                if (this.selectedExtraStopTime.toString().startsWith('9')) {
+                    this.inputService.changeValidators(
+                        this.loadExtraStops().at(indx).get('timeTo'),
+                        false
+                    );
+                } else {
+                    this.inputService.changeValidators(
+                        this.loadExtraStops().at(indx).get('timeTo')
+                    );
+                }
                 break;
             }
             default: {
@@ -2175,6 +2185,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                     this.numberOfLoadExtraStops().numberOfDeliveries + 1,
             });
         }
+
         if (routes.length > 1) {
             this.routingService
                 .apiRoutingGet(
@@ -2209,6 +2220,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                                         this.selectedDispatches
                                             ?.currentLocationCoordinates &&
                                         index === 1,
+                                    zIndex: 99 + index,
                                 };
                             }),
                         };
@@ -2291,7 +2303,9 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                             this.totalLegCost = res.totalCost;
                         }
                     },
-                    error: () => {},
+                    error: (error) => {
+                        console.log('map error: ', error);
+                    },
                 });
         }
     }
