@@ -606,7 +606,7 @@
                         ></div>
                         <!-- Percentage is driver owner -->
                         <span
-                            *ngIf="option.driver?.owner"
+                            *ngIf="option.driver?.owner && option?.payType"
                             [ngClass]="{
                                 'driver-owner': option.driver?.owner,
                                 active: indx === activeItem?.itemIndex
@@ -723,7 +723,8 @@
                     <span
                         *ngIf="
                             options[0].name !== 'No Results' &&
-                            !option.driver?.owner
+                            !option.driver?.owner &&
+                            option?.payType
                         "
                         [ngClass]="{
                             active: indx === activeItem?.itemIndex
