@@ -631,14 +631,16 @@
                                 : null
                         }}"
                         [ngClass]="{
-                            trailerContainer:
-                                option?.trailer?.logoType
-                                    .trim()
-                                    .replace(' ', '') === 'Container',
-                            lowboyrgn:
-                                option?.trailer?.logoType
-                                    .trim()
-                                    .replace(' ', '') === 'Low Boy / RGN'
+                            trailerContainer: option?.trailer?.logoType
+                                ? option?.trailer?.logoType
+                                      .trim()
+                                      .replace(' ', '') === 'Container'
+                                : false,
+                            lowboyrgn: option?.trailer?.logoType
+                                ? option?.trailer?.logoType
+                                      .trim()
+                                      .replace(' ', '') === 'Low Boy / RGN'
+                                : false
                         }"
                     >
                         <svg-icon [src]="option?.trailer?.logoName"></svg-icon>
