@@ -27,9 +27,7 @@
                         [ngClass]="{
                             'finish-order-cont': repairs.repairType.name != 'Bill',
                             'open-items-body':
-                                showRepairItems[repairs?.id] && repairs.repairType.name == 'Bill',
-                            'open-items-body-no-invoice':
-                                showRepairItems[repairs?.id] && repairs.repairType.name != 'Bill'
+                                showRepairItems[repairs?.id] && repairs.repairType.name == 'Bill'
                         }"
                     >
                         <div class="repair-items">
