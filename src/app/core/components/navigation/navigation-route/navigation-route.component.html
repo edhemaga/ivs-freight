@@ -14,15 +14,21 @@
     }"
     (mouseenter)="onNavItemHover(true)"
     (mouseleave)="onNavItemHover(false)"
-    (click)="onRouteAction()"
+    (click)="onRouteAction(); test(route.id)"
+    ngbTooltip
+    mainTooltip="Find Anything"
+    tooltipBackground="#2F2F2F"
+    position="top"
 >
     <div
         [ngClass]="{
             'nav-item-active-box':
-                (route.isRouteActive || route.isSubrouteActive) &&
+                ((route.isRouteActive && footerRouteActive) ||
+                    route.isSubrouteActive) &&
                 !isNavigationHovered &&
-                isSettingsPanelOpen &&
-                !isUserPanelOpen
+                !isSettingsPanelOpen &&
+                !isUserPanelOpen &&
+                footerRouteActive
         }"
     ></div>
 
@@ -37,12 +43,19 @@
                 closeDropdownOnNavClose &&
                 !isSettingsPanelOpen &&
                 !isUserPanelOpen,
+
             'nav-item-svg-active':
-                (route.id === activeRouteIdFromLocalStorage &&
-                    !settingsPage &&
-                    route.arrow &&
-                    !activeLink) ||
-                (activeLink && !settingsPage && !isUserPanelOpen)
+                (!settingsPage &&
+                    route.id === activeRouteIdFromLocalStorage &&
+                    footerRouteActive &&
+                    !route.isRouteActive) ||
+                (!settingsPage &&
+                    activeLink &&
+                    footerRouteActive &&
+                    !route.isRouteActive) ||
+                (!settingsPage &&
+                    activeRouteName === route_name &&
+                    footerRouteActive)
         }"
     ></svg-icon>
     <div *ngIf="message > 0" class="message-container">
@@ -71,9 +84,12 @@
             [ngClass]="{
                 'nav-item-name-active':
                     (!settingsPage &&
-                        route.id === activeRouteIdFromLocalStorage) ||
-                    (!settingsPage && activeLink) ||
-                    (!settingsPage && activeRouteName === route_name),
+                        route.id === activeRouteIdFromLocalStorage &&
+                        footerRouteActive) ||
+                    (!settingsPage && activeLink && footerRouteActive) ||
+                    (!settingsPage &&
+                        activeRouteName === route_name &&
+                        footerRouteActive),
 
                 'active-text':
                     route.isRouteActive &&
@@ -97,7 +113,9 @@
             *ngIf="message"
             [@showHideDetails]="isNavigationHovered ? 'true' : 'false'"
         >
-            {{ message }}
+            <span>
+                {{ message }}
+            </span>
         </div>
         <div
             *ngIf="files"
@@ -127,6 +145,9 @@
             class="nav-item-arrow_top"
             src="assets/svg/common/arrow_top_right.svg"
             (click)="openLinkInNewWindow(route.route)"
+            (mouseenter)="hoveredArrow(true)"
+            (mouseleave)="hoveredArrow(false)"
+            [ngClass]="{ 'hovered-arrow': arrowHovered }"
         ></svg-icon>
     </div>
 </div>
