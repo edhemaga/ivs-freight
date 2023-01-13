@@ -255,6 +255,16 @@
         -ms-user-select: none;
         user-select: none;
         pointer-events: none;
+
+        &::-moz-selection {
+            background-color: $input-background-color-disabled !important;
+            color: $input-text-color-filled-disabled !important;
+        }
+
+        &::selection {
+            background-color: $input-background-color-disabled !important;
+            color: $input-text-color-filled-disabled !important;
+        }
     }
 
     &.blue-input-color {
