@@ -482,8 +482,6 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
             value: this.selectedTab,
             params: { height: `${dotAnimation.getClientRects()[0].height}px` },
         };
-
-        console.log(this.selectedTab + ' :Select TAB: ');
     }
 
     public tabPhysicalAddressChange(event: any): void {
@@ -1045,7 +1043,6 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (reasponse: any) => {
-                    console.log(reasponse);
                     this.brokerForm.patchValue({
                         businessName: reasponse.businessName,
                         dbaName: reasponse.dbaName,
@@ -1626,7 +1623,6 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                 .pipe(takeUntil(this.destroy$))
                 .subscribe({
                     next: (res: BrokerAvailableCreditResponse) => {
-                        console.log('available credit res: ', res);
                         this.brokerForm
                             .get('creditLimit')
                             .patchValue(res.creditLimit);
