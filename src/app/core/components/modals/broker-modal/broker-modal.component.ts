@@ -37,10 +37,14 @@ import {
 import { BrokerTService } from '../../customer/state/broker-state/broker.service';
 import { debounceTime, Subject, takeUntil } from 'rxjs';
 import { ReviewsRatingService } from '../../../services/reviews-rating/reviewsRating.service';
-import { convertNumberInThousandSep } from '../../../utils/methods.calculations';
+import {
+    convertNumberInThousandSep,
+    convertThousanSepInNumber,
+} from '../../../utils/methods.calculations';
 import { poBoxValidation } from '../../shared/ta-input/ta-input.regex-validations';
 import { FormService } from '../../../services/form/form.service';
 import { LoadModalComponent } from '../load-modal/load-modal.component';
+import { BrokerAvailableCreditResponse } from '../../../../../../appcoretruckassist/model/brokerAvailableCreditResponse';
 import {
     name2_24Validation,
     creditLimitValidation,
@@ -1041,6 +1045,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (reasponse: any) => {
+                    console.log(reasponse);
                     this.brokerForm.patchValue({
                         businessName: reasponse.businessName,
                         dbaName: reasponse.dbaName,
@@ -1605,6 +1610,35 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
             default: {
                 break;
             }
+        }
+    }
+
+    public onBlurCreditLimit() {
+        let limit = this.brokerForm.get('creditLimit').value;
+
+        if (limit) {
+            limit = convertThousanSepInNumber(limit);
+            this.brokerModalService
+                .availableCreditBroker({
+                    id: this.editData?.id ? this.editData.id : null,
+                    creditLimit: limit,
+                })
+                .pipe(takeUntil(this.destroy$))
+                .subscribe({
+                    next: (res: BrokerAvailableCreditResponse) => {
+                        console.log('available credit res: ', res);
+                        this.brokerForm
+                            .get('creditLimit')
+                            .patchValue(res.creditLimit);
+
+                        this.brokerForm
+                            .get('availableCredit')
+                            .patchValue(res.availableCredit);
+                    },
+                    error: (error) => {
+                        console.log(error);
+                    },
+                });
         }
     }
 
