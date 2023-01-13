@@ -2597,8 +2597,6 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                     this.additionalBillingTypes = res.additionalBillingTypes;
                     this.originalAdditionalBillingTypes =
                         res.additionalBillingTypes;
-
-                    console.log(res.additionalBillingTypes);
                 },
                 error: () => {},
             });
