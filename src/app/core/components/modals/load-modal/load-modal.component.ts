@@ -11,7 +11,14 @@ import {
     Validators,
     AbstractControl,
 } from '@angular/forms';
-import { Component, ElementRef, Input, OnDestroy, OnInit } from '@angular/core';
+import {
+    Component,
+    DoCheck,
+    ElementRef,
+    Input,
+    OnDestroy,
+    OnInit,
+} from '@angular/core';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 
@@ -53,7 +60,7 @@ interface IStopRoutes {
     styleUrls: ['./load-modal.component.scss'],
     providers: [ModalService, FormService, FinancialCalculationPipe],
 })
-export class LoadModalComponent implements OnInit, OnDestroy {
+export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     private destroy$ = new Subject<void>();
 
     @Input() editData: any;
@@ -405,10 +412,6 @@ export class LoadModalComponent implements OnInit, OnDestroy {
         if (this.originElement) {
             this.originHeight =
                 this.originElement.nativeElement.getBoundingClientRect().height;
-            console.log(
-                'origin element: ',
-                this.originElement.nativeElement.getBoundingClientRect().height
-            );
         }
     }
 
@@ -479,6 +482,8 @@ export class LoadModalComponent implements OnInit, OnDestroy {
             files: [null],
             loadMiles: [0],
             totalMiles: [0],
+            totalHours: [0],
+            totalMinutes: [0],
         });
 
         this.formService.checkFormChange(this.loadForm);
@@ -1944,13 +1949,13 @@ export class LoadModalComponent implements OnInit, OnDestroy {
             id: [null],
             stopType: ['Pickup'],
             stopOrder: [null],
-            shipperId: [null],
+            shipperId: [null, Validators.required],
             shipperContactId: [null],
-            dateFrom: [null],
+            dateFrom: [null, Validators.required],
             dateTo: [null],
             timeType: [null],
-            timeFrom: [null],
-            timeTo: [null],
+            timeFrom: [null, Validators.required],
+            timeTo: [null, Validators.required],
             arrive: [null],
             depart: [null],
             longitude: [null],
@@ -2679,6 +2684,9 @@ export class LoadModalComponent implements OnInit, OnDestroy {
             additionalBillingRates:
                 this.premmapedAdditionalBillingRate('create'),
             stops: this.premmapedStops() as any,
+            totalLegMiles: this.totalLegMiles.toString().replace(/\./g, ''),
+            totalLegHours: this.totalLegHours,
+            totalLegMinutes: this.totalLegMinutes,
             files: documents,
         };
 
@@ -2817,12 +2825,11 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                 timeTo: this.loadForm.get('pickupTimeTo').value,
                 arrive: null,
                 depart: null,
-                legMiles: this.loadForm.get('pickuplegMiles').value,
+                legMiles: this.loadForm
+                    .get('pickuplegMiles')
+                    .value.replace(/\./g, ''),
                 legHours: this.loadForm.get('pickuplegHours').value,
                 legMinutes: this.loadForm.get('pickuplegMinutes').value,
-                totalLegMiles: null,
-                totalLegHours: null,
-                totalLegMinutes: null,
                 items: [],
                 // this.loadStopsDetails(index).controls.map(
                 //     (item, index) => {
@@ -2914,9 +2921,6 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                     legMiles: item.get('legMiles').value,
                     legHours: item.get('legHours').value,
                     legMinutes: item.get('legMinutes').value,
-                    totalLegMiles: null,
-                    totalLegHours: null,
-                    totalLegMinutes: null,
                     items: [],
                 });
             });
@@ -2953,9 +2957,6 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                 legMiles: this.loadForm.get('deliverylegMiles').value,
                 legHours: this.loadForm.get('deliverylegHours').value,
                 legMinutes: this.loadForm.get('deliverylegMinutes').value,
-                totalLegMiles: this.totalLegMiles,
-                totalLegHours: this.totalLegHours,
-                totalLegMinutes: this.totalLegMinutes,
                 items: [],
             });
         }
