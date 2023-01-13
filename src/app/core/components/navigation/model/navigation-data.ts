@@ -484,7 +484,7 @@ export const footerData: FooterData[] = [
         notification: 50,
     },
     {
-        id: 34,
+        id: 33,
         image: '',
         text: '',
         isRouteActive: false,
@@ -493,7 +493,7 @@ export const footerData: FooterData[] = [
 ];
 export const settings: Settings[] = [
     {
-        id: 33,
+        id: 34,
         image: 'assets/svg/common/ic_settings.svg',
         text: 'Settings',
         arrow: 'assets/svg/common/ic_arrow-down.svg',
@@ -510,43 +510,43 @@ export const settings: Settings[] = [
                 name: 'Location',
                 image: 'assets/svg/common/ic_location.svg',
                 route: '/location',
-                activeRouteFlegId: 35,
+                activeRouteFlegId: 34,
             },
             {
                 name: 'Document',
                 image: 'assets/svg/common/ic_document.svg',
                 route: '/document',
-                activeRouteFlegId: 36,
+                activeRouteFlegId: 34,
             },
             {
                 name: 'User',
                 image: 'assets/svg/common/ic_user.svg',
                 route: '/user',
-                activeRouteFlegId: 37,
+                activeRouteFlegId: 34,
             },
             {
                 name: 'Custom Agreement',
                 image: 'assets/svg/applicant/case.svg',
                 route: '/custom_agreement',
-                activeRouteFlegId: 38,
+                activeRouteFlegId: 34,
             },
             {
                 name: 'Training Material',
                 image: 'assets/svg/applicant/case.svg',
                 route: '/training_material',
-                activeRouteFlegId: 39,
+                activeRouteFlegId: 34,
             },
             {
                 name: 'Billing',
                 image: 'assets/svg/common/ic_billing.svg',
                 route: '/billing',
-                activeRouteFlegId: 40,
+                activeRouteFlegId: 34,
             },
             {
                 name: 'Integration',
                 image: 'assets/svg/common/ic_integration.svg',
                 route: '/integration',
-                activeRouteFlegId: 41,
+                activeRouteFlegId: 34,
             },
         ],
     },

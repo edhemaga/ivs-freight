@@ -21,7 +21,7 @@
 
         .nav-item-arrow_top {
             position: absolute;
-            right: 0;
+            right: -6px;
             opacity: 0;
             top: 7px;
             width: 12.6px;
@@ -37,7 +37,13 @@
         &:nth-child(1) {
             margin-top: 2px;
             .nav-item-arrow_top {
-                top: 10px;
+                top: 8px;
+            }
+            &:nth-child(1) {
+                top: 0;
+            }
+            &:nth-last-child(1) {
+                top: 3px;
             }
         }
         .subroutes-active-checkpoint {

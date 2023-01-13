@@ -20,7 +20,7 @@
             ></app-navigation-modals>
         </div>
 
-        <div class="navigation-middle">
+        <div class="navigation-middle" (mouseenter)="onMidleNavHover(true)">
             <div class="navigation-routes-container">
                 <div
                     class="navigation-routes"
@@ -38,33 +38,19 @@
                 >
                     <app-navigation-route
                         [activeLink]="item.isRouteActive"
-                        *ngIf="!item.arrow && !item.messages && !item.files"
+                        *ngIf="!item.arrow"
                         [class]="'close'"
                         [route]="item"
+                        [message]="item.messages"
+                        [files]="item.files"
+                        [index]="ind"
+                        [isActiveFooterRoute]="isActiveFooterRoute"
                         [isNavigationHovered]="isNavigationHovered"
                         [isActiveSubroute]="isActiveSubroute"
                         (onRouteEvent)="onRouteEvent($event)"
                     >
                     </app-navigation-route>
-                    <!-- Messages -->
-                    <app-navigation-route
-                        *ngIf="item.messages"
-                        [route]="item"
-                        [class]="'close'"
-                        [message]="item.messages"
-                        [isNavigationHovered]="isNavigationHovered"
-                        [isActiveSubroute]="isActiveSubroute"
-                        (onRouteEvent)="onRouteEvent($event)"
-                    ></app-navigation-route>
-                    <app-navigation-route
-                        *ngIf="item.files"
-                        [route]="item"
-                        [class]="'close'"
-                        [files]="item.files"
-                        [isNavigationHovered]="isNavigationHovered"
-                        [isActiveSubroute]="isActiveSubroute"
-                        (onRouteEvent)="onRouteEvent($event)"
-                    ></app-navigation-route>
+
                     <!-- If route has subroutes -->
                     <app-navigation-subroute-card
                         (click)="onHoveredNavigation(true)"
@@ -112,12 +98,15 @@
                     </app-navigation-subroute-card>
                 </div>
                 <div
-                    *ngIf="!isSettingsPanelOpen && !isActiveSubroute"
+                    *ngIf="
+                        footerHovered &&
+                        !isSettingsPanelOpen &&
+                        !isActiveSubroute
+                    "
                     [@showHideDetails]="
-                        isNavigationHovered &&
                         !isActiveSubroute &&
-                        !isActiveFooterRoute &&
                         isModalPanelOpen &&
+                        !footerRouteActive &&
                         isActiveMagicLine
                             ? 'false'
                             : 'true'
@@ -128,13 +117,17 @@
         </div>
         <!-- Open nav on click -->
         <div class="open-navigation" *ngIf="isNavigationHovered"></div>
-        <div class="navigation-bottom">
+        <div class="navigation-bottom" (mouseenter)="onMidleNavHover(false)">
             <app-navigation-footer
                 (click)="onHoveredNavigation(true)"
                 [isNavigationHovered]="isNavigationHovered"
                 [isUserCompanyDetailsOpen]="isUserCompanyDetailsOpen"
                 [isSettingsPanelOpen]="isSettingsPanelOpen"
                 [isUserPanelOpen]="isUserPanelOpen"
+                [isModalPanelOpen]="isModalPanelOpen"
+                [isActiveFooterRouteClick]="isActiveFooterRoute"
+                [showHideLineIfSettingsActive]="footerHovered"
+                [isActiveSubroute]="isActiveSubroute"
                 (onActivateFooterRoutes)="onActivateFooterRoute($event)"
             >
             </app-navigation-footer>

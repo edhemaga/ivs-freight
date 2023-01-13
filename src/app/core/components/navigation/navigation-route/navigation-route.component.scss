@@ -28,23 +28,25 @@
         height: 10px;
     }
     .message {
-        width: 18px;
-        height: 18px;
         position: absolute;
-        right: 8px;
+        right: 16px;
         background: rgba(229, 115, 115, 20%);
         border-radius: 50%;
-        display: flex;
-        justify-content: center;
-        align-items: flex-start;
         color: $notification;
         font-size: 11px;
         font-weight: 700;
         opacity: 0;
+        span {
+            width: 18px;
+            height: 18px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
     }
     .files {
         position: absolute;
-        right: 8px;
+        right: 16px;
         display: flex;
         gap: 4px;
         span {
@@ -61,7 +63,7 @@
     }
     .nav-item-arrow_top {
         opacity: 0;
-        margin-right: 8px;
+        margin-right: 17px;
         svg {
             width: 12px;
             height: 12px;
@@ -89,7 +91,7 @@
         }
         .nav-item-arrow {
             position: absolute;
-            right: 0;
+            right: 8px;
             transform: rotate(0deg);
             transition: $nav-transition;
             width: 12px;
@@ -100,7 +102,7 @@
         .nav-item-arrow-rotate {
             transform: rotate(180deg);
             transition: $nav-transition;
-            right: 1.5px;
+            right: 10px;
             svg {
                 path {
                     fill: $nav-white;
@@ -118,7 +120,17 @@
         transition: $nav-transition-5;
         .nav-item-arrow_top {
             opacity: 1;
-            margin-bottom: 4px;
+            margin-bottom: 3px;
+            &:nth-child(1) {
+                margin-bottom: 5px;
+            }
+        }
+    }
+    .hovered-arrow {
+        svg {
+            path {
+                fill: $nav-white;
+            }
         }
     }
 }
@@ -151,7 +163,7 @@
     font-weight: 700 !important;
 }
 .nav-width {
-    width: 230px;
+    width: 238px;
     &:hover {
         .nav-item-img,
         .nav-item-arrow {

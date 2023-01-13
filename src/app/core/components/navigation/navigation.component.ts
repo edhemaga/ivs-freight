@@ -34,13 +34,15 @@ export class NavigationComponent implements OnInit, OnDestroy {
     public isSettingsPanelOpen: boolean = false;
     public isUserCompanyDetailsOpen: boolean = false;
     private isActiveSubrouteIndex: number = -1;
-    public isActiveSubroute: boolean = true;
+    public isActiveSubroute: boolean = false;
     public activeSubrouteFleg: boolean = false;
-
+    public footerHovered: boolean = false;
     public isActiveFooterRoute: boolean = false;
-
-    public isActiveMagicLine: boolean = false;
+    public routeInSettingsActive: boolean = false;
+    public isActiveMagicLine: boolean = true;
     public hideMagicLine: boolean = false;
+    public showHideLineIfSettingsActive: boolean = true;
+    public footerRouteActive: boolean = true;
     private destroy$ = new Subject<void>();
     closeDropdownOnNavClose: boolean;
     @ViewChild('navbar') navbar: ElementRef;
@@ -51,6 +53,12 @@ export class NavigationComponent implements OnInit, OnDestroy {
     ) {}
 
     ngOnInit(): void {
+        this.navigationService.getValueNavHovered().subscribe((value) => {
+            this.footerHovered = value;
+        });
+        this.navigationService.getValueWhichNavIsOpen().subscribe((value) => {
+            this.footerRouteActive = value;
+        });
         this.navigationService.navigationDropdownActivation$
             .pipe(takeUntil(this.destroy$))
             .subscribe((data) => {
@@ -104,10 +112,18 @@ export class NavigationComponent implements OnInit, OnDestroy {
                 }
             });
     }
+    //Midle navigation hovered hide magic line in footer nav
+    onMidleNavHover(event) {
+        this.navigationService.setValueNavHovered(event);
+    }
+    public routeInSettingsActivated($event) {
+        this.routeInSettingsActive = $event;
+    }
+    public footerHoveredHideLine($event) {
+        // this.footerHovered = $event;
+    }
     //On outside of navbar close navbar
     closeNavbar(event) {
-        console.log(event.target.parentElement.parentElement);
-
         if (
             //If this elements keep open navigation
             event.target.parentElement.classList.contains(
@@ -183,6 +199,7 @@ export class NavigationComponent implements OnInit, OnDestroy {
     }
 
     public onRouteEvent(subroute: NavigationSubRoutes): void {
+        localStorage.removeItem('footer_active');
         const index = this.navigation.findIndex(
             (item) => item.id === subroute.routeId
         );
@@ -204,6 +221,7 @@ export class NavigationComponent implements OnInit, OnDestroy {
         subroute: NavigationSubRoutes
     ): void {
         if (index === this.isActiveSubrouteIndex) {
+            this.navigationService.setValueWhichNavIsOpen(true);
             this.navigation[index].isRouteActive =
                 !this.navigation[index].isRouteActive;
 
@@ -236,6 +254,7 @@ export class NavigationComponent implements OnInit, OnDestroy {
     }
 
     private activationMainRoute(index: number): void {
+        this.navigationService.setValueWhichNavIsOpen(true);
         this.disableRoutes();
         this.navigation[index].isRouteActive = true;
         this.isActiveFooterRoute = false;
@@ -245,7 +264,6 @@ export class NavigationComponent implements OnInit, OnDestroy {
         this.navigation.forEach((nav) => (nav.isRouteActive = false));
         this.navigation.forEach((nav) => (nav.isSubrouteActive = false));
         localStorage.removeItem('subroute_active');
-        localStorage.removeItem('settings_active');
         this.isActiveSubrouteIndex = -1;
         this.isActiveSubroute = false;
         this.activeSubrouteFleg = false;

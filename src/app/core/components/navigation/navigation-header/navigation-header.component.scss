@@ -14,7 +14,7 @@
         padding: 0 4px;
         .nav-header-top-logo {
             svg {
-                // margin-left: -3.5px;
+                cursor: pointer;
             }
         }
     }
@@ -60,7 +60,7 @@
                 background: rgba(48, 116, 211, 0.1);
                 svg {
                     position: relative;
-                    top: -1px;
+                    top: -0.9px;
                     left: -0.1px;
                 }
                 &:hover {
@@ -97,6 +97,7 @@
             align-items: center;
             justify-content: space-between;
             padding-right: 8px;
+            cursor: pointer;
             &-search {
                 border-radius: 50%;
                 padding: 8px;

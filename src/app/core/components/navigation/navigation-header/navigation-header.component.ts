@@ -1,9 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
-import {
-    navigation_header_animation,
-    navigation_route_animation,
-} from '../navigation.animation';
+import { navigation_route_animation } from '../navigation.animation';
 import { NavigationService } from '../services/navigation.service';
 @Component({
     selector: 'app-navigation-header',

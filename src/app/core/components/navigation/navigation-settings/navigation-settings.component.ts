@@ -1,13 +1,13 @@
 import {
     ChangeDetectionStrategy,
     Component,
+    EventEmitter,
     Input,
     OnChanges,
     OnInit,
     Output,
 } from '@angular/core';
 import { Router } from '@angular/router';
-import { EventEmitter } from 'stream';
 import { settings } from '../model/navigation-data';
 import { FooterData, Settings } from '../model/navigation.model';
 import {
@@ -29,9 +29,13 @@ export class NavigationSettingsComponent implements OnInit, OnChanges {
     @Input() isNavigationHovered: boolean = false;
     @Input() isUserPanelOpen: boolean = false;
     @Input() isSettingsPanelOpen: boolean = false;
+    @Input() settingsRouteActivated: boolean = false;
+    @Input() isActiveFooterRouteClick: boolean = false;
+    @Output() activatedSettingsRoute = new EventEmitter<any>();
     // @Output() onRouteEvent: any = new EventEmitter();
     public footer: FooterData[] = settings;
     public isMagicLineActive: boolean = false;
+    public activeLink: boolean = false;
     status: boolean = false;
     constructor(
         private router: Router,
@@ -43,6 +47,9 @@ export class NavigationSettingsComponent implements OnInit, OnChanges {
         }
     }
     routeAction(route) {
+        this.navigationService.setValueWhichNavIsOpen(false);
+        this.activatedSettingsRoute.emit({ value: true, id: 34 });
+        this.activeLink = true;
         // this.onRouteEvent.emit({
         //     routeId: this.route.id,
         //     routes: this.route.route,
@@ -51,7 +58,7 @@ export class NavigationSettingsComponent implements OnInit, OnChanges {
         //     ),
         // });
         localStorage.setItem(
-            'settings_active',
+            'footer_active',
             route.activeRouteFlegId.toString()
         );
         localStorage.removeItem('subroute_active');
@@ -65,7 +72,6 @@ export class NavigationSettingsComponent implements OnInit, OnChanges {
     ngOnInit(): void {}
     public onUserPanelClose() {
         this.isSettingsPanelOpen = !this.isSettingsPanelOpen;
-
         this.navigationService.onDropdownActivation({
             name: 'Settings',
             type: this.isSettingsPanelOpen,

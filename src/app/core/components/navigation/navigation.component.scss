@@ -15,7 +15,6 @@
     color: $nav-text-color;
     font-size: $nav-font-size;
     font-weight: $nav-font-medium;
-
     transition: $nav-transition;
     overflow: hidden;
     .nav-holder {
@@ -28,14 +27,9 @@
         padding: 10px 6px;
         border-radius: 3px;
         z-index: -1;
-        cursor: pointer;
-        // &:hover {
-        //     width: 250px;
-        //     background: $nav-dark;
-        //     box-shadow: $nav-boxshadow;
-        //     transition: $nav-transition;
-        //     cursor: pointer;
-        // }
+    }
+    .new-magic-line {
+        width: 36px !important;
     }
     .dark-nav {
         background: $nav-dark !important;
@@ -43,11 +37,14 @@
         transition: $nav-transition;
         .new-magic-line {
             background: $nav-hover-color !important;
+            width: 238px !important;
         }
     }
     .animation {
         transition: $nav-transition;
         width: 48px;
+        cursor: pointer;
+        overflow: hidden;
     }
     .navigation-middle {
         overflow-y: scroll;
@@ -57,6 +54,7 @@
     }
     .open-navigation {
         flex: 1;
+        cursor: pointer;
     }
     .navigation-bottom {
         // overflow: hidden;
@@ -89,6 +87,7 @@
             padding-top: 1px;
             z-index: 1;
             position: relative;
+            cursor: pointer;
         }
 
         .subroute-card {

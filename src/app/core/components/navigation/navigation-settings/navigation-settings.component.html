@@ -1,4 +1,10 @@
-<div class="holder" (click)="onUserPanelClose()">
+<div
+    class="holder"
+    (click)="onUserPanelClose()"
+    [ngClass]="{
+        'active-link': isActiveFooterRouteClick || settingsRouteActivated
+    }"
+>
     <div
         class="parent"
         *ngIf="isSettingsPanelOpen && isNavigationHovered"
@@ -31,13 +37,15 @@
         ></div>
     </div>
 
-    <div class="footer-item">
-        <svg-icon src="{{ footer[0].image }}"></svg-icon>
-        <p
-            [@showHideDetails]="isNavigationHovered ? 'true' : 'false'"
-            [ngClass]="{ 'active-text': isSettingsPanelOpen }"
-        >
-            <span> Settings</span>
+    <div
+        class="footer-item"
+        [ngClass]="{
+            'active-text': isActiveFooterRouteClick
+        }"
+    >
+        <svg-icon class="image-footer" src="{{ footer[0].image }}"></svg-icon>
+        <p [@showHideDetails]="isNavigationHovered ? 'true' : 'false'">
+            <span class="item-name"> Settings</span>
             <svg-icon
                 class="nav-item-arrow nav-item-arrow-active"
                 [ngClass]="{

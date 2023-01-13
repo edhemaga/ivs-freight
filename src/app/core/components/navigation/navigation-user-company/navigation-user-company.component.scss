@@ -26,66 +26,65 @@
         align-items: center;
         margin-bottom: 6px;
         justify-content: space-between;
-        .user-company-header-svg{
-            &:nth-child(2){
-
-                svg{
-                    
-                    height: 12px;
-                    width: 12px;
+        .user-company-header-svg {
+            &:nth-child(2) {
+                svg {
+                    cursor: pointer;
                     left: -10px;
                     position: relative;
-                    path{
+                    path {
+                        fill: $nav-svg-darker;
+                    }
+                    &:hover {
+                        path {
+                            fill: $nav-white;
+                        }
+                    }
+                }
+            }
+        }
+        .header-left {
+            display: flex;
+            align-items: center;
+            .user-company-header-svg {
+                transition: all 0.3s ease-in-out;
+                height: 32px;
+                width: 32px;
+                display: flex;
+                align-items: flex-start;
+                svg {
+                    position: relative;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    path {
                         fill: $nav-svg-darker;
                     }
                 }
             }
-        }
-        .header-left{
-            display: flex;
-            align-items: center;
-        .user-company-header-svg {
-            transition: all 0.3s ease-in-out;
-            height: 32px;
-            width: 32px;
-            display: flex;
-            align-items: flex-start;
-            svg {
-                position: relative;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%);
-                path {
-                    fill: $nav-svg-darker;
-                }
+
+            .user-company-header-text {
+                font-weight: $nav-font-bold;
+                color: $nav-white;
+                margin-left: 6px;
+                -webkit-user-select: none;
+                -moz-user-select: none;
+                -ms-user-select: none;
+                user-select: none;
             }
-           
-        }
-       
-        .user-company-header-text {
-            font-weight: $nav-font-bold;
-            color: $nav-white;
-            margin-left: 6px;
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
 
-        }
-
-        &:hover {
-            .user-company-header-svg {
-                // transition: $nav-transition;
-                // background-color: $nav-hover-lightcolor;
-                svg {
-                    path {
-                        // fill: $nav-svg-hover;
+            &:hover {
+                .user-company-header-svg {
+                    // transition: $nav-transition;
+                    // background-color: $nav-hover-lightcolor;
+                    svg {
+                        path {
+                            // fill: $nav-svg-hover;
+                        }
                     }
                 }
             }
         }
-    }
-
     }
 
     .user-company-content {
@@ -109,12 +108,12 @@
             color: $nav-white !important;
             font-weight: $nav-font-bold;
             padding-left: 10px;
-            svg{
+            svg {
                 height: 20px;
                 width: 20px;
                 position: relative;
                 left: -10px;
-                path{
+                path {
                     fill: $nav-active-lighter;
                 }
             }

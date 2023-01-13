@@ -1,9 +1,16 @@
 <div class="nav-footer" [ngClass]="{ 'nav-footer-width': isNavigationHovered }">
-    <div class="settings-footer">
+    <div
+        class="settings-footer"
+        [ngClass]="{
+            'activated-footer-route': settingsRouteActivated
+        }"
+    >
         <app-navigation-settings
+            (activatedSettingsRoute)="settingsRouteClicked($event)"
             [isNavigationHovered]="isNavigationHovered"
             [isUserPanelOpen]="isUserPanelOpen"
             [isSettingsPanelOpen]="isSettingsPanelOpen"
+            [settingsRouteActivated]="settingsRouteActivated"
         ></app-navigation-settings>
     </div>
     <div
@@ -20,7 +27,9 @@
         <div
             [ngClass]="{
                 'hide-user': isUserPanelOpen === true && ind === 2,
-                'user-profile': ind === 2
+                'user-profile': ind === 2,
+                'activated-footer-route':
+                    notificationsActive && item.notification
             }"
         >
             <div
@@ -28,7 +37,16 @@
                     'hide-user': isUserCompanyDetailsOpen && ind === 2
                 }"
             >
-                <div [ngClass]="{ notification: item.notification }">
+                <div
+                    [ngClass]="{ notification: item.notification }"
+                    (click)="
+                        item.notification &&
+                            settingsRouteClicked({
+                                value: true,
+                                id: item.id
+                            })
+                    "
+                >
                     <div *ngIf="item.text !== ''">
                         <div
                             class="nav-footer-hover"
@@ -55,9 +73,21 @@
                             >
                             </svg-icon>
                         </div>
+                        <svg-icon
+                            *ngIf="item.notification"
+                            class="notification-svg"
+                            src="{{ item.image }}"
+                            [ngClass]="{
+                                'active-img': notificationsActive
+                            }"
+                        >
+                        </svg-icon>
                         <img
                             class="nav-footer-image"
-                            [ngClass]="{ 'nav-footer-image-user': ind === 2 }"
+                            [ngClass]="{
+                                'nav-footer-image-user': ind === 2
+                            }"
+                            *ngIf="!item.notification"
                             [src]="item.image"
                             [alt]="item.text.userName"
                         />
@@ -74,6 +104,9 @@
                                     !(item.text | userData) &&
                                     isNavigationHovered
                                 "
+                                [ngClass]="{
+                                    'active-route': notificationsActive
+                                }"
                             >
                                 {{ item.text }}
                             </p>
@@ -131,4 +164,15 @@
             </div>
         </div>
     </div>
+    <div
+        *ngIf="!mouseOverFooter && !isActiveSubroute"
+        [@showHideDetails]="
+            showMagicLine &&
+            !isUserCompanyDetailsOpen &&
+            !isUserPanelOpen &&
+            !isSettingsPanelOpen &&
+            !isModalPanelOpen
+        "
+        class="magic-line-footer"
+    ></div>
 </div>

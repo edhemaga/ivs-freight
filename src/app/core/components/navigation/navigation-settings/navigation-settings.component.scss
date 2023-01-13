@@ -1,4 +1,17 @@
 @import '../navigation.design.scss';
+.active-link {
+    .item-name {
+        color: $nav-active-lighter;
+        font-weight: 700;
+    }
+    .image-footer {
+        svg {
+            path {
+                fill: $nav-active-lighter;
+            }
+        }
+    }
+}
 .holder {
     padding: 4px 0;
     position: relative;
@@ -78,6 +91,10 @@
         transition: all 0.5s ease-in-out;
         -webkit-user-select: none;
         user-select: none;
+        svg {
+            z-index: 1;
+            position: relative;
+        }
         p {
             width: 100%;
             margin: 0px;
@@ -88,12 +105,13 @@
             font-weight: 400;
             display: flex;
             align-items: center;
+            z-index: 1;
             .nav-item-arrow {
                 position: absolute;
                 right: 10px;
                 transform: rotate(180deg);
                 transition: all 0.3s ease-in-out;
-
+                z-index: 1;
                 line-height: 9px;
                 svg {
                 }
