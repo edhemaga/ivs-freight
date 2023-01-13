@@ -64,6 +64,20 @@ export class TtRegistrationModalComponent implements OnInit, OnDestroy {
                 payload: this.editData.data,
             };
         }
+
+        if (this.editData?.modal) {
+            if (this.editData.modal === 'truck') {
+                this.inputService.changeValidators(
+                    this.registrationForm.get('expDate')
+                );
+                this.registrationExpirationDate = true;
+            } else {
+                this.inputService.changeValidators(
+                    this.registrationForm.get('expDate'),
+                    false
+                );
+            }
+        }
     }
 
     private createForm() {
