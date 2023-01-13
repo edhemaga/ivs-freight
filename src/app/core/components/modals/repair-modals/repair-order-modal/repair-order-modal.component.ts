@@ -256,6 +256,12 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
     public onModalHeaderTabChange(event: any) {
         this.selectedHeaderTab = event.id;
         if (event.id === 1) {
+
+            setTimeout(()=>{
+                this.DetailsDataService.setUnitValue(this.repairOrderForm.get('unit')?.value);
+            }, 100)
+            
+
             this.inputService.changeValidators(
                 this.repairOrderForm.get('repairShopId'),
                 false
@@ -343,6 +349,8 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                 false
             );
         }
+
+        
     }
 
     public onTypeOfRepair(event: any, action?: string) {

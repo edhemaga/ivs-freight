@@ -810,7 +810,7 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
                         : '';
 
                     if (!repairTruckNum){
-                        repairTruckNum = this.DetailsDataService?.unitValue;
+                        repairTruckNum = this.DetailsDataService?.unitValue ? this.DetailsDataService?.unitValue : '';
                     }
 
                     messageText = 'Truck - ' + repairTruckNum;
@@ -824,7 +824,7 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
                         : '';
 
                     if (!repairTrailerNum){
-                        repairTrailerNum = this.DetailsDataService?.unitValue;
+                        repairTrailerNum = this.DetailsDataService?.unitValue ? this.DetailsDataService?.unitValue : '';
                     }    
                     messageText = 'Trailer - ' + repairTrailerNum;
                 }
