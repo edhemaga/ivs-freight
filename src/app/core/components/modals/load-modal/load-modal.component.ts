@@ -11,14 +11,7 @@ import {
     Validators,
     AbstractControl,
 } from '@angular/forms';
-import {
-    Component,
-    ElementRef,
-    Input,
-    OnDestroy,
-    OnInit,
-    Renderer2,
-} from '@angular/core';
+import { Component, ElementRef, Input, OnDestroy, OnInit } from '@angular/core';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 
@@ -45,6 +38,7 @@ import { ShipperModalComponent } from '../shipper-modal/shipper-modal.component'
 import { FinancialCalculationPipe } from './load-financial/financialCalculation.pipe';
 import { RoutingResponse } from '../../../../../../appcoretruckassist/model/routingResponse';
 import { LoadStopItemAutocompleteDescriptionResponse } from '../../../../../../appcoretruckassist/model/loadStopItemAutocompleteDescriptionResponse';
+import { ViewChild } from '@angular/core';
 
 interface IStopRoutes {
     longitude: number;
@@ -392,12 +386,12 @@ export class LoadModalComponent implements OnInit, OnDestroy {
         private loadService: LoadTService,
         private modalService: ModalService,
         private ngbActiveModal: NgbActiveModal,
-        private financialCalculationPipe: FinancialCalculationPipe,
-        private renderer: Renderer2,
-        private element: ElementRef
+        private financialCalculationPipe: FinancialCalculationPipe
     ) {}
 
     public originHeight: number;
+
+    @ViewChild('originElement') originElement: ElementRef;
 
     ngOnInit() {
         this.companyUser = JSON.parse(localStorage.getItem('user'));
@@ -407,10 +401,15 @@ export class LoadModalComponent implements OnInit, OnDestroy {
         this.trackBillingPayment();
     }
 
-    ngAfterViewInit() {
-        this.renderer.listen(this.element.nativeElement, 'resize', (event) => {
-            this.originHeight = this.element.nativeElement.offsetHeight;
-        });
+    ngDoCheck() {
+        if (this.originElement) {
+            this.originHeight =
+                this.originElement.nativeElement.getBoundingClientRect().height;
+            console.log(
+                'origin element: ',
+                this.originElement.nativeElement.getBoundingClientRect().height
+            );
+        }
     }
 
     private createForm() {
@@ -3147,6 +3146,5 @@ export class LoadModalComponent implements OnInit, OnDestroy {
     ngOnDestroy(): void {
         this.destroy$.next();
         this.destroy$.complete();
-        this.renderer.destroy();
     }
 }
