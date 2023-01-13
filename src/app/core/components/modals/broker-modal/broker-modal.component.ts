@@ -443,7 +443,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                         this.inputService.markInvalid(this.brokerForm);
                         return;
                     }
-                    if (this.editData) {
+                    if (['edit'].includes(this.editData?.type)) {
                         this.updateBroker(this.editData.id);
                         this.modalService.setModalSpinner({
                             action: null,
