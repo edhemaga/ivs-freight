@@ -564,6 +564,16 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             }
             case 'extra-stops-time': {
                 this.selectedExtraStopTime[indx] = event.id;
+                if (this.selectedExtraStopTime.toString().startsWith('9')) {
+                    this.inputService.changeValidators(
+                        this.loadExtraStops().at(indx).get('timeTo'),
+                        false
+                    );
+                } else {
+                    this.inputService.changeValidators(
+                        this.loadExtraStops().at(indx).get('timeTo')
+                    );
+                }
                 break;
             }
             default: {
@@ -2175,7 +2185,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                     this.numberOfLoadExtraStops().numberOfDeliveries + 1,
             });
         }
-        console.log('map routes: ', routes);
+
         if (routes.length > 1) {
             this.routingService
                 .apiRoutingGet(
@@ -2192,7 +2202,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 .subscribe({
                     next: (res: RoutingResponse) => {
                         // TODO: Populate lat and long with routesPoints
-                        console.log('res map: ', res);
+
                         // Render on map routes
                         this.loadStopRoutes[0] = {
                             routeColor: '#919191',
