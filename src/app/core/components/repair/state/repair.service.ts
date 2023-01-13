@@ -25,6 +25,7 @@ import { TruckassistTableService } from '../../../services/truckassist-table/tru
 import { RepairDQuery } from './details-state/repair-d.query';
 import { RepairDStore } from './details-state/repair-d.store';
 import { FormDataService } from 'src/app/core/services/formData/form-data.service';
+import { RepairAutocompleteDescriptionResponse } from '../../../../../../appcoretruckassist/model/repairAutocompleteDescriptionResponse';
 
 @Injectable({
     providedIn: 'root',
@@ -260,6 +261,14 @@ export class RepairTService implements OnDestroy {
         selectedTab: string
     ): Observable<any> {
         return;
+    }
+
+    public autocompleteRepairByDescription(
+        description: string
+    ): Observable<RepairAutocompleteDescriptionResponse> {
+        return this.repairService.apiRepairAutocompleteDescriptionDescriptionGet(
+            description
+        );
     }
 
     // <----------------------- Repair Shop -------------------->

@@ -357,7 +357,7 @@
                             [ngClass]="{
                                 'row-gap':
                                     this.brokerForm.get('creditType').value ===
-                                        'Enable' &&
+                                        'Custom' &&
                                     brokerForm.get('creditLimit').value &&
                                     brokerForm.get('availableCredit').value
                             }"
@@ -391,6 +391,7 @@
                                         minLength: 4,
                                         maxLength: 11
                                     }"
+                                    (blurInput)="onBlurCreditLimit()"
                                 ></app-ta-input>
                             </div>
                             <div class="broker-billing-field">
@@ -413,7 +414,7 @@
                             <div
                                 *ngIf="
                                     this.brokerForm.get('creditType').value ===
-                                        'Enable' &&
+                                        'Custom' &&
                                     brokerForm.get('creditLimit').value &&
                                     brokerForm.get('availableCredit').value
                                 "
