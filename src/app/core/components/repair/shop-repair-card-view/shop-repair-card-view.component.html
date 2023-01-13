@@ -15,7 +15,7 @@
                   | formatDateP: 'difference-days')
                 : false
         "
-        [haveDropSVG]="true"
+        [haveDropSVG]="repairShopCardViewData?.pinned ?  true : false"
     >
         <div class="repair-information-wrapper">
             <div class="repair-information-item" *ngIf="repairShopCardViewData?.phone">
