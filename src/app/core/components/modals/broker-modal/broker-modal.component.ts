@@ -338,6 +338,8 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
 
                         this.inputService.changeValidators(
                             this.brokerContacts.at(index).get('phone'),
+                            false,
+                            [],
                             false
                         );
                     }
@@ -808,7 +810,6 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
             payTerm,
             brokerContacts,
             mcNumber,
-            availableCredit,
             ...form
         } = this.brokerForm.value;
 
@@ -956,7 +957,6 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
             isCredit,
             brokerContacts,
             mcNumber,
-            availableCredit,
             creditLimit,
             ...form
         } = this.brokerForm.value;
@@ -1625,7 +1625,9 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                     next: (res: BrokerAvailableCreditResponse) => {
                         this.brokerForm
                             .get('creditLimit')
-                            .patchValue(res.creditLimit);
+                            .patchValue(
+                                convertNumberInThousandSep(res.creditLimit)
+                            );
 
                         this.brokerForm
                             .get('availableCredit')
