@@ -606,7 +606,7 @@
                         ></div>
                         <!-- Percentage is driver owner -->
                         <span
-                            *ngIf="option.driver?.owner"
+                            *ngIf="option.driver?.owner && option?.payType"
                             [ngClass]="{
                                 'driver-owner': option.driver?.owner,
                                 active: indx === activeItem?.itemIndex
@@ -631,14 +631,16 @@
                                 : null
                         }}"
                         [ngClass]="{
-                            trailerContainer:
-                                option?.trailer?.logoType
-                                    .trim()
-                                    .replace(' ', '') === 'Container',
-                            lowboyrgn:
-                                option?.trailer?.logoType
-                                    .trim()
-                                    .replace(' ', '') === 'Low Boy / RGN'
+                            trailerContainer: option?.trailer?.logoType
+                                ? option?.trailer?.logoType
+                                      .trim()
+                                      .replace(' ', '') === 'Container'
+                                : false,
+                            lowboyrgn: option?.trailer?.logoType
+                                ? option?.trailer?.logoType
+                                      .trim()
+                                      .replace(' ', '') === 'Low Boy / RGN'
+                                : false
                         }"
                     >
                         <svg-icon [src]="option?.trailer?.logoName"></svg-icon>
@@ -721,7 +723,8 @@
                     <span
                         *ngIf="
                             options[0].name !== 'No Results' &&
-                            !option.driver?.owner
+                            !option.driver?.owner &&
+                            option?.payType
                         "
                         [ngClass]="{
                             active: indx === activeItem?.itemIndex
