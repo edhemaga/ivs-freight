@@ -2710,9 +2710,9 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             additionalBillingRates:
                 this.premmapedAdditionalBillingRate('create'),
             stops: this.premmapedStops() as any,
-            totalLegMiles: this.totalLegMiles,
-            totalLegHours: this.totalLegHours,
-            totalLegMinutes: this.totalLegMinutes,
+            totalMiles: this.totalLegMiles,
+            totalHours: this.totalLegHours,
+            totalMinutes: this.totalLegMinutes,
             files: documents,
         };
 
