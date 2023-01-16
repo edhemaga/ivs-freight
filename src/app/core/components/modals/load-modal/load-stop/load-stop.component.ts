@@ -17,6 +17,7 @@ export class LoadStopComponent {
     @Input() timeRange: any;
     @Input() legMile: string;
     @Input() isEmptyLoad: boolean;
+    @Input() disabledCard: boolean;
     @Input() shipperContact: {
         fullName: string;
         avatar: string;
@@ -42,11 +43,13 @@ export class LoadStopComponent {
         new EventEmitter<void>();
 
     public toggleStop() {
-        const oldNoActive = this.noActive;
-        this.noActive = '';
-        this._isCardOpen =
-            oldNoActive == 'innactive' ? true : !this._isCardOpen;
-        this.toggleEvent.emit(this._isCardOpen);
+        if (!this.disabledCard) {
+            const oldNoActive = this.noActive;
+            this.noActive = '';
+            this._isCardOpen =
+                oldNoActive == 'innactive' ? true : !this._isCardOpen;
+            this.toggleEvent.emit(this._isCardOpen);
+        }
     }
 
     public deleteStop() {

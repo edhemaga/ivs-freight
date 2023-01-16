@@ -11,7 +11,7 @@
  */
 
 
-export interface ReSendSignUpUserCommand { 
+export interface ResendSignUpUserCommand { 
     email?: string | null;
 }
 

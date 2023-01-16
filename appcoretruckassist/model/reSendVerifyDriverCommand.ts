@@ -11,7 +11,7 @@
  */
 
 
-export interface ReSendVerifyDriverCommand { 
+export interface ResendVerifyDriverCommand { 
     email?: string | null;
 }
 

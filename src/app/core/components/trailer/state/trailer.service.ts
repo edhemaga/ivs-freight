@@ -20,6 +20,7 @@ import { TrailerItemStore } from './trailer-details-state/trailer-details.store'
 import { TrailersMinimalListQuery } from './trailer-minimal-list-state/trailer-minimal.query';
 import { TrailerDetailsListStore } from './trailer-details-list-state/trailer-details-list.store';
 import { FormDataService } from '../../../services/formData/form-data.service';
+import { TrailerAutocompleteModelResponse } from '../../../../../../appcoretruckassist/model/trailerAutocompleteModelResponse';
 
 @Injectable({ providedIn: 'root' })
 export class TrailerTService implements OnDestroy {
@@ -121,7 +122,9 @@ export class TrailerTService implements OnDestroy {
         this.formDataService.extractFormDataFromFunction(data);
         return this.trailerService.apiTrailerPut().pipe(
             tap(() => {
-                let storedTrailerData = {...this.trailerItemStore?.getValue()?.entities[data.id]};
+                let storedTrailerData = {
+                    ...this.trailerItemStore?.getValue()?.entities[data.id],
+                };
                 const subTrailer = this.getTrailerById(data.id)
                     .pipe(takeUntil(this.destroy$))
                     .subscribe({
@@ -283,6 +286,12 @@ export class TrailerTService implements OnDestroy {
         }
 
         return this.trailerService.apiTrailerIdGet(trailerId);
+    }
+
+    public autocompleteByTrailerModel(
+        model: string
+    ): Observable<TrailerAutocompleteModelResponse> {
+        return this.trailerService.apiTrailerAutocompleteModelModelGet(model);
     }
 
     public getTrailerRegistrationsById(trailerId: number) {

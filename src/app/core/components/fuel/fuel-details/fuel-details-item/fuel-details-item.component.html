@@ -16,7 +16,7 @@
                 [dateChecked]="'5 days ago'"
             >
                 <div class="repair-information-wrapper">
-                    <div class="repair-information-item">
+                    <div class="repair-information-item" *ngIf="fuel?.data?.phone">
                         <svg-icon
                             class="repair-icon"
                             src="assets/svg/common/ic_phone.svg"
@@ -24,7 +24,7 @@
                         <p class="repair-value">{{ fuel?.data?.phone }}</p>
                     </div>
 
-                    <div class="repair-information-item">
+                    <div class="repair-information-item address-cont" *ngIf="fuel?.data?.address?.address">
                         <svg-icon
                             class="repair-icon"
                             src="assets/svg/common/ic_address.svg"

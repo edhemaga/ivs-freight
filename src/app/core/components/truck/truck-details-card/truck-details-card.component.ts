@@ -362,7 +362,7 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
             showGridLines: false,
         },
     };
-
+    public truckIndex: any;
     constructor(
         private detailsPageDriverSer: DetailsPageService,
         private truckMinimalListQuery: TrucksMinimalListQuery,
@@ -393,7 +393,12 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
             return b.id - a.id;
         });
         //this.truck.ownerHistories = array1;
-        this.ownersData = array1;    
+        this.ownersData = array1;   
+
+        let currentIndex = this.truck_list.findIndex(
+            (truck) => truck.id === this.truck.id
+        );
+        this.truckIndex = currentIndex;
     }
 
     public sortKeys = (a, b) => {
@@ -551,15 +556,15 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
             .map((item) => {
                 return {
                     id: item.id,
-                    name: this.truck.truckNumber,
+                    name: item.truckNumber,
                     status: item.status,
                     svg: item.truckType.logoName,
                     folder: 'common/trucks',
                     active: item.id === this.truck.id,
                 };
-            });
-            
+            });     
     }
+
     public onSelectedTruck(event: any) {
         if (event.id !== this.truck.id) {
             this.truckDropDowns = this.truckMinimalListQuery
@@ -591,6 +596,7 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
                     this.onSelectedTruck({
                         id: this.truck_list[currentIndex].id,
                     });
+                    this.truckIndex = currentIndex;
                 }
                 break;
             }
@@ -606,6 +612,7 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
                     this.onSelectedTruck({
                         id: this.truck_list[currentIndex].id,
                     });
+                    this.truckIndex = currentIndex;
                 }
 
                 break;

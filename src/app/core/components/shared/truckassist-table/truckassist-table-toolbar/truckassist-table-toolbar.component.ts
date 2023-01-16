@@ -33,6 +33,7 @@ export class TruckassistTableToolbarComponent
     @Input() columns: any[];
     @Input() tableContainerWidth: number;
     @Input() selectedDispatcher: any;
+    @Input() dispathcboardTableLocked: boolean;
     listName: string = '';
     optionsPopup: any;
     optionsPopupOpen: boolean = false;

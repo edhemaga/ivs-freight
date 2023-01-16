@@ -3,3 +3,25 @@
     position: absolute;
     top: 0;
 }
+
+
+.multiple-tables{
+    .table-info{
+        background-color: #3074D333;
+        margin-bottom: 12px;
+        border-radius: 3px;
+    }
+
+    .dipsatch_groups:not(.dipsatch_groups:first-child){
+        table{
+            thead{
+                display: none;
+            }
+        }
+    }
+
+
+    .dispatcher-field{
+        visibility: visible !important;
+    }
+}

@@ -190,6 +190,8 @@ export class DriverDetailsCardComponent
         },
     };
 
+    public currentDriverIndex;
+
     constructor(
         private modalService: ModalService,
         private detailsPageDriverSer: DetailsPageService,
@@ -232,6 +234,13 @@ export class DriverDetailsCardComponent
     ngOnInit(): void {
         this.getDriverById(this.driver.id);
         this.note.patchValue(this.driver.note);
+
+        let currentIndex = this.driversList.findIndex(
+            (driver) => driver.id === this.driver.id
+        );
+        
+        this.currentDriverIndex = currentIndex;
+
         // Confirmation Subscribe
         if (this.templateCard) {
             this.confirmationService.confirmationData$
@@ -731,6 +740,8 @@ export class DriverDetailsCardComponent
                     this.onSelectedDriver({
                         id: this.driversList[currentIndex].id,
                     });
+
+                    this.currentDriverIndex = currentIndex;
                 }
                 break;
             }
@@ -746,6 +757,7 @@ export class DriverDetailsCardComponent
                     this.onSelectedDriver({
                         id: this.driversList[currentIndex].id,
                     });
+                    this.currentDriverIndex = currentIndex;
                 }
                 break;
             }

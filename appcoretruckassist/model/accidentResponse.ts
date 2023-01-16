@@ -11,6 +11,7 @@
  */
 import { FileResponse } from './fileResponse';
 import { BrokerMinimalResponse } from './brokerMinimalResponse';
+import { CitationResponse } from './citationResponse';
 import { TrailerAccidentResponse } from './trailerAccidentResponse';
 import { InsuranceTypeResponse } from './insuranceTypeResponse';
 import { TruckAccidentResponse } from './truckAccidentResponse';
@@ -56,6 +57,7 @@ export interface AccidentResponse {
     severityWeight?: number | null;
     hmPlacards?: boolean;
     description?: string | null;
+    citations?: Array<CitationResponse> | null;
     insuranceType?: Array<InsuranceTypeResponse> | null;
     roadwayTrafficway?: string | null;
     weatherCondition?: string | null;

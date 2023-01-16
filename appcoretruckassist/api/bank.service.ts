@@ -150,7 +150,7 @@ export class BankService {
             }
         }
 
-        let localVarPath = `/api/Bank/applicant/list`;
+        let localVarPath = `/api/bank/applicant/list`;
         return this.httpClient.request<Array<BankResponse>>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
@@ -216,7 +216,7 @@ export class BankService {
             }
         }
 
-        let localVarPath = `/api/Bank/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int32"})}`;
+        let localVarPath = `/api/bank/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int32"})}`;
         return this.httpClient.request<any>('delete', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
@@ -282,7 +282,7 @@ export class BankService {
             }
         }
 
-        let localVarPath = `/api/Bank/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int32"})}`;
+        let localVarPath = `/api/bank/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int32"})}`;
         return this.httpClient.request<BankResponse>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
@@ -381,7 +381,7 @@ export class BankService {
             }
         }
 
-        let localVarPath = `/api/Bank/list`;
+        let localVarPath = `/api/bank/list`;
         return this.httpClient.request<BankListResponse>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
@@ -456,7 +456,7 @@ export class BankService {
             }
         }
 
-        let localVarPath = `/api/Bank`;
+        let localVarPath = `/api/bank`;
         return this.httpClient.request<CreateResponse>('post', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
@@ -531,7 +531,7 @@ export class BankService {
             }
         }
 
-        let localVarPath = `/api/Bank`;
+        let localVarPath = `/api/bank`;
         return this.httpClient.request<object>('put', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,

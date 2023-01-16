@@ -37,6 +37,7 @@ import { Subject, takeUntil, skip, tap } from 'rxjs';
 import { VinDecoderService } from '../../../services/VIN-DECODER/vindecoder.service';
 import { convertThousanSepInNumber } from '../../../utils/methods.calculations';
 import { FormService } from '../../../services/form/form.service';
+import { TruckAutocompleteModelResponse } from '../../../../../../appcoretruckassist/model/truckAutocompleteModelResponse';
 
 @Component({
     selector: 'app-truck-modal',
@@ -998,6 +999,23 @@ export class TruckModalComponent implements OnInit, OnDestroy {
             default: {
                 break;
             }
+        }
+    }
+
+    public onBlurTruckModel() {
+        const model = this.truckForm.get('model').value;
+        if (model.length >= 1) {
+            this.truckModalService
+                .autocompleteByTruckModel(model)
+                .pipe(takeUntil(this.destroy$))
+                .subscribe({
+                    next: (res: TruckAutocompleteModelResponse) => {
+                        console.log('autocomplete: ', res);
+                    },
+                    error: (error) => {
+                        console.log(error);
+                    },
+                });
         }
     }
 

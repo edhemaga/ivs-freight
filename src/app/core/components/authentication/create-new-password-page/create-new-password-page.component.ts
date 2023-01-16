@@ -3,15 +3,18 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpResponseBase } from '@angular/common/http';
 import { Router } from '@angular/router';
 
+import { Subject, takeUntil } from 'rxjs';
+
+import { passwordValidation } from '../../shared/ta-input/ta-input.regex-validations';
+
 import moment from 'moment';
 
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
 import { AuthStoreService } from '../state/auth.service';
 import { NotificationService } from '../../../services/notification/notification.service';
+import { AuthSecurityService } from '../state/auth-security.service';
 
 import { SetNewPasswordCommand } from 'appcoretruckassist/model/setNewPasswordCommand';
-import { Subject, takeUntil } from 'rxjs';
-import { passwordValidation } from '../../shared/ta-input/ta-input.regex-validations';
 
 @Component({
     selector: 'app-create-new-password-page',
@@ -25,15 +28,20 @@ export class CreateNewPasswordPageComponent implements OnInit, OnDestroy {
 
     public copyrightYear: number;
 
+    public isValidLoad: boolean;
+
     constructor(
         private formBuilder: FormBuilder,
         private inputService: TaInputService,
         private authStoreService: AuthStoreService,
         private notification: NotificationService,
-        private router: Router
+        private router: Router,
+        private authSecurityService: AuthSecurityService
     ) {}
 
     ngOnInit(): void {
+        this.checkIsValidInit();
+
         this.createForm();
 
         this.passwordsNotSame();
@@ -119,6 +127,22 @@ export class CreateNewPasswordPageComponent implements OnInit, OnDestroy {
         if (event.keyCode === 13) {
             this.onCreateNewPassword();
         }
+    }
+
+    private checkIsValidInit(): void {
+        this.authSecurityService.getAccountActivatedSubject$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => {
+                if (!res) {
+                    this.isValidLoad = false;
+
+                    this.router.navigate(['/auth']);
+
+                    return;
+                } else {
+                    this.isValidLoad = true;
+                }
+            });
     }
 
     ngOnDestroy(): void {

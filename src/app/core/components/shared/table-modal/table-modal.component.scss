@@ -1,0 +1,120 @@
+.modal-table-head {
+    display: flex;
+
+    .head-scrollable-container{
+        overflow: hidden;
+    }
+
+    tr {
+        display: flex;
+        height: 30px;
+
+        th {
+            display: flex;
+            align-items: center;
+
+            div {
+                display: flex;
+                align-items: center;
+            }
+
+            .th-title,
+            .th-num-count {
+                font-size: 11px;
+                font-weight: bold;
+                color: #919191;
+            }
+
+            .th-title {
+                padding-left: 10px;
+            }
+
+            .th-num-count {
+                justify-content: center;
+            }
+
+            .add-btn {
+                cursor: pointer;
+                justify-content: center;
+            }
+        }
+    }
+}
+
+.modal-table-body {
+    tr {
+        display: flex;
+        width: fit-content;
+        height: 34px;
+        background: #6f9ee020;
+        border-radius: 2px;
+
+        .scrollable-container{
+            overflow: hidden;
+        }
+
+        .fixed-container,
+        .scrollable-container,
+        .action-container {
+            display: flex;
+
+            td {
+                display: flex;
+                div {
+                    display: flex;
+                    align-items: center;
+                }
+
+                .td-input-text {
+                    font-size: 14px;
+                    font-weight: 400;
+                    color: #2f2f2f;
+                    padding-left: 10px;
+
+                    .td-input-text-extraText {
+                        font-size: 14px;
+                        font-weight: 400;
+                        color: #919191;
+                        margin-left: 2px;
+                    }
+                }
+
+                .ta-input-container {
+                    padding-left: 10px;
+                }
+
+                .td-num-count {
+                    justify-content: center;
+                    color: #919191;
+                }
+
+                .icon {
+                    cursor: pointer;
+                    justify-content: center;
+                }
+            }
+        }
+    }
+}
+
+
+.cdk-drag-preview {
+    display: flex;
+    align-items: center;
+    height: 30px !important;
+
+    .th-title {
+        height: 27px;
+        padding: 2px 6px;
+        display: flex;
+        align-items: center;
+        color: #3c3c3c;
+        font-size: 14px;
+        font-weight: bold;
+        background: #f1f1f1;
+        border-radius: 2px;
+        box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.15);
+        position: relative;
+        z-index: 1000;
+    }
+}

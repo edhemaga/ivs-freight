@@ -73,12 +73,13 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
     @Input() mapType: string = 'shipper'; // shipper, repairShop, fuelStop, accident, inspection, routing
     @Input() routes: Array<MapRouteModel> = []; // array of stops to be shown on map, ex. - [{routeColor: #3074D3, stops: [{lat: 39.353087, long: -84.299328, stopColor: #EF5350, empty: true}, {lat: 39.785871, long: -86.143448, stopColor: #26A690, empty: false}]]
     @Input() dropdownActions: any[] = [];
+    @Input() darkMode: boolean = false;
     @Output() callDropDownAction: EventEmitter<any> = new EventEmitter();
     @Output() updateMapList: EventEmitter<any> = new EventEmitter();
     @Output() selectMarker: EventEmitter<any> = new EventEmitter();
 
     public agmMap: any;
-    public styles = AppConst.GOOGLE_MAP_STYLES;
+    public styles: any = AppConst.GOOGLE_MAP_STYLES;
     mapRestrictions = {
         latLngBounds: AppConst.NORTH_AMERICA_BOUNDS,
         strictBounds: true,
@@ -92,7 +93,7 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
     public markerSelected: boolean = false;
     public mapLatitude: number = 41.860119;
     public mapLongitude: number = -87.660156;
-    public sortBy: string = 'nameDesc';
+    public sortBy: string = ''; //nameDesc
     public searchValue: string = '';
     public mapMarkers: any[] = [];
     public mapCircle: any = {
@@ -154,6 +155,10 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
 
         this.addMapListSearchListener();
         this.addDeleteListener();
+
+        if ( this.darkMode ) {
+            this.styles = AppConst.GOOGLE_MAP_DARK_STYLES;
+        }
     }
 
     ngOnChanges(changes: SimpleChanges): void {

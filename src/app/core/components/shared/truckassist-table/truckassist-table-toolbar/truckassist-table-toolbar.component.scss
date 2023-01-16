@@ -157,6 +157,46 @@
                 }
             }
         }
+
+        .new-load{
+            width: 36px;
+            height: 36px;
+            background-color: #3074D3;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 3px;
+            align-self: center;
+            cursor: pointer;
+
+            svg-icon{
+                display: flex;
+                svg{
+
+                }
+            }
+        }
+
+        .settings-dispatch, .lock-unlock-dispatch{
+            width: 26px;
+            height: 26px;
+            display: flex;
+            margin-right: 10px;
+            align-self: center;
+            align-items: center;
+            justify-content: flex-end;
+            cursor: pointer;
+
+            svg-icon{
+                display: flex;
+                svg, path{
+                    width: 18px;
+                    height: 18px;
+
+                    fill: #919191;
+                }
+            }
+        }
     }
 
     // LOCATION FILTER AND OPEN MODAL BUTTON

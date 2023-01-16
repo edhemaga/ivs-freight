@@ -45,6 +45,10 @@ export interface TrailerShortResponse {
     licensePlate?: string | null;
     fhwaInspection?: string | null;
     fhwaExp?: number;
+    inspectionPercentage?: number | null;
+    inspectionExpirationDays?: number | null;
+    registrationPercentage?: number | null;
+    registrationExpirationDays?: number | null;
     createdAt?: string;
     updatedAt?: string;
 }

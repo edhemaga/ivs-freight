@@ -9,10 +9,12 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { EnumValue } from './enumValue';
 
 
 export interface LoadPaymentPayResponse { 
     id?: number;
+    paymentType?: EnumValue;
     pay?: number;
     payDate?: string;
 }

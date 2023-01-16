@@ -21,16 +21,13 @@
                     <span
                         *ngFor="let repairs of repairListData; let i = index"
                         (click)="
-                            showRepairItems[repairs?.id] =
-                                !showRepairItems[repairs?.id]
+                            openRepairDetail(repairs)
                         "
                         class="item-shop-wrapper"
                         [ngClass]="{
-                            'finish-order-cont': !repairs.invoice,
+                            'finish-order-cont': repairs.repairType.name != 'Bill',
                             'open-items-body':
-                                showRepairItems[repairs?.id] && repairs.invoice,
-                            'open-items-body-no-invoice':
-                                showRepairItems[repairs?.id] && !repairs.invoice
+                                showRepairItems[repairs?.id] && repairs.repairType.name == 'Bill'
                         }"
                     >
                         <div class="repair-items">
@@ -39,10 +36,10 @@
                                 [ngClass]="{
                                     'open-items-body':
                                         showRepairItems[repairs?.id] &&
-                                        repairs.invoice,
+                                        repairs.repairType.name == 'Bill',
                                     'open-items-body-no-invoice':
                                         showRepairItems[repairs?.id] &&
-                                        !repairs.invoice
+                                        repairs.repairType.name != 'Bill'
                                 }"
                             >
                                 <span class="unit">{{
@@ -58,12 +55,12 @@
                                 <span class="date"
                                     ><span
                                         class="inv"
-                                        *ngIf="repairs.invoice"
-                                        >{{ repairs.invoice }}</span
+                                        *ngIf="repairs.repairType.name == 'Bill'"
+                                        >{{ repairs.invoice ? repairs.invoice : '' }}</span
                                     ></span
                                 >
                                 <div
-                                    *ngIf="!repairs.invoice"
+                                    *ngIf="repairs.repairType.name != 'Bill'"
                                     class="no-invoice"
                                 >
                                     <svg-icon
@@ -100,7 +97,7 @@
                                     (click)="
                                         finishOrder(repairs.id, repairs, $event)
                                     "
-                                    *ngIf="!repairs.invoice"
+                                    *ngIf="repairs.repairType.name != 'Bill'"
                                     class="button-wrapper-shop"
                                 >
                                     Finish Order
@@ -108,7 +105,7 @@
                                 <div
                                     class="dots-vertical"
                                     [ngClass]="{
-                                        'order-activate': !repairs.invoice
+                                        'order-activate': repairs.repairType.name != 'Bill'
                                     }"
                                 >
                                     <app-details-page-dropdown
@@ -120,6 +117,7 @@
                                         (dropDownActions)="
                                             optionsEvent($event, 'repair')
                                         "
+                                        (click)="stopClick($event, repairs)"
                                     >
                                     </app-details-page-dropdown>
                                 </div>
@@ -131,7 +129,7 @@
                                 showRepairItems[repairs?.id] ? 'true' : 'false'
                             "
                             [ngClass]="{
-                                'no-repairs-inovice': !repairs.invoice
+                                'no-repairs-inovice': repairs.repairType.name != 'Bill'
                             }"
                             class="repair-items-body-wrapper"
                         >
@@ -139,14 +137,14 @@
                                 <div class="item-header">#</div>
                                 <div class="item-header">ITEM</div>
                                 <div
-                                    *ngIf="repairs.invoice"
+                                    *ngIf="repairs.repairType.name == 'Bill'"
                                     class="item-header"
                                 >
                                     PRICE
                                 </div>
                                 <div class="item-header">QTY</div>
                                 <div
-                                    *ngIf="repairs.invoice"
+                                    *ngIf="repairs.repairType.name == 'Bill'"
                                     class="item-header"
                                 >
                                     TOTAL
@@ -207,9 +205,11 @@
                                             desc?.price | formatCurrency
                                         }}</span
                                     >
-                                    <span class="description-item-qty">{{
-                                        desc?.quantity
-                                    }}</span>
+                                    <span class="description-item-qty">
+                                        <span class="inner-qty-value">
+                                            {{ desc?.quantity }}
+                                        </span>
+                                    </span>
                                     <span
                                         *ngIf="desc.subtotal"
                                         class="description-item-total"
@@ -262,7 +262,7 @@
                                 vehicle.logoName
                             }} "
                         ></svg-icon>
-                        <span class="date">{{ vehicle.totalOrder }}</span>
+                        <span class="date">{{ vehicle.totalRepairs }}</span>
                         <span class="cost">{{
                             vehicle.totalCost | formatCurrency
                         }}</span>

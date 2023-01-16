@@ -1,7 +1,8 @@
 <div *ngIf="trailer" class="cards-item-wrapper-1">
     <app-ta-details-header-card
-        [tooltipNext]="'Next Trailer'"
-        [tooltipPrevious]="'Previous Trailer'"
+        [ngClass]="{ 'disabedPreviousArrow': trailerIndex == 0, 'disableNextArrow': trailerIndex == (trailer_list.length -1 ) }"
+        [tooltipNext]=" trailerIndex == (trailer_list.length -1 )  ?  'Disabled' : 'Next Trailer' "
+        [tooltipPrevious]=" trailerIndex == 0 ? 'Disabled' : 'Previous Trailer' "
         [cardDetailsDate]="trailer.createdAt | formatDateP"
         [options]="trailerDropDowns"
         [searchInputName]="'Search Trailer'"

@@ -22,10 +22,10 @@ import { RepairTruckQuery } from './repair-truck-state/repair-truck.query';
 import { RepairTrailerQuery } from './repair-trailer-state/repair-trailer.query';
 import { ShopQuery } from './shop-state/shop.query';
 import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
-import { GetRepairShopClustersQuery } from '../../../../../../appcoretruckassist/model/getRepairShopClustersQuery';
 import { RepairDQuery } from './details-state/repair-d.query';
 import { RepairDStore } from './details-state/repair-d.store';
 import { FormDataService } from 'src/app/core/services/formData/form-data.service';
+import { RepairAutocompleteDescriptionResponse } from '../../../../../../appcoretruckassist/model/repairAutocompleteDescriptionResponse';
 
 @Injectable({
     providedIn: 'root',
@@ -139,7 +139,8 @@ export class RepairTService implements OnDestroy {
                             }
                             this.tableService.sendActionAnimation({
                                 animation: 'update',
-                                tab: repair?.truckId ? 'active' : 'inactive',
+                                tab: 'repair',
+                                //tab: repair?.truckId ? 'active' : 'inactive',
                                 data: repair,
                                 id: repair.id,
                             });
@@ -262,6 +263,14 @@ export class RepairTService implements OnDestroy {
         return;
     }
 
+    public autocompleteRepairByDescription(
+        description: string
+    ): Observable<RepairAutocompleteDescriptionResponse> {
+        return this.repairService.apiRepairAutocompleteDescriptionDescriptionGet(
+            description
+        );
+    }
+
     // <----------------------- Repair Shop -------------------->
     public addRepairShop(data: any): Observable<CreateResponse> {
         this.formDataService.extractFormDataFromFunction(data);
@@ -305,10 +314,27 @@ export class RepairTService implements OnDestroy {
                     .pipe(takeUntil(this.destroy$))
                     .subscribe({
                         next: (shop: RepairShopResponse | any) => {
-                            this.shopStore.remove(({ id }) => id === data.id);
-
+                            this.shopStore.remove(({ id }) => id === data.id);               
                             this.shopStore.add(shop);
 
+                            this.rDs.update((store) => {                         
+                                let ind;
+                                let shopStored = JSON.parse(JSON.stringify(store));
+                                shopStored.repairShop.map((data: any, index: any) => {
+                                    if (data.id == shop.id){
+                                        ind = index;
+                                    }
+                                });
+                                
+                                shopStored.repairShop[ind] = shop;
+                                
+                                return {
+                                    ...store,
+                                    repairShop: [...shopStored.repairShop],
+                                };
+                                
+                            });
+                            
                             this.tableService.sendActionAnimation({
                                 animation: 'update',
                                 tab: 'repair-shop',
@@ -580,6 +606,94 @@ export class RepairTService implements OnDestroy {
             };
         });
     }
+
+    public deleteReview(reviewId, shopId){
+        let shopStored = JSON.parse(JSON.stringify(this.rDs?.getValue()));
+        let shopData = shopStored?.repairShop;
+        let currentShop;
+        let shopIndex;
+        shopData.map(
+            (shop: any, ind: any) => { 
+                if ( shop.id == shopId ) {
+                    currentShop = shop;
+                    shopIndex = ind;
+                }
+            }
+        );
+
+        currentShop?.reviews.map((item: any, index: any) => {
+            if ( item.id == reviewId ){
+                currentShop?.reviews.splice(index, 1);
+            }})
+
+
+        
+        shopData[shopIndex] = currentShop;
+
+        this.shopStore.remove(({ id }) => id === shopId);               
+        this.shopStore.add(currentShop);
+
+        
+        this.rDs.update((store) => {                         
+            shopStored.repairShop[shopIndex] = currentShop;
+            
+            return {
+                ...store,
+                repairShop: [...shopStored.repairShop],
+            };
+            
+        });
+
+        this.tableService.sendActionAnimation({
+            animation: 'update',
+            tab: 'repair-shop',
+            data: currentShop,
+            id: currentShop.id,
+        });
+    }
+
+    public addNewReview(data, shopId){
+        console.log('--data', data);
+        console.log('--currentId', shopId);
+
+        let shopStored = JSON.parse(JSON.stringify(this.rDs?.getValue()));
+        let shopData = shopStored?.repairShop;
+        let currentShop;
+        let shopIndex;
+        shopData.map(
+            (shop: any, ind: any) => { 
+                if ( shop.id == shopId ) {
+                    currentShop = shop;
+                    shopIndex = ind;
+                }
+            }
+        );
+        currentShop?.reviews.push(data);
+
+        shopData[shopIndex] = currentShop;
+
+        this.shopStore.remove(({ id }) => id === shopId);               
+        this.shopStore.add(currentShop);
+
+        
+        this.rDs.update((store) => {                         
+            shopStored.repairShop[shopIndex] = currentShop;
+            
+            return {
+                ...store,
+                repairShop: [...shopStored.repairShop],
+            };
+            
+        });
+
+        this.tableService.sendActionAnimation({
+            animation: 'update',
+            tab: 'repair-shop',
+            data: currentShop,
+            id: currentShop.id,
+        });
+    }
+
     ngOnDestroy(): void {
         this.destroy$.next();
         this.destroy$.complete();

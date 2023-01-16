@@ -1,0 +1,56 @@
+{
+    "root": true,
+    "ignorePatterns": ["projects/**/*"],
+    "overrides": [
+        {
+            "files": ["*.ts"],
+            "parserOptions": {
+                "project": ["tsconfig.json", "e2e/tsconfig.json"],
+                "createDefaultProgram": true
+            },
+            "extends": [
+                "plugin:@angular-eslint/recommended",
+                "plugin:@angular-eslint/template/process-inline-templates",
+                "prettier"
+            ],
+            "plugins": ["unused-imports"],
+            "rules": {
+                "indent": "off",
+                "unused-imports/no-unused-imports": "error",
+                "@angular-eslint/component-selector": [
+                    "error",
+                    {
+                        "style": "kebab-case",
+                        "type": "element"
+                    }
+                ],
+                "@angular-eslint/directive-selector": [
+                    "error",
+                    {
+                        "style": "camelCase",
+                        "type": "attribute"
+                    }
+                ],
+                "@angular-eslint/no-empty-lifecycle-method": ["off"],
+                "@angular-eslint/no-host-metadata-property": ["off"],
+                "@angular-eslint/no-output-rename": ["off"],
+                "@angular-eslint/no-output-on-prefix": ["off"],
+                "@angular-eslint/no-output-native": ["off"],
+                "no-unused-vars": [
+                  "warn",
+                  {
+                    "argsIgnorePattern": "^_",
+                    "varsIgnorePattern": "^_"
+                  }
+                ]
+            }
+        },
+        {
+            "files": ["*.html"],
+            "extends": ["plugin:@angular-eslint/template/recommended"],
+            "rules": {
+                "@angular-eslint/template/eqeqeq": ["off"]
+            }
+        }
+    ]
+}

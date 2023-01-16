@@ -9,7 +9,6 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { IntegrationProviderCommand } from './integrationProviderCommand';
 
 
 export interface EditIntegrationCommand { 
@@ -17,6 +16,6 @@ export interface EditIntegrationCommand {
     userId?: string | null;
     carrierId?: string | null;
     password?: string | null;
-    integrationProviderCommand?: IntegrationProviderCommand;
+    integrationProviderId?: number;
 }
 

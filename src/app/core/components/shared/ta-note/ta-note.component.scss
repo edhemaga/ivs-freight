@@ -293,6 +293,10 @@
             box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.15) !important;
         }
 
+        &.dark {
+            background-color: #2f2f2f;
+        }
+
         .editor {
             min-height: 32px;
             max-height: 80px;
@@ -308,6 +312,10 @@
             line-height: 15px;
             padding: 3px 6px;
             font-weight: 500;
+
+            &.dark {
+                background-color: #2f2f2f;
+            }
 
             &::-moz-selection {
                 color: $bw6-2;
@@ -426,11 +434,16 @@
 
                 border-radius: 1px;
                 background-color: #f3f3f3;
+
+                &.dark {
+                    background-color: #424242;
+                }
             }
         }
 
         .note_container {
             width: 100%;
+            padding: 4px 0px 4px 2px;
         }
     }
 

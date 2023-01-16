@@ -26,5 +26,6 @@ export interface UpdateDispatchCommand {
     note?: string | null;
     loadIds?: Array<number> | null;
     hoursOfService?: Array<DispatchHosCommand> | null;
+    parkingSlotId?: number | null;
 }
 

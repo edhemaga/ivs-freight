@@ -244,6 +244,29 @@
         }
     }
 
+    &.dark {
+        .editor_buttons {
+            svg-icon {
+                path {
+                    fill: #919191;
+                }
+            }
+
+            &:hover,
+            &.active {
+                background-color: #424242;
+            }
+
+            &.active {
+                svg-icon {
+                    path {
+                        fill: #ffffff;
+                    }
+                }
+            }
+        }
+    }
+
     .note_border_line {
         height: 24px;
         width: 2px;
@@ -251,5 +274,9 @@
 
         background-color: #f3f3f3;
         border-radius: 1px;
+
+        &.dark {
+            background-color: #424242;
+        }
     }
 }

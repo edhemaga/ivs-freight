@@ -1,6 +1,5 @@
 import {
     CreateCommentCommand,
-    RoutingResponse,
     RoutingService,
     SignInResponse,
     UpdateCommentCommand,
@@ -12,7 +11,14 @@ import {
     Validators,
     AbstractControl,
 } from '@angular/forms';
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import {
+    Component,
+    DoCheck,
+    ElementRef,
+    Input,
+    OnDestroy,
+    OnInit,
+} from '@angular/core';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 
@@ -23,21 +29,50 @@ import { CommentsService } from '../../../services/comments/comments.service';
 import { ReviewCommentModal } from '../../shared/ta-user-review/ta-user-review.component';
 import { ITaInput } from '../../shared/ta-input/ta-input.config';
 
-import { Subject, takeUntil } from 'rxjs';
-import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { debounceTime, Subject, takeUntil } from 'rxjs';
 import { descriptionValidation } from '../../shared/ta-input/ta-input.regex-validations';
-import { convertThousanSepInNumber } from '../../../utils/methods.calculations';
+import {
+    convertDateToBackend,
+    convertThousanSepInNumber,
+} from '../../../utils/methods.calculations';
 import moment from 'moment';
 import { CreateLoadTemplateCommand } from '../../../../../../appcoretruckassist/model/createLoadTemplateCommand';
-import { IBilling } from './load-financial/load-financial.component';
+import { IBilling, IPayment } from './load-financial/load-financial.component';
 import { MapRouteModel } from '../../shared/model/map-route';
+import { BrokerModalComponent } from '../broker-modal/broker-modal.component';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { ShipperModalComponent } from '../shipper-modal/shipper-modal.component';
+import { FinancialCalculationPipe } from './load-financial/financialCalculation.pipe';
+import { RoutingResponse } from '../../../../../../appcoretruckassist/model/routingResponse';
+import { LoadStopItemAutocompleteDescriptionResponse } from '../../../../../../appcoretruckassist/model/loadStopItemAutocompleteDescriptionResponse';
+import { ViewChild } from '@angular/core';
+import { trigger, transition, style, animate } from '@angular/animations';
+
+interface IStopRoutes {
+    longitude: number;
+    latitude: number;
+    pickup?: boolean;
+    delivery?: boolean;
+    stopNumber?: number;
+}
 @Component({
     selector: 'app-load-modal',
     templateUrl: './load-modal.component.html',
     styleUrls: ['./load-modal.component.scss'],
-    providers: [ModalService, FormService],
+    animations: [
+        trigger('fadeIn', [
+            transition(':enter', [
+                style({ opacity: 0, transform: 'translateX(-500px)' }),
+                animate(
+                    3000,
+                    style({ opacity: 1, transform: 'translateX(0px)' })
+                ),
+            ]),
+        ]),
+    ],
+    providers: [ModalService, FormService, FinancialCalculationPipe],
 })
-export class LoadModalComponent implements OnInit, OnDestroy {
+export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     private destroy$ = new Subject<void>();
 
     @Input() editData: any;
@@ -148,7 +183,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
     public labelsShipperContacts: any[] = [];
     public originShipperContacts: any[] = [];
 
-    // Requirements LAbels
+    // Requirements Labels
     public labelsTruckReq: any[] = [];
     public labelsTrailerReq: any[] = [];
     public labelsDoorType: any[] = [];
@@ -305,6 +340,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
     public selectedExtraStopTime: any[] = [];
 
     // Billing
+    public originalAdditionalBillingTypes: any[] = [];
     public additionalBillingTypes: any[] = [];
     public isAvailableAdjustedRate: boolean = false;
     public isAvailableAdvanceRate: boolean = false;
@@ -332,21 +368,33 @@ export class LoadModalComponent implements OnInit, OnDestroy {
     public deliveryDateRange: boolean = false;
     public isActiveDeliveryStop: boolean = false;
 
-    public disableCardAnimation: boolean = false;
-
     // Billing part
     public loadModalBill: IBilling = {
         baseRate: 0,
-        adjusted: 0,
-        advance: 0,
         layover: 0,
         lumper: 0,
         fuelSurcharge: 0,
         escort: 0,
         detention: 0,
     };
-
+    public selectedAdditionalBillings: any[] = [];
     public isVisibleBillDropdown: boolean = false;
+
+    // Payment part
+    public loadModalPayment: IPayment = {
+        advance: 0,
+        paidInFull: 0,
+        shortPaid: [],
+    };
+    public isVisiblePayment: boolean = false;
+
+    // Dummy variables for load total
+    public totalLegMiles: number = null;
+    public totalLegHours: number = null;
+    public totalLegMinutes: number = null;
+    public totalLegCost: number = null;
+
+    public disableCardAnimation: boolean = false;
 
     constructor(
         private formBuilder: FormBuilder,
@@ -355,8 +403,14 @@ export class LoadModalComponent implements OnInit, OnDestroy {
         private commentsService: CommentsService,
         private routingService: RoutingService,
         private loadService: LoadTService,
-        private modalService: ModalService
+        private modalService: ModalService,
+        private ngbActiveModal: NgbActiveModal,
+        private financialCalculationPipe: FinancialCalculationPipe
     ) {}
+
+    public originHeight: number;
+
+    @ViewChild('originElement') originElement: ElementRef;
 
     ngOnInit() {
         this.companyUser = JSON.parse(localStorage.getItem('user'));
@@ -364,6 +418,13 @@ export class LoadModalComponent implements OnInit, OnDestroy {
         this.getLoadDropdowns();
 
         this.trackBillingPayment();
+    }
+
+    ngDoCheck() {
+        if (this.originElement) {
+            this.originHeight =
+                this.originElement.nativeElement.getBoundingClientRect().height;
+        }
     }
 
     private createForm() {
@@ -400,9 +461,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
             pickuplegMiles: [null],
             pickuplegHours: [null],
             pickuplegMinutes: [null],
-            pickuptotalLegMiles: [null],
-            pickuptotalLegHours: [null],
-            pickuptotalLegMinutes: [null],
+            pickuplegCost: [null],
             // -------------
             // Delivery Stop
             deliveryStop: ['Delivery'],
@@ -417,9 +476,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
             deliverylegMiles: [null],
             deliverylegHours: [null],
             deliverylegMinutes: [null],
-            deliveryotalLegMiles: [null],
-            deliverytotalLegHours: [null],
-            deliverytotalLegMinutes: [null],
+            deliverylegCost: [null],
             // -------------
             // Extra Stops
             extraStops: this.formBuilder.array([]),
@@ -431,15 +488,14 @@ export class LoadModalComponent implements OnInit, OnDestroy {
             advancePay: [null],
             additionalBillings: this.formBuilder.array([]),
             billingDropdown: [null],
-            // layoverRate: [null],
-            // lumperRate: [null],
-            // fuelSurchargeRate: [null],
-            // escortRate: [null],
-            // detentionRate: [null],
             invoiced: [null],
             // -------------
             note: [null],
             files: [null],
+            loadMiles: [0],
+            totalMiles: [0],
+            totalHours: [0],
+            totalMinutes: [0],
         });
 
         this.formService.checkFormChange(this.loadForm);
@@ -485,6 +541,9 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                         .patchValue(obj.numberOfPickups);
                 }
 
+                if (this.selectedExtraStopShipper[indx]) {
+                    this.drawStopOnMap();
+                }
                 break;
             }
             case 'stop-time-pickup': {
@@ -503,7 +562,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
             }
             case 'stop-time-delivery': {
                 this.selectedStopTimeDelivery = event.id;
-                if (this.selectedStopTimePickup === 8) {
+                if (this.selectedStopTimeDelivery === 8) {
                     this.inputService.changeValidators(
                         this.loadForm.get('deliveryTimeTo'),
                         false
@@ -517,6 +576,16 @@ export class LoadModalComponent implements OnInit, OnDestroy {
             }
             case 'extra-stops-time': {
                 this.selectedExtraStopTime[indx] = event.id;
+                if (this.selectedExtraStopTime.toString().startsWith('9')) {
+                    this.inputService.changeValidators(
+                        this.loadExtraStops().at(indx).get('timeTo'),
+                        false
+                    );
+                } else {
+                    this.inputService.changeValidators(
+                        this.loadExtraStops().at(indx).get('timeTo')
+                    );
+                }
                 break;
             }
             default: {
@@ -602,7 +671,6 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                 break;
             }
             case 'dispatches': {
-                console.log('dispatches: ', event);
                 if (event) {
                     this.selectedDispatches = {
                         ...event,
@@ -610,6 +678,9 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                             ?.concat(' ', event?.trailer?.name)
                             .concat(' ', event?.driver?.name),
                     };
+
+                    // Draw Stop on map
+                    this.drawStopOnMap();
 
                     this.loadDispatchesTTDInputConfig = {
                         ...this.loadDispatchesTTDInputConfig,
@@ -659,43 +730,21 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                         },
                     };
 
-                    if (
-                        this.selectedDispatches.driver.payType === 'Flat Rate'
-                    ) {
+                    if (this.selectedDispatches.payType === 'Flat Rate') {
                         this.inputService.changeValidators(
                             this.loadForm.get('driverRate')
+                        );
+                        this.inputService.changeValidators(
+                            this.loadForm.get('adjustedRate'),
+                            false
                         );
                     } else {
                         this.inputService.changeValidators(
                             this.loadForm.get('adjustedRate')
                         );
-                    }
-
-                    // Draw Stop on map between deadhead driver and first pickup
-                    if (this.selectedPickupShipper && this.selectedDispatches) {
-                        console.log(
-                            'dispatches: ',
-                            this.selectedDispatches,
-                            this.selectedPickupShipper
-                        );
-                        this.drawStopOnMap(
-                            {
-                                longitude:
-                                    this.selectedDispatches
-                                        .currentLocationCoordinates.longitude,
-                                latitude:
-                                    this.selectedDispatches
-                                        .currentLocationCoordinates.latitude,
-                                pickup: false,
-                                delivery: false,
-                            },
-                            {
-                                longitude: this.selectedPickupShipper.longitude,
-                                latitude: this.selectedPickupShipper.latitude,
-                                pickup: true,
-                                delivery: false,
-                            },
-                            'dispatche-pickup-route'
+                        this.inputService.changeValidators(
+                            this.loadForm.get('driverRate'),
+                            false
                         );
                     }
                 } else {
@@ -715,182 +764,248 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                         false
                     );
                 }
+
                 break;
             }
             case 'broker': {
-                this.selectedBroker = event;
+                if (event?.canOpenModal) {
+                    this.ngbActiveModal.close();
 
-                if (this.selectedBroker) {
-                    this.loadBrokerInputConfig = {
-                        ...this.loadBrokerInputConfig,
-                        multipleInputValues: {
-                            options: [
-                                {
-                                    value: this.selectedBroker.businessName,
-                                    logoName: null,
-                                },
-                                {
-                                    value: this.selectedBroker.availableCredit,
-                                    second_value:
-                                        this.selectedBroker.creditLimit,
-                                    logoName: null,
-                                    isProgressBar: true,
-                                },
-                                {
-                                    value: this.selectedBroker.loadsCount,
-                                    logoName: null,
-                                    isCounter: true,
-                                },
-                            ],
-                            customClass: 'load-broker',
+                    this.modalService.setProjectionModal({
+                        action: 'open',
+                        payload: {
+                            key: 'load-modal',
+                            value: {},
                         },
-                    };
+                        extraPayload: {
+                            data: null,
+                            type: 'new',
+                        },
+                        component: BrokerModalComponent,
+                        size: 'small',
+                    });
+                } else {
+                    this.selectedBroker = event;
 
-                    this.labelsBrokerContacts = this.originBrokerContacts.map(
-                        (el) => {
-                            return {
-                                ...el,
-                                contacts: el?.contacts?.filter(
-                                    (subEl) =>
-                                        subEl.brokerId ===
-                                        this.selectedBroker.id
-                                ),
-                            };
+                    if (this.selectedBroker) {
+                        this.loadBrokerInputConfig = {
+                            ...this.loadBrokerInputConfig,
+                            multipleInputValues: {
+                                options: [
+                                    {
+                                        value: this.selectedBroker.businessName,
+                                        logoName: null,
+                                    },
+                                    {
+                                        value: this.selectedBroker
+                                            .availableCredit,
+                                        second_value:
+                                            this.selectedBroker.creditLimit,
+                                        logoName: null,
+                                        isProgressBar: true,
+                                    },
+                                    {
+                                        value: this.selectedBroker.loadsCount,
+                                        logoName: null,
+                                        isCounter: true,
+                                    },
+                                ],
+                                customClass: 'load-broker',
+                            },
+                        };
+
+                        this.labelsBrokerContacts =
+                            this.originBrokerContacts.map((el) => {
+                                return {
+                                    ...el,
+                                    contacts: el?.contacts?.filter(
+                                        (subEl) =>
+                                            subEl.brokerId ===
+                                            this.selectedBroker.id
+                                    ),
+                                };
+                            });
+                        if (this.labelsBrokerContacts[1]?.contacts[0]) {
+                            this.selectedBrokerContact =
+                                this.labelsBrokerContacts[1].contacts[0];
+
+                            if (this.selectedBrokerContact) {
+                                this.loadForm
+                                    .get('brokerContactId')
+                                    .patchValue(
+                                        this.selectedBrokerContact.fullName
+                                    );
+
+                                this.loadBrokerContactsInputConfig = {
+                                    ...this.loadBrokerContactsInputConfig,
+                                    multipleInputValues: {
+                                        options: [
+                                            {
+                                                value: this
+                                                    .selectedBrokerContact.name,
+                                                logoName: null,
+                                            },
+                                            {
+                                                value: this
+                                                    .selectedBrokerContact
+                                                    .originalPhone,
+                                                second_value: this
+                                                    .selectedBrokerContact
+                                                    .phoneExtension
+                                                    ? `#${this.selectedBrokerContact.phoneExtension}`
+                                                    : null,
+                                                logoName: null,
+                                            },
+                                        ],
+                                        customClass: 'load-broker-contact',
+                                    },
+                                    isDisabled: false,
+                                    blackInput: false,
+                                };
+                            }
                         }
-                    );
+                    }
+                    // restart value if clear
+                    else {
+                        this.labelsBrokerContacts = this.originBrokerContacts;
+                        this.loadBrokerInputConfig = {
+                            ...this.loadBrokerInputConfig,
+                            multipleInputValues: null,
+                        };
 
-                    this.selectedBrokerContact =
-                        this.labelsBrokerContacts[1].contacts[0];
+                        this.selectedBrokerContact = null;
 
-                    if (this.selectedBrokerContact) {
-                        this.loadForm
-                            .get('brokerContactId')
-                            .patchValue(this.selectedBrokerContact.fullName);
+                        this.loadForm.get('brokerContactId').patchValue(null);
 
+                        this.loadBrokerContactsInputConfig = {
+                            ...this.loadBrokerContactsInputConfig,
+                            multipleInputValues: null,
+                            isDisabled: true,
+                        };
+                    }
+                }
+
+                break;
+            }
+            case 'broker-contact': {
+                if (event?.canOpenModal) {
+                    this.ngbActiveModal.close();
+
+                    this.modalService.setProjectionModal({
+                        action: 'open',
+                        payload: {
+                            key: 'load-modal',
+                            value: {},
+                        },
+                        type: 'edit',
+                        extraPayload: {
+                            data: this.selectedBroker,
+                            type: 'edit-contact',
+                        },
+                        component: BrokerModalComponent,
+                        size: 'small',
+                    });
+                } else {
+                    if (event) {
+                        this.selectedBrokerContact = {
+                            ...event,
+                            name: event?.name?.concat(' ', event?.phone),
+                        };
                         this.loadBrokerContactsInputConfig = {
                             ...this.loadBrokerContactsInputConfig,
                             multipleInputValues: {
                                 options: [
                                     {
-                                        value: this.selectedBrokerContact.name,
+                                        value: event.name,
                                         logoName: null,
                                     },
                                     {
-                                        value: this.selectedBrokerContact
-                                            .originalPhone,
-                                        second_value: `#${this.selectedBrokerContact.phoneExtension}`,
+                                        value: event.originalPhone,
+                                        second_value: event.phoneExtension
+                                            ? `#${event.phoneExtension}`
+                                            : null,
                                         logoName: null,
                                     },
                                 ],
                                 customClass: 'load-broker-contact',
                             },
                             isDisabled: false,
-                            blackInput: false,
+                        };
+                    } else {
+                        this.loadBrokerContactsInputConfig = {
+                            ...this.loadBrokerContactsInputConfig,
+                            multipleInputValues: null,
                         };
                     }
                 }
-                // restart value if clear
-                else {
-                    this.labelsBrokerContacts = this.originBrokerContacts;
-                    this.loadBrokerInputConfig = {
-                        ...this.loadBrokerInputConfig,
-                        multipleInputValues: null,
-                    };
 
-                    this.selectedBrokerContact = null;
-
-                    this.loadForm.get('brokerContactId').patchValue(null);
-
-                    this.loadBrokerContactsInputConfig = {
-                        ...this.loadBrokerContactsInputConfig,
-                        multipleInputValues: null,
-                        isDisabled: true,
-                    };
-                }
-                break;
-            }
-            case 'broker-contact': {
-                if (event) {
-                    this.selectedBrokerContact = {
-                        ...event,
-                        name: event?.name?.concat(' ', event?.phone),
-                    };
-                    this.loadBrokerContactsInputConfig = {
-                        ...this.loadBrokerContactsInputConfig,
-                        multipleInputValues: {
-                            options: [
-                                {
-                                    value: event.name,
-                                    logoName: null,
-                                },
-                                {
-                                    value: event.originalPhone,
-                                    second_value: `#${event.phoneExtension}`,
-                                    logoName: null,
-                                },
-                            ],
-                            customClass: 'load-broker-contact',
-                        },
-                        isDisabled: false,
-                    };
-                } else {
-                    this.loadBrokerContactsInputConfig = {
-                        ...this.loadBrokerContactsInputConfig,
-                        multipleInputValues: null,
-                    };
-                }
                 break;
             }
             case 'shipper-pickup': {
-                this.selectedPickupShipper = event;
-                console.log(
-                    'why is undefined: ',
-                    event,
-                    this.selectedPickupShipper
-                );
-                if (this.selectedPickupShipper) {
-                    this.loadPickupShipperInputConfig = {
-                        ...this.loadPickupShipperInputConfig,
-                        multipleInputValues: {
-                            options: [
-                                {
-                                    value: this.selectedPickupShipper
-                                        .businessName,
-                                    logoName: null,
-                                },
-                                {
-                                    value: this.selectedPickupShipper.address,
-                                    logoName: null,
-                                },
-                                {
-                                    value: this.selectedPickupShipper
-                                        .loadsCount,
-                                    logoName: null,
-                                    isCounter: true,
-                                },
-                            ],
-                            customClass: 'load-shipper',
+                if (event?.canOpenModal) {
+                    this.ngbActiveModal.close();
+
+                    this.modalService.setProjectionModal({
+                        action: 'open',
+                        payload: {
+                            key: 'load-modal',
+                            value: {},
                         },
-                    };
+                        extraPayload: {
+                            data: null,
+                            type: 'new',
+                        },
+                        component: ShipperModalComponent,
+                        size: 'small',
+                    });
+                } else {
+                    this.selectedPickupShipper = event;
 
-                    this.labelsShipperContacts = this.originShipperContacts.map(
-                        (el) => {
-                            return {
-                                ...el,
-                                contacts: el?.contacts?.filter(
-                                    (subEl) =>
-                                        subEl.shipperId ===
-                                        this.selectedPickupShipper.id
-                                ),
-                            };
-                        }
-                    );
+                    // Draw Stop on map
+                    this.drawStopOnMap();
 
-                    if (this.labelsShipperContacts.length) {
-                        this.selectedPickupShipperContact =
-                            this.labelsShipperContacts[1].contacts[0];
+                    if (this.selectedPickupShipper) {
+                        this.loadPickupShipperInputConfig = {
+                            ...this.loadPickupShipperInputConfig,
+                            multipleInputValues: {
+                                options: [
+                                    {
+                                        value: this.selectedPickupShipper
+                                            .businessName,
+                                        logoName: null,
+                                    },
+                                    {
+                                        value: this.selectedPickupShipper
+                                            .address,
+                                        logoName: null,
+                                    },
+                                    {
+                                        value: this.selectedPickupShipper
+                                            .loadsCount,
+                                        logoName: null,
+                                        isCounter: true,
+                                    },
+                                ],
+                                customClass: 'load-shipper',
+                            },
+                        };
 
-                        if (this.selectedPickupShipperContact) {
+                        this.labelsShipperContacts =
+                            this.originShipperContacts.map((el) => {
+                                return {
+                                    ...el,
+                                    contacts: el?.contacts?.filter(
+                                        (subEl) =>
+                                            subEl.shipperId ===
+                                            this.selectedPickupShipper.id
+                                    ),
+                                };
+                            });
+
+                        if (this.labelsShipperContacts[1]?.contacts[0]) {
+                            this.selectedPickupShipperContact =
+                                this.labelsShipperContacts[1].contacts[0];
+
                             this.loadForm
                                 .get('pickupShipperContactId')
                                 .patchValue(
@@ -911,7 +1026,11 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                                             value: this
                                                 .selectedPickupShipperContact
                                                 .originalPhone,
-                                            second_value: `#${this.selectedPickupShipperContact.phoneExtension}`,
+                                            second_value: this
+                                                .selectedPickupShipperContact
+                                                .phoneExtension
+                                                ? `#${this.selectedPickupShipperContact.phoneExtension}`
+                                                : null,
                                             logoName: null,
                                         },
                                     ],
@@ -921,157 +1040,69 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                             };
                         }
                     }
+                    // Restart value if clear
+                    else {
+                        this.labelsShipperContacts = this.originShipperContacts;
 
-                    // Draw Stop on map between deadhead driver and first pickup
-                    if (this.selectedDispatches) {
-                        console.log(
-                            'pickup shipper: ',
-                            this.selectedDispatches,
-                            this.selectedPickupShipper
-                                .currentLocationCoordinates
-                        );
-                        this.drawStopOnMap(
-                            {
-                                longitude:
-                                    this.selectedDispatches
-                                        .currentLocationCoordinates.longitude,
-                                latitude:
-                                    this.selectedDispatches
-                                        .currentLocationCoordinates.latitude,
-                                pickup: false,
-                                delivery: false,
-                            },
-                            {
-                                longitude: this.selectedPickupShipper.longitude,
-                                latitude: this.selectedPickupShipper.latitude,
-                                pickup: true,
-                                delivery: false,
-                            },
-                            'dispatche-pickup-route'
-                        );
+                        this.loadPickupShipperInputConfig = {
+                            ...this.loadPickupShipperInputConfig,
+                            multipleInputValues: null,
+                        };
+
+                        this.selectedPickupShipperContact = null;
+
+                        this.loadForm
+                            .get('pickupShipperContactId')
+                            .patchValue(null);
+
+                        this.loadPickupShipperContactsInputConfig = {
+                            ...this.loadPickupShipperContactsInputConfig,
+                            multipleInputValues: null,
+                            isDisabled: true,
+                        };
                     }
                 }
-                // Restart value if clear
-                else {
-                    this.labelsShipperContacts = this.originShipperContacts;
 
-                    this.loadPickupShipperInputConfig = {
-                        ...this.loadPickupShipperInputConfig,
-                        multipleInputValues: null,
-                    };
-
-                    this.selectedPickupShipperContact = null;
-
-                    this.loadForm
-                        .get('pickupShipperContactId')
-                        .patchValue(null);
-
-                    this.loadPickupShipperContactsInputConfig = {
-                        ...this.loadPickupShipperContactsInputConfig,
-                        multipleInputValues: null,
-                        isDisabled: true,
-                    };
-                }
                 break;
             }
             case 'shipper-contact-pickup': {
-                if (event) {
-                    this.selectedPickupShipperContact = {
-                        ...event,
-                        name: event?.name?.concat(' ', event?.phone),
-                    };
+                if (event?.canOpenModal) {
+                    this.ngbActiveModal.close();
 
-                    this.loadPickupShipperContactsInputConfig = {
-                        ...this.loadPickupShipperContactsInputConfig,
-                        multipleInputValues: {
-                            options: [
-                                {
-                                    value: event.name,
-                                    logoName: null,
-                                },
-                                {
-                                    value: event.originalPhone,
-                                    second_value: `#${event.phoneExtension}`,
-                                    logoName: null,
-                                },
-                            ],
-                            customClass: 'load-shipper-contact',
+                    this.modalService.setProjectionModal({
+                        action: 'open',
+                        payload: {
+                            key: 'load-modal',
+                            value: {},
                         },
-                        isDisabled: false,
-                    };
+                        type: 'edit',
+                        extraPayload: {
+                            data: this.selectedPickupShipper,
+                            type: 'edit-contact',
+                        },
+                        component: ShipperModalComponent,
+                        size: 'small',
+                    });
                 } else {
-                    this.loadPickupShipperContactsInputConfig = {
-                        ...this.loadPickupShipperContactsInputConfig,
-                        multipleInputValues: null,
-                    };
-                }
-                break;
-            }
-            case 'shipper-delivery': {
-                this.selectedDeliveryShipper = event;
-                if (this.selectedDeliveryShipper) {
-                    this.loadDeliveryShipperInputConfig = {
-                        ...this.loadDeliveryShipperInputConfig,
-                        multipleInputValues: {
-                            options: [
-                                {
-                                    value: this.selectedDeliveryShipper
-                                        .businessName,
-                                    logoName: null,
-                                },
-                                {
-                                    value: this.selectedDeliveryShipper.address,
-                                    logoName: null,
-                                },
-                                {
-                                    value: this.selectedDeliveryShipper
-                                        .loadsCount,
-                                    logoName: null,
-                                    isCounter: true,
-                                },
-                            ],
-                            customClass: 'load-shipper',
-                        },
-                    };
+                    if (event) {
+                        this.selectedPickupShipperContact = {
+                            ...event,
+                            name: event?.name?.concat(' ', event?.phone),
+                        };
 
-                    this.labelsShipperContacts = this.originShipperContacts.map(
-                        (el) => {
-                            return {
-                                ...el,
-                                contacts: el?.contacts?.filter(
-                                    (subEl) =>
-                                        subEl.shipperId ===
-                                        this.selectedDeliveryShipper.id
-                                ),
-                            };
-                        }
-                    );
-
-                    this.selectedDeliveryShipperContact =
-                        this.labelsShipperContacts[1].contacts[0];
-
-                    if (this.selectedDeliveryShipperContact) {
-                        this.loadForm
-                            .get('deliveryShipperContactId')
-                            .patchValue(
-                                this.selectedDeliveryShipperContact.fullName
-                            );
-
-                        this.loadDeliveryShipperContactsInputConfig = {
-                            ...this.loadDeliveryShipperContactsInputConfig,
+                        this.loadPickupShipperContactsInputConfig = {
+                            ...this.loadPickupShipperContactsInputConfig,
                             multipleInputValues: {
                                 options: [
                                     {
-                                        value: this
-                                            .selectedDeliveryShipperContact
-                                            .name,
+                                        value: event.name,
                                         logoName: null,
                                     },
                                     {
-                                        value: this
-                                            .selectedDeliveryShipperContact
-                                            .originalPhone,
-                                        second_value: `#${this.selectedDeliveryShipperContact.phoneExtension}`,
+                                        value: event.originalPhone,
+                                        second_value: event.phoneExtension
+                                            ? `#${event.phoneExtension}`
+                                            : null,
                                         logoName: null,
                                     },
                                 ],
@@ -1079,110 +1110,210 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                             },
                             isDisabled: false,
                         };
+                    } else {
+                        this.loadPickupShipperContactsInputConfig = {
+                            ...this.loadPickupShipperContactsInputConfig,
+                            multipleInputValues: null,
+                        };
+                    }
+                }
+
+                break;
+            }
+            case 'shipper-delivery': {
+                if (event?.canOpenModal) {
+                    this.ngbActiveModal.close();
+
+                    this.modalService.setProjectionModal({
+                        action: 'open',
+                        payload: {
+                            key: 'load-modal',
+                            value: {},
+                        },
+                        extraPayload: {
+                            data: null,
+                            type: 'new',
+                        },
+                        component: ShipperModalComponent,
+                        size: 'small',
+                    });
+                } else {
+                    this.selectedDeliveryShipper = event;
+
+                    const existLoadStop =
+                        this.selectedDeliveryShipper?.id ===
+                        this.selectedPickupShipper?.id;
+
+                    if (existLoadStop) {
+                        this.loadForm.get('deliveryShipper').patchValue(null);
+                        this.selectedDeliveryShipper = null;
+
+                        return;
                     }
 
-                    if (this.loadExtraStops().length) {
-                        this.drawStopOnMap(
-                            {
-                                longitude: this.loadExtraStops()
-                                    .at(this.loadExtraStops().length - 1)
-                                    .get('longitude').value,
-                                latitude: this.loadExtraStops()
-                                    .at(this.loadExtraStops().length - 1)
-                                    .get('latitude').value,
+                    // Draw Stop on map
+                    this.drawStopOnMap();
+
+                    if (this.selectedDeliveryShipper) {
+                        this.loadDeliveryShipperInputConfig = {
+                            ...this.loadDeliveryShipperInputConfig,
+                            multipleInputValues: {
+                                options: [
+                                    {
+                                        value: this.selectedDeliveryShipper
+                                            .businessName,
+                                        logoName: null,
+                                    },
+                                    {
+                                        value: this.selectedDeliveryShipper
+                                            .address,
+                                        logoName: null,
+                                    },
+                                    {
+                                        value: this.selectedDeliveryShipper
+                                            .loadsCount,
+                                        logoName: null,
+                                        isCounter: true,
+                                    },
+                                ],
+                                customClass: 'load-shipper',
                             },
-                            {
-                                longitude:
-                                    this.selectedDeliveryShipper.longitude,
-                                latitude: this.selectedDeliveryShipper.latitude,
-                                pickup: false,
-                                delivery: true,
-                            },
-                            'extraLoad-delivery-route'
-                        );
-                    } else {
-                        if (this.selectedPickupShipper) {
-                            this.drawStopOnMap(
-                                {
-                                    longitude:
-                                        this.selectedPickupShipper.longitude,
-                                    latitude:
-                                        this.selectedPickupShipper.latitude,
-                                    pickup: true,
-                                    delivery: false,
+                        };
+
+                        this.labelsShipperContacts =
+                            this.originShipperContacts.map((el) => {
+                                return {
+                                    ...el,
+                                    contacts: el?.contacts?.filter(
+                                        (subEl) =>
+                                            subEl.shipperId ===
+                                            this.selectedDeliveryShipper.id
+                                    ),
+                                };
+                            });
+
+                        if (this.labelsShipperContacts[1]?.contacts[0]) {
+                            this.selectedDeliveryShipperContact =
+                                this.labelsShipperContacts[1].contacts[0];
+
+                            this.loadForm
+                                .get('deliveryShipperContactId')
+                                .patchValue(
+                                    this.selectedDeliveryShipperContact.fullName
+                                );
+
+                            this.loadDeliveryShipperContactsInputConfig = {
+                                ...this.loadDeliveryShipperContactsInputConfig,
+                                multipleInputValues: {
+                                    options: [
+                                        {
+                                            value: this
+                                                .selectedDeliveryShipperContact
+                                                .name,
+                                            logoName: null,
+                                        },
+                                        {
+                                            value: this
+                                                .selectedDeliveryShipperContact
+                                                .originalPhone,
+                                            second_value: this
+                                                .selectedDeliveryShipperContact
+                                                .phoneExtension
+                                                ? `#${this.selectedDeliveryShipperContact.phoneExtension}`
+                                                : null,
+                                            logoName: null,
+                                        },
+                                    ],
+                                    customClass: 'load-shipper-contact',
                                 },
-                                {
-                                    longitude:
-                                        this.selectedDeliveryShipper.longitude,
-                                    latitude:
-                                        this.selectedDeliveryShipper.latitude,
-                                    pickup: false,
-                                    delivery: true,
-                                },
-                                'pickup-delivery-route'
-                            );
+                                isDisabled: false,
+                            };
                         }
                     }
+                    // Restart value if clear
+                    else {
+                        this.labelsShipperContacts = this.originShipperContacts;
+
+                        this.loadPickupShipperInputConfig = {
+                            ...this.loadPickupShipperInputConfig,
+                            multipleInputValues: null,
+                        };
+
+                        this.selectedDeliveryShipperContact = null;
+
+                        this.loadForm
+                            .get('deliveryShipperContactId')
+                            .patchValue(null);
+
+                        this.loadDeliveryShipperContactsInputConfig = {
+                            ...this.loadDeliveryShipperContactsInputConfig,
+                            multipleInputValues: null,
+                            isDisabled: true,
+                        };
+                    }
                 }
-                // Restart value if clear
-                else {
-                    this.labelsShipperContacts = this.originShipperContacts;
 
-                    this.loadPickupShipperInputConfig = {
-                        ...this.loadPickupShipperInputConfig,
-                        multipleInputValues: null,
-                    };
-
-                    this.selectedDeliveryShipperContact = null;
-
-                    this.loadForm
-                        .get('deliveryShipperContactId')
-                        .patchValue(null);
-
-                    this.loadDeliveryShipperContactsInputConfig = {
-                        ...this.loadDeliveryShipperContactsInputConfig,
-                        multipleInputValues: null,
-                        isDisabled: true,
-                    };
-                }
                 break;
             }
             case 'shipper-contact-delivery': {
-                if (event) {
-                    this.selectedDeliveryShipperContact = {
-                        ...event,
-                        name: event?.name?.concat(' ', event?.phone),
-                    };
+                if (event?.canOpenModal) {
+                    this.ngbActiveModal.close();
 
-                    this.selectedDeliveryShipperContact = {
-                        ...this.selectedDeliveryShipperContact,
-                        multipleInputValues: {
-                            options: [
-                                {
-                                    value: event.name,
-                                    logoName: null,
-                                },
-                                {
-                                    value: event.originalPhone,
-                                    second_value: `#${event.phoneExtension}`,
-                                    logoName: null,
-                                },
-                            ],
-                            customClass: 'load-shipper-contact',
+                    this.modalService.setProjectionModal({
+                        action: 'open',
+                        payload: {
+                            key: 'load-modal',
+                            value: {},
                         },
-                        isDisabled: false,
-                    };
+                        type: 'edit',
+                        extraPayload: {
+                            data: this.selectedDeliveryShipper,
+                            type: 'edit-contact',
+                        },
+                        component: ShipperModalComponent,
+                        size: 'small',
+                    });
                 } else {
-                    this.selectedDeliveryShipperContact = {
-                        ...this.selectedDeliveryShipperContact,
-                        multipleInputValues: null,
-                    };
+                    if (event) {
+                        this.selectedDeliveryShipperContact = {
+                            ...event,
+                            name: event?.name?.concat(' ', event?.phone),
+                        };
+
+                        this.selectedDeliveryShipperContact = {
+                            ...this.selectedDeliveryShipperContact,
+                            multipleInputValues: {
+                                options: [
+                                    {
+                                        value: event.name,
+                                        logoName: null,
+                                    },
+                                    {
+                                        value: event.originalPhone,
+                                        second_value: event.phoneExtension
+                                            ? `#${event.phoneExtension}`
+                                            : null,
+                                        logoName: null,
+                                    },
+                                ],
+                                customClass: 'load-shipper-contact',
+                            },
+                            isDisabled: false,
+                        };
+                    } else {
+                        this.selectedDeliveryShipperContact = {
+                            ...this.selectedDeliveryShipperContact,
+                            multipleInputValues: null,
+                        };
+                    }
                 }
+
                 break;
             }
             case 'shipper-extra-stops': {
                 this.selectedExtraStopShipper[index] = event;
-                console.log(this.selectedExtraStopShipper);
+
+                this.drawStopOnMap();
 
                 // 4. If Load Stop Exist (shipper), just return
                 const existLoadStop = this.selectedExtraStopShipper.find(
@@ -1254,10 +1385,10 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                                 };
                             });
 
-                        this.selectedExtraStopShipperContact[index] =
-                            this.labelsShipperContacts[1].contacts[0];
+                        if (this.labelsShipperContacts[1]?.contacts[0]) {
+                            this.selectedExtraStopShipperContact[index] =
+                                this.labelsShipperContacts[1].contacts[0];
 
-                        if (this.selectedExtraStopShipperContact[index]) {
                             this.loadExtraStops()
                                 .at(index)
                                 .get('shipperContactId')
@@ -1287,7 +1418,12 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                                                 .selectedExtraStopShipperContact[
                                                 index
                                             ].originalPhone,
-                                            second_value: `#${this.selectedExtraStopShipperContact[index].phoneExtension}`,
+                                            second_value: this
+                                                .selectedExtraStopShipperContact[
+                                                index
+                                            ].phoneExtension
+                                                ? `#${this.selectedExtraStopShipperContact[index].phoneExtension}`
+                                                : null,
                                             logoName: null,
                                         },
                                     ],
@@ -1341,7 +1477,9 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                                 },
                                 {
                                     value: event.originalPhone,
-                                    second_value: `#${event.phoneExtension}`,
+                                    second_value: event.phoneExtension
+                                        ? `#${event.phoneExtension}`
+                                        : null,
                                     logoName: null,
                                 },
                             ],
@@ -1452,6 +1590,10 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                 break;
             }
             case 'first-delivery': {
+                if (!this.selectedPickupShipper) {
+                    return;
+                }
+
                 this.isActiveDeliveryStop = event;
                 this.isActivePickupStop = false;
                 this.loadExtraStops().controls.filter((item) => {
@@ -1485,7 +1627,6 @@ export class LoadModalComponent implements OnInit, OnDestroy {
         });
     }
 
-    public selectedAdditionalBillings: any[] = [];
     public addAdditionalBilling(event: any) {
         if (event) {
             this.selectedAdditionalBillings.push(
@@ -1527,6 +1668,34 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                     item.name !== this.additionalBillings().at(index).value.name
             );
 
+        switch (this.additionalBillings().at(index).value.name) {
+            case 'Layover': {
+                this.loadModalBill.layover = 0;
+                break;
+            }
+            case 'Lumper': {
+                this.loadModalBill.lumper = 0;
+                break;
+            }
+            case 'Fuel Surcharge': {
+                this.loadModalBill.fuelSurcharge = 0;
+                break;
+            }
+            case 'Escort': {
+                this.loadModalBill.escort = 0;
+                break;
+            }
+            case 'Detention': {
+                this.loadModalBill.detention = 0;
+                break;
+            }
+            default: {
+                break;
+            }
+        }
+
+        this.loadModalBill = Object.assign({}, this.loadModalBill);
+
         this.additionalBillings().removeAt(index);
     }
 
@@ -1535,9 +1704,14 @@ export class LoadModalComponent implements OnInit, OnDestroy {
             switch (data.type) {
                 case 'billing': {
                     this.isVisibleBillDropdown = true;
+                    this.inputService.changeValidators(
+                        this.loadForm.get('advancePay')
+                    );
+
                     break;
                 }
                 case 'payment': {
+                    this.isVisiblePayment = true;
                     break;
                 }
                 default: {
@@ -1550,71 +1724,147 @@ export class LoadModalComponent implements OnInit, OnDestroy {
     public trackBillingPayment() {
         this.loadForm
             .get('baseRate')
-            .valueChanges.pipe(takeUntil(this.destroy$), distinctUntilChanged())
+            .valueChanges.pipe(takeUntil(this.destroy$))
             .subscribe((value) => {
                 if (!value) {
                     this.isAvailableAdjustedRate = false;
                     this.isAvailableAdvanceRate = false;
-
+                    this.loadModalBill = {
+                        ...this.loadModalBill,
+                        baseRate: 0,
+                    };
                     this.loadForm.get('adjustedRate').reset();
                     this.loadForm.get('driverRate').reset();
                     this.loadForm.get('advancePay').reset();
                 } else {
                     this.loadModalBill = {
                         ...this.loadModalBill,
-                        baseRate: value.replaceAll(',', ''),
+                        baseRate: value,
                     };
                 }
             });
 
+        // Adjusted Rate
         this.loadForm
-            .get('additionalBillings')
+            .get('adjustedRate')
             .valueChanges.pipe(takeUntil(this.destroy$))
-            .subscribe((item) => {
-                switch (item.name) {
-                    case 'Layover': {
-                        this.loadModalBill = {
-                            ...this.loadModalBill,
-                            layover: item.billingValue.replaceAll(',', ''),
-                        };
-                        break;
-                    }
-                    case 'Lumper': {
-                        this.loadModalBill = {
-                            ...this.loadModalBill,
-                            lumper: item.billingValue.replaceAll(',', ''),
-                        };
-                        break;
-                    }
-                    case 'Fuel Surcharge': {
-                        this.loadModalBill = {
-                            ...this.loadModalBill,
-                            fuelSurcharge: item.billingValue.replaceAll(
-                                ',',
-                                ''
-                            ),
-                        };
-                        break;
-                    }
-                    case 'Escort': {
-                        this.loadModalBill = {
-                            ...this.loadModalBill,
-                            escort: item.billingValue.replaceAll(',', ''),
-                        };
-                        break;
-                    }
-                    case 'Detention': {
-                        this.loadModalBill = {
-                            ...this.loadModalBill,
-                            detention: item.billingValue.replaceAll(',', ''),
-                        };
-                        break;
-                    }
-                    default: {
-                        break;
+            .subscribe((value) => {
+                if (value) {
+                    if (
+                        !this.loadForm.get('baseRate').value ||
+                        convertThousanSepInNumber(value) >
+                            convertThousanSepInNumber(
+                                this.loadForm.get('baseRate').value
+                            )
+                    ) {
+                        this.loadForm.get('adjustedRate').reset();
+                        this.loadForm
+                            .get('adjustedRate')
+                            .setErrors({ invalid: true });
+                    } else {
+                        this.loadForm.get('adjustedRate').setErrors(null);
                     }
                 }
             });
+
+        // Driver Rate
+        this.loadForm
+            .get('driverRate')
+            .valueChanges.pipe(takeUntil(this.destroy$))
+            .subscribe((value) => {
+                if (value) {
+                    if (
+                        !this.loadForm.get('baseRate').value ||
+                        convertThousanSepInNumber(value) >
+                            convertThousanSepInNumber(
+                                this.loadForm.get('baseRate').value
+                            )
+                    ) {
+                        this.loadForm.get('driverRate').reset();
+                        this.loadForm
+                            .get('driverRate')
+                            .setErrors({ invalid: true });
+                    } else {
+                        this.loadForm.get('driverRate').setErrors(null);
+                    }
+                }
+            });
+
+        // Advance Rate
+        this.loadForm
+            .get('advancePay')
+            .valueChanges.pipe(takeUntil(this.destroy$))
+            .subscribe((value) => {
+                if (value) {
+                    this.loadModalPayment = {
+                        ...this.loadModalPayment,
+                        advance: value,
+                    };
+
+                    if (
+                        convertThousanSepInNumber(value) >
+                        this.financialCalculationPipe.transform(
+                            this.loadModalBill,
+                            'billing'
+                        )
+                    ) {
+                        this.loadForm
+                            .get('advancePay')
+                            .setErrors({ invalid: true });
+                    } else {
+                        this.loadForm.get('advancePay').setErrors(null);
+                    }
+                } else {
+                    this.loadModalPayment = {
+                        ...this.loadModalPayment,
+                        advance: 0,
+                    };
+                }
+            });
+
+        // Additional Billings
+        this.additionalBillings()
+            .valueChanges.pipe(takeUntil(this.destroy$))
+            .subscribe((arr) => {
+                arr.forEach((value) => {
+                    switch (value.name) {
+                        case 'Layover': {
+                            this.loadModalBill.layover = value.billingValue;
+                            break;
+                        }
+                        case 'Lumper': {
+                            this.loadModalBill.lumper = value.billingValue;
+                            break;
+                        }
+                        case 'Fuel Surcharge': {
+                            this.loadModalBill.fuelSurcharge =
+                                value.billingValue;
+                            break;
+                        }
+                        case 'Escort': {
+                            this.loadModalBill.escort = value.billingValue;
+                            break;
+                        }
+                        case 'Detention': {
+                            this.loadModalBill.detention = value.billingValue;
+                            break;
+                        }
+                        default: {
+                            break;
+                        }
+                    }
+                });
+
+                this.loadModalBill = Object.assign({}, this.loadModalBill);
+            });
+    }
+
+    public removeAdditionalPayment() {
+        this.isVisibleBillDropdown = false;
+        this.inputService.changeValidators(
+            this.loadForm.get('advancePay'),
+            false
+        );
     }
 
     // **************** end ****************
@@ -1656,9 +1906,9 @@ export class LoadModalComponent implements OnInit, OnDestroy {
         // 3. Selected arrays
         this.selectedExtraStopShipper.push(null);
         this.selectedExtraStopShipperContact.push(null);
-        this.selectExtraStopType.push(null);
         this.loadExtraStopsDateRange.push(false);
-        this.selectedExtraStopTime.push(false);
+        this.selectExtraStopType.push(3000);
+        this.selectedExtraStopTime.push(7000);
 
         if (!this.selectedPickupShipper) {
             return;
@@ -1669,8 +1919,6 @@ export class LoadModalComponent implements OnInit, OnDestroy {
 
     public addLoadExtraStop() {
         this.loadExtraStops().push(this.newLoadExtraStop());
-
-        // this.drawStopOnMap();
 
         this.closeAllLoadExtraStopExceptActive(
             this.loadExtraStops().controls[this.loadExtraStops().length - 1]
@@ -1723,24 +1971,21 @@ export class LoadModalComponent implements OnInit, OnDestroy {
             id: [null],
             stopType: ['Pickup'],
             stopOrder: [null],
-            shipperId: [null],
+            shipperId: [null, Validators.required],
             shipperContactId: [null],
-            dateFrom: [null],
+            dateFrom: [null, Validators.required],
             dateTo: [null],
             timeType: [null],
-            timeFrom: [null],
-            timeTo: [null],
+            timeFrom: [null, Validators.required],
+            timeTo: [null, Validators.required],
             arrive: [null],
             depart: [null],
-            longitude: [null], //this.selectedPickupShipper.longitude],
-            latitude: [null], //this.selectedPickupShipper.latitude],
+            longitude: [null],
+            latitude: [null],
             legMiles: [null],
             legHours: [null],
             legMinutes: [null],
-            totalLegMiles: [null],
-            totalLegHours: [null],
-            totalLegMinutes: [null],
-            // -----------
+            legCost: [null],
             items: this.formBuilder.array([]),
             openClose: [true],
         });
@@ -1785,6 +2030,8 @@ export class LoadModalComponent implements OnInit, OnDestroy {
         this.selectExtraStopType.splice(index, 1);
         this.loadExtraStopsDateRange.splice(index, 1);
         this.selectedExtraStopTime.splice(index, 1);
+
+        this.drawStopOnMap();
     }
 
     public closeAllLoadExtraStopExceptActive(loadStop: AbstractControl) {
@@ -1805,7 +2052,6 @@ export class LoadModalComponent implements OnInit, OnDestroy {
     }
 
     // ********************** Load Stop Items **********************
-
     public createNewRowInStopItems(action: string, loadStopIndex?: number) {
         switch (action) {
             case 'pickup': {
@@ -1896,157 +2142,184 @@ export class LoadModalComponent implements OnInit, OnDestroy {
     // ********************** end **********************
 
     // Draw Routes on Map
-    public drawStopOnMap(
-        start: {
-            longitude: number;
-            latitude: number;
-            pickup?: boolean;
-            delivery?: boolean;
-        },
-        end: {
-            longitude: number;
-            latitude: number;
-            pickup?: boolean;
-            delivery?: boolean;
-        },
-        type: string
-    ) {
-        // If has extra stops
-        // this.loadExtraStops().length > 1
-        // ? JSON.stringify(
-        //       this.loadExtraStops().controls.map((item) => {
-        //           return {
-        //               longitude: item.get('longitude').value,
-        //               latitude: item.get('latitude').value,
-        //           };
-        //       })
-        //   )
+    public drawStopOnMap() {
+        const routes: IStopRoutes[] = [];
 
-        this.routingService
-            .apiRoutingGet(
-                JSON.stringify([
-                    { longitude: start.longitude, latitude: start.latitude },
-                    { longitude: end.longitude, latitude: end.latitude },
-                ])
-            )
-            .pipe(debounceTime(1000), takeUntil(this.destroy$))
-            .subscribe({
-                next: (res: RoutingResponse) => {
-                    // TODO: Populate lat and long with routesPoints
-                    console.log('start position: ', start);
-                    console.log('end position: ', end);
-                    console.log(
-                        'coordinate dispatchers: ',
-                        this.selectedDispatches?.currentLocationCoordinates
-                    );
-                    console.log('coordinate response = ', res);
-
-                    if (!this.loadStopRoutes[0]) {
-                        this.loadStopRoutes[0] = {
-                            routeColor: '#919191',
-                            stops: [
-                                {
-                                    lat: start.latitude,
-                                    long: start.longitude,
-                                    empty: true,
-                                    stopColor: start.pickup
-                                        ? '#26A690'
-                                        : start.delivery
-                                        ? '#EF5350'
-                                        : '#919191',
-                                },
-                                {
-                                    lat: end.latitude,
-                                    long: end.longitude,
-                                    empty: true,
-                                    stopColor: start.pickup
-                                        ? '#26A690'
-                                        : start.delivery
-                                        ? '#EF5350'
-                                        : '#919191',
-                                },
-                            ],
-                        };
-                    } else {
-                        this.loadStopRoutes[0] = {
-                            routeColor: '#919191',
-                            stops: [
-                                ...this.loadStopRoutes[0].stops,
-                                {
-                                    lat: start.latitude,
-                                    long: start.longitude,
-                                    empty: true,
-                                    stopColor: start.pickup
-                                        ? '#26A690'
-                                        : start.delivery
-                                        ? '#EF5350'
-                                        : '#919191',
-                                },
-                                {
-                                    lat: end.latitude,
-                                    long: end.longitude,
-                                    empty: true,
-                                    stopColor: start.pickup
-                                        ? '#26A690'
-                                        : start.delivery
-                                        ? '#EF5350'
-                                        : '#919191',
-                                },
-                            ],
-                        };
-                    }
-
-                    console.log('draw on map: ', this.loadStopRoutes);
-
-                    // this.loadExtraStops().controls.forEach(
-                    //     (element: FormGroup, index: number) => {
-                    //         if (index === 0) {
-                    //             element.get('legMiles').patchValue(null);
-                    //             element.get('legHours').patchValue(null);
-                    //             element.get('legMinutes').patchValue(null);
-                    //             return;
-                    //         }
-                    //         // index - 1, because firstStop was skipped
-                    //         element
-                    //             .get('legMiles')
-                    //             .patchValue(res.legs[index - 1].miles);
-                    //         element
-                    //             .get('legHours')
-                    //             .patchValue(res.legs[index - 1].hours);
-                    //         element
-                    //             .get('legMinutes')
-                    //             .patchValue(res.legs[index - 1].minutes);
-
-                    //         if (!element.get('totalLegMiles').value) {
-                    //             element.get('totalLegMiles').patchValue(
-                    //                 res.legs
-                    //                     .map((item) => item.miles)
-                    //                     .reduce((accumulator, item) => {
-                    //                         return (accumulator += item);
-                    //                     }, 0)
-                    //             );
-
-                    //             element.get('totalLegHours').patchValue(
-                    //                 res.legs
-                    //                     .map((item) => item.hours)
-                    //                     .reduce((accumulator, item) => {
-                    //                         return (accumulator += item);
-                    //                     }, 0)
-                    //             );
-
-                    //             element.get('totalLegMinutes').patchValue(
-                    //                 res.legs
-                    //                     .map((item) => item.minutes)
-                    //                     .reduce((accumulator, item) => {
-                    //                         return (accumulator += item);
-                    //                     }, 0)
-                    //             );
-                    //         }
-                    //     }
-                    // );
-                },
-                error: () => {},
+        // Dispatches
+        if (this.selectedDispatches?.currentLocationCoordinates) {
+            routes[0] = {
+                longitude:
+                    this.selectedDispatches.currentLocationCoordinates
+                        .longitude,
+                latitude:
+                    this.selectedDispatches.currentLocationCoordinates.latitude,
+                pickup: false,
+                delivery: false,
+                stopNumber: 0,
+            };
+        }
+        // Pickup Shipper
+        if (this.selectedPickupShipper) {
+            routes[
+                this.selectedDispatches?.currentLocationCoordinates ? 1 : 0
+            ] = {
+                longitude: this.selectedPickupShipper.longitude,
+                latitude: this.selectedPickupShipper.latitude,
+                pickup: true,
+                delivery: false,
+                stopNumber: 1,
+            };
+        }
+        // Extra Stops
+        if (this.loadExtraStops().length) {
+            this.loadExtraStops().controls.map((item, index) => {
+                routes.push({
+                    longitude: this.selectedExtraStopShipper[index]?.longitude,
+                    latitude: this.selectedExtraStopShipper[index]?.latitude,
+                    pickup: this.selectExtraStopType[index]
+                        .toString()
+                        .startsWith('3'),
+                    delivery: this.selectExtraStopType[index]
+                        .toString()
+                        .startsWith('4'),
+                    stopNumber: item.get('stopOrder').value,
+                });
             });
+        }
+        // Delivery Shipper
+        if (this.selectedDeliveryShipper) {
+            routes.push({
+                longitude: this.selectedDeliveryShipper.longitude,
+                latitude: this.selectedDeliveryShipper.latitude,
+                pickup: false,
+                delivery: true,
+                stopNumber:
+                    this.numberOfLoadExtraStops().numberOfDeliveries + 1,
+            });
+        }
+
+        if (routes.length > 1) {
+            this.routingService
+                .apiRoutingGet(
+                    JSON.stringify(
+                        routes.map((item) => {
+                            return {
+                                longitude: item.longitude,
+                                latitude: item.latitude,
+                            };
+                        })
+                    )
+                )
+                .pipe(debounceTime(2000), takeUntil(this.destroy$))
+                .subscribe({
+                    next: (res: RoutingResponse) => {
+                        // TODO: Populate lat and long with routesPoints
+
+                        // Render on map routes
+                        this.loadStopRoutes[0] = {
+                            routeColor: '#919191',
+                            stops: routes.map((route, index) => {
+                                return {
+                                    lat: route.latitude,
+                                    long: route.longitude,
+                                    stopColor: route.pickup
+                                        ? '#26A690'
+                                        : route.delivery
+                                        ? '#EF5350'
+                                        : '#919191',
+                                    stopNumber: route.stopNumber.toString(),
+                                    empty:
+                                        this.selectedDispatches
+                                            ?.currentLocationCoordinates &&
+                                        index === 1,
+                                    zIndex: 99 + index,
+                                };
+                            }),
+                        };
+
+                        // Store in form values
+                        if (res?.legs?.length) {
+                            res.legs.forEach((item, index) => {
+                                // Pickup
+                                if (index === 0) {
+                                    this.loadForm
+                                        .get('loadMiles')
+                                        .patchValue(
+                                            res?.totalMiles - item.miles
+                                        );
+
+                                    this.loadForm
+                                        .get('pickuplegMiles')
+                                        .patchValue(item.miles);
+                                    this.loadForm
+                                        .get('pickuplegHours')
+                                        .patchValue(item.hours);
+                                    this.loadForm
+                                        .get('pickuplegMinutes')
+                                        .patchValue(item.minutes);
+
+                                    this.loadForm
+                                        .get('pickuplegCost')
+                                        .patchValue(item.cost);
+                                }
+                                // Extra Stops
+                                if (
+                                    index > 0 &&
+                                    this.loadExtraStops().length === index
+                                ) {
+                                    this.loadExtraStops()
+                                        .at(index - 1)
+                                        .get('legMiles')
+                                        .patchValue(item.miles);
+                                    this.loadExtraStops()
+                                        .at(index - 1)
+                                        .get('legHours')
+                                        .patchValue(item.hours);
+                                    this.loadExtraStops()
+                                        .at(index - 1)
+                                        .get('legMinutes')
+                                        .patchValue(item.minutes);
+                                    this.loadExtraStops()
+                                        .at(index - 1)
+                                        .get('legCost')
+                                        .patchValue(item.cost);
+                                }
+                                // Delivery Stop
+                                else {
+                                    if (index > 0) {
+                                        this.loadForm
+                                            .get('deliverylegMiles')
+                                            .patchValue(res?.legs[index].miles);
+                                        this.loadForm
+                                            .get('deliverylegHours')
+                                            .patchValue(res?.legs[index].hours);
+                                        this.loadForm
+                                            .get('deliverylegMinutes')
+                                            .patchValue(
+                                                res?.legs[index].minutes
+                                            );
+                                        this.loadForm
+                                            .get('deliverylegCost')
+                                            .patchValue(res?.legs[index].cost);
+                                    }
+                                }
+                            });
+
+                            this.loadForm
+                                .get('totalMiles')
+                                .patchValue(res?.totalMiles);
+
+                            this.totalLegMiles = res.totalMiles;
+                            this.totalLegHours = res.totalHours;
+                            this.totalLegMinutes = res.totalMinutes;
+                            this.totalLegCost = res.totalCost;
+                        }
+                    },
+                    error: (error) => {
+                        console.log('map error: ', error);
+                    },
+                });
+        }
     }
 
     // Toggle Additional Part of Load Visibility
@@ -2160,17 +2433,15 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                                     subFolder: 'trailers',
                                 },
                                 itemIndex: index,
-                                fullName: item.driver?.firstName
-                                    ?.concat(' ', item.driver?.lastName)
+                                fullName: item.truck?.truckNumber
+                                    .concat(' ', item.trailer?.trailerNumber)
                                     .concat(
                                         ' ',
-                                        item.coDriver?.firstName?.concat(
+                                        item.driver?.firstName.concat(
                                             ' ',
-                                            item.coDriver?.lastName
+                                            item.driver?.lastName
                                         )
-                                    )
-                                    .concat(' ', item.truck?.truckNumber)
-                                    .concat(' ', item.trailer?.trailerNumber),
+                                    ),
                             };
                         });
 
@@ -2355,6 +2626,8 @@ export class LoadModalComponent implements OnInit, OnDestroy {
 
                     // Additional Billing Types
                     this.additionalBillingTypes = res.additionalBillingTypes;
+                    this.originalAdditionalBillingTypes =
+                        res.additionalBillingTypes;
                 },
                 error: () => {},
             });
@@ -2427,17 +2700,31 @@ export class LoadModalComponent implements OnInit, OnDestroy {
             },
             note: form.note,
             baseRate: convertThousanSepInNumber(form.baseRate),
-            adjustedRate: convertThousanSepInNumber(form.adjustedRate),
+            driverRate: form.driverRate
+                ? convertThousanSepInNumber(form.driverRate)
+                : null,
+            adjustedRate: form.adjustedRate
+                ? convertThousanSepInNumber(form.adjustedRate)
+                : null,
             advancePay: convertThousanSepInNumber(form.advancePay),
-            additionalBillingRates: this.premmapedAdditionalBillingRate(),
+            additionalBillingRates:
+                this.premmapedAdditionalBillingRate('create'),
             stops: this.premmapedStops() as any,
+            totalMiles: this.totalLegMiles,
+            totalHours: this.totalLegHours,
+            totalMinutes: this.totalLegMinutes,
             files: documents,
         };
 
         this.loadService
             .createLoad(newData)
             .pipe(takeUntil(this.destroy$))
-            .subscribe();
+            .subscribe({
+                next: () => {},
+                error: (error) => {
+                    console.log('load error: ', error);
+                },
+            });
     }
 
     private updateLoad(id: number) {}
@@ -2445,7 +2732,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
     private saveLoadTemplate() {
         const { ...form } = this.loadForm.value;
         const newData: CreateLoadTemplateCommand = {
-            name: '',
+            name: 'Novi template',
             type: this.tabs.find((item) => item.id === this.selectedTab)
                 .name as any,
             dispatcherId: this.selectedDispatcher
@@ -2457,10 +2744,10 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                     : this.selectedCompany
                     ? this.selectedCompany.id
                     : null,
-            dateCreated: moment(new Date()).toISOString(true),
             dispatchId: this.selectedDispatches
                 ? this.selectedDispatches.id
                 : null,
+            dateCreated: moment(new Date()).toISOString(true),
             brokerId: this.selectedBroker ? this.selectedBroker.id : null,
             brokerContactId: this.selectedBrokerContact
                 ? this.selectedBrokerContact.id
@@ -2492,9 +2779,15 @@ export class LoadModalComponent implements OnInit, OnDestroy {
             },
             note: form.note,
             baseRate: convertThousanSepInNumber(form.baseRate),
-            adjustedRate: convertThousanSepInNumber(form.adjustedRate),
+            // driverRate: form.driverRate
+            //     ? convertThousanSepInNumber(form.driverRate)
+            //     : null,
+            adjustedRate: form.adjustedRate
+                ? convertThousanSepInNumber(form.adjustedRate)
+                : null,
             advancePay: convertThousanSepInNumber(form.advancePay),
-            // additionalBillingRates: this.premmapedAdditionalBillingRate(),
+            additionalBillingRates:
+                this.premmapedAdditionalBillingRate('create'),
             stops: this.premmapedStops() as any,
         };
 
@@ -2512,144 +2805,187 @@ export class LoadModalComponent implements OnInit, OnDestroy {
             });
     }
 
-    private premmapedAdditionalBillingRate() {
-        // return this.additionalBillingTypes.map((item) => {
-        //     return {
-        //         id: item.id ? item.id : null,
-        //         additionalBillingType: item.additionalBillingType,
-        //         rate:
-        //             item.additionalBillingType === 1
-        //                 ? this.loadForm.get('layoverRate').value
-        //                     ? convertThousanSepInNumber(
-        //                           this.loadForm.get('layoverRate').value
-        //                       )
-        //                     : null
-        //                 : item.additionalBillingType === 2
-        //                 ? this.loadForm.get('lumperRate').value
-        //                     ? convertThousanSepInNumber(
-        //                           this.loadForm.get('lumperRate').value
-        //                       )
-        //                     : null
-        //                 : item.additionalBillingType === 3
-        //                 ? this.loadForm.get('fuelSurchargeRate').value
-        //                     ? convertThousanSepInNumber(
-        //                           this.loadForm.get('fuelSurchargeRate').value
-        //                       )
-        //                     : null
-        //                 : item.additionalBillingType === 4
-        //                 ? this.loadForm.get('escortRate').value
-        //                     ? convertThousanSepInNumber(
-        //                           this.loadForm.get('escortRate').value
-        //                       )
-        //                     : null
-        //                 : item.additionalBillingType === 5
-        //                 ? this.loadForm.get('detentionRate').value
-        //                     ? convertThousanSepInNumber(
-        //                           this.loadForm.get('detentionRate').value
-        //                       )
-        //                     : null
-        //                 : null,
-        //     };
-        // });
+    private premmapedAdditionalBillingRate(action: string) {
+        return this.originalAdditionalBillingTypes.map((item) => {
+            const biilingRate = this.additionalBillings().controls.find(
+                (control) => control.get('name').value === item.name
+            );
+            return {
+                id: action === 'update' ? item.id : null,
+                additionalBillingType: item.id,
+                rate: biilingRate
+                    ? biilingRate.get('billingValue').value
+                    : null,
+            };
+        });
     }
 
     private premmapedStops() {
-        // const timeTypePicked = null;
-        // // this.stopTimeTabs.find(
-        // //     (item) => item.id === this.selectedStopTime
-        // // ).name;
-        // return this.loadExtraStops().controls.map((item, index) => {
-        //     return {
-        //         id: null,
-        //         stopOrder: item.get('stopOrder').value,
-        //         shipperId: item.get('shipperId').value,
-        //         dateFrom: convertDateToBackend(item.get('dateFrom').value),
-        //         dateTo: item.get('dateTo').value
-        //             ? convertDateToBackend(item.get('dateTo').value)
-        //             : null,
-        //         timeType:
-        //             timeTypePicked === 'APPT' ? 'Appointment' : timeTypePicked,
-        //         timeFrom: item.get('timeFrom').value,
-        //         timeTo: item.get('timeTo').value,
-        //         arrive: null,
-        //         depart: null,
-        //         // From legs
-        //         legMiles: item.get('legMiles').value,
-        //         legHours: item.get('legHours').value,
-        //         legMinutes: item.get('legMinutes').value,
-        //         totalLegMiles: item.get('totalLegMiles').value,
-        //         totalLegHours: item.get('totalLegHours').value,
-        //         totalLegMinutes: item.get('totalLegMinutes').value,
-        //         // -----------
-        //         // Shipper Contact information
-        //         // address: ['3905 Elliot Ave, Springdale, GA 72762, USA'],
-        //         // contact: ['A. Djordjevic'],
-        //         // phone: ['(987) 654-3210'],
-        //         // extensionPhone: ['444'],
-        //         // -----------
-        //         items: this.loadStopsDetails(index).controls.map(
-        //             (item, index) => {
-        //                 return {
-        //                     id: item.get('id').value,
-        //                     bolNumber: item.get('bolNumber').value,
-        //                     appointmentNumber:
-        //                         item.get('appointmentNumber').value,
-        //                     pickupNumber: item.get('pickupNumber').value,
-        //                     poNumber: item.get('poNumber').value,
-        //                     sealNumber: item.get('sealNumber').value,
-        //                     weight: item.get('weight').value
-        //                         ? convertThousanSepInNumber(
-        //                               item.get('weight').value
-        //                           )
-        //                         : null,
-        //                     length: item.get('length').value
-        //                         ? convertThousanSepInNumber(
-        //                               item.get('length').value
-        //                           )
-        //                         : null,
-        //                     height: item.get('height').value
-        //                         ? convertThousanSepInNumber(
-        //                               item.get('height').value
-        //                           )
-        //                         : null,
-        //                     temperature: item.get('temperature').value
-        //                         ? convertThousanSepInNumber(
-        //                               item.get('temperature').value
-        //                           )
-        //                         : null,
-        //                     description: item.get('description').value,
-        //                     code: item.get('code').value,
-        //                     quantity: item.get('quantity').value
-        //                         ? convertThousanSepInNumber(
-        //                               item.get('quantity').value
-        //                           )
-        //                         : null,
-        //                     units: this.selectedLoadDetailsUnits[index]
-        //                         ? this.selectedLoadDetailsUnits[index].id
-        //                         : null,
-        //                     secure: this.selectedLoadDetailsStrapChain[index]
-        //                         ? this.selectedLoadDetailsStrapChain[index].id
-        //                         : null,
-        //                     tarp: this.selectedLoadDetailsTarps[index]
-        //                         ? this.selectedLoadDetailsTarps[index].id
-        //                         : null,
-        //                     stackable: this.selectedLoadDetailsStackable[index]
-        //                         ? this.selectedLoadDetailsStackable[index].id
-        //                         : null,
-        //                     driverAssist: this.selectedLoadDetailsDriverAssis[
-        //                         index
-        //                     ]
-        //                         ? this.selectedLoadDetailsDriverAssis[index].id
-        //                         : null,
-        //                     hazardousMaterialId: this
-        //                         .selectedLoadDetailsHazardous[index]
-        //                         ? this.selectedLoadDetailsHazardous[index].id
-        //                         : null,
-        //                 };
-        //             }
-        //         ),
-        //     };
-        // });
+        const stops: any[] = [];
+
+        // Pickup
+        if (this.selectedPickupShipper) {
+            stops.push({
+                id: null,
+                stopType: this.loadForm.get('pickupStop').value,
+                stopOrder: stops.length + 1,
+                stopLoadOrder: this.loadForm.get('pickupStopOrder').value,
+                shipperId: this.selectedPickupShipper.id,
+                shipperContactId: this.selectedPickupShipperContact?.id
+                    ? this.selectedPickupShipperContact.id
+                    : null,
+                dateFrom: convertDateToBackend(
+                    this.loadForm.get('pickupDateFrom').value
+                ),
+                dateTo: this.loadForm.get('pickupDateTo').value
+                    ? convertDateToBackend(
+                          this.loadForm.get('pickupDateTo').value
+                      )
+                    : null,
+                timeType:
+                    this.stopTimeTabsPickup.find((item) => item.checked)
+                        .name === 'APPT'
+                        ? 'Appointment'
+                        : 'Open',
+                timeFrom: this.loadForm.get('pickupTimeFrom').value,
+                timeTo: this.loadForm.get('pickupTimeTo').value,
+                arrive: null,
+                depart: null,
+                legMiles: this.loadForm.get('pickuplegMiles').value,
+                legHours: this.loadForm.get('pickuplegHours').value,
+                legMinutes: this.loadForm.get('pickuplegMinutes').value,
+                items: [],
+                // this.loadStopsDetails(index).controls.map(
+                //     (item, index) => {
+                //         return {
+                //             id: item.get('id').value,
+                //             bolNumber: item.get('bolNumber').value,
+                //             appointmentNumber:
+                //                 item.get('appointmentNumber').value,
+                //             pickupNumber: item.get('pickupNumber').value,
+                //             poNumber: item.get('poNumber').value,
+                //             sealNumber: item.get('sealNumber').value,
+                //             weight: item.get('weight').value
+                //                 ? convertThousanSepInNumber(
+                //                       item.get('weight').value
+                //                   )
+                //                 : null,
+                //             length: item.get('length').value
+                //                 ? convertThousanSepInNumber(
+                //                       item.get('length').value
+                //                   )
+                //                 : null,
+                //             height: item.get('height').value
+                //                 ? convertThousanSepInNumber(
+                //                       item.get('height').value
+                //                   )
+                //                 : null,
+                //             temperature: item.get('temperature').value
+                //                 ? convertThousanSepInNumber(
+                //                       item.get('temperature').value
+                //                   )
+                //                 : null,
+                //             description: item.get('description').value,
+                //             code: item.get('code').value,
+                //             quantity: item.get('quantity').value
+                //                 ? convertThousanSepInNumber(
+                //                       item.get('quantity').value
+                //                   )
+                //                 : null,
+                //             units: this.selectedLoadDetailsUnits[index]
+                //                 ? this.selectedLoadDetailsUnits[index].id
+                //                 : null,
+                //             secure: this.selectedLoadDetailsStrapChain[index]
+                //                 ? this.selectedLoadDetailsStrapChain[index].id
+                //                 : null,
+                //             tarp: this.selectedLoadDetailsTarps[index]
+                //                 ? this.selectedLoadDetailsTarps[index].id
+                //                 : null,
+                //             stackable: this.selectedLoadDetailsStackable[index]
+                //                 ? this.selectedLoadDetailsStackable[index].id
+                //                 : null,
+                //             driverAssist: this.selectedLoadDetailsDriverAssis[
+                //                 index
+                //             ]
+                //                 ? this.selectedLoadDetailsDriverAssis[index].id
+                //                 : null,
+                //             hazardousMaterialId: this
+                //                 .selectedLoadDetailsHazardous[index]
+                //                 ? this.selectedLoadDetailsHazardous[index].id
+                //                 : null,
+                //         };
+                //     }
+                // ),
+            });
+        }
+
+        // Extra Stops
+        if (this.loadExtraStops().length) {
+            this.loadExtraStops().controls.forEach((item, index) => {
+                stops.push({
+                    id: null,
+                    stopType: item.get('stopType').value,
+                    stopOrder: stops.length + 1,
+                    stopLoadOrder: item.get('stopOrder').value,
+                    shipperId: this.selectedExtraStopShipper[index].id,
+                    dateFrom: convertDateToBackend(item.get('dateFrom').value),
+                    dateTo: item.get('dateTo').value
+                        ? convertDateToBackend(item.get('dateTo').value)
+                        : null,
+                    timeType:
+                        this.stopTimeTabsPickup.find((item) => item.checked)
+                            .name === 'APPT'
+                            ? 'Appointment'
+                            : 'Open',
+                    timeFrom: item.get('timeFrom').value,
+                    timeTo: item.get('timeTo').value,
+                    arrive: null,
+                    depart: null,
+                    // From legs
+                    legMiles: item.get('legMiles').value,
+                    legHours: item.get('legHours').value,
+                    legMinutes: item.get('legMinutes').value,
+                    items: [],
+                });
+            });
+        }
+
+        // Delivery
+        if (this.selectedDeliveryShipper) {
+            stops.push({
+                id: null,
+                stopType: this.loadForm.get('deliveryStop').value,
+                stopOrder: stops.length + 1,
+                stopLoadOrder: this.loadForm.get('deliveryStopOrder').value,
+                shipperId: this.selectedDeliveryShipper.id,
+                shipperContactId: this.selectedDeliveryShipperContact?.id
+                    ? this.selectedDeliveryShipperContact.id
+                    : null,
+                dateFrom: convertDateToBackend(
+                    this.loadForm.get('deliveryDateFrom').value
+                ),
+                dateTo: this.loadForm.get('deliveryDateTo').value
+                    ? convertDateToBackend(
+                          this.loadForm.get('deliveryDateTo').value
+                      )
+                    : null,
+                timeType:
+                    this.stopTimeTabsDelivery.find((item) => item.checked)
+                        .name === 'APPT'
+                        ? 'Appointment'
+                        : 'Open',
+                timeFrom: this.loadForm.get('deliveryTimeFrom').value,
+                timeTo: this.loadForm.get('deliveryTimeTo').value,
+                arrive: null,
+                depart: null,
+                legMiles: this.loadForm.get('deliverylegMiles').value,
+                legHours: this.loadForm.get('deliverylegHours').value,
+                legMinutes: this.loadForm.get('deliverylegMinutes').value,
+                items: [],
+            });
+        }
+
+        return stops;
     }
 
     /* Comments */
@@ -2754,6 +3090,80 @@ export class LoadModalComponent implements OnInit, OnDestroy {
 
     public identity(index: number, item: any): number {
         return item.id;
+    }
+
+    public onBlurDescription(action: string, ind?: number) {
+        switch (action) {
+            case 'pickup': {
+                const description = this.loadPickupStopItems()
+                    .at(ind)
+                    .get('description').value;
+
+                if (description) {
+                    this.loadService
+                        .autocompleteLoadByDescription(description)
+                        .pipe(takeUntil(this.destroy$))
+                        .subscribe({
+                            next: (
+                                res: LoadStopItemAutocompleteDescriptionResponse
+                            ) => {
+                                console.log('autocomplete pickup: ', res);
+                            },
+                            error: (error) => {
+                                console.log(error);
+                            },
+                        });
+                }
+
+                break;
+            }
+            case 'delivery': {
+                const description = this.loadDeliveryStopItems()
+                    .at(ind)
+                    .get('description').value;
+
+                if (description) {
+                    this.loadService
+                        .autocompleteLoadByDescription(description)
+                        .pipe(takeUntil(this.destroy$))
+                        .subscribe({
+                            next: (
+                                res: LoadStopItemAutocompleteDescriptionResponse
+                            ) => {
+                                console.log('autocomplete delivery: ', res);
+                            },
+                            error: (error) => {
+                                console.log(error);
+                            },
+                        });
+                }
+
+                break;
+            }
+            case 'extra-stop': {
+                const description = this.loadExtraStopItems(ind)
+                    .at(ind)
+                    .get('description').value;
+
+                if (description) {
+                    this.loadService
+                        .autocompleteLoadByDescription(description)
+                        .pipe(takeUntil(this.destroy$))
+                        .subscribe({
+                            next: (
+                                res: LoadStopItemAutocompleteDescriptionResponse
+                            ) => {
+                                console.log('autocomplete extra stop: ', res);
+                            },
+                            error: (error) => {
+                                console.log(error);
+                            },
+                        });
+                }
+
+                break;
+            }
+        }
     }
 
     ngOnDestroy(): void {
