@@ -13,7 +13,7 @@
     (mouseleave)="onNavItemHover(false)"
     (click)="onRouteAction()"
 >
-    <div
+    <!-- <div
         *ngIf="!isNavigationHovered"
         class="tooltip"
         ngbTooltip
@@ -21,7 +21,10 @@
         mainTooltip="{{ route.name }}"
         tooltipBackground="#2F2F2F"
         position="right"
-    ></div>
+    ></div> -->
+    <div class="tooltip" *ngIf="!isNavigationHovered" data-tooltip>
+        {{ route.name }}
+    </div>
     <div
         [ngClass]="{
             'nav-item-active-box':
