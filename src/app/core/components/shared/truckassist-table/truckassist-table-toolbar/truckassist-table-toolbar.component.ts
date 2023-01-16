@@ -11,7 +11,6 @@ import {
 import { TableType } from 'appcoretruckassist';
 import { Subject, takeUntil } from 'rxjs';
 import { TruckassistTableService } from '../../../../services/truckassist-table/truckassist-table.service';
-import { map } from 'rxjs/operators';
 import { FormControl } from '@angular/forms';
 import { Titles } from 'src/app/core/utils/application.decorators';
 
