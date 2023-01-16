@@ -80,7 +80,38 @@
                 </div>
                 <div class="gps_info_hold">
                     <div class="moving_side">MOVING - SOUTH</div>
-                    <div class="moving_time">{{!hoveredGpsIcon ? 'Near Maplewood, MO' : '03:47'}}</div>
+                    <div class="moving_time">
+                        {{ !hoveredGpsIcon ? 'Near Maplewood, MO' : '03:47' }}
+                    </div>
+                </div>
+            </div>
+            <div class="gps_info_border"></div>
+            <div class="gps_progress_hold">
+                <div class="progress_inner" *ngFor="let stop of gpsProgress">
+                    <div class="progress_header">
+                        <div class="progress_header_inside">
+                            <div class="progress_icon">
+                                <svg-icon
+                                    src="/assets/svg/applicant/check.svg"
+                                ></svg-icon>
+                            </div>
+                            <div class="progress_name">{{ stop.location }}</div>
+                        </div>
+                        <div class="progress_type">
+                            <div class="progress_number">0</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="gps_info_border"></div>
+            <div class="gps_complete_hold">
+                <div class="gps_complete_row">
+                    <div class="gps_complete_text">COMPLETED</div>
+                    <div class="gps_complete_text_info">TOTAL</div>
+                </div>
+                <div class="gps_complete_second_row">
+                    <div class="gps_complete_text">6%</div>
+                    <div class="gps_complete_text_info">452.0 mi</div>
                 </div>
             </div>
         </div>

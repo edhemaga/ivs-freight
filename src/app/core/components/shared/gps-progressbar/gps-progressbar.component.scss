@@ -129,18 +129,21 @@
     height: 282px;
     background-color: #2f2f2f;
     border-radius: 3px;
+    overflow: hidden;
 
     .map_holder {
-        width: 50%;
+        flex: 1;
     }
 
     .gps_all_hold {
         padding: 4px;
-        width: 50%;
+        width: 251px;
 
         .gps_header {
             display: flex;
             align-items: center;
+
+            margin-bottom: 4px;
             padding: 2px;
             border-radius: 2px;
 
@@ -177,6 +180,96 @@
                     font-weight: 500;
                     font-size: 11px;
                     line-height: 11px;
+                }
+            }
+        }
+
+        .gps_info_border {
+            height: 1px;
+            width: 100%;
+
+            background-color: #424242;
+            border-radius: 1px;
+        }
+
+        .gps_progress_hold {
+            height: 200px;
+            padding-top: 9px;
+
+            .progress_inner {
+                .progress_header {
+                    display: flex;
+                    .progress_header_inside {
+                        display: flex;
+                        align-items: center;
+                        flex: 1;
+                        .progress_icon {
+                            svg-icon {
+                                svg {
+                                    display: flex;
+                                    width: 14px;
+                                    height: 14px;
+                                }
+                            }
+                        }
+
+                        .progress_name {
+                            margin-left: 8px;
+
+                            font-size: 14px;
+                            font-weight: 700;
+                            line-height: 18px;
+                            color: #919191;
+                        }
+                    }
+
+                    .progress_type {
+                        
+                    }
+                }
+            }
+        }
+
+        .gps_complete_hold {
+            margin-top: 7px;
+            padding: 0px 10px;
+
+            .gps_complete_row {
+                display: flex;
+                margin-bottom: 2px;
+
+                .gps_complete_text {
+                    flex: 1;
+                    color: #ffffff66;
+                    font-size: 11px;
+                    line-height: 14px;
+                    font-weight: 700;
+                }
+
+                .gps_complete_text_info {
+                    color: #ffffff66;
+                    font-size: 11px;
+                    line-height: 14px;
+                    font-weight: 700;
+                }
+            }
+
+            .gps_complete_second_row {
+                display: flex;
+
+                .gps_complete_text {
+                    flex: 1;
+                    color: #ffffff;
+                    font-size: 14px;
+                    line-height: 18px;
+                    font-weight: 700;
+                }
+
+                .gps_complete_text_info {
+                    color: #ffffff;
+                    font-size: 14px;
+                    line-height: 18px;
+                    font-weight: 700;
                 }
             }
         }
