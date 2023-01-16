@@ -1,4 +1,3 @@
-
 import { FullCalendarModule } from '@fullcalendar/angular';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from './../shared/shared.module';

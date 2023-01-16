@@ -1,125 +1,152 @@
-<div
-    class="navigation"
-    (mouseenter)="onHoveredNavigation(true)"
-    (mouseleave)="onHoveredNavigation(false)"
->
-    <div class="navigation-top">
-        <app-navigation-header
-            [isNavigationHovered]="isNavigationHovered"
-        ></app-navigation-header>
+<!-- (mouseenter)="onHoveredNavigation(true)"
+(mouseleave)="onHoveredNavigation(false)" -->
+<div class="navigation">
+    <div
+        class="nav-holder"
+        #navbar
+        [ngClass]="isNavigationHovered == true ? 'dark-nav' : 'animation'"
+    >
+        <div class="navigation-top">
+            <app-navigation-header
+                (click)="onHoveredNavigation(true)"
+                [isNavigationHovered]="isNavigationHovered"
+            ></app-navigation-header>
 
-        <app-navigation-modals
-            [isNavigationHoveredAndPanelOpen]="
-                isModalPanelOpen && isNavigationHovered
-            "
-        ></app-navigation-modals>
-    </div>
-
-    <div class="navigation-middle">
-        <div
-            class="navigation-routes-container"
-            (mouseenter)="onHoveredRoutesContainer(true)"
-            (mouseleave)="onHoveredRoutesContainer(false)"
-        >
-            <div
-                class="navigation-routes"
-                *ngFor="
-                    let item of navigation;
-                    let ind = index;
-                    trackBy: identity
+            <app-navigation-modals
+                (click)="onHoveredNavigation(true)"
+                [isNavigationHoveredAndPanelOpen]="
+                    isModalPanelOpen && isNavigationHovered
                 "
-                [ngClass]="{
-                    'new-magic-line-selected':
-                        item.isRouteActive ||
-                        item.isSubrouteActive ||
-                        isActiveRouteOnReload(item.route)
-                }"
-            >
-                <app-navigation-route
-                    *ngIf="!item.arrow"
-                    [route]="item"
-                    [isNavigationHovered]="isNavigationHovered"
-                    [isActiveSubroute]="isActiveSubroute"
-                    (onRouteEvent)="onRouteEvent($event)"
-                >
-                </app-navigation-route>
+            ></app-navigation-modals>
+        </div>
 
-                <app-navigation-subroute-card
-                    *ngIf="item.arrow"
-                    [isNavigationCardActive]="
-                        item.isRouteActive &&
-                        isNavigationHovered &&
-                        !isModalPanelOpen &&
-                        !isUserPanelOpen &&
-                        !isUserCompanyDetailsOpen
+        <div class="navigation-middle" (mouseenter)="onMidleNavHover(true)">
+            <div class="navigation-routes-container">
+                <div
+                    class="navigation-routes"
+                    *ngFor="
+                        let item of navigation;
+                        let ind = index;
+                        trackBy: identity
                     "
-                    [contentHeight]="item.route.length"
+                    [ngClass]="{
+                        'new-magic-line-selected':
+                            item.isRouteActive ||
+                            item.isSubrouteActive ||
+                            isActiveRouteOnReload(item.route)
+                    }"
                 >
                     <app-navigation-route
+                        [activeLink]="item.isRouteActive"
+                        *ngIf="!item.arrow"
+                        [class]="'close'"
                         [route]="item"
+                        [message]="item.messages"
+                        [files]="item.files"
+                        [index]="ind"
+                        [isActiveFooterRoute]="isActiveFooterRoute"
                         [isNavigationHovered]="isNavigationHovered"
                         [isActiveSubroute]="isActiveSubroute"
                         (onRouteEvent)="onRouteEvent($event)"
                     >
                     </app-navigation-route>
 
-                    <app-navigation-subroute
-                        *ngIf="
-                            isNavigationHovered &&
+                    <!-- If route has subroutes -->
+                    <app-navigation-subroute-card
+                        (click)="onHoveredNavigation(true)"
+                        *ngIf="item.arrow"
+                        [isNavigationCardActive]="
                             item.isRouteActive &&
+                            isNavigationHovered &&
+                            closeDropdownOnNavClose &&
                             !isModalPanelOpen &&
                             !isUserPanelOpen &&
+                            !isSettingsPanelOpen &&
                             !isUserCompanyDetailsOpen
                         "
-                        [subroute]="item"
-                        [isActiveSubroute]="isActiveSubroute"
                         [isNavigationHovered]="isNavigationHovered"
-                        (onSubrouteActiveEvent)="onRouteEvent($event)"
+                        [contentHeight]="item.route.length"
                     >
-                    </app-navigation-subroute>
-                </app-navigation-subroute-card>
+                        <app-navigation-route
+                            class="subroute-item"
+                            [route]="item"
+                            [activeLink]="item.isRouteActive"
+                            [isSettingsPanelOpen]="isSettingsPanelOpen"
+                            [isUserPanelOpen]="isUserPanelOpen"
+                            [isNavigationHovered]="isNavigationHovered"
+                            [closeDropdownOnNavClose]="closeDropdownOnNavClose"
+                            [isActiveSubroute]="isActiveSubroute"
+                            (onRouteEvent)="onRouteEvent($event)"
+                        >
+                        </app-navigation-route>
+
+                        <app-navigation-subroute
+                            *ngIf="
+                                isNavigationHovered &&
+                                item.isRouteActive &&
+                                !isModalPanelOpen &&
+                                closeDropdownOnNavClose &&
+                                !isUserPanelOpen &&
+                                !isSettingsPanelOpen &&
+                                !isUserCompanyDetailsOpen
+                            "
+                            [subroute]="item"
+                            [isActiveSubroute]="isActiveSubroute"
+                            [isNavigationHovered]="isNavigationHovered"
+                            (onSubrouteActiveEvent)="onRouteEvent($event)"
+                        >
+                        </app-navigation-subroute>
+                    </app-navigation-subroute-card>
+                </div>
+                <div
+                    *ngIf="
+                        footerHovered &&
+                        !isSettingsPanelOpen &&
+                        !isActiveSubroute
+                    "
+                    [@showHideDetails]="
+                        !isActiveSubroute &&
+                        isModalPanelOpen &&
+                        !footerRouteActive &&
+                        isActiveMagicLine
+                            ? 'false'
+                            : 'true'
+                    "
+                    class="new-magic-line"
+                ></div>
             </div>
-            <div
-                [@showHideDetails]="
-                    isNavigationHovered &&
-                    !isActiveSubroute &&
-                    !isActiveFooterRoute &&
-                    isActiveMagicLine
-                        ? 'true'
-                        : 'false'
-                "
-                class="new-magic-line"
-            ></div>
         </div>
-        <hr
-            *ngIf="isNavigationHovered && isActiveSubroute"
-            class="wrapper-line"
-        />
-    </div>
+        <!-- Open nav on click -->
+        <div class="open-navigation" *ngIf="isNavigationHovered"></div>
+        <div class="navigation-bottom" (mouseenter)="onMidleNavHover(false)">
+            <app-navigation-footer
+                (click)="onHoveredNavigation(true)"
+                [isNavigationHovered]="isNavigationHovered"
+                [isUserCompanyDetailsOpen]="isUserCompanyDetailsOpen"
+                [isSettingsPanelOpen]="isSettingsPanelOpen"
+                [isUserPanelOpen]="isUserPanelOpen"
+                [isModalPanelOpen]="isModalPanelOpen"
+                [isActiveFooterRouteClick]="isActiveFooterRoute"
+                [showHideLineIfSettingsActive]="footerHovered"
+                [isActiveSubroute]="isActiveSubroute"
+                (onActivateFooterRoutes)="onActivateFooterRoute($event)"
+            >
+            </app-navigation-footer>
+            <app-navigation-user-profile
+                (click)="onHoveredNavigation(true)"
+                [isNavigationHovered]="
+                    isNavigationHovered && !isUserCompanyDetailsOpen
+                "
+                [isUserPanelOpen]="isUserPanelOpen"
+            >
+            </app-navigation-user-profile>
 
-    <div
-        class="navigation-bottom"
-        (mouseenter)="onHoveredRoutesContainer(false)"
-    >
-        <app-navigation-footer
-            [isNavigationHovered]="
-                isNavigationHovered && !isUserCompanyDetailsOpen
-            "
-            (onActivateFooterRoutes)="onActivateFooterRoute($event)"
-        ></app-navigation-footer>
-
-        <app-navigation-user-profile
-            [isNavigationHovered]="
-                isNavigationHovered && !isUserCompanyDetailsOpen
-            "
-            [isUserPanelOpen]="isUserPanelOpen"
-        >
-        </app-navigation-user-profile>
-
-        <app-navigation-user-company
-            [isNavigationHoveredAndPanelOpen]="
-                isUserCompanyDetailsOpen && isNavigationHovered
-            "
-        ></app-navigation-user-company>
+            <app-navigation-user-company
+                (click)="onHoveredNavigation(true)"
+                [isNavigationHoveredAndPanelOpen]="
+                    isUserCompanyDetailsOpen && isNavigationHovered
+                "
+            ></app-navigation-user-company>
+        </div>
     </div>
 </div>

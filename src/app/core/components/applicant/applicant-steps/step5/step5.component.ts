@@ -44,7 +44,7 @@ import {
 export class Step5Component implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
 
-    public selectedMode: string = SelectedMode.FEEDBACK;
+    public selectedMode: string = SelectedMode.APPLICANT;
 
     public applicantId: number;
 
@@ -69,14 +69,15 @@ export class Step5Component implements OnInit, OnDestroy {
 
     public vehicleType: TruckTypeResponse[] = [];
 
-    public selectedViolationIndex: number;
-    public helperIndex: number = 2;
+    public selectedViolationIndex: number = -1;
 
     public isEditing: boolean = false;
     public isReviewingCard: boolean = false;
 
+    public displayButtonInsteadOfForm: boolean = false;
+    public hideFormOnEdit: boolean = false;
+
     public formValuesToPatch: any;
-    public previousFormValuesOnEdit: any;
 
     public openAnnotationArray: {
         lineIndex?: number;
@@ -201,8 +202,6 @@ export class Step5Component implements OnInit, OnDestroy {
 
             const restOfTheItemsInViolationsArray = [...trafficViolationItems];
 
-            restOfTheItemsInViolationsArray.pop();
-
             const filteredViolationsArray = restOfTheItemsInViolationsArray.map(
                 (item) => {
                     return {
@@ -211,6 +210,7 @@ export class Step5Component implements OnInit, OnDestroy {
                         isEditingViolation: false,
                         date: convertDateFromBackend(item.date),
                         vehicleType: item.vehicleType.name,
+                        vehicleTypeLogoName: item.vehicleType.logoName,
                         location: item.location,
                         description: item.description,
                         trafficViolationItemReview:
@@ -228,6 +228,8 @@ export class Step5Component implements OnInit, OnDestroy {
                 isEditingViolation: false,
                 date: convertDateFromBackend(lastItemInViolationsArray.date),
                 vehicleType: lastItemInViolationsArray.vehicleType.name,
+                vehicleTypeLogoName:
+                    lastItemInViolationsArray.vehicleType.logoName,
                 location: lastItemInViolationsArray.location,
                 description: lastItemInViolationsArray.description,
                 trafficViolationItemReview:
@@ -244,34 +246,11 @@ export class Step5Component implements OnInit, OnDestroy {
                 JSON.stringify(filteredViolationsArray)
             );
 
-            this.formValuesToPatch = filteredLastItemInViolationsArray;
             this.previousFormValuesOnReview = filteredLastItemInViolationsArray;
-            this.previousFormValuesOnEdit = this.violationsArray.length
-                ? filteredLastItemInViolationsArray
-                : {
-                      date: null,
-                      vehicleType: null,
-                      location: null,
-                      description: null,
-                  };
 
-            for (let i = 0; i < filteredViolationsArray.length; i++) {
-                const firstEmptyObjectInList = this.openAnnotationArray.find(
-                    (item) => Object.keys(item).length === 0
-                );
+            this.formStatus = 'VALID';
 
-                const indexOfFirstEmptyObjectInList =
-                    this.openAnnotationArray.indexOf(firstEmptyObjectInList);
-
-                this.openAnnotationArray[indexOfFirstEmptyObjectInList] = {
-                    lineIndex: this.openAnnotationArray.indexOf(
-                        firstEmptyObjectInList
-                    ),
-                    lineInputs: [false],
-                    displayAnnotationButton: false,
-                    displayAnnotationTextArea: false,
-                };
-            }
+            this.displayButtonInsteadOfForm = true;
         } else {
             this.inputService.changeValidatorsCheck(
                 this.notBeenConvictedForm.get('notBeenConvicted'),
@@ -448,10 +427,7 @@ export class Step5Component implements OnInit, OnDestroy {
     }
 
     public handleCheckboxParagraphClick(type: string): void {
-        if (
-            this.selectedMode === SelectedMode.FEEDBACK ||
-            this.selectedMode === SelectedMode.REVIEW
-        ) {
+        if (this.selectedMode !== SelectedMode.APPLICANT) {
             return;
         }
 
@@ -477,44 +453,17 @@ export class Step5Component implements OnInit, OnDestroy {
         this.violationsArray.splice(index, 1);
     }
 
-    public onEditViolation(index: number): void {
-        if (this.isEditing) {
-            this.isEditing = false;
-            this.violationsArray[
-                this.selectedViolationIndex
-            ].isEditingViolation = false;
-
-            this.helperIndex = 2;
-            this.selectedViolationIndex = -1;
-        }
-
-        this.helperIndex = index;
-        this.selectedViolationIndex = index;
-
-        this.isEditing = true;
-        this.violationsArray[index].isEditingViolation = true;
-
-        const selectedViolation = this.violationsArray[index];
-
-        if (this.lastViolationsCard) {
-            this.previousFormValuesOnEdit = {
-                date: this.lastViolationsCard?.date,
-                vehicleType: this.lastViolationsCard?.vehicleType,
-                location: this.lastViolationsCard.location,
-                description: this.lastViolationsCard?.description,
-            };
-        }
-
-        this.formValuesToPatch = selectedViolation;
-
-        if (this.selectedMode === SelectedMode.FEEDBACK) {
-            this.feedbackValuesToPatch =
-                this.stepFeedbackValues[this.selectedViolationIndex];
-        }
-    }
-
     public getViolationFormValues(event: any): void {
         this.violationsArray = [...this.violationsArray, event];
+
+        this.isEditing = true;
+
+        this.formValuesToPatch = {
+            date: null,
+            vehicleType: null,
+            location: null,
+            description: null,
+        };
 
         if (this.lastViolationsCard.id) {
             this.violationsArray[this.violationsArray.length - 1].id =
@@ -524,59 +473,111 @@ export class Step5Component implements OnInit, OnDestroy {
         } else {
             this.violationsArray[this.violationsArray.length - 1].id = null;
         }
-
-        this.helperIndex = 2;
-
-        const firstEmptyObjectInList = this.openAnnotationArray.find(
-            (item) => Object.keys(item).length === 0
-        );
-
-        const indexOfFirstEmptyObjectInList = this.openAnnotationArray.indexOf(
-            firstEmptyObjectInList
-        );
-
-        this.openAnnotationArray[indexOfFirstEmptyObjectInList] = {
-            lineIndex: this.openAnnotationArray.indexOf(firstEmptyObjectInList),
-            lineInputs: [false],
-            displayAnnotationButton: false,
-            displayAnnotationTextArea: false,
-        };
     }
 
-    public saveEditedViolation(event: any): void {
-        this.isEditing = false;
+    public onEditViolation(index: number): void {
+        this.violationsArray
+            .filter((item) => item.isEditingViolation)
+            .forEach((item) => (item.isEditingViolation = false));
+
+        this.selectedViolationIndex = index;
+
+        this.isEditing = true;
         this.violationsArray[this.selectedViolationIndex].isEditingViolation =
-            false;
+            true;
 
-        this.violationsArray[this.selectedViolationIndex] = {
-            ...this.violationsArray[this.selectedViolationIndex],
-            ...event,
-        };
+        this.hideFormOnEdit = true;
+        this.displayButtonInsteadOfForm = false;
 
-        this.helperIndex = 2;
-        this.selectedViolationIndex = -1;
+        const selectedViolation =
+            this.violationsArray[this.selectedViolationIndex];
 
-        this.formValuesToPatch = this.previousFormValuesOnEdit;
+        this.formValuesToPatch = selectedViolation;
 
         if (this.selectedMode === SelectedMode.FEEDBACK) {
             this.feedbackValuesToPatch =
-                this.stepFeedbackValues[this.stepFeedbackValues.length - 1];
+                this.stepFeedbackValues[this.selectedViolationIndex];
         }
     }
 
     public cancelViolationEditing(_: any): void {
-        this.isEditing = false;
-        this.violationsArray[this.selectedViolationIndex].isEditingViolation =
-            false;
-
-        this.helperIndex = 2;
-        this.selectedViolationIndex = -1;
-
-        this.formValuesToPatch = this.previousFormValuesOnEdit;
-
         if (this.selectedMode === SelectedMode.FEEDBACK) {
             this.feedbackValuesToPatch =
                 this.stepFeedbackValues[this.stepFeedbackValues.length - 1];
+        }
+
+        this.isEditing = false;
+
+        this.hideFormOnEdit = false;
+
+        if (this.violationsArray.length === 1) {
+            const selectedViolation = this.violationsArray[0];
+
+            this.formValuesToPatch = selectedViolation;
+
+            this.violationsArray = [];
+        } else {
+            if (this.selectedViolationIndex >= 0) {
+                this.violationsArray[
+                    this.selectedViolationIndex
+                ].isEditingViolation = false;
+            }
+
+            this.formValuesToPatch = {
+                date: null,
+                vehicleType: null,
+                location: null,
+                description: null,
+            };
+
+            this.displayButtonInsteadOfForm = true;
+        }
+
+        this.selectedViolationIndex = -1;
+    }
+
+    public saveEditedViolation(event: any): void {
+        if (this.selectedMode === SelectedMode.FEEDBACK) {
+            this.feedbackValuesToPatch =
+                this.stepFeedbackValues[this.stepFeedbackValues.length - 1];
+        }
+
+        if (this.selectedViolationIndex >= 0) {
+            this.violationsArray[this.selectedViolationIndex] = {
+                ...this.violationsArray[this.selectedViolationIndex],
+                ...event,
+            };
+        } else {
+            this.violationsArray = [...this.violationsArray, event];
+        }
+
+        this.isEditing = false;
+
+        this.hideFormOnEdit = false;
+        this.displayButtonInsteadOfForm = true;
+
+        this.formValuesToPatch = {
+            date: null,
+            vehicleType: null,
+            location: null,
+            description: null,
+        };
+
+        this.selectedViolationIndex = -1;
+    }
+
+    public onGetBtnClickValue(event: any): void {
+        if (event.notDisabledClick) {
+            this.isEditing = true;
+
+            this.displayButtonInsteadOfForm = false;
+
+            this.formValuesToPatch = {
+                date: null,
+                vehicleType: null,
+                location: null,
+                description: null,
+            };
         }
     }
 
@@ -661,7 +662,6 @@ export class Step5Component implements OnInit, OnDestroy {
             this.hasIncorrectFields = false;
         }
 
-        this.helperIndex = 2;
         this.selectedViolationIndex = -1;
 
         this.previousFormValuesOnReview.trafficViolationItemReview = {
@@ -679,7 +679,6 @@ export class Step5Component implements OnInit, OnDestroy {
         this.violationsArray[this.selectedViolationIndex].isEditingViolation =
             false;
 
-        this.helperIndex = 2;
         this.selectedViolationIndex = -1;
 
         this.previousFormValuesOnReview.trafficViolationItemReview = {
@@ -785,12 +784,11 @@ export class Step5Component implements OnInit, OnDestroy {
         }
     }
 
-    public onCardReview(index: number) {
+    public onCardReview(index: number): void {
         if (this.isReviewingCard) {
             return;
         }
 
-        this.helperIndex = index;
         this.selectedViolationIndex = index;
 
         this.violationsArray[index].isEditingViolation = true;
@@ -920,10 +918,7 @@ export class Step5Component implements OnInit, OnDestroy {
 
     public onStepAction(event: any): void {
         if (event.action === 'next-step') {
-            if (
-                this.selectedMode === SelectedMode.APPLICANT ||
-                this.selectedMode === SelectedMode.FEEDBACK
-            ) {
+            if (this.selectedMode !== SelectedMode.REVIEW) {
                 this.onSubmit();
             }
 
@@ -943,7 +938,9 @@ export class Step5Component implements OnInit, OnDestroy {
             this.onlyOneHoldLicenseForm.invalid ||
             this.certifyForm.invalid ||
             this.formStatus === 'INVALID' ||
-            this.isEditing
+            this.isEditing ||
+            (this.selectedMode === SelectedMode.FEEDBACK &&
+                !this.isFeedbackValueUpdated)
         ) {
             if (this.formStatus === 'INVALID') {
                 this.markFormInvalid = true;
@@ -996,7 +993,7 @@ export class Step5Component implements OnInit, OnDestroy {
 
         let filteredLastViolationsCard: any;
 
-        if (!noViolationsForPastTwelveMonths) {
+        if (!noViolationsForPastTwelveMonths && !this.violationsArray.length) {
             filteredLastViolationsCard = {
                 ...((this.stepHasValues ||
                     this.selectedMode === SelectedMode.FEEDBACK) && {
@@ -1038,7 +1035,9 @@ export class Step5Component implements OnInit, OnDestroy {
                 : certify,
             trafficViolationItems: noViolationsForPastTwelveMonths
                 ? []
-                : [...filteredViolationsArray, filteredLastViolationsCard],
+                : !this.violationsArray.length
+                ? [filteredLastViolationsCard]
+                : [...filteredViolationsArray],
         };
 
         const storeTrafficViolationItems = saveData.trafficViolationItems.map(
@@ -1156,14 +1155,10 @@ export class Step5Component implements OnInit, OnDestroy {
             trafficViolationItemId: lastItemId,
             isPrimary: true,
             commonMessage: null,
-            isDateValid: lastItemReview ? lastItemReview.isDateValid : true,
-            isLocationValid: lastItemReview
-                ? lastItemReview.isLocationValid
-                : true,
+            isDateValid: lastItemReview.isDateValid ?? true,
+            isLocationValid: lastItemReview.isLocationValid ?? true,
             locationMessage: this.lastViolationsCard.firstRowReview,
-            isDescriptionValid: lastItemReview
-                ? lastItemReview.isDescriptionValid
-                : true,
+            isDescriptionValid: lastItemReview.isDescriptionValid ?? true,
             descriptionMessage: this.lastViolationsCard.secondRowReview,
         };
 

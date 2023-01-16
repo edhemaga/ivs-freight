@@ -103,14 +103,13 @@ export class CdlCardComponent implements OnInit, OnDestroy {
     }
 
     public patchStepValues(stepValues: CdlCardFeedbackResponse): void {
-        console.log('stepValues', stepValues);
-        const { issueDate, /* expireDate, */ files, id } = stepValues;
+        const { issueDate, expirationDate, files, id } = stepValues;
 
         this.cdlCardId = id;
 
         this.cdlCardForm.patchValue({
             fromDate: convertDateFromBackend(issueDate),
-            /*     toDate: convertDateFromBackend(expireDate), */
+            toDate: convertDateFromBackend(expirationDate),
             files: JSON.stringify(files),
         });
 
@@ -230,10 +229,7 @@ export class CdlCardComponent implements OnInit, OnDestroy {
 
     public onStepAction(event: any): void {
         if (event.action === 'next-step') {
-            if (
-                this.selectedMode === SelectedMode.APPLICANT ||
-                this.selectedMode === SelectedMode.FEEDBACK
-            ) {
+            if (this.selectedMode !== SelectedMode.REVIEW) {
                 this.onSubmit();
             }
 
@@ -256,12 +252,17 @@ export class CdlCardComponent implements OnInit, OnDestroy {
 
         const { fromDate, toDate } = this.cdlCardForm.value;
 
-        const documents = this.documents.map((item) => item.realFile);
+        let documents = [];
+        this.documents.map((item) => {
+            if (item.realFile) {
+                documents.push(item.realFile);
+            }
+        });
 
         const saveData: any = {
             applicantId: this.applicantId,
             issueDate: convertDateToBackend(fromDate),
-            expireDate: convertDateToBackend(toDate),
+            expirationDate: convertDateToBackend(toDate),
             files: documents,
             ...((this.stepHasValues ||
                 this.selectedMode === SelectedMode.FEEDBACK) && {
@@ -269,8 +270,6 @@ export class CdlCardComponent implements OnInit, OnDestroy {
                 filesForDeleteIds: this.documentsForDeleteIds,
             }),
         };
-
-        console.log('saveDAta', saveData);
 
         const selectMatchingBackendMethod = () => {
             if (
@@ -303,7 +302,7 @@ export class CdlCardComponent implements OnInit, OnDestroy {
                                 cdlCard: {
                                     ...store.applicant.medicalCertificate,
                                     issueDate: saveData.issueDate,
-                                    expireDate: saveData.expireDate,
+                                    expirationDate: saveData.expirationDate,
                                     files: saveData.files,
                                 },
                             },

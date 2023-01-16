@@ -100,6 +100,17 @@
                                     <span class="truck-trailer-number">{{
                                         item.truck.truckNumber
                                     }}</span>
+                                    <div
+                                        *ngIf="item.truck && !__isBoardLocked"
+                                        class="remove-item"
+                                        (click)="removeTruck(rowIndex)"
+                                    >
+                                        <svg-icon
+                                            [src]="
+                                                'assets/svg/applicant/close-x.svg'
+                                            "
+                                        ></svg-icon>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -232,6 +243,16 @@
                                         <span class="truck-trailer-number">{{
                                             item.trailer.trailerNumber
                                         }}</span>
+                                        <div
+                                            class="remove-item"
+                                            (click)="removeTrailer(rowIndex)"
+                                        >
+                                            <svg-icon
+                                                [src]="
+                                                    'assets/svg/applicant/close-x.svg'
+                                                "
+                                            ></svg-icon>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -447,6 +468,16 @@
                                             [fill]="'#ff0000'"
                                         ></svg-icon>
                                     </span>
+                                    <div
+                                        class="remove-item driver-remove-item"
+                                        (click)="removeDriver(rowIndex)"
+                                    >
+                                        <svg-icon
+                                            [src]="
+                                                'assets/svg/applicant/close-x.svg'
+                                            "
+                                        ></svg-icon>
+                                    </div>
                                 </div>
                             </div>
                             <div
@@ -659,7 +690,7 @@
                     >
                         <div class="padding-inside">
                             <div
-                                class="info-item"
+                                class="info-item pickup-dev-popover-hold"
                                 *ngIf="
                                     item.driver && item.trailer && item.truck
                                 "
@@ -667,11 +698,76 @@
                                 [ngbPopover]="pickupPopover"
                                 [autoClose]="'outside'"
                                 container="body"
-                                [placement]="'bottom-center'"
+                                [placement]="'bottom'"
                                 popoverClass="pickup-delivery-popover"
                                 triggers="manual"
                                 (click)="showPickupDelivery(t3)"
-                            ></div>
+                            >
+                                <div
+                                    class="no-delpickup"
+                                    *ngIf="!item.assignedLoads.length"
+                                >
+                                    No Active or Pending Load
+                                </div>
+
+                                <div
+                                    class="load-items-hold"
+                                    *ngIf="item.assignedLoads.length"
+                                >
+                                    <div class="pick-load-box pickup-box">
+                                        <svg-icon
+                                            *ngIf="item.assignedLoads[0]
+                                            .pickupCount < 9"
+                                            src="
+                                                assets/svg/svg_numbers/olddash/svg_num_box_{{
+                                                item.assignedLoads[0]
+                                                    .pickupCount
+                                            }}.svg
+                                            "
+                                        ></svg-icon>
+                                        <svg-icon
+                                            *ngIf="item.assignedLoads[0]
+                                            .pickupCount > 9"
+                                            src="assets/svg/svg_numbers/svg_num_over.svg
+                                        "
+                                        ></svg-icon>
+                                        <div class="pick-load-info">
+                                            <div class="pick-load-info-address">
+                                                {{item.assignedLoads[0].pickup.shipper.address.city}}, {{item.assignedLoads[0].pickup.shipper.address.stateShortName}}
+                                            </div>
+                                            <div class="pick-load-info-time">
+                                                05/09/21
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="pick-load-box delivery-box">
+                                        <svg-icon
+                                            *ngIf="item.assignedLoads[0]
+                                            .deliveryCount < 9"
+                                            src="
+                                                assets/svg/svg_numbers/olddash/svg_num_box_{{
+                                                item.assignedLoads[0]
+                                                    .deliveryCount
+                                            }}.svg
+                                            "
+                                        ></svg-icon>
+                                        <svg-icon
+                                            *ngIf="item.assignedLoads[0]
+                                            .deliveryCount > 9"
+                                            src="assets/svg/svg_numbers/svg_num_over.svg
+                                        "
+                                        ></svg-icon>
+                                        <div class="pick-load-info">
+                                            <div class="pick-load-info-address">
+                                                {{item.assignedLoads[0].delivery.shipper.address.city}}, {{item.assignedLoads[0].delivery.shipper.address.stateShortName}}
+                                            </div>
+                                            <div class="pick-load-info-time">
+                                                05/09/21
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </td>

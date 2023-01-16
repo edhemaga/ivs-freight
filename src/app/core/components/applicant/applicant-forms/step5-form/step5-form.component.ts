@@ -16,7 +16,13 @@ import moment from 'moment';
 
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
-import { Subscription, Subject, takeUntil } from 'rxjs';
+import {
+    Subscription,
+    Subject,
+    takeUntil,
+    distinctUntilChanged,
+    throttleTime,
+} from 'rxjs';
 
 import {
     anyInputInLineIncorrect,
@@ -130,10 +136,7 @@ export class Step5FormComponent
     }
 
     ngAfterViewInit(): void {
-        if (
-            this.selectedMode === SelectedMode.APPLICANT ||
-            this.selectedMode === SelectedMode.FEEDBACK
-        ) {
+        if (this.selectedMode !== SelectedMode.REVIEW) {
             this.violationsForm.statusChanges
                 .pipe(takeUntil(this.destroy$))
                 .subscribe((res) => {
@@ -141,7 +144,11 @@ export class Step5FormComponent
                 });
 
             this.violationsForm.valueChanges
-                .pipe(takeUntil(this.destroy$))
+                .pipe(
+                    distinctUntilChanged(),
+                    throttleTime(2),
+                    takeUntil(this.destroy$)
+                )
                 .subscribe((res) => {
                     res.location = this.selectedAddress;
 
@@ -151,7 +158,11 @@ export class Step5FormComponent
 
         if (this.selectedMode === SelectedMode.REVIEW) {
             this.violationsForm.valueChanges
-                .pipe(takeUntil(this.destroy$))
+                .pipe(
+                    distinctUntilChanged(),
+                    throttleTime(2),
+                    takeUntil(this.destroy$)
+                )
                 .subscribe((res) => {
                     const reviewMessages = {
                         firstRowReview: res.firstRowReview,
@@ -185,10 +196,7 @@ export class Step5FormComponent
             setTimeout(() => {
                 this.patchForm(changes.formValuesToPatch.currentValue);
 
-                if (
-                    this.selectedMode === SelectedMode.APPLICANT ||
-                    this.selectedMode === SelectedMode.FEEDBACK
-                ) {
+                if (this.selectedMode !== SelectedMode.REVIEW) {
                     this.startValueChangesMonitoring();
                 }
             }, 50);
@@ -271,7 +279,7 @@ export class Step5FormComponent
         this.violationsForm.patchValue({
             date: formValue?.date,
             vehicleType: formValue?.vehicleType,
-            location: formValue.location ? formValue?.location?.address : null,
+            location: formValue?.location ? formValue?.location?.address : null,
             description: formValue?.description,
         });
 
@@ -286,11 +294,16 @@ export class Step5FormComponent
 
     public startValueChangesMonitoring() {
         this.subscription = this.violationsForm.valueChanges
-            .pipe(takeUntil(this.destroy$))
+            .pipe(
+                distinctUntilChanged(),
+                throttleTime(2),
+                takeUntil(this.destroy$)
+            )
             .subscribe((updatedFormValues) => {
                 const {
                     id,
                     reviewId,
+                    vehicleTypeLogoName,
                     date,
                     location,
                     isEditingViolation,
@@ -361,6 +374,9 @@ export class Step5FormComponent
         const saveData: ViolationModel = {
             ...violationsForm,
             isEditingViolation: false,
+            vehicleTypeLogoName: this.vehicleType.find(
+                (item) => item.name === violationsForm.vehicleType
+            ).logoName,
             location: selectedAddress,
         };
 
@@ -372,13 +388,24 @@ export class Step5FormComponent
         this.formService.resetForm(this.violationsForm);
     }
 
-    public onSaveEditedViolation(): void {
-        if (this.violationsForm.invalid) {
-            this.inputService.markInvalid(this.violationsForm);
-            return;
-        }
+    public onCancelEditAccident(): void {
+        this.cancelFormEditingEmitter.emit(1);
 
-        if (!this.isViolationEdited) {
+        this.isViolationEdited = false;
+
+        this.formStatusEmitter.emit('VALID');
+
+        if (this.subscription) {
+            this.subscription.unsubscribe();
+        }
+    }
+
+    public onSaveEditedViolation(): void {
+        if (this.violationsForm.invalid || !this.isViolationEdited) {
+            if (this.violationsForm.invalid) {
+                this.inputService.markInvalid(this.violationsForm);
+            }
+
             return;
         }
 
@@ -393,29 +420,22 @@ export class Step5FormComponent
 
         const saveData: ViolationModel = {
             ...violationsForm,
+            isEditingViolation: false,
+            vehicleTypeLogoName: this.vehicleType.find(
+                (item) => item.name === violationsForm.vehicleType
+            ).logoName,
             location: this.selectedAddress
                 ? selectedAddress
                 : this.editingCardAddress,
-            isEditingViolation: false,
         };
 
         this.saveFormEditingEmitter.emit(saveData);
 
         this.isViolationEdited = false;
 
-        this.formService.resetForm(this.violationsForm);
-
-        this.subscription.unsubscribe();
-    }
-
-    public onCancelEditAccident(): void {
-        this.cancelFormEditingEmitter.emit(1);
-
-        this.isViolationEdited = false;
-
-        this.formService.resetForm(this.violationsForm);
-
-        this.subscription.unsubscribe();
+        if (this.subscription) {
+            this.subscription.unsubscribe();
+        }
     }
 
     public onGetBtnClickValue(event: any): void {

@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
-import { Router } from '@angular/router';
+import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 
 import { Subject, takeUntil } from 'rxjs';
 
@@ -16,6 +16,7 @@ import { ApplicantStore } from '../../state/store/applicant.store';
 
 import {
     ApplicantResponse,
+    CreatePspAuthReviewCommand,
     PspAuthFeedbackResponse,
     UpdatePspAuthCommand,
 } from 'appcoretruckassist';
@@ -30,13 +31,16 @@ import { SelectedMode } from '../../state/enum/selected-mode.enum';
 export class PspAuthorizationComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
 
-    public selectedMode: string = SelectedMode.REVIEW;
+    public selectedMode: string = SelectedMode.APPLICANT;
+
+    public isValidLoad: boolean;
 
     public pspAuthorizationForm: FormGroup;
 
     public companyName: string;
 
     public applicantId: number;
+    public queryParamId: number | string | null = null;
 
     public signature: string;
     public signatureImgSrc: string;
@@ -51,10 +55,13 @@ export class PspAuthorizationComponent implements OnInit, OnDestroy {
         private applicantStore: ApplicantStore,
         private applicantQuery: ApplicantQuery,
         private applicantActionsService: ApplicantActionsService,
-        private imageBase64Service: ImageBase64Service
+        private imageBase64Service: ImageBase64Service,
+        private route: ActivatedRoute
     ) {}
 
     ngOnInit(): void {
+        this.getQueryParams();
+
         this.createForm();
 
         this.getStepValuesFromStore();
@@ -70,24 +77,38 @@ export class PspAuthorizationComponent implements OnInit, OnDestroy {
         });
     }
 
+    public getQueryParams(): void {
+        this.route.paramMap.subscribe((params: ParamMap) => {
+            this.queryParamId = params.get('id');
+        });
+    }
+
     public getStepValuesFromStore(): void {
         this.applicantQuery.applicant$
             .pipe(takeUntil(this.destroy$))
             .subscribe((res: ApplicantResponse) => {
-                const personalInfo = res.personalInfo;
+                if (res && res.id == this.queryParamId) {
+                    this.isValidLoad = true;
 
-                this.applicantCardInfo = {
-                    name: personalInfo?.fullName,
-                    ssn: personalInfo?.ssn,
-                    dob: convertDateFromBackend(personalInfo?.doB),
-                };
+                    const personalInfo = res.personalInfo;
 
-                this.applicantId = res.id;
+                    this.applicantCardInfo = {
+                        name: personalInfo?.fullName,
+                        ssn: personalInfo?.ssn,
+                        dob: convertDateFromBackend(personalInfo?.doB),
+                    };
 
-                this.companyName = res.companyInfo.name;
+                    this.applicantId = res.id;
 
-                if (res.pspAuth) {
-                    this.patchStepValues(res.pspAuth);
+                    this.companyName = res.companyInfo.name;
+
+                    if (res.pspAuth) {
+                        this.patchStepValues(res.pspAuth);
+                    }
+                } else {
+                    this.isValidLoad = false;
+
+                    this.router.navigate(['/auth']);
                 }
             });
     }
@@ -115,10 +136,7 @@ export class PspAuthorizationComponent implements OnInit, OnDestroy {
     }
 
     public handleCheckboxParagraphClick(type: string): void {
-        if (
-            this.selectedMode === SelectedMode.FEEDBACK ||
-            this.selectedMode === SelectedMode.REVIEW
-        ) {
+        if (this.selectedMode !== SelectedMode.APPLICANT) {
             return;
         }
 
@@ -174,10 +192,7 @@ export class PspAuthorizationComponent implements OnInit, OnDestroy {
 
     public onStepAction(event: any): void {
         if (event.action === 'next-step') {
-            if (
-                this.selectedMode === SelectedMode.APPLICANT ||
-                this.selectedMode === SelectedMode.FEEDBACK
-            ) {
+            if (this.selectedMode !== SelectedMode.REVIEW) {
                 this.onSubmit();
             }
 
@@ -254,7 +269,36 @@ export class PspAuthorizationComponent implements OnInit, OnDestroy {
             });
     }
 
-    public onSubmitReview(): void {}
+    public onSubmitReview(): void {
+        const saveData: CreatePspAuthReviewCommand = {
+            applicantId: this.applicantId,
+        };
+
+        this.applicantActionsService
+            .createPspAuthorizationReview(saveData)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: () => {
+                    this.router.navigate([`/sph/${this.applicantId}`]);
+
+                    this.applicantStore.update((store) => {
+                        return {
+                            ...store,
+                            applicant: {
+                                ...store.applicant,
+                                pspAuth: {
+                                    ...store.applicant.pspAuth,
+                                    reviewed: true,
+                                },
+                            },
+                        };
+                    });
+                },
+                error: (err) => {
+                    console.log(err);
+                },
+            });
+    }
 
     ngOnDestroy(): void {
         this.destroy$.next();
