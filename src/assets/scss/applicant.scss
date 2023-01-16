@@ -5,12 +5,26 @@
         }
     }
 
+    .input-container .input-control {
+        background: $bw2;
+        transition: background 0.2s ease-in-out;
+    }
+
     .input-container .input-dropdown-arrow:hover ~ .input-control {
         background: $ta-light-grey !important;
     }
 
-    .input-container .input-control {
-        background: $bw2;
-        transition: background 0.2s ease-in-out;
+    .input-container .input-control.valid-focus-out-filled/* ,
+    .input-container .input-control.invalid-focus-out-filled */ {
+        background: transparent !important;
+    }
+
+    .input-container
+        .input-dropdown-arrow:hover
+        ~ .input-control.valid-focus-out-filled,
+    .input-container
+        .input-dropdown-arrow:hover
+        ~ .input-control.invalid-focus-out-filled {
+        background: transparent !important;
     }
 }

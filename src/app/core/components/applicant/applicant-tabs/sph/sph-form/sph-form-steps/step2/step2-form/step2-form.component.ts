@@ -14,7 +14,13 @@ import {
 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
-import { Subscription, Subject, takeUntil } from 'rxjs';
+import {
+    Subscription,
+    Subject,
+    takeUntil,
+    distinctUntilChanged,
+    throttleTime,
+} from 'rxjs';
 
 import { isFormValueEqual } from '../../../../../../state/utils/utils';
 
@@ -110,7 +116,11 @@ export class SphStep2FormComponent
             });
 
         this.accidentForm.valueChanges
-            .pipe(takeUntil(this.destroy$))
+            .pipe(
+                distinctUntilChanged(),
+                throttleTime(2),
+                takeUntil(this.destroy$)
+            )
             .subscribe((res) => {
                 res.accidentLocation = this.selectedAddress;
 
@@ -202,7 +212,11 @@ export class SphStep2FormComponent
 
     public startValueChangesMonitoring(): void {
         this.subscription = this.accidentForm.valueChanges
-            .pipe(takeUntil(this.destroy$))
+            .pipe(
+                distinctUntilChanged(),
+                throttleTime(2),
+                takeUntil(this.destroy$)
+            )
             .subscribe((updatedFormValues) => {
                 const {
                     accidentLocation,

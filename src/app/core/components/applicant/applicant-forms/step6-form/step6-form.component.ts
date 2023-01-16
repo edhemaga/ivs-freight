@@ -13,7 +13,13 @@ import {
 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
-import { Subject, Subscription, takeUntil } from 'rxjs';
+import {
+    distinctUntilChanged,
+    Subject,
+    Subscription,
+    takeUntil,
+    throttleTime,
+} from 'rxjs';
 
 import {
     anyInputInLineIncorrect,
@@ -119,7 +125,11 @@ export class Step6FormComponent
                 });
 
             this.contactForm.valueChanges
-                .pipe(takeUntil(this.destroy$))
+                .pipe(
+                    distinctUntilChanged(),
+                    throttleTime(2),
+                    takeUntil(this.destroy$)
+                )
                 .subscribe((res) => {
                     this.lastFormValuesEmitter.emit(res);
                 });
@@ -127,7 +137,11 @@ export class Step6FormComponent
 
         if (this.selectedMode === SelectedMode.REVIEW) {
             this.contactForm.valueChanges
-                .pipe(takeUntil(this.destroy$))
+                .pipe(
+                    distinctUntilChanged(),
+                    throttleTime(2),
+                    takeUntil(this.destroy$)
+                )
                 .subscribe((res) => {
                     const reviewMessages = {
                         firstRowReview: res.firstRowReview,
@@ -243,7 +257,11 @@ export class Step6FormComponent
 
     public startValueChangesMonitoring() {
         this.subscription = this.contactForm.valueChanges
-            .pipe(takeUntil(this.destroy$))
+            .pipe(
+                distinctUntilChanged(),
+                throttleTime(2),
+                takeUntil(this.destroy$)
+            )
             .subscribe((updatedFormValues) => {
                 const {
                     id,

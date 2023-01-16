@@ -32,7 +32,7 @@ import {
 export class MedicalCertificateComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
 
-    public selectedMode: string = SelectedMode.APPLICANT;
+    public selectedMode: string = SelectedMode.REVIEW;
 
     public isValidLoad: boolean;
 
@@ -43,6 +43,7 @@ export class MedicalCertificateComponent implements OnInit, OnDestroy {
     public queryParamId: number | string | null = null;
 
     public stepHasValues: boolean = false;
+    public stepHasReviewValues: boolean = false;
 
     public documents: any[] = [];
     public documentsForDeleteIds: number[] = [];
@@ -62,7 +63,7 @@ export class MedicalCertificateComponent implements OnInit, OnDestroy {
         },
         {
             lineIndex: 1,
-            lineInputs: [false],
+            lineInputs: [],
             displayAnnotationButton: false,
             displayAnnotationTextArea: false,
         },
@@ -141,6 +142,29 @@ export class MedicalCertificateComponent implements OnInit, OnDestroy {
         });
 
         this.documents = files;
+
+        if (this.selectedMode === SelectedMode.REVIEW) {
+            if (stepValues.files[0].review) {
+                this.stepHasReviewValues = true;
+
+                for (let i = 0; i < stepValues.files.length; i++) {
+                    const fileReview = stepValues.files[i].review;
+
+                    this.openAnnotationArray[1].lineInputs = [
+                        ...this.openAnnotationArray[1].lineInputs,
+                        !fileReview,
+                    ];
+                }
+
+                const lineInputItems = this.openAnnotationArray[1].lineInputs;
+                const isAnyInputInLineIncorrect =
+                    anyInputInLineIncorrect(lineInputItems);
+
+                if (isAnyInputInLineIncorrect) {
+                    this.openAnnotationArray[1].displayAnnotationButton = true;
+                }
+            }
+        }
     }
 
     public onFilesAction(event: any): void {
@@ -167,6 +191,18 @@ export class MedicalCertificateComponent implements OnInit, OnDestroy {
                     ...this.documentsForDeleteIds,
                     event.deleteId,
                 ];
+
+                break;
+            case 'mark-incorrect':
+                if (this.selectedMode === SelectedMode.REVIEW) {
+                    this.incorrectInput(true, event.index, 1);
+                }
+
+                break;
+            case 'mark-correct':
+                if (this.selectedMode === SelectedMode.REVIEW) {
+                    this.incorrectInput(false, event.index, 1);
+                }
 
                 break;
 
@@ -229,9 +265,7 @@ export class MedicalCertificateComponent implements OnInit, OnDestroy {
         }
 
         const inputFieldsArray = JSON.stringify(
-            this.openAnnotationArray
-                .filter((item) => Object.keys(item).length !== 0)
-                .map((item) => item.lineInputs)
+            this.openAnnotationArray.map((item) => item.lineInputs)
         );
 
         if (inputFieldsArray.includes('true')) {
@@ -364,10 +398,73 @@ export class MedicalCertificateComponent implements OnInit, OnDestroy {
             isExpireDateValid: !this.openAnnotationArray[0].lineInputs[1],
             dateMessage:
                 this.medicalCertificateForm.get('firstRowReview').value,
-            filesReview: [],
+            filesReview: this.documents.map((item, index) => {
+                return {
+                    storageId: item.fileId,
+                    isValid: !this.openAnnotationArray[1].lineInputs[index],
+                    message:
+                        this.medicalCertificateForm.get('secondRowReview')
+                            .value,
+                };
+            }),
         };
 
         console.log('saveData', saveData);
+
+        const selectMatchingBackendMethod = () => {
+            if (
+                this.selectedMode === SelectedMode.REVIEW &&
+                !this.stepHasReviewValues
+            ) {
+                return this.applicantActionsService.createMedicalCertificateReview(
+                    saveData
+                );
+            }
+
+            if (
+                this.selectedMode === SelectedMode.REVIEW &&
+                this.stepHasReviewValues
+            ) {
+                return this.applicantActionsService.updateMedicalCertificateReview(
+                    saveData
+                );
+            }
+        };
+
+        selectMatchingBackendMethod()
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: () => {
+                    this.router.navigate([
+                        `/mvr-authorization/${this.applicantId}`,
+                    ]);
+
+                    this.applicantStore.update((store) => {
+                        return {
+                            ...store,
+                            applicant: {
+                                ...store.applicant,
+                                medicalCertificate: {
+                                    ...store.applicant.medicalCertificate,
+                                    files: store.applicant.medicalCertificate.files.map(
+                                        (item, index) => {
+                                            return {
+                                                ...item,
+                                                review: saveData.filesReview[
+                                                    index
+                                                ],
+                                            };
+                                        }
+                                    ),
+                                },
+                            },
+                        };
+                    });
+                },
+                error: (err) => {
+                    console.log(err);
+                },
+            });
     }
 
     ngOnDestroy(): void {

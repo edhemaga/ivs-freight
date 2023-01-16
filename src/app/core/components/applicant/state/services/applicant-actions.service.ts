@@ -64,6 +64,9 @@ import {
     CreatePersonalInfoCommand,
     CreateSphReviewCommand,
     CreateHosRulesReviewCommand,
+    UpdateMedicalCertificateReviewCommand,
+    CreateMvrAuthReviewCommand,
+    UpdateMvrAuthReviewCommand,
 } from 'appcoretruckassist/model/models';
 
 @Injectable({
@@ -351,6 +354,12 @@ export class ApplicantActionsService {
         );
     }
 
+    public createMvrAuthorizationReview(
+        data: CreateMvrAuthReviewCommand
+    ): Observable<CreateWithUploadsResponse> {
+        return this.applicantService.apiApplicantMvrReviewPost(data);
+    }
+
     public createPspAuthorizationReview(
         data: CreatePspAuthReviewCommand
     ): Observable<CreateResponse> {
@@ -455,6 +464,20 @@ export class ApplicantActionsService {
         data: UpdateDrugAndAlcoholReviewCommand
     ): Observable<object> {
         return this.applicantService.apiApplicantDrugandalcoholReviewPut(data);
+    }
+
+    public updateMedicalCertificateReview(
+        data: UpdateMedicalCertificateReviewCommand
+    ): Observable<CreateResponse> {
+        return this.applicantService.apiApplicantMedicalcertificateReviewPut(
+            data
+        );
+    }
+
+    public updateMvrAuthorizationReview(
+        data: UpdateMvrAuthReviewCommand
+    ): Observable<object> {
+        return this.applicantService.apiApplicantMvrReviewPut(data);
     }
 
     /* BACKEND GET ACTION FUNCTIONS */

@@ -20,7 +20,7 @@ export class ApplicantAddSaveBtnComponent implements OnInit {
     ngOnInit(): void {}
 
     public onGetClickValue(): void {
-        if (this.addBtn && !this.disabledValue) {
+        if (this.addBtn) {
             this.clickValueEmitter.emit({ notDisabledClick: true });
         }
 
@@ -32,11 +32,11 @@ export class ApplicantAddSaveBtnComponent implements OnInit {
             this.clickValueEmitter.emit({ reviewCancelClick: true });
         }
 
-        if (this.saveBtn && !this.reviewBtn && !this.disabledValue) {
+        if (this.saveBtn && !this.reviewBtn) {
             this.clickValueEmitter.emit({ saveClick: true });
         }
 
-        if (this.saveBtn && this.reviewBtn && !this.disabledValue) {
+        if (this.saveBtn && this.reviewBtn) {
             this.clickValueEmitter.emit({ reviewSaveClick: true });
         }
     }

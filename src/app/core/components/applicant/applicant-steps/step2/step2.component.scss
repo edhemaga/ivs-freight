@@ -59,7 +59,6 @@
 
     .work-experiences-container {
         width: 616px;
-        margin-bottom: 40px;
 
         .line-container {
             position: relative;
@@ -119,7 +118,8 @@
             .employer-box,
             .date-box,
             .job-description-box,
-            .driving-position-box {
+            .driving-position-box,
+            .icon-box {
                 p {
                     line-height: 14px;
                     font-size: 11px;
@@ -175,8 +175,30 @@
                         }
                     }
                 }
+
+                &.icon-box {
+                    .truck-icon,
+                    .trailer-icon {
+                        line-height: 16px;
+
+                        &.truck-icon {
+                            transform: rotateY(200deg);
+                        }
+                    }
+
+                    .equipment-number {
+                        color: $bw5;
+                        font-size: 11px;
+                        line-height: 12px;
+                        margin-left: 6px !important;
+                    }
+                }
             }
         }
+    }
+
+    .btn-instead-form-container {
+        margin-top: 22px;
     }
 
     .work-experience-group {

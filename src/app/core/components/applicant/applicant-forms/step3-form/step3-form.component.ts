@@ -13,7 +13,13 @@ import {
 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
-import { Subscription, Subject, takeUntil } from 'rxjs';
+import {
+    Subscription,
+    Subject,
+    takeUntil,
+    distinctUntilChanged,
+    throttleTime,
+} from 'rxjs';
 
 import moment from 'moment';
 
@@ -145,7 +151,11 @@ export class Step3FormComponent
                 });
 
             this.licenseForm.valueChanges
-                .pipe(takeUntil(this.destroy$))
+                .pipe(
+                    distinctUntilChanged(),
+                    throttleTime(2),
+                    takeUntil(this.destroy$)
+                )
                 .subscribe((res) => {
                     res.state = this.selectedStateType?.stateName;
                     res.stateShort = this.selectedStateType?.name;
@@ -159,7 +169,11 @@ export class Step3FormComponent
 
         if (this.selectedMode === SelectedMode.REVIEW) {
             this.licenseForm.valueChanges
-                .pipe(takeUntil(this.destroy$))
+                .pipe(
+                    distinctUntilChanged(),
+                    throttleTime(2),
+                    takeUntil(this.destroy$)
+                )
                 .subscribe((res) => {
                     const reviewMessages = {
                         firstRowReview: res.firstRowReview,
@@ -324,7 +338,11 @@ export class Step3FormComponent
 
     public startValueChangesMonitoring(): void {
         this.subscription = this.licenseForm.valueChanges
-            .pipe(takeUntil(this.destroy$))
+            .pipe(
+                distinctUntilChanged(),
+                throttleTime(2),
+                takeUntil(this.destroy$)
+            )
             .subscribe((updatedFormValues) => {
                 const {
                     isEditingLicense,

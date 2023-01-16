@@ -14,7 +14,13 @@ import {
 } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
-import { Subscription, Subject, takeUntil } from 'rxjs';
+import {
+    Subscription,
+    Subject,
+    takeUntil,
+    distinctUntilChanged,
+    throttleTime,
+} from 'rxjs';
 
 import moment from 'moment';
 
@@ -168,7 +174,11 @@ export class Step4FormComponent
                 });
 
             this.accidentForm.valueChanges
-                .pipe(takeUntil(this.destroy$))
+                .pipe(
+                    distinctUntilChanged(),
+                    throttleTime(2),
+                    takeUntil(this.destroy$)
+                )
                 .subscribe((res) => {
                     if (this.selectedAddress) {
                         const selectedAddress = {
@@ -186,7 +196,11 @@ export class Step4FormComponent
 
         if (this.selectedMode === SelectedMode.REVIEW) {
             this.accidentForm.valueChanges
-                .pipe(takeUntil(this.destroy$))
+                .pipe(
+                    distinctUntilChanged(),
+                    throttleTime(2),
+                    takeUntil(this.destroy$)
+                )
                 .subscribe((res) => {
                     const reviewMessages = {
                         firstRowReview: res.firstRowReview,
@@ -357,7 +371,11 @@ export class Step4FormComponent
 
     public startValueChangesMonitoring(): void {
         this.subscription = this.accidentForm.valueChanges
-            .pipe(takeUntil(this.destroy$))
+            .pipe(
+                distinctUntilChanged(),
+                throttleTime(2),
+                takeUntil(this.destroy$)
+            )
             .subscribe((updatedFormValues) => {
                 const {
                     date,

@@ -10,7 +10,13 @@ import {
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
-import { Subject, Subscription, takeUntil } from 'rxjs';
+import {
+    distinctUntilChanged,
+    Subject,
+    Subscription,
+    takeUntil,
+    throttleTime,
+} from 'rxjs';
 
 import {
     anyInputInLineIncorrect,
@@ -1245,7 +1251,11 @@ export class Step6Component implements OnInit, OnDestroy {
 
             if (hasIncorrectValues) {
                 this.subscription = this.educationForm.valueChanges
-                    .pipe(takeUntil(this.destroy$))
+                    .pipe(
+                        distinctUntilChanged(),
+                        throttleTime(2),
+                        takeUntil(this.destroy$)
+                    )
                     .subscribe((updatedFormValues) => {
                         const filteredFieldsWithIncorrectValues = Object.keys(
                             filteredIncorrectValues

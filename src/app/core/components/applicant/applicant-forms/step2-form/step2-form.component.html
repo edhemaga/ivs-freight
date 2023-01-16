@@ -51,37 +51,34 @@
 
             <!-- REVIEW AND FEEDBACK -->
 
-            <div
-                class="review-feedback-container"
-                *ngIf="
-                    (selectedMode === 'REVIEW_MODE' ||
-                        selectedMode === 'FEEDBACK_MODE') &&
-                    !isReviewingCard
-                "
+            <ng-container
+                *ngIf="selectedMode !== 'APPLICANT_MODE' && !isReviewingCard"
             >
-                <app-applicant-review-feedback
-                    formControlName="firstRowReview"
-                    [displayAnnotationButton]="
-                        selectedMode === 'REVIEW_MODE' &&
-                        openAnnotationArray[20].displayAnnotationButton
-                    "
-                    [displayAnnotationTextArea]="
-                        selectedMode === 'REVIEW_MODE' &&
-                        openAnnotationArray[20].displayAnnotationTextArea
-                    "
-                    [lineIndex]="20"
-                    [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
-                    [feedbackText]="
-                        selectedMode === 'FEEDBACK_MODE' &&
-                        (stepFeedbackValues?.commonMessage ??
-                            stepFeedbackValues?.employerMessage)
-                    "
-                    (annotationBtnClickEvent)="
-                        selectedMode === 'REVIEW_MODE' &&
-                            getAnnotationBtnClickValue($event)
-                    "
-                ></app-applicant-review-feedback>
-            </div>
+                <div class="review-feedback-container">
+                    <app-applicant-review-feedback
+                        formControlName="firstRowReview"
+                        [displayAnnotationButton]="
+                            selectedMode === 'REVIEW_MODE' &&
+                            openAnnotationArray[20].displayAnnotationButton
+                        "
+                        [displayAnnotationTextArea]="
+                            selectedMode === 'REVIEW_MODE' &&
+                            openAnnotationArray[20].displayAnnotationTextArea
+                        "
+                        [lineIndex]="20"
+                        [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
+                        [feedbackText]="
+                            selectedMode === 'FEEDBACK_MODE' &&
+                            (stepFeedbackValues?.commonMessage ??
+                                stepFeedbackValues?.employerMessage)
+                        "
+                        (annotationBtnClickEvent)="
+                            selectedMode === 'REVIEW_MODE' &&
+                                getAnnotationBtnClickValue($event)
+                        "
+                    ></app-applicant-review-feedback>
+                </div>
+            </ng-container>
         </div>
 
         <!-- PHONE, EMAIL, FAX -->
@@ -166,36 +163,33 @@
 
             <!-- REVIEW AND FEEDBACK -->
 
-            <div
-                class="review-feedback-container"
-                *ngIf="
-                    (selectedMode === 'REVIEW_MODE' ||
-                        selectedMode === 'FEEDBACK_MODE') &&
-                    !isReviewingCard
-                "
+            <ng-container
+                *ngIf="selectedMode !== 'APPLICANT_MODE' && !isReviewingCard"
             >
-                <app-applicant-review-feedback
-                    formControlName="thirdRowReview"
-                    [displayAnnotationButton]="
-                        selectedMode === 'REVIEW_MODE' &&
-                        openAnnotationArray[22].displayAnnotationButton
-                    "
-                    [displayAnnotationTextArea]="
-                        selectedMode === 'REVIEW_MODE' &&
-                        openAnnotationArray[22].displayAnnotationTextArea
-                    "
-                    [lineIndex]="22"
-                    [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
-                    [feedbackText]="
-                        selectedMode === 'FEEDBACK_MODE' &&
-                        stepFeedbackValues?.contactMessage
-                    "
-                    (annotationBtnClickEvent)="
-                        selectedMode === 'REVIEW_MODE' &&
-                            getAnnotationBtnClickValue($event)
-                    "
-                ></app-applicant-review-feedback>
-            </div>
+                <div class="review-feedback-container">
+                    <app-applicant-review-feedback
+                        formControlName="thirdRowReview"
+                        [displayAnnotationButton]="
+                            selectedMode === 'REVIEW_MODE' &&
+                            openAnnotationArray[22].displayAnnotationButton
+                        "
+                        [displayAnnotationTextArea]="
+                            selectedMode === 'REVIEW_MODE' &&
+                            openAnnotationArray[22].displayAnnotationTextArea
+                        "
+                        [lineIndex]="22"
+                        [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
+                        [feedbackText]="
+                            selectedMode === 'FEEDBACK_MODE' &&
+                            stepFeedbackValues?.contactMessage
+                        "
+                        (annotationBtnClickEvent)="
+                            selectedMode === 'REVIEW_MODE' &&
+                                getAnnotationBtnClickValue($event)
+                        "
+                    ></app-applicant-review-feedback>
+                </div>
+            </ng-container>
         </div>
 
         <!-- ADDRESS -->
@@ -260,36 +254,33 @@
 
             <!-- REVIEW AND FEEDBACK -->
 
-            <div
-                class="review-feedback-container"
-                *ngIf="
-                    (selectedMode === 'REVIEW_MODE' ||
-                        selectedMode === 'FEEDBACK_MODE') &&
-                    !isReviewingCard
-                "
+            <ng-container
+                *ngIf="selectedMode !== 'APPLICANT_MODE' && !isReviewingCard"
             >
-                <app-applicant-review-feedback
-                    formControlName="fourthRowReview"
-                    [displayAnnotationButton]="
-                        selectedMode === 'REVIEW_MODE' &&
-                        openAnnotationArray[23].displayAnnotationButton
-                    "
-                    [displayAnnotationTextArea]="
-                        selectedMode === 'REVIEW_MODE' &&
-                        openAnnotationArray[23].displayAnnotationTextArea
-                    "
-                    [lineIndex]="23"
-                    [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
-                    [feedbackText]="
-                        selectedMode === 'FEEDBACK_MODE' &&
-                        stepFeedbackValues?.addressMessage
-                    "
-                    (annotationBtnClickEvent)="
-                        selectedMode === 'REVIEW_MODE' &&
-                            getAnnotationBtnClickValue($event)
-                    "
-                ></app-applicant-review-feedback>
-            </div>
+                <div class="review-feedback-container">
+                    <app-applicant-review-feedback
+                        formControlName="fourthRowReview"
+                        [displayAnnotationButton]="
+                            selectedMode === 'REVIEW_MODE' &&
+                            openAnnotationArray[23].displayAnnotationButton
+                        "
+                        [displayAnnotationTextArea]="
+                            selectedMode === 'REVIEW_MODE' &&
+                            openAnnotationArray[23].displayAnnotationTextArea
+                        "
+                        [lineIndex]="23"
+                        [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
+                        [feedbackText]="
+                            selectedMode === 'FEEDBACK_MODE' &&
+                            stepFeedbackValues?.addressMessage
+                        "
+                        (annotationBtnClickEvent)="
+                            selectedMode === 'REVIEW_MODE' &&
+                                getAnnotationBtnClickValue($event)
+                        "
+                    ></app-applicant-review-feedback>
+                </div>
+            </ng-container>
         </div>
 
         <!-- JOB DETAILS -->
@@ -335,36 +326,33 @@
 
             <!-- REVIEW AND FEEDBACK -->
 
-            <div
-                class="review-feedback-container"
-                *ngIf="
-                    (selectedMode === 'REVIEW_MODE' ||
-                        selectedMode === 'FEEDBACK_MODE') &&
-                    !isReviewingCard
-                "
+            <ng-container
+                *ngIf="selectedMode !== 'APPLICANT_MODE' && !isReviewingCard"
             >
-                <app-applicant-review-feedback
-                    formControlName="secondRowReview"
-                    [displayAnnotationButton]="
-                        selectedMode === 'REVIEW_MODE' &&
-                        openAnnotationArray[21].displayAnnotationButton
-                    "
-                    [displayAnnotationTextArea]="
-                        selectedMode === 'REVIEW_MODE' &&
-                        openAnnotationArray[21].displayAnnotationTextArea
-                    "
-                    [lineIndex]="21"
-                    [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
-                    [feedbackText]="
-                        selectedMode === 'FEEDBACK_MODE' &&
-                        stepFeedbackValues?.jobDescriptionMessage
-                    "
-                    (annotationBtnClickEvent)="
-                        selectedMode === 'REVIEW_MODE' &&
-                            getAnnotationBtnClickValue($event)
-                    "
-                ></app-applicant-review-feedback>
-            </div>
+                <div class="review-feedback-container">
+                    <app-applicant-review-feedback
+                        formControlName="secondRowReview"
+                        [displayAnnotationButton]="
+                            selectedMode === 'REVIEW_MODE' &&
+                            openAnnotationArray[21].displayAnnotationButton
+                        "
+                        [displayAnnotationTextArea]="
+                            selectedMode === 'REVIEW_MODE' &&
+                            openAnnotationArray[21].displayAnnotationTextArea
+                        "
+                        [lineIndex]="21"
+                        [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
+                        [feedbackText]="
+                            selectedMode === 'FEEDBACK_MODE' &&
+                            stepFeedbackValues?.jobDescriptionMessage
+                        "
+                        (annotationBtnClickEvent)="
+                            selectedMode === 'REVIEW_MODE' &&
+                                getAnnotationBtnClickValue($event)
+                        "
+                    ></app-applicant-review-feedback>
+                </div>
+            </ng-container>
         </div>
 
         <!-- FROM, TO, REASON FOR LEAVING -->
@@ -442,9 +430,7 @@
                         dropdownWidthClass: isEditing
                             ? 'w-col-284'
                             : 'w-col-292',
-                        isDisabled:
-                            selectedMode === 'REVIEW_MODE' ||
-                            selectedMode === 'FEEDBACK_MODE'
+                        isDisabled: selectedMode !== 'APPLICANT_MODE'
                     }"
                     [options]="reasonsForLeaving"
                     [activeItem]="selectedReasonForLeaving"
@@ -456,36 +442,33 @@
 
             <!-- REVIEW AND FEEDBACK -->
 
-            <div
-                class="review-feedback-container"
-                *ngIf="
-                    (selectedMode === 'REVIEW_MODE' ||
-                        selectedMode === 'FEEDBACK_MODE') &&
-                    !isReviewingCard
-                "
+            <ng-container
+                *ngIf="selectedMode !== 'APPLICANT_MODE' && !isReviewingCard"
             >
-                <app-applicant-review-feedback
-                    formControlName="secondRowReview"
-                    [displayAnnotationButton]="
-                        selectedMode === 'REVIEW_MODE' &&
-                        openAnnotationArray[21].displayAnnotationButton
-                    "
-                    [displayAnnotationTextArea]="
-                        selectedMode === 'REVIEW_MODE' &&
-                        openAnnotationArray[21].displayAnnotationTextArea
-                    "
-                    [lineIndex]="21"
-                    [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
-                    [feedbackText]="
-                        selectedMode === 'FEEDBACK_MODE' &&
-                        stepFeedbackValues?.jobDescriptionMessage
-                    "
-                    (annotationBtnClickEvent)="
-                        selectedMode === 'REVIEW_MODE' &&
-                            getAnnotationBtnClickValue($event)
-                    "
-                ></app-applicant-review-feedback>
-            </div>
+                <div class="review-feedback-container">
+                    <app-applicant-review-feedback
+                        formControlName="secondRowReview"
+                        [displayAnnotationButton]="
+                            selectedMode === 'REVIEW_MODE' &&
+                            openAnnotationArray[21].displayAnnotationButton
+                        "
+                        [displayAnnotationTextArea]="
+                            selectedMode === 'REVIEW_MODE' &&
+                            openAnnotationArray[21].displayAnnotationTextArea
+                        "
+                        [lineIndex]="21"
+                        [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
+                        [feedbackText]="
+                            selectedMode === 'FEEDBACK_MODE' &&
+                            stepFeedbackValues?.jobDescriptionMessage
+                        "
+                        (annotationBtnClickEvent)="
+                            selectedMode === 'REVIEW_MODE' &&
+                                getAnnotationBtnClickValue($event)
+                        "
+                    ></app-applicant-review-feedback>
+                </div>
+            </ng-container>
         </div>
 
         <!-- ACCOUNT FOR PERIOD -->
@@ -520,40 +503,38 @@
 
             <!-- REVIEW AND FEEDBACK -->
 
-            <div
-                class="review-feedback-container"
-                *ngIf="
-                    (selectedMode === 'REVIEW_MODE' ||
-                        selectedMode === 'FEEDBACK_MODE') &&
-                    !isReviewingCard
-                "
+            <ng-container
+                *ngIf="selectedMode !== 'APPLICANT_MODE' && !isReviewingCard"
             >
-                <app-applicant-review-feedback
-                    formControlName="seventhRowReview"
-                    [displayAnnotationButton]="
-                        selectedMode === 'REVIEW_MODE' &&
-                        openAnnotationArray[26].displayAnnotationButton
-                    "
-                    [displayAnnotationTextArea]="
-                        selectedMode === 'REVIEW_MODE' &&
-                        openAnnotationArray[26].displayAnnotationTextArea
-                    "
-                    [lineIndex]="26"
-                    [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
-                    [feedbackText]="
-                        selectedMode === 'FEEDBACK_MODE' &&
-                        stepFeedbackValues?.accountForPeriodBetweenMessage
-                    "
-                    (annotationBtnClickEvent)="
-                        selectedMode === 'REVIEW_MODE' &&
-                            getAnnotationBtnClickValue($event)
-                    "
-                ></app-applicant-review-feedback>
-            </div>
+                <div class="review-feedback-container">
+                    <app-applicant-review-feedback
+                        formControlName="seventhRowReview"
+                        [displayAnnotationButton]="
+                            selectedMode === 'REVIEW_MODE' &&
+                            openAnnotationArray[26].displayAnnotationButton
+                        "
+                        [displayAnnotationTextArea]="
+                            selectedMode === 'REVIEW_MODE' &&
+                            openAnnotationArray[26].displayAnnotationTextArea
+                        "
+                        [lineIndex]="26"
+                        [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
+                        [feedbackText]="
+                            selectedMode === 'FEEDBACK_MODE' &&
+                            stepFeedbackValues?.accountForPeriodBetweenMessage
+                        "
+                        (annotationBtnClickEvent)="
+                            selectedMode === 'REVIEW_MODE' &&
+                                getAnnotationBtnClickValue($event)
+                        "
+                    ></app-applicant-review-feedback>
+                </div>
+            </ng-container>
         </div>
 
         <div
             class="d-flex flex-column justfiy-content-center driving-position-group"
+            [ngStyle]="{ margin: isEditing ? '0 4px 12px 4px' : ' 0 0 12px 0' }"
         >
             <!-- DRIVING POSITION CHECKBOX -->
 
@@ -565,662 +546,622 @@
                 [disabledStillCheckMark]="selectedMode !== 'APPLICANT_MODE'"
             ></app-ta-checkbox>
 
-            <div
-                class="d-flex flex-column class-of-equipment-container"
-                [ngStyle]="{
-                    'margin-top':
-                        classesOfEquipment?.controls.length === 1
-                            ? '28px'
-                            : '12px'
-                }"
+            <ng-container
                 *ngIf="workExperienceForm.get('isDrivingPosition').value"
             >
-                <!-- CREATED CLASS OF EQUIPMENT DATA -->
-
-                <ng-container
-                    *ngIf="classesOfEquipment?.controls.length > 1"
-                    formArrayName="classesOfEquipment"
+                <div
+                    class="d-flex flex-column class-of-equipment-container"
+                    [ngStyle]="{
+                        'margin-top':
+                            classesOfEquipment?.controls.length === 1
+                                ? '28px'
+                                : '12px'
+                    }"
                 >
-                    <div
-                        class="d-flex flex-column align-items-center class-of-equipment-cards-container"
+                    <!-- CREATED CLASS OF EQUIPMENT DATA -->
+
+                    <ng-container
+                        *ngIf="classesOfEquipment?.controls.length > 1"
+                        formArrayName="classesOfEquipment"
                     >
-                        <div class="align-items-center cards-title-box">
-                            <div class="align-items-center vehicle-box">
-                                <p class="m-0 ta-font-semi-bold">
-                                    Vehicle Type <span>*</span>
-                                </p>
+                        <div
+                            class="d-flex flex-column align-items-center class-of-equipment-cards-container"
+                            [ngStyle]="{
+                                width: isEditing ? '600px' : '616px'
+                            }"
+                        >
+                            <div class="align-items-center cards-title-box">
+                                <div class="align-items-center vehicle-box">
+                                    <p class="m-0 ta-font-semi-bold">
+                                        Vehicle Type <span>*</span>
+                                    </p>
+                                </div>
+
+                                <div class="align-items-center trailer-box">
+                                    <p class="m-0 ta-font-semi-bold">
+                                        Trailer Type <span>*</span>
+                                    </p>
+                                </div>
+
+                                <div class="align-items-center length-box">
+                                    <p class="m-0 ta-font-semi-bold">
+                                        Length <span>*</span>
+                                    </p>
+                                </div>
                             </div>
 
-                            <div class="align-items-center trailer-box">
-                                <p class="m-0 ta-font-semi-bold">
-                                    Trailer Type <span>*</span>
-                                </p>
-                            </div>
+                            <ng-container
+                                *ngFor="
+                                    let classOfEquipment of classesOfEquipment?.controls;
+                                    let i = index;
+                                    trackBy: trackByIdentity
+                                "
+                            >
+                                <div
+                                    class="d-flex flex-column justify-content-center class-of-equipment-card applicant-step-two-deep"
+                                    [ngClass]="{
+                                        valid:
+                                            classesOfEquipment.controls[i]
+                                                .status === 'VALID'
+                                    }"
+                                    [formGroupName]="i"
+                                >
+                                    <!-- ,
+                                    invalid:
+                                        classesOfEquipment.controls[i]
+                                            .status === 'INVALID' -->
+                                    <div
+                                        class="d-flex align-items-center input-container"
+                                    >
+                                        <!-- TRUCK TYPE, TRAILER TYPE, LENGTH -->
 
-                            <div class="align-items-center length-box">
-                                <p class="m-0 ta-font-semi-bold">
-                                    Length <span>*</span>
-                                </p>
-                            </div>
+                                        <div class="card-vehicle-type-group">
+                                            <app-ta-input-dropdown
+                                                formControlName="vehicleType"
+                                                [template]="'svgtext-template'"
+                                                [inputConfig]="{
+                                                    name: 'Input Dropdown',
+                                                    type: 'text',
+                                                    isDisabled:
+                                                        selectedMode !==
+                                                        'APPLICANT_MODE',
+                                                    isDropdown: true,
+                                                    dropdownWidthClass:
+                                                        isEditing
+                                                            ? 'w-col-210'
+                                                            : 'w-col-218',
+                                                    dropdownImageInput: {
+                                                        withText: true,
+                                                        svg: true,
+                                                        image: false,
+                                                        url: selectedVehicleTypeArr[
+                                                            i
+                                                        ]?.logoName,
+                                                        template: 'truck',
+                                                        class: selectedVehicleTypeArr[
+                                                            i
+                                                        ]?.name
+                                                            ?.trim()
+                                                            .replace(' ', '')
+                                                            .toLowerCase()
+                                                    },
+                                                    customClass:
+                                                        'truck-trailer-dropdown',
+                                                    hideErrorMessage: true,
+                                                    hideRequiredCheck: true
+                                                }"
+                                                [options]="vehicleType"
+                                                [activeItem]="
+                                                    selectedVehicleTypeArr[i]
+                                                "
+                                                (selectedItem)="
+                                                    handleInputSelect(
+                                                        $event,
+                                                        'TRUCK-TYPE',
+                                                        i
+                                                    )
+                                                "
+                                            ></app-ta-input-dropdown>
+                                        </div>
+
+                                        <div class="card-trailer-type-group">
+                                            <app-ta-input-dropdown
+                                                formControlName="trailerType"
+                                                [template]="'svgtext-template'"
+                                                [inputConfig]="{
+                                                    name: 'Input Dropdown',
+                                                    type: 'text',
+                                                    isDisabled:
+                                                        (selectedMode ===
+                                                            'APPLICANT_MODE' &&
+                                                            (!isTruckSelectedArr[
+                                                                i
+                                                            ] ||
+                                                                isBoxTruckSelectedArr[
+                                                                    i
+                                                                ])) ||
+                                                        selectedMode !==
+                                                            'APPLICANT_MODE',
+                                                    isDropdown: true,
+                                                    dropdownWidthClass:
+                                                        isEditing
+                                                            ? 'w-col-219'
+                                                            : 'w-col-228',
+                                                    customClass:
+                                                        'truck-trailer-dropdown',
+                                                    dropdownImageInput: {
+                                                        withText: true,
+                                                        svg: true,
+                                                        image: false,
+                                                        url: selectedTrailerTypeArr[
+                                                            i
+                                                        ]?.logoName,
+                                                        template: 'trailer',
+                                                        class: [
+                                                            'Tanker',
+                                                            'Tanker Pneumatic'
+                                                        ].includes(
+                                                            selectedTrailerTypeArr[
+                                                                i
+                                                            ]?.name
+                                                        )
+                                                            ? 'tanker'
+                                                            : selectedTrailerTypeArr[
+                                                                  i
+                                                              ]?.name
+                                                                  ?.toLowerCase()
+                                                                  ?.includes(
+                                                                      'rgn'
+                                                                  )
+                                                            ? 'low-boy-rgn'
+                                                            : selectedTrailerTypeArr[
+                                                                  i
+                                                              ]?.name
+                                                                  ?.trim()
+                                                                  .replace(
+                                                                      ' ',
+                                                                      ''
+                                                                  )
+                                                                  .toLowerCase()
+                                                    },
+                                                    hideErrorMessage: true,
+                                                    hideRequiredCheck: true
+                                                }"
+                                                [options]="
+                                                    filteredTrailerTypeArr[i]
+                                                "
+                                                [activeItem]="
+                                                    selectedTrailerTypeArr[i]
+                                                "
+                                                (selectedItem)="
+                                                    handleInputSelect(
+                                                        $event,
+                                                        'TRAILER-TYPE',
+                                                        i
+                                                    )
+                                                "
+                                            ></app-ta-input-dropdown>
+                                        </div>
+
+                                        <div class="card-length-group">
+                                            <app-ta-input-dropdown
+                                                formControlName="trailerLength"
+                                                [inputConfig]="{
+                                                    name: 'Input Dropdown',
+                                                    type: 'text',
+                                                    isDisabled:
+                                                        (selectedMode ===
+                                                            'APPLICANT_MODE' &&
+                                                            !isTruckSelectedArr[
+                                                                i
+                                                            ]) ||
+                                                        selectedMode !==
+                                                            'APPLICANT_MODE',
+                                                    isDropdown: true,
+                                                    dropdownWidthClass:
+                                                        isEditing
+                                                            ? 'w-col-95'
+                                                            : 'w-col-98',
+                                                    hideErrorMessage: true,
+                                                    hideRequiredCheck: true
+                                                }"
+                                                [options]="
+                                                    filteredLengthTypeArr[i]
+                                                "
+                                                [activeItem]="
+                                                    selectedTrailerLengthArr[i]
+                                                "
+                                                (selectedItem)="
+                                                    handleInputSelect(
+                                                        $event,
+                                                        'TRAILER-LENGTH',
+                                                        i
+                                                    )
+                                                "
+                                            ></app-ta-input-dropdown>
+                                        </div>
+
+                                        <div
+                                            class="d-flex justfiy-content-center align-items-center delete-btn-group"
+                                        >
+                                            <div
+                                                ngbTooltip
+                                                mainTooltip="Delete"
+                                                tooltipBackground="#EF5350"
+                                                position="top"
+                                                (click)="
+                                                    onDeleteClassOfEquipment(i)
+                                                "
+                                            >
+                                                <svg-icon
+                                                    class="delete-icon"
+                                                    [ngClass]="{
+                                                        valid:
+                                                            classesOfEquipment
+                                                                .controls[i]
+                                                                .status ===
+                                                            'VALID'
+                                                    }"
+                                                    src="assets/svg/truckassist-table/dropdown/content/delete.svg"
+                                                    [svgStyle]="{
+                                                        'width.px': 18,
+                                                        'height.px': 18
+                                                    }"
+                                                ></svg-icon>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div
+                                        class="align-items-center switch-container"
+                                    >
+                                        <app-ta-input-switch-on-off
+                                            [titleText]="'CFR Part 40?'"
+                                            [isRequired]="true"
+                                            [selectedSwitchState]="
+                                                classesOfEquipment.controls[i]
+                                                    .value.cfrPart
+                                            "
+                                            [displayRequiredState]="
+                                                displaySwitchCfrPartRequiredStateArray[
+                                                    i
+                                                ]
+                                            "
+                                            (switchStateEmitter)="
+                                                handleInputSelect(
+                                                    $event,
+                                                    'SWITCH',
+                                                    i,
+                                                    'cfrPart'
+                                                )
+                                            "
+                                        ></app-ta-input-switch-on-off>
+
+                                        <app-ta-input-switch-on-off
+                                            [titleText]="'FMCSA Regulated'"
+                                            [isRequired]="true"
+                                            [selectedSwitchState]="
+                                                classesOfEquipment.controls[i]
+                                                    .value.fmCSA
+                                            "
+                                            [displayRequiredState]="
+                                                displaySwitchFmcsaRequiredStateArray[
+                                                    i
+                                                ]
+                                            "
+                                            (switchStateEmitter)="
+                                                handleInputSelect(
+                                                    $event,
+                                                    'SWITCH',
+                                                    i,
+                                                    'fmCSA'
+                                                )
+                                            "
+                                        ></app-ta-input-switch-on-off>
+
+                                        <ng-container *ngIf="false">
+                                            <div
+                                                class="d-flex align-items-center required-container"
+                                            >
+                                                <p
+                                                    class="m-0 ta-font-semi-bold"
+                                                >
+                                                    Required
+                                                </p>
+                                            </div>
+                                        </ng-container>
+                                    </div>
+                                </div></ng-container
+                            >
                         </div>
+                    </ng-container>
 
+                    <ng-container
+                        *ngIf="classesOfEquipment?.controls.length <= 1"
+                        formArrayName="classesOfEquipment"
+                    >
                         <ng-container
                             *ngFor="
                                 let classOfEquipment of classesOfEquipment?.controls;
                                 let i = index;
                                 trackBy: trackByIdentity
                             "
+                            [formGroupName]="i"
                         >
-                            <div
-                                class="d-flex flex-column justify-content-center class-of-equipment-card applicant-step-two-deep"
-                                [ngClass]="{
-                                    valid:
-                                        classesOfEquipment.controls[i]
-                                            .status === 'VALID'
-                                }"
-                                [formGroupName]="i"
-                            >
-                                <!-- ,
-                                    invalid:
-                                        classesOfEquipment.controls[i]
-                                            .status === 'INVALID' -->
+                            <!-- TRUCK TYPE, TRAILER TYPE, LENGTH -->
+
+                            <div class="d-flex line-container">
                                 <div
-                                    class="d-flex align-items-center input-container"
-                                >
-                                    <!-- TRUCK TYPE, TRAILER TYPE, LENGTH -->
-
-                                    <div class="card-vehicle-type-group">
-                                        <app-ta-input-dropdown
-                                            formControlName="vehicleType"
-                                            [template]="'svgtext-template'"
-                                            [inputConfig]="{
-                                                name: 'Input Dropdown',
-                                                type: 'text',
-                                                isDropdown: true,
-                                                dropdownWidthClass: 'w-col-220',
-                                                dropdownImageInput: {
-                                                    withText: true,
-                                                    svg: true,
-                                                    image: false,
-                                                    url: selectedVehicleTypeArr[
-                                                        i
-                                                    ]?.logoName,
-                                                    template: 'truck',
-                                                    class: selectedVehicleTypeArr[
-                                                        i
-                                                    ]?.name
-                                                        ?.trim()
-                                                        .replace(' ', '')
-                                                        .toLowerCase()
-                                                },
-                                                customClass:
-                                                    'truck-trailer-dropdown',
-                                                hideErrorMessage: true,
-                                                hideRequiredCheck: true
-                                            }"
-                                            [options]="vehicleType"
-                                            [activeItem]="
-                                                selectedVehicleTypeArr[i]
-                                            "
-                                            (selectedItem)="
-                                                handleInputSelect(
-                                                    $event,
-                                                    'TRUCK-TYPE',
-                                                    i
-                                                )
-                                            "
-                                        ></app-ta-input-dropdown>
-                                    </div>
-
-                                    <div class="card-trailer-type-group">
-                                        <app-ta-input-dropdown
-                                            formControlName="trailerType"
-                                            [template]="'svgtext-template'"
-                                            [inputConfig]="{
-                                                name: 'Input Dropdown',
-                                                type: 'text',
-                                                isDropdown: true,
-                                                dropdownWidthClass: 'w-col-230',
-                                                customClass:
-                                                    'truck-trailer-dropdown',
-                                                dropdownImageInput: {
-                                                    withText: true,
-                                                    svg: true,
-                                                    image: false,
-                                                    url: selectedTrailerTypeArr[
-                                                        i
-                                                    ]?.logoName,
-                                                    template: 'trailer',
-                                                    class: [
-                                                        'Tanker',
-                                                        'Tanker Pneumatic'
-                                                    ].includes(
-                                                        selectedTrailerTypeArr[
-                                                            i
-                                                        ]?.name
-                                                    )
-                                                        ? 'tanker'
-                                                        : selectedTrailerTypeArr[
-                                                              i
-                                                          ]?.name
-                                                              ?.toLowerCase()
-                                                              ?.includes('rgn')
-                                                        ? 'low-boy-rgn'
-                                                        : selectedTrailerTypeArr[
-                                                              i
-                                                          ]?.name
-                                                              ?.trim()
-                                                              .replace(' ', '')
-                                                              .toLowerCase()
-                                                },
-                                                hideErrorMessage: true,
-                                                hideRequiredCheck: true
-                                            }"
-                                            [options]="filteredTrailerType"
-                                            [activeItem]="
-                                                selectedTrailerTypeArr[i]
-                                            "
-                                            (selectedItem)="
-                                                handleInputSelect(
-                                                    $event,
-                                                    'TRAILER-TYPE',
-                                                    i
-                                                )
-                                            "
-                                        ></app-ta-input-dropdown>
-                                    </div>
-
-                                    <div class="card-length-group">
-                                        <app-ta-input-dropdown
-                                            formControlName="trailerLength"
-                                            [inputConfig]="{
-                                                name: 'Input Dropdown',
-                                                type: 'text',
-                                                isDropdown: true,
-                                                dropdownWidthClass: 'w-col-100',
-                                                hideErrorMessage: true,
-                                                hideRequiredCheck: true
-                                            }"
-                                            [options]="filteredLengthType"
-                                            [activeItem]="
-                                                selectedTrailerLengthArr[i]
-                                            "
-                                            (selectedItem)="
-                                                handleInputSelect(
-                                                    $event,
-                                                    'TRAILER-LENGTH',
-                                                    i
-                                                )
-                                            "
-                                        ></app-ta-input-dropdown>
-                                    </div>
-
-                                    <div
-                                        class="d-flex justfiy-content-center align-items-center delete-btn-group"
-                                    >
-                                        <div
-                                            ngbTooltip
-                                            mainTooltip="Delete"
-                                            tooltipBackground="#EF5350"
-                                            position="top"
-                                            (click)="
-                                                onDeleteClassOfEquipment(i)
-                                            "
-                                        >
-                                            <svg-icon
-                                                class="delete-icon"
-                                                [ngClass]="{
-                                                    valid:
-                                                        classesOfEquipment
-                                                            .controls[i]
-                                                            .status === 'VALID'
-                                                }"
-                                                src="assets/svg/truckassist-table/dropdown/content/delete.svg"
-                                                [svgStyle]="{
-                                                    'width.px': 18,
-                                                    'height.px': 18
-                                                }"
-                                            ></svg-icon>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div
-                                    class="align-items-center switch-container"
-                                >
-                                    <app-ta-input-switch-on-off
-                                        [titleText]="'CFR Part 40?'"
-                                        [isRequired]="true"
-                                        [selectedSwitchState]="
-                                            classesOfEquipment.controls[i].value
-                                                .cfrPart
-                                        "
-                                        (switchStateEmitter)="
-                                            handleInputSelect(
-                                                $event,
-                                                'SWITCH',
-                                                i,
-                                                'cfrPart'
-                                            )
-                                        "
-                                    ></app-ta-input-switch-on-off>
-
-                                    <app-ta-input-switch-on-off
-                                        [titleText]="'FMCSA Regulated'"
-                                        [isRequired]="true"
-                                        [selectedSwitchState]="
-                                            classesOfEquipment.controls[i].value
-                                                .cfrPart
-                                        "
-                                        (switchStateEmitter)="
-                                            handleInputSelect(
-                                                $event,
-                                                'SWITCH',
-                                                i,
-                                                'fmCSA'
-                                            )
-                                        "
-                                    ></app-ta-input-switch-on-off>
-
-                                    <ng-container *ngIf="false">
-                                        <div
-                                            class="d-flex align-items-center required-container"
-                                        >
-                                            <p class="m-0 ta-font-semi-bold">
-                                                Required
-                                            </p>
-                                        </div>
-                                    </ng-container>
-                                </div>
-                            </div></ng-container
-                        >
-                    </div>
-                </ng-container>
-
-                <!-- <div
-                    *ngIf="classOfEquipmentArray?.length"
-                    class="d-flex flex-column justify-content-center equipment-container"
-                    [ngStyle]="{
-                        'margin-bottom':
-                            isEditingClassOfEquipment &&
-                            classOfEquipmentArray?.length === 1
-                                ? '0'
-                                : '32px'
-                    }"
-                >
-                    <div
-                        class="d-flex flex-column"
-                        *ngFor="
-                            let classOfEquipment of classOfEquipmentArray;
-                            let i = index;
-                            trackBy: trackByIdentity
-                        "
-                    >
-                        <div
-                            class="d-flex align-items-center title-container"
-                            *ngIf="
-                                (classOfEquipmentArray.length > 0 &&
-                                    classOfEquipmentHelperIndex !== 0 &&
-                                    i === 0) ||
-                                (classOfEquipmentHelperIndex === 0 && i === 1)
-                            "
-                        >
-                            <div
-                                class="d-flex align-items-center vehicle-title-box"
-                            >
-                                <p class="m-0 ta-font-bold">
-                                    VEHICLE TYPE <span>*</span>
-                                </p>
-                            </div>
-                            <div
-                                class="d-flex align-items-center trailer-title-box"
-                            >
-                                <p class="m-0 ta-font-bold">
-                                    TRAILER TYPE <span>*</span>
-                                </p>
-                            </div>
-                            <div
-                                class="d-flex align-items-center length-title-box"
-                            >
-                                <p class="m-0 ta-font-bold">
-                                    LENGTH <span>*</span>
-                                </p>
-                            </div>
-                        </div>
-
-                        <div
-                            class="d-flex align-items-center equipment-info-container line-container"
-                            *ngIf="!classOfEquipment.isEditingClassOfEquipment"
-                        >
-                            <div
-                                class="d-flex align-items-center info-btn-container"
-                            >
-                                <div
-                                    class="d-flex align-items-center vehicle-box"
-                                >
-                                    <svg-icon
-                                        class="icon"
-                                        [src]="
-                                            'assets/svg/common/trucks/' +
-                                            classOfEquipment.vehicleTypeImageLocation
-                                        "
-                                    ></svg-icon>
-
-                                    <p class="m-0 ta-font-regular">
-                                        {{ classOfEquipment.vehicleType }}
-                                    </p>
-                                </div>
-                                <div
-                                    class="d-flex align-items-center trailer-box"
-                                >
-                                    <svg-icon
-                                        *ngIf="
-                                            classOfEquipment.trailerTypeImageLocation
-                                        "
-                                        class="icon"
-                                        [src]="
-                                            'assets/svg/common/trailers/' +
-                                            classOfEquipment.trailerTypeImageLocation
-                                        "
-                                    ></svg-icon>
-
-                                    <p class="m-0 ta-font-regular">
-                                        {{ classOfEquipment.trailerType }}
-                                    </p>
-                                </div>
-                                <div
-                                    class="d-flex align-items-center length-box"
+                                    class="vehicle-type-group"
                                     [ngStyle]="{
-                                        width:
-                                            selectedMode === 'APPLICANT_MODE'
-                                                ? '79px'
-                                                : '60px'
+                                        width: isEditing ? '233px' : '251px'
                                     }"
                                 >
-                                    <p class="m-0 ta-font-regular">
-                                        {{ classOfEquipment.trailerLength }}
-                                    </p>
-                                </div>
-                            </div>
-
-                            <div
-                                class="d-flex align-items-center btn-container"
-                                *ngIf="selectedMode === 'APPLICANT_MODE'"
-                            >
-                                <div
-                                    ngbTooltip
-                                    mainTooltip="Edit"
-                                    tooltipBackground="#6C6C6C"
-                                    position="top"
-                                >
-                                    <svg-icon
-                                        class="edit-icon"
-                                        src="assets/svg/truckassist-table/dropdown/content/edit-hover.svg"
-                                        [svgStyle]="{
-                                            'width.px': 18,
-                                            'height.px': 18
+                                    <app-ta-input-dropdown
+                                        formControlName="vehicleType"
+                                        [template]="'svgtext-template'"
+                                        [inputConfig]="{
+                                            name: 'Input Dropdown',
+                                            type: 'text',
+                                            label: 'Vehicle type',
+                                            isRequired: true,
+                                            isDropdown: true,
+                                            isDisabled:
+                                                selectedMode !==
+                                                'APPLICANT_MODE',
+                                            dropdownWidthClass: 'w-col-251',
+                                            dropdownImageInput: {
+                                                withText: true,
+                                                svg: true,
+                                                image: false,
+                                                url: selectedVehicleTypeArr[i]
+                                                    ?.logoName,
+                                                template: 'truck',
+                                                class: selectedVehicleTypeArr[
+                                                    i
+                                                ]?.name
+                                                    ?.trim()
+                                                    .replace(' ', '')
+                                                    .toLowerCase()
+                                            },
+                                            customClass:
+                                                'truck-trailer-dropdown'
                                         }"
-                                        (click)="onEditClassOfEquipment(i)"
-                                    ></svg-icon>
-                                </div>
-
-                                <div
-                                    ngbTooltip
-                                    mainTooltip="Delete"
-                                    tooltipBackground="#EF5350"
-                                    position="top"
-                                >
-                                    <svg-icon
-                                        class="delete-icon"
-                                        src="assets/svg/truckassist-table/dropdown/content/delete.svg"
-                                        [svgStyle]="{
-                                            'width.px': 18,
-                                            'height.px': 18
-                                        }"
-                                        (click)="onDeleteClassOfEquipment(i)"
-                                    ></svg-icon>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div> -->
-
-                <ng-container
-                    *ngIf="classesOfEquipment?.controls.length <= 1"
-                    formArrayName="classesOfEquipment"
-                >
-                    <ng-container
-                        *ngFor="
-                            let classOfEquipment of classesOfEquipment?.controls;
-                            let i = index;
-                            trackBy: trackByIdentity
-                        "
-                        [formGroupName]="i"
-                    >
-                        <!-- TRUCK TYPE, TRAILER TYPE, LENGTH -->
-
-                        <div class="d-flex line-container">
-                            <div class="vehicle-type-group">
-                                <app-ta-input-dropdown
-                                    formControlName="vehicleType"
-                                    [template]="'svgtext-template'"
-                                    [inputConfig]="{
-                                        name: 'Input Dropdown',
-                                        type: 'text',
-                                        label: 'Vehicle type',
-                                        isRequired: true,
-                                        isDropdown: true,
-                                        isDisabled:
-                                            selectedMode === 'REVIEW_MODE' ||
-                                            selectedMode === 'FEEDBACK_MODE',
-                                        dropdownWidthClass: 'w-col-251',
-                                        dropdownImageInput: {
-                                            withText: true,
-                                            svg: true,
-                                            image: false,
-                                            url: selectedVehicleType?.logoName,
-                                            template: 'truck',
-                                            class: selectedVehicleType?.name
-                                                ?.trim()
-                                                .replace(' ', '')
-                                                .toLowerCase()
-                                        },
-                                        customClass: 'truck-trailer-dropdown'
-                                    }"
-                                    [options]="vehicleType"
-                                    [activeItem]="selectedVehicleType"
-                                    (selectedItem)="
-                                        handleInputSelect(
-                                            $event,
-                                            'TRUCK-TYPE',
-                                            i
-                                        )
-                                    "
-                                ></app-ta-input-dropdown>
-                            </div>
-
-                            <div class="trailer-type-group">
-                                <app-ta-input-dropdown
-                                    formControlName="trailerType"
-                                    [template]="'svgtext-template'"
-                                    [inputConfig]="{
-                                        name: 'Input Dropdown',
-                                        type: 'text',
-                                        label: 'Trailer Type',
-                                        isDisabled:
-                                            (selectedMode ===
-                                                'APPLICANT_MODE' &&
-                                                (!isTruckSelected ||
-                                                    !!isBoxTruckSelected)) ||
-                                            selectedMode === 'REVIEW_MODE' ||
-                                            selectedMode === 'FEEDBACK_MODE',
-                                        isRequired: isTruckSelected,
-                                        isDropdown: true,
-                                        dropdownWidthClass: 'w-col-211',
-                                        customClass: 'truck-trailer-dropdown',
-                                        dropdownImageInput: {
-                                            withText: true,
-                                            svg: true,
-                                            image: false,
-                                            url: selectedTrailerType?.logoName,
-                                            template: 'trailer',
-                                            class: [
-                                                'Tanker',
-                                                'Tanker Pneumatic'
-                                            ].includes(
-                                                selectedTrailerType?.name
-                                            )
-                                                ? 'tanker'
-                                                : selectedTrailerType?.name
-                                                      ?.toLowerCase()
-                                                      ?.includes('rgn')
-                                                ? 'low-boy-rgn'
-                                                : selectedTrailerType?.name
-                                                      ?.trim()
-                                                      .replace(' ', '')
-                                                      .toLowerCase()
-                                        }
-                                    }"
-                                    [activeItem]="selectedTrailerType"
-                                    [options]="filteredTrailerType"
-                                    (selectedItem)="
-                                        handleInputSelect(
-                                            $event,
-                                            'TRAILER-TYPE',
-                                            i
-                                        )
-                                    "
-                                ></app-ta-input-dropdown>
-                            </div>
-
-                            <div class="length-group">
-                                <app-ta-input-dropdown
-                                    formControlName="trailerLength"
-                                    [inputConfig]="{
-                                        name: 'Input Dropdown',
-                                        type: 'text',
-                                        label: 'Length',
-                                        isDropdown: true,
-                                        isDisabled:
-                                            (selectedMode ===
-                                                'APPLICANT_MODE' &&
-                                                !isTruckSelected) ||
-                                            selectedMode === 'REVIEW_MODE' ||
-                                            selectedMode === 'FEEDBACK_MODE',
-                                        isRequired: isTruckSelected,
-                                        dropdownWidthClass: 'w-col-130'
-                                    }"
-                                    [options]="filteredLengthType"
-                                    [activeItem]="selectedTrailerLength"
-                                    (selectedItem)="
-                                        handleInputSelect(
-                                            $event,
-                                            'TRAILER-LENGTH',
-                                            i
-                                        )
-                                    "
-                                ></app-ta-input-dropdown>
-                            </div>
-                        </div>
-
-                        <!-- CFR PART, FMCSA -->
-
-                        <div
-                            class="d-flex align-items-center questions-container"
-                        >
-                            <div
-                                class="d-flex align-items-center question-box"
-                                *ngFor="
-                                    let question of questions;
-                                    let indx = index;
-                                    trackBy: trackByIdentity
-                                "
-                            >
-                                <div
-                                    class="d-flex flex-column question-title-box"
-                                >
-                                    <p
-                                        class="m-0 noselect ta-font-regular"
-                                        class="m-0 ta-font-regular"
-                                        [ngClass]="
-                                            selectedMode === 'FEEDBACK_MODE'
-                                                ? 'question-title-feedback'
-                                                : 'question-title'
-                                        "
-                                    >
-                                        {{ question.title }} <span>*</span>
-                                    </p>
-
-                                    <ng-container
-                                        *ngIf="
-                                            displayRadioRequiredNoteArray[indx]
-                                                .displayRadioRequiredNote
-                                        "
-                                    >
-                                        <p
-                                            class="m-0 ta-font-semi-bold required"
-                                        >
-                                            Required
-                                        </p>
-                                    </ng-container>
-                                </div>
-
-                                <div class="question-radios-box">
-                                    <app-ta-input-radiobuttons
-                                        #cmp
-                                        [buttons]="question.answerChoices"
-                                        [disabled]="
-                                            selectedMode === 'REVIEW_MODE' ||
-                                            selectedMode === 'FEEDBACK_MODE'
-                                        "
-                                        [displayRequiredNote]="
-                                            displayRadioRequiredNoteArray[indx]
-                                                .displayRadioRequiredNote
-                                        "
-                                        (changedValue)="
+                                        [options]="vehicleType"
+                                        [activeItem]="selectedVehicleTypeArr[i]"
+                                        (selectedItem)="
                                             handleInputSelect(
                                                 $event,
-                                                'ANSWER-CHOICE',
+                                                'TRUCK-TYPE',
                                                 i
                                             )
                                         "
-                                    ></app-ta-input-radiobuttons>
+                                    ></app-ta-input-dropdown>
+                                </div>
+
+                                <div class="trailer-type-group">
+                                    <app-ta-input-dropdown
+                                        formControlName="trailerType"
+                                        [template]="'svgtext-template'"
+                                        [inputConfig]="{
+                                            name: 'Input Dropdown',
+                                            type: 'text',
+                                            label: 'Trailer Type',
+                                            isDisabled:
+                                                (selectedMode ===
+                                                    'APPLICANT_MODE' &&
+                                                    (!isTruckSelectedArr[i] ||
+                                                        isBoxTruckSelectedArr[
+                                                            i
+                                                        ])) ||
+                                                selectedMode !==
+                                                    'APPLICANT_MODE',
+                                            isRequired: isTruckSelectedArr[i],
+                                            isDropdown: true,
+                                            dropdownWidthClass: 'w-col-211',
+                                            customClass:
+                                                'truck-trailer-dropdown',
+                                            dropdownImageInput: {
+                                                withText: true,
+                                                svg: true,
+                                                image: false,
+                                                url: selectedTrailerTypeArr[i]
+                                                    ?.logoName,
+                                                template: 'trailer',
+                                                class: [
+                                                    'Tanker',
+                                                    'Tanker Pneumatic'
+                                                ].includes(
+                                                    selectedTrailerTypeArr[i]
+                                                        ?.name
+                                                )
+                                                    ? 'tanker'
+                                                    : selectedTrailerTypeArr[
+                                                          i
+                                                      ]?.name
+                                                          ?.toLowerCase()
+                                                          ?.includes('rgn')
+                                                    ? 'low-boy-rgn'
+                                                    : selectedTrailerTypeArr[
+                                                          i
+                                                      ]?.name
+                                                          ?.trim()
+                                                          .replace(' ', '')
+                                                          .toLowerCase()
+                                            },
+                                            hideErrorMessage:
+                                                (selectedMode ===
+                                                    'APPLICANT_MODE' &&
+                                                    (!isTruckSelectedArr[i] ||
+                                                        isBoxTruckSelectedArr[
+                                                            i
+                                                        ])) ||
+                                                selectedMode !==
+                                                    'APPLICANT_MODE'
+                                        }"
+                                        [activeItem]="selectedTrailerTypeArr[i]"
+                                        [options]="filteredTrailerTypeArr[i]"
+                                        (selectedItem)="
+                                            handleInputSelect(
+                                                $event,
+                                                'TRAILER-TYPE',
+                                                i
+                                            )
+                                        "
+                                    ></app-ta-input-dropdown>
+                                </div>
+
+                                <div class="length-group">
+                                    <app-ta-input-dropdown
+                                        formControlName="trailerLength"
+                                        [inputConfig]="{
+                                            name: 'Input Dropdown',
+                                            type: 'text',
+                                            label: 'Length',
+                                            isDropdown: true,
+                                            isDisabled:
+                                                (selectedMode ===
+                                                    'APPLICANT_MODE' &&
+                                                    !isTruckSelectedArr[i]) ||
+                                                selectedMode !==
+                                                    'APPLICANT_MODE',
+                                            isRequired: isTruckSelectedArr[i],
+                                            dropdownWidthClass: 'w-col-130',
+                                            hideErrorMessage:
+                                                (selectedMode ===
+                                                    'APPLICANT_MODE' &&
+                                                    !isTruckSelectedArr[i]) ||
+                                                selectedMode !==
+                                                    'APPLICANT_MODE'
+                                        }"
+                                        [options]="filteredLengthTypeArr[i]"
+                                        [activeItem]="
+                                            selectedTrailerLengthArr[i]
+                                        "
+                                        (selectedItem)="
+                                            handleInputSelect(
+                                                $event,
+                                                'TRAILER-LENGTH',
+                                                i
+                                            )
+                                        "
+                                    ></app-ta-input-dropdown>
                                 </div>
                             </div>
+
+                            <!-- CFR PART, FMCSA -->
+
+                            <div
+                                class="d-flex align-items-center questions-container"
+                            >
+                                <ng-container
+                                    *ngFor="
+                                        let question of questions;
+                                        let indx = index;
+                                        trackBy: trackByIdentity
+                                    "
+                                >
+                                    <div
+                                        class="d-flex align-items-center question-box"
+                                    >
+                                        <div
+                                            class="d-flex flex-column question-title-box"
+                                        >
+                                            <p
+                                                class="m-0 noselect ta-font-regular"
+                                                class="m-0 ta-font-regular"
+                                                [ngClass]="
+                                                    selectedMode ===
+                                                    'FEEDBACK_MODE'
+                                                        ? 'question-title-feedback'
+                                                        : 'question-title'
+                                                "
+                                            >
+                                                {{ question.title }}
+                                                <span>*</span>
+                                            </p>
+
+                                            <ng-container
+                                                *ngIf="
+                                                    displayRadioRequiredNoteArray[
+                                                        indx
+                                                    ].displayRadioRequiredNote
+                                                "
+                                            >
+                                                <p
+                                                    class="m-0 ta-font-semi-bold required"
+                                                >
+                                                    Required
+                                                </p>
+                                            </ng-container>
+                                        </div>
+
+                                        <div class="question-radios-box">
+                                            <app-ta-input-radiobuttons
+                                                #cmp
+                                                [buttons]="
+                                                    question.answerChoices
+                                                "
+                                                [disabled]="
+                                                    selectedMode !==
+                                                    'APPLICANT_MODE'
+                                                "
+                                                [displayRequiredNote]="
+                                                    displayRadioRequiredNoteArray[
+                                                        indx
+                                                    ].displayRadioRequiredNote
+                                                "
+                                                (changedValue)="
+                                                    handleInputSelect(
+                                                        $event,
+                                                        'ANSWER-CHOICE',
+                                                        i
+                                                    )
+                                                "
+                                            ></app-ta-input-radiobuttons>
+                                        </div>
+                                    </div>
+                                </ng-container>
+                            </div>
+                        </ng-container>
+                    </ng-container>
+
+                    <!-- ANOTHER CLASS BTN -->
+
+                    <ng-container *ngIf="selectedMode === 'APPLICANT_MODE'">
+                        <div
+                            class="d-flex justify-content-center align-items-center"
+                            [ngStyle]="{
+                                'margin-top':
+                                    classesOfEquipment?.controls.length <= 1
+                                        ? '22px'
+                                        : '18px'
+                            }"
+                        >
+                            <app-applicant-add-save-btn
+                                [addBtn]="true"
+                                [btnText]="'Add Another Class Of Equipment'"
+                                [disabledValue]="
+                                    classesOfEquipment.status === 'INVALID'
+                                "
+                                (clickValueEmitter)="
+                                    onGetBtnClickValue($event, true)
+                                "
+                            ></app-applicant-add-save-btn>
                         </div>
                     </ng-container>
-                </ng-container>
-
-                <!-- ANOTHER CLASS BTN -->
-
-                <ng-container *ngIf="selectedMode === 'APPLICANT_MODE'">
-                    <div
-                        class="d-flex justify-content-center align-items-center"
-                        [ngStyle]="{
-                            'margin-top':
-                                classesOfEquipment?.controls.length <= 1
-                                    ? '22px'
-                                    : '18px'
-                        }"
-                    >
-                        <app-applicant-add-save-btn
-                            [addBtn]="true"
-                            [btnText]="'Add Another Class Of Equipment'"
-                            [disabledValue]="
-                                classesOfEquipment.status === 'INVALID'
-                            "
-                            (clickValueEmitter)="
-                                onGetBtnClickValue($event, true, 1)
-                            "
-                        ></app-applicant-add-save-btn>
-                    </div>
-                </ng-container>
-            </div>
+                </div>
+            </ng-container>
         </div>
 
         <!-- BTN -->
 
-        <div class="d-flex align-items-center justify-content-center">
+        <div
+            class="d-flex align-items-center justify-content-center"
+            [ngStyle]="{
+                margin: isEditing ? '0 4px 0 4px' : '10px 0 0 0'
+            }"
+        >
             <ng-container
                 *ngIf="selectedMode === 'APPLICANT_MODE' && !isEditing"
             >
@@ -1230,8 +1171,6 @@
                     [disabledValue]="workExperienceForm.invalid"
                     (clickValueEmitter)="onGetBtnClickValue($event)"
                 ></app-applicant-add-save-btn>
-
-                <!-- classOfEquipmentForm.invalid || -->
             </ng-container>
 
             <ng-container *ngIf="isEditing">
@@ -1243,15 +1182,10 @@
                 <app-applicant-add-save-btn
                     [saveBtn]="true"
                     [disabledValue]="
-                        !isWorkExperienceEdited ||
-                        !isWorkExperienceClassOfEquipmentEdited ||
-                        !workExperienceForm.valid
+                        !isWorkExperienceEdited || !workExperienceForm.valid
                     "
                     (clickValueEmitter)="onGetBtnClickValue($event)"
                 ></app-applicant-add-save-btn>
-
-                <!--  ||
-                        !classOfEquipmentForm.valid -->
             </ng-container>
 
             <ng-container *ngIf="isReviewingCard">

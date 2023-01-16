@@ -1,5 +1,4 @@
 @import 'src/theme/variables.scss';
-@import 'src/assets/scss/applicant.scss';
 
 .work-experience-border-container {
     border: 1px solid #2f2f2f;
@@ -116,8 +115,6 @@
 
     .class-of-equipment-container {
         .class-of-equipment-cards-container {
-            width: 616px;
-
             .cards-title-box {
                 width: 100%;
                 margin-bottom: 4px;
@@ -269,7 +266,6 @@
         }
 
         .vehicle-type-group {
-            width: 251px;
             margin: 0 12px 22px 0;
         }
 

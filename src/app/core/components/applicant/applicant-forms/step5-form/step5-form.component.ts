@@ -16,7 +16,13 @@ import moment from 'moment';
 
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
-import { Subscription, Subject, takeUntil } from 'rxjs';
+import {
+    Subscription,
+    Subject,
+    takeUntil,
+    distinctUntilChanged,
+    throttleTime,
+} from 'rxjs';
 
 import {
     anyInputInLineIncorrect,
@@ -138,7 +144,11 @@ export class Step5FormComponent
                 });
 
             this.violationsForm.valueChanges
-                .pipe(takeUntil(this.destroy$))
+                .pipe(
+                    distinctUntilChanged(),
+                    throttleTime(2),
+                    takeUntil(this.destroy$)
+                )
                 .subscribe((res) => {
                     res.location = this.selectedAddress;
 
@@ -148,7 +158,11 @@ export class Step5FormComponent
 
         if (this.selectedMode === SelectedMode.REVIEW) {
             this.violationsForm.valueChanges
-                .pipe(takeUntil(this.destroy$))
+                .pipe(
+                    distinctUntilChanged(),
+                    throttleTime(2),
+                    takeUntil(this.destroy$)
+                )
                 .subscribe((res) => {
                     const reviewMessages = {
                         firstRowReview: res.firstRowReview,
@@ -280,7 +294,11 @@ export class Step5FormComponent
 
     public startValueChangesMonitoring() {
         this.subscription = this.violationsForm.valueChanges
-            .pipe(takeUntil(this.destroy$))
+            .pipe(
+                distinctUntilChanged(),
+                throttleTime(2),
+                takeUntil(this.destroy$)
+            )
             .subscribe((updatedFormValues) => {
                 const {
                     id,

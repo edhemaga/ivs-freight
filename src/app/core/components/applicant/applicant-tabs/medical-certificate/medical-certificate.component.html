@@ -134,7 +134,15 @@
                             </div>
                         </div>
 
-                        <div class="line-container">
+                        <div
+                            class="line-container"
+                            [ngStyle]="{
+                                width:
+                                    selectedMode === 'REVIEW_MODE'
+                                        ? 'fit-content'
+                                        : '100%'
+                            }"
+                        >
                             <app-ta-upload-files
                                 [files]="documents"
                                 [size]="'medium'"

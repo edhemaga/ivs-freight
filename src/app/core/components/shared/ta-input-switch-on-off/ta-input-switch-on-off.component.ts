@@ -32,9 +32,15 @@ export class TaInputSwitchOnOffComponent implements OnInit {
     }
 
     public setSelectedSwitchState(): void {
+        if (this.selectedSwitchState === null) {
+            this.isSwitchOn = null;
+        }
+
         if (this.selectedSwitchState === false) {
             this.isSwitchOn = false;
-        } else {
+        }
+
+        if (this.selectedSwitchState) {
             this.isSwitchOn = true;
         }
     }

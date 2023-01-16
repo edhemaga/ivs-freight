@@ -107,9 +107,7 @@
                                         </div>
                                     </div>
 
-                                    <div
-                                        class="d-flex flex-column justify-content-center"
-                                    >
+                                    <div class="d-flex flex-column h-100">
                                         <div
                                             class="d-flex align-items-center job-description-box"
                                         >
@@ -134,7 +132,193 @@
                                             </div>
                                         </ng-container>
                                     </div>
+
+                                    <ng-container
+                                        *ngIf="
+                                            workExperience.classesOfEquipment
+                                                .length
+                                        "
+                                    >
+                                        <div class="d-flex flex-column h-100">
+                                            <ng-container
+                                                *ngIf="
+                                                    workExperience
+                                                        .classesOfEquipment
+                                                        .length >= 1
+                                                "
+                                            >
+                                                <div
+                                                    class="d-flex align-items-center icon-box"
+                                                >
+                                                    <svg-icon
+                                                        class="truck-icon"
+                                                        src="assets/svg/truckassist-table/truck/ic_truck_semi-truck.svg"
+                                                        [svgStyle]="{
+                                                            'width.px': '33',
+                                                            'height.px': '12'
+                                                        }"
+                                                    ></svg-icon>
+
+                                                    <svg-icon
+                                                        class="trailer-icon"
+                                                        src="assets/svg/common/trailers/ic_trailer_reefer.svg"
+                                                        [svgStyle]="{
+                                                            'width.px': '33',
+                                                            'height.px': '12'
+                                                        }"
+                                                    ></svg-icon>
+                                                </div>
+                                            </ng-container>
+
+                                            <ng-container
+                                                *ngIf="
+                                                    workExperience
+                                                        .classesOfEquipment
+                                                        .length >= 2
+                                                "
+                                            >
+                                                <div
+                                                    class="d-flex align-items-center icon-box"
+                                                >
+                                                    <svg-icon
+                                                        class="truck-icon"
+                                                        src="assets/svg/truckassist-table/truck/ic_truck_semi-truck.svg"
+                                                        [svgStyle]="{
+                                                            'width.px': '33',
+                                                            'height.px': '12'
+                                                        }"
+                                                    ></svg-icon>
+
+                                                    <svg-icon
+                                                        class="trailer-icon"
+                                                        src="assets/svg/common/trailers/ic_trailer_tanker.svg"
+                                                        [svgStyle]="{
+                                                            'width.px': '33',
+                                                            'height.px': '12'
+                                                        }"
+                                                    ></svg-icon>
+
+                                                    <ng-container
+                                                        *ngIf="
+                                                            workExperience
+                                                                .classesOfEquipment
+                                                                .length >= 3
+                                                        "
+                                                    >
+                                                        <p
+                                                            class="m-0 ta-font-medium equipment-number"
+                                                        >
+                                                            +
+                                                            {{
+                                                                workExperience
+                                                                    .classesOfEquipment
+                                                                    .length - 2
+                                                            }}
+                                                        </p>
+                                                    </ng-container>
+                                                </div>
+                                            </ng-container>
+                                        </div>
+                                    </ng-container>
                                 </div>
+
+                                <!-- REVIEW AND FEEDBACK -->
+
+                                <ng-container
+                                    *ngIf="selectedMode !== 'APPLICANT_MODE'"
+                                >
+                                    <div class="review-feedback-container">
+                                        <app-applicant-review-feedback
+                                            [formControlName]="
+                                                'cardReview' + (i + 1)
+                                            "
+                                            [displayAnnotationButton]="
+                                                selectedMode ===
+                                                    'REVIEW_MODE' &&
+                                                openAnnotationArray[i]
+                                                    .displayAnnotationButton
+                                            "
+                                            [displayAnnotationTextArea]="
+                                                selectedMode ===
+                                                    'REVIEW_MODE' &&
+                                                openAnnotationArray[i]
+                                                    .displayAnnotationTextArea
+                                            "
+                                            [lineIndex]="i"
+                                            [cardsLength]="
+                                                workExperienceArray.length
+                                            "
+                                            [cardsType]="'workExperience'"
+                                            [cardIndex]="i"
+                                            [isFeedback]="
+                                                selectedMode === 'FEEDBACK_MODE'
+                                            "
+                                            [feedbackText]="
+                                                selectedMode ===
+                                                    'FEEDBACK_MODE' &&
+                                                stepFeedbackValues[i]
+                                                    .commonMessage
+                                            "
+                                            (annotationBtnClickEvent)="
+                                                selectedMode ===
+                                                    'REVIEW_MODE' &&
+                                                    getAnnotationBtnClickValue(
+                                                        $event
+                                                    )
+                                            "
+                                        ></app-applicant-review-feedback>
+                                    </div>
+                                </ng-container>
+                            </div>
+                        </ng-container>
+
+                        <ng-container
+                            *ngIf="workExperience.isEditingWorkExperience"
+                        >
+                            <div
+                                [ngStyle]="{
+                                    'margin-bottom':
+                                        workExperienceArray.length > 1
+                                            ? '4px'
+                                            : 0
+                                }"
+                            >
+                                <app-step2-form
+                                    [mode]="selectedMode"
+                                    [isEditing]="isEditing"
+                                    [formValuesToPatch]="formValuesToPatch"
+                                    [isReviewingCard]="isReviewingCard"
+                                    [stepFeedbackValues]="feedbackValuesToPatch"
+                                    [checkIsRadioUnchecked]="
+                                        checkIsRadioUnchecked
+                                    "
+                                    [displayRadioRequiredNoteArray]="
+                                        displayRadioRequiredNoteArray
+                                    "
+                                    (formValuesEmitter)="
+                                        getWorkExperienceFormValues($event)
+                                    "
+                                    (cancelFormEditingEmitter)="
+                                        cancelWorkExperienceEditing($event)
+                                    "
+                                    (saveFormEditingEmitter)="
+                                        saveEditedWorkExperience($event)
+                                    "
+                                    (formStatusEmitter)="
+                                        onGetFormStatus($event)
+                                    "
+                                    (cancelFormReviewingEmitter)="
+                                        cancelWorkExperienceReview($event)
+                                    "
+                                    (cardOpenAnnotationArrayValuesEmitter)="
+                                        onGetCardOpenAnnotationArrayValues(
+                                            $event
+                                        )
+                                    "
+                                    (radioRequiredNoteEmitter)="
+                                        onGetRadioRequiredNoteEmit($event)
+                                    "
+                                ></app-step2-form>
                             </div>
                         </ng-container>
                     </ng-container>
@@ -143,342 +327,28 @@
 
             <!-- FORM SECTION -->
 
-            <ng-container
-                *ngIf="
-                    (selectedMode !== 'REVIEW_MODE' &&
-                        !hideFormOnEdit &&
-                        !displayButtonInsteadOfForm) ||
-                    (selectedMode === 'REVIEW_MODE' && !isReviewingCard)
-                "
-            >
-                <div
-                    [ngStyle]="{
-                        'border-top': !isEditing ? '1px solid #DADADA' : 0
-                    }"
-                >
-                    <app-step2-form
-                        [mode]="selectedMode"
-                        [isEditing]="isEditing"
-                        [markFormInvalid]="markFormInvalid"
-                        [markInnerFormInvalid]="markInnerFormInvalid"
-                        [formValuesToPatch]="formValuesToPatch"
-                        [isReviewingCard]="isReviewingCard"
-                        [stepFeedbackValues]="feedbackValuesToPatch"
-                        [checkIsRadioUnchecked]="checkIsRadioUnchecked"
-                        [displayRadioRequiredNoteArray]="
-                            displayRadioRequiredNoteArray
-                        "
-                        (formValuesEmitter)="
-                            getWorkExperienceFormValues($event)
-                        "
-                        (formStatusEmitter)="onGetFormStatus($event)"
-                        (innerFormStatusEmitter)="onGetInnerFormStatus($event)"
-                        (markInvalidEmitter)="onMarkInvalidEmit($event)"
-                        (markInnerFormInvalidEmitter)="
-                            onMarkInnerInvalidEmit($event)
-                        "
-                        (lastFormValuesEmitter)="onGetLastFormValues($event)"
-                        (hasIncorrectFieldsEmitter)="
-                            onHasIncorrectFields($event)
-                        "
-                        (openAnnotationArrayValuesEmitter)="
-                            onGetOpenAnnotationArrayValues($event)
-                        "
-                        (radioRequiredNoteEmitter)="
-                            onGetRadioRequiredNoteEmit($event)
-                        "
-                        (classOfEquipmentformValuesEmitter)="
-                            onGetClassOfEquipmentValues($event)
-                        "
-                        (isEditingClassOfEquipmentEmitter)="
-                            onGetIsEditingClassOfEquipmentStatus($event)
-                        "
-                    ></app-step2-form>
-                </div>
-            </ng-container>
+            <!--  [ngStyle]="{
+                    'margin-top': isEditing ? 0 : '22px'
+                }" -->
 
-            <ng-container *ngIf="displayButtonInsteadOfForm">
-                <div class="d-flex justify-content-center align-items-center">
-                    <app-applicant-add-save-btn
-                        [addBtn]="true"
-                        [btnText]="'Add Second Or Last Employer'"
-                        (clickValueEmitter)="onGetBtnClickValue($event)"
-                    ></app-applicant-add-save-btn>
-                </div>
-            </ng-container>
-        </div>
-    </ng-container>
-
-    <!-- <div class="d-flex justify-content-center flex-column">
-            <div
-                class="d-flex flex-column history-panel-container"
-                *ngIf="workExperienceArray.length"
-                [ngStyle]="{ 'margin-bottom': isReviewingCard ? 0 : '32px' }"
-            >
-                <div
-                    class="d-flex flex-column"
-                    *ngFor="
-                        let workHistory of workExperienceArray;
-                        let i = index;
-                        trackBy: trackByIdentity
+            <div class="d-flex flex-column justify-content-center form-section">
+                <ng-container
+                    *ngIf="
+                        (selectedMode !== 'REVIEW_MODE' &&
+                            !hideFormOnEdit &&
+                            !displayButtonInsteadOfForm) ||
+                        (selectedMode === 'REVIEW_MODE' && !isReviewingCard)
                     "
                 >
                     <div
-                        class="d-flex align-items-center history-title-container"
-                        *ngIf="
-                            (workExperienceArray.length > 0 &&
-                                helperIndex !== 0 &&
-                                i === 0) ||
-                            (helperIndex === 0 && i === 1) ||
-                            (i === helperIndex + 1 &&
-                                selectedWorkExperienceIndex > -1)
-                        "
-                    >
-                        <div
-                            class="d-flex align-items-center employer-title-container"
-                        >
-                            <p class="m-0 ta-font-bold">
-                                current or last employer <span>*</span>
-                            </p>
-                        </div>
-                        <div
-                            class="d-flex align-items-center from-title-container"
-                        >
-                            <p class="m-0 ta-font-bold">from <span>*</span></p>
-                        </div>
-                        <div
-                            class="d-flex align-items-center to-title-container"
-                        >
-                            <p class="m-0 ta-font-bold">to <span>*</span></p>
-                        </div>
-                    </div>
-                    <div
-                        class="d-flex align-items-center history-panel line-container"
-                        *ngIf="!workHistory.isEditingWorkHistory"
-                    >
-                        <div
-                            class="d-flex align-items-center info-btn-container"
-                        >
-                            <div
-                                class="d-flex align-items-center"
-                                [ngStyle]="{
-                                    cursor:
-                                        selectedMode === 'REVIEW_MODE'
-                                            ? 'pointer'
-                                            : 'auto'
-                                }"
-                                (click)="
-                                    selectedMode === 'REVIEW_MODE' &&
-                                        onCardReview(i)
-                                "
-                            >
-                                <div
-                                    class="d-flex align-items-center history-employer"
-                                >
-                                    <p class="m-0 ta-font-regular">
-                                        {{ workHistory.employer }}
-                                    </p>
-                                </div>
-                                <div
-                                    class="d-flex align-items-center history-from-date"
-                                >
-                                    <p class="m-0 ta-font-regular">
-                                        {{ workHistory.fromDate }}
-                                    </p>
-                                </div>
-                                <div
-                                    class="d-flex align-items-center history-to-date"
-                                    [ngStyle]="{
-                                        'margin-right':
-                                            selectedMode === 'FEEDBACK_MODE'
-                                                ? '18px'
-                                                : '20px',
-                                        width:
-                                            selectedMode !== 'APPLICANT_MODE'
-                                                ? '90px'
-                                                : '108px'
-                                    }"
-                                >
-                                    <p class="m-0 ta-font-regular">
-                                        {{ workHistory.toDate }}
-                                    </p>
-                                </div>
-                            </div>
-                            <div
-                                class="d-flex align-items-center btn-container"
-                                [ngClass]="{
-                                    active: selectedMode === 'REVIEW_MODE'
-                                }"
-                                [ngStyle]="{
-                                    'margin-left':
-                                        selectedMode === 'FEEDBACK_MODE'
-                                            ? '18px'
-                                            : 0
-                                }"
-                            >
-                                <ng-container
-                                    *ngIf="
-                                        selectedMode === 'APPLICANT_MODE' ||
-                                        (selectedMode === 'FEEDBACK_MODE' &&
-                                            stepFeedbackValues[i]
-                                                .hasIncorrectValue)
-                                    "
-                                >
-                                    <div
-                                        ngbTooltip
-                                        mainTooltip="Edit"
-                                        tooltipBackground="#6C6C6C"
-                                        position="top"
-                                    >
-                                        <svg-icon
-                                            class="edit-icon"
-                                            src="assets/svg/truckassist-table/dropdown/content/edit-hover.svg"
-                                            [svgStyle]="{
-                                                'width.px': 18,
-                                                'height.px': 18
-                                            }"
-                                            (click)="onEditWorkExperience(i)"
-                                        ></svg-icon>
-                                    </div>
-                                </ng-container>
-
-                                <ng-container
-                                    *ngIf="selectedMode === 'APPLICANT_MODE'"
-                                >
-                                    <div
-                                        ngbTooltip
-                                        mainTooltip="Delete"
-                                        tooltipBackground="#EF5350"
-                                        position="top"
-                                    >
-                                        <svg-icon
-                                            class="delete-icon"
-                                            src="assets/svg/truckassist-table/dropdown/content/delete.svg"
-                                            [svgStyle]="{
-                                                'width.px': 18,
-                                                'height.px': 18
-                                            }"
-                                            (click)="onDeleteWorkExperience(i)"
-                                        ></svg-icon>
-                                    </div>
-                                </ng-container>
-
-                                <ng-container
-                                    *ngIf="selectedMode === 'REVIEW_MODE'"
-                                >
-                                    <div
-                                        class="review-icon-box"
-                                        ngbTooltip
-                                        mainTooltip="Mark Incorrect"
-                                        tooltipBackground="#F44336"
-                                        position="top"
-                                    >
-                                        <svg-icon
-                                            class="review-icon"
-                                            [ngClass]="{
-                                                active:
-                                                    openAnnotationArray[i]
-                                                        .displayAnnotationButton ||
-                                                    openAnnotationArray[i]
-                                                        .displayAnnotationTextArea
-                                            }"
-                                            src="assets/svg/ic_x.svg"
-                                            [svgStyle]="{
-                                                'width.px': 18,
-                                                'height.px': 18
-                                            }"
-                                            (click)="
-                                                openAnnotationArray[i]
-                                                    .lineInputs[0]
-                                                    ? incorrectInput(
-                                                          $event,
-                                                          0,
-                                                          i,
-                                                          'card'
-                                                      )
-                                                    : onCardReview(i)
-                                            "
-                                        ></svg-icon>
-                                    </div>
-                                </ng-container>
-
-                                <ng-container
-                                    *ngIf="
-                                        selectedMode === 'FEEDBACK_MODE' &&
-                                        stepFeedbackValues[i].hasIncorrectValue
-                                    "
-                                >
-                                    <div
-                                        class="feedback-icon-box"
-                                        ngbTooltip
-                                        mainTooltip="Marked Incorrect"
-                                        tooltipBackground="#F44336"
-                                        position="top"
-                                    >
-                                        <svg-icon
-                                            class="feedback-icon"
-                                            src="assets/svg/common/ic_danger.svg"
-                                            [svgStyle]="{
-                                                'width.px': 18,
-                                                'height.px': 18
-                                            }"
-                                        ></svg-icon>
-                                    </div>
-                                </ng-container>
-                            </div>
-                        </div>
-
-                        REVIEW AND FEEDBACK
-
-                        <div
-                            class="review-feedback-container"
-                            *ngIf="
-                                selectedMode === 'REVIEW_MODE' ||
-                                selectedMode === 'FEEDBACK_MODE'
-                            "
-                        >
-                            <app-applicant-review-feedback
-                                [formControlName]="'cardReview' + (i + 1)"
-                                [displayAnnotationButton]="
-                                    selectedMode === 'REVIEW_MODE' &&
-                                    openAnnotationArray[i]
-                                        .displayAnnotationButton
-                                "
-                                [displayAnnotationTextArea]="
-                                    selectedMode === 'REVIEW_MODE' &&
-                                    openAnnotationArray[i]
-                                        .displayAnnotationTextArea
-                                "
-                                [lineIndex]="i"
-                                [cardsLength]="workExperienceArray.length"
-                                [cardsType]="'workExperience'"
-                                [cardIndex]="i"
-                                [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
-                                [feedbackText]="
-                                    selectedMode === 'FEEDBACK_MODE' &&
-                                    stepFeedbackValues[i].commonMessage
-                                "
-                                (annotationBtnClickEvent)="
-                                    selectedMode === 'REVIEW_MODE' &&
-                                        getAnnotationBtnClickValue($event)
-                                "
-                            ></app-applicant-review-feedback>
-                        </div>
-                    </div>
-
-                    <div
-                        *ngIf="workHistory.isEditingWorkHistory"
-                        class="d-flex flex-column history-panel-form"
                         [ngStyle]="{
-                            margin:
-                                i !== 0
-                                    ? '32px auto 0 auto'
-                                    : '10px auto 0 auto'
+                            'border-top': !isEditing ? '1px solid #DADADA' : 0
                         }"
                     >
                         <app-step2-form
                             [mode]="selectedMode"
                             [isEditing]="isEditing"
+                            [markFormInvalid]="markFormInvalid"
                             [formValuesToPatch]="formValuesToPatch"
                             [isReviewingCard]="isReviewingCard"
                             [stepFeedbackValues]="feedbackValuesToPatch"
@@ -495,42 +365,55 @@
                             (saveFormEditingEmitter)="
                                 saveEditedWorkExperience($event)
                             "
-                            (cancelFormReviewingEmitter)="
-                                cancelWorkExperienceReview($event)
+                            (formStatusEmitter)="onGetFormStatus($event)"
+                            (markInvalidEmitter)="onMarkInvalidEmit($event)"
+                            (lastFormValuesEmitter)="
+                                onGetLastFormValues($event)
                             "
-                            (cardOpenAnnotationArrayValuesEmitter)="
-                                onGetCardOpenAnnotationArrayValues($event)
+                            (hasIncorrectFieldsEmitter)="
+                                onHasIncorrectFields($event)
+                            "
+                            (openAnnotationArrayValuesEmitter)="
+                                onGetOpenAnnotationArrayValues($event)
                             "
                             (radioRequiredNoteEmitter)="
                                 onGetRadioRequiredNoteEmit($event)
                             "
-                            (classOfEquipmentformValuesEmitter)="
-                                onGetClassOfEquipmentValues($event)
-                            "
-                            (isEditingClassOfEquipmentEmitter)="
-                                onGetIsEditingClassOfEquipmentStatus($event)
-                            "
                         ></app-step2-form>
                     </div>
-                </div>
+                </ng-container>
+
+                <ng-container *ngIf="displayButtonInsteadOfForm">
+                    <div
+                        class="d-flex justify-content-center align-items-center btn-instead-form-container"
+                    >
+                        <app-applicant-add-save-btn
+                            [addBtn]="true"
+                            [btnText]="'Add Second Or Last Employer'"
+                            (clickValueEmitter)="onGetBtnClickValue($event)"
+                        ></app-applicant-add-save-btn>
+                    </div>
+                </ng-container>
             </div>
-        </div> -->
+        </div>
+    </ng-container>
 
     <!-- DONT HAVE WORK EXPERIENCE CHECKBOX -->
 
-    <div
-        class="d-flex justify-content-center work-experience-group"
-        [formGroup]="workExperienceForm"
-        *ngIf="!isEditing"
-    >
-        <app-ta-checkbox
-            formControlName="noWorkExperience"
-            [name]="'noWorkExperience'"
-            [label]="'I don’t have work experience'"
-            [customClass]="'bold-12'"
-            [disabledStillCheckMark]="selectedMode !== 'APPLICANT_MODE'"
-        ></app-ta-checkbox>
-    </div>
+    <ng-container *ngIf="!isEditing">
+        <div
+            class="d-flex justify-content-center work-experience-group"
+            [formGroup]="workExperienceForm"
+        >
+            <app-ta-checkbox
+                formControlName="noWorkExperience"
+                [name]="'noWorkExperience'"
+                [label]="'I don’t have work experience'"
+                [customClass]="'bold-12'"
+                [disabledStillCheckMark]="selectedMode !== 'APPLICANT_MODE'"
+            ></app-ta-checkbox>
+        </div>
+    </ng-container>
 </div>
 
 <!-- NEXT BTN -->
@@ -543,10 +426,7 @@
         [filledCorrectly]="
             workExperienceForm.valid &&
             !isEditing &&
-            !isEditingClassOfEquipment &&
-            ((selectedMode === 'APPLICANT_MODE' &&
-                formStatus === 'VALID' &&
-                innerFormStatus === 'VALID') ||
+            ((selectedMode === 'APPLICANT_MODE' && formStatus === 'VALID') ||
                 (selectedMode === 'FEEDBACK_MODE' && isFeedbackValueUpdated))
         "
         [hasIncorrectFields]="

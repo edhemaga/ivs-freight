@@ -13,6 +13,10 @@ import { ApplicantQuery } from '../state/store/applicant.query';
 import { SelectedMode } from '../state/enum/selected-mode.enum';
 import { INavigation } from '../state/model/navigation.model';
 import { ApplicantResponse } from 'appcoretruckassist';
+import {
+    isAnyPropertyInObjectFalse,
+    isAnyValueInArrayTrue,
+} from '../state/utils/utils';
 
 @Component({
     selector: 'app-applicant-header',
@@ -220,6 +224,67 @@ export class ApplicantHeaderComponent implements OnInit, OnChanges {
                 if (this.selectedMode === SelectedMode.REVIEW) {
                     this.isTabReviewedArray = this.isTabReviewedArray.map(
                         (item, index) => {
+                            if (index === 3) {
+                                const mvrAuthItems = res?.mvrAuth?.files;
+
+                                const mvrAuthReviewItems = mvrAuthItems?.map(
+                                    (item) => item?.review
+                                );
+
+                                let filteredMvrAuthItemsReview = [];
+                                let hasIncorrectValue: boolean;
+
+                                if (mvrAuthReviewItems) {
+                                    if (mvrAuthReviewItems[0]) {
+                                        let incorrectValuesArray = [];
+
+                                        for (
+                                            let i = 0;
+                                            i < mvrAuthReviewItems?.length;
+                                            i++
+                                        ) {
+                                            const filteredItem =
+                                                mvrAuthReviewItems[i];
+
+                                            filteredMvrAuthItemsReview = [
+                                                ...filteredMvrAuthItemsReview,
+                                                filteredItem,
+                                            ];
+
+                                            const objectHasIncorrectValue =
+                                                isAnyPropertyInObjectFalse(
+                                                    filteredItem
+                                                );
+
+                                            incorrectValuesArray = [
+                                                ...incorrectValuesArray,
+                                                objectHasIncorrectValue,
+                                            ];
+                                        }
+
+                                        if (
+                                            isAnyValueInArrayTrue(
+                                                incorrectValuesArray
+                                            )
+                                        ) {
+                                            hasIncorrectValue = true;
+                                        } else {
+                                            hasIncorrectValue = false;
+                                        }
+                                    }
+                                }
+
+                                return {
+                                    ...item,
+                                    isReviewed:
+                                        mvrAuthReviewItems &&
+                                        mvrAuthReviewItems[0]
+                                            ? true
+                                            : false,
+                                    hasIncorrectAnswer: hasIncorrectValue,
+                                };
+                            }
+
                             if (index === 4) {
                                 return {
                                     ...item,

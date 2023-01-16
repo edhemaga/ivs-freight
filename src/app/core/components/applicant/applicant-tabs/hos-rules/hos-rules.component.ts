@@ -70,6 +70,8 @@ export class HosRulesComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe((res: ApplicantResponse) => {
                 if (res && res.id == this.queryParamId) {
+                    this.isValidLoad = true;
+
                     this.applicantId = res.id;
 
                     if (res.hosRule) {

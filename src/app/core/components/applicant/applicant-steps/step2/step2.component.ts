@@ -23,7 +23,6 @@ import { ApplicantStore } from '../../state/store/applicant.store';
 import { ApplicantQuery } from '../../state/store/applicant.query';
 
 import { SelectedMode } from '../../state/enum/selected-mode.enum';
-import { WorkExpereienceModel } from '../../state/model/work-experience.model';
 import {
     EnumValue,
     TrailerLengthResponse,
@@ -50,11 +49,53 @@ export class Step2Component implements OnInit, OnDestroy {
     public workExperienceForm: FormGroup;
 
     public formStatus: string = 'INVALID';
-    public innerFormStatus: string = 'VALID';
     public markFormInvalid: boolean;
-    public markInnerFormInvalid: boolean;
 
-    public workExperienceArray: WorkExpereienceModel[] = [];
+    public workExperienceArray /* : WorkExpereienceModel[]  */ = [
+        {
+            id: 1,
+            isEditingWorkExperience: false,
+            workExperienceItemReview: null,
+            employer: 'asdas',
+            employerPhone: '(222) 222-2222',
+            employerEmail: 'asd@asd.com',
+            employerFax: '(122) 222-2222',
+            employerAddress: {
+                address: 'Chimney Rock Rd, Houston, TX, US',
+            },
+            employerAddressUnit: '2',
+            jobDescription: 'Asd',
+            fromDate: '01/07/23',
+            toDate: '01/07/23',
+            reasonForLeaving: 'Better opportunity',
+            accountForPeriod: 'asdas',
+
+            isDrivingPosition: true,
+            classesOfEquipment: [
+                /*  {
+                    vehicleType: 'Semi Truck',
+                    trailerType: 'Reefer',
+                    trailerLength: '20 ft',
+                    cfrPart: true,
+                    fmCSA: true,
+                },
+                {
+                    vehicleType: 'Tow Truck',
+                    trailerType: 'Dry Van',
+                    trailerLength: '22 ft',
+                    cfrPart: false,
+                    fmCSA: false,
+                },
+                {
+                    vehicleType: 'Spotter',
+                    trailerType: 'Side Kit',
+                    trailerLength: '24 ft',
+                    cfrPart: true,
+                    fmCSA: false,
+                }, */
+            ],
+        },
+    ];
 
     public stepValues: any;
     public stepHasValues: boolean = false;
@@ -65,7 +106,6 @@ export class Step2Component implements OnInit, OnDestroy {
     public selectedWorkExperienceIndex: number;
 
     public isEditing: boolean = false;
-    public isEditingClassOfEquipment: boolean = false;
     public isReviewingCard: boolean = false;
 
     public displayButtonInsteadOfForm: boolean = false;
@@ -112,6 +152,7 @@ export class Step2Component implements OnInit, OnDestroy {
     ) {}
 
     ngOnInit(): void {
+        console.log('arr', this.workExperienceArray);
         this.createForm();
 
         this.getStepValuesFromStore();
@@ -168,8 +209,6 @@ export class Step2Component implements OnInit, OnDestroy {
             const restOfTheItemsInWorkExperienceArray = [
                 ...workExperienceItems,
             ];
-
-            restOfTheItemsInWorkExperienceArray.pop();
 
             const filteredWorkExperienceArray =
                 restOfTheItemsInWorkExperienceArray.map((item) => {
@@ -297,9 +336,12 @@ export class Step2Component implements OnInit, OnDestroy {
                 JSON.stringify(filteredWorkExperienceArray)
             );
 
-            this.formValuesToPatch = filteredLastItemInWorkExperienceArray;
             this.previousFormValuesOnReview =
                 filteredLastItemInWorkExperienceArray;
+
+            this.formStatus = 'VALID';
+
+            this.displayButtonInsteadOfForm = true;
         } else {
             this.formStatus = 'VALID';
         }
@@ -443,7 +485,6 @@ export class Step2Component implements OnInit, OnDestroy {
             .subscribe((value) => {
                 if (value) {
                     this.formStatus = 'VALID';
-                    this.innerFormStatus = 'VALID';
                 } else {
                     if (this.lastWorkExperienceCard) {
                         this.formValuesToPatch = {
@@ -477,7 +518,6 @@ export class Step2Component implements OnInit, OnDestroy {
                     }
 
                     this.formStatus = 'INVALID';
-                    this.innerFormStatus = 'VALID';
                 }
             });
     }
@@ -490,66 +530,39 @@ export class Step2Component implements OnInit, OnDestroy {
         this.workExperienceArray.splice(index, 1);
     }
 
-    public onEditWorkExperience(index: number): void {
-        if (this.isEditing) {
-            this.isEditing = false;
-            this.workExperienceArray[
-                this.selectedWorkExperienceIndex
-            ].isEditingWorkExperience = false;
-
-            this.selectedWorkExperienceIndex = -1;
-        }
-
-        this.selectedWorkExperienceIndex = index;
-
-        this.isEditing = true;
-        this.workExperienceArray[index].isEditingWorkExperience = true;
-
-        const selectedWorkExperience = this.workExperienceArray[index];
-
-        this.formValuesToPatch = selectedWorkExperience;
-
-        if (this.selectedMode === SelectedMode.FEEDBACK) {
-            this.feedbackValuesToPatch =
-                this.stepFeedbackValues[this.selectedWorkExperienceIndex];
-        }
-    }
-
-    public cancelWorkExperienceEditing(_: any): void {
-        this.isEditing = false;
-        this.workExperienceArray[
-            this.selectedWorkExperienceIndex
-        ].isEditingWorkExperience = false;
-
-        this.selectedWorkExperienceIndex = -1;
-
-        if (this.selectedMode === SelectedMode.FEEDBACK) {
-            this.feedbackValuesToPatch =
-                this.stepFeedbackValues[this.stepFeedbackValues.length - 1];
-        }
-    }
-
-    public saveEditedWorkExperience(event: any): void {
-        this.isEditing = false;
-        this.workExperienceArray[
-            this.selectedWorkExperienceIndex
-        ].isEditingWorkExperience = false;
-
-        this.workExperienceArray[this.selectedWorkExperienceIndex] = {
-            ...this.workExperienceArray[this.selectedWorkExperienceIndex],
-            ...event,
-        };
-
-        this.selectedWorkExperienceIndex = -1;
-
-        if (this.selectedMode === SelectedMode.FEEDBACK) {
-            this.feedbackValuesToPatch =
-                this.stepFeedbackValues[this.stepFeedbackValues.length - 1];
-        }
-    }
-
     public getWorkExperienceFormValues(event: any): void {
         this.workExperienceArray = [...this.workExperienceArray, event];
+
+        this.isEditing = true;
+
+        this.formValuesToPatch = {
+            employer: null,
+            employerPhone: null,
+            employerEmail: null,
+            employerFax: null,
+            employerAddress: null,
+            employerAddressUnit: null,
+            jobDescription: null,
+            fromDate: null,
+            toDate: null,
+            reasonForLeaving: null,
+            accountForPeriod: null,
+
+            isDrivingPosition: null,
+            classesOfEquipment: null,
+        };
+
+        if (this.lastWorkExperienceCard.id) {
+            this.workExperienceArray[this.workExperienceArray.length - 1].id =
+                this.lastWorkExperienceCard.id;
+
+            this.lastWorkExperienceCard.id = null;
+        } else {
+            this.workExperienceArray[this.workExperienceArray.length - 1].id =
+                null;
+        }
+
+        /*  this.workExperienceArray = [...this.workExperienceArray, event];
 
         if (this.lastWorkExperienceCard.id) {
             this.workExperienceArray[this.workExperienceArray.length - 1].id =
@@ -574,44 +587,205 @@ export class Step2Component implements OnInit, OnDestroy {
             lineInputs: [false],
             displayAnnotationButton: false,
             displayAnnotationTextArea: false,
+        }; */
+    }
+
+    public onEditWorkExperience(index: number): void {
+        this.workExperienceArray
+            .filter((item) => item.isEditingWorkExperience)
+            .forEach((item) => (item.isEditingWorkExperience = false));
+
+        this.selectedWorkExperienceIndex = index;
+
+        this.isEditing = true;
+        this.workExperienceArray[
+            this.selectedWorkExperienceIndex
+        ].isEditingWorkExperience = true;
+
+        this.hideFormOnEdit = true;
+        this.displayButtonInsteadOfForm = false;
+
+        const selectedWorkExperience =
+            this.workExperienceArray[this.selectedWorkExperienceIndex];
+
+        this.formValuesToPatch = selectedWorkExperience;
+
+        if (this.selectedMode === SelectedMode.FEEDBACK) {
+            this.feedbackValuesToPatch =
+                this.stepFeedbackValues[this.selectedWorkExperienceIndex];
+        }
+
+        /* if (this.isEditing) {
+            this.isEditing = false;
+            this.workExperienceArray[
+                this.selectedWorkExperienceIndex
+            ].isEditingWorkExperience = false;
+
+            this.selectedWorkExperienceIndex = -1;
+        }
+
+        this.selectedWorkExperienceIndex = index;
+
+        this.isEditing = true;
+        this.workExperienceArray[index].isEditingWorkExperience = true;
+
+        const selectedWorkExperience = this.workExperienceArray[index];
+
+        this.formValuesToPatch = selectedWorkExperience;
+
+        if (this.selectedMode === SelectedMode.FEEDBACK) {
+            this.feedbackValuesToPatch =
+                this.stepFeedbackValues[this.selectedWorkExperienceIndex];
+        } */
+    }
+
+    public cancelWorkExperienceEditing(_: any): void {
+        if (this.selectedMode === SelectedMode.FEEDBACK) {
+            this.feedbackValuesToPatch =
+                this.stepFeedbackValues[this.stepFeedbackValues.length - 1];
+        }
+
+        this.isEditing = false;
+
+        this.hideFormOnEdit = false;
+
+        if (this.workExperienceArray.length === 1) {
+            const selectedWorkExperience = this.workExperienceArray[0];
+
+            this.formValuesToPatch = selectedWorkExperience;
+
+            this.workExperienceArray = [];
+        } else {
+            if (this.selectedWorkExperienceIndex >= 0) {
+                this.workExperienceArray[
+                    this.selectedWorkExperienceIndex
+                ].isEditingWorkExperience = false;
+            }
+
+            this.formValuesToPatch = {
+                employer: null,
+                employerPhone: null,
+                employerEmail: null,
+                employerFax: null,
+                employerAddress: null,
+                employerAddressUnit: null,
+                jobDescription: null,
+                fromDate: null,
+                toDate: null,
+                reasonForLeaving: null,
+                accountForPeriod: null,
+
+                isDrivingPosition: null,
+                classesOfEquipment: null,
+            };
+
+            this.displayButtonInsteadOfForm = true;
+        }
+
+        this.selectedWorkExperienceIndex = -1;
+
+        /*  this.isEditing = false;
+        this.workExperienceArray[
+            this.selectedWorkExperienceIndex
+        ].isEditingWorkExperience = false;
+
+        this.selectedWorkExperienceIndex = -1;
+
+        if (this.selectedMode === SelectedMode.FEEDBACK) {
+            this.feedbackValuesToPatch =
+                this.stepFeedbackValues[this.stepFeedbackValues.length - 1];
+        } */
+    }
+
+    public saveEditedWorkExperience(event: any): void {
+        if (this.selectedMode === SelectedMode.FEEDBACK) {
+            this.feedbackValuesToPatch =
+                this.stepFeedbackValues[this.stepFeedbackValues.length - 1];
+        }
+
+        if (this.selectedWorkExperienceIndex >= 0) {
+            this.workExperienceArray[this.selectedWorkExperienceIndex] = {
+                ...this.workExperienceArray[this.selectedWorkExperienceIndex],
+                ...event,
+            };
+        } else {
+            this.workExperienceArray = [...this.workExperienceArray, event];
+        }
+
+        this.isEditing = false;
+
+        this.hideFormOnEdit = false;
+        this.displayButtonInsteadOfForm = true;
+
+        this.formValuesToPatch = {
+            employer: null,
+            employerPhone: null,
+            employerEmail: null,
+            employerFax: null,
+            employerAddress: null,
+            employerAddressUnit: null,
+            jobDescription: null,
+            fromDate: null,
+            toDate: null,
+            reasonForLeaving: null,
+            accountForPeriod: null,
+
+            isDrivingPosition: null,
+            classesOfEquipment: null,
         };
+
+        this.selectedWorkExperienceIndex = -1;
+
+        /* this.isEditing = false;
+        this.workExperienceArray[
+            this.selectedWorkExperienceIndex
+        ].isEditingWorkExperience = false;
+
+        this.workExperienceArray[this.selectedWorkExperienceIndex] = {
+            ...this.workExperienceArray[this.selectedWorkExperienceIndex],
+            ...event,
+        };
+
+        this.selectedWorkExperienceIndex = -1;
+
+        if (this.selectedMode === SelectedMode.FEEDBACK) {
+            this.feedbackValuesToPatch =
+                this.stepFeedbackValues[this.stepFeedbackValues.length - 1];
+        } */
     }
 
     public onGetBtnClickValue(event: any): void {
-        /*   if (event.notDisabledClick) {
+        if (event.notDisabledClick) {
             this.isEditing = true;
 
             this.displayButtonInsteadOfForm = false;
 
             this.formValuesToPatch = {
-                licenseNumber: null,
-                country: null,
-                state: null,
-                classType: null,
-                expDate: null,
-                restrictions: null,
-                endorsments: null,
+                employer: null,
+                employerPhone: null,
+                employerEmail: null,
+                employerFax: null,
+                employerAddress: null,
+                employerAddressUnit: null,
+                jobDescription: null,
+                fromDate: null,
+                toDate: null,
+                reasonForLeaving: null,
+                accountForPeriod: null,
+
+                isDrivingPosition: null,
+                classesOfEquipment: null,
             };
-        } */
+        }
     }
 
     public onGetFormStatus(status: string): void {
         this.formStatus = status;
     }
 
-    public onGetInnerFormStatus(status: string): void {
-        this.innerFormStatus = status;
-    }
-
     public onMarkInvalidEmit(event: any): void {
         if (!event) {
             this.markFormInvalid = false;
-        }
-    }
-
-    public onMarkInnerInvalidEmit(event: any): void {
-        if (!event) {
-            this.markInnerFormInvalid = false;
         }
     }
 
@@ -727,23 +901,6 @@ export class Step2Component implements OnInit, OnDestroy {
             this.displayRadioRequiredNoteArray[
                 event.id
             ].displayRadioRequiredNote = false;
-        }
-    }
-
-    public onGetClassOfEquipmentValues(event: any): void {
-        if (event.itemDeleted) {
-            this.lastWorkExperienceCard.classesOfEquipment.splice(
-                event.index,
-                1
-            );
-        }
-    }
-
-    public onGetIsEditingClassOfEquipmentStatus(event: any): void {
-        if (event) {
-            this.isEditingClassOfEquipment = true;
-        } else {
-            this.isEditingClassOfEquipment = false;
         }
     }
 
@@ -1045,10 +1202,7 @@ export class Step2Component implements OnInit, OnDestroy {
 
     public onStepAction(event: any): void {
         if (event.action === 'next-step') {
-            if (
-                this.selectedMode === SelectedMode.APPLICANT ||
-                this.selectedMode === SelectedMode.FEEDBACK
-            ) {
+            if (this.selectedMode !== SelectedMode.REVIEW) {
                 this.onSubmit();
             }
 
@@ -1067,17 +1221,12 @@ export class Step2Component implements OnInit, OnDestroy {
 
         if (
             this.formStatus === 'INVALID' ||
-            this.innerFormStatus === 'INVALID' ||
             this.isEditing ||
             (this.selectedMode === SelectedMode.FEEDBACK &&
                 !this.isFeedbackValueUpdated)
         ) {
             if (this.formStatus === 'INVALID') {
                 this.markFormInvalid = true;
-            }
-
-            if (this.innerFormStatus === 'INVALID') {
-                this.markInnerFormInvalid = true;
             }
 
             return;
@@ -1107,8 +1256,8 @@ export class Step2Component implements OnInit, OnDestroy {
                     fax: item.employerFax,
                     address: item.employerAddress,
                     isDrivingPosition: item.isDrivingPosition,
-                    cfrPart: item.cfrPart,
-                    fmcsa: item.fmCSA,
+                    /*    cfrPart: item.cfrPart,
+                    fmcsa: item.fmCSA, */
                     reasonForLeaving: this.reasonsForLeaving.find(
                         (reasonItem) =>
                             reasonItem.name === item.reasonForLeaving
@@ -1339,9 +1488,9 @@ export class Step2Component implements OnInit, OnDestroy {
                 const itemReview = item.workExperienceItemReview;
 
                 return {
-                    ...(this.stepHasReviewValues && {
+                    /*  ...(this.stepHasReviewValues && {
                         id: item.reviewId,
-                    }),
+                    }), */
                     workExperienceItemId: item.id,
                     isPrimary: false,
                     commonMessage: this.workExperienceForm.get(
