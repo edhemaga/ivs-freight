@@ -271,10 +271,14 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                         this.driverForm.get('teamDriver').patchValue(true);
                         this.inputService.changeValidators(
                             this.driverForm.get('soloEmptyMile'),
+                            false,
+                            [],
                             false
                         );
                         this.inputService.changeValidators(
                             this.driverForm.get('soloLoadedMile'),
+                            false,
+                            [],
                             false
                         );
                     }
@@ -288,10 +292,14 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                         this.driverForm.get('soloDriver').patchValue(true);
                         this.inputService.changeValidators(
                             this.driverForm.get('teamEmptyMile'),
+                            false,
+                            [],
                             false
                         );
                         this.inputService.changeValidators(
                             this.driverForm.get('teamLoadedMile'),
+                            false,
+                            [],
                             false
                         );
                     }
@@ -391,12 +399,15 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                 this.inputService.changeValidators(
                     this.driverForm.get('ein'),
                     true,
-                    [einNumberRegex]
+                    [einNumberRegex],
+                    false
                 );
                 this.einNumberChange();
             } else {
                 this.inputService.changeValidators(
                     this.driverForm.get('ein'),
+                    false,
+                    [],
                     false
                 );
             }
@@ -419,7 +430,118 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             }
             case 'paytype': {
                 this.selectedPayType = event;
+                // First delete all requred
+                this.inputService.changeValidators(
+                    this.driverForm.get('perMileSolo'),
+                    false,
+                    [],
+                    false
+                );
+                this.inputService.changeValidators(
+                    this.driverForm.get('soloEmptyMile'),
+                    false,
+                    [],
+                    false
+                );
+                this.inputService.changeValidators(
+                    this.driverForm.get('soloLoadedMile'),
+                    false,
+                    [],
+                    false
+                );
+                this.inputService.changeValidators(
+                    this.driverForm.get('perMileTeam'),
+                    false,
+                    [],
+                    false
+                );
+                this.inputService.changeValidators(
+                    this.driverForm.get('teamEmptyMile'),
+                    false,
+                    [],
+                    false
+                );
+                this.inputService.changeValidators(
+                    this.driverForm.get('teamLoadedMile'),
+                    false,
+                    [],
+                    false
+                );
+                this.inputService.changeValidators(
+                    this.driverForm.get('soloFlatRate'),
+                    false,
+                    [],
+                    false
+                );
+                this.inputService.changeValidators(
+                    this.driverForm.get('teamFlatRate'),
+                    false,
+                    [],
+                    false
+                );
 
+                // Per Mile
+                if (this.selectedPayType?.id === 1) {
+                    if (this.fleetType === 'Solo') {
+                        if (this.hasMilesSameRate) {
+                            this.inputService.changeValidators(
+                                this.driverForm.get('perMileSolo')
+                            );
+                        } else {
+                            this.inputService.changeValidators(
+                                this.driverForm.get('soloEmptyMile')
+                            );
+                            this.inputService.changeValidators(
+                                this.driverForm.get('soloLoadedMile')
+                            );
+                        }
+                    } else if (this.fleetType === 'Team') {
+                        if (this.hasMilesSameRate) {
+                            this.inputService.changeValidators(
+                                this.driverForm.get('perMileTeam')
+                            );
+                        } else {
+                            this.inputService.changeValidators(
+                                this.driverForm.get('teamEmptyMile')
+                            );
+                            this.inputService.changeValidators(
+                                this.driverForm.get('teamLoadedMile')
+                            );
+                        }
+                    } else if (this.fleetType === 'Combined') {
+                        this.inputService.changeValidators(
+                            this.driverForm.get('soloEmptyMile')
+                        );
+                        this.inputService.changeValidators(
+                            this.driverForm.get('soloLoadedMile')
+                        );
+                        this.inputService.changeValidators(
+                            this.driverForm.get('teamEmptyMile')
+                        );
+                        this.inputService.changeValidators(
+                            this.driverForm.get('teamLoadedMile')
+                        );
+                    }
+                }
+                // Flat Rate
+                else if (this.selectedPayType?.id === 3) {
+                    if (this.fleetType === 'Solo') {
+                        this.inputService.changeValidators(
+                            this.driverForm.get('soloFlatRate')
+                        );
+                    } else if (this.fleetType === 'Team') {
+                        this.inputService.changeValidators(
+                            this.driverForm.get('teamFlatRate')
+                        );
+                    } else if (this.fleetType === 'Combined') {
+                        this.inputService.changeValidators(
+                            this.driverForm.get('soloFlatRate')
+                        );
+                        this.inputService.changeValidators(
+                            this.driverForm.get('teamFlatRate')
+                        );
+                    }
+                }
                 break;
             }
             default: {
@@ -567,12 +689,12 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             soloEmptyMile: [null],
             soloLoadedMile: [null],
             soloPerStop: [null, perStopValidation],
-            perMileSolo: [null],
+            perMileSolo: [null], // if has same rate loaded and empty
             soloFlatRate: [null, perStopValidation],
             teamEmptyMile: [null],
             teamLoadedMile: [null],
             teamPerStop: [null, perStopValidation],
-            perMileTeam: [null],
+            perMileTeam: [null], // if has same rate loaded and empty
             teamFlatRate: [null, perStopValidation],
             commissionSolo: [25],
             commissionTeam: [25],
@@ -841,10 +963,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                             .patchValue(
                                 data.solo?.emptyMile
                                     ? data.solo.emptyMile
-                                    : null,
-                                {
-                                    emitEvent: false,
-                                }
+                                    : null
                             );
 
                         this.driverForm
@@ -852,10 +971,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                             .patchValue(
                                 data.solo?.loadedMile
                                     ? data.solo.loadedMile
-                                    : null,
-                                {
-                                    emitEvent: false,
-                                }
+                                    : null
                             );
 
                         this.driverForm
@@ -867,10 +983,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                                               ? data.solo.perStop
                                               : null
                                       )
-                                    : null,
-                                {
-                                    emitEvent: false,
-                                }
+                                    : null
                             );
 
                         this.driverForm
@@ -880,22 +993,17 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                                     ? convertNumberInThousandSep(
                                           data.soloFlatRate
                                       )
-                                    : null,
-                                {
-                                    emitEvent: false,
-                                }
+                                    : null
                             );
 
                         this.driverForm
                             .get('perMileSolo')
-                            .patchValue(data.perMileSolo, { emitEvent: false });
+                            .patchValue(data.perMileSolo);
 
                         if (data.defaultSoloDriverCommission) {
                             this.driverForm
                                 .get('commissionSolo')
-                                .patchValue(data.defaultSoloDriverCommission, {
-                                    emitEvent: false,
-                                });
+                                .patchValue(data.defaultSoloDriverCommission);
                         }
                     }
 
@@ -1067,7 +1175,14 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                 : this.driverForm.get('ownerType').value === 'Sole Proprietor'
                 ? 2
                 : 1,
-            bussinesName: this.owner
+            ein: !this.driverForm.get('isOwner').value
+                ? null
+                : this.driverForm.get('ownerType').value === 'Sole Proprietor'
+                ? null
+                : form.ein,
+            bussinesName: !this.driverForm.get('isOwner').value
+                ? null
+                : this.driverForm.get('ownerType').value === 'Sole Proprietor'
                 ? null
                 : this.driverForm.get('bussinesName').value,
             address: {
