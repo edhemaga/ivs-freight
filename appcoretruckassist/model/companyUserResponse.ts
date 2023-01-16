@@ -45,6 +45,7 @@ export interface CompanyUserResponse {
     base?: number | null;
     commission?: number | null;
     note?: string | null;
+    verified?: boolean;
     lastLogin?: string | null;
     createdAt?: string;
     updatedAt?: string;

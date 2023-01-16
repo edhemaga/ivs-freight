@@ -64,6 +64,8 @@ export interface TruckShortResponse {
     pto?: boolean | null;
     inspectionPercentage?: number | null;
     inspectionExpirationDays?: number | null;
+    registrationPercentage?: number | null;
+    registrationExpirationDays?: number | null;
     createdAt?: string;
     updatedAt?: string;
 }

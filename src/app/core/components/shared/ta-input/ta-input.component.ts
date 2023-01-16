@@ -547,6 +547,7 @@ export class TaInputComponent
     }
 
     public onKeyUp(event): void {
+        console.log(event.keyCode);
         if (
             event.keyCode == 8 &&
             !(this.inputConfig.isDropdown || this.inputConfig.dropdownLabel)
@@ -916,9 +917,12 @@ export class TaInputComponent
         }
 
         if (
-            ['business name', 'shop name', 'fuel stop'].includes(
-                this.inputConfig.name.toLowerCase()
-            )
+            [
+                'business name',
+                'shop name',
+                'fuel stop',
+                'producer name',
+            ].includes(this.inputConfig.name.toLowerCase())
         ) {
             if (
                 this.inputService
@@ -1442,7 +1446,7 @@ export class TaInputComponent
         }
 
         if (
-            ['producer name', 'insurer name', 'office name'].includes(
+            ['insurer name', 'office name'].includes(
                 this.inputConfig.name.toLowerCase()
             )
         ) {
