@@ -129,10 +129,6 @@ export class TaInputComponent
     }
 
     ngOnInit(): void {
-        /* 
-        console.log('ngOnInit');
-        console.log(this.inputConfig); */
-
         // Toggle label transition animation
         $('.input-label').addClass('no-transition');
 
@@ -384,7 +380,6 @@ export class TaInputComponent
                     this.inputConfig.name === 'timepicker'
                 ) {
                     this.focusBlur = setTimeout(() => {
-                        console.log('BLUR ON THISSS');
                         // this.focusInput = false;
                         this.blurOnDateTime();
                     }, 100);
@@ -548,7 +543,6 @@ export class TaInputComponent
     }
 
     public onKeyUp(event): void {
-        console.log(event.keyCode);
         if (
             event.keyCode == 8 &&
             !(this.inputConfig.isDropdown || this.inputConfig.dropdownLabel)
