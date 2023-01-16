@@ -128,8 +128,8 @@ export class TaReCardComponent implements OnInit {
     public CloseCard() {
         let currentDate = moment().format('MM/DD/YYYY');
         if (
-            moment(this.expDateClose).isBefore(currentDate) ||
-            this.isDeactivated
+            ( moment(this.expDateClose).isBefore(currentDate) ||
+            this.isDeactivated ) && !this.forcedOpen
         ) {
             this.isCardOpen = false;
             this.animationStarted = false;
