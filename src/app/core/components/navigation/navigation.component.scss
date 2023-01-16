@@ -11,50 +11,60 @@
     flex-direction: column;
     justify-content: space-between;
     padding: 12px;
-    cursor: pointer;
     // background-color: $nav-white;
     color: $nav-text-color;
     font-size: $nav-font-size;
     font-weight: $nav-font-medium;
-
     transition: $nav-transition;
     overflow: hidden;
-    .nav-holder{
+    .nav-holder {
         height: 100%;
         display: flex;
         flex-direction: column;
         background: $nav-white;
         padding: 0 6px;
         width: 48px;
-        padding: 10px 6px;
+        padding: 10px 0px;
         border-radius: 3px;
         z-index: -1;
-    // &:hover {
-    //     width: 250px;
-    //     background: $nav-dark;
-    //     box-shadow: $nav-boxshadow;
-    //     transition: $nav-transition;
-    //     cursor: pointer;
-    // }
-}
-.dark-nav{
-    background: $nav-dark !important;
-    width: 250px !important;
-    transition: $nav-transition;
-    .new-magic-line{
-        background: $nav-hover-color !important;
     }
-}
-
+    .new-magic-line {
+        width: 36px !important;
+    }
+    .dark-nav {
+        background: $nav-dark !important;
+        width: 250px !important;
+        transition: $nav-transition;
+        .new-magic-line {
+            background: $nav-hover-color !important;
+            width: 238px !important;
+        }
+    }
+    .animation {
+        transition: $nav-transition;
+        width: 48px;
+        cursor: pointer;
+        overflow: hidden;
+    }
+    .navigation-top {
+        padding: 0px 6px;
+    }
     .navigation-middle {
         overflow-y: scroll;
         overflow-x: hidden;
+        min-height: 388px;
+        max-height: 620px;
+        padding: 0px 6px;
     }
-    .open-navigation{
+    .open-navigation {
         flex: 1;
+        cursor: pointer;
     }
-    .navigation-bottom{
-        overflow: hidden;
+    .navigation-bottom {
+        // overflow: hidden;
+        padding: 0px 6px;
+        position: absolute;
+        bottom: 22px;
     }
     .wrapper-line {
         @media only screen and (min-width: 300px) {
@@ -72,14 +82,17 @@
 
     .navigation-routes-container {
         position: relative;
-        
+
         .navigation-routes {
             // padding-left: 9px;
             display: flex;
             flex-wrap: wrap;
-            justify-content: center;
+            padding-left: 8px;
             padding-bottom: 1px;
             padding-top: 1px;
+            z-index: 1;
+            position: relative;
+            cursor: pointer;
         }
 
         .subroute-card {
@@ -99,10 +112,10 @@
             top: 0px;
             content: '';
             height: 28px;
-            background:$nav-hover-ligh;
+            background: $nav-hover-ligh;
             border-radius: 3px;
             transition: $magic-line-transition;
-            z-index: -1;
+            z-index: 0;
         }
 
         .new-magic-line-selected {
@@ -217,4 +230,3 @@
         }
     }
 }
-

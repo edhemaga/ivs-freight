@@ -2,9 +2,9 @@
     <div class="user-company-header" (click)="onAction()">
         <div class="header-left">
             <svg-icon
-            class="user-company-header-svg"
-            src="assets/svg/common/ic_company.svg"
-        ></svg-icon>
+                class="user-company-header-svg"
+                src="assets/svg/common/ic_company.svg"
+            ></svg-icon>
             <p class="user-company-header-text">Switch Company</p>
         </div>
         <svg-icon
@@ -21,9 +21,7 @@
             [ngClass]="{ 'user-company-text-active': item.isActive }"
             class="user-company-text"
         >
-        <svg-icon src="assets/svg/applicant/check.svg">
-
-        </svg-icon>
+            <svg-icon src="assets/svg/applicant/check.svg"> </svg-icon>
             {{ item.companyName }}
         </p>
     </div>

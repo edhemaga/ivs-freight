@@ -1,8 +1,9 @@
 <div class="nav-header">
     <div class="nav-header-top">
         <svg-icon
-            class="nav-header-top-logo"
-            src="{{ isNavigationHovered | changeLogo }}"
+            class="nav-header-top-logo close"
+            src="assets/svg/applicant/new-logo.svg"
+            (click)="redirectToDashboard()"
         ></svg-icon>
     </div>
     <div
@@ -10,19 +11,23 @@
         [ngClass]="{ 'expand-width': isNavigationHovered }"
     >
         <div class="nav-header-bottom-leftSide">
-
-        <div
-            class="nav-header-bottom-plus"
-            (click)="onAction('Open Panel')"
-            [ngStyle]="isNavigationHovered == true && { 'background': '#3074D3' }"
-        >
-            <svg-icon 
-            [ngClass]="{ 'light-svg': isNavigationHovered }"
-            src="assets/svg/common/ic_plus.svg"></svg-icon>
+            <div
+                class="nav-header-bottom-plus"
+                (click)="onAction('Open Panel')"
+                [ngClass]="{ 'dark-svg': isNavigationHovered }"
+            >
+                <svg-icon
+                    [ngClass]="{ 'light-svg': isNavigationHovered }"
+                    src="assets/svg/common/ic_plus.svg"
+                ></svg-icon>
+            </div>
+            <p
+                [@showHideDetails]="isNavigationHovered ? 'true' : 'false'"
+                class="ta-font-bold"
+            >
+                Add New
+            </p>
         </div>
-        <p [@showHideDetails]="isNavigationHovered ? 'true' : 'false'" 
-        class="ta-font-bold">Add New</p>
-    </div>
 
         <div
             class="nav-header-bottom-rightSide"

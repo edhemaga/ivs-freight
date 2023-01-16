@@ -1,37 +1,84 @@
-<div class="holder">
-    <div class="parent" 
-    
-    *ngIf="showItems && isNavigationHovered"></div>
-    <div *ngIf="showItems && isNavigationHovered">
-        
-    <div  class="items" *ngFor="let item of footer[0].route"
-    [route]="footer[0]"
-
+<div
+    class="holder"
+    (click)="onUserPanelClose()"
+    [ngClass]="{
+        'active-link': isActiveFooterRouteClick || settingsRouteActivated
+    }"
+>
+    <div
+        *ngIf="!isNavigationHovered"
+        class="tooltip"
+        ngbTooltip
+        mainTooltip="Settings"
+        tooltipBackground="#2F2F2F"
+        position="right"
+    ></div>
+    <div
+        class="parent"
+        *ngIf="isSettingsPanelOpen && isNavigationHovered"
+    ></div>
+    <div
+        *ngIf="isSettingsPanelOpen && isNavigationHovered"
+        class="wrapper"
+        [@dropDownMenu]
     >
-    
-    <div 
-    (click)="changeRouteSettings(item)"
-    class="item"
-    >
-
-            <svg-icon
-            src="{{ item.image }}"
-            
-            ></svg-icon>
-            <p  >{{item.name}}</p>
-            <svg-icon
-            class="nav-item-arrow_top"
-            src="assets/svg/common/arrow_top_right.svg"
-            ></svg-icon>
+        <div
+            class="items"
+            *ngFor="let item of footer[0].route"
+            [route]="footer[0]"
+            (click)="routeAction(item)"
+            [ngClass]="{
+                'magic-line-selected': isActiveRouteOnReload(item.route)
+            }"
+        >
+            <div (click)="changeRouteSettings(item)" class="item item-settings">
+                <svg-icon
+                    src="{{ item.image }}"
+                    class="svg-settings"
+                ></svg-icon>
+                <p>{{ item.name }}</p>
+                <svg-icon
+                    class="mark-route"
+                    src="assets/svg/common/confirmation/ic_confirmation_hire.svg"
+                    [ngClass]="{
+                        'active-mark': isActiveRouteOnReload(item.route)
+                    }"
+                ></svg-icon>
+            </div>
         </div>
+        <div
+            [@showHideDetails]="isActiveMagicLine ? 'false' : 'true'"
+            class="new-magic-line"
+        ></div>
     </div>
-</div>
 
-<div class="footer-item" (click)="showItems = !showItems">
-    <svg-icon
-    src="{{ footer[0].image }}"
-    ></svg-icon>
-    <p [@showHideDetails]="isNavigationHovered ? 'true' : 'false'">Settings</p>
-</div>
-
+    <div
+        class="footer-item"
+        [ngClass]="{
+            'active-text': isActiveFooterRouteClick
+        }"
+    >
+        <svg-icon
+            class="image-footer"
+            [ngClass]="{
+                'activated-svg': isSettingsPanelOpen
+            }"
+            src="{{ footer[0].image }}"
+        ></svg-icon>
+        <p
+            [@showHideDetails]="isNavigationHovered ? 'true' : 'false'"
+            [ngClass]="{
+                'activated-settings': isSettingsPanelOpen
+            }"
+        >
+            <span class="item-name"> Settings</span>
+            <svg-icon
+                class="nav-item-arrow nav-item-arrow-active"
+                [ngClass]="{
+                    'nav-item-arrow-rotate': isSettingsPanelOpen
+                }"
+                src="assets/svg/common/ic_arrow-down.svg"
+            ></svg-icon>
+        </p>
+    </div>
 </div>

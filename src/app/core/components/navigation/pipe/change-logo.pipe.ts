@@ -8,6 +8,6 @@ export class ChangeLogoPipe implements PipeTransform {
         if (!value) {
             return 'assets/svg/applicant/ic_logo-light.svg';
         }
-        return 'assets/svg/common/ic_logo-dark.svg';
+        return 'assets/svg/applicant/new-logo.svg';
     }
 }

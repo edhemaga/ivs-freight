@@ -40,8 +40,6 @@ export class NavigationUserCompanyComponent implements OnInit {
     }
 
     public onAction() {
-        console.log('click')
-
         this.navigationService.onDropdownActivation({
             name: 'User Company Details',
             type: false,
