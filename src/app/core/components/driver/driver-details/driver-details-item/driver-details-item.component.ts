@@ -35,6 +35,7 @@ import {
     keyframes,
 } from '@angular/animations';
 import { Titles } from 'src/app/core/utils/application.decorators';
+import { convertDateFromBackend } from '../../../../utils/methods.calculations';
 
 @Titles()
 @Component({
@@ -604,6 +605,12 @@ export class DriverDetailsItemComponent
     public onFileAction(action: string) {
         onFileActionMethods(action);
     }
+
+    public formatDate(mod){
+        return convertDateFromBackend(mod);
+    }
+
+
     ngOnDestroy(): void {
         this.destroy$.next();
         this.destroy$.complete();
