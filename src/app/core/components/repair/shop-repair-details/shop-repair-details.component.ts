@@ -137,7 +137,7 @@ export class ShopRepairDetailsComponent implements OnInit, OnDestroy {
                     shop.id ===
                     (id ? id : +this.act_route.snapshot.params['id'])
             );
-
+        
         this.repairDQuery.repairShop$
             .pipe(take(1), takeUntil(this.destroy$), distinctUntilChanged())
             .subscribe((items: RepairShopResponse[]) => {
@@ -245,10 +245,34 @@ export class ShopRepairDetailsComponent implements OnInit, OnDestroy {
         };
     }
     public dropActionRepair(event: any) {
+
+        if ( event.type == 'write-review' ){
+            event.type = 'edit';
+            event.openedTab = 'Review';
+        }
+
         this.dropDownService.dropActionsHeaderRepair(
             event,
             this.repairObject,
-            event.id
+            event.id,
+        );
+    }
+
+    public onModalAction(event: any){
+
+        let eventType = '';
+       if ( event == 'Contact' || event == 'Review'){
+            eventType = 'edit'
+       } else {
+            eventType = event;
+       }
+        let eventObject = {
+            id: this.repairObject.id,
+            type: eventType,
+            openedTab: event,
+        }
+        this.dropDownService.dropActionsHeaderRepair(
+            eventObject
         );
     }
 

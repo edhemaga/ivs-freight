@@ -97,6 +97,8 @@ export class DriverDetailsItemComponent
     public expiredCard: any[] = [];
     public currentIndex: number;
     public activeCdl: any;
+    public currentDate: any;
+
     constructor(
         private cdlService: CdlTService,
         private medicalService: MedicalTService,
@@ -185,6 +187,7 @@ export class DriverDetailsItemComponent
                     }
                 },
             });
+        this.currentDate = moment(new Date()).format();
     }
     public getExpireDate() {
         this.dataCDl = this.drivers[0]?.data?.cdls?.map((ele) => {

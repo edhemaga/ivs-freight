@@ -69,12 +69,27 @@
                 ></app-ta-input>
             </div>
             <div class="col-6">
+                <div
+                    *ngIf="!registrationExpirationDate"
+                    class="d-flex align-items-center registration-expiration-container"
+                >
+                    <div class="registartion-action" (click)="onAction()">
+                        <svg-icon
+                            class="registartion-action-svg"
+                            [src]="'assets/svg/common/ic_plus.svg'"
+                        ></svg-icon>
+                    </div>
+                    <p class="m-0 p-0 registration-action-text">
+                        Add expiration date
+                    </p>
+                </div>
                 <app-ta-input
+                    *ngIf="registrationExpirationDate"
                     [inputConfig]="{
                         name: 'datepicker',
                         type: 'text',
                         isDropdown: true,
-                        label: 'Expiry Date',
+                        label: 'Expiration Date',
                         placeholderIcon: 'date',
                         isRequired: true,
                         customClass: 'datetimeclass'

@@ -9,10 +9,12 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { LiveTrackingSignalItemResponse } from './liveTrackingSignalItemResponse';
 
 
-export interface LiveTrackingSignalResponse { 
-    data?: Array<LiveTrackingSignalItemResponse> | null;
-}
+export type ParkingSlotType = 'Standard' | 'Full';
+
+export const ParkingSlotType = {
+    Standard: 'Standard' as ParkingSlotType,
+    Full: 'Full' as ParkingSlotType
+};
 

@@ -18,6 +18,8 @@ import { BrokerMinimalListStore } from '../broker-details-state/broker-minimal-l
 import { BrokerDetailsListStore } from '../broker-details-state/broker-details-list-state/broker-details-list.store';
 import { FormDataService } from 'src/app/core/services/formData/form-data.service';
 import { BrokerDetailsStore } from '../broker-details-state/broker-details.store';
+import { BrokerAvailableCreditCommand } from '../../../../../../../appcoretruckassist/model/brokerAvailableCreditCommand';
+import { BrokerAvailableCreditResponse } from '../../../../../../../appcoretruckassist/model/brokerAvailableCreditResponse';
 
 @Injectable({
     providedIn: 'root',
@@ -267,6 +269,13 @@ export class BrokerTService implements OnDestroy {
         );
     }
 
+    // Available Credit Broker
+    public availableCreditBroker(
+        data: BrokerAvailableCreditCommand
+    ): Observable<BrokerAvailableCreditResponse> {
+        return this.brokerService.apiBrokerAvailablecreditPut(data);
+    }
+
     // Change Ban Status
     public changeBanStatus(brokerId: number): Observable<any> {
         return this.brokerService.apiBrokerBanIdPut(brokerId, 'response').pipe(
@@ -424,8 +433,6 @@ export class BrokerTService implements OnDestroy {
             brokerId
         );
     }
-
-    public getBrokerLoa;
 
     ngOnDestroy(): void {
         this.destroy$.next();

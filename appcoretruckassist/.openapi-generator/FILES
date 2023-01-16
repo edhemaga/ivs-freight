@@ -482,6 +482,11 @@ model/pMTruckUnitResponsePagination.ts
 model/parkingListResponse.ts
 model/parkingResponse.ts
 model/parkingResponsePagination.ts
+model/parkingShortResponse.ts
+model/parkingSlotCommand.ts
+model/parkingSlotResponse.ts
+model/parkingSlotShortResponse.ts
+model/parkingSlotType.ts
 model/passwordResponse.ts
 model/patchNoteCommand.ts
 model/payPeriod.ts
@@ -694,6 +699,7 @@ model/updatePMTruckDefaultCommand.ts
 model/updatePMTruckDefaultListCommand.ts
 model/updatePMTruckUnitListCommand.ts
 model/updateParkingCommand.ts
+model/updateParkingSlotCommand.ts
 model/updatePersonalInfoCommand.ts
 model/updatePersonalInfoReviewCommand.ts
 model/updatePreviousAddressCommand.ts

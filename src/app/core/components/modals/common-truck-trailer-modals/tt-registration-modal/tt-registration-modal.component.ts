@@ -40,6 +40,8 @@ export class TtRegistrationModalComponent implements OnInit, OnDestroy {
 
     public disableCardAnimation: boolean = false;
 
+    public registrationExpirationDate: boolean = false;
+
     constructor(
         private formBuilder: FormBuilder,
         private commonTruckTrailerService: CommonTruckTrailerService,
@@ -55,6 +57,27 @@ export class TtRegistrationModalComponent implements OnInit, OnDestroy {
             this.disableCardAnimation = true;
             this.editRegistrationById();
         }
+
+        if (this.editData && this.editData?.data) {
+            this.editData = {
+                ...this.editData,
+                payload: this.editData.data,
+            };
+        }
+
+        if (this.editData?.modal) {
+            if (this.editData.modal === 'truck') {
+                this.inputService.changeValidators(
+                    this.registrationForm.get('expDate')
+                );
+                this.registrationExpirationDate = true;
+            } else {
+                this.inputService.changeValidators(
+                    this.registrationForm.get('expDate'),
+                    false
+                );
+            }
+        }
     }
 
     private createForm() {
@@ -65,7 +88,7 @@ export class TtRegistrationModalComponent implements OnInit, OnDestroy {
             ],
             stateId: [null, Validators.required],
             issueDate: [null, Validators.required],
-            expDate: [null, Validators.required],
+            expDate: [null],
             note: [null],
             files: [null],
         });
@@ -252,6 +275,15 @@ export class TtRegistrationModalComponent implements OnInit, OnDestroy {
                 },
                 error: () => {},
             });
+    }
+
+    public onAction() {
+        this.registrationExpirationDate = !this.registrationExpirationDate;
+
+        this.inputService.changeValidators(
+            this.registrationForm.get('expDate'),
+            this.registrationExpirationDate ? true : false
+        );
     }
 
     ngOnDestroy(): void {

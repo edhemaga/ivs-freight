@@ -48,6 +48,7 @@
                     placement="bottom"
                     [showCloseButton]="false"
                     [pointer]="false"
+                    [panOnOpen]="false"
                 >
                     <ng-template>
                         <div
@@ -59,6 +60,7 @@
                                 'hide-marker': location.hidden
                             }"
                             (click)="markerClick(location)"
+                            (mousewheel)="markerZoom($event, location)"
                         >
                             <svg
                                 *ngIf="
@@ -262,8 +264,6 @@
                             <app-map-marker-dropdown
                                 [title]="
                                     location?.driver
-                                        ? location.driver
-                                        : 'Job Gaston'
                                 "
                                 [item]="location"
                                 [type]="'gps'"
@@ -629,7 +629,7 @@
                                         <app-gps-progressbar
                                             *ngIf="column.progressComponent"
                                         ></app-gps-progressbar>
-                                        <ng-container
+                                        <span
                                             *ngIf="
                                                 !column.progressComponent &&
                                                 (!column.showDeviceDropdown ||
@@ -642,6 +642,14 @@
                                                                 !location.trailerNumber)))) &&
                                                 column.value != 'ignition'
                                             "
+                                            class="marker-like-text"
+                                            [ngClass]="{
+                                                'no-data-text':
+                                                    !location[column.value] &&
+                                                    column.manageDevicePlaceholder &&
+                                                    showManageDevice
+                                            }"
+                                            [ngStyle]="{ 'margin': '0' }"
                                         >
                                             {{
                                                 location[column.value] != null
@@ -675,7 +683,7 @@
                                                     ? column.placeholderText
                                                     : 'No data'
                                             }}
-                                        </ng-container>
+                                        </span>
                                         <ng-container
                                             *ngIf="column.value == 'ignition'"
                                         >
@@ -1156,7 +1164,7 @@
                                 </svg-icon>
                             </span>
                             <div
-                                class="truck-unit-text marker-like-text marker-bold-text"
+                                class="truck-unit-text marker-like-text marker-bold-text device-id-text"
                             >
                                 {{ location.deviceId }}
                             </div>
@@ -1286,7 +1294,7 @@
                                 </svg-icon>
                             </span>
                             <div
-                                class="truck-unit-text marker-like-text marker-bold-text"
+                                class="truck-unit-text marker-like-text marker-bold-text device-id-text"
                             >
                                 {{ location.deviceId }}
                             </div>

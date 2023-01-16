@@ -100,6 +100,10 @@
 <ng-template #taInputDropdownPopover>
     <!--------------------------- Dropdown options --------------------------->
     <div
+        *ngIf="inputConfig?.mergedDropdown"
+        class="dropdown-options-divider {{ inputConfig.dropdownWidthClass }}"
+    ></div>
+    <div
         (scroll)="onScrollDropdown($event.target)"
         *ngIf="
             (inputConfig.name != 'Address' &&
@@ -114,7 +118,8 @@
             scroll: options | taDropdownCount: template,
             'dropdown-options-groups':
                 template === 'groups' || template === 'load-broker-contact',
-            'dropdown-options-fuel-franchise': template === 'fuel-franchise'
+            'dropdown-options-fuel-franchise': template === 'fuel-franchise',
+            'merged-dropdown': inputConfig?.mergedDropdown
         }"
         class="dropdown-options  {{ inputConfig.dropdownWidthClass }}"
     >
@@ -130,6 +135,7 @@
                             options.length === 1 &&
                             options[0].name === 'No Results',
                         'add-new': option.name === 'ADD NEW',
+
                         active: option.id === activeItem?.id
                     }"
                     class="dropdown-option"
@@ -169,6 +175,8 @@
                             options[0].name === 'No Results',
                         'add-new': option.name === 'ADD NEW',
                         active: option.id === activeItem?.id,
+                        'all-assigned':
+                            option.name.toLowerCase() === 'all assigned',
                         trailerContainer: option.name === 'Container',
                         lowboyrgn: option.name === 'Low Boy / RGN'
                     }"
@@ -196,6 +204,7 @@
                             option.name.trim().replace(' ', '').toLowerCase()
                         }}"
                     ></svg-icon>
+                    <!-- Text -->
                     <div
                         [innerHtml]="
                             option?.number
@@ -217,9 +226,26 @@
                                         ])
                         "
                         [ngClass]="{
-                            'truck-text': option?.subFolder === 'trucks'
+                            'truck-text': option?.subFolder === 'trucks',
+                            'flex-1': option?.additionalText
                         }"
                         class="svgtext-template-text"
+                    ></div>
+
+                    <!-- Additional Text -->
+                    <div
+                        *ngIf="option?.additionalText"
+                        [innerHtml]="
+                            option.additionalText
+                                | taHighlight
+                                    : [
+                                          {
+                                              index: 45632,
+                                              text: getSuperControl.value
+                                          }
+                                      ]
+                        "
+                        class="svgtext-template-text additional-text"
                     ></div>
                 </div>
             </div>
@@ -232,7 +258,10 @@
                         disabled: option?.disabled,
                         'no-result':
                             options.length === 1 &&
-                            options[0].name === 'No Results'
+                            options[0].name === 'No Results',
+                        'add-new': option.name === 'ADD NEW',
+                        'all-assigned':
+                            option.name.toLowerCase() === 'all assigned'
                     }"
                     class="dropdown-option details-template"
                 >
@@ -254,10 +283,27 @@
                         }"
                         class="details-template-text"
                     ></div>
-                    <svg-icon
-                        [src]="option.svg | taSvg: option.folder"
-                        class="details-template-logo"
-                    ></svg-icon>
+                    <div class="d-flex align-items-center" style="gap: 7px">
+                        <!-- Additional Text -->
+                        <div
+                            *ngIf="option?.additionalText"
+                            [innerHtml]="
+                                option.additionalText
+                                    | taHighlight
+                                        : [
+                                              {
+                                                  index: 45632,
+                                                  text: getSuperControl.value
+                                              }
+                                          ]
+                            "
+                            class="svgtext-template-text additional-text"
+                        ></div>
+                        <svg-icon
+                            [src]="option.svg | taSvg: option.folder"
+                            class="details-template-logo"
+                        ></svg-icon>
+                    </div>
                 </div>
             </div>
             <!--------------------------- Grouping template (can see on contact modal)  --------------------------->
@@ -560,7 +606,7 @@
                         ></div>
                         <!-- Percentage is driver owner -->
                         <span
-                            *ngIf="option.driver?.owner"
+                            *ngIf="option.driver?.owner && option?.payType"
                             [ngClass]="{
                                 'driver-owner': option.driver?.owner,
                                 active: indx === activeItem?.itemIndex
@@ -584,6 +630,18 @@
                                       .toLowerCase()
                                 : null
                         }}"
+                        [ngClass]="{
+                            trailerContainer: option?.trailer?.logoType
+                                ? option?.trailer?.logoType
+                                      .trim()
+                                      .replace(' ', '') === 'Container'
+                                : false,
+                            lowboyrgn: option?.trailer?.logoType
+                                ? option?.trailer?.logoType
+                                      .trim()
+                                      .replace(' ', '') === 'Low Boy / RGN'
+                                : false
+                        }"
                     >
                         <svg-icon [src]="option?.trailer?.logoName"></svg-icon>
                         <div
@@ -665,7 +723,8 @@
                     <span
                         *ngIf="
                             options[0].name !== 'No Results' &&
-                            !option.driver?.owner
+                            !option.driver?.owner &&
+                            option?.payType
                         "
                         [ngClass]="{
                             active: indx === activeItem?.itemIndex
@@ -1049,6 +1108,55 @@
                             </span>
                         </div>
                     </div>
+                </div>
+            </div>
+            <!-- Double Text Template -->
+            <div *ngSwitchCase="'double-text-template'">
+                <div
+                    (click)="onActiveItem(option)"
+                    *ngFor="let option of options; trackBy: identity"
+                    [ngClass]="{
+                        disabled: option?.disabled,
+                        'no-result':
+                            options.length === 1 &&
+                            options[0].name === 'No Results',
+                        'add-new': option.name === 'ADD NEW',
+                        active: option.id === activeItem?.id,
+                        'all-assigned':
+                            option.name.toLowerCase() === 'all assigned'
+                    }"
+                    class="dropdown-option dropdown-double-text-option"
+                >
+                    <!-- First Text -->
+                    <div
+                        [innerHtml]="
+                            option.name
+                                | taHighlight
+                                    : [
+                                          {
+                                              index: 45632,
+                                              text: getSuperControl.value
+                                          }
+                                      ]
+                        "
+                        class="svgtext-template-text"
+                    ></div>
+
+                    <!-- Additional Text -->
+                    <div
+                        *ngIf="option?.additionalText"
+                        [innerHtml]="
+                            option.additionalText
+                                | taHighlight
+                                    : [
+                                          {
+                                              index: 45632,
+                                              text: getSuperControl.value
+                                          }
+                                      ]
+                        "
+                        class="svgtext-template-text additional-text"
+                    ></div>
                 </div>
             </div>
             <!--------------------------- Default Template - Render Only Text --------------------------->

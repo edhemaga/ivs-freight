@@ -498,7 +498,6 @@ ngb-modal-window[aria-hidden='true'] {
                     -moz-user-select: none;
                     -ms-user-select: none;
                     user-select: none;
-                    pointer-events: none;
                     line-height: 18px;
                     position: relative;
                     transition: all 0.3s ease-in-out;
@@ -1012,7 +1011,7 @@ ngb-modal-window.modal {
             width: 100vw;
             height: 100vh;
 
-            transition: all 0.3s;
+            //transition: all 0.3s;
 
             .modal-container {
                 margin: 75px auto 60px auto;

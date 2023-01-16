@@ -37,10 +37,14 @@ import {
 import { BrokerTService } from '../../customer/state/broker-state/broker.service';
 import { debounceTime, Subject, takeUntil } from 'rxjs';
 import { ReviewsRatingService } from '../../../services/reviews-rating/reviewsRating.service';
-import { convertNumberInThousandSep } from '../../../utils/methods.calculations';
+import {
+    convertNumberInThousandSep,
+    convertThousanSepInNumber,
+} from '../../../utils/methods.calculations';
 import { poBoxValidation } from '../../shared/ta-input/ta-input.regex-validations';
 import { FormService } from '../../../services/form/form.service';
 import { LoadModalComponent } from '../load-modal/load-modal.component';
+import { BrokerAvailableCreditResponse } from '../../../../../../appcoretruckassist/model/brokerAvailableCreditResponse';
 import {
     name2_24Validation,
     creditLimitValidation,
@@ -196,7 +200,20 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
             }, 50);
         }
 
-        console.log('broker edit data: ', this.editData);
+        // Open Tab Position
+        if (this.editData?.openedTab) {
+            setTimeout(() => {
+                this.tabChange({
+                    id:
+                        this.editData?.openedTab === 'Contact'
+                            ? 2
+                            : this.editData?.openedTab === 'Review'
+                            ? 3
+                            : 1,
+                });
+                this.disableCardAnimation = true;
+            });
+        }
 
         this.companyUser = JSON.parse(localStorage.getItem('user'));
     }
@@ -248,8 +265,6 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe((isFormChange: boolean) => {
                 this.isFormDirty = isFormChange;
-                console.log('is form dirty: ', this.isFormDirty);
-                console.log('valid: ', this.brokerForm.valid);
             });
     }
 
@@ -323,6 +338,8 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
 
                         this.inputService.changeValidators(
                             this.brokerContacts.at(index).get('phone'),
+                            false,
+                            [],
                             false
                         );
                     }
@@ -432,7 +449,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                         this.inputService.markInvalid(this.brokerForm);
                         return;
                     }
-                    if (this.editData) {
+                    if (['edit'].includes(this.editData?.type)) {
                         this.updateBroker(this.editData.id);
                         this.modalService.setModalSpinner({
                             action: null,
@@ -793,7 +810,6 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
             payTerm,
             brokerContacts,
             mcNumber,
-            availableCredit,
             ...form
         } = this.brokerForm.value;
 
@@ -941,7 +957,6 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
             isCredit,
             brokerContacts,
             mcNumber,
-            availableCredit,
             creditLimit,
             ...form
         } = this.brokerForm.value;
@@ -1592,6 +1607,36 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
             default: {
                 break;
             }
+        }
+    }
+
+    public onBlurCreditLimit() {
+        let limit = this.brokerForm.get('creditLimit').value;
+
+        if (limit) {
+            limit = convertThousanSepInNumber(limit);
+            this.brokerModalService
+                .availableCreditBroker({
+                    id: this.editData?.id ? this.editData.id : null,
+                    creditLimit: limit,
+                })
+                .pipe(takeUntil(this.destroy$))
+                .subscribe({
+                    next: (res: BrokerAvailableCreditResponse) => {
+                        this.brokerForm
+                            .get('creditLimit')
+                            .patchValue(
+                                convertNumberInThousandSep(res.creditLimit)
+                            );
+
+                        this.brokerForm
+                            .get('availableCredit')
+                            .patchValue(res.availableCredit);
+                    },
+                    error: (error) => {
+                        console.log(error);
+                    },
+                });
         }
     }
 

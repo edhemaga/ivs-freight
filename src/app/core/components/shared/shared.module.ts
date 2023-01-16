@@ -121,6 +121,7 @@ import { LoadStopComponent } from '../modals/load-modal/load-stop/load-stop.comp
 import { GpsProgressbarComponent } from './gps-progressbar/gps-progressbar.component';
 import { LoadFinancialComponent } from '../modals/load-modal/load-financial/load-financial.component';
 import { TaInputSwitchOnOffComponent } from './ta-input-switch-on-off/ta-input-switch-on-off.component';
+import { TableModalComponent } from './table-modal/table-modal.component';
 import { TaPickupDeliveryComponent } from './ta-pickup-delivery/ta-pickup-delivery.component';
 import { PayrollBonusModalComponent } from '../modals/payroll-modals/payroll-bonus-modal/payroll-bonus-modal.component';
 import { PayrollCreditBonusComponent } from '../modals/payroll-modals/payroll-credit-bonus/payroll-credit-bonus.component';
@@ -238,6 +239,7 @@ export function playerFactory() {
         PayrollStatusesComponent,
         TaCheckboxCardComponent,
         GpsProgressbarComponent,
+        TableModalComponent,
         TaPickupDeliveryComponent,
     ],
     imports: [
@@ -404,6 +406,7 @@ export function playerFactory() {
 
         TaCheckboxCardComponent,
         TaPickupDeliveryComponent,
+        TableModalComponent,
     ],
     providers: [],
     schemas: [CUSTOM_ELEMENTS_SCHEMA],

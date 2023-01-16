@@ -127,41 +127,6 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
         private taLikeDislikeService: TaLikeDislikeService
     ) {}
 
-    public get openHours(): FormArray {
-        return this.repairShopForm.get('openHours') as FormArray;
-    }
-
-    public get contacts(): FormArray {
-        return this.repairShopForm.get('contacts') as FormArray;
-    }
-
-    public trackOpenHours() {
-        this.openHours.valueChanges
-            .pipe(debounceTime(2000), takeUntil(this.destroy$))
-            .subscribe((array: any[]) => {
-                array.forEach((item) => {
-                    if (item.startTime && item.endTime) {
-                        if (
-                            moment(array[0].startTime, 'HH:mm:ss').format(
-                                'HH:mm:ss'
-                            ) !== '00:00:00' &&
-                            moment(array[0].endTime, 'HH:mm:ss').format(
-                                'HH:mm:ss'
-                            ) !== '00:00:00'
-                        ) {
-                            this.repairShopForm
-                                .get('openAlways')
-                                .patchValue(false);
-                        } else {
-                            this.repairShopForm
-                                .get('openAlways')
-                                .patchValue(true);
-                        }
-                    }
-                });
-            });
-    }
-
     ngOnInit() {
         this.companyUser = JSON.parse(localStorage.getItem('user'));
         this.createForm();
@@ -197,6 +162,21 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             }
             this.openHours.removeAt(1);
             this.addOpenHours('Sunday', false, 0, null, null);
+        }
+
+        // Open Tab Position
+        if (this.editData?.openedTab) {
+            setTimeout(() => {
+                this.tabChange({
+                    id:
+                        this.editData?.openedTab === 'Contact'
+                            ? 2
+                            : this.editData?.openedTab === 'Review'
+                            ? 3
+                            : 1,
+                });
+                this.disableCardAnimation = true;
+            });
         }
     }
 
@@ -285,6 +265,41 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
         }
     }
 
+    public get openHours(): FormArray {
+        return this.repairShopForm.get('openHours') as FormArray;
+    }
+
+    public get contacts(): FormArray {
+        return this.repairShopForm.get('contacts') as FormArray;
+    }
+
+    public trackOpenHours() {
+        this.openHours.valueChanges
+            .pipe(debounceTime(500), takeUntil(this.destroy$))
+            .subscribe((array: any[]) => {
+                array.forEach((item) => {
+                    if (item.startTime && item.endTime) {
+                        if (
+                            moment(item.startTime, 'HH:mm:ss').format(
+                                'HH:mm:ss'
+                            ) !== '00:00:00' &&
+                            moment(item.endTime, 'HH:mm:ss').format(
+                                'HH:mm:ss'
+                            ) !== '00:00:00'
+                        ) {
+                            this.repairShopForm
+                                .get('openAlways')
+                                .patchValue(false);
+                        } else {
+                            this.repairShopForm
+                                .get('openAlways')
+                                .patchValue(true);
+                        }
+                    }
+                });
+            });
+    }
+
     public addOpenHours(
         day: string,
         isDay: boolean = false,
@@ -356,6 +371,10 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             'email',
             this.destroy$
         );
+
+        setTimeout(() => {
+            this.trackContactEmail();
+        }, 50);
     }
 
     public removeContacts(id: number) {
@@ -365,6 +384,37 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
         if (this.contacts.length === 0) {
             this.repairShopForm.markAsUntouched();
         }
+    }
+
+    public trackContactEmail() {
+        const helper = new Array(this.contacts.length).fill(false);
+
+        this.contacts.valueChanges
+            .pipe(debounceTime(300), takeUntil(this.destroy$))
+            .subscribe((items) => {
+                items.forEach((item, index) => {
+                    if (item.email && helper[index] === false) {
+                        helper[index] = true;
+
+                        this.inputService.changeValidators(
+                            this.contacts.at(index).get('phone'),
+                            false,
+                            [],
+                            false
+                        );
+                    }
+
+                    if (!item.email && helper[index] === true) {
+                        this.contacts.at(index).get('email').patchValue(null);
+                        this.inputService.changeValidators(
+                            this.contacts.at(index).get('phone'),
+                            true,
+                            [phoneFaxRegex]
+                        );
+                        helper[index] = false;
+                    }
+                });
+            });
     }
 
     public onScrollingContacts(event: any) {
@@ -716,11 +766,71 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
                             this.addOpenHours(
                                 el,
                                 true,
-                                index,
+                                index - 1,
                                 convertTimeFromBackend(res.startTimeAllDays),
                                 convertTimeFromBackend(res.endTimeAllDays)
                             );
                         });
+
+                        if (res.openHours.length === 2) {
+                            const sunday = res.openHours.find(
+                                (item) => item.dayOfWeek === 'Sunday'
+                            );
+                            const saturday = res.openHours.find(
+                                (item) => item.dayOfWeek === 'Saturday'
+                            );
+                            this.openHours.controls.forEach((item, index) => {
+                                if (item.get('dayOfWeek').value === 0) {
+                                    item.get('startTime').patchValue(
+                                        sunday.startTime
+                                            ? convertTimeFromBackend(
+                                                  sunday.startTime
+                                              )
+                                            : null
+                                    );
+                                    item.get('endTime').patchValue(
+                                        sunday.endTime
+                                            ? convertTimeFromBackend(
+                                                  sunday.endTime
+                                              )
+                                            : null
+                                    );
+                                }
+
+                                if (item.get('dayOfWeek').value === 6) {
+                                    item.get('startTime').patchValue(
+                                        saturday.startTime
+                                            ? convertTimeFromBackend(
+                                                  saturday.startTime
+                                              )
+                                            : null
+                                    );
+                                    item.get('isDay').patchValue(
+                                        !!(
+                                            saturday.startTime &&
+                                            saturday.endTime
+                                        )
+                                    );
+                                    item.get('endTime').patchValue(
+                                        saturday.endTime
+                                            ? convertTimeFromBackend(
+                                                  saturday.endTime
+                                              )
+                                            : null
+                                    );
+                                }
+                            });
+
+                            this.openHours.removeAt(1);
+
+                            this.addOpenHours(
+                                sunday.dayOfWeek,
+                                !!(sunday.startTime && sunday.endTime),
+                                0,
+                                convertTimeFromBackend(sunday.startTime),
+                                convertTimeFromBackend(sunday.endTime)
+                            );
+                        }
                     } else {
                         this.addOpenHours(
                             'MON - SAT',
@@ -739,8 +849,12 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
                                 el.dayOfWeek,
                                 !!(el.startTime && el.endTime),
                                 this.openHoursDays.indexOf(el.dayOfWeek) - 1,
-                                convertTimeFromBackend(el.startTime),
-                                convertTimeFromBackend(el.endTime)
+                                el.startTime
+                                    ? convertTimeFromBackend(el.startTime)
+                                    : null,
+                                el.endTime
+                                    ? convertTimeFromBackend(el.endTime)
+                                    : null
                             );
                         });
                     }
@@ -801,8 +915,6 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
                 return item;
             });
 
-        console.log(formatOpenHours);
-
         let newData: any = {
             ...form,
             address: { ...this.selectedAddress, addressUnit: addressUnit },
@@ -813,6 +925,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
                 : null,
             endTimeAllDays: !this.isDaysVisible ? openHours[0].endTime : null,
             openHours: formatOpenHours,
+            openAlways: form.openAlways,
             serviceTypes: this.services.map((item) => {
                 return {
                     serviceType: item.serviceType,
@@ -834,7 +947,6 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             contacts: contacts,
         };
 
-        console.log('repair shop: ', newData);
         this.shopService
             .addRepairShop(newData)
             .pipe(takeUntil(this.destroy$))
@@ -945,11 +1057,17 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             })
             .filter((item) => {
                 if (!this.isDaysVisible) {
-                    return item.dayOfWeek === 5 || item.dayOfWeek === 6;
+                    return item.dayOfWeek === 0 || item.dayOfWeek === 6;
                 }
                 return item;
             })
-            .filter((item) => item.dayOfWeek !== -1);
+            .filter((item) => item.dayOfWeek !== -1)
+            .map((item) => {
+                if (item.dayOfWeek === 0) {
+                    item.dayOfWeek = 'Sunday';
+                }
+                return item;
+            });
 
         let newData: any = {
             id: id,
@@ -962,6 +1080,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
                 : null,
             endTimeAllDays: !this.isDaysVisible ? openHours[0].endTime : null,
             openHours: formatOpenHours,
+            openAlways: form.openAlways,
             serviceTypes: this.services.map((item) => {
                 return {
                     serviceType: item.serviceType,
@@ -982,6 +1101,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             ...newData,
             contacts: contacts,
         };
+
         this.shopService
             .updateRepairShop(newData)
             .pipe(takeUntil(this.destroy$))

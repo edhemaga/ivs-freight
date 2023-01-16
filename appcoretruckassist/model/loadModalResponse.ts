@@ -43,6 +43,7 @@ export interface LoadModalResponse {
     doorTypes?: Array<EnumValue> | null;
     suspensions?: Array<EnumValue> | null;
     additionalBillingTypes?: Array<EnumValue> | null;
+    paymentTypes?: Array<EnumValue> | null;
     generalCommodities?: Array<EnumValue> | null;
     timeTypes?: Array<EnumValue> | null;
     secures?: Array<EnumValue> | null;

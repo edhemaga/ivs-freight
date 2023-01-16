@@ -9,15 +9,10 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { IntegrationProviderCommand } from './integrationProviderCommand';
 
 
-export interface IntegrationConnectDisconnectCommand { 
+export interface ParkingShortResponse { 
     id?: number;
-    userId?: string | null;
-    carrierId?: string | null;
-    password?: string | null;
-    integrationProviderCommand?: IntegrationProviderCommand;
-    isConnected?: boolean | null;
+    name?: string | null;
 }
 

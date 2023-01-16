@@ -135,7 +135,8 @@
                 inputConfig.dropdownLabel,
             'dropdown-image-input':
                 inputConfig?.dropdownImageInput?.url && !focusInput,
-            'remove-input-svg': inputConfig.removeInput
+            'remove-input-svg': inputConfig.removeInput,
+            'merged-dropdown': inputConfig.mergedDropdown && focusInput
         }"
         ngbTooltip
         [mainTooltip]="
@@ -707,6 +708,13 @@
                 class="{{ item?.subFolder }} {{
                     item?.logoType.trim().replace(' ', '').toLowerCase()
                 }}"
+                [ngClass]="{
+                    trailerContainer:
+                        item?.logoType.trim().replace(' ', '') === 'Container',
+                    lowboyrgn:
+                        item?.logoType.trim().replace(' ', '') ===
+                        'Low Boy / RGN'
+                }"
                 [src]="item?.logoName"
             ></svg-icon>
 
@@ -841,12 +849,12 @@
         "
         [pattern]="inputConfig.pattern"
         [placeholder]="
-            (inputConfig.placeholder && focusInput
-                ? inputConfig.placeholder
-                : '') ||
             (inputConfig.placeholderInsteadOfLabel &&
             inputConfig.placeholder &&
             focusInput
+                ? inputConfig.placeholder
+                : '') ||
+            (inputConfig.placeholder && focusInput
                 ? inputConfig.placeholder
                 : '')
         "
@@ -907,6 +915,10 @@
                         getSuperControl.invalid &&
                         !focusInput)) &&
                 !inputConfig.blackInput,
+            'invalid-focus-out-empty':
+                !getSuperControl.value &&
+                getSuperControl.invalid &&
+                (touchedInput || getSuperControl.touched),
             'password-eye':
                 inputConfig.type === 'password' &&
                 isVisiblePasswordEye &&
@@ -977,7 +989,8 @@
             'hide-placeholder-in-multiple-placeholder-input':
                 inputConfig?.multipleInputValues?.options?.length && focusInput,
             connectedDropdown: inputConfig?.connectDropdown,
-            'cursor-on-right-side': inputConfig?.inputCursorOnRightSide
+            'cursor-on-right-side': inputConfig?.inputCursorOnRightSide,
+            'merged-dropdown': inputConfig.mergedDropdown
         }"
         (keypress)="manipulateWithInput($event)"
         (keyup)="onKeyUp($event)"
@@ -1066,9 +1079,8 @@
                 !inputConfig.dropdownLabel,
             invalid:
                 getSuperControl.invalid &&
-                touchedInput &&
-                !focusInput &&
-                !inputConfig.blackInput
+                (touchedInput || getSuperControl.touched) &&
+                !focusInput
         }"
         [style.left]="
             inputConfig.placeholderIconFolllowTextOnRightSide

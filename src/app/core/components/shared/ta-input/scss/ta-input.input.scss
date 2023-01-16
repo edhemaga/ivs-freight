@@ -223,7 +223,8 @@
         background-color: $input-background-color-invalid-focus !important;
     }
 
-    &.invalid-focus-out-filled {
+    &.invalid-focus-out-filled,
+    &.invalid-focus-out-empty {
         background-color: $input-background-color-invalid-focus-out !important;
         color: $input-text-color-invalid-focus-out !important;
 
@@ -255,6 +256,16 @@
         -ms-user-select: none;
         user-select: none;
         pointer-events: none;
+
+        &::-moz-selection {
+            background-color: $input-background-color-disabled !important;
+            color: $input-text-color-filled-disabled !important;
+        }
+
+        &::selection {
+            background-color: $input-background-color-disabled !important;
+            color: $input-text-color-filled-disabled !important;
+        }
     }
 
     &.blue-input-color {
@@ -478,6 +489,31 @@
         padding-right: 32px;
     }
 
+    &.merged-dropdown {
+        border-bottom-left-radius: 0px !important;
+        border-bottom-right-radius: 0px !important;
+
+        &::-webkit-input-placeholder {
+            color: rgb(255, 255, 255, 0.4) !important;
+        }
+
+        &::-moz-placeholder {
+            color: rgb(255, 255, 255, 0.4) !important;
+        }
+
+        &:-ms-input-placeholder {
+            color: rgb(255, 255, 255, 0.4) !important;
+        }
+
+        &::-ms-input-placeholder {
+            color: rgb(255, 255, 255, 0.4) !important;
+        }
+
+        &::placeholder {
+            color: rgb(255, 255, 255, 0.4) !important;
+        }
+    }
+
     //------------------------- Custom class -------------------------
     &.input-32 {
         height: 32px;
@@ -500,7 +536,7 @@
 
     &.details-pages {
         background-color: $input-background-color-normal-focus !important;
-        
+
         &::-webkit-input-placeholder {
             color: $input-placeholder-color-normal-focus !important;
         }

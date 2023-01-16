@@ -12,6 +12,7 @@ import { LoadMinimalListResponse } from '../../../../../../appcoretruckassist/mo
 import { LoadModalResponse } from '../../../../../../appcoretruckassist/model/loadModalResponse';
 import { CreateLoadTemplateCommand } from '../../../../../../appcoretruckassist/model/createLoadTemplateCommand';
 import { FormDataService } from 'src/app/core/services/formData/form-data.service';
+import { LoadStopItemAutocompleteDescriptionResponse } from '../../../../../../appcoretruckassist/model/loadStopItemAutocompleteDescriptionResponse';
 
 @Injectable({
     providedIn: 'root',
@@ -117,6 +118,14 @@ export class LoadTService {
 
     public getLoadDropdowns(id?: number): Observable<LoadModalResponse> {
         return this.loadServices.apiLoadModalGet(id);
+    }
+
+    public autocompleteLoadByDescription(
+        desctiption: string
+    ): Observable<LoadStopItemAutocompleteDescriptionResponse> {
+        return this.loadServices.apiLoadStopsAutocompleteDescriptionDescriptionGet(
+            desctiption
+        );
     }
 
     // Load Templates

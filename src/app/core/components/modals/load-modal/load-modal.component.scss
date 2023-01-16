@@ -12,7 +12,7 @@
 
 .stops-header-bar {
     display: grid;
-    grid-template-columns: 25px 263px 218px 1fr;
+    grid-template-columns: 25px 263px 222px 1fr;
     align-items: center;
     padding: 0 18px;
 
@@ -73,7 +73,7 @@
             padding: 0;
             font-size: 11px;
             font-weight: 600;
-            line-height: 14px;
+            line-height: 18px;
             color: #2f2f2f;
             height: 100%;
             -webkit-user-select: none;
@@ -84,7 +84,6 @@
 
         .total-miles-value {
             font-size: 14px;
-            line-height: 18px;
         }
     }
 }
