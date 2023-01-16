@@ -46,6 +46,7 @@ import { FinancialCalculationPipe } from './load-financial/financialCalculation.
 import { RoutingResponse } from '../../../../../../appcoretruckassist/model/routingResponse';
 import { LoadStopItemAutocompleteDescriptionResponse } from '../../../../../../appcoretruckassist/model/loadStopItemAutocompleteDescriptionResponse';
 import { ViewChild } from '@angular/core';
+import { trigger, transition, style, animate } from '@angular/animations';
 
 interface IStopRoutes {
     longitude: number;
@@ -58,6 +59,17 @@ interface IStopRoutes {
     selector: 'app-load-modal',
     templateUrl: './load-modal.component.html',
     styleUrls: ['./load-modal.component.scss'],
+    animations: [
+        trigger('fadeIn', [
+            transition(':enter', [
+                style({ opacity: 0, transform: 'translateX(-500px)' }),
+                animate(
+                    3000,
+                    style({ opacity: 1, transform: 'translateX(0px)' })
+                ),
+            ]),
+        ]),
+    ],
     providers: [ModalService, FormService, FinancialCalculationPipe],
 })
 export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
@@ -2698,11 +2710,9 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             additionalBillingRates:
                 this.premmapedAdditionalBillingRate('create'),
             stops: this.premmapedStops() as any,
-            totalLegMiles: this.totalLegMiles.toString().includes('.')
-                ? this.totalLegMiles.toString().replace(/\./g, '')
-                : this.totalLegMiles.toString(),
-            totalLegHours: this.totalLegHours,
-            totalLegMinutes: this.totalLegMinutes,
+            totalMiles: this.totalLegMiles,
+            totalHours: this.totalLegHours,
+            totalMinutes: this.totalLegMinutes,
             files: documents,
         };
 
@@ -2841,13 +2851,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 timeTo: this.loadForm.get('pickupTimeTo').value,
                 arrive: null,
                 depart: null,
-                legMiles: this.loadForm
-                    .get('pickuplegMiles')
-                    .value.includes('.')
-                    ? this.loadForm
-                          .get('pickuplegMiles')
-                          .value.replace(/\./g, '')
-                    : this.loadForm.get('pickuplegMiles').value,
+                legMiles: this.loadForm.get('pickuplegMiles').value,
                 legHours: this.loadForm.get('pickuplegHours').value,
                 legMinutes: this.loadForm.get('pickuplegMinutes').value,
                 items: [],

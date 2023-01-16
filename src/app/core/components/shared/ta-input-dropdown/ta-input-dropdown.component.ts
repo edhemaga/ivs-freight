@@ -1076,8 +1076,9 @@ export class TaInputDropdownComponent
                     });
 
                     if (
-                        this.inputConfig.name === 'Address' ||
-                        this.inputConfig.name === 'RoutingAddress'
+                        (this.inputConfig.name === 'Address' ||
+                            this.inputConfig.name === 'RoutingAddress') &&
+                        this.inputRef.focusInput
                     ) {
                         this.popoverRef?.open();
                     }

@@ -19,6 +19,7 @@
     height: auto;
     overflow: hidden;
     position: relative;
+    transition: width 300ms;
 
     .drop-zone-active {
         width: 100%;
