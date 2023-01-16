@@ -128,7 +128,7 @@ export class NavigationComponent implements OnInit, OnDestroy {
 
         if (
             //If this elements keep open navigation
-            event.target.parentElement.classList.contains(
+            event.target.parentElement?.classList.contains(
                 'nav-header-top-logo'
             ) ||
             event.target.classList.contains('subroute') ||
@@ -143,6 +143,7 @@ export class NavigationComponent implements OnInit, OnDestroy {
             event.target.classList.contains('user-content-text') ||
             event.target.classList.contains('modal-nav-close-text') ||
             event.target.classList.contains('user-company-header') ||
+            event.target.classList.contains('tooltip') ||
             event.target.parentElement?.parentElement?.classList.contains(
                 'modal-nav-close-svg'
             ) ||
@@ -153,6 +154,7 @@ export class NavigationComponent implements OnInit, OnDestroy {
         ) {
             //If this elements close navigation
             if (
+                event.target.classList.contains('tooltip-notifications') ||
                 event.target.classList.contains('open-navigation') ||
                 event.target.classList.contains('notification-svg ') ||
                 event.target.classList.contains('item-settings') ||
@@ -160,7 +162,6 @@ export class NavigationComponent implements OnInit, OnDestroy {
                 event.target.classList.contains('navigation-top') ||
                 event.target.classList.contains('magic-line-footer') ||
                 event.target.classList.contains('navigation-bottom') ||
-                event.target.classList.contains('tooltip') ||
                 event.target.parentElement?.classList.contains(
                     'item-settings'
                 ) ||
