@@ -159,7 +159,7 @@ export class TrailerDetailsCardComponent
             });
     }
     public onSelectedTrailer(event: any) {
-        /*
+        
         if (event.id !== this.trailer.id) {
             this.trailerDropDowns = this.trailerMinimalQuery
                 .getAll()
@@ -174,9 +174,8 @@ export class TrailerDetailsCardComponent
                     };
                 });
             this.detailsPageDriverSer.getDataDetailId(event.id);
-            console.log('---getDataDetailId', this.detailsPageDriverSer.getDataDetailId(event.id));
+            //console.log('---getDataDetailId', this.detailsPageDriverSer.getDataDetailId(event.id));
         }
-        */
     }
     public onChangeTrailer(action: string) {
         
