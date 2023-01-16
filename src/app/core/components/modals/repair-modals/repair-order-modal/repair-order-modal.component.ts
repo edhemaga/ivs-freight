@@ -27,6 +27,7 @@ import {
     repairOdometerValidation,
     vehicleUnitValidation,
 } from '../../../shared/ta-input/ta-input.regex-validations';
+import { DetailsDataService } from '../../../../services/details-data/details-data.service';
 
 @Component({
     selector: 'app-repair-order-modal',
@@ -96,7 +97,8 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
         private modalService: ModalService,
         private ngbActiveModal: NgbActiveModal,
         private sumArrayPipe: SumArraysPipe,
-        private formService: FormService
+        private formService: FormService,
+        private DetailsDataService: DetailsDataService,
     ) {}
 
     public get items(): FormArray {
@@ -254,6 +256,12 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
     public onModalHeaderTabChange(event: any) {
         this.selectedHeaderTab = event.id;
         if (event.id === 1) {
+
+            setTimeout(()=>{
+                this.DetailsDataService.setUnitValue(this.repairOrderForm.get('unit')?.value);
+            }, 100)
+            
+
             this.inputService.changeValidators(
                 this.repairOrderForm.get('repairShopId'),
                 false
@@ -341,6 +349,8 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                 false
             );
         }
+
+        
     }
 
     public onTypeOfRepair(event: any, action?: string) {
@@ -381,6 +391,12 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
         const { items, ...form } = this.repairOrderForm.value;
         switch (action) {
             case 'repair-unit': {
+                if ( event.truckNumber ){
+                    this.DetailsDataService.setUnitValue(event.truckNumber);
+                } else if ( event.trailerNumber ) {
+                    this.DetailsDataService.setUnitValue(event.trailerNumber);
+                }
+
                 if (event?.canOpenModal) {
                     this.ngbActiveModal.close();
                     this.modalService.setProjectionModal({

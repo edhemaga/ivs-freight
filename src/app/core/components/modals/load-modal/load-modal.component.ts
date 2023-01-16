@@ -2710,9 +2710,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             additionalBillingRates:
                 this.premmapedAdditionalBillingRate('create'),
             stops: this.premmapedStops() as any,
-            totalLegMiles: this.totalLegMiles.toString().includes('.')
-                ? this.totalLegMiles.toString().replace(/\./g, '')
-                : this.totalLegMiles.toString(),
+            totalLegMiles: this.totalLegMiles.toFixed(0),
             totalLegHours: this.totalLegHours,
             totalLegMinutes: this.totalLegMinutes,
             files: documents,
@@ -2855,11 +2853,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 depart: null,
                 legMiles: this.loadForm
                     .get('pickuplegMiles')
-                    .value.includes('.')
-                    ? this.loadForm
-                          .get('pickuplegMiles')
-                          .value.replace(/\./g, '')
-                    : this.loadForm.get('pickuplegMiles').value,
+                    .value.toFixed(0),
                 legHours: this.loadForm.get('pickuplegHours').value,
                 legMinutes: this.loadForm.get('pickuplegMinutes').value,
                 items: [],
@@ -2950,7 +2944,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                     arrive: null,
                     depart: null,
                     // From legs
-                    legMiles: item.get('legMiles').value,
+                    legMiles: item.get('legMiles').value.toFixed(0),
                     legHours: item.get('legHours').value,
                     legMinutes: item.get('legMinutes').value,
                     items: [],
@@ -2986,7 +2980,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 timeTo: this.loadForm.get('deliveryTimeTo').value,
                 arrive: null,
                 depart: null,
-                legMiles: this.loadForm.get('deliverylegMiles').value,
+                legMiles: this.loadForm.get('deliverylegMiles').value.toFixed(0),
                 legHours: this.loadForm.get('deliverylegHours').value,
                 legMinutes: this.loadForm.get('deliverylegMinutes').value,
                 items: [],

@@ -18,6 +18,9 @@ import { RepairOrderModalComponent } from '../../../modals/repair-modals/repair-
 import { card_component_animation } from '../../../shared/animations/card-component.animations';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
 import { RepairDQuery } from '../../state/details-state/repair-d.query';
+import { UpdateReviewCommand } from '../../../../../../../appcoretruckassist';
+import { ReviewsRatingService } from '../../../../services/reviews-rating/reviewsRating.service';
+import { TruckassistTableService } from '../../../../services/truckassist-table/truckassist-table.service';
 
 @Component({
     selector: 'app-shop-repair-details-item',
@@ -45,7 +48,9 @@ export class ShopRepairDetailsItemComponent implements OnInit, OnChanges {
         private modalService: ModalService,
         private confirmationService: ConfirmationService,
         private repairDQuery: RepairDQuery,
-        private cdr: ChangeDetectorRef
+        private cdr: ChangeDetectorRef,
+        private reviewRatingService: ReviewsRatingService,
+        private tableService: TruckassistTableService,
     ) {}
     ngOnChanges(changes: SimpleChanges): void {
         if (
@@ -98,8 +103,27 @@ export class ShopRepairDetailsItemComponent implements OnInit, OnChanges {
                     }
                 },
             });
-
+        
         this.initTableOptions();
+
+        this.tableService.currentActionAnimation
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res: any) => {
+                if (res.animation && res.tab === 'repair') {
+                    let index = -1;
+                    this.repairListData.map((item, inx) => {
+                        if ( item.id == res.id ) {
+                            index = inx;
+
+                        }
+                    })
+                    
+                    if ( index > -1 ) {
+                        this.repairListData[index] = {...this.repairListData[index], ...res.data};
+                        this.cdr.detectChanges();
+                    }
+                }
+            });
     }
 
     public deleteRepairByIdFunction(id: number) {
@@ -172,7 +196,47 @@ export class ShopRepairDetailsItemComponent implements OnInit, OnChanges {
                     show: true,
                     iconName: 'edit'
                 },
-
+                {
+                    title: 'border'
+                },
+                {
+                    title: 'View Details',
+                    name: 'view-details',
+                    svg: 'assets/svg/common/ic_hazardous-info.svg',
+                    iconName: 'view-details',
+                    show: true,
+                },
+                {
+                    title: 'Finish Order',
+                    name: 'finish order',
+                    iconName: 'finish-order', 
+                    blueIcon: true,
+                },
+                {
+                    title: 'All Bills',
+                    name: 'all bills',
+                    iconName: 'ic_truck',
+                },
+                {
+                    title: 'border',
+                },
+                {
+                    title: 'Share',
+                    name: 'share',
+                    svg: 'assets/svg/common/share-icon.svg',
+                    show: true,
+                    iconName: 'share'
+                },
+                {
+                    title: 'Print',
+                    name: 'print',
+                    svg: 'assets/svg/common/ic_fax.svg',
+                    show: true,
+                    iconName: 'print'
+                },
+                {
+                    title: 'border',
+                },
                 {
                     title: 'Delete',
                     name: 'delete-item',
@@ -181,7 +245,8 @@ export class ShopRepairDetailsItemComponent implements OnInit, OnChanges {
                     svg: 'assets/svg/common/ic_trash.svg',
                     danger: true,
                     show: true,
-                    iconName: 'delete'
+                    iconName: 'delete',
+                    redIcon: true,
                 },
             ],
             export: true,
@@ -208,8 +273,60 @@ export class ShopRepairDetailsItemComponent implements OnInit, OnChanges {
         return item.id;
     }
 
-    public changeReviewsEvent(reviews: { data: any[]; action: string }) {
-        this.reviewsRepair = [...reviews.data];
+    public changeReviewsEvent(reviews: { data: any; action: string }) {
+         if ( reviews.action == 'update' ) {
+            const review: UpdateReviewCommand = {
+                id: reviews.data.id,
+                comment: reviews.data.commentContent,
+            };
+           
+            this.reviewRatingService
+            .updateReview(review)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: () => {},
+                error: () => {},
+            });
+         } else if ( reviews.action == 'delete' ) {
+            this.reviewRatingService
+            .deleteReview(reviews.data)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: () => {},
+                error: () => {},
+            });
+         }
+        //this.reviewsRepair = [...reviews.data];
         // TODO: API CREATE OR DELETE
+    }
+
+
+    public openRepairDetail(repair){
+        if ( this.showRepairItems[repair.id] ) {
+            this.showRepairItems[repair.id] = false;
+        } else {
+            if ( repair?.items?.length > 0 ) {
+                this.showRepairItems[repair.id] = true;
+            }
+        }
+    }
+
+    public stopClick(ev, data){
+        ev.stopPropagation();
+        ev.preventDefault();
+        
+        if ( data.truckId ) {
+            this.dummyData.actions[4]['iconName'] = 'ic_truck';
+        } else if ( data.trailerId ) {
+            this.dummyData.actions[4]['iconName'] = 'ic_trailer';
+        }
+
+        if ( data.repairType.name != 'Bill' ) {
+            this.dummyData.actions[3]['hide'] = false;
+            this.dummyData.actions[4]['title'] = 'All Orders';
+        } else {
+            this.dummyData.actions[3]['hide'] = true;
+            this.dummyData.actions[4]['title'] = 'All Bills';
+        }
     }
 }

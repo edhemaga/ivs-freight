@@ -277,7 +277,7 @@ export class TruckassistTableHeadComponent
         let previousIndex: number = null,
             currentIndex: number = null;
 
-        this.columns.map((c, i) => {
+        this.columns.map((c, i) => { 
             if (this.notPinedColumns[event.previousIndex].field === c.field) {
                 previousIndex = i;
             }

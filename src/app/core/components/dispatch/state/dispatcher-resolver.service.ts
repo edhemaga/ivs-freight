@@ -20,7 +20,7 @@ export class DispatcherResolverService implements Resolve<any> {
             return this.dispatcherQuery.modalList;
         } else {
             const dispatcherId = localStorage.getItem('dispatchUserSelect')
-                ? parseInt(localStorage.getItem('dispatchUserSelect'))
+                ? JSON.parse(localStorage.getItem('dispatchUserSelect')).id
                 : -1;
 
             const dispatchList =

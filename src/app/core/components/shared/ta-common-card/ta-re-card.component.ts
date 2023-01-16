@@ -78,6 +78,7 @@ export class TaReCardComponent implements OnInit {
     @Input() public cardNameCommon: string;
     @Input() public cardDocumentCounter: number;
     @Input() public isCardOpen: boolean = true;
+    @Input() public forcedOpen: boolean = false;
     @Input() public hasSvg: string = '';
     @Input() public options: any = [];
     @Input() public hasCopyIcon: boolean = false;
@@ -148,6 +149,10 @@ export class TaReCardComponent implements OnInit {
     public toggleCard(event: any) {
         event.preventDefault();
         event.stopPropagation();
+        
+        if ( this.forcedOpen ) {
+            return false;
+        }
         let currentDate = moment().format('MM/DD/YYYY');
         if (
             moment(this.expDateClose).isBefore(currentDate) ||
