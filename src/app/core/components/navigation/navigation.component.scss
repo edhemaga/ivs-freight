@@ -5,43 +5,67 @@
     top: 0;
     left: 0;
     z-index: 1000;
-
+    border-radius: 3px;
     height: 100%;
-    width: 56px;
-
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-
-    padding: 18px 12px;
-
-    background-color: $nav-white;
+    padding: 12px;
+    // background-color: $nav-white;
     color: $nav-text-color;
     font-size: $nav-font-size;
     font-weight: $nav-font-medium;
-
     transition: $nav-transition;
     overflow: hidden;
-
-    &:hover {
-        width: 200px;
-        box-shadow: $nav-boxshadow;
+    .nav-holder {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        background: $nav-white;
+        padding: 0 6px;
+        width: 48px;
+        padding: 10px 0px;
+        border-radius: 3px;
+        z-index: -1;
+    }
+    .new-magic-line {
+        width: 36px !important;
+    }
+    .dark-nav {
+        background: $nav-dark !important;
+        width: 250px !important;
         transition: $nav-transition;
+        .new-magic-line {
+            background: $nav-hover-color !important;
+            width: 238px !important;
+        }
+    }
+    .animation {
+        transition: $nav-transition;
+        width: 48px;
         cursor: pointer;
+        overflow: hidden;
     }
-
-    .navigation-top,
-    .navigation-middle,
-    .navigation-bottom {
-        padding-left: 5px;
+    .navigation-top {
+        padding: 0px 6px;
     }
-
     .navigation-middle {
-        flex: 1;
         overflow-y: scroll;
         overflow-x: hidden;
+        min-height: 388px;
+        max-height: 620px;
+        padding: 0px 6px;
     }
-
+    .open-navigation {
+        flex: 1;
+        cursor: pointer;
+    }
+    .navigation-bottom {
+        // overflow: hidden;
+        padding: 0px 6px;
+        position: absolute;
+        bottom: 22px;
+    }
     .wrapper-line {
         @media only screen and (min-width: 300px) {
             display: inline;
@@ -60,9 +84,15 @@
         position: relative;
 
         .navigation-routes {
-            margin-left: 1px;
+            // padding-left: 9px;
+            display: flex;
+            flex-wrap: wrap;
+            padding-left: 8px;
             padding-bottom: 1px;
             padding-top: 1px;
+            z-index: 1;
+            position: relative;
+            cursor: pointer;
         }
 
         .subroute-card {
@@ -78,14 +108,14 @@
         .new-magic-line {
             display: inline-block;
             position: absolute;
-            left: -6px;
+            left: 0px;
             top: 0px;
             content: '';
             height: 28px;
-            background: $nav-hover-color;
+            background: $nav-hover-ligh;
             border-radius: 3px;
             transition: $magic-line-transition;
-            z-index: -1;
+            z-index: 0;
         }
 
         .new-magic-line-selected {
