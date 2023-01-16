@@ -35,6 +35,7 @@ import { RefreshTokenInterceptor } from './core/interceptors/refresh-token.inter
 import { configFactory } from './app.config';
 import { StaticInjectorService } from './core/utils/application.decorators';
 import { NavigationSettingsComponent } from './core/components/navigation/navigation-settings/navigation-settings.component';
+import { UnderConstructionComponent } from './core/components/under-construction/under-construction.component';
 
 @NgModule({
     declarations: [
@@ -50,6 +51,7 @@ import { NavigationSettingsComponent } from './core/components/navigation/naviga
         NavigationUserProfileComponent,
         NavigationUserCompanyComponent,
         NavigationSettingsComponent,
+        UnderConstructionComponent,
     ],
     imports: [
         BrowserModule,

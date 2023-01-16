@@ -166,8 +166,6 @@ export class NavigationFooterComponent implements OnInit, OnChanges, OnDestroy {
         }
     }
     public onAction(index: number, action: string) {
-        console.log(index, action);
-
         switch (action) {
             case 'Open User Panel': {
                 if (index === 2) {
@@ -186,11 +184,11 @@ export class NavigationFooterComponent implements OnInit, OnChanges, OnDestroy {
                 return;
             }
         }
-        this.navigationService.navigationDropdownActivation$.subscribe(
-            (res) => {
-                console.log(res);
-            }
-        );
+        // this.navigationService.navigationDropdownActivation$.subscribe(
+        //     (res) => {
+        //         console.log(res);
+        //     }
+        // );
     }
 
     public isActiveFooterRoute(item: FooterData): boolean {

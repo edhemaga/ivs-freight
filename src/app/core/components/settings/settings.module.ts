@@ -7,6 +7,8 @@ import { SettingsToolbarComponent } from './settings-toolbar/settings-toolbar.co
 import { SettingsToollbarCardComponent } from './settings-toolbar/settings-toollbar-card/settings-toollbar-card.component';
 import { SettingsComponent } from './settings.component';
 import { TruckassistTableModule } from '../shared/truckassist-table/truckassist-table.module';
+import { TrainingMaterialComponent } from './training-material/training-material.component';
+import { CustomAgreementComponent } from './custom-agreement/custom-agreement.component';
 
 @NgModule({
     imports: [
@@ -19,6 +21,8 @@ import { TruckassistTableModule } from '../shared/truckassist-table/truckassist-
         SettingsComponent,
         SettingsToolbarComponent,
         SettingsToollbarCardComponent,
+        TrainingMaterialComponent,
+        CustomAgreementComponent,
     ],
 })
 export class SettingsModule {}

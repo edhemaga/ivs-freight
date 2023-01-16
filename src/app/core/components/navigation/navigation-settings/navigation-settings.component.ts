@@ -68,10 +68,7 @@ export class NavigationSettingsComponent implements OnInit {
         });
     }
     public changeRouteSettings(subroute: Settings): void {
-        if (subroute.route === '/user') {
-            this.router.navigate([subroute.route]);
-        } else {
-            this.router.navigate([`/settings${subroute.route}`]);
-        }
+        console.log(`/settings${subroute.route}`);
+        this.router.navigate([`/settings${subroute.route}`]);
     }
 }

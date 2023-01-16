@@ -19,20 +19,32 @@
         [ngClass]="{
             'nav-footer-item-scaleWidth': !isNavigationHovered,
             show: isNavigationHovered,
-            'activated-footer-route': notificationsActive && item.notification
+            'activated-footer-route': notificationsActive && item.notification,
+            'notification-item': item.notification
         }"
-        (click)="onAction(ind, 'Open User Panel')"
+        (click)="
+            onAction(ind, 'Open User Panel');
+            item.notification &&
+                settingsRouteClicked({
+                    value: true,
+                    id: item.id
+                })
+        "
+        ngbTooltip
+        mainTooltip="Notifications"
+        tooltipBackground="#2F2F2F"
+        position="right"
         [routerLink]="item.route"
         routerLinkActive="{{ ind !== 2 ? 'nav-footer-item-active' : '' }}"
     >
-        <div
-            *ngIf="item.notification"
+        <!-- <div
+            *ngIf="item.notification && !isNavigationHovered"
             class="tooltip"
             ngbTooltip
             mainTooltip="Notifications"
             tooltipBackground="#2F2F2F"
             position="right"
-        ></div>
+        ></div> -->
         <div
             [ngClass]="{
                 'hide-user': isUserPanelOpen === true && ind === 2,
@@ -44,26 +56,17 @@
                     'hide-user': isUserCompanyDetailsOpen && ind === 2
                 }"
             >
-                <div
-                    [ngClass]="{ notification: item.notification }"
-                    (click)="
-                        item.notification &&
-                            settingsRouteClicked({
-                                value: true,
-                                id: item.id
-                            })
-                    "
-                >
+                <div [ngClass]="{ notification: item.notification }">
                     <div *ngIf="item.text !== ''">
                         <div
                             class="nav-footer-hover"
                             [ngClass]="{ 'nav-footer-hover-user': ind === 2 }"
                         ></div>
 
-                        <div
+                        <!-- <div
                             *ngIf="isActiveFooterRoute(item)"
                             class="nav-item-active-box"
-                        ></div>
+                        ></div> -->
                         <div
                             class="status-marker-container-notification-1 close"
                         >
@@ -180,11 +183,11 @@
             !mouseOverFooter &&
             !isActiveSubroute &&
             !isUserPanelOpen &&
-            !isSettingsPanelOpen
+            !isSettingsPanelOpen &&
+            !isUserCompanyDetailsOpen
         "
         [@showHideDetailsMagicLine]="
             showMagicLine &&
-            !isUserCompanyDetailsOpen &&
             !isUserPanelOpen &&
             !isSettingsPanelOpen &&
             !isModalPanelOpen

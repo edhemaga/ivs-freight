@@ -88,6 +88,8 @@ $notification: #e57373;
     .status-marker {
         width: 10px;
         height: 10px;
+
+        position: relative;
     }
 
     .status-active {

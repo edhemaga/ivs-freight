@@ -19,8 +19,10 @@
     z-index: 1;
     .tooltip {
         position: absolute;
-        width: 100%;
+        width: 36px;
         height: 100%;
+        left: -8px;
+        padding-left: 36px;
     }
     .message-container {
         position: relative;
@@ -139,7 +141,9 @@
         }
     }
 }
-
+.active-link {
+    background: red;
+}
 .nav-item-active {
     color: $nav-active-lighter;
     border-radius: 3px;
@@ -206,8 +210,10 @@
     }
     .tooltip {
         position: absolute;
-        width: 100%;
+        width: 36px;
         height: 100%;
+        left: 0px;
+        padding-left: 36px;
     }
 }
 .nav-item-svg-active {

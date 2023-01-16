@@ -124,6 +124,8 @@ export class NavigationComponent implements OnInit, OnDestroy {
     }
     //On outside of navbar close navbar
     closeNavbar(event) {
+        console.log(event.target);
+
         if (
             //If this elements keep open navigation
             event.target.parentElement.classList.contains(
@@ -152,7 +154,13 @@ export class NavigationComponent implements OnInit, OnDestroy {
             //If this elements close navigation
             if (
                 event.target.classList.contains('open-navigation') ||
+                event.target.classList.contains('notification-svg ') ||
                 event.target.classList.contains('item-settings') ||
+                event.target.classList.contains('navigation-middle') ||
+                event.target.classList.contains('navigation-top') ||
+                event.target.classList.contains('magic-line-footer') ||
+                event.target.classList.contains('navigation-bottom') ||
+                event.target.classList.contains('tooltip') ||
                 event.target.parentElement?.classList.contains(
                     'item-settings'
                 ) ||
@@ -184,6 +192,7 @@ export class NavigationComponent implements OnInit, OnDestroy {
                 this.isActiveMagicLine = true;
                 this.isModalPanelOpen = false;
                 this.isActiveSubroute = false;
+
                 this.navigationService.onDropdownActivation({
                     name: 'Settings',
                     type: false,

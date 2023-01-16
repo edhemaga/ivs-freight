@@ -1,15 +1,7 @@
 import { NavigationSubRoutes } from '../model/navigation.model';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Navigation } from '../model/navigation.model';
-import {
-    Component,
-    Input,
-    Output,
-    EventEmitter,
-    OnInit,
-    Injector,
-    SimpleChanges,
-} from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import {
     navigation_magic_line,
     navigation_route_animation,
@@ -48,11 +40,12 @@ export class NavigationRouteComponent implements OnInit {
     public settingsPage: boolean;
     public arrowHovered: boolean;
     public footerRouteActive: boolean;
+    routeId: string;
     constructor(
         public router: Router,
-        public navigationService: NavigationService
+        public navigationService: NavigationService,
+        public activatedroute: ActivatedRoute
     ) {}
-
     //Get subroute name
     ngOnChanges() {
         const router = StaticInjectorService.Injector.get(Router);
@@ -83,6 +76,9 @@ export class NavigationRouteComponent implements OnInit {
         this.navigationService.getValueWhichNavIsOpen().subscribe((value) => {
             this.footerRouteActive = value;
         });
+        // this.router.events.subscribe((val: any) => {
+        //     console.log(val.urlAfterRedirects);
+        // });
     }
     //Arrow clicked open link in new window
     public openLinkInNewWindow(item) {
@@ -93,6 +89,7 @@ export class NavigationRouteComponent implements OnInit {
         this.arrowHovered = event;
     }
     public onRouteAction() {
+        console.log(this.route.id, this.route.route);
         this.onRouteEvent.emit({
             routeId: this.route.id,
             routes: this.route.route,

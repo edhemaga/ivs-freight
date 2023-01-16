@@ -17,6 +17,7 @@
         *ngIf="!isNavigationHovered"
         class="tooltip"
         ngbTooltip
+        [openTooltipDelay]="100"
         mainTooltip="{{ route.name }}"
         tooltipBackground="#2F2F2F"
         position="right"
@@ -37,28 +38,6 @@
         class="{{ class }}"
         class="nav-item-img nav-item-img-active"
         src="{{ route.image }}"
-        *ngIf="!route.arrow"
-        [ngClass]="{
-            'route-clicked-svg':
-                route.isRouteActive &&
-                route.arrow &&
-                closeDropdownOnNavClose &&
-                !isSettingsPanelOpen &&
-                !isUserPanelOpen,
-            'nav-item-svg-active':
-                ((route.isRouteActive && footerRouteActive) ||
-                    route.isSubrouteActive) &&
-                !isSettingsPanelOpen &&
-                !settingsPage &&
-                !isUserPanelOpen &&
-                footerRouteActive
-        }"
-    ></svg-icon>
-    <svg-icon
-        class="{{ class }}"
-        class="nav-item-img nav-item-img-active"
-        src="{{ route.image }}"
-        *ngIf="route.arrow"
         [ngClass]="{
             'route-clicked-svg':
                 route.isRouteActive &&

@@ -27,18 +27,24 @@
         margin-bottom: 6px;
         justify-content: space-between;
         .user-company-header-svg {
-            &:nth-child(2) {
-                svg {
-                    cursor: pointer;
-                    left: -10px;
-                    position: relative;
-                    path {
-                        fill: $nav-svg-darker;
-                    }
-                    &:hover {
+            &:hover {
+                cursor: pointer;
+                &:nth-child(2) {
+                    svg {
                         path {
                             fill: $nav-white;
                         }
+                    }
+                }
+            }
+            &:nth-child(2) {
+                left: -10px;
+                position: relative;
+                svg {
+                    cursor: pointer;
+
+                    path {
+                        fill: $nav-svg-darker;
                     }
                 }
             }
@@ -90,7 +96,7 @@
     .user-company-content {
         padding: 5px 14px 5px 8px;
         width: 100%;
-
+        cursor: pointer;
         .user-company-text {
             font-size: $nav-font-size;
             font-weight: $nav-font-regular;

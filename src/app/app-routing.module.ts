@@ -45,7 +45,7 @@ import { ApplicantTableResolver } from './core/components/driver/state/applicant
 import { ApplicantSphFormResolver } from './core/components/applicant/state/resolver/applicant-sph-form.resolver';
 import { MilesResolverService } from './core/components/miles/state/miles-resolver.service';
 import { DispatcherResolverService } from './core/components/dispatch/state/dispatcher-resolver.service';
-
+import { UnderConstructionComponent } from './core/components/under-construction/under-construction.component';
 const routes: Routes = [
     // Auth Routes
     {
@@ -80,6 +80,10 @@ const routes: Routes = [
         resolve: { dashboard: DashboardResolverService },
     },
     {
+        path: 'under-construction',
+        component: UnderConstructionComponent,
+    },
+    {
         path: 'ads',
         loadChildren: () =>
             import('./core/components/dispatcher/dispatcher.module').then(
@@ -104,17 +108,6 @@ const routes: Routes = [
                 (m) => m.SettingsModule
             ),
         canActivate: [AuthGuard],
-    },
-    {
-        path: 'user',
-        loadChildren: () =>
-            import('./core/components/user/user.module').then(
-                (m) => m.UserModule
-            ),
-        data: { title: 'User' },
-        resolve: {
-            user: UserResolver,
-        },
     },
     {
         path: 'load',

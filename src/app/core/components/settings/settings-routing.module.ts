@@ -6,6 +6,7 @@ import { ParkingResolver } from './settings-location/settings-parking/parking-st
 import { cOfficeResolver } from './settings-location/settings-office/state/company-office.resolver';
 import { TerminalResolver } from './settings-location/settings-terminal/state/company-terminal.resolver';
 import { companyRepairShopResolver } from './settings-location/settings-repair-shop/state/company-repairshop.resolver';
+import { UserResolver } from '../user/state/user-state/user.resolver';
 
 const routes: Routes = [
     {
@@ -43,6 +44,17 @@ const routes: Routes = [
                 data: { title: 'Location' },
             },
             {
+                path: 'user',
+                loadChildren: () =>
+                    import('../../../core/components/user/user.module').then(
+                        (m) => m.UserModule
+                    ),
+                data: { title: 'User' },
+                resolve: {
+                    user: UserResolver,
+                },
+            },
+            {
                 path: 'document',
                 loadChildren: () =>
                     import('./settings-document/settings-document.module').then(
@@ -57,6 +69,22 @@ const routes: Routes = [
                         (m) => m.SettingsBillingModule
                     ),
                 data: { title: 'Billing' },
+            },
+            {
+                path: 'custom-agreement',
+                loadChildren: () =>
+                    import('./custom-agreement/custom-agreement.module').then(
+                        (m) => m.CustomAgreementModule
+                    ),
+                data: { title: 'Custom Agreement' },
+            },
+            {
+                path: 'training-material',
+                loadChildren: () =>
+                    import('./training-material/training-material.module').then(
+                        (m) => m.TrainingMaterialModule
+                    ),
+                data: { title: 'Training Material' },
             },
             {
                 path: 'integration',

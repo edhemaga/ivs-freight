@@ -6,7 +6,7 @@
         width: 230px;
         position: relative;
         left: -7px;
-        bottom: 2px;
+        bottom: 3px;
         border-radius: 3px;
         color: $nav-text-color;
         font-weight: $nav-font-medium;
@@ -139,19 +139,19 @@
     }
 
     .subroutes:nth-child(2):hover ~ .new-magic-line {
-        transform: translateY(27px) !important;
+        transform: translateY(26px) !important;
     }
 
     .new-magic-line-selected:nth-child(2) ~ .new-magic-line {
-        transform: translateY(27px);
+        transform: translateY(26px);
     }
 
     .subroutes:nth-child(3):hover ~ .new-magic-line {
-        transform: translateY(56px) !important;
+        transform: translateY(55px) !important;
     }
 
     .new-magic-line-selected:nth-child(3) ~ .new-magic-line {
-        transform: translateY(56px);
+        transform: translateY(55px);
     }
 
     .subroutes:nth-child(4):hover ~ .new-magic-line {
@@ -187,43 +187,43 @@
     }
 
     .subroutes:nth-child(8):hover ~ .new-magic-line {
-        transform: translateY(201px) !important;
+        transform: translateY(200px) !important;
     }
 
     .new-magic-line-selected:nth-child(8) ~ .new-magic-line {
-        transform: translateY(201px);
+        transform: translateY(200px);
     }
 
     .subroutes:nth-child(9):hover ~ .new-magic-line {
-        transform: translateY(230px) !important;
+        transform: translateY(229px) !important;
     }
 
     .new-magic-line-selected:nth-child(9) ~ .new-magic-line {
-        transform: translateY(230px);
+        transform: translateY(229px);
     }
 
     .subroutes:nth-child(10):hover ~ .new-magic-line {
-        transform: translateY(259px) !important;
+        transform: translateY(258px) !important;
     }
 
     .new-magic-line-selected:nth-child(10) ~ .new-magic-line {
-        transform: translateY(259px);
+        transform: translateY(258px);
     }
 
     .subroutes:nth-child(11):hover ~ .new-magic-line {
-        transform: translateY(288px) !important;
+        transform: translateY(287px) !important;
     }
 
     .new-magic-line-selected:nth-child(11) ~ .new-magic-line {
-        transform: translateY(288px);
+        transform: translateY(287px);
     }
 
     .subroutes:nth-child(12):hover ~ .new-magic-line {
-        transform: translateY(318px) !important;
+        transform: translateY(316px) !important;
     }
 
     .new-magic-line-selected:nth-child(12) ~ .new-magic-line {
-        transform: translateY(318px);
+        transform: translateY(316px);
     }
 
     .subroutes:nth-child(13):hover ~ .new-magic-line {
