@@ -59,7 +59,10 @@
                                                     isRequired: true,
                                                     isDisabled:
                                                         selectedMode ===
-                                                        'REVIEW_MODE',
+                                                            'REVIEW_MODE' ||
+                                                        (selectedMode ===
+                                                            'FEEDBACK_MODE' &&
+                                                            stepFeedbackValues?.isBusinessNameValid),
                                                     textTransform: 'uppercase',
                                                     autoFocus: true,
                                                     incorrectInput:
@@ -88,7 +91,10 @@
                                                     isRequired: true,
                                                     isDisabled:
                                                         selectedMode ===
-                                                        'REVIEW_MODE',
+                                                            'REVIEW_MODE' ||
+                                                        (selectedMode ===
+                                                            'FEEDBACK_MODE' &&
+                                                            stepFeedbackValues?.isEinValid),
                                                     incorrectInput:
                                                         selectedMode ===
                                                         'REVIEW_MODE'
@@ -136,7 +142,7 @@
                                                     [feedbackText]="
                                                         selectedMode ===
                                                             'FEEDBACK_MODE' &&
-                                                        ''
+                                                        stepFeedbackValues?.businessNameEinMessage
                                                     "
                                                     (annotationBtnClickEvent)="
                                                         selectedMode ===
@@ -163,7 +169,10 @@
                                                     isRequired: true,
                                                     isDisabled:
                                                         selectedMode ===
-                                                        'REVIEW_MODE',
+                                                            'REVIEW_MODE' ||
+                                                        (selectedMode ===
+                                                            'FEEDBACK_MODE' &&
+                                                            stepFeedbackValues?.isPhoneValid),
                                                     placeholderIcon: 'phone',
                                                     mask: '(000) 000-0000',
                                                     maxLength: 14,
@@ -191,7 +200,10 @@
                                                     isRequired: true,
                                                     isDisabled:
                                                         selectedMode ===
-                                                        'REVIEW_MODE',
+                                                            'REVIEW_MODE' ||
+                                                        (selectedMode ===
+                                                            'FEEDBACK_MODE' &&
+                                                            stepFeedbackValues?.isEmailValid),
                                                     placeholderIcon: 'email',
                                                     autocomplete: 'off',
                                                     minLength: 5,
@@ -244,7 +256,7 @@
                                                     [feedbackText]="
                                                         selectedMode ===
                                                             'FEEDBACK_MODE' &&
-                                                        ''
+                                                        stepFeedbackValues?.contactMessage
                                                     "
                                                     (annotationBtnClickEvent)="
                                                         selectedMode ===
@@ -271,7 +283,10 @@
                                                     isRequired: true,
                                                     isDisabled:
                                                         selectedMode ===
-                                                        'REVIEW_MODE',
+                                                            'REVIEW_MODE' ||
+                                                        (selectedMode ===
+                                                            'FEEDBACK_MODE' &&
+                                                            stepFeedbackValues?.isAddressValid),
                                                     placeholderIcon: 'address',
                                                     textTransform: 'capitalize',
                                                     dropdownWidthClass:
@@ -313,7 +328,10 @@
                                                     label: 'Unit #',
                                                     isDisabled:
                                                         selectedMode ===
-                                                        'REVIEW_MODE',
+                                                            'REVIEW_MODE' ||
+                                                        (selectedMode ===
+                                                            'FEEDBACK_MODE' &&
+                                                            stepFeedbackValues?.isAddressUnitValid),
                                                     minLength: 1,
                                                     maxLength: 10,
                                                     textTransform: 'uppercase',
@@ -364,7 +382,7 @@
                                                     [feedbackText]="
                                                         selectedMode ===
                                                             'FEEDBACK_MODE' &&
-                                                        ''
+                                                        stepFeedbackValues?.addressMessage
                                                     "
                                                     (annotationBtnClickEvent)="
                                                         selectedMode ===
@@ -389,15 +407,15 @@
                                                     name: 'Input Dropdown Bank Name',
                                                     type: 'text',
                                                     label: 'Bank Name',
-                                                    isDisabled:
-                                                        selectedMode ===
-                                                        'REVIEW_MODE',
                                                     minLength: 2,
                                                     maxLength: 64,
                                                     textTransform: 'uppercase',
                                                     isDropdown: true,
                                                     dropdownWidthClass:
-                                                        'w-col-202'
+                                                        'w-col-202',
+                                                    isDisabled:
+                                                        selectedMode !==
+                                                        'APPLICANT_MODE'
                                                 }"
                                                 [activeItem]="selectedBank"
                                                 [options]="banksDropdownList"
@@ -426,7 +444,10 @@
                                                             'REVIEW_MODE' ||
                                                         (selectedMode ===
                                                             'APPLICANT_MODE' &&
-                                                            !isBankSelected),
+                                                            !isBankSelected) ||
+                                                        (selectedMode ===
+                                                            'FEEDBACK_MODE' &&
+                                                            stepFeedbackValues?.isAccountValid),
                                                     isRequired: isBankSelected,
                                                     maxLength: 17,
                                                     minLength: 5,
@@ -452,8 +473,8 @@
                                                     type: 'text',
                                                     label: 'Routing number',
                                                     isDisabled:
-                                                        selectedMode ===
-                                                            'REVIEW_MODE' ||
+                                                        selectedMode !==
+                                                            'APPLICANT_MODE' ||
                                                         (selectedMode ===
                                                             'APPLICANT_MODE' &&
                                                             !isBankSelected),
@@ -497,7 +518,7 @@
                                                     [feedbackText]="
                                                         selectedMode ===
                                                             'FEEDBACK_MODE' &&
-                                                        ''
+                                                        stepFeedbackValues?.accountRoutingMessage
                                                     "
                                                     (annotationBtnClickEvent)="
                                                         selectedMode ===
@@ -539,8 +560,8 @@
                                                     isRequired: true,
                                                     isDropdown: true,
                                                     isDisabled:
-                                                        selectedMode ===
-                                                        'REVIEW_MODE',
+                                                        selectedMode !==
+                                                        'APPLICANT_MODE',
                                                     dropdownImageInput: {
                                                         withText: true,
                                                         svg: true,
@@ -578,7 +599,10 @@
                                                     isRequired: true,
                                                     isDisabled:
                                                         selectedMode ===
-                                                        'REVIEW_MODE',
+                                                            'REVIEW_MODE' ||
+                                                        (selectedMode ===
+                                                            'FEEDBACK_MODE' &&
+                                                            stepFeedbackValues?.isTruckVinValid),
                                                     textTransform: 'uppercase',
                                                     maxLength: 17,
                                                     minLength: 5,
@@ -635,7 +659,7 @@
                                                     [feedbackText]="
                                                         selectedMode ===
                                                             'FEEDBACK_MODE' &&
-                                                        ''
+                                                        stepFeedbackValues?.truckVinMessage
                                                     "
                                                     (annotationBtnClickEvent)="
                                                         selectedMode ===
@@ -663,8 +687,8 @@
                                                     isRequired: true,
                                                     isDropdown: true,
                                                     isDisabled:
-                                                        selectedMode ===
-                                                        'REVIEW_MODE',
+                                                        selectedMode !==
+                                                        'APPLICANT_MODE',
                                                     dropdownImageInput: {
                                                         withText: false,
                                                         svg: true,
@@ -695,7 +719,10 @@
                                                     isRequired: true,
                                                     isDisabled:
                                                         selectedMode ===
-                                                        'REVIEW_MODE',
+                                                            'REVIEW_MODE' ||
+                                                        (selectedMode ===
+                                                            'FEEDBACK_MODE' &&
+                                                            stepFeedbackValues?.isTruckModelValid),
                                                     textTransform: 'uppercase',
                                                     minLength: 1,
                                                     maxLength: 50,
@@ -722,7 +749,10 @@
                                                     label: 'Year',
                                                     isDisabled:
                                                         selectedMode ===
-                                                        'REVIEW_MODE',
+                                                            'REVIEW_MODE' ||
+                                                        (selectedMode ===
+                                                            'FEEDBACK_MODE' &&
+                                                            stepFeedbackValues?.isTruckYearValid),
                                                     isRequired: true,
                                                     minLength: 4,
                                                     maxLength: 4,
@@ -750,8 +780,8 @@
                                                     label: 'Color',
                                                     isDropdown: true,
                                                     isDisabled:
-                                                        selectedMode ===
-                                                        'REVIEW_MODE',
+                                                        selectedMode !==
+                                                        'APPLICANT_MODE',
                                                     dropdownImageInput: {
                                                         withText: true,
                                                         svg: true,
@@ -811,7 +841,7 @@
                                                     [feedbackText]="
                                                         selectedMode ===
                                                             'FEEDBACK_MODE' &&
-                                                        ''
+                                                        stepFeedbackValues?.truckModelYearMessage
                                                     "
                                                     (annotationBtnClickEvent)="
                                                         selectedMode ===
@@ -863,8 +893,8 @@
                                                     label: 'Type',
                                                     isDropdown: true,
                                                     isDisabled:
-                                                        selectedMode ===
-                                                            'REVIEW_MODE' ||
+                                                        selectedMode !==
+                                                            'APPLICANT_MODE' ||
                                                         (selectedMode ===
                                                             'APPLICANT_MODE' &&
                                                             !isAddTrailerSelected),
@@ -930,7 +960,10 @@
                                                             'REVIEW_MODE' ||
                                                         (selectedMode ===
                                                             'APPLICANT_MODE' &&
-                                                            !isAddTrailerSelected),
+                                                            !isAddTrailerSelected) ||
+                                                        (selectedMode ===
+                                                            'FEEDBACK_MODE' &&
+                                                            stepFeedbackValues?.isTrailerVinValid),
                                                     isRequired:
                                                         isAddTrailerSelected,
                                                     loadingSpinner: {
@@ -986,7 +1019,7 @@
                                                     [feedbackText]="
                                                         selectedMode ===
                                                             'FEEDBACK_MODE' &&
-                                                        ''
+                                                        stepFeedbackValues?.trailerVinMessage
                                                     "
                                                     (annotationBtnClickEvent)="
                                                         selectedMode ===
@@ -1013,8 +1046,8 @@
                                                     label: 'Make',
                                                     isDropdown: true,
                                                     isDisabled:
-                                                        selectedMode ===
-                                                            'REVIEW_MODE' ||
+                                                        selectedMode !==
+                                                            'APPLICANT_MODE' ||
                                                         (selectedMode ===
                                                             'APPLICANT_MODE' &&
                                                             !isAddTrailerSelected),
@@ -1056,7 +1089,10 @@
                                                             'REVIEW_MODE' ||
                                                         (selectedMode ===
                                                             'APPLICANT_MODE' &&
-                                                            !isAddTrailerSelected),
+                                                            !isAddTrailerSelected) ||
+                                                        (selectedMode ===
+                                                            'FEEDBACK_MODE' &&
+                                                            stepFeedbackValues?.isTrailerModelValid),
                                                     textTransform: 'uppercase',
                                                     minLength: 1,
                                                     maxLength: 50,
@@ -1136,7 +1172,10 @@
                                                             'REVIEW_MODE' ||
                                                         (selectedMode ===
                                                             'APPLICANT_MODE' &&
-                                                            !isAddTrailerSelected),
+                                                            !isAddTrailerSelected) ||
+                                                        (selectedMode ===
+                                                            'FEEDBACK_MODE' &&
+                                                            stepFeedbackValues?.isTrailerYearValid),
                                                     isRequired:
                                                         isAddTrailerSelected,
                                                     minLength: 4,
@@ -1164,8 +1203,8 @@
                                                     label: 'Color',
                                                     isDropdown: true,
                                                     isDisabled:
-                                                        selectedMode ===
-                                                            'REVIEW_MODE' ||
+                                                        selectedMode !==
+                                                            'APPLICANT_MODE' ||
                                                         (selectedMode ===
                                                             'APPLICANT_MODE' &&
                                                             !isAddTrailerSelected),
@@ -1204,8 +1243,8 @@
                                                     label: 'Length',
                                                     isDropdown: true,
                                                     isDisabled:
-                                                        selectedMode ===
-                                                            'REVIEW_MODE' ||
+                                                        selectedMode !==
+                                                            'APPLICANT_MODE' ||
                                                         (selectedMode ===
                                                             'APPLICANT_MODE' &&
                                                             !isAddTrailerSelected),
@@ -1297,7 +1336,10 @@
             [nextStep]="true"
             [lastStep]="true"
             [filledCorrectly]="
-                selectedMode === 'APPLICANT_MODE' && ownerInfoForm.valid
+                ownerInfoForm.valid &&
+                (selectedMode === 'APPLICANT_MODE' ||
+                    (selectedMode === 'FEEDBACK_MODE' &&
+                        isFeedbackValueUpdated))
             "
             [hasIncorrectFields]="
                 selectedMode === 'REVIEW_MODE' && hasIncorrectFields

@@ -336,6 +336,7 @@ const routes: Routes = [
                 './core/components/applicant/applicant-tabs/owner-info/owner-info.module'
             ).then((m) => m.OwnerInfoModule),
         canActivate: [ApplicantGuard],
+        resolve: { applicant: ApplicantResolver },
     },
     {
         path: 'medical-certificate/:id',

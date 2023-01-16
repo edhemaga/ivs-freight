@@ -3,9 +3,20 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 
-import { skip, Subject, takeUntil, tap } from 'rxjs';
+import {
+    distinctUntilChanged,
+    skip,
+    Subject,
+    Subscription,
+    takeUntil,
+    tap,
+    throttleTime,
+} from 'rxjs';
 
-import { anyInputInLineIncorrect } from '../../state/utils/utils';
+import {
+    anyInputInLineIncorrect,
+    isFormValueNotEqual,
+} from '../../state/utils/utils';
 
 import {
     accountBankValidation,
@@ -55,7 +66,9 @@ import { IdNameList } from '../../state/model/lists.model';
 export class OwnerInfoComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
 
-    public selectedMode: string = SelectedMode.APPLICANT;
+    public selectedMode: string = SelectedMode.FEEDBACK;
+
+    public subscription: Subscription;
 
     public isValidLoad: boolean;
 
@@ -65,6 +78,7 @@ export class OwnerInfoComponent implements OnInit, OnDestroy {
 
     public ownerInfoForm: FormGroup;
 
+    public stepValues: any;
     public stepHasValues: boolean = false;
     public stepHasReviewValues: boolean = false;
 
@@ -170,6 +184,9 @@ export class OwnerInfoComponent implements OnInit, OnDestroy {
         },
     ];
     public hasIncorrectFields: boolean = false;
+
+    public stepFeedbackValues: any;
+    public isFeedbackValueUpdated: boolean = false;
 
     constructor(
         private formBuilder: FormBuilder,
@@ -278,6 +295,32 @@ export class OwnerInfoComponent implements OnInit, OnDestroy {
     public patchStepValues(stepValues: CompanyOwnerInfoFeedbackResponse): void {
         console.log('stepValues', stepValues);
 
+        const {
+            businessName,
+            ein,
+            phone,
+            email,
+            address,
+            bank,
+            accountNumber,
+            routingNumber,
+            truckType,
+            truckVin,
+            truckMake,
+            truckModel,
+            truckYear,
+            truckColor,
+            hasTrailer,
+            trailerType,
+            trailerVin,
+            trailerMake,
+            trailerModel,
+            trailerYear,
+            trailerColor,
+            trailerLength,
+            review,
+        } = stepValues;
+
         if (this.selectedMode === SelectedMode.REVIEW) {
             if (stepValues.review) {
                 const {
@@ -290,6 +333,8 @@ export class OwnerInfoComponent implements OnInit, OnDestroy {
                     contactMessage,
                     isAddressValid,
                     isAddressUnitValid,
+                    isAccountValid,
+                    accountRoutingMessage,
                     addressMessage,
                     isTruckVinValid,
                     truckVinMessage,
@@ -336,6 +381,17 @@ export class OwnerInfoComponent implements OnInit, OnDestroy {
                             ? true
                             : false,
                     displayAnnotationTextArea: addressMessage ? true : false,
+                };
+                this.openAnnotationArray[3] = {
+                    ...this.openAnnotationArray[3],
+                    lineInputs: [!isAccountValid],
+                    displayAnnotationButton:
+                        !isAccountValid && !accountRoutingMessage
+                            ? true
+                            : false,
+                    displayAnnotationTextArea: accountRoutingMessage
+                        ? true
+                        : false,
                 };
                 this.openAnnotationArray[4] = {
                     ...this.openAnnotationArray[4],
@@ -396,7 +452,7 @@ export class OwnerInfoComponent implements OnInit, OnDestroy {
                     firstRowReview: businessNameEinMessage,
                     secondRowReview: contactMessage,
                     thirdRowReview: addressMessage,
-                    fourthRowReview: null,
+                    fourthRowReview: accountRoutingMessage,
                     fifthRowReview: truckVinMessage,
                     sixthRowReview: truckModelYearMessage,
                     seventhRowReview: trailerVinMessage,
@@ -406,30 +462,6 @@ export class OwnerInfoComponent implements OnInit, OnDestroy {
             }
         }
 
-        const {
-            businessName,
-            ein,
-            phone,
-            email,
-            address,
-            accountNumber,
-            routingNumber,
-            truckType,
-            truckVin,
-            truckMake,
-            truckModel,
-            truckYear,
-            truckColor,
-            hasTrailer,
-            trailerType,
-            trailerVin,
-            trailerMake,
-            trailerModel,
-            trailerYear,
-            trailerColor,
-            trailerLength,
-        } = stepValues;
-
         this.ownerInfoForm.patchValue({
             businessName,
             ein,
@@ -437,6 +469,7 @@ export class OwnerInfoComponent implements OnInit, OnDestroy {
             email,
             address: address.address,
             addressUnit: address.addressUnit,
+            bank: bank ? bank.name : null,
             accountNumber,
             routingNumber,
             truckType: truckType.name,
@@ -448,10 +481,15 @@ export class OwnerInfoComponent implements OnInit, OnDestroy {
             addTrailer: hasTrailer,
         });
 
+        this.selectedBank = bank;
         this.selectedAddress = address;
         this.selectedTruckType = truckType;
         this.selectedTruckMake = truckMake;
         this.selectedTruckColor = truckColor;
+
+        if (bank) {
+            this.isBankSelected = true;
+        }
 
         if (hasTrailer) {
             this.ownerInfoForm.patchValue({
@@ -472,6 +510,18 @@ export class OwnerInfoComponent implements OnInit, OnDestroy {
             this.isAddTrailerSelected = true;
         } else {
             this.isAddTrailerSelected = false;
+        }
+
+        if (this.selectedMode === SelectedMode.FEEDBACK) {
+            if (review) {
+                this.stepFeedbackValues = review;
+
+                console.log('this.stepFeedbackValues', this.stepFeedbackValues);
+            }
+
+            this.stepValues = stepValues;
+
+            this.startFeedbackValueChangesMonitoring();
         }
     }
 
@@ -939,6 +989,105 @@ export class OwnerInfoComponent implements OnInit, OnDestroy {
             this.openAnnotationArray[
                 event.lineIndex
             ].displayAnnotationTextArea = false;
+        }
+    }
+
+    public startFeedbackValueChangesMonitoring(): void {
+        if (this.stepFeedbackValues) {
+            const filteredIncorrectValues = Object.keys(
+                this.stepFeedbackValues
+            ).reduce((o, key) => {
+                this.stepFeedbackValues[key] === false &&
+                    (o[key] = this.stepFeedbackValues[key]);
+
+                return o;
+            }, {});
+
+            const hasIncorrectValues = Object.keys(
+                filteredIncorrectValues
+            ).length;
+
+            if (hasIncorrectValues) {
+                this.subscription = this.ownerInfoForm.valueChanges
+                    .pipe(
+                        distinctUntilChanged(),
+                        throttleTime(2),
+                        takeUntil(this.destroy$)
+                    )
+                    .subscribe((updatedFormValues) => {
+                        const filteredFieldsWithIncorrectValues = Object.keys(
+                            filteredIncorrectValues
+                        ).reduce((o, key) => {
+                            const keyName = key
+                                .replace('Valid', '')
+                                .replace('is', '')
+                                .trim()
+                                .toLowerCase();
+
+                            const match = Object.keys(this.stepValues)
+                                .filter((item) =>
+                                    item.toLowerCase().includes(keyName)
+                                )
+                                .pop();
+
+                            o[keyName] = this.stepValues[match];
+
+                            if (keyName === 'address') {
+                                o['address'] = JSON.stringify({
+                                    address: this.stepValues.address.address,
+                                });
+                            }
+
+                            if (keyName === 'addressunit') {
+                                o['addressunit'] =
+                                    this.stepValues.address.addressUnit;
+                            }
+
+                            return o;
+                        }, {});
+
+                        const filteredUpdatedFieldsWithIncorrectValues =
+                            Object.keys(
+                                filteredFieldsWithIncorrectValues
+                            ).reduce((o, key) => {
+                                const keyName = key;
+
+                                const match = Object.keys(this.stepValues)
+                                    .filter((item) =>
+                                        item.toLowerCase().includes(keyName)
+                                    )
+                                    .pop();
+
+                                o[keyName] = updatedFormValues[match];
+
+                                if (keyName === 'address') {
+                                    o['address'] = JSON.stringify({
+                                        address: updatedFormValues.address,
+                                    });
+                                }
+
+                                if (keyName === 'addressunit') {
+                                    o['addressunit'] =
+                                        updatedFormValues.addressUnit;
+                                }
+
+                                return o;
+                            }, {});
+
+                        const isFormNotEqual = isFormValueNotEqual(
+                            filteredFieldsWithIncorrectValues,
+                            filteredUpdatedFieldsWithIncorrectValues
+                        );
+
+                        if (isFormNotEqual) {
+                            this.isFeedbackValueUpdated = true;
+                        } else {
+                            this.isFeedbackValueUpdated = false;
+                        }
+                    });
+            } else {
+                this.isFeedbackValueUpdated = true;
+            }
         }
     }
 
