@@ -164,7 +164,12 @@ export class ApplicantHeaderComponent implements OnInit, OnChanges {
                             }
 
                             if (index === 1) {
-                                return item;
+                                return {
+                                    ...item,
+                                    isCompleted: res.companyOwnerInfo
+                                        ? true
+                                        : false,
+                                };
                             }
 
                             if (index === 2) {
@@ -224,6 +229,26 @@ export class ApplicantHeaderComponent implements OnInit, OnChanges {
                 if (this.selectedMode === SelectedMode.REVIEW) {
                     this.isTabReviewedArray = this.isTabReviewedArray.map(
                         (item, index) => {
+                            if (index === 1) {
+                                const ownerInfoReview =
+                                    res?.companyOwnerInfo?.review;
+
+                                let hasIncorrectValue: boolean;
+
+                                if (ownerInfoReview) {
+                                    hasIncorrectValue =
+                                        isAnyPropertyInObjectFalse(
+                                            ownerInfoReview
+                                        );
+                                }
+
+                                return {
+                                    ...item,
+                                    isReviewed: ownerInfoReview ? true : false,
+                                    hasIncorrectAnswer: hasIncorrectValue,
+                                };
+                            }
+
                             if (index === 3) {
                                 const mvrAuthItems = res?.mvrAuth?.files;
 

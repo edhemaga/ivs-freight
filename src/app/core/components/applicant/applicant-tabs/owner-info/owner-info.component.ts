@@ -39,6 +39,10 @@ import {
     TrailerTypeResponse,
     TrailerLengthResponse,
     ApplicantResponse,
+    ApplicantModalResponse,
+    CreateCompanyOwnerInfoCommand,
+    CompanyOwnerInfoFeedbackResponse,
+    CreateCompanyOwnerInfoReviewCommand,
 } from 'appcoretruckassist';
 import { InputSwitchActions } from '../../state/enum/input-switch-actions.enum';
 import { IdNameList } from '../../state/model/lists.model';
@@ -57,8 +61,12 @@ export class OwnerInfoComponent implements OnInit, OnDestroy {
 
     public applicantId: number;
     public queryParamId: number | string | null = null;
+    public ownerInfoCompanyId: number;
 
     public ownerInfoForm: FormGroup;
+
+    public stepHasValues: boolean = false;
+    public stepHasReviewValues: boolean = false;
 
     public selectedTab: number = 1;
     public selectedAddress: AddressEntity;
@@ -132,7 +140,7 @@ export class OwnerInfoComponent implements OnInit, OnDestroy {
         },
         {
             lineIndex: 4,
-            lineInputs: [false],
+            lineInputs: [false, false],
             displayAnnotationButton: false,
             displayAnnotationTextArea: false,
         },
@@ -150,6 +158,12 @@ export class OwnerInfoComponent implements OnInit, OnDestroy {
         },
         {
             lineIndex: 7,
+            lineInputs: [false],
+            displayAnnotationButton: false,
+            displayAnnotationTextArea: false,
+        },
+        {
+            lineIndex: 8,
             lineInputs: [false],
             displayAnnotationButton: false,
             displayAnnotationTextArea: false,
@@ -223,6 +237,7 @@ export class OwnerInfoComponent implements OnInit, OnDestroy {
             sixthRowReview: [null],
             seventhRowReview: [null],
             eightRowReview: [null],
+            ninthRowReview: [null],
         });
 
         this.inputService.customInputValidator(
@@ -247,19 +262,217 @@ export class OwnerInfoComponent implements OnInit, OnDestroy {
 
                     this.applicantId = res.id;
 
-                    /* if (res.trafficViolation) {
-                    this.patchStepValues(res.trafficViolation);
+                    if (res.companyOwnerInfo) {
+                        this.patchStepValues(res.companyOwnerInfo);
 
-                    this.stepHasValues = true;
-                } */
+                        this.stepHasValues = true;
+                    }
                 } else {
-                    console.log('NIJE');
                     this.isValidLoad = false;
 
                     this.router.navigate(['/auth']);
                 }
-                this.applicantId = res.id;
             });
+    }
+
+    public patchStepValues(stepValues: CompanyOwnerInfoFeedbackResponse): void {
+        console.log('stepValues', stepValues);
+
+        if (this.selectedMode === SelectedMode.REVIEW) {
+            if (stepValues.review) {
+                const {
+                    id,
+                    isBusinessNameValid,
+                    isEinValid,
+                    businessNameEinMessage,
+                    isPhoneValid,
+                    isEmailValid,
+                    contactMessage,
+                    isAddressValid,
+                    isAddressUnitValid,
+                    addressMessage,
+                    isTruckVinValid,
+                    truckVinMessage,
+                    isTruckModelValid,
+                    isTruckYearValid,
+                    truckModelYearMessage,
+                    isTrailerVinValid,
+                    trailerVinMessage,
+                    isTrailerModelValid,
+                    isTrailerYearValid,
+                } = stepValues.review;
+
+                this.stepHasReviewValues = true;
+
+                this.ownerInfoCompanyId = id;
+
+                this.openAnnotationArray[0] = {
+                    ...this.openAnnotationArray[0],
+                    lineInputs: [!isBusinessNameValid, !isEinValid],
+                    displayAnnotationButton:
+                        (!isBusinessNameValid || !isEinValid) &&
+                        !businessNameEinMessage
+                            ? true
+                            : false,
+                    displayAnnotationTextArea: businessNameEinMessage
+                        ? true
+                        : false,
+                };
+                this.openAnnotationArray[1] = {
+                    ...this.openAnnotationArray[1],
+                    lineInputs: [!isPhoneValid, !isEmailValid],
+                    displayAnnotationButton:
+                        (!isPhoneValid || !isEmailValid) && !contactMessage
+                            ? true
+                            : false,
+                    displayAnnotationTextArea: contactMessage ? true : false,
+                };
+                this.openAnnotationArray[2] = {
+                    ...this.openAnnotationArray[2],
+                    lineInputs: [!isAddressValid, !isAddressUnitValid],
+                    displayAnnotationButton:
+                        (!isAddressValid || !isAddressUnitValid) &&
+                        !addressMessage
+                            ? true
+                            : false,
+                    displayAnnotationTextArea: addressMessage ? true : false,
+                };
+                this.openAnnotationArray[4] = {
+                    ...this.openAnnotationArray[4],
+                    lineInputs: [!isTruckVinValid],
+                    displayAnnotationButton:
+                        !isTruckVinValid && !truckVinMessage ? true : false,
+                    displayAnnotationTextArea: truckVinMessage ? true : false,
+                };
+                this.openAnnotationArray[5] = {
+                    ...this.openAnnotationArray[5],
+                    lineInputs: [!isTruckModelValid, !isTruckYearValid],
+                    displayAnnotationButton:
+                        (!isTruckModelValid || !isTruckYearValid) &&
+                        !truckModelYearMessage
+                            ? true
+                            : false,
+                    displayAnnotationTextArea: truckModelYearMessage
+                        ? true
+                        : false,
+                };
+                this.openAnnotationArray[6] = {
+                    ...this.openAnnotationArray[6],
+                    lineInputs: [!isTrailerVinValid],
+                    displayAnnotationButton:
+                        !isTrailerVinValid && !trailerVinMessage ? true : false,
+                    displayAnnotationTextArea: trailerVinMessage ? true : false,
+                };
+                this.openAnnotationArray[7] = {
+                    ...this.openAnnotationArray[7],
+                    lineInputs: [!isTrailerModelValid],
+                    /*  displayAnnotationButton:
+                        !isTrailerModelValid && !trailerVinMessage
+                            ? true
+                            : false,
+                    displayAnnotationTextArea: trailerVinMessage ? true : false, */
+                };
+                this.openAnnotationArray[8] = {
+                    ...this.openAnnotationArray[8],
+                    lineInputs: [!isTrailerYearValid],
+                    /*  displayAnnotationButton:
+                        !isTrailerYearValid && !trailerVinMessage
+                            ? true
+                            : false,
+                    displayAnnotationTextArea: trailerVinMessage ? true : false, */
+                };
+
+                const inputFieldsArray = JSON.stringify(
+                    this.openAnnotationArray.map((item) => item.lineInputs)
+                );
+
+                if (inputFieldsArray.includes('true')) {
+                    this.hasIncorrectFields = true;
+                } else {
+                    this.hasIncorrectFields = false;
+                }
+
+                this.ownerInfoForm.patchValue({
+                    firstRowReview: businessNameEinMessage,
+                    secondRowReview: contactMessage,
+                    thirdRowReview: addressMessage,
+                    fourthRowReview: null,
+                    fifthRowReview: truckVinMessage,
+                    sixthRowReview: truckModelYearMessage,
+                    seventhRowReview: trailerVinMessage,
+                    eightRowReview: null,
+                    ninthRowReview: null,
+                });
+            }
+        }
+
+        const {
+            businessName,
+            ein,
+            phone,
+            email,
+            address,
+            accountNumber,
+            routingNumber,
+            truckType,
+            truckVin,
+            truckMake,
+            truckModel,
+            truckYear,
+            truckColor,
+            hasTrailer,
+            trailerType,
+            trailerVin,
+            trailerMake,
+            trailerModel,
+            trailerYear,
+            trailerColor,
+            trailerLength,
+        } = stepValues;
+
+        this.ownerInfoForm.patchValue({
+            businessName,
+            ein,
+            phone,
+            email,
+            address: address.address,
+            addressUnit: address.addressUnit,
+            accountNumber,
+            routingNumber,
+            truckType: truckType.name,
+            truckVin,
+            truckMake: truckMake.name,
+            truckModel,
+            truckYear,
+            truckColor: truckColor.name,
+            addTrailer: hasTrailer,
+        });
+
+        this.selectedAddress = address;
+        this.selectedTruckType = truckType;
+        this.selectedTruckMake = truckMake;
+        this.selectedTruckColor = truckColor;
+
+        if (hasTrailer) {
+            this.ownerInfoForm.patchValue({
+                trailerType: trailerType.name,
+                trailerVin,
+                trailerMake: trailerMake.name,
+                trailerModel,
+                trailerYear,
+                trailerColor: trailerColor.name,
+                trailerLength: trailerLength.name,
+            });
+
+            this.selectedTrailerType = trailerType;
+            this.selectedTrailerMake = trailerMake;
+            this.selectedTrailerColor = trailerColor;
+            this.selectedTrailerLength = trailerLength;
+
+            this.isAddTrailerSelected = true;
+        } else {
+            this.isAddTrailerSelected = false;
+        }
     }
 
     public onTabChange(event: any): void {
@@ -576,7 +789,7 @@ export class OwnerInfoComponent implements OnInit, OnDestroy {
     public getDropdownLists(): void {
         this.applicantQuery.applicantDropdownLists$
             .pipe(takeUntil(this.destroy$))
-            .subscribe((res: any /* ApplicantModalResponse */) => {
+            .subscribe((res: ApplicantModalResponse) => {
                 this.banksDropdownList = res.banks;
 
                 this.truckType = res.truckTypes.map((item) => {
@@ -649,6 +862,7 @@ export class OwnerInfoComponent implements OnInit, OnDestroy {
                             .get('firstRowReview')
                             .patchValue(null);
                     }
+
                     break;
                 case 1:
                     if (!isAnyInputInLineIncorrect) {
@@ -656,6 +870,7 @@ export class OwnerInfoComponent implements OnInit, OnDestroy {
                             .get('secondRowReview')
                             .patchValue(null);
                     }
+
                     break;
                 case 2:
                     if (!isAnyInputInLineIncorrect) {
@@ -663,6 +878,7 @@ export class OwnerInfoComponent implements OnInit, OnDestroy {
                             .get('thirdRowReview')
                             .patchValue(null);
                     }
+
                     break;
                 case 3:
                     this.ownerInfoForm.get('fourthRowReview').patchValue(null);
@@ -673,7 +889,11 @@ export class OwnerInfoComponent implements OnInit, OnDestroy {
 
                     break;
                 case 5:
-                    this.ownerInfoForm.get('sixthRowReview').patchValue(null);
+                    if (!isAnyInputInLineIncorrect) {
+                        this.ownerInfoForm
+                            .get('sixthRowReview')
+                            .patchValue(null);
+                    }
 
                     break;
                 case 6:
@@ -682,6 +902,10 @@ export class OwnerInfoComponent implements OnInit, OnDestroy {
                     break;
                 case 7:
                     this.ownerInfoForm.get('eightRowReview').patchValue(null);
+
+                    break;
+                case 8:
+                    this.ownerInfoForm.get('ninthRowReview').patchValue(null);
 
                     break;
                 default:
@@ -769,7 +993,7 @@ export class OwnerInfoComponent implements OnInit, OnDestroy {
             county: '',
         };
 
-        const saveData: any = {
+        const saveData: CreateCompanyOwnerInfoCommand = {
             ...ownerInfoForm,
             applicantId: this.applicantId,
             address: selectedAddress,
@@ -780,9 +1004,9 @@ export class OwnerInfoComponent implements OnInit, OnDestroy {
                 (item) => item.name === truckMake
             ).id,
             truckYear: +truckYear,
-            truckColorId: this.colorType.find(
-                (item) => item.name === truckColor
-            ).id,
+            truckColorId: truckColor
+                ? this.colorType.find((item) => item.name === truckColor).id
+                : null,
             hasTrailer: addTrailer,
             trailerTypeId: addTrailer
                 ? this.trailerType.find((item) => item.name === trailerType).id
@@ -805,9 +1029,174 @@ export class OwnerInfoComponent implements OnInit, OnDestroy {
         };
 
         console.log('saveData', saveData);
+
+        const storeOwnerInfoCompanyItems = {
+            ...saveData,
+            bank: this.banksDropdownList.find(
+                (item) => item.id === saveData.bankId
+            ),
+            truckType: this.truckType.find(
+                (item) => item.id === saveData.truckTypeId
+            ),
+            truckMake: this.truckMakeType.find(
+                (item) => item.id === saveData.truckMakeId
+            ),
+            truckColor: this.colorType.find(
+                (item) => item.id === saveData.truckColorId
+            ),
+            trailerType: this.trailerType.find(
+                (item) => item.id === saveData.trailerTypeId
+            ),
+            trailerLength: this.trailerLengthType.find(
+                (item) => item.id === saveData.trailerLengthId
+            ),
+            trailerMake: this.trailerMakeType.find(
+                (item) => item.id === saveData.trailerMakeId
+            ),
+            trailerColor: this.colorType.find(
+                (item) => item.id === saveData.trailerColorId
+            ),
+        };
+
+        const selectMatchingBackendMethod = () => {
+            if (
+                this.selectedMode === SelectedMode.APPLICANT &&
+                !this.stepHasValues
+            ) {
+                return this.applicantActionsService.createOwnerInfoCompany(
+                    saveData
+                );
+            }
+
+            if (
+                (this.selectedMode === SelectedMode.APPLICANT &&
+                    this.stepHasValues) ||
+                this.selectedMode === SelectedMode.FEEDBACK
+            ) {
+                return this.applicantActionsService.updateOwnerInfoCompany(
+                    saveData
+                );
+            }
+        };
+
+        selectMatchingBackendMethod()
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: () => {
+                    this.router.navigate([
+                        `/medical-certificate/${this.applicantId}`,
+                    ]);
+
+                    this.applicantStore.update((store) => {
+                        return {
+                            ...store,
+                            applicant: {
+                                ...store.applicant,
+                                companyOwnerInfo: {
+                                    ...store.applicant.companyOwnerInfo,
+                                    ...storeOwnerInfoCompanyItems,
+                                },
+                            },
+                        };
+                    });
+                },
+                error: (err) => {
+                    console.log(err);
+                },
+            });
     }
 
-    public onSubmitReview(): void {}
+    public onSubmitReview(): void {
+        const {
+            firstRowReview,
+            secondRowReview,
+            thirdRowReview,
+            fourthRowReview,
+            fifthRowReview,
+            sixthRowReview,
+            seventhRowReview,
+            eightRowReview,
+            ninthRowReview,
+        } = this.ownerInfoForm.value;
+
+        const saveData: CreateCompanyOwnerInfoReviewCommand = {
+            applicantId: this.applicantId,
+            ...(this.stepHasReviewValues && {
+                id: this.ownerInfoCompanyId,
+            }),
+            isBusinessNameValid: !this.openAnnotationArray[0].lineInputs[0],
+            isEinValid: !this.openAnnotationArray[0].lineInputs[1],
+            businessNameEinMessage: firstRowReview,
+            isPhoneValid: !this.openAnnotationArray[1].lineInputs[0],
+            isEmailValid: !this.openAnnotationArray[1].lineInputs[1],
+            contactMessage: secondRowReview,
+            isAddressValid: !this.openAnnotationArray[2].lineInputs[0],
+            isAddressUnitValid: !this.openAnnotationArray[2].lineInputs[1],
+            addressMessage: thirdRowReview,
+            isAccountValid: !this.openAnnotationArray[3].lineInputs[0],
+            isRoutingValid: true,
+            accountRoutingMessage: fourthRowReview,
+            isTruckVinValid: !this.openAnnotationArray[4].lineInputs[0],
+            truckVinMessage: fifthRowReview,
+            isTruckModelValid: !this.openAnnotationArray[5].lineInputs[0],
+            isTruckYearValid: !this.openAnnotationArray[5].lineInputs[1],
+            truckModelYearMessage: sixthRowReview,
+            isTrailerVinValid: !this.openAnnotationArray[6].lineInputs[0],
+            trailerVinMessage: seventhRowReview,
+            isTrailerModelValid: !this.openAnnotationArray[7].lineInputs[0],
+            /*   trailer model message */
+            isTrailerYearValid: !this.openAnnotationArray[8].lineInputs[0],
+            /*   trailer year message */
+        };
+
+        console.log('saveData', saveData);
+
+        const selectMatchingBackendMethod = () => {
+            if (
+                this.selectedMode === SelectedMode.REVIEW &&
+                !this.stepHasReviewValues
+            ) {
+                return this.applicantActionsService.createOwnerInfoCompanyReview(
+                    saveData
+                );
+            }
+
+            if (
+                this.selectedMode === SelectedMode.REVIEW &&
+                this.stepHasReviewValues
+            ) {
+                return this.applicantActionsService.updateOwnerInfoCompanyReview(
+                    saveData
+                );
+            }
+        };
+
+        selectMatchingBackendMethod()
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: () => {
+                    this.router.navigate([
+                        `/medical-certificate/${this.applicantId}`,
+                    ]);
+
+                    this.applicantStore.update((store) => {
+                        return {
+                            ...store,
+                            applicant: {
+                                ...store.applicant,
+                                companyOwnerInfo: {
+                                    ...store.applicant.companyOwnerInfo,
+                                    review: saveData,
+                                },
+                            },
+                        };
+                    });
+                },
+                error: (err) => {
+                    console.log(err);
+                },
+            });
+    }
 
     ngOnDestroy(): void {
         this.destroy$.next();

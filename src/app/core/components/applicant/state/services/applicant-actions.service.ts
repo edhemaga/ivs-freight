@@ -67,6 +67,10 @@ import {
     UpdateMedicalCertificateReviewCommand,
     CreateMvrAuthReviewCommand,
     UpdateMvrAuthReviewCommand,
+    CreateCompanyOwnerInfoCommand,
+    UpdateCompanyOwnerInfoCommand,
+    CreateCompanyOwnerInfoReviewCommand,
+    UpdateCompanyOwnerInfoReviewCommand,
 } from 'appcoretruckassist/model/models';
 
 @Injectable({
@@ -136,6 +140,12 @@ export class ApplicantActionsService {
         data: CreateDrugAndAlcoholCommand
     ): Observable<object> {
         return this.applicantService.apiApplicantDrugandalcoholPost(data);
+    }
+
+    public createOwnerInfoCompany(
+        data: CreateCompanyOwnerInfoCommand
+    ): Observable<CreateResponse> {
+        return this.applicantService.apiApplicantOwnerinfoCompanyPost(data);
     }
 
     public createMedicalCertificate(
@@ -230,6 +240,12 @@ export class ApplicantActionsService {
         data: UpdateAuthorizationCommand
     ): Observable<object> {
         return this.applicantService.apiApplicantAuthorizationPut(data);
+    }
+
+    public updateOwnerInfoCompany(
+        data: UpdateCompanyOwnerInfoCommand
+    ): Observable<object> {
+        return this.applicantService.apiApplicantOwnerinfoCompanyPut(data);
     }
 
     public updateMedicalCertificate(
@@ -344,6 +360,14 @@ export class ApplicantActionsService {
         data: CreateAuthorizationReviewCommand
     ): Observable<object> {
         return this.applicantService.apiApplicantAuthorizationReviewPost(data);
+    }
+
+    public createOwnerInfoCompanyReview(
+        data: CreateCompanyOwnerInfoReviewCommand
+    ): Observable<CreateResponse> {
+        return this.applicantService.apiApplicantOwnerinfoCompanyReviewPost(
+            data
+        );
     }
 
     public createMedicalCertificateReview(
@@ -464,6 +488,14 @@ export class ApplicantActionsService {
         data: UpdateDrugAndAlcoholReviewCommand
     ): Observable<object> {
         return this.applicantService.apiApplicantDrugandalcoholReviewPut(data);
+    }
+
+    public updateOwnerInfoCompanyReview(
+        data: UpdateCompanyOwnerInfoReviewCommand
+    ): Observable<object> {
+        return this.applicantService.apiApplicantOwnerinfoCompanyReviewPut(
+            data
+        );
     }
 
     public updateMedicalCertificateReview(
