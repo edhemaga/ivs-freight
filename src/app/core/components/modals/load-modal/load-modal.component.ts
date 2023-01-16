@@ -2698,7 +2698,9 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             additionalBillingRates:
                 this.premmapedAdditionalBillingRate('create'),
             stops: this.premmapedStops() as any,
-            totalLegMiles: this.totalLegMiles.toString().replace(/\./g, ''),
+            totalLegMiles: this.totalLegMiles.toString().includes('.')
+                ? this.totalLegMiles.toString().replace(/\./g, '')
+                : this.totalLegMiles.toString(),
             totalLegHours: this.totalLegHours,
             totalLegMinutes: this.totalLegMinutes,
             files: documents,
@@ -2841,7 +2843,11 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 depart: null,
                 legMiles: this.loadForm
                     .get('pickuplegMiles')
-                    .value.replace(/\./g, ''),
+                    .value.includes('.')
+                    ? this.loadForm
+                          .get('pickuplegMiles')
+                          .value.replace(/\./g, '')
+                    : this.loadForm.get('pickuplegMiles').value,
                 legHours: this.loadForm.get('pickuplegHours').value,
                 legMinutes: this.loadForm.get('pickuplegMinutes').value,
                 items: [],
