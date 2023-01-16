@@ -8,8 +8,8 @@ import {
     ViewChild,
 } from '@angular/core';
 import { navigationData } from './model/navigation-data';
-import { Router } from '@angular/router';
-import { Subject, takeUntil } from 'rxjs';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { filter, map, mergeMap, Subject, takeUntil } from 'rxjs';
 import { NavigationService } from './services/navigation.service';
 import { navigation_magic_line } from './navigation.animation';
 import { DetailsDataService } from '../../services/details-data/details-data.service';
@@ -46,10 +46,12 @@ export class NavigationComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
     closeDropdownOnNavClose: boolean;
     @ViewChild('navbar') navbar: ElementRef;
+    selectedRoute: string = "";
     constructor(
         private router: Router,
         private navigationService: NavigationService,
-        private DetailsDataService: DetailsDataService
+        private DetailsDataService: DetailsDataService,
+        private activatedRoute: ActivatedRoute,
     ) {}
 
     ngOnInit(): void {
@@ -111,6 +113,8 @@ export class NavigationComponent implements OnInit, OnDestroy {
                         break;
                 }
             });
+
+            this.router.events.pipe(filter((event) => event instanceof NavigationEnd)).subscribe((url:any) => this.selectedRoute = url.url);
     }
     //Midle navigation hovered hide magic line in footer nav
     onMidleNavHover(event) {
