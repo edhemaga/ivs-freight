@@ -133,12 +133,19 @@ export class TrailerTService implements OnDestroy {
                                 ({ id }) => id === data.id
                             );
 
+                            this.trailerMinimalStore.remove(
+                                ({ id }) => id === data.id
+                            );
+
+                            
+
                             trailer.registrations =
                                 storedTrailerData.registrations;
                             trailer.titles = storedTrailerData.titles;
                             trailer.inspections = storedTrailerData.inspections;
 
                             this.trailerActiveStore.add(trailer);
+                            this.trailerMinimalStore.add(trailer);
                             this.tadl.replace(trailer.id, trailer);
                             this.tableService.sendActionAnimation({
                                 animation: 'update',
