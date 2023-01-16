@@ -705,35 +705,35 @@
                             >
                                 <div
                                     class="no-delpickup"
-                                    *ngIf="!item.assignedLoads.length"
+                                    *ngIf="!item.activeLoad"
                                 >
                                     No Active or Pending Load
                                 </div>
 
                                 <div
                                     class="load-items-hold"
-                                    *ngIf="item.assignedLoads.length"
+                                    *ngIf="item.activeLoad"
                                 >
                                     <div class="pick-load-box pickup-box">
                                         <svg-icon
-                                            *ngIf="item.assignedLoads[0]
+                                            *ngIf="item.activeLoad
                                             .pickupCount < 9"
                                             src="
                                                 assets/svg/svg_numbers/olddash/svg_num_box_{{
-                                                item.assignedLoads[0]
+                                                item.activeLoad
                                                     .pickupCount
                                             }}.svg
                                             "
                                         ></svg-icon>
                                         <svg-icon
-                                            *ngIf="item.assignedLoads[0]
+                                            *ngIf="item.activeLoad
                                             .pickupCount > 9"
                                             src="assets/svg/svg_numbers/svg_num_over.svg
                                         "
                                         ></svg-icon>
                                         <div class="pick-load-info">
                                             <div class="pick-load-info-address">
-                                                {{item.assignedLoads[0].pickup.shipper.address.city}}, {{item.assignedLoads[0].pickup.shipper.address.stateShortName}}
+                                                {{item.activeLoad.pickup.shipper.address.city}}, {{item.activeLoad.pickup.shipper.address.stateShortName}}
                                             </div>
                                             <div class="pick-load-info-time">
                                                 05/09/21
@@ -742,24 +742,24 @@
                                     </div>
                                     <div class="pick-load-box delivery-box">
                                         <svg-icon
-                                            *ngIf="item.assignedLoads[0]
+                                            *ngIf="item.activeLoad
                                             .deliveryCount < 9"
                                             src="
                                                 assets/svg/svg_numbers/olddash/svg_num_box_{{
-                                                item.assignedLoads[0]
+                                                item.activeLoad
                                                     .deliveryCount
                                             }}.svg
                                             "
                                         ></svg-icon>
                                         <svg-icon
-                                            *ngIf="item.assignedLoads[0]
+                                            *ngIf="item.activeLoad
                                             .deliveryCount > 9"
                                             src="assets/svg/svg_numbers/svg_num_over.svg
                                         "
                                         ></svg-icon>
                                         <div class="pick-load-info">
                                             <div class="pick-load-info-address">
-                                                {{item.assignedLoads[0].delivery.shipper.address.city}}, {{item.assignedLoads[0].delivery.shipper.address.stateShortName}}
+                                                {{item.activeLoad.delivery.shipper.address.city}}, {{item.activeLoad.delivery.shipper.address.stateShortName}}
                                             </div>
                                             <div class="pick-load-info-time">
                                                 05/09/21
