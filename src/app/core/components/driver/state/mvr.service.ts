@@ -67,11 +67,11 @@ export class MvrTService implements OnDestroy {
                     const dr = this.driverItemStore.getValue();
                     const driverData = JSON.parse(JSON.stringify(dr.entities));
                     let newData = driverData[driverId];
-    
-                    let mvrApi = this.mvrService.apiMvrIdGet(res.id).subscribe({
+                    
+                    let allDriverMvrsApi = this.mvrService.apiMvrListGet(driverId).subscribe({
                         next: (resp: any) => {
     
-                            newData.mvrs.push(resp);
+                            newData.mvrs = resp;
                            
                             this.tableService.sendActionAnimation({
                                 animation: 'update',
@@ -82,9 +82,9 @@ export class MvrTService implements OnDestroy {
                             this.dlStore.add(newData);
                             this.driverItemStore.set([newData]);
                           
-                            mvrApi.unsubscribe();
+                            allDriverMvrsApi.unsubscribe();
                         },
-                    });  
+                    })
             })
         );
     }
