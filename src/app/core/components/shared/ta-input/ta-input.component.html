@@ -720,7 +720,7 @@
 
             <!-- Text -->
             <span
-                *ngIf="!item?.isProgressBar"
+                *ngIf="!item?.isProgressBar && item.value"
                 class="multiple-input-text"
                 [ngStyle]="{
                     color: '#2F2F2F'
@@ -915,10 +915,7 @@
                         getSuperControl.invalid &&
                         !focusInput)) &&
                 !inputConfig.blackInput,
-            'invalid-focus-out-empty':
-                !getSuperControl.value &&
-                getSuperControl.invalid &&
-                (touchedInput || getSuperControl.touched),
+
             'password-eye':
                 inputConfig.type === 'password' &&
                 isVisiblePasswordEye &&
@@ -1003,6 +1000,11 @@
         "
         [(ngModel)]="input.value"
     />
+
+    <!--  'invalid-focus-out-empty':
+                !getSuperControl.value &&
+                getSuperControl.invalid &&
+                (touchedInput || getSuperControl.touched), -->
 
     <!-- Input Label -->
     <label
