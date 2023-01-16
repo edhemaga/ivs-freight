@@ -4,455 +4,501 @@
     <div class="d-flex justify-content-between align-items-end info-container">
         <!-- INFO BOX -->
 
-        <div
-            class="d-flex flex-column info-box"
-            [ngClass]="{ 'display-box': displayInfoBox }"
-            *ngIf="selectedMode !== 'REVIEW_MODE'"
-        >
+        <ng-container *ngIf="selectedMode !== 'REVIEW_MODE'">
             <div
-                class="d-flex align-items-center justify-content-between box-header"
+                class="d-flex flex-column info-box"
+                [ngClass]="{ 'display-box': displayInfoBox }"
             >
-                <h2 class="m-0 ta-font-black">{{ companyInfo?.name }}</h2>
-
                 <div
-                    ngbTooltip
-                    mainTooltip="Close"
-                    tooltipBackground="#6C6C6C"
-                    position="top"
+                    class="d-flex align-items-center justify-content-between box-header"
                 >
+                    <h2 class="m-0 ta-font-black">{{ companyInfo?.name }}</h2>
+
+                    <div
+                        ngbTooltip
+                        mainTooltip="Close"
+                        tooltipBackground="#6C6C6C"
+                        position="top"
+                    >
+                        <svg-icon
+                            class="d-flex align-items-center justify-content-center close-icon"
+                            src="assets/svg/common/ic_x.svg"
+                            [svgStyle]="{ 'width.px': '22', 'height.px': '22' }"
+                            (click)="onHidePopupBox('INFO-BOX')"
+                        ></svg-icon>
+                    </div>
+                </div>
+
+                <div class="d-flex align-items-center box-dets">
+                    <p class="m-0 ta-font-regular">
+                        USDOT # {{ companyInfo?.usDot }}
+                    </p>
+                </div>
+
+                <div class="d-flex align-items-center box-dets">
                     <svg-icon
-                        class="d-flex align-items-center justify-content-center close-icon"
-                        src="assets/svg/common/ic_x.svg"
-                        [svgStyle]="{ 'width.px': '22', 'height.px': '22' }"
-                        (click)="onHidePopupBox('INFO-BOX')"
+                        class="phone-icon"
+                        src="assets/svg/common/ic_phone.svg"
+                        [svgStyle]="{ 'width.px': '18', 'height.px': '18' }"
                     ></svg-icon>
+                    <p class="m-0 ta-font-regular">{{ companyInfo?.phone }}</p>
+                </div>
+
+                <div class="d-flex align-items-start box-dets">
+                    <svg-icon
+                        class="location-icon"
+                        src="assets/svg/applicant/location.svg"
+                        [svgStyle]="{ 'width.px': '18', 'height.px': '18' }"
+                    ></svg-icon>
+                    <p class="m-0 ta-font-regular">
+                        {{ companyInfo?.address.streetNumber }}
+                        {{ companyInfo?.address.street }}
+
+                        <ng-container *ngIf="companyInfo?.address.addressUnit">
+                            #{{ companyInfo?.address.addressUnit }}
+                        </ng-container>
+
+                        <br />
+
+                        {{ companyInfo?.address.city }},
+                        {{ companyInfo?.address.stateShortName
+                        }}<ng-container *ngIf="companyInfo?.address.zipCode">
+                            {{ companyInfo?.address.zipCode }}</ng-container
+                        >,
+                        {{ companyInfo?.address.country }}
+                    </p>
+                </div>
+
+                <div class="d-flex box-divider"></div>
+
+                <div class="d-flex align-items-center box-dets">
+                    <svg-icon
+                        class="document-icon"
+                        src="assets/svg/common/ic_document.svg"
+                        [svgStyle]="{ 'width.px': '18', 'height.px': '18' }"
+                    ></svg-icon>
+                    <p class="m-0 ta-font-regular">
+                        Date of application: {{ dateOfApplication }}
+                    </p>
                 </div>
             </div>
-
-            <div class="d-flex align-items-center box-dets">
-                <p class="m-0 ta-font-regular">
-                    USDOT # {{ companyInfo?.usDot }}
-                </p>
-            </div>
-
-            <div class="d-flex align-items-center box-dets">
-                <svg-icon
-                    class="phone-icon"
-                    src="assets/svg/common/ic_phone.svg"
-                    [svgStyle]="{ 'width.px': '18', 'height.px': '18' }"
-                ></svg-icon>
-                <p class="m-0 ta-font-regular">{{ companyInfo?.phone }}</p>
-            </div>
-
-            <div class="d-flex align-items-start box-dets">
-                <svg-icon
-                    class="location-icon"
-                    src="assets/svg/applicant/location.svg"
-                    [svgStyle]="{ 'width.px': '18', 'height.px': '18' }"
-                ></svg-icon>
-                <p class="m-0 ta-font-regular">
-                    {{ companyInfo?.address.streetNumber }}
-                    {{ companyInfo?.address.street }}
-
-                    <ng-container *ngIf="companyInfo?.address.addressUnit">
-                        #{{ companyInfo?.address.addressUnit }}
-                    </ng-container>
-
-                    <br />
-
-                    {{ companyInfo?.address.city }},
-                    {{ companyInfo?.address.stateShortName
-                    }}<ng-container *ngIf="companyInfo?.address.zipCode">
-                        {{ companyInfo?.address.zipCode }}</ng-container
-                    >,
-                    {{ companyInfo?.address.country }}
-                </p>
-            </div>
-
-            <div class="d-flex box-divider"></div>
-
-            <div class="d-flex align-items-center box-dets">
-                <svg-icon
-                    class="document-icon"
-                    src="assets/svg/common/ic_document.svg"
-                    [svgStyle]="{ 'width.px': '18', 'height.px': '18' }"
-                ></svg-icon>
-                <p class="m-0 ta-font-regular">
-                    Date of application: {{ dateOfApplication }}
-                </p>
-            </div>
-        </div>
+        </ng-container>
 
         <!-- REQUESTS BOX -->
 
-        <div
-            #requestsBox
-            class="d-flex flex-column requests-box"
-            [ngClass]="{ 'display-box': displayRequestsBox }"
-            [ngStyle]="{
-                top: -requestsBoxHeight + -41 + 'px',
-                'padding-bottom': isDocumentsCardOpen ? 0 : '8px'
-            }"
-            *ngIf="selectedMode === 'REVIEW_MODE'"
-        >
-            <div class="d-flex align-items-center box-header">
-                <div class="box-tabs">
-                    <app-ta-tab-switch
-                        [tabs]="requestsBoxTabs"
-                        (switchClicked)="onTabChange($event, 'REQUESTS-BOX')"
-                        [type]="'type2-modal-popup'"
-                    >
-                    </app-ta-tab-switch>
-                </div>
-
-                <div class="icon-box">
-                    <svg-icon
-                        class="d-flex align-items-center justify-content-center close-icon"
-                        src="assets/svg/applicant/close-x.svg"
-                        [svgStyle]="{ 'width.px': '22', 'height.px': '22' }"
-                        (click)="onHidePopupBox('REQUESTS-BOX')"
-                    ></svg-icon>
-                </div>
-            </div>
-
+        <ng-container *ngIf="selectedMode === 'REVIEW_MODE'">
             <div
-                Class="d-flex flex-column"
-                [formGroup]="sphTabForm"
-                *ngIf="selectedRequestsTab === 1"
+                #requestsBox
+                class="d-flex flex-column requests-box"
+                [ngClass]="{ 'display-box': displayRequestsBox }"
+                [ngStyle]="{
+                    top: -requestsBoxHeight + -41 + 'px',
+                    'padding-bottom': isDocumentsCardOpen ? 0 : '8px'
+                }"
             >
-                <div Class="d-flex flex-column names-box">
-                    <div class="d-flex">
-                        <div class="employer-group">
-                            <app-ta-input
-                                *ngIf="!hasMultiplePreviousEmployers"
-                                formControlName="previousEmployer"
-                                [inputConfig]="{
-                                    name: 'Employer',
-                                    type: 'text',
-                                    label: 'Previous Employer',
-                                    textTransform: 'capitalize',
-                                    isDisabled: true
-                                }"
-                            ></app-ta-input>
-
-                            <app-ta-input-dropdown
-                                *ngIf="hasMultiplePreviousEmployers"
-                                formControlName="previousEmployer"
-                                [inputConfig]="{
-                                    name: 'Input Dropdown',
-                                    type: 'text',
-                                    label: 'Previous Employer',
-                                    isDropdown: true,
-                                    dropdownWidthClass: 'w-col-376',
-                                    hideClear: true
-                                }"
-                                [options]="previousEmployersList"
-                                [activeItem]="selectedEmployer"
-                                (selectedItem)="
-                                    handleInputSelect(
-                                        $event,
-                                        'PREVIOUS-EMPLOYER'
-                                    )
-                                "
-                            ></app-ta-input-dropdown>
-                        </div>
+                <div class="d-flex align-items-center box-header">
+                    <div class="box-tabs">
+                        <app-ta-tab-switch
+                            [tabs]="requestsBoxTabs"
+                            (switchClicked)="
+                                onTabChange($event, 'REQUESTS-BOX')
+                            "
+                            [type]="'type2-modal-popup'"
+                        >
+                        </app-ta-tab-switch>
                     </div>
 
-                    <div class="d-flex">
-                        <div class="applicant-group">
-                            <app-ta-input
-                                formControlName="applicantName"
-                                [inputConfig]="{
-                                    name: 'Applicant Name',
-                                    type: 'text',
-                                    label: 'Applicant Name',
-                                    textTransform: 'capitalize',
-                                    isDisabled: true
-                                }"
-                            ></app-ta-input>
-                        </div>
+                    <div class="icon-box">
+                        <svg-icon
+                            class="d-flex align-items-center justify-content-center close-icon"
+                            src="assets/svg/applicant/close-x.svg"
+                            [svgStyle]="{ 'width.px': '22', 'height.px': '22' }"
+                            (click)="onHidePopupBox('REQUESTS-BOX')"
+                        ></svg-icon>
                     </div>
                 </div>
 
-                <!-- REQUESTS -->
-
-                <app-ta-custom-card [cardName]="'Requests'" [isCardOpen]="true">
-                    <div class="requests-card">
-                        <div
-                            class="d-flex"
-                            *ngFor="
-                                let request of previousRequests?.controls;
-                                let i = index;
-                                trackBy: trackByIdentity
-                            "
-                            formArrayName="requests"
-                        >
-                            <div class="d-flex" [formGroupName]="i">
-                                <div
-                                    class="date-group"
-                                    [ngStyle]="{
-                                        'margin-bottom': i === 4 ? '0' : '2px'
-                                    }"
-                                >
-                                    <app-ta-input
-                                        formControlName="dateOfRequest"
-                                        [inputConfig]="{
-                                            name: 'datepicker',
-                                            type: 'text',
-                                            label: 'Date',
-                                            placeholderIcon: 'date',
-                                            customClass: 'datetimeclass',
-                                            isDisabled: true,
-                                            placeholderInsteadOfLabel: i !== 0
-                                        }"
-                                    ></app-ta-input>
-                                </div>
-                                <div class="time-group">
-                                    <app-ta-input
-                                        formControlName="timeOfRequest"
-                                        [inputConfig]="{
-                                            name: 'timepicker',
-                                            type: 'text',
-                                            label: 'Time',
-                                            placeholderIcon: 'time',
-                                            customClass: 'datetimeclass',
-                                            isDisabled: true,
-                                            placeholderInsteadOfLabel: i !== 0
-                                        }"
-                                    ></app-ta-input>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div
-                            class="d-flex align-items-center"
-                            [ngStyle]="{
-                                'margin-top': !previousRequests?.controls.length
-                                    ? '0'
-                                    : '20px'
-                            }"
-                            *ngIf="
-                                previousRequests?.controls.length < 5 &&
-                                !(
-                                    sphTabForm.get('dateReceivedRequest')
-                                        .value &&
-                                    selectedSphReceivedBy &&
-                                    documents.length
-                                )
-                            "
-                        >
-                            <div class="d-flex align-items-center">
-                                <div
-                                    class="d-flex align-items-center request-input-group"
-                                >
-                                    <svg-icon
-                                        class="icon"
-                                        src="assets/svg/common/ic_date.svg"
-                                        [svgStyle]="{
-                                            'width.px': 18,
-                                            'height.px': 18
-                                        }"
-                                    ></svg-icon>
-
-                                    <div class="pipe"></div>
-
-                                    <p class="m-0 ta-font-regular">
-                                        Request
-                                        {{
-                                            previousRequests?.controls.length +
-                                                1
-                                        }}
-                                    </p>
-                                </div>
-
-                                <div
-                                    class="d-flex align-items-center justify-content-center send-request-btn-box"
-                                >
-                                    <button
-                                        type="button"
-                                        class="d-flex justify-content-center align-items-center ta-font-bold send-request-btn"
-                                        (click)="onCreateNewRequest()"
-                                    >
-                                        Send request
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </app-ta-custom-card>
-
-                <!-- SPH RECEIVED -->
-
-                <app-ta-custom-card
-                    [cardName]="'SPH Received'"
-                    [isCardOpen]="true"
-                    [customTextAction]="'Open SPH'"
-                    [hasDownload]="'assets/svg/common/ic_download.svg'"
-                    (onActionEvent)="onSphReceivedCardAction($event)"
-                >
-                    <div class="sph-received-card">
-                        <div class="d-flex">
+                <ng-container *ngIf="selectedRequestsTab === 1">
+                    <div Class="d-flex flex-column" [formGroup]="sphTabForm">
+                        <div Class="d-flex flex-column names-box">
                             <div class="d-flex">
-                                <div class="date-group">
+                                <div class="employer-group">
+                                    <ng-container
+                                        *ngIf="!hasMultiplePreviousEmployers"
+                                    >
+                                        <app-ta-input
+                                            formControlName="previousEmployer"
+                                            [inputConfig]="{
+                                                name: 'Employer',
+                                                type: 'text',
+                                                label: 'Previous Employer',
+                                                textTransform: 'capitalize',
+                                                isDisabled: true
+                                            }"
+                                        ></app-ta-input>
+                                    </ng-container>
+
+                                    <ng-container
+                                        *ngIf="hasMultiplePreviousEmployers"
+                                    >
+                                        <app-ta-input-dropdown
+                                            formControlName="previousEmployer"
+                                            [inputConfig]="{
+                                                name: 'Input Dropdown',
+                                                type: 'text',
+                                                label: 'Previous Employer',
+                                                isDropdown: true,
+                                                dropdownWidthClass: 'w-col-376',
+                                                hideClear: true
+                                            }"
+                                            [options]="previousEmployersList"
+                                            [activeItem]="selectedEmployer"
+                                            (selectedItem)="
+                                                handleInputSelect(
+                                                    $event,
+                                                    'PREVIOUS-EMPLOYER'
+                                                )
+                                            "
+                                        ></app-ta-input-dropdown>
+                                    </ng-container>
+                                </div>
+                            </div>
+
+                            <div class="d-flex">
+                                <div class="applicant-group">
                                     <app-ta-input
-                                        formControlName="dateReceivedRequest"
+                                        formControlName="applicantName"
                                         [inputConfig]="{
-                                            name: 'datepicker',
+                                            name: 'Applicant Name',
                                             type: 'text',
-                                            label: 'Date Received',
-                                            placeholderIcon: 'date',
-                                            customClass: 'datetimeclass'
+                                            label: 'Applicant Name',
+                                            textTransform: 'capitalize',
+                                            isDisabled: true
                                         }"
                                     ></app-ta-input>
                                 </div>
-
-                                <div class="received-by-group">
-                                    <app-ta-input-dropdown
-                                        formControlName="receivedByRequest"
-                                        [inputConfig]="{
-                                            name: 'Input Dropdown',
-                                            type: 'text',
-                                            label: 'Received By',
-                                            isDropdown: true,
-                                            dropdownWidthClass: 'w-col-182'
-                                        }"
-                                        [options]="sphReceivedByList"
-                                        [activeItem]="selectedSphReceivedBy"
-                                        (selectedItem)="
-                                            handleInputSelect(
-                                                $event,
-                                                'SPH-RECEIVED-BY'
-                                            )
-                                        "
-                                    ></app-ta-input-dropdown>
-                                </div>
                             </div>
                         </div>
+
+                        <!-- REQUESTS -->
+
+                        <app-ta-custom-card
+                            [cardName]="'Requests'"
+                            [isCardOpen]="true"
+                        >
+                            <div class="requests-card">
+                                <ng-container
+                                    *ngFor="
+                                        let request of previousRequests?.controls;
+                                        let i = index;
+                                        trackBy: trackByIdentity
+                                    "
+                                >
+                                    <div
+                                        class="d-flex"
+                                        formArrayName="requests"
+                                    >
+                                        <div class="d-flex" [formGroupName]="i">
+                                            <div
+                                                class="date-group"
+                                                [ngStyle]="{
+                                                    'margin-bottom':
+                                                        i === 4 ? '0' : '2px'
+                                                }"
+                                            >
+                                                <app-ta-input
+                                                    formControlName="dateOfRequest"
+                                                    [inputConfig]="{
+                                                        name: 'datepicker',
+                                                        type: 'text',
+                                                        label: 'Date',
+                                                        placeholderIcon: 'date',
+                                                        customClass:
+                                                            'datetimeclass',
+                                                        isDisabled: true,
+                                                        placeholderInsteadOfLabel:
+                                                            i !== 0
+                                                    }"
+                                                ></app-ta-input>
+                                            </div>
+                                            <div class="time-group">
+                                                <app-ta-input
+                                                    formControlName="timeOfRequest"
+                                                    [inputConfig]="{
+                                                        name: 'timepicker',
+                                                        type: 'text',
+                                                        label: 'Time',
+                                                        placeholderIcon: 'time',
+                                                        customClass:
+                                                            'datetimeclass',
+                                                        isDisabled: true,
+                                                        placeholderInsteadOfLabel:
+                                                            i !== 0
+                                                    }"
+                                                ></app-ta-input>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </ng-container>
+
+                                <ng-container
+                                    *ngIf="
+                                        previousRequests?.controls.length < 5 &&
+                                        !(
+                                            sphTabForm.get(
+                                                'dateReceivedRequest'
+                                            ).value &&
+                                            selectedSphReceivedBy &&
+                                            documents.length
+                                        )
+                                    "
+                                >
+                                    <div
+                                        class="d-flex align-items-center"
+                                        [ngStyle]="{
+                                            'margin-top': !previousRequests
+                                                ?.controls.length
+                                                ? '0'
+                                                : '20px'
+                                        }"
+                                    >
+                                        <div class="d-flex align-items-center">
+                                            <div
+                                                class="d-flex align-items-center request-input-group"
+                                            >
+                                                <svg-icon
+                                                    class="icon"
+                                                    src="assets/svg/common/ic_date.svg"
+                                                    [svgStyle]="{
+                                                        'width.px': 18,
+                                                        'height.px': 18
+                                                    }"
+                                                ></svg-icon>
+
+                                                <div class="pipe"></div>
+
+                                                <p class="m-0 ta-font-regular">
+                                                    Request
+                                                    {{
+                                                        previousRequests
+                                                            ?.controls.length +
+                                                            1
+                                                    }}
+                                                </p>
+                                            </div>
+
+                                            <div
+                                                class="d-flex align-items-center justify-content-center send-request-btn-box"
+                                            >
+                                                <button
+                                                    type="button"
+                                                    class="d-flex justify-content-center align-items-center ta-font-bold send-request-btn"
+                                                    (click)="
+                                                        onCreateNewRequest()
+                                                    "
+                                                >
+                                                    Send request
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </ng-container>
+                            </div>
+                        </app-ta-custom-card>
+
+                        <!-- SPH RECEIVED -->
+
+                        <app-ta-custom-card
+                            [cardName]="'SPH Received'"
+                            [isCardOpen]="true"
+                            [customTextAction]="'Open SPH'"
+                            [hasDownload]="'assets/svg/common/ic_download.svg'"
+                            (onActionEvent)="onSphReceivedCardAction($event)"
+                        >
+                            <div class="sph-received-card">
+                                <div class="d-flex">
+                                    <div class="d-flex">
+                                        <div class="date-group">
+                                            <app-ta-input
+                                                formControlName="dateReceivedRequest"
+                                                [inputConfig]="{
+                                                    name: 'datepicker',
+                                                    type: 'text',
+                                                    label: 'Date Received',
+                                                    placeholderIcon: 'date',
+                                                    customClass: 'datetimeclass'
+                                                }"
+                                            ></app-ta-input>
+                                        </div>
+
+                                        <div class="received-by-group">
+                                            <app-ta-input-dropdown
+                                                formControlName="receivedByRequest"
+                                                [inputConfig]="{
+                                                    name: 'Input Dropdown',
+                                                    type: 'text',
+                                                    label: 'Received By',
+                                                    isDropdown: true,
+                                                    dropdownWidthClass:
+                                                        'w-col-182'
+                                                }"
+                                                [options]="sphReceivedByList"
+                                                [activeItem]="
+                                                    selectedSphReceivedBy
+                                                "
+                                                (selectedItem)="
+                                                    handleInputSelect(
+                                                        $event,
+                                                        'SPH-RECEIVED-BY'
+                                                    )
+                                                "
+                                            ></app-ta-input-dropdown>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </app-ta-custom-card>
+
+                        <!-- DOCUMENTS -->
+
+                        <app-ta-custom-card
+                            [hasCounter]="
+                                documents.length ? documents.length : '0'
+                            "
+                            [cardName]="'Documents'"
+                            [isCardOpen]="true"
+                            (onOpenCard)="onOpenCloseCard($event)"
+                        >
+                            <app-ta-upload-files
+                                [files]="documents"
+                                [size]="'small'"
+                                (onFileEvent)="onFilesAction($event)"
+                            ></app-ta-upload-files>
+                        </app-ta-custom-card>
                     </div>
-                </app-ta-custom-card>
-
-                <!-- DOCUMENTS -->
-
-                <app-ta-custom-card
-                    [hasCounter]="documents.length ? documents.length : '0'"
-                    [cardName]="'Documents'"
-                    [isCardOpen]="true"
-                    (onOpenCard)="onOpenCloseCard($event)"
-                >
-                    <app-ta-upload-files
-                        [files]="documents"
-                        [size]="'small'"
-                        (onFileEvent)="onFilesAction($event)"
-                    ></app-ta-upload-files>
-                </app-ta-custom-card>
+                </ng-container>
             </div>
-        </div>
+        </ng-container>
 
         <!-- DOCUMENTS BOX -->
 
-        <div
-            #documentsBox
-            class="d-flex flex-column documents-box"
-            [ngClass]="{ 'display-box': displayDocumentsBox }"
-            [ngStyle]="{
-                top: -documentsBoxHeight + -53 + 'px'
-            }"
-            *ngIf="selectedMode === 'REVIEW_MODE'"
-        >
-            <div class="d-flex align-items-center box-header">
-                <div class="box-tabs">
-                    <app-ta-tab-switch
-                        [tabs]="documentsBoxTabs"
-                        (switchClicked)="onTabChange($event, 'DOCUMENTS-BOX')"
-                        [type]="'type2-modal-popup'"
-                    >
-                    </app-ta-tab-switch>
-                </div>
+        <ng-container *ngIf="selectedMode === 'REVIEW_MODE'">
+            <div
+                #documentsBox
+                class="d-flex flex-column documents-box"
+                [ngClass]="{ 'display-box': displayDocumentsBox }"
+                [ngStyle]="{
+                    top: -documentsBoxHeight + -53 + 'px'
+                }"
+            >
+                <div class="d-flex align-items-center box-header">
+                    <div class="box-tabs">
+                        <app-ta-tab-switch
+                            [tabs]="documentsBoxTabs"
+                            (switchClicked)="
+                                onTabChange($event, 'DOCUMENTS-BOX')
+                            "
+                            [type]="'type2-modal-popup'"
+                        >
+                        </app-ta-tab-switch>
+                    </div>
 
-                <div class="icon-box">
-                    <svg-icon
-                        class="d-flex align-items-center justify-content-center close-icon"
-                        src="assets/svg/applicant/close-x.svg"
-                        [svgStyle]="{ 'width.px': '22', 'height.px': '22' }"
-                        (click)="onHidePopupBox('DOCUMENTS-BOX')"
-                    ></svg-icon>
+                    <div class="icon-box">
+                        <svg-icon
+                            class="d-flex align-items-center justify-content-center close-icon"
+                            src="assets/svg/applicant/close-x.svg"
+                            [svgStyle]="{ 'width.px': '22', 'height.px': '22' }"
+                            (click)="onHidePopupBox('DOCUMENTS-BOX')"
+                        ></svg-icon>
+                    </div>
                 </div>
             </div>
-        </div>
+        </ng-container>
 
         <!-- INFO BAR -->
 
-        <div
-            class="d-flex align-items-end info-bar"
-            *ngIf="!isWelcomeOrEndPage"
-        >
-            <!-- COMPANY INFO BUTTON -->
+        <ng-container *ngIf="!isWelcomeOrEndPage">
+            <div class="d-flex align-items-end info-bar">
+                <!-- COMPANY INFO BUTTON -->
 
-            <div
-                class="d-flex align-items-center"
-                *ngIf="selectedMode !== 'REVIEW_MODE'"
-            >
-                <svg-icon
-                    class="info-icon"
-                    [ngClass]="{ 'display-box': displayInfoBox }"
-                    src="assets/svg/applicant/info.svg"
-                    [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
-                    (click)="onDisplayOrHidePopupBox('INFO-BOX')"
-                ></svg-icon>
+                <ng-container *ngIf="selectedMode !== 'REVIEW_MODE'">
+                    <div class="d-flex align-items-center">
+                        <svg-icon
+                            class="info-icon"
+                            [ngClass]="{ 'display-box': displayInfoBox }"
+                            src="assets/svg/applicant/info.svg"
+                            [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
+                            (click)="onDisplayOrHidePopupBox('INFO-BOX')"
+                        ></svg-icon>
 
-                <p
-                    class="m-0 ta-font-medium"
-                    [ngClass]="{ 'display-box': displayInfoBox }"
-                    (click)="onDisplayOrHidePopupBox('INFO-BOX')"
-                >
-                    Company Info
-                </p>
+                        <p
+                            class="m-0 ta-font-medium"
+                            [ngClass]="{ 'display-box': displayInfoBox }"
+                            (click)="onDisplayOrHidePopupBox('INFO-BOX')"
+                        >
+                            Company Info
+                        </p>
+                    </div>
+                </ng-container>
+
+                <ng-container *ngIf="selectedMode === 'REVIEW_MODE'">
+                    <div class="d-flex flex-column">
+                        <!-- REQUESTS BUTTON -->
+
+                        <div class="d-flex align-items-center">
+                            <svg-icon
+                                class="requests-icon"
+                                [ngClass]="{
+                                    'display-box': displayRequestsBox
+                                }"
+                                src="assets/svg/common/ic_document.svg"
+                                [svgStyle]="{ 'width.px': 20, 'height.px': 20 }"
+                                (click)="
+                                    onDisplayOrHidePopupBox('REQUESTS-BOX')
+                                "
+                            ></svg-icon>
+
+                            <p
+                                class="m-0 ta-font-medium"
+                                (click)="
+                                    onDisplayOrHidePopupBox('REQUESTS-BOX')
+                                "
+                            >
+                                Requests
+                            </p>
+                        </div>
+
+                        <!-- DOCUMENTS BUTTON-->
+
+                        <div class="d-flex align-items-center">
+                            <svg-icon
+                                class="documents-icon"
+                                [ngClass]="{
+                                    'display-box': displayDocumentsBox
+                                }"
+                                src="assets/svg/common/ic_filemanager.svg"
+                                [svgStyle]="{ 'width.px': 20, 'height.px': 20 }"
+                                (click)="
+                                    onDisplayOrHidePopupBox('DOCUMENTS-BOX')
+                                "
+                            ></svg-icon>
+
+                            <p
+                                class="m-0 ta-font-medium"
+                                [ngClass]="{
+                                    'display-box': displayDocumentsBox
+                                }"
+                                (click)="
+                                    onDisplayOrHidePopupBox('DOCUMENTS-BOX')
+                                "
+                            >
+                                Documents
+                            </p>
+                        </div>
+                    </div>
+                </ng-container>
             </div>
-
-            <div
-                class="d-flex flex-column"
-                *ngIf="selectedMode === 'REVIEW_MODE'"
-            >
-                <!-- REQUESTS BUTTON -->
-
-                <div class="d-flex align-items-center">
-                    <svg-icon
-                        class="requests-icon"
-                        [ngClass]="{ 'display-box': displayRequestsBox }"
-                        src="assets/svg/common/ic_document.svg"
-                        [svgStyle]="{ 'width.px': 20, 'height.px': 20 }"
-                        (click)="onDisplayOrHidePopupBox('REQUESTS-BOX')"
-                    ></svg-icon>
-
-                    <p
-                        class="m-0 ta-font-medium"
-                        (click)="onDisplayOrHidePopupBox('REQUESTS-BOX')"
-                    >
-                        Requests
-                    </p>
-                </div>
-
-                <!-- DOCUMENTS BUTTON-->
-
-                <div class="d-flex align-items-center">
-                    <svg-icon
-                        class="documents-icon"
-                        [ngClass]="{ 'display-box': displayDocumentsBox }"
-                        src="assets/svg/common/ic_filemanager.svg"
-                        [svgStyle]="{ 'width.px': 20, 'height.px': 20 }"
-                        (click)="onDisplayOrHidePopupBox('DOCUMENTS-BOX')"
-                    ></svg-icon>
-
-                    <p
-                        class="m-0 ta-font-medium"
-                        [ngClass]="{ 'display-box': displayDocumentsBox }"
-                        (click)="onDisplayOrHidePopupBox('DOCUMENTS-BOX')"
-                    >
-                        Documents
-                    </p>
-                </div>
-            </div>
-        </div>
+        </ng-container>
 
         <div class="d-flex align-items-center logo-container">
             <svg-icon

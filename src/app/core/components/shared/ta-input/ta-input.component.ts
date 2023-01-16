@@ -129,9 +129,10 @@ export class TaInputComponent
     }
 
     ngOnInit(): void {
+        /* 
         console.log('ngOnInit');
-        console.log(this.inputConfig);
-        
+        console.log(this.inputConfig); */
+
         // Toggle label transition animation
         $('.input-label').addClass('no-transition');
 
