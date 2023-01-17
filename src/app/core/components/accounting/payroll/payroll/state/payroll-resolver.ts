@@ -19,14 +19,14 @@ export class PayrolldResolver implements Resolve<any> {
         //   );
         // }
 
-        // return this.payrollStoreService.getPayrollList().pipe(
-        //     tap(
-        //         result => {
-        //             console.log("HELLO");
-        //             console.log(result);
-        //         }
-        //     )
-        // )
+        return this.payrollStoreService.getPayrollList().pipe(
+            tap(
+                result => {
+                    console.log("HELLO");
+                    console.log(result);
+                }
+            )
+        )
 
         return of(true);
     }
