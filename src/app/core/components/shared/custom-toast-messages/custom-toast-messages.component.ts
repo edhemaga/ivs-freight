@@ -79,12 +79,14 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
     next: HttpHandler;
     errorData: any;
 
-    mainTitle: string = '';
+    mainTitle: any = '';
     method: string = '';
-    actionTitle: string = '';
+    actionTitle: any = '';
     actionType: string = '';
     wideMessage: any = false;
     storesArray: any = JSON.parse(localStorage.getItem('AkitaStores'));
+
+    manuallyStarted: any = false;
 
     apiConfObj: any[] = [
         {
@@ -265,7 +267,14 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
     }
 
     ngOnInit(): void {
-        this.createTitleBasedOnHttpRequest();
+        if ( this.httpRequest ){
+            this.createTitleBasedOnHttpRequest();
+            this.manuallyStarted = false;
+        } else {
+            this.triggerManuallyToast();
+            this.manuallyStarted = true;
+        }
+        
     }
 
     createTitleBasedOnHttpRequest() {
@@ -1037,5 +1046,11 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
         this.next.handle(this.httpRequest).subscribe(() => {
             this.notificationService.errorToastr(this.httpRequest, this.next);
         });
+    }
+
+
+    triggerManuallyToast(){
+        this.message = this.toastPackage.message;
+        this.mainTitle = this.toastPackage.title; 
     }
 }
