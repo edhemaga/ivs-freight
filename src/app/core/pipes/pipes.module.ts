@@ -38,6 +38,7 @@ import { ByteConvertPipe } from './byte-convert.pipe';
 import { LoadDatetimeRangePipe } from '../components/modals/load-modal/load-datetime-range.pipe';
 import { FinancialCalculationPipe } from '../components/modals/load-modal/load-financial/financialCalculation.pipe';
 import { TableModalInputConfigPipe } from './tableModalInputConfig.pipe';
+import { PriceCalculationArraysPipe } from './price-calculation-arrays.pipe';
 
 @NgModule({
     declarations: [
@@ -79,6 +80,7 @@ import { TableModalInputConfigPipe } from './tableModalInputConfig.pipe';
         LoadDatetimeRangePipe,
         FinancialCalculationPipe,
         TableModalInputConfigPipe,
+        PriceCalculationArraysPipe,
     ],
     imports: [CommonModule],
     exports: [
@@ -119,7 +121,8 @@ import { TableModalInputConfigPipe } from './tableModalInputConfig.pipe';
         ByteConvertPipe,
         LoadDatetimeRangePipe,
         FinancialCalculationPipe,
-        TableModalInputConfigPipe
+        TableModalInputConfigPipe,
+        PriceCalculationArraysPipe,
     ],
     providers: [
         DatePipe,

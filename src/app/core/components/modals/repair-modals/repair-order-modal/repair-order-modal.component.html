@@ -331,7 +331,7 @@
                                         id: 'Price' + ind,
                                         name: 'Price',
                                         type: 'text',
-                                        thousandSeparator: true,
+                                        priceSeparator: true,
                                         blueInputColor:
                                             selectedPM[ind]?.logoName &&
                                             !selectedPM[
@@ -394,7 +394,7 @@
                 <div *ngIf="selectedHeaderTab === 2" class="row item-total-row">
                     <p class="item-total">
                         <span class="item-total-text">TOTAL</span>
-                        {{ subtotal | sumArrays | currency }}
+                        {{ subtotal | priceCalculationArray }}
                     </p>
                 </div>
             </app-ta-custom-card>

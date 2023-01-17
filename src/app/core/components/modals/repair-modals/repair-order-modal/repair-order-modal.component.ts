@@ -2,9 +2,8 @@ import {
     convertDateFromBackend,
     convertDateToBackend,
     convertNumberInThousandSep,
-    convertThousanSepInNumber,
+    convertPriceInNumber,
 } from '../../../../utils/methods.calculations';
-import { SumArraysPipe } from '../../../../pipes/sum-arrays.pipe';
 import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { RepairTService } from '../../../repair/state/repair.service';
@@ -28,12 +27,17 @@ import {
     vehicleUnitValidation,
 } from '../../../shared/ta-input/ta-input.regex-validations';
 import { DetailsDataService } from '../../../../services/details-data/details-data.service';
+import { PriceCalculationArraysPipe } from '../../../../pipes/price-calculation-arrays.pipe';
+import {
+    convertThousanSepInNumber,
+    convertNumberInPrice,
+} from '../../../../utils/methods.calculations';
 
 @Component({
     selector: 'app-repair-order-modal',
     templateUrl: './repair-order-modal.component.html',
     styleUrls: ['./repair-order-modal.component.scss'],
-    providers: [SumArraysPipe, ModalService, FormService],
+    providers: [PriceCalculationArraysPipe, ModalService, FormService],
 })
 export class RepairOrderModalComponent implements OnInit, OnDestroy {
     @ViewChild('t2') public popoverRef: NgbPopover;
@@ -96,7 +100,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
         private repairService: RepairTService,
         private modalService: ModalService,
         private ngbActiveModal: NgbActiveModal,
-        private sumArrayPipe: SumArraysPipe,
+        private priceArrayPipe: PriceCalculationArraysPipe,
         private formService: FormService,
         private DetailsDataService: DetailsDataService
     ) {}
@@ -788,7 +792,9 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                 invoice: invoice,
                 total:
                     this.repairOrderForm.get('repairType').value === 'Bill'
-                        ? this.sumArrayPipe.transform(this.subtotal)
+                        ? convertNumberInPrice(
+                              this.priceArrayPipe.transform(this.subtotal)
+                          )
                         : null,
                 serviceTypes: this.services.map((item) => {
                     return {
@@ -927,7 +933,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                       )
                     : null,
                 total: this.subtotal
-                    ? this.sumArrayPipe.transform(this.subtotal)
+                    ? this.priceArrayPipe.transform(this.subtotal)
                     : null,
                 invoice: invoice,
                 serviceTypes: this.services.map((item) => {
@@ -1147,7 +1153,9 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                                     orderingId: ++this.itemsCounter,
                                     description: res.items[i].description,
                                     price: res.items[i].price
-                                        ? res.items[i].price
+                                        ? convertNumberInPrice(
+                                              res.items[i].price
+                                          )
                                         : null,
                                     quantity: res.items[i].price
                                         ? res.items[i].quantity
@@ -1155,7 +1163,9 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                                             : 1
                                         : res.items[i].quantity,
                                     subtotal: res.items[i].subtotal
-                                        ? res.items[i].subtotal
+                                        ? convertNumberInPrice(
+                                              res.items[i].subtotal
+                                          )
                                         : null,
                                     pmTruckId: res.items[i].pmTruck,
                                     pmTrailerId: res.items[i].pmTrailer,
@@ -1220,14 +1230,14 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                 price:
                     this.selectedHeaderTab === 2
                         ? item.get('price').value
-                            ? convertThousanSepInNumber(item.get('price').value)
+                            ? convertPriceInNumber(item.get('price').value)
                             : null
                         : null,
                 quantity: item.get('quantity').value,
                 subtotal:
                     this.selectedHeaderTab === 2
                         ? this.subtotal[index].value
-                            ? this.subtotal[index].value
+                            ? convertNumberInPrice(this.subtotal[index].value)
                             : null
                         : null,
                 pmTruckId:
