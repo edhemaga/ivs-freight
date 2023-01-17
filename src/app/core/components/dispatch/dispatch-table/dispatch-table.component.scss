@@ -138,6 +138,10 @@
                         padding-left: 6px;
                         padding-right: 6px;
 
+                        &.parking-field {
+                            padding-left: 0px;
+                        }
+
                         .text {
                             color: #ffffff;
                             font-size: 14px;
@@ -174,7 +178,7 @@
                             }
                         }
 
-                        &.pickup-dev-popover-hold{
+                        &.pickup-dev-popover-hold {
                             padding: 0 2px;
                         }
 
@@ -304,41 +308,54 @@
                             user-select: none;
                         }
 
-                        .load-items-hold{
+                        .load-items-hold {
                             display: flex;
                             width: 100%;
 
-                            .pick-load-box{
+                            .pick-load-box {
                                 flex: 1;
                                 display: flex;
                                 align-items: center;
 
-                                .pick-load-info{
+                                .pick-load-info {
                                     margin-left: 6px;
                                     line-height: 1;
-                                    .pick-load-info-address{
+                                    .pick-load-info-address {
                                         font-size: 11px;
                                         font-weight: 700;
-                                        color: #2F2F2F;
+                                        color: #2f2f2f;
+
+                                        &::selection{
+                                            background-color: #2f2f2f33;
+                                            color: #2f2f2f;
+                                        }
                                     }
-                                    .pick-load-info-time{
+                                    .pick-load-info-time {
                                         font-size: 11px;
                                         color: #919191;
+
+                                        &::selection{
+                                            background-color: #91919133;
+                                            color: #919191;
+                                        }
                                     }
                                 }
 
-                                &.delivery-box{
-                                    svg-icon{
-                                        svg{
-                                            rect{
-                                                fill: #EF5350;
+                                svg-icon {
+                                    user-select: none;
+                                }
+
+                                &.delivery-box {
+                                    svg-icon {
+                                        svg {
+                                            rect {
+                                                fill: #ef5350;
                                             }
                                         }
                                     }
                                 }
                             }
                         }
-
 
                         .driver-copy {
                             position: absolute;
@@ -597,6 +614,42 @@
 
                     box-shadow: 0 0 12px inset #707070;
                     z-index: 10;
+                }
+
+
+                &.parking-field-new {
+                    .add_new {
+                        justify-content: flex-start;
+
+                        svg-icon {
+                            margin-right: 6px;
+                        }
+                    }
+
+                    &.unassigned{
+                        background-color: #fff;
+
+                        svg-icon{
+                            path{
+                                fill: #CCCCCC !important;
+                            }
+                        }
+
+                        .text{
+                            font-size: 11px;
+                            color: #919191;
+                        }
+
+                        &:hover{
+                            background-color: #42A4F4;
+
+                            svg-icon{
+                                path{
+                                    fill: #fff;
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }

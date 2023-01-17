@@ -25,3 +25,15 @@
         visibility: visible !important;
     }
 }
+
+.dispatch-board-main-table{
+    app-truckassist-table-toolbar{
+        app-ta-input-dropdown{
+            app-ta-input{
+                input{
+                    height: 28px !important;
+                }
+            }
+        }
+    }
+}

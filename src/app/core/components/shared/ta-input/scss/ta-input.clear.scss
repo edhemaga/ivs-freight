@@ -90,7 +90,8 @@
     &.dropdown-label-position,
     &.repair-m-pm {
         right: 27px !important;
-        top: 4px;
+        top: 50%;
+        transform: translateY(-50%);
 
         svg-icon {
             display: flex;
@@ -335,20 +336,7 @@
 
     //------------------------- Custom class -------------------------
     &.input-32 {
-        top: 3.5px;
         right: 6px;
-    }
-
-    &.input-30 {
-        top: 2px;
-    }
-
-    &.line-input-26 {
-        top: 2px;
-    }
-
-    &.line-input-26-in-card {
-        top: 1px;
     }
 
     &.focus {
