@@ -112,6 +112,7 @@ export class TaReCardComponent implements OnInit {
     @Input() hasToggler: boolean;
     @Input() public testDate: any;
     @Input() public mainData: any;
+    @Input() public insuranceCard: boolean = false;
     public data: any;
     public resPage: boolean = false;
     public copiedCommon: boolean = false;
