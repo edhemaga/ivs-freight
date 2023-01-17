@@ -125,6 +125,7 @@ import { TaPickupDeliveryComponent } from './ta-pickup-delivery/ta-pickup-delive
 import { PayrollBonusModalComponent } from '../modals/payroll-modals/payroll-bonus-modal/payroll-bonus-modal.component';
 import { PayrollCreditBonusComponent } from '../modals/payroll-modals/payroll-credit-bonus/payroll-credit-bonus.component';
 import { PayrollDeducationModalComponent } from '../modals/payroll-modals/payroll-deducation-modal/payroll-deducation-modal.component';
+import { TaNoticeOfAsignmentComponent } from './ta-notice-of-asignment/ta-notice-of-asignment.component';
 
 export function playerFactory() {
     return import('lottie-web');
@@ -239,6 +240,7 @@ export function playerFactory() {
         GpsProgressbarComponent,
         TableModalComponent,
         TaPickupDeliveryComponent,
+        TaNoticeOfAsignmentComponent,
     ],
     imports: [
         CommonModule,
@@ -403,7 +405,8 @@ export function playerFactory() {
 
         TaCheckboxCardComponent,
         TaPickupDeliveryComponent,
-        TableModalComponent
+        TableModalComponent,
+        TaNoticeOfAsignmentComponent
     ],
     providers: [],
     schemas: [CUSTOM_ELEMENTS_SCHEMA],

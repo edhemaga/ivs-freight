@@ -1,0 +1,229 @@
+<div class="custom_editor_holder d-flex" [formGroup]="noticeForm">
+    <div *ngIf="settings.fontFamily" class="custom_select_holder font-family">
+        <app-ta-input-dropdown
+            formControlName="fontFamily"
+            [inputConfig]="{
+                name: 'Input Dropdown',
+                type: 'text',
+                label: activeFont?.name,
+                placeholderInsteadOfLabel: true,
+                isDropdown: true,
+                dropdownWidthClass: 'w-col-376',
+                hideClear: true
+            }"
+            [options]="fontFamilyList"
+            [activeItem]="activeFont"
+            (selectedItem)="selectFontFamily($event)"
+        ></app-ta-input-dropdown>
+        <!-- <ng-select
+            (change)="selectFontFamily($event)"
+            [(ngModel)]="selectedFontFamily"
+            [clearable]="false"
+            [items]="fontFamilyList"
+            [searchable]="false"
+            bindLabel="name"
+            bindValue="id"
+        >
+            <ng-template let-item="item" ng-label-tmp>
+                <div [ngStyle]="{ 'font-family': item.name }">
+                    {{ item.showName }}
+                </div>
+            </ng-template>
+            <ng-template let-item="item" let-search="searchTerm" ng-option-tmp>
+                <div [ngStyle]="{ 'font-family': item.name }">
+                    {{ item.showName }}
+                </div>
+            </ng-template>
+        </ng-select> -->
+    </div>
+    <div *ngIf="settings.fontSize" class="custom_select_holder font-size">
+        <app-ta-input-dropdown
+            formControlName="fontSize"
+            [inputConfig]="{
+                name: 'Input Dropdown',
+                type: 'text',
+                label: activeFontSize?.name,
+                placeholderInsteadOfLabel: true,
+                isDropdown: true,
+                dropdownWidthClass: 'w-col-376',
+                hideClear: true
+            }"
+            [options]="fontSizes"
+            [activeItem]="activeFontSize"
+            (selectedItem)="changeFontSize($event)"
+        ></app-ta-input-dropdown>
+        <!-- <ng-select
+            (change)="changeFontSize($event)"
+            [(ngModel)]="selectedFontSize"
+            [clearable]="false"
+            [items]="[8, 10, 12, 14, 18, 22, 28, 36]"
+            [searchable]="false"
+        >
+        </ng-select> -->
+    </div>
+    <div *ngIf="settings.colorPicker" class="wysiwyg_color_picker">
+        <div
+            (click)="toggleDropdown()"
+            [class.active]="showDropdown"
+            [ngStyle]="{ 'background-color': selectedPaternColor }"
+            class="wysiwyg_choosen_color"
+        ></div>
+        <div *ngIf="showDropdown" class="wysiwyg_color_dropdown">
+            <div class="text-color">Text color</div>
+            <div class="color_holder">
+                <div
+                    (click)="changeTextColor(i)"
+                    *ngFor="let item of [].constructor(24); let i = index"
+                    [class.active]="
+                        customSelectColor[i] === selectedPaternColor
+                    "
+                ></div>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="settings.textTransform" class="wysiwyg_button_group d-flex">
+        <div
+            (click)="executeEditor('bold')"
+            [class.active]="activeOptions.bold"
+            class="sysiwyg_button_item"
+        >
+            <svg-icon
+                src="assets/svg/truckassist-table/note/bold-icon.svg"
+            ></svg-icon>
+        </div>
+        <div
+            (click)="executeEditor('italic')"
+            [class.active]="activeOptions.italic"
+            class="sysiwyg_button_item"
+        >
+            <svg-icon
+                src="assets/svg/truckassist-table/note/italic-icon.svg"
+            ></svg-icon>
+        </div>
+        <div
+            (click)="executeEditor('underline')"
+            [class.active]="activeOptions.underline"
+            class="sysiwyg_button_item"
+        >
+            <svg-icon
+                src="assets/svg/truckassist-table/note/underline-icon.svg"
+            ></svg-icon>
+        </div>
+        <!-- <div
+            (click)="executeEditor('strikeThrough')"
+            [class.active]="activeOptions.strikeThrough"
+            class="sysiwyg_button_item"
+        >
+            <svg-icon src="assets/img/svgs/throught-line.svg"></svg-icon>
+        </div> -->
+    </div>
+    <div
+        [class.small_width]="sidebarWidth < 528"
+        class="wysiwyg-text-transform-buttons d-flex"
+    >
+        <!-- <div
+            *ngIf="sidebarWidth >= 528 && settings.textAligment"
+            class="custom_select_holder text-align-holder"
+        >
+            <ng-select
+                (change)="selectAligment($event)"
+                [(ngModel)]="selectedAlign"
+                [bindvalue]="img"
+                [clearable]="false"
+                [items]="textAlignImages"
+                [searchable]="false"
+            >
+                <ng-template let-item="item" ng-label-tmp>
+                    <div class="selected_img">
+                        <svg-icon
+                            [src]="'assets/img/svgs/' + item.img"
+                        ></svg-icon>
+                    </div>
+                </ng-template>
+                <ng-template
+                    let-item="item"
+                    let-search="searchTerm"
+                    ng-option-tmp
+                >
+                    <div class="options_img">
+                        <svg-icon
+                            [src]="'assets/img/svgs/' + item.img"
+                        ></svg-icon>
+                    </div>
+                </ng-template>
+            </ng-select>
+        </div> -->
+        <div
+            class="text-align-buttons d-flex"
+        >
+            <div
+                (click)="executeEditor('justifyLeft')"
+                [class.active]="activeOptions.justifyLeft"
+                class="align-buttons"
+            >
+                <svg-icon src="assets/svg/common/align-left.svg"></svg-icon>
+            </div>
+            <div
+                (click)="executeEditor('justifyRight')"
+                [class.active]="activeOptions.justifyRight"
+                class="align-buttons"
+            >
+                <svg-icon src="assets/svg/common/align-right.svg"></svg-icon>
+            </div>
+            <!-- <div
+                (click)="executeEditor('justifyCenter')"
+                [class.active]="activeOptions.justifyCenter"
+                class="align-buttons"
+            >
+                <svg-icon src="assets/img/svgs/align-middle.svg"></svg-icon>
+            </div> -->
+            <!-- <div class="align-buttons active" (click)="executeEditor('bold')">
+            <svg-icon src="assets/img/svgs/align-all.svg"></svg-icon>
+        </div> -->
+        </div>
+        <div *ngIf="settings.textIndent" class="paragraph-buttons d-flex">
+            <div
+                (click)="executeEditor('indent')"
+                [class.active]="activeOptions.indent"
+                class="align-buttons"
+            >
+                <svg-icon src="assets/img/svgs/paragraph-inside.svg"></svg-icon>
+            </div>
+            <div
+                (click)="executeEditor('outdent')"
+                [class.active]="activeOptions.outdent"
+                class="align-buttons"
+            >
+                <svg-icon
+                    src="assets/img/svgs/paragraph-outside.svg"
+                ></svg-icon>
+            </div>
+        </div>
+        <div *ngIf="settings.textLists" class="paragraph-buttons d-flex">
+            <div
+                (click)="executeEditor('insertUnorderedList')"
+                [class.active]="activeOptions.insertUnorderedList"
+                class="align-buttons"
+            >
+                <svg-icon src="assets/img/svgs/unordered-list.svg"></svg-icon>
+            </div>
+            <div
+                (click)="executeEditor('insertOrderedList')"
+                [class.active]="activeOptions.insertOrderedList"
+                class="align-buttons"
+            >
+                <svg-icon src="assets/img/svgs/ordered-list.svg"></svg-icon>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="w-100">
+    <div
+        #noticeRef
+        (focus)="focusElement($event)"
+        (keyup)="updateNoteMain($event)"
+        [innerHTML]="noticeValue | safeHtml"
+        class="note-sidebar-item-field"
+        contenteditable
+    ></div>
+</div>

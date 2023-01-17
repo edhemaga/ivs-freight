@@ -96,7 +96,22 @@
             [disableAnimation]="disableCardAnimation"
             [isCardOpen]="false"
         >
-            Reausable Component edit Note
+            <div class="wisywygholder">
+                <app-ta-notice-of-asignment
+                    formControlName="noticeOfAssigment"
+                    #noticeOfAssignment
+                    [range]="range"
+                    [selectedEditor]="selectedEditor"
+                    [settings]="wysiwigSettings"
+                    [sidebarWidth]="1000"
+                    [noticeValue]="
+                        factoringForm.get('noticeOfAssigment').value &&
+                        factoringForm.get('noticeOfAssigment').value != 'null'
+                            ? factoringForm.get('noticeOfAssigment').value
+                            : ''
+                    "
+                ></app-ta-notice-of-asignment>
+            </div>
         </app-ta-custom-card>
         <app-ta-input-note
             formControlName="note"

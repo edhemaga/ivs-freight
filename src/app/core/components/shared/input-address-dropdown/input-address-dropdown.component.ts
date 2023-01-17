@@ -62,6 +62,7 @@ export class InputAddressDropdownComponent
     chosenFromDropdown: boolean = false;
     allowValidation: boolean = false;
     stopType: string = 'EMPTY';
+    requestSent: boolean = false;
     @Output() selectedAddress: EventEmitter<{
         address: AddressEntity;
         valid: boolean;
@@ -141,6 +142,7 @@ export class InputAddressDropdownComponent
                         this.allowValidation &&
                         this.inputDropdown.inputRef.focusInput
                     ) {
+                        this.requestSent = false;
                         this.getSuperControl.setErrors({ invalid: true });
                         const addressData = {
                             address: {},
@@ -187,10 +189,16 @@ export class InputAddressDropdownComponent
     }
 
     public onCloseDropdown(e) {
+        setTimeout(() => {
+            if (!this.requestSent) {
+                this.getSuperControl.setErrors({ invalid: true });
+            }
+        }, 200);
         this.closeDropdown.emit(e);
     }
 
     public getAddressData(address) {
+        this.requestSent = true;
         this.addressService.getAddressInfo(address).subscribe((res) => {
             this.currentAddressData = {
                 address: res.address,
