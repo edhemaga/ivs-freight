@@ -371,6 +371,10 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             'email',
             this.destroy$
         );
+
+        setTimeout(() => {
+            this.trackContactEmail();
+        }, 50);
     }
 
     public removeContacts(id: number) {
@@ -380,6 +384,37 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
         if (this.contacts.length === 0) {
             this.repairShopForm.markAsUntouched();
         }
+    }
+
+    public trackContactEmail() {
+        const helper = new Array(this.contacts.length).fill(false);
+
+        this.contacts.valueChanges
+            .pipe(debounceTime(300), takeUntil(this.destroy$))
+            .subscribe((items) => {
+                items.forEach((item, index) => {
+                    if (item.email && helper[index] === false) {
+                        helper[index] = true;
+
+                        this.inputService.changeValidators(
+                            this.contacts.at(index).get('phone'),
+                            false,
+                            [],
+                            false
+                        );
+                    }
+
+                    if (!item.email && helper[index] === true) {
+                        this.contacts.at(index).get('email').patchValue(null);
+                        this.inputService.changeValidators(
+                            this.contacts.at(index).get('phone'),
+                            true,
+                            [phoneFaxRegex]
+                        );
+                        helper[index] = false;
+                    }
+                });
+            });
     }
 
     public onScrollingContacts(event: any) {

@@ -269,7 +269,8 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
             value: 'hidden',
             iconInsteadOfValue: true,
             activeValueIconUrl: 'assets/svg/common/ic_eye-visible.svg',
-            inactiveValueIconUrl: 'assets/svg/common/telematics/ic_eye-open.svg',
+            inactiveValueIconUrl:
+                'assets/svg/common/telematics/ic_eye-open.svg',
             alwaysShown: true,
             showInRegularView: true,
             showInExpand: true,
@@ -295,6 +296,8 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
 
     focusedDeviceId: number = 0;
     regularViewColumnIndex: number = null;
+
+    mapZoomTime: number = 0;
 
     constructor(
         private signalRService: SignalRService,
@@ -416,6 +419,9 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
     markerClick(device) {
         if (this.focusedDeviceId != device.deviceId) {
             this.focusedDeviceId = device.deviceId;
+
+            this.mapLatitude = device.latitude;
+            this.mapLongitude = device.longitude;
         } else {
             this.focusedDeviceId = 0;
         }
@@ -593,6 +599,7 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
 
         this.filterUnassignedDevices();
         //this.mapsService.searchTextChanged('');
+        this.highlightSearchedText();
     }
 
     clearAssignedSearchInput() {
@@ -600,6 +607,7 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
         this.searchAssignedText = '';
 
         this.filterAssignedDevices();
+        this.highlightSearchedText(true);
     }
 
     handleInputSelect(event, type) {
@@ -769,13 +777,11 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
         this.filteredAssignedDevices = this.gpsAssignedData.filter(
             (item) =>
                 item?.deviceId?.includes(this.searchAssignedText) ||
-                item?.driver?.includes(this.searchAssignedText) ||
-                item?.location?.includes(this.searchAssignedText) ||
+                item?.driver?.toLowerCase().includes(this.searchAssignedText) ||
+                item?.location?.toLowerCase().includes(this.searchAssignedText.toLowerCase()) ||
                 item?.trailerNumber?.includes(this.searchAssignedText) ||
                 item?.truckNumber?.includes(this.searchAssignedText)
         );
-
-        console.log('filteredAssignedDevices', this.filteredAssignedDevices);
     }
 
     filterUnassignedDevices() {
@@ -794,13 +800,13 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
             this.searchIsActive = true;
 
             this.filterAssignedDevices();
-            //this.highlightSearchedText();
+            this.highlightSearchedText(true);
         } else if (this.searchIsActive && this.searchAssignedText?.length < 3) {
             this.searchIsActive = false;
             this.searchAssignedText = '';
 
             this.filterAssignedDevices();
-            //this.highlightSearchedText();
+            this.highlightSearchedText(true);
         }
     }
 
@@ -809,7 +815,7 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
             this.searchUnassignedIsActive = true;
 
             this.filterUnassignedDevices();
-            //this.highlightSearchedText();
+            this.highlightSearchedText();
         } else if (
             this.searchUnassignedIsActive &&
             this.searchUnassignedText?.length < 3
@@ -818,18 +824,20 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
             this.searchUnassignedText = '';
 
             this.filterUnassignedDevices();
-            //this.highlightSearchedText();
+            this.highlightSearchedText();
         }
     }
 
-    highlightSearchedText() {
+    highlightSearchedText(searchAssigned?) {
+        var classSelector = searchAssigned ? '.column-text .marker-like-text' : '.device-id-text';
+        var searchText = searchAssigned ? this.searchAssignedText : this.searchUnassignedText;
+
         document
-            .querySelectorAll<HTMLElement>('.column-text')
+            .querySelectorAll<HTMLElement>(classSelector)
             .forEach((title: HTMLElement) => {
                 var text = title.textContent;
-                console.log('textContent', text);
 
-                const regex = new RegExp(this.searchAssignedText, 'gi');
+                const regex = new RegExp(searchText, 'gi');
                 const newText = text.replace(regex, (match: string) => {
                     if (match.length >= 3) {
                         return `<mark class='highlighted-text'>${match}</mark>`;
@@ -1059,22 +1067,53 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
         var showHide = !device.hidden;
 
         this.driverLocations.map((item) => {
-            if ( item.deviceId == device.deviceId ) {
+            if (item.deviceId == device.deviceId) {
                 item.hidden = showHide;
             }
         });
 
         this.gpsAssignedData.map((item) => {
-            if ( item.deviceId == device.deviceId ) {
+            if (item.deviceId == device.deviceId) {
                 item.hidden = showHide;
             }
         });
 
         this.filteredAssignedDevices.map((item) => {
-            if ( item.deviceId == device.deviceId ) {
+            if (item.deviceId == device.deviceId) {
                 item.hidden = showHide;
             }
         });
+    }
+
+    markerZoom(e, item) {
+        var currentTime = new Date().getTime();
+
+        if (!this.mapZoomTime || currentTime - this.mapZoomTime > 200) {
+            this.mapZoomTime = currentTime;
+        } else {
+            return;
+        }
+
+        if (e.wheelDeltaY > 0) {
+            // The user scrolled up.
+            this.zoomChange(this.mapZoom + 1);
+
+            if (
+                this.mapLatitude == item.latitude &&
+                this.mapLongitude == item.longitude
+            ) {
+                this.mapLatitude = item.latitude + 0.000001;
+                this.mapLongitude = item.longitude + 0.000001;
+            } else {
+                this.mapLatitude = item.latitude;
+                this.mapLongitude = item.longitude;
+            }
+        } else {
+            // The user scrolled down.
+            this.zoomChange(this.mapZoom - 1);
+        }
+
+        this.ref.detectChanges();
     }
 
     ngOnDestroy(): void {

@@ -708,12 +708,19 @@
                 class="{{ item?.subFolder }} {{
                     item?.logoType.trim().replace(' ', '').toLowerCase()
                 }}"
+                [ngClass]="{
+                    trailerContainer:
+                        item?.logoType.trim().replace(' ', '') === 'Container',
+                    lowboyrgn:
+                        item?.logoType.trim().replace(' ', '') ===
+                        'Low Boy / RGN'
+                }"
                 [src]="item?.logoName"
             ></svg-icon>
 
             <!-- Text -->
             <span
-                *ngIf="!item?.isProgressBar"
+                *ngIf="!item?.isProgressBar && item.value"
                 class="multiple-input-text"
                 [ngStyle]="{
                     color: '#2F2F2F'
@@ -908,6 +915,7 @@
                         getSuperControl.invalid &&
                         !focusInput)) &&
                 !inputConfig.blackInput,
+
             'password-eye':
                 inputConfig.type === 'password' &&
                 isVisiblePasswordEye &&
@@ -993,6 +1001,11 @@
         [(ngModel)]="input.value"
     />
 
+    <!--  'invalid-focus-out-empty':
+                !getSuperControl.value &&
+                getSuperControl.invalid &&
+                (touchedInput || getSuperControl.touched), -->
+
     <!-- Input Label -->
     <label
         *ngIf="!inputConfig.multiSelectDropdownActive"
@@ -1068,9 +1081,8 @@
                 !inputConfig.dropdownLabel,
             invalid:
                 getSuperControl.invalid &&
-                touchedInput &&
-                !focusInput &&
-                !inputConfig.blackInput
+                (touchedInput || getSuperControl.touched) &&
+                !focusInput
         }"
         [style.left]="
             inputConfig.placeholderIconFolllowTextOnRightSide

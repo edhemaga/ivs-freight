@@ -31,6 +31,7 @@ import { skip, Subject, takeUntil, tap } from 'rxjs';
 import { VinDecoderService } from '../../../services/VIN-DECODER/vindecoder.service';
 import { trailerVolumeValidation } from '../../shared/ta-input/ta-input.regex-validations';
 import { FormService } from '../../../services/form/form.service';
+import { TrailerAutocompleteModelResponse } from '../../../../../../appcoretruckassist/model/trailerAutocompleteModelResponse';
 import {
     convertDateToBackend,
     convertDateFromBackend,
@@ -761,6 +762,23 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
             default: {
                 break;
             }
+        }
+    }
+
+    public onBlurTrailerModel() {
+        const model = this.trailerForm.get('model').value;
+        if (model.length >= 1) {
+            this.trailerModalService
+                .autocompleteByTrailerModel(model)
+                .pipe(takeUntil(this.destroy$))
+                .subscribe({
+                    next: (res: TrailerAutocompleteModelResponse) => {
+                        console.log('autocomplete: ', res);
+                    },
+                    error: (error) => {
+                        console.log(error);
+                    },
+                });
         }
     }
 

@@ -35,6 +35,7 @@ import {
     keyframes,
 } from '@angular/animations';
 import { Titles } from 'src/app/core/utils/application.decorators';
+import { convertDateFromBackend } from '../../../../utils/methods.calculations';
 
 @Titles()
 @Component({
@@ -97,6 +98,8 @@ export class DriverDetailsItemComponent
     public expiredCard: any[] = [];
     public currentIndex: number;
     public activeCdl: any;
+    public currentDate: any;
+
     constructor(
         private cdlService: CdlTService,
         private medicalService: MedicalTService,
@@ -185,6 +188,7 @@ export class DriverDetailsItemComponent
                     }
                 },
             });
+        this.currentDate = moment(new Date()).format();
     }
     public getExpireDate() {
         this.dataCDl = this.drivers[0]?.data?.cdls?.map((ele) => {
@@ -601,6 +605,12 @@ export class DriverDetailsItemComponent
     public onFileAction(action: string) {
         onFileActionMethods(action);
     }
+
+    public formatDate(mod){
+        return convertDateFromBackend(mod);
+    }
+
+
     ngOnDestroy(): void {
         this.destroy$.next();
         this.destroy$.complete();

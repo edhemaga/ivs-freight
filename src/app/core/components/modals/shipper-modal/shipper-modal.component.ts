@@ -342,6 +342,8 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
 
                         this.inputService.changeValidators(
                             this.shipperContacts.at(index).get('phone'),
+                            false,
+                            [],
                             false
                         );
                     }

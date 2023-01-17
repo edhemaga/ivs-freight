@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 
 import { Subject, takeUntil } from 'rxjs';
 
@@ -13,6 +13,7 @@ import { ApplicantQuery } from '../../state/store/applicant.query';
 import { SelectedMode } from '../../state/enum/selected-mode.enum';
 import {
     ApplicantResponse,
+    CreateHosRulesReviewCommand,
     HosRuleFeedbackResponse,
     UpdatePspAuthCommand,
 } from 'appcoretruckassist';
@@ -27,9 +28,12 @@ export class HosRulesComponent implements OnInit, OnDestroy {
 
     public selectedMode: string = SelectedMode.APPLICANT;
 
+    public isValidLoad: boolean;
+
     public hosRulesForm: FormGroup;
 
     public applicantId: number;
+    public queryParamId: number | string | null = null;
 
     constructor(
         private formBuilder: FormBuilder,
@@ -37,10 +41,13 @@ export class HosRulesComponent implements OnInit, OnDestroy {
         private router: Router,
         private applicantStore: ApplicantStore,
         private applicantQuery: ApplicantQuery,
-        private applicantActionsService: ApplicantActionsService
+        private applicantActionsService: ApplicantActionsService,
+        private route: ActivatedRoute
     ) {}
 
     ngOnInit(): void {
+        this.getQueryParams();
+
         this.createForm();
 
         this.getStepValuesFromStore();
@@ -52,14 +59,28 @@ export class HosRulesComponent implements OnInit, OnDestroy {
         });
     }
 
+    public getQueryParams(): void {
+        this.route.paramMap.subscribe((params: ParamMap) => {
+            this.queryParamId = params.get('id');
+        });
+    }
+
     public getStepValuesFromStore(): void {
         this.applicantQuery.applicant$
             .pipe(takeUntil(this.destroy$))
             .subscribe((res: ApplicantResponse) => {
-                this.applicantId = res.id;
+                if (res && res.id == this.queryParamId) {
+                    this.isValidLoad = true;
 
-                if (res.hosRule) {
-                    this.patchStepValues(res.hosRule);
+                    this.applicantId = res.id;
+
+                    if (res.hosRule) {
+                        this.patchStepValues(res.hosRule);
+                    }
+                } else {
+                    this.isValidLoad = false;
+
+                    this.router.navigate(['/auth']);
                 }
             });
     }
@@ -74,10 +95,7 @@ export class HosRulesComponent implements OnInit, OnDestroy {
 
     public onStepAction(event: any): void {
         if (event.action === 'next-step') {
-            if (
-                this.selectedMode === SelectedMode.APPLICANT ||
-                this.selectedMode === SelectedMode.FEEDBACK
-            ) {
+            if (this.selectedMode !== SelectedMode.REVIEW) {
                 this.onSubmit();
             }
 
@@ -126,7 +144,36 @@ export class HosRulesComponent implements OnInit, OnDestroy {
             });
     }
 
-    public onSubmitReview(): void {}
+    public onSubmitReview(): void {
+        const saveData: CreateHosRulesReviewCommand = {
+            applicantId: this.applicantId,
+        };
+
+        this.applicantActionsService
+            .createHosRulesReview(saveData)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: () => {
+                    this.router.navigate([`/ssn-card/${this.applicantId}`]);
+
+                    this.applicantStore.update((store) => {
+                        return {
+                            ...store,
+                            applicant: {
+                                ...store.applicant,
+                                hosRule: {
+                                    ...store.applicant.hosRule,
+                                    reviewed: true,
+                                },
+                            },
+                        };
+                    });
+                },
+                error: (err) => {
+                    console.log(err);
+                },
+            });
+    }
 
     ngOnDestroy(): void {
         this.destroy$.next();

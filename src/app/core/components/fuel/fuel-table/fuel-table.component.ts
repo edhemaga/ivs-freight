@@ -325,6 +325,7 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     contentType: 'edit',
                     show: true,
                     svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
+                    iconName: 'edit'
                 },
                 {
                     title: 'Delete',
@@ -336,6 +337,8 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     show: true,
                     danger: true,
                     svg: 'assets/svg/truckassist-table/dropdown/content/delete.svg',
+                    iconName: 'delete',
+                    redIcon: true, 
                 },
             ],
         };

@@ -1,6 +1,8 @@
 <div
     class="ta-upload-file-container {{ customClassName }}"
-    [class.modal]="!customClassName || customClassName == '' || customClassName == 'modals'"
+    [class.modal]="
+        !customClassName || customClassName == '' || customClassName == 'modals'
+    "
     [class.keep_open]="t2?.isOpen()"
     [class.applicant_review]="file?.incorrect"
     [class.annotation_hover]="annotationHover"
@@ -60,7 +62,7 @@
         </div>
 
         <!-- Review Message -->
-        <div
+        <!--  <div
             class="review-feedback-container"
             (mouseenter)="annotationHover = true"
             (mouseleave)="annotationHover = false"
@@ -80,7 +82,7 @@
                 [feedbackText]="feedbackText"
                 (annotationBtnClickEvent)="getAnnotationReviewEvent($event)"
             ></app-applicant-review-feedback>
-        </div>
+        </div> -->
     </div>
 
     <!-- No Review Actions -->
@@ -92,11 +94,17 @@
         class="ta-upload-file-header"
     >
         <!-- Left Side -->
-        <div class="rightside_bar" *ngIf="customClassName == 'company-documents'"></div>
+        <div
+            class="rightside_bar"
+            *ngIf="customClassName == 'company-documents'"
+        ></div>
         <div
             *ngIf="customClassName != 'company-documents'"
             class="ta-upload-file-action-leftside"
-            [ngClass]="{ 'no-action-tag': !hasTagsDropdown, active: t2?.isOpen() }"
+            [ngClass]="{
+                'no-action-tag': !hasTagsDropdown,
+                active: t2?.isOpen()
+            }"
             #t2="ngbPopover"
             [ngbPopover]="tagsPopover"
             [popoverClass]="'tags_popover'"
@@ -121,7 +129,10 @@
             class="ta-upload-file-action-rightside"
             [ngClass]="{
                 'feedback-mode': isReview && reviewMode === 'FEEDBACK_MODE',
-                small: type == 'details' || type == 'todo' || reviewMode == 'REVIEW_MODE',
+                small:
+                    type == 'details' ||
+                    type == 'todo' ||
+                    reviewMode == 'REVIEW_MODE',
                 'vertical-mode': customClassName == 'company-documents'
             }"
         >
@@ -161,7 +172,11 @@
                 position="top"
                 class="ta-upload-action-delete"
                 (click)="openDeletePopup(file?.fileName)"
-                *ngIf="type != 'details' && type != 'todo' && reviewMode != 'REVIEW_MODE'"
+                *ngIf="
+                    type != 'details' &&
+                    type != 'todo' &&
+                    reviewMode != 'REVIEW_MODE'
+                "
             >
                 <svg-icon src="assets/svg/common/ic_trash.svg"></svg-icon>
             </div>
@@ -221,7 +236,12 @@
 
         <!-- Tag Content -->
         <div
-            *ngIf="(hasTagsDropdown || categoryTag) && file?.tags && file?.tags != '' && file?.tags != 'No Tag'"
+            *ngIf="
+                (hasTagsDropdown || categoryTag) &&
+                file?.tags &&
+                file?.tags != '' &&
+                file?.tags != 'No Tag'
+            "
             class="ta-upload-file-tag"
         >
             <span>{{
@@ -334,9 +354,7 @@
 <ng-template #tagsPopover let-data="data">
     <div class="tags_main_holder">
         <div class="remove_tag_holder" *ngIf="file?.tags" (click)="removeTag()">
-            <div class="remove_tag">
-                Remove Tag
-            </div>
+            <div class="remove_tag">Remove Tag</div>
         </div>
         <div class="remove_tag_border_holder" *ngIf="file?.tags">
             <div class="remove_tag_border"></div>

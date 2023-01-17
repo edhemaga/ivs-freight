@@ -11,8 +11,10 @@
  */
 
 
-export interface IntegrationProviderCommand { 
-    id?: number;
-    title?: string | null;
-}
+export type ParkingSlotType = 'Standard' | 'Full';
+
+export const ParkingSlotType = {
+    Standard: 'Standard' as ParkingSlotType,
+    Full: 'Full' as ParkingSlotType
+};
 

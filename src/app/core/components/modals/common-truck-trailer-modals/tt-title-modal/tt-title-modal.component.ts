@@ -51,6 +51,13 @@ export class TtTitleModalComponent implements OnInit, OnDestroy {
             this.disableCardAnimation = true;
             this.editTitleById(this.editData.file_id);
         }
+
+        if (this.editData && this.editData?.data) {
+            this.editData = {
+                ...this.editData,
+                payload: this.editData.data,
+            };
+        }
     }
 
     private createForm() {

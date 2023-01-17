@@ -18,5 +18,21 @@ export function createInitialState(): DispatcherState {
 export class DispatcherStore extends EntityStore<DispatcherState> {
     constructor() {
         super(createInitialState());
+        // this.akitaPreUpdate((current, next) => {
+        //     console.log(`Updating user from ${current.name} to ${next.name}`)
+        //     return next;
+        // });
+    }
+
+    akitaPreUpdateEntity(prevState, nestState) {
+        console.log('UPDATING STATE AFTER CHANGING IT');
+        return nestState;
+    }
+
+    akitaPreUpdate(previousState: Readonly<DispatcherState>, nextState: Readonly<DispatcherState>): DispatcherState {
+        console.log(previousState);
+        console.log("UDATING STATEEE");
+        console.log(nextState);
+        return nextState;
     }
 }

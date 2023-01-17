@@ -124,6 +124,7 @@
                         gap: 4px;
                         position: relative;
                         bottom: 1px;
+                        right: 4px;
 
                         p {
                             color: #919191;
@@ -207,17 +208,19 @@
 
     // Stop Body
     .load-stop-body {
-        &.innactive {
-            height: 0px !important;
-            overflow: hidden !important;
-            opacity: 0 !important;
-            margin-top: 0px !important;
-            margin-bottom: 0px !important;
-        }
+        .content-holder {
+            &.innactive {
+                height: 0px !important;
+                overflow: hidden !important;
+                opacity: 0 !important;
+                margin-top: 0px !important;
+                margin-bottom: 0px !important;
+            }
 
-        &.active {
-            overflow: visible !important;
-            opacity: 1 !important;
+            &.active {
+                overflow: visible !important;
+                opacity: 1 !important;
+            }
         }
     }
 

@@ -10,6 +10,7 @@
  * Do not edit the class manually.
  */
 import { DayOfWeek } from './dayOfWeek';
+import { ParkingSlotCommand } from './parkingSlotCommand';
 import { PayPeriod } from './payPeriod';
 import { AddressEntity } from './addressEntity';
 
@@ -33,5 +34,6 @@ export interface UpdateParkingCommand {
     parkingCount?: number | null;
     parkingSlotCount?: number | null;
     fullParkingSlotCount?: number | null;
+    parkingSlots?: Array<ParkingSlotCommand> | null;
 }
 

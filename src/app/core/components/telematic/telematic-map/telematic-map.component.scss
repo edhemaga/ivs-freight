@@ -662,7 +662,7 @@
     transition: all 0.2s ease-in-out;
     overflow: hidden;
 
-    &.no-data-text {
+    &.no-data-text, .no-data-text {
         color: #B7B7B7;
 
         &::-moz-selection {

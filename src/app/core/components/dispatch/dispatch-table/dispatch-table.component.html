@@ -1,6 +1,9 @@
 <div
     class="dispatch-table"
-    [ngClass]="{ locked: __isBoardLocked, unlocked: !__isBoardLocked }"
+    [ngClass]="{
+        locked: __isBoardLocked,
+        unlocked: !__isBoardLocked && showAddAddressField == -1
+    }"
     cdkDropList
     (cdkDropListDropped)="dropList($event)"
 >
@@ -97,6 +100,17 @@
                                     <span class="truck-trailer-number">{{
                                         item.truck.truckNumber
                                     }}</span>
+                                    <div
+                                        *ngIf="item.truck && !__isBoardLocked"
+                                        class="remove-item"
+                                        (click)="removeTruck(rowIndex)"
+                                    >
+                                        <svg-icon
+                                            [src]="
+                                                'assets/svg/applicant/close-x.svg'
+                                            "
+                                        ></svg-icon>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -115,9 +129,17 @@
                                     dropdownWidthClass: 'w-col-98',
                                     placeholderInsteadOfLabel: true,
                                     hideDropdownArrow: true,
-                                    autoFocus: true
+                                    autoFocus: true,
+                                    blackInput: true,
+                                    hideDropdownArrow: true,
+                                    hideRequiredCheck: true,
+                                    hideDangerMark: true,
+                                    hideErrorMessage: true,
+                                    mergedDropdown: true
                                 }"
                                 [options]="truckList"
+                                [canAddNew]="true"
+                                [canOpenModal]="true"
                                 [activeItem]="null"
                                 (selectedItem)="addTruck($event)"
                             ></app-ta-input-dropdown>
@@ -221,6 +243,16 @@
                                         <span class="truck-trailer-number">{{
                                             item.trailer.trailerNumber
                                         }}</span>
+                                        <div
+                                            class="remove-item"
+                                            (click)="removeTrailer(rowIndex)"
+                                        >
+                                            <svg-icon
+                                                [src]="
+                                                    'assets/svg/applicant/close-x.svg'
+                                                "
+                                            ></svg-icon>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -239,9 +271,17 @@
                                         dropdownWidthClass: 'w-col-98',
                                         placeholderInsteadOfLabel: true,
                                         hideDropdownArrow: true,
-                                        autoFocus: true
+                                        autoFocus: true,
+                                        blackInput: true,
+                                        hideDropdownArrow: true,
+                                        hideRequiredCheck: true,
+                                        hideDangerMark: true,
+                                        hideErrorMessage: true,
+                                        mergedDropdown: true
                                     }"
                                     [options]="trailerList"
+                                    [canAddNew]="true"
+                                    [canOpenModal]="true"
                                     [activeItem]="null"
                                     (selectedItem)="addTrailer($event)"
                                 ></app-ta-input-dropdown>
@@ -428,6 +468,16 @@
                                             [fill]="'#ff0000'"
                                         ></svg-icon>
                                     </span>
+                                    <div
+                                        class="remove-item driver-remove-item"
+                                        (click)="removeDriver(rowIndex)"
+                                    >
+                                        <svg-icon
+                                            [src]="
+                                                'assets/svg/applicant/close-x.svg'
+                                            "
+                                        ></svg-icon>
+                                    </div>
                                 </div>
                             </div>
                             <div
@@ -436,7 +486,7 @@
                             >
                                 <app-ta-input-dropdown
                                     [formControl]="truckFormControll"
-                                    [template]="'svgtext-template'"
+                                    [template]="'details-template'"
                                     [inputConfig]="{
                                         name: 'Input Dropdown',
                                         type: 'text',
@@ -445,9 +495,17 @@
                                         dropdownWidthClass: 'w-col-200',
                                         placeholderInsteadOfLabel: true,
                                         hideDropdownArrow: true,
-                                        autoFocus: true
+                                        autoFocus: true,
+                                        blackInput: true,
+                                        hideDropdownArrow: true,
+                                        hideRequiredCheck: true,
+                                        hideDangerMark: true,
+                                        hideErrorMessage: true,
+                                        mergedDropdown: true
                                     }"
                                     [options]="driverList"
+                                    [canAddNew]="true"
+                                    [canOpenModal]="true"
                                     [activeItem]="null"
                                     (selectedItem)="addDriver($event)"
                                 ></app-ta-input-dropdown>
@@ -632,7 +690,7 @@
                     >
                         <div class="padding-inside">
                             <div
-                                class="info-item"
+                                class="info-item pickup-dev-popover-hold"
                                 *ngIf="
                                     item.driver && item.trailer && item.truck
                                 "
@@ -640,11 +698,75 @@
                                 [ngbPopover]="pickupPopover"
                                 [autoClose]="'outside'"
                                 container="body"
-                                [placement]="'bottom-center'"
+                                [placement]="'bottom'"
                                 popoverClass="pickup-delivery-popover"
                                 triggers="manual"
                                 (click)="showPickupDelivery(t3)"
                             >
+                                <div
+                                    class="no-delpickup"
+                                    *ngIf="!item.activeLoad"
+                                >
+                                    No Active or Pending Load
+                                </div>
+
+                                <div
+                                    class="load-items-hold"
+                                    *ngIf="item.activeLoad"
+                                >
+                                    <div class="pick-load-box pickup-box">
+                                        <svg-icon
+                                            *ngIf="item.activeLoad
+                                            .pickupCount < 9"
+                                            src="
+                                                assets/svg/svg_numbers/olddash/svg_num_box_{{
+                                                item.activeLoad
+                                                    .pickupCount
+                                            }}.svg
+                                            "
+                                        ></svg-icon>
+                                        <svg-icon
+                                            *ngIf="item.activeLoad
+                                            .pickupCount > 9"
+                                            src="assets/svg/svg_numbers/svg_num_over.svg
+                                        "
+                                        ></svg-icon>
+                                        <div class="pick-load-info">
+                                            <div class="pick-load-info-address">
+                                                {{item.activeLoad.pickup.shipper.address.city}}, {{item.activeLoad.pickup.shipper.address.stateShortName}}
+                                            </div>
+                                            <div class="pick-load-info-time">
+                                                05/09/21
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="pick-load-box delivery-box">
+                                        <svg-icon
+                                            *ngIf="item.activeLoad
+                                            .deliveryCount < 9"
+                                            src="
+                                                assets/svg/svg_numbers/olddash/svg_num_box_{{
+                                                item.activeLoad
+                                                    .deliveryCount
+                                            }}.svg
+                                            "
+                                        ></svg-icon>
+                                        <svg-icon
+                                            *ngIf="item.activeLoad
+                                            .deliveryCount > 9"
+                                            src="assets/svg/svg_numbers/svg_num_over.svg
+                                        "
+                                        ></svg-icon>
+                                        <div class="pick-load-info">
+                                            <div class="pick-load-info-address">
+                                                {{item.activeLoad.delivery.shipper.address.city}}, {{item.activeLoad.delivery.shipper.address.stateShortName}}
+                                            </div>
+                                            <div class="pick-load-info-time">
+                                                05/09/21
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -779,10 +901,18 @@
                                     dropdownWidthClass: 'w-col-98',
                                     placeholderInsteadOfLabel: true,
                                     hideDropdownArrow: true,
-                                    autoFocus: true
+                                    autoFocus: true,
+                                    blackInput: true,
+                                    hideDropdownArrow: true,
+                                    hideRequiredCheck: true,
+                                    hideDangerMark: true,
+                                    hideErrorMessage: true,
+                                    mergedDropdown: true
                                 }"
                                 [options]="truckList"
                                 [activeItem]="null"
+                                [canAddNew]="true"
+                                [canOpenModal]="true"
                                 (selectedItem)="addTruck($event)"
                             ></app-ta-input-dropdown>
                         </div>
@@ -848,11 +978,18 @@
                                         isDropdown: true,
                                         dropdownWidthClass: 'w-col-98',
                                         placeholderInsteadOfLabel: true,
+                                        autoFocus: true,
+                                        blackInput: true,
                                         hideDropdownArrow: true,
-                                        autoFocus: true
+                                        hideRequiredCheck: true,
+                                        hideDangerMark: true,
+                                        hideErrorMessage: true,
+                                        mergedDropdown: true
                                     }"
                                     [options]="trailerList"
                                     [activeItem]="null"
+                                    [canAddNew]="true"
+                                    [canOpenModal]="true"
                                     (selectedItem)="addTrailer($event)"
                                 ></app-ta-input-dropdown>
                             </div>
@@ -909,7 +1046,7 @@
                             >
                                 <app-ta-input-dropdown
                                     [formControl]="truckFormControll"
-                                    [template]="'svgtext-template'"
+                                    [template]="'details-template'"
                                     [inputConfig]="{
                                         name: 'Input Dropdown',
                                         type: 'text',
@@ -918,10 +1055,18 @@
                                         dropdownWidthClass: 'w-col-200',
                                         placeholderInsteadOfLabel: true,
                                         hideDropdownArrow: true,
-                                        autoFocus: true
+                                        autoFocus: true,
+                                        blackInput: true,
+                                        hideDropdownArrow: true,
+                                        hideRequiredCheck: true,
+                                        hideDangerMark: true,
+                                        hideErrorMessage: true,
+                                        mergedDropdown: true
                                     }"
                                     [options]="driverList"
                                     [activeItem]="null"
+                                    [canAddNew]="true"
+                                    [canOpenModal]="true"
                                     (selectedItem)="addDriver($event)"
                                 ></app-ta-input-dropdown>
                             </div>

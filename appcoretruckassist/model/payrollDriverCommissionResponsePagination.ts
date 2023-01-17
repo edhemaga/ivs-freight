@@ -9,10 +9,13 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { LiveTrackingSignalItemResponse } from './liveTrackingSignalItemResponse';
+import { PayrollDriverCommissionResponse } from './payrollDriverCommissionResponse';
 
 
-export interface LiveTrackingSignalResponse { 
-    data?: Array<LiveTrackingSignalItemResponse> | null;
+export interface PayrollDriverCommissionResponsePagination { 
+    pageIndex?: number;
+    pageSize?: number;
+    count?: number;
+    data?: Array<PayrollDriverCommissionResponse> | null;
 }
 

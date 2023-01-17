@@ -11,10 +11,10 @@
  */
 
 
-export interface FuelStopExtensionResponse { 
-    favourite?: boolean;
-    lastUsed?: string | null;
-    totalCost?: number | null;
-    note?: string | null;
-}
+export type PayrollCreditType = 'Driver' | 'Owner';
+
+export const PayrollCreditType = {
+    Driver: 'Driver' as PayrollCreditType,
+    Owner: 'Owner' as PayrollCreditType
+};
 

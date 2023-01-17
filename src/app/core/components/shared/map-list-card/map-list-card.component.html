@@ -17,7 +17,7 @@
                         [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
                     ></svg-icon>
                 </span>
-                <span class="title-text">{{ title }}</span>
+                <span class="title-text">{{ title }} <ng-container *ngIf="type == 'fuelStop'">- {{ item.store }}</ng-container></span>
             </div>
             <div class="d-flex">
                 <svg-icon
@@ -183,9 +183,9 @@
                     Orders
                 </div>
             </div>
-            <div *ngIf="sortCategory.name == 'Purchase'">
+            <div *ngIf="sortCategory.name == 'Transaction'">
                 <div class="marker-like-text">
-                    <span class="marker-bold-text">{{ item.fuelTransactions ? item.fuelTransactions.length : '2,473' }}</span> Purchase
+                    <span class="marker-bold-text">{{ item.fuelTransactions ? item.fuelTransactions.length : '2,473' }}</span> Transaction
                 </div>
             </div>
             <div *ngIf="sortCategory.name == 'Total Cost'">

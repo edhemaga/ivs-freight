@@ -17,6 +17,7 @@
     <!-- Origin Tab -->
     <form
         origin
+        #originElement
         [formGroup]="loadForm"
         class="form-container form-container-without-mb"
     >
@@ -113,7 +114,7 @@
                         type: 'text',
                         label: 'Reference No.',
                         isRequired: true,
-                        textTransform: 'capitalize'
+                        textTransform: 'uppercase'
                     }"
                 ></app-ta-input>
                 <app-ta-input-dropdown
@@ -399,7 +400,7 @@
                     [shipperContact]="{
                         fullName: selectedPickupShipperContact?.name
                     }"
-                    [isOpen]="isActivePickupStop"
+                    [isCardOpen]="isActivePickupStop"
                     (toggle)="toggleStopActivity($event, 'first-pickup')"
                 >
                     <div class="row row-no-mt">
@@ -491,7 +492,10 @@
                             [inputConfig]="{
                                 name: 'timepicker',
                                 type: 'text',
-                                label: 'From',
+                                label:
+                                    selectedStopTimePickup === 6
+                                        ? 'At'
+                                        : 'From',
                                 placeholderIcon: 'time',
                                 isDropdown: true,
                                 isRequired: true,
@@ -587,7 +591,7 @@
                                         selectedExtraStopShipperContact[indx]
                                             ?.name
                                 }"
-                                [isOpen]="
+                                [isCardOpen]="
                                     loadExtraStops().at(indx).get('openClose')
                                         .value
                                 "
@@ -736,7 +740,11 @@
                                         [inputConfig]="{
                                             name: 'timepicker',
                                             type: 'text',
-                                            label: 'From',
+                                            label: selectedExtraStopTime[indx]
+                                                ?.toString()
+                                                ?.startsWith('9')
+                                                ? 'At'
+                                                : 'From',
                                             placeholderIcon: 'time',
                                             isDropdown: true,
                                             isRequired: true,
@@ -816,7 +824,7 @@
                         fullName: selectedDeliveryShipperContact?.name
                     }"
                     [disabledCard]="!selectedPickupShipper"
-                    [isOpen]="isActiveDeliveryStop"
+                    [isCardOpen]="isActiveDeliveryStop"
                     (toggle)="toggleStopActivity($event, 'first-delivery')"
                 >
                     <div class="row">
@@ -910,7 +918,10 @@
                             [inputConfig]="{
                                 name: 'timepicker',
                                 type: 'text',
-                                label: 'From',
+                                label:
+                                    selectedStopTimeDelivery === 8
+                                        ? 'At'
+                                        : 'From',
                                 placeholderIcon: 'time',
                                 isDropdown: true,
                                 isRequired: true,
@@ -1239,7 +1250,8 @@
         }"
         [ngStyle]="{
             overflow: 'hidden',
-            'owerflow-y': 'scroll'
+            'owerflow-y': 'scroll',
+            height: originHeight + 130 + 'px'
         }"
     >
         <!-- Hazardous -->

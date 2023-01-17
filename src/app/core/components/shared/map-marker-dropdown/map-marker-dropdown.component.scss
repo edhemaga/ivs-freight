@@ -215,6 +215,17 @@
         color: #536bc2;
         background: #536bc233;
     }
+    
+    .marker-bold-text {
+        &::-moz-selection {
+            color: #536bc2;
+            background: #536bc233;
+        }
+        &::selection {
+            color: #536bc2;
+            background: #536bc233;
+        }
+    }
 }
 
 .pink-text {
