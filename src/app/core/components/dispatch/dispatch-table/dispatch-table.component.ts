@@ -523,6 +523,18 @@ export class DispatchTableComponent implements OnInit {
         });
     }
 
+    removeTruck(indx) {
+        this.updateOrAddDispatchBoardAndSend('truckId', null, indx);
+    }
+
+    removeTrailer(indx) {
+        this.updateOrAddDispatchBoardAndSend('trailerId', null, indx);
+    }
+
+    removeDriver(indx) {
+        this.updateOrAddDispatchBoardAndSend('driverId', null, indx);
+    }
+
     // CDL DRAG AND DROP
 
     dropList(event) {
@@ -687,7 +699,7 @@ export class DispatchTableComponent implements OnInit {
         drag: CdkDrag,
         drop: CdkDropList
     ) => {
-       // console.log('trailerPred', drop.element);
+        // console.log('trailerPred', drop.element);
         return true;
     };
 }

@@ -697,14 +697,14 @@
                         </div>
                         <div
                             class="marker-info-text"
-                            *ngIf="item.openHours[1].startTime"
+                            *ngIf="item.openHours[1]?.startTime"
                         >
                             {{ item.openHours[1].startTime }} -
                             {{ item.openHours[1].endTime }}
                         </div>
                         <div
                             class="marker-info-text"
-                            *ngIf="!item.openHours[1].startTime"
+                            *ngIf="!item.openHours[1]?.startTime"
                         >
                             Closed
                         </div>
@@ -723,7 +723,7 @@
                         <div
                             class="marker-info-text"
                             *ngIf="
-                                item.openHours && item.openHours[6].startTime
+                                item.openHours && item.openHours[6]?.startTime
                             "
                         >
                             {{ item.openHours[6].startTime }} -
@@ -732,7 +732,7 @@
                         <div
                             class="marker-info-text"
                             *ngIf="
-                                !item.openHours || !item.openHours[6].startTime
+                                !item.openHours || !item.openHours[6]?.startTime
                             "
                         >
                             Closed

@@ -8,7 +8,13 @@ import {
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
-import { Subject, Subscription, takeUntil } from 'rxjs';
+import {
+    distinctUntilChanged,
+    Subject,
+    Subscription,
+    takeUntil,
+    throttleTime,
+} from 'rxjs';
 
 import { addressValidation } from '../../../shared/ta-input/ta-input.regex-validations';
 
@@ -554,7 +560,11 @@ export class Step7Component implements OnInit, OnDestroy {
 
             if (hasIncorrectValues) {
                 this.subscription = this.sevenDaysHosForm.valueChanges
-                    .pipe(takeUntil(this.destroy$))
+                    .pipe(
+                        distinctUntilChanged(),
+                        throttleTime(2),
+                        takeUntil(this.destroy$)
+                    )
                     .subscribe((updatedFormValues) => {
                         const filteredFieldsWithIncorrectValues = Object.keys(
                             filteredIncorrectValues
@@ -637,12 +647,6 @@ export class Step7Component implements OnInit, OnDestroy {
     }
 
     public onSubmit(): void {
-        if (this.selectedMode === SelectedMode.FEEDBACK) {
-            if (!this.isFeedbackValueUpdated) {
-                return;
-            }
-        }
-
         const {
             hosArray,
             isValidHos,
@@ -659,7 +663,12 @@ export class Step7Component implements OnInit, OnDestroy {
 
         const isAnyRadioUnchecked = isAnyRadioInArrayUnChecked(radioButtons);
 
-        if (this.sevenDaysHosForm.invalid || isAnyRadioUnchecked) {
+        if (
+            this.sevenDaysHosForm.invalid ||
+            isAnyRadioUnchecked ||
+            (this.selectedMode === SelectedMode.FEEDBACK &&
+                !this.isFeedbackValueUpdated)
+        ) {
             if (this.sevenDaysHosForm.invalid) {
                 this.inputService.markInvalid(this.sevenDaysHosForm);
             }

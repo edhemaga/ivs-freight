@@ -11,9 +11,10 @@
     user-select: none;
 
     .nav-header-top {
+        padding: 0 4px;
         .nav-header-top-logo {
             svg {
-                margin-left: -3.5px;
+                cursor: pointer;
             }
         }
     }
@@ -26,31 +27,66 @@
         justify-content: space-between;
         width: 0px;
         position: relative;
-        right: 4px;
+        // right: 4px;
 
         &.expand-width {
-            width: 177px;
+            // width: 177px;
+            width: 100%;
         }
-
-        .nav-header-bottom-plus {
-            background: #ffffff;
-            border-radius: 50%;
-            padding: 0 8px;
-            width: 32px;
-            height: 32px;
-            box-shadow: 0 0 4px rgb(0 0 0 / 15%);
-            position: relative;
+        .nav-header-bottom-leftSide {
             display: flex;
             align-items: center;
-            justify-content: center;
-
-            &:hover {
-                cursor: pointer;
+            gap: 4px;
+            padding-left: 2px;
+            p {
                 transition: $nav-transition;
-                background-image: linear-gradient($nav-blue-3, $nav-active);
+                color: $nav-text-color-darker;
+                margin: 0;
+                display: flex;
+                width: 70px;
+                opacity: 0;
+            }
+            .nav-header-bottom-plus {
+                border-radius: 50%;
+                padding: 0 8px;
+                width: 36px;
+                height: 36px;
+                left: -2px;
+                position: relative;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                z-index: 9;
+                background: rgba(48, 116, 211, 0.1);
+                svg {
+                    position: relative;
+                    top: -0.9px;
+                    left: -0.1px;
+                }
+                &:hover {
+                    background: $nav-svg-active;
+                    cursor: pointer;
+                    transition: background-color 0.2s linear;
+                    svg {
+                        path {
+                            fill: $nav-white;
+                        }
+                    }
+                }
+            }
+            .dark-svg {
+                background: $nav-svg-active;
                 svg {
                     path {
                         fill: $nav-white;
+                    }
+                }
+                &:hover {
+                    background: $nav-white;
+                    svg {
+                        path {
+                            fill: $nav-svg-active;
+                        }
                     }
                 }
             }
@@ -60,26 +96,22 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-
+            padding-right: 8px;
+            cursor: pointer;
             &-search {
-                background: $nav-hover-darker;
                 border-radius: 50%;
-                padding: 7px;
+                padding: 8px;
                 position: relative;
-                width: 32px;
-                height: 32px;
                 svg {
                     position: absolute;
                     top: 50%;
                     left: 50%;
                     transform: translate(-50%, -50%);
-                }
-                &:hover {
-                    transition: $nav-transition;
-                    background-color: $nav-hover-lightcolor;
-                    svg {
-                        #Path_35719 {
-                            fill: $nav-svg-hover !important;
+                    width: 19px;
+                    height: 19px;
+                    &:hover {
+                        path {
+                            fill: $nav-white;
                         }
                     }
                 }

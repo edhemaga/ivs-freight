@@ -21,7 +21,7 @@ export interface LoadStopCommand {
     shipperContactId?: number | null;
     dateFrom?: string;
     dateTo?: string | null;
-    timeType?: null;
+    timeType?: any;
     timeFrom?: string | null;
     timeTo?: string | null;
     arrive?: string | null;
@@ -30,6 +30,6 @@ export interface LoadStopCommand {
     legHours?: number | null;
     legMinutes?: number | null;
     shape?: string | null;
-    items?: Array<null> | null;
+    items?: Array<any> | null;
 }
 

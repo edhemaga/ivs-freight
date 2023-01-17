@@ -246,6 +246,8 @@ export class TtRegistrationModalComponent implements OnInit, OnDestroy {
                             : null,
                     });
 
+                    this.registrationExpirationDate = !!res.expDate;
+
                     this.documents = res.files;
                     this.selectedStateType = {
                         ...res.state,

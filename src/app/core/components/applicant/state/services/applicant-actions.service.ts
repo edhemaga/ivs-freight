@@ -62,6 +62,15 @@ import {
     CreateMedicalCertificateReviewCommand,
     CreateCdlCardReviewCommand,
     CreatePersonalInfoCommand,
+    CreateSphReviewCommand,
+    CreateHosRulesReviewCommand,
+    UpdateMedicalCertificateReviewCommand,
+    CreateMvrAuthReviewCommand,
+    UpdateMvrAuthReviewCommand,
+    CreateCompanyOwnerInfoCommand,
+    UpdateCompanyOwnerInfoCommand,
+    CreateCompanyOwnerInfoReviewCommand,
+    UpdateCompanyOwnerInfoReviewCommand,
 } from 'appcoretruckassist/model/models';
 
 @Injectable({
@@ -133,6 +142,12 @@ export class ApplicantActionsService {
         return this.applicantService.apiApplicantDrugandalcoholPost(data);
     }
 
+    public createOwnerInfoCompany(
+        data: CreateCompanyOwnerInfoCommand
+    ): Observable<CreateResponse> {
+        return this.applicantService.apiApplicantOwnerinfoCompanyPost(data);
+    }
+
     public createMedicalCertificate(
         data: any
     ): Observable<CreateWithUploadsResponse> {
@@ -152,7 +167,7 @@ export class ApplicantActionsService {
     public createSsnCard(data: any): Observable<CreateWithUploadsResponse> {
         this.formDataService.extractFormDataFromFunction(data);
 
-        return this.applicantService.apiApplicantSsnPost(data);
+        return this.applicantService.apiApplicantSsnPost();
     }
 
     public createCdlCard(data: any): Observable<CreateWithUploadsResponse> {
@@ -225,6 +240,12 @@ export class ApplicantActionsService {
         data: UpdateAuthorizationCommand
     ): Observable<object> {
         return this.applicantService.apiApplicantAuthorizationPut(data);
+    }
+
+    public updateOwnerInfoCompany(
+        data: UpdateCompanyOwnerInfoCommand
+    ): Observable<object> {
+        return this.applicantService.apiApplicantOwnerinfoCompanyPut(data);
     }
 
     public updateMedicalCertificate(
@@ -341,6 +362,14 @@ export class ApplicantActionsService {
         return this.applicantService.apiApplicantAuthorizationReviewPost(data);
     }
 
+    public createOwnerInfoCompanyReview(
+        data: CreateCompanyOwnerInfoReviewCommand
+    ): Observable<CreateResponse> {
+        return this.applicantService.apiApplicantOwnerinfoCompanyReviewPost(
+            data
+        );
+    }
+
     public createMedicalCertificateReview(
         data: CreateMedicalCertificateReviewCommand
     ): Observable<CreateResponse> {
@@ -349,10 +378,28 @@ export class ApplicantActionsService {
         );
     }
 
+    public createMvrAuthorizationReview(
+        data: CreateMvrAuthReviewCommand
+    ): Observable<CreateWithUploadsResponse> {
+        return this.applicantService.apiApplicantMvrReviewPost(data);
+    }
+
     public createPspAuthorizationReview(
         data: CreatePspAuthReviewCommand
     ): Observable<CreateResponse> {
         return this.applicantService.apiApplicantPspReviewPost(data);
+    }
+
+    public createSphReview(
+        data: CreateSphReviewCommand
+    ): Observable<CreateResponse> {
+        return this.applicantService.apiApplicantSphReviewPost(data);
+    }
+
+    public createHosRulesReview(
+        data: CreateHosRulesReviewCommand
+    ): Observable<CreateResponse> {
+        return this.applicantService.apiApplicantHosrulesReviewPost(data);
     }
 
     public createCdlCardReview(
@@ -441,6 +488,28 @@ export class ApplicantActionsService {
         data: UpdateDrugAndAlcoholReviewCommand
     ): Observable<object> {
         return this.applicantService.apiApplicantDrugandalcoholReviewPut(data);
+    }
+
+    public updateOwnerInfoCompanyReview(
+        data: UpdateCompanyOwnerInfoReviewCommand
+    ): Observable<object> {
+        return this.applicantService.apiApplicantOwnerinfoCompanyReviewPut(
+            data
+        );
+    }
+
+    public updateMedicalCertificateReview(
+        data: UpdateMedicalCertificateReviewCommand
+    ): Observable<CreateResponse> {
+        return this.applicantService.apiApplicantMedicalcertificateReviewPut(
+            data
+        );
+    }
+
+    public updateMvrAuthorizationReview(
+        data: UpdateMvrAuthReviewCommand
+    ): Observable<object> {
+        return this.applicantService.apiApplicantMvrReviewPut(data);
     }
 
     /* BACKEND GET ACTION FUNCTIONS */
