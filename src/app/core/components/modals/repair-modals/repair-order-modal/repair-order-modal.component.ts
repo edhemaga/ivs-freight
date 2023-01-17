@@ -521,6 +521,10 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
     public activeRepairService(service) {
         service.active = !service.active;
         this.services = [...this.services];
+
+        this.repairOrderForm
+            .get('servicesHelper')
+            .patchValue(JSON.stringify(this.services));
     }
 
     public onFilesEvent(event: any) {
@@ -618,6 +622,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
             repairShopId: [null],
             items: this.formBuilder.array([]),
             note: [null],
+            servicesHelper: [null],
             files: [null],
         });
 
@@ -731,6 +736,10 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                         };
                     });
 
+                    this.repairOrderForm
+                        .get('servicesHelper')
+                        .patchValue(JSON.stringify(this.services));
+
                     // Repair Shops
                     this.labelsRepairShop = [...res.repairShops];
                 },
@@ -739,7 +748,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
     }
 
     private addRepair() {
-        const { date, unit, odometer, invoice, ...form } =
+        const { date, unit, odometer, invoice, servicesHelper, ...form } =
             this.repairOrderForm.value;
 
         let documents = [];
@@ -873,7 +882,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
     }
 
     private updateRepair(id: number) {
-        const { date, unit, odometer, invoice, ...form } =
+        const { date, unit, odometer, invoice, servicesHelper, ...form } =
             this.repairOrderForm.value;
 
         let documents = [];
@@ -1124,6 +1133,10 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                             };
                         }),
                     ];
+
+                    this.repairOrderForm
+                        .get('servicesHelper')
+                        .patchValue(JSON.stringify(this.services));
 
                     // Repair Shop
                     if (res.repairShop?.id) {

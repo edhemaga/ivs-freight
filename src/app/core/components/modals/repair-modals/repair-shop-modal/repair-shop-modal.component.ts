@@ -359,6 +359,10 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
     public activeRepairService(service) {
         service.active = !service.active;
         this.services = [...this.services];
+
+        this.repairShopForm
+            .get('servicesHelper')
+            .patchValue(JSON.stringify(this.services));
     }
 
     public addContacts(event: { check: boolean; action: string }) {
@@ -589,6 +593,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             note: [null],
             contacts: this.formBuilder.array([]),
             files: [null],
+            servicesHelper: [null],
         });
 
         this.inputService.customInputValidator(
@@ -711,6 +716,10 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
                             active: item.active,
                         };
                     });
+
+                    this.repairShopForm
+                        .get('servicesHelper')
+                        .patchValue(JSON.stringify(this.services));
 
                     // Contacts
                     if (res.contacts) {
@@ -876,6 +885,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             openHoursSameAllDays,
             startTimeAllDays,
             endTimeAllDays,
+            servicesHelper,
             ...form
         } = this.repairShopForm.value;
 
@@ -1030,6 +1040,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             openHoursSameAllDays,
             startTimeAllDays,
             endTimeAllDays,
+            servicesHelper,
             ...form
         } = this.repairShopForm.value;
 
@@ -1132,6 +1143,10 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
                             active: false,
                         };
                     });
+
+                    this.repairShopForm
+                        .get('servicesHelper')
+                        .patchValue(JSON.stringify(this.services));
                 },
                 error: () => {},
             });
