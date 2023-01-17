@@ -39,6 +39,7 @@ import { LoadDatetimeRangePipe } from '../components/modals/load-modal/load-date
 import { FinancialCalculationPipe } from '../components/modals/load-modal/load-financial/financialCalculation.pipe';
 import { TableModalInputConfigPipe } from './tableModalInputConfig.pipe';
 import { PriceCalculationArraysPipe } from './price-calculation-arrays.pipe';
+import { ActiveItemsPipe } from './activeItems.pipe';
 
 @NgModule({
     declarations: [
@@ -81,6 +82,7 @@ import { PriceCalculationArraysPipe } from './price-calculation-arrays.pipe';
         FinancialCalculationPipe,
         TableModalInputConfigPipe,
         PriceCalculationArraysPipe,
+        ActiveItemsPipe,
     ],
     imports: [CommonModule],
     exports: [
@@ -123,6 +125,7 @@ import { PriceCalculationArraysPipe } from './price-calculation-arrays.pipe';
         FinancialCalculationPipe,
         TableModalInputConfigPipe,
         PriceCalculationArraysPipe,
+        ActiveItemsPipe,
     ],
     providers: [
         DatePipe,

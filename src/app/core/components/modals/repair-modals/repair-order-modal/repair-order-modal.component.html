@@ -403,13 +403,13 @@
         <app-ta-custom-card
             [cardName]="'Service'"
             [disableAnimation]="disableCardAnimation"
-            [hasCounter]="pickedServices() ? pickedServices() : 0"
+            [hasCounter]="services | activeItems"
             [isCardOpen]="true"
         >
             <div class="repair-shop-services">
                 <div
-                    (click)="repair.active = !repair.active"
                     *ngFor="let repair of services; trackBy: identity"
+                    (click)="activeRepairService(repair)"
                     [ngClass]="{ active: repair.active }"
                     class="repair-shop-service"
                 >

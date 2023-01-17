@@ -356,8 +356,9 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             });
     }
 
-    public pickedServices() {
-        return this.services.filter((item) => item.active).length;
+    public activeRepairService(service) {
+        service.active = !service.active;
+        this.services = [...this.services];
     }
 
     public addContacts(event: { check: boolean; action: string }) {
