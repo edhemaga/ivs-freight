@@ -26,8 +26,8 @@
                     (preloadData)="preloadData(cdl, 'cdl')"
                     (resizePage)="toggleResizePage(i, 'cdl')"
                     [cardNameCommon]="cdl?.cdlNumber"
-                    [expDateClose]="cdl?.expDate | formatDateP"
-                    [voidedDate]="cdl?.dateDeactivated | formatDateP"
+                    [expDateClose]="formatDate(cdl?.expDate)"
+                    [voidedDate]="formatDate(cdl?.dateDeactivated)"
                     [hasCopyIcon]="true"
                     [optionsId]="cdl.id"
                     [isCardOpen]="cdl.status == 1 ? true : false"
@@ -63,7 +63,7 @@
                                 <div class="card-restriction">
                                     <div class="restriction-name">Issued</div>
                                     <div class="restriction-item-value">
-                                        {{ cdl?.issueDate | formatDateP }}
+                                        {{ formatDate(cdl?.issueDate)}}
                                     </div>
                                 </div>
                                 <div
@@ -72,7 +72,7 @@
                                 >
                                     <div class="restriction-name">Voided</div>
                                     <div class="restriction-item-value">
-                                        {{ cdl.dateDeactivated | formatDateP }}
+                                        {{ formatDate(cdl.dateDeactivated)}}
                                     </div>
                                 </div>
                             </div>
@@ -158,10 +158,10 @@
                                 <div class="card-details-progress-container">
                                     <app-truckassist-progress-expiration
                                         [expireDate]="
-                                            cdl?.expDate | formatDateP
+                                            formatDate(cdl?.expDate)
                                         "
                                         [startDate]="
-                                            cdl?.issueDate | formatDateP
+                                            formatDate(cdl?.issueDate)
                                         "
                                         [expiresSettings]="'details'"
                                     >
@@ -280,7 +280,7 @@
                     "
                     [hasToggler]="true"
                     [options]="dataDropDownMvr"
-                    [cardNameCommon]="test?.testingDate | formatDateP"
+                    [cardNameCommon]="formatDate(test?.testingDate)"
                     (resizePage)="toggleResizePage(i, 'test')"
                     [optionsId]="test.id"
                     [testDate]="test?.testingDate | formatDateP"
@@ -416,11 +416,11 @@
                         trackBy: identity
                     "
                     [options]="dataDropDownMvr"
-                    [cardNameCommon]="med?.issueDate | formatDateP"
+                    [cardNameCommon]="formatDate(med?.issueDate)"
                     [cardDocumentCounter]="
                         med?.files?.length ? med.files.length : 0
                     "
-                    [expDateClose]="med?.expDate | formatDateP"
+                    [expDateClose]="formatDate(med?.expDate)"
                     [optionsId]="med.id"
                     (dataDropDopwn)="getMedicalById(med.id)"
                     (preloadData)="preloadData(med, 'med')"
@@ -442,10 +442,10 @@
                                 <div class="card-details-progress-container">
                                     <app-truckassist-progress-expiration
                                         [expireDate]="
-                                            med?.expDate | formatDateP
+                                            formatDate(med?.expDate)
                                         "
                                         [startDate]="
-                                            med?.issueDate | formatDateP
+                                            formatDate(med?.issueDate)
                                         "
                                         [expiresSettings]="'details'"
                                     >
@@ -556,8 +556,8 @@
                             : 'assets/svg/truckassist-table/note/Note - Empty.svg'
                     "
                     (resizePage)="toggleResizePage(i, 'mvr')"
-                    [cardNameCommon]="mvr?.issueDate | formatDateP"
-                    [expDateClose]="mvr?.expDate | formatDateP"
+                    [cardNameCommon]="formatDate(mvr?.issueDate)"
+                    [expDateClose]="formatDate(mvr?.expDate)"
                     [optionsId]="mvr.id"
                     [setPositionDrop]="true"
                     [mainData]="mvr"
@@ -571,10 +571,10 @@
                                 <div class="card-details-progress-container">
                                     <app-truckassist-progress-expiration
                                         [startDate]="
-                                            mvr?.issueDate | formatDateP
+                                            formatDate(mvr?.issueDate)
                                         "
                                         [expireDate]="
-                                            mvr?.expDate
+                                            formatDate(mvr?.expDate)
                                         "
                                         [expiresSettings]="'details'"
                                     >

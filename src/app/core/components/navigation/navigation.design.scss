@@ -1,9 +1,11 @@
 //------------ Colors constants
 $nav-white: #ffffff;
+$nav-dark: #2f2f2f;
 
 $nav-svg: #b7b7b7;
 $nav-svg-hover: #919191;
-$nav-svg-active: #6d82c7;
+$nav-svg-active: #3074d3;
+$nav-svg-darker: #aaaaaa;
 
 $nav-text-color-dadada: #dadada;
 $nav-text-color-lighter: #b7b7b7;
@@ -14,11 +16,14 @@ $nav-text-color-hover: #3c3c3c;
 $nav-blue-1: #e0eaf8;
 $nav-blue-2: #97a8dc;
 $nav-blue-3: #6d82c7;
-$nav-active-lighter: #536bc2;
+$nav-active-lighter: #6f9ee0;
 $nav-active: #3551b7;
+$nav-hover-hover: #255bb9;
 
 $nav-hover-lightcolor: #f3f3f3;
-$nav-hover-color: #f7f7f7;
+$nav-hover-ligh: #eeeeee;
+$nav-hover-color: #1d1d1d;
+
 $nav-hover-darker: #f9f9f9;
 
 $nav-important-light: #ff8080;
@@ -42,6 +47,8 @@ $nav-font-semibold: 600;
 $nav-font-bold: 700;
 $nav-font-extrabold: 800;
 
+$nav-transparent: rgba(170, 170, 170, 10%);
+
 $wrapper-line: #b7b7b7;
 $magic-line-transition: all 0.2s ease-in;
 
@@ -50,6 +57,9 @@ $user-busy-status-hover: #ffa726;
 $user-active-status: #4db6a2;
 $user-active-status-hover: #26a690;
 
+$files: #ffcc80;
+
+$notification: #e57373;
 @keyframes showMagicLine {
     0% {
         opacity: 0;
@@ -72,21 +82,14 @@ $user-active-status-hover: #26a690;
     justify-content: center;
     align-items: center;
     position: absolute;
-    bottom: 2px;
-    left: 23px;
-    background: $nav-white;
+    bottom: 12px;
+    left: 17px;
 
     .status-marker {
         width: 10px;
         height: 10px;
-        border-radius: 6px;
-        border: 0 solid $nav-white;
-        background: $nav-white;
-    }
 
-    .status-online {
-        border: 3px solid $user-active-status;
-        background: $nav-white !important;
+        position: relative;
     }
 
     .status-active {
@@ -97,6 +100,25 @@ $user-active-status-hover: #26a690;
     .status-busy {
         border: 2px solid $user-busy-status;
         background: #ffffff !important;
+    }
+}
+.status-marker-container-notification {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    bottom: -2px;
+    left: -8px;
+    background: $nav-dark;
+    .status-marker-notification {
+        width: 8px;
+        height: 8px;
+        border-radius: 8px;
+        border: 0 solid $nav-white;
+        background: $notification;
     }
 }
 // ------------ end

@@ -10,7 +10,13 @@ import {
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
-import { Subject, Subscription, takeUntil } from 'rxjs';
+import {
+    distinctUntilChanged,
+    Subject,
+    Subscription,
+    takeUntil,
+    throttleTime,
+} from 'rxjs';
 
 import {
     anyInputInLineIncorrect,
@@ -57,7 +63,7 @@ export class Step8Component implements OnInit, OnDestroy {
 
     private destroy$ = new Subject<void>();
 
-    public selectedMode: string = SelectedMode.FEEDBACK;
+    public selectedMode: string = SelectedMode.REVIEW;
 
     public drugTestRadios: any;
 
@@ -316,12 +322,6 @@ export class Step8Component implements OnInit, OnDestroy {
                 sapAddressUnit: sapAddress.addressUnit,
                 isAgreement: certifyInformation,
             });
-
-            /*  this.drugAlcoholStatementForm
-            .get('motorCarrier')
-            .setErrors({ invalid: true });
-
-        console.log(this.drugAlcoholStatementForm.get('motorCarrier').errors); */
 
             this.selectedAddress = address;
             this.selectedSapAddress = sapAddress;
@@ -621,7 +621,11 @@ export class Step8Component implements OnInit, OnDestroy {
                 console.log('filteredIncorrectValues', filteredIncorrectValues);
 
                 this.subscription = this.drugAlcoholStatementForm.valueChanges
-                    .pipe(takeUntil(this.destroy$))
+                    .pipe(
+                        distinctUntilChanged(),
+                        throttleTime(2),
+                        takeUntil(this.destroy$)
+                    )
                     .subscribe((updatedFormValues) => {
                         const filteredFieldsWithIncorrectValues = Object.keys(
                             filteredIncorrectValues
@@ -755,14 +759,15 @@ export class Step8Component implements OnInit, OnDestroy {
     }
 
     public onSubmit(): void {
-        if (this.selectedMode === SelectedMode.FEEDBACK) {
-            if (!this.isFeedbackValueUpdated) {
-                return;
+        if (
+            this.drugAlcoholStatementForm.invalid ||
+            (this.selectedMode === SelectedMode.FEEDBACK &&
+                !this.isFeedbackValueUpdated)
+        ) {
+            if (this.drugAlcoholStatementForm.invalid) {
+                this.inputService.markInvalid(this.drugAlcoholStatementForm);
             }
-        }
 
-        if (this.drugAlcoholStatementForm.invalid) {
-            this.inputService.markInvalid(this.drugAlcoholStatementForm);
             return;
         }
 

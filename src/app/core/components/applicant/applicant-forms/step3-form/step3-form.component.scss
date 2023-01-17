@@ -1,6 +1,47 @@
 @import 'src/theme/variables.scss';
 
+.accident-border-container {
+    border: 1px solid #2f2f2f;
+    border-radius: 2px;
+    padding: 4px 4px 12px 4px;
+}
+
+.accident-header {
+    padding: 8px;
+    border-radius: 2px;
+    background: $ta-black-2;
+    margin-bottom: 28px;
+
+    p {
+        font-size: 14px;
+        line-height: 18px;
+        color: $white;
+
+        &::-moz-selection {
+            color: $white;
+            background: rgb(255, 255, 255, 0.2);
+        }
+
+        &::selection {
+            color: $white;
+            background: rgb(255, 255, 255, 0.2);
+        }
+    }
+}
+
 .step-form {
+    br {
+        &::-moz-selection {
+            color: $ta-black;
+            background: rgb(47, 47, 47, 0.2);
+        }
+
+        &::selection {
+            color: $ta-black;
+            background: rgb(47, 47, 47, 0.2);
+        }
+    }
+
     .line-container {
         position: relative;
 
@@ -15,7 +56,6 @@
 
     .group {
         margin-bottom: 32px;
-        margin-right: 12px;
 
         &:last-child {
             margin-right: 0;
@@ -23,17 +63,9 @@
         }
     }
 
-    .license-group {
-        width: 370px;
-    }
-
     .country-group {
         width: 234px;
         margin-right: 0 !important;
-    }
-
-    .state-group {
-        width: 246px;
     }
 
     .class-group {
@@ -46,29 +78,93 @@
     }
 
     .restrictions-group {
-        width: 616px;
-        margin-bottom: 32px;
         margin-right: 0 !important;
     }
 
     .endorsments-group {
-        width: 616px;
-        margin-right: 0 !important;
+        margin: 0 0 12px 0 !important;
+    }
+
+    .files-section {
+        h4 {
+            font-size: 14px;
+            line-height: 22px;
+            margin-bottom: 22px !important;
+
+            &::-moz-selection {
+                color: $ta-black-2;
+                background: rgb(47, 47, 47, 0.2);
+            }
+
+            &::selection {
+                color: $ta-black-2;
+                background: rgb(47, 47, 47, 0.2);
+            }
+
+            span {
+                &::-moz-selection {
+                    color: $ta-black-2;
+                    background: rgb(47, 47, 47, 0.2);
+                }
+
+                &::selection {
+                    color: $ta-black-2;
+                    background: rgb(47, 47, 47, 0.2);
+                }
+            }
+        }
+
+        .files-container {
+            width: 616px;
+            margin-bottom: 22px;
+
+            .files-header {
+                border-top: 0.2px solid $ta-light-grey-4;
+                border-radius: 1px;
+                margin-bottom: 9px;
+                padding-top: 5px;
+                height: 24px;
+
+                .counter-container {
+                    border-radius: 2px;
+                    background: $ta-light-grey-4;
+                    width: 24px;
+                    height: 24px;
+
+                    p {
+                        font-size: 14px;
+                        color: $bw6-2;
+                        user-select: none;
+                    }
+                }
+
+                .document-title-container {
+                    .documents-title {
+                        height: 18px;
+                        font-size: 14px;
+                        color: $bw6-2;
+                        user-select: none;
+                        margin-left: 4px !important;
+                    }
+                }
+            }
+        }
     }
 
     .add-license-title {
-        color: $bw6-2;
+        color: $ta-black;
         font-size: 14px;
-        margin-right: 12px !important;
+        height: 18px;
+        margin-bottom: 12px !important;
 
         &::-moz-selection {
-            color: $bw6-2;
-            background: rgb(108, 108, 108, 0.2);
+            color: $ta-black;
+            background: rgb(66, 66, 66, 0.2);
         }
 
         &::selection {
-            color: $bw6-2;
-            background: rgb(108, 108, 108, 0.2);
+            color: $ta-black;
+            background: rgb(66, 66, 66, 0.2);
         }
     }
 }

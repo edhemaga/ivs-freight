@@ -34,6 +34,8 @@ import { EncryptionDecryptionService } from './core/services/encryption-decrypti
 import { RefreshTokenInterceptor } from './core/interceptors/refresh-token.interceptor';
 import { configFactory } from './app.config';
 import { StaticInjectorService } from './core/utils/application.decorators';
+import { NavigationSettingsComponent } from './core/components/navigation/navigation-settings/navigation-settings.component';
+import { UnderConstructionComponent } from './core/components/under-construction/under-construction.component';
 
 @NgModule({
     declarations: [
@@ -48,6 +50,8 @@ import { StaticInjectorService } from './core/utils/application.decorators';
         NavigationModalsComponent,
         NavigationUserProfileComponent,
         NavigationUserCompanyComponent,
+        NavigationSettingsComponent,
+        UnderConstructionComponent,
     ],
     imports: [
         BrowserModule,

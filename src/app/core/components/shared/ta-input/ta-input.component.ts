@@ -129,9 +129,6 @@ export class TaInputComponent
     }
 
     ngOnInit(): void {
-        console.log('ngOnInit');
-        console.log(this.inputConfig);
-        
         // Toggle label transition animation
         $('.input-label').addClass('no-transition');
 
@@ -383,7 +380,6 @@ export class TaInputComponent
                     this.inputConfig.name === 'timepicker'
                 ) {
                     this.focusBlur = setTimeout(() => {
-                        console.log('BLUR ON THISSS');
                         // this.focusInput = false;
                         this.blurOnDateTime();
                     }, 100);
@@ -916,9 +912,12 @@ export class TaInputComponent
         }
 
         if (
-            ['business name', 'shop name', 'fuel stop'].includes(
-                this.inputConfig.name.toLowerCase()
-            )
+            [
+                'business name',
+                'shop name',
+                'fuel stop',
+                'producer name',
+            ].includes(this.inputConfig.name.toLowerCase())
         ) {
             if (
                 this.inputService
@@ -1442,7 +1441,7 @@ export class TaInputComponent
         }
 
         if (
-            ['producer name', 'insurer name', 'office name'].includes(
+            ['insurer name', 'office name'].includes(
                 this.inputConfig.name.toLowerCase()
             )
         ) {

@@ -10,7 +10,13 @@ import {
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
-import { Subject, Subscription, takeUntil } from 'rxjs';
+import {
+    distinctUntilChanged,
+    Subject,
+    Subscription,
+    takeUntil,
+    throttleTime,
+} from 'rxjs';
 
 import {
     anyInputInLineIncorrect,
@@ -77,7 +83,7 @@ export class Step6Component implements OnInit, OnDestroy {
 
     private destroy$ = new Subject<void>();
 
-    public selectedMode: string = SelectedMode.FEEDBACK;
+    public selectedMode: string = SelectedMode.REVIEW;
 
     public subscription: Subscription;
 
@@ -456,24 +462,6 @@ export class Step6Component implements OnInit, OnDestroy {
                   phone: null,
                   relationship: null,
               };
-
-        for (let i = 0; i < filteredContactsArray.length; i++) {
-            const firstEmptyObjectInList = this.openAnnotationArray.find(
-                (item) => Object.keys(item).length === 0
-            );
-
-            const indexOfFirstEmptyObjectInList =
-                this.openAnnotationArray.indexOf(firstEmptyObjectInList);
-
-            this.openAnnotationArray[indexOfFirstEmptyObjectInList] = {
-                lineIndex: this.openAnnotationArray.indexOf(
-                    firstEmptyObjectInList
-                ),
-                lineInputs: [false],
-                displayAnnotationButton: false,
-                displayAnnotationTextArea: false,
-            };
-        }
 
         this.educationForm.patchValue({
             specialTraining,
@@ -1229,7 +1217,7 @@ export class Step6Component implements OnInit, OnDestroy {
         }
     }
 
-    public onCardReview(index: number) {
+    public onCardReview(index: number): void {
         if (this.isReviewingCard) {
             return;
         }
@@ -1263,7 +1251,11 @@ export class Step6Component implements OnInit, OnDestroy {
 
             if (hasIncorrectValues) {
                 this.subscription = this.educationForm.valueChanges
-                    .pipe(takeUntil(this.destroy$))
+                    .pipe(
+                        distinctUntilChanged(),
+                        throttleTime(2),
+                        takeUntil(this.destroy$)
+                    )
                     .subscribe((updatedFormValues) => {
                         const filteredFieldsWithIncorrectValues = Object.keys(
                             filteredIncorrectValues
@@ -1472,15 +1464,6 @@ export class Step6Component implements OnInit, OnDestroy {
     }
 
     public onSubmit(): void {
-        if (this.selectedMode === SelectedMode.FEEDBACK) {
-            if (
-                !this.isUpperFormFeedbackValueUpdated ||
-                !this.isBottomFormFeedbackValueUpdated
-            ) {
-                return;
-            }
-        }
-
         const {
             specialTraining,
             specialTrainingExplain,
@@ -1512,7 +1495,10 @@ export class Step6Component implements OnInit, OnDestroy {
             this.formStatus === 'INVALID' ||
             !this.selectedGrade ||
             isAnyRadioUnchecked ||
-            this.isEditing
+            this.isEditing ||
+            (this.selectedMode === SelectedMode.FEEDBACK &&
+                (!this.isUpperFormFeedbackValueUpdated ||
+                    !this.isBottomFormFeedbackValueUpdated))
         ) {
             if (this.educationForm.invalid) {
                 this.inputService.markInvalid(this.educationForm);
@@ -1667,6 +1653,12 @@ export class Step6Component implements OnInit, OnDestroy {
                             },
                         };
                     });
+
+                    if (this.selectedMode === SelectedMode.FEEDBACK) {
+                        if (this.subscription) {
+                            this.subscription.unsubscribe();
+                        }
+                    }
                 },
                 error: (err) => {
                     console.log(err);
@@ -1715,11 +1707,9 @@ export class Step6Component implements OnInit, OnDestroy {
             emergencyContactId: lastItemId,
             isPrimary: true,
             commonMessage: null,
-            isNameValid: lastItemReview ? lastItemReview.isNameValid : true,
-            isPhoneValid: lastItemReview ? lastItemReview.isPhoneValid : true,
-            isRelationshipValid: lastItemReview
-                ? lastItemReview.isRelationshipValid
-                : true,
+            isNameValid: lastItemReview.isNameValid ?? true,
+            isPhoneValid: lastItemReview.isPhoneValid ?? true,
+            isRelationshipValid: lastItemReview.isRelationshipValid ?? true,
             emergencyContactMessage: this.lastContactCard.firstRowReview,
         };
 

@@ -8,20 +8,14 @@
     }"
     (click)="onGetClickValue()"
 >
-    <p
-        class="m-0"
-        [ngClass]="{
-            'ta-font-bold': addBtn,
-            'ta-font-semi-bold': cancelBtn || saveBtn
-        }"
-    >
+    <p class="m-0 ta-font-bold">
         {{
             cancelBtn
                 ? 'Cancel'
                 : saveBtn && reviewBtn
                 ? 'Add Annotation'
                 : saveBtn
-                ? 'Save Changes'
+                ? 'Save'
                 : btnText
         }}
     </p>
