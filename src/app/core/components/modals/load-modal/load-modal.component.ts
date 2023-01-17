@@ -2214,7 +2214,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 .subscribe({
                     next: (res: RoutingResponse) => {
                         // TODO: Populate lat and long with routesPoints
-                        console.log('---routes---', routes);
+    
                         // Render on map routes
                         this.loadStopRoutes[0] = {
                             routeColor: '#919191',
