@@ -2202,7 +2202,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 .subscribe({
                     next: (res: RoutingResponse) => {
                         // TODO: Populate lat and long with routesPoints
-
+                        console.log('---routes---', routes);
                         // Render on map routes
                         this.loadStopRoutes[0] = {
                             routeColor: '#919191',
@@ -2224,7 +2224,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                                 };
                             }),
                         };
-
+                        console.log('---this.loadStopRoutes----', this.loadStopRoutes)
                         // Store in form values
                         if (res?.legs?.length) {
                             res.legs.forEach((item, index) => {
