@@ -568,7 +568,7 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
             case 'SHIPPER':
             case 'BROKER':
                 let messageValue = '';
-                if (this.httpRequest.body) {
+                if (this.httpRequest.body && !this.httpRequest.body.id ) {
                     messageValue = this.httpRequest.body.getAll('dbaName')[0]
                         ? this.httpRequest.body.getAll('dbaName')[0]
                         : this.httpRequest.body.getAll('businessName')[0];

@@ -166,7 +166,7 @@
                             ? 'assets/svg/truckassist-table/note/Note.svg'
                             : 'assets/svg/truckassist-table/note/Note - Empty.svg'
                     "
-                    [expDateClose]="formatDate(fhwa.issueDate)"
+                    [expDateClose]="formatDate(fhwa.expDate)"
                     (dropActions)="
                         optionsEvent($event, trailers.data, 'inspection')
                     "
