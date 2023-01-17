@@ -308,6 +308,13 @@
                 }
             }
         }
+
+        &.cart-button {
+            top: 0px;
+            right: 0px;
+            width: 34px;
+            height: 34px;
+        }
     }
 
     .general-pm-open-container {
@@ -407,6 +414,13 @@
                 }
             }
         }
+
+        &.cart-button {
+            top: 0px;
+            right: 0px;
+            width: 34px;
+            height: 34px;
+        }
     }
 }
 
@@ -423,6 +437,14 @@
             .tab-title {
                 color: #6c6c6c;
                 transition: 0.25s;
+            }
+        }
+    }
+
+    svg-icon {
+        svg {
+            path {
+                fill: #B7B7B7;
             }
         }
     }

@@ -36,7 +36,7 @@ export class ShopRepairCardViewComponent
     public shopsDropdowns: any[] = [];
     public shopsList: any;
     public repairShopObject: any;
-
+    public shopIndex: any;
     barChartConfig: any = {
         dataProperties: [
             {
@@ -155,9 +155,11 @@ export class ShopRepairCardViewComponent
                 changes.repairShopCardViewData.currentValue.note
             );
             this.repairShopCardViewData =
-                changes.repairShopCardViewData?.currentValue;
+                changes.repairShopCardViewData?.currentValue;  
         }
         this.getActiveServices(changes.repairShopCardViewData.currentValue);
+        this.getShopsDropdown(changes.repairShopCardViewData.currentValue);
+        this.cdRef.detectChanges();
     }
 
     ngOnInit(): void {
@@ -183,9 +185,12 @@ export class ShopRepairCardViewComponent
                     this.getShopsDropdown();
                 }
             });
+
+        let currentIndex = this.shopsDropdowns.findIndex((item) => item.active);
+        this.shopIndex = currentIndex;
     }
 
-    public getShopsDropdown() {
+    public getShopsDropdown(newData?) {
         this.repairDQuery.repairShopMinimal$
             .pipe(
                 takeUntil(this.destroy$),
@@ -205,6 +210,9 @@ export class ShopRepairCardViewComponent
                 })
             )
             .subscribe((data) => {
+                if ( newData ) {
+                    data[0]['name'] = newData.name;
+                }
                 this.shopsDropdowns = data;
             });
     }
@@ -234,6 +242,7 @@ export class ShopRepairCardViewComponent
                 currentIndex = --currentIndex;
                 if (currentIndex != -1) {
                     this.onSelectedShop(this.shopsDropdowns[currentIndex]);
+                    this.shopIndex = currentIndex;
                 }
                 break;
             }
@@ -246,6 +255,7 @@ export class ShopRepairCardViewComponent
                     this.onSelectedShop({
                         id: this.shopsDropdowns[currentIndex].id,
                     });
+                    this.shopIndex = currentIndex;
                 }
                 break;
             }

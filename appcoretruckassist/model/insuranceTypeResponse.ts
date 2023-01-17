@@ -10,11 +10,13 @@
  * Do not edit the class manually.
  */
 import { EnumValue } from './enumValue';
+import { InsurancePolicyShortResponse } from './insurancePolicyShortResponse';
 
 
 export interface InsuranceTypeResponse { 
     id?: number;
     insTypes?: EnumValue;
+    insurancePolicy?: InsurancePolicyShortResponse;
     claimNo?: number | null;
     insAdjuster?: string | null;
     phone?: string | null;

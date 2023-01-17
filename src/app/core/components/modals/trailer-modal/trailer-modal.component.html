@@ -138,6 +138,7 @@
                                 minLength: 1,
                                 maxLength: 50
                             }"
+                            (blurInput)="onBlurTrailerModel()"
                         ></app-ta-input>
                         <app-ta-input
                             formControlName="year"
@@ -238,6 +239,7 @@
                                 [files]="documents"
                                 [size]="'small'"
                                 (onFileEvent)="onFilesEvent($event)"
+                                [customClassName]="'modals'"
                                 [showDropzone]="true"
                             ></app-ta-upload-files>
                         </app-ta-custom-card>
@@ -487,7 +489,8 @@
                                     placeholderText: trailerForm.get('volume')
                                         .value
                                         ? selectedTrailerType?.name === 'Tanker'
-                                        ? 'gal' : 'cu_ft'
+                                            ? 'gal'
+                                            : 'cu_ft'
                                         : null,
                                     thousandSeparator: true
                                 }"

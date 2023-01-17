@@ -20,6 +20,7 @@ import { TruckItemStore } from './truck-details-state/truck.details.store';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { TrucksDetailsListStore } from './truck-details-list-state/truck-details-list.store';
 import { FormDataService } from '../../../services/formData/form-data.service';
+import { TruckAutocompleteModelResponse } from '../../../../../../appcoretruckassist/model/truckAutocompleteModelResponse';
 
 @Injectable({ providedIn: 'root' })
 export class TruckTService implements OnDestroy {
@@ -76,8 +77,6 @@ export class TruckTService implements OnDestroy {
         );
     }
 
-    /* Observable<CreateTruckResponse> */
-
     public addTruck(data: any): Observable<any> {
         this.formDataService.extractFormDataFromFunction(data);
         return this.truckService.apiTruckPost().pipe(
@@ -130,11 +129,18 @@ export class TruckTService implements OnDestroy {
                             this.truckActiveStore.remove(
                                 ({ id }) => id === data.id
                             );
+                            
+
+                            this.truckMinimalStore.remove(
+                                ({ id }) => id === data.id
+                            );
+                                
 
                             truck.registrations = storedTruckData.registrations;
                             truck.titles = storedTruckData.titles;
                             truck.inspections = storedTruckData.inspections;
-
+                            
+                            this.truckMinimalStore.add(truck);
                             this.tdlStore.add(truck);
                             this.truckItem.set([truck]);
 
@@ -379,6 +385,12 @@ export class TruckTService implements OnDestroy {
 
     public getTruckTitleByTitleId(titleId: number) {
         return this.TitleService.apiTitleIdGet(titleId);
+    }
+
+    public autocompleteByTruckModel(
+        model: string
+    ): Observable<TruckAutocompleteModelResponse> {
+        return this.truckService.apiTruckAutocompleteModelModelGet(model);
     }
 
     ngOnDestroy(): void {

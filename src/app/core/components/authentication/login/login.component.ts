@@ -10,6 +10,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthStoreService } from './../state/auth.service';
 import { NotificationService } from '../../../services/notification/notification.service';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
+import { AuthSecurityService } from '../state/auth-security.service';
 
 import moment from 'moment';
 
@@ -32,7 +33,8 @@ export class LoginComponent implements OnInit, OnDestroy {
         private formBuilder: FormBuilder,
         private authStoreService: AuthStoreService,
         private notification: NotificationService,
-        private inputService: TaInputService
+        private inputService: TaInputService,
+        private authSecurityService: AuthSecurityService
     ) {}
 
     ngOnInit() {
@@ -40,11 +42,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 
         this.copyrightYear = moment().year();
 
-        this.inputService.customInputValidator(
-            this.loginForm.get('email'),
-            'email',
-            this.destroy$
-        );
+        this.resetSubject();
     }
 
     private createForm(): void {
@@ -88,6 +86,10 @@ export class LoginComponent implements OnInit, OnDestroy {
         if (event.keyCode === 13) {
             this.userLogin();
         }
+    }
+
+    public resetSubject(): void {
+        this.authSecurityService.updateAccountActivatedSubject(false);
     }
 
     ngOnDestroy(): void {

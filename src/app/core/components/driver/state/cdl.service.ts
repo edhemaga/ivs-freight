@@ -42,9 +42,28 @@ export class CdlTService implements OnDestroy {
                 const driverData = JSON.parse(JSON.stringify(dr.entities));
                 let newData = driverData[driverId];
 
+                // get all cdls on driver, sorted by backend side
+                let allCdls = this.cdlService.apiCdlListGet(driverId).subscribe({
+                    next: (resp: any) => {
+                        newData.cdls = resp;
+
+                        this.tableService.sendActionAnimation({
+                            animation: 'update',
+                            data: newData,
+                            id: newData.id,
+                        });
+                        
+                        this.dlStore.add(newData);
+                        this.driverItemStore.set([newData]);
+
+                        allCdls.unsubscribe();
+                    }
+                });
+
+                // get added cdl
+                /*
                 let cdlApi = this.cdlService.apiCdlIdGet(res.id).subscribe({
                     next: (resp: any) => {
-
                         newData.cdls.push(resp);
                         
                         this.tableService.sendActionAnimation({
@@ -59,6 +78,8 @@ export class CdlTService implements OnDestroy {
                         cdlApi.unsubscribe();
                     },
                 });  
+
+                */
             })
         );
     }

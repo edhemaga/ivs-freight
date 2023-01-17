@@ -161,13 +161,18 @@ export const mileageValidation = [
 //---------------- License plate
 export const licensePlateValidation = [
     Validators.minLength(5),
-    Validators.maxLength(7),
+    Validators.maxLength(9),
 ];
 
 //---------------- Description
 export const descriptionValidation = [
     Validators.minLength(2),
     Validators.maxLength(160),
+];
+
+export const descriptionPayrollBonusValidation = [
+    Validators.minLength(2),
+    Validators.maxLength(40),
 ];
 
 //---------------- Label
@@ -215,7 +220,7 @@ export const repairOdometerValidation = [
 //---------------- Invoice
 export const invoiceValidation = [
     Validators.minLength(1),
-    Validators.maxLength(7),
+    Validators.maxLength(22),
 ];
 
 //---------------- Fuel Store Odometer
@@ -469,3 +474,4 @@ export const cvcValidation = [Validators.minLength(3), Validators.maxLength(4)];
 export const mileValidation = [Validators.min(0), Validators.max(10)];
 
 export const perStopValidation = [Validators.min(0), Validators.max(5000)];
+export const perLoadValidation = [Validators.min(0), Validators.max(50000)];

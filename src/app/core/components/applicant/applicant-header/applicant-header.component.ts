@@ -13,6 +13,10 @@ import { ApplicantQuery } from '../state/store/applicant.query';
 import { SelectedMode } from '../state/enum/selected-mode.enum';
 import { INavigation } from '../state/model/navigation.model';
 import { ApplicantResponse } from 'appcoretruckassist';
+import {
+    isAnyPropertyInObjectFalse,
+    isAnyValueInArrayTrue,
+} from '../state/utils/utils';
 
 @Component({
     selector: 'app-applicant-header',
@@ -134,7 +138,6 @@ export class ApplicantHeaderComponent implements OnInit, OnChanges {
         this.applicantQuery.applicant$
             .pipe(takeUntil(this.destroy$))
             .subscribe((res: ApplicantResponse) => {
-                console.log('RES', res);
                 this.applicantId = res.id;
 
                 if (this.selectedMode === SelectedMode.APPLICANT) {
@@ -161,7 +164,12 @@ export class ApplicantHeaderComponent implements OnInit, OnChanges {
                             }
 
                             if (index === 1) {
-                                return item;
+                                return {
+                                    ...item,
+                                    isCompleted: res.companyOwnerInfo
+                                        ? true
+                                        : false,
+                                };
                             }
 
                             if (index === 2) {
@@ -204,7 +212,7 @@ export class ApplicantHeaderComponent implements OnInit, OnChanges {
                             if (index === 7) {
                                 return {
                                     ...item,
-                                    isCompleted: res.ssn ? true : false,
+                                    isCompleted: res.ssnCard ? true : false,
                                 };
                             }
 
@@ -221,16 +229,112 @@ export class ApplicantHeaderComponent implements OnInit, OnChanges {
                 if (this.selectedMode === SelectedMode.REVIEW) {
                     this.isTabReviewedArray = this.isTabReviewedArray.map(
                         (item, index) => {
-                            if (index === 4) {
-                                /*  const pspAutorizationReview =
-                                    res?.pspAuth?.reviewed;
+                            if (index === 1) {
+                                const ownerInfoReview =
+                                    res?.companyOwnerInfo?.review;
+
+                                let hasIncorrectValue: boolean;
+
+                                if (ownerInfoReview) {
+                                    hasIncorrectValue =
+                                        isAnyPropertyInObjectFalse(
+                                            ownerInfoReview
+                                        );
+                                }
 
                                 return {
                                     ...item,
-                                    isReviewed: pspAutorizationReview
+                                    isReviewed: ownerInfoReview ? true : false,
+                                    hasIncorrectAnswer: hasIncorrectValue,
+                                };
+                            }
+
+                            if (index === 3) {
+                                const mvrAuthItems = res?.mvrAuth?.files;
+
+                                const mvrAuthReviewItems = mvrAuthItems?.map(
+                                    (item) => item?.review
+                                );
+
+                                let filteredMvrAuthItemsReview = [];
+                                let hasIncorrectValue: boolean;
+
+                                if (mvrAuthReviewItems) {
+                                    if (mvrAuthReviewItems[0]) {
+                                        let incorrectValuesArray = [];
+
+                                        for (
+                                            let i = 0;
+                                            i < mvrAuthReviewItems?.length;
+                                            i++
+                                        ) {
+                                            const filteredItem =
+                                                mvrAuthReviewItems[i];
+
+                                            filteredMvrAuthItemsReview = [
+                                                ...filteredMvrAuthItemsReview,
+                                                filteredItem,
+                                            ];
+
+                                            const objectHasIncorrectValue =
+                                                isAnyPropertyInObjectFalse(
+                                                    filteredItem
+                                                );
+
+                                            incorrectValuesArray = [
+                                                ...incorrectValuesArray,
+                                                objectHasIncorrectValue,
+                                            ];
+                                        }
+
+                                        if (
+                                            isAnyValueInArrayTrue(
+                                                incorrectValuesArray
+                                            )
+                                        ) {
+                                            hasIncorrectValue = true;
+                                        } else {
+                                            hasIncorrectValue = false;
+                                        }
+                                    }
+                                }
+
+                                return {
+                                    ...item,
+                                    isReviewed:
+                                        mvrAuthReviewItems &&
+                                        mvrAuthReviewItems[0]
+                                            ? true
+                                            : false,
+                                    hasIncorrectAnswer: hasIncorrectValue,
+                                };
+                            }
+
+                            if (index === 4) {
+                                return {
+                                    ...item,
+                                    isReviewed: res?.pspAuth?.reviewed
                                         ? true
                                         : false,
-                                }; */
+                                };
+                            }
+
+                            if (index === 5) {
+                                return {
+                                    ...item,
+                                    isReviewed: res?.sph?.reviewed
+                                        ? true
+                                        : false,
+                                };
+                            }
+
+                            if (index === 6) {
+                                return {
+                                    ...item,
+                                    isReviewed: res?.hosRule?.reviewed
+                                        ? true
+                                        : false,
+                                };
                             }
 
                             return item;

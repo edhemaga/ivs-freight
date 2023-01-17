@@ -48,6 +48,13 @@ export class TtFhwaInspectionModalComponent implements OnInit, OnDestroy {
             this.disableCardAnimation = true;
             this.editInspectionById();
         }
+
+        if (this.editData && this.editData?.data) {
+            this.editData = {
+                ...this.editData,
+                payload: this.editData.data,
+            };
+        }
     }
 
     private createForm() {

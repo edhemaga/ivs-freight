@@ -21,9 +21,10 @@
                     [cardNameCommon]="reg.licensePlate"
                     [hasCopyIcon]="true"
                     [options]="dataTest"
-                    [expDateClose]="reg.expDate | formatDateP"
+                    [expDateClose]="formatDate(reg.expDate)"
                     [optionsId]="reg.id"
                     [mainData]="reg"
+                    [forcedOpen]="reg.expDate == '1970-01-01T00:00:00' ? true : false"
                     [cardNameCurrent]="'registration'"
                     [noteIcons]="
                         reg.note
@@ -46,19 +47,19 @@
                                 <div class="card-item">
                                     <div class="card-item-name">Issued</div>
                                     <div class="card-item-value">
-                                        {{ reg.issueDate | formatDateP }}
+                                        {{ formatDate(reg.issueDate)}}
                                     </div>
                                 </div>
                             </div>
                             <div
                                 class="card-row-progress second-progress"
-                               
+                                *ngIf="reg.expDate && reg.expDate != '1970-01-01T00:00:00'"
                             >
                                 <div class="card-details-progress-container">
                                     <app-truckassist-progress-expiration
-                                        [expireDate]="reg.expDate | formatDateP"
+                                        [expireDate]="formatDate(reg.expDate)"
                                         [startDate]="
-                                            reg.issueDate | formatDateP
+                                            formatDate(reg.issueDate)
                                         "
                                         [expiresSettings]="'details'"
                                     >
@@ -154,7 +155,7 @@
                         trackBy: identity
                     "
                     [options]="dataFHWA"
-                    [cardNameCommon]="fhwa.issueDate | formatDateP"
+                    [cardNameCommon]="formatDate(fhwa.issueDate)"
                     [optionsId]="fhwa.id"
                     [cardDocumentCounter]="
                         fhwa?.files?.length ? fhwa?.files?.length : 0
@@ -165,7 +166,7 @@
                             ? 'assets/svg/truckassist-table/note/Note.svg'
                             : 'assets/svg/truckassist-table/note/Note - Empty.svg'
                     "
-                    [expDateClose]="fhwa.issueDate | setFutureYear"
+                    [expDateClose]="formatDate(fhwa.issueDate)"
                     (dropActions)="
                         optionsEvent($event, trailers.data, 'inspection')
                     "
@@ -178,10 +179,10 @@
                                 <div class="card-details-progress-container">
                                     <app-truckassist-progress-expiration
                                         [expireDate]="
-                                            fhwa.issueDate | setFutureYear
+                                            formatDate(fhwa.expDate)
                                         "
                                         [startDate]="
-                                            fhwa.issueDate | formatDateP
+                                            formatDate(fhwa.issueDate)
                                         "
                                         [expiresSettings]="'details'"
                                     >
@@ -301,7 +302,7 @@
                                 <div class="card-item">
                                     <div class="card-item-name">Issued</div>
                                     <div class="card-item-value">
-                                        {{ title.issueDate | formatDateP }}
+                                        {{ formatDate(title.issueDate) }}
                                     </div>
                                 </div>
                             </div>
@@ -311,10 +312,10 @@
                                 <div class="card-details-progress-container">
                                     <app-truckassist-progress-expiration
                                         [expireDate]="
-                                            title.issueDate | formatDateP
+                                            formatDate(title.issueDate)
                                         "
                                         [startDate]="
-                                            title.purchaseDate | formatDateP
+                                            formatDate(title.purchaseDate)
                                         "
                                         [expiresSettings]="'details'"
                                     >

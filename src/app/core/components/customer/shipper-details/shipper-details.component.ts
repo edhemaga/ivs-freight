@@ -30,6 +30,7 @@ export class ShipperDetailsComponent implements OnInit, OnDestroy {
     public shipperObject: any;
     public currentIndex: number = 0;
     public shipperList: any = this.shipperMinimalQuery.getAll();
+    public newShipperId: any = 0;
     constructor(
         private activated_route: ActivatedRoute,
         private router: Router,
@@ -46,7 +47,18 @@ export class ShipperDetailsComponent implements OnInit, OnDestroy {
         private shipperStore: ShipperDetailsListStore,
         private DetailsDataService: DetailsDataService,
         private ShipperItemStore: ShipperItemStore,
-    ) {}
+    ) {
+
+        let storeData$ = this.ShipperItemStore._select(state => state);
+        storeData$.subscribe(state => {
+            
+            let newShipData = {...state.entities[this.newShipperId]};
+            if ( !this.isEmpty(newShipData) ) { 
+                this.shipperConf(newShipData);
+             }
+        })
+
+    }
 
     ngOnInit(): void {
         // Confirmation Subscribe
@@ -90,6 +102,7 @@ export class ShipperDetailsComponent implements OnInit, OnDestroy {
 
                 query.pipe(takeUntil(this.destroy$)).subscribe({
                     next: (res: any) => {
+                        this.newShipperId = res.id;
                         this.shipperConf(res);
                         this.router.navigate([
                             `/customer/${res.id}/shipper-details`,
@@ -108,6 +121,10 @@ export class ShipperDetailsComponent implements OnInit, OnDestroy {
         };
         this.shipperConf(shipperData);
     }
+
+    public isEmpty(obj: Record<string, any>): boolean {
+        return Object.keys(obj).length === 0;
+      }
 
     public shipperConf(data: any) {
         this.DetailsDataService.setNewData(data);

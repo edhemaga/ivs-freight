@@ -138,7 +138,7 @@ export class TaInputService {
         } else if ('license plate' === inputName) {
             return /^[A-Za-z0-9\s-]$/;
         } else if ('description' === inputName) {
-            return /^[A-Za-z\s]*$/;
+            return /^[A-Za-z-.,/\s]*$/;
         } else if ('dba name' === inputName) {
             return /^[A-Za-z0-9!#'$&%()*+,./:;=<>?^[-]*$/;
         } else if ('per mile' === inputName) {
@@ -189,10 +189,13 @@ export class TaInputService {
         validators: any[] = [],
         reset: boolean = true
     ): void {
+        // Set validation
         if (hasValidation) {
             const validation = [Validators.required, ...validators];
             formControl.setValidators(validation);
-        } else {
+        }
+        // Reset validation
+        else {
             if (formControl && formControl.hasValidator(Validators.required)) {
                 formControl.clearValidators();
             }

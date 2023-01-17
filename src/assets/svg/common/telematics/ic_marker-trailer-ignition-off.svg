@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="34" height="33.999" viewBox="0 0 34 33.999">
+  <defs>
+    <filter id="Path_41063" x="0" y="0" width="34" height="33.999" filterUnits="userSpaceOnUse">
+      <feOffset input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="2" result="blur"/>
+      <feFlood flood-opacity="0.149"/>
+      <feComposite operator="in" in2="blur"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+  </defs>
+  <g transform="matrix(1, 0, 0, 1, 0, 0)" filter="drop-shadow(0px 0px 4px #00000026)">
+    <path id="Path_41063-2" data-name="Path 41063" d="M44.015.921l7.857,7.857a3.142,3.142,0,0,1,0,4.444l-7.857,7.857a3.142,3.142,0,0,1-4.444,0l-7.857-7.857a3.139,3.139,0,0,1,0-4.444L39.571.921a3.142,3.142,0,0,1,4.444,0" transform="translate(-24.79 6)" fill="#fff"/>
+  </g>
+  <path id="Path_41064" data-name="Path 41064" d="M43.206,3.586l6,6a2,2,0,0,1,0,2.828l-6,6a2,2,0,0,1-2.828,0l-6-6a2,2,0,0,1,0-2.828l6-6a2,2,0,0,1,2.828,0" transform="translate(-24.792 6)" fill="#ffa726" stroke="rgba(0,0,0,0)" stroke-miterlimit="10" stroke-width="1"/>
+  <path id="Path_41065" data-name="Path 41065" d="M39.675,3.366l3.75,3.75a1.249,1.249,0,0,1,0,1.767l-3.75,3.75a1.249,1.249,0,0,1-1.767,0l-3.75-3.75a1.249,1.249,0,0,1,0-1.767l3.75-3.75a1.249,1.249,0,0,1,1.767,0" transform="translate(-21.792 9)" fill="#fff"/>
+</svg>

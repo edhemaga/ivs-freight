@@ -26,6 +26,8 @@ import { CreateWithUploadsResponse } from '../model/createWithUploadsResponse';
 import { FileResponse } from '../model/fileResponse';
 // @ts-ignore
 import { ProblemDetails } from '../model/problemDetails';
+// @ts-ignore
+import { YesNoEnum } from '../model/yesNoEnum';
 
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
@@ -388,6 +390,7 @@ export class CitationService {
      * @param accidentId 
      * @param citationNo 
      * @param cost 
+     * @param paid 
      * @param description 
      * @param citationDate 
      * @param note 
@@ -395,10 +398,10 @@ export class CitationService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiCitationPost(roadsideInspectionId?: number, accidentId?: number, citationNo?: string, cost?: number, description?: string, citationDate?: string, note?: string, files?: Array<Blob>, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<CreateWithUploadsResponse>;
-    public apiCitationPost(roadsideInspectionId?: number, accidentId?: number, citationNo?: string, cost?: number, description?: string, citationDate?: string, note?: string, files?: Array<Blob>, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<CreateWithUploadsResponse>>;
-    public apiCitationPost(roadsideInspectionId?: number, accidentId?: number, citationNo?: string, cost?: number, description?: string, citationDate?: string, note?: string, files?: Array<Blob>, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<CreateWithUploadsResponse>>;
-    public apiCitationPost(roadsideInspectionId?: number, accidentId?: number, citationNo?: string, cost?: number, description?: string, citationDate?: string, note?: string, files?: Array<Blob>, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+    public apiCitationPost(roadsideInspectionId?: number, accidentId?: number, citationNo?: string, cost?: number, paid?: YesNoEnum, description?: string, citationDate?: string, note?: string, files?: Array<Blob>, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<CreateWithUploadsResponse>;
+    public apiCitationPost(roadsideInspectionId?: number, accidentId?: number, citationNo?: string, cost?: number, paid?: YesNoEnum, description?: string, citationDate?: string, note?: string, files?: Array<Blob>, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<CreateWithUploadsResponse>>;
+    public apiCitationPost(roadsideInspectionId?: number, accidentId?: number, citationNo?: string, cost?: number, paid?: YesNoEnum, description?: string, citationDate?: string, note?: string, files?: Array<Blob>, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<CreateWithUploadsResponse>>;
+    public apiCitationPost(roadsideInspectionId?: number, accidentId?: number, citationNo?: string, cost?: number, paid?: YesNoEnum, description?: string, citationDate?: string, note?: string, files?: Array<Blob>, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -459,6 +462,9 @@ export class CitationService {
         if (cost !== undefined) {
             localVarFormParams = localVarFormParams.append('Cost', <any>cost) as any || localVarFormParams;
         }
+        if (paid !== undefined) {
+            localVarFormParams = localVarFormParams.append('Paid', <any>paid) as any || localVarFormParams;
+        }
         if (description !== undefined) {
             localVarFormParams = localVarFormParams.append('Description', <any>description) as any || localVarFormParams;
         }
@@ -503,6 +509,7 @@ export class CitationService {
      * @param id 
      * @param citationNo 
      * @param cost 
+     * @param paid 
      * @param description 
      * @param citationDate 
      * @param note 
@@ -511,10 +518,10 @@ export class CitationService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiCitationPut(id?: number, citationNo?: string, cost?: number, description?: string, citationDate?: string, note?: string, files?: Array<Blob>, filesForDeleteIds?: Array<number>, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<CreateWithUploadsResponse>;
-    public apiCitationPut(id?: number, citationNo?: string, cost?: number, description?: string, citationDate?: string, note?: string, files?: Array<Blob>, filesForDeleteIds?: Array<number>, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<CreateWithUploadsResponse>>;
-    public apiCitationPut(id?: number, citationNo?: string, cost?: number, description?: string, citationDate?: string, note?: string, files?: Array<Blob>, filesForDeleteIds?: Array<number>, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<CreateWithUploadsResponse>>;
-    public apiCitationPut(id?: number, citationNo?: string, cost?: number, description?: string, citationDate?: string, note?: string, files?: Array<Blob>, filesForDeleteIds?: Array<number>, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+    public apiCitationPut(id?: number, citationNo?: string, cost?: number, paid?: YesNoEnum, description?: string, citationDate?: string, note?: string, files?: Array<Blob>, filesForDeleteIds?: Array<number>, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<CreateWithUploadsResponse>;
+    public apiCitationPut(id?: number, citationNo?: string, cost?: number, paid?: YesNoEnum, description?: string, citationDate?: string, note?: string, files?: Array<Blob>, filesForDeleteIds?: Array<number>, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<CreateWithUploadsResponse>>;
+    public apiCitationPut(id?: number, citationNo?: string, cost?: number, paid?: YesNoEnum, description?: string, citationDate?: string, note?: string, files?: Array<Blob>, filesForDeleteIds?: Array<number>, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<CreateWithUploadsResponse>>;
+    public apiCitationPut(id?: number, citationNo?: string, cost?: number, paid?: YesNoEnum, description?: string, citationDate?: string, note?: string, files?: Array<Blob>, filesForDeleteIds?: Array<number>, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -571,6 +578,9 @@ export class CitationService {
         }
         if (cost !== undefined) {
             localVarFormParams = localVarFormParams.append('Cost', <any>cost) as any || localVarFormParams;
+        }
+        if (paid !== undefined) {
+            localVarFormParams = localVarFormParams.append('Paid', <any>paid) as any || localVarFormParams;
         }
         if (description !== undefined) {
             localVarFormParams = localVarFormParams.append('Description', <any>description) as any || localVarFormParams;

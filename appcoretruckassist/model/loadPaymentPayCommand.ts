@@ -13,6 +13,7 @@
 
 export interface LoadPaymentPayCommand { 
     id?: number | null;
+    paymentType?: number;
     pay?: number;
     payDate?: string;
 }

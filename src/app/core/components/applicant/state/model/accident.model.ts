@@ -15,6 +15,7 @@ export interface AccidentModel {
     location: any;
     date: string;
     accidentState?: string;
+    accidentStateShort?: string;
     fatalities: number;
     injuries: number;
     hazmatSpill?: boolean;

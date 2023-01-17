@@ -419,7 +419,7 @@
                                 <div
                                     *ngFor="
                                         let item of routeProperties
-                                            | keyvalue: sortKeys
+                                            | keyvalue : sortKeys
                                     "
                                 >
                                     <div
@@ -469,7 +469,8 @@
                                                             ].distanceUnit
                                                           : '')
                                                     : item.value.text
-                                                : stop[item.value.value]
+                                                : (stop[item.value.value]
+                                                  | taThousandSeparator)
                                         }}
                                     </div>
                                 </div>
@@ -1057,7 +1058,7 @@
                                 <div
                                     *ngFor="
                                         let item of routeProperties
-                                            | keyvalue: sortKeys
+                                            | keyvalue : sortKeys
                                     "
                                 >
                                     <div
@@ -1487,13 +1488,11 @@
                                         </svg>
                                     </div>
                                     <div
-                                        [ngStyle]="{
-                                            visibility:
-                                                focusedRouteIndex == i
-                                                    ? 'hidden'
-                                                    : 'visible'
-                                        }"
                                         class="marker-container circle-marker"
+                                        [ngClass]="
+                                            route.isFocused ? 'route-zIndex-999' :
+                                            'route-zIndex-' + (tableData[selectedMapIndex].routes.length -i)
+                                        "
                                         (click)="stopMarkerClick($event, i, j)"
                                         (mousewheel)="
                                             markerZoom($event, route.stops[j])

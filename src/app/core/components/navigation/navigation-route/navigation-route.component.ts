@@ -31,6 +31,7 @@ export class NavigationRouteComponent implements OnInit {
     @Input() isUserPanelOpen: boolean = false;
     @Input() isActiveFooterRoute: boolean = false;
     @Input() index: number;
+    @Input() selectedRoute: string = "";
     @Output() onRouteEvent = new EventEmitter<NavigationSubRoutes>();
 
     public activeRouteName: string;

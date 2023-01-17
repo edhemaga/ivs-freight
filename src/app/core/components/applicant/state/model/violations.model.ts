@@ -3,6 +3,7 @@ export interface ViolationModel {
     reviewId: number;
     date: string;
     vehicleType: string;
+    vehicleTypeLogoName: string;
     location: any;
     description: string;
     isEditingViolation: boolean;

@@ -1,46 +1,52 @@
-<div class="container-fluid">
-    <div class="row">
-        <div
-            class="d-flex flex-column container-fluid justify-content-between check-email-container"
-        >
-            <div class="d-flex flex-column align-items-center">
-                <div
-                    class="d-flex flex-column align-items-center check-email-text"
-                >
-                    <h1 class="m-0 text-center">
-                        Please check <span>your email</span>
-                    </h1>
+<ng-container *ngIf="email">
+    <div class="container-fluid">
+        <div class="row">
+            <div
+                class="d-flex flex-column container-fluid justify-content-between check-email-container"
+            >
+                <div class="d-flex flex-column align-items-center">
+                    <div
+                        class="d-flex flex-column align-items-center check-email-text"
+                    >
+                        <h1 class="m-0 text-center">
+                            Please check <span>your email</span>
+                        </h1>
 
-                    <h2 class="m-0 text-center">
-                        We've sent you instructions to<br /><span>{{
-                            email
-                        }}</span>
-                        for resetting your password.
-                    </h2>
+                        <h2 class="m-0 text-center">
+                            We've sent you instructions to<br /><span>{{
+                                email
+                            }}</span>
+                            for resetting your password.
+                        </h2>
 
-                    <p class="m-0 text-center">
-                        If you haven't received an email from us within a couple
-                        of minutes,<br />please check your spam folder.
-                    </p>
+                        <p class="m-0 text-center">
+                            If you haven't received an email from us within a
+                            couple of minutes,<br />please check your spam
+                            folder.
+                        </p>
+                    </div>
+
+                    <svg-icon
+                        src="assets/svg/authentication/check-email.svg"
+                        [svgStyle]="{
+                            'width.px': '384.65',
+                            'height.px': '359.24'
+                        }"
+                    ></svg-icon>
                 </div>
 
-                <svg-icon
-                    src="assets/svg/authentication/check-email.svg"
-                    [svgStyle]="{ 'width.px': '384.65', 'height.px': '359.24' }"
-                ></svg-icon>
-            </div>
+                <!-- COPYRIGHT -->
 
-            <!-- COPYRIGHT -->
-
-            <div class="row">
-                <div
-                    class="d-flex justify-content-center align-items-center copyright"
-                >
-                    <p class="m-0">
-                        Copyright © TruckAssist {{ copyrightYear }}.
-                    </p>
+                <div class="row">
+                    <div
+                        class="d-flex justify-content-center align-items-center copyright"
+                    >
+                        <p class="m-0">
+                            Copyright © TruckAssist {{ copyrightYear }}.
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
+</ng-container>

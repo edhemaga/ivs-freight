@@ -912,9 +912,12 @@ export class TaInputComponent
         }
 
         if (
-            ['business name', 'shop name', 'fuel stop'].includes(
-                this.inputConfig.name.toLowerCase()
-            )
+            [
+                'business name',
+                'shop name',
+                'fuel stop',
+                'producer name',
+            ].includes(this.inputConfig.name.toLowerCase())
         ) {
             if (
                 this.inputService
@@ -985,6 +988,7 @@ export class TaInputComponent
                 'detention-rate',
                 'fuel per miles',
                 'fuel price map',
+                'amount',
             ].includes(this.inputConfig.name.toLowerCase())
         ) {
             if (
@@ -1437,7 +1441,7 @@ export class TaInputComponent
         }
 
         if (
-            ['producer name', 'insurer name', 'office name'].includes(
+            ['insurer name', 'office name'].includes(
                 this.inputConfig.name.toLowerCase()
             )
         ) {
@@ -1838,8 +1842,8 @@ export class TaInputComponent
                             this.dateTimeInputDate.setMonth(
                                 parseInt(
                                     this.span1.nativeElement.innerHTML +
-                                        (parseInt(e.key) - 1)
-                                )
+                                        parseInt(e.key)
+                                ) - 1
                             )
                         );
 
@@ -1851,6 +1855,7 @@ export class TaInputComponent
                                 parseInt(e.key)
                             ).slice(-2);
                         }
+
                         this.selectionInput = 1;
                         this.selectSpanByTabIndex(1, true);
                     }
@@ -2189,7 +2194,7 @@ export class TaInputComponent
                     this.span3.nativeElement.innerHTML = 'yy';
                     this.dateTimeInputDate = new Date();
                     this.showDateInput = false;
-                    this.resetForms();
+                    //this.resetForms(); // PITANJE STO SE OVO SKLANJA I UOPSTE STO JE TREBALO
                 }
             } else {
                 if (
@@ -2204,7 +2209,7 @@ export class TaInputComponent
                     this.span2.nativeElement.innerHTML = 'MM';
                     this.dateTimeInputDate = new Date();
                     this.showDateInput = false;
-                    this.resetForms();
+                    //this.resetForms(); // PITANJE STO SE OVO SKLANJA I UOPSTE STO JE TREBALO
                 }
             }
 

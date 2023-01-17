@@ -156,7 +156,7 @@ export class CommentService {
             }
         }
 
-        let localVarPath = `/api/Comment/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int32"})}`;
+        let localVarPath = `/api/comment/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int32"})}`;
         return this.httpClient.request<any>('delete', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
@@ -222,7 +222,7 @@ export class CommentService {
             }
         }
 
-        let localVarPath = `/api/Comment/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int32"})}`;
+        let localVarPath = `/api/comment/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int32"})}`;
         return this.httpClient.request<CommentResponse>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
@@ -331,7 +331,7 @@ export class CommentService {
             }
         }
 
-        let localVarPath = `/api/Comment/list`;
+        let localVarPath = `/api/comment/list`;
         return this.httpClient.request<CommentByEntityTypeListResponse>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
@@ -394,7 +394,7 @@ export class CommentService {
             }
         }
 
-        let localVarPath = `/api/Comment/modal`;
+        let localVarPath = `/api/comment/modal`;
         return this.httpClient.request<GetCommentModalResponse>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
@@ -468,7 +468,7 @@ export class CommentService {
             }
         }
 
-        let localVarPath = `/api/Comment`;
+        let localVarPath = `/api/comment`;
         return this.httpClient.request<CreateResponse>('post', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
@@ -543,7 +543,7 @@ export class CommentService {
             }
         }
 
-        let localVarPath = `/api/Comment`;
+        let localVarPath = `/api/comment`;
         return this.httpClient.request<any>('put', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,

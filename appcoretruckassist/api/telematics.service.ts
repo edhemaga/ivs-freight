@@ -25,15 +25,13 @@ import { AssignGpsDevicesToTrailerCommand } from '../model/assignGpsDevicesToTra
 // @ts-ignore
 import { AssignGpsDevicesToTruckCommand } from '../model/assignGpsDevicesToTruckCommand';
 // @ts-ignore
-import { GpsType } from '../model/gpsType';
-// @ts-ignore
 import { LiveTrackingHistoryResponse } from '../model/liveTrackingHistoryResponse';
 // @ts-ignore
 import { LiveTrackingItemResponse } from '../model/liveTrackingItemResponse';
 // @ts-ignore
 import { LiveTrackingResponse } from '../model/liveTrackingResponse';
 // @ts-ignore
-import { LiveTrackingSignalResponse } from '../model/liveTrackingSignalResponse';
+import { LiveTrackingUnassignResponse } from '../model/liveTrackingUnassignResponse';
 // @ts-ignore
 import { MobileGpsDataCommand } from '../model/mobileGpsDataCommand';
 // @ts-ignore
@@ -335,65 +333,13 @@ export class TelematicsService {
     }
 
     /**
-     * @param unassigned 
-     * @param deviceId 
-     * @param type 
-     * @param pageIndex 
-     * @param pageSize 
-     * @param companyId 
-     * @param sort 
-     * @param search 
-     * @param search1 
-     * @param search2 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiTelematicsDataAllGet(unassigned?: boolean, deviceId?: string, type?: GpsType, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<LiveTrackingResponse>;
-    public apiTelematicsDataAllGet(unassigned?: boolean, deviceId?: string, type?: GpsType, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<LiveTrackingResponse>>;
-    public apiTelematicsDataAllGet(unassigned?: boolean, deviceId?: string, type?: GpsType, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<LiveTrackingResponse>>;
-    public apiTelematicsDataAllGet(unassigned?: boolean, deviceId?: string, type?: GpsType, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
-
-        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
-        if (unassigned !== undefined && unassigned !== null) {
-          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>unassigned, 'Unassigned');
-        }
-        if (deviceId !== undefined && deviceId !== null) {
-          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>deviceId, 'DeviceId');
-        }
-        if (type !== undefined && type !== null) {
-          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>type, 'Type');
-        }
-        if (pageIndex !== undefined && pageIndex !== null) {
-          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>pageIndex, 'PageIndex');
-        }
-        if (pageSize !== undefined && pageSize !== null) {
-          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>pageSize, 'PageSize');
-        }
-        if (companyId !== undefined && companyId !== null) {
-          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>companyId, 'CompanyId');
-        }
-        if (sort !== undefined && sort !== null) {
-          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>sort, 'Sort');
-        }
-        if (search !== undefined && search !== null) {
-          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>search, 'Search');
-        }
-        if (search1 !== undefined && search1 !== null) {
-          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>search1, 'Search1');
-        }
-        if (search2 !== undefined && search2 !== null) {
-          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>search2, 'Search2');
-        }
+    public apiTelematicsDataAllGet(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<LiveTrackingResponse>;
+    public apiTelematicsDataAllGet(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<LiveTrackingResponse>>;
+    public apiTelematicsDataAllGet(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<LiveTrackingResponse>>;
+    public apiTelematicsDataAllGet(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -439,7 +385,6 @@ export class TelematicsService {
         return this.httpClient.request<LiveTrackingResponse>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
-                params: localVarQueryParameters,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,
@@ -674,9 +619,9 @@ export class TelematicsService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiTelematicsUnassignAllGet(request: object, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<LiveTrackingSignalResponse>;
-    public apiTelematicsUnassignAllGet(request: object, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<LiveTrackingSignalResponse>>;
-    public apiTelematicsUnassignAllGet(request: object, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<LiveTrackingSignalResponse>>;
+    public apiTelematicsUnassignAllGet(request: object, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<LiveTrackingUnassignResponse>;
+    public apiTelematicsUnassignAllGet(request: object, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<LiveTrackingUnassignResponse>>;
+    public apiTelematicsUnassignAllGet(request: object, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<LiveTrackingUnassignResponse>>;
     public apiTelematicsUnassignAllGet(request: object, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
         if (request === null || request === undefined) {
             throw new Error('Required parameter request was null or undefined when calling apiTelematicsUnassignAllGet.');
@@ -723,7 +668,7 @@ export class TelematicsService {
         }
 
         let localVarPath = `/api/telematics/unassign/all`;
-        return this.httpClient.request<LiveTrackingSignalResponse>('get', `${this.configuration.basePath}${localVarPath}`,
+        return this.httpClient.request<LiveTrackingUnassignResponse>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,
@@ -740,9 +685,9 @@ export class TelematicsService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiTelematicsUnassignCompanyGet(request: object, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<LiveTrackingSignalResponse>;
-    public apiTelematicsUnassignCompanyGet(request: object, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<LiveTrackingSignalResponse>>;
-    public apiTelematicsUnassignCompanyGet(request: object, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<LiveTrackingSignalResponse>>;
+    public apiTelematicsUnassignCompanyGet(request: object, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<LiveTrackingUnassignResponse>;
+    public apiTelematicsUnassignCompanyGet(request: object, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<LiveTrackingUnassignResponse>>;
+    public apiTelematicsUnassignCompanyGet(request: object, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<LiveTrackingUnassignResponse>>;
     public apiTelematicsUnassignCompanyGet(request: object, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
         if (request === null || request === undefined) {
             throw new Error('Required parameter request was null or undefined when calling apiTelematicsUnassignCompanyGet.');
@@ -789,7 +734,7 @@ export class TelematicsService {
         }
 
         let localVarPath = `/api/telematics/unassign/company`;
-        return this.httpClient.request<LiveTrackingSignalResponse>('get', `${this.configuration.basePath}${localVarPath}`,
+        return this.httpClient.request<LiveTrackingUnassignResponse>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,

@@ -13,6 +13,7 @@
         <div class="tab-switch-text"  mainContent style="pointer-events: none">
             {{ item.name }}
         </div>
+        <div class="tab-counter" *ngIf="item.counter">{{item.counter}}</div>
         <div popoverContent>
             <div class="custom-popover-holder">
                 <div
@@ -78,7 +79,7 @@
         </div>
     </div>
     <div
-        class="slide-active-holder"
+        class="slide-active-holder {{type}}"
         [ngStyle]="{
             width: hoverStyle.width + 'px',
             left: hoverStyle.x + 'px'

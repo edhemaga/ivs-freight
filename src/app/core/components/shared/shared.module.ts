@@ -120,6 +120,12 @@ import { LoadModalProgressBarComponent } from '../modals/load-modal/load-modal-p
 import { LoadStopComponent } from '../modals/load-modal/load-stop/load-stop.component';
 import { GpsProgressbarComponent } from './gps-progressbar/gps-progressbar.component';
 import { LoadFinancialComponent } from '../modals/load-modal/load-financial/load-financial.component';
+import { TaInputSwitchOnOffComponent } from './ta-input-switch-on-off/ta-input-switch-on-off.component';
+import { TableModalComponent } from './table-modal/table-modal.component';
+import { TaPickupDeliveryComponent } from './ta-pickup-delivery/ta-pickup-delivery.component';
+import { PayrollBonusModalComponent } from '../modals/payroll-modals/payroll-bonus-modal/payroll-bonus-modal.component';
+import { PayrollCreditBonusComponent } from '../modals/payroll-modals/payroll-credit-bonus/payroll-credit-bonus.component';
+import { PayrollDeducationModalComponent } from '../modals/payroll-modals/payroll-deducation-modal/payroll-deducation-modal.component';
 
 export function playerFactory() {
     return import('lottie-web');
@@ -171,6 +177,7 @@ export function playerFactory() {
         ApplicantReviewFeedbackComponent,
         TaTimePeriodComponent,
         AutoclosePopoverComponent,
+        TaInputSwitchOnOffComponent,
 
         // Modals Components
         ApplicantModalComponent,
@@ -203,6 +210,11 @@ export function playerFactory() {
         LoadModalStatusesComponent,
         LoadFinancialComponent,
         //-------------
+        // Payroll Modals
+        PayrollBonusModalComponent,
+        PayrollCreditBonusComponent,
+        PayrollDeducationModalComponent,
+        //-------------
         TtTitleModalComponent,
         ConfirmationModalComponent,
         MapSettingsModalComponent,
@@ -227,6 +239,8 @@ export function playerFactory() {
         PayrollStatusesComponent,
         TaCheckboxCardComponent,
         GpsProgressbarComponent,
+        TableModalComponent,
+        TaPickupDeliveryComponent,
     ],
     imports: [
         CommonModule,
@@ -312,6 +326,7 @@ export function playerFactory() {
         TaInputArrowsComponent,
         CustomScrollbarComponent,
         GpsProgressbarComponent,
+        TaInputSwitchOnOffComponent,
 
         DetailsDropdownComponent,
         TaReCardComponent,
@@ -378,6 +393,11 @@ export function playerFactory() {
         LoadModalStatusesComponent,
         LoadFinancialComponent,
         //-------------
+        // Payroll Modals
+        PayrollBonusModalComponent,
+        PayrollCreditBonusComponent,
+        PayrollDeducationModalComponent,
+        //-------------
         TtTitleModalComponent,
         ConfirmationModalComponent,
         MapSettingsModalComponent,
@@ -385,6 +405,8 @@ export function playerFactory() {
         PayrollStatusesComponent,
 
         TaCheckboxCardComponent,
+        TaPickupDeliveryComponent,
+        TableModalComponent,
     ],
     providers: [],
     schemas: [CUSTOM_ELEMENTS_SCHEMA],

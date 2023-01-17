@@ -36,9 +36,7 @@ export class CustomDatetimePickersComponent implements OnInit {
     currentMonth: any = new Date().getMonth();
     currentDay: any = new Date().getDate();
     listPreview: any = 'full_list';
-    timeMinutes: any = new Array(60)
-        .fill(0)
-        .map((_, idx) => (idx < 10 ? '0' + idx : idx));
+    timeMinutes: any = ["00", "15", "30", "45"]
     monthArray: any = new Array(12).fill(0).map((_, indx) => indx + 1);
     monthDayList: any = new Array(31).fill(0).map((_, indx) => indx + 1);
     yearsList: any = new Array(100)

@@ -1,12 +1,12 @@
-<div class="load-stop-container" [ngClass]="{ active: _isCardOpen }">
+<div class="load-stop-container" [ngClass]="{ active: isCardOpen }">
     <div
         class="load-stop-header-bar"
         [ngClass]="{
-            'first-or-last': firstOrLast && _isCardOpen,
+            'first-or-last': firstOrLast && isCardOpen,
             'origin-destination-no-filled': !shipper,
-            'not-active-stop': !_isCardOpen
+            'not-active-stop': !isCardOpen
         }"
-        (click)="toggleStop()"
+        (click)="toggleStop($event)"
     >
         <div
             class="load-stop-counter-container"
@@ -64,7 +64,7 @@
                 >
                     <p>
                         {{ isEmptyLoad ? 'DEADHEAD' : 'LEG' }}
-                        <span>{{ legMile }} mi</span>
+                        <span>{{ legMile | number: '1.2-2' }} mi</span>
                     </p>
                 </div>
                 <div
@@ -95,15 +95,16 @@
             </div>
         </div>
     </div>
-    <div
-        class="load-stop-body"
-        [ngClass]="noActive"
-        [ngStyle]="animationMarginParams"
-        [@showHideCardBody]="{
-            value: _isCardOpen.toString(),
-            params: animationMarginParams
-        }"
-    >
-        <ng-content></ng-content>
+    <div class="load-stop-body">
+        <div
+            [ngStyle]="animationMarginParams"
+            [@collapse]="{
+                value: isCardOpen,
+                params: animationMarginParams
+            }"
+            class="content-holder"
+        >
+            <ng-content></ng-content>
+        </div>
     </div>
 </div>

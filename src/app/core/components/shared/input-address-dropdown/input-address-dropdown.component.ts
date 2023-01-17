@@ -11,7 +11,14 @@ import {
     ChangeDetectorRef,
     HostListener,
 } from '@angular/core';
-import { distinctUntilChanged, filter, Subject, switchMap, takeUntil, throttleTime } from 'rxjs';
+import {
+    distinctUntilChanged,
+    filter,
+    Subject,
+    switchMap,
+    takeUntil,
+    throttleTime,
+} from 'rxjs';
 import { AddressService } from 'src/app/core/services/shared/address.service';
 import { AddressEntity } from 'appcoretruckassist';
 import {
@@ -120,7 +127,7 @@ export class InputAddressDropdownComponent
                 filter((term: string) => {
                     if (!term) {
                         this.inputConfig.loadingSpinner = {
-                            isLoading: false
+                            isLoading: false,
                         };
                         this.addresList = [];
                     } else if (
@@ -149,7 +156,7 @@ export class InputAddressDropdownComponent
                     this.inputConfig.loadingSpinner = {
                         size: 'small',
                         color: 'white',
-                        isLoading: true
+                        isLoading: true,
                     };
 
                     return this.addressService.getAddresses(
@@ -161,13 +168,12 @@ export class InputAddressDropdownComponent
             )
             .subscribe((res) => {
                 this.inputConfig.loadingSpinner = {
-                    isLoading: false
+                    isLoading: false,
                 };
 
                 this.addresList = res.addresses.map((item, indx) => {
                     return {
-                        ...item,
-                        name: item.address.address,
+                        name: item,
                         id: indx,
                     };
                 });
@@ -184,18 +190,24 @@ export class InputAddressDropdownComponent
         this.closeDropdown.emit(e);
     }
 
+    public getAddressData(address) {
+        this.addressService.getAddressInfo(address).subscribe((res) => {
+            this.currentAddressData = {
+                address: res.address,
+                valid: res.address && res.longLat ? true : false,
+                longLat: res.longLat,
+            };
+            this.selectedAddress.emit(this.currentAddressData);
+        });
+    }
+
     public onSelectDropdown(event: any, action: string) {
         switch (action) {
             case 'address': {
                 this.activeAddress = event;
-                if (event?.address) {
-                    this.currentAddressData = {
-                        address: event.address,
-                        valid: true,
-                        longLat: event.longLat,
-                    };
-                    this.selectedAddress.emit(this.currentAddressData);
-                    this.getSuperControl.setValue(event.address.address);
+                if (event?.name) {
+                    this.getAddressData(event.name);
+                    this.getSuperControl.setValue(event.name);
                     this.getSuperControl.setErrors(null);
                     this.chosenFromDropdown = true;
                 } else {

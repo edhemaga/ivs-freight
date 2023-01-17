@@ -91,7 +91,7 @@ $transition: all 0.3s ease-in-out;
 
                     .copy-value{
                         
-                        width: 365px;
+                        max-width: 365px;
                         text-overflow: ellipsis;
                         overflow: hidden; 
                         white-space: nowrap;
@@ -215,6 +215,7 @@ $transition: all 0.3s ease-in-out;
             font-size: $font-size14;
             font-weight: 400;
             color: $color-gray-dark;
+            max-width: 294px;
             overflow: hidden;
             line-height: 19px;
             text-overflow: ellipsis;

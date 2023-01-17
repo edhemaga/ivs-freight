@@ -25,13 +25,11 @@ import { CompanyIntegrationProviderListResponse } from '../model/companyIntegrat
 // @ts-ignore
 import { CompanyIntegrationResponse } from '../model/companyIntegrationResponse';
 // @ts-ignore
-import { CreateResponse } from '../model/createResponse';
-// @ts-ignore
 import { EditIntegrationCommand } from '../model/editIntegrationCommand';
 // @ts-ignore
-import { IntegrationConectedResponse } from '../model/integrationConectedResponse';
+import { EfsIntegrationConnectDisconnectCommand } from '../model/efsIntegrationConnectDisconnectCommand';
 // @ts-ignore
-import { IntegrationConnectDisconnectCommand } from '../model/integrationConnectDisconnectCommand';
+import { IntegrationConectedResponse } from '../model/integrationConectedResponse';
 // @ts-ignore
 import { IntegrationListResponse } from '../model/integrationListResponse';
 // @ts-ignore
@@ -110,14 +108,14 @@ export class IntegrationService {
     }
 
     /**
-     * @param integrationConnectDisconnectCommand 
+     * @param efsIntegrationConnectDisconnectCommand 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiIntegrationConnectDisconnectPost(integrationConnectDisconnectCommand?: IntegrationConnectDisconnectCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<IntegrationConectedResponse>;
-    public apiIntegrationConnectDisconnectPost(integrationConnectDisconnectCommand?: IntegrationConnectDisconnectCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<IntegrationConectedResponse>>;
-    public apiIntegrationConnectDisconnectPost(integrationConnectDisconnectCommand?: IntegrationConnectDisconnectCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<IntegrationConectedResponse>>;
-    public apiIntegrationConnectDisconnectPost(integrationConnectDisconnectCommand?: IntegrationConnectDisconnectCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+    public apiIntegrationEfsConnectDisconnectPost(efsIntegrationConnectDisconnectCommand?: EfsIntegrationConnectDisconnectCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<IntegrationConectedResponse>;
+    public apiIntegrationEfsConnectDisconnectPost(efsIntegrationConnectDisconnectCommand?: EfsIntegrationConnectDisconnectCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<IntegrationConectedResponse>>;
+    public apiIntegrationEfsConnectDisconnectPost(efsIntegrationConnectDisconnectCommand?: EfsIntegrationConnectDisconnectCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<IntegrationConectedResponse>>;
+    public apiIntegrationEfsConnectDisconnectPost(efsIntegrationConnectDisconnectCommand?: EfsIntegrationConnectDisconnectCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -170,11 +168,11 @@ export class IntegrationService {
             }
         }
 
-        let localVarPath = `/api/integration/Connect/Disconnect`;
+        let localVarPath = `/api/integration/efs/connect/disconnect`;
         return this.httpClient.request<IntegrationConectedResponse>('post', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
-                body: integrationConnectDisconnectCommand,
+                body: efsIntegrationConnectDisconnectCommand,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,
@@ -660,9 +658,9 @@ export class IntegrationService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiIntegrationPost(addIntegrationCommand?: AddIntegrationCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<CreateResponse>;
-    public apiIntegrationPost(addIntegrationCommand?: AddIntegrationCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<CreateResponse>>;
-    public apiIntegrationPost(addIntegrationCommand?: AddIntegrationCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<CreateResponse>>;
+    public apiIntegrationPost(addIntegrationCommand?: AddIntegrationCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<CompanyIntegrationResponse>;
+    public apiIntegrationPost(addIntegrationCommand?: AddIntegrationCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<CompanyIntegrationResponse>>;
+    public apiIntegrationPost(addIntegrationCommand?: AddIntegrationCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<CompanyIntegrationResponse>>;
     public apiIntegrationPost(addIntegrationCommand?: AddIntegrationCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarHeaders = this.defaultHeaders;
@@ -717,7 +715,7 @@ export class IntegrationService {
         }
 
         let localVarPath = `/api/integration`;
-        return this.httpClient.request<CreateResponse>('post', `${this.configuration.basePath}${localVarPath}`,
+        return this.httpClient.request<CompanyIntegrationResponse>('post', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 body: addIntegrationCommand,
@@ -735,9 +733,9 @@ export class IntegrationService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiIntegrationPut(editIntegrationCommand?: EditIntegrationCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<IntegrationConectedResponse>;
-    public apiIntegrationPut(editIntegrationCommand?: EditIntegrationCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<IntegrationConectedResponse>>;
-    public apiIntegrationPut(editIntegrationCommand?: EditIntegrationCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<IntegrationConectedResponse>>;
+    public apiIntegrationPut(editIntegrationCommand?: EditIntegrationCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<CompanyIntegrationResponse>;
+    public apiIntegrationPut(editIntegrationCommand?: EditIntegrationCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<CompanyIntegrationResponse>>;
+    public apiIntegrationPut(editIntegrationCommand?: EditIntegrationCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<CompanyIntegrationResponse>>;
     public apiIntegrationPut(editIntegrationCommand?: EditIntegrationCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarHeaders = this.defaultHeaders;
@@ -792,7 +790,7 @@ export class IntegrationService {
         }
 
         let localVarPath = `/api/integration`;
-        return this.httpClient.request<IntegrationConectedResponse>('put', `${this.configuration.basePath}${localVarPath}`,
+        return this.httpClient.request<CompanyIntegrationResponse>('put', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 body: editIntegrationCommand,

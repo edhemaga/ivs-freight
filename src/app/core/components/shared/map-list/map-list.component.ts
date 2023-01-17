@@ -299,7 +299,7 @@ export class MapListComponent
                     sortName: 'location',
                     isHidden: true,
                 },
-                { name: 'Favorites', id: 8, sortName: 'favorites' },
+                // { name: 'Favorites', id: 8, sortName: 'favorites' },
                 { name: 'Available', id: 9, sortName: 'available' },
                 { name: 'Rating', id: 3, sortName: 'rating' },
                 { name: 'Date Added', id: 4, sortName: 'createdAt' },
@@ -321,10 +321,10 @@ export class MapListComponent
                     sortName: 'location',
                     isHidden: true,
                 },
-                { name: 'Favorites', id: 8, sortName: 'favorites' },
+                // { name: 'Favorites', id: 8, sortName: 'favorites' },
                 { name: 'Fuel Price', id: 9, sortName: 'fuelPrice' },
                 { name: 'Last Used Date', id: 5, sortName: 'updatedAt  ' },
-                { name: 'Purchase', id: 6, sortName: 'purchase' },
+                { name: 'Transaction', id: 6, sortName: 'transaction' },
                 { name: 'Total Cost', id: 7, sortName: 'cost' },
             ];
         } else if (this.type == 'accident') {

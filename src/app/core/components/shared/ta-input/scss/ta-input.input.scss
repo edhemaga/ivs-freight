@@ -223,7 +223,8 @@
         background-color: $input-background-color-invalid-focus !important;
     }
 
-    &.invalid-focus-out-filled {
+    &.invalid-focus-out-filled,
+    &.invalid-focus-out-empty {
         background-color: $input-background-color-invalid-focus-out !important;
         color: $input-text-color-invalid-focus-out !important;
 
@@ -255,6 +256,16 @@
         -ms-user-select: none;
         user-select: none;
         pointer-events: none;
+
+        &::-moz-selection {
+            background-color: $input-background-color-disabled !important;
+            color: $input-text-color-filled-disabled !important;
+        }
+
+        &::selection {
+            background-color: $input-background-color-disabled !important;
+            color: $input-text-color-filled-disabled !important;
+        }
     }
 
     &.blue-input-color {
@@ -412,7 +423,7 @@
     }
 
     &.load-shipper {
-        grid-template-columns: 331px 139px 85px;
+        grid-template-columns: 331px 143px 80px;
         -moz-column-gap: 2px;
         column-gap: 2px;
         padding-right: 25px;
@@ -476,6 +487,31 @@
     &.cursor-on-right-side {
         text-align: right;
         padding-right: 32px;
+    }
+
+    &.merged-dropdown {
+        border-bottom-left-radius: 0px !important;
+        border-bottom-right-radius: 0px !important;
+
+        &::-webkit-input-placeholder {
+            color: rgb(255, 255, 255, 0.4) !important;
+        }
+
+        &::-moz-placeholder {
+            color: rgb(255, 255, 255, 0.4) !important;
+        }
+
+        &:-ms-input-placeholder {
+            color: rgb(255, 255, 255, 0.4) !important;
+        }
+
+        &::-ms-input-placeholder {
+            color: rgb(255, 255, 255, 0.4) !important;
+        }
+
+        &::placeholder {
+            color: rgb(255, 255, 255, 0.4) !important;
+        }
     }
 
     //------------------------- Custom class -------------------------

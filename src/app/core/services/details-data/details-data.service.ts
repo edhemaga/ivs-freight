@@ -13,6 +13,7 @@ export class DetailsDataService {
     public leftMenuOpened: any = false;
     public stopName: any;
     public documentName: any;
+    public unitValue: any;
 
     constructor() {}
 
@@ -54,5 +55,9 @@ export class DetailsDataService {
 
     setDocumentName(mod){
         this.documentName = mod;
+    }
+
+    setUnitValue(mod){
+        this.unitValue = mod;
     }
 }

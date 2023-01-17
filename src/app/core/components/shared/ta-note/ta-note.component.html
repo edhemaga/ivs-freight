@@ -64,6 +64,7 @@
         <div
             [class.expanded]="isExpanded"
             class="k-widget k-editor custom_editor"
+            [class.dark]="type == 'dark'"
             [ngStyle]="{ width: noteWidth + 'px' }"
         >
             <div
@@ -75,6 +76,7 @@
                 [class.not_expanded]="!isExpanded"
                 [class.parking_text_hold]="parking"
                 [class.opened_all_editor]="openedAll"
+                [class.dark]="type == 'dark'"
                 [innerHTML]="note | safeHtml"
                 class="editor"
                 (keydown)="maxLimitForContenteditableDiv($event, 250)"
@@ -82,7 +84,10 @@
                 id="main_editor"
             ></div>
             <div class="container_separate" *ngIf="isExpanded">
-                <div class="container_separate_inner"></div>
+                <div
+                    class="container_separate_inner"
+                    [class.dark]="type == 'dark'"
+                ></div>
             </div>
             <div class="spinner" *ngIf="savingNote && isExpanded">
                 <app-ta-spinner
@@ -104,6 +109,7 @@
                     [parking]="parking"
                     [popoverNote]="true"
                     [selectedEditor]="main_editor?.nativeElement"
+                    [type]="type"
                 ></app-ta-note-container>
             </div>
         </div>

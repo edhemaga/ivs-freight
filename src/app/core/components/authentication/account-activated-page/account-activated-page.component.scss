@@ -5,6 +5,18 @@
     min-height: 100vh;
     padding-top: 60px;
 
+    br {
+        &::-moz-selection {
+            color: $bw6-2;
+            background: rgb(108, 108, 108, 0.2);
+        }
+
+        &::selection {
+            color: $bw6-2;
+            background: rgb(108, 108, 108, 0.2);
+        }
+    }
+
     .account-activated-text {
         h1 {
             font-weight: 800;
@@ -76,6 +88,7 @@
         border: none;
         outline: none;
         transition: background 0.3s ease-in-out;
+        user-select: none;
 
         &:hover {
             background: $ta-blue;

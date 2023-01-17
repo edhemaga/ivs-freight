@@ -121,6 +121,8 @@ export class ShipperCardViewComponent implements OnInit, OnChanges {
         },
     };
 
+    public shipperIndex: any;
+
     constructor(
         private detailsPageDriverSer: DetailsPageService,
         private shipperMinimalListQuery: ShipperMinimalListQuery
@@ -134,6 +136,11 @@ export class ShipperCardViewComponent implements OnInit, OnChanges {
     }
     ngOnInit(): void {
         this.tabsButton();
+
+        let currentIndex = this.shipperList.findIndex(
+            (shipper) => shipper.id === this.shipper.id
+        );
+        this.shipperIndex = currentIndex;
     }
     public getShipperDropdown() {
         this.shipperDropdowns = this.shipperMinimalListQuery
@@ -209,6 +216,7 @@ export class ShipperCardViewComponent implements OnInit, OnChanges {
                     this.onSelectedShipper({
                         id: this.shipperList[currentIndex].id,
                     });
+                    this.shipperIndex = currentIndex; 
                 }
                 break;
             }
@@ -224,6 +232,7 @@ export class ShipperCardViewComponent implements OnInit, OnChanges {
                     this.onSelectedShipper({
                         id: this.shipperList[currentIndex].id,
                     });
+                    this.shipperIndex = currentIndex;
                 }
                 break;
             }

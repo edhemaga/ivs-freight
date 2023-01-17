@@ -59,6 +59,7 @@ export class TrailerDetailsCardComponent
     public trailerDropDowns: any[] = [];
     private destroy$ = new Subject<void>();
     public trailer_list: any[] = this.trailerMinimalQuery.getAll();
+    public trailerIndex: any;
     constructor(
         private detailsPageDriverSer: DetailsPageService,
         private trailerMinimalQuery: TrailersMinimalListQuery,
@@ -79,6 +80,12 @@ export class TrailerDetailsCardComponent
         this.getTrailerById(this.trailer.id);
         this.initTableOptions();
         this.getTrailerDropdown();
+
+        let currentIndex = this.trailer_list.findIndex(
+            (trailer) => trailer.id === this.trailer.id
+        );
+        
+        this.trailerIndex = currentIndex;
     }
 
     public getTrailerById(id: number) {
@@ -143,7 +150,7 @@ export class TrailerDetailsCardComponent
             .map((item) => {
                 return {
                     id: item.id,
-                    name: this.trailer.trailerNumber,
+                    name: item.trailerNumber,
                     svg: item.trailerType.logoName,
                     folder: 'common/trailers',
                     status: item.status,
@@ -152,7 +159,7 @@ export class TrailerDetailsCardComponent
             });
     }
     public onSelectedTrailer(event: any) {
-        /*
+        
         if (event.id !== this.trailer.id) {
             this.trailerDropDowns = this.trailerMinimalQuery
                 .getAll()
@@ -167,9 +174,7 @@ export class TrailerDetailsCardComponent
                     };
                 });
             this.detailsPageDriverSer.getDataDetailId(event.id);
-            console.log('---getDataDetailId', this.detailsPageDriverSer.getDataDetailId(event.id));
         }
-        */
     }
     public onChangeTrailer(action: string) {
         
@@ -187,6 +192,7 @@ export class TrailerDetailsCardComponent
                     this.onSelectedTrailer({
                         id: this.trailer_list[currentIndex].id,
                     });
+                    this.trailerIndex = currentIndex;
                 }
                 break;
             }
@@ -202,6 +208,7 @@ export class TrailerDetailsCardComponent
                     this.onSelectedTrailer({
                         id: this.trailer_list[currentIndex].id,
                     });
+                    this.trailerIndex = currentIndex;
                 }
 
                 break;

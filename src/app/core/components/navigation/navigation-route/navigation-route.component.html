@@ -49,12 +49,7 @@
                 !isSettingsPanelOpen &&
                 !isUserPanelOpen,
             'nav-item-svg-active':
-                ((route.isRouteActive && footerRouteActive) ||
-                    route.isSubrouteActive) &&
-                !isSettingsPanelOpen &&
-                !settingsPage &&
-                !isUserPanelOpen &&
-                footerRouteActive
+                selectedRoute == route.route
         }"
     ></svg-icon>
 

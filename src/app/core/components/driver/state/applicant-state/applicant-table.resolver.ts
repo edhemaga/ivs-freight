@@ -24,7 +24,7 @@ export class ApplicantTableResolver implements Resolve<ApplicantTableState> {
                 catchError(() => {
                     return of('No applicants data...');
                 }),
-                tap((applicantPagination: any /*GetApplicantListResponse*/) => {
+                tap((applicantPagination: any) => {
                     localStorage.setItem(
                         'applicantTableCount',
                         JSON.stringify({

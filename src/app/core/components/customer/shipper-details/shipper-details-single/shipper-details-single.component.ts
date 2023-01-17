@@ -6,8 +6,11 @@ import {
     OnChanges,
     SimpleChanges,
 } from '@angular/core';
-import { ShipperResponse } from 'appcoretruckassist';
+import { ShipperResponse, UpdateReviewCommand } from 'appcoretruckassist';
 import { Titles } from 'src/app/core/utils/application.decorators';
+import { ReviewCommentModal } from '../../../shared/ta-user-review/ta-user-review.component';
+import { ReviewsRatingService } from '../../../../services/reviews-rating/reviewsRating.service';
+import { debounceTime, Subject, takeUntil } from 'rxjs';
 
 @Titles()
 @Component({
@@ -22,7 +25,8 @@ export class ShipperDetailsSingleComponent implements OnInit, OnChanges {
     public shipperLikes: number;
     public shipperDislike: number;
     public reviewsRepair: any = [];
-    constructor() {}
+    private destroy$ = new Subject<void>();
+    constructor(private reviewRatingService: ReviewsRatingService,) {}
     ngOnChanges(changes: SimpleChanges): void {
         if (changes.shipper?.currentValue != changes.shipper?.previousValue) {
             this.shipper = changes.shipper.currentValue;
@@ -30,9 +34,10 @@ export class ShipperDetailsSingleComponent implements OnInit, OnChanges {
             this.shipperContacts =
                 changes.shipper.currentValue[0].data.shipperContacts;
             this.shipperLikes =
-                changes.shipper.currentValue[0].data.upRatingCount;
+                changes.shipper.currentValue[0].data.upCount;
             this.shipperDislike =
-                changes.shipper.currentValue[0].data.downRatingCount;
+                changes.shipper.currentValue[0].data.downCount;
+        
             this.getReviews(changes.shipper.currentValue[0].data);
         }
     }
@@ -58,7 +63,47 @@ export class ShipperDetailsSingleComponent implements OnInit, OnChanges {
             };
         });
     }
-    public changeReviewsEvent() {
-        // TODO: API CREATE OR DELETE
+    public changeReviewsEvent(reviews: ReviewCommentModal) {
+        switch (reviews.action) {
+            case 'delete': {
+              this.deleteReview(reviews);
+              break;
+            }
+            case 'add': {
+              //this.addReview(reviews);
+              break;
+            }
+            case 'update': {
+              this.updateReview(reviews);
+              break;
+            }
+            default: {
+             break;
+             }
+         }
+    }
+
+    private updateReview(reviews: ReviewCommentModal) {
+        const review: UpdateReviewCommand = {
+            id: reviews.data.id,
+            comment: reviews.data.commentContent,
+        };
+        this.reviewRatingService
+            .updateReview(review)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: () => {},
+                error: () => {},
+            });
+    }
+
+    private deleteReview(reviews: ReviewCommentModal) {
+        this.reviewRatingService
+            .deleteReview(reviews.data)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: () => {},
+                error: () => {},
+            });
     }
 }

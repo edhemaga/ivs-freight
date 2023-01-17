@@ -11,7 +11,13 @@ import {
 import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 import { Router } from '@angular/router';
 
-import { Subject, Subscription, takeUntil } from 'rxjs';
+import {
+    distinctUntilChanged,
+    Subject,
+    Subscription,
+    takeUntil,
+    throttleTime,
+} from 'rxjs';
 
 import {
     anyInputInLineIncorrect,
@@ -19,6 +25,7 @@ import {
     isFormValueNotEqual,
     isAnyRadioInArrayUnChecked,
     filterUnceckedRadiosId,
+    isAnyValueInArrayFalse,
 } from '../../state/utils/utils';
 
 import {
@@ -68,7 +75,7 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
 
     private destroy$ = new Subject<void>();
 
-    public selectedMode: string = SelectedMode.REVIEW;
+    public selectedMode: string = SelectedMode.APPLICANT;
 
     public personalInfoRadios: any;
 
@@ -287,6 +294,10 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
         },
     ];
 
+    public documents: any[] = [];
+    public documentsForDeleteIds: number[] = [];
+    public displayDocumentsRequiredNote: boolean = false;
+
     public openAnnotationArray: {
         lineIndex?: number;
         lineInputs?: boolean[];
@@ -426,6 +437,7 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
             felonyExplain: [null],
             misdemeanorExplain: [null],
             drunkDrivingExplain: [null],
+            files: [null, Validators.required],
 
             firstRowReview: [null],
             secondRowReview: [null],
@@ -533,7 +545,6 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
             this.selectedBank = this.banksDropdownList.find(
                 (item) => item.id === bankId
             );
-
             const isAgreementValue =
                 this.personalInfoForm.get('isAgreement').value;
 
@@ -562,6 +573,10 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
 
                 if (anotherName) {
                     this.personalInfoRadios[2].buttons[0].checked = true;
+
+                    this.inputService.changeValidators(
+                        this.personalInfoForm.get('anotherNameExplain')
+                    );
                 } else {
                     this.personalInfoRadios[2].buttons[1].checked = true;
 
@@ -569,10 +584,19 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
                         this.personalInfoRadios[2].buttons[0].checked = false;
                         this.personalInfoRadios[2].buttons[1].checked = false;
                     }
+
+                    this.inputService.changeValidators(
+                        this.personalInfoForm.get('anotherNameExplain'),
+                        false
+                    );
                 }
 
                 if (inMilitary) {
                     this.personalInfoRadios[3].buttons[0].checked = true;
+
+                    this.inputService.changeValidators(
+                        this.personalInfoForm.get('inMilitaryExplain')
+                    );
                 } else {
                     this.personalInfoRadios[3].buttons[1].checked = true;
 
@@ -580,10 +604,19 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
                         this.personalInfoRadios[3].buttons[0].checked = false;
                         this.personalInfoRadios[3].buttons[1].checked = false;
                     }
+
+                    this.inputService.changeValidators(
+                        this.personalInfoForm.get('inMilitaryExplain'),
+                        false
+                    );
                 }
 
                 if (felony) {
                     this.personalInfoRadios[4].buttons[0].checked = true;
+
+                    this.inputService.changeValidators(
+                        this.personalInfoForm.get('felonyExplain')
+                    );
                 } else {
                     this.personalInfoRadios[4].buttons[1].checked = true;
 
@@ -591,10 +624,19 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
                         this.personalInfoRadios[4].buttons[0].checked = false;
                         this.personalInfoRadios[4].buttons[1].checked = false;
                     }
+
+                    this.inputService.changeValidators(
+                        this.personalInfoForm.get('felonyExplain'),
+                        false
+                    );
                 }
 
                 if (misdemeanor) {
                     this.personalInfoRadios[5].buttons[0].checked = true;
+
+                    this.inputService.changeValidators(
+                        this.personalInfoForm.get('misdemeanorExplain')
+                    );
                 } else {
                     this.personalInfoRadios[5].buttons[1].checked = true;
 
@@ -602,10 +644,19 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
                         this.personalInfoRadios[5].buttons[0].checked = false;
                         this.personalInfoRadios[5].buttons[1].checked = false;
                     }
+
+                    this.inputService.changeValidators(
+                        this.personalInfoForm.get('misdemeanorExplain'),
+                        false
+                    );
                 }
 
                 if (drunkDriving) {
                     this.personalInfoRadios[6].buttons[0].checked = true;
+
+                    this.inputService.changeValidators(
+                        this.personalInfoForm.get('drunkDrivingExplain')
+                    );
                 } else {
                     this.personalInfoRadios[6].buttons[1].checked = true;
 
@@ -613,6 +664,11 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
                         this.personalInfoRadios[6].buttons[0].checked = false;
                         this.personalInfoRadios[6].buttons[1].checked = false;
                     }
+
+                    this.inputService.changeValidators(
+                        this.personalInfoForm.get('drunkDrivingExplain'),
+                        false
+                    );
                 }
             }
         }, 150);
@@ -1090,6 +1146,32 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
             });
     }
 
+    public onFilesAction(event: any): void {
+        this.documents = event.files;
+
+        this.displayDocumentsRequiredNote = false;
+
+        switch (event.action) {
+            case 'add':
+                this.personalInfoForm
+                    .get('files')
+                    .patchValue(JSON.stringify(event.files));
+
+                break;
+            case 'delete':
+                this.personalInfoForm
+                    .get('files')
+                    .patchValue(
+                        event.files.length ? JSON.stringify(event.files) : null
+                    );
+
+                break;
+
+            default:
+                break;
+        }
+    }
+
     private createNewAddress(): FormGroup {
         this.cardReviewIndex++;
 
@@ -1467,13 +1549,23 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
                 return o;
             }, {});
 
+            const previousAddressesHasIncorrectValue = isAnyValueInArrayFalse(
+                this.stepFeedbackValues.previousAddressesReview.map(
+                    (item) => item.isPreviousAddressValid
+                )
+            );
+
             const hasIncorrectValues = Object.keys(
                 filteredIncorrectValues
             ).length;
 
-            if (hasIncorrectValues) {
+            if (hasIncorrectValues || previousAddressesHasIncorrectValue) {
                 this.subscription = this.personalInfoForm.valueChanges
-                    .pipe(takeUntil(this.destroy$))
+                    .pipe(
+                        distinctUntilChanged(),
+                        throttleTime(2),
+                        takeUntil(this.destroy$)
+                    )
                     .subscribe((updatedFormValues) => {
                         const filteredFieldsWithIncorrectValues = Object.keys(
                             filteredIncorrectValues
@@ -1592,7 +1684,6 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
                                 .map((item) => {
                                     return {
                                         address: item.address,
-                                        addressUnit: item.addressUnit,
                                     };
                                 });
 
@@ -1621,7 +1712,6 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
                                 .map((item) => {
                                     return {
                                         address: item.address,
-                                        addressUnit: item.addressUnit,
                                     };
                                 });
 
@@ -1738,6 +1828,10 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
         if (this.personalInfoForm.invalid || isAnyRadioUnchecked) {
             if (this.personalInfoForm.invalid) {
                 this.inputService.markInvalid(this.personalInfoForm);
+
+                if (!this.documents.length) {
+                    this.displayDocumentsRequiredNote = true;
+                }
             }
 
             if (isAnyRadioUnchecked) {

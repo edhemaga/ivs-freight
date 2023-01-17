@@ -12,6 +12,7 @@
 
 
 export interface VerifyForgotPasswordDriverCommand { 
+    email?: string | null;
     code?: number;
 }
 

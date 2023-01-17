@@ -19,6 +19,7 @@ import {
     mileValidation,
     monthsValidRegex,
     nicknameValidation,
+    perLoadValidation,
     perStopValidation,
     phoneExtension,
     prefixValidation,
@@ -387,13 +388,13 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
             soloEmptyMile: [null, mileValidation],
             soloLoadedMile: [null, mileValidation],
             soloPerStop: [null, perStopValidation],
-            soloPerLoad: [null, perStopValidation],
+            soloPerLoad: [null, perLoadValidation],
             perMileSolo: [null, mileValidation],
 
             teamEmptyMile: [null, mileValidation],
             teamLoadedMile: [null, mileValidation],
             teamPerStop: [null, perStopValidation],
-            teamPerLoad: [null, perStopValidation],
+            teamPerLoad: [null, perLoadValidation],
             perMileTeam: [null, mileValidation],
 
             loadedAndEmptySameRate: [false],

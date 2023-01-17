@@ -30,6 +30,7 @@ import {
 } from '@angular/animations';
 import { Titles } from 'src/app/core/utils/application.decorators';
 import { OnChanges } from '@angular/core';
+import { convertDateFromBackend } from '../../../../utils/methods.calculations';
 
 @Titles()
 @Component({
@@ -397,6 +398,11 @@ export class TruckDetailsItemComponent implements OnInit, OnDestroy, OnChanges {
             }
         }
     }
+
+    public formatDate(mod){
+        return convertDateFromBackend(mod);
+    }
+
 
     ngOnDestroy(): void {
         this.destroy$.next();

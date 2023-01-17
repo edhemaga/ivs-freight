@@ -23,4 +23,8 @@ export class AddressService implements OnDestroy {
             closedBorder
         );
     }
+
+    public getAddressInfo(address) {
+        return this.geoService.apiGeolocationAddressGet(address);
+    }
 }

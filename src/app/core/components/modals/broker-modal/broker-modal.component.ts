@@ -37,9 +37,14 @@ import {
 import { BrokerTService } from '../../customer/state/broker-state/broker.service';
 import { debounceTime, Subject, takeUntil } from 'rxjs';
 import { ReviewsRatingService } from '../../../services/reviews-rating/reviewsRating.service';
-import { convertNumberInThousandSep } from '../../../utils/methods.calculations';
+import {
+    convertNumberInThousandSep,
+    convertThousanSepInNumber,
+} from '../../../utils/methods.calculations';
 import { poBoxValidation } from '../../shared/ta-input/ta-input.regex-validations';
 import { FormService } from '../../../services/form/form.service';
+import { LoadModalComponent } from '../load-modal/load-modal.component';
+import { BrokerAvailableCreditResponse } from '../../../../../../appcoretruckassist/model/brokerAvailableCreditResponse';
 import {
     name2_24Validation,
     creditLimitValidation,
@@ -150,6 +155,9 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
 
     public disableCardAnimation: boolean = false;
 
+    public longitude: number;
+    public latitude: number;
+
     constructor(
         private formBuilder: FormBuilder,
         private inputService: TaInputService,
@@ -174,6 +182,37 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                 name: 'Review',
             });
             this.ratingChanges();
+        }
+
+        // From Another Modal Data
+        if (this.editData?.extraPayload?.type === 'edit-contact') {
+            this.disableCardAnimation = true;
+            this.editBrokerById(this.editData.extraPayload.data.id);
+            setTimeout(() => {
+                this.tabs = this.tabs.map((item, index) => {
+                    return {
+                        ...item,
+                        disabled: index === 0,
+                        checked: index === 1,
+                    };
+                });
+                this.selectedTab = 2;
+            }, 50);
+        }
+
+        // Open Tab Position
+        if (this.editData?.openedTab) {
+            setTimeout(() => {
+                this.tabChange({
+                    id:
+                        this.editData?.openedTab === 'Contact'
+                            ? 2
+                            : this.editData?.openedTab === 'Review'
+                            ? 3
+                            : 1,
+                });
+                this.disableCardAnimation = true;
+            });
         }
 
         this.companyUser = JSON.parse(localStorage.getItem('user'));
@@ -299,6 +338,8 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
 
                         this.inputService.changeValidators(
                             this.brokerContacts.at(index).get('phone'),
+                            false,
+                            [],
                             false
                         );
                     }
@@ -366,6 +407,27 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
             }
         } else {
             if (data.action === 'close') {
+                if (this.editData?.canOpenModal) {
+                    switch (this.editData?.key) {
+                        case 'load-modal': {
+                            this.modalService.setProjectionModal({
+                                action: 'close',
+                                payload: {
+                                    key: this.editData?.key,
+                                    value: null,
+                                },
+                                component: LoadModalComponent,
+                                size: 'small',
+                                closing: 'fastest',
+                            });
+                            break;
+                        }
+
+                        default: {
+                            break;
+                        }
+                    }
+                }
                 return;
             }
             // Save And Add New
@@ -387,7 +449,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                         this.inputService.markInvalid(this.brokerForm);
                         return;
                     }
-                    if (this.editData) {
+                    if (['edit'].includes(this.editData?.type)) {
                         this.updateBroker(this.editData.id);
                         this.modalService.setModalSpinner({
                             action: null,
@@ -503,16 +565,25 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
         event: {
             address: AddressEntity;
             valid: boolean;
+            longLat: any;
         },
         action: string
     ) {
         switch (action) {
             case 'physical-address': {
-                if (event.valid) this.selectedPhysicalAddress = event.address;
+                if (event.valid) {
+                    this.selectedPhysicalAddress = event.address;
+                    this.longitude = event.longLat.longitude;
+                    this.latitude = event.longLat.latitude;
+                }
                 break;
             }
             case 'physical-pobox': {
-                if (event.valid) this.selectedPhysicalPoBox = event.address;
+                if (event.valid) {
+                    this.selectedPhysicalPoBox = event.address;
+                    this.longitude = event.longLat.longitude;
+                    this.latitude = event.longLat.latitude;
+                }
                 break;
             }
             case 'billing-address': {
@@ -739,7 +810,6 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
             payTerm,
             brokerContacts,
             mcNumber,
-            availableCredit,
             ...form
         } = this.brokerForm.value;
 
@@ -764,6 +834,8 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                 : null,
             payTerm: this.selectedPayTerm ? this.selectedPayTerm.id : null,
             files: documents,
+            longitude: this.longitude,
+            latitude: this.latitude,
         };
 
         for (let index = 0; index < brokerContacts.length; index++) {
@@ -781,6 +853,27 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
+                    if (this.editData?.canOpenModal) {
+                        switch (this.editData?.key) {
+                            case 'load-modal': {
+                                this.modalService.setProjectionModal({
+                                    action: 'close',
+                                    payload: {
+                                        key: this.editData?.key,
+                                        value: null,
+                                    },
+                                    component: LoadModalComponent,
+                                    size: 'small',
+                                    closing: 'slowlest',
+                                });
+                                break;
+                            }
+
+                            default: {
+                                break;
+                            }
+                        }
+                    }
                     if (this.addNewAfterSave) {
                         this.modalService.setModalSpinner({
                             action: 'save and add new',
@@ -864,7 +957,6 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
             isCredit,
             brokerContacts,
             mcNumber,
-            availableCredit,
             creditLimit,
             ...form
         } = this.brokerForm.value;
@@ -893,6 +985,8 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
             payTerm: this.selectedPayTerm ? this.selectedPayTerm.id : null,
             files: documents ? documents : this.brokerForm.value.files,
             filesForDeleteIds: this.filesForDelete,
+            longitude: this.longitude,
+            latitude: this.latitude,
         };
 
         for (let index = 0; index < brokerContacts.length; index++) {
@@ -908,7 +1002,32 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
         this.brokerModalService
             .updateBroker(newData)
             .pipe(takeUntil(this.destroy$))
-            .subscribe();
+            .subscribe({
+                next: () => {
+                    if (this.editData?.canOpenModal) {
+                        switch (this.editData?.key) {
+                            case 'load-modal': {
+                                this.modalService.setProjectionModal({
+                                    action: 'close',
+                                    payload: {
+                                        key: this.editData?.key,
+                                        value: null,
+                                    },
+                                    component: LoadModalComponent,
+                                    size: 'small',
+                                    closing: 'slowlest',
+                                });
+                                break;
+                            }
+
+                            default: {
+                                break;
+                            }
+                        }
+                    }
+                },
+                error: () => {},
+            });
     }
 
     private deleteBrokerById(id: number): void {
@@ -1045,12 +1164,6 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                         this.disableOneMoreReview = true;
                     }
 
-                    console.log(
-                        'response: ',
-                        reasponse.downCount,
-                        reasponse.upCount,
-                        reasponse.currentCompanyUserRating
-                    );
                     this.taLikeDislikeService.populateLikeDislikeEvent({
                         downRatingCount: reasponse.downCount,
                         upRatingCount: reasponse.upCount,
@@ -1085,13 +1198,13 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                             reasponse.mainAddress.address ===
                                 reasponse.billingAddress.address
                             ? {
-                                  id: 'billingaddress',
+                                  id: 5,
                                   name: 'Billing Address',
                                   inputName: 'n',
                                   checked: true,
                               }
                             : {
-                                  id: 'poboxbilling',
+                                  id: 6,
                                   name: 'PO Box Billing',
                                   inputName: 'n',
                                   checked: false,
@@ -1494,6 +1607,36 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
             default: {
                 break;
             }
+        }
+    }
+
+    public onBlurCreditLimit() {
+        let limit = this.brokerForm.get('creditLimit').value;
+
+        if (limit) {
+            limit = convertThousanSepInNumber(limit);
+            this.brokerModalService
+                .availableCreditBroker({
+                    id: this.editData?.id ? this.editData.id : null,
+                    creditLimit: limit,
+                })
+                .pipe(takeUntil(this.destroy$))
+                .subscribe({
+                    next: (res: BrokerAvailableCreditResponse) => {
+                        this.brokerForm
+                            .get('creditLimit')
+                            .patchValue(
+                                convertNumberInThousandSep(res.creditLimit)
+                            );
+
+                        this.brokerForm
+                            .get('availableCredit')
+                            .patchValue(res.availableCredit);
+                    },
+                    error: (error) => {
+                        console.log(error);
+                    },
+                });
         }
     }
 

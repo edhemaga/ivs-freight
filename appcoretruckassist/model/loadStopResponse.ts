@@ -19,6 +19,7 @@ export interface LoadStopResponse {
     id?: number;
     stopType?: EnumValue;
     stopOrder?: number;
+    stopLoadOrder?: number;
     shipper?: ShipperShortResponse;
     shipperContact?: ShipperContactShortResponse;
     dateFrom?: string;
@@ -34,8 +35,6 @@ export interface LoadStopResponse {
     legMiles?: number | null;
     legHours?: number | null;
     legMinutes?: number | null;
-    totalLegMiles?: number | null;
-    totalLegHours?: number | null;
-    totalLegMinutes?: number | null;
+    shape?: string | null;
 }
 

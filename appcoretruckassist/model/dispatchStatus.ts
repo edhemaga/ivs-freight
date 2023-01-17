@@ -11,11 +11,11 @@
  */
 
 
-export type DispatchStatus = 'Off' | 'Active' | 'Dispatched' | 'DeadHeading' | 'Cancel' | 'Repair' | 'DispatchedRepair' | 'CheckedInRepair' | 'LoadedRepair' | 'Towing' | 'CheckedIn' | 'Loaded' | 'Empty' | 'Offloaded';
+export type DispatchStatus = 'Off' | 'Available' | 'Dispatched' | 'DeadHeading' | 'Cancel' | 'Repair' | 'DispatchedRepair' | 'CheckedInRepair' | 'LoadedRepair' | 'Towing' | 'CheckedIn' | 'Loaded' | 'Empty' | 'Offloaded';
 
 export const DispatchStatus = {
     Off: 'Off' as DispatchStatus,
-    Active: 'Active' as DispatchStatus,
+    Available: 'Available' as DispatchStatus,
     Dispatched: 'Dispatched' as DispatchStatus,
     DeadHeading: 'DeadHeading' as DispatchStatus,
     Cancel: 'Cancel' as DispatchStatus,

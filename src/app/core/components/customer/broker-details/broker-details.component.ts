@@ -14,6 +14,7 @@ import { ConfirmationService } from '../../modals/confirmation-modal/confirmatio
 import { BrokerMinimalListQuery } from '../state/broker-details-state/broker-minimal-list-state/broker-minimal.query';
 import { BrokerMinimalListStore } from '../state/broker-details-state/broker-minimal-list-state/broker-minimal.store';
 import { BrokerDetailsListQuery } from '../state/broker-details-state/broker-details-list-state/broker-details-list.query';
+import { BrokerDetailsStore } from '../state/broker-details-state/broker-details.store';
 
 @Component({
     selector: 'app-broker-details',
@@ -29,6 +30,7 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
     public brokerObject: any;
     public currentIndex: number = 0;
     public brokerList: any = this.brokerMimialQuery.getAll();
+    public newBrokerId: any = 0;
     constructor(
         private activated_route: ActivatedRoute,
         private router: Router,
@@ -43,8 +45,21 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
         private confirmationService: ConfirmationService,
         private brokerMinimalStore: BrokerMinimalListStore,
         private bdlq: BrokerDetailsListQuery,
-        private DetailsDataService: DetailsDataService
-    ) {}
+        private DetailsDataService: DetailsDataService,
+        private BrokerItemStore: BrokerDetailsStore,
+    ) {
+
+        let storeData$ = this.BrokerItemStore._select(state => state);
+        storeData$.subscribe(state => {
+
+            let newBrokerData = {...state.entities[this.newBrokerId]};
+            if ( !this.isEmpty(newBrokerData) ) {  
+                this.brokerInitConfig(newBrokerData);
+            }
+           
+        })
+
+    }
 
     ngOnInit(): void {
         // Confirmation Subscribe
@@ -92,24 +107,43 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe((id) => {
                 let query;
+
+            
                 if (this.bdlq.hasEntity(id)) {
                     query = this.bdlq.selectEntity(id).pipe(take(1));
+                    query.pipe(takeUntil(this.destroy$)).subscribe({
+                        next: (res: BrokerResponse) => {
+                            this.brokerInitConfig(res);
+                            this.newBrokerId = res.id;
+                            this.router.navigate([
+                                `/customer/${res.id}/broker-details`,
+                            ]);
+                            this.cdRef.detectChanges();
+                        }
+                    });
+
                 } else {
-                    query = this.brokerService.getBrokerById(id);
+                    //query = this.brokerService.getBrokerById(id);
+                    this.newBrokerId = id;
+                    this.router.navigate([
+                        `/customer/${id}/broker-details`,
+                    ]);
+                    this.cdRef.detectChanges();
                 }
-
-                query.pipe(takeUntil(this.destroy$)).subscribe({
-                    next: (res: BrokerResponse) => {
-                        this.brokerInitConfig(res);
-                        this.router.navigate([
-                            `/customer/${res.id}/broker-details`,
-                        ]);
-                    }
-                });
+               
+                
             });
-
-        this.brokerInitConfig(this.activated_route.snapshot.data.broker);
+        
+        let brokerId = this.activated_route.snapshot.params.id;   
+        let brokerData = {
+            ...this.BrokerItemStore?.getValue()?.entities[brokerId],
+        };    
+        this.brokerInitConfig(brokerData);
     }
+
+    public isEmpty(obj: Record<string, any>): boolean {
+        return Object.keys(obj).length === 0;
+      }
 
     public deleteBrokerById(id: number) {
         let last = this.brokerList.at(-1);
@@ -142,7 +176,9 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
             (broker) => broker.id === data.id
         );
         this.initTableOptions(data);
-        this.getBrokerById(data.id);
+        //calling api every time data is loaded
+        //this.getBrokerById(data.id);
+       
         let totalCost;
         this.DetailsDataService.setNewData(data);
         if (data?.loads?.length) {

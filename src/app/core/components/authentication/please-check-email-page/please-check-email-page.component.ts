@@ -1,4 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 import moment from 'moment';
 
@@ -9,13 +10,25 @@ import moment from 'moment';
 })
 export class PleaseCheckEmailPageComponent implements OnInit, OnDestroy {
     public email: string;
+
     public copyrightYear: number;
 
-    constructor() {}
+    constructor(private router: Router) {}
 
     ngOnInit(): void {
-        this.email = JSON.parse(localStorage.getItem('checkEmail'));
+        this.checkIsValidInit();
+
         this.copyrightYear = moment().year();
+    }
+
+    private checkIsValidInit(): void {
+        this.email = JSON.parse(localStorage.getItem('checkEmail'));
+
+        if (!this.email) {
+            this.router.navigate(['/auth']);
+
+            return;
+        }
     }
 
     ngOnDestroy(): void {
