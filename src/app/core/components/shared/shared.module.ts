@@ -108,7 +108,6 @@ import { CustomToastMessagesComponent } from './custom-toast-messages/custom-toa
 import { SvgDefinitionsComponent } from '../../../svg-definitions/svg-definitions.component';
 import { TaCustomCardV2Component } from './ta-custom-card-v2/ta-custom-card-v2.component';
 import { InputAddressDropdownComponent } from './input-address-dropdown/input-address-dropdown.component';
-import { ApplicantReviewFeedbackComponent } from './applicant-review-feedback/applicant-review-feedback.component';
 import { LoadModalHazardousComponent } from '../modals/load-modal/load-modal-hazardous/load-modal-hazardous.component';
 import { LoadModalStatusesComponent } from '../modals/load-modal/load-modal-statuses/load-modal-statuses.component';
 import { MapSettingsModalComponent } from '../modals/map-settings-modal/map-settings-modal.component';
@@ -174,7 +173,6 @@ export function playerFactory() {
         TaUploadFileComponent,
         TaInputDropdownLabelComponent,
         TaUploadFilesComponent,
-        ApplicantReviewFeedbackComponent,
         TaTimePeriodComponent,
         AutoclosePopoverComponent,
         TaInputSwitchOnOffComponent,
@@ -304,7 +302,6 @@ export function playerFactory() {
         ProfileImagesModule,
         AgmSnazzyInfoWindowModule,
         AgmDirectionModule,
-        ApplicantReviewFeedbackComponent,
 
         // Components
         TabSwitcherComponent,
