@@ -52,6 +52,7 @@ export interface ITaInput {
     removeInput?: boolean;
     readOnly?: boolean;
     thousandSeparator?: boolean; // type of input must be 'text'
+    priceSeparator?: boolean;
     loadingSpinner?: {
         size?: string; // small, big
         color?: string; // black, gray, white, blueLight, blueDark

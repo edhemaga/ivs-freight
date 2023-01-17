@@ -66,6 +66,7 @@
         "chartjs-plugin-doughnutlabel": "^2.0.3",
         "croppie": "^2.6.5",
         "crypto-js": "^4.1.1",
+        "currency-formatter": "^1.5.9",
         "deep-object-diff": "^1.1.9",
         "evoweb-geoxml3": "^1.0.0",
         "glob": "^7.2.0",
