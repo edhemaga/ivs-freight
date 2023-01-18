@@ -508,11 +508,11 @@
                         item?.wait.days
                     "
                     [cardName]="
-                        item?.shipper?.address?.street +
+                        item?.shipper?.address?.street ? item?.shipper?.address?.street : '' +
                         ', ' +
-                        item?.shipper?.address?.stateShortName +
+                        item?.shipper?.address?.stateShortName ? item?.shipper?.address?.stateShortName : '' +
                         ' ' +
-                        item?.shipper?.address?.zipCode
+                        item?.shipper?.address?.zipCode ? item?.shipper?.address?.zipCode : ''
                     "
                     [hasCounter]="item?.stopOrder"
                     [hasDivider]="j > 0 ? true : false"
@@ -763,7 +763,12 @@
                 </app-ta-custom-card-v2>
                 <div class="divider"></div>
                 <div class="map-load-container">
-                    <span class="default-text">Here map</span>
+                    <!-- <span class="default-text">Here map</span> -->
+                    <app-maps
+                        [mapType]="'routing'"
+                        [routes]="routeData"
+                        [ngStyle]="{ width: '100%', height: '100%' }"
+                    ></app-maps>
                 </div>
             </div>
         </div>

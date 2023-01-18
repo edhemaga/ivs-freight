@@ -2237,6 +2237,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                             }),
                         };
                         console.log('---this.loadStopRoutes----', this.loadStopRoutes)
+                        console.log('---routes---', routes);
                         // Store in form values
                         if (res?.legs?.length) {
                             res.legs.forEach((item, index) => {

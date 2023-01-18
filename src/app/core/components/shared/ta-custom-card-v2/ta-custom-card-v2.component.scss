@@ -1,8 +1,9 @@
 .ta-custom-card-v2 {
     display: block;
-
+    //padding: 0px 8px;
     // CARD HEADER
     .ta-card-header {
+        padding: 0px 8px;
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -179,6 +180,10 @@
         &.cursor {
             cursor: pointer;
         }
+    }
+
+    .content-holder{
+        padding: 0px 8px;
     }
 
     // CARD BODY

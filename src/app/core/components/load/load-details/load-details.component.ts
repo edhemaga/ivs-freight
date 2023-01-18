@@ -13,6 +13,13 @@ import { LoadResponse } from '../../../../../../appcoretruckassist/model/loadRes
 import { LoadDetailsListQuery } from '../state/load-details-state/load-details-list-state/load-d-list.query';
 import { LoadTService } from '../state/load.service';
 import { MapRouteModel } from '../../shared/model/map-route';
+interface IStopRoutes {
+    longitude: number;
+    latitude: number;
+    pickup?: boolean;
+    delivery?: boolean;
+    stopNumber?: number;
+}
 
 @Component({
     selector: 'app-load-details',
@@ -184,6 +191,38 @@ export class LoadDetailsComponent implements OnInit, OnChanges, OnDestroy {
                 
             ]
         }
+
+
+        const routes: IStopRoutes[] = [];
+       
+        data.stops.map( (stop: any, index: number) => {
+                routes[index] = {
+                    longitude: stop.shipper.longitude,
+                    latitude: stop.shipper.latitude,
+                    pickup: stop.stopType.name == 'Pickup' ? true : false,
+                    delivery: stop.stopType.name == 'Delivery' ? true : false,
+                    stopNumber: index,
+                }
+            }
+        );
+
+        console.log('---routes---', routes);
+        this.loadStopRoutes[0] = {
+            routeColor: '#919191',
+            stops: routes.map((route, index) => {
+                return {
+                    lat: route.latitude,
+                    long: route.longitude,
+                    stopColor: route.pickup
+                        ? '#26A690'
+                        : route.delivery
+                        ? '#EF5350'
+                        : '#919191',
+                    stopNumber: route?.stopNumber?.toString(),
+                    zIndex: 99 + index,
+                };
+            }),
+        };
     }
 
     ngOnDestroy(): void {
