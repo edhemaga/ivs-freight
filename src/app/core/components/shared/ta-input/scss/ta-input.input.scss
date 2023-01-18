@@ -216,6 +216,7 @@
         span,
         span .border-picker {
             color: $input-text-color-valid-focus-out !important;
+            user-select: none;
         }
     }
 
