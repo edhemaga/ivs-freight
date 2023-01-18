@@ -3,6 +3,8 @@
 .input-icon {
     position: absolute;
     left: 6px;
+    top: 48%;
+    transform: translateY(-50%);
     z-index: 10;
     -webkit-user-select: none;
     -moz-user-select: none;
@@ -37,7 +39,8 @@
         background: $input-placeholder-icon-normal-after;
         position: absolute;
         left: 24px;
-        top: 5px;
+        top: 51%;
+        transform: translateY(-50%);
     }
 
     &.cursor-pointer {
@@ -163,29 +166,10 @@
     }
 
     //------------------------- Custom class -------------------------
-    &.input-32 {
-        top: 2.7px;
-    }
-
-    &.input-30 {
-        top: 2px;
-    }
-
-    &.line-input-26 {
-        top: 2px;
-
-        &::after {
-            left: 24px;
-            top: 3px;
-        }
-    }
 
     &.line-input-26-in-card {
-        top: 1px;
-
         &::after {
-            top: 4px;
-            height: 17px;
+            top: 53%;
         }
     }
 
