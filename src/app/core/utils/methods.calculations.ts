@@ -1,5 +1,6 @@
 import { AbstractControl } from '@angular/forms';
 import moment from 'moment';
+import * as CurrencyFormatter from 'currency-formatter';
 
 //------------------------------- Calculating Parking Slots -------------------------------
 export const calculateParkingSlot = (
@@ -126,4 +127,15 @@ export const convertThousanSepInNumber = (value: string) => {
 export const convertNumberInThousandSep = (value: number) => {
     if (value)
         return value.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ',');
+};
+
+//-------------------------------  PRICE CONVERTORS -------------------------------
+export const convertPriceInNumber = (value: string) => {
+    if (value) return value.toString();
+};
+export const convertNumberInPrice = (value: number) => {
+    if (value) {
+        const options = { currency: 'USD' };
+        return CurrencyFormatter.format(value, options);
+    }
 };
