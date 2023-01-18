@@ -8,8 +8,6 @@
         [tableContainerWidth]="tableContainerWidth"
     ></app-truckassist-table-toolbar>
 
-    
-
     <div class="payroll-tables-holder">
         <ng-container *ngFor="let d of payrollData | async">
             <div class="card-holder">
@@ -29,7 +27,7 @@
                             (headActions)="onTableHeadActions($event)"
                             [tableContainerWidth]="tableContainerWidth"
                         ></app-truckassist-table-head>
-    
+
                         <app-truckassist-table-body
                             [viewData]="viewData"
                             [columns]="columns"
