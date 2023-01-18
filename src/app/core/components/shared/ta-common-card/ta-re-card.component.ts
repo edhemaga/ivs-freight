@@ -112,6 +112,7 @@ export class TaReCardComponent implements OnInit {
     @Input() hasToggler: boolean;
     @Input() public testDate: any;
     @Input() public mainData: any;
+    @Input() public insuranceCard: boolean = false;
     public data: any;
     public resPage: boolean = false;
     public copiedCommon: boolean = false;
@@ -128,8 +129,8 @@ export class TaReCardComponent implements OnInit {
     public CloseCard() {
         let currentDate = moment().format('MM/DD/YYYY');
         if (
-            moment(this.expDateClose).isBefore(currentDate) ||
-            this.isDeactivated
+            ( moment(this.expDateClose).isBefore(currentDate) ||
+            this.isDeactivated ) && !this.forcedOpen
         ) {
             this.isCardOpen = false;
             this.animationStarted = false;

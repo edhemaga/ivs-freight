@@ -2,9 +2,8 @@ import {
     convertDateFromBackend,
     convertDateToBackend,
     convertNumberInThousandSep,
-    convertThousanSepInNumber,
+    convertPriceInNumber,
 } from '../../../../utils/methods.calculations';
-import { SumArraysPipe } from '../../../../pipes/sum-arrays.pipe';
 import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { RepairTService } from '../../../repair/state/repair.service';
@@ -28,12 +27,17 @@ import {
     vehicleUnitValidation,
 } from '../../../shared/ta-input/ta-input.regex-validations';
 import { DetailsDataService } from '../../../../services/details-data/details-data.service';
+import { PriceCalculationArraysPipe } from '../../../../pipes/price-calculation-arrays.pipe';
+import {
+    convertThousanSepInNumber,
+    convertNumberInPrice,
+} from '../../../../utils/methods.calculations';
 
 @Component({
     selector: 'app-repair-order-modal',
     templateUrl: './repair-order-modal.component.html',
     styleUrls: ['./repair-order-modal.component.scss'],
-    providers: [SumArraysPipe, ModalService, FormService],
+    providers: [PriceCalculationArraysPipe, ModalService, FormService],
 })
 export class RepairOrderModalComponent implements OnInit, OnDestroy {
     @ViewChild('t2') public popoverRef: NgbPopover;
@@ -96,9 +100,9 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
         private repairService: RepairTService,
         private modalService: ModalService,
         private ngbActiveModal: NgbActiveModal,
-        private sumArrayPipe: SumArraysPipe,
+        private priceArrayPipe: PriceCalculationArraysPipe,
         private formService: FormService,
-        private DetailsDataService: DetailsDataService,
+        private DetailsDataService: DetailsDataService
     ) {}
 
     public get items(): FormArray {
@@ -189,7 +193,9 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
 
     public addItems(event: { check: boolean; action: string }) {
         if (event.check) {
-            this.items.push(this.createItems({ id: ++this.itemsCounter }));
+            this.items.push(
+                this.createItems({ id: null, orderingId: ++this.itemsCounter })
+            );
             this.subtotal = [
                 ...this.subtotal,
                 { id: this.itemsCounter, value: 0 },
@@ -256,11 +262,11 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
     public onModalHeaderTabChange(event: any) {
         this.selectedHeaderTab = event.id;
         if (event.id === 1) {
-
-            setTimeout(()=>{
-                this.DetailsDataService.setUnitValue(this.repairOrderForm.get('unit')?.value);
-            }, 100)
-            
+            setTimeout(() => {
+                this.DetailsDataService.setUnitValue(
+                    this.repairOrderForm.get('unit')?.value
+                );
+            }, 100);
 
             this.inputService.changeValidators(
                 this.repairOrderForm.get('repairShopId'),
@@ -313,7 +319,8 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
 
             if (this.selectedPMIndex) {
                 this.inputService.changeValidators(
-                    this.repairOrderForm.get('odometer')
+                    this.repairOrderForm.get('odometer'),
+                    false
                 );
             }
 
@@ -349,8 +356,6 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                 false
             );
         }
-
-        
     }
 
     public onTypeOfRepair(event: any, action?: string) {
@@ -377,8 +382,11 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
 
             this.inputService.changeValidators(
                 this.repairOrderForm.get('odometer'),
+                false,
+                [],
                 false
             );
+
             this.repairOrderForm.get('unit').patchValue(null);
             this.selectedUnit = null;
             this.selectedPM = [];
@@ -391,9 +399,9 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
         const { items, ...form } = this.repairOrderForm.value;
         switch (action) {
             case 'repair-unit': {
-                if ( event.truckNumber ){
+                if (event?.truckNumber) {
                     this.DetailsDataService.setUnitValue(event.truckNumber);
-                } else if ( event.trailerNumber ) {
+                } else if (event?.trailerNumber) {
                     this.DetailsDataService.setUnitValue(event.trailerNumber);
                 }
 
@@ -431,6 +439,12 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                         this.selectedPM = [];
 
                         this.selectedPMIndex = null;
+                        this.inputService.changeValidators(
+                            this.repairOrderForm.get('odometer'),
+                            false,
+                            [],
+                            false
+                        );
                     }
 
                     this.typeOfRepair.find((item) => item.checked).name ===
@@ -504,8 +518,13 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
         }
     }
 
-    public pickedServices() {
-        return this.services.filter((item) => item.active).length;
+    public activeRepairService(service) {
+        service.active = !service.active;
+        this.services = [...this.services];
+
+        this.repairOrderForm
+            .get('servicesHelper')
+            .patchValue(JSON.stringify(this.services));
     }
 
     public onFilesEvent(event: any) {
@@ -603,6 +622,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
             repairShopId: [null],
             items: this.formBuilder.array([]),
             note: [null],
+            servicesHelper: [null],
             files: [null],
         });
 
@@ -623,6 +643,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
 
     private createItems(data?: {
         id: number;
+        orderingId: number;
         description?: any;
         price?: any;
         quantity?: any;
@@ -632,9 +653,15 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
     }): FormGroup {
         return this.formBuilder.group({
             id: [data.id],
+            orderingId: [data.orderingId],
             description: [data.description, [...descriptionValidation]],
-            price: [data.price, priceValidation],
-            quantity: [data.quantity],
+            price: [
+                data.price === '0' || data.price === 0 ? null : data.price,
+                priceValidation,
+            ],
+            quantity: [
+                data.quantity === '0' || data.price == 0 ? null : data.quantity,
+            ],
             subtotal: [data.subtotal],
             pmTruckId: [data.pmTruckId],
             pmTrailerId: [data.pmTrailerId],
@@ -709,6 +736,10 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                         };
                     });
 
+                    this.repairOrderForm
+                        .get('servicesHelper')
+                        .patchValue(JSON.stringify(this.services));
+
                     // Repair Shops
                     this.labelsRepairShop = [...res.repairShops];
                 },
@@ -717,7 +748,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
     }
 
     private addRepair() {
-        const { date, unit, odometer, invoice, ...form } =
+        const { date, unit, odometer, invoice, servicesHelper, ...form } =
             this.repairOrderForm.value;
 
         let documents = [];
@@ -771,7 +802,9 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                 invoice: invoice,
                 total:
                     this.repairOrderForm.get('repairType').value === 'Bill'
-                        ? this.sumArrayPipe.transform(this.subtotal)
+                        ? convertNumberInPrice(
+                              this.priceArrayPipe.transform(this.subtotal)
+                          )
                         : null,
                 serviceTypes: this.services.map((item) => {
                     return {
@@ -849,7 +882,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
     }
 
     private updateRepair(id: number) {
-        const { date, unit, odometer, invoice, ...form } =
+        const { date, unit, odometer, invoice, servicesHelper, ...form } =
             this.repairOrderForm.value;
 
         let documents = [];
@@ -910,7 +943,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                       )
                     : null,
                 total: this.subtotal
-                    ? this.sumArrayPipe.transform(this.subtotal)
+                    ? this.priceArrayPipe.transform(this.subtotal)
                     : null,
                 invoice: invoice,
                 serviceTypes: this.services.map((item) => {
@@ -992,10 +1025,12 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                 this.selectedPM = [...res.selectedPM];
 
                 if (res.items_array.length) {
+                    this.itemsCounter = 0;
                     for (const iterator of res.items_array) {
                         this.items.push(
                             this.createItems({
                                 id: iterator.id,
+                                orderingId: ++this.itemsCounter,
                                 description: iterator.description,
                                 price: iterator.price,
                                 quantity: iterator.quantity,
@@ -1099,6 +1134,10 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                         }),
                     ];
 
+                    this.repairOrderForm
+                        .get('servicesHelper')
+                        .patchValue(JSON.stringify(this.services));
+
                     // Repair Shop
                     if (res.repairShop?.id) {
                         this.repairService
@@ -1125,18 +1164,23 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                             this.items.push(
                                 this.createItems({
                                     id: res.items[i].id,
+                                    orderingId: ++this.itemsCounter,
                                     description: res.items[i].description,
                                     price: res.items[i].price
-                                        ? res.items[i].price
-                                        : 0,
+                                        ? convertNumberInPrice(
+                                              res.items[i].price
+                                          )
+                                        : null,
                                     quantity: res.items[i].price
                                         ? res.items[i].quantity
                                             ? res.items[i].quantity
                                             : 1
                                         : res.items[i].quantity,
                                     subtotal: res.items[i].subtotal
-                                        ? res.items[i].subtotal
-                                        : 0,
+                                        ? convertNumberInPrice(
+                                              res.items[i].subtotal
+                                          )
+                                        : null,
                                     pmTruckId: res.items[i].pmTruck,
                                     pmTrailerId: res.items[i].pmTrailer,
                                 })
@@ -1144,7 +1188,11 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
 
                             if (this.selectedHeaderTab === 2) {
                                 this.inputService.changeValidators(
-                                    this.repairOrderForm.get('odometer')
+                                    this.repairOrderForm.get('odometer'),
+                                    !!res.items[i].pmTruck ||
+                                        !!res.items[i].pmTrailer,
+                                    [],
+                                    false
                                 );
                             }
 
@@ -1179,8 +1227,6 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                             }
 
                             this.selectedPMIndex = res.items.length;
-
-                            this.itemsCounter = res.items[i].id;
                         }
                     }
                     setTimeout(() => {
@@ -1198,14 +1244,14 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                 price:
                     this.selectedHeaderTab === 2
                         ? item.get('price').value
-                            ? convertThousanSepInNumber(item.get('price').value)
+                            ? convertPriceInNumber(item.get('price').value)
                             : null
                         : null,
                 quantity: item.get('quantity').value,
                 subtotal:
                     this.selectedHeaderTab === 2
                         ? this.subtotal[index].value
-                            ? this.subtotal[index].value
+                            ? convertNumberInPrice(this.subtotal[index].value)
                             : null
                         : null,
                 pmTruckId:

@@ -59,7 +59,7 @@ p {
 
 // Progress bar settings
 .settings-progress-container {
-    padding: 0 11px;
+    padding: 0 10px;
     padding-bottom: 16px;
     padding-top: 7px;
     .table-progress-cotnainer {
@@ -236,8 +236,8 @@ p {
     .settings-body-items {
         display: flex;
         flex-direction: column;
-        padding-top: 12px;
-        padding-bottom: 16px;
+        padding-top: 0px;
+        padding-bottom: 4px;
         padding-left: 10px;
         .single-item {
             display: flex;

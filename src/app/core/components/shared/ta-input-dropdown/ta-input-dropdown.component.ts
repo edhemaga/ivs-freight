@@ -258,7 +258,6 @@ export class TaInputDropdownComponent
         else if (option.id === 7655) {
             // Open New Modal
             if (this.canOpenModal) {
-                console.log(option);
                 this.selectedItem.emit({ ...option, canOpenModal: true });
             }
             // Work with current modal
@@ -1076,8 +1075,9 @@ export class TaInputDropdownComponent
                     });
 
                     if (
-                        this.inputConfig.name === 'Address' ||
-                        this.inputConfig.name === 'RoutingAddress'
+                        (this.inputConfig.name === 'Address' ||
+                            this.inputConfig.name === 'RoutingAddress') &&
+                        this.inputRef.focusInput
                     ) {
                         this.popoverRef?.open();
                     }

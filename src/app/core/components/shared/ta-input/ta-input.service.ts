@@ -138,7 +138,7 @@ export class TaInputService {
         } else if ('license plate' === inputName) {
             return /^[A-Za-z0-9\s-]$/;
         } else if ('description' === inputName) {
-            return /^[A-Za-z\s]*$/;
+            return /^[A-Za-z0-9-.,/\s]*$/;
         } else if ('dba name' === inputName) {
             return /^[A-Za-z0-9!#'$&%()*+,./:;=<>?^[-]*$/;
         } else if ('per mile' === inputName) {

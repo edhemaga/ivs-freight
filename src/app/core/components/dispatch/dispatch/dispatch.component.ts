@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, SimpleChanges, Input, ChangeDetectorRef, DoCheck, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, AfterViewInit, Input, ChangeDetectorRef, ViewEncapsulation } from '@angular/core';
 import { Observable, Subject, takeUntil } from 'rxjs';
 import { Titles } from 'src/app/core/utils/application.decorators';
 import { DispatcherQuery } from '../state/dispatcher.query';
@@ -11,7 +11,7 @@ import { DispatcherStoreService } from '../state/dispatcher.service';
     styleUrls: ['./dispatch.component.scss'],
     encapsulation: ViewEncapsulation.None,
 })
-export class DispatchComponent implements OnInit, AfterViewInit, DoCheck {
+export class DispatchComponent implements OnInit, AfterViewInit {
     @Input() test: any = "test";
     tableOptions: any = {};
     tableData: any[] = [];
@@ -24,6 +24,7 @@ export class DispatchComponent implements OnInit, AfterViewInit, DoCheck {
     private destroy$ = new Subject<void>();
     dispatcherItems: any[];
     isBoardLocked = true;
+    maxToolbarWidth: number = 0;
 
     selectedDispatcher = localStorage.getItem('dispatchUserSelect') ? JSON.parse(localStorage.getItem('dispatchUserSelect')) : -1;
 
@@ -111,7 +112,17 @@ export class DispatchComponent implements OnInit, AfterViewInit, DoCheck {
     ngAfterViewInit(): void {
         setTimeout(() => {
             this.observTableContainer();
+            this.getToolbarWidth();
+            
         }, 10);
+    }
+
+
+    getToolbarWidth() {
+        const tableContainer = document.querySelector('.table-container');
+
+        this.maxToolbarWidth = tableContainer.clientWidth;
+        this.cd.detectChanges();
     }
 
     observTableContainer() {
@@ -150,19 +161,25 @@ export class DispatchComponent implements OnInit, AfterViewInit, DoCheck {
                 type: 'dropdown',
                 template: 'load-dispatcher',
                 actionType: 'dispatcher',
-                selectedDispatcher: this.dispatcherItems[0],
+                selectedDispatcher: this.selectedDispatcher,
                 dropdownData: this.dispatcherItems,
                 inputConfig: {
                     name: 'Input Dropdown',
                     type: 'text',
                     label: 'Dispatcher',
+                    hideClear: true,
                     isDropdown: true,
                     placeholderInsteadOfLabel: true,
                     dropdownImageInput: {
                         withText: true,
                         svg: false,
                         image: true,
-                        template: 'user',
+                        url: this.selectedDispatcher?.logoName,
+                        nameInitialsInsteadUrl:
+                            !this.selectedDispatcher?.logoName
+                                ? this.selectedDispatcher?.name
+                                : null,
+                        template: 'user'
                     },
                     textTransform: 'capitalize',
                     dropdownWidthClass: 'w-col-192',
@@ -188,9 +205,6 @@ export class DispatchComponent implements OnInit, AfterViewInit, DoCheck {
                 gridNameTitle: 'Dispatch Board',
             },
         ];
-    }
-
-    ngDoCheck(): void {
     }
 
     ngOnChanges(){

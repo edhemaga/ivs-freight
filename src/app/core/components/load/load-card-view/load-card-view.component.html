@@ -38,7 +38,7 @@
                     </span>
                 </div>
             </div>
-            <div class="driver-reg">
+            <div class="driver-reg" *ngIf="load?.dispatch?.driver" >
                 <div class="driver-avatar">
                     <img
                         [src]="
@@ -51,7 +51,7 @@
                         alt="Avatar Driver"
                         class="avatar"
                     />
-                    <div class="load-item-driver-name">
+                    <div class="load-item-driver-name" >
                         {{
                             load?.dispatch?.driver?.firstName +
                                 ' ' +
@@ -142,11 +142,17 @@
                     <div class="assigned-driver">
                         <div class="driver-info">
                             <img
-                                src="assets/svg/common/user-image.svg"
+                                [src]="
+                                load?.dispatch?.driver?.avatar
+                                    ? imageBase64Service.sanitizer(
+                                        load?.dispatch?.driver?.avatar
+                                    )
+                                : 'assets/svg/truckassist-table/customer/contact-column-avatar-select-row.svg'
+                                "
                                 class="driver-avatar"
                                 alt=""
                             />
-                            <span class="driver-name">{{
+                            <span class="driver-name" *ngIf="load?.dispatch?.driver">{{
                                 load?.dispatch?.driver?.firstName +
                                     ' ' +
                                     load?.dispatch?.driver?.lastName

@@ -13,7 +13,13 @@ import {
 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
-import { Subscription, Subject, takeUntil } from 'rxjs';
+import {
+    Subscription,
+    Subject,
+    takeUntil,
+    distinctUntilChanged,
+    throttleTime,
+} from 'rxjs';
 
 import moment from 'moment';
 
@@ -50,6 +56,7 @@ export class Step3FormComponent
     @Input() formValuesToPatch?: any;
     @Input() markFormInvalid?: boolean;
     @Input() isReviewingCard: boolean;
+    @Input() stepFeedbackValues?: any;
 
     @Output() formValuesEmitter = new EventEmitter<any>();
     @Output() cancelFormEditingEmitter = new EventEmitter<any>();
@@ -86,6 +93,10 @@ export class Step3FormComponent
     public selectedClassType: EnumValue = null;
     public selectedRestrictions: CdlRestrictionResponse[] = [];
     public selectedEndorsments: CdlEndorsementResponse[] = [];
+
+    public documents: any[] = [];
+    public documentsForDeleteIds: number[] = [];
+    public displayDocumentsRequiredNote: boolean = false;
 
     public openAnnotationArray: {
         lineIndex?: number;
@@ -132,7 +143,7 @@ export class Step3FormComponent
     }
 
     ngAfterViewInit(): void {
-        if (this.selectedMode === SelectedMode.APPLICANT) {
+        if (this.selectedMode !== SelectedMode.REVIEW) {
             this.licenseForm.statusChanges
                 .pipe(takeUntil(this.destroy$))
                 .subscribe((res) => {
@@ -140,8 +151,15 @@ export class Step3FormComponent
                 });
 
             this.licenseForm.valueChanges
-                .pipe(takeUntil(this.destroy$))
+                .pipe(
+                    distinctUntilChanged(),
+                    throttleTime(2),
+                    takeUntil(this.destroy$)
+                )
                 .subscribe((res) => {
+                    res.state = this.selectedStateType?.stateName;
+                    res.stateShort = this.selectedStateType?.name;
+
                     res.restrictions = this.selectedRestrictions;
                     res.endorsments = this.selectedEndorsments;
 
@@ -151,7 +169,11 @@ export class Step3FormComponent
 
         if (this.selectedMode === SelectedMode.REVIEW) {
             this.licenseForm.valueChanges
-                .pipe(takeUntil(this.destroy$))
+                .pipe(
+                    distinctUntilChanged(),
+                    throttleTime(2),
+                    takeUntil(this.destroy$)
+                )
                 .subscribe((res) => {
                     const reviewMessages = {
                         firstRowReview: res.firstRowReview,
@@ -179,21 +201,16 @@ export class Step3FormComponent
         }
 
         if (
-            this.selectedMode === SelectedMode.REVIEW ||
-            this.selectedMode === SelectedMode.APPLICANT
+            changes.formValuesToPatch?.previousValue !==
+            changes.formValuesToPatch?.currentValue
         ) {
-            if (
-                changes.formValuesToPatch?.previousValue !==
-                changes.formValuesToPatch?.currentValue
-            ) {
-                setTimeout(() => {
-                    this.patchForm(changes.formValuesToPatch.currentValue);
+            setTimeout(() => {
+                this.patchForm(changes.formValuesToPatch.currentValue);
 
-                    if (this.selectedMode === SelectedMode.APPLICANT) {
-                        this.startValueChangesMonitoring();
-                    }
-                }, 50);
-            }
+                if (this.selectedMode !== SelectedMode.REVIEW) {
+                    this.startValueChangesMonitoring();
+                }
+            }, 50);
         }
     }
 
@@ -208,6 +225,7 @@ export class Step3FormComponent
             endorsments: [null],
             restrictionsSubscription: [null],
             endorsmentsSubscription: [null],
+            /*  files: [null, Validators.required], */
 
             firstRowReview: [null],
             secondRowReview: [null],
@@ -266,11 +284,11 @@ export class Step3FormComponent
         }
 
         this.licenseForm.patchValue({
-            licenseNumber: formValue.licenseNumber,
-            country: formValue.country,
-            state: formValue.state,
-            classType: formValue.classType,
-            expDate: formValue.expDate,
+            licenseNumber: formValue?.licenseNumber,
+            country: formValue?.country,
+            state: formValue?.stateShort,
+            classType: formValue?.classType,
+            expDate: formValue?.expDate,
         });
 
         setTimeout(() => {
@@ -285,20 +303,20 @@ export class Step3FormComponent
             );
 
             const filteredStateType = this.usStates.find(
-                (stateItem) => stateItem.name === formValue?.state
+                (stateItem) => stateItem.name === formValue?.stateShort
             );
 
             this.selectedStateType = filteredStateType
                 ? filteredStateType
                 : this.canadaStates.find(
-                      (stateItem) => stateItem.name === formValue?.state
+                      (stateItem) => stateItem.name === formValue?.stateShort
                   );
 
             this.selectedClassType = this.classTypes.find(
                 (item) => item.name === formValue?.classType
             );
 
-            this.selectedRestrictions = formValue.restrictions.map((item) => {
+            this.selectedRestrictions = formValue?.restrictions?.map((item) => {
                 return {
                     ...item,
                     name: item.code
@@ -307,7 +325,7 @@ export class Step3FormComponent
                 };
             });
 
-            this.selectedEndorsments = formValue.endorsments.map((item) => {
+            this.selectedEndorsments = formValue?.endorsments?.map((item) => {
                 return {
                     ...item,
                     name: item.code
@@ -320,7 +338,11 @@ export class Step3FormComponent
 
     public startValueChangesMonitoring(): void {
         this.subscription = this.licenseForm.valueChanges
-            .pipe(takeUntil(this.destroy$))
+            .pipe(
+                distinctUntilChanged(),
+                throttleTime(2),
+                takeUntil(this.destroy$)
+            )
             .subscribe((updatedFormValues) => {
                 const {
                     isEditingLicense,
@@ -328,6 +350,8 @@ export class Step3FormComponent
                     expDate,
                     id,
                     reviewId,
+                    restrictionsCode,
+                    endorsmentsCode,
                     ...previousFormValues
                 } = this.formValuesToPatch;
 
@@ -427,6 +451,37 @@ export class Step3FormComponent
         }
     }
 
+    public onFilesAction(event: any): void {
+        this.documents = event.files;
+
+        this.displayDocumentsRequiredNote = false;
+
+        switch (event.action) {
+            case 'add':
+                this.licenseForm
+                    .get('files')
+                    .patchValue(JSON.stringify(event.files));
+
+                break;
+            case 'delete':
+                this.licenseForm
+                    .get('files')
+                    .patchValue(
+                        event.files.length ? JSON.stringify(event.files) : null
+                    );
+
+                this.documentsForDeleteIds = [
+                    ...this.documentsForDeleteIds,
+                    event.deleteId,
+                ];
+
+                break;
+
+            default:
+                break;
+        }
+    }
+
     public onAddLicense(): void {
         if (this.licenseForm.invalid) {
             this.inputService.markInvalid(this.licenseForm);
@@ -434,6 +489,7 @@ export class Step3FormComponent
         }
 
         const {
+            state,
             restrictions,
             endorsments,
             restrictionsSubscription,
@@ -445,8 +501,16 @@ export class Step3FormComponent
 
         const saveData: LicenseModel = {
             ...licenseForm,
+            state: this.selectedStateType.stateName,
+            stateShort: this.selectedStateType.name,
             restrictions: this.selectedRestrictions,
             endorsments: this.selectedEndorsments,
+            restrictionsCode: this.selectedRestrictions
+                .map((resItem) => resItem.code)
+                .join(', '),
+            endorsmentsCode: this.selectedEndorsments
+                .map((resItem) => resItem.code)
+                .join(', '),
             isEditingLicense: false,
         };
 
@@ -458,11 +522,7 @@ export class Step3FormComponent
         this.selectedEndorsments = [];
         this.selectedRestrictions = [];
 
-        console.log('prije', this.licenseForm.value);
-
         this.formService.resetForm(this.licenseForm);
-
-        console.log('poslije', this.licenseForm.value);
     }
 
     public onCancelEditLicense(): void {
@@ -470,22 +530,24 @@ export class Step3FormComponent
 
         this.isLicenseEdited = false;
 
-        this.formService.resetForm(this.licenseForm);
+        this.formStatusEmitter.emit('VALID');
 
-        this.subscription.unsubscribe();
+        if (this.subscription) {
+            this.subscription.unsubscribe();
+        }
     }
 
     public onSaveEditedLicense(): void {
-        if (this.licenseForm.invalid) {
-            this.inputService.markInvalid(this.licenseForm);
-            return;
-        }
+        if (this.licenseForm.invalid || !this.isLicenseEdited) {
+            if (this.licenseForm.invalid) {
+                this.inputService.markInvalid(this.licenseForm);
+            }
 
-        if (!this.isLicenseEdited) {
             return;
         }
 
         const {
+            state,
             restrictions,
             endorsments,
             restrictionsSubscription,
@@ -497,8 +559,16 @@ export class Step3FormComponent
 
         const saveData: LicenseModel = {
             ...licenseForm,
+            state: this.selectedStateType.stateName,
+            stateShort: this.selectedStateType.name,
             restrictions: this.selectedRestrictions,
             endorsments: this.selectedEndorsments,
+            restrictionsCode: this.selectedRestrictions
+                .map((resItem) => resItem.code)
+                .join(', '),
+            endorsmentsCode: this.selectedEndorsments
+                .map((resItem) => resItem.code)
+                .join(', '),
             isEditingLicense: false,
         };
 
@@ -506,15 +576,9 @@ export class Step3FormComponent
 
         this.isLicenseEdited = false;
 
-        this.selectedCountryType = null;
-        this.selectedStateType = null;
-        this.selectedClassType = null;
-        this.selectedEndorsments = [];
-        this.selectedRestrictions = [];
-
-        this.formService.resetForm(this.licenseForm);
-
-        this.subscription.unsubscribe();
+        if (this.subscription) {
+            this.subscription.unsubscribe();
+        }
     }
 
     public onGetBtnClickValue(event: any): void {

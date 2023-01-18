@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 
 import { Subject, takeUntil } from 'rxjs';
 
@@ -23,7 +23,6 @@ import {
     CreateMedicalCertificateReviewCommand,
     MedicalCertificateFeedbackResponse,
 } from 'appcoretruckassist';
-import { UploadFile } from '../../../shared/ta-upload-files/ta-upload-file/ta-upload-file.component';
 
 @Component({
     selector: 'app-medical-certificate',
@@ -33,14 +32,18 @@ import { UploadFile } from '../../../shared/ta-upload-files/ta-upload-file/ta-up
 export class MedicalCertificateComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
 
-    public selectedMode: string = SelectedMode.APPLICANT;
+    public selectedMode: string = SelectedMode.REVIEW;
+
+    public isValidLoad: boolean;
 
     public medicalCertificateForm: FormGroup;
 
     public applicantId: number;
     public medicalCertificateId: number | null = null;
+    public queryParamId: number | string | null = null;
 
     public stepHasValues: boolean = false;
+    public stepHasReviewValues: boolean = false;
 
     public documents: any[] = [];
     public documentsForDeleteIds: number[] = [];
@@ -60,7 +63,7 @@ export class MedicalCertificateComponent implements OnInit, OnDestroy {
         },
         {
             lineIndex: 1,
-            lineInputs: [false],
+            lineInputs: [],
             displayAnnotationButton: false,
             displayAnnotationTextArea: false,
         },
@@ -68,6 +71,7 @@ export class MedicalCertificateComponent implements OnInit, OnDestroy {
     public hasIncorrectFields: boolean = false;
 
     constructor(
+        private route: ActivatedRoute,
         private formBuilder: FormBuilder,
         private inputService: TaInputService,
         private router: Router,
@@ -77,6 +81,8 @@ export class MedicalCertificateComponent implements OnInit, OnDestroy {
     ) {}
 
     ngOnInit(): void {
+        this.getQueryParams();
+
         this.createForm();
 
         this.getStepValuesFromStore();
@@ -93,16 +99,30 @@ export class MedicalCertificateComponent implements OnInit, OnDestroy {
         });
     }
 
+    public getQueryParams(): void {
+        this.route.paramMap.subscribe((params: ParamMap) => {
+            this.queryParamId = params.get('id');
+        });
+    }
+
     public getStepValuesFromStore(): void {
         this.applicantQuery.applicant$
             .pipe(takeUntil(this.destroy$))
             .subscribe((res: ApplicantResponse) => {
-                this.applicantId = res.id;
+                if (res && res.id == this.queryParamId) {
+                    this.isValidLoad = true;
 
-                if (res.medicalCertificate) {
-                    this.patchStepValues(res.medicalCertificate);
+                    this.applicantId = res.id;
 
-                    this.stepHasValues = true;
+                    if (res.medicalCertificate) {
+                        this.patchStepValues(res.medicalCertificate);
+
+                        this.stepHasValues = true;
+                    }
+                } else {
+                    this.isValidLoad = false;
+
+                    this.router.navigate(['/auth']);
                 }
             });
     }
@@ -110,6 +130,7 @@ export class MedicalCertificateComponent implements OnInit, OnDestroy {
     public patchStepValues(
         stepValues: MedicalCertificateFeedbackResponse
     ): void {
+        console.log('stepValues', stepValues);
         const { issueDate, expireDate, files, id } = stepValues;
 
         this.medicalCertificateId = id;
@@ -121,9 +142,33 @@ export class MedicalCertificateComponent implements OnInit, OnDestroy {
         });
 
         this.documents = files;
+
+        if (this.selectedMode === SelectedMode.REVIEW) {
+            if (stepValues.files[0].review) {
+                this.stepHasReviewValues = true;
+
+                for (let i = 0; i < stepValues.files.length; i++) {
+                    const fileReview = stepValues.files[i].review;
+
+                    this.openAnnotationArray[1].lineInputs = [
+                        ...this.openAnnotationArray[1].lineInputs,
+                        !fileReview,
+                    ];
+                }
+
+                const lineInputItems = this.openAnnotationArray[1].lineInputs;
+                const isAnyInputInLineIncorrect =
+                    anyInputInLineIncorrect(lineInputItems);
+
+                if (isAnyInputInLineIncorrect) {
+                    this.openAnnotationArray[1].displayAnnotationButton = true;
+                }
+            }
+        }
     }
 
     public onFilesAction(event: any): void {
+        console.log('event', event);
         this.documents = event.files;
 
         this.displayDocumentsRequiredNote = false;
@@ -148,17 +193,22 @@ export class MedicalCertificateComponent implements OnInit, OnDestroy {
                 ];
 
                 break;
+            case 'mark-incorrect':
+                if (this.selectedMode === SelectedMode.REVIEW) {
+                    this.incorrectInput(true, event.index, 1);
+                }
+
+                break;
+            case 'mark-correct':
+                if (this.selectedMode === SelectedMode.REVIEW) {
+                    this.incorrectInput(false, event.index, 1);
+                }
+
+                break;
 
             default:
                 break;
         }
-    }
-
-    public onFilesReviewAction(event: {
-        file: UploadFile;
-        message: string;
-    }): void {
-        console.log('reviewEvent', event);
     }
 
     public incorrectInput(
@@ -215,9 +265,7 @@ export class MedicalCertificateComponent implements OnInit, OnDestroy {
         }
 
         const inputFieldsArray = JSON.stringify(
-            this.openAnnotationArray
-                .filter((item) => Object.keys(item).length !== 0)
-                .map((item) => item.lineInputs)
+            this.openAnnotationArray.map((item) => item.lineInputs)
         );
 
         if (inputFieldsArray.includes('true')) {
@@ -247,10 +295,7 @@ export class MedicalCertificateComponent implements OnInit, OnDestroy {
 
     public onStepAction(event: any): void {
         if (event.action === 'next-step') {
-            if (
-                this.selectedMode === SelectedMode.APPLICANT ||
-                this.selectedMode === SelectedMode.FEEDBACK
-            ) {
+            if (this.selectedMode !== SelectedMode.REVIEW) {
                 this.onSubmit();
             }
 
@@ -275,7 +320,12 @@ export class MedicalCertificateComponent implements OnInit, OnDestroy {
 
         const { fromDate, toDate } = this.medicalCertificateForm.value;
 
-        const documents = this.documents.map((item) => item.realFile);
+        let documents = [];
+        this.documents.map((item) => {
+            if (item.realFile) {
+                documents.push(item.realFile);
+            }
+        });
 
         const saveData: any = {
             applicantId: this.applicantId,
@@ -288,6 +338,8 @@ export class MedicalCertificateComponent implements OnInit, OnDestroy {
                 filesForDeleteIds: this.documentsForDeleteIds,
             }),
         };
+
+        console.log('saveData', saveData);
 
         const selectMatchingBackendMethod = () => {
             if (
@@ -346,10 +398,73 @@ export class MedicalCertificateComponent implements OnInit, OnDestroy {
             isExpireDateValid: !this.openAnnotationArray[0].lineInputs[1],
             dateMessage:
                 this.medicalCertificateForm.get('firstRowReview').value,
-            filesReview: [],
+            filesReview: this.documents.map((item, index) => {
+                return {
+                    storageId: item.fileId,
+                    isValid: !this.openAnnotationArray[1].lineInputs[index],
+                    message:
+                        this.medicalCertificateForm.get('secondRowReview')
+                            .value,
+                };
+            }),
         };
 
         console.log('saveData', saveData);
+
+        const selectMatchingBackendMethod = () => {
+            if (
+                this.selectedMode === SelectedMode.REVIEW &&
+                !this.stepHasReviewValues
+            ) {
+                return this.applicantActionsService.createMedicalCertificateReview(
+                    saveData
+                );
+            }
+
+            if (
+                this.selectedMode === SelectedMode.REVIEW &&
+                this.stepHasReviewValues
+            ) {
+                return this.applicantActionsService.updateMedicalCertificateReview(
+                    saveData
+                );
+            }
+        };
+
+        selectMatchingBackendMethod()
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: () => {
+                    this.router.navigate([
+                        `/mvr-authorization/${this.applicantId}`,
+                    ]);
+
+                    this.applicantStore.update((store) => {
+                        return {
+                            ...store,
+                            applicant: {
+                                ...store.applicant,
+                                medicalCertificate: {
+                                    ...store.applicant.medicalCertificate,
+                                    files: store.applicant.medicalCertificate.files.map(
+                                        (item, index) => {
+                                            return {
+                                                ...item,
+                                                review: saveData.filesReview[
+                                                    index
+                                                ],
+                                            };
+                                        }
+                                    ),
+                                },
+                            },
+                        };
+                    });
+                },
+                error: (err) => {
+                    console.log(err);
+                },
+            });
     }
 
     ngOnDestroy(): void {

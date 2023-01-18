@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
-import { Router } from '@angular/router';
+import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 
 import { Subject, takeUntil } from 'rxjs';
 
@@ -16,7 +16,11 @@ import { ApplicantActionsService } from '../../state/services/applicant-actions.
 import { ApplicantQuery } from '../../state/store/applicant.query';
 import { ApplicantStore } from '../../state/store/applicant.store';
 
-import { ApplicantResponse, MvrAuthFeedbackResponse } from 'appcoretruckassist';
+import {
+    ApplicantResponse,
+    CreateMvrAuthReviewCommand,
+    MvrAuthFeedbackResponse,
+} from 'appcoretruckassist';
 import { InputSwitchActions } from '../../state/enum/input-switch-actions.enum';
 import { SelectedMode } from '../../state/enum/selected-mode.enum';
 
@@ -28,15 +32,19 @@ import { SelectedMode } from '../../state/enum/selected-mode.enum';
 export class MvrAuthorizationComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
 
-    public selectedMode: string = SelectedMode.APPLICANT;
+    public selectedMode: string = SelectedMode.REVIEW;
+
+    public isValidLoad: boolean;
 
     public mvrAuthorizationForm: FormGroup;
     public dontHaveMvrForm: FormGroup;
 
     public applicantId: number;
     public mvrAuthId: number | null = null;
+    public queryParamId: number | string | null = null;
 
     public stepHasValues: boolean = false;
+    public stepHasReviewValues: boolean = false;
 
     public lastValidLicense: any;
 
@@ -58,7 +66,7 @@ export class MvrAuthorizationComponent implements OnInit, OnDestroy {
     }[] = [
         {
             lineIndex: 0,
-            lineInputs: [false],
+            lineInputs: [],
             displayAnnotationButton: false,
             displayAnnotationTextArea: false,
         },
@@ -72,10 +80,13 @@ export class MvrAuthorizationComponent implements OnInit, OnDestroy {
         private applicantStore: ApplicantStore,
         private applicantQuery: ApplicantQuery,
         private applicantActionsService: ApplicantActionsService,
-        private imageBase64Service: ImageBase64Service
+        private imageBase64Service: ImageBase64Service,
+        private route: ActivatedRoute
     ) {}
 
     ngOnInit(): void {
+        this.getQueryParams();
+
         this.createForm();
 
         this.getStepValuesFromStore();
@@ -99,33 +110,49 @@ export class MvrAuthorizationComponent implements OnInit, OnDestroy {
         });
     }
 
+    public getQueryParams(): void {
+        this.route.paramMap.subscribe((params: ParamMap) => {
+            this.queryParamId = params.get('id');
+        });
+    }
+
     public getStepValuesFromStore(): void {
         this.applicantQuery.applicant$
             .pipe(takeUntil(this.destroy$))
             .subscribe((res: ApplicantResponse) => {
-                const personalInfo = res.personalInfo;
-                const cdlInformation = res.cdlInformation;
+                if (res && res.id == this.queryParamId) {
+                    this.isValidLoad = true;
 
-                const lastLicenseAdded =
-                    cdlInformation?.licences[
-                        cdlInformation.licences.length - 1
-                    ];
+                    const personalInfo = res.personalInfo;
+                    const cdlInformation = res.cdlInformation;
 
-                this.lastValidLicense = {
-                    license: lastLicenseAdded?.licenseNumber,
-                    state: lastLicenseAdded?.state?.stateShortName,
-                    classType: lastLicenseAdded?.classType?.name,
-                    expDate: convertDateFromBackend(lastLicenseAdded?.expDate),
-                };
+                    const lastLicenseAdded =
+                        cdlInformation?.licences[
+                            cdlInformation.licences.length - 1
+                        ];
 
-                this.lastValidLicense.name = personalInfo?.fullName;
+                    this.lastValidLicense = {
+                        license: lastLicenseAdded?.licenseNumber,
+                        state: lastLicenseAdded?.state?.stateShortName,
+                        classType: lastLicenseAdded?.classType?.name,
+                        expDate: convertDateFromBackend(
+                            lastLicenseAdded?.expDate
+                        ),
+                    };
 
-                this.applicantId = res.id;
+                    this.lastValidLicense.name = personalInfo?.fullName;
 
-                if (res.mvrAuth) {
-                    this.patchStepValues(res.mvrAuth);
+                    this.applicantId = res.id;
 
-                    this.stepHasValues = true;
+                    if (res.mvrAuth) {
+                        this.patchStepValues(res.mvrAuth);
+
+                        this.stepHasValues = true;
+                    }
+                } else {
+                    this.isValidLoad = false;
+
+                    this.router.navigate(['/load']);
                 }
             });
     }
@@ -150,15 +177,49 @@ export class MvrAuthorizationComponent implements OnInit, OnDestroy {
             isPeriodicallyObtained,
             isInformationCorrect,
             licenseCheck: onlyLicense,
-            files: JSON.stringify(files),
+            files: files ? JSON.stringify(files) : null,
         });
-
-        this.dontHaveMvrForm.get('dontHaveMvr').patchValue(dontHaveMvr);
 
         this.signatureImgSrc = signature;
         this.signature = signature;
 
         this.documents = files;
+
+        this.dontHaveMvrForm.get('dontHaveMvr').patchValue(dontHaveMvr);
+
+        if (dontHaveMvr) {
+            this.inputService.changeValidators(
+                this.mvrAuthorizationForm.get('files'),
+                false
+            );
+        } else {
+            this.inputService.changeValidators(
+                this.mvrAuthorizationForm.get('files')
+            );
+        }
+
+        if (this.selectedMode === SelectedMode.REVIEW) {
+            if (stepValues.files[0].review) {
+                this.stepHasReviewValues = true;
+
+                for (let i = 0; i < stepValues.files.length; i++) {
+                    const fileReview = stepValues.files[i].review;
+
+                    this.openAnnotationArray[0].lineInputs = [
+                        ...this.openAnnotationArray[0].lineInputs,
+                        !fileReview,
+                    ];
+                }
+
+                const lineInputItems = this.openAnnotationArray[0].lineInputs;
+                const isAnyInputInLineIncorrect =
+                    anyInputInLineIncorrect(lineInputItems);
+
+                if (isAnyInputInLineIncorrect) {
+                    this.openAnnotationArray[0].displayAnnotationButton = true;
+                }
+            }
+        }
     }
 
     public requestDrivingRecordFromEmployer(): void {
@@ -194,10 +255,7 @@ export class MvrAuthorizationComponent implements OnInit, OnDestroy {
     }
 
     public handleCheckboxParagraphClick(type: string): void {
-        if (
-            this.selectedMode === SelectedMode.FEEDBACK ||
-            this.selectedMode === SelectedMode.REVIEW
-        ) {
+        if (this.selectedMode !== SelectedMode.APPLICANT) {
             return;
         }
 
@@ -270,6 +328,18 @@ export class MvrAuthorizationComponent implements OnInit, OnDestroy {
                 ];
 
                 break;
+            case 'mark-incorrect':
+                if (this.selectedMode === SelectedMode.REVIEW) {
+                    this.incorrectInput(true, event.index, 0);
+                }
+
+                break;
+            case 'mark-correct':
+                if (this.selectedMode === SelectedMode.REVIEW) {
+                    this.incorrectInput(false, event.index, 0);
+                }
+
+                break;
 
             default:
                 break;
@@ -308,9 +378,7 @@ export class MvrAuthorizationComponent implements OnInit, OnDestroy {
         }
 
         const inputFieldsArray = JSON.stringify(
-            this.openAnnotationArray
-                .filter((item) => Object.keys(item).length !== 0)
-                .map((item) => item.lineInputs)
+            this.openAnnotationArray.map((item) => item.lineInputs)
         );
 
         if (inputFieldsArray.includes('true')) {
@@ -338,10 +406,7 @@ export class MvrAuthorizationComponent implements OnInit, OnDestroy {
 
     public onStepAction(event: any): void {
         if (event.action === 'next-step') {
-            if (
-                this.selectedMode === SelectedMode.APPLICANT ||
-                this.selectedMode === SelectedMode.FEEDBACK
-            ) {
+            if (this.selectedMode !== SelectedMode.REVIEW) {
                 this.onSubmit();
             }
 
@@ -377,7 +442,12 @@ export class MvrAuthorizationComponent implements OnInit, OnDestroy {
 
         const { dontHaveMvr } = this.dontHaveMvrForm.value;
 
-        const documents = this.documents.map((item) => item.realFile);
+        let documents = [];
+        this.documents.map((item) => {
+            if (item.realFile) {
+                documents.push(item.realFile);
+            }
+        });
 
         const saveData: any = {
             applicantId: this.applicantId,
@@ -456,7 +526,80 @@ export class MvrAuthorizationComponent implements OnInit, OnDestroy {
             });
     }
 
-    public onSubmitReview(): void {}
+    public onSubmitReview(): void {
+        const saveData: CreateMvrAuthReviewCommand = {
+            applicantId: this.applicantId,
+            filesReview: this.documents.length
+                ? this.documents.map((item, index) => {
+                      return {
+                          storageId: item.fileId,
+                          isValid:
+                              !this.openAnnotationArray[0].lineInputs[index],
+                          message:
+                              this.mvrAuthorizationForm.get('firstRowReview')
+                                  .value,
+                      };
+                  })
+                : [],
+        };
+
+        console.log('saveData', saveData);
+
+        const selectMatchingBackendMethod = () => {
+            if (
+                this.selectedMode === SelectedMode.REVIEW &&
+                !this.stepHasReviewValues
+            ) {
+                return this.applicantActionsService.createMvrAuthorizationReview(
+                    saveData
+                );
+            }
+
+            if (
+                this.selectedMode === SelectedMode.REVIEW &&
+                this.stepHasReviewValues
+            ) {
+                return this.applicantActionsService.updateMvrAuthorizationReview(
+                    saveData
+                );
+            }
+        };
+
+        selectMatchingBackendMethod()
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: () => {
+                    this.router.navigate([
+                        `/psp-authorization/${this.applicantId}`,
+                    ]);
+
+                    this.applicantStore.update((store) => {
+                        return {
+                            ...store,
+                            applicant: {
+                                ...store.applicant,
+                                mvrAuth: {
+                                    ...store.applicant.mvrAuth,
+                                    files: store.applicant.mvrAuth.files.map(
+                                        (item, index) => {
+                                            return {
+                                                ...item,
+                                                review: saveData.filesReview[
+                                                    index
+                                                ],
+                                            };
+                                        }
+                                    ),
+                                },
+                            },
+                        };
+                    });
+                },
+                error: (err) => {
+                    console.log(err);
+                },
+            });
+    }
 
     ngOnDestroy(): void {
         this.destroy$.next();
