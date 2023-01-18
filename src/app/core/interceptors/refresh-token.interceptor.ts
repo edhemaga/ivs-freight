@@ -11,13 +11,17 @@ import { Observable, catchError, throwError, switchMap } from 'rxjs';
 import { AccountService, SignInResponse } from 'appcoretruckassist';
 import { Router } from '@angular/router';
 import { UserLoggedService } from '../components/authentication/state/user-logged.service';
+import { AuthStoreService } from '../components/authentication/state/auth.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Injectable()
 export class RefreshTokenInterceptor implements HttpInterceptor {
     constructor(
         private accountService: AccountService,
         private router: Router,
-        private userLoggedService: UserLoggedService
+        private authService: AuthStoreService,
+        private userLoggedService: UserLoggedService,
+        private ngbModal: NgbModal
     ) {}
 
     intercept(
@@ -54,7 +58,9 @@ export class RefreshTokenInterceptor implements HttpInterceptor {
                             }),
                             catchError((err: HttpErrorResponse) => {
                                 if (err.status === 404 || err.status === 500) {
-                                    localStorage.removeItem('user');
+                                    this.ngbModal.dismissAll();
+                                    localStorage.clear();
+                                    this.authService.accountLogut();
                                     this.router.navigate(['/auth']);
                                 }
                                 return throwError(() => err);

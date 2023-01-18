@@ -993,6 +993,7 @@ export class TaInputComponent
                 'shop name',
                 'fuel stop',
                 'producer name',
+                'terminal name',
             ].includes(this.inputConfig.name.toLowerCase())
         ) {
             if (
@@ -1439,7 +1440,7 @@ export class TaInputComponent
 
         // All Simbols
         if (
-            ['username', 'nickname', 'terminal name', 'password'].includes(
+            ['username', 'nickname', 'password'].includes(
                 this.inputConfig.name.toLowerCase()
             )
         ) {

@@ -15,17 +15,12 @@ export class ModalService {
     private modalSpinner: Subject<{
         action: string;
         status: boolean;
-        setFasterTimeout?: boolean;
+        close: boolean;
     }> = new Subject<{
         action: string;
         status: boolean;
-        setFasterTimeout?: boolean;
+        close: boolean;
     }>();
-
-    constructor(
-        private ngbModal: NgbModal,
-        private encryptionDecryptionService: EncryptionDecryptionService
-    ) {}
 
     // Getter
     public get modalSpinner$() {
@@ -36,16 +31,21 @@ export class ModalService {
         return this.modalStatusChange.asObservable();
     }
 
+    constructor(
+        private ngbModal: NgbModal,
+        private encryptionDecryptionService: EncryptionDecryptionService
+    ) {}
+
     // Setter
     public setModalSpinner(data: {
         action: string;
         status: boolean;
-        setFasterTimeout?: boolean;
+        close: boolean;
     }) {
         this.modalSpinner.next({
             action: data.action,
             status: data.status,
-            setFasterTimeout: data.setFasterTimeout,
+            close: data.close,
         });
     }
 
@@ -114,7 +114,7 @@ export class ModalService {
         }
     }
 
-    public openModal(
+    public async openModal(
         component: any,
         options: ModalOptions,
         editData?: any,

@@ -625,21 +625,14 @@ export function getFunctionParams(func, data, callableFnc?) {
 
         if (element.length > 0) params.push(element);
     });
-    // console.log("sorted params");
-    // console.log(params);
 
     let sortedArray = [];
     Object.entries(data)
         .filter((item) => params.indexOf(item[0]) > -1)
         .map((item) => {
-            //console.log(item);
             const indxOf = params.indexOf(item[0]);
             sortedArray[indxOf] = !item[1] ? undefined : item[1];
         });
-
-    console.log(
-        callableFnc.subscribe((item) => console.log('WHAT IS ITEM', item))
-    );
 
     return sortedArray;
 }

@@ -49,28 +49,28 @@ export class TrailerDetailsComponent implements OnInit, OnDestroy {
         private trailerMinimalQuery: TrailersMinimalListQuery,
         private trailerMinimalStore: TrailersMinimalListStore,
         private DetailsDataService: DetailsDataService,
-        private trailerItemStore: TrailerItemStore,
+        private trailerItemStore: TrailerItemStore
     ) {
+        let storeData$ = this.trailerItemStore._select((state) => state);
 
-        let storeData$ = this.trailerItemStore._select(state => state);
+        storeData$.subscribe((state) => {
+            let newTrailerData = { ...state.entities[this.newTrailerId] };
 
-        storeData$.subscribe(state => {
-            let newTrailerData = {...state.entities[this.newTrailerId]};
-
-            if ( !this.isEmpty(newTrailerData) ) {
+            if (!this.isEmpty(newTrailerData)) {
                 this.DetailsDataService.setNewData(newTrailerData);
                 this.trailerConf(newTrailerData);
                 this.initTableOptions(newTrailerData);
             }
-           
-          });
+        });
     }
 
     ngOnInit(): void {
         let dataId = this.activated_route.snapshot.params.id;
-        let trailerData = {...this.trailerItemStore?.getValue()?.entities[dataId]};
+        let trailerData = {
+            ...this.trailerItemStore?.getValue()?.entities[dataId],
+        };
         this.initTableOptions(trailerData);
-        
+
         this.tableService.currentActionAnimation
             .pipe(takeUntil(this.destroy$))
             .subscribe((res: any) => {
@@ -115,41 +115,38 @@ export class TrailerDetailsComponent implements OnInit, OnDestroy {
                         .selectEntity(id)
                         .pipe(take(1));
 
-                        query.pipe(takeUntil(this.destroy$)).subscribe({
-                            next: (res: TrailerResponse) => {
-                                this.currentIndex = this.trailerList.findIndex(
-                                    (trailer) => trailer.id === res.id
-                                );
-                                            
-                                this.DetailsDataService.setNewData(res);
-                                this.trailerConf(res);
-                                this.initTableOptions(res);
-                                this.newTrailerId = id;
-                                this.router.navigate([`/trailer/${res.id}/details`]);
-        
-                                this.cdRef.detectChanges();
-                            },
-                            error: () => {},
-                        });    
+                    query.pipe(takeUntil(this.destroy$)).subscribe({
+                        next: (res: TrailerResponse) => {
+                            this.currentIndex = this.trailerList.findIndex(
+                                (trailer) => trailer.id === res.id
+                            );
 
+                            this.DetailsDataService.setNewData(res);
+                            this.trailerConf(res);
+                            this.initTableOptions(res);
+                            this.newTrailerId = id;
+                            this.router.navigate([
+                                `/trailer/${res.id}/details`,
+                            ]);
 
-
+                            this.cdRef.detectChanges();
+                        },
+                        error: () => {},
+                    });
                 } else {
                     //query = this.trailerService.getTrailerById(id);
-                    
+
                     this.newTrailerId = id;
                     this.router.navigate([`/trailer/${id}/details`]);
                     this.cdRef.detectChanges();
                 }
-                
-                
             });
         this.trailerConf(trailerData);
     }
 
     public isEmpty(obj: Record<string, any>): boolean {
         return Object.keys(obj).length === 0;
-      }
+    }
 
     trailerConf(data: any) {
         this.DetailsDataService.setNewData(data);
@@ -337,10 +334,7 @@ export class TrailerDetailsComponent implements OnInit, OnDestroy {
         this.trailerService
             .changeTrailerStatus(id, status)
             .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {},
-                error: () => {},
-            });
+            .subscribe();
     }
     public onTrailerActions(event: any) {
         this.dropService.dropActionHeaderTruck(
@@ -352,7 +346,9 @@ export class TrailerDetailsComponent implements OnInit, OnDestroy {
     }
     public onModalAction(action: string): void {
         let dataId = this.activated_route.snapshot.params.id;
-        let trailer = {...this.trailerItemStore?.getValue()?.entities[dataId]};
+        let trailer = {
+            ...this.trailerItemStore?.getValue()?.entities[dataId],
+        };
         switch (action.toLowerCase()) {
             case 'registration': {
                 this.modalService.openModal(

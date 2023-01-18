@@ -184,12 +184,14 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
                     this.modalService.setModalSpinner({
                         action: null,
                         status: true,
+                        close: false,
                     });
                 } else {
                     this.addCompanyOffice();
                     this.modalService.setModalSpinner({
                         action: null,
                         status: true,
+                        close: false,
                     });
                 }
                 break;
@@ -199,6 +201,7 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
                 this.modalService.setModalSpinner({
                     action: 'delete',
                     status: true,
+                    close: false,
                 });
 
                 break;
@@ -323,7 +326,22 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
         this.settingsLocationService
             .updateCompanyOffice(newData)
             .pipe(takeUntil(this.destroy$))
-            .subscribe();
+            .subscribe({
+                next: () => {
+                    this.modalService.setModalSpinner({
+                        action: null,
+                        status: true,
+                        close: true,
+                    });
+                },
+                error: () => {
+                    this.modalService.setModalSpinner({
+                        action: null,
+                        status: false,
+                        close: false,
+                    });
+                },
+            });
     }
 
     private addCompanyOffice() {
@@ -386,9 +404,21 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
                                 break;
                             }
                         }
+                    } else {
+                        this.modalService.setModalSpinner({
+                            action: null,
+                            status: true,
+                            close: true,
+                        });
                     }
                 },
-                error: () => {},
+                error: () => {
+                    this.modalService.setModalSpinner({
+                        action: null,
+                        status: false,
+                        close: false,
+                    });
+                },
             });
     }
 
@@ -396,7 +426,22 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
         this.settingsLocationService
             .deleteCompanyOfficeById(id)
             .pipe(takeUntil(this.destroy$))
-            .subscribe();
+            .subscribe({
+                next: () => {
+                    this.modalService.setModalSpinner({
+                        action: 'delete',
+                        status: true,
+                        close: true,
+                    });
+                },
+                error: () => {
+                    this.modalService.setModalSpinner({
+                        action: 'delete',
+                        status: false,
+                        close: false,
+                    });
+                },
+            });
     }
 
     private editCompanyOfficeById(id: number) {
