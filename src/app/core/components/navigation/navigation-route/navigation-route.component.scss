@@ -141,6 +141,7 @@
         .nav-item-arrow_top {
             opacity: 1;
             margin-bottom: 3px;
+            z-index: 9;
             &:nth-child(1) {
                 margin-bottom: 5px;
             }
@@ -191,9 +192,14 @@
         .nav-item-arrow {
             svg {
                 path {
-                    transition: $nav-transition-5;
                     fill: $nav-white;
                 }
+            }
+        }
+        .nav-item-rightSide {
+            p {
+                color: $nav-white;
+                font-weight: $nav-font-bold;
             }
         }
     }
@@ -216,6 +222,15 @@
     z-index: -1;
     border-radius: 3px;
     padding: 5px 9px;
+}
+.nav-item-active-box-active {
+    width: 238px;
+    background-color: $nav-hover-color;
+    position: absolute;
+    height: 28px;
+    border-radius: 3px;
+    z-index: -1;
+    left: 0px;
 }
 .subroute-item {
     .nav-item-active-box {

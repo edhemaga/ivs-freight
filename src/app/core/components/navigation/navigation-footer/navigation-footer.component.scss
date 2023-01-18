@@ -293,16 +293,20 @@
         }
 
         .nav-item-active-box {
-            width: 35px;
+            width: 38px;
             height: 28px;
             position: absolute;
-            left: -7px;
+            left: -9px;
             content: '';
-            background-color: $nav-hover-color;
+            background-color: $nav-hover-ligh;
             z-index: -1;
             border-radius: 3px;
         }
-
+        .nav-item-active-box-active {
+            width: 238px;
+            left: -8px;
+            background-color: $nav-hover-color;
+        }
         &.show {
             // animation: showMagicLine 1s;
         }

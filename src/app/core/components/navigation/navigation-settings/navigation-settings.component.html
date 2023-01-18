@@ -6,6 +6,16 @@
     }"
 >
     <div
+        *ngIf="
+            (isActiveFooterRouteClick &&
+                !mouseOverMiddleNav &&
+                !mouseOverFooter) ||
+            (settingsRouteActivated && !mouseOverMiddleNav && !mouseOverFooter)
+        "
+        class="nav-item-active-box-settings"
+        [ngClass]="{ 'nav-item-active-box-active': isNavigationHovered }"
+    ></div>
+    <div
         *ngIf="!isNavigationHovered"
         class="tooltip"
         ngbTooltip

@@ -15,6 +15,20 @@
 .holder {
     padding: 4px 0;
     position: relative;
+    .nav-item-active-box-settings {
+        width: 36px;
+        height: 28px;
+        background: $nav-hover-ligh;
+        position: absolute;
+        left: -8px;
+        border-radius: 3px;
+        bottom: 3px;
+    }
+    .nav-item-active-box-active {
+        width: 238px;
+        left: -8px;
+        background-color: $nav-hover-color;
+    }
     .parent {
         z-index: -1;
         position: absolute;
@@ -152,6 +166,29 @@
                 svg {
                     path {
                         fill: $nav-white;
+                    }
+                }
+            }
+        }
+        &:hover {
+            .image-footer {
+                svg {
+                    path {
+                        fill: $nav-white;
+                    }
+                }
+            }
+
+            p {
+                span {
+                    color: $nav-white;
+                    font-weight: $nav-font-bold;
+                }
+                .nav-item-arrow {
+                    svg {
+                        path {
+                            fill: $nav-white;
+                        }
                     }
                 }
             }

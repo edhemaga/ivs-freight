@@ -11,7 +11,7 @@
     }"
     (mouseenter)="onNavItemHover(true)"
     (mouseleave)="onNavItemHover(false)"
-    (click)="onRouteAction()"
+    (click)="onRouteAction(); routeIndex(index)"
 >
     <!-- <div
         *ngIf="!isNavigationHovered"
@@ -22,18 +22,23 @@
         tooltipBackground="#2F2F2F"
         position="right"
     ></div> -->
-    <div class="tooltip" *ngIf="!isNavigationHovered" data-tooltip>
+    <!-- <div class="tooltip" *ngIf="!isNavigationHovered" data-tooltip>
         {{ route.name }}
-    </div>
+    </div> -->
+
     <div
         [ngClass]="{
             'nav-item-active-box':
-                ((route.isRouteActive && footerRouteActive) ||
+                (route.isRouteActive ||
+                    footerRouteActive ||
                     route.isSubrouteActive) &&
+                footerRouteActive &&
                 !isNavigationHovered &&
                 !isSettingsPanelOpen &&
                 !isUserPanelOpen &&
-                footerRouteActive
+                selectedRoute == route.name &&
+                !middleIsHovered &&
+                !footerHovered
         }"
     ></div>
 
@@ -48,8 +53,7 @@
                 closeDropdownOnNavClose &&
                 !isSettingsPanelOpen &&
                 !isUserPanelOpen,
-            'nav-item-svg-active':
-                selectedRoute == route.route
+            'nav-item-svg-active': selectedRoute == route.name
         }"
     ></svg-icon>
 
@@ -77,12 +81,7 @@
             *ngIf="isNavigationHovered"
             class="nav-item-name"
             [ngClass]="{
-                'nav-item-name-active':
-                    ((route.isRouteActive && footerRouteActive) ||
-                        route.isSubrouteActive) &&
-                    !isSettingsPanelOpen &&
-                    !isUserPanelOpen &&
-                    footerRouteActive,
+                'nav-item-name-active': selectedRoute == route.name,
 
                 'active-text':
                     route.isRouteActive &&
@@ -137,7 +136,7 @@
             *ngIf="isNavigationHovered && !route.arrow && !message && !files"
             class="nav-item-arrow_top"
             src="assets/svg/common/arrow_top_right.svg"
-            (click)="openLinkInNewWindow(route.route)"
+            (click)="openLinkInNewWindow(route.route); $event.stopPropagation()"
             (mouseenter)="hoveredArrow(true)"
             (mouseleave)="hoveredArrow(false)"
             [ngClass]="{ 'hovered-arrow': arrowHovered }"

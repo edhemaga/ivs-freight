@@ -10,10 +10,8 @@
     background-color: $nav-transparent;
     box-shadow: $nav-boxshadow;
     position: relative;
-    // bottom: 18px;
-    // left: 18px;
+    height: fit-content;
     z-index: 99;
-
     padding: 4px;
 
     p {
@@ -108,7 +106,7 @@
             -moz-user-select: none;
             -ms-user-select: none;
             user-select: none;
-            padding-left: 36px;
+            padding-left: 24px;
         }
         span {
             margin-left: 12px;
@@ -116,12 +114,12 @@
         .user-company-text-active {
             color: $nav-white !important;
             font-weight: $nav-font-bold;
-            padding-left: 10px;
+            // padding-left: 10px;
             svg {
                 height: 20px;
                 width: 20px;
-                position: relative;
-                left: -10px;
+                position: absolute;
+                left: 11px;
                 path {
                     fill: $nav-active-lighter;
                 }
