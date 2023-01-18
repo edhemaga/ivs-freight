@@ -2,6 +2,7 @@ import { HttpHandler, HttpRequest } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ToastrService, IndividualConfig } from 'ngx-toastr';
 import { ActivatedRoute } from '@angular/router';
+import { title } from 'process';
 
 const notificationOptions: Partial<IndividualConfig> = {
     progressBar: false,
@@ -90,5 +91,14 @@ export class NotificationService {
 
     public warning(message: string, title?: string) {
         //this.toastr.warning(message, title, notificationOptions);
+    }
+
+
+    public triggerToastMessage(type: any, title: any, message: any){
+        if ( type == 'success' ) {
+            this.toastr.success(message, title, notificationOptions);
+        } else if ( type == 'error' ) {
+            this.toastr.error(message, title, notificationOptions);
+        }
     }
 }

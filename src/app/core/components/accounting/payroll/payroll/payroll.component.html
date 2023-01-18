@@ -9,37 +9,39 @@
     ></app-truckassist-table-toolbar>
 
     <div class="payroll-tables-holder">
-        <div class="card-holder">
-            <app-ta-custom-card
-                [cardName]="'Driver (Miles)'"
-                [hasLeftCounter]="19"
-                [isCardOpen]="false"
-                [hasDivider]="false"
-                [hasPayrollStatus]="true"
-            >
-                <div *ngIf="activeViewMode == 'List'">
-                    <app-truckassist-table-head
-                        [options]="tableOptions"
-                        [viewData]="viewData"
-                        [columns]="columns"
-                        [tableData]="tableData"
-                        (headActions)="onTableHeadActions($event)"
-                        [tableContainerWidth]="tableContainerWidth"
-                    ></app-truckassist-table-head>
+        <ng-container *ngFor="let d of payrollData | async">
+            <div class="card-holder">
+                <app-ta-custom-card
+                    [cardName]="d.title"
+                    [hasLeftCounter]="d.count"
+                    [isCardOpen]="false"
+                    [hasDivider]="false"
+                    [hasPayrollStatus]="true"
+                >
+                    <div *ngIf="activeViewMode == 'List'">
+                        <app-truckassist-table-head
+                            [options]="tableOptions"
+                            [viewData]="viewData"
+                            [columns]="columns"
+                            [tableData]="tableData"
+                            (headActions)="onTableHeadActions($event)"
+                            [tableContainerWidth]="tableContainerWidth"
+                        ></app-truckassist-table-head>
 
-                    <app-truckassist-table-body
-                        [viewData]="viewData"
-                        [columns]="columns"
-                        [options]="tableOptions"
-                        [selectedTab]="selectedTab"
-                        (bodyActions)="onTableBodyActions($event)"
-                        [tableData]="tableData"
-                        [tableContainerWidth]="tableContainerWidth"
-                    ></app-truckassist-table-body>
-                </div>
-            </app-ta-custom-card>
-        </div>
-        <div class="card-holder">
+                        <app-truckassist-table-body
+                            [viewData]="viewData"
+                            [columns]="columns"
+                            [options]="tableOptions"
+                            [selectedTab]="selectedTab"
+                            (bodyActions)="onTableBodyActions($event)"
+                            [tableData]="tableData"
+                            [tableContainerWidth]="tableContainerWidth"
+                        ></app-truckassist-table-body>
+                    </div>
+                </app-ta-custom-card>
+            </div>
+        </ng-container>
+        <!-- <div class="card-holder">
             <app-ta-custom-card
                 [cardName]="'Driver (Commission)'"
                 [isCardOpen]="false"
@@ -158,6 +160,6 @@
                     ></app-truckassist-table-body>
                 </div>
             </app-ta-custom-card>
-        </div>
+        </div> -->
     </div>
 </div>
