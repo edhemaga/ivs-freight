@@ -600,11 +600,12 @@ app-load-details-item {
     border-radius: 3px;
 }
 .load-progress-container {
-    width: 760px;
-    height: 8px;
-    background-color: #dadada;
+    //width: 760px;
+    //height: 8px;
+    //background-color: #dadada;
     border-radius: 2px;
     position: relative;
+    top: -14px;
     .icon-start {
         bottom: 9px;
     }

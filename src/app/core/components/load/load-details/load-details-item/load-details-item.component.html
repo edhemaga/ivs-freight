@@ -282,12 +282,11 @@
                                 >Current Location</span
                             >
                             <span class="current-location-value">{{
-                                loadItem?.data?.currentLocation?.city +
+                                loadItem?.data?.currentLocation?.city ? loadItem?.data?.currentLocation?.city : '' +
                                     ', ' +
-                                    loadItem?.data?.currentLocation
-                                        ?.stateShortName +
+                                loadItem?.data?.currentLocation?.stateShortName ? loadItem?.data?.currentLocation?.stateShortName : '' +
                                     ' ' +
-                                    loadItem?.data?.currentLocation?.zipCode
+                                loadItem?.data?.currentLocation?.zipCode ? loadItem?.data?.currentLocation?.zipCode : ''
                             }}</span>
                         </div>
                         <div class="location-item-wrapper">
@@ -295,17 +294,19 @@
                                 >Next Stop - Pickup</span
                             >
                             <span class="current-location-value">{{
-                                loadItem?.data?.nextStop?.shipper?.address
-                                    ?.city +
+                                loadItem?.data?.nextStop?.shipper?.address?.city ? loadItem?.data?.nextStop?.shipper?.address?.city : ''  +
                                     ', ' +
-                                    loadItem?.data?.nextStop?.shipper?.address
-                                        ?.stateShortName +
+                                loadItem?.data?.nextStop?.shipper?.address?.stateShortName ? loadItem?.data?.nextStop?.shipper?.address?.stateShortName : '' +
                                     ' ' +
-                                    loadItem?.data?.nextStop?.shipper?.address
-                                        ?.zipCode
+                                loadItem?.data?.nextStop?.shipper?.address?.zipCode ? loadItem?.data?.nextStop?.shipper?.address?.zipCode : ''
                             }}</span>
                         </div>
                     </div>
+                    <div class="load-progress-container">
+                        <app-gps-progressbar></app-gps-progressbar>
+                    </div>
+                    
+                <!--    
                     <div class="load-progress-container">
                         <div class="start-after-icons">
                             <svg-icon
@@ -351,6 +352,7 @@
                             ></svg-icon>
                         </div>
                     </div>
+                -->
                     <div class="stop-location-wrapper moving-cont">
                         <div class="location-item-wrapper">
                             <span class="moving-header"

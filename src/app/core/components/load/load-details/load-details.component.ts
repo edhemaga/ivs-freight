@@ -205,8 +205,7 @@ export class LoadDetailsComponent implements OnInit, OnChanges, OnDestroy {
                 }
             }
         );
-
-        console.log('---routes---', routes);
+        
         this.loadStopRoutes[0] = {
             routeColor: '#919191',
             stops: routes.map((route, index) => {
