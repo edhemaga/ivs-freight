@@ -179,9 +179,12 @@ export class MapRouteModalComponent implements OnInit, OnDestroy {
             .subscribe((trucks: TruckListResponse) => {
                 this.truckType = trucks.pagination.data.map((truck) => {
                     return {
-                        ...truck.truckType,
+                        id: truck.id,
+                        name: truck.truckNumber,
+                        truckType: truck.truckType,
                         folder: 'common',
                         subFolder: 'trucks',
+                        logoName: truck.truckType.logoName
                     };
                 });
             });

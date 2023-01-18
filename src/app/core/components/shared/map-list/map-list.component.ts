@@ -54,6 +54,7 @@ export class MapListComponent
     searchIsActive: boolean = false;
     searchText: string = '';
     searchLoading: boolean = false;
+    searchTimeout: any;
 
     constructor(
         private formBuilder: FormBuilder,
@@ -85,7 +86,11 @@ export class MapListComponent
             .pipe(takeUntil(this.destroy$))
             .subscribe((changes) => {
                 this.searchText = changes.search;
-                this.onSearch();
+
+                clearTimeout(this.searchTimeout);
+                this.searchTimeout = setTimeout(() => {
+                    this.onSearch();
+                }, 300);
             });
 
         this.mapsService.selectedMarkerChange

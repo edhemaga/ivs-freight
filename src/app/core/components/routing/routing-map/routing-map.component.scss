@@ -430,6 +430,10 @@
         .loaded-stop-background {
             //display: none;
         }
+
+        .address_holder .main_address_holder.not_expanded input {
+            background-color: #f3f3f3 !important;
+        }
     }
 
     &:last-child {

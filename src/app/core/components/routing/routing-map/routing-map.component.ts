@@ -1884,6 +1884,22 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
                 });
             }
         });
+
+        this.inputAddress.map((addressInput, inputIndex) => {
+            if (inputIndex == i && this.tableData[this.selectedMapIndex].routes[i].isFocused) {
+                addressInput.addressExpand();
+                addressInput.inputDropdown?.inputRef?.input.nativeElement.focus();
+                setTimeout(() => {
+                    addressInput.inputDropdown.inputRef.focusInput = true;
+                }, 500);
+            } else {
+                addressInput.inputDropdown?.inputRef?.input.nativeElement.blur();
+                addressInput.addressExpanded = false;
+                setTimeout(() => {
+                    addressInput.inputDropdown.inputRef.focusInput = false;
+                }, 500);
+            }
+        });
     }
 
     onToolBarAction(event: any) {
@@ -3089,7 +3105,12 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
                                   .length - routeIndex,
                     });
 
+                    var mainthis = this;
                     this.routePolylines[route.id].setMap(this.agmMap);
+                    google.maps.event.addListener(this.routePolylines[route.id], 'click', () => {
+                        console.log('polyline click', route, routeIndex);
+                        mainthis.focusRoute(routeIndex);
+                    });
                 },
                 error: () => {
                     console.log('decodeRouteShape error');
