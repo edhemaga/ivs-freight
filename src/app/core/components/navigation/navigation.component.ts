@@ -46,12 +46,12 @@ export class NavigationComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
     closeDropdownOnNavClose: boolean;
     @ViewChild('navbar') navbar: ElementRef;
-    selectedRoute: string = "";
+    selectedRoute: string = '';
     constructor(
         private router: Router,
         private navigationService: NavigationService,
         private DetailsDataService: DetailsDataService,
-        private activatedRoute: ActivatedRoute,
+        private activatedRoute: ActivatedRoute
     ) {}
 
     ngOnInit(): void {
@@ -114,7 +114,9 @@ export class NavigationComponent implements OnInit, OnDestroy {
                 }
             });
 
-            this.router.events.pipe(filter((event) => event instanceof NavigationEnd)).subscribe((url:any) => this.selectedRoute = url.url);
+        this.router.events
+            .pipe(filter((event) => event instanceof NavigationEnd))
+            .subscribe((url: any) => (this.selectedRoute = url.url));
     }
     //Midle navigation hovered hide magic line in footer nav
     onMidleNavHover(event) {
@@ -128,7 +130,7 @@ export class NavigationComponent implements OnInit, OnDestroy {
     }
     //On outside of navbar close navbar
     closeNavbar(event) {
-        console.log(event.target);
+        // console.log(event.target);
 
         if (
             //If this elements keep open navigation
