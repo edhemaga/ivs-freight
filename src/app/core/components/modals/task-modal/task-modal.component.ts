@@ -130,6 +130,7 @@ export class TaskModalComponent implements OnInit, OnDestroy {
                 this.modalService.setModalSpinner({
                     action: 'save and add new',
                     status: true,
+                    close: false,
                 });
                 this.addNewAfterSave = true;
                 break;
@@ -144,12 +145,14 @@ export class TaskModalComponent implements OnInit, OnDestroy {
                     this.modalService.setModalSpinner({
                         action: null,
                         status: true,
+                        close: false,
                     });
                 } else {
                     this.addTask();
                     this.modalService.setModalSpinner({
                         action: null,
                         status: true,
+                        close: false,
                     });
                 }
                 break;
@@ -159,6 +162,7 @@ export class TaskModalComponent implements OnInit, OnDestroy {
                 this.modalService.setModalSpinner({
                     action: 'delete',
                     status: true,
+                    close: false,
                 });
                 break;
             }
@@ -325,7 +329,22 @@ export class TaskModalComponent implements OnInit, OnDestroy {
             filesForDeleteIds: this.filesForDelete,
         };
 
-        this.todoService.updateTodo(newData).subscribe();
+        this.todoService.updateTodo(newData).subscribe({
+            next: () => {
+                this.modalService.setModalSpinner({
+                    action: null,
+                    status: true,
+                    close: true,
+                });
+            },
+            error: () => {
+                this.modalService.setModalSpinner({
+                    action: null,
+                    status: false,
+                    close: false,
+                });
+            },
+        });
     }
 
     private addTask() {
@@ -361,6 +380,7 @@ export class TaskModalComponent implements OnInit, OnDestroy {
                     this.modalService.setModalSpinner({
                         action: 'save and add new',
                         status: false,
+                        close: false,
                     });
 
                     this.formService.resetForm(this.taskForm);
@@ -372,9 +392,21 @@ export class TaskModalComponent implements OnInit, OnDestroy {
                     this.filesForDelete = [];
 
                     this.addNewAfterSave = false;
+                } else {
+                    this.modalService.setModalSpinner({
+                        action: null,
+                        status: true,
+                        close: true,
+                    });
                 }
             },
-            error: () => {},
+            error: () => {
+                this.modalService.setModalSpinner({
+                    action: null,
+                    status: false,
+                    close: false,
+                });
+            },
         });
     }
 
@@ -382,7 +414,22 @@ export class TaskModalComponent implements OnInit, OnDestroy {
         this.todoService
             .deleteTodoById(id)
             .pipe(takeUntil(this.destroy$))
-            .subscribe();
+            .subscribe({
+                next: () => {
+                    this.modalService.setModalSpinner({
+                        action: 'delete',
+                        status: true,
+                        close: true,
+                    });
+                },
+                error: () => {
+                    this.modalService.setModalSpinner({
+                        action: 'delete',
+                        status: false,
+                        close: false,
+                    });
+                },
+            });
     }
 
     private editTask(id: number) {

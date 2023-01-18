@@ -150,6 +150,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                 this.modalService.setModalSpinner({
                     action: 'save and add new',
                     status: true,
+                    close: false,
                 });
                 this.addNewAfterSave = true;
 
@@ -165,12 +166,14 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                     this.modalService.setModalSpinner({
                         action: null,
                         status: true,
+                        close: false,
                     });
                 } else {
                     this.addRepair();
                     this.modalService.setModalSpinner({
                         action: null,
                         status: true,
+                        close: false,
                     });
                 }
                 break;
@@ -181,6 +184,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                     this.modalService.setModalSpinner({
                         action: 'delete',
                         status: true,
+                        close: false,
                     });
                 }
                 break;
@@ -826,6 +830,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                         this.modalService.setModalSpinner({
                             action: 'save and add new',
                             status: false,
+                            close: false,
                         });
                         this.formService.resetForm(this.repairOrderForm);
 
@@ -875,9 +880,21 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                         this.filesForDelete = [];
 
                         this.addNewAfterSave = false;
+                    } else {
+                        this.modalService.setModalSpinner({
+                            action: 'save and add new',
+                            status: false,
+                            close: true,
+                        });
                     }
                 },
-                error: () => {},
+                error: () => {
+                    this.modalService.setModalSpinner({
+                        action: null,
+                        status: false,
+                        close: false,
+                    });
+                },
             });
     }
 
@@ -961,7 +978,22 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
         this.repairService
             .updateRepair(newData)
             .pipe(takeUntil(this.destroy$))
-            .subscribe();
+            .subscribe({
+                next: () => {
+                    this.modalService.setModalSpinner({
+                        action: null,
+                        status: true,
+                        close: true,
+                    });
+                },
+                error: () => {
+                    this.modalService.setModalSpinner({
+                        action: null,
+                        status: false,
+                        close: false,
+                    });
+                },
+            });
     }
 
     private deleteRepair(id: number) {
@@ -971,7 +1003,22 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                 this.editData.type === 'edit-trailer' ? 'inactive' : 'active'
             )
             .pipe(takeUntil(this.destroy$))
-            .subscribe();
+            .subscribe({
+                next: () => {
+                    this.modalService.setModalSpinner({
+                        action: 'delete',
+                        status: true,
+                        close: true,
+                    });
+                },
+                error: () => {
+                    this.modalService.setModalSpinner({
+                        action: 'delete',
+                        status: false,
+                        close: false,
+                    });
+                },
+            });
     }
 
     private populateForm(res: any) {

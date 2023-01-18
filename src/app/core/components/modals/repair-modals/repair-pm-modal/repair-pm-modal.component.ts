@@ -251,8 +251,7 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
                                 this.modalService.setModalSpinner({
                                     action: null,
                                     status: true,
-                                    setFasterTimeout:
-                                        !!this.editData?.canOpenModal,
+                                    close: false,
                                 });
                                 break;
                             }
@@ -261,8 +260,7 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
                                 this.modalService.setModalSpinner({
                                     action: null,
                                     status: true,
-                                    setFasterTimeout:
-                                        !!this.editData?.canOpenModal,
+                                    close: false,
                                 });
                                 break;
                             }
@@ -279,6 +277,7 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
                                 this.modalService.setModalSpinner({
                                     action: null,
                                     status: true,
+                                    close: false,
                                 });
                                 break;
                             }
@@ -287,6 +286,7 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
                                 this.modalService.setModalSpinner({
                                     action: null,
                                     status: true,
+                                    close: false,
                                 });
                                 break;
                             }
@@ -475,9 +475,21 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
                                 break;
                             }
                         }
+                    } else {
+                        this.modalService.setModalSpinner({
+                            action: null,
+                            status: true,
+                            close: true,
+                        });
                     }
                 },
-                error: () => {},
+                error: () => {
+                    this.modalService.setModalSpinner({
+                        action: null,
+                        status: false,
+                        close: false,
+                    });
+                },
             });
     }
 
@@ -539,9 +551,21 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
                                 break;
                             }
                         }
+                    } else {
+                        this.modalService.setModalSpinner({
+                            action: null,
+                            status: true,
+                            close: true,
+                        });
                     }
                 },
-                error: () => {},
+                error: () => {
+                    this.modalService.setModalSpinner({
+                        action: null,
+                        status: false,
+                        close: false,
+                    });
+                },
             });
     }
 
@@ -602,9 +626,21 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
                                 break;
                             }
                         }
+                    } else {
+                        this.modalService.setModalSpinner({
+                            action: null,
+                            status: true,
+                            close: true,
+                        });
                     }
                 },
-                error: () => {},
+                error: () => {
+                    this.modalService.setModalSpinner({
+                        action: null,
+                        status: false,
+                        close: false,
+                    });
+                },
             });
     }
 
@@ -665,9 +701,21 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
                                 break;
                             }
                         }
+                    } else {
+                        this.modalService.setModalSpinner({
+                            action: null,
+                            status: true,
+                            close: true,
+                        });
                     }
                 },
-                error: () => {},
+                error: () => {
+                    this.modalService.setModalSpinner({
+                        action: null,
+                        status: false,
+                        close: false,
+                    });
+                },
             });
     }
 

@@ -78,12 +78,14 @@ export class FuelStopModalComponent implements OnInit, OnDestroy {
                     this.modalService.setModalSpinner({
                         action: null,
                         status: true,
+                        close: false,
                     });
                 } else {
                     this.addFuelStop();
                     this.modalService.setModalSpinner({
                         action: null,
                         status: true,
+                        close: false,
                     });
                 }
                 break;
@@ -323,7 +325,22 @@ export class FuelStopModalComponent implements OnInit, OnDestroy {
         this.fuelService
             .updateFuelStop(newData)
             .pipe(takeUntil(this.destroy$))
-            .subscribe();
+            .subscribe({
+                next: () => {
+                    this.modalService.setModalSpinner({
+                        action: null,
+                        status: true,
+                        close: true,
+                    });
+                },
+                error: () => {
+                    this.modalService.setModalSpinner({
+                        action: null,
+                        status: false,
+                        close: false,
+                    });
+                },
+            });
     }
 
     private addFuelStop() {
@@ -351,7 +368,22 @@ export class FuelStopModalComponent implements OnInit, OnDestroy {
         this.fuelService
             .addFuelStop(newData)
             .pipe(takeUntil(this.destroy$))
-            .subscribe();
+            .subscribe({
+                next: () => {
+                    this.modalService.setModalSpinner({
+                        action: null,
+                        status: true,
+                        close: true,
+                    });
+                },
+                error: () => {
+                    this.modalService.setModalSpinner({
+                        action: null,
+                        status: false,
+                        close: false,
+                    });
+                },
+            });
     }
 
     private getFuelStopById(id: number) {

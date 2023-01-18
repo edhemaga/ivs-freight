@@ -235,12 +235,14 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
                     this.modalService.setModalSpinner({
                         action: null,
                         status: true,
+                        close: false,
                     });
                 } else {
                     this.addParking();
                     this.modalService.setModalSpinner({
                         action: null,
                         status: true,
+                        close: false,
                     });
                 }
                 break;
@@ -250,6 +252,7 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
                 this.modalService.setModalSpinner({
                     action: 'delete',
                     status: true,
+                    close: false,
                 });
 
                 break;
@@ -362,7 +365,22 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
         this.settingsLocationService
             .updateCompanyParking(newData)
             .pipe(takeUntil(this.destroy$))
-            .subscribe();
+            .subscribe({
+                next: () => {
+                    this.modalService.setModalSpinner({
+                        action: null,
+                        status: true,
+                        close: true,
+                    });
+                },
+                error: () => {
+                    this.modalService.setModalSpinner({
+                        action: null,
+                        status: false,
+                        close: false,
+                    });
+                },
+            });
     }
 
     private addParking() {
@@ -414,14 +432,44 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
         this.settingsLocationService
             .addCompanyParking(newData)
             .pipe(takeUntil(this.destroy$))
-            .subscribe();
+            .subscribe({
+                next: () => {
+                    this.modalService.setModalSpinner({
+                        action: null,
+                        status: true,
+                        close: true,
+                    });
+                },
+                error: () => {
+                    this.modalService.setModalSpinner({
+                        action: null,
+                        status: false,
+                        close: false,
+                    });
+                },
+            });
     }
 
     private deleteParkingById(id: number) {
         this.settingsLocationService
             .deleteCompanyParkingById(id)
             .pipe(takeUntil(this.destroy$))
-            .subscribe();
+            .subscribe({
+                next: () => {
+                    this.modalService.setModalSpinner({
+                        action: 'delete',
+                        status: true,
+                        close: true,
+                    });
+                },
+                error: () => {
+                    this.modalService.setModalSpinner({
+                        action: 'delete',
+                        status: false,
+                        close: false,
+                    });
+                },
+            });
     }
 
     private editCompanyParkingById(id: number) {

@@ -22,7 +22,14 @@ import {
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
 import { AddressEntity, CreateResponse, EnumValue } from 'appcoretruckassist';
 import { tab_modal_animation } from '../../shared/animations/tabs-modal.animation';
-import { distinctUntilChanged, Subject, takeUntil } from 'rxjs';
+import {
+    distinctUntilChanged,
+    Subject,
+    takeUntil,
+    switchMap,
+    of,
+    debounceTime,
+} from 'rxjs';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { BankVerificationService } from '../../../services/BANK-VERIFICATION/bankVerification.service';
 import { FormService } from '../../../services/form/form.service';
@@ -43,6 +50,8 @@ import {
     convertThousanSepInNumber,
 } from '../../../utils/methods.calculations';
 import { HttpResponseBase } from '@angular/common/http';
+import { TaUserService } from '../../../services/user/user.service';
+import { CheckUserByEmailResponse } from '../../../../../../appcoretruckassist/model/checkUserByEmailResponse';
 
 @Component({
     selector: 'app-user-modal',
@@ -133,11 +142,14 @@ export class UserModalComponent implements OnInit, OnDestroy {
     public disableCardAnimation: boolean = false;
     private destroy$ = new Subject<void>();
 
+    public isUserReturned: boolean = false;
+
     constructor(
         private formBuilder: FormBuilder,
         private inputService: TaInputService,
         private modalService: ModalService,
-        private userService: UserTService,
+        private companyUserService: UserTService,
+        private taUserService: TaUserService,
         private bankVerificationService: BankVerificationService,
         private formService: FormService,
         private ngbActiveModal: NgbActiveModal
@@ -154,6 +166,8 @@ export class UserModalComponent implements OnInit, OnDestroy {
         }
 
         this.trackUserPayroll();
+
+        this.checkUserEmail();
     }
 
     public onModalAction(data: { action: string; bool: boolean }): void {
@@ -172,12 +186,14 @@ export class UserModalComponent implements OnInit, OnDestroy {
                     this.modalService.setModalSpinner({
                         action: null,
                         status: true,
+                        close: false,
                     });
                 } else {
                     this.addUser();
                     this.modalService.setModalSpinner({
                         action: null,
                         status: true,
+                        close: false,
                     });
                 }
                 break;
@@ -195,6 +211,7 @@ export class UserModalComponent implements OnInit, OnDestroy {
                     this.modalService.setModalSpinner({
                         action: 'delete',
                         status: true,
+                        close: false,
                     });
                 }
                 break;
@@ -435,6 +452,40 @@ export class UserModalComponent implements OnInit, OnDestroy {
         );
     }
 
+    private checkUserEmail() {
+        this.userForm
+            .get('email')
+            .valueChanges.pipe(
+                takeUntil(this.destroy$),
+                debounceTime(500),
+                switchMap((value) => {
+                    if (this.userForm.get('email').valid) {
+                        return this.taUserService.checkUserByEmail(value);
+                    }
+                    return of(null);
+                })
+            )
+            .subscribe({
+                next: (res: CheckUserByEmailResponse) => {
+                    if (res) {
+                        this.isUserReturned = true;
+                        this.userForm.patchValue({
+                            firstName: res.firstName,
+                            lastName: res.lastName,
+                            email: res.email,
+                            phone: res.phone,
+                            address: res.address.address,
+                        });
+
+                        this.selectedAddress = res.address;
+                    }
+                },
+                error: (error) => {
+                    this.isUserReturned = false;
+                },
+            });
+    }
+
     private trackUserPayroll() {
         this.userForm
             .get('includeInPayroll')
@@ -578,10 +629,25 @@ export class UserModalComponent implements OnInit, OnDestroy {
             commission: commission ? parseFloat(commission) : null,
         };
 
-        this.userService
+        this.companyUserService
             .updateUser(newData)
             .pipe(takeUntil(this.destroy$))
-            .subscribe();
+            .subscribe({
+                next: () => {
+                    this.modalService.setModalSpinner({
+                        action: null,
+                        status: true,
+                        close: true,
+                    });
+                },
+                error: () => {
+                    this.modalService.setModalSpinner({
+                        action: null,
+                        status: false,
+                        close: false,
+                    });
+                },
+            });
     }
 
     private addUser() {
@@ -629,21 +695,51 @@ export class UserModalComponent implements OnInit, OnDestroy {
             commission: commission ? parseFloat(commission) : null,
         };
 
-        this.userService
+        this.companyUserService
             .addUser(newData)
             .pipe(takeUntil(this.destroy$))
-            .subscribe();
+            .subscribe({
+                next: () => {
+                    this.modalService.setModalSpinner({
+                        action: null,
+                        status: true,
+                        close: true,
+                    });
+                },
+                error: () => {
+                    this.modalService.setModalSpinner({
+                        action: null,
+                        status: false,
+                        close: false,
+                    });
+                },
+            });
     }
 
     private deleteUserById(id: number) {
-        this.userService
+        this.companyUserService
             .deleteUserById(id)
             .pipe(takeUntil(this.destroy$))
-            .subscribe();
+            .subscribe({
+                next: () => {
+                    this.modalService.setModalSpinner({
+                        action: 'delete',
+                        status: true,
+                        close: true,
+                    });
+                },
+                error: () => {
+                    this.modalService.setModalSpinner({
+                        action: 'delete',
+                        status: false,
+                        close: false,
+                    });
+                },
+            });
     }
 
     private getUserById(id: number) {
-        this.userService
+        this.companyUserService
             .getUserByid(id)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
@@ -771,7 +867,7 @@ export class UserModalComponent implements OnInit, OnDestroy {
     }
 
     private updateUserStatus(id: number) {
-        this.userService
+        this.companyUserService
             .updateUserStatus(id)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
@@ -790,7 +886,7 @@ export class UserModalComponent implements OnInit, OnDestroy {
     }
 
     private getModalDropdowns() {
-        this.userService
+        this.companyUserService
             .getModalDropdowns()
             .pipe(takeUntil(this.destroy$))
             .subscribe({

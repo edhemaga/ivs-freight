@@ -28,7 +28,7 @@ import {
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { DropZoneConfig } from '../../shared/ta-upload-files/ta-upload-dropzone/ta-upload-dropzone.component';
 import { ContactTService } from '../../contacts/state/contact.service';
-import { Subject, takeUntil } from 'rxjs';
+import { Subject, switchMap, takeUntil } from 'rxjs';
 import Croppie from 'croppie';
 import { FormService } from '../../../services/form/form.service';
 import { phoneExtension } from '../../shared/ta-input/ta-input.regex-validations';
@@ -236,6 +236,7 @@ export class ContactModalComponent implements OnInit, OnDestroy {
                 this.modalService.setModalSpinner({
                     action: 'save and add new',
                     status: true,
+                    close: false,
                 });
                 this.addNewAfterSave = true;
                 break;
@@ -250,12 +251,14 @@ export class ContactModalComponent implements OnInit, OnDestroy {
                     this.modalService.setModalSpinner({
                         action: null,
                         status: true,
+                        close: false,
                     });
                 } else {
                     this.addCompanyContact();
                     this.modalService.setModalSpinner({
                         action: null,
                         status: true,
+                        close: false,
                     });
                 }
                 break;
@@ -266,6 +269,7 @@ export class ContactModalComponent implements OnInit, OnDestroy {
                     this.modalService.setModalSpinner({
                         action: 'delete',
                         status: true,
+                        close: false,
                     });
                 }
                 break;
@@ -433,6 +437,7 @@ export class ContactModalComponent implements OnInit, OnDestroy {
                         this.modalService.setModalSpinner({
                             action: 'save and add new',
                             status: false,
+                            close: false,
                         });
 
                         this.formService.resetForm(this.contactForm);
@@ -451,9 +456,21 @@ export class ContactModalComponent implements OnInit, OnDestroy {
                         this.contactEmails.controls = [];
 
                         this.addNewAfterSave = false;
+                    } else {
+                        this.modalService.setModalSpinner({
+                            action: null,
+                            status: false,
+                            close: true,
+                        });
                     }
                 },
-                error: () => {},
+                error: () => {
+                    this.modalService.setModalSpinner({
+                        action: null,
+                        status: false,
+                        close: false,
+                    });
+                },
             });
     }
 
@@ -481,7 +498,22 @@ export class ContactModalComponent implements OnInit, OnDestroy {
         this.contactService
             .updateCompanyContact(newData)
             .pipe(takeUntil(this.destroy$))
-            .subscribe();
+            .subscribe({
+                next: () => {
+                    this.modalService.setModalSpinner({
+                        action: null,
+                        status: true,
+                        close: true,
+                    });
+                },
+                error: () => {
+                    this.modalService.setModalSpinner({
+                        action: null,
+                        status: false,
+                        close: false,
+                    });
+                },
+            });
     }
 
     public deleteCompanyContactById(id: number): void {
@@ -493,9 +525,16 @@ export class ContactModalComponent implements OnInit, OnDestroy {
                     this.modalService.setModalSpinner({
                         action: 'delete',
                         status: true,
+                        close: true,
                     });
                 },
-                error: () => {},
+                error: () => {
+                    this.modalService.setModalSpinner({
+                        action: 'delete',
+                        status: false,
+                        close: false,
+                    });
+                },
             });
     }
 
@@ -579,20 +618,15 @@ export class ContactModalComponent implements OnInit, OnDestroy {
                         name: this.selectedContactLabel.name,
                         colorId: this.selectedContactLabel.colorId,
                     })
-                    .pipe(takeUntil(this.destroy$))
+                    .pipe(
+                        takeUntil(this.destroy$),
+                        switchMap(() => {
+                            return this.contactService.getCompanyContactModal();
+                        })
+                    )
                     .subscribe({
-                        next: () => {
-                            this.contactService
-                                .getCompanyContactModal()
-                                .pipe(takeUntil(this.destroy$))
-                                .subscribe({
-                                    next: (
-                                        res: CompanyContactModalResponse
-                                    ) => {
-                                        this.contactLabels = res.labels;
-                                    },
-                                    error: () => {},
-                                });
+                        next: (res: CompanyContactModalResponse) => {
+                            this.contactLabels = res.labels;
                         },
                         error: () => {},
                     });
@@ -624,25 +658,19 @@ export class ContactModalComponent implements OnInit, OnDestroy {
                         name: this.selectedContactLabel.name,
                         colorId: this.selectedContactLabel.colorId,
                     })
-                    .pipe(takeUntil(this.destroy$))
-                    .subscribe({
-                        next: (res: CreateResponse) => {
+                    .pipe(
+                        takeUntil(this.destroy$),
+                        switchMap((res: CreateResponse) => {
                             this.selectedContactLabel = {
                                 ...this.selectedContactLabel,
                                 id: res.id,
                             };
-
-                            this.contactService
-                                .getCompanyContactModal()
-                                .pipe(takeUntil(this.destroy$))
-                                .subscribe({
-                                    next: (
-                                        res: CompanyContactModalResponse
-                                    ) => {
-                                        this.contactLabels = res.labels;
-                                    },
-                                    error: () => {},
-                                });
+                            return this.contactService.getCompanyContactModal();
+                        })
+                    )
+                    .subscribe({
+                        next: (res: CompanyContactModalResponse) => {
+                            this.contactLabels = res.labels;
                         },
                         error: () => {},
                     });
