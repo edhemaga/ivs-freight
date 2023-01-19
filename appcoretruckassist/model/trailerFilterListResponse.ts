@@ -9,9 +9,10 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { TrailerFilterResponsePagination } from './trailerFilterResponsePagination';
 
 
-export interface GetAvailableCreditEFSQuery { 
-    integrationId?: number;
+export interface TrailerFilterListResponse { 
+    pagination?: TrailerFilterResponsePagination;
 }
 
