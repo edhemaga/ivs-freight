@@ -54,6 +54,7 @@
         right: 16px;
         display: flex;
         gap: 4px;
+        opacity: 0;
         span {
             font-size: 11px;
             color: $files;
@@ -89,6 +90,9 @@
             line-height: 17px;
             color: $nav-white;
             font-weight: 400;
+        }
+        .route-not-active {
+            color: #787878;
         }
         .nav-item-name-active {
             font-weight: 700;
@@ -185,8 +189,34 @@
         .nav-item-rightSide {
             p {
                 color: $nav-white;
-                font-weight: $nav-font-bold;
             }
+        }
+    }
+}
+.nav-item-parent-active {
+    &:hover {
+        .nav-item-img {
+            svg {
+                path {
+                    fill: #558ddd;
+                }
+            }
+        }
+        .nav-item-rightSide {
+            .nav-item-name {
+                color: #558ddd;
+
+                span {
+                    color: #558ddd;
+                }
+            }
+            // .nav-item-arrow {
+            //     svg {
+            //         path {
+            //             fill: $nav-active-lighter;
+            //         }
+            //     }
+            // }
         }
     }
 }
@@ -196,6 +226,8 @@
 .subroute-item {
     padding-left: 4px;
     .nav-item-rightSide {
+        opacity: 0;
+        transition: all 0.5s ease-in-out;
         .nav-item-name {
             margin-left: 5px;
         }

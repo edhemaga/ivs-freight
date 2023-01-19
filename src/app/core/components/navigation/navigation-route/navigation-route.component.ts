@@ -40,6 +40,7 @@ export class NavigationRouteComponent implements OnInit {
     @Input() index: number;
     @Input() middleIsHovered: boolean = false;
     @Input() selectedRoute: string = '';
+    @Input() selectedSubRoute: string = '';
 
     @Output() onRouteEvent = new EventEmitter<NavigationSubRoutes>();
     @Output() itemIndex = new EventEmitter<Number>();
@@ -51,6 +52,7 @@ export class NavigationRouteComponent implements OnInit {
     public arrowHovered: boolean;
     public footerRouteActive: boolean;
     public footerHovered: boolean;
+    public textSubRoute: string = '';
     showToolTip: boolean;
     routeId: string;
     // routeName: string;
@@ -64,6 +66,11 @@ export class NavigationRouteComponent implements OnInit {
     }
     //Get subroute name
     ngOnChanges(changes: SimpleChanges) {
+        this.textSubRoute = this.selectedSubRoute;
+        this.activeRouteIdFromLocalStorage = parseInt(
+            localStorage.getItem('subroute_active')
+        );
+
         let router = StaticInjectorService.Injector.get(Router);
         let n = router.url.split('/');
         if (n[2]) {
@@ -74,6 +81,7 @@ export class NavigationRouteComponent implements OnInit {
     }
 
     ngOnInit() {
+        console.log(this.route.route);
         this.timeout = setTimeout(() => {
             this.isActiveRouteOnReload(window.location.pathname);
             clearTimeout(this.timeout);

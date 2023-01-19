@@ -52,6 +52,7 @@
                         [isActiveSubroute]="isActiveSubroute"
                         (onRouteEvent)="onRouteEvent($event)"
                         [selectedRoute]="selectedRoute"
+                        [selectedSubRoute]="selectedSubRoute"
                         [middleIsHovered]="middleIsHovered"
                         (itemIndex)="routeIndex($event)"
                     >
@@ -72,7 +73,9 @@
                         "
                         [isNavigationHovered]="isNavigationHovered"
                         [contentHeight]="item.route.length"
-                        (subrouteContainerActive)="test($event)"
+                        (subrouteContainerActive)="
+                            isSubrouteContainerOpen($event)
+                        "
                     >
                         <app-navigation-route
                             class="subroute-item"
@@ -101,6 +104,7 @@
                             "
                             [subroute]="item"
                             [index]="ind"
+                            [selectedSubRoute]="selectedSubRoute"
                             [isActiveSubroute]="isActiveSubroute"
                             [isNavigationHovered]="isNavigationHovered"
                             (onSubrouteActiveEvent)="onRouteEvent($event)"
@@ -123,17 +127,23 @@
                             !isSettingsPanelOpen &&
                             !subrouteContainerOpened &&
                             !isUserCompanyDetailsOpen &&
-                            !isUserPanelOpen)
+                            !isUserPanelOpen &&
+                            selectedRoute != 'Settings')
                     "
                     [@showHideDetails]="
                         !isActiveSubroute &&
                         isModalPanelOpen &&
                         !footerRouteActive &&
-                        isActiveMagicLine
+                        isActiveMagicLine &&
+                        isNavigationHovered
                             ? 'false'
                             : 'true'
                     "
                     class="new-magic-line"
+                    [ngClass]="{
+                        'animate-magic-line': isNavigationHovered,
+                        'magic-line-width': !isNavigationHovered
+                    }"
                 ></div>
             </div>
         </div>
@@ -154,6 +164,9 @@
                 [isActiveFooterRouteClick]="isActiveFooterRoute"
                 [showHideLineIfSettingsActive]="middleIsHovered"
                 [isActiveSubroute]="isActiveSubroute"
+                [selectedRoute]="selectedRoute"
+                [selectedSubRoute]="selectedSubRoute"
+                [subrouteContainerOpened]="subrouteContainerOpened"
                 (onActivateFooterRoutes)="onActivateFooterRoute($event)"
             >
             </app-navigation-footer>

@@ -50,6 +50,7 @@ export class NavigationComponent implements OnInit, OnDestroy {
     closeDropdownOnNavClose: boolean;
     @ViewChild('navbar') navbar: ElementRef;
     selectedRoute: string = '';
+    selectedSubRoute: string = '';
     companiesExists: boolean;
     routeIndexSelected: boolean;
     constructor(
@@ -59,17 +60,7 @@ export class NavigationComponent implements OnInit, OnDestroy {
         private DetailsDataService: DetailsDataService,
         private activatedRoute: ActivatedRoute
     ) {}
-    oneUserCompany($event) {
-        this.companiesExists = $event;
-        this.cdRef.detectChanges();
-    }
-    routeIndex($event) {
-        this.routeIndexSelected = $event;
-    }
-    test(test) {
-        console.log(test);
-        this.subrouteContainerOpened = test;
-    }
+
     ngOnInit(): void {
         this.navigationService.getValueNavHovered().subscribe((value) => {
             this.middleIsHovered = value;
@@ -144,6 +135,13 @@ export class NavigationComponent implements OnInit, OnDestroy {
                     this.cdRef.detectChanges();
                 } else {
                     let ruteName = url.url.split('/');
+                    if (ruteName[2]) {
+                        let t =
+                            ruteName[2].charAt(0).toUpperCase() +
+                            ruteName[2].substr(1).toLowerCase();
+                        this.selectedSubRoute = t;
+                        this.cdRef.detectChanges();
+                    }
                     let t =
                         ruteName[1].charAt(0).toUpperCase() +
                         ruteName[1].substr(1).toLowerCase();
@@ -151,6 +149,16 @@ export class NavigationComponent implements OnInit, OnDestroy {
                     this.cdRef.detectChanges();
                 }
             });
+    }
+    oneUserCompany($event) {
+        this.companiesExists = $event;
+        this.cdRef.detectChanges();
+    }
+    routeIndex($event) {
+        this.routeIndexSelected = $event;
+    }
+    isSubrouteContainerOpen(event) {
+        this.subrouteContainerOpened = event;
     }
     //Midle navigation hovered hide magic line in footer nav
     onMidleNavHover(event) {
@@ -192,6 +200,7 @@ export class NavigationComponent implements OnInit, OnDestroy {
         ) {
             //If this elements close navigation
             if (
+                event.target.classList.contains('modal-item') ||
                 event.target.classList.contains('tooltip-notifications') ||
                 event.target.classList.contains('open-navigation') ||
                 event.target.classList.contains('notification-svg ') ||

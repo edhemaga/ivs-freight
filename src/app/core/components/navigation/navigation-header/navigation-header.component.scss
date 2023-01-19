@@ -116,7 +116,11 @@
                     }
                 }
             }
-
+            .tooltip-right {
+                position: absolute;
+                left: -11px;
+                bottom: 23px;
+            }
             &-notes {
                 margin: 0 6px;
                 background: $nav-hover-darker;
