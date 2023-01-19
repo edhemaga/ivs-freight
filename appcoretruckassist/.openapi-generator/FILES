@@ -84,7 +84,6 @@ model/addIntegrationCommand.ts
 model/addressEntity.ts
 model/addressListResponse.ts
 model/addressResponse.ts
-model/apiCategory.ts
 model/applicantAdminResponse.ts
 model/applicantCompanyInfoResponse.ts
 model/applicantFileResponse.ts
@@ -289,6 +288,9 @@ model/dispatchResponsePagination.ts
 model/dispatchShortResponse.ts
 model/dispatchStatus.ts
 model/dispatchStatusResponse.ts
+model/dispatcherFilterListResponse.ts
+model/dispatcherFilterResponse.ts
+model/dispatcherFilterResponsePagination.ts
 model/driverAccidentResponse.ts
 model/driverDispatchResponse.ts
 model/driverFilterListResponse.ts
@@ -644,7 +646,9 @@ model/trafficViolationItemReviewResponse.ts
 model/trailerAccidentResponse.ts
 model/trailerAutocompleteModelResponse.ts
 model/trailerDispatchModalResponse.ts
+model/trailerFilterListResponse.ts
 model/trailerFilterResponse.ts
+model/trailerFilterResponsePagination.ts
 model/trailerLengthResponse.ts
 model/trailerListResponse.ts
 model/trailerMakeResponse.ts
