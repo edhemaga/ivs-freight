@@ -45,16 +45,21 @@
             class="nav-item-active-box"
             [ngClass]="{ 'nav-item-active-box-active': isNavigationHovered }"
         ></div>
-
         <div
+            class="tooltip-right"
+            [ngClass]="{ 'hide-tooltip': isNavigationHovered }"
+        >
+            <app-tooltip-slide
+                [show]="showToolTip"
+                [name]="'Settings'"
+            ></app-tooltip-slide>
+        </div>
+        <!-- <div
+            class="tooltipholder"
             *ngIf="item.notification && !isNavigationHovered"
-            class="tooltip tooltip-notifications"
-            ngbTooltip
-            [openTooltipDelay]="100"
-            mainTooltip="Notification"
-            tooltipBackground="#2F2F2F"
-            position="right"
-        ></div>
+        >
+            <span class="tooltiptext"> Notifications</span>
+        </div> -->
         <div
             [ngClass]="{
                 'hide-user': isUserPanelOpen === true && ind === 2,
@@ -66,8 +71,13 @@
                     'hide-user': isUserCompanyDetailsOpen && ind === 2
                 }"
             >
-                <div [ngClass]="{ notification: item.notification }">
-                    <div *ngIf="item.text !== ''">
+                <div
+                    [ngClass]="{
+                        notification: item.notification,
+                        'nav-width': isNavigationHovered
+                    }"
+                >
+                    <div *ngIf="item.text !== ''" class="wrapper">
                         <div
                             class="nav-footer-hover"
                             [ngClass]="{ 'nav-footer-hover-user': ind === 2 }"
