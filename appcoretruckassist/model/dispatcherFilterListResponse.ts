@@ -9,9 +9,10 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { DispatcherFilterResponsePagination } from './dispatcherFilterResponsePagination';
 
 
-export interface GetAvailableCreditEFSQuery { 
-    integrationId?: number;
+export interface DispatcherFilterListResponse { 
+    pagination?: DispatcherFilterResponsePagination;
 }
 
