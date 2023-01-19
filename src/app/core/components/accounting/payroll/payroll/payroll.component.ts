@@ -68,8 +68,8 @@ export class PayrollComponent implements OnInit, AfterViewInit {
 
         this.pquery.payrolldata$.subscribe(data => {
             console.log("WHAT IS DATA");
-            console.log(data)
-        })
+            console.log(data);
+        });
 
         const driverCount = JSON.parse(
             localStorage.getItem('driverTableCount')
