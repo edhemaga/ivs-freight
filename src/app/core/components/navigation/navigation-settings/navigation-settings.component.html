@@ -2,7 +2,8 @@
     class="holder"
     (click)="onUserPanelClose()"
     [ngClass]="{
-        'active-link': isActiveFooterRouteClick || settingsRouteActivated
+        'active-link': isActiveFooterRouteClick || settingsRouteActivated,
+        'nav-width': isNavigationHovered
     }"
 >
     <div
@@ -15,18 +16,12 @@
         class="nav-item-active-box-settings"
         [ngClass]="{ 'nav-item-active-box-active': isNavigationHovered }"
     ></div>
-    <div
-        *ngIf="!isNavigationHovered"
-        class="tooltip"
-        ngbTooltip
-        mainTooltip="Settings"
-        tooltipBackground="#2F2F2F"
-        position="right"
-    ></div>
+
     <div
         class="parent"
         *ngIf="isSettingsPanelOpen && isNavigationHovered"
     ></div>
+
     <div
         *ngIf="isSettingsPanelOpen && isNavigationHovered"
         class="wrapper"
@@ -68,6 +63,13 @@
             'active-text': isActiveFooterRouteClick
         }"
     >
+        <div
+            class="tooltipholder"
+            *ngIf="!isNavigationHovered"
+            (click)="$event.stopPropagation()"
+        >
+            <span class="tooltiptext"> Settings</span>
+        </div>
         <svg-icon
             class="image-footer"
             [ngClass]="{
@@ -81,7 +83,7 @@
                 'activated-settings': isSettingsPanelOpen
             }"
         >
-            <span class="item-name"> Settings</span>
+            <span class="item-name" *ngIf="isNavigationHovered"> Settings</span>
             <svg-icon
                 class="nav-item-arrow nav-item-arrow-active"
                 [ngClass]="{

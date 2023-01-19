@@ -51,7 +51,7 @@ export class NavigationRouteComponent implements OnInit {
     public arrowHovered: boolean;
     public footerRouteActive: boolean;
     public footerHovered: boolean;
-
+    showToolTip: boolean;
     routeId: string;
     // routeName: string;
     constructor(

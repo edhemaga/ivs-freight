@@ -113,7 +113,7 @@
         align-items: center;
         height: 28px;
         line-height: 27px;
-        width: 230px;
+        // width: 230px;
         font-weight: 500;
         font-size: 14px;
         color: #6c6c6c;
@@ -194,6 +194,9 @@
             }
         }
     }
+}
+.nav-width {
+    width: 230px;
 }
 .new-magic-line {
     display: inline-block;

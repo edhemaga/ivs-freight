@@ -47,11 +47,11 @@
             }
         }
         .notification {
-            width: 230px;
+            // width: 230px;
             div {
-                width: 230px;
+                // width: 230px;
                 .nav-footer-rightSide {
-                    width: 230px;
+                    // width: 230px;
                     p {
                         z-index: 1;
                     }
@@ -66,7 +66,6 @@
             }
         }
         .notification {
-            width: 230px;
             position: relative;
             height: 28px;
             position: relative;
@@ -95,6 +94,12 @@
             }
             .nav-footer-rightSide {
                 width: 100%;
+            }
+        }
+        .nav-width {
+            width: 230px;
+            .wrapper {
+                width: 230px;
             }
         }
         div {

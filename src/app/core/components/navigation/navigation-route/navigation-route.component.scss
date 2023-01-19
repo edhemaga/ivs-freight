@@ -17,25 +17,10 @@
     user-select: none;
     position: relative;
     z-index: 1;
-    // .tooltip {
-    //     position: absolute;
-    //     width: 36px;
-    //     height: 100%;
-    //     left: -8px;
-    //     padding-left: 36px;
-    // }
-    [data-tooltip] {
-        position: absolute;
-        width: auto;
-        left: calc(50% - 70px);
-        text-align: center;
-        content: attr(data-tooltip);
-        color: red;
-        background-color: black;
-        padding: 8px;
-        visibility: hidden;
-        opacity: 0;
-        transform: translateX(10px);
+    .tooltip-right {
+        left: -8px;
+        position: relative;
+        top: -15px;
     }
     .message-container {
         position: relative;
@@ -155,6 +140,7 @@
         }
     }
 }
+
 .active-link {
     background: red;
 }
@@ -204,12 +190,18 @@
         }
     }
 }
+.hide-tooltip {
+    display: none;
+}
 .subroute-item {
     padding-left: 4px;
     .nav-item-rightSide {
         .nav-item-name {
             margin-left: 5px;
         }
+    }
+    .tooltip-right {
+        left: -3px;
     }
 }
 .nav-item-active-box {
@@ -236,13 +228,6 @@
     .nav-item-active-box {
         left: 0px;
     }
-    // .tooltip {
-    //     position: absolute;
-    //     width: 36px;
-    //     height: 100%;
-    //     left: 0px;
-    //     padding-left: 36px;
-    // }
 }
 .nav-item-svg-active {
     svg {
@@ -262,5 +247,13 @@
     transition: all 0.3s ease-in-out;
     .nav-item-arrow_top {
         opacity: 1;
+    }
+}
+@keyframes moveToRight {
+    0% {
+        transform: translateX(0px);
+    }
+    100% {
+        transform: translateX(48px);
     }
 }
