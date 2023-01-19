@@ -21,8 +21,14 @@
             [ngClass]="{ 'user-company-text-active': item.isActive }"
             class="user-company-text"
         >
-            <svg-icon src="assets/svg/applicant/check.svg"> </svg-icon>
-            {{ item.companyName }}
+            <svg-icon
+                *ngIf="item.isActive"
+                src="assets/svg/applicant/check.svg"
+            >
+            </svg-icon>
+            <span>
+                {{ item.companyName }}
+            </span>
         </p>
     </div>
 </div>

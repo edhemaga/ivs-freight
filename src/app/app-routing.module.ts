@@ -112,7 +112,7 @@ const routes: Routes = [
         canActivate: [AuthGuard],
     },
     {
-        path: 'load',
+        path: 'list/load',
         loadChildren: () =>
             import('./core/components/load/load.module').then(
                 (m) => m.LoadModule
@@ -126,7 +126,7 @@ const routes: Routes = [
         },
     },
     {
-        path: 'driver',
+        path: 'list/driver',
         loadChildren: () =>
             import('./core/components/driver/driver.module').then(
                 (m) => m.DriverModule
@@ -139,7 +139,7 @@ const routes: Routes = [
         },
     },
     {
-        path: 'truck',
+        path: 'list/truck',
         loadChildren: () =>
             import('./core/components/truck/truck.module').then(
                 (m) => m.TruckModule
@@ -151,7 +151,7 @@ const routes: Routes = [
         },
     },
     {
-        path: 'trailer',
+        path: 'list/trailer',
         loadChildren: () =>
             import('./core/components/trailer/trailer.module').then(
                 (m) => m.TrailerModule
@@ -163,7 +163,7 @@ const routes: Routes = [
         },
     },
     {
-        path: 'customer',
+        path: 'list/customer',
         loadChildren: () =>
             import('./core/components/customer/customer.module').then(
                 (m) => m.CustomerModule
@@ -172,7 +172,7 @@ const routes: Routes = [
         resolve: { broker: BrokerResolver, shipper: ShipperResolver },
     },
     {
-        path: 'repair',
+        path: 'list/repair',
         loadChildren: () =>
             import('./core/components/repair/repair.module').then(
                 (m) => m.RepairModule
@@ -185,7 +185,7 @@ const routes: Routes = [
         },
     },
     {
-        path: 'pm',
+        path: 'list/pm',
         loadChildren: () =>
             import(
                 './core/components/pm-truck-trailer/pm-truck-trailer.module'
@@ -197,7 +197,7 @@ const routes: Routes = [
         },
     },
     {
-        path: 'fuel',
+        path: 'list/fuel',
         loadChildren: () =>
             import('./core/components/fuel/fuel.module').then(
                 (m) => m.FuelModule
@@ -208,7 +208,7 @@ const routes: Routes = [
         },
     },
     {
-        path: 'owner',
+        path: 'list/owner',
         loadChildren: () =>
             import('./core/components/owner/owner.module').then(
                 (m) => m.OwnerModule
@@ -220,7 +220,7 @@ const routes: Routes = [
         },
     },
     {
-        path: 'account',
+        path: 'list/account',
         loadChildren: () =>
             import('./core/components/account/account.module').then(
                 (m) => m.AccountModule
@@ -231,7 +231,7 @@ const routes: Routes = [
         },
     },
     {
-        path: 'contact',
+        path: 'list/contact',
         loadChildren: () =>
             import('./core/components/contacts/contacts.module').then(
                 (m) => m.ContactsModule

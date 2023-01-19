@@ -7,7 +7,7 @@
         }"
         [routerLink]="item.route"
         routerLinkActive="subroute-active"
-        (click)="onSubrouteAction(item)"
+        (click)="onSubrouteAction(item); subrouteIndex(index)"
     >
         <svg-icon
             class="subroutes-active-checkpoint"
@@ -16,7 +16,7 @@
         <p class="subroutes-item ta-font-regular">{{ item.name }}</p>
         <svg-icon
             class="nav-item-arrow_top"
-            (click)="openLinkInNewWindow(item.route)"
+            (click)="openLinkInNewWindow(item.route); $event.stopPropagation()"
             src="assets/svg/common/arrow_top_right.svg"
         ></svg-icon>
     </div>
