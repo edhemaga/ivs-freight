@@ -7,6 +7,7 @@ import {
 } from 'appcoretruckassist';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { CheckUserByEmailResponse } from '../../../../../appcoretruckassist/model/checkUserByEmailResponse';
 
 @Injectable({
     providedIn: 'root',
@@ -37,5 +38,11 @@ export class TaUserService {
         password: ValidatePasswordCommand
     ): Observable<PasswordResponse> {
         return this.userService.apiUserValidatepasswordPost(password);
+    }
+
+    public checkUserByEmail(
+        email: string
+    ): Observable<CheckUserByEmailResponse> {
+        return this.userService.apiUserCheckEmailGet(email);
     }
 }

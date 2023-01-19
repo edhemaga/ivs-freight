@@ -6,6 +6,8 @@
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
+    top: 48%;
+    transform: translateY(-50%);
 
     svg {
         text {
@@ -19,9 +21,5 @@
                 fill: $input-placeholder-text-focus;
             }
         }
-    }
-
-    &.line-input-26 {
-        top: 1.5px;
     }
 }

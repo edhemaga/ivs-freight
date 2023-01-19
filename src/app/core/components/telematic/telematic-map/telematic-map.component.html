@@ -262,9 +262,7 @@
                             }"
                         >
                             <app-map-marker-dropdown
-                                [title]="
-                                    location?.driver
-                                "
+                                [title]="location?.driver"
                                 [item]="location"
                                 [type]="'gps'"
                             ></app-map-marker-dropdown>
@@ -513,9 +511,14 @@
                 >
                     <div
                         class="gps-list-row"
-                        (click)="location.hidden ? showHideDevice($event, location) : markerClick(location)"
+                        (click)="
+                            location.hidden
+                                ? showHideDevice($event, location)
+                                : markerClick(location)
+                        "
                         [ngClass]="{
-                            'selected-row': focusedDeviceId == location.deviceId,
+                            'selected-row':
+                                focusedDeviceId == location.deviceId,
                             'hidden-row': location.hidden
                         }"
                         [formGroup]="$any(deviceInputs)"
@@ -649,7 +652,7 @@
                                                     column.manageDevicePlaceholder &&
                                                     showManageDevice
                                             }"
-                                            [ngStyle]="{ 'margin': '0' }"
+                                            [ngStyle]="{ margin: '0' }"
                                         >
                                             {{
                                                 location[column.value] != null
@@ -757,7 +760,7 @@
                                                     placeholderIcon:
                                                         'ic_coordinates',
                                                     customClass:
-                                                        'truck-trailer-dropdown line-input-26 device-dropdown',
+                                                        'truck-trailer-dropdown device-dropdown',
                                                     placeholderInsteadOfLabel: true
                                                 }"
                                                 [options]="gpsDevicesList"
@@ -786,7 +789,11 @@
                                             column.iconInsteadOfValue &&
                                             !column.hidden
                                         "
-                                        [src]="location[column.value] ? column.activeValueIconUrl : column.inactiveValueIconUrl"
+                                        [src]="
+                                            location[column.value]
+                                                ? column.activeValueIconUrl
+                                                : column.inactiveValueIconUrl
+                                        "
                                         [svgStyle]="{
                                             'width.px': 14,
                                             'height.px': 14
@@ -797,7 +804,14 @@
                                             'margin-right':
                                                 column.marginRight + 'px'
                                         }"
-                                        (click)="column.name == 'hidden' ? showHideDevice($event, location) : ''"
+                                        (click)="
+                                            column.name == 'hidden'
+                                                ? showHideDevice(
+                                                      $event,
+                                                      location
+                                                  )
+                                                : ''
+                                        "
                                     ></svg-icon>
                                 </ng-container>
                             </ng-container>
@@ -1206,8 +1220,7 @@
                                     isDropdown: true,
                                     dropdownWidthClass: 'w-col-158',
                                     placeholderIcon: 'ic_truck',
-                                    customClass:
-                                        'truck-trailer-dropdown line-input-26',
+                                    customClass: 'truck-trailer-dropdown',
                                     placeholderInsteadOfLabel: true,
                                     commands: {
                                         active: true,

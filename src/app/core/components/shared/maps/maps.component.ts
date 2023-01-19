@@ -156,7 +156,7 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
         this.addMapListSearchListener();
         this.addDeleteListener();
 
-        if ( this.darkMode ) {
+        if (this.darkMode) {
             this.styles = AppConst.GOOGLE_MAP_DARK_STYLES;
         }
     }
@@ -1240,14 +1240,7 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
         this.routingService
             .decodeRouteShape(route.id)
             .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: (res) => {
-                    console.log('decodeRouteShape', res);
-                },
-                error: () => {
-                    console.log('decodeRouteShape error');
-                },
-            });
+            .subscribe();
     }
 
     addDeleteListener() {
@@ -1261,8 +1254,11 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
                                 res.template === 'shipper' ||
                                 res.template === 'repair shop'
                             ) {
-                                var resType = res.template === 'repair shop' ? 'delete-repair' : res.type;
-                                var deleteResponse = {...res, type: resType};
+                                var resType =
+                                    res.template === 'repair shop'
+                                        ? 'delete-repair'
+                                        : res.type;
+                                var deleteResponse = { ...res, type: resType };
 
                                 this.callDropDownAction.emit(deleteResponse);
 

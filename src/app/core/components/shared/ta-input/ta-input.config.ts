@@ -60,14 +60,9 @@ export interface ITaInput {
     };
     addressFlag?: string; // added text in right corner and this flag will be disabled clear button, invalid danger mark\
     // Custom classes
-    // - 'input-22' -> height: 22px
-    // - 'input-26' = DEFAULT = -> height: 26px,
-    // - 'input-30' -> height: 30px,
     // - 'input-32' -> height: 32px,
-    // - 'line-input-26' -> centered elements into input, when input not a part of form tag or part of boostrap popover
     // - 'line-input-26-in-card' -> when input implement in custom-card and not aligned
     // - 'datetimeclass' -> date/time pickers
-    // - 'dollar-placeholderIcon' -> when input has dollar icon
     customClass?: string;
 
     // ***************** Multiple Inputs & Labels *****************

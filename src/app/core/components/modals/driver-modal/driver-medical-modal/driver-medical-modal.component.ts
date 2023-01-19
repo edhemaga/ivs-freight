@@ -110,12 +110,14 @@ export class DriverMedicalModalComponent implements OnInit, OnDestroy {
                     this.modalService.setModalSpinner({
                         action: null,
                         status: true,
+                        close: false,
                     });
                 } else {
                     this.addMedical();
                     this.modalService.setModalSpinner({
                         action: null,
                         status: true,
+                        close: false,
                     });
                 }
 
@@ -175,7 +177,22 @@ export class DriverMedicalModalComponent implements OnInit, OnDestroy {
         this.medicalService
             .updateMedical(newData)
             .pipe(takeUntil(this.destroy$))
-            .subscribe();
+            .subscribe({
+                next: () => {
+                    this.modalService.setModalSpinner({
+                        action: null,
+                        status: true,
+                        close: true,
+                    });
+                },
+                error: () => {
+                    this.modalService.setModalSpinner({
+                        action: null,
+                        status: false,
+                        close: false,
+                    });
+                },
+            });
     }
 
     private addMedical() {
@@ -199,7 +216,22 @@ export class DriverMedicalModalComponent implements OnInit, OnDestroy {
         this.medicalService
             .addMedical(newData)
             .pipe(takeUntil(this.destroy$))
-            .subscribe();
+            .subscribe({
+                next: () => {
+                    this.modalService.setModalSpinner({
+                        action: null,
+                        status: true,
+                        close: true,
+                    });
+                },
+                error: () => {
+                    this.modalService.setModalSpinner({
+                        action: null,
+                        status: false,
+                        close: false,
+                    });
+                },
+            });
     }
 
     public getMedicalById(id: number) {

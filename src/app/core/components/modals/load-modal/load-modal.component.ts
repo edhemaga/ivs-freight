@@ -609,12 +609,14 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                     this.modalService.setModalSpinner({
                         action: null,
                         status: true,
+                        close: false,
                     });
                 } else {
                     this.addLoad();
                     this.modalService.setModalSpinner({
                         action: null,
                         status: true,
+                        close: false,
                     });
                 }
                 break;
@@ -630,6 +632,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 this.modalService.setModalSpinner({
                     action: 'load-template',
                     status: true,
+                    close: false,
                 });
                 break;
             }
@@ -2315,9 +2318,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                             this.totalLegCost = res.totalCost;
                         }
                     },
-                    error: (error) => {
-                        console.log('map error: ', error);
-                    },
+                    error: () => {},
                 });
         }
     }
@@ -2720,9 +2721,19 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             .createLoad(newData)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: () => {},
-                error: (error) => {
-                    console.log('load error: ', error);
+                next: () => {
+                    this.modalService.setModalSpinner({
+                        action: null,
+                        status: true,
+                        close: true,
+                    });
+                },
+                error: () => {
+                    this.modalService.setModalSpinner({
+                        action: null,
+                        status: false,
+                        close: false,
+                    });
                 },
             });
     }
@@ -2798,10 +2809,17 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 next: () => {
                     this.modalService.setModalSpinner({
                         action: 'load-template',
-                        status: false,
+                        status: true,
+                        close: false,
                     });
                 },
-                error: () => {},
+                error: () => {
+                    this.modalService.setModalSpinner({
+                        action: 'load-template',
+                        status: false,
+                        close: false,
+                    });
+                },
             });
     }
 
@@ -3109,9 +3127,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                             ) => {
                                 console.log('autocomplete pickup: ', res);
                             },
-                            error: (error) => {
-                                console.log(error);
-                            },
+                            error: () => {},
                         });
                 }
 
@@ -3132,9 +3148,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                             ) => {
                                 console.log('autocomplete delivery: ', res);
                             },
-                            error: (error) => {
-                                console.log(error);
-                            },
+                            error: () => {},
                         });
                 }
 
@@ -3155,9 +3169,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                             ) => {
                                 console.log('autocomplete extra stop: ', res);
                             },
-                            error: (error) => {
-                                console.log(error);
-                            },
+                            error: () => {},
                         });
                 }
 

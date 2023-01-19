@@ -5,6 +5,7 @@
     position: absolute;
     right: 6px;
     top: 50%;
+    transform: translateY(-50%);
     width: 14px;
     height: 14px;
     line-height: 18px;
@@ -13,7 +14,6 @@
     -webkit-user-select: none;
     user-select: none;
     z-index: 10;
-    transform: translateY(-50%);
 
     &.datetimeclass {
         display: flex;
@@ -195,14 +195,6 @@
         }
     }
 
-    &.input-32 {
-        top: 6px;
-    }
-
-    &.input-30 {
-        top: 5px;
-    }
-
     &.details-pages {
         svg {
             path {
@@ -222,7 +214,8 @@
 .input-dropdown-confirm {
     position: absolute;
     right: 26px;
-    top: 0px;
+    top: 50%;
+    transform: translateY(-50%);
     border-radius: 1px;
     transition: all 0.3s ease-in-out;
     z-index: 10;

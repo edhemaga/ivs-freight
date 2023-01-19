@@ -245,13 +245,14 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
                         this.modalService.setModalSpinner({
                             action: null,
                             status: true,
+                            close: false,
                         });
                     } else {
                         this.addTrailer();
                         this.modalService.setModalSpinner({
                             action: null,
                             status: true,
-                            setFasterTimeout: !!this.editData?.canOpenModal,
+                            close: false,
                         });
                     }
                 }
@@ -262,6 +263,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
                     this.modalService.setModalSpinner({
                         action: 'delete',
                         status: true,
+                        close: false,
                     });
                 }
             }
@@ -403,9 +405,21 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
                                 break;
                             }
                         }
+                    } else {
+                        this.modalService.setModalSpinner({
+                            action: null,
+                            status: true,
+                            close: true,
+                        });
                     }
                 },
-                error: () => {},
+                error: () => {
+                    this.modalService.setModalSpinner({
+                        action: null,
+                        status: false,
+                        close: false,
+                    });
+                },
             });
     }
 
@@ -413,7 +427,22 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
         this.trailerModalService
             .deleteTrailerById(id, this.editData.tabSelected)
             .pipe(takeUntil(this.destroy$))
-            .subscribe();
+            .subscribe({
+                next: () => {
+                    this.modalService.setModalSpinner({
+                        action: 'delete',
+                        status: true,
+                        close: true,
+                    });
+                },
+                error: () => {
+                    this.modalService.setModalSpinner({
+                        action: 'delete',
+                        status: false,
+                        close: false,
+                    });
+                },
+            });
     }
 
     private updateTrailer(id: number): void {
@@ -496,7 +525,22 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
         this.trailerModalService
             .updateTrailer(newData)
             .pipe(takeUntil(this.destroy$))
-            .subscribe();
+            .subscribe({
+                next: () => {
+                    this.modalService.setModalSpinner({
+                        action: null,
+                        status: true,
+                        close: true,
+                    });
+                },
+                error: () => {
+                    this.modalService.setModalSpinner({
+                        action: null,
+                        status: false,
+                        close: false,
+                    });
+                },
+            });
     }
 
     private populateStorageData(res) {

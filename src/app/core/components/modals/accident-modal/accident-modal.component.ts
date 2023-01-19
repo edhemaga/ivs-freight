@@ -222,12 +222,14 @@ export class AccidentModalComponent implements OnInit, OnDestroy {
                     this.modalService.setModalSpinner({
                         action: null,
                         status: true,
+                        close: false,
                     });
                 } else {
                     this.addAccident();
                     this.modalService.setModalSpinner({
                         action: null,
                         status: true,
+                        close: false,
                     });
                 }
                 break;
@@ -351,9 +353,21 @@ export class AccidentModalComponent implements OnInit, OnDestroy {
 
     private updateAccident(id: number) {
         console.log('update: ', id);
+
+        this.modalService.setModalSpinner({
+            action: null,
+            status: true,
+            close: true,
+        });
     }
 
-    private addAccident() {}
+    private addAccident() {
+        this.modalService.setModalSpinner({
+            action: null,
+            status: true,
+            close: true,
+        });
+    }
 
     private getModalDropdowns() {
         this.accidentTService

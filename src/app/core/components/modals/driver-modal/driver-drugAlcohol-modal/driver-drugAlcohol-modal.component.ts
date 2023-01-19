@@ -117,12 +117,14 @@ export class DriverDrugAlcoholModalComponent implements OnInit, OnDestroy {
                     this.modalService.setModalSpinner({
                         action: null,
                         status: true,
+                        close: false,
                     });
                 } else {
                     this.addTest();
                     this.modalService.setModalSpinner({
                         action: null,
                         status: true,
+                        close: false,
                     });
                 }
                 break;
@@ -261,7 +263,22 @@ export class DriverDrugAlcoholModalComponent implements OnInit, OnDestroy {
         this.testService
             .updateTest(newData)
             .pipe(takeUntil(this.destroy$))
-            .subscribe();
+            .subscribe({
+                next: () => {
+                    this.modalService.setModalSpinner({
+                        action: null,
+                        status: true,
+                        close: true,
+                    });
+                },
+                error: () => {
+                    this.modalService.setModalSpinner({
+                        action: null,
+                        status: false,
+                        close: false,
+                    });
+                },
+            });
     }
 
     public addTest() {
@@ -287,7 +304,22 @@ export class DriverDrugAlcoholModalComponent implements OnInit, OnDestroy {
         this.testService
             .addTest(newData)
             .pipe(takeUntil(this.destroy$))
-            .subscribe();
+            .subscribe({
+                next: () => {
+                    this.modalService.setModalSpinner({
+                        action: null,
+                        status: true,
+                        close: true,
+                    });
+                },
+                error: () => {
+                    this.modalService.setModalSpinner({
+                        action: null,
+                        status: false,
+                        close: false,
+                    });
+                },
+            });
     }
 
     public getTestById(id: number) {

@@ -440,6 +440,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                 this.modalService.setModalSpinner({
                     action: 'save and add new',
                     status: true,
+                    close: false,
                 });
                 this.addNewAfterSave = true;
             } else {
@@ -454,12 +455,14 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                         this.modalService.setModalSpinner({
                             action: null,
                             status: true,
+                            close: false,
                         });
                     } else {
                         this.addBroker();
                         this.modalService.setModalSpinner({
                             action: null,
                             status: true,
+                            close: false,
                         });
                     }
                 }
@@ -469,6 +472,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                     this.modalService.setModalSpinner({
                         action: 'delete',
                         status: true,
+                        close: false,
                     });
                 }
             }
@@ -743,10 +747,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
         this.reviewRatingService
             .deleteReview(reviews.data)
             .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {},
-                error: () => {},
-            });
+            .subscribe();
     }
 
     private updateReview(reviews: ReviewCommentModal) {
@@ -878,6 +879,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                         this.modalService.setModalSpinner({
                             action: 'save and add new',
                             status: false,
+                            close: false,
                         });
 
                         this.formService.resetForm(this.brokerForm);
@@ -938,9 +940,21 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                         );
 
                         this.addNewAfterSave = false;
+                    } else {
+                        this.modalService.setModalSpinner({
+                            action: null,
+                            status: false,
+                            close: true,
+                        });
                     }
                 },
-                error: () => {},
+                error: () => {
+                    this.modalService.setModalSpinner({
+                        action: null,
+                        status: false,
+                        close: false,
+                    });
+                },
             });
     }
 
@@ -1024,9 +1038,21 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                                 break;
                             }
                         }
+                    } else {
+                        this.modalService.setModalSpinner({
+                            action: null,
+                            status: false,
+                            close: true,
+                        });
                     }
                 },
-                error: () => {},
+                error: () => {
+                    this.modalService.setModalSpinner({
+                        action: null,
+                        status: false,
+                        close: false,
+                    });
+                },
             });
     }
 
@@ -1034,7 +1060,22 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
         this.brokerModalService
             .deleteBrokerById(id)
             .pipe(takeUntil(this.destroy$))
-            .subscribe();
+            .subscribe({
+                next: () => {
+                    this.modalService.setModalSpinner({
+                        action: 'delete',
+                        status: false,
+                        close: true,
+                    });
+                },
+                error: () => {
+                    this.modalService.setModalSpinner({
+                        action: 'delete',
+                        status: false,
+                        close: false,
+                    });
+                },
+            });
     }
 
     private editBrokerById(id: number): void {
@@ -1633,9 +1674,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                             .get('availableCredit')
                             .patchValue(res.availableCredit);
                     },
-                    error: (error) => {
-                        console.log(error);
-                    },
+                    error: () => {},
                 });
         }
     }

@@ -1,6 +1,7 @@
 import { Navigation, NavigationSubRoutes } from './model/navigation.model';
 import {
     ChangeDetectionStrategy,
+    ChangeDetectorRef,
     Component,
     ElementRef,
     OnDestroy,
@@ -9,7 +10,7 @@ import {
 } from '@angular/core';
 import { navigationData } from './model/navigation-data';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
-import { filter, map, mergeMap, Subject, takeUntil } from 'rxjs';
+import { filter, map, mergeMap, startWith, Subject, takeUntil } from 'rxjs';
 import { NavigationService } from './services/navigation.service';
 import { navigation_magic_line } from './navigation.animation';
 import { DetailsDataService } from '../../services/details-data/details-data.service';
@@ -36,6 +37,7 @@ export class NavigationComponent implements OnInit, OnDestroy {
     private isActiveSubrouteIndex: number = -1;
     public isActiveSubroute: boolean = false;
     public activeSubrouteFleg: boolean = false;
+    public middleIsHovered: boolean = false;
     public footerHovered: boolean = false;
     public isActiveFooterRoute: boolean = false;
     public routeInSettingsActive: boolean = false;
@@ -44,18 +46,35 @@ export class NavigationComponent implements OnInit, OnDestroy {
     public showHideLineIfSettingsActive: boolean = true;
     public footerRouteActive: boolean = true;
     private destroy$ = new Subject<void>();
+    public subrouteContainerOpened: boolean = false;
     closeDropdownOnNavClose: boolean;
     @ViewChild('navbar') navbar: ElementRef;
     selectedRoute: string = '';
+    companiesExists: boolean;
+    routeIndexSelected: boolean;
     constructor(
+        private cdRef: ChangeDetectorRef,
         private router: Router,
         private navigationService: NavigationService,
         private DetailsDataService: DetailsDataService,
         private activatedRoute: ActivatedRoute
     ) {}
-
+    oneUserCompany($event) {
+        this.companiesExists = $event;
+        this.cdRef.detectChanges();
+    }
+    routeIndex($event) {
+        this.routeIndexSelected = $event;
+    }
+    test(test) {
+        console.log(test);
+        this.subrouteContainerOpened = test;
+    }
     ngOnInit(): void {
         this.navigationService.getValueNavHovered().subscribe((value) => {
+            this.middleIsHovered = value;
+        });
+        this.navigationService.getValueFootHovered().subscribe((value) => {
             this.footerHovered = value;
         });
         this.navigationService.getValueWhichNavIsOpen().subscribe((value) => {
@@ -113,25 +132,38 @@ export class NavigationComponent implements OnInit, OnDestroy {
                         break;
                 }
             });
-
+        //Detect changes in routes
         this.router.events
-            .pipe(filter((event) => event instanceof NavigationEnd))
-            .subscribe((url: any) => (this.selectedRoute = url.url));
+            .pipe(
+                filter((event) => event instanceof NavigationEnd),
+                startWith(this.router)
+            )
+            .subscribe((url: any) => {
+                if (url.url === '/dispatcher') {
+                    this.selectedRoute = 'Dispatch';
+                    this.cdRef.detectChanges();
+                } else {
+                    let ruteName = url.url.split('/');
+                    let t =
+                        ruteName[1].charAt(0).toUpperCase() +
+                        ruteName[1].substr(1).toLowerCase();
+                    this.selectedRoute = t;
+                    this.cdRef.detectChanges();
+                }
+            });
     }
     //Midle navigation hovered hide magic line in footer nav
     onMidleNavHover(event) {
         this.navigationService.setValueNavHovered(event);
     }
+    public onFooterHover(event) {
+        this.navigationService.setValueFootHovered(event);
+    }
     public routeInSettingsActivated($event) {
         this.routeInSettingsActive = $event;
     }
-    public footerHoveredHideLine($event) {
-        // this.footerHovered = $event;
-    }
     //On outside of navbar close navbar
     closeNavbar(event) {
-        // console.log(event.target);
-
         if (
             //If this elements keep open navigation
             event.target.parentElement?.classList.contains(
@@ -265,7 +297,7 @@ export class NavigationComponent implements OnInit, OnDestroy {
 
         if (index !== this.isActiveSubrouteIndex) {
             this.navigation.forEach((nav) => (nav.isRouteActive = false));
-            this.isActiveSubroute = true;
+            // this.isActiveSubroute = true;
             this.activeSubrouteFleg = false;
             if (this.isActiveSubrouteIndex != -1) {
                 this.navigation[this.isActiveSubrouteIndex].isSubrouteActive =
@@ -335,7 +367,11 @@ export class NavigationComponent implements OnInit, OnDestroy {
     }
 
     public isActiveRouteOnReload(route: string): boolean {
-        return this.router.url.includes(route);
+        let ruteName = this.router.url.split('/');
+        let t =
+            ruteName[1].charAt(0).toUpperCase() +
+            ruteName[1].substr(1).toLowerCase();
+        return route === t;
     }
 
     public identity(index, item): number {
