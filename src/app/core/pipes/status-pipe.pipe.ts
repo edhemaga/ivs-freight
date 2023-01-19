@@ -2,7 +2,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 import { IDispatchModel } from '../components/shared/ta-status-switch/ta-status-switch.component';
 
 const STATUS_COLORS = {
-    '-1': 'FFA7A7',
+    '-1': 'F276EF',
     1: '919191',
     2: '008496',
     3: '3074D3',
@@ -14,7 +14,7 @@ const STATUS_COLORS = {
     9: 'FF9800',
     10: 'F276EF',
     11: '62B264',
-    12: '74BF97',
+    12: '26A690',
     13: 'FB5555',
     14: 'FB5555',
 };
@@ -31,6 +31,7 @@ export class StatusPipePipe implements PipeTransform {
                     : STATUS_COLORS['-1']
             }`;
         } else {
+            console.log("WHAT IS STATUS COLOR", status_id);
             return `${STATUS_COLORS[status_id]}`;
         }
     }

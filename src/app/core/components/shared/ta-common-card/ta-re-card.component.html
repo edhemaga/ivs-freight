@@ -147,7 +147,7 @@
     </div>
     <div
         class="card-footer-cmp"
-        [ngClass]="{ 'hide-padding': resPage }"
+        [ngClass]="{ 'hide-padding': resPage, 'insuranceCard' : insuranceCard }"
         *ngIf="( isCardOpen || forcedOpen) && hasFooter"
         [@footerOpenAnimation]="animationStarted ? 'true' : 'false'"
     >

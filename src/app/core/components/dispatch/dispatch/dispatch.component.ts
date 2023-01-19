@@ -24,6 +24,7 @@ export class DispatchComponent implements OnInit, AfterViewInit {
     private destroy$ = new Subject<void>();
     dispatcherItems: any[];
     isBoardLocked = true;
+    maxToolbarWidth: number = 0;
 
     selectedDispatcher = localStorage.getItem('dispatchUserSelect') ? JSON.parse(localStorage.getItem('dispatchUserSelect')) : -1;
 
@@ -111,7 +112,17 @@ export class DispatchComponent implements OnInit, AfterViewInit {
     ngAfterViewInit(): void {
         setTimeout(() => {
             this.observTableContainer();
+            this.getToolbarWidth();
+            
         }, 10);
+    }
+
+
+    getToolbarWidth() {
+        const tableContainer = document.querySelector('.table-container');
+
+        this.maxToolbarWidth = tableContainer.clientWidth;
+        this.cd.detectChanges();
     }
 
     observTableContainer() {
@@ -150,12 +161,13 @@ export class DispatchComponent implements OnInit, AfterViewInit {
                 type: 'dropdown',
                 template: 'load-dispatcher',
                 actionType: 'dispatcher',
-                selectedDispatcher: this.dispatcherItems[0],
+                selectedDispatcher: this.selectedDispatcher,
                 dropdownData: this.dispatcherItems,
                 inputConfig: {
                     name: 'Input Dropdown',
                     type: 'text',
                     label: 'Dispatcher',
+                    hideClear: true,
                     isDropdown: true,
                     placeholderInsteadOfLabel: true,
                     dropdownImageInput: {

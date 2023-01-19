@@ -216,6 +216,7 @@
         span,
         span .border-picker {
             color: $input-text-color-valid-focus-out !important;
+            user-select: none;
         }
     }
 
@@ -522,16 +523,6 @@
     &.input-32-font-20 {
         font-weight: 700;
         font-size: 20px;
-    }
-
-    &.input-30 {
-        height: 30px;
-    }
-
-    &.input-22 {
-        height: 22px;
-        font-size: 11px;
-        font-weight: 400;
     }
 
     &.details-pages {

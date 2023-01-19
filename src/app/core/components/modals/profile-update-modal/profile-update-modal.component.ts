@@ -145,7 +145,11 @@ export class ProfileUpdateModalComponent implements OnInit, OnDestroy {
 
         if (data.action === 'save') {
             this.updateUserProfile();
-            this.modalService.setModalSpinner({ action: null, status: true });
+            this.modalService.setModalSpinner({
+                action: null,
+                status: true,
+                close: false,
+            });
         }
     }
 
@@ -331,8 +335,19 @@ export class ProfileUpdateModalComponent implements OnInit, OnDestroy {
                     };
                     this.userService.updateUserProfile(true);
                     localStorage.setItem('user', JSON.stringify(newUser));
+                    this.modalService.setModalSpinner({
+                        action: null,
+                        status: true,
+                        close: true,
+                    });
                 },
-                error: () => {},
+                error: () => {
+                    this.modalService.setModalSpinner({
+                        action: null,
+                        status: false,
+                        close: false,
+                    });
+                },
             });
     }
 

@@ -108,6 +108,7 @@ export class MapSettingsModalComponent implements OnInit, OnDestroy {
                     this.modalService.setModalSpinner({
                         action: 'set-map-settings',
                         status: true,
+                        close: false,
                     });
                 }
 
@@ -162,8 +163,20 @@ export class MapSettingsModalComponent implements OnInit, OnDestroy {
             .updateMap(newData)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: () => {},
-                error: () => {},
+                next: () => {
+                    this.modalService.setModalSpinner({
+                        action: 'set-map-settings',
+                        status: true,
+                        close: true,
+                    });
+                },
+                error: () => {
+                    this.modalService.setModalSpinner({
+                        action: 'set-map-settings',
+                        status: false,
+                        close: false,
+                    });
+                },
             });
     }
 

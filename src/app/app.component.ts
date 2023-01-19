@@ -3,6 +3,7 @@ import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import {
     catchError,
+    debounceTime,
     filter,
     map,
     mergeMap,
@@ -13,12 +14,12 @@ import {
 import { scrollButtonAnimation } from './app.component.animation';
 import { StaticInjectorService } from './core/utils/application.decorators';
 import { GpsServiceService } from './global/services/gps-service.service';
-import { SignInResponse } from '../../appcoretruckassist';
-import { HttpErrorResponse } from '@angular/common/http';
 import { AccountService } from '../../appcoretruckassist';
-import { configFactory } from './app.config';
 import { UserLoggedService } from './core/components/authentication/state/user-logged.service';
-import { debounceTime } from 'rxjs/operators';
+import { SignInResponse } from '../../appcoretruckassist/model/signInResponse';
+
+import { HttpErrorResponse } from '@angular/common/http';
+import { configFactory } from './app.config';
 
 @Component({
     selector: 'app-root',
@@ -67,9 +68,8 @@ export class AppComponent implements OnInit {
                 );
             });
 
-        setTimeout(() => {
-            this.checkRefreshTokenExpiration();
-        }, 300);
+        // Logout
+        this.checkRefreshTokenExpiration();
     }
 
     /**

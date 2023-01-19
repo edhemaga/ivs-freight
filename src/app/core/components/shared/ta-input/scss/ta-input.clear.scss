@@ -3,7 +3,6 @@
 .input-clear {
     position: absolute;
     right: 4px;
-    top: 0px;
     border-radius: 1px;
     transition: all 0.3s ease-in-out;
     display: none;
@@ -90,7 +89,8 @@
     &.dropdown-label-position,
     &.repair-m-pm {
         right: 27px !important;
-        top: 4px;
+        top: 50%;
+        transform: translateY(-50%);
 
         svg-icon {
             display: flex;
@@ -209,7 +209,8 @@
             background-color: $input-placeholder-icon-normal-after;
             position: absolute;
             right: 22px;
-            top: 5px;
+            top: 53%;
+            transform: translateY(-50%);
         }
 
         &.valid-focus-in {
@@ -245,7 +246,8 @@
                 background-color: $input-placeholder-icon-valid-after;
                 position: absolute;
                 right: 22px;
-                top: 5px;
+                top: 53%;
+                transform: translateY(-50%);
             }
         }
 
@@ -302,7 +304,8 @@
                 background-color: #ffcdd2;
                 position: absolute;
                 right: 22px;
-                top: 5px;
+                top: 53%;
+                transform: translateY(-50%);
             }
         }
     }
@@ -335,20 +338,7 @@
 
     //------------------------- Custom class -------------------------
     &.input-32 {
-        top: 3.5px;
         right: 6px;
-    }
-
-    &.input-30 {
-        top: 2px;
-    }
-
-    &.line-input-26 {
-        top: 2px;
-    }
-
-    &.line-input-26-in-card {
-        top: 1px;
     }
 
     &.focus {

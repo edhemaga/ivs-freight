@@ -17,8 +17,17 @@ export class FormDataService {
                         element instanceof Object &&
                         !(item[1][0] instanceof Blob)
                     ) {
+                        
                         Object.entries(element).map((it, indx) => {
-                            if (it[1] instanceof Object) {
+                            if(it[1] instanceof Array){
+                                it[1].map(ita => {
+                                    this.formData.append(
+                                        `${item[0]}[${ind}].${it[0]}`,
+                                        ita as any
+                                    );
+                                });
+                            }
+                            else if (it[1] instanceof Object) {
                                 Object.entries(it[1]).map((at, indx) => {
                                     at[1] &&
                                         this.formData.append(
@@ -26,7 +35,9 @@ export class FormDataService {
                                             at[1] as any
                                         );
                                 });
-                            } else {
+                            } 
+                            else {
+                                
                                 it[1] &&
                                     this.formData.append(
                                         `${item[0]}[${ind}].${it[0]}`,

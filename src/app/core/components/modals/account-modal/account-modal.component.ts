@@ -18,7 +18,7 @@ import {
 
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { AccountTService } from '../../account/state/account.service';
-import { Subject, takeUntil } from 'rxjs';
+import { Subject, switchMap, takeUntil } from 'rxjs';
 import {
     labelValidation,
     urlValidation,
@@ -115,6 +115,7 @@ export class AccountModalComponent implements OnInit, OnDestroy {
                 this.modalService.setModalSpinner({
                     action: 'save and add new',
                     status: true,
+                    close: false,
                 });
                 this.addNewAfterSave = true;
                 break;
@@ -130,12 +131,14 @@ export class AccountModalComponent implements OnInit, OnDestroy {
                     this.modalService.setModalSpinner({
                         action: null,
                         status: true,
+                        close: false,
                     });
                 } else {
                     this.addCompanyAccount();
                     this.modalService.setModalSpinner({
                         action: null,
                         status: true,
+                        close: false,
                     });
                 }
                 break;
@@ -146,6 +149,7 @@ export class AccountModalComponent implements OnInit, OnDestroy {
                     this.modalService.setModalSpinner({
                         action: 'delete',
                         status: true,
+                        close: false,
                     });
                 }
                 break;
@@ -221,6 +225,7 @@ export class AccountModalComponent implements OnInit, OnDestroy {
                         this.modalService.setModalSpinner({
                             action: 'save and add new',
                             status: false,
+                            close: false,
                         });
                         this.formService.resetForm(this.accountForm);
 
@@ -228,9 +233,21 @@ export class AccountModalComponent implements OnInit, OnDestroy {
                         this.selectedAccountLabel = null;
 
                         this.addNewAfterSave = false;
+                    } else {
+                        this.modalService.setModalSpinner({
+                            action: null,
+                            status: false,
+                            close: true,
+                        });
                     }
                 },
-                error: () => {},
+                error: () => {
+                    this.modalService.setModalSpinner({
+                        action: null,
+                        status: false,
+                        close: false,
+                    });
+                },
             });
     }
 
@@ -247,14 +264,44 @@ export class AccountModalComponent implements OnInit, OnDestroy {
         this.accountService
             .updateCompanyAccount(newData)
             .pipe(takeUntil(this.destroy$))
-            .subscribe();
+            .subscribe({
+                next: () => {
+                    this.modalService.setModalSpinner({
+                        action: null,
+                        status: true,
+                        close: true,
+                    });
+                },
+                error: () => {
+                    this.modalService.setModalSpinner({
+                        action: null,
+                        status: false,
+                        close: false,
+                    });
+                },
+            });
     }
 
     public deleteCompanyAccountById(id: number): void {
         this.accountService
             .deleteCompanyAccountById(id)
             .pipe(takeUntil(this.destroy$))
-            .subscribe();
+            .subscribe({
+                next: () => {
+                    this.modalService.setModalSpinner({
+                        action: 'delete',
+                        status: true,
+                        close: true,
+                    });
+                },
+                error: () => {
+                    this.modalService.setModalSpinner({
+                        action: 'delete',
+                        status: false,
+                        close: false,
+                    });
+                },
+            });
     }
 
     public onPickExistLabel(event: any) {
@@ -282,20 +329,15 @@ export class AccountModalComponent implements OnInit, OnDestroy {
                         name: this.selectedAccountLabel.name,
                         colorId: this.selectedAccountLabel.colorId,
                     })
-                    .pipe(takeUntil(this.destroy$))
+                    .pipe(
+                        takeUntil(this.destroy$),
+                        switchMap(() => {
+                            return this.accountService.companyAccountModal();
+                        })
+                    )
                     .subscribe({
-                        next: () => {
-                            this.accountService
-                                .companyAccountModal()
-                                .pipe(takeUntil(this.destroy$))
-                                .subscribe({
-                                    next: (
-                                        res: CompanyAccountModalResponse
-                                    ) => {
-                                        this.accountLabels = res.labels;
-                                    },
-                                    error: () => {},
-                                });
+                        next: (res: CompanyAccountModalResponse) => {
+                            this.accountLabels = res.labels;
                         },
                         error: () => {},
                     });
@@ -327,27 +369,23 @@ export class AccountModalComponent implements OnInit, OnDestroy {
                         name: this.selectedAccountLabel.name,
                         colorId: this.selectedAccountLabel.colorId,
                     })
-                    .pipe(takeUntil(this.destroy$))
-                    .subscribe({
-                        next: (res: CreateResponse) => {
+                    .pipe(
+                        takeUntil(this.destroy$),
+                        switchMap((res: CreateResponse) => {
                             this.selectedAccountLabel = {
                                 ...this.selectedAccountLabel,
                                 id: res.id,
                             };
-                            this.accountService
-                                .companyAccountModal()
-                                .pipe(takeUntil(this.destroy$))
-                                .subscribe({
-                                    next: (
-                                        res: CompanyAccountModalResponse
-                                    ) => {
-                                        this.accountLabels = res.labels;
-                                    },
-                                    error: () => {},
-                                });
+                            return this.accountService.companyAccountModal();
+                        })
+                    )
+                    .subscribe({
+                        next: (res: CompanyAccountModalResponse) => {
+                            this.accountLabels = res.labels;
                         },
                         error: () => {},
                     });
+
                 break;
             }
             default: {

@@ -79,6 +79,7 @@ export class ApplicantModalComponent implements OnInit, OnDestroy {
                 this.modalService.setModalSpinner({
                     action: 'resend email',
                     status: true,
+                    close: false,
                 });
                 break;
             }
@@ -92,6 +93,7 @@ export class ApplicantModalComponent implements OnInit, OnDestroy {
                 this.modalService.setModalSpinner({
                     action: 'save and add new',
                     status: true,
+                    close: false,
                 });
                 break;
             }
@@ -106,12 +108,14 @@ export class ApplicantModalComponent implements OnInit, OnDestroy {
                     this.modalService.setModalSpinner({
                         action: null,
                         status: true,
+                        close: false,
                     });
                 } else {
                     this.addApplicant();
                     this.modalService.setModalSpinner({
                         action: null,
                         status: true,
+                        close: false,
                     });
                 }
                 break;
@@ -136,7 +140,22 @@ export class ApplicantModalComponent implements OnInit, OnDestroy {
                 id,
             })
             .pipe(takeUntil(this.destroy$))
-            .subscribe();
+            .subscribe({
+                next: () => {
+                    this.modalService.setModalSpinner({
+                        action: null,
+                        status: true,
+                        close: false,
+                    });
+                },
+                error: () => {
+                    this.modalService.setModalSpinner({
+                        action: null,
+                        status: false,
+                        close: false,
+                    });
+                },
+            });
     }
 
     private addApplicant() {
@@ -149,15 +168,23 @@ export class ApplicantModalComponent implements OnInit, OnDestroy {
                         this.modalService.setModalSpinner({
                             action: 'save and add new',
                             status: false,
+                            close: false,
                         });
                         this.addNewApplicant = false;
                         this.formService.resetForm(this.applicantForm);
+                    } else {
+                        this.modalService.setModalSpinner({
+                            action: null,
+                            status: false,
+                            close: true,
+                        });
                     }
                 },
                 error: () => {
                     this.modalService.setModalSpinner({
-                        action: 'save and add new',
+                        action: null,
                         status: false,
+                        close: false,
                     });
                 },
             });
