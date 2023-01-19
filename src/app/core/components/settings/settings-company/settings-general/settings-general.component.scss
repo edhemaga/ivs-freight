@@ -25,7 +25,7 @@
     grid-template-columns: repeat(3, 130px);
     column-gap: 64px;
     row-gap: 12px;
-    padding-left: 10px;
+    padding-left: 6px;
     .additional-template-item {
         display: flex;
         flex-direction: column;
@@ -299,7 +299,7 @@
 .cards-custom {
     padding: 0 6px;
     .ta-card-header {
-        padding: 0 6px !important;
+        padding: 0 4px !important;
     }
 }
 .show-hide {
