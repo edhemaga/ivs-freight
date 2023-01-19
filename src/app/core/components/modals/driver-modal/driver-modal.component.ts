@@ -124,10 +124,11 @@ export class DriverModalComponent implements OnInit, OnDestroy {
         dropZoneAvailableFiles:
             'application/pdf, application/png, application/jpg',
         multiple: true,
-        globalDropZone: false,
+        globalDropZone: true,
     };
     public longitude: number;
     public latitude: number;
+    public tags: any[] = [];
     private destroy$ = new Subject<void>();
 
     constructor(
@@ -722,6 +723,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             pushNotificationPayroll: [false],
             smsNotificationPayroll: [false],
             files: [null],
+            tags: [null],
         });
 
         this.inputService.customInputValidator(
@@ -956,6 +958,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                         .patchValue(data.mvrExpiration);
                     this.fleetType = data.fleetType;
                     this.hasMilesSameRate = data.loadedAndEmptySameRate;
+                    this.tags = data.tags;
 
                     if (['Solo', 'Combined'].includes(this.fleetType)) {
                         this.driverForm
@@ -1152,11 +1155,26 @@ export class DriverModalComponent implements OnInit, OnDestroy {
         } = this.driverForm.value;
 
         let documents = [];
+        let tagsArray = [];
         this.documents.map((item) => {
+            if(item.tagId?.length)
+            tagsArray.push(
+                {
+                    fileName: item.realFile.name,
+                    tagIds: item.tagId
+                }
+            );
+
             if (item.realFile) {
                 documents.push(item.realFile);
             }
         });
+
+        if(!tagsArray.length) {
+            tagsArray = null;
+        }
+
+        console.log(tagsArray, 'TAGSARRAY')
 
         const newData: any = {
             ...form,
@@ -1384,6 +1402,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             files: documents,
             longitude: this.longitude,
             latitude: this.latitude,
+            tags: tagsArray,
         };
 
         this.driverTService
