@@ -763,267 +763,263 @@ export class TaInputDropdownComponent
                                 selectedItem = this.options[0]?.businessName
                                     ? this.options[0]?.businessName
                                     : this.options[0]?.name;
+                            } else {
+                                selectedItem = this.options[0]?.number
+                                    ? this.options[0]?.number.toString().trim()
+                                    : this.options[0].name.toString().trim();
                             }
-                            selectedItem = this.options[0]?.number
-                                ? this.options[0]?.number.toString().trim()
-                                : this.options[0].name.toString().trim();
                         }
 
-                        // Address Select
-                        if (
-                            (this.inputConfig.name == 'Address' ||
-                                this.inputConfig.name == 'RoutingAddress') &&
-                            (!selectedItem || selectedItem == '')
-                        ) {
-                            selectedItem = this.options[0].name;
-                        }
-
-                        // Input Dropdown Bank Name
-                        if (
-                            !selectedItem &&
-                            this.inputConfig.name === 'Input Dropdown Bank Name'
-                        ) {
-                            this.addNewItem();
-                        }
-
-                        // Input Dropdown Label
-                        if (!selectedItem && this.inputConfig.dropdownLabel) {
-                            this.commandEvent({
-                                data: this.getSuperControl.value,
-                                action: 'confirm',
-                                mode: data.dropdownLabelNew ? 'new' : 'edit',
-                            });
-                            setTimeout(() => {
-                                this.getSuperControl.setErrors(null);
-                                this.inputConfig.dropdownLabelNew = false;
-                                this.inputConfig.commands.active = false;
-                                this.inputConfig.blackInput = false;
-                                this.inputRef.focusInput = false;
-                                this.inputRef.editInputMode = false;
-                                this.inputRef.input.nativeElement.blur();
-                            }, 150);
-                        }
-
-                        // ADD NEW Option
-                        if (selectedItem === 'ADD NEW') {
-                            this.addNewConfig();
-
-                            if (this.inputConfig.dropdownLabel) {
-                                // DropDown label
-                                if (this.inputConfig.dropdownLabel) {
-                                    this.inputConfig.dropdownLabelNew = true;
-                                    this.inputRef.editInputMode = true;
-                                    this.selectedLabelMode.emit('Color');
-                                    this.inputConfig.commands.active = true;
-                                    this.inputRef.setInputCursorAtTheEnd(
-                                        this.inputRef.input.nativeElement
-                                    );
-                                    this.inputConfig.blackInput = true;
-                                    this.selectedItem.emit({
-                                        id: 7655,
-                                        name: 'ADD NEW',
-                                    });
-                                }
-                            }
-                            selectedItem = null;
-                        }
-                        // Normal Pick Dropdown
-                        else {
-                            const existItem = this.options
-                                .map((item) => {
-                                    // Address
-                                    if (
-                                        item.name &&
-                                        (this.inputConfig.name == 'Address' ||
-                                            this.inputConfig.name ==
-                                                'RoutingAddress')
-                                    ) {
-                                        return {
-                                            id: item.id,
-                                            name: item.name,
-                                            address: item.address,
-                                            longLat: item.longLat,
-                                        };
-                                    }
-
-                                    // Load Dispatches TTD
-                                    else if (
-                                        [
-                                            'load-dispatches-ttd',
-                                            'load-broker',
-                                            'load-shipper',
-                                        ].includes(this.template)
-                                    ) {
-                                        return { ...item };
-                                    }
-
-                                    // Image (must be before type code, because color has same prop like other dropdown pop)
-                                    else if (item.logoName) {
-                                        return { ...item };
-                                    }
-
-                                    // Code
-                                    else if (item.code && item.description) {
-                                        return {
-                                            id: item.id,
-                                            name: item.code.concat(
-                                                ' - ',
-                                                item.description
-                                            ),
-                                        };
-                                    }
-                                    // Dropdown Labels
-                                    else if (
-                                        item?.dropLabel ||
-                                        this.inputConfig.dropdownLabel
-                                    ) {
-                                        return { ...item };
-                                    }
-                                    // Default
-                                    else {
-                                        if (item.name) {
-                                            return {
-                                                id: item.id,
-                                                name: item.name,
-                                            };
-                                        }
-                                    }
-                                })
-                                .find((item) => {
-                                    // Dropdown Label
-                                    if (
-                                        (item?.dropLabel ||
-                                            this.inputConfig.dropdownLabel) &&
-                                        selectedItem.substring(
-                                            0,
-                                            selectedItem.lastIndexOf(' ')
-                                        ) === item?.name.toLowerCase()
-                                    ) {
-                                        return item;
-                                    }
-
-                                    // Dropdown Load Dispatcher, Broker
-                                    if (
-                                        [
-                                            'load-broker',
-                                            'load-dispatcher',
-                                            'load-shipper',
-                                        ].includes(this.template) &&
-                                        selectedItem
-                                            ?.toLowerCase()
-                                            .includes(item?.name?.toLowerCase())
-                                    ) {
-                                        return item;
-                                    }
-                                    // Dropdown Load Dispatches
-                                    if (
-                                        this.template ===
-                                            'load-dispatches-ttd' &&
-                                        selectedItem
-                                            ?.toLowerCase()
-                                            .includes(
-                                                item?.trailer?.trailerNumber.toLowerCase()
-                                            ) &&
-                                        selectedItem
-                                            ?.toLowerCase()
-                                            .includes(
-                                                item?.truck?.truckNumber.toLowerCase()
-                                            ) &&
-                                        selectedItem
-                                            ?.toLowerCase()
-                                            .includes(
-                                                item?.driver?.firstName
-                                                    .concat(
-                                                        ' ',
-                                                        item?.driver?.lastName
-                                                    )
-                                                    .toLowerCase()
-                                            )
-                                    ) {
-                                        return item;
-                                    }
-
-                                    // Default
-                                    if (
-                                        !this.inputConfig.dropdownLabel &&
-                                        this.template !==
-                                            'load-dispatches-ttd' &&
-                                        selectedItem?.toLowerCase() ===
-                                            item?.name.toLowerCase()
-                                    ) {
-                                        return item;
-                                    }
-                                });
-
-                            // MultiSelect Dropdown
-                            if (this.inputConfig.multiselectDropdown) {
-                                this.onMultiselectSelect(existItem);
-                            }
-                            // Normal Dropdown
-                            else {
-                                this.inputConfig = {
-                                    ...this.inputConfig,
-                                    blackInput: true,
-                                };
-
-                                // Dropdown labels option selected
-                                if (this.inputConfig.dropdownLabel) {
-                                    if (this.labelMode === 'Label') {
-                                        this.activeItem = existItem;
-                                        this.getSuperControl.setValue(
-                                            existItem.name
-                                        );
-                                        this.options = this.originalOptions;
-                                        this.selectedItem.emit(existItem);
-
-                                        this.inputService.dropDownItemSelectedOnEnter$.next(
-                                            {
-                                                action: true,
-                                                inputConfig: null,
-                                            }
-                                        );
-                                    }
-
-                                    if (this.labelMode === 'Color') {
-                                        this.activeItemColor = existItem;
-
-                                        this.selectedItemColor.emit(
-                                            this.activeItemColor
-                                        );
-                                    }
-                                }
-                                // Normal
-                                else {
-                                    this.getSuperControl.setValue(
-                                        existItem?.name
-                                    );
-                                    this.selectedItem.emit(existItem);
-                                    this.activeItem = existItem;
-                                    this.inputRef.focusInput = false;
-                                    this.inputRef.input.nativeElement.blur();
-                                }
-
-                                if (
-                                    this.inputConfig.name !== 'RoutingAddress'
-                                ) {
-                                    const timeout = setTimeout(() => {
-                                        this.inputConfig = {
-                                            ...this.inputConfig,
-                                            blackInput: false,
-                                        };
-                                        clearTimeout(timeout);
-                                    }, 200);
-                                }
-                            }
-                            this.popoverRef.close();
-                        }
+                        this.pickupElementWithKeyboard(selectedItem, data);
                     }
                 }
 
                 if (keyCode === 9) {
-                    this.popoverRef.open();
+                    if (this.options.length === 1) {
+                        let selectedItem = null;
+                        if (this.template === 'fuel-franchise') {
+                            selectedItem = this.options[0]?.businessName
+                                ? this.options[0]?.businessName
+                                : this.options[0]?.name;
+                        } else {
+                            selectedItem = this.options[0]?.number
+                                ? this.options[0]?.number.toString().trim()
+                                : this.options[0].name.toString().trim();
+                        }
+                        this.pickupElementWithKeyboard(selectedItem, data);
+                    } else {
+                        this.popoverRef.open();
+                    }
                 }
             });
+    }
+
+    private pickupElementWithKeyboard(selectedItem: string, data: any) {
+        // Address Select
+        if (
+            (this.inputConfig.name == 'Address' ||
+                this.inputConfig.name == 'RoutingAddress') &&
+            (!selectedItem || selectedItem == '')
+        ) {
+            selectedItem = this.options[0].name;
+        }
+
+        // Input Dropdown Bank Name
+        if (
+            !selectedItem &&
+            this.inputConfig.name === 'Input Dropdown Bank Name'
+        ) {
+            this.addNewItem();
+        }
+
+        // Input Dropdown Label
+        if (!selectedItem && this.inputConfig.dropdownLabel) {
+            this.commandEvent({
+                data: this.getSuperControl.value,
+                action: 'confirm',
+                mode: data.dropdownLabelNew ? 'new' : 'edit',
+            });
+            setTimeout(() => {
+                this.getSuperControl.setErrors(null);
+                this.inputConfig.dropdownLabelNew = false;
+                this.inputConfig.commands.active = false;
+                this.inputConfig.blackInput = false;
+                this.inputRef.focusInput = false;
+                this.inputRef.editInputMode = false;
+                this.inputRef.input.nativeElement.blur();
+            }, 150);
+        }
+
+        // ADD NEW Option
+        if (selectedItem === 'ADD NEW') {
+            this.addNewConfig();
+
+            if (this.inputConfig.dropdownLabel) {
+                // DropDown label
+                if (this.inputConfig.dropdownLabel) {
+                    this.inputConfig.dropdownLabelNew = true;
+                    this.inputRef.editInputMode = true;
+                    this.selectedLabelMode.emit('Color');
+                    this.inputConfig.commands.active = true;
+                    this.inputRef.setInputCursorAtTheEnd(
+                        this.inputRef.input.nativeElement
+                    );
+                    this.inputConfig.blackInput = true;
+                    this.selectedItem.emit({
+                        id: 7655,
+                        name: 'ADD NEW',
+                    });
+                }
+            }
+            selectedItem = null;
+        }
+        // Normal Pick Dropdown
+        else {
+            const existItem = this.options
+                .map((item) => {
+                    // Address
+                    if (
+                        item.name &&
+                        (this.inputConfig.name == 'Address' ||
+                            this.inputConfig.name == 'RoutingAddress')
+                    ) {
+                        return {
+                            id: item.id,
+                            name: item.name,
+                            address: item.address,
+                            longLat: item.longLat,
+                        };
+                    }
+
+                    // Load Dispatches TTD
+                    else if (
+                        [
+                            'load-dispatches-ttd',
+                            'load-broker',
+                            'load-shipper',
+                        ].includes(this.template)
+                    ) {
+                        return { ...item };
+                    }
+
+                    // Image (must be before type code, because color has same prop like other dropdown pop)
+                    else if (item.logoName) {
+                        return { ...item };
+                    }
+
+                    // Code
+                    else if (item.code && item.description) {
+                        return {
+                            id: item.id,
+                            name: item.code.concat(' - ', item.description),
+                        };
+                    }
+                    // Dropdown Labels
+                    else if (
+                        item?.dropLabel ||
+                        this.inputConfig.dropdownLabel
+                    ) {
+                        return { ...item };
+                    }
+                    // Default
+                    else {
+                        if (item.name) {
+                            return {
+                                id: item.id,
+                                name: item.name,
+                            };
+                        }
+                    }
+                })
+                .find((item) => {
+                    // Dropdown Label
+                    if (
+                        (item?.dropLabel || this.inputConfig.dropdownLabel) &&
+                        selectedItem.substring(
+                            0,
+                            selectedItem.lastIndexOf(' ')
+                        ) === item?.name.toLowerCase()
+                    ) {
+                        return item;
+                    }
+
+                    // Dropdown Load Dispatcher, Broker
+                    if (
+                        [
+                            'load-broker',
+                            'load-dispatcher',
+                            'load-shipper',
+                        ].includes(this.template) &&
+                        selectedItem
+                            ?.toLowerCase()
+                            .includes(item?.name?.toLowerCase())
+                    ) {
+                        return item;
+                    }
+                    // Dropdown Load Dispatches
+                    if (
+                        this.template === 'load-dispatches-ttd' &&
+                        selectedItem
+                            ?.toLowerCase()
+                            .includes(
+                                item?.trailer?.trailerNumber.toLowerCase()
+                            ) &&
+                        selectedItem
+                            ?.toLowerCase()
+                            .includes(item?.truck?.truckNumber.toLowerCase()) &&
+                        selectedItem
+                            ?.toLowerCase()
+                            .includes(
+                                item?.driver?.firstName
+                                    .concat(' ', item?.driver?.lastName)
+                                    .toLowerCase()
+                            )
+                    ) {
+                        return item;
+                    }
+
+                    // Default
+                    if (
+                        !this.inputConfig.dropdownLabel &&
+                        this.template !== 'load-dispatches-ttd' &&
+                        selectedItem?.toLowerCase() === item?.name.toLowerCase()
+                    ) {
+                        return item;
+                    }
+                });
+
+            // MultiSelect Dropdown
+            if (this.inputConfig.multiselectDropdown) {
+                this.onMultiselectSelect(existItem);
+            }
+            // Normal Dropdown
+            else {
+                this.inputConfig = {
+                    ...this.inputConfig,
+                    blackInput: true,
+                };
+
+                // Dropdown labels option selected
+                if (this.inputConfig.dropdownLabel) {
+                    if (this.labelMode === 'Label') {
+                        this.activeItem = existItem;
+                        this.getSuperControl.setValue(existItem.name);
+                        this.options = this.originalOptions;
+                        this.selectedItem.emit(existItem);
+
+                        this.inputService.dropDownItemSelectedOnEnter$.next({
+                            action: true,
+                            inputConfig: null,
+                        });
+                    }
+
+                    if (this.labelMode === 'Color') {
+                        this.activeItemColor = existItem;
+
+                        this.selectedItemColor.emit(this.activeItemColor);
+                    }
+                }
+                // Normal
+                else {
+                    this.getSuperControl.setValue(existItem?.name);
+                    this.selectedItem.emit(existItem);
+                    this.activeItem = existItem;
+                    this.inputRef.focusInput = false;
+                    this.inputRef.input.nativeElement.blur();
+                }
+
+                if (this.inputConfig.name !== 'RoutingAddress') {
+                    const timeout = setTimeout(() => {
+                        this.inputConfig = {
+                            ...this.inputConfig,
+                            blackInput: false,
+                        };
+                        clearTimeout(timeout);
+                    }, 200);
+                }
+            }
+            this.popoverRef.close();
+        }
     }
 
     private search(searchText: string): void {

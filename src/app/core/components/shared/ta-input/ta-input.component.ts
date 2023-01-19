@@ -558,6 +558,13 @@ export class TaInputComponent
                 return;
             }
         }
+
+        if (event.keyCode === 9) {
+            this.inputService.dropDownKeyNavigation$.next({
+                keyCode: event.keyCode,
+                data: null,
+            });
+        }
     }
 
     public onKeyup(event): void {
