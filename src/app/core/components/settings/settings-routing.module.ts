@@ -7,6 +7,7 @@ import { cOfficeResolver } from './settings-location/settings-office/state/compa
 import { TerminalResolver } from './settings-location/settings-terminal/state/company-terminal.resolver';
 import { companyRepairShopResolver } from './settings-location/settings-repair-shop/state/company-repairshop.resolver';
 import { UserResolver } from '../user/state/user-state/user.resolver';
+import { UnderConstructionComponent } from '../under-construction/under-construction.component';
 
 const routes: Routes = [
     {
@@ -64,34 +65,38 @@ const routes: Routes = [
             },
             {
                 path: 'billing',
-                loadChildren: () =>
-                    import('./settings-billing/settings-billing.module').then(
-                        (m) => m.SettingsBillingModule
-                    ),
+                // loadChildren: () =>
+                //     import('./settings-billing/settings-billing.module').then(
+                //         (m) => m.SettingsBillingModule
+                //     ),
+                component: UnderConstructionComponent,
                 data: { title: 'Billing' },
             },
             {
                 path: 'custom-agreement',
-                loadChildren: () =>
-                    import('./custom-agreement/custom-agreement.module').then(
-                        (m) => m.CustomAgreementModule
-                    ),
+                // loadChildren: () =>
+                //     import('./custom-agreement/custom-agreement.module').then(
+                //         (m) => m.CustomAgreementModule
+                //     ),
+                component: UnderConstructionComponent,
                 data: { title: 'Custom Agreement' },
             },
             {
                 path: 'training-material',
-                loadChildren: () =>
-                    import('./training-material/training-material.module').then(
-                        (m) => m.TrainingMaterialModule
-                    ),
+                // loadChildren: () =>
+                //     import('./training-material/training-material.module').then(
+                //         (m) => m.TrainingMaterialModule
+                //     ),
+                component: UnderConstructionComponent,
                 data: { title: 'Training Material' },
             },
             {
                 path: 'integration',
-                loadChildren: () =>
-                    import(
-                        './settings-integration/settings-integration.module'
-                    ).then((m) => m.SettingsIntegrationModule),
+                // loadChildren: () =>
+                //     import(
+                //         './settings-integration/settings-integration.module'
+                //     ).then((m) => m.SettingsIntegrationModule),
+                component: UnderConstructionComponent,
                 data: { title: 'Integration' },
             },
         ],

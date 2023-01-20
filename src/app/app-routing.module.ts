@@ -220,6 +220,12 @@ const routes: Routes = [
         },
     },
     {
+        path: 'list/rentor',
+        component: UnderConstructionComponent,
+        canActivate: [AuthGuard],
+        data: { title: 'Rentor' },
+    },
+    {
         path: 'list/account',
         loadChildren: () =>
             import('./core/components/account/account.module').then(
@@ -250,6 +256,36 @@ const routes: Routes = [
         canActivate: [AuthGuard],
     },
     {
+        path: 'report',
+        component: UnderConstructionComponent,
+        data: { title: 'Report' },
+    },
+    {
+        path: 'statistic',
+        component: UnderConstructionComponent,
+        data: { title: 'Statistic' },
+    },
+    {
+        path: 'chat',
+        component: UnderConstructionComponent,
+        data: { title: 'Chat' },
+    },
+    {
+        path: 'telematic',
+        component: UnderConstructionComponent,
+        data: { title: 'Telematic' },
+    },
+    {
+        path: 'places',
+        component: UnderConstructionComponent,
+        data: { title: 'Places' },
+    },
+    {
+        path: 'file-manager',
+        component: UnderConstructionComponent,
+        data: { title: 'File Menager' },
+    },
+    {
         path: 'gpstracking',
         loadChildren: () =>
             import('./core/components/telematic/telematic.module').then(
@@ -275,6 +311,36 @@ const routes: Routes = [
         resolve: { miles: MilesResolverService },
     },
     {
+        path: 'tools/1099',
+        component: UnderConstructionComponent,
+        canActivate: [AuthGuard],
+        data: { title: '1099' },
+    },
+    {
+        path: 'tools/2290',
+        component: UnderConstructionComponent,
+        canActivate: [AuthGuard],
+        data: { title: '2290' },
+    },
+    {
+        path: 'tools/factoring',
+        component: UnderConstructionComponent,
+        canActivate: [AuthGuard],
+        data: { title: 'Factoring' },
+    },
+    {
+        path: 'tools/fax',
+        component: UnderConstructionComponent,
+        canActivate: [AuthGuard],
+        data: { title: 'Fax' },
+    },
+    {
+        path: 'tools/sms',
+        component: UnderConstructionComponent,
+        canActivate: [AuthGuard],
+        data: { title: 'Sms' },
+    },
+    {
         path: 'safety/violation',
         loadChildren: () =>
             import('./core/components/safety/violation/violation.module').then(
@@ -298,6 +364,30 @@ const routes: Routes = [
             accidentInactive: AccidentInactiveResolver,
             accidentNonReported: AccidentNonReportedResolver,
         },
+    },
+    {
+        path: 'safety/log',
+        component: UnderConstructionComponent,
+        canActivate: [AuthGuard],
+        data: { title: 'Log' },
+    },
+    {
+        path: 'safety/scheduled-insurance',
+        component: UnderConstructionComponent,
+        canActivate: [AuthGuard],
+        data: { title: 'Scheduled Insurance' },
+    },
+    {
+        path: 'safety/mvr',
+        component: UnderConstructionComponent,
+        canActivate: [AuthGuard],
+        data: { title: 'Mvr' },
+    },
+    {
+        path: 'safety/test',
+        component: UnderConstructionComponent,
+        canActivate: [AuthGuard],
+        data: { title: 'Test' },
     },
     {
         path: 'tools/todo',
@@ -421,8 +511,36 @@ const routes: Routes = [
         canActivate: [AuthGuard],
     },
     {
+        path: 'accounting',
+        loadChildren: () =>
+            import('./core/components/accounting/accounting.module').then(
+                (m) => m.AccountingModule
+            ),
+        canActivate: [AuthGuard],
+    },
+    {
+        path: 'accounting/ifta',
+        component: UnderConstructionComponent,
+        data: { title: 'Ifta' },
+    },
+    {
+        path: 'accounting/ledger',
+        component: UnderConstructionComponent,
+        data: { title: 'Ledger' },
+    },
+    {
+        path: 'accounting/tax',
+        component: UnderConstructionComponent,
+        data: { title: 'Tax' },
+    },
+    {
         path: 'catalog',
         component: SvgDefinitionsComponent,
+    },
+    {
+        path: 'notifications',
+        component: UnderConstructionComponent,
+        data: { title: 'Notifications' },
     },
 
     { path: '**', redirectTo: 'dashboard' },

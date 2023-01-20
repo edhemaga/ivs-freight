@@ -140,7 +140,6 @@ export class NavigationComponent implements OnInit, OnDestroy {
                 } else {
                     let ruteName = url.url.split('/');
                     if (ruteName[2]) {
-                        console.log(ruteName[2]);
                         if (ruteName[2] == 'sms') {
                             this.selectedSubRoute = 'SMS';
                             this.cdRef.detectChanges();
@@ -200,7 +199,6 @@ export class NavigationComponent implements OnInit, OnDestroy {
         this.cdRef.detectChanges();
     }
     isSubrouteContainerOpen(event) {
-        console.log(this.closeDropdownOnNavClose);
         this.subrouteContainerOpened = event;
         this.cdRef.detectChanges();
     }
