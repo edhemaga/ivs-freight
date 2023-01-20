@@ -547,6 +547,8 @@ export class TaInputComponent
     }
 
     public onKeydown(event) {
+        this.capsLockOn = event.getModifierState('CapsLock');
+
         if (this.inputConfig.textTransform === 'capitalize') {
             if (event.getModifierState('CapsLock')) {
                 event.preventDefault();
@@ -557,6 +559,13 @@ export class TaInputComponent
                 event.preventDefault();
                 return;
             }
+        }
+
+        if (event.keyCode === 9) {
+            this.inputService.dropDownKeyNavigation$.next({
+                keyCode: event.keyCode,
+                data: null,
+            });
         }
     }
 
@@ -677,8 +686,6 @@ export class TaInputComponent
                 });
             }
         }
-
-        this.capsLockOn = !!event.getModifierState('CapsLock');
     }
 
     public transformText(value: string, paste?: boolean) {

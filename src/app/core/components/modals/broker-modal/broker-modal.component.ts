@@ -184,6 +184,8 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
             this.ratingChanges();
         }
 
+        console.log('editdata: ', this.editData);
+
         // From Another Modal Data
         if (this.editData?.extraPayload?.type === 'edit-contact') {
             this.disableCardAnimation = true;
@@ -451,7 +453,11 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                         return;
                     }
                     if (['edit'].includes(this.editData?.type)) {
-                        this.updateBroker(this.editData.id);
+                        this.updateBroker(
+                            this.editData?.extraPayload?.type === 'edit-contact'
+                                ? this.editData.extraPayload.data.id
+                                : this.editData.id
+                        );
                         this.modalService.setModalSpinner({
                             action: null,
                             status: true,
@@ -1021,6 +1027,11 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                     if (this.editData?.canOpenModal) {
                         switch (this.editData?.key) {
                             case 'load-modal': {
+                                this.modalService.setModalSpinner({
+                                    action: null,
+                                    status: false,
+                                    close: true,
+                                });
                                 this.modalService.setProjectionModal({
                                     action: 'close',
                                     payload: {
