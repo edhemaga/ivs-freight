@@ -110,6 +110,7 @@ export class SettingsRepairshopModalComponent implements OnInit, OnDestroy {
             payPeriod: [null],
             weeklyDay: [null],
             monthlyDay: [null],
+            servicesHelper: [null],
         });
 
         this.inputService.customInputValidator(
@@ -150,12 +151,14 @@ export class SettingsRepairshopModalComponent implements OnInit, OnDestroy {
                     this.modalService.setModalSpinner({
                         action: null,
                         status: true,
+                        close: false,
                     });
                 } else {
                     this.addRepairShop();
                     this.modalService.setModalSpinner({
                         action: null,
                         status: true,
+                        close: false,
                     });
                 }
                 break;
@@ -165,6 +168,7 @@ export class SettingsRepairshopModalComponent implements OnInit, OnDestroy {
                 this.modalService.setModalSpinner({
                     action: 'delete',
                     status: true,
+                    close: false,
                 });
                 break;
             }
@@ -193,8 +197,13 @@ export class SettingsRepairshopModalComponent implements OnInit, OnDestroy {
         }
     }
 
-    public pickedServices() {
-        return this.services.filter((item) => item.active).length;
+    public activeRepairService(service) {
+        service.active = !service.active;
+        this.services = [...this.services];
+
+        this.repairShopForm
+            .get('servicesHelper')
+            .patchValue(JSON.stringify(this.services));
     }
 
     public onHandleAddress(event: {
@@ -209,7 +218,8 @@ export class SettingsRepairshopModalComponent implements OnInit, OnDestroy {
     }
 
     private updateRepariShop(id: number) {
-        const { addressUnit, rent, ...form } = this.repairShopForm.value;
+        const { addressUnit, rent, servicesHelper, ...form } =
+            this.repairShopForm.value;
 
         const newData: any = {
             id: id,
@@ -242,11 +252,27 @@ export class SettingsRepairshopModalComponent implements OnInit, OnDestroy {
         this.repairService
             .updateRepairShop(newData)
             .pipe(takeUntil(this.destroy$))
-            .subscribe();
+            .subscribe({
+                next: () => {
+                    this.modalService.setModalSpinner({
+                        action: null,
+                        status: true,
+                        close: true,
+                    });
+                },
+                error: () => {
+                    this.modalService.setModalSpinner({
+                        action: null,
+                        status: false,
+                        close: false,
+                    });
+                },
+            });
     }
 
     private addRepairShop() {
-        const { addressUnit, rent, ...form } = this.repairShopForm.value;
+        const { addressUnit, rent, servicesHelper, ...form } =
+            this.repairShopForm.value;
 
         const newData: any = {
             ...form,
@@ -278,14 +304,44 @@ export class SettingsRepairshopModalComponent implements OnInit, OnDestroy {
         this.repairService
             .addRepairShop(newData)
             .pipe(takeUntil(this.destroy$))
-            .subscribe();
+            .subscribe({
+                next: () => {
+                    this.modalService.setModalSpinner({
+                        action: null,
+                        status: true,
+                        close: true,
+                    });
+                },
+                error: () => {
+                    this.modalService.setModalSpinner({
+                        action: null,
+                        status: false,
+                        close: false,
+                    });
+                },
+            });
     }
 
     private deleteRepairShopById(id: number) {
         this.repairService
             .deleteRepairShopById(id)
             .pipe(takeUntil(this.destroy$))
-            .subscribe();
+            .subscribe({
+                next: () => {
+                    this.modalService.setModalSpinner({
+                        action: 'delete',
+                        status: true,
+                        close: true,
+                    });
+                },
+                error: () => {
+                    this.modalService.setModalSpinner({
+                        action: 'delete',
+                        status: false,
+                        close: false,
+                    });
+                },
+            });
     }
 
     private editRepairShopById(id: number) {
@@ -330,6 +386,10 @@ export class SettingsRepairshopModalComponent implements OnInit, OnDestroy {
                         };
                     });
 
+                    this.repairShopForm
+                        .get('servicesHelper')
+                        .patchValue(JSON.stringify(this.services));
+
                     if (res.phoneExt) {
                         this.isPhoneExtExist = true;
                     }
@@ -359,6 +419,10 @@ export class SettingsRepairshopModalComponent implements OnInit, OnDestroy {
                             active: false,
                         };
                     });
+
+                    this.repairShopForm
+                        .get('servicesHelper')
+                        .patchValue(JSON.stringify(this.services));
                 },
                 error: () => {},
             });

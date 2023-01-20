@@ -8,7 +8,6 @@ import {
     SimpleChanges,
 } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { TrailerResponse } from 'appcoretruckassist';
 import { Subject, takeUntil } from 'rxjs';
 import { DropDownService } from 'src/app/core/services/details-page/drop-down.service';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
@@ -28,6 +27,7 @@ import {
 } from '@angular/animations';
 import { Titles } from 'src/app/core/utils/application.decorators';
 import { OnChanges } from '@angular/core';
+import { convertDateFromBackend } from '../../../../utils/methods.calculations';
 
 @Titles()
 @Component({
@@ -35,29 +35,34 @@ import { OnChanges } from '@angular/core';
     templateUrl: './trailer-details-item.component.html',
     styleUrls: ['./trailer-details-item.component.scss'],
     encapsulation: ViewEncapsulation.None,
-    animations: [card_component_animation('showHideCardBody'), trigger('cardAnimation', [
-        state('in', style({ opacity: 1, 'max-height': '0px'})),
-        transition(':enter', [
-            animate(
-                5100,
-                keyframes([
-                    style({ opacity: 0, 'max-height': '0px' }),
-                    style({ opacity: 1, 'max-height' : '600px' }),
-                ])
-            ),
+    animations: [
+        card_component_animation('showHideCardBody'),
+        trigger('cardAnimation', [
+            state('in', style({ opacity: 1, 'max-height': '0px' })),
+            transition(':enter', [
+                animate(
+                    5100,
+                    keyframes([
+                        style({ opacity: 0, 'max-height': '0px' }),
+                        style({ opacity: 1, 'max-height': '600px' }),
+                    ])
+                ),
+            ]),
+            transition(':leave', [
+                animate(
+                    5100,
+                    keyframes([
+                        style({ opacity: 1, 'max-height': '600px' }),
+                        style({ opacity: 0, 'max-height': '0px' }),
+                    ])
+                ),
+            ]),
         ]),
-        transition(':leave', [
-            animate(
-                5100,
-                keyframes([
-                    style({ opacity: 1, 'max-height' : '600px' }),
-                    style({ opacity: 0, 'max-height' : '0px' }),
-                ])
-            ),
-        ]),
-    ]),],
+    ],
 })
-export class TrailerDetailsItemComponent implements OnInit, OnDestroy, OnChanges {
+export class TrailerDetailsItemComponent
+    implements OnInit, OnDestroy, OnChanges
+{
     @ViewChildren('fhwaUpload') fhwaUpload: any;
     @ViewChildren('registrationUpload') registrationUpload: any;
     @ViewChildren('titleUpload') titleUpload: any;
@@ -81,7 +86,7 @@ export class TrailerDetailsItemComponent implements OnInit, OnDestroy, OnChanges
         private commonTrailerService: CommonTruckTrailerService,
         private dropDownService: DropDownService
     ) {}
-    
+
     ngOnInit(): void {
         this.note?.patchValue(this.trailer[0]?.data?.note);
         // Confirmation Subscribe
@@ -134,7 +139,7 @@ export class TrailerDetailsItemComponent implements OnInit, OnDestroy, OnChanges
                     name: 'edit',
                     svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
                     show: true,
-                    iconName: 'edit'
+                    iconName: 'edit',
                 },
                 {
                     title: 'border',
@@ -144,21 +149,21 @@ export class TrailerDetailsItemComponent implements OnInit, OnDestroy, OnChanges
                     name: 'view-details',
                     svg: 'assets/svg/common/ic_hazardous-info.svg',
                     show: true,
-                    iconName: 'view-details'
+                    iconName: 'view-details',
                 },
                 {
                     title: 'Renew',
                     name: 'renew',
                     svg: 'assets/svg/common/ic_retry_white.svg',
                     show: true,
-                    iconName: 'renew'
+                    iconName: 'renew',
                 },
                 {
                     title: 'Transfer',
                     name: 'transfer',
                     svg: 'assets/svg/common/dropdown-transfer-icon.svg',
                     show: true,
-                    iconName: 'transfer'
+                    iconName: 'transfer',
                 },
                 {
                     title: 'border',
@@ -168,14 +173,14 @@ export class TrailerDetailsItemComponent implements OnInit, OnDestroy, OnChanges
                     name: 'share',
                     svg: 'assets/svg/common/share-icon.svg',
                     show: true,
-                    iconName: 'share'
+                    iconName: 'share',
                 },
                 {
                     title: 'Print',
                     name: 'print',
                     svg: 'assets/svg/common/ic_fax.svg',
                     show: true,
-                    iconName: 'print'
+                    iconName: 'print',
                 },
                 {
                     title: 'border',
@@ -185,7 +190,7 @@ export class TrailerDetailsItemComponent implements OnInit, OnDestroy, OnChanges
                     name: 'activate-item',
                     svg: 'assets/svg/common/ic_cancel_violation.svg',
                     redIcon: true,
-                    iconName: 'deactivate-item'
+                    iconName: 'deactivate-item',
                 },
                 {
                     title: 'Delete',
@@ -196,7 +201,7 @@ export class TrailerDetailsItemComponent implements OnInit, OnDestroy, OnChanges
                     danger: true,
                     show: true,
                     redIcon: true,
-                    iconName: 'delete'
+                    iconName: 'delete',
                 },
             ],
             export: true,
@@ -219,7 +224,7 @@ export class TrailerDetailsItemComponent implements OnInit, OnDestroy, OnChanges
                     name: 'edit',
                     svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
                     show: true,
-                    iconName: 'edit'
+                    iconName: 'edit',
                 },
                 {
                     title: 'border',
@@ -229,7 +234,7 @@ export class TrailerDetailsItemComponent implements OnInit, OnDestroy, OnChanges
                     name: 'view-details',
                     svg: 'assets/svg/common/ic_hazardous-info.svg',
                     show: true,
-                    iconName: 'view-details'
+                    iconName: 'view-details',
                 },
                 {
                     title: 'border',
@@ -239,14 +244,14 @@ export class TrailerDetailsItemComponent implements OnInit, OnDestroy, OnChanges
                     name: 'share',
                     svg: 'assets/svg/common/share-icon.svg',
                     show: true,
-                    iconName: 'share'
+                    iconName: 'share',
                 },
                 {
                     title: 'Print',
                     name: 'print',
                     svg: 'assets/svg/common/ic_fax.svg',
                     show: true,
-                    iconName: 'print'
+                    iconName: 'print',
                 },
                 {
                     title: 'border',
@@ -260,7 +265,7 @@ export class TrailerDetailsItemComponent implements OnInit, OnDestroy, OnChanges
                     danger: true,
                     show: true,
                     redIcon: true,
-                    iconName: 'delete'
+                    iconName: 'delete',
                 },
             ],
             export: true,
@@ -291,41 +296,20 @@ export class TrailerDetailsItemComponent implements OnInit, OnDestroy, OnChanges
         this.commonTrailerService
             .deleteRegistrationById(id)
             .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {
-                   
-                },
-                error: () => {
-                 
-                },
-            });
+            .subscribe();
     }
 
     private deleteInspectionByIdFunction(id: number) {
         this.commonTrailerService
             .deleteInspectionById(id)
             .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {
-                 
-                },
-                error: () => {
-                    
-                },
-            });
+            .subscribe();
     }
     private deleteTitleByIdFunction(id: number) {
         this.commonTrailerService
             .deleteTitleById(id)
             .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {
-                   
-                },
-                error: () => {
-                  
-                },
-            });
+            .subscribe();
     }
 
     public downloadAllFiles(type: string, index: number) {
@@ -363,6 +347,10 @@ export class TrailerDetailsItemComponent implements OnInit, OnDestroy, OnChanges
         }
     }
 
+    public formatDate(mod) {
+        return convertDateFromBackend(mod);
+    }
+
     ngOnDestroy(): void {
         this.tableService.sendActionAnimation({});
         this.destroy$.next();
@@ -371,4 +359,3 @@ export class TrailerDetailsItemComponent implements OnInit, OnDestroy, OnChanges
 
     ngOnChanges(changes: SimpleChanges): void {}
 }
-

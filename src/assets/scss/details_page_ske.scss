@@ -340,9 +340,10 @@ p {
             display: grid;
             grid-template-columns: 141px 141px;
             column-gap: 21px;
+            margin-bottom: 4px;
         }
         .card-row-progress {
-            margin-top: 12px;
+            margin-top: 8px;
         }
         .card-restriction {
             display: flex;

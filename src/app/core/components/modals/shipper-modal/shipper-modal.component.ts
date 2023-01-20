@@ -233,6 +233,7 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
             this.modalService.setModalSpinner({
                 action: 'save and add new',
                 status: true,
+                close: false,
             });
             this.addNewAfterSave = true;
         } else {
@@ -247,12 +248,14 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
                     this.modalService.setModalSpinner({
                         action: null,
                         status: true,
+                        close: false,
                     });
                 } else {
                     this.addShipper();
                     this.modalService.setModalSpinner({
                         action: null,
                         status: true,
+                        close: false,
                     });
                 }
             }
@@ -262,6 +265,7 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
                 this.modalService.setModalSpinner({
                     action: 'delete',
                     status: true,
+                    close: false,
                 });
             }
         }
@@ -590,6 +594,7 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
                         this.modalService.setModalSpinner({
                             action: 'save and add new',
                             status: false,
+                            close: false,
                         });
 
                         this.formService.resetForm(this.shipperForm);
@@ -621,9 +626,21 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
                         this.filesForDelete = [];
 
                         this.addNewAfterSave = false;
+                    } else {
+                        this.modalService.setModalSpinner({
+                            action: null,
+                            status: true,
+                            close: true,
+                        });
                     }
                 },
-                error: () => {},
+                error: () => {
+                    this.modalService.setModalSpinner({
+                        action: null,
+                        status: false,
+                        close: false,
+                    });
+                },
             });
     }
 
@@ -695,9 +712,21 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
                                 break;
                             }
                         }
+                    } else {
+                        this.modalService.setModalSpinner({
+                            action: null,
+                            status: true,
+                            close: true,
+                        });
                     }
                 },
-                error: () => {},
+                error: () => {
+                    this.modalService.setModalSpinner({
+                        action: null,
+                        status: false,
+                        close: false,
+                    });
+                },
             });
     }
 
@@ -705,7 +734,22 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
         this.shipperModalService
             .deleteShipperById(id)
             .pipe(takeUntil(this.destroy$))
-            .subscribe();
+            .subscribe({
+                next: () => {
+                    this.modalService.setModalSpinner({
+                        action: 'delete',
+                        status: true,
+                        close: true,
+                    });
+                },
+                error: () => {
+                    this.modalService.setModalSpinner({
+                        action: 'delete',
+                        status: false,
+                        close: false,
+                    });
+                },
+            });
     }
 
     private editShipperById(id: number) {

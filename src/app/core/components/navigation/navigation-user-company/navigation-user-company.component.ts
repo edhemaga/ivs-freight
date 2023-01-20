@@ -3,6 +3,8 @@ import {
     ChangeDetectionStrategy,
     Input,
     OnInit,
+    Output,
+    EventEmitter,
 } from '@angular/core';
 import { SelectCompanyResponse } from 'appcoretruckassist';
 import { AuthStoreService } from '../../authentication/state/auth.service';
@@ -17,8 +19,8 @@ import { SignInResponse } from '../../../../../../appcoretruckassist/model/signI
 })
 export class NavigationUserCompanyComponent implements OnInit {
     @Input() isNavigationHoveredAndPanelOpen: boolean = false;
-
     public userCompanies: any[];
+    @Output() companiesExists = new EventEmitter<boolean>();
 
     constructor(
         private navigationService: NavigationService,
@@ -36,7 +38,11 @@ export class NavigationUserCompanyComponent implements OnInit {
         // }
 
         // ----------------------- DEVELOP MODE ----------------------------
-        this.userCompanies = JSON.parse(localStorage.getItem('user')).companies;
+        let arr = JSON.parse(localStorage.getItem('user')).companies;
+
+        arr.length > 1
+            ? ((this.userCompanies = arr), this.companiesExists.emit(true))
+            : this.companiesExists.emit(false);
     }
 
     public onAction() {
@@ -54,7 +60,6 @@ export class NavigationUserCompanyComponent implements OnInit {
                     let user: SignInResponse = JSON.parse(
                         localStorage.getItem('user')
                     );
-
                     user = {
                         ...user,
                         avatar: res.avatar,

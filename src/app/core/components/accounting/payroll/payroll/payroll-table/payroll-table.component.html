@@ -1,0 +1,120 @@
+<div class="payroll-table-main">
+    <table>
+        <thead>
+            <tr>
+                <th *ngFor="let h of tableSettings">
+                    <div class="thead-box d-flex">
+                        <div class="thead-border {{h.hasBorder}}" *ngIf="h.hasBorder"></div>
+                        <div class="field-subtitle">{{h.textAbove}}</div>
+                        <div class="field-title">{{ h.field }}</div>
+                    </div>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let tr of tableData">
+                <td *ngFor="let h of tableSettings">
+                    <div class="table-box" [ngSwitch]="h.template">
+                        <div class="table-hold-box" *ngSwitchCase="'bold-normal-template'">
+                            <div class="bold-normal-template" [innerHTML]="tr | payrolltablepipe : h"></div>
+                        </div>
+
+                        <div class="table-hold-box" *ngSwitchCase="'status-template'">
+                            <div class="status-template d-flex">
+                                <svg-icon
+                                    src="assets/svg/common/ic_danger.svg"
+                                ></svg-icon>
+                                <span>444 DAYS</span>
+                            </div>
+                        </div>
+
+                        <div class="table-hold-box" *ngSwitchDefault>
+                            <div class="normal-template" [innerHTML]="tr | payrolltablepipe : h"></div>
+                        </div>
+                    </div>
+                </td>
+
+
+                <!-- 
+                <td>
+                    <div class="table-box">
+                        <div class="table-hold-box">
+                            <div class="bold-normal-template">5240C</div>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div class="table-box">
+                        <div class="table-hold-box">
+                            <div class="bold-normal-template">
+                                Aleksandar Djordjevic
+                            </div>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div class="table-box">
+                        <div class="table-hold-box">
+                            <div class="normal-template">LA59OSK</div>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div class="table-box">
+                        <div class="table-hold-box">
+                            <div class="normal-template">04/05/24</div>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div class="table-box">
+                        <div class="table-hold-box">
+                            <div class="normal-template">5</div>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div class="table-box">
+                        <div class="table-hold-box">
+                            <div class="normal-template">$50,326.57</div>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div class="table-box">
+                        <div class="table-hold-box">
+                            <div class="normal-template">17.5%</div>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div class="table-box">
+                        <div class="table-hold-box">
+                            <div class="normal-template">$1,842.06</div>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div class="table-box">
+                        <div class="table-hold-box">
+                            <div class="bold-normal-template">$2,146.92</div>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div class="table-box">
+                        <div class="table-hold-box">
+                            <div class="status-template d-flex">
+                                <svg-icon
+                                    src="assets/svg/common/ic_danger.svg"
+                                ></svg-icon>
+                                <span>444 DAYS</span>
+                            </div>
+                        </div>
+                    </div>
+                </td> 
+                -->
+            </tr>
+        </tbody>
+    </table>
+</div>

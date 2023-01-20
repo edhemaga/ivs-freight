@@ -138,6 +138,10 @@
                         padding-left: 6px;
                         padding-right: 6px;
 
+                        &.parking-field {
+                            padding-left: 0px;
+                        }
+
                         .text {
                             color: #ffffff;
                             font-size: 14px;
@@ -172,6 +176,10 @@
                                     fill: #fff;
                                 }
                             }
+                        }
+
+                        &.pickup-dev-popover-hold {
+                            padding: 0 2px;
                         }
 
                         .truck-trailer-number {
@@ -291,11 +299,62 @@
                             }
                         }
                         .no-delpickup {
+                            padding-left: 4px;
+
                             font-size: 11px;
                             color: #919191;
                             font-weight: 500;
                             text-transform: uppercase;
                             user-select: none;
+                        }
+
+                        .load-items-hold {
+                            display: flex;
+                            width: 100%;
+
+                            .pick-load-box {
+                                flex: 1;
+                                display: flex;
+                                align-items: center;
+
+                                .pick-load-info {
+                                    margin-left: 6px;
+                                    line-height: 1;
+                                    .pick-load-info-address {
+                                        font-size: 11px;
+                                        font-weight: 700;
+                                        color: #2f2f2f;
+
+                                        &::selection{
+                                            background-color: #2f2f2f33;
+                                            color: #2f2f2f;
+                                        }
+                                    }
+                                    .pick-load-info-time {
+                                        font-size: 11px;
+                                        color: #919191;
+
+                                        &::selection{
+                                            background-color: #91919133;
+                                            color: #919191;
+                                        }
+                                    }
+                                }
+
+                                svg-icon {
+                                    user-select: none;
+                                }
+
+                                &.delivery-box {
+                                    svg-icon {
+                                        svg {
+                                            rect {
+                                                fill: #ef5350;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
                         }
 
                         .driver-copy {
@@ -363,6 +422,54 @@
                                 }
                             }
                         }
+
+                        .remove-item {
+                            position: absolute;
+                            height: 26px;
+                            min-width: 26px;
+                            top: 50%;
+                            right: 0px;
+                            max-width: 85%;
+                            transform: translateY(-50%);
+                            display: none;
+                            justify-content: flex-end;
+                            align-items: center;
+                            transition: all 0.3s;
+                            z-index: 999;
+
+                            svg-icon {
+                                left: auto;
+                                right: 4px;
+                                svg {
+                                    width: 18px;
+                                    height: 18px;
+                                }
+                            }
+                            &:hover {
+                                cursor: pointer;
+                                width: 4000px;
+                                background-color: #ef5350;
+                                border-radius: 2px;
+                                transition: all 0.3s;
+
+                                &::after {
+                                    content: 'REMOVE';
+                                    position: absolute;
+                                    font-size: 9px;
+                                    font-weight: 700;
+                                    left: 6px;
+                                    color: #fff;
+                                }
+
+                                svg-icon {
+                                    svg {
+                                        path {
+                                            fill: #ffffff !important;
+                                        }
+                                    }
+                                }
+                            }
+                        }
                     }
 
                     .circles-holder {
@@ -372,6 +479,15 @@
                         align-items: center;
                         border-radius: 2px;
 
+                        .info-item {
+                            flex: 1;
+                            padding-left: 16px;
+                            width: 100%;
+                        }
+                    }
+
+                    .circles-holder,
+                    .driver-remove-item {
                         svg-icon {
                             position: absolute;
                             top: 50%;
@@ -379,12 +495,6 @@
                             left: 6px;
                             z-index: 300;
                             display: flex;
-                        }
-
-                        .info-item {
-                            flex: 1;
-                            padding-left: 16px;
-                            width: 100%;
                         }
                     }
 
@@ -504,6 +614,42 @@
 
                     box-shadow: 0 0 12px inset #707070;
                     z-index: 10;
+                }
+
+
+                &.parking-field-new {
+                    .add_new {
+                        justify-content: flex-start;
+
+                        svg-icon {
+                            margin-right: 6px;
+                        }
+                    }
+
+                    &.unassigned{
+                        background-color: #fff;
+
+                        svg-icon{
+                            path{
+                                fill: #CCCCCC !important;
+                            }
+                        }
+
+                        .text{
+                            font-size: 11px;
+                            color: #919191;
+                        }
+
+                        &:hover{
+                            background-color: #42A4F4;
+
+                            svg-icon{
+                                path{
+                                    fill: #fff;
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -733,6 +879,20 @@
                                 background-color: rgba(255, 255, 255, 0.7);
                                 z-index: 999;
                             }
+                        }
+                    }
+
+                    .info-item {
+                        &:hover {
+                            .remove-item {
+                                display: flex;
+                            }
+                        }
+                    }
+
+                    .padding-inside {
+                        .driver-buttons {
+                            display: none !important;
                         }
                     }
                 }

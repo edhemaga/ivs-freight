@@ -1,48 +1,81 @@
-<div class="user-panel" *ngIf="isUserPanelOpen && isNavigationHovered">
-    <div
-        class="user-content"
-        *ngFor="let item of userNavigationData; trackBy: identity"
-        (click)="onAction(item)"
-    >
-        <div class="user-content-hover"></div>
-        <svg-icon
+<div
+    [ngClass]="{ 'user-panel': isNavigationHovered }"
+    class="wrapper"
+    *ngIf="isUserPanelOpen"
+>
+    <div *ngIf="isNavigationHovered" class="wrapper-elements" [@dropDownMenu]>
+        <div
+            class="items"
+            *ngFor="let item of userNavigationData; trackBy: identity"
+            (click)="onAction(item)"
             [ngClass]="{
-                'user-content-logout': item.name === 'Logout',
-                'user-content-status': item.name === 'User status'
+                'user-content-exists':
+                    item.name !== 'Switch Company' && !companiesExists,
+                'hide-company':
+                    item.name === 'Switch Company' && !companiesExists,
+                'user-content': companiesExists
             }"
-            class="user-content-svg"
-            src="{{
-                item.name === 'User status'
-                    ? currentUserStatus === 'online'
-                        ? item.image
-                        : 'assets/svg/common/ic_verify-check.svg'
-                    : item.image
-            }}"
-        ></svg-icon>
-        <p
-            *ngIf="item.name !== 'User status'"
-            class="user-content-text"
-            [ngClass]="{ 'user-content-logout': item.name === 'Logout' }"
         >
-            {{ item.name }}
-        </p>
-        <p
-            *ngIf="
-                item.name === 'User status' && currentUserStatus === 'online'
+            <div class="items-holder">
+                <div class="user-content-hover"></div>
+                <svg-icon
+                    [ngClass]="{
+                        'user-content-logout': item.name === 'Logout',
+                        'user-content-status': item.name === 'User status'
+                    }"
+                    class="user-content-svg"
+                    src="{{
+                        item.name === 'User status'
+                            ? currentUserStatus === 'online'
+                                ? item.image
+                                : 'assets/svg/common/ic_verify-check.svg'
+                            : item.image
+                    }}"
+                ></svg-icon>
+                <p
+                    *ngIf="item.name !== 'User status'"
+                    class="user-content-text"
+                    [ngClass]="{
+                        'user-content-logout': item.name === 'Logout'
+                    }"
+                >
+                    {{ item.name }}
+                </p>
+                <p
+                    *ngIf="
+                        item.name === 'User status' &&
+                        currentUserStatus === 'online'
+                    "
+                    class="user-content-text user-content-text-status"
+                >
+                    Set <b>Busy</b> Status
+                </p>
+                <p
+                    *ngIf="
+                        item.name === 'User status' &&
+                        currentUserStatus === 'busy'
+                    "
+                    class="user-content-text user-content-text-status"
+                >
+                    Set <b>Active</b> Status
+                </p>
+            </div>
+        </div>
+        <div
+            [@showHideDetails]="
+                true && !true && !true && true && isActiveMagicLine
+                    ? 'true'
+                    : 'true'
             "
-            class="user-content-text user-content-text-status"
-        >
-            Set <b>Busy</b> Status
-        </p>
-        <p
-            *ngIf="item.name === 'User status' && currentUserStatus === 'busy'"
-            class="user-content-text user-content-text-status"
-        >
-            Set <b>Active</b> Status
-        </p>
+            class="new-magic-line"
+        ></div>
     </div>
 
-    <div class="panel-user" (click)="onUserPanelClose()">
+    <div
+        *ngIf="isUserPanelOpen"
+        class="panel-user"
+        (click)="onUserPanelClose()"
+    >
         <img
             class="panel-image"
             [src]="
@@ -56,7 +89,7 @@
                     .concat(' ', loggedUser.lastName.substring(0, 1))
             "
         />
-        <div class="panel-name">
+        <div class="panel-name" *ngIf="isNavigationHovered">
             <p class="nav-footer-user-company">{{ loggedUser.companyName }}</p>
             <p class="nav-footer-user-name">
                 {{ loggedUser.firstName.concat(' ', loggedUser.lastName) }}
@@ -73,7 +106,12 @@
                     'status-offline': currentUserStatus === 'offline'
                 }"
                 class="status-marker"
-            ></div>
+            >
+                <svg-icon
+                    src="../../../../../assets/svg/applicant/user-active.svg"
+                >
+                </svg-icon>
+            </div>
         </div>
     </div>
 </div>

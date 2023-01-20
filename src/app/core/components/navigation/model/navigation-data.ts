@@ -3,6 +3,7 @@ import {
     Navigation,
     NavigationModal,
     NavigationUserPanel,
+    Settings,
 } from './navigation.model';
 
 export const navigationData: Navigation[] = [
@@ -30,67 +31,63 @@ export const navigationData: Navigation[] = [
         route: [
             {
                 name: 'Load',
-                route: '/load',
+                route: '/list/load',
                 activeRouteFlegId: 3, // for active sub-route to know which sub-route list is active
             },
             {
                 name: 'Customer',
-                route: '/customer',
+                route: '/list/customer',
                 activeRouteFlegId: 3,
             },
             {
                 name: 'Driver',
-                route: '/driver',
+                route: '/list/driver',
                 activeRouteFlegId: 3,
             },
             {
                 name: 'Truck',
-                route: '/truck',
+                route: '/list/truck',
                 activeRouteFlegId: 3,
             },
             {
                 name: 'Trailer',
-                route: '/trailer',
+                route: '/list/trailer',
                 activeRouteFlegId: 3,
             },
             {
                 name: 'Repair',
-                route: '/repair',
+                route: '/list/repair',
                 activeRouteFlegId: 3,
             },
             {
                 name: 'PM',
-                route: '/pm',
-                activeRouteFlegId: 3,
-            },
-            {
-                name: 'User',
-                route: '/user',
+                route: '/list/pm',
                 activeRouteFlegId: 3,
             },
             {
                 name: 'Fuel',
-                route: '/fuel',
+                route: '/list/fuel',
                 activeRouteFlegId: 3,
             },
             {
                 name: 'Owner',
-                route: '/owner',
+                route: '/list/owner',
                 activeRouteFlegId: 3,
             },
             {
                 name: 'Rentor',
-                route: '/rentor',
+                // route: '/rentor',
+                route: 'under-constraction',
                 activeRouteFlegId: 3,
             },
             {
                 name: 'Account',
-                route: '/account',
+                route: '/list/account',
                 activeRouteFlegId: 3,
             },
             {
                 name: 'Contact',
-                route: '/contact',
+                route: '/list/contact',
                 activeRouteFlegId: 3,
             },
         ],
@@ -110,17 +107,20 @@ export const navigationData: Navigation[] = [
             },
             {
                 name: 'IFTA',
-                route: '/accounting/ifta',
+                // route: '/accounting/ifta',
+                route: 'under-construction',
                 activeRouteFlegId: 4,
             },
             {
                 name: 'Ledger',
-                route: '/accounting/ledger',
+                // route: '/accounting/ledger',
+                route: 'under-construction',
                 activeRouteFlegId: 4,
             },
             {
                 name: 'Tax',
-                route: '/accounting/tax',
+                // route: '/accounting/tax',
+                route: 'under-construction',
                 activeRouteFlegId: 4,
             },
         ],
@@ -150,17 +150,20 @@ export const navigationData: Navigation[] = [
             },
             {
                 name: 'Scheduled Ins.',
-                route: '/safety/scheduled-insurance',
+                // route: '/safety/scheduled-insurance',
+                route: 'under-construction',
                 activeRouteFlegId: 5,
             },
             {
                 name: 'MVR',
-                route: '/safety/mvr',
+                // route: '/safety/mvr',
+                route: 'under-construction',
                 activeRouteFlegId: 5,
             },
             {
                 name: 'Test',
-                route: '/safety/test',
+                // route: '/safety/test',
+                route: 'under-construction',
                 activeRouteFlegId: 5,
             },
         ],
@@ -190,27 +193,32 @@ export const navigationData: Navigation[] = [
             },
             {
                 name: '1099',
-                route: '/tools/1099',
+                // route: '/tools/1099',
+                route: 'under-construction',
                 activeRouteFlegId: 6,
             },
             {
                 name: '2290',
-                route: '/tools/2290',
+                // route: '/tools/2290',
+                route: 'under-construction',
                 activeRouteFlegId: 6,
             },
             {
                 name: 'Factoring',
-                route: '/tools/factoring',
+                // route: '/tools/factoring',
+                route: 'under-construction',
                 activeRouteFlegId: 6,
             },
             {
                 name: 'Fax',
-                route: '/tools/fax',
+                // route: '/tools/fax',
+                route: 'under-construction',
                 activeRouteFlegId: 6,
             },
             {
                 name: 'SMS',
-                route: '/tools/sms',
+                // route: '/tools/sms',
+                route: 'under-construction',
                 activeRouteFlegId: 6,
             },
         ],
@@ -226,43 +234,45 @@ export const navigationData: Navigation[] = [
         id: 8,
         name: 'Report',
         image: 'ic_report.svg',
-        route: '/report',
+        route: 'under-construction',
         isRouteActive: false,
     },
     {
         id: 9,
         name: 'Statistic',
         image: 'ic_statistic.svg',
-        route: '/statistic' /* /statistic/load -> Bilo je pre. Pravi problem load tabeli, nakon reloada, pokusava da vodi ka ovoj ruti, posto ne postoji prebaci se na dashboard */,
+        route: 'under-construction' /* /statistic/load -> Bilo je pre. Pravi problem load tabeli, nakon reloada, pokusava da vodi ka ovoj ruti, posto ne postoji prebaci se na dashboard */,
         isRouteActive: false,
     },
     {
         id: 10,
         name: 'Chat',
         image: 'ic_chat.svg',
-        route: '/communicator',
+        route: 'under-construction',
         isRouteActive: false,
+        messages: 5,
     },
     {
         id: 11,
         name: 'Telematic',
         image: 'ic_gps.svg',
-        route: '/gpstracking',
+        route: 'under-construction',
         isRouteActive: false,
     },
     {
         id: 12,
         name: 'Places',
         image: 'ic_places-new.svg',
-        route: '/places',
+        route: 'under-construction',
         isRouteActive: false,
     },
     {
         id: 13,
         name: 'File Manager',
         image: 'ic_file_manager-new.svg',
-        route: '/filemanager',
+        route: 'under-construction',
         isRouteActive: false,
+        files: 83,
     },
 ];
 
@@ -465,7 +475,7 @@ export const userNavigationData: NavigationUserPanel[] = [
     {
         id: 31,
         name: 'Logout',
-        image: 'ic_logout.svg',
+        image: 'assets/svg/common/ic_exit.svg',
         action: 'logout',
     },
 ];
@@ -474,16 +484,78 @@ export const footerData: FooterData[] = [
     // ROUTE WHAT'S NEW ?
     {
         id: 32,
-        image: 'assets/svg/common/ic_info.svg',
-        text: "What's New",
-        route: '/whatsnew',
+        image: 'assets/svg/common/ic_bell.svg',
+        text: 'Notifications',
         isRouteActive: false,
+        route: 'under-construction',
+        notification: 50,
     },
     {
         id: 33,
+        image: '',
+        text: '',
+        isRouteActive: false,
+        route: '',
+    },
+];
+export const settings: Settings[] = [
+    {
+        id: 34,
         image: 'assets/svg/common/ic_settings.svg',
         text: 'Settings',
-        route: '/settings',
+        arrow: 'assets/svg/common/ic_arrow-down.svg',
         isRouteActive: false,
+        isSubrouteActive: false,
+        route: [
+            {
+                name: 'Company',
+                image: 'assets/svg/common/ic_company.svg',
+                route: '/company',
+                activeRouteFlegId: 34,
+            },
+            {
+                name: 'Location',
+                image: 'assets/svg/common/ic_location.svg',
+                route: '/location',
+                activeRouteFlegId: 34,
+            },
+            {
+                name: 'Document',
+                image: 'assets/svg/common/ic_document.svg',
+                route: '/document',
+                activeRouteFlegId: 34,
+            },
+            {
+                name: 'User',
+                image: 'assets/svg/common/ic_user.svg',
+                route: '/user',
+                activeRouteFlegId: 34,
+            },
+            {
+                name: 'Custom Agreement',
+                image: 'assets/svg/applicant/case.svg',
+                route: '/custom-agreement',
+
+                activeRouteFlegId: 34,
+            },
+            {
+                name: 'Training Material',
+                image: 'assets/svg/applicant/case.svg',
+                route: '/training-material',
+                activeRouteFlegId: 34,
+            },
+            {
+                name: 'Billing',
+                image: 'assets/svg/common/ic_billing.svg',
+                route: '/billing',
+                activeRouteFlegId: 34,
+            },
+            {
+                name: 'Integration',
+                image: 'assets/svg/common/ic_integration.svg',
+                route: '/integration',
+                activeRouteFlegId: 34,
+            },
+        ],
     },
 ];

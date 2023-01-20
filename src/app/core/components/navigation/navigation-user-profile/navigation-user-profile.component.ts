@@ -15,23 +15,30 @@ import { AuthStoreService } from '../../authentication/state/auth.service';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { ProfileUpdateModalComponent } from '../../modals/profile-update-modal/profile-update-modal.component';
 import { TaUserService } from '../../../services/user/user.service';
+import {
+    DropDownAnimation,
+    navigation_route_animation,
+} from '../navigation.animation';
 
 @Component({
     selector: 'app-navigation-user-profile',
     templateUrl: './navigation-user-profile.component.html',
     styleUrls: ['./navigation-user-profile.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
+    animations: [
+        navigation_route_animation('showHideDetails'),
+        DropDownAnimation,
+    ],
 })
 export class NavigationUserProfileComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
     @Input() isNavigationHovered: boolean = false;
     @Input() isUserPanelOpen: boolean = false;
-
+    @Input() companiesExists: boolean;
     public userNavigationData: NavigationUserPanel[] = userNavigationData;
     public currentUserStatus: string = 'online';
 
     public loggedUser: any = null;
-
     constructor(
         public router: Router,
         private authService: AuthStoreService,
@@ -58,7 +65,6 @@ export class NavigationUserProfileComponent implements OnInit, OnDestroy {
                 ? this.imageBase64Service.sanitizer(this.loggedUser.avatar)
                 : null,
         };
-
         this.userService.updateUserProfile$
             .pipe(debounceTime(1000), takeUntil(this.destroy$))
             .subscribe((val: boolean) => {
@@ -76,7 +82,6 @@ export class NavigationUserProfileComponent implements OnInit, OnDestroy {
                 }
             });
     }
-
     public onUserPanelClose() {
         this.navigationService.onDropdownActivation({
             name: 'User Panel',

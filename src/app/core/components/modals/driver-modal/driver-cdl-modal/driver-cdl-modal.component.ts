@@ -124,12 +124,14 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
                     this.modalService.setModalSpinner({
                         action: null,
                         status: true,
+                        close: false,
                     });
                 } else {
                     this.addCdl();
                     this.modalService.setModalSpinner({
                         action: null,
                         status: true,
+                        close: false,
                     });
                 }
                 break;
@@ -389,7 +391,22 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
         this.cdlService
             .updateCdl(newData)
             .pipe(takeUntil(this.destroy$))
-            .subscribe();
+            .subscribe({
+                next: () => {
+                    this.modalService.setModalSpinner({
+                        action: null,
+                        status: true,
+                        close: true,
+                    });
+                },
+                error: () => {
+                    this.modalService.setModalSpinner({
+                        action: null,
+                        status: false,
+                        close: false,
+                    });
+                },
+            });
     }
 
     public addCdl() {
@@ -428,12 +445,42 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
                     id: this.editData.renewData.id,
                 })
                 .pipe(takeUntil(this.destroy$))
-                .subscribe();
+                .subscribe({
+                    next: () => {
+                        this.modalService.setModalSpinner({
+                            action: null,
+                            status: true,
+                            close: true,
+                        });
+                    },
+                    error: () => {
+                        this.modalService.setModalSpinner({
+                            action: null,
+                            status: false,
+                            close: false,
+                        });
+                    },
+                });
         } else {
             this.cdlService
                 .addCdl(newData)
                 .pipe(takeUntil(this.destroy$))
-                .subscribe();
+                .subscribe({
+                    next: () => {
+                        this.modalService.setModalSpinner({
+                            action: null,
+                            status: true,
+                            close: true,
+                        });
+                    },
+                    error: () => {
+                        this.modalService.setModalSpinner({
+                            action: null,
+                            status: false,
+                            close: false,
+                        });
+                    },
+                });
         }
     }
 

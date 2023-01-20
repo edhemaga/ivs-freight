@@ -46,7 +46,7 @@ export function getBrokerColumnDefinition() {
             export: true,
             resizable: true,
             link: {
-                routerLinkStart: '/customer/',
+                routerLinkStart: '/list/customer/',
                 routerLinkEnd: '/broker-details',
             },
         },
@@ -629,7 +629,7 @@ export function getShipperColumnDefinition() {
             export: true,
             resizable: true,
             link: {
-                routerLinkStart: '/customer/',
+                routerLinkStart: '/list/customer/',
                 routerLinkEnd: '/shipper-details',
             },
         },

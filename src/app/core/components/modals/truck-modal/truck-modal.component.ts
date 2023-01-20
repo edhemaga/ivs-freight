@@ -283,13 +283,14 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                         this.modalService.setModalSpinner({
                             action: null,
                             status: true,
+                            close: false,
                         });
                     } else {
                         this.addTruck();
                         this.modalService.setModalSpinner({
                             action: null,
                             status: true,
-                            setFasterTimeout: !!this.editData?.canOpenModal,
+                            close: false,
                         });
                     }
                 }
@@ -300,6 +301,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                     this.modalService.setModalSpinner({
                         action: 'delete',
                         status: true,
+                        close: false,
                     });
                 }
             }
@@ -860,9 +862,21 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                                 break;
                             }
                         }
+                    } else {
+                        this.modalService.setModalSpinner({
+                            action: null,
+                            status: true,
+                            close: true,
+                        });
                     }
                 },
-                error: () => {},
+                error: () => {
+                    this.modalService.setModalSpinner({
+                        action: null,
+                        status: false,
+                        close: false,
+                    });
+                },
             });
     }
 
@@ -964,14 +978,44 @@ export class TruckModalComponent implements OnInit, OnDestroy {
         this.truckModalService
             .updateTruck(newData)
             .pipe(takeUntil(this.destroy$))
-            .subscribe();
+            .subscribe({
+                next: () => {
+                    this.modalService.setModalSpinner({
+                        action: null,
+                        status: true,
+                        close: true,
+                    });
+                },
+                error: () => {
+                    this.modalService.setModalSpinner({
+                        action: null,
+                        status: false,
+                        close: false,
+                    });
+                },
+            });
     }
 
     public deleteTruckById(id: number) {
         this.truckModalService
             .deleteTruckById(id, this.editData.tabSelected)
             .pipe(takeUntil(this.destroy$))
-            .subscribe();
+            .subscribe({
+                next: () => {
+                    this.modalService.setModalSpinner({
+                        action: 'delete',
+                        status: true,
+                        close: true,
+                    });
+                },
+                error: () => {
+                    this.modalService.setModalSpinner({
+                        action: 'delete',
+                        status: false,
+                        close: false,
+                    });
+                },
+            });
     }
 
     public onFilesEvent(event: any) {

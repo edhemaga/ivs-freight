@@ -35,10 +35,7 @@
             ></app-ta-tab-switch>
 
             <app-ta-input-dropdown
-                (selectedItem)="onSelectDropDown($event, 'repair-unit')"
-                [activeItem]="selectedUnit"
-                [canAddNew]="true"
-                [canOpenModal]="true"
+                formControlName="unit"
                 [inputConfig]="{
                     name: 'Input Dropdown vehicle-unit',
                     type: 'text',
@@ -54,7 +51,10 @@
                         !editData?.storageData?.unit
                 }"
                 [options]="labelsUnit"
-                formControlName="unit"
+                [activeItem]="selectedUnit"
+                [canAddNew]="true"
+                [canOpenModal]="true"
+                (selectedItem)="onSelectDropDown($event, 'repair-unit')"
             ></app-ta-input-dropdown>
             <app-ta-input
                 [inputConfig]="{
@@ -62,7 +62,7 @@
                     type: 'text',
                     label: 'Odometer',
                     isRequired: selectedPM[selectedPMIndex]?.id,
-                    isDisabled: selectedHeaderTab !== 2 || !selectedPM[0]?.id,
+                    isDisabled: selectedHeaderTab !== 2,
                     thousandSeparator: true,
                     minLength: 1,
                     maxLength: 9
@@ -235,7 +235,7 @@
                                 class="common-fake-table-card"
                             >
                                 <p>
-                                    {{ item.get('id').value }}
+                                    {{ item.get('orderingId').value }}
                                 </p>
                                 <div class="desc-pm-container">
                                     <app-ta-input
@@ -331,7 +331,7 @@
                                         id: 'Price' + ind,
                                         name: 'Price',
                                         type: 'text',
-                                        thousandSeparator: true,
+                                        priceSeparator: true,
                                         blueInputColor:
                                             selectedPM[ind]?.logoName &&
                                             !selectedPM[
@@ -394,7 +394,7 @@
                 <div *ngIf="selectedHeaderTab === 2" class="row item-total-row">
                     <p class="item-total">
                         <span class="item-total-text">TOTAL</span>
-                        {{ subtotal | sumArrays | currency }}
+                        {{ subtotal | priceCalculationArray }}
                     </p>
                 </div>
             </app-ta-custom-card>
@@ -403,13 +403,13 @@
         <app-ta-custom-card
             [cardName]="'Service'"
             [disableAnimation]="disableCardAnimation"
-            [hasCounter]="pickedServices() ? pickedServices() : 0"
+            [hasCounter]="services | activeItems"
             [isCardOpen]="true"
         >
             <div class="repair-shop-services">
                 <div
-                    (click)="repair.active = !repair.active"
                     *ngFor="let repair of services; trackBy: identity"
+                    (click)="activeRepairService(repair)"
                     [ngClass]="{ active: repair.active }"
                     class="repair-shop-service"
                 >
