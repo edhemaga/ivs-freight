@@ -28,8 +28,10 @@
         border-radius: 3px;
         z-index: -1;
     }
+    .middle-bottom-holder {
+    }
     .new-magic-line {
-        width: 36px !important;
+        width: 36px;
     }
     .dark-nav {
         background: $nav-dark !important;
@@ -37,7 +39,6 @@
         transition: $nav-transition;
         .new-magic-line {
             background: $nav-hover-color !important;
-            width: 238px !important;
         }
     }
     .animation {
@@ -117,7 +118,21 @@
             transition: $magic-line-transition;
             z-index: 0;
         }
-
+        .animate-magic-line {
+            max-width: 238px;
+            animation: grow0 0.4s forwards;
+        }
+        @keyframes grow0 {
+            from {
+                width: 36px;
+            }
+            to {
+                width: 238px;
+            }
+        }
+        .magic-line-width {
+            width: 36px !important;
+        }
         .new-magic-line-selected {
             -webkit-user-select: none;
             -moz-user-select: none;

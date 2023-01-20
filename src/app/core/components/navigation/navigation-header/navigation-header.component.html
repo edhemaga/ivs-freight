@@ -36,14 +36,16 @@
             <div
                 class="nav-header-bottom-rightSide-search"
                 (click)="onAction('Search')"
-                ngbTooltip
-                mainTooltip="Find Anything"
-                tooltipBackground="#6c6c6c"
-                position="top"
             >
                 <svg-icon src="assets/svg/common/ic_search.svg"></svg-icon>
-            </div>
-            <!-- <div
+
+                <div class="tooltip-right">
+                    <app-tooltip-slide
+                        [show]="true"
+                        [name]="'Search anything'"
+                    ></app-tooltip-slide>
+                </div>
+                <!-- <div
                 class="nav-header-bottom-rightSide-notes"
                 (click)="onAction('Notes')"
                 ngbTooltip
@@ -53,7 +55,7 @@
             >
                 <svg-icon src="assets/svg/common/ic_note.svg"></svg-icon>
             </div> -->
-            <!-- <div
+                <!-- <div
                 class="nav-header-bottom-rightSide-bell"
                 (click)="onAction('Bell')"
                 ngbTooltip
@@ -63,6 +65,7 @@
             >
                 <svg-icon src="assets/svg/common/ic_bell.svg"></svg-icon>
             </div> -->
+            </div>
         </div>
     </div>
 </div>

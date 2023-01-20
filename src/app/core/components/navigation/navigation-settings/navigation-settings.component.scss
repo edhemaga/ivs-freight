@@ -15,6 +15,15 @@
 .holder {
     padding: 4px 0;
     position: relative;
+    .tooltip-right {
+        left: -8px;
+        position: relative;
+        top: 0px;
+        z-index: 9;
+    }
+    .hide-tooltip {
+        display: none;
+    }
     .nav-item-active-box-settings {
         width: 36px;
         height: 28px;
@@ -75,6 +84,13 @@
                 width: 20px;
                 height: 20px;
             }
+            .route-not-active-svg {
+                svg {
+                    path {
+                        fill: #787878;
+                    }
+                }
+            }
             .mark-route {
                 opacity: 0;
                 position: absolute;
@@ -92,6 +108,9 @@
             font-size: 14px;
             line-height: 17px;
             font-weight: 400;
+        }
+        .route-not-active {
+            color: #787878;
         }
         .nav-item-arrow_top {
             opacity: 0;
@@ -182,7 +201,6 @@
             p {
                 span {
                     color: $nav-white;
-                    font-weight: $nav-font-bold;
                 }
                 .nav-item-arrow {
                     svg {
@@ -217,6 +235,18 @@
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
+}
+.animate-magic-line {
+    max-width: 238px;
+    animation: grow0 0.4s forwards;
+}
+@keyframes grow0 {
+    from {
+        width: 36px;
+    }
+    to {
+        width: 238px;
+    }
 }
 .wrapper {
     position: relative;

@@ -1,9 +1,11 @@
 import {
+    ChangeDetectorRef,
     Component,
     EventEmitter,
     Input,
     OnChanges,
     Output,
+    SimpleChanges,
 } from '@angular/core';
 @Component({
     selector: 'app-navigation-subroute-card',
@@ -11,11 +13,12 @@ import {
     styleUrls: ['./navigation-subroute-card.component.scss'],
 })
 export class NavigationSubrouteCardComponent implements OnChanges {
-    @Input() isNavigationCardActive: boolean = false;
+    @Input() isNavigationCardActive: boolean;
     @Input() contentHeight: number = 0;
     @Output() subrouteContainerActive = new EventEmitter<Boolean>();
-    ngOnChanges() {
+    constructor(private cdRef: ChangeDetectorRef) {}
+    ngOnChanges(changes: SimpleChanges) {
         this.subrouteContainerActive.emit(this.isNavigationCardActive);
-        console.log(this.isNavigationCardActive);
+        this.cdRef.detectChanges();
     }
 }
