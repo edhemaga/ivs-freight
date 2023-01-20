@@ -9,7 +9,6 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { ApiCategory } from './apiCategory';
 
 
 export interface CreateCompanyAccountCommand { 
@@ -17,8 +16,6 @@ export interface CreateCompanyAccountCommand {
     url?: string | null;
     username?: string | null;
     password?: string | null;
-    api?: number;
-    apiCategory?: ApiCategory;
     note?: string | null;
     companyAccountLabelId?: number | null;
 }

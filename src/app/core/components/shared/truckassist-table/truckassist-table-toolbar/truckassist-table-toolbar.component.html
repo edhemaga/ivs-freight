@@ -67,7 +67,10 @@
     ></app-toolbar-filters>
 
     <!-- TOOLBAR ACTIONS -->
-    <div class="table-actions">
+    <div
+        class="table-actions"
+        [class.m-0]="options.toolbarActions.hideOpenModalButton"
+    >
         <div class="actions-container">
             <!-- Activation -->
             <div
@@ -161,7 +164,13 @@
                 *ngIf="options.toolbarActions.showDispatchSettings"
                 (click)="onToolBarAction('toggle-locked')"
             >
-                <svg-icon [src]="dispathcboardTableLocked ? 'assets/svg/common/ic_lock.svg' : 'assets/svg/common/ic_unlock.svg'"></svg-icon>
+                <svg-icon
+                    [src]="
+                        dispathcboardTableLocked
+                            ? 'assets/svg/common/ic_lock.svg'
+                            : 'assets/svg/common/ic_unlock.svg'
+                    "
+                ></svg-icon>
             </div>
             <!-- BORDER -->
             <div

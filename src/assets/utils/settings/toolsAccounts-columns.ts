@@ -48,7 +48,7 @@ export function getToolsAccountsColumnDefinition() {
             export: true,
             resizable: true,
             link: {
-                routerLinkStart: '/account/',
+                routerLinkStart: '/list/account/',
                 routerLinkEnd: '/details',
             },
         },

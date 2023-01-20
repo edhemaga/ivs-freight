@@ -13,6 +13,7 @@ import { ModalService } from './modal.service';
 import { UploadFile } from '../ta-upload-files/ta-upload-file/ta-upload-file.component';
 import { DropZoneConfig } from '../ta-upload-files/ta-upload-dropzone/ta-upload-dropzone.component';
 import { TaUploadFileService } from '../ta-upload-files/ta-upload-file.service';
+import { AuthGuard } from '../../../guards/authentication.guard';
 import {
     animate,
     state,
@@ -46,6 +47,7 @@ import {
     host: {
         '(document:keyup)': 'onKeyUp($event)',
     },
+    providers: [AuthGuard],
 })
 export class TaModalComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
@@ -372,11 +374,7 @@ export class TaModalComponent implements OnInit, OnDestroy {
         this.modalService.modalSpinner$
             .pipe(takeUntil(this.destroy$))
             .subscribe(
-                (data: {
-                    action: string;
-                    status: boolean;
-                    setFasterTimeout: boolean;
-                }) => {
+                (data: { action: string; status: boolean; close: boolean }) => {
                     switch (data.action) {
                         case 'delete': {
                             this.deleteSpinnerVisibility = data.status;
@@ -411,19 +409,13 @@ export class TaModalComponent implements OnInit, OnDestroy {
                     if (
                         !['save and add new', 'load-template'].includes(
                             data.action
-                        )
+                        ) &&
+                        data.close
                     ) {
-                        setTimeout(
-                            () => {
-                                $('.pac-container').remove();
-                                this.ngbActiveModal.close();
-                                this.uploadFileService.visibilityDropZone(
-                                    false
-                                );
-                                this.uploadFileService.uploadFiles(null);
-                            },
-                            data?.setFasterTimeout ? 1000 : 2000
-                        );
+                        $('.pac-container').remove();
+                        this.ngbActiveModal.close();
+                        this.uploadFileService.visibilityDropZone(false);
+                        this.uploadFileService.uploadFiles(null);
                     }
                 }
             );

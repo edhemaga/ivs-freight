@@ -2,7 +2,8 @@
 //-------------------- Input Error --------------------
 .input-error {
     position: absolute;
-    top: 26px;
+    top: 100%;
+    // transform: translateY(-50%);
     right: 5px;
     color: $input-error-color;
     font-size: 11px;
@@ -17,14 +18,5 @@
     &::selection {
         background-color: $input-error-background-selection;
         color: $input-error-color;
-    }
-
-    //------------------------- Custom class -------------------------
-    &.input-32 {
-        top: 32px;
-    }
-
-    &.input-30 {
-        top: 30px;
     }
 }

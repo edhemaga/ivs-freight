@@ -120,6 +120,7 @@ export class PayrollDeducationModalComponent implements OnInit {
                 this.modalService.setModalSpinner({
                     action: 'save and add new',
                     status: true,
+                    close: false,
                 });
                 this.addNewAfterSave = true;
                 break;
@@ -134,12 +135,14 @@ export class PayrollDeducationModalComponent implements OnInit {
                     this.modalService.setModalSpinner({
                         action: null,
                         status: true,
+                        close: false,
                     });
                 } else {
                     this.addDeducation();
                     this.modalService.setModalSpinner({
                         action: null,
                         status: true,
+                        close: false,
                     });
                 }
                 break;

@@ -16,7 +16,7 @@
     font-size: $nav-font-size;
     font-weight: $nav-font-medium;
     transition: $nav-transition;
-    overflow: hidden;
+    // overflow: hidden;
     .nav-holder {
         height: 100%;
         display: flex;
@@ -81,7 +81,7 @@
     //------- end
 
     .navigation-routes-container {
-        position: relative;
+        position: absolute;
 
         .navigation-routes {
             // padding-left: 9px;
@@ -126,11 +126,11 @@
         }
 
         .navigation-routes:nth-child(1):hover ~ .new-magic-line {
-            transform: translateY(1px) !important;
+            transform: translateY(2px) !important;
         }
 
         .new-magic-line-selected:nth-child(1) ~ .new-magic-line {
-            transform: translateY(1px);
+            transform: translateY(2px);
         }
 
         .navigation-routes:nth-child(2):hover ~ .new-magic-line {

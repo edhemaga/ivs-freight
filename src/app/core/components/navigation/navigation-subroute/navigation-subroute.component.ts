@@ -29,11 +29,14 @@ import {
 export class NavigationSubrouteComponent {
     @Input() subroute: Navigation;
     @Input() isNavigationHovered: boolean = false;
+    @Input() index: number;
     @Output() onSubrouteActiveEvent = new EventEmitter<NavigationSubRoutes>();
-
+    @Output() subRouteIndex = new EventEmitter<Number>();
     public isMagicLineActive: boolean = false;
     constructor(private router: Router) {}
-
+    subrouteIndex(index) {
+        this.subRouteIndex.emit(index);
+    }
     public onSubrouteAction(subroute: NavigationSubRoutes) {
         if (this.subroute.id === subroute.activeRouteFlegId) {
             localStorage.setItem(

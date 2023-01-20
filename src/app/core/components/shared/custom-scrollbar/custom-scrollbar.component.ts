@@ -140,7 +140,7 @@ export class CustomScrollbarComponent
             // Regular Scroll
             else {
                 const content_height =
-                    this.elRef.nativeElement.children[0].scrollHeight;
+                    this.elRef.nativeElement.children[0].scrollHeight -1;
                 const visible_height = window.innerHeight;
 
                 if (content_height <= visible_height) {

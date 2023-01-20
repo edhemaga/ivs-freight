@@ -989,7 +989,7 @@
                         <span class="loaded-miles-value"
                             >{{
                                 loadForm.get('loadMiles').value
-                                    | number: '1.2-2'
+                                    | number : '1.2-2'
                             }}
                             mi</span
                         >
@@ -999,7 +999,7 @@
                         <span class="total-miles-value"
                             >{{
                                 loadForm.get('totalMiles').value
-                                    | number: '1.2-2'
+                                    | number : '1.2-2'
                             }}
                             mi</span
                         >
@@ -1010,7 +1010,7 @@
             <app-load-financial
                 [firstHeaderTitle]="'Billing'"
                 [billing]="
-                    loadModalBill | financialCalculation: 'billing' | currency
+                    loadModalBill | financialCalculation : 'billing' | currency
                 "
                 [disableBillAction]="
                     !loadForm.get('baseRate').value ||
@@ -1023,7 +1023,7 @@
                 [secondHeaderTitle]="'Payment'"
                 [payment]="
                     loadModalPayment
-                        | financialCalculation: 'payment'
+                        | financialCalculation : 'payment'
                         | currency
                 "
                 [disablePaymentAction]="!loadForm.get('baseRate').value"
@@ -1053,7 +1053,6 @@
                                 inputCursorOnRightSide: true,
                                 hideErrorMessage: true,
                                 hideRequiredCheck: true,
-                                customClass: 'dollar-placeholderIcon',
                                 thousandSeparator: true
                             }"
                         ></app-ta-input>
@@ -1075,7 +1074,6 @@
                                 inputCursorOnRightSide: true,
                                 hideErrorMessage: true,
                                 hideRequiredCheck: true,
-                                customClass: 'dollar-placeholderIcon',
                                 thousandSeparator: true
                             }"
                         ></app-ta-input>
@@ -1098,7 +1096,6 @@
                                 hideErrorMessage: true,
                                 hideRequiredCheck: true,
                                 hideDangerMark: true,
-                                customClass: 'dollar-placeholderIcon',
                                 thousandSeparator: true
                             }"
                         ></app-ta-input>
@@ -1127,8 +1124,6 @@
                                             isRequired: true,
                                             hideErrorMessage: true,
                                             hideRequiredCheck: true,
-                                            customClass:
-                                                'dollar-placeholderIcon',
                                             thousandSeparator: true
                                         }"
                                         (clear)="removeAdditionalBilling(indx)"
@@ -1170,7 +1165,6 @@
                                 hideErrorMessage: true,
                                 hideRequiredCheck: true,
                                 hideDangerMark: true,
-                                customClass: 'dollar-placeholderIcon',
                                 thousandSeparator: true,
                                 removeInput: true
                             }"
