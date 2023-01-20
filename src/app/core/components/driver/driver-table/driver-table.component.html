@@ -1,15 +1,15 @@
 <div class="table-container">
-    <!-- <app-truckassist-table-toolbar
+    <app-truckassist-table-toolbar
         (toolBarAction)="onToolBarAction($event)"
         [options]="tableOptions"
         [tableData]="tableData"
         [selectedTab]="selectedTab"
         [columns]="columns"
         [tableContainerWidth]="tableContainerWidth"
-    ></app-truckassist-table-toolbar> -->
+    ></app-truckassist-table-toolbar>
 
     <div *ngIf="activeViewMode == 'List'">
-        <!-- <app-truckassist-table-head
+        <app-truckassist-table-head
             [options]="tableOptions"
             [viewData]="viewData"
             [columns]="columns"
@@ -26,13 +26,20 @@
             (bodyActions)="onTableBodyActions($event)"
             [tableData]="tableData"
             [tableContainerWidth]="tableContainerWidth"
-        ></app-truckassist-table-body> -->
+        ></app-truckassist-table-body>
 
         <app-table-modal
             [columns]="modalColumns"
             [viewData]="modalViewData"
-            [midSectionWidth]="400"
+            [midSectionWidth]="341"
             [formGroup]="testControl"
+            [modalScrollStyleOptions]="{
+                horizontalScrollBarMarginTop: 4,
+                horizontalScrollBarLeft: 0,
+                horizontalScrollBarWidth: 606,
+                additionalWidth: 265,
+                modalScrollClassActive: true
+            }"
         ></app-table-modal>
     </div>
 

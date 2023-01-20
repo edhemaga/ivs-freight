@@ -1,4 +1,4 @@
-<table>
+<table class="ta-table-modal-container">
     <thead class="modal-table-head">
         <!-- Fixed Columns -->
         <tr>
@@ -26,6 +26,20 @@
                 </div>
             </th>
         </tr>
+
+        <!-- Border -->
+        <div class="border-wrapper">
+            <div
+                class="border-container border-to-right"
+                [ngStyle]="{
+                    'height.px':
+                        30 +
+                        (viewData.length + 1) * 34 +
+                        viewData.length * 4 +
+                        4
+                }"
+            ></div>
+        </div>
 
         <!-- Scrollable Columns -->
         <tr
@@ -55,6 +69,20 @@
             </th>
         </tr>
 
+        <!-- Border -->
+        <div class="border-wrapper">
+            <div
+                class="border-container border-to-left"
+                [ngStyle]="{
+                    'height.px':
+                        30 +
+                        (viewData.length + 1) * 34 +
+                        viewData.length * 4 +
+                        4
+                }"
+            ></div>
+        </div>
+
         <!-- Action Columns -->
         <tr>
             <th *ngFor="let column of tableActionColumns; let i = index">
@@ -83,13 +111,7 @@
             [scrollBarOptions]="{
                 showVerticalScrollBar: false,
                 showHorizontalScrollBar: true,
-                modalStyle: {
-                    horizontalScrollBarMarginTop: 4,
-                    horizontalScrollBarLeft: 0,
-                    horizontalScrollBarWidth: 665,
-                    additionalWidth: 265,
-                    modalScrollClassActive: true
-                }
+                modalStyle: modalScrollStyleOptions
             }"
             (scrollEvent)="onHorizontalScroll($event)"
         >
@@ -117,12 +139,18 @@
                             *ngIf="
                                 column.ngTemplate === 'text' &&
                                 column.columnFocusId !==
-                                    column.title + ' ' + i + ' ' + j
+                                    column.title +
+                                        ' ' +
+                                        i +
+                                        ' ' +
+                                        j +
+                                        ' ' +
+                                        'fixed'
                             "
                             [ngStyle]="{
                                 width: column.width + 'px'
                             }"
-                            (click)="onFocusInput(column, i, j)"
+                            (click)="onFocusInput(column, i, j, 'fixed')"
                         >
                             {{ row[column.field].text }}
                             <div class="td-input-text-extraText">
@@ -134,7 +162,7 @@
                         <div
                             *ngIf="
                                 column.columnFocusId ===
-                                column.title + ' ' + i + ' ' + j
+                                column.title + ' ' + i + ' ' + j + ' ' + 'fixed'
                             "
                             class="ta-input-container"
                             [ngStyle]="{
@@ -172,12 +200,18 @@
                             *ngIf="
                                 column.ngTemplate === 'text' &&
                                 column.columnFocusId !==
-                                    column.title + ' ' + i + ' ' + j
+                                    column.title +
+                                        ' ' +
+                                        i +
+                                        ' ' +
+                                        j +
+                                        ' ' +
+                                        'scrollable'
                             "
                             [ngStyle]="{
                                 width: column.width + 'px'
                             }"
-                            (click)="onFocusInput(column, i, j)"
+                            (click)="onFocusInput(column, i, j, 'scrollable')"
                         >
                             {{ row[column.field].text }}
                             <div class="td-input-text-extraText">
@@ -189,7 +223,13 @@
                         <div
                             *ngIf="
                                 column.columnFocusId ===
-                                column.title + ' ' + i + ' ' + j
+                                column.title +
+                                    ' ' +
+                                    i +
+                                    ' ' +
+                                    j +
+                                    ' ' +
+                                    'scrollable'
                             "
                             class="ta-input-container"
                             [ngStyle]="{
@@ -234,6 +274,13 @@
                     </td>
                 </div>
             </tr>
+
+            <div
+                class="empty-row-modal"
+                [ngStyle]="{
+                    'width.px': modalScrollStyleOptions.horizontalScrollBarWidth
+                }"
+            ></div>
         </app-custom-scrollbar>
     </tbody>
 </table>

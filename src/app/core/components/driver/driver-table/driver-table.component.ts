@@ -1127,9 +1127,6 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
     modalTestInitialization() {
         this.modalColumns = getLoadModalColumnDefinition();
 
-        console.log('modalTestInitialization');
-        console.log(this.modalColumns);
-
         for (let i = 0; i < 3; i++) {
             this.modalViewData.push({
                 tableDescription: {

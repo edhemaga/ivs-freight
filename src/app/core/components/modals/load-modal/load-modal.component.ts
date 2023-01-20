@@ -398,6 +398,9 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
 
     public disableCardAnimation: boolean = false;
 
+    // Modal Table
+    tableModalOpen: string = ''
+
     constructor(
         private formBuilder: FormBuilder,
         private inputService: TaInputService,
@@ -2061,26 +2064,29 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         switch (action) {
             case 'pickup': {
                 this.loadPickupStopItems().push(this.newLoadStopItems());
-                this.modalTableOpen = 1;
                 break;
             }
             case 'delivery': {
                 this.loadDeliveryStopItems().push(this.newLoadStopItems());
-                this.modalTableOpen = 2;
                 break;
             }
             case 'extra-stop': {
                 this.loadExtraStopItems(loadStopIndex).push(
                     this.newLoadStopItems()
                 );
-                this.modalTableOpen = 3;
                 break;
             }
             default: {
-                this.modalTableOpen = 0;
                 break;
             }
         }
+    }
+
+    
+    showTableModal(isOpen: boolean, stopType: string){
+        this.tableModalOpen = isOpen ? stopType : '';
+
+        this.modalInitialization();
     }
 
     public loadPickupStopItems(): FormArray {
@@ -3192,9 +3198,11 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     });
     modalColumns: any[] = [];
     modalViewData: any[] = [];
-    modalTableOpen: number = 0;
     
-    modalTestInitialization() {
+    modalInitialization() {
+        this.modalColumns = [];
+        this.modalViewData = [];
+        
         this.modalColumns = getLoadModalColumnDefinition();
 
         for (let i = 0; i < 3; i++) {
