@@ -44,12 +44,6 @@ import { FormControl, FormGroup } from '@angular/forms';
     providers: [NameInitialsPipe, TaThousandSeparatorPipe],
 })
 export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
-    public testControl: FormGroup = new FormGroup({
-        email: new FormControl(null),
-        password: new FormControl(null),
-        phone: new FormControl(null),
-    });
-
     private destroy$ = new Subject<void>();
 
     tableOptions: any = {};
@@ -339,37 +333,6 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
             });
 
         this.loadingPage = false;
-    }
-
-    modalColumns: any[] = [];
-    modalViewData: any[] = [];
-    modalTestInitialization() {
-        this.modalColumns = getLoadModalColumnDefinition();
-
-        console.log('modalTestInitialization');
-        console.log(this.modalColumns);
-
-        for (let i = 0; i < 3; i++) {
-            this.modalViewData.push({
-                tableDescription: {
-                    text: 'Jaffa Cakes',
-                    extraText: '',
-                },
-                tableQuantity: {
-                    text: 230,
-                    extraText: 'Boxes',
-                },
-                tableBolNo: {
-                    text: 1598550,
-                    extraText: '',
-                },
-                tableWeight: {
-                    text: '2,360',
-                    extraText: 'lbs',
-                },
-                tableAction: 'delete',
-            });
-        }
     }
 
     ngAfterViewInit(): void {
@@ -1151,5 +1114,39 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
             document.querySelector('.table-container')
         );
         this.resizeObserver.disconnect();
+    }
+
+    public testControl: FormGroup = new FormGroup({
+        email: new FormControl(null),
+        password: new FormControl(null),
+        phone: new FormControl(null),
+    });
+    modalColumns: any[] = [];
+    modalViewData: any[] = [];
+    
+    modalTestInitialization() {
+        this.modalColumns = getLoadModalColumnDefinition();
+
+        for (let i = 0; i < 3; i++) {
+            this.modalViewData.push({
+                tableDescription: {
+                    text: 'Jaffa Cakes',
+                    extraText: '',
+                },
+                tableQuantity: {
+                    text: 230,
+                    extraText: 'Boxes',
+                },
+                tableBolNo: {
+                    text: 1598550,
+                    extraText: '',
+                },
+                tableWeight: {
+                    text: '2,360',
+                    extraText: 'lbs',
+                },
+                tableAction: 'delete',
+            });
+        }
     }
 }
