@@ -11,7 +11,8 @@
  */
 import { LoadStopType } from './loadStopType';
 
-export interface LoadStopCommand {
+
+export interface LoadStopCommand { 
     id?: number | null;
     stopType?: LoadStopType;
     stopOrder?: number;

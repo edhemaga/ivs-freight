@@ -646,7 +646,9 @@ model/trafficViolationItemReviewResponse.ts
 model/trailerAccidentResponse.ts
 model/trailerAutocompleteModelResponse.ts
 model/trailerDispatchModalResponse.ts
+model/trailerFilterListResponse.ts
 model/trailerFilterResponse.ts
+model/trailerFilterResponsePagination.ts
 model/trailerLengthResponse.ts
 model/trailerListResponse.ts
 model/trailerMakeResponse.ts

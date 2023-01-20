@@ -30,6 +30,8 @@ export class NavigationSettingsComponent implements OnInit {
     @Input() isSettingsPanelOpen = false;
     @Input() settingsRouteActivated: boolean = false;
     @Input() isActiveFooterRouteClick: boolean = false;
+    @Input() mouseOverMiddleNav: boolean = false;
+    @Input() mouseOverFooter: boolean = false;
     @Output() activatedSettingsRoute = new EventEmitter<any>();
     public footer: FooterData[] = settings;
     constructor(
@@ -68,7 +70,16 @@ export class NavigationSettingsComponent implements OnInit {
         });
     }
     public changeRouteSettings(subroute: Settings): void {
-        console.log(`/settings${subroute.route}`);
-        this.router.navigate([`/settings${subroute.route}`]);
+        console.log(subroute.route);
+        if (
+            subroute.route === '/integration' ||
+            subroute.route === '/billing' ||
+            subroute.route === '/training-material' ||
+            subroute.route === '/custom-agreement'
+        ) {
+            this.router.navigate(['under-construction']);
+        } else {
+            this.router.navigate([`/settings${subroute.route}`]);
+        }
     }
 }

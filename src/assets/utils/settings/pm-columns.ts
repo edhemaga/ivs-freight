@@ -46,7 +46,11 @@ export function getTruckPMColumnDefinition() {
             disabled: true,
             export: true,
             resizable: true,
-            linkField: {
+            linkField: { // OVO PROVERITI DA LI TREBA?
+                routerLinkStart: '/trucks/edit/',
+                routerLinkEnd: '/detail',
+            },
+            link: {
                 routerLinkStart: '/trucks/edit/',
                 routerLinkEnd: '/detail',
             },

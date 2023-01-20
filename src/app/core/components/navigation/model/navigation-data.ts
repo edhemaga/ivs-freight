@@ -31,52 +31,47 @@ export const navigationData: Navigation[] = [
         route: [
             {
                 name: 'Load',
-                route: '/load',
+                route: '/list/load',
                 activeRouteFlegId: 3, // for active sub-route to know which sub-route list is active
             },
             {
                 name: 'Customer',
-                route: '/customer',
+                route: '/list/customer',
                 activeRouteFlegId: 3,
             },
             {
                 name: 'Driver',
-                route: '/driver',
+                route: '/list/driver',
                 activeRouteFlegId: 3,
             },
             {
                 name: 'Truck',
-                route: '/truck',
+                route: '/list/truck',
                 activeRouteFlegId: 3,
             },
             {
                 name: 'Trailer',
-                route: '/trailer',
+                route: '/list/trailer',
                 activeRouteFlegId: 3,
             },
             {
                 name: 'Repair',
-                route: '/repair',
+                route: '/list/repair',
                 activeRouteFlegId: 3,
             },
             {
                 name: 'PM',
-                route: '/pm',
-                activeRouteFlegId: 3,
-            },
-            {
-                name: 'User',
-                route: '/user',
+                route: '/list/pm',
                 activeRouteFlegId: 3,
             },
             {
                 name: 'Fuel',
-                route: '/fuel',
+                route: '/list/fuel',
                 activeRouteFlegId: 3,
             },
             {
                 name: 'Owner',
-                route: '/owner',
+                route: '/list/owner',
                 activeRouteFlegId: 3,
             },
             {
@@ -87,12 +82,12 @@ export const navigationData: Navigation[] = [
             },
             {
                 name: 'Account',
-                route: '/account',
+                route: '/list/account',
                 activeRouteFlegId: 3,
             },
             {
                 name: 'Contact',
-                route: '/contact',
+                route: '/list/contact',
                 activeRouteFlegId: 3,
             },
         ],
