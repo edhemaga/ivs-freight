@@ -58,7 +58,9 @@
             }
 
             //------------------------ Svg-Template-Logo Template ------------------------
-            .dropdown-option:not(:hover):not(.active):not(.dropdown-option-hovered) {
+            .dropdown-option:not(:hover):not(.active):not(
+                    .dropdown-option-hovered
+                ) {
                 .svg-template-logo {
                     height: 18px;
 
@@ -135,8 +137,7 @@
                 }
 
                 &.disabled {
-                    color: #aaaaaa;
-                    font-style: italic;
+                    color: #6c6c6c;
                     pointer-events: none;
                     -webkit-user-select: none;
                     -moz-user-select: none;
@@ -854,6 +855,10 @@
                     &.active {
                         color: #6f9ee0;
                         background-color: rgb(111, 158, 224, 0.2);
+                    }
+
+                    &.hasOneValue {
+                        max-width: 19px !important;
                     }
                 }
             }

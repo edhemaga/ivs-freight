@@ -120,13 +120,13 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     public stopTimeTabsPickup = [
         {
             id: 5,
-            name: 'Open',
+            name: 'WORK HOURS',
             checked: true,
             color: '3074D3',
         },
         {
             id: 6,
-            name: 'APPT',
+            name: 'APPOINTMENT',
             checked: false,
             color: '3074D3',
         },
@@ -136,13 +136,13 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     public stopTimeTabsDelivery = [
         {
             id: 7,
-            name: 'Open',
+            name: 'WORK HOURS',
             checked: true,
             color: '3074D3',
         },
         {
             id: 8,
-            name: 'APPT',
+            name: 'APPOINTMENT',
             checked: false,
             color: '3074D3',
         },
@@ -152,13 +152,13 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         [
             {
                 id: 7900,
-                name: 'Open',
+                name: 'WORK HOURS',
                 checked: true,
                 color: '3074D3',
             },
             {
                 id: 9000,
-                name: 'APPT',
+                name: 'APPOINTMENT',
                 checked: false,
                 color: '3074D3',
             },
@@ -286,7 +286,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         isRequired: true,
         blackInput: true,
         textTransform: 'uppercase',
-        dropdownWidthClass: 'w-col-606',
+        dropdownWidthClass: 'w-col-608',
     };
 
     public loadPickupShipperContactsInputConfig: ITaInput = {
@@ -300,7 +300,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         isDisabled: true,
         blackInput: true,
         textTransform: 'capitalize',
-        dropdownWidthClass: 'w-col-331',
+        dropdownWidthClass: 'w-col-330',
     };
 
     public loadDeliveryShipperInputConfig: ITaInput = {
@@ -314,7 +314,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         isRequired: true,
         blackInput: true,
         textTransform: 'uppercase',
-        dropdownWidthClass: 'w-col-606',
+        dropdownWidthClass: 'w-col-608',
     };
 
     public loadDeliveryShipperContactsInputConfig: ITaInput = {
@@ -328,7 +328,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         isDisabled: true,
         blackInput: true,
         textTransform: 'capitalize',
-        dropdownWidthClass: 'w-col-331',
+        dropdownWidthClass: 'w-col-330',
     };
 
     // Extra Stop Configuration
@@ -826,10 +826,12 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                                 };
                             })
                             .filter((item) => item.contacts?.length);
-                        console.log(
-                            'broker contacts: ',
-                            this.labelsBrokerContacts
-                        );
+
+                        this.labelsBrokerContacts.unshift({
+                            id: 7655,
+                            name: 'ADD NEW',
+                        });
+
                         if (this.labelsBrokerContacts[1]?.contacts[0]) {
                             this.selectedBrokerContact =
                                 this.labelsBrokerContacts[1].contacts[0];
@@ -870,7 +872,12 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                             }
                         } else {
                             this.selectedBrokerContact = null;
-
+                            this.labelsBrokerContacts = [
+                                {
+                                    id: 7655,
+                                    name: 'ADD NEW',
+                                },
+                            ];
                             this.loadForm
                                 .get('brokerContactId')
                                 .patchValue(null);
@@ -1020,6 +1027,11 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                             })
                             .filter((item) => item.contacts?.length);
 
+                        this.labelsShipperContacts.unshift({
+                            id: 7655,
+                            name: 'ADD NEW',
+                        });
+
                         if (this.labelsShipperContacts[1]?.contacts[0]) {
                             this.selectedPickupShipperContact =
                                 this.labelsShipperContacts[1].contacts[0];
@@ -1058,7 +1070,12 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                             };
                         } else {
                             this.selectedPickupShipperContact = null;
-
+                            this.labelsShipperContacts = [
+                                {
+                                    id: 7655,
+                                    name: 'ADD NEW',
+                                },
+                            ];
                             this.loadForm
                                 .get('pickupShipperContactId')
                                 .patchValue(null);
@@ -1174,12 +1191,6 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                         this.selectedDeliveryShipper?.id ===
                         this.selectedPickupShipper?.id;
 
-                    console.log(
-                        'existLoadStop: ',
-                        existLoadStop,
-                        this.selectedDeliveryShipper,
-                        this.selectedPickupShipper
-                    );
                     if (existLoadStop) {
                         setTimeout(() => {
                             this.loadForm
@@ -1236,6 +1247,11 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                             })
                             .filter((item) => item.contacts?.length);
 
+                        this.labelsShipperContacts.unshift({
+                            id: 7655,
+                            name: 'ADD NEW',
+                        });
+
                         if (this.labelsShipperContacts[1]?.contacts[0]) {
                             this.selectedDeliveryShipperContact =
                                 this.labelsShipperContacts[1].contacts[0];
@@ -1274,7 +1290,12 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                             };
                         } else {
                             this.selectedDeliveryShipperContact = null;
-
+                            this.labelsShipperContacts = [
+                                {
+                                    id: 7655,
+                                    name: 'ADD NEW',
+                                },
+                            ];
                             this.loadForm
                                 .get('deliveryShipperContactId')
                                 .patchValue(null);
@@ -1414,141 +1435,105 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                         }, 30);
                     }
 
-                    setTimeout(() => {
-                        // Select Extra Stop Shipper
-                        if (this.selectedExtraStopShipper[index]) {
-                            this.loadExtraStopsShipperInputConfig[index] = {
-                                ...this.loadExtraStopsShipperInputConfig[index],
+                    // Select Extra Stop Shipper
+                    if (this.selectedExtraStopShipper[index]) {
+                        this.loadExtraStopsShipperInputConfig[index] = {
+                            ...this.loadExtraStopsShipperInputConfig[index],
+                            multipleInputValues: {
+                                options: [
+                                    {
+                                        value: this.selectedExtraStopShipper[
+                                            index
+                                        ].businessName,
+                                        logoName: null,
+                                    },
+                                    {
+                                        value: this.selectedExtraStopShipper[
+                                            index
+                                        ].address,
+                                        logoName: null,
+                                    },
+                                    {
+                                        value: this.selectedExtraStopShipper[
+                                            index
+                                        ].loadsCount,
+                                        logoName: null,
+                                        isCounter: true,
+                                    },
+                                ],
+                                customClass: 'load-shipper',
+                            },
+                        };
+
+                        this.labelsShipperContacts = this.originShipperContacts
+                            .map((el) => {
+                                return {
+                                    ...el,
+                                    contacts: el?.contacts?.filter(
+                                        (subEl) =>
+                                            subEl.shipperId ===
+                                            this.selectedExtraStopShipper[index]
+                                                .id
+                                    ),
+                                };
+                            })
+                            .filter((item) => item.contacts?.length);
+
+                        this.labelsShipperContacts.unshift({
+                            id: 7655,
+                            name: 'ADD NEW',
+                        });
+
+                        if (this.labelsShipperContacts[1]?.contacts[0]) {
+                            this.selectedExtraStopShipperContact[index] =
+                                this.labelsShipperContacts[1].contacts[0];
+
+                            this.loadExtraStops()
+                                .at(index)
+                                .get('shipperContactId')
+                                .patchValue(
+                                    this.selectedExtraStopShipperContact[index]
+                                        ?.fullName
+                                );
+
+                            this.loadExtraStopsShipperContactsInputConfig[
+                                index
+                            ] = {
+                                ...this
+                                    .loadExtraStopsShipperContactsInputConfig[
+                                    index
+                                ],
                                 multipleInputValues: {
                                     options: [
                                         {
                                             value: this
-                                                .selectedExtraStopShipper[index]
-                                                .businessName,
+                                                .selectedExtraStopShipperContact[
+                                                index
+                                            ].name,
                                             logoName: null,
                                         },
                                         {
                                             value: this
-                                                .selectedExtraStopShipper[index]
-                                                .address,
+                                                .selectedExtraStopShipperContact[
+                                                index
+                                            ].originalPhone,
+                                            second_value: this
+                                                .selectedExtraStopShipperContact[
+                                                index
+                                            ].phoneExtension
+                                                ? `#${this.selectedExtraStopShipperContact[index].phoneExtension}`
+                                                : null,
                                             logoName: null,
-                                        },
-                                        {
-                                            value: this
-                                                .selectedExtraStopShipper[index]
-                                                .loadsCount,
-                                            logoName: null,
-                                            isCounter: true,
                                         },
                                     ],
-                                    customClass: 'load-shipper',
+                                    customClass: 'load-shipper-contact',
                                 },
+                                isDisabled: false,
                             };
-
-                            this.labelsShipperContacts =
-                                this.originShipperContacts
-                                    .map((el) => {
-                                        return {
-                                            ...el,
-                                            contacts: el?.contacts?.filter(
-                                                (subEl) =>
-                                                    subEl.shipperId ===
-                                                    this
-                                                        .selectedExtraStopShipper[
-                                                        index
-                                                    ].id
-                                            ),
-                                        };
-                                    })
-                                    .filter((item) => item.contacts?.length);
-
-                            if (this.labelsShipperContacts[1]?.contacts[0]) {
-                                this.selectedExtraStopShipperContact[index] =
-                                    this.labelsShipperContacts[1].contacts[0];
-
-                                this.loadExtraStops()
-                                    .at(index)
-                                    .get('shipperContactId')
-                                    .patchValue(
-                                        this.selectedExtraStopShipperContact[
-                                            index
-                                        ]?.fullName
-                                    );
-
-                                this.loadExtraStopsShipperContactsInputConfig[
-                                    index
-                                ] = {
-                                    ...this
-                                        .loadExtraStopsShipperContactsInputConfig[
-                                        index
-                                    ],
-                                    multipleInputValues: {
-                                        options: [
-                                            {
-                                                value: this
-                                                    .selectedExtraStopShipperContact[
-                                                    index
-                                                ].name,
-                                                logoName: null,
-                                            },
-                                            {
-                                                value: this
-                                                    .selectedExtraStopShipperContact[
-                                                    index
-                                                ].originalPhone,
-                                                second_value: this
-                                                    .selectedExtraStopShipperContact[
-                                                    index
-                                                ].phoneExtension
-                                                    ? `#${this.selectedExtraStopShipperContact[index].phoneExtension}`
-                                                    : null,
-                                                logoName: null,
-                                            },
-                                        ],
-                                        customClass: 'load-shipper-contact',
-                                    },
-                                    isDisabled: false,
-                                };
-                            } else {
-                                this.labelsShipperContacts =
-                                    this.originShipperContacts;
-
-                                this.loadExtraStopsShipperInputConfig[index] = {
-                                    ...this.loadExtraStopsShipperInputConfig[
-                                        index
-                                    ],
-                                    multipleInputValues: null,
-                                };
-
-                                this.selectedExtraStopShipperContact[index] =
-                                    null;
-
-                                this.loadExtraStops()
-                                    .at(index)
-                                    .get('shipperContactId')
-                                    .patchValue(null);
-
-                                this.loadExtraStopsShipperContactsInputConfig[
-                                    index
-                                ] = {
-                                    ...this
-                                        .loadExtraStopsShipperContactsInputConfig[
-                                        index
-                                    ],
-                                    multipleInputValues: null,
-                                    isDisabled: false,
-                                };
-                            }
-                        }
-                        // Restart value if clear
-                        else {
-                            this.labelsShipperContacts =
-                                this.originShipperContacts;
-
-                            this.loadExtraStopsShipperInputConfig[index] = {
-                                ...this.loadExtraStopsShipperInputConfig[index],
-                                multipleInputValues: null,
-                            };
+                        } else {
+                            this.labelsShipperContacts = [
+                                { id: 7655, name: 'ADD NEW' },
+                            ];
 
                             this.selectedExtraStopShipperContact[index] = null;
 
@@ -1565,10 +1550,34 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                                     index
                                 ],
                                 multipleInputValues: null,
-                                isDisabled: true,
+                                isDisabled: false,
                             };
                         }
-                    }, 50);
+                    }
+                    // Restart value if clear
+                    else {
+                        this.labelsShipperContacts = this.originShipperContacts;
+
+                        this.loadExtraStopsShipperInputConfig[index] = {
+                            ...this.loadExtraStopsShipperInputConfig[index],
+                            multipleInputValues: null,
+                        };
+
+                        this.selectedExtraStopShipperContact[index] = null;
+
+                        this.loadExtraStops()
+                            .at(index)
+                            .get('shipperContactId')
+                            .patchValue(null);
+
+                        this.loadExtraStopsShipperContactsInputConfig[index] = {
+                            ...this.loadExtraStopsShipperContactsInputConfig[
+                                index
+                            ],
+                            multipleInputValues: null,
+                            isDisabled: true,
+                        };
+                    }
                 }
 
                 break;
@@ -2051,7 +2060,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             isRequired: true,
             blackInput: true,
             textTransform: 'uppercase',
-            dropdownWidthClass: 'w-col-606',
+            dropdownWidthClass: 'w-col-608',
         });
 
         // 2. Set Config For Shipper Contacts in Extra Stop
@@ -2067,7 +2076,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             isDisabled: true,
             blackInput: true,
             textTransform: 'capitalize',
-            dropdownWidthClass: 'w-col-331',
+            dropdownWidthClass: 'w-col-330',
         });
 
         // 3. Selected arrays
@@ -2118,13 +2127,13 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 this.stopTimeTabsExtraStops.push([
                     {
                         id: 7900 + this.loadExtraStops().length,
-                        name: 'Open',
+                        name: 'WORK HOURS',
                         checked: true,
                         color: '3074D3',
                     },
                     {
                         id: 9000 + this.loadExtraStops().length,
-                        name: 'APPT',
+                        name: 'APPOINTMENT',
                         checked: false,
                         color: '3074D3',
                     },
@@ -3033,9 +3042,9 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                     : null,
                 timeType:
                     this.stopTimeTabsPickup.find((item) => item.checked)
-                        .name === 'APPT'
-                        ? 'Appointment'
-                        : 'Open',
+                        .name === 'APPOINTMENT'
+                        ? 2
+                        : 1,
                 timeFrom: this.loadForm.get('pickupTimeFrom').value,
                 timeTo: this.loadForm.get('pickupTimeTo').value,
                 arrive: null,
@@ -3123,9 +3132,9 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                         : null,
                     timeType:
                         this.stopTimeTabsPickup.find((item) => item.checked)
-                            .name === 'APPT'
-                            ? 'Appointment'
-                            : 'Open',
+                            .name === 'APPOINTMENT'
+                            ? 2
+                            : 1,
                     timeFrom: item.get('timeFrom').value,
                     timeTo: item.get('timeTo').value,
                     arrive: null,
@@ -3160,9 +3169,9 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                     : null,
                 timeType:
                     this.stopTimeTabsDelivery.find((item) => item.checked)
-                        .name === 'APPT'
-                        ? 'Appointment'
-                        : 'Open',
+                        .name === 'APPOINTMENT'
+                        ? 2
+                        : 1,
                 timeFrom: this.loadForm.get('deliveryTimeFrom').value,
                 timeTo: this.loadForm.get('deliveryTimeTo').value,
                 arrive: null,
