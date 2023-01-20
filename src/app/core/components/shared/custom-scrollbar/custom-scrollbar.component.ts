@@ -57,6 +57,7 @@ export class CustomScrollbarComponent
     ) {}
 
     ngOnInit(): void {
+        console.log(this.scrollBarOptions);
         this.ngZone.runOutsideAngular(() => {
             document.addEventListener('mouseup', this.onMouseUpHandler);
 

@@ -31,7 +31,8 @@
             'width.px': scrollBarOptions?.modalStyle?.horizontalScrollBarWidth
                 ? scrollBarOptions.modalStyle.horizontalScrollBarWidth
                 : tableNotPinedBoundingRect?.width,
-            'margin-top.px': scrollBarOptions?.modalStyle?.horizontalScrollBarMarginTop
+            'margin-top.px': scrollBarOptions?.modalStyle
+                ?.horizontalScrollBarMarginTop
                 ? scrollBarOptions.modalStyle.horizontalScrollBarMarginTop
                 : -15
         }"
@@ -52,6 +53,7 @@
             }"
             (mousedown)="setDraggingStart($event)"
             (mouseup)="isMouseDown = false"
-        ></div>
+        >
+        </div>
     </div>
 </div>
