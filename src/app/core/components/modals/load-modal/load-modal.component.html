@@ -532,7 +532,14 @@
                             }"
                             (onActionEvent)="createNewRowInStopItems('pickup')"
                         >
-                            Tabel Pickup Component - Boki
+                            <div   *ngIf="modalTableOpen === 1">otvorilo se</div>
+                            <app-table-modal
+                                *ngIf="modalTableOpen === 1"
+                                [columns]="modalColumns"
+                                [viewData]="modalViewData"
+                                [midSectionWidth]="400"
+                                [formGroup]="testControl"
+                            ></app-table-modal>
                         </app-ta-custom-card>
                     </div>
                 </app-load-stop>
@@ -793,7 +800,12 @@
                                             marginBottom: '12px'
                                         }"
                                     >
-                                        Tabel Extra Stop Component - Boki
+                                        <!-- <app-table-modal
+                                            [columns]="modalColumns"
+                                            [viewData]="modalViewData"
+                                            [midSectionWidth]="400"
+                                            [formGroup]="testControl"
+                                        ></app-table-modal> -->
                                     </app-ta-custom-card>
                                 </div>
                             </app-load-stop>
@@ -960,7 +972,12 @@
                                 createNewRowInStopItems('delivery')
                             "
                         >
-                            Tabel Delivery Component - Boki
+                            <!-- <app-table-modal
+                                [columns]="modalColumns"
+                                [viewData]="modalViewData"
+                                [midSectionWidth]="400"
+                                [formGroup]="testControl"
+                            ></app-table-modal> -->
                         </app-ta-custom-card>
                     </div>
                 </app-load-stop>

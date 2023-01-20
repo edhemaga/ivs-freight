@@ -25,10 +25,12 @@ export class TableModalComponent implements OnInit, OnChanges {
 
     constructor() {}
 
+    // --------------------------------NgOnInit---------------------------------
     ngOnInit(): void {
         this.setHeadColumns();
     }
 
+    // --------------------------------NgOnChanges---------------------------------
     ngOnChanges(changes: SimpleChanges): void {
         if (changes?.columns && !changes?.columns?.firstChange) {
             this.columns = changes.columns.currentValue;
@@ -37,6 +39,7 @@ export class TableModalComponent implements OnInit, OnChanges {
         }
     }
 
+    // Set Head Columns
     setHeadColumns() {
         this.tableFixedColumns = [];
         this.tableScrollableColumns = [];
@@ -65,36 +68,52 @@ export class TableModalComponent implements OnInit, OnChanges {
         });
     }
 
+    // Focus Input
     onFocusInput(column: any, i: number, j: number) {
         column.columnFocusId = column.title + ' ' + i + ' ' + j;
     }
 
     // Reorder
     onReorder(event: CdkDragDrop<any>) {
-        // let previousIndex: number = null,
-        //     currentIndex: number = null;
+        let previousIndex: number = null, 
+            currentIndex: number = null;
+ 
+        this.columns.map((c, i) => {
+            if (
+                this.tableScrollableColumns[event.previousIndex].field ===
+                c.field
+            ) {
+                previousIndex = i;
+            }
 
-        // this.columns.map((c, i) => { 
-        //     if (this.notPinedColumns[event.previousIndex].field === c.field) {
-        //         previousIndex = i;
-        //     }
+            if (
+                this.tableScrollableColumns[event.currentIndex].field ===
+                c.field
+            ) {
+                currentIndex = i;
+            }
+        });
 
-        //     if (this.notPinedColumns[event.currentIndex].field === c.field) {
-        //         currentIndex = i;
-        //     }
-        // });
+        let column: any[] = this.columns.splice(previousIndex, 1);
 
-        // let column: any[] = this.columns.splice(previousIndex, 1);
+        this.columns.splice(currentIndex, 0, column[0]);
 
-        // this.columns.splice(currentIndex, 0, column[0]);
+        this.setHeadColumns();
+    }
 
-        // localStorage.setItem(
-        //     `table-${this.tableConfigurationType}-Configuration`,
-        //     JSON.stringify(this.columns)
-        // );
+    // Horizontal Scroll
+    onHorizontalScroll(scrollEvent: any) {
+        if (scrollEvent.eventAction === 'scrolling') {
+            document
+                .querySelectorAll('#table-modal-scroll-columns-container')
+                .forEach((el) => {
+                    el.scrollLeft = scrollEvent.scrollPosition;
+                });
+        }
+    }
 
-        // this.tableService.sendColumnsOrder({ columnsOrder: this.columns });
-
-        // this.setVisibleColumns();
+    // Delete Row
+    onDeleteRow(index: number){
+        this.viewData.splice(index, 1);
     }
 }

@@ -115,6 +115,7 @@ export class CustomScrollbarComponent
                     document.querySelector('.not-pined-columns');
 
                 const tableFullWidth = scrollWrapper.scrollWidth;
+
                 const tableVisibleWidth =
                     scrollWrapper.getBoundingClientRect().width;
 

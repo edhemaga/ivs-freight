@@ -29,6 +29,7 @@
 
         <!-- Scrollable Columns -->
         <tr
+            id="table-modal-scroll-columns-container"
             class="head-scrollable-container"
             [ngStyle]="{ 'max-width.px': midSectionWidth }"
             cdkDropListOrientation="horizontal"
@@ -38,8 +39,7 @@
             <th
                 *ngFor="let column of tableScrollableColumns; let i = index"
                 cdkDrag
-                [cdkDragDisabled]="locked || rezaizeing || column.isAction"
-                cdkDragBoundary="head-scrollable-container"
+                cdkDragBoundary=".head-scrollable-container"
                 [cdkDragPreviewClass]="'cdk-drag-preview'"
             >
                 <!-- Title -->
@@ -79,141 +79,161 @@
     </thead>
 
     <tbody class="modal-table-body">
-        <tr
-            *ngFor="let row of viewData; let i = index"
-            [ngStyle]="{ 'margin-top.px': i !== 0 ? 4 : 0 }"
+        <app-custom-scrollbar
+            [scrollBarOptions]="{
+                showVerticalScrollBar: false,
+                showHorizontalScrollBar: true,
+                modalStyle: {
+                    horizontalScrollBarMarginTop: 4,
+                    horizontalScrollBarLeft: 0,
+                    horizontalScrollBarWidth: 665,
+                    additionalWidth: 265,
+                    modalScrollClassActive: true
+                }
+            }"
+            (scrollEvent)="onHorizontalScroll($event)"
         >
-            <!-- Fixed Columns -->
-            <div class="fixed-container">
-                <td *ngFor="let column of tableFixedColumns; let j = index">
-                    <!-- Number Count -->
-                    <div
-                        class="td-num-count"
-                        *ngIf="column.ngTemplate === 'num-count'"
-                        [ngStyle]="{
-                            width: column.width + 'px'
-                        }"
-                    >
-                        {{ i + 1 }}
-                    </div>
-
-                    <!-- Text -->
-                    <div
-                        class="td-input-text"
-                        *ngIf="
-                            column.ngTemplate === 'text' &&
-                            column.columnFocusId !==
-                                column.title + ' ' + i + ' ' + j
-                        "
-                        [ngStyle]="{
-                            width: column.width + 'px'
-                        }"
-                        (click)="onFocusInput(column, i, j)"
-                    >
-                        {{ row[column.field].text }}
-                        <div class="td-input-text-extraText">
-                            {{ row[column.field].extraText }}
-                        </div>
-                    </div>
-
-                    <!-- Input -->
-                    <div
-                        *ngIf="
-                            column.columnFocusId ===
-                            column.title + ' ' + i + ' ' + j
-                        "
-                        class="ta-input-container"
-                        [ngStyle]="{
-                            width: column.width + 'px'
-                        }"
-                    >
-                        <app-ta-input
-                            *ngIf="column?.inputConfig"
-                            [formControl]="column.formControl"
-                            [inputConfig]="
-                                column.inputConfig
-                                    | tableModalInputConfig
-                                        : i + ' ' + column.title
-                            "
-                        ></app-ta-input>
-                    </div>
-                </td>
-            </div>
-
-            <!-- Scrollable Columns -->
-            <div
-                class="scrollable-container"
-                [ngStyle]="{ 'max-width.px': midSectionWidth }"
+            <tr
+                *ngFor="let row of viewData; let i = index"
+                [ngStyle]="{ 'margin-top.px': i !== 0 ? 4 : 0 }"
             >
-                <td
-                    *ngFor="let column of tableScrollableColumns; let j = index"
-                >
-                    <!-- Text -->
-                    <div
-                        class="td-input-text"
-                        *ngIf="
-                            column.ngTemplate === 'text' &&
-                            column.columnFocusId !==
-                                column.title + ' ' + i + ' ' + j
-                        "
-                        [ngStyle]="{
-                            width: column.width + 'px'
-                        }"
-                        (click)="onFocusInput(column, i, j)"
-                    >
-                        {{ row[column.field].text }}
-                        <div class="td-input-text-extraText">
-                            {{ row[column.field].extraText }}
-                        </div>
-                    </div>
-
-                    <!-- Input -->
-                    <div
-                        *ngIf="
-                            column.columnFocusId ===
-                            column.title + ' ' + i + ' ' + j
-                        "
-                        class="ta-input-container"
-                        [ngStyle]="{
-                            width: column.width + 'px'
-                        }"
-                    >
-                        <app-ta-input
-                            *ngIf="column?.inputConfig"
-                            [formControl]="column.formControl"
-                            [inputConfig]="
-                                column.inputConfig
-                                    | tableModalInputConfig
-                                        : i + ' ' + column.title
-                            "
-                        ></app-ta-input>
-                    </div>
-                </td>
-            </div>
-
-            <!-- Action Columns -->
-            <div class="action-container">
-                <td *ngFor="let column of tableActionColumns">
-                    <!-- Delete Action -->
-                    <div
-                        *ngIf="column.isAction"
-                        class="icon"
-                        [ngStyle]="{
-                            'width.px': column.width
-                        }"
-                    >
-                        <svg-icon
-                            [svgStyle]="{
-                                'width.px': 18,
-                                'height.px': 18
+                <!-- Fixed Columns -->
+                <div class="fixed-container">
+                    <td *ngFor="let column of tableFixedColumns; let j = index">
+                        <!-- Number Count -->
+                        <div
+                            class="td-num-count"
+                            *ngIf="column.ngTemplate === 'num-count'"
+                            [ngStyle]="{
+                                width: column.width + 'px'
                             }"
-                            [src]="
-                                'assets/svg/table-modal/Modal-Delete-BTN.svg'
+                        >
+                            {{ i + 1 }}
+                        </div>
+
+                        <!-- Text -->
+                        <div
+                            class="td-input-text"
+                            *ngIf="
+                                column.ngTemplate === 'text' &&
+                                column.columnFocusId !==
+                                    column.title + ' ' + i + ' ' + j
                             "
-                        ></svg-icon>
-                    </div>
-                </td>
-            </div>
-        </tr>
+                            [ngStyle]="{
+                                width: column.width + 'px'
+                            }"
+                            (click)="onFocusInput(column, i, j)"
+                        >
+                            {{ row[column.field].text }}
+                            <div class="td-input-text-extraText">
+                                {{ row[column.field].extraText }}
+                            </div>
+                        </div>
+
+                        <!-- Input -->
+                        <div
+                            *ngIf="
+                                column.columnFocusId ===
+                                column.title + ' ' + i + ' ' + j
+                            "
+                            class="ta-input-container"
+                            [ngStyle]="{
+                                width: column.width + 'px'
+                            }"
+                        >
+                            <app-ta-input
+                                *ngIf="column?.inputConfig"
+                                [formControl]="column.formControl"
+                                [inputConfig]="
+                                    column.inputConfig
+                                        | tableModalInputConfig
+                                            : i + ' ' + column.title
+                                "
+                            ></app-ta-input>
+                        </div>
+                    </td>
+                </div>
+
+                <!-- Scrollable Columns -->
+                <div
+                    class="scrollable-container not-pined-columns"
+                    id="table-modal-scroll-columns-container"
+                    [ngStyle]="{ 'max-width.px': midSectionWidth }"
+                >
+                    <td
+                        *ngFor="
+                            let column of tableScrollableColumns;
+                            let j = index
+                        "
+                    >
+                        <!-- Text -->
+                        <div
+                            class="td-input-text"
+                            *ngIf="
+                                column.ngTemplate === 'text' &&
+                                column.columnFocusId !==
+                                    column.title + ' ' + i + ' ' + j
+                            "
+                            [ngStyle]="{
+                                width: column.width + 'px'
+                            }"
+                            (click)="onFocusInput(column, i, j)"
+                        >
+                            {{ row[column.field].text }}
+                            <div class="td-input-text-extraText">
+                                {{ row[column.field].extraText }}
+                            </div>
+                        </div>
+
+                        <!-- Input -->
+                        <div
+                            *ngIf="
+                                column.columnFocusId ===
+                                column.title + ' ' + i + ' ' + j
+                            "
+                            class="ta-input-container"
+                            [ngStyle]="{
+                                width: column.width + 'px'
+                            }"
+                        >
+                            <app-ta-input
+                                *ngIf="column?.inputConfig"
+                                [formControl]="column.formControl"
+                                [inputConfig]="
+                                    column.inputConfig
+                                        | tableModalInputConfig
+                                            : i + ' ' + column.title
+                                "
+                            ></app-ta-input>
+                        </div>
+                    </td>
+                </div>
+
+                <!-- Action Columns -->
+                <div class="action-container">
+                    <td *ngFor="let column of tableActionColumns">
+                        <!-- Delete Action -->
+                        <div
+                            *ngIf="column.isAction"
+                            class="icon"
+                            [ngStyle]="{
+                                'width.px': column.width
+                            }"
+                            (click)="onDeleteRow(i)"
+                        >
+                            <svg-icon
+                                [svgStyle]="{
+                                    'width.px': 18,
+                                    'height.px': 18
+                                }"
+                                [src]="
+                                    'assets/svg/table-modal/Modal-Delete-BTN.svg'
+                                "
+                            ></svg-icon>
+                        </div>
+                    </td>
+                </div>
+            </tr>
+        </app-custom-scrollbar>
     </tbody>
 </table>

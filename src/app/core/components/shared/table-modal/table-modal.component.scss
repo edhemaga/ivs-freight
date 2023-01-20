@@ -5,6 +5,10 @@
         overflow: hidden;
     }
 
+    .head-scrollable-container{
+        cursor: pointer;
+    }
+
     tr {
         display: flex;
         height: 30px;
@@ -57,9 +61,11 @@
         .scrollable-container,
         .action-container {
             display: flex;
+            height: 32px;
 
             td {
                 display: flex;
+
                 div {
                     display: flex;
                     align-items: center;
@@ -117,4 +123,23 @@
         position: relative;
         z-index: 1000;
     }
+}
+
+.cdk-drag-animating {
+    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.cdk-drag-placeholder {
+    opacity: 0;
+}
+
+.cdk-drop-list-dragging {
+    th {
+        cursor: grabbing !important;
+    }
+}
+
+.head-scrollable-container.cdk-drop-list-dragging
+    th:not(.cdk-drag-placeholder) {
+    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
 }

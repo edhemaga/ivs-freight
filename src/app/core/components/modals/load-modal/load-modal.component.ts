@@ -10,6 +10,7 @@ import {
     FormGroup,
     Validators,
     AbstractControl,
+    FormControl,
 } from '@angular/forms';
 import {
     Component,
@@ -47,6 +48,7 @@ import { RoutingResponse } from '../../../../../../appcoretruckassist/model/rout
 import { LoadStopItemAutocompleteDescriptionResponse } from '../../../../../../appcoretruckassist/model/loadStopItemAutocompleteDescriptionResponse';
 import { ViewChild } from '@angular/core';
 import { trigger, transition, style, animate } from '@angular/animations';
+import { getLoadModalColumnDefinition } from 'src/assets/utils/settings/modal-columns-configuration/table-load-modal-columns';
 
 interface IStopRoutes {
     longitude: number;
@@ -2056,19 +2058,23 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         switch (action) {
             case 'pickup': {
                 this.loadPickupStopItems().push(this.newLoadStopItems());
+                this.modalTableOpen = 1;
                 break;
             }
             case 'delivery': {
                 this.loadDeliveryStopItems().push(this.newLoadStopItems());
+                this.modalTableOpen = 2;
                 break;
             }
             case 'extra-stop': {
                 this.loadExtraStopItems(loadStopIndex).push(
                     this.newLoadStopItems()
                 );
+                this.modalTableOpen = 3;
                 break;
             }
             default: {
+                this.modalTableOpen = 0;
                 break;
             }
         }
@@ -3163,6 +3169,42 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
 
                 break;
             }
+        }
+    }
+
+    // MODAL TABLE
+    public testControl: FormGroup = new FormGroup({
+        email: new FormControl(null),
+        password: new FormControl(null),
+        phone: new FormControl(null),
+    });
+    modalColumns: any[] = [];
+    modalViewData: any[] = [];
+    modalTableOpen: number = 0;
+    
+    modalTestInitialization() {
+        this.modalColumns = getLoadModalColumnDefinition();
+
+        for (let i = 0; i < 3; i++) {
+            this.modalViewData.push({
+                tableDescription: {
+                    text: 'Jaffa Cakes',
+                    extraText: '',
+                },
+                tableQuantity: {
+                    text: 230,
+                    extraText: 'Boxes',
+                },
+                tableBolNo: {
+                    text: 1598550,
+                    extraText: '',
+                },
+                tableWeight: {
+                    text: '2,360',
+                    extraText: 'lbs',
+                },
+                tableAction: 'delete',
+            });
         }
     }
 
