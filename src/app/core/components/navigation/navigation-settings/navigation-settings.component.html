@@ -55,8 +55,11 @@
                 <svg-icon
                     src="{{ item.image }}"
                     class="svg-settings"
+                    [ngClass]="{ 'route-not-active-svg': item.construction }"
                 ></svg-icon>
-                <p>{{ item.name }}</p>
+                <p [ngClass]="{ 'route-not-active': item.construction }">
+                    {{ item.name }}
+                </p>
                 <svg-icon
                     class="mark-route"
                     src="assets/svg/common/confirmation/ic_confirmation_hire.svg"

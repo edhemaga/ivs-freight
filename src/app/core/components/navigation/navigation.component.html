@@ -45,8 +45,8 @@
                         [class]="'close'"
                         [route]="item"
                         [message]="item.messages"
+                        [index]="index"
                         [files]="item.files"
-                        [index]="ind"
                         [isActiveFooterRoute]="isActiveFooterRoute"
                         [isNavigationHovered]="isNavigationHovered"
                         [isActiveSubroute]="isActiveSubroute"
@@ -60,8 +60,9 @@
 
                     <!-- If route has subroutes -->
                     <app-navigation-subroute-card
-                        (click)="onHoveredNavigation(true)"
+                        (click)="onHoveredNavigation(true); getIndex(ind)"
                         *ngIf="item.arrow"
+                        [test]="item.isRouteActive"
                         [isNavigationCardActive]="
                             item.isRouteActive &&
                             isNavigationHovered &&
@@ -80,6 +81,7 @@
                         <app-navigation-route
                             class="subroute-item"
                             [route]="item"
+                            [subrouteContainerOpened]="subrouteContainerOpened"
                             [selectedRoute]="selectedRoute"
                             [activeLink]="item.isRouteActive"
                             [isSettingsPanelOpen]="isSettingsPanelOpen"
@@ -89,6 +91,7 @@
                             [isActiveSubroute]="isActiveSubroute"
                             (onRouteEvent)="onRouteEvent($event)"
                             (itemIndex)="routeIndex($event)"
+                            [ind]="ind"
                         >
                         </app-navigation-route>
 
@@ -103,7 +106,6 @@
                                 !isUserCompanyDetailsOpen
                             "
                             [subroute]="item"
-                            [index]="ind"
                             [selectedSubRoute]="selectedSubRoute"
                             [isActiveSubroute]="isActiveSubroute"
                             [isNavigationHovered]="isNavigationHovered"

@@ -34,7 +34,9 @@
         position: absolute;
         top: -11px;
     }
-
+    .route-not-active {
+        color: #787878;
+    }
     .nav-footer-item-scaleWidth {
         // width: 0px !important;
     }
@@ -83,6 +85,22 @@
                 .status-marker-notification-1 {
                     width: 8px;
                     height: 8px;
+                }
+            }
+            .route-not-active-svg {
+                svg {
+                    path {
+                        transition: fill 0.4s ease;
+                        fill: #787878;
+                    }
+                }
+            }
+            .route-closed-nav-svg-not-active {
+                svg {
+                    path {
+                        transition: fill 0.4s ease;
+                        fill: #e1e1e1;
+                    }
                 }
             }
             .active-img {

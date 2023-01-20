@@ -10,11 +10,12 @@
     class="nav-item"
     [ngClass]="{
         'nav-width': isNavigationHovered,
-        'nav-item-parent-active': selectedRoute == route.name
+        'nav-item-parent-active':
+            selectedRoute == route.name && !subrouteContainerOpened
     }"
     (mouseenter)="onNavItemHover(true); showToolTip = true"
     (mouseleave)="onNavItemHover(false); showToolTip = false"
-    (click)="onRouteAction(); routeIndex(index)"
+    (click)="onRouteAction(); routeIndex(route.id)"
 >
     <div
         class="tooltip-right"
@@ -52,7 +53,11 @@
                 closeDropdownOnNavClose &&
                 !isSettingsPanelOpen &&
                 !isUserPanelOpen,
-            'nav-item-svg-active': selectedRoute == route.name
+            'nav-item-svg-active': selectedRoute == route.name,
+            'route-not-active-svg':
+                route.construction == true && isNavigationHovered,
+            'route-closed-nav-svg-not-active':
+                route.construction == true && !isNavigationHovered
         }"
     ></svg-icon>
 
@@ -90,7 +95,7 @@
                     !isUserPanelOpen &&
                     !settingsPage,
 
-                'route-not-active': route.route == 'under-construction'
+                'route-not-active': route.construction == true
             }"
             [@showHideDetails]="isNavigationHovered ? 'true' : 'false'"
         >

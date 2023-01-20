@@ -84,6 +84,13 @@
                 width: 20px;
                 height: 20px;
             }
+            .route-not-active-svg {
+                svg {
+                    path {
+                        fill: #787878;
+                    }
+                }
+            }
             .mark-route {
                 opacity: 0;
                 position: absolute;
@@ -101,6 +108,9 @@
             font-size: 14px;
             line-height: 17px;
             font-weight: 400;
+        }
+        .route-not-active {
+            color: #787878;
         }
         .nav-item-arrow_top {
             opacity: 0;

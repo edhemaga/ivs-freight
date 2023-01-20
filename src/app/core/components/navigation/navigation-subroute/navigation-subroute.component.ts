@@ -38,9 +38,7 @@ export class NavigationSubrouteComponent implements OnChanges {
     public isMagicLineActive: boolean = false;
     constructor(private router: Router) {}
 
-    ngOnChanges(changes: SimpleChanges): void {
-        // console.log(this.selectedSubRoute);
-    }
+    ngOnChanges(changes: SimpleChanges): void {}
 
     subrouteIndex(index) {
         this.subRouteIndex.emit(index);

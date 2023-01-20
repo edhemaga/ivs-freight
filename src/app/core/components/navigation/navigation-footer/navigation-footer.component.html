@@ -117,7 +117,14 @@
                             src="{{ item.image }}"
                             [ngClass]="{
                                 'active-img': notificationsActive,
-                                close: item.notification
+                                close: item.notification,
+                                'route-closed-nav-svg-not-active':
+                                    item.construction == true &&
+                                    !isNavigationHovered,
+
+                                'route-not-active-svg':
+                                    item.construction == true &&
+                                    isNavigationHovered
                             }"
                         >
                         </svg-icon>
@@ -145,7 +152,8 @@
                                     isNavigationHovered
                                 "
                                 [ngClass]="{
-                                    'active-route': notificationsActive
+                                    'active-route': notificationsActive,
+                                    'route-not-active': item.construction
                                 }"
                             >
                                 {{ item.text }}

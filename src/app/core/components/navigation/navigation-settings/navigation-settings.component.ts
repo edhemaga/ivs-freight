@@ -78,16 +78,6 @@ export class NavigationSettingsComponent implements OnInit, OnChanges {
         });
     }
     public changeRouteSettings(subroute: Settings): void {
-        console.log(subroute.route);
-        if (
-            subroute.route === '/integration' ||
-            subroute.route === '/billing' ||
-            subroute.route === '/training-material' ||
-            subroute.route === '/custom-agreement'
-        ) {
-            this.router.navigate(['under-construction']);
-        } else {
-            this.router.navigate([`/settings${subroute.route}`]);
-        }
+        this.router.navigate([`/settings${subroute.route}`]);
     }
 }

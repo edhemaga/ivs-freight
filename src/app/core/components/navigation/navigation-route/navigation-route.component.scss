@@ -17,6 +17,22 @@
     user-select: none;
     position: relative;
     z-index: 1;
+    .route-not-active-svg {
+        svg {
+            path {
+                transition: fill 0.4s ease;
+                fill: #787878;
+            }
+        }
+    }
+    .route-closed-nav-svg-not-active {
+        svg {
+            path {
+                transition: fill 0.4s ease;
+                fill: #e1e1e1;
+            }
+        }
+    }
     .tooltip-right {
         left: -8px;
         position: relative;
@@ -145,9 +161,6 @@
     }
 }
 
-.active-link {
-    background: red;
-}
 .nav-item-active {
     color: $nav-active-lighter;
     border-radius: 3px;
@@ -163,14 +176,15 @@
             }
         }
     }
-}
-.route-clicked-svg {
-    svg {
-        path {
-            fill: $nav-white !important;
+    .nav-item-rightSide {
+        .nav-item-name {
+            span {
+                color: $nav-white !important;
+            }
         }
     }
 }
+
 .route-clicked {
     color: $nav-white !important;
     font-weight: 700 !important;
@@ -210,6 +224,11 @@
                     color: #558ddd;
                 }
             }
+            &:hover {
+                .nav-item-name {
+                    color: #558ddd;
+                }
+            }
             // .nav-item-arrow {
             //     svg {
             //         path {
@@ -230,6 +249,9 @@
         transition: all 0.5s ease-in-out;
         .nav-item-name {
             margin-left: 5px;
+        }
+        .hide-subrout {
+            display: none;
         }
     }
     .tooltip-right {
@@ -264,7 +286,19 @@
 .nav-item-svg-active {
     svg {
         path {
-            fill: $nav-active-lighter;
+            fill: $nav-active-lighter !important;
+        }
+    }
+}
+// .nav-item-text-active {
+//     span {
+//     }
+//     color: $nav-active-lighter !important;
+// }
+.route-clicked-svg {
+    svg {
+        path {
+            fill: $nav-white !important;
         }
     }
 }
