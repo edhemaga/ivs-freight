@@ -745,7 +745,12 @@
                         let indx = index
                     "
                     [ngClass]="{
-                        disabled: option?.disabled || option.dnu || option.ban,
+                        disabled:
+                            option?.disabled ||
+                            option?.dnu ||
+                            option?.ban ||
+                            (!option?.availableCredit &&
+                                option.name !== 'ADD NEW'),
                         'no-result':
                             options.length === 1 &&
                             options[0].name === 'No Results',

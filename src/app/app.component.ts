@@ -1,25 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
-import {
-    catchError,
-    debounceTime,
-    filter,
-    map,
-    mergeMap,
-    of,
-    switchMap,
-    throwError,
-} from 'rxjs';
+import { filter, map, mergeMap } from 'rxjs';
 import { scrollButtonAnimation } from './app.component.animation';
 import { StaticInjectorService } from './core/utils/application.decorators';
-import { GpsServiceService } from './global/services/gps-service.service';
-import { AccountService } from '../../appcoretruckassist';
-import { UserLoggedService } from './core/components/authentication/state/user-logged.service';
-import { SignInResponse } from '../../appcoretruckassist/model/signInResponse';
-
-import { HttpErrorResponse } from '@angular/common/http';
-import { configFactory } from './app.config';
 
 @Component({
     selector: 'app-root',
@@ -36,10 +20,7 @@ export class AppComponent implements OnInit {
         private router: Router,
         public titleService: Title,
         private activatedRoute: ActivatedRoute,
-        private gpsService: GpsServiceService,
-        private _: StaticInjectorService,
-        private accountService: AccountService,
-        private userLoggedService: UserLoggedService
+        private _: StaticInjectorService
     ) {}
 
     ngOnInit() {
@@ -69,7 +50,6 @@ export class AppComponent implements OnInit {
             });
 
         // Logout
-        this.checkRefreshTokenExpiration();
     }
 
     /**
@@ -77,38 +57,5 @@ export class AppComponent implements OnInit {
      */
     public top() {
         window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-
-    public checkRefreshTokenExpiration() {
-        const user: SignInResponse = JSON.parse(localStorage.getItem('user'));
-        if (user) {
-            this.accountService
-                .apiAccountRefreshPost({
-                    refreshToken: user.refreshToken,
-                })
-                .pipe(
-                    debounceTime(2000),
-                    switchMap((res: any) => {
-                        user.token = res.token;
-                        user.refreshToken = res.refreshToken;
-                        setTimeout(() => {
-                            localStorage.removeItem('user');
-                            localStorage.setItem('user', JSON.stringify(user));
-                        }, 100);
-                        configFactory(this.userLoggedService);
-                        return of(true);
-                    }),
-                    catchError((err: HttpErrorResponse) => {
-                        if (err.status === 404 || err.status === 500) {
-                            window.location.reload();
-                            this.currentPage = 'login';
-                            localStorage.removeItem('user');
-                            this.router.navigate(['/auth']);
-                        }
-                        return throwError(() => err);
-                    })
-                )
-                .subscribe();
-        }
     }
 }

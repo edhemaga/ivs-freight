@@ -547,6 +547,8 @@ export class TaInputComponent
     }
 
     public onKeydown(event) {
+        this.capsLockOn = event.getModifierState('CapsLock');
+
         if (this.inputConfig.textTransform === 'capitalize') {
             if (event.getModifierState('CapsLock')) {
                 event.preventDefault();
@@ -684,8 +686,6 @@ export class TaInputComponent
                 });
             }
         }
-
-        this.capsLockOn = !!event.getModifierState('CapsLock');
     }
 
     public transformText(value: string, paste?: boolean) {

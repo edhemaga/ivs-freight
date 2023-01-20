@@ -1064,7 +1064,9 @@
                         <app-ta-input
                             *ngIf="
                                 selectedDispatches &&
-                                selectedDispatches.payType !== 'Flat Rate'
+                                selectedDispatches.payType !== 'Flat Rate' &&
+                                this.selectedAdditionalBillings[0]?.checked &&
+                                this.selectedAdditionalBillings[0]?.id === 6
                             "
                             formControlName="adjustedRate"
                             [inputConfig]="{
@@ -1072,15 +1074,16 @@
                                 type: 'text',
                                 label: 'Adjusted',
                                 labelInInput: true,
-                                isRequired: true,
                                 placeholderIconRightSide: 'dollar',
                                 placeholderIconColor: 'purple',
                                 inputCursorOnRightSide: true,
+                                removeInput: true,
                                 hideErrorMessage: true,
                                 hideRequiredCheck: true,
                                 hideDangerMark: true,
                                 thousandSeparator: true
                             }"
+                            (clear)="removeAdditionalBilling('adjusted')"
                         ></app-ta-input>
                         <div formArrayName="additionalBillings">
                             <div
@@ -1107,9 +1110,15 @@
                                             isRequired: true,
                                             hideErrorMessage: true,
                                             hideRequiredCheck: true,
+                                            hideDangerMark: true,
                                             thousandSeparator: true
                                         }"
-                                        (clear)="removeAdditionalBilling(indx)"
+                                        (clear)="
+                                            removeAdditionalBilling(
+                                                'billing',
+                                                indx
+                                            )
+                                        "
                                     ></app-ta-input>
                                 </div>
                             </div>

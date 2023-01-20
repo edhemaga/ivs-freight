@@ -775,8 +775,13 @@ export class TaInputDropdownComponent
                 }
 
                 if (keyCode === 9) {
-                    if (this.options.length === 1) {
+                    if (
+                        this.options.length === 1 &&
+                        this.options[0].id !== 7655 &&
+                        this.options[0].id !== 7654
+                    ) {
                         let selectedItem = null;
+
                         if (this.template === 'fuel-franchise') {
                             selectedItem = this.options[0]?.businessName
                                 ? this.options[0]?.businessName
@@ -786,6 +791,7 @@ export class TaInputDropdownComponent
                                 ? this.options[0]?.number.toString().trim()
                                 : this.options[0].name.toString().trim();
                         }
+
                         this.pickupElementWithKeyboard(selectedItem, data);
                     } else {
                         this.popoverRef.open();

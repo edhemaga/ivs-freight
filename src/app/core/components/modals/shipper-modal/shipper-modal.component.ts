@@ -243,8 +243,12 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
                     this.inputService.markInvalid(this.shipperForm);
                     return;
                 }
-                if (this.editData) {
-                    this.updateShipper(this.editData.id);
+                if (['edit'].includes(this.editData?.type)) {
+                    this.updateShipper(
+                        this.editData?.extraPayload?.type === 'edit-contact'
+                            ? this.editData.extraPayload.data.id
+                            : this.editData.id
+                    );
                     this.modalService.setModalSpinner({
                         action: null,
                         status: true,
@@ -695,6 +699,11 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
                     if (this.editData?.canOpenModal) {
                         switch (this.editData?.key) {
                             case 'load-modal': {
+                                this.modalService.setModalSpinner({
+                                    action: null,
+                                    status: true,
+                                    close: true,
+                                });
                                 this.modalService.setProjectionModal({
                                     action: 'close',
                                     payload: {
@@ -705,6 +714,7 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
                                     size: 'small',
                                     closing: 'slowlest',
                                 });
+
                                 break;
                             }
 
