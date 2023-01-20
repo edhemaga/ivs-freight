@@ -181,8 +181,6 @@ export class Step2Component implements OnInit, OnDestroy, AfterViewInit {
         this.hasNoSafetyPerformanceToReport();
 
         this.getStepValuesFromStore();
-
-        console.log(this.applicantStore);
     }
 
     ngAfterViewInit(): void {
@@ -225,7 +223,6 @@ export class Step2Component implements OnInit, OnDestroy, AfterViewInit {
     }
 
     public patchStepValues(stepValues: any): void {
-        console.log('stepValues', stepValues);
         const {
             workForCompany,
             workFrom,
@@ -747,8 +744,6 @@ export class Step2Component implements OnInit, OnDestroy, AfterViewInit {
                 ? []
                 : [...filteredAccidentArray, filteredLastAccidentCard],
         };
-
-        console.log('saveData', saveData);
 
         this.applicantActionsService
             .createAccidentHistorySphForm(saveData)

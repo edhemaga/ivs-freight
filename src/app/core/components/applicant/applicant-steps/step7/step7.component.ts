@@ -71,7 +71,7 @@ export class Step7Component implements OnInit, OnDestroy {
 
     private destroy$ = new Subject<void>();
 
-    public selectedMode: string = SelectedMode.APPLICANT;
+    public selectedMode: string = SelectedMode.REVIEW;
 
     public subscription: Subscription;
 
@@ -118,6 +118,7 @@ export class Step7Component implements OnInit, OnDestroy {
         {
             title: 'Are you currently working for another employer?',
             formControlName: 'anotherEmployer',
+            formControlNameExplain: 'anotherEmployerExplain',
             answerChoices: [
                 {
                     id: 1,
@@ -140,6 +141,7 @@ export class Step7Component implements OnInit, OnDestroy {
         {
             title: 'At this time do you intend to work for another employer while still employed by this company?',
             formControlName: 'intendToWorkAnotherEmployer',
+            formControlNameExplain: 'intendToWorkAnotherEmployerExplain',
             answerChoices: [
                 {
                     id: 3,
@@ -184,6 +186,18 @@ export class Step7Component implements OnInit, OnDestroy {
             displayAnnotationButton: false,
             displayAnnotationTextArea: false,
         },
+        {
+            lineIndex: 1,
+            lineInputs: [false],
+            displayAnnotationButton: false,
+            displayAnnotationTextArea: false,
+        },
+        {
+            lineIndex: 2,
+            lineInputs: [false],
+            displayAnnotationButton: false,
+            displayAnnotationTextArea: false,
+        },
     ];
     public hasIncorrectFields: boolean = false;
 
@@ -222,7 +236,9 @@ export class Step7Component implements OnInit, OnDestroy {
             startDate: [null, Validators.required],
             address: [null, [Validators.required, ...addressValidation]],
             anotherEmployer: [null, Validators.required],
+            anotherEmployerExplain: [null],
             intendToWorkAnotherEmployer: [null, Validators.required],
+            intendToWorkAnotherEmployerExplain: [null],
             isValidAnotherEmployer: [null, Validators.requiredTrue],
 
             firstRowReview: [null],
@@ -413,6 +429,63 @@ export class Step7Component implements OnInit, OnDestroy {
         }
     }
 
+    /*  
+        if (selectedCheckbox.label === 'YES') {
+           
+
+            this.inputService.changeValidators(
+                this.educationForm.get(selectedExplainFormControlName)
+            );
+
+            if (selectedCheckbox.index === 2) {
+                this.inputService.changeValidators(
+                    this.educationForm.get(selectedExplainFormControlName),
+                    false
+                );
+            }
+
+            if (selectedCheckbox.index === 3) {
+                this.inputService.changeValidators(
+                    this.educationForm.get('driverForCompanyBeforeExplain')
+                );
+
+                this.inputService.changeValidators(
+                    this.educationForm.get('driverForCompanyToExplain')
+                );
+            }
+        } else {
+         
+
+            this.inputService.changeValidators(
+                this.educationForm.get(selectedExplainFormControlName),
+                false
+            );
+
+            if (selectedCheckbox.index === 2) {
+                this.inputService.changeValidators(
+                    this.educationForm.get(selectedExplainFormControlName),
+                    false
+                );
+            }
+
+            if (selectedCheckbox.index === 3) {
+                this.inputService.changeValidators(
+                    this.educationForm.get('driverForCompanyBeforeExplain'),
+                    false
+                );
+
+                this.inputService.changeValidators(
+                    this.educationForm.get('driverForCompanyToExplain'),
+                    false
+                );
+
+                this.educationForm.patchValue({
+                    driverForCompanyBeforeExplain: null,
+                    driverForCompanyToExplain: null,
+                });
+            }
+        } */
+
     public handleInputSelect(event: any, action: string): void {
         switch (action) {
             case InputSwitchActions.ADDRESS:
@@ -433,19 +506,37 @@ export class Step7Component implements OnInit, OnDestroy {
                 const selectedFormControlName =
                     this.questions[selectedCheckbox.index].formControlName;
 
+                const selectedExplainFormControlName =
+                    this.questions[selectedCheckbox.index]
+                        .formControlNameExplain;
+
                 if (selectedCheckbox.label === 'YES') {
                     this.sevenDaysHosForm
                         .get(selectedFormControlName)
                         .patchValue(true);
+
+                    this.inputService.changeValidators(
+                        this.sevenDaysHosForm.get(
+                            selectedExplainFormControlName
+                        )
+                    );
                 } else {
                     this.sevenDaysHosForm
                         .get(selectedFormControlName)
                         .patchValue(false);
+
+                    this.inputService.changeValidators(
+                        this.sevenDaysHosForm.get(
+                            selectedExplainFormControlName
+                        ),
+                        false
+                    );
                 }
 
                 this.displayRadioRequiredNoteArray[
                     selectedCheckbox.index
                 ].displayRadioRequiredNote = false;
+
                 break;
 
             default:

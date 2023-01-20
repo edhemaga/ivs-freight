@@ -52,7 +52,7 @@ export class Step2Component implements OnInit, OnDestroy {
     public markFormInvalid: boolean;
 
     public workExperienceArray /* : WorkExpereienceModel[]  */ = [
-        {
+        /*    {
             id: 1,
             isEditingWorkExperience: false,
             workExperienceItemReview: null,
@@ -72,7 +72,7 @@ export class Step2Component implements OnInit, OnDestroy {
 
             isDrivingPosition: true,
             classesOfEquipment: [
-                /*  {
+                 {
                     vehicleType: 'Semi Truck',
                     trailerType: 'Reefer',
                     trailerLength: '20 ft',
@@ -92,9 +92,9 @@ export class Step2Component implements OnInit, OnDestroy {
                     trailerLength: '24 ft',
                     cfrPart: true,
                     fmCSA: false,
-                }, */
+                },
             ],
-        },
+        }, */
     ];
 
     public stepValues: any;
@@ -152,7 +152,6 @@ export class Step2Component implements OnInit, OnDestroy {
     ) {}
 
     ngOnInit(): void {
-        console.log('arr', this.workExperienceArray);
         this.createForm();
 
         this.getStepValuesFromStore();

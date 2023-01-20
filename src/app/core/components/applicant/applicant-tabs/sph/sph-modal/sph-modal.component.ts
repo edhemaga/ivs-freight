@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 
@@ -44,7 +46,6 @@ export class SphModalComponent implements OnInit, OnDestroy {
         {
             title: 'Did the above applicant work for your company?',
             formControlName: 'applicantWorkForCompany',
-            formControlNameExplain: 'applicantWorkForCompanyExplain',
             answerChoices: [
                 {
                     id: 1,
@@ -67,7 +68,6 @@ export class SphModalComponent implements OnInit, OnDestroy {
         {
             title: 'Did he/she drive a motor vehicle for your company?',
             formControlName: 'motorVehicleForCompany',
-            formControlNameExplain: 'motorVehicleForCompanyExplain',
             answerChoices: [
                 {
                     id: 3,
@@ -90,7 +90,6 @@ export class SphModalComponent implements OnInit, OnDestroy {
         {
             title: 'Would this applicant be considered for employment with your company again?',
             formControlName: 'consideredForEmploymentAgain',
-            formControlNameExplain: 'consideredForEmploymentAgainExplain',
             answerChoices: [
                 {
                     id: 5,
@@ -289,8 +288,6 @@ export class SphModalComponent implements OnInit, OnDestroy {
 
         this.accidentHistoryForm = this.formBuilder.group({
             applicantWorkForCompany: [null],
-            applicantWorkForCompanyBeforeExplain: [null],
-            applicantWorkForCompanyToExplain: [null],
             motorVehicleForCompany: [null],
             vehicleType: [null],
             trailerType: [null],
@@ -333,14 +330,6 @@ export class SphModalComponent implements OnInit, OnDestroy {
         this.accidentHistoryForm
             .get(selectedFormControlName)
             .patchValue(selectedCheckbox.label);
-    }
-
-    public handleCheckboxParagraphClick(): void {
-        this.drugAndAlcoholTestingHistoryForm.patchValue({
-            applicantNotSubject: !this.drugAndAlcoholTestingHistoryForm.get(
-                'applicantNotSubject'
-            ).value,
-        });
     }
 
     public getDropdownLists(): void {

@@ -28,7 +28,7 @@ import { SelectedMode } from '../../state/enum/selected-mode.enum';
 export class Step11Component implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
 
-    public selectedMode: string = SelectedMode.APPLICANT;
+    public selectedMode: string = SelectedMode.REVIEW;
 
     public authorizationForm: FormGroup;
 
@@ -202,38 +202,37 @@ export class Step11Component implements OnInit, OnDestroy {
         this.applicantActionsService
             .updateAuthorization(saveData)
             .pipe(takeUntil(this.destroy$))
-            .subscribe();
-        ({
-            next: () => {
-                this.router.navigate([
-                    `/medical-certificate/${this.applicantId}`,
-                ]);
+            .subscribe({
+                next: () => {
+                    this.router.navigate([
+                        `/medical-certificate/${this.applicantId}`,
+                    ]);
 
-                this.applicantStore.update((store) => {
-                    return {
-                        ...store,
-                        applicant: {
-                            ...store.applicant,
-                            authorization: {
-                                ...store.applicant.authorization,
-                                isFirstAuthorization:
-                                    saveData.isFirstAuthorization,
-                                isSecondAuthorization:
-                                    saveData.isSecondAuthorization,
-                                isThirdAuthorization:
-                                    saveData.isThirdAuthorization,
-                                isFourthAuthorization:
-                                    saveData.isFourthAuthorization,
-                                signature: saveData.signature,
+                    this.applicantStore.update((store) => {
+                        return {
+                            ...store,
+                            applicant: {
+                                ...store.applicant,
+                                authorization: {
+                                    ...store.applicant.authorization,
+                                    isFirstAuthorization:
+                                        saveData.isFirstAuthorization,
+                                    isSecondAuthorization:
+                                        saveData.isSecondAuthorization,
+                                    isThirdAuthorization:
+                                        saveData.isThirdAuthorization,
+                                    isFourthAuthorization:
+                                        saveData.isFourthAuthorization,
+                                    signature: saveData.signature,
+                                },
                             },
-                        },
-                    };
-                });
-            },
-            error: (err) => {
-                console.log(err);
-            },
-        });
+                        };
+                    });
+                },
+                error: (err) => {
+                    console.log(err);
+                },
+            });
     }
 
     public onSubmitReview(): void {

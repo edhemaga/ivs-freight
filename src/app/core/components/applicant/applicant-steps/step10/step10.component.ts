@@ -27,7 +27,7 @@ import { SelectedMode } from '../../state/enum/selected-mode.enum';
 export class Step10Component implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
 
-    public selectedMode: string = SelectedMode.APPLICANT;
+    public selectedMode: string = SelectedMode.REVIEW;
 
     public disclosureReleaseForm: FormGroup;
 

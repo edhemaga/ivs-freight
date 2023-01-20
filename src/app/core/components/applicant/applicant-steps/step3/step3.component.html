@@ -307,11 +307,14 @@
                             <span class="required-star">*</span>
                         </p>
 
-                        <ng-container *ngIf="displayRadioRequiredNote">
-                            <p class="m-0 ta-font-semi-bold required">
-                                Required
-                            </p>
-                        </ng-container>
+                        <p
+                            class="m-0 ta-font-semi-bold required"
+                            [ngClass]="{
+                                'required-active': displayRadioRequiredNote
+                            }"
+                        >
+                            Required
+                        </p>
                     </div>
 
                     <div class="permit-radios-box">

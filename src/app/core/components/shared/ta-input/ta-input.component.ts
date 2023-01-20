@@ -548,7 +548,6 @@ export class TaInputComponent
     }
 
     public onKeyUp(event): void {
-        console.log(event.keyCode);
         if (
             event.keyCode == 8 &&
             !(this.inputConfig.isDropdown || this.inputConfig.dropdownLabel)

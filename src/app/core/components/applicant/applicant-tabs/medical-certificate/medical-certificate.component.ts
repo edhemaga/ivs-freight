@@ -32,7 +32,7 @@ import {
 export class MedicalCertificateComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
 
-    public selectedMode: string = SelectedMode.APPLICANT;
+    public selectedMode: string = SelectedMode.REVIEW;
 
     public isValidLoad: boolean;
 
@@ -130,7 +130,6 @@ export class MedicalCertificateComponent implements OnInit, OnDestroy {
     public patchStepValues(
         stepValues: MedicalCertificateFeedbackResponse
     ): void {
-        console.log('stepValues', stepValues);
         const { issueDate, expireDate, files, id } = stepValues;
 
         this.medicalCertificateId = id;
@@ -168,7 +167,6 @@ export class MedicalCertificateComponent implements OnInit, OnDestroy {
     }
 
     public onFilesAction(event: any): void {
-        console.log('event', event);
         this.documents = event.files;
 
         this.displayDocumentsRequiredNote = false;
@@ -339,8 +337,6 @@ export class MedicalCertificateComponent implements OnInit, OnDestroy {
             }),
         };
 
-        console.log('saveData', saveData);
-
         const selectMatchingBackendMethod = () => {
             if (
                 this.selectedMode === SelectedMode.APPLICANT &&
@@ -408,8 +404,6 @@ export class MedicalCertificateComponent implements OnInit, OnDestroy {
                 };
             }),
         };
-
-        console.log('saveData', saveData);
 
         const selectMatchingBackendMethod = () => {
             if (
