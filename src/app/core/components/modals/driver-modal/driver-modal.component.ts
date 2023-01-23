@@ -1174,8 +1174,6 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             tagsArray = null;
         }
 
-        console.log(tagsArray, 'TAGSARRAY')
-
         const newData: any = {
             ...form,
             dateOfBirth: convertDateToBackend(
