@@ -10,14 +10,17 @@ export class PayrollStoreService {
     payrollData = {
         payrollDriverCommissions: {
             title: 'Driver (Commission)',
+            short_title: 'Driver (%)',
             count: 'payrollDriverCommissionsCount',
         },
         payrollDriverMileages: {
             title: 'Driver (Miles)',
+            short_title: 'Driver (Miles)',
             count: 'payrollDriverMileagesCount',
         },
         payrollOwners: {
             title: 'Owner',
+            short_title: 'Owner',
             count: 'payrollOwnersCount',
         },
     };
@@ -26,6 +29,11 @@ export class PayrollStoreService {
         private payrollStore: PayrollStore,
         private ps: PayrollService
     ) {}
+
+
+    getPayrollOwnerOpenReport(id: number){
+        return this.ps.apiPayrollOwnerIdGet(id);
+    }
 
     getPayrollList() {
         return this.ps.apiPayrollListGet();
@@ -37,9 +45,12 @@ export class PayrollStoreService {
             if (this.payrollData[item]) {
                 payrollData.push({
                     title: this.payrollData[item].title,
+                    short_title: this.payrollData[item].short_title,
                     data: data[item].data,
                     count: data[this.payrollData[item].count],
-                    tableSettings: this.getTableDefinitions(this.payrollData[item].title)
+                    tableSettings: this.getTableDefinitions(
+                        this.payrollData[item].title
+                    ),
                 });
             }
         });
@@ -47,13 +58,13 @@ export class PayrollStoreService {
         this.payrollStore.set({ ...payrollData }); // NEVEROVATNO ALI SAMO OVAKO RADI :)
     }
 
-    getTableDefinitions(title){
-        switch(title){
-            case "Driver (Miles)":
+    getTableDefinitions(title) {
+        switch (title) {
+            case 'Driver (Miles)':
                 return driver_miles_table_settings;
-            case "Driver (Commission)":
+            case 'Driver (Commission)':
                 return driver_commision_table_settings;
-            case "Owner":
+            case 'Owner':
                 return owner_table_settings;
         }
     }

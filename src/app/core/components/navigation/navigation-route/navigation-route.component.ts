@@ -35,7 +35,7 @@ export class NavigationRouteComponent implements OnInit, OnChanges {
     @Input() files: number;
     @Input() class: string;
     @Input() closeDropdownOnNavClose: boolean;
-    @Input() activeLink: boolean = false;
+
     @Input() isSettingsPanelOpen: boolean = false;
     @Input() isUserPanelOpen: boolean = false;
     @Input() isActiveFooterRoute: boolean = false;
@@ -51,6 +51,7 @@ export class NavigationRouteComponent implements OnInit, OnChanges {
     @Output() itemIndex = new EventEmitter<Number>();
     @Output() hideSubrouteFromChild = new EventEmitter<boolean>();
     @Input() isLocalDropdownOpen: boolean = false;
+
     public activeRouteName: string;
     public activeRouteIdFromLocalStorage: number;
     public isNavItemHovered: boolean = false;
@@ -60,6 +61,17 @@ export class NavigationRouteComponent implements OnInit, OnChanges {
     public footerRouteActive: boolean;
     public footerHovered: boolean;
     public textSubRoute: string = '';
+
+    public _activeLink = undefined;
+    public activeLinkHighlight: boolean = false;
+
+    @Input() set activeLink(value) {
+        if (typeof this._activeLink == 'undefined' && value) {
+            this._activeLink = value;
+        } else if (typeof this._activeLink != 'undefined') {
+            this.activeLinkHighlight = value;
+        }
+    }
     showToolTip: boolean;
     routeId: string;
     public rHide: boolean = false;
