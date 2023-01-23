@@ -138,8 +138,17 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
                             break;
                         }
                         case 'info': {
+                            console.log('---res----', res);
+                            console.log('---res----', this.DetailsDataService.cdlId);
                             if (res.cdlStatus === 'New') {
-                                this.deactivateCdl(res.data.id);
+                                console.log('---res.data', res.data);
+                                this.deactivateCdl(res.data.id, res.data.data.id);
+                                if ( this.DetailsDataService.cdlId != res.data.id) {
+                                    setTimeout(()=>{
+                                        this.activateCdl(this.DetailsDataService.cdlId);
+                                    }, 1000);
+                                    
+                                }
                             } else {
                                 this.activateCdl(res.data.id);
                             }
@@ -489,9 +498,9 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
                 },
             });
     }
-    private deactivateCdl(id: number) {
+    private deactivateCdl(id: number, driverId: number) {
         this.cdlService
-            .deactivateCdlById(id)
+            .deactivateCdlById(id, driverId)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {},
@@ -515,6 +524,7 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
 
         switch (action) {
             case 'CDL': {
+                console.log('----here-----')
                 if (!this.arrayActiveCdl.includes(true)) {
                     this.modalService.openModal(
                         DriverCdlModalComponent,
@@ -522,6 +532,12 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
                         { id: this.driverId, type: 'new-licence' }
                     );
                 } else {
+                    this.modalService.openModal(
+                        DriverCdlModalComponent,
+                        { size: 'small' },
+                        { id: this.driverId, type: 'new-licence' }
+                    );
+                    /*
                     const data = {
                         ...this.driverObject,
                         data: {
@@ -553,6 +569,7 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
                             modalHeader: true,
                         }
                     );
+                    */
                 }
                 break;
             }

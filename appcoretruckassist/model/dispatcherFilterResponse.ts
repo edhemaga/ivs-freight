@@ -11,7 +11,9 @@
  */
 
 
-export interface GetAvailableCreditEFSQuery { 
-    integrationId?: number;
+export interface DispatcherFilterResponse { 
+    id?: number;
+    fullName?: string | null;
+    avatar?: string | null;
 }
 

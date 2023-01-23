@@ -42,7 +42,7 @@ import {
                 height: '*',
                 overflow: 'hidden',
                 opacity: 1,
-                'margin-left': '16px',
+                'margin-left': '12px',
                 'margin-right': '10px',
                 'padding-bottom': '11px',
                 'padding-top': '0px',
@@ -138,9 +138,13 @@ export class TaReCardComponent implements OnInit {
     }
 
     public sendData(data: any) {
-        console.log('--sendData function---');
+        console.log('--sendData function---', data);
         this.data = data;
         this.DetailsDataService.setCardMainTitle(this.cardNameCommon);
+        if ( this.mainData.id ){
+            this.DetailsDataService.setCdlId(this.mainData.id);
+        }
+        
         // api start after every click
         //this.dataDropDopwn.emit(data);
         if ( this.preloadData ) {

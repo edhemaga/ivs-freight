@@ -59,7 +59,7 @@ p {
 
 // Progress bar settings
 .settings-progress-container {
-    padding: 0 10px;
+    padding: 0 6px;
     padding-bottom: 16px;
     padding-top: 7px;
     .table-progress-cotnainer {
@@ -238,7 +238,7 @@ p {
         flex-direction: column;
         padding-top: 0px;
         padding-bottom: 4px;
-        padding-left: 10px;
+        padding-left: 6px;
         .single-item {
             display: flex;
             align-items: center;
@@ -317,7 +317,7 @@ p {
     grid-template-columns: 170px 152px;
     grid-row-gap: 6px;
     row-gap: 6px;
-    padding-left: 10px;
+    padding-left: 6px;
     margin-top: -6px;
     column-gap: 50px;
     .parking-template-item {
@@ -374,11 +374,11 @@ p {
         grid-column: 1 / -1;
     }
 }
-.payroll-template-data {
+.payroll-template-data { 
     display: grid;
     column-gap: 20px;
     row-gap: 12px;
-    padding: 0 10px;
+    padding: 0 6px;
     .payroll-template-item {
         display: flex;
         align-items: center;
@@ -412,7 +412,7 @@ p {
     }
 }
 .no-divider {
-    padding-bottom: 16px;
+    padding-bottom: 0px;
 }
 .copied {
     .basic-data-value {

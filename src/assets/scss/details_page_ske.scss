@@ -134,7 +134,7 @@ p {
     display: grid;
     grid-template-columns: 202px 202px;
     column-gap: 12px;
-    padding: 0 6px;
+    padding: 0 0px;
     .assignTo-vehicle {
         svg {
             width: 55px;
@@ -275,7 +275,7 @@ p {
     padding: 0 6px;
     .card-body-cdl {
         display: grid;
-        padding: 0 10px;
+        padding: 0 6px;
         .card-restriction-endorsment {
             display: grid;
             grid-template-columns: 110px 131px;
@@ -965,7 +965,7 @@ p {
     grid-template-columns: 130px 130px 130px;
     row-gap: 10px;
     column-gap: 10px;
-    padding: 0 10px;
+    padding: 0 4px;
     .mileage-template-item {
         display: flex;
         flex-direction: column;

@@ -45,6 +45,7 @@ export class ConfirmationModalComponent {
                 array: data.array.map((item) => item.id),
             });
         } else {
+            console.log('----data', data);
             this.confirmationDataSubject.sendConfirmationData(data);
         }
 
