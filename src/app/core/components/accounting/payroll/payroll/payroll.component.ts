@@ -38,6 +38,9 @@ export class PayrollComponent implements OnInit, AfterViewInit {
     mapingIndex: number = 0;
     payrollData: Observable<any>;
 
+    tableExpanded: boolean = true;
+    reportTableData: any = {};
+
     constructor(
         private driversActiveQuery: DriversActiveQuery,
         private driversInactiveQuery: DriversInactiveQuery,
@@ -49,6 +52,11 @@ export class PayrollComponent implements OnInit, AfterViewInit {
         setTimeout(() => {
             this.observTableContainer();
         }, 10);
+    }
+
+    expandTable(data: any){
+        this.reportTableData = data;
+        this.tableExpanded = !this.tableExpanded;
     }
 
     observTableContainer() {
@@ -167,6 +175,7 @@ export class PayrollComponent implements OnInit, AfterViewInit {
             toolbarActions: {
                 showMoneyFilter: true,
                 hideOpenModalButton: true,
+                hideWidth: true
             },
             actions: this.getTableActions(),
         };

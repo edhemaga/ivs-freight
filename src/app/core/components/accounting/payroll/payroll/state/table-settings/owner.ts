@@ -12,7 +12,8 @@ export const owner_table_settings = [
     {
         field: "PAYROLL",
         template: "normal-template",
-        data_field: "payrollNumber"
+        data_field: "payrollNumber",
+        hideNotExpanded: true
     },
     {
         field: "PERIOD",
@@ -22,22 +23,26 @@ export const owner_table_settings = [
     {
         field: "LOAD",
         template: "normal-template",
-        data_field: "loadsCount"
+        data_field: "loadsCount",
+        hideNotExpanded: true
     },
     {
         field: "REVENUE",
         hasBorder: "left",
         textAbove: "COMMISION",
-        template: "normal-template"
+        template: "normal-template",
+        hideNotExpanded: true
     },
     {
         field: "PAY",
         hasBorder: "right",
-        template: "normal-template"
+        template: "normal-template",
+        hideNotExpanded: true
     },
     {
         field: "SALARY",
-        template: "normal-template"
+        template: "normal-template",
+        hideNotExpanded: true
     },
     {
         field: "TOTAL",
