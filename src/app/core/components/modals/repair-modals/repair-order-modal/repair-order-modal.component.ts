@@ -92,6 +92,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
     public isFormDirty: boolean;
     public selectedRepairType: any = null;
     public addNewAfterSave: boolean = false;
+    public tags: any[] = [];
     private destroy$ = new Subject<void>();
 
     constructor(
@@ -624,6 +625,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
             note: [null],
             servicesHelper: [null],
             files: [null],
+            tags: [null],
         });
 
         this.formService.checkFormChange(this.repairOrderForm);
@@ -742,6 +744,8 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
 
                     // Repair Shops
                     this.labelsRepairShop = [...res.repairShops];
+
+                    this.tags = res.tags;
                 },
                 error: () => {},
             });
@@ -752,11 +756,22 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
             this.repairOrderForm.value;
 
         let documents = [];
+        let tagsArray = [];
         this.documents.map((item) => {
+            if (item.tagId?.length)
+                tagsArray.push({
+                    fileName: item.realFile.name,
+                    tagIds: item.tagId,
+                });
+
             if (item.realFile) {
                 documents.push(item.realFile);
             }
         });
+
+        if (!tagsArray.length) {
+            tagsArray = null;
+        }
 
         let newData: any = null;
 
@@ -782,6 +797,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                 }),
                 items: this.premmapedItems(),
                 files: documents,
+                tags: tagsArray,
             };
         } else {
             newData = {
@@ -814,6 +830,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                 }),
                 items: this.premmapedItems(),
                 files: documents,
+                tags: tagsArray,
             };
         }
 
