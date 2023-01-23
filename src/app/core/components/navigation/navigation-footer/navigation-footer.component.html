@@ -13,6 +13,9 @@
             [settingsRouteActivated]="settingsRouteActivated"
             [mouseOverMiddleNav]="mouseOverMiddleNav"
             [mouseOverFooter]="mouseOverFooter"
+            [selectedRoute]="selectedRoute"
+            [selectedSubRoute]="selectedSubRoute"
+            [subrouteContainerOpened]="subrouteContainerOpened"
         ></app-navigation-settings>
     </div>
     <div
@@ -34,26 +37,34 @@
         "
         [routerLink]="item.route"
         routerLinkActive="{{ ind !== 2 ? 'nav-footer-item-active' : '' }}"
+        (mouseenter)="showToolTip = true"
     >
+        <div
+            class="tooltip-right"
+            [ngClass]="{ 'hide-tooltip': isNavigationHovered }"
+            *ngIf="item.notification"
+        >
+            <app-tooltip-slide
+                [show]="showToolTip"
+                [name]="'Notifications'"
+            ></app-tooltip-slide>
+        </div>
         <div
             *ngIf="
                 !mouseOverMiddleNav &&
                 !mouseOverFooter &&
                 notificationsActive &&
-                item.notification
+                item.notification &&
+                !subrouteContainerOpened &&
+                !isSettingsPanelOpen
             "
             class="nav-item-active-box"
-            [ngClass]="{ 'nav-item-active-box-active': isNavigationHovered }"
+            [ngClass]="{
+                'nav-item-active-box-active': isNavigationHovered,
+                'animate-magic-line': isNavigationHovered
+            }"
         ></div>
-        <div
-            class="tooltip-right"
-            [ngClass]="{ 'hide-tooltip': isNavigationHovered }"
-        >
-            <app-tooltip-slide
-                [show]="showToolTip"
-                [name]="'Settings'"
-            ></app-tooltip-slide>
-        </div>
+
         <!-- <div
             class="tooltipholder"
             *ngIf="item.notification && !isNavigationHovered"
@@ -106,7 +117,14 @@
                             src="{{ item.image }}"
                             [ngClass]="{
                                 'active-img': notificationsActive,
-                                close: item.notification
+                                close: item.notification,
+                                'route-closed-nav-svg-not-active':
+                                    item.construction == true &&
+                                    !isNavigationHovered,
+
+                                'route-not-active-svg':
+                                    item.construction == true &&
+                                    isNavigationHovered
                             }"
                         >
                         </svg-icon>
@@ -134,7 +152,8 @@
                                     isNavigationHovered
                                 "
                                 [ngClass]="{
-                                    'active-route': notificationsActive
+                                    'active-route': notificationsActive,
+                                    'route-not-active': item.construction
                                 }"
                             >
                                 {{ item.text }}
@@ -210,6 +229,9 @@
             !isModalPanelOpen
         "
         class="magic-line-footer"
-        [ngClass]="{ 'magic-line-not-hovered': !isNavigationHovered }"
+        [ngClass]="{
+            'magic-line-not-hovered': !isNavigationHovered,
+            'animate-magic-line': isNavigationHovered
+        }"
     ></div>
 </div>

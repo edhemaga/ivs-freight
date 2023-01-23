@@ -1,23 +1,22 @@
 <div
     *ngIf="isNavItemHovered && isActiveSubroute && !route.isRouteActive"
     class="nav-item-hover"
-    [ngClass]="{ 'route-hover': isNavigationHovered }"
+    [ngClass]="{
+        'route-hover': isNavigationHovered
+    }"
 ></div>
 <div
     class="{{ class }}"
     class="nav-item"
     [ngClass]="{
-        'nav-width': isNavigationHovered
+        'nav-width': isNavigationHovered,
+        'nav-item-parent-active':
+            selectedRoute == route.name && !subrouteContainerOpened
     }"
     (mouseenter)="onNavItemHover(true); showToolTip = true"
     (mouseleave)="onNavItemHover(false); showToolTip = false"
-    (click)="onRouteAction(); routeIndex(index)"
+    (click)="onRouteAction(); routeIndex(route.id)"
 >
-    <!-- <div *ngIf="!isNavigationHovered" class="tooltip"></div> -->
-    <!-- <div class="tooltipholder" *ngIf="!isNavigationHovered">
-        <span class="tooltiptext"> {{ route.name }}</span>
-    </div> -->
-
     <div
         class="tooltip-right"
         [ngClass]="{ 'hide-tooltip': isNavigationHovered }"
@@ -54,7 +53,11 @@
                 closeDropdownOnNavClose &&
                 !isSettingsPanelOpen &&
                 !isUserPanelOpen,
-            'nav-item-svg-active': selectedRoute == route.name
+            'nav-item-svg-active': selectedRoute == route.name,
+            'route-not-active-svg':
+                route.construction == true && isNavigationHovered,
+            'route-closed-nav-svg-not-active':
+                route.construction == true && !isNavigationHovered
         }"
     ></svg-icon>
 
@@ -90,8 +93,11 @@
                     closeDropdownOnNavClose &&
                     !isSettingsPanelOpen &&
                     !isUserPanelOpen &&
-                    !settingsPage
+                    !settingsPage,
+
+                'route-not-active': route.construction == true
             }"
+            [@showHideDetails]="isNavigationHovered ? 'true' : 'false'"
         >
             {{ route.name }}
             <span
@@ -128,7 +134,8 @@
                     !isSettingsPanelOpen &&
                     !isUserPanelOpen,
 
-                'nav-item-arrow-first': route.id === 3
+                'nav-item-arrow-first': route.id === 3,
+                'nav-openend-svg': isNavigationHovered
             }"
             *ngIf="route.arrow && isNavigationHovered"
             src="{{ route.arrow }}"

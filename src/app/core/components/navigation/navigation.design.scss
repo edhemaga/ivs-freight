@@ -122,37 +122,3 @@ $notification: #e57373;
     }
 }
 // ------------ end
-// ------------ Tooltip design
-.tooltipholder {
-    position: absolute;
-    display: inline-block;
-    width: 36px;
-    height: 28px !important;
-    left: -7px;
-    z-index: 9999999;
-    .tooltiptext {
-        visibility: hidden;
-        width: max-content;
-        background-color: $nav-dark;
-        color: $nav-white;
-        text-align: center;
-        border-radius: 3px;
-        position: absolute;
-        z-index: 1;
-        opacity: 0;
-        transition: opacity 0.3s;
-        line-height: 18px;
-        font-size: 11px;
-        font-weight: $nav-font-semibold;
-        transition: opacity 0.4s;
-        padding: 2px 6px 2px 6px;
-        top: 4px;
-    }
-    &:hover {
-        .tooltiptext {
-            animation: moveToRight 0.1s normal forwards;
-            visibility: visible;
-            opacity: 1;
-        }
-    }
-}

@@ -67,7 +67,9 @@
             top: 4px;
             color: $nav-white;
         }
-
+        .route-not-active {
+            color: #787878;
+        }
         &:hover {
             transition: $nav-transition-5;
             color: $nav-text-color-hover;

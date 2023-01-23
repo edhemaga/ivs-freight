@@ -81,7 +81,7 @@ export class LoadStopComponent {
             this.isCardOpen = !this.isCardOpen;
 
             this.toggleEvent.emit(this.isCardOpen);
-        }
+        } 
     }
 
     public deleteStop() {

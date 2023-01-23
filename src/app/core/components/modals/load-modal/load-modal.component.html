@@ -542,10 +542,9 @@
                     <div class="stop-items-wrapper">
                         <app-ta-custom-card
                             [cardName]="'Item'"
-                            [isCardOpen]="true"
+                            [isCardOpen]="false"
                             [hasCounter]="2"
                             [hasActionSvg]="'assets/svg/common/ic_plus.svg'"
-                            [isCardOpen]="true"
                             [hasBodyData]="true"
                             [disableAnimation]="disableCardAnimation"
                             [animationMarginParams]="{
@@ -553,8 +552,22 @@
                                 marginBottom: '12px'
                             }"
                             (onActionEvent)="createNewRowInStopItems('pickup')"
+                            (onOpenCard)="showTableModal($event, 'pickup')"
                         >
-                            Tabel Pickup Component - Boki
+                            <app-table-modal
+                                *ngIf="tableModalOpen === 'pickup'"
+                                [columns]="modalColumns"
+                                [viewData]="modalViewData"
+                                [midSectionWidth]="341"
+                                [formGroup]="testControl"
+                                [modalScrollStyleOptions]="{
+                                    horizontalScrollBarMarginTop: 4,
+                                    horizontalScrollBarLeft: 0,
+                                    horizontalScrollBarWidth: 606,
+                                    additionalWidth: 265,
+                                    modalScrollClassActive: true
+                                }"
+                            ></app-table-modal>
                         </app-ta-custom-card>
                     </div>
                 </app-load-stop>
@@ -795,15 +808,20 @@
                                 <div class="stop-items-wrapper">
                                     <app-ta-custom-card
                                         [cardName]="'Item'"
-                                        [isCardOpen]="true"
+                                        [isCardOpen]="false"
                                         [hasCounter]="2"
                                         [hasActionSvg]="
                                             'assets/svg/common/ic_plus.svg'
                                         "
-                                        [isCardOpen]="true"
                                         [hasBodyData]="true"
                                         (onActionEvent)="
                                             createNewRowInStopItems(
+                                                'delivery'.indx
+                                            )
+                                        "
+                                        (onOpenCard)="
+                                            showTableModal(
+                                                $event,
                                                 'delivery'.indx
                                             )
                                         "
@@ -815,7 +833,23 @@
                                             marginBottom: '12px'
                                         }"
                                     >
-                                        Tabel Extra Stop Component - Boki
+                                        <app-table-modal
+                                            *ngIf="
+                                                tableModalOpen ===
+                                                'delivery'.indx
+                                            "
+                                            [columns]="modalColumns"
+                                            [viewData]="modalViewData"
+                                            [midSectionWidth]="341"
+                                            [formGroup]="testControl"
+                                            [modalScrollStyleOptions]="{
+                                                horizontalScrollBarMarginTop: 4,
+                                                horizontalScrollBarLeft: 0,
+                                                horizontalScrollBarWidth: 606,
+                                                additionalWidth: 265,
+                                                modalScrollClassActive: true
+                                            }"
+                                        ></app-table-modal>
                                     </app-ta-custom-card>
                                 </div>
                             </app-load-stop>
@@ -1004,10 +1038,9 @@
                     <div class="stop-items-wrapper">
                         <app-ta-custom-card
                             [cardName]="'Item'"
-                            [isCardOpen]="true"
+                            [isCardOpen]="false"
                             [hasCounter]="2"
                             [hasActionSvg]="'assets/svg/common/ic_plus.svg'"
-                            [isCardOpen]="true"
                             [hasBodyData]="true"
                             [disableAnimation]="disableCardAnimation"
                             [animationMarginParams]="{
@@ -1017,8 +1050,22 @@
                             (onActionEvent)="
                                 createNewRowInStopItems('delivery')
                             "
+                            (onOpenCard)="showTableModal($event, 'delivery')"
                         >
-                            Tabel Delivery Component - Boki
+                            <app-table-modal
+                                *ngIf="tableModalOpen === 'delivery'"
+                                [columns]="modalColumns"
+                                [viewData]="modalViewData"
+                                [midSectionWidth]="341"
+                                [formGroup]="testControl"
+                                [modalScrollStyleOptions]="{
+                                    horizontalScrollBarMarginTop: 4,
+                                    horizontalScrollBarLeft: 0,
+                                    horizontalScrollBarWidth: 606,
+                                    additionalWidth: 265,
+                                    modalScrollClassActive: true
+                                }"
+                            ></app-table-modal>
                         </app-ta-custom-card>
                     </div>
                 </app-load-stop>

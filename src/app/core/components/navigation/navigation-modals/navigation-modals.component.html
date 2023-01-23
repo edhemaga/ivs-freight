@@ -5,21 +5,18 @@
         (click)="onAction('Close Panel')"
         class="modal-nav-close"
     >
-    <p class="modal-nav-close-text">
-        Add New
-    </p>
+        <p class="modal-nav-close-text">Add New</p>
         <svg-icon
             class="modal-nav-close-svg"
             src="assets/svg/common/ic_x.svg"
         ></svg-icon>
-       
     </div>
 
     <div class="modal-nav-content">
         <p class="modal-nav-header">GENERAL <span></span></p>
         <div class="modal-nav-routes">
-
-            <p  class="ta-font-regular"
+            <p
+                class="ta-font-regular modal-item"
                 *ngFor="
                     let item of generalNavigationData;
                     let ind = index;
@@ -29,14 +26,14 @@
             >
                 {{ item.name }}
             </p>
-
         </div>
     </div>
 
     <div class="modal-nav-content">
         <p class="modal-nav-header">TOOLS <span></span></p>
         <div class="modal-nav-routes">
-            <p class="ta-font-regular"
+            <p
+                class="ta-font-regular"
                 *ngFor="
                     let item of toolsNavigationData;
                     let ind = index;
@@ -52,7 +49,8 @@
     <div class="modal-nav-content">
         <p class="modal-nav-header">REPAIR <span></span></p>
         <div class="modal-nav-routes">
-            <p class="ta-font-regular"
+            <p
+                class="ta-font-regular"
                 *ngFor="
                     let item of repairNavigationData;
                     let ind = index;
@@ -68,7 +66,8 @@
     <div class="modal-nav-content">
         <p class="modal-nav-header">FUEL <span></span></p>
         <div class="modal-nav-routes">
-            <p class="ta-font-regular"
+            <p
+                class="ta-font-regular"
                 *ngFor="
                     let item of fuelNavigationData;
                     let ind = index;
@@ -84,7 +83,8 @@
     <div class="modal-nav-content">
         <p class="modal-nav-header">SAFETY <span></span></p>
         <div class="modal-nav-routes">
-            <p class="ta-font-regular"
+            <p
+                class="ta-font-regular"
                 *ngFor="
                     let item of safetyNavigationData;
                     let ind = index;
@@ -100,7 +100,8 @@
     <div class="modal-nav-content">
         <p class="modal-nav-header">ACCOUNTING <span></span></p>
         <div class="modal-nav-routes">
-            <p class="ta-font-regular"
+            <p
+                class="ta-font-regular"
                 *ngFor="
                     let item of accountingNavigationData;
                     let ind = index;

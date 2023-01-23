@@ -47,9 +47,11 @@ export class NavigationComponent implements OnInit, OnDestroy {
     public footerRouteActive: boolean = true;
     private destroy$ = new Subject<void>();
     public subrouteContainerOpened: boolean = false;
+    public index: number;
     closeDropdownOnNavClose: boolean;
     @ViewChild('navbar') navbar: ElementRef;
     selectedRoute: string = '';
+    selectedSubRoute: string = '';
     companiesExists: boolean;
     routeIndexSelected: boolean;
     constructor(
@@ -59,17 +61,7 @@ export class NavigationComponent implements OnInit, OnDestroy {
         private DetailsDataService: DetailsDataService,
         private activatedRoute: ActivatedRoute
     ) {}
-    oneUserCompany($event) {
-        this.companiesExists = $event;
-        this.cdRef.detectChanges();
-    }
-    routeIndex($event) {
-        this.routeIndexSelected = $event;
-    }
-    test(test) {
-        console.log(test);
-        this.subrouteContainerOpened = test;
-    }
+
     ngOnInit(): void {
         this.navigationService.getValueNavHovered().subscribe((value) => {
             this.middleIsHovered = value;
@@ -142,8 +134,41 @@ export class NavigationComponent implements OnInit, OnDestroy {
                 if (url.url === '/dispatcher') {
                     this.selectedRoute = 'Dispatch';
                     this.cdRef.detectChanges();
+                } else if (url.url === '/file-manager') {
+                    this.selectedRoute = 'File Manager';
+                    this.cdRef.detectChanges();
                 } else {
                     let ruteName = url.url.split('/');
+                    if (ruteName[2]) {
+                        if (ruteName[2] == 'sms') {
+                            this.selectedSubRoute = 'SMS';
+                            this.cdRef.detectChanges();
+                        } else if (ruteName[2] == 'todo') {
+                            this.selectedSubRoute = 'To-Do';
+                            this.cdRef.detectChanges();
+                        } else if (ruteName[2] == 'scheduled-insurance') {
+                            this.selectedSubRoute = 'Scheduled Ins.';
+                            this.cdRef.detectChanges();
+                        } else if (ruteName[2] == 'mvr') {
+                            this.selectedSubRoute = 'MVR';
+                            this.cdRef.detectChanges();
+                        } else if (ruteName[2] == 'mvr') {
+                            this.selectedSubRoute = 'MVR';
+                            this.cdRef.detectChanges();
+                        } else if (ruteName[2] == 'pm') {
+                            this.selectedSubRoute = 'PM';
+                            this.cdRef.detectChanges();
+                        } else if (ruteName[2] == 'ifta') {
+                            this.selectedSubRoute = 'IFTA';
+                            this.cdRef.detectChanges();
+                        } else {
+                            let t =
+                                ruteName[2].charAt(0).toUpperCase() +
+                                ruteName[2].substr(1).toLowerCase();
+                            this.selectedSubRoute = t;
+                            this.cdRef.detectChanges();
+                        }
+                    }
                     let t =
                         ruteName[1].charAt(0).toUpperCase() +
                         ruteName[1].substr(1).toLowerCase();
@@ -151,6 +176,31 @@ export class NavigationComponent implements OnInit, OnDestroy {
                     this.cdRef.detectChanges();
                 }
             });
+    }
+    getIndex(ind) {
+        this.index = ind;
+        // console.log(
+        //     this.navigation,
+        //     this.isNavigationHovered,
+        //     this.closeDropdownOnNavClose,
+        //     this.isModalPanelOpen,
+        //     this.isUserPanelOpen,
+        //     this.isSettingsPanelOpen,
+        //     this.isUserCompanyDetailsOpen
+        // );
+        // console.log(this.navigation, 'asasfasff');
+    }
+    oneUserCompany($event) {
+        this.companiesExists = $event;
+        this.cdRef.detectChanges();
+    }
+    routeIndex($event) {
+        this.routeIndexSelected = $event;
+        this.cdRef.detectChanges();
+    }
+    isSubrouteContainerOpen(event) {
+        this.subrouteContainerOpened = event;
+        this.cdRef.detectChanges();
     }
     //Midle navigation hovered hide magic line in footer nav
     onMidleNavHover(event) {
@@ -192,6 +242,7 @@ export class NavigationComponent implements OnInit, OnDestroy {
         ) {
             //If this elements close navigation
             if (
+                event.target.classList.contains('modal-item') ||
                 event.target.classList.contains('tooltip-notifications') ||
                 event.target.classList.contains('open-navigation') ||
                 event.target.classList.contains('notification-svg ') ||

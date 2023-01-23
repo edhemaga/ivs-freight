@@ -3,8 +3,10 @@ import {
     Component,
     EventEmitter,
     Input,
+    OnChanges,
     OnInit,
     Output,
+    SimpleChanges,
 } from '@angular/core';
 import { Router } from '@angular/router';
 import { settings } from '../model/navigation-data';
@@ -24,7 +26,7 @@ import { NavigationService } from '../services/navigation.service';
         DropDownAnimation,
     ],
 })
-export class NavigationSettingsComponent implements OnInit {
+export class NavigationSettingsComponent implements OnInit, OnChanges {
     @Input() isNavigationHovered: boolean = false;
     @Input() isUserPanelOpen: boolean = false;
     @Input() isSettingsPanelOpen = false;
@@ -32,13 +34,19 @@ export class NavigationSettingsComponent implements OnInit {
     @Input() isActiveFooterRouteClick: boolean = false;
     @Input() mouseOverMiddleNav: boolean = false;
     @Input() mouseOverFooter: boolean = false;
+    @Input() subrouteContainerOpened: boolean = false;
+    @Input() selectedRoute: string;
+    @Input() selectedSubRoute: string;
     @Output() activatedSettingsRoute = new EventEmitter<any>();
     public footer: FooterData[] = settings;
+    public showToolTip: boolean;
     constructor(
         private router: Router,
         private navigationService: NavigationService
     ) {}
-
+    ngOnChanges(changes: SimpleChanges): void {
+        // console.log(this.selectedSubRoute, this.selectedRoute);
+    }
     ngOnInit(): void {
         this.navigationService.navigationDropdownActivation$.subscribe(
             (res) => {
@@ -70,16 +78,6 @@ export class NavigationSettingsComponent implements OnInit {
         });
     }
     public changeRouteSettings(subroute: Settings): void {
-        console.log(subroute.route);
-        if (
-            subroute.route === '/integration' ||
-            subroute.route === '/billing' ||
-            subroute.route === '/training-material' ||
-            subroute.route === '/custom-agreement'
-        ) {
-            this.router.navigate(['under-construction']);
-        } else {
-            this.router.navigate([`/settings${subroute.route}`]);
-        }
+        this.router.navigate([`/settings${subroute.route}`]);
     }
 }

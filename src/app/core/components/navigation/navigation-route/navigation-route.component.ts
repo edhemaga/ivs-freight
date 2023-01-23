@@ -8,6 +8,7 @@ import {
     EventEmitter,
     OnInit,
     SimpleChanges,
+    OnChanges,
 } from '@angular/core';
 import {
     navigation_magic_line,
@@ -25,7 +26,7 @@ import { NavigationService } from '../services/navigation.service';
         navigation_magic_line('magicLine'),
     ],
 })
-export class NavigationRouteComponent implements OnInit {
+export class NavigationRouteComponent implements OnInit, OnChanges {
     @Input() route: Navigation;
     @Input() isNavigationHovered: boolean = false;
     @Input() isActiveSubroute: boolean = false;
@@ -38,8 +39,11 @@ export class NavigationRouteComponent implements OnInit {
     @Input() isUserPanelOpen: boolean = false;
     @Input() isActiveFooterRoute: boolean = false;
     @Input() index: number;
+    @Input() ind: number;
     @Input() middleIsHovered: boolean = false;
     @Input() selectedRoute: string = '';
+    @Input() selectedSubRoute: string = '';
+    @Input() subrouteContainerOpened: boolean = false;
 
     @Output() onRouteEvent = new EventEmitter<NavigationSubRoutes>();
     @Output() itemIndex = new EventEmitter<Number>();
@@ -51,27 +55,16 @@ export class NavigationRouteComponent implements OnInit {
     public arrowHovered: boolean;
     public footerRouteActive: boolean;
     public footerHovered: boolean;
+    public textSubRoute: string = '';
     showToolTip: boolean;
     routeId: string;
+    hide: number;
     // routeName: string;
     constructor(
         public router: Router,
         public navigationService: NavigationService,
         public activatedroute: ActivatedRoute
     ) {}
-    routeIndex(ind) {
-        // this.itemIndex.emit(ind);
-    }
-    //Get subroute name
-    ngOnChanges(changes: SimpleChanges) {
-        let router = StaticInjectorService.Injector.get(Router);
-        let n = router.url.split('/');
-        if (n[2]) {
-            this.activeRouteName = n[2];
-        } else {
-            this.activeRouteName = n[1];
-        }
-    }
 
     ngOnInit() {
         this.timeout = setTimeout(() => {
@@ -88,6 +81,28 @@ export class NavigationRouteComponent implements OnInit {
         //     console.log(val.urlAfterRedirects);
         // });
     }
+    routeIndex(ind) {
+        this.hide = ind;
+        console.log(this.hide === this.activeRouteIdFromLocalStorage);
+    }
+    //Get subroute name
+    ngOnChanges(changes: SimpleChanges) {
+        // console.log(this.ind, this.index);
+
+        this.textSubRoute = this.selectedSubRoute;
+        this.activeRouteIdFromLocalStorage = parseInt(
+            localStorage.getItem('subroute_active')
+        );
+
+        let router = StaticInjectorService.Injector.get(Router);
+        let n = router.url.split('/');
+        if (n[2]) {
+            this.activeRouteName = n[2];
+        } else {
+            this.activeRouteName = n[1];
+        }
+    }
+
     //Arrow clicked open link in new window
     public openLinkInNewWindow(item) {
         window.open(item, '_blank');
