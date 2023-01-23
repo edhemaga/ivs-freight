@@ -105,7 +105,7 @@ export class ShipperDetailsComponent implements OnInit, OnDestroy {
                         this.newShipperId = res.id;
                         this.shipperConf(res);
                         this.router.navigate([
-                            `/customer/${res.id}/shipper-details`,
+                            `/list/customer/${res.id}/shipper-details`,
                         ]);
                         this.cdRef.detectChanges();
                     },
@@ -218,14 +218,14 @@ export class ShipperDetailsComponent implements OnInit, OnDestroy {
                 next: () => {
                     if (this.shipperMinimalStore.getValue().ids.length >= 1) {
                         this.router.navigate([
-                            `/customer/${
+                            `/list/customer/${
                                 this.shipperList[this.currentIndex].id
                             }/shipper-details`,
                         ]);
                     }
                 },
                 error: () => {
-                    this.router.navigate(['/customer']);
+                    this.router.navigate(['/list/customer']);
                 },
             });
     }

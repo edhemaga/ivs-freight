@@ -11,10 +11,9 @@
  */
 
 
-export type ApiCategory = 'EFSFUEL' | 'ACCIDENTVIOLATION';
-
-export const ApiCategory = {
-    Efsfuel: 'EFSFUEL' as ApiCategory,
-    Accidentviolation: 'ACCIDENTVIOLATION' as ApiCategory
-};
+export interface RepairCategoryFilterResponse { 
+    id?: number;
+    name?: string | null;
+    logo?: string | null;
+}
 
