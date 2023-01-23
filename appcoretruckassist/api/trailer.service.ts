@@ -31,7 +31,7 @@ import { ProblemDetails } from '../model/problemDetails';
 // @ts-ignore
 import { TrailerAutocompleteModelResponse } from '../model/trailerAutocompleteModelResponse';
 // @ts-ignore
-import { TrailerFilterResponse } from '../model/trailerFilterResponse';
+import { TrailerFilterListResponse } from '../model/trailerFilterListResponse';
 // @ts-ignore
 import { TrailerListResponse } from '../model/trailerListResponse';
 // @ts-ignore
@@ -398,9 +398,9 @@ export class TrailerService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiTrailerFilterGet(active?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<Array<TrailerFilterResponse>>;
-    public apiTrailerFilterGet(active?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<Array<TrailerFilterResponse>>>;
-    public apiTrailerFilterGet(active?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<Array<TrailerFilterResponse>>>;
+    public apiTrailerFilterGet(active?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<TrailerFilterListResponse>;
+    public apiTrailerFilterGet(active?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<TrailerFilterListResponse>>;
+    public apiTrailerFilterGet(active?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<TrailerFilterListResponse>>;
     public apiTrailerFilterGet(active?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
@@ -478,7 +478,7 @@ export class TrailerService {
         }
 
         let localVarPath = `/api/trailer/filter`;
-        return this.httpClient.request<Array<TrailerFilterResponse>>('get', `${this.configuration.basePath}${localVarPath}`,
+        return this.httpClient.request<TrailerFilterListResponse>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 params: localVarQueryParameters,

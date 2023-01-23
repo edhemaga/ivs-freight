@@ -393,6 +393,10 @@ export class TruckTService implements OnDestroy {
         return this.truckService.apiTruckAutocompleteModelModelGet(model);
     }
 
+    public getFuelConsumption(id: number, chartType: number) {
+        return this.truckService.apiTruckFuelconsumptionGet(id, chartType);
+    }
+
     ngOnDestroy(): void {
         this.destroy$.next();
         this.destroy$.complete();

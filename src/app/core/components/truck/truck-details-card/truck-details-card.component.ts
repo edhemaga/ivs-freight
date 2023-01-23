@@ -500,8 +500,19 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe((item) => {
                 this.truck = item;
+                this.getFuelChartData(id);
             });
     }
+
+    public getFuelChartData(id: number) {
+        this.truckService
+            .getFuelConsumption(id, 1)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((item) => {
+                console.log(item, 'itemmm')
+            });
+    }
+
     /**Function for dots in cards */
     public initTableOptions(): void {
         this.dataEdit = {

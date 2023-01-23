@@ -11,11 +11,8 @@
  */
 
 
-export interface CompanyShortResponse { 
-    id?: number;
-    companyName?: string | null;
-    logo?: string | null;
-    isDivision?: boolean;
-    isActive?: boolean;
+export interface TruckPerformanceResponse { 
+    mileage?: number;
+    fuelCost?: number;
 }
 

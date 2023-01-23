@@ -11,11 +11,11 @@
  */
 
 
-export interface CompanyShortResponse { 
-    id?: number;
-    companyName?: string | null;
-    logo?: string | null;
-    isDivision?: boolean;
-    isActive?: boolean;
+export interface TruckFuelConsumptionChartResponse { 
+    milesPerGallon?: number | null;
+    costPerGallon?: number | null;
+    day?: number | null;
+    month?: number | null;
+    year?: number | null;
 }
 
