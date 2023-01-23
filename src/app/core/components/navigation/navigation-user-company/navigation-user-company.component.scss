@@ -10,10 +10,8 @@
     background-color: $nav-transparent;
     box-shadow: $nav-boxshadow;
     position: relative;
-    // bottom: 18px;
-    // left: 18px;
+    height: fit-content;
     z-index: 99;
-
     padding: 4px;
 
     p {
@@ -72,7 +70,7 @@
             .user-company-header-text {
                 font-weight: $nav-font-bold;
                 color: $nav-white;
-                margin-left: 6px;
+                margin-left: 3px;
                 -webkit-user-select: none;
                 -moz-user-select: none;
                 -ms-user-select: none;
@@ -94,7 +92,7 @@
     }
 
     .user-company-content {
-        padding: 5px 14px 5px 8px;
+        padding: 5px 14px 5px 0px;
         width: 100%;
         cursor: pointer;
         .user-company-text {
@@ -108,17 +106,20 @@
             -moz-user-select: none;
             -ms-user-select: none;
             user-select: none;
+            padding-left: 24px;
         }
-
+        span {
+            margin-left: 12px;
+        }
         .user-company-text-active {
             color: $nav-white !important;
             font-weight: $nav-font-bold;
-            padding-left: 10px;
+            // padding-left: 10px;
             svg {
                 height: 20px;
                 width: 20px;
-                position: relative;
-                left: -10px;
+                position: absolute;
+                left: 11px;
                 path {
                     fill: $nav-active-lighter;
                 }

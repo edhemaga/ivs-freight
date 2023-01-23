@@ -1,4 +1,4 @@
-<div class="load-stop-container" [ngClass]="{ active: isCardOpen }">
+<div class="load-stop-container {{ state }}" [ngClass]="{ active: isCardOpen }">
     <div
         class="load-stop-header-bar"
         [ngClass]="{
@@ -18,8 +18,9 @@
             class="load-stop-header-content"
             [ngClass]="{ 'extra-stop': !firstOrLast && !shipper }"
         >
+            <!-- Number Of Stop -->
             <div
-                *ngIf="!shipper"
+                *ngIf="!shipper && state !== 'invalid'"
                 class="origin-destination-no-filled-container"
             >
                 <p>
@@ -33,7 +34,24 @@
                     <span>*</span>
                 </p>
             </div>
+
+            <!-- Shipper, Address -->
             <div class="load-stop-inner-content">
+                <div
+                    *ngIf="!shipper && state === 'invalid'"
+                    class="load-stop-content-up load-stop-content-up-name"
+                >
+                    <p [ngStyle]="{ color: '#F44336' }">Required</p>
+                </div>
+                <div
+                    *ngIf="!shipperAddress && state === 'invalid'"
+                    class="load-stop-content-down"
+                >
+                    <p [ngStyle]="{ color: '#EF5350' }">
+                        Fill all necessary fields
+                    </p>
+                </div>
+
                 <div
                     *ngIf="shipper"
                     class="load-stop-content-up load-stop-content-up-name"
@@ -45,7 +63,22 @@
                 </div>
             </div>
 
+            <!-- Date, Time -->
             <div class="load-stop-inner-content">
+                <div
+                    *ngIf="!dateRange && state === 'invalid'"
+                    class="load-stop-content-up load-stop-content-up-name"
+                >
+                    <p [ngStyle]="{ color: '#F44336' }">Required</p>
+                </div>
+                <div
+                    *ngIf="!timeRange && state === 'invalid'"
+                    class="load-stop-content-down"
+                >
+                    <p [ngStyle]="{ color: '#EF5350' }">
+                        Fill all necessary fields
+                    </p>
+                </div>
                 <div
                     *ngIf="dateRange"
                     class="load-stop-content-up load-stop-content-up-datetime"
@@ -57,6 +90,7 @@
                 </div>
             </div>
 
+            <!-- Leg, Deadhead, Shipper Contact -->
             <div class="load-stop-inner-content">
                 <div
                     *ngIf="legMile"
@@ -64,7 +98,7 @@
                 >
                     <p>
                         {{ isEmptyLoad ? 'DEADHEAD' : 'LEG' }}
-                        <span>{{ legMile | number: '1.2-2' }} mi</span>
+                        <span>{{ legMile | number : '1.2-2' }} mi</span>
                     </p>
                 </div>
                 <div
@@ -75,6 +109,7 @@
                         [src]="
                             'assets/svg/common/load/ic_load_shipper_contact_avatar.svg'
                         "
+                        class="shipperContact-avatar"
                     ></svg-icon>
                     <p>{{ shipperContact?.fullName }}</p>
                 </div>

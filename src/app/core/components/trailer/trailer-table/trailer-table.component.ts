@@ -13,7 +13,6 @@ import { TrailerInactiveState } from '../state/trailer-inactive-state/trailer-in
 import { TrailerTService } from '../state/trailer.service';
 import { TaThousandSeparatorPipe } from '../../../pipes/taThousandSeparator.pipe';
 import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
-import { NotificationService } from '../../../services/notification/notification.service';
 import {
     closeAnimationAction,
     tableSearch,
@@ -117,7 +116,7 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
                             c.title ===
                             response.columns[response.event.index].title
                         ) {
-                            console.log('Radi resize')
+                            console.log('Radi resize');
                             c.width = response.event.width;
                         }
 
@@ -461,8 +460,8 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 ? this.datePipe.transform(data.purchaseDate, 'MM/dd/yy')
                 : '',
             tablePurchasePrice: data?.purchasePrice
-            ? '$' + this.thousandSeparator.transform(data.purchasePrice)
-            : '',
+                ? '$' + this.thousandSeparator.transform(data.purchasePrice)
+                : '',
             tableTerminated: 'Nema taj podatak sa back-a',
             tableAdded: data.createdAt
                 ? this.datePipe.transform(data.createdAt, 'MM/dd/yy')
@@ -668,10 +667,7 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.trailerService
             .changeTrailerStatus(id, this.selectedTab)
             .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {},
-                error: () => {},
-            });
+            .subscribe();
     }
 
     private deleteTrailerById(id: number) {

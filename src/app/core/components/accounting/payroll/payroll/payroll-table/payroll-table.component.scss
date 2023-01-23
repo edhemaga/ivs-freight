@@ -1,0 +1,131 @@
+.payroll-table-main {
+    table {
+        width: 100%;
+
+        thead {
+            th {
+                height: 50px;
+                padding-left: 4px;
+
+                font-size: 14px;
+                font-weight: 700;
+                color: #2f2f2f;
+
+                .thead-box {
+                    position: relative;
+                    display: flex;
+                    flex-direction: column;
+                    height: 100%;
+                    justify-content: space-between;
+                    padding-bottom: 7px;
+
+                    .field-subtitle {
+                        font-size: 11px;
+                    }
+
+                    .thead-border {
+                        position: absolute;
+                        left: -10px;
+                        height: 36px;
+                        top: 50%;
+                        width: 2px;
+                        border-radius: 1px;
+                        background-color: #cccccc;
+
+                        transform: translateY(calc(-50% - 3px));
+
+                        &.right {
+                            left: auto;
+                            right: 10px;
+                        }
+                    }
+                }
+            }
+        }
+
+        tbody {
+            tr {
+                td {
+                    padding: 1px 0;
+                    font-size: 14px;
+
+                    .table-box {
+                        display: flex;
+                        align-items: center;
+                        height: 34px;
+                        background-color: #ffffff;
+
+                        .table-hold-box {
+                            width: 100%;
+                            display: flex;
+                            align-items: center;
+                            height: 26px;
+                            padding-left: 4px;
+                        }
+                    }
+
+                    &:first-child {
+                        .table-box,
+                        .table-hold-box {
+                            border-radius: 3px 0 0 3px;
+
+                            &:not(.table-box) {
+                                margin-left: 4px;
+                            }
+                        }
+                    }
+
+                    &:last-child {
+                        .table-box,
+                        .table-hold-box {
+                            border-radius: 0 3px 3px 0;
+
+                            &:not(.table-box) {
+                                margin-right: 4px;
+                            }
+                        }
+                    }
+                }
+
+                &:hover {
+                    td {
+                        .table-box {
+                            .table-hold-box {
+                                background-color: #eeeeee;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    // Payroll templates
+
+    .status-template {
+        align-items: center;
+        svg-icon {
+            display: flex;
+            margin-right: 4px;
+
+            svg {
+                width: 18px;
+                height: 18px;
+
+                path {
+                    fill: #ef5350;
+                }
+            }
+        }
+
+        span {
+            font-size: 11px;
+            font-weight: 700;
+            color: #ef5350;
+        }
+    }
+
+    .bold-normal-template {
+        font-weight: 700;
+    }
+}

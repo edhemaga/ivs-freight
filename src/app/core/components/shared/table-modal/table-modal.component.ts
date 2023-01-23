@@ -7,16 +7,18 @@ import {
     SimpleChanges,
 } from '@angular/core';
 import { FormGroup } from '@angular/forms';
+import { OnDestroy } from '@angular/core';
 
 @Component({
     selector: 'app-table-modal',
     templateUrl: './table-modal.component.html',
     styleUrls: ['./table-modal.component.scss'],
 })
-export class TableModalComponent implements OnInit, OnChanges {
+export class TableModalComponent implements OnInit, OnChanges, OnDestroy {
     @Input() columns: any[];
     @Input() viewData: any[];
     @Input() midSectionWidth: number;
+    @Input() modalScrollStyleOptions: any;
     @Input() formGroup: FormGroup;
 
     tableFixedColumns: any[] = [];
@@ -25,10 +27,12 @@ export class TableModalComponent implements OnInit, OnChanges {
 
     constructor() {}
 
+    // --------------------------------NgOnInit---------------------------------
     ngOnInit(): void {
         this.setHeadColumns();
     }
 
+    // --------------------------------NgOnChanges---------------------------------
     ngOnChanges(changes: SimpleChanges): void {
         if (changes?.columns && !changes?.columns?.firstChange) {
             this.columns = changes.columns.currentValue;
@@ -37,6 +41,7 @@ export class TableModalComponent implements OnInit, OnChanges {
         }
     }
 
+    // Set Head Columns
     setHeadColumns() {
         this.tableFixedColumns = [];
         this.tableScrollableColumns = [];
@@ -65,36 +70,89 @@ export class TableModalComponent implements OnInit, OnChanges {
         });
     }
 
-    onFocusInput(column: any, i: number, j: number) {
-        column.columnFocusId = column.title + ' ' + i + ' ' + j;
+    // Focus Input
+    onFocusInput(column: any, i: number, j: number, tableSections: string) {
+        let tableColumns = [];
+        // FOCUS ON CURRENT SELECTED INPUT
+        tableSections === 'scrollable'
+            ? (tableColumns = this.tableScrollableColumns)
+            : (tableColumns = this.tableFixedColumns);
+
+        tableColumns = tableColumns.map((c) => {
+            if (c.title === column.title) {
+                c.columnFocusId =
+                    c.title + ' ' + i + ' ' + j + ' ' + tableSections;
+            } else {
+                c.columnFocusId = '';
+            }
+
+            return c;
+        });
+
+        tableSections === 'scrollable'
+            ? (this.tableScrollableColumns = [...tableColumns])
+            : (this.tableFixedColumns = [...tableColumns]);
+
+        // REMOVE FOCUS FROME PREVIOUS INPUT
+        tableSections === 'scrollable'
+            ? (tableColumns = this.tableFixedColumns)
+            : (tableColumns = this.tableScrollableColumns);
+
+        tableColumns = tableColumns.map((c) => {
+            c.columnFocusId = '';
+
+            return c;
+        });
+
+        tableSections === 'scrollable'
+            ? (this.tableFixedColumns = [...tableColumns])
+            : (this.tableScrollableColumns = [...tableColumns]);
     }
 
     // Reorder
     onReorder(event: CdkDragDrop<any>) {
-        // let previousIndex: number = null,
-        //     currentIndex: number = null;
+        let previousIndex: number = null,
+            currentIndex: number = null;
 
-        // this.columns.map((c, i) => { 
-        //     if (this.notPinedColumns[event.previousIndex].field === c.field) {
-        //         previousIndex = i;
-        //     }
+        this.columns.map((c, i) => {
+            if (
+                this.tableScrollableColumns[event.previousIndex].field ===
+                c.field
+            ) {
+                previousIndex = i;
+            }
 
-        //     if (this.notPinedColumns[event.currentIndex].field === c.field) {
-        //         currentIndex = i;
-        //     }
-        // });
+            if (
+                this.tableScrollableColumns[event.currentIndex].field ===
+                c.field
+            ) {
+                currentIndex = i;
+            }
+        });
 
-        // let column: any[] = this.columns.splice(previousIndex, 1);
+        let column: any[] = this.columns.splice(previousIndex, 1);
 
-        // this.columns.splice(currentIndex, 0, column[0]);
+        this.columns.splice(currentIndex, 0, column[0]);
 
-        // localStorage.setItem(
-        //     `table-${this.tableConfigurationType}-Configuration`,
-        //     JSON.stringify(this.columns)
-        // );
-
-        // this.tableService.sendColumnsOrder({ columnsOrder: this.columns });
-
-        // this.setVisibleColumns();
+        this.setHeadColumns();
     }
+
+    // Horizontal Scroll
+    onHorizontalScroll(scrollEvent: any) {
+        if (scrollEvent.eventAction === 'scrolling') {
+            document
+                .querySelectorAll('#table-modal-scroll-columns-container')
+                .forEach((el) => {
+                    el.scrollLeft = scrollEvent.scrollPosition;
+                });
+        }
+    }
+
+    // Delete Row
+    onDeleteRow(index: number) {
+        this.viewData.splice(index, 1);
+    }
+
+    // --------------------------------NgOnDestroy---------------------------------
+    ngOnDestroy() {}
 }

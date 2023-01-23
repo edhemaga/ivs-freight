@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { EntityState, EntityStore, StoreConfig } from '@datorama/akita';
-//import { PayrollListResponse } from 'appcoretruckassist';
 
 export interface PayrollState extends EntityState<any, string> {}
 

@@ -1,22 +1,42 @@
+<!-- item.name == selectedRoute -->
 <div
     class="holder"
     (click)="onUserPanelClose()"
     [ngClass]="{
-        'active-link': isActiveFooterRouteClick || settingsRouteActivated
+        'active-link': selectedRoute == 'Settings',
+        'nav-width': isNavigationHovered
     }"
 >
     <div
-        *ngIf="!isNavigationHovered"
-        class="tooltip"
-        ngbTooltip
-        mainTooltip="Settings"
-        tooltipBackground="#2F2F2F"
-        position="right"
+        *ngIf="
+            selectedRoute == 'Settings' &&
+            !mouseOverMiddleNav &&
+            !mouseOverFooter &&
+            !isSettingsPanelOpen &&
+            !isUserPanelOpen &&
+            !subrouteContainerOpened
+        "
+        class="nav-item-active-box-settings"
+        [ngClass]="{
+            'nav-item-active-box-active': isNavigationHovered,
+            'animate-magic-line': isNavigationHovered
+        }"
+        (mouseenter)="showToolTip = true"
     ></div>
+    <div
+        class="tooltip-right"
+        [ngClass]="{ 'hide-tooltip': isNavigationHovered }"
+    >
+        <app-tooltip-slide
+            [show]="true"
+            [name]="'Settings'"
+        ></app-tooltip-slide>
+    </div>
     <div
         class="parent"
         *ngIf="isSettingsPanelOpen && isNavigationHovered"
     ></div>
+
     <div
         *ngIf="isSettingsPanelOpen && isNavigationHovered"
         class="wrapper"
@@ -35,8 +55,11 @@
                 <svg-icon
                     src="{{ item.image }}"
                     class="svg-settings"
+                    [ngClass]="{ 'route-not-active-svg': item.construction }"
                 ></svg-icon>
-                <p>{{ item.name }}</p>
+                <p [ngClass]="{ 'route-not-active': item.construction }">
+                    {{ item.name }}
+                </p>
                 <svg-icon
                     class="mark-route"
                     src="assets/svg/common/confirmation/ic_confirmation_hire.svg"
@@ -71,7 +94,7 @@
                 'activated-settings': isSettingsPanelOpen
             }"
         >
-            <span class="item-name"> Settings</span>
+            <span class="item-name" *ngIf="isNavigationHovered"> Settings</span>
             <svg-icon
                 class="nav-item-arrow nav-item-arrow-active"
                 [ngClass]="{

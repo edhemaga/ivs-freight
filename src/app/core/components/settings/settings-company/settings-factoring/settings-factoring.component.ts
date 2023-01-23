@@ -73,14 +73,7 @@ export class SettingsFactoringComponent
         this.settingsCompanyService
             .deleteFactoringCompanyById(id)
             .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {
-                  
-                },
-                error: () => {
-                
-                },
-            });
+            .subscribe();
     }
 
     public onDeleteFactoringCompany() {

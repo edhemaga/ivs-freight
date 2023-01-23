@@ -36,7 +36,8 @@
         background: $input-placeholder-icon-normal-after;
         position: absolute;
         right: 22px;
-        top: 5px;
+        top: 53%;
+        transform: translateY(-50%);
     }
 
     // Follow Text

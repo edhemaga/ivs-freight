@@ -360,23 +360,9 @@
                 <!-- Stops Header -->
                 <div class="stops-header-bar">
                     <p>#</p>
-                    <p>Shipper, LOCATION</p>
-                    <p
-                        *ngIf="
-                            loadForm.get('pickupShipper').value ||
-                            loadForm.get('deliveryShipper').value
-                        "
-                    >
-                        DATE & TIME
-                    </p>
-                    <p
-                        *ngIf="
-                            loadForm.get('pickupShipper').value ||
-                            loadForm.get('deliveryShipper').value
-                        "
-                    >
-                        DETAILS
-                    </p>
+                    <p>SHIPPER, LOCATION</p>
+                    <p>DATE & TIME</p>
+                    <p>DETAILS</p>
                 </div>
                 <!-- Pickup Stop  -->
                 <app-load-stop
@@ -400,6 +386,25 @@
                     [shipperContact]="{
                         fullName: selectedPickupShipperContact?.name
                     }"
+                    [state]="
+                        loadForm.get('pickupShipper').valid &&
+                        loadForm.get('pickupDateFrom').valid &&
+                        loadForm.get('pickupTimeFrom').valid &&
+                        loadForm.get('pickupTimeTo').valid
+                            ? 'valid'
+                            : (loadForm.get('pickupShipper').errors &&
+                                  loadForm.get('pickupShipper').touched) ||
+                              (loadForm.get('pickupDateFrom').errors &&
+                                  loadForm.get('pickupDateFrom').touched) ||
+                              (loadForm.get('pickupDateTo').errors &&
+                                  loadForm.get('pickupDateTo').touched) ||
+                              (loadForm.get('pickupTimeFrom').errors &&
+                                  loadForm.get('pickupTimeFrom').touched) ||
+                              (loadForm.get('pickupTimeTo').errors &&
+                                  loadForm.get('pickupTimeTo').touched)
+                            ? 'invalid'
+                            : null
+                    "
                     [isCardOpen]="isActivePickupStop"
                     (toggle)="toggleStopActivity($event, 'first-pickup')"
                 >
@@ -415,6 +420,11 @@
                                 [activeItem]="selectedPickupShipper"
                                 (selectedItem)="
                                     onSelectDropdown($event, 'shipper-pickup')
+                                "
+                                (closeDropdown)="
+                                    loadForm
+                                        .get('pickupShipper')
+                                        .markAsTouched()
                                 "
                             ></app-ta-input-dropdown>
                         </div>
@@ -459,6 +469,9 @@
                                 isRequired: true,
                                 customClass: 'datetimeclass'
                             }"
+                            (blurInput)="
+                                loadForm.get('pickupDateFrom').markAsTouched()
+                            "
                         ></app-ta-input>
                         <div
                             *ngIf="!pickupDateRange"
@@ -484,6 +497,9 @@
                                 placeholderIcon: 'date',
                                 customClass: 'datetimeclass'
                             }"
+                            (blurInput)="
+                                loadForm.get('pickupDateTo').markAsTouched()
+                            "
                         ></app-ta-input>
 
                         <!-- Time Picker -->
@@ -501,6 +517,9 @@
                                 isRequired: true,
                                 customClass: 'datetimeclass'
                             }"
+                            (blurInput)="
+                                loadForm.get('pickupTimeFrom').markAsTouched()
+                            "
                         ></app-ta-input>
                         <!-- Time Picker -->
                         <app-ta-input
@@ -515,15 +534,17 @@
                                 isDisabled: selectedStopTimePickup === 6,
                                 customClass: 'datetimeclass'
                             }"
+                            (blurInput)="
+                                loadForm.get('pickupTimeTo').markAsTouched()
+                            "
                         ></app-ta-input>
                     </div>
                     <div class="stop-items-wrapper">
                         <app-ta-custom-card
                             [cardName]="'Item'"
-                            [isCardOpen]="true"
+                            [isCardOpen]="false"
                             [hasCounter]="2"
                             [hasActionSvg]="'assets/svg/common/ic_plus.svg'"
-                            [isCardOpen]="true"
                             [hasBodyData]="true"
                             [disableAnimation]="disableCardAnimation"
                             [animationMarginParams]="{
@@ -531,8 +552,22 @@
                                 marginBottom: '12px'
                             }"
                             (onActionEvent)="createNewRowInStopItems('pickup')"
+                            (onOpenCard)="showTableModal($event, 'pickup')"
                         >
-                            Tabel Pickup Component - Boki
+                            <app-table-modal
+                                *ngIf="tableModalOpen === 'pickup'"
+                                [columns]="modalColumns"
+                                [viewData]="modalViewData"
+                                [midSectionWidth]="341"
+                                [formGroup]="testControl"
+                                [modalScrollStyleOptions]="{
+                                    horizontalScrollBarMarginTop: 4,
+                                    horizontalScrollBarLeft: 0,
+                                    horizontalScrollBarWidth: 606,
+                                    additionalWidth: 265,
+                                    modalScrollClassActive: true
+                                }"
+                            ></app-table-modal>
                         </app-ta-custom-card>
                     </div>
                 </app-load-stop>
@@ -773,15 +808,20 @@
                                 <div class="stop-items-wrapper">
                                     <app-ta-custom-card
                                         [cardName]="'Item'"
-                                        [isCardOpen]="true"
+                                        [isCardOpen]="false"
                                         [hasCounter]="2"
                                         [hasActionSvg]="
                                             'assets/svg/common/ic_plus.svg'
                                         "
-                                        [isCardOpen]="true"
                                         [hasBodyData]="true"
                                         (onActionEvent)="
                                             createNewRowInStopItems(
+                                                'delivery'.indx
+                                            )
+                                        "
+                                        (onOpenCard)="
+                                            showTableModal(
+                                                $event,
                                                 'delivery'.indx
                                             )
                                         "
@@ -793,7 +833,23 @@
                                             marginBottom: '12px'
                                         }"
                                     >
-                                        Tabel Extra Stop Component - Boki
+                                        <app-table-modal
+                                            *ngIf="
+                                                tableModalOpen ===
+                                                'delivery'.indx
+                                            "
+                                            [columns]="modalColumns"
+                                            [viewData]="modalViewData"
+                                            [midSectionWidth]="341"
+                                            [formGroup]="testControl"
+                                            [modalScrollStyleOptions]="{
+                                                horizontalScrollBarMarginTop: 4,
+                                                horizontalScrollBarLeft: 0,
+                                                horizontalScrollBarWidth: 606,
+                                                additionalWidth: 265,
+                                                modalScrollClassActive: true
+                                            }"
+                                        ></app-table-modal>
                                     </app-ta-custom-card>
                                 </div>
                             </app-load-stop>
@@ -825,6 +881,25 @@
                     }"
                     [disabledCard]="!selectedPickupShipper"
                     [isCardOpen]="isActiveDeliveryStop"
+                    [state]="
+                        loadForm.get('deliveryShipper').valid &&
+                        loadForm.get('deliveryDateFrom').valid &&
+                        loadForm.get('deliveryTimeFrom').valid &&
+                        loadForm.get('deliveryTimeTo').valid
+                            ? 'valid'
+                            : (loadForm.get('deliveryShipper').errors &&
+                                  loadForm.get('deliveryShipper').touched) ||
+                              (loadForm.get('deliveryDateFrom').errors &&
+                                  loadForm.get('deliveryDateFrom').touched) ||
+                              (loadForm.get('deliveryDateTo').errors &&
+                                  loadForm.get('deliveryDateTo').touched) ||
+                              (loadForm.get('deliveryTimeFrom').errors &&
+                                  loadForm.get('deliveryTimeFrom').touched) ||
+                              (loadForm.get('deliveryTimeTo').errors &&
+                                  loadForm.get('deliveryTimeTo').touched)
+                            ? 'invalid'
+                            : null
+                    "
                     (toggle)="toggleStopActivity($event, 'first-delivery')"
                 >
                     <div class="row">
@@ -839,6 +914,11 @@
                                 [activeItem]="selectedDeliveryShipper"
                                 (selectedItem)="
                                     onSelectDropdown($event, 'shipper-delivery')
+                                "
+                                (closeDropdown)="
+                                    loadForm
+                                        .get('deliveryShipper')
+                                        .markAsTouched()
                                 "
                             ></app-ta-input-dropdown>
                         </div>
@@ -885,6 +965,9 @@
                                 isRequired: true,
                                 customClass: 'datetimeclass'
                             }"
+                            (blurInput)="
+                                loadForm.get('deliveryDateFrom').markAsTouched()
+                            "
                         ></app-ta-input>
                         <div
                             *ngIf="!deliveryDateRange"
@@ -910,6 +993,9 @@
                                 placeholderIcon: 'date',
                                 customClass: 'datetimeclass'
                             }"
+                            (blurInput)="
+                                loadForm.get('deliveryDateTo').markAsTouched()
+                            "
                         ></app-ta-input>
 
                         <!-- Time Picker -->
@@ -927,6 +1013,9 @@
                                 isRequired: true,
                                 customClass: 'datetimeclass'
                             }"
+                            (blurInput)="
+                                loadForm.get('deliveryTimeFrom').markAsTouched()
+                            "
                         ></app-ta-input>
                         <!-- Time Picker -->
                         <app-ta-input
@@ -941,15 +1030,17 @@
                                 isDisabled: selectedStopTimeDelivery === 8,
                                 customClass: 'datetimeclass'
                             }"
+                            (blurInput)="
+                                loadForm.get('deliveryTimeTo').markAsTouched()
+                            "
                         ></app-ta-input>
                     </div>
                     <div class="stop-items-wrapper">
                         <app-ta-custom-card
                             [cardName]="'Item'"
-                            [isCardOpen]="true"
+                            [isCardOpen]="false"
                             [hasCounter]="2"
                             [hasActionSvg]="'assets/svg/common/ic_plus.svg'"
-                            [isCardOpen]="true"
                             [hasBodyData]="true"
                             [disableAnimation]="disableCardAnimation"
                             [animationMarginParams]="{
@@ -959,8 +1050,22 @@
                             (onActionEvent)="
                                 createNewRowInStopItems('delivery')
                             "
+                            (onOpenCard)="showTableModal($event, 'delivery')"
                         >
-                            Tabel Delivery Component - Boki
+                            <app-table-modal
+                                *ngIf="tableModalOpen === 'delivery'"
+                                [columns]="modalColumns"
+                                [viewData]="modalViewData"
+                                [midSectionWidth]="341"
+                                [formGroup]="testControl"
+                                [modalScrollStyleOptions]="{
+                                    horizontalScrollBarMarginTop: 4,
+                                    horizontalScrollBarLeft: 0,
+                                    horizontalScrollBarWidth: 606,
+                                    additionalWidth: 265,
+                                    modalScrollClassActive: true
+                                }"
+                            ></app-table-modal>
                         </app-ta-custom-card>
                     </div>
                 </app-load-stop>
@@ -972,7 +1077,7 @@
                         <span class="loaded-miles-value"
                             >{{
                                 loadForm.get('loadMiles').value
-                                    | number: '1.2-2'
+                                    | number : '1.2-2'
                             }}
                             mi</span
                         >
@@ -982,7 +1087,7 @@
                         <span class="total-miles-value"
                             >{{
                                 loadForm.get('totalMiles').value
-                                    | number: '1.2-2'
+                                    | number : '1.2-2'
                             }}
                             mi</span
                         >
@@ -993,7 +1098,7 @@
             <app-load-financial
                 [firstHeaderTitle]="'Billing'"
                 [billing]="
-                    loadModalBill | financialCalculation: 'billing' | currency
+                    loadModalBill | financialCalculation : 'billing' | currency
                 "
                 [disableBillAction]="
                     !loadForm.get('baseRate').value ||
@@ -1006,7 +1111,7 @@
                 [secondHeaderTitle]="'Payment'"
                 [payment]="
                     loadModalPayment
-                        | financialCalculation: 'payment'
+                        | financialCalculation : 'payment'
                         | currency
                 "
                 [disablePaymentAction]="!loadForm.get('baseRate').value"
@@ -1036,7 +1141,6 @@
                                 inputCursorOnRightSide: true,
                                 hideErrorMessage: true,
                                 hideRequiredCheck: true,
-                                customClass: 'dollar-placeholderIcon',
                                 thousandSeparator: true
                             }"
                         ></app-ta-input>
@@ -1058,7 +1162,6 @@
                                 inputCursorOnRightSide: true,
                                 hideErrorMessage: true,
                                 hideRequiredCheck: true,
-                                customClass: 'dollar-placeholderIcon',
                                 thousandSeparator: true
                             }"
                         ></app-ta-input>
@@ -1066,7 +1169,9 @@
                         <app-ta-input
                             *ngIf="
                                 selectedDispatches &&
-                                selectedDispatches.payType !== 'Flat Rate'
+                                selectedDispatches.payType !== 'Flat Rate' &&
+                                this.selectedAdditionalBillings[0]?.checked &&
+                                this.selectedAdditionalBillings[0]?.id === 6
                             "
                             formControlName="adjustedRate"
                             [inputConfig]="{
@@ -1074,16 +1179,16 @@
                                 type: 'text',
                                 label: 'Adjusted',
                                 labelInInput: true,
-                                isRequired: true,
                                 placeholderIconRightSide: 'dollar',
                                 placeholderIconColor: 'purple',
                                 inputCursorOnRightSide: true,
+                                removeInput: true,
                                 hideErrorMessage: true,
                                 hideRequiredCheck: true,
                                 hideDangerMark: true,
-                                customClass: 'dollar-placeholderIcon',
                                 thousandSeparator: true
                             }"
+                            (clear)="removeAdditionalBilling('adjusted')"
                         ></app-ta-input>
                         <div formArrayName="additionalBillings">
                             <div
@@ -1110,11 +1215,15 @@
                                             isRequired: true,
                                             hideErrorMessage: true,
                                             hideRequiredCheck: true,
-                                            customClass:
-                                                'dollar-placeholderIcon',
+                                            hideDangerMark: true,
                                             thousandSeparator: true
                                         }"
-                                        (clear)="removeAdditionalBilling(indx)"
+                                        (clear)="
+                                            removeAdditionalBilling(
+                                                'billing',
+                                                indx
+                                            )
+                                        "
                                     ></app-ta-input>
                                 </div>
                             </div>
@@ -1153,7 +1262,6 @@
                                 hideErrorMessage: true,
                                 hideRequiredCheck: true,
                                 hideDangerMark: true,
-                                customClass: 'dollar-placeholderIcon',
                                 thousandSeparator: true,
                                 removeInput: true
                             }"

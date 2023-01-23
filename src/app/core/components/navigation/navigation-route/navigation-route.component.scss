@@ -17,12 +17,26 @@
     user-select: none;
     position: relative;
     z-index: 1;
-    .tooltip {
-        position: absolute;
-        width: 36px;
-        height: 100%;
+    .route-not-active-svg {
+        svg {
+            path {
+                transition: fill 0.4s ease;
+                fill: #787878;
+            }
+        }
+    }
+    .route-closed-nav-svg-not-active {
+        svg {
+            path {
+                transition: fill 0.4s ease;
+                fill: #e1e1e1;
+            }
+        }
+    }
+    .tooltip-right {
         left: -8px;
-        padding-left: 36px;
+        position: relative;
+        top: -15px;
     }
     .message-container {
         position: relative;
@@ -56,6 +70,7 @@
         right: 16px;
         display: flex;
         gap: 4px;
+        opacity: 0;
         span {
             font-size: 11px;
             color: $files;
@@ -91,6 +106,9 @@
             line-height: 17px;
             color: $nav-white;
             font-weight: 400;
+        }
+        .route-not-active {
+            color: #787878;
         }
         .nav-item-name-active {
             font-weight: 700;
@@ -128,6 +146,7 @@
         .nav-item-arrow_top {
             opacity: 1;
             margin-bottom: 3px;
+            z-index: 9;
             &:nth-child(1) {
                 margin-bottom: 5px;
             }
@@ -141,9 +160,7 @@
         }
     }
 }
-.active-link {
-    background: red;
-}
+
 .nav-item-active {
     color: $nav-active-lighter;
     border-radius: 3px;
@@ -159,14 +176,15 @@
             }
         }
     }
-}
-.route-clicked-svg {
-    svg {
-        path {
-            fill: $nav-white !important;
+    .nav-item-rightSide {
+        .nav-item-name {
+            span {
+                color: $nav-white !important;
+            }
         }
     }
 }
+
 .route-clicked {
     color: $nav-white !important;
     font-weight: 700 !important;
@@ -178,19 +196,66 @@
         .nav-item-arrow {
             svg {
                 path {
-                    transition: $nav-transition-5;
                     fill: $nav-white;
                 }
             }
         }
+        .nav-item-rightSide {
+            p {
+                color: $nav-white;
+            }
+        }
     }
+}
+.nav-item-parent-active {
+    &:hover {
+        .nav-item-img {
+            svg {
+                path {
+                    fill: #558ddd;
+                }
+            }
+        }
+        .nav-item-rightSide {
+            .nav-item-name {
+                color: #558ddd;
+
+                span {
+                    color: #558ddd;
+                }
+            }
+            &:hover {
+                .nav-item-name {
+                    color: #558ddd;
+                }
+            }
+            // .nav-item-arrow {
+            //     svg {
+            //         path {
+            //             fill: $nav-active-lighter;
+            //         }
+            //     }
+            // }
+        }
+    }
+}
+.hide-tooltip {
+    display: none;
 }
 .subroute-item {
     padding-left: 4px;
     .nav-item-rightSide {
+        opacity: 0;
+        transition: all 0.5s ease-in-out;
         .nav-item-name {
             margin-left: 5px;
         }
+        .hide-subrout {
+            display: none;
+        }
+    }
+    .tooltip-right {
+        left: -3px;
     }
 }
 .nav-item-active-box {
@@ -204,22 +269,36 @@
     border-radius: 3px;
     padding: 5px 9px;
 }
+.nav-item-active-box-active {
+    width: 238px;
+    background-color: $nav-hover-color;
+    position: absolute;
+    height: 28px;
+    border-radius: 3px;
+    z-index: -1;
+    left: 0px;
+}
 .subroute-item {
     .nav-item-active-box {
         left: 0px;
-    }
-    .tooltip {
-        position: absolute;
-        width: 36px;
-        height: 100%;
-        left: 0px;
-        padding-left: 36px;
     }
 }
 .nav-item-svg-active {
     svg {
         path {
-            fill: $nav-active-lighter;
+            fill: $nav-active-lighter !important;
+        }
+    }
+}
+// .nav-item-text-active {
+//     span {
+//     }
+//     color: $nav-active-lighter !important;
+// }
+.route-clicked-svg {
+    svg {
+        path {
+            fill: $nav-white !important;
         }
     }
 }
@@ -234,5 +313,13 @@
     transition: all 0.3s ease-in-out;
     .nav-item-arrow_top {
         opacity: 1;
+    }
+}
+@keyframes moveToRight {
+    0% {
+        transform: translateX(0px);
+    }
+    100% {
+        transform: translateX(48px);
     }
 }

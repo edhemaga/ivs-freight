@@ -547,6 +547,8 @@ export class TaInputComponent
     }
 
     public onKeydown(event) {
+        this.capsLockOn = event.getModifierState('CapsLock');
+
         if (this.inputConfig.textTransform === 'capitalize') {
             if (event.getModifierState('CapsLock')) {
                 event.preventDefault();
@@ -557,6 +559,13 @@ export class TaInputComponent
                 event.preventDefault();
                 return;
             }
+        }
+
+        if (event.keyCode === 9) {
+            this.inputService.dropDownKeyNavigation$.next({
+                keyCode: event.keyCode,
+                data: null,
+            });
         }
     }
 
@@ -677,8 +686,6 @@ export class TaInputComponent
                 });
             }
         }
-
-        this.capsLockOn = !!event.getModifierState('CapsLock');
     }
 
     public transformText(value: string, paste?: boolean) {
@@ -993,6 +1000,7 @@ export class TaInputComponent
                 'shop name',
                 'fuel stop',
                 'producer name',
+                'terminal name',
             ].includes(this.inputConfig.name.toLowerCase())
         ) {
             if (
@@ -1439,7 +1447,7 @@ export class TaInputComponent
 
         // All Simbols
         if (
-            ['username', 'nickname', 'terminal name', 'password'].includes(
+            ['username', 'nickname', 'password'].includes(
                 this.inputConfig.name.toLowerCase()
             )
         ) {
