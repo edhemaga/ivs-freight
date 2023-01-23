@@ -490,13 +490,14 @@
             ></svg-icon>
             <span class="marker-info-text">{{ item?.phone }}</span>
             <span
-                [tooltipBackground]="copiedPhone ? '#536BC2' : '#6c6c6c'"
-                ngbTooltip
-                [mainTooltip]="copiedPhone ? 'Copied' : 'Copy'"
-                position="top"
                 class="tooltip-copy"
                 (click)="copyText(item?.phone, 'phone')"
+                (mouseenter)="copyHover('phone', true)"
+                (mouseleave)="copyHover('phone', false)"
             >
+                <div class="copy-tooltip" [ngClass]="{ 'active-tooltip': copiedPhone }" *ngIf="copyPhoneHover">
+                    {{ copiedPhone ? 'Copied' : 'Copy' }}
+                </div>
                 <svg-icon
                     class="copy-icon"
                     src="assets/svg/common/ic_copy.svg"
@@ -516,13 +517,14 @@
             ></svg-icon>
             <span class="marker-info-text">{{ item?.email }}</span>
             <span
-                [tooltipBackground]="copiedEmail ? '#536BC2' : '#6c6c6c'"
-                ngbTooltip
-                [mainTooltip]="copiedEmail ? 'Copied' : 'Copy'"
-                position="top"
                 class="tooltip-copy"
                 (click)="copyText(item?.email, 'email')"
+                (mouseenter)="copyHover('email', true)"
+                (mouseleave)="copyHover('email', false)"
             >
+                <div class="copy-tooltip" [ngClass]="{ 'active-tooltip': copiedEmail }" *ngIf="copyEmailHover">
+                    {{ copiedEmail ? 'Copied' : 'Copy' }}
+                </div>
                 <svg-icon
                     class="copy-icon"
                     src="assets/svg/common/ic_copy.svg"
@@ -602,13 +604,14 @@
                 </div>
             </div>
             <span
-                [tooltipBackground]="copiedAddress ? '#536BC2' : '#6c6c6c'"
-                ngbTooltip
-                [mainTooltip]="copiedAddress ? 'Copied' : 'Copy'"
-                position="top"
                 class="tooltip-copy"
                 (click)="copyText(item?.address.address, 'address')"
+                (mouseenter)="copyHover('address', true)"
+                (mouseleave)="copyHover('address', false)"
             >
+                <div class="copy-tooltip address-tooltip" [ngClass]="{ 'active-tooltip': copiedAddress }" *ngIf="copyAddressHover">
+                    {{ copiedAddress ? 'Copied' : 'Copy' }}
+                </div>
                 <svg-icon
                     class="copy-icon"
                     src="assets/svg/common/ic_copy.svg"

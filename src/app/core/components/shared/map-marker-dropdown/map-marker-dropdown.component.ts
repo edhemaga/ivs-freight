@@ -42,6 +42,10 @@ export class MapMarkerDropdownComponent implements OnInit {
         '#919191',
     ];
 
+    public copyPhoneHover: boolean = false;
+    public copyEmailHover: boolean = false;
+    public copyAddressHover: boolean = false;
+
     constructor(
         private ref: ChangeDetectorRef,
         private detailsDataService: DetailsDataService
@@ -60,6 +64,7 @@ export class MapMarkerDropdownComponent implements OnInit {
                 this.copiedPhone = true;
                 setTimeout(() => {
                     this.copiedPhone = false;
+                    this.ref.detectChanges();
                 }, 2100);
                 break;
 
@@ -67,6 +72,7 @@ export class MapMarkerDropdownComponent implements OnInit {
                 this.copiedEmail = true;
                 setTimeout(() => {
                     this.copiedEmail = false;
+                    this.ref.detectChanges();
                 }, 2100);
                 break;
 
@@ -74,6 +80,7 @@ export class MapMarkerDropdownComponent implements OnInit {
                 this.copiedAddress = true;
                 setTimeout(() => {
                     this.copiedAddress = false;
+                    this.ref.detectChanges();
                 }, 2100);
                 break;
         }
@@ -89,6 +96,8 @@ export class MapMarkerDropdownComponent implements OnInit {
         selBox.select();
         document.execCommand('copy');
         document.body.removeChild(selBox);
+        
+        this.ref.detectChanges();
     }
 
     toggleWorkingHours() {
@@ -155,5 +164,17 @@ export class MapMarkerDropdownComponent implements OnInit {
         ) {
             this.loadMoreData.emit(this.item);
         }
+    }
+    
+    copyHover(type, hover) {
+        if ( type == 'address' ) {
+            this.copyAddressHover = hover;
+        } else if ( type == 'phone' ) {
+            this.copyPhoneHover = hover;
+        } else {
+            this.copyEmailHover = hover;
+        }
+        
+        this.ref.detectChanges();
     }
 }

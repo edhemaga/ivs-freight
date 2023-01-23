@@ -198,10 +198,10 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
             map.addListener('idle', () => {
                 // update the coordinates here
 
-                var mapCenter = map.getCenter();
+                // var mapCenter = map.getCenter();
 
-                this.mapLatitude = mapCenter.lat();
-                this.mapLongitude = mapCenter.lng();
+                // this.mapLatitude = mapCenter.lat();
+                // this.mapLongitude = mapCenter.lng();
 
                 clearTimeout(this.clustersTimeout);
 
