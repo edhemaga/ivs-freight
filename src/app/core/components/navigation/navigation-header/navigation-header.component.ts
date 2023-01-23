@@ -10,6 +10,8 @@ import { NavigationService } from '../services/navigation.service';
 })
 export class NavigationHeaderComponent {
     @Input() isNavigationHovered: boolean = false;
+    public showToolTip: boolean = false;
+    public showToolTipPlus: boolean = false;
 
     constructor(
         private navigationService: NavigationService,
