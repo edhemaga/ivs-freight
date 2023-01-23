@@ -12,6 +12,7 @@
 
     .nav-header-top {
         padding: 0 4px;
+        overflow: hidden;
         .nav-header-top-logo {
             svg {
                 cursor: pointer;
@@ -38,6 +39,14 @@
             align-items: center;
             gap: 4px;
             padding-left: 2px;
+            .tooltip-right {
+                left: 0px;
+                position: absolute;
+                top: 4px;
+            }
+            .hide-tooltip {
+                display: none;
+            }
             p {
                 transition: $nav-transition;
                 color: $nav-text-color-darker;
@@ -102,6 +111,8 @@
                 border-radius: 50%;
                 padding: 8px;
                 position: relative;
+                width: 22px;
+                height: 22px;
                 svg {
                     position: absolute;
                     top: 50%;
@@ -121,62 +132,71 @@
                 left: -11px;
                 bottom: 23px;
             }
-            &-notes {
-                margin: 0 6px;
-                background: $nav-hover-darker;
-                border-radius: 50%;
-                padding: 7px;
-                position: relative;
-                width: 32px;
-                height: 32px;
+            // &-notes {
+            //     margin: 0 6px;
+            //     background: $nav-hover-darker;
+            //     border-radius: 50%;
+            //     padding: 7px;
+            //     position: relative;
+            //     width: 32px;
+            //     height: 32px;
 
-                svg-icon {
-                    svg {
-                        position: absolute;
-                        top: 50%;
-                        left: 50%;
-                        transform: translate(-50%, -50%);
-                    }
-                }
+            //     svg-icon {
+            //         svg {
+            //             position: absolute;
+            //             top: 50%;
+            //             left: 50%;
+            //             transform: translate(-50%, -50%);
+            //         }
+            //     }
 
-                &:hover {
-                    transition: $nav-transition;
-                    background-color: $nav-hover-lightcolor;
+            //     &:hover {
+            //         transition: $nav-transition;
+            //         background-color: $nav-hover-lightcolor;
 
-                    svg-icon {
-                        svg {
-                            #Path_35726 {
-                                fill: $nav-svg-hover !important;
-                            }
+            //         svg-icon {
+            //             svg {
+            //                 #Path_35726 {
+            //                     fill: $nav-svg-hover !important;
+            //                 }
 
-                            #Path_35727 {
-                                fill: $nav-svg-hover !important;
-                            }
-                        }
-                    }
-                }
-            }
+            //                 #Path_35727 {
+            //                     fill: $nav-svg-hover !important;
+            //                 }
+            //             }
+            //         }
+            //     }
+            // }
 
-            &-bell {
-                background: $nav-hover-darker;
-                border-radius: 50%;
-                padding: 7px;
-                position: relative;
-                width: 32px;
-                height: 32px;
+            // &-bell {
+            //     background: $nav-hover-darker;
+            //     border-radius: 50%;
+            //     padding: 7px;
+            //     position: relative;
+            //     width: 32px;
+            //     height: 32px;
+            //     svg {
+            //         position: absolute;
+            //         top: 50%;
+            //         left: 50%;
+            //         transform: translate(-50%, -50%);
+            //     }
+            //     &:hover {
+            //         transition: $nav-transition;
+            //         background-color: $nav-hover-lightcolor;
+            //         svg {
+            //             #Path_35724 {
+            //                 fill: $nav-svg-hover !important;
+            //             }
+            //         }
+            //     }
+            // }
+        }
+        .nav-header-bottom-rightSide-search {
+            &:hover {
                 svg {
-                    position: absolute;
-                    top: 50%;
-                    left: 50%;
-                    transform: translate(-50%, -50%);
-                }
-                &:hover {
-                    transition: $nav-transition;
-                    background-color: $nav-hover-lightcolor;
-                    svg {
-                        #Path_35724 {
-                            fill: $nav-svg-hover !important;
-                        }
+                    path {
+                        fill: $nav-white;
                     }
                 }
             }
