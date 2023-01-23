@@ -11,12 +11,10 @@
     flex-direction: column;
     justify-content: space-between;
     padding: 12px;
-    // background-color: $nav-white;
     color: $nav-text-color;
     font-size: $nav-font-size;
     font-weight: $nav-font-medium;
     transition: $nav-transition;
-    // overflow: hidden;
     .nav-holder {
         height: 100%;
         display: flex;
@@ -28,8 +26,7 @@
         border-radius: 3px;
         z-index: -1;
     }
-    .middle-bottom-holder {
-    }
+
     .new-magic-line {
         width: 36px;
     }
@@ -37,15 +34,13 @@
         background: $nav-dark !important;
         width: 250px !important;
         transition: $nav-transition;
-        .new-magic-line {
-            // background: $nav-hover-color !important;
-        }
+        overflow-y: scroll;
+        overflow-x: hidden;
     }
     .animation {
         transition: $nav-transition;
         width: 48px;
         cursor: pointer;
-        // overflow: hidden;
     }
     .navigation-top {
         padding: 0px 6px;
@@ -53,19 +48,22 @@
     .navigation-middle {
         overflow-y: scroll;
         overflow-x: hidden;
-        min-height: 388px;
-        max-height: 620px;
+        // min-height: 388px;
+        // max-height: 620px;
         padding: 0px 6px;
+    }
+    .close-navigation {
+        flex: 1;
+        cursor: pointer;
     }
     .open-navigation {
         flex: 1;
         cursor: pointer;
     }
     .navigation-bottom {
-        // overflow: hidden;
         padding: 0px 6px;
-        position: absolute;
-        bottom: 22px;
+        position: relative;
+        // bottom: 22px;
     }
     .wrapper-line {
         @media only screen and (min-width: 300px) {
@@ -82,18 +80,15 @@
     //------- end
 
     .navigation-routes-container {
-        position: absolute;
-        max-height: 710px;
-        // overflow-y: scroll;
-        // overflow-x: hidden;
+        position: relative;
+        max-height: auto;
         .navigation-routes {
-            // padding-left: 9px;
             display: flex;
             flex-wrap: wrap;
             padding-left: 8px;
             padding-bottom: 1px;
             padding-top: 1px;
-            z-index: 1;
+            // z-index: 1;
             position: relative;
             cursor: pointer;
         }

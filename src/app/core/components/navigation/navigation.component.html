@@ -125,22 +125,7 @@
                     </app-navigation-subroute-card>
                 </div>
                 <div
-                    *ngIf="
-                        (middleIsHovered &&
-                            !isSettingsPanelOpen &&
-                            !isActiveSubroute &&
-                            !isUserPanelOpen &&
-                            !openedDropdown) ||
-                        (isNavigationHovered &&
-                            footerRouteActive &&
-                            !footerHovered &&
-                            !isActiveSubroute &&
-                            !isSettingsPanelOpen &&
-                            !isUserCompanyDetailsOpen &&
-                            !isUserPanelOpen &&
-                            !openedDropdown &&
-                            selectedRoute != 'Settings')
-                    "
+                    *ngIf="true"
                     [@showHideDetails]="
                         !isActiveSubroute &&
                         isModalPanelOpen &&
@@ -159,7 +144,12 @@
             </div>
         </div>
         <!-- Open nav on click -->
-        <div class="open-navigation" *ngIf="isNavigationHovered"></div>
+        <div
+            [ngClass]="{
+                'open-navigation': isNavigationHovered,
+                'close-navigation': !isNavigationHovered
+            }"
+        ></div>
         <div
             class="navigation-bottom"
             (mouseenter)="onMidleNavHover(false); onFooterHover(true)"
