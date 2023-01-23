@@ -60,11 +60,18 @@
 
                     <!-- If route has subroutes -->
                     <app-navigation-subroute-card
-                        (click)="onHoveredNavigation(true); getIndex(ind)"
+                        (click)="
+                            onHoveredNavigation(true);
+                            getIndex(ind);
+                            dropdownOpened(item.isRouteActive)
+                        "
                         *ngIf="item.arrow"
                         [test]="item.isRouteActive"
+                        (subrouteContainerActive)="
+                            isSubrouteContainerOpen($event)
+                        "
+                        [isRouteActive]="item.isRouteActive"
                         [isNavigationCardActive]="
-                            item.isRouteActive &&
                             isNavigationHovered &&
                             closeDropdownOnNavClose &&
                             !isModalPanelOpen &&
@@ -74,13 +81,15 @@
                         "
                         [isNavigationHovered]="isNavigationHovered"
                         [contentHeight]="item.route.length"
-                        (subrouteContainerActive)="
-                            isSubrouteContainerOpen($event)
-                        "
                     >
                         <app-navigation-route
                             class="subroute-item"
                             [route]="item"
+                            [hideSubrouteTitle]="hideSubrouteTitle"
+                            (hideSubrouteFromChild)="
+                                hideSubrouteFromChild($event)
+                            "
+                            [openedDropdown]="openedDropdown"
                             [subrouteContainerOpened]="subrouteContainerOpened"
                             [selectedRoute]="selectedRoute"
                             [activeLink]="item.isRouteActive"
@@ -120,16 +129,16 @@
                         (middleIsHovered &&
                             !isSettingsPanelOpen &&
                             !isActiveSubroute &&
-                            !subrouteContainerOpened &&
-                            !isUserPanelOpen) ||
+                            !isUserPanelOpen &&
+                            !openedDropdown) ||
                         (isNavigationHovered &&
                             footerRouteActive &&
                             !footerHovered &&
                             !isActiveSubroute &&
                             !isSettingsPanelOpen &&
-                            !subrouteContainerOpened &&
                             !isUserCompanyDetailsOpen &&
                             !isUserPanelOpen &&
+                            !openedDropdown &&
                             selectedRoute != 'Settings')
                     "
                     [@showHideDetails]="

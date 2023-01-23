@@ -48,6 +48,8 @@ export class NavigationComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
     public subrouteContainerOpened: boolean = false;
     public index: number;
+    public openedDropdown: boolean = false;
+    public hideSubrouteTitle: number = -1;
     closeDropdownOnNavClose: boolean;
     @ViewChild('navbar') navbar: ElementRef;
     selectedRoute: string = '';
@@ -61,7 +63,9 @@ export class NavigationComponent implements OnInit, OnDestroy {
         private DetailsDataService: DetailsDataService,
         private activatedRoute: ActivatedRoute
     ) {}
-
+    hideSubrouteFromChild($event) {
+        this.hideSubrouteTitle = $event;
+    }
     ngOnInit(): void {
         this.navigationService.getValueNavHovered().subscribe((value) => {
             this.middleIsHovered = value;
@@ -190,6 +194,7 @@ export class NavigationComponent implements OnInit, OnDestroy {
         // );
         // console.log(this.navigation, 'asasfasff');
     }
+
     oneUserCompany($event) {
         this.companiesExists = $event;
         this.cdRef.detectChanges();
@@ -198,7 +203,12 @@ export class NavigationComponent implements OnInit, OnDestroy {
         this.routeIndexSelected = $event;
         this.cdRef.detectChanges();
     }
+    dropdownOpened(event) {
+        this.openedDropdown = event;
+    }
     isSubrouteContainerOpen(event) {
+        // console.log(event);
+
         this.subrouteContainerOpened = event;
         this.cdRef.detectChanges();
     }
@@ -282,7 +292,7 @@ export class NavigationComponent implements OnInit, OnDestroy {
                 this.isActiveMagicLine = true;
                 this.isModalPanelOpen = false;
                 this.isActiveSubroute = false;
-
+                this.openedDropdown = false;
                 this.navigationService.onDropdownActivation({
                     name: 'Settings',
                     type: false,
@@ -298,6 +308,7 @@ export class NavigationComponent implements OnInit, OnDestroy {
             this.isModalPanelOpen = false;
             this.isActiveSubroute = false;
             this.isNavigationHovered = false;
+            this.openedDropdown = false;
             this.navigationService.onDropdownActivation({
                 name: 'Settings',
                 type: false,
