@@ -359,9 +359,10 @@
             <!--------Owner--------->
             <app-ta-custom-card
                 class="item-cards"
-                [cardName]="'Owner'"
+                [cardName]=" ownerCardOpened ? 'Owner' : 'Owner ' + truck.owner.name "
                 [bodyTemplate]="'card'"
                 [isCardOpen]="true"
+                (onOpenCard)="onOpenCloseCard($event)"
             >
                 <div class="common-template">
                     <div class="common-template-item">
@@ -377,6 +378,36 @@
                         </div>
                     </div>
                 </div>
+                <div
+                    class="wrapper-owner"
+                >
+                    <div class="owner-items">
+                        <svg-icon
+                            class="icons-details"
+                            src="assets/svg/common/ic_phone.svg"
+                        ></svg-icon>
+
+                        <app-ta-copy [copyValue]="truck?.owner?.phone">
+                        </app-ta-copy>
+                    </div>
+                    <div class="owner-items">
+                        <svg-icon
+                            class="icons-details"
+                            src="assets/svg/common/ic_email.svg"
+                        ></svg-icon>
+                        <app-ta-copy [copyValue]="truck?.owner?.email">
+                        </app-ta-copy>
+                    </div>
+                    <div class="owner-items">
+                        <svg-icon
+                            src="assets/svg/common/ic_address.svg"
+                        ></svg-icon>
+                        <p class="information-value">
+                            {{ truck.owner.address.address }}
+                        </p>
+                    </div>
+                </div>
+                <!--
                 <div
                     class="wrapper-owner"
                     [@ownerDetailsAnimation]="togglerOwner ? 'true' : 'false'"
@@ -437,6 +468,7 @@
                         </span>
                     </div>
                 </div>
+            -->
             </app-ta-custom-card>
 
             <!--------Perfomance--------->

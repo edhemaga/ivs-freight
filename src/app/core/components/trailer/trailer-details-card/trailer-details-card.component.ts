@@ -60,6 +60,7 @@ export class TrailerDetailsCardComponent
     private destroy$ = new Subject<void>();
     public trailer_list: any[] = this.trailerMinimalQuery.getAll();
     public trailerIndex: any;
+    public ownerCardOpened: boolean = true;
     constructor(
         private detailsPageDriverSer: DetailsPageService,
         private trailerMinimalQuery: TrailersMinimalListQuery,
@@ -222,6 +223,10 @@ export class TrailerDetailsCardComponent
     public sortKeys = (a, b) => {
         return a.value.id > b.value.id ? -1 : 1;
     };
+
+    public onOpenCloseCard(mod: any){
+        this.ownerCardOpened = mod;
+    }
 
     ngOnDestroy(): void {
         this.destroy$.next();

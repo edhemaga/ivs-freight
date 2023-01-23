@@ -226,6 +226,7 @@
         <div
             [ngClass]="noActive"
             [ngStyle]="animationMarginParams"
+            [class.openedCardClass]="_isCardOpen"
             [@showHideCardBody]="{
                 value: _isCardOpen.toString(),
                 params: animationMarginParams

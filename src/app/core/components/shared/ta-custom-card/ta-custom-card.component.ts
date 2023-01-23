@@ -78,7 +78,6 @@ export class TaCustomCardComponent {
         if (!this.disabledCard) {
             event.preventDefault();
             event.stopPropagation();
-
             const oldNoActive = this.noActive;
             this.noActive = '';
             this._isCardOpen =

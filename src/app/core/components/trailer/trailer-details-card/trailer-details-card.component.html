@@ -229,14 +229,46 @@
 
             <!-- Owner -->
             <app-ta-custom-card
-                [cardName]="'Owner'"
+                [cardName]=" ownerCardOpened ? 'Owner' : 'Owner ' + trailer.owner.name "
                 [isCardOpen]="true"
                 [bodyTemplate]="'card'"
+                (onOpenCard)="onOpenCloseCard($event)"
             >
                 <div class="owner-container">
                     <div class="owner-items-name">
                         <span class="firm-name">{{ trailer.owner.name }}</span>
                     </div>
+                    <div class="wrapper-owner-items">
+                        <div class="owner-items">
+                            <svg-icon
+                                class="icons-details"
+                                src="assets/svg/common/ic_phone.svg"
+                            ></svg-icon>
+                            <app-ta-copy
+                                [copyValue]="trailer?.owner?.phone"
+                            >
+                            </app-ta-copy>
+                        </div>
+                        <div class="owner-items">
+                            <svg-icon
+                                class="icons-details"
+                                src="assets/svg/common/ic_email.svg"
+                            ></svg-icon>
+                            <app-ta-copy
+                                [copyValue]="trailer?.owner?.email"
+                            >
+                            </app-ta-copy>
+                        </div>
+                        <div class="owner-items">
+                            <svg-icon
+                                src="assets/svg/common/ic_address.svg"
+                            ></svg-icon>
+                            <p class="information-value">
+                                {{ trailer.owner.address.address }}
+                            </p>
+                        </div>
+                    </div>
+                    <!--    
                     <div [@ownerDetailsAnimation]="toggleOwner ? 'true' : 'false'">
                         <div class="wrapper-owner-items">
                             <div class="owner-items">
@@ -269,6 +301,7 @@
                             </div>
                         </div>
                     </div>
+                
                     <div [ngClass]="{ 'transform-arrow': toggleOwner }">
                         <div
                             (click)="toggleOwner = !toggleOwner"
@@ -299,6 +332,7 @@
                             </span>
                         </div>
                     </div>
+                -->
                 </div>
             </app-ta-custom-card>
 

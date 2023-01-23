@@ -16,6 +16,8 @@ export const card_modal_animation = (type: string) =>
                 opacity: '1',
                 'margin-top': '{{marginTop}}',
                 'margin-bottom': '{{marginBottom}}',
+                //'user-select': 'none',
+                //'background-color' : '#FF0000'
             }),
             {
                 params: {
@@ -31,6 +33,8 @@ export const card_modal_animation = (type: string) =>
                 overflow: 'hidden',
                 opacity: '0',
                 'margin-top': '0px',
+                //'user-select': 'none',
+                //'background-color' : '#FF0'
             })
         ),
         state(
