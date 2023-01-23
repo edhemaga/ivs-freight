@@ -158,7 +158,6 @@
             </div>
 
             <!-- Dispatchboard table options -->
-
             <div
                 class="lock-unlock-dispatch"
                 *ngIf="options.toolbarActions.showDispatchSettings"
@@ -373,6 +372,7 @@
                                     type="checkbox"
                                 />
                                 <label
+                                    [ngClass]="{'some-selected': column.areSomeSelected}"
                                     class="columns-options-label"
                                     for="checkbox{{ i }}"
                                 ></label>
