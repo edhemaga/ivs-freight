@@ -329,6 +329,7 @@ export class AccidentTableComponent
                 field: 'active',
                 length: accidentCount.active,
                 data: roadsideActiveData,
+                gridNameTitle: 'Accident',
                 tableConfiguration: 'ACCIDENT',
                 isActive: this.selectedTab === 'active',
                 gridColumns: this.getGridColumns('ACCIDENT'),
