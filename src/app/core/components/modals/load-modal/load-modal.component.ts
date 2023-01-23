@@ -349,6 +349,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     public documents: any[] = [];
     public fileModified: boolean = false;
     public filesForDelete: any[] = [];
+    public tags: any[] = [];
 
     // Comments
     public comments: any[] = [];
@@ -496,6 +497,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             totalMiles: [0],
             totalHours: [0],
             totalMinutes: [0],
+            tags: [null],
         });
 
         this.formService.checkFormChange(this.loadForm);
@@ -2354,6 +2356,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             .subscribe({
                 next: (res: LoadModalResponse) => {
                     this.loadNumber = res.loadNumber;
+                    this.tags = res.tags;
 
                     // Dispatcher
                     this.labelsDispatcher = res.dispatchers.map((item) => {
@@ -2643,11 +2646,24 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         const { ...form } = this.loadForm.value;
 
         let documents = [];
+        let tagsArray = [];
         this.documents.map((item) => {
+            if(item.tagId?.length)
+            tagsArray.push(
+                {
+                    fileName: item.realFile.name,
+                    tagIds: item.tagId
+                }
+            );
+
             if (item.realFile) {
                 documents.push(item.realFile);
             }
         });
+
+        if(!tagsArray.length) {
+            tagsArray = null;
+        }
 
         let newData: any = {
             type: this.tabs.find((item) => item.id === this.selectedTab)
@@ -2714,6 +2730,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             totalHours: this.totalLegHours,
             totalMinutes: this.totalLegMinutes,
             files: documents,
+            tags: tagsArray,
         };
 
         this.loadService

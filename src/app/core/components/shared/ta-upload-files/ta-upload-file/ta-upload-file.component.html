@@ -237,7 +237,7 @@
         <!-- Tag Content -->
         <div
             *ngIf="
-                (hasTagsDropdown || categoryTag) &&
+                (hasTagsDropdown || customClassName == 'table-details') &&
                 file?.tags &&
                 file?.tags != '' &&
                 file?.tags != 'No Tag'
