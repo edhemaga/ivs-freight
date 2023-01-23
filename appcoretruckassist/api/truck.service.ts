@@ -37,7 +37,7 @@ import { ProblemDetails } from '../model/problemDetails';
 // @ts-ignore
 import { TruckAutocompleteModelResponse } from '../model/truckAutocompleteModelResponse';
 // @ts-ignore
-import { TruckFilterListResponse } from '../model/truckFilterListResponse';
+import { TruckFilterResponse } from '../model/truckFilterResponse';
 // @ts-ignore
 import { TruckListResponse } from '../model/truckListResponse';
 // @ts-ignore
@@ -395,40 +395,13 @@ export class TruckService {
     }
 
     /**
-     * @param active 
-     * @param pageIndex 
-     * @param pageSize 
-     * @param companyId 
-     * @param search 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiTruckFilterGet(active?: number, pageIndex?: number, pageSize?: number, companyId?: number, search?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<TruckFilterListResponse>;
-    public apiTruckFilterGet(active?: number, pageIndex?: number, pageSize?: number, companyId?: number, search?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<TruckFilterListResponse>>;
-    public apiTruckFilterGet(active?: number, pageIndex?: number, pageSize?: number, companyId?: number, search?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<TruckFilterListResponse>>;
-    public apiTruckFilterGet(active?: number, pageIndex?: number, pageSize?: number, companyId?: number, search?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
-
-        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
-        if (active !== undefined && active !== null) {
-          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>active, 'Active');
-        }
-        if (pageIndex !== undefined && pageIndex !== null) {
-          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>pageIndex, 'PageIndex');
-        }
-        if (pageSize !== undefined && pageSize !== null) {
-          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>pageSize, 'PageSize');
-        }
-        if (companyId !== undefined && companyId !== null) {
-          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>companyId, 'CompanyId');
-        }
-        if (search !== undefined && search !== null) {
-          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>search, 'Search');
-        }
+    public apiTruckFilterGet(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<Array<TruckFilterResponse>>;
+    public apiTruckFilterGet(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<Array<TruckFilterResponse>>>;
+    public apiTruckFilterGet(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<Array<TruckFilterResponse>>>;
+    public apiTruckFilterGet(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -471,10 +444,9 @@ export class TruckService {
         }
 
         let localVarPath = `/api/truck/filter`;
-        return this.httpClient.request<TruckFilterListResponse>('get', `${this.configuration.basePath}${localVarPath}`,
+        return this.httpClient.request<Array<TruckFilterResponse>>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
-                params: localVarQueryParameters,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,

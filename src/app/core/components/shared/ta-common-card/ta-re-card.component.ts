@@ -159,6 +159,11 @@ export class TaReCardComponent implements OnInit {
             return false;
         }
         let currentDate = moment().format('MM/DD/YYYY');
+
+        this.DetailsDataService.setCardMainTitle(this.cardNameCommon);
+        if ( this.mainData.id ){
+            this.DetailsDataService.setCdlId(this.mainData.id);
+        }
         if (
             moment(this.expDateClose).isBefore(currentDate) ||
             this.isDeactivated ||

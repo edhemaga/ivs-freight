@@ -14,7 +14,6 @@ import { LoadStopType } from './loadStopType';
 //import { TimeType } from './timeType';
 
 
-
 export interface LoadStopCommand { 
     id?: number | null;
     stopType?: LoadStopType;
