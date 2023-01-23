@@ -722,7 +722,7 @@
 
             <!-- Text -->
             <span
-                *ngIf="!item?.isProgressBar && item.value"
+                *ngIf="!item?.isProgressBar"
                 class="multiple-input-text"
                 [ngStyle]="{
                     color: '#2F2F2F'
@@ -877,13 +877,14 @@
             disabled: !getSuperControl.value && inputConfig.isDisabled,
             'disabled-filled': getSuperControl.value && inputConfig.isDisabled,
             'valid-focus-in':
-                getSuperControl.value &&
-                getSuperControl.valid &&
-                focusInput &&
-                !isVisiblePasswordEye &&
-                !isVisibleCommands &&
-                !inputConfig?.dropdownImageInput?.url &&
-                !inputConfig.blackInput,
+                (getSuperControl.value &&
+                    getSuperControl.valid &&
+                    focusInput &&
+                    !isVisiblePasswordEye &&
+                    !isVisibleCommands &&
+                    !inputConfig?.dropdownImageInput?.url &&
+                    !inputConfig.blackInput) ||
+                (inputConfig.multipleInputValues?.options.length && focusInput),
             'valid-focus-out-filled':
                 (((getSuperControl.value &&
                     getSuperControl.valid &&
@@ -898,7 +899,9 @@
                     getSuperControl.value &&
                     getSuperControl.valid &&
                     !focusInput &&
-                    !inputConfig.isDisabled),
+                    !inputConfig.isDisabled) ||
+                (inputConfig.multipleInputValues?.options.length &&
+                    !focusInput),
             'invalid-focus-in':
                 getSuperControl.value &&
                 getSuperControl.invalid &&
@@ -917,7 +920,12 @@
                         getSuperControl.invalid &&
                         !focusInput)) &&
                 !inputConfig.blackInput,
-
+            'invalid-focus-out-empty':
+                !getSuperControl.value &&
+                getSuperControl.invalid &&
+                (touchedInput || getSuperControl.touched) &&
+                inputConfig.multipleLabel?.labels.length &&
+                !inputConfig.multipleInputValues?.options.length,
             'password-eye':
                 inputConfig.type === 'password' &&
                 isVisiblePasswordEye &&
@@ -1004,11 +1012,6 @@
         "
         [(ngModel)]="input.value"
     />
-
-    <!--  'invalid-focus-out-empty':
-                !getSuperControl.value &&
-                getSuperControl.invalid &&
-                (touchedInput || getSuperControl.touched), -->
 
     <!-- Input Label -->
     <label

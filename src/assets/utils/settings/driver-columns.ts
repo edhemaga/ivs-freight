@@ -43,7 +43,7 @@ export function getDriverColumnsDefinition() {
                 src: 'additionalData.avatar.src',
             },
             link: {
-                routerLinkStart: '/driver/',
+                routerLinkStart: '/list/driver/',
                 routerLinkEnd: '/details',
             },
             progress: null,

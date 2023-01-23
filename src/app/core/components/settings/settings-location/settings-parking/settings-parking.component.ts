@@ -104,14 +104,7 @@ export class SettingsParkingComponent implements OnInit, OnDestroy {
         this.settingsLocationService
             .deleteCompanyParkingById(id)
             .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {
-                
-                },
-                error: () => {
-                 
-                },
-            });
+            .subscribe();
     }
     public identity(index: number, item: any): number {
         return item.id;
@@ -136,7 +129,7 @@ export class SettingsParkingComponent implements OnInit, OnDestroy {
                     name: 'edit',
                     svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
                     show: true,
-                    iconName: 'edit'
+                    iconName: 'edit',
                 },
                 {
                     title: 'border',
@@ -146,7 +139,7 @@ export class SettingsParkingComponent implements OnInit, OnDestroy {
                     name: 'view-details',
                     svg: 'assets/svg/common/ic_hazardous-info.svg',
                     show: true,
-                    iconName: 'view-details'
+                    iconName: 'view-details',
                 },
                 {
                     title: 'border',
@@ -156,14 +149,14 @@ export class SettingsParkingComponent implements OnInit, OnDestroy {
                     name: 'share',
                     svg: 'assets/svg/common/share-icon.svg',
                     show: true,
-                    iconName: 'share'
+                    iconName: 'share',
                 },
                 {
                     title: 'Print',
                     name: 'print',
                     svg: 'assets/svg/common/ic_fax.svg',
                     show: true,
-                    iconName: 'print'
+                    iconName: 'print',
                 },
                 {
                     title: 'border',
@@ -177,7 +170,7 @@ export class SettingsParkingComponent implements OnInit, OnDestroy {
                     danger: true,
                     show: true,
                     redIcon: true,
-                    iconName: 'delete'
+                    iconName: 'delete',
                 },
             ],
             export: true,

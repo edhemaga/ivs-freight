@@ -611,18 +611,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
                                 this.routingService
                                     .deleteRouteById(res.id)
                                     .pipe(takeUntil(this.destroy$))
-                                    .subscribe({
-                                        next: () => {
-                                            console.log(
-                                                'deleteRouteById success'
-                                            );
-                                        },
-                                        error: () => {
-                                            console.log(
-                                                'deleteRouteById error'
-                                            );
-                                        },
-                                    });
+                                    .subscribe();
                             }
                             break;
                         }
@@ -1097,15 +1086,10 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
                         this.routingService
                             .updateRoute(updateRouteObj)
                             .pipe(takeUntil(this.destroy$))
-                            .subscribe({
-                                next: () => {},
-                                error: () => {},
-                            });
+                            .subscribe();
                     }
                 },
-                error: () => {
-                    console.log('deleteStopById error');
-                },
+                error: () => {},
             });
 
         // const routeIndex = this.getRouteIndexById(route.id);
@@ -1346,10 +1330,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
                 this.routingService
                     .updateRoute(updateRouteObj)
                     .pipe(takeUntil(this.destroy$))
-                    .subscribe({
-                        next: () => {},
-                        error: () => {},
-                    });
+                    .subscribe();
             } else {
                 this.getRouteShape(route);
             }
@@ -1655,7 +1636,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
             newRoute.stops.map((stop) => {
                 stop.id = 0;
 
-                if ( !stop.latitude ) {
+                if (!stop.latitude) {
                     stop.latitude = stop.lat;
                     stop.longitude = stop.long;
                 }
@@ -1796,10 +1777,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
             this.routingService
                 .updateRoute(updateRouteObj)
                 .pipe(takeUntil(this.destroy$))
-                .subscribe({
-                    next: () => {},
-                    error: () => {},
-                });
+                .subscribe();
 
             //route.stops = [];
         }
@@ -3193,10 +3171,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
                 this.routingService
                     .updateRoute(updateRouteObj)
                     .pipe(takeUntil(this.destroy$))
-                    .subscribe({
-                        next: () => {},
-                        error: () => {},
-                    });
+                    .subscribe();
             });
     }
 

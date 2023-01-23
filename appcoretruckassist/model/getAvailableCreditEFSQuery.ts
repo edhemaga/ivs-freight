@@ -12,6 +12,6 @@
 
 
 export interface GetAvailableCreditEFSQuery { 
-    companyAccountId?: number;
+    integrationId?: number;
 }
 

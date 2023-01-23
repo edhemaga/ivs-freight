@@ -40,7 +40,7 @@
         tooltipTextAlign="center"
         class="main-icon-holder"
     >
-        <svg-icon [src]="icon | taSvg: 'common'"></svg-icon>
+        <svg-icon [src]="icon | taSvg : 'common'"></svg-icon>
         <div *ngIf="filterActiveArray.length > 0" class="active-filter-num">
             {{ filterActiveArray.length }}
         </div>
@@ -109,7 +109,7 @@
                         type: 'text',
                         label: 'Search ' + filterTitle.split(' ')[0] + ' ',
                         placeholderIcon: 'ic_search',
-                        customClass: 'filter-search-input line-input-26',
+                        customClass: 'filter-search-input',
                         placeholderInsteadOfLabel: true,
                         blackInput: true
                     }"
@@ -1132,8 +1132,7 @@
                                 name: 'singleFrom',
                                 type: 'number',
                                 label: 'From',
-                                placeholderIcon: 'dollar',
-                                customClass: 'line-input-26'
+                                placeholderIcon: 'dollar'
                             }"
                         ></app-ta-input>
                     </div>
@@ -1147,8 +1146,7 @@
                                 name: 'singleTo',
                                 type: 'number',
                                 label: 'To',
-                                placeholderIcon: 'dollar',
-                                customClass: 'line-input-26'
+                                placeholderIcon: 'dollar'
                             }"
                         ></app-ta-input>
                     </div>
@@ -1207,8 +1205,7 @@
                                 name: 'multiFromFirstFrom',
                                 type: 'number',
                                 label: 'From',
-                                placeholderIcon: 'dollar',
-                                customClass: 'line-input-26'
+                                placeholderIcon: 'dollar'
                             }"
                         ></app-ta-input>
                     </div>
@@ -1223,8 +1220,7 @@
                                 name: 'multiFromFirstTo',
                                 type: 'number',
                                 label: 'To',
-                                placeholderIcon: 'dollar',
-                                customClass: 'line-input-26'
+                                placeholderIcon: 'dollar'
                             }"
                         ></app-ta-input>
                     </div>
@@ -1285,8 +1281,7 @@
                                 name: 'multiFormSecondFrom',
                                 type: 'number',
                                 label: 'From',
-                                placeholderIcon: 'dollar',
-                                customClass: 'line-input-26'
+                                placeholderIcon: 'dollar'
                             }"
                         ></app-ta-input>
                     </div>
@@ -1301,8 +1296,7 @@
                                 name: 'multiFormSecondTo',
                                 type: 'number',
                                 label: 'To',
-                                placeholderIcon: 'dollar',
-                                customClass: 'line-input-26'
+                                placeholderIcon: 'dollar'
                             }"
                         ></app-ta-input>
                     </div>
@@ -1363,8 +1357,7 @@
                                 name: 'multiFormThirdFrom',
                                 type: 'number',
                                 label: 'From',
-                                placeholderIcon: 'dollar',
-                                customClass: 'line-input-26'
+                                placeholderIcon: 'dollar'
                             }"
                         ></app-ta-input>
                     </div>
@@ -1379,8 +1372,7 @@
                                 name: 'multiFormThirdTo',
                                 type: 'number',
                                 label: 'To',
-                                placeholderIcon: 'dollar',
-                                customClass: 'line-input-26'
+                                placeholderIcon: 'dollar'
                             }"
                         ></app-ta-input>
                     </div>
@@ -1471,13 +1463,19 @@
         </div>
         <div *ngIf="locationDefType" class="filter-holder location-filter">
             <div class="filter-header">
-                <div class="user-title-text" *ngIf="!areaFilter">{{ filterTitle }}</div>
-                <div class="user-title-text" *ngIf="areaFilter">Area Filter</div>
+                <div class="user-title-text" *ngIf="!areaFilter">
+                    {{ filterTitle }}
+                </div>
+                <div class="user-title-text" *ngIf="areaFilter">
+                    Area Filter
+                </div>
             </div>
             <div class="border-filter top-border-margin"></div>
-            <div class="areaFilterHolder" 
-                *ngIf="areaFilter" 
-                [@showAnimation]="activeFilter ? 'true' : 'false'">
+            <div
+                class="areaFilterHolder"
+                *ngIf="areaFilter"
+                [@showAnimation]="activeFilter ? 'true' : 'false'"
+            >
                 <app-ta-tab-switch
                     [tabs]="areBoxTab"
                     (switchClicked)="onTabChange($event, 'REQUESTS-BOX')"
@@ -1485,15 +1483,17 @@
                 >
                 </app-ta-tab-switch>
             </div>
-            <div class="area-all-holder">    
-                <div class="main-part-holder" 
-                    *ngIf="areaFilter && areaFilterSelected != 'Location' "
+            <div class="area-all-holder">
+                <div
+                    class="main-part-holder"
+                    *ngIf="areaFilter && areaFilterSelected != 'Location'"
                     [@areaRightSideAnimation]="'in'"
-                    >
-                    <div class="area-forms-holder" 
+                >
+                    <div
+                        class="area-forms-holder"
                         [formGroup]="areaForm"
                         [@showAnimation]="activeFilter ? 'true' : 'false'"
-                        >
+                    >
                         <div class="area-single-form-holder">
                             <app-input-address-dropdown
                                 formControlName="origin"
@@ -1507,13 +1507,14 @@
                                     dropdownWidthClass: 'w-col-288',
                                     minLength: 6,
                                     maxLength: 256,
-                                    placeholderInsteadOfLabel: true,
-                                    customClass: 'line-input-26'
+                                    placeholderInsteadOfLabel: true
                                 }"
                                 [placeholderType]="'shortAddress'"
                                 (incorrectEvent)="incorrectInput($event, 0, 18)"
                                 [activeAddress]="selectedAddress"
-                                (selectedAddress)="handleOriginSelect($event, 'ADDRESS')"
+                                (selectedAddress)="
+                                    handleOriginSelect($event, 'ADDRESS')
+                                "
                             ></app-input-address-dropdown>
                         </div>
                         <div class="area-single-form-holder">
@@ -1529,21 +1530,26 @@
                                     dropdownWidthClass: 'w-col-288',
                                     minLength: 6,
                                     maxLength: 256,
-                                    placeholderInsteadOfLabel: true,
-                                    customClass: 'line-input-26'
+                                    placeholderInsteadOfLabel: true
                                 }"
                                 [placeholderType]="'shortAddress'"
                                 (incorrectEvent)="incorrectInput($event, 0, 18)"
                                 [activeAddress]="selectedAddress"
-                                (selectedAddress)="handleDestinationSelect($event, 'ADDRESS')"
+                                (selectedAddress)="
+                                    handleDestinationSelect($event, 'ADDRESS')
+                                "
                             ></app-input-address-dropdown>
                         </div>
                     </div>
                 </div>
-                <div class="main-part-holder" 
-                    *ngIf="type == 'locationFilter' && areaFilterSelected == 'Location'"
+                <div
+                    class="main-part-holder"
+                    *ngIf="
+                        type == 'locationFilter' &&
+                        areaFilterSelected == 'Location'
+                    "
                     [@areaLeftSideAnimation]="'in'"
-                    >   
+                >
                     <div
                         class="filter-middle-holder location-middle-padding"
                         [formGroup]="locationForm"
@@ -1562,13 +1568,14 @@
                                 dropdownWidthClass: 'w-col-288',
                                 minLength: 6,
                                 maxLength: 256,
-                                placeholderInsteadOfLabel: true,
-                                customClass: 'line-input-26'
+                                placeholderInsteadOfLabel: true
                             }"
                             [placeholderType]="'shortAddress'"
                             (incorrectEvent)="incorrectInput($event, 0, 18)"
                             [activeAddress]="selectedAddress"
-                            (selectedAddress)="handleInputSelect($event, 'ADDRESS')"
+                            (selectedAddress)="
+                                handleInputSelect($event, 'ADDRESS')
+                            "
                         ></app-input-address-dropdown>
                     </div>
                     <div
@@ -1600,7 +1607,7 @@
                                 label: 'From',
                                 placeholderIcon:
                                     type == 'payFilter' ? 'dollar' : 'mileage',
-                                customClass: 'line-input-26'.concat(
+                                customClass: ''.concat(
                                     '' +
                                         this.rangeForm.get('rangeFrom').value ==
                                         minValueRange
@@ -1624,7 +1631,7 @@
                                 label: 'To',
                                 placeholderIcon:
                                     type == 'payFilter' ? 'dollar' : 'mileage',
-                                customClass: 'line-input-26'.concat(
+                                customClass: ''.concat(
                                     '' + this.rangeForm.get('rangeTo').value ==
                                         maxValueRange
                                         ? ' discolor-placeholder'
@@ -1685,7 +1692,12 @@
                     Set
                 </div>
             </div>
-            <div class="buttons-holder" *ngIf="type == 'locationFilter' && areaFilterSelected == 'Location'">
+            <div
+                class="buttons-holder"
+                *ngIf="
+                    type == 'locationFilter' && areaFilterSelected == 'Location'
+                "
+            >
                 <div
                     (click)="clearAll($event)"
                     class="button-clear"
@@ -1709,12 +1721,20 @@
                     Set
                 </div>
             </div>
-            <div class="buttons-holder" *ngIf="type == 'locationFilter' && areaFilterSelected != 'Location'">
+            <div
+                class="buttons-holder"
+                *ngIf="
+                    type == 'locationFilter' && areaFilterSelected != 'Location'
+                "
+            >
                 <div
                     (click)="clearAll($event)"
                     class="button-clear"
                     [class.active]="
-                         originLatVal != 0 || originLongVal != 0 || destLongVal != 0 || destLatVal != 0 
+                        originLatVal != 0 ||
+                        originLongVal != 0 ||
+                        destLongVal != 0 ||
+                        destLatVal != 0
                     "
                 >
                     Clear All
@@ -1723,8 +1743,10 @@
                     (click)="setFilterValue($event)"
                     class="button-set"
                     [class.active]="
-                         ( originLatValSet != originLatVal || originLongValSet != originLongVal ) &&
-                        ( destLongValSet != destLongVal || destLatValSet != destLatVal )
+                        (originLatValSet != originLatVal ||
+                            originLongValSet != originLongVal) &&
+                        (destLongValSet != destLongVal ||
+                            destLatValSet != destLatVal)
                     "
                 >
                     Set

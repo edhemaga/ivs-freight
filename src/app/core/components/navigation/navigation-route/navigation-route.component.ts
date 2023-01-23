@@ -1,7 +1,15 @@
 import { NavigationSubRoutes } from '../model/navigation.model';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Navigation } from '../model/navigation.model';
-import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
+import {
+    Component,
+    Input,
+    Output,
+    EventEmitter,
+    OnInit,
+    SimpleChanges,
+    OnChanges,
+} from '@angular/core';
 import {
     navigation_magic_line,
     navigation_route_animation,
@@ -18,7 +26,7 @@ import { NavigationService } from '../services/navigation.service';
         navigation_magic_line('magicLine'),
     ],
 })
-export class NavigationRouteComponent implements OnInit {
+export class NavigationRouteComponent implements OnInit, OnChanges {
     @Input() route: Navigation;
     @Input() isNavigationHovered: boolean = false;
     @Input() isActiveSubroute: boolean = false;
@@ -31,9 +39,14 @@ export class NavigationRouteComponent implements OnInit {
     @Input() isUserPanelOpen: boolean = false;
     @Input() isActiveFooterRoute: boolean = false;
     @Input() index: number;
-    @Input() selectedRoute: string = "";
-    @Output() onRouteEvent = new EventEmitter<NavigationSubRoutes>();
+    @Input() ind: number;
+    @Input() middleIsHovered: boolean = false;
+    @Input() selectedRoute: string = '';
+    @Input() selectedSubRoute: string = '';
+    @Input() subrouteContainerOpened: boolean = false;
 
+    @Output() onRouteEvent = new EventEmitter<NavigationSubRoutes>();
+    @Output() itemIndex = new EventEmitter<Number>();
     public activeRouteName: string;
     public activeRouteIdFromLocalStorage: number;
     public isNavItemHovered: boolean = false;
@@ -41,33 +54,17 @@ export class NavigationRouteComponent implements OnInit {
     public settingsPage: boolean;
     public arrowHovered: boolean;
     public footerRouteActive: boolean;
+    public footerHovered: boolean;
+    public textSubRoute: string = '';
+    showToolTip: boolean;
     routeId: string;
+    hide: number;
+    // routeName: string;
     constructor(
         public router: Router,
         public navigationService: NavigationService,
         public activatedroute: ActivatedRoute
     ) {}
-    //Get subroute name
-    ngOnChanges() {
-        const router = StaticInjectorService.Injector.get(Router);
-        const n = router.url.split('/');
-        this.activeRouteIdFromLocalStorage = parseInt(
-            localStorage.getItem('subroute_active')
-        );
-        // this.route_name = this.route.route.slice(1, 20);
-        // // if (
-        // //     parseInt(localStorage.getItem('subroute_active')) === this.route.id
-        // // ) {
-        // // }
-        // const conditions = ['settings', 'user'];
-        if (n[2]) {
-            this.activeRouteName = n[2];
-        } else {
-            this.activeRouteName = n[1];
-        }
-        // this.settingsPage = conditions.some((el) => router.url.includes(el));
-        // console.log(this.activeRouteName, this.route_name, 'changes');
-    }
 
     ngOnInit() {
         this.timeout = setTimeout(() => {
@@ -77,10 +74,35 @@ export class NavigationRouteComponent implements OnInit {
         this.navigationService.getValueWhichNavIsOpen().subscribe((value) => {
             this.footerRouteActive = value;
         });
+        this.navigationService.getValueFootHovered().subscribe((value) => {
+            this.footerHovered = value;
+        });
         // this.router.events.subscribe((val: any) => {
         //     console.log(val.urlAfterRedirects);
         // });
     }
+    routeIndex(ind) {
+        this.hide = ind;
+        console.log(this.hide === this.activeRouteIdFromLocalStorage);
+    }
+    //Get subroute name
+    ngOnChanges(changes: SimpleChanges) {
+        // console.log(this.ind, this.index);
+
+        this.textSubRoute = this.selectedSubRoute;
+        this.activeRouteIdFromLocalStorage = parseInt(
+            localStorage.getItem('subroute_active')
+        );
+
+        let router = StaticInjectorService.Injector.get(Router);
+        let n = router.url.split('/');
+        if (n[2]) {
+            this.activeRouteName = n[2];
+        } else {
+            this.activeRouteName = n[1];
+        }
+    }
+
     //Arrow clicked open link in new window
     public openLinkInNewWindow(item) {
         window.open(item, '_blank');
@@ -90,7 +112,6 @@ export class NavigationRouteComponent implements OnInit {
         this.arrowHovered = event;
     }
     public onRouteAction() {
-        console.log(this.route.id, this.route.route);
         this.onRouteEvent.emit({
             routeId: this.route.id,
             routes: this.route.route,
@@ -98,8 +119,8 @@ export class NavigationRouteComponent implements OnInit {
                 localStorage.getItem('subroute_active')
             ),
         });
-
         if (!Array.isArray(this.route.route)) {
+            this.itemIndex.emit(this.index);
             this.router.navigate([`${this.route.route}`]);
         }
     }

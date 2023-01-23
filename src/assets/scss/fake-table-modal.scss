@@ -139,8 +139,10 @@
                     background-color: #2f2f2f !important;
                 }
 
-                &.valid-focus-in {
+                &.valid-focus-in,
+                &.dropdown-placeholder-active {
                     background-color: #255bb9 !important;
+                    color: #ffffff !important;
                 }
 
                 &.invalid-focus-in {

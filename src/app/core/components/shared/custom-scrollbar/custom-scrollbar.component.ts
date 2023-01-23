@@ -57,6 +57,7 @@ export class CustomScrollbarComponent
     ) {}
 
     ngOnInit(): void {
+        console.log(this.scrollBarOptions);
         this.ngZone.runOutsideAngular(() => {
             document.addEventListener('mouseup', this.onMouseUpHandler);
 
@@ -68,6 +69,8 @@ export class CustomScrollbarComponent
             );
 
             window.addEventListener('resize', this.onResizeHandler);
+
+            this.calculateBarSizeAndPosition(this.elRef.nativeElement.children[0]);
         });
     }
 
@@ -85,10 +88,11 @@ export class CustomScrollbarComponent
     }
 
     public setScrollEvent = (e: any) => {
-        if (!this.isMouseDown)
+        if (!this.isMouseDown) {
             this.calculateBarSizeAndPosition(
                 this.elRef.nativeElement.children[0]
             );
+        }
     };
 
     setDraggingStart(e: MouseEvent) {
@@ -115,6 +119,7 @@ export class CustomScrollbarComponent
                     document.querySelector('.not-pined-columns');
 
                 const tableFullWidth = scrollWrapper.scrollWidth;
+
                 const tableVisibleWidth =
                     scrollWrapper.getBoundingClientRect().width;
 
@@ -139,7 +144,7 @@ export class CustomScrollbarComponent
             // Regular Scroll
             else {
                 const content_height =
-                    this.elRef.nativeElement.children[0].scrollHeight -1;
+                    this.elRef.nativeElement.children[0].scrollHeight - 1;
                 const visible_height = window.innerHeight;
 
                 if (content_height <= visible_height) {
@@ -168,10 +173,11 @@ export class CustomScrollbarComponent
     };
 
     onResizeHandler = () => {
-        if (!this.isMouseDown && !hasTablePageHeight)
+        if (!this.isMouseDown && !hasTablePageHeight) {
             this.calculateBarSizeAndPosition(
                 this.elRef.nativeElement.children[0]
             );
+        }
     };
 
     onMouseMoveHandler = (e) => {

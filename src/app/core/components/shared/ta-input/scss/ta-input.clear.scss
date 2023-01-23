@@ -3,7 +3,6 @@
 .input-clear {
     position: absolute;
     right: 4px;
-    top: 0px;
     border-radius: 1px;
     transition: all 0.3s ease-in-out;
     display: none;
@@ -210,7 +209,8 @@
             background-color: $input-placeholder-icon-normal-after;
             position: absolute;
             right: 22px;
-            top: 5px;
+            top: 53%;
+            transform: translateY(-50%);
         }
 
         &.valid-focus-in {
@@ -246,7 +246,8 @@
                 background-color: $input-placeholder-icon-valid-after;
                 position: absolute;
                 right: 22px;
-                top: 5px;
+                top: 53%;
+                transform: translateY(-50%);
             }
         }
 
@@ -303,7 +304,8 @@
                 background-color: #ffcdd2;
                 position: absolute;
                 right: 22px;
-                top: 5px;
+                top: 53%;
+                transform: translateY(-50%);
             }
         }
     }

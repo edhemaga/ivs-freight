@@ -232,12 +232,14 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
                     this.modalService.setModalSpinner({
                         action: null,
                         status: true,
+                        close: false,
                     });
                 } else {
                     this.addTerminal();
                     this.modalService.setModalSpinner({
                         action: null,
                         status: true,
+                        close: false,
                     });
                 }
                 break;
@@ -247,6 +249,7 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
                 this.modalService.setModalSpinner({
                     action: 'delete',
                     status: true,
+                    close: false,
                 });
                 break;
             }
@@ -452,7 +455,22 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
         this.settingsLocationService
             .updateCompanyTerminal(newData)
             .pipe(takeUntil(this.destroy$))
-            .subscribe();
+            .subscribe({
+                next: () => {
+                    this.modalService.setModalSpinner({
+                        action: null,
+                        status: true,
+                        close: true,
+                    });
+                },
+                error: () => {
+                    this.modalService.setModalSpinner({
+                        action: null,
+                        status: false,
+                        close: false,
+                    });
+                },
+            });
     }
 
     private addTerminal() {
@@ -495,14 +513,44 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
         this.settingsLocationService
             .addCompanyTerminal(newData)
             .pipe(takeUntil(this.destroy$))
-            .subscribe();
+            .subscribe({
+                next: () => {
+                    this.modalService.setModalSpinner({
+                        action: null,
+                        status: true,
+                        close: true,
+                    });
+                },
+                error: () => {
+                    this.modalService.setModalSpinner({
+                        action: null,
+                        status: false,
+                        close: false,
+                    });
+                },
+            });
     }
 
     private deleteTerminalById(id: number) {
         this.settingsLocationService
             .deleteCompanyTerminalById(id)
             .pipe(takeUntil(this.destroy$))
-            .subscribe();
+            .subscribe({
+                next: () => {
+                    this.modalService.setModalSpinner({
+                        action: 'delete',
+                        status: true,
+                        close: true,
+                    });
+                },
+                error: () => {
+                    this.modalService.setModalSpinner({
+                        action: 'delete',
+                        status: false,
+                        close: false,
+                    });
+                },
+            });
     }
 
     private editTerminalById(id: number) {

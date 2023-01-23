@@ -745,7 +745,11 @@
                         let indx = index
                     "
                     [ngClass]="{
-                        disabled: option?.disabled || option.dnu || option.ban,
+                        disabled:
+                            option?.disabled ||
+                            option?.dnu ||
+                            option?.ban ||
+                            option?.availableCreditType?.name === 'Empty',
                         'no-result':
                             options.length === 1 &&
                             options[0].name === 'No Results',
@@ -784,8 +788,19 @@
                         ></div>
                     </div>
                     <div
-                        *ngIf="!['ADD NEW', 'No Results'].includes(option.name)"
                         class="load-broker-progress-status"
+                        [ngStyle]="{
+                            visibility:
+                                (!['ADD NEW', 'No Results'].includes(
+                                    option.name
+                                ) &&
+                                    option.availableCreditType?.name !==
+                                        'Unlimited') ||
+                                option.dnu ||
+                                option.ban
+                                    ? 'visible'
+                                    : 'hidden'
+                        }"
                     >
                         <app-load-modal-progress-bar
                             [availableCredit]="
@@ -801,7 +816,10 @@
                     </div>
                     <div
                         *ngIf="!['ADD NEW', 'No Results'].includes(option.name)"
-                        [ngClass]="{ active: option.id === activeItem?.id }"
+                        [ngClass]="{
+                            active: option.id === activeItem?.id,
+                            hasOneValue: option.loadsCount === 1
+                        }"
                         class="load-broker-load-counter"
                     >
                         {{ option.loadsCount }}
@@ -822,10 +840,7 @@
                 >
                     <p
                         (click)="onActiveItem(option)"
-                        *ngIf="
-                            options.length !== 1 &&
-                            options[0].name !== 'No Results'
-                        "
+                        *ngIf="options[0].name !== 'No Results'"
                         [ngClass]="{
                             'add-new': option.name === 'ADD NEW'
                         }"

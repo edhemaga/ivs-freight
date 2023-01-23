@@ -42,17 +42,22 @@ export class NavigationFooterComponent implements OnInit, OnChanges, OnDestroy {
     @Input() showHideLineIfSettingsActive: boolean;
     @Input() isActiveFooterRouteClick: boolean;
     @Input() isActiveSubroute: boolean;
+    @Input() subrouteContainerOpened: boolean;
+    @Input() selectedRoute: string;
+    @Input() selectedSubRoute: string;
     @Output() onActivateFooterRoutes = new EventEmitter<boolean>();
     @Output() userActivatedSettingsRoute = new EventEmitter<boolean>();
 
     public currentUserStatus: string = 'online';
     public footerData: FooterData[] = footerData;
     public loggedUser: any = null;
-    public mouseOverFooter: boolean;
+    public mouseOverMiddleNav: boolean = false;
+    public mouseOverFooter: boolean = false;
     public settingsRouteActivated: boolean = false;
     public notificationsActive: boolean = false;
     public showMagicLine: boolean;
     public midleRouteActive: boolean = false;
+    public showToolTip: boolean;
     constructor(
         private router: Router,
         private navigationService: NavigationService,
@@ -61,16 +66,22 @@ export class NavigationFooterComponent implements OnInit, OnChanges, OnDestroy {
         private cdRef: ChangeDetectorRef
     ) {}
     ngOnChanges(changes: SimpleChanges): void {
-        // console.log(this.settingsRouteActivated, this.notificationsActive);
+        // console.log(this.subrouteContainerOpened);
     }
     ngOnInit() {
         this.navigationService.getValueNavHovered().subscribe((value) => {
+            this.mouseOverMiddleNav = value;
+            this.cdRef.detectChanges();
+        });
+        this.navigationService.getValueFootHovered().subscribe((value) => {
             this.mouseOverFooter = value;
+            this.cdRef.detectChanges();
         });
         this.navigationService.getValueWhichNavIsOpen().subscribe((value) => {
             this.settingsRouteActivated = !value;
             this.notificationsActive = !value;
         });
+
         this.isActiveFooterRouteOnReload(window.location.pathname);
         if (localStorage.getItem('footer_active') !== null) {
             if (localStorage.getItem('footer_active') === '34') {

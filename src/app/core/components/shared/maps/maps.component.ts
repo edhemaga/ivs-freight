@@ -1306,14 +1306,7 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
         this.routingService
             .decodeRouteShape(route.id)
             .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: (res) => {
-                    console.log('decodeRouteShape', res);
-                },
-                error: () => {
-                    console.log('decodeRouteShape error');
-                },
-            });
+            .subscribe();
     }
 
     addDeleteListener() {

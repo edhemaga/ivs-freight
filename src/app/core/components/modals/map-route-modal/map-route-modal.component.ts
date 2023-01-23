@@ -120,6 +120,7 @@ export class MapRouteModalComponent implements OnInit, OnDestroy {
                 this.modalService.setModalSpinner({
                     action: 'save and add new',
                     status: true,
+                    close: false,
                 });
                 this.addNewAfterSave = true;
                 break;
@@ -135,12 +136,14 @@ export class MapRouteModalComponent implements OnInit, OnDestroy {
                     this.modalService.setModalSpinner({
                         action: 'create-map-route',
                         status: true,
+                        close: false,
                     });
                 } else {
                     this.addRoute();
                     this.modalService.setModalSpinner({
                         action: 'create-map-route',
                         status: true,
+                        close: false,
                     });
                 }
                 break;
@@ -207,6 +210,7 @@ export class MapRouteModalComponent implements OnInit, OnDestroy {
                         this.modalService.setModalSpinner({
                             action: 'save and add new',
                             status: false,
+                            close: false,
                         });
                         this.formService.resetForm(this.mapRouteForm);
                         this.selectedTruckType = null;
@@ -217,9 +221,21 @@ export class MapRouteModalComponent implements OnInit, OnDestroy {
                             };
                         });
                         this.addNewAfterSave = true;
+                    } else {
+                        this.modalService.setModalSpinner({
+                            action: null,
+                            status: false,
+                            close: true,
+                        });
                     }
                 },
-                error: () => {},
+                error: () => {
+                    this.modalService.setModalSpinner({
+                        action: null,
+                        status: false,
+                        close: false,
+                    });
+                },
             });
     }
 
@@ -237,8 +253,20 @@ export class MapRouteModalComponent implements OnInit, OnDestroy {
             .updateRoute(newData)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: () => {},
-                error: () => {},
+                next: () => {
+                    this.modalService.setModalSpinner({
+                        action: null,
+                        status: true,
+                        close: true,
+                    });
+                },
+                error: () => {
+                    this.modalService.setModalSpinner({
+                        action: null,
+                        status: false,
+                        close: false,
+                    });
+                },
             });
     }
 

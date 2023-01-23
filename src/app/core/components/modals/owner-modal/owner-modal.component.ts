@@ -149,6 +149,7 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
                 this.modalService.setModalSpinner({
                     action: 'save and add new',
                     status: true,
+                    close: false,
                 });
                 this.addNewAfterSave = true;
                 break;
@@ -163,13 +164,14 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
                     this.modalService.setModalSpinner({
                         action: null,
                         status: true,
+                        close: false,
                     });
                 } else {
                     this.addOwner();
                     this.modalService.setModalSpinner({
                         action: null,
                         status: true,
-                        setFasterTimeout: !!this.editData?.canOpenModal,
+                        close: false,
                     });
                 }
 
@@ -180,6 +182,7 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
                 this.modalService.setModalSpinner({
                     action: 'delete',
                     status: true,
+                    close: false,
                 });
                 break;
             }
@@ -412,14 +415,44 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
         this.ownerModalService
             .updateOwner(newData)
             .pipe(takeUntil(this.destroy$))
-            .subscribe();
+            .subscribe({
+                next: () => {
+                    this.modalService.setModalSpinner({
+                        action: null,
+                        status: true,
+                        close: true,
+                    });
+                },
+                error: () => {
+                    this.modalService.setModalSpinner({
+                        action: null,
+                        status: false,
+                        close: false,
+                    });
+                },
+            });
     }
 
     private deleteOwnerById(id: number) {
         this.ownerModalService
             .deleteOwnerById(id, this.editData.selectedTab)
             .pipe(takeUntil(this.destroy$))
-            .subscribe();
+            .subscribe({
+                next: () => {
+                    this.modalService.setModalSpinner({
+                        action: 'delete',
+                        status: true,
+                        close: true,
+                    });
+                },
+                error: () => {
+                    this.modalService.setModalSpinner({
+                        action: 'delete',
+                        status: false,
+                        close: false,
+                    });
+                },
+            });
     }
 
     private addOwner() {
@@ -461,6 +494,11 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
             .subscribe({
                 next: () => {
                     if (this.editData?.canOpenModal) {
+                        this.modalService.setModalSpinner({
+                            action: null,
+                            status: false,
+                            close: true,
+                        });
                         switch (this.editData?.key) {
                             case 'truck-modal': {
                                 this.modalService.setProjectionModal({
@@ -498,6 +536,7 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
                         this.modalService.setModalSpinner({
                             action: 'save and add new',
                             status: false,
+                            close: false,
                         });
                         this.formService.resetForm(this.ownerForm);
 
@@ -512,9 +551,21 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
                         });
 
                         this.addNewAfterSave = false;
+                    } else {
+                        this.modalService.setModalSpinner({
+                            action: 'save and add new',
+                            status: false,
+                            close: true,
+                        });
                     }
                 },
-                error: () => {},
+                error: () => {
+                    this.modalService.setModalSpinner({
+                        action: null,
+                        status: false,
+                        close: false,
+                    });
+                },
             });
     }
 

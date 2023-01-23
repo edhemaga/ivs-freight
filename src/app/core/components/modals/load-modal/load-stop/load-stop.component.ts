@@ -58,6 +58,7 @@ export class LoadStopComponent {
         fullName: string;
         avatar: string;
     };
+    @Input() state: 'valid' | 'invalid';
 
     @Input() animationMarginParams = {
         marginTop: '32px',
@@ -80,7 +81,7 @@ export class LoadStopComponent {
             this.isCardOpen = !this.isCardOpen;
 
             this.toggleEvent.emit(this.isCardOpen);
-        }
+        } 
     }
 
     public deleteStop() {

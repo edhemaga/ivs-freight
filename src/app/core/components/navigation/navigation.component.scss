@@ -16,7 +16,7 @@
     font-size: $nav-font-size;
     font-weight: $nav-font-medium;
     transition: $nav-transition;
-    overflow: hidden;
+    // overflow: hidden;
     .nav-holder {
         height: 100%;
         display: flex;
@@ -28,8 +28,10 @@
         border-radius: 3px;
         z-index: -1;
     }
+    .middle-bottom-holder {
+    }
     .new-magic-line {
-        width: 36px !important;
+        width: 36px;
     }
     .dark-nav {
         background: $nav-dark !important;
@@ -37,7 +39,6 @@
         transition: $nav-transition;
         .new-magic-line {
             background: $nav-hover-color !important;
-            width: 238px !important;
         }
     }
     .animation {
@@ -81,7 +82,7 @@
     //------- end
 
     .navigation-routes-container {
-        position: relative;
+        position: absolute;
 
         .navigation-routes {
             // padding-left: 9px;
@@ -117,7 +118,21 @@
             transition: $magic-line-transition;
             z-index: 0;
         }
-
+        .animate-magic-line {
+            max-width: 238px;
+            animation: grow0 0.4s forwards;
+        }
+        @keyframes grow0 {
+            from {
+                width: 36px;
+            }
+            to {
+                width: 238px;
+            }
+        }
+        .magic-line-width {
+            width: 36px !important;
+        }
         .new-magic-line-selected {
             -webkit-user-select: none;
             -moz-user-select: none;
@@ -126,11 +141,11 @@
         }
 
         .navigation-routes:nth-child(1):hover ~ .new-magic-line {
-            transform: translateY(1px) !important;
+            transform: translateY(2px) !important;
         }
 
         .new-magic-line-selected:nth-child(1) ~ .new-magic-line {
-            transform: translateY(1px);
+            transform: translateY(2px);
         }
 
         .navigation-routes:nth-child(2):hover ~ .new-magic-line {

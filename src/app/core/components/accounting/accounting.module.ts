@@ -6,20 +6,24 @@ import { AccountingIndexComponent } from './accounting-index/accounting-index.co
 import { PayrollComponent } from './payroll/payroll/payroll.component';
 import { AccountingPayrollComponent } from './accounting-payroll/accounting-payroll.component';
 import { TruckassistTableModule } from '../shared/truckassist-table/truckassist-table.module';
+import { PayrollTableComponent } from './payroll/payroll/payroll-table/payroll-table.component';
+import { PayrollTablePipe } from './payroll/payroll/pipe/payroll-table.pipe';
 
 @NgModule({
     declarations: [
         AccountingIndexComponent,
         PayrollComponent,
         AccountingPayrollComponent,
+        PayrollTableComponent,
+        PayrollTablePipe
     ],
     imports: [
         CommonModule,
         AccountingRoutingModule,
         SharedModule,
-        TruckassistTableModule,
+        TruckassistTableModule
     ],
     entryComponents: [AccountingIndexComponent],
-    exports: [AccountingIndexComponent],
+    exports: [AccountingIndexComponent]
 })
 export class AccountingModule {}
