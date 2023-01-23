@@ -19,8 +19,8 @@ export class PayrollTableComponent implements OnInit {
   }
 
   openReport(data){
-    const id = this.getReportBasedOnTitle(this.title, data);
-    this.expandTable.emit({title: this.title, id: id});
+    //const id = this.getReportBasedOnTitle(this.title, data);
+    this.expandTable.emit({title: this.title, id: data.id});
   }
 
 

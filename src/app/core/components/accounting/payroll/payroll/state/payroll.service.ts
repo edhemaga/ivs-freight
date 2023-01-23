@@ -35,6 +35,11 @@ export class PayrollStoreService {
         return this.ps.apiPayrollOwnerIdGet(id);
     }
 
+
+    getPayrollCommisionDriverOpenReport(id: number){
+        return this.ps.apiPayrollDriverCommissionIdGet(id);
+    }
+
     getPayrollList() {
         return this.ps.apiPayrollListGet();
     }

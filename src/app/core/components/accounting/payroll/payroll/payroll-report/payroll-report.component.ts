@@ -1,38 +1,48 @@
 import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
 import { PayrollStoreService } from '../state/payroll.service';
+import { commision_driver_open_loads } from '../state/table-settings/commision_driver_open_loads';
 import { owner_open_loads } from '../state/table-settings/owner_open_load';
 
 @Component({
-  selector: 'app-payroll-report',
-  templateUrl: './payroll-report.component.html',
-  styleUrls: ['./payroll-report.component.scss']
+    selector: 'app-payroll-report',
+    templateUrl: './payroll-report.component.html',
+    styleUrls: ['./payroll-report.component.scss'],
 })
 export class PayrollReportComponent implements OnInit {
+    reportMainData: any = { loads: [] };
+    tableSettings: any[] = [];
 
-  reportMainData: any = { loads: []};
-  tableSettings: any[] = [];
-
-  @Input() set reportTableData(value) {
-    if( value.id ){
-      this.getDataBasedOnTitle(value);
+    @Input() set reportTableData(value) {
+        if (value.id) {
+            this.getDataBasedOnTitle(value);
+        }
     }
-  }
 
-  constructor(private ps: PayrollStoreService, private dch: ChangeDetectorRef) { }
+    constructor(
+        private ps: PayrollStoreService,
+        private dch: ChangeDetectorRef
+    ) {}
 
-  ngOnInit(): void {
-  }
+    ngOnInit(): void {}
 
-  getDataBasedOnTitle(data: {id: number, title: string}){
-    switch(data.title){
-      case "Owner": 
-        this.tableSettings = owner_open_loads;
-        this.ps.getPayrollOwnerOpenReport(data.id).subscribe(res => {
-          this.reportMainData = res;
-          this.dch.detectChanges();
-        })
-      break;
+    getDataBasedOnTitle(data: { id: number; title: string }) {
+        switch (data.title) {
+            case 'Owner':
+                this.tableSettings = owner_open_loads;
+                this.ps.getPayrollOwnerOpenReport(data.id).subscribe((res) => {
+                    this.reportMainData = res;
+                    this.dch.detectChanges();
+                });
+                break;
+            case 'Driver (Commission)':
+                this.tableSettings = commision_driver_open_loads;
+                this.ps
+                    .getPayrollCommisionDriverOpenReport(data.id)
+                    .subscribe((res) => {
+                        this.reportMainData = res;
+                        this.dch.detectChanges();
+                    });
+                break;
+        }
     }
-  }
-
 }
