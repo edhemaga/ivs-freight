@@ -102,6 +102,7 @@
             {{ route.name }}
             <!-- prettier-ignore -->
             <span
+            [@showHideDetails]="isNavigationHovered ? 'true' : 'false'"
                 class="subroute"
                 *ngIf="
                      route.id == activeRouteIdFromLocalStorage && !activeLinkHighlight

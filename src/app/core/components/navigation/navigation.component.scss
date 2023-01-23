@@ -81,7 +81,9 @@
 
     .navigation-routes-container {
         position: relative;
-        max-height: auto;
+        height: fit-content;
+        overflow-y: scroll;
+        overflow-x: hidden;
         .navigation-routes {
             display: flex;
             flex-wrap: wrap;
@@ -113,7 +115,7 @@
             background: $nav-hover-ligh;
             border-radius: 3px;
             transition: $magic-line-transition;
-            z-index: 0;
+            z-index: -1;
         }
         .animate-magic-line {
             max-width: 238px;

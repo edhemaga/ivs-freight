@@ -125,7 +125,22 @@
                     </app-navigation-subroute-card>
                 </div>
                 <div
-                    *ngIf="true"
+                    *ngIf="
+                        (middleIsHovered &&
+                            !isSettingsPanelOpen &&
+                            !isActiveSubroute &&
+                            !isUserPanelOpen &&
+                            !openedDropdown) ||
+                        (isNavigationHovered &&
+                            footerRouteActive &&
+                            !footerHovered &&
+                            !isActiveSubroute &&
+                            !isSettingsPanelOpen &&
+                            !isUserCompanyDetailsOpen &&
+                            !isUserPanelOpen &&
+                            !openedDropdown &&
+                            selectedRoute != 'Settings')
+                    "
                     [@showHideDetails]="
                         !isActiveSubroute &&
                         isModalPanelOpen &&
