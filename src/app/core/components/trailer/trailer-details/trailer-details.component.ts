@@ -126,7 +126,7 @@ export class TrailerDetailsComponent implements OnInit, OnDestroy {
                             this.initTableOptions(res);
                             this.newTrailerId = id;
                             this.router.navigate([
-                                `/trailer/${res.id}/details`,
+                                `/list/trailer/${res.id}/details`,
                             ]);
 
                             this.cdRef.detectChanges();
@@ -137,7 +137,7 @@ export class TrailerDetailsComponent implements OnInit, OnDestroy {
                     //query = this.trailerService.getTrailerById(id);
 
                     this.newTrailerId = id;
-                    this.router.navigate([`/trailer/${id}/details`]);
+                    this.router.navigate([`/list/trailer/${id}/details`]);
                     this.cdRef.detectChanges();
                 }
             });
@@ -318,14 +318,14 @@ export class TrailerDetailsComponent implements OnInit, OnDestroy {
                 next: () => {
                     if (this.trailerMinimalStore.getValue().ids.length >= 1) {
                         this.router.navigate([
-                            `/trailer/${
+                            `/list/trailer/${
                                 this.trailerList[this.currentIndex].id
                             }/details`,
                         ]);
                     }
                 },
                 error: () => {
-                    this.router.navigate(['/trailer']);
+                    this.router.navigate(['/list/trailer']);
                 },
             });
     }

@@ -345,6 +345,8 @@ export class CustomerTableComponent
     sendCustomerData() {
         this.initTableOptions();
 
+        this.checkActiveViewMode();
+
         const brokerShipperCount = JSON.parse(
             localStorage.getItem('brokerShipperTableCount')
         );
@@ -388,12 +390,32 @@ export class CustomerTableComponent
             },
         ];
 
-        console.log('Broker Data');
-        console.log(this.tableData[1].data);
-
         const td = this.tableData.find((t) => t.field === this.selectedTab);
 
         this.setCustomerData(td);
+    }
+
+    // Check If Selected Tab Has Active View Mode
+    checkActiveViewMode(){
+        if(this.activeViewMode === 'Map'){
+            let hasMapView = false;
+
+            let viewModeOptions = this.tableOptions.toolbarActions.viewModeOptions;
+
+            viewModeOptions.map((viewMode: any) => {
+                if (viewMode.name === 'Map') {
+                    hasMapView = true;
+                }
+            });
+
+            if(!hasMapView){
+                this.activeViewMode = 'List';
+
+                viewModeOptions = this.getViewModeOptions();
+            }
+
+            this.tableOptions.toolbarActions.viewModeOptions = [...viewModeOptions];
+        }
     }
 
     getGridColumns(configType: string) {
@@ -455,7 +477,7 @@ export class CustomerTableComponent
                   'Treba da se postavo odgovarajuci redosled za po box address'
                 : '',
             tablePaymentDetailAvailCredit:
-                'Nema apodatka sa beka, progres je u pitanju',
+                'NA',
             tablePaymentDetailCreditLimit: data?.creditLimit
                 ? '$' + this.thousandSeparator.transform(data.creditLimit)
                 : '',
@@ -506,7 +528,7 @@ export class CustomerTableComponent
             ...data,
             isSelected: false,
             tableAddress: data?.address?.address ? data.address.address : '',
-            tableLoads: 'Nema podatak sa beka',
+            tableLoads: 'NA',
             tableAverageWatingTimePickup: data?.avgPickupTime
                 ? data.avgPickupTime
                 : '',
@@ -542,7 +564,7 @@ export class CustomerTableComponent
             tableAdded: data.createdAt
                 ? this.datePipe.transform(data.createdAt, 'MM/dd/yy')
                 : '',
-            tableEdited: 'Nema podatak sa beka', // data.updatedAt
+            tableEdited: 'NA', // data.updatedAt
                 //? this.datePipe.transform(data.updatedAt, 'MM/dd/yy')
                 //: '',
         };

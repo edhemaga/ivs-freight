@@ -2,9 +2,12 @@
     <div class="parent">
         <div
             [style.height.px]="
-                contentHeight | dynamicNavHeight : isNavigationCardActive
+                contentHeight
+                    | dynamicNavHeight : isNavigationCardActive && isRouteActive
             "
-            [ngClass]="{ 'subroute-card': isNavigationCardActive }"
+            [ngClass]="{
+                'subroute-card': isNavigationCardActive && isRouteActive
+            }"
         ></div>
     </div>
     <ng-content></ng-content>

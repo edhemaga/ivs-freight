@@ -6,6 +6,8 @@
         'active-link': selectedRoute == 'Settings',
         'nav-width': isNavigationHovered
     }"
+    (mouseenter)="showToolTip = true"
+    (mouseleave)="showToolTip = false"
 >
     <div
         *ngIf="
@@ -21,14 +23,13 @@
             'nav-item-active-box-active': isNavigationHovered,
             'animate-magic-line': isNavigationHovered
         }"
-        (mouseenter)="showToolTip = true"
     ></div>
     <div
         class="tooltip-right"
         [ngClass]="{ 'hide-tooltip': isNavigationHovered }"
     >
         <app-tooltip-slide
-            [show]="true"
+            [show]="showToolTip"
             [name]="'Settings'"
         ></app-tooltip-slide>
     </div>
