@@ -3,7 +3,7 @@
         !editData?.type?.includes('edit') ? 'Add Shipper' : 'Edit Shipper'
     "
     [editData]="editData"
-    [editName]="editData?.data?.businessName"
+    [editName]="shipperName"
     [isModalValid]="shipperForm.valid && isFormDirty"
     [saveAndAddNew]="editData?.type !== 'edit'"
     [customClass]="'modal-container-M'"
