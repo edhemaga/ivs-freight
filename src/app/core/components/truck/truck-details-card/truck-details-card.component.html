@@ -403,7 +403,7 @@
                             src="assets/svg/common/ic_address.svg"
                         ></svg-icon>
                         <p class="information-value">
-                            {{ truck.owner.address.address }}
+                            <app-ta-copy [copyValue]="truck?.owner?.address?.address"></app-ta-copy>
                         </p>
                     </div>
                 </div>

@@ -1,9 +1,9 @@
 @keyframes selectFix {
     from {
-        user-select: auto;
+        user-select: none;
     }
     to {
-        user-select: none;
+        user-select: auto !important;
     }
 }
 
@@ -493,10 +493,7 @@
             }
 
             &.openedCardClass{
-                //background-color: #ff0000;
-                //user-select: auto;
-                //transition: 2.3s all ease;
-                //animation: selectFix 3.4s ease;
+                animation: selectFix 1.5s ease;
             }
 
         }

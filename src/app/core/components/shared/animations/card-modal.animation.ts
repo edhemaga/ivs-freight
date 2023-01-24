@@ -33,7 +33,7 @@ export const card_modal_animation = (type: string) =>
                 overflow: 'hidden',
                 opacity: '0',
                 'margin-top': '0px',
-                //'user-select': 'none',
+                'user-select': 'none',
                 //'background-color' : '#FF0'
             })
         ),
