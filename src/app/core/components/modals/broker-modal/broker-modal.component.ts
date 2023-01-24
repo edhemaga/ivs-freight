@@ -158,6 +158,8 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
     public longitude: number;
     public latitude: number;
 
+    public brokerName: string = '';
+
     constructor(
         private formBuilder: FormBuilder,
         private inputService: TaInputService,
@@ -1144,6 +1146,8 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                         dnu: reasponse.dnu,
                         brokerContacts: [],
                     });
+
+                    this.brokerName = reasponse.businessName;
 
                     this.modalService.changeModalStatus({
                         name: 'dnu',

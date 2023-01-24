@@ -1032,6 +1032,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                                 customClass: 'load-shipper',
                             },
                         };
+
                         this.labelsShipperContacts = this.originShipperContacts
                             .map((el) => {
                                 return {
@@ -1086,6 +1087,11 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                                 },
                                 isDisabled: false,
                             };
+
+                            console.log(
+                                'shipper contact config: ',
+                                this.loadPickupShipperContactsInputConfig
+                            );
                         } else {
                             this.selectedPickupShipperContact = null;
                             this.labelsShipperContacts = [
@@ -1107,6 +1113,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                     }
                     // Restart value if clear
                     else {
+                        console.log('uso u else');
                         this.labelsShipperContacts = this.originShipperContacts;
 
                         this.loadPickupShipperInputConfig = {

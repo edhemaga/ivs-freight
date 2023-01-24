@@ -103,6 +103,8 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
 
     public disableCardAnimation: boolean = false;
 
+    public shipperName: string = '';
+
     constructor(
         private formBuilder: FormBuilder,
         private inputService: TaInputService,
@@ -804,6 +806,8 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
                         note: res.note,
                         shipperContacts: [],
                     });
+
+                    this.shipperName = res.businessName;
 
                     this.selectedAddress = res.address;
                     this.isPhoneExtExist = !!res.phoneExt;
