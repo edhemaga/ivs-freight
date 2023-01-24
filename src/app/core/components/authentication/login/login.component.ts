@@ -69,7 +69,7 @@ export class LoginComponent implements OnInit, OnDestroy {
             .accountLogin(this.loginForm.value)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: () => {
+                next: (res) => {
                     this.notification.success('Login is success', 'Success');
                 },
                 error: () => {

@@ -53,13 +53,14 @@
     }
     .message {
         position: absolute;
-        right: 16px;
+        right: 8px;
         background: rgba(229, 115, 115, 20%);
         border-radius: 50%;
         color: $notification;
         font-size: 11px;
         font-weight: 700;
         opacity: 0;
+        user-select: none;
         span {
             width: 18px;
             height: 18px;
@@ -70,10 +71,11 @@
     }
     .files {
         position: absolute;
-        right: 16px;
+        right: 9px;
         display: flex;
         gap: 4px;
         opacity: 0;
+        user-select: none;
         span {
             font-size: 11px;
             color: $files;
@@ -109,6 +111,7 @@
             line-height: 17px;
             color: $nav-white;
             font-weight: 400;
+            user-select: none;
         }
         .route-not-active {
             color: #787878;
@@ -119,7 +122,7 @@
         }
         .nav-item-arrow {
             position: absolute;
-            right: 8px;
+            right: 0px;
             transform: rotate(0deg);
             transition: $nav-transition;
             width: 12px;
@@ -138,7 +141,7 @@
         .nav-item-arrow-rotate {
             transform: rotate(180deg);
             transition: $nav-transition;
-            right: 10px;
+            right: 2px;
             svg {
                 path {
                     fill: $nav-white;
@@ -243,7 +246,7 @@
 }
 .nav-item-active-box {
     width: 36px;
-    height: 29px;
+    height: 28px;
     position: absolute;
     left: 0px;
     content: '';
@@ -251,7 +254,7 @@
     z-index: -1;
     border-radius: 3px;
     padding: 5px 9px;
-    top: 1px;
+    top: 0px;
 }
 .subroute-item {
     padding-left: 8px;

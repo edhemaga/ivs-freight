@@ -34,8 +34,6 @@
         background: $nav-dark !important;
         width: 250px !important;
         transition: $nav-transition;
-        overflow-y: scroll;
-        overflow-x: hidden;
     }
     .animation {
         transition: $nav-transition;
@@ -138,11 +136,11 @@
     }
 
     .navigation-routes:nth-child(1):hover ~ .new-magic-line {
-        transform: translateY(2px) !important;
+        transform: translateY(1px) !important;
     }
 
     .new-magic-line-selected:nth-child(1) ~ .new-magic-line {
-        transform: translateY(2px);
+        transform: translateY(1px);
     }
 
     .navigation-routes:nth-child(2):hover ~ .new-magic-line {

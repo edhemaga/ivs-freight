@@ -201,7 +201,6 @@ export class NavigationComponent implements OnInit, OnDestroy {
     }
     routeIndex($event) {
         this.routeIndexSelected = $event;
-        console.log($event, this.index);
         this.cdRef.detectChanges();
     }
     dropdownOpened(event) {
