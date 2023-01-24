@@ -9,8 +9,11 @@ import { Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation } fro
 export class PayrollTableComponent implements OnInit {
   @Output() expandTable = new EventEmitter();
   @Input() tableSettings: any[];
+  @Input() tableSettingsResizable: any[];
   @Input() tableData: any[];
   @Input() title: string;
+  @Input() isResizableTable: boolean = false;
+  @Input() tableAddClas: string = "";
 
   @Input() expandedTable: boolean;
   constructor() { }
