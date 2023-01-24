@@ -358,6 +358,12 @@
         .focusable-image {
             opacity: 0.6;
         }
+
+        .trailerContainer {
+            width: max-content !important;
+            padding: 0px !important;
+            margin: 0px !important;
+        }
     }
 
     &.load-broker {

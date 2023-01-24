@@ -1,5 +1,7 @@
 <app-ta-modal
-    [modalTitle]="editData?.type !== 'edit' ? 'Add Shipper' : 'Edit Shipper'"
+    [modalTitle]="
+        !editData?.type?.includes('edit') ? 'Add Shipper' : 'Edit Shipper'
+    "
     [editData]="editData"
     [editName]="editData?.data?.businessName"
     [isModalValid]="shipperForm.valid && isFormDirty"

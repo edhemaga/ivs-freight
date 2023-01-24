@@ -174,8 +174,6 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
         this.isCredit({ id: 301, name: 'Custom', checked: true });
         this.followIsBillingAddressSame();
 
-        console.log('editdata: ', this.editData);
-
         // From Another Modal Data
         if (this.editData?.type === 'edit-contact') {
             this.disableCardAnimation = true;
@@ -454,7 +452,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                         this.inputService.markInvalid(this.brokerForm);
                         return;
                     }
-                    console.log(this.editData);
+
                     if (this.editData?.type.includes('edit')) {
                         this.updateBroker(this.editData.id);
                         this.modalService.setModalSpinner({

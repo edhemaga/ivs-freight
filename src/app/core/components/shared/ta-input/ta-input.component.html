@@ -663,11 +663,7 @@
 
     <!-- Multiple Input Values -->
     <div
-        *ngIf="
-            inputConfig?.multipleInputValues?.options?.length &&
-            getSuperControl.value &&
-            !focusInput
-        "
+        *ngIf="inputConfig?.multipleInputValues?.options?.length && !focusInput"
         class="input-control {{
             inputConfig?.multipleInputValues?.customClass
         }}"

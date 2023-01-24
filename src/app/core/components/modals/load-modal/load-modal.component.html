@@ -390,7 +390,9 @@
                         loadForm.get('pickupShipper').valid &&
                         loadForm.get('pickupDateFrom').valid &&
                         loadForm.get('pickupTimeFrom').valid &&
-                        loadForm.get('pickupTimeTo').valid
+                        (selectedStopTimePickup === 6
+                            ? !loadForm.get('pickupTimeTo').errors
+                            : loadForm.get('pickupTimeTo').valid)
                             ? 'valid'
                             : (loadForm.get('pickupShipper').errors &&
                                   loadForm.get('pickupShipper').touched) ||
@@ -546,6 +548,8 @@
                             [hasCounter]="2"
                             [hasActionSvg]="'assets/svg/common/ic_plus.svg'"
                             [hasBodyData]="true"
+                            [hasArrow]="true"
+                            [bottomCollapseArrow]="true"
                             [disableAnimation]="disableCardAnimation"
                             [animationMarginParams]="{
                                 marginTop: '10px',
@@ -958,7 +962,9 @@
                         loadForm.get('deliveryShipper').valid &&
                         loadForm.get('deliveryDateFrom').valid &&
                         loadForm.get('deliveryTimeFrom').valid &&
-                        loadForm.get('deliveryTimeTo').valid
+                        (selectedStopTimeDelivery === 8
+                            ? !loadForm.get('deliveryTimeTo').errors
+                            : loadForm.get('deliveryTimeTo').valid)
                             ? 'valid'
                             : (loadForm.get('deliveryShipper').errors &&
                                   loadForm.get('deliveryShipper').touched) ||

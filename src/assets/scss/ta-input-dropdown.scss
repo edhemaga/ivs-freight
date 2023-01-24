@@ -761,6 +761,12 @@
                             }
                         }
                     }
+
+                    &.trailerContainer {
+                        width: max-content !important;
+                        padding: 0px !important;
+                        margin: 0px !important;
+                    }
                 }
 
                 .load-dispatch-driver-rate {

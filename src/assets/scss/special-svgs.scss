@@ -116,7 +116,6 @@
     }
 
     &.trailerContainer {
-        padding-left: 0px;
         svg {
             path {
                 fill: #ffa726;
@@ -532,9 +531,6 @@
         }
 
         &.trailerContainer {
-            max-width: max-content !important;
-            padding: 0px !important;
-            margin: 0px !important;
             svg {
                 path {
                     fill: #ffa726;
