@@ -5,7 +5,6 @@ import {
     NavigationUserPanel,
     Settings,
 } from './navigation.model';
-
 export const navigationData: Navigation[] = [
     {
         id: 1,
@@ -549,7 +548,7 @@ export const settings: Settings[] = [
             },
             {
                 name: 'Training Material',
-                image: 'assets/svg/applicant/case.svg',
+                image: 'assets/svg/applicant/book.svg',
                 route: '/training-material',
                 activeRouteFlegId: 34,
                 construction: true,

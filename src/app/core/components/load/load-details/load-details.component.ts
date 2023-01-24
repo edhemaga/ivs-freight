@@ -55,7 +55,7 @@ export class LoadDetailsComponent implements OnInit, OnChanges, OnDestroy {
                 query.pipe(takeUntil(this.destroy$)).subscribe({
                     next: (res: LoadResponse) => {
                         this.detailCongif(res);
-                        this.router.navigate([`/load/${res.id}/details`]);
+                        this.router.navigate([`/list/load/${res.id}/details`]);
                         
                     },
                     error: () => {

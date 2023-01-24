@@ -61,6 +61,50 @@
                             align-items: center;
                             height: 26px;
                             padding-left: 4px;
+
+                            .pick-load-box {
+                                flex: 1;
+                                display: flex;
+                                align-items: center;
+
+                                .pick-load-info {
+                                    margin-left: 6px;
+                                    line-height: 1;
+                                    .pick-load-info-address {
+                                        font-size: 11px;
+                                        font-weight: 700;
+                                        color: #2f2f2f;
+
+                                        &::selection {
+                                            background-color: #2f2f2f33;
+                                            color: #2f2f2f;
+                                        }
+                                    }
+                                    .pick-load-info-time {
+                                        font-size: 11px;
+                                        color: #919191;
+
+                                        &::selection {
+                                            background-color: #91919133;
+                                            color: #919191;
+                                        }
+                                    }
+                                }
+
+                                svg-icon {
+                                    user-select: none;
+                                }
+
+                                &.delivery-box {
+                                    svg-icon {
+                                        svg {
+                                            rect {
+                                                fill: #ef5350;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
                         }
                     }
 
@@ -96,6 +140,15 @@
                         }
                     }
                 }
+
+                &:first-child{
+                    .table-hold-box{
+                        &.highlighted{
+                            background-color: #EEEEEE;
+                            border-radius: 3px 3px 0 0;
+                        }
+                    }
+                }
             }
         }
     }
@@ -127,5 +180,17 @@
 
     .bold-normal-template {
         font-weight: 700;
+
+        &.image-right {
+            margin-left: 4px;
+        }
+    }
+
+    .medium-normal-template {
+        font-weight: 500;
+    }
+
+    .semibold-normal-template {
+        font-weight: 500;
     }
 }
