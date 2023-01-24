@@ -31,7 +31,11 @@ export interface CreateLoadTemplateCommand {
     note?: string | null;
     baseRate?: number;
     adjustedRate?: number | null;
+    driverRate?: number | null;
     advancePay?: number | null;
+    totalMiles?: number | null;
+    totalHours?: number | null;
+    totalMinutes?: number | null;
     additionalBillingRates?: Array<LoadBillingAdditionalCommand> | null;
     stops?: Array<LoadStopCommand> | null;
 }

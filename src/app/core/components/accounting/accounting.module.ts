@@ -9,6 +9,7 @@ import { TruckassistTableModule } from '../shared/truckassist-table/truckassist-
 import { PayrollTableComponent } from './payroll/payroll/payroll-table/payroll-table.component';
 import { PayrollTablePipe } from './payroll/payroll/pipe/payroll-table.pipe';
 import { PayrollReportComponent } from './payroll/payroll/payroll-report/payroll-report.component';
+import { PayrollSmallTablesComponent } from './payroll/payroll/payroll-small-tables/payroll-small-tables.component';
 
 @NgModule({
     declarations: [
@@ -17,7 +18,8 @@ import { PayrollReportComponent } from './payroll/payroll/payroll-report/payroll
         AccountingPayrollComponent,
         PayrollTableComponent,
         PayrollTablePipe,
-        PayrollReportComponent
+        PayrollReportComponent,
+        PayrollSmallTablesComponent
     ],
     imports: [
         CommonModule,

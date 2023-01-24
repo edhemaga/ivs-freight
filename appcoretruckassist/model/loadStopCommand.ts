@@ -23,7 +23,7 @@ export interface LoadStopCommand {
     shipperContactId?: number | null;
     dateFrom?: string;
     dateTo?: string | null;
-    timeType?: any;
+    timeType?: number;
     timeFrom?: string | null;
     timeTo?: string | null;
     arrive?: string | null;

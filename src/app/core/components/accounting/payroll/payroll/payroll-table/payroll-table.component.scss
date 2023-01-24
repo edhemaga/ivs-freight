@@ -134,18 +134,74 @@
                 &:hover {
                     td {
                         .table-box {
-                            .table-hold-box {
+                            .table-hold-box:not(.highlighted-last) {
                                 background-color: #eeeeee;
                             }
+
                         }
                     }
                 }
 
-                &:first-child{
-                    .table-hold-box{
-                        &.highlighted{
-                            background-color: #EEEEEE;
+                &:first-child {
+                    .table-hold-box {
+                        &.highlighted {
+                            background-color: #eeeeee;
                             border-radius: 3px 3px 0 0;
+                        }
+                    }
+                }
+
+                .highlighted-last {
+                    background-color: #dadada;
+                    border-radius: 0 0 3px 3px !important;
+                }
+            }
+        }
+
+        &.resizable-table {
+            thead {
+            }
+
+            tbody {
+                tr {
+                    &.reorder-row{
+                        border-top: 2px solid #EEEEEE;
+                    }
+                    
+                    td {
+                        padding: 0;
+                        .table-box {
+                            .table-hold-box {
+                                height: 100%;
+                            }
+                        }
+
+                        &:first-child {
+                            .table-box,
+                            .table-hold-box {
+                                margin-left: 0px !important;
+                            }
+                        }
+
+                        &:last-child {
+                            .table-box,
+                            .table-hold-box {
+                                margin-right: 0px !important;
+                            }
+                        }
+                    }
+
+                    &:hover {
+                        td {
+                            .table-box {
+                                .table-hold-box:not(.highlighted-last) {
+                                    background-color: #EEEEEE;
+                                }
+
+                                .highlighted-last{
+                                    border-bottom-left-radius: 0px !important;
+                                }
+                            }
                         }
                     }
                 }
@@ -191,6 +247,6 @@
     }
 
     .semibold-normal-template {
-        font-weight: 500;
+        font-weight: 600;
     }
 }
