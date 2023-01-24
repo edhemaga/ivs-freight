@@ -174,32 +174,34 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
         this.isCredit({ id: 301, name: 'Custom', checked: true });
         this.followIsBillingAddressSame();
 
-        if (this.editData?.id) {
-            this.disableCardAnimation = true;
-            this.editBrokerById(this.editData.id);
-            this.tabs.push({
-                id: 3,
-                name: 'Review',
-            });
-            this.ratingChanges();
-        }
-
         console.log('editdata: ', this.editData);
 
         // From Another Modal Data
-        if (this.editData?.extraPayload?.type === 'edit-contact') {
+        if (this.editData?.type === 'edit-contact') {
             this.disableCardAnimation = true;
-            this.editBrokerById(this.editData.extraPayload.data.id);
+            this.editBrokerById(this.editData.id);
             setTimeout(() => {
                 this.tabs = this.tabs.map((item, index) => {
                     return {
                         ...item,
-                        disabled: index === 0,
+                        disabled: index !== 1,
                         checked: index === 1,
                     };
                 });
                 this.selectedTab = 2;
             }, 50);
+        }
+        // normal get by id broker
+        else {
+            if (this.editData?.id) {
+                this.disableCardAnimation = true;
+                this.editBrokerById(this.editData.id);
+                this.tabs.push({
+                    id: 3,
+                    name: 'Review',
+                });
+                this.ratingChanges();
+            }
         }
 
         // Open Tab Position
@@ -452,12 +454,9 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                         this.inputService.markInvalid(this.brokerForm);
                         return;
                     }
-                    if (['edit'].includes(this.editData?.type)) {
-                        this.updateBroker(
-                            this.editData?.extraPayload?.type === 'edit-contact'
-                                ? this.editData.extraPayload.data.id
-                                : this.editData.id
-                        );
+                    console.log(this.editData);
+                    if (this.editData?.type.includes('edit')) {
+                        this.updateBroker(this.editData.id);
                         this.modalService.setModalSpinner({
                             action: null,
                             status: true,

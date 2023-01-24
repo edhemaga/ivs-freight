@@ -398,8 +398,10 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
 
     public disableCardAnimation: boolean = false;
 
+    public requirementsSectionOpened: boolean = false;
+
     // Modal Table
-    tableModalOpen: string = ''
+    tableModalOpen: string = '';
 
     constructor(
         private formBuilder: FormBuilder,
@@ -423,6 +425,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         this.getLoadDropdowns();
 
         this.trackBillingPayment();
+        console.log(this.editData?.storageData);
     }
 
     ngDoCheck() {
@@ -746,11 +749,26 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                             this.loadForm.get('adjustedRate'),
                             false
                         );
+
+                        this.additionalBillingTypes =
+                            this.additionalBillingTypes.filter(
+                                (item) => item.id !== 6
+                            );
                     } else {
                         this.inputService.changeValidators(
                             this.loadForm.get('driverRate'),
                             false
                         );
+                        if (
+                            !this.additionalBillingTypes.find(
+                                (item) => item.id === 6
+                            )
+                        )
+                            this.additionalBillingTypes.unshift({
+                                id: 6,
+                                name: 'Adjusted',
+                                checked: false,
+                            });
                     }
                 } else {
                     this.loadDispatchesTTDInputConfig = {
@@ -780,12 +798,9 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                         action: 'open',
                         payload: {
                             key: 'load-modal',
-                            value: {},
+                            value: this.loadModalData(),
                         },
-                        extraPayload: {
-                            data: null,
-                            type: 'new',
-                        },
+                        type: 'new',
                         component: BrokerModalComponent,
                         size: 'small',
                     });
@@ -924,13 +939,10 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                         action: 'open',
                         payload: {
                             key: 'load-modal',
-                            value: {},
+                            value: this.loadModalData(),
+                            id: this.selectedBroker.id,
                         },
-                        type: 'edit',
-                        extraPayload: {
-                            data: this.selectedBroker,
-                            type: 'edit-contact',
-                        },
+                        type: 'edit-contact',
                         component: BrokerModalComponent,
                         size: 'small',
                     });
@@ -978,12 +990,9 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                         action: 'open',
                         payload: {
                             key: 'load-modal',
-                            value: {},
+                            value: this.loadModalData(),
                         },
-                        extraPayload: {
-                            data: null,
-                            type: 'new',
-                        },
+                        type: 'new',
                         component: ShipperModalComponent,
                         size: 'small',
                     });
@@ -1125,13 +1134,10 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                         action: 'open',
                         payload: {
                             key: 'load-modal',
-                            value: {},
+                            value: null,
+                            id: this.selectedPickupShipper,
                         },
-                        type: 'edit',
-                        extraPayload: {
-                            data: this.selectedPickupShipper,
-                            type: 'edit-contact',
-                        },
+                        type: 'edit-contact',
                         component: ShipperModalComponent,
                         size: 'small',
                     });
@@ -1180,12 +1186,9 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                         action: 'open',
                         payload: {
                             key: 'load-modal',
-                            value: {},
+                            value: this.loadModalData(),
                         },
-                        extraPayload: {
-                            data: null,
-                            type: 'new',
-                        },
+                        type: 'new',
                         component: ShipperModalComponent,
                         size: 'small',
                     });
@@ -1345,13 +1348,10 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                         action: 'open',
                         payload: {
                             key: 'load-modal',
-                            value: {},
+                            value: null,
+                            id: this.selectedDeliveryShipper,
                         },
-                        type: 'edit',
-                        extraPayload: {
-                            data: this.selectedDeliveryShipper,
-                            type: 'edit-contact',
-                        },
+                        type: 'edit-contact',
                         component: ShipperModalComponent,
                         size: 'small',
                     });
@@ -1400,12 +1400,9 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                         action: 'open',
                         payload: {
                             key: 'load-modal',
-                            value: {},
+                            value: this.loadModalData(),
                         },
-                        extraPayload: {
-                            data: null,
-                            type: 'new',
-                        },
+                        type: 'new',
                         component: ShipperModalComponent,
                         size: 'small',
                     });
@@ -1595,13 +1592,10 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                         action: 'open',
                         payload: {
                             key: 'load-modal',
-                            value: {},
+                            value: null,
+                            id: this.selectedExtraStopShipper[index],
                         },
-                        type: 'edit',
-                        extraPayload: {
-                            data: this.selectedExtraStopShipper[index],
-                            type: 'edit-contact',
-                        },
+                        type: 'edit-contact',
                         component: ShipperModalComponent,
                         size: 'small',
                     });
@@ -2255,8 +2249,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         }
     }
 
-    
-    showTableModal(isOpen: boolean, stopType: string){
+    showTableModal(isOpen: boolean, stopType: string) {
         this.tableModalOpen = isOpen ? stopType : '';
 
         this.modalInitialization();
@@ -2819,7 +2812,10 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                     ];
                     this.originalAdditionalBillingTypes =
                         this.additionalBillingTypes;
+
+                    this.populateLoadModalData();
                 },
+
                 error: () => {},
             });
     }
@@ -2828,6 +2824,121 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         setTimeout(() => {
             this.disableCardAnimation = false;
         }, 1000);
+    }
+
+    private populateLoadModalData() {
+        if (this.editData?.storageData) {
+            const loadData = this.editData?.storageData;
+
+            this.loadForm.patchValue({
+                referenceNumber: loadData.referenceNumber,
+                weight: loadData.weight,
+                liftgate: loadData.loadRequirements?.liftgate,
+                note: loadData.note,
+                baseRate: loadData.baseRate,
+                driverRate: loadData.driverRate,
+                adjustedRate: loadData.advancePay,
+                totalMiles: loadData.totalLegMiles,
+                totalHours: loadData.totalLegHours,
+                totalMinutes: loadData.totalLegMinutes,
+                driverMessage: loadData.loadRequirements?.driverMessage,
+            });
+
+            this.tabs = this.tabs.map((item) => {
+                return {
+                    ...item,
+                    checked: item.name === loadData.type,
+                };
+            });
+
+            this.requirementsSectionOpened = Object.keys(
+                loadData.loadRequirements
+            ).some(
+                (key) =>
+                    loadData.loadRequirements[key] !== undefined &&
+                    loadData.loadRequirements[key] !== null
+            );
+
+            this.selectedTemplate = loadData.loadTemplateId;
+            this.selectedDispatcher = loadData.dispatcherId;
+            this.selectedCompany = loadData.companyId;
+            this.onSelectDropdown(loadData.dispatchId, 'dispatches');
+
+            this.onSelectDropdown(loadData.brokerId, 'broker');
+            this.onSelectDropdown(loadData.brokerContactId, 'broker-contact');
+
+            this.selectedGeneralCommodity = loadData.generalCommodity;
+
+            this.selectedTruckReq = loadData.loadRequirements.truckTypeId;
+            this.selectedTrailerReq = loadData.loadRequirements.trailerTypeId;
+            this.selectedDoorType = loadData.loadRequirements.doorType;
+            this.selectedSuspension = loadData.loadRequirements.suspension;
+            this.selectedTrailerLength =
+                loadData.loadRequirements.trailerLengthId;
+            this.selectedYear = loadData.loadRequirements.year;
+
+            this.documents = loadData.files;
+            this.additionalBillingTypes = this.additionalBillingTypes.map(
+                (item, index) => {
+                    return {
+                        ...item,
+                        checked:
+                            loadData.additionalBillingRates[index]?.checked,
+                    };
+                }
+            );
+        }
+    }
+
+    private loadModalData() {
+        const { ...form } = this.loadForm.value;
+
+        let documents = [];
+        this.documents.map((item) => {
+            if (item.realFile) {
+                documents.push(item.realFile);
+            }
+        });
+        return {
+            type: this.tabs.find((item) => item.id === this.selectedTab)
+                .name as any,
+            loadNumber: this.loadNumber,
+            loadTemplateId: this.selectedTemplate,
+            dispatcherId: this.selectedDispatcher,
+            companyId:
+                this.labelsCompanies.length === 1
+                    ? this.labelsCompanies[0]
+                    : this.selectedCompany,
+            dispatchId: this.selectedDispatches,
+            brokerId: this.selectedBroker,
+            brokerContactId: this.selectedBrokerContact,
+            referenceNumber: form.referenceNumber,
+            generalCommodity: this.selectedGeneralCommodity,
+            weight: form.weight,
+
+            loadRequirements: {
+                id: null,
+                truckTypeId: this.selectedTruckReq,
+                trailerTypeId: this.selectedTrailerReq,
+                doorType: this.selectedDoorType,
+                suspension: this.selectedSuspension,
+                trailerLengthId: this.selectedTrailerLength,
+                year: this.selectedYear,
+                liftgate: form.liftgate,
+                driverMessage: form.driverMessage,
+            },
+            note: form.note,
+            baseRate: form.baseRate,
+            driverRate: form.driverRate,
+            adjustedRate: form.advancePay,
+            additionalBillingRates:
+                this.premmapedAdditionalBillingRate('create'),
+            stops: this.premmapedStops() as any,
+            totalMiles: this.totalLegMiles,
+            totalHours: this.totalLegHours,
+            totalMinutes: this.totalLegMinutes,
+            files: documents,
+        };
     }
 
     private addLoad() {
@@ -2980,9 +3091,9 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             },
             note: form.note,
             baseRate: convertThousanSepInNumber(form.baseRate),
-            // driverRate: form.driverRate
-            //     ? convertThousanSepInNumber(form.driverRate)
-            //     : null,
+            driverRate: form.driverRate
+                ? convertThousanSepInNumber(form.driverRate)
+                : null,
             adjustedRate: form.adjustedRate
                 ? convertThousanSepInNumber(form.adjustedRate)
                 : null,
@@ -2990,6 +3101,9 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             additionalBillingRates:
                 this.premmapedAdditionalBillingRate('create'),
             stops: this.premmapedStops() as any,
+            totalMiles: this.totalLegMiles,
+            totalHours: this.totalLegHours,
+            totalMinutes: this.totalLegMinutes,
         };
 
         this.loadService
@@ -2999,7 +3113,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 next: () => {
                     this.modalService.setModalSpinner({
                         action: 'load-template',
-                        status: true,
+                        status: false,
                         close: false,
                     });
                 },
@@ -3378,11 +3492,11 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     });
     modalColumns: any[] = [];
     modalViewData: any[] = [];
-    
+
     modalInitialization() {
         this.modalColumns = [];
         this.modalViewData = [];
-        
+
         this.modalColumns = getLoadModalColumnDefinition();
 
         for (let i = 0; i < 3; i++) {

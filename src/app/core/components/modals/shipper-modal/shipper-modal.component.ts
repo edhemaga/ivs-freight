@@ -128,9 +128,9 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
         }
 
         // From Another Modal Data
-        if (this.editData?.extraPayload?.type === 'edit-contact') {
+        if (this.editData?.type === 'edit-contact') {
             this.disableCardAnimation = true;
-            this.editShipperById(this.editData.extraPayload.data.id);
+            this.editShipperById(this.editData.payload.id);
             setTimeout(() => {
                 this.tabs = this.tabs.map((item, index) => {
                     return {
@@ -245,8 +245,8 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
                 }
                 if (['edit'].includes(this.editData?.type)) {
                     this.updateShipper(
-                        this.editData?.extraPayload?.type === 'edit-contact'
-                            ? this.editData.extraPayload.data.id
+                        this.editData?.type === 'edit-contact'
+                            ? this.editData.payload.id
                             : this.editData.id
                     );
                     this.modalService.setModalSpinner({

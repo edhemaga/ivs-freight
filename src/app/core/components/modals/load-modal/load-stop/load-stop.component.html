@@ -14,10 +14,7 @@
         >
             <p>{{ stopNumber }}</p>
         </div>
-        <div
-            class="load-stop-header-content"
-            [ngClass]="{ 'extra-stop': !firstOrLast && !shipper }"
-        >
+        <div class="load-stop-header-content">
             <!-- Number Of Stop -->
             <div
                 *ngIf="!shipper && state !== 'invalid'"
@@ -93,8 +90,8 @@
             <!-- Leg, Deadhead, Shipper Contact -->
             <div class="load-stop-inner-content">
                 <div
-                    *ngIf="legMile"
                     class="load-stop-content-up load-stop-content-up-deadhead"
+                    [ngStyle]="{ visibility: legMile ? 'visible' : 'hidden' }"
                 >
                     <p>
                         {{ isEmptyLoad ? 'DEADHEAD' : 'LEG' }}

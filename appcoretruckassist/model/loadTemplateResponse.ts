@@ -51,5 +51,7 @@ export interface LoadTemplateResponse {
     totalPaid?: number | null;
     totalDue?: number;
     totalMiles?: number;
+    totalHours?: number | null;
+    totalMinutes?: number | null;
 }
 

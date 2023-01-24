@@ -31,6 +31,10 @@ export interface UpdateLoadTemplateCommand {
     adjustedRate?: number | null;
     revisedRate?: number | null;
     tonuRate?: number | null;
+    driverRate?: number | null;
+    totalMiles?: number | null;
+    totalHours?: number | null;
+    totalMinutes?: number | null;
     additionalBillingRates?: Array<LoadBillingAdditionalCommand> | null;
     pays?: Array<LoadPaymentPayCommand> | null;
     stops?: Array<LoadStopCommand> | null;

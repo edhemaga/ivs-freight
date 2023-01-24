@@ -13,6 +13,7 @@
         padding: 10px;
         margin-bottom: 17px;
         cursor: pointer;
+        background-color: #eeeeee;
         transition: all 0.3s ease-in-out;
 
         .load-stop-counter-container {
@@ -43,7 +44,7 @@
 
         .load-stop-header-content {
             display: grid;
-            grid-template-columns: 260px 147px 123px 1fr;
+            grid-template-columns: 260px 147px 123px 22px;
             grid-template-rows: 20px;
             -moz-column-gap: 4px;
             column-gap: 4px;

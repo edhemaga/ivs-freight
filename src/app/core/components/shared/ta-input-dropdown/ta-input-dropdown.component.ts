@@ -129,6 +129,31 @@ export class TaInputDropdownComponent
             }
         }
 
+        if (
+            changes.activeItem?.currentValue !==
+            changes.activeItem?.previousValue
+        ) {
+            this.getSuperControl.patchValue(
+                changes.activeItem.currentValue?.number
+                    ? changes.activeItem.currentValue?.number
+                    : changes.activeItem.currentValue?.name
+                    ? changes.activeItem.currentValue?.name
+                    : null
+            );
+
+            this.inputConfig = {
+                ...this.inputConfig,
+                blackInput: true,
+            };
+
+            setTimeout(() => {
+                this.inputConfig = {
+                    ...this.inputConfig,
+                    blackInput: false,
+                };
+            }, 150);
+        }
+
         // MultiSelect Selected Items From Backend
         if (
             this.inputConfig.multiselectDropdown &&
