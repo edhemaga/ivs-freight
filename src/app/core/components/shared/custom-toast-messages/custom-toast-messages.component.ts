@@ -110,6 +110,10 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
             value: 'TRAILER',
         },
         {
+            api: 'insurancepolicy',
+            value: 'INSURANCE POLICY',
+        },
+        {
             api: 'account/signupcompany',
             value: 'COMPANY',
         },
@@ -145,10 +149,7 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
             api: 'companyoffice',
             value: 'OFFICE',
         },
-        {
-            api: 'company',
-            value: 'COMPANY',
-        },
+        
         {
             api: 'truck',
             value: 'TRUCK',
@@ -230,11 +231,6 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
             value: 'STOP',
         },
         {
-            api: 'insurancepolicy',
-            value: 'INSURANCE POLICY',
-        },
-
-        {
             api: 'parking',
             value: 'PARKING',
         },
@@ -245,6 +241,10 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
         {
             api: 'load',
             value: 'LOAD',
+        },
+        {
+            api: 'company',
+            value: 'COMPANY',
         },
     ];
     constructor(

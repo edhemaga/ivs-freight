@@ -141,7 +141,7 @@ export class TaReCardComponent implements OnInit {
         console.log('--sendData function---', data);
         this.data = data;
         this.DetailsDataService.setCardMainTitle(this.cardNameCommon);
-        if ( this.mainData.id ){
+        if ( this.mainData?.id ){
             this.DetailsDataService.setCdlId(this.mainData.id);
         }
         
@@ -161,7 +161,7 @@ export class TaReCardComponent implements OnInit {
         let currentDate = moment().format('MM/DD/YYYY');
 
         this.DetailsDataService.setCardMainTitle(this.cardNameCommon);
-        if ( this.mainData.id ){
+        if ( this.mainData?.id ){
             this.DetailsDataService.setCdlId(this.mainData.id);
         }
         if (
