@@ -2,8 +2,8 @@
     <app-ta-details-header-card
         [ngClass]="{ 'disabedPreviousArrow': truckIndex == 0, 'disableNextArrow': truckIndex == (truck_list.length -1 ) }"
         [cardDetailsDate]="truck.createdAt | formatDateP"
-        [tooltipNext]=" truckIndex == (truck_list.length -1 )  ?  'Disabled' : 'Next Truck' "
-        [tooltipPrevious]=" truckIndex == 0 ? 'Disabled' : 'Previous Truck' "
+        [tooltipNext]=" truckIndex == (truck_list.length -1 )  ?  '' : 'Next Truck' "
+        [tooltipPrevious]=" truckIndex == 0 ? '' : 'Previous Truck' "
         [searchInputName]="'Search Truck'"
         [options]="truckDropDowns"
         (selectValue)="onSelectedTruck($event)"

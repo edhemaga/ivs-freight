@@ -2,8 +2,8 @@
     <app-ta-details-header-card
         [ngClass]="{ 'disabedPreviousArrow': brokerIndex == 0, 'disableNextArrow': brokerIndex == (brokerList.length -1 ) }"
         [cardDetailsDate]="broker?.createdAt | formatDateP"
-        [tooltipNext]=" brokerIndex == (brokerList.length -1 )  ?  'Disabled' : 'Next Broker' "
-        [tooltipPrevious]=" brokerIndex == 0 ? 'Disabled' : 'Previous Broker' "
+        [tooltipNext]=" brokerIndex == (brokerList.length -1 )  ?  '' : 'Next Broker' "
+        [tooltipPrevious]=" brokerIndex == 0 ? '' : 'Previous Broker' "
         [searchInputName]="'Search Broker'"
         [dateChecked]="'5 days ago'"
         [options]="brokerDropdowns"
