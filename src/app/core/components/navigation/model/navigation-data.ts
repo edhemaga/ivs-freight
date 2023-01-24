@@ -259,9 +259,9 @@ export const navigationData: Navigation[] = [
         id: 11,
         name: 'Telematic',
         image: 'ic_gps.svg',
-        route: 'telematic',
+        route: '/telematic',
         isRouteActive: false,
-        construction: true,
+        construction: false,
     },
     {
         id: 12,

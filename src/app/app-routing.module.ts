@@ -271,11 +271,6 @@ const routes: Routes = [
         data: { title: 'Chat' },
     },
     {
-        path: 'telematic',
-        component: UnderConstructionComponent,
-        data: { title: 'Telematic' },
-    },
-    {
         path: 'places',
         component: UnderConstructionComponent,
         data: { title: 'Places' },
@@ -286,7 +281,7 @@ const routes: Routes = [
         data: { title: 'File Menager' },
     },
     {
-        path: 'gpstracking',
+        path: 'telematic',
         loadChildren: () =>
             import('./core/components/telematic/telematic.module').then(
                 (m) => m.TelematicModule

@@ -1,5 +1,5 @@
 <div class="payroll-table-main">
-    <table>
+    <table class="{{tableAddClas}}">
         <thead>
             <tr>
                 <ng-container *ngFor="let h of tableSettings">
@@ -22,163 +22,213 @@
             </tr>
         </thead>
         <tbody>
-            <tr
-                *ngFor="let tr of tableData; let rowIndex = index"
-                (click)="openReport(tr)"
-            >
-                <ng-container *ngFor="let h of tableSettings">
-                    <td
-                        *ngIf="
-                            expandedTable ||
-                            (!expandedTable && !h.hideNotExpanded)
-                        "
-                    >
-                        <div class="table-box" [ngSwitch]="h.template">
-                            <div
-                                class="table-hold-box"
-                                *ngSwitchCase="'bold-normal-template'"
-                            >
+            <ng-container *ngFor="let tr of tableData; let rowIndex = index">
+                <tr (click)="openReport(tr)">
+                    <ng-container *ngFor="let h of tableSettings">
+                        <td
+                            *ngIf="
+                                expandedTable ||
+                                (!expandedTable && !h.hideNotExpanded)
+                            "
+                        >
+                            <div class="table-box" [ngSwitch]="h.template">
                                 <div
-                                    class="bold-normal-template"
-                                    [innerHTML]="tr | payrolltablepipe : h"
-                                ></div>
-                            </div>
-
-                            <div
-                                class="table-hold-box"
-                                *ngSwitchCase="'status-template'"
-                            >
-                                <div class="status-template d-flex">
-                                    <svg-icon
-                                        src="assets/svg/common/ic_danger.svg"
-                                    ></svg-icon>
-                                    <span>444 DAYS</span>
+                                    class="table-hold-box"
+                                    *ngSwitchCase="'bold-normal-template'"
+                                >
+                                    <div
+                                        class="bold-normal-template"
+                                        [innerHTML]="tr | payrolltablepipe : h"
+                                    ></div>
                                 </div>
-                            </div>
 
-                            <div
-                                class="table-hold-box d-flex"
-                                *ngSwitchCase="'bold-image-template'"
-                            >
-                                <app-profile-images
-                                    [indx]="rowIndex"
-                                    [name]="tr | payrolltablepipe : h"
-                                    [size]="'small'"
-                                    [withTooltip]="false"
-                                ></app-profile-images>
                                 <div
-                                    class="bold-normal-template image-right"
-                                    [innerHTML]="tr | payrolltablepipe : h"
-                                ></div>
-                            </div>
+                                    class="table-hold-box"
+                                    *ngSwitchCase="'status-template'"
+                                >
+                                    <div class="status-template d-flex">
+                                        <svg-icon
+                                            src="assets/svg/common/ic_danger.svg"
+                                        ></svg-icon>
+                                        <span>444 DAYS</span>
+                                    </div>
+                                </div>
 
-                            <div
-                                class="table-hold-box"
-                                *ngSwitchCase="'pickup-template'"
-                            >
-                                <div class="pick-load-box">
-                                    {{ tr.pickup.pickupCount }}
-                                    <svg-icon
-                                        *ngIf="tr.pickupCount < 9"
-                                        src="
+                                <div
+                                    class="table-hold-box d-flex"
+                                    *ngSwitchCase="'bold-image-template'"
+                                >
+                                    <app-profile-images
+                                        [indx]="rowIndex"
+                                        [name]="tr | payrolltablepipe : h"
+                                        [size]="'small'"
+                                        [withTooltip]="false"
+                                    ></app-profile-images>
+                                    <div
+                                        class="bold-normal-template image-right"
+                                        [innerHTML]="tr | payrolltablepipe : h"
+                                    ></div>
+                                </div>
+
+                                <div
+                                    class="table-hold-box"
+                                    *ngSwitchCase="'pickup-template'"
+                                >
+                                    <div class="pick-load-box">
+                                        {{ tr.pickup.pickupCount }}
+                                        <svg-icon
+                                            *ngIf="tr.pickupCount < 9"
+                                            src="
                                             assets/svg/svg_numbers/olddash/svg_num_box_{{
-                                            tr.pickupCount
-                                        }}.svg
+                                                tr.pickupCount
+                                            }}.svg
                                         "
-                                    ></svg-icon>
-                                    <svg-icon
-                                        *ngIf="tr.pickupCount > 9"
-                                        src="assets/svg/svg_numbers/svg_num_over.svg
+                                        ></svg-icon>
+                                        <svg-icon
+                                            *ngIf="tr.pickupCount > 9"
+                                            src="assets/svg/svg_numbers/svg_num_over.svg
                                     "
-                                    ></svg-icon>
-                                    <div class="pick-load-info">
-                                        <div class="pick-load-info-address">
-                                            {{
-                                                tr.pickup.shipper.address.city
-                                            }},
-                                            {{
-                                                tr.pickup.shipper.address
-                                                    .stateShortName
-                                            }}
-                                        </div>
-                                        <div class="pick-load-info-time">
-                                            05/09/21
+                                        ></svg-icon>
+                                        <div class="pick-load-info">
+                                            <div class="pick-load-info-address">
+                                                {{
+                                                    tr.pickup.shipper.address
+                                                        .city
+                                                }},
+                                                {{
+                                                    tr.pickup.shipper.address
+                                                        .stateShortName
+                                                }}
+                                            </div>
+                                            <div class="pick-load-info-time">
+                                                05/09/21
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
 
-                            <div
-                                class="table-hold-box"
-                                *ngSwitchCase="'delivery-template'"
-                            >
-                                <div class="pick-load-box delivery-box">
-                                    <svg-icon
-                                        *ngIf="tr.deliveryCount < 9"
-                                        src="
+                                <div
+                                    class="table-hold-box"
+                                    *ngSwitchCase="'delivery-template'"
+                                >
+                                    <div class="pick-load-box delivery-box">
+                                        <svg-icon
+                                            *ngIf="tr.deliveryCount < 9"
+                                            src="
                                             assets/svg/svg_numbers/olddash/svg_num_box_{{
-                                            tr.deliveryCount
-                                        }}.svg
+                                                tr.deliveryCount
+                                            }}.svg
                                         "
-                                    ></svg-icon>
-                                    <svg-icon
-                                        *ngIf="tr.deliveryCount > 9"
-                                        src="assets/svg/svg_numbers/svg_num_over.svg
+                                        ></svg-icon>
+                                        <svg-icon
+                                            *ngIf="tr.deliveryCount > 9"
+                                            src="assets/svg/svg_numbers/svg_num_over.svg
                                     "
-                                    ></svg-icon>
-                                    <div class="pick-load-info">
-                                        <div class="pick-load-info-address">
-                                            {{
-                                                tr.delivery.shipper.address
-                                                    .city
-                                            }},
-                                            {{
-                                                tr.delivery.shipper.address
-                                                    .stateShortName
-                                            }}
-                                        </div>
-                                        <div class="pick-load-info-time">
-                                            05/09/21
+                                        ></svg-icon>
+                                        <div class="pick-load-info">
+                                            <div class="pick-load-info-address">
+                                                {{
+                                                    tr.delivery.shipper.address
+                                                        .city
+                                                }},
+                                                {{
+                                                    tr.delivery.shipper.address
+                                                        .stateShortName
+                                                }}
+                                            </div>
+                                            <div class="pick-load-info-time">
+                                                05/09/21
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
 
-                            <div
-                                class="table-hold-box"
-                                *ngSwitchCase="'medium-normal-template'"
-                            >
                                 <div
-                                    class="medium-normal-template"
-                                    [innerHTML]="
-                                        tr | payrolltablepipe : h : rowIndex
-                                    "
-                                ></div>
-                            </div>
+                                    class="table-hold-box"
+                                    *ngSwitchCase="'medium-normal-template'"
+                                >
+                                    <div
+                                        class="medium-normal-template"
+                                        [innerHTML]="
+                                            tr | payrolltablepipe : h : rowIndex
+                                        "
+                                    ></div>
+                                </div>
 
-                            <div
-                                class="table-hold-box"
-                                *ngSwitchCase="'semibold-normal-template'"
-                                [class.highlighted]="h.highlighted"
-                            >
                                 <div
-                                    class="semibold-normal-template"
-                                    [innerHTML]="
-                                        tr | payrolltablepipe : h : rowIndex
-                                    "
-                                ></div>
-                            </div>
+                                    class="table-hold-box"
+                                    *ngSwitchCase="'semibold-normal-template'"
+                                    [class.highlighted]="h.highlighted"
+                                >
+                                    <div
+                                        class="semibold-normal-template"
+                                        [innerHTML]="
+                                            tr | payrolltablepipe : h : rowIndex
+                                        "
+                                    ></div>
+                                </div>
 
-                            <div class="table-hold-box" *ngSwitchDefault>
-                                <div
-                                    class="normal-template"
-                                    [innerHTML]="tr | payrolltablepipe : h"
-                                ></div>
+                                <div class="table-hold-box" *ngSwitchDefault>
+                                    <div
+                                        class="normal-template"
+                                        [innerHTML]="tr | payrolltablepipe : h"
+                                    ></div>
+                                </div>
                             </div>
-                        </div>
-                    </td>
-                </ng-container>
-            </tr>
+                        </td>
+                    </ng-container>
+                </tr>
+                <tr *ngIf="isResizableTable" class="reorder-row">
+                    <ng-container *ngFor="let h of tableSettingsResizable">
+                        <td [attr.colspan]="h.colspan">
+                            <div class="table-box" [ngSwitch]="h.template">
+                                <div
+                                    class="table-hold-box"
+                                    *ngSwitchCase="'bold-normal-template'"
+                                    [class.highlighted-last]="h.highlighted"
+                                >
+                                    <div class="bold-normal-template">
+                                        {{ h.value }}
+                                    </div>
+                                </div>
+
+                                <div
+                                    class="table-hold-box"
+                                    *ngSwitchCase="'medium-normal-template'"
+                                >
+                                    <div class="medium-normal-template">
+                                        {{ h.value }}
+                                    </div>
+                                </div>
+
+                                <div
+                                    class="table-hold-box"
+                                    *ngSwitchCase="'medium-normal-template'"
+                                >
+                                    <div class="medium-normal-template">
+                                        {{ h.value }}
+                                    </div>
+                                </div>
+
+                                <div
+                                    class="table-hold-box"
+                                    *ngSwitchCase="'semibold-normal-template'"
+                                >
+                                    <div class="semibold-normal-template">
+                                        {{ h.value }}
+                                    </div>
+                                </div>
+
+                                <div class="table-hold-box" *ngSwitchDefault>
+                                    <div class="normal-template">
+                                        {{ h.value }}
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    </ng-container>
+                </tr>
+            </ng-container>
         </tbody>
     </table>
 </div>
