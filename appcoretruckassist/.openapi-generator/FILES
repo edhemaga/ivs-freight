@@ -1,5 +1,4 @@
 .gitignore
-.openapi-generator-ignore
 README.md
 api.module.ts
 api/accident.service.ts
@@ -545,7 +544,6 @@ model/renewCdlCommand.ts
 model/reorderDispatchCommand.ts
 model/reorderDispatchesCommand.ts
 model/repairAutocompleteDescriptionResponse.ts
-model/repairCategoryFilterResponse.ts
 model/repairItemResponse.ts
 model/repairListResponse.ts
 model/repairModalResponse.ts

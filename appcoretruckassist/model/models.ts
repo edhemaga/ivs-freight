@@ -477,7 +477,6 @@ export * from './renewCdlCommand';
 export * from './reorderDispatchCommand';
 export * from './reorderDispatchesCommand';
 export * from './repairAutocompleteDescriptionResponse';
-export * from './repairCategoryFilterResponse';
 export * from './repairItemResponse';
 export * from './repairListResponse';
 export * from './repairModalResponse';

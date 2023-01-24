@@ -53,7 +53,22 @@
                         <span
                             *ngIf="isCardOpen || haveHeaderText || forcedOpen"
                             class="open-name disable-selection"
-                            >{{ cardNameCommon }}</span
+                            >
+                                <span *ngIf="!hasCopyIcon">{{ cardNameCommon }}</span>
+                                <span 
+                                    *ngIf="hasCopyIcon" 
+                                    ngbTooltip
+                                    [mainTooltip]="copiedCommon ? 'Copied' : 'Copy'"
+                                    position="top"
+                                    [autoClose]="false"
+                                    (click)="copyText(cardNameCommon, $event)"
+                                    [tooltipBackground]="
+                                        copiedCommon ? '#536BC2' : '#6c6c6c'
+                                    "
+                                    (mouseleave)="copiedCommon = false"
+                                >{{ cardNameCommon }}</span>
+                            
+                            </span
                         >
 
                         <span
