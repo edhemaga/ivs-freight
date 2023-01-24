@@ -273,9 +273,9 @@ export const navigationData: Navigation[] = [
     },
     {
         id: 13,
-        name: 'File Manager',
+        name: 'File Menager',
         image: 'ic_file_manager-new.svg',
-        route: 'file-manager',
+        route: 'file-menager',
         isRouteActive: false,
         files: 83,
         construction: true,

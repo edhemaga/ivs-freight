@@ -5,8 +5,10 @@
         (click)="onAction('Close Panel')"
         class="modal-nav-close"
     >
-        <p class="modal-nav-close-text">Add New</p>
+        <p class="modal-nav-close-text">{{ Title }}</p>
         <svg-icon
+            (mouseenter)="Title = 'Close'"
+            (mouseleave)="Title = 'Add New'"
             class="modal-nav-close-svg"
             src="assets/svg/common/ic_x.svg"
         ></svg-icon>
