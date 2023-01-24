@@ -1,4 +1,5 @@
 export interface IMultipleInput {
+    id?: any;
     value: string | number;
     second_value?: string | number;
     logoName?: string;

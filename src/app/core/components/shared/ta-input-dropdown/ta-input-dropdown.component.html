@@ -581,14 +581,16 @@
                         *ngIf="options[0].name !== 'No Results'"
                         class="load-dispatches-container  {{
                             option?.truck?.subFolder
-                        }} {{
-                            option?.truck?.logoType
-                                ? option?.truck?.logoType
-                                      .trim()
-                                      .replace(' ', '')
-                                      .toLowerCase()
-                                : null
                         }}"
+                        [ngClass]="{
+                            'dispatch-semi-truck': option.id === 1,
+                            'dispatch-semi-sleeper': option.id === 2,
+                            'dispatch-box-truck': option.id === 3,
+                            'dispatch-cargo-van': option.id === 4,
+                            'dispatch-tow-truck': option.id === 5,
+                            'dispatch-car-hauler': option.id === 6,
+                            'dispatch-spotter': option.id === 7
+                        }"
                     >
                         <svg-icon [src]="option.truck?.logoName"></svg-icon>
                         <div
@@ -620,16 +622,7 @@
                     <!-- Trailer -->
                     <div
                         *ngIf="options[0].name !== 'No Results'"
-                        class="load-dispatches-container {{
-                            option?.trailer?.subFolder
-                        }} {{
-                            option?.trailer?.logoType
-                                ? option?.trailer?.logoType
-                                      .trim()
-                                      .replace(' ', '')
-                                      .toLowerCase()
-                                : null
-                        }}"
+                        class="load-dispatches-container"
                         [ngClass]="{
                             trailerContainer: option?.trailer?.logoType
                                 ? option?.trailer?.logoType

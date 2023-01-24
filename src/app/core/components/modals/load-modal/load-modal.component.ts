@@ -697,6 +697,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                         multipleInputValues: {
                             options: [
                                 {
+                                    id: event?.truck?.id,
                                     value: event?.truck?.name,
                                     logoName: event?.truck?.logoName,
                                     isImg: false,
