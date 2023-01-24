@@ -276,7 +276,7 @@ const routes: Routes = [
         data: { title: 'Places' },
     },
     {
-        path: 'file-manager',
+        path: 'file-menager',
         component: UnderConstructionComponent,
         data: { title: 'File Menager' },
     },
