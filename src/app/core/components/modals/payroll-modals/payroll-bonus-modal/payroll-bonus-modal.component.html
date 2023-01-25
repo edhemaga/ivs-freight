@@ -1,5 +1,5 @@
 <app-ta-modal
-    [modalTitle]="editData?.type !== 'edit' ? 'Add Bonus' : 'Edit Bonus'"
+    [modalTitle]="!editData?.type.includes('edit') ? 'Add Bonus' : 'Edit Bonus'"
     [editData]="editData"
     [isModalValid]="payrollBonusForm.valid && isFormDirty"
     [saveAndAddNew]="editData?.type !== 'edit'"
@@ -10,6 +10,7 @@
             <div class="col-7">
                 <app-ta-input-dropdown
                     formControlName="driverId"
+                    [template]="'svgtext-template'"
                     [inputConfig]="{
                         name: 'Input Dropdown',
                         type: 'text',
@@ -58,7 +59,7 @@
                         label: 'Description',
                         type: 'text',
                         minLength: 2,
-                        maxLength: 160,
+                        maxLength: 40,
                         textTransform: 'capitalize',
                         isRequired: true,
                         customClass: 'line-input-26-in-card'
