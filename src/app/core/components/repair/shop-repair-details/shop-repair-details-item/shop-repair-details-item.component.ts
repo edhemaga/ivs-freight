@@ -50,7 +50,7 @@ export class ShopRepairDetailsItemComponent implements OnInit, OnChanges {
         private repairDQuery: RepairDQuery,
         private cdr: ChangeDetectorRef,
         private reviewRatingService: ReviewsRatingService,
-        private tableService: TruckassistTableService,
+        private tableService: TruckassistTableService
     ) {}
     ngOnChanges(changes: SimpleChanges): void {
         if (
@@ -103,7 +103,7 @@ export class ShopRepairDetailsItemComponent implements OnInit, OnChanges {
                     }
                 },
             });
-        
+
         this.initTableOptions();
 
         this.tableService.currentActionAnimation
@@ -112,14 +112,16 @@ export class ShopRepairDetailsItemComponent implements OnInit, OnChanges {
                 if (res.animation && res.tab === 'repair') {
                     let index = -1;
                     this.repairListData.map((item, inx) => {
-                        if ( item.id == res.id ) {
+                        if (item.id == res.id) {
                             index = inx;
-
                         }
-                    })
-                    
-                    if ( index > -1 ) {
-                        this.repairListData[index] = {...this.repairListData[index], ...res.data};
+                    });
+
+                    if (index > -1) {
+                        this.repairListData[index] = {
+                            ...this.repairListData[index],
+                            ...res.data,
+                        };
                         this.cdr.detectChanges();
                     }
                 }
@@ -194,10 +196,10 @@ export class ShopRepairDetailsItemComponent implements OnInit, OnChanges {
                     name: 'edit',
                     svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
                     show: true,
-                    iconName: 'edit'
+                    iconName: 'edit',
                 },
                 {
-                    title: 'border'
+                    title: 'border',
                 },
                 {
                     title: 'View Details',
@@ -209,7 +211,7 @@ export class ShopRepairDetailsItemComponent implements OnInit, OnChanges {
                 {
                     title: 'Finish Order',
                     name: 'finish order',
-                    iconName: 'finish-order', 
+                    iconName: 'finish-order',
                     blueIcon: true,
                 },
                 {
@@ -225,14 +227,14 @@ export class ShopRepairDetailsItemComponent implements OnInit, OnChanges {
                     name: 'share',
                     svg: 'assets/svg/common/share-icon.svg',
                     show: true,
-                    iconName: 'share'
+                    iconName: 'share',
                 },
                 {
                     title: 'Print',
                     name: 'print',
                     svg: 'assets/svg/common/ic_fax.svg',
                     show: true,
-                    iconName: 'print'
+                    iconName: 'print',
                 },
                 {
                     title: 'border',
@@ -274,54 +276,47 @@ export class ShopRepairDetailsItemComponent implements OnInit, OnChanges {
     }
 
     public changeReviewsEvent(reviews: { data: any; action: string }) {
-         if ( reviews.action == 'update' ) {
+        if (reviews.action == 'update') {
             const review: UpdateReviewCommand = {
                 id: reviews.data.id,
                 comment: reviews.data.commentContent,
             };
-           
+
             this.reviewRatingService
-            .updateReview(review)
-            .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {},
-                error: () => {},
-            });
-         } else if ( reviews.action == 'delete' ) {
+                .updateReview(review)
+                .pipe(takeUntil(this.destroy$))
+                .subscribe();
+        } else if (reviews.action == 'delete') {
             this.reviewRatingService
-            .deleteReview(reviews.data)
-            .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {},
-                error: () => {},
-            });
-         }
+                .deleteReview(reviews.data)
+                .pipe(takeUntil(this.destroy$))
+                .subscribe();
+        }
         //this.reviewsRepair = [...reviews.data];
         // TODO: API CREATE OR DELETE
     }
 
-
-    public openRepairDetail(repair){
-        if ( this.showRepairItems[repair.id] ) {
+    public openRepairDetail(repair) {
+        if (this.showRepairItems[repair.id]) {
             this.showRepairItems[repair.id] = false;
         } else {
-            if ( repair?.items?.length > 0 ) {
+            if (repair?.items?.length > 0) {
                 this.showRepairItems[repair.id] = true;
             }
         }
     }
 
-    public stopClick(ev, data){
+    public stopClick(ev, data) {
         ev.stopPropagation();
         ev.preventDefault();
-        
-        if ( data.truckId ) {
+
+        if (data.truckId) {
             this.dummyData.actions[4]['iconName'] = 'ic_truck';
-        } else if ( data.trailerId ) {
+        } else if (data.trailerId) {
             this.dummyData.actions[4]['iconName'] = 'ic_trailer';
         }
 
-        if ( data.repairType.name != 'Bill' ) {
+        if (data.repairType.name != 'Bill') {
             this.dummyData.actions[3]['hide'] = false;
             this.dummyData.actions[4]['title'] = 'All Orders';
         } else {

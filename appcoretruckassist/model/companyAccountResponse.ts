@@ -9,7 +9,6 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { EnumValue } from './enumValue';
 import { CompanyAccountLabelResponse } from './companyAccountLabelResponse';
 
 
@@ -19,9 +18,6 @@ export interface CompanyAccountResponse {
     url?: string | null;
     username?: string | null;
     password?: string | null;
-    api?: number;
-    apiCategory?: EnumValue;
-    connected?: boolean;
     note?: string | null;
     companyAccountLabel?: CompanyAccountLabelResponse;
     createdAt?: string;

@@ -654,14 +654,7 @@ export class ToDoListCardComponent implements OnInit, OnDestroy {
                     id: event.data.id,
                     commentContent: event.data.commentContent,
                 })
-                .subscribe({
-                    next: () => {
-                        console.log('SUCCESS DELETING');
-                    },
-                    error: () => {
-                        console.log('ERROR WHILE DELETING');
-                    },
-                });
+                .subscribe();
         }
     }
 

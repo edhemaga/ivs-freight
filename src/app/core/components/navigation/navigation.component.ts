@@ -1,6 +1,7 @@
 import { Navigation, NavigationSubRoutes } from './model/navigation.model';
 import {
     ChangeDetectionStrategy,
+    ChangeDetectorRef,
     Component,
     ElementRef,
     OnDestroy,
@@ -9,7 +10,7 @@ import {
 } from '@angular/core';
 import { navigationData } from './model/navigation-data';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
-import { filter, map, mergeMap, Subject, takeUntil } from 'rxjs';
+import { filter, map, mergeMap, startWith, Subject, takeUntil } from 'rxjs';
 import { NavigationService } from './services/navigation.service';
 import { navigation_magic_line } from './navigation.animation';
 import { DetailsDataService } from '../../services/details-data/details-data.service';
@@ -36,6 +37,7 @@ export class NavigationComponent implements OnInit, OnDestroy {
     private isActiveSubrouteIndex: number = -1;
     public isActiveSubroute: boolean = false;
     public activeSubrouteFleg: boolean = false;
+    public middleIsHovered: boolean = false;
     public footerHovered: boolean = false;
     public isActiveFooterRoute: boolean = false;
     public routeInSettingsActive: boolean = false;
@@ -44,18 +46,31 @@ export class NavigationComponent implements OnInit, OnDestroy {
     public showHideLineIfSettingsActive: boolean = true;
     public footerRouteActive: boolean = true;
     private destroy$ = new Subject<void>();
+    public subrouteContainerOpened: boolean = false;
+    public index: number;
+    public openedDropdown: boolean = false;
+    public hideSubrouteTitle: number = -1;
     closeDropdownOnNavClose: boolean;
     @ViewChild('navbar') navbar: ElementRef;
     selectedRoute: string = '';
+    selectedSubRoute: string = '';
+    companiesExists: boolean;
+    routeIndexSelected: boolean;
     constructor(
+        private cdRef: ChangeDetectorRef,
         private router: Router,
         private navigationService: NavigationService,
         private DetailsDataService: DetailsDataService,
         private activatedRoute: ActivatedRoute
     ) {}
-
+    hideSubrouteFromChild($event) {
+        this.hideSubrouteTitle = $event;
+    }
     ngOnInit(): void {
         this.navigationService.getValueNavHovered().subscribe((value) => {
+            this.middleIsHovered = value;
+        });
+        this.navigationService.getValueFootHovered().subscribe((value) => {
             this.footerHovered = value;
         });
         this.navigationService.getValueWhichNavIsOpen().subscribe((value) => {
@@ -113,25 +128,102 @@ export class NavigationComponent implements OnInit, OnDestroy {
                         break;
                 }
             });
-
+        //Detect changes in routes
         this.router.events
-            .pipe(filter((event) => event instanceof NavigationEnd))
-            .subscribe((url: any) => (this.selectedRoute = url.url));
+            .pipe(
+                filter((event) => event instanceof NavigationEnd),
+                startWith(this.router)
+            )
+            .subscribe((url: any) => {
+                if (url.url === '/dispatcher') {
+                    this.selectedRoute = 'Dispatch';
+                    this.cdRef.detectChanges();
+                } else if (url.url === '/file-manager') {
+                    this.selectedRoute = 'File Manager';
+                    this.cdRef.detectChanges();
+                } else {
+                    let ruteName = url.url.split('/');
+                    if (ruteName[2]) {
+                        if (ruteName[2] == 'sms') {
+                            this.selectedSubRoute = 'SMS';
+                            this.cdRef.detectChanges();
+                        } else if (ruteName[2] == 'todo') {
+                            this.selectedSubRoute = 'To-Do';
+                            this.cdRef.detectChanges();
+                        } else if (ruteName[2] == 'scheduled-insurance') {
+                            this.selectedSubRoute = 'Scheduled Ins.';
+                            this.cdRef.detectChanges();
+                        } else if (ruteName[2] == 'mvr') {
+                            this.selectedSubRoute = 'MVR';
+                            this.cdRef.detectChanges();
+                        } else if (ruteName[2] == 'mvr') {
+                            this.selectedSubRoute = 'MVR';
+                            this.cdRef.detectChanges();
+                        } else if (ruteName[2] == 'pm') {
+                            this.selectedSubRoute = 'PM';
+                            this.cdRef.detectChanges();
+                        } else if (ruteName[2] == 'ifta') {
+                            this.selectedSubRoute = 'IFTA';
+                            this.cdRef.detectChanges();
+                        } else {
+                            let t =
+                                ruteName[2].charAt(0).toUpperCase() +
+                                ruteName[2].substr(1).toLowerCase();
+                            this.selectedSubRoute = t;
+                            this.cdRef.detectChanges();
+                        }
+                    }
+                    let t =
+                        ruteName[1].charAt(0).toUpperCase() +
+                        ruteName[1].substr(1).toLowerCase();
+                    this.selectedRoute = t;
+                    this.cdRef.detectChanges();
+                }
+            });
+    }
+    getIndex(ind) {
+        this.index = ind;
+        // console.log(
+        //     this.navigation,
+        //     this.isNavigationHovered,
+        //     this.closeDropdownOnNavClose,
+        //     this.isModalPanelOpen,
+        //     this.isUserPanelOpen,
+        //     this.isSettingsPanelOpen,
+        //     this.isUserCompanyDetailsOpen
+        // );
+        // console.log(this.navigation, 'asasfasff');
+    }
+
+    oneUserCompany($event) {
+        this.companiesExists = $event;
+        this.cdRef.detectChanges();
+    }
+    routeIndex($event) {
+        this.routeIndexSelected = $event;
+        this.cdRef.detectChanges();
+    }
+    dropdownOpened(event) {
+        this.openedDropdown = event;
+    }
+    isSubrouteContainerOpen(event) {
+        // console.log(event);
+
+        this.subrouteContainerOpened = event;
+        this.cdRef.detectChanges();
     }
     //Midle navigation hovered hide magic line in footer nav
     onMidleNavHover(event) {
         this.navigationService.setValueNavHovered(event);
     }
+    public onFooterHover(event) {
+        this.navigationService.setValueFootHovered(event);
+    }
     public routeInSettingsActivated($event) {
         this.routeInSettingsActive = $event;
     }
-    public footerHoveredHideLine($event) {
-        // this.footerHovered = $event;
-    }
     //On outside of navbar close navbar
     closeNavbar(event) {
-        // console.log(event.target);
-
         if (
             //If this elements keep open navigation
             event.target.parentElement?.classList.contains(
@@ -160,6 +252,7 @@ export class NavigationComponent implements OnInit, OnDestroy {
         ) {
             //If this elements close navigation
             if (
+                event.target.classList.contains('modal-item') ||
                 event.target.classList.contains('tooltip-notifications') ||
                 event.target.classList.contains('open-navigation') ||
                 event.target.classList.contains('notification-svg ') ||
@@ -199,7 +292,7 @@ export class NavigationComponent implements OnInit, OnDestroy {
                 this.isActiveMagicLine = true;
                 this.isModalPanelOpen = false;
                 this.isActiveSubroute = false;
-
+                this.openedDropdown = false;
                 this.navigationService.onDropdownActivation({
                     name: 'Settings',
                     type: false,
@@ -215,6 +308,7 @@ export class NavigationComponent implements OnInit, OnDestroy {
             this.isModalPanelOpen = false;
             this.isActiveSubroute = false;
             this.isNavigationHovered = false;
+            this.openedDropdown = false;
             this.navigationService.onDropdownActivation({
                 name: 'Settings',
                 type: false,
@@ -265,7 +359,7 @@ export class NavigationComponent implements OnInit, OnDestroy {
 
         if (index !== this.isActiveSubrouteIndex) {
             this.navigation.forEach((nav) => (nav.isRouteActive = false));
-            this.isActiveSubroute = true;
+            // this.isActiveSubroute = true;
             this.activeSubrouteFleg = false;
             if (this.isActiveSubrouteIndex != -1) {
                 this.navigation[this.isActiveSubrouteIndex].isSubrouteActive =
@@ -335,7 +429,17 @@ export class NavigationComponent implements OnInit, OnDestroy {
     }
 
     public isActiveRouteOnReload(route: string): boolean {
-        return this.router.url.includes(route);
+        // console.log(route);
+        if (route == '/dispatcher') {
+            let t = 'Dispatch';
+            return route === t;
+        } else {
+            let ruteName = this.router.url.split('/');
+            let t =
+                ruteName[1].charAt(0).toUpperCase() +
+                ruteName[1].substr(1).toLowerCase();
+            return route === t;
+        }
     }
 
     public identity(index, item): number {

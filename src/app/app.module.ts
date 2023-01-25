@@ -92,7 +92,7 @@ import { UnderConstructionComponent } from './core/components/under-construction
         ],
         EncryptionDecryptionService,
         GoogleMapsAPIWrapper,
-        StaticInjectorService
+        StaticInjectorService,
     ],
     exports: [],
     schemas: [CUSTOM_ELEMENTS_SCHEMA],

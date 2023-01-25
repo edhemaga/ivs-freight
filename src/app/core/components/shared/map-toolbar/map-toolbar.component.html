@@ -73,9 +73,7 @@
     >
         <app-filter
             [type]="'truckTypeFilter'"
-            [filterTitle]="
-                'Truck Type Legend'
-            "
+            [filterTitle]="'Truck Type Legend'"
             [defFilterHolder]="true"
             [icon]="'truck'"
             [leftSideIcon]="true"
@@ -95,9 +93,7 @@
     >
         <app-filter
             [type]="'trailerTypeFilter'"
-            [filterTitle]="
-                'Trailer Type Legend'
-            "
+            [filterTitle]="'Trailer Type Legend'"
             [defFilterHolder]="true"
             [icon]="'trailer'"
             [leftSideIcon]="true"
@@ -117,9 +113,7 @@
     >
         <app-filter
             [type]="'driverFilter'"
-            [filterTitle]="
-                'Driver'
-            "
+            [filterTitle]="'Driver'"
             [defFilterHolder]="true"
             [icon]="'ic_steering-wheel'"
             [leftSideIcon]="true"
@@ -252,7 +246,7 @@
             <div
                 *ngIf="!options.toolbarActions.hideInfo"
                 class="action-div"
-                [ngClass]="{ 'action-active' : infoActive }"
+                [ngClass]="{ 'action-active': infoActive }"
                 (click)="onToolBarAction('open-route-info')"
             >
                 <svg-icon
@@ -512,7 +506,6 @@
             label: 'Map Name',
             isRequired: true,
             blackInput: true,
-            customClass: 'line-input-26',
             maxLength: 16
           }"
         ></app-ta-input>
@@ -584,7 +577,6 @@
                         label: 'Name',
                         isRequired: true,
                         blackInput: true,
-                        customClass: 'line-input-26',
                         maxLength: 16
                     }"
                 ></app-ta-input>
@@ -669,7 +661,7 @@
                         label: 'Stop Time',
                         isRequired: true,
                         placeholderIcon: 'time',
-                        customClass: 'datetimeclass line-input-26'
+                        customClass: 'datetimeclass'
                     }"
                 ></app-ta-input>
             </div>
@@ -717,7 +709,6 @@
                         label: 'Miles Per Gallon',
                         placeholderIcon: 'mileage',
                         isRequired: true,
-                        customClass: 'line-input-26',
                         min: 0,
                         max: 10,
                         maxLength: 4
@@ -739,7 +730,6 @@
                         label: 'Price Per Gallon',
                         placeholderIcon: 'dollar',
                         isRequired: true,
-                        customClass: 'line-input-26',
                         min: 0,
                         max: 10,
                         maxLength: 4

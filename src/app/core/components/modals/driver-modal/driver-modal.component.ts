@@ -179,6 +179,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             this.modalService.setModalSpinner({
                 action: 'save and add new',
                 status: true,
+                close: false,
             });
             this.addNewAfterSave = true;
         }
@@ -194,6 +195,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                 this.modalService.setModalSpinner({
                     action: null,
                     status: true,
+                    close: false,
                 });
             }
             // Save
@@ -202,6 +204,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                 this.modalService.setModalSpinner({
                     action: null,
                     status: true,
+                    close: false,
                 });
             }
         }
@@ -211,6 +214,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             this.modalService.setModalSpinner({
                 action: 'delete',
                 status: true,
+                close: false,
             });
         }
     }
@@ -1428,6 +1432,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                         this.modalService.setModalSpinner({
                             action: 'save and add new',
                             status: false,
+                            close: false,
                         });
                         this.driverForm.get('ownerType').patchValue(null);
                         this.driverForm.get('payType').patchValue(null);
@@ -1518,9 +1523,21 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                         this.selectedBank = null;
                         this.selectedOffDutyAddressArray = [];
                         this.selectedAddress = null;
+                    } else {
+                        this.modalService.setModalSpinner({
+                            action: null,
+                            status: true,
+                            close: true,
+                        });
                     }
                 },
-                error: () => {},
+                error: () => {
+                    this.modalService.setModalSpinner({
+                        action: null,
+                        status: false,
+                        close: false,
+                    });
+                },
             });
     }
 
@@ -1815,8 +1832,22 @@ export class DriverModalComponent implements OnInit, OnDestroy {
         this.driverTService
             .updateDriver(newData)
             .pipe(takeUntil(this.destroy$))
-            .subscribe((res) => {
-                this.updateTags();
+            .subscribe({
+                next: () => {
+                    this.modalService.setModalSpinner({
+                        action: null,
+                        status: true,
+                        close: true,
+                    });
+                    this.updateTags();
+                },
+                error: () => {
+                    this.modalService.setModalSpinner({
+                        action: null,
+                        status: false,
+                        close: false,
+                    });
+                },
             });
     }
 
@@ -2083,7 +2114,22 @@ export class DriverModalComponent implements OnInit, OnDestroy {
         this.driverTService
             .deleteDriverById(id, !this.driverStatus ? 'active' : 'inactive')
             .pipe(takeUntil(this.destroy$))
-            .subscribe();
+            .subscribe({
+                next: () => {
+                    this.modalService.setModalSpinner({
+                        action: 'delete',
+                        status: true,
+                        close: true,
+                    });
+                },
+                error: () => {
+                    this.modalService.setModalSpinner({
+                        action: 'delete',
+                        status: false,
+                        close: false,
+                    });
+                },
+            });
     }
 
     private updateDriverStatus() {

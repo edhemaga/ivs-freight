@@ -81,10 +81,10 @@
         >
             <!-- Payroll status -->
             <div class="payroll-status d-flex" *ngIf="hasPayrollStatus">
-                <app-payroll-statuses
+                <!-- <app-payroll-statuses
                     [active]="_isCardOpen && _isCardOpen != 'null'"
                     [options]="{ value: '$4,146.92 DEBT', type: 'next' }"
-                ></app-payroll-statuses>
+                ></app-payroll-statuses> -->
                 <app-payroll-statuses
                     [active]="_isCardOpen && _isCardOpen != 'null'"
                     [options]="{ value: '$4,146.92 DEBT', type: 'dept' }"

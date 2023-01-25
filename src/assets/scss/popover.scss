@@ -367,7 +367,8 @@
                 }
             }
 
-            .options-border-container, .toolbar-option-border-container {
+            .options-border-container,
+            .toolbar-option-border-container {
                 width: 100%;
                 height: fit-content;
                 display: flex;
@@ -375,21 +376,22 @@
                 justify-content: center;
                 margin: 4px 0;
 
-                .options-border, .option-border {
+                .options-border,
+                .option-border {
                     height: 1px;
                     background: #aaaaaa20;
                     border-radius: 1px;
                 }
             }
 
-            .toolbar-option-border-container{
-                .option-border{
+            .toolbar-option-border-container {
+                .option-border {
                     width: 135px;
                 }
             }
 
-            .options-border-container{
-                .options-border{
+            .options-border-container {
+                .options-border {
                     width: 190px;
                 }
             }
@@ -441,10 +443,22 @@
                                 }
                             }
 
+                            .some-selected {
+                                background-image: url('../../assets/svg/truckassist-table/some-selected-chack-mark.svg');
+                                background-color: #6f9ee0;
+                                background-repeat: no-repeat;
+                                background-position: center;
+                                transition: background-color 0.25s;
+
+                                &:hover {
+                                    background-color: #5673aa;
+                                }
+                            }
+
                             .columns-options-checkbox:checked
                                 + .columns-options-label {
                                 background-color: #6f9ee0;
-                                background-image: url('../../assets/svg/truckassist-table/check-new.svg');
+                                background-image: url('../../assets/svg/truckassist-table/check-new.svg') !important;
                                 background-repeat: no-repeat;
                                 background-position: center;
                                 transition: background-color 0.25s;
@@ -1555,12 +1569,12 @@
 
 .files-popover {
     background-color: #ffffff;
-    
+
     .popover-body {
         position: relative;
         left: -96px;
         top: 4px;
-        
+
         box-shadow: 0 0 4px rgb(0 0 0 / 15%);
         border-radius: 3px;
         background-color: #ffffff;
@@ -1944,10 +1958,10 @@
         border-radius: 2px;
 
         &:hover {
-            background: #F3F3F3;
+            background: #f3f3f3;
             cursor: pointer;
         }
-        
+
         .columns-menu-svg {
             margin-right: 6px;
         }
@@ -1979,12 +1993,14 @@
             padding: 0px;
             overflow: hidden;
 
-            .text-container, .ta-checkbox-label {
+            .text-container,
+            .ta-checkbox-label {
                 width: 0%;
             }
         }
 
-        .text-container, .ta-checkbox-label {
+        .text-container,
+        .ta-checkbox-label {
             width: 100%;
             height: 18px;
             transition: 0.2s;

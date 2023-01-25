@@ -34,7 +34,7 @@ export class NavigationUserProfileComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
     @Input() isNavigationHovered: boolean = false;
     @Input() isUserPanelOpen: boolean = false;
-
+    @Input() companiesExists: boolean;
     public userNavigationData: NavigationUserPanel[] = userNavigationData;
     public currentUserStatus: string = 'online';
 
@@ -65,7 +65,6 @@ export class NavigationUserProfileComponent implements OnInit, OnDestroy {
                 ? this.imageBase64Service.sanitizer(this.loggedUser.avatar)
                 : null,
         };
-
         this.userService.updateUserProfile$
             .pipe(debounceTime(1000), takeUntil(this.destroy$))
             .subscribe((val: boolean) => {

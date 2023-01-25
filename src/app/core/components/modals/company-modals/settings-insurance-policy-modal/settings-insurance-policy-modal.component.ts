@@ -184,12 +184,14 @@ export class SettingsInsurancePolicyModalComponent
                     this.modalService.setModalSpinner({
                         action: null,
                         status: true,
+                        close: false,
                     });
                 } else {
                     this.addInsurancePolicy(this.editData.company);
                     this.modalService.setModalSpinner({
                         action: null,
                         status: true,
+                        close: false,
                     });
                 }
                 break;
@@ -199,6 +201,7 @@ export class SettingsInsurancePolicyModalComponent
                 this.modalService.setModalSpinner({
                     action: 'delete',
                     status: true,
+                    close: false,
                 });
 
                 break;
@@ -477,9 +480,7 @@ export class SettingsInsurancePolicyModalComponent
             address: this.selectedAddress?.address
                 ? this.selectedAddress
                 : null,
-            files: documents
-                ? documents
-                : this.insurancePolicyForm.value.files
+            files: documents ? documents : this.insurancePolicyForm.value.files,
         };
 
         const commLiablity = commericalGeneralLiability
@@ -614,7 +615,22 @@ export class SettingsInsurancePolicyModalComponent
         this.settingsCompanyService
             .addInsurancePolicy(newData)
             .pipe(takeUntil(this.destroy$))
-            .subscribe();
+            .subscribe({
+                next: () => {
+                    this.modalService.setModalSpinner({
+                        action: null,
+                        status: true,
+                        close: true,
+                    });
+                },
+                error: () => {
+                    this.modalService.setModalSpinner({
+                        action: null,
+                        status: false,
+                        close: false,
+                    });
+                },
+            });
     }
 
     private updateInsurancePolicy(id: number) {
@@ -829,14 +845,44 @@ export class SettingsInsurancePolicyModalComponent
         this.settingsCompanyService
             .updateInsurancePolicy(newData)
             .pipe(takeUntil(this.destroy$))
-            .subscribe();
+            .subscribe({
+                next: () => {
+                    this.modalService.setModalSpinner({
+                        action: null,
+                        status: true,
+                        close: true,
+                    });
+                },
+                error: () => {
+                    this.modalService.setModalSpinner({
+                        action: null,
+                        status: false,
+                        close: false,
+                    });
+                },
+            });
     }
 
     private deleteInsurancePolicyById(id: number) {
         this.settingsCompanyService
             .deleteInsurancePolicyById(id)
             .pipe(takeUntil(this.destroy$))
-            .subscribe();
+            .subscribe({
+                next: () => {
+                    this.modalService.setModalSpinner({
+                        action: 'delete',
+                        status: true,
+                        close: true,
+                    });
+                },
+                error: () => {
+                    this.modalService.setModalSpinner({
+                        action: 'delete',
+                        status: false,
+                        close: false,
+                    });
+                },
+            });
     }
 
     private editInsurancePolicyById(insurance: any) {

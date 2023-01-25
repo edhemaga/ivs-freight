@@ -55,25 +55,25 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
         private DetailsDataService: DetailsDataService,
         private TruckItemStore: TruckItemStore
     ) {
-        let storeData$ = this.TruckItemStore._select(state => state);
+        let storeData$ = this.TruckItemStore._select((state) => state);
 
-        storeData$.subscribe(state => {
-            let newTruckData = {...state.entities[this.newTruckId]};
+        storeData$.subscribe((state) => {
+            let newTruckData = { ...state.entities[this.newTruckId] };
 
-            if ( !this.isEmpty(newTruckData) ) {
+            if (!this.isEmpty(newTruckData)) {
                 this.DetailsDataService.setNewData(newTruckData);
                 this.truckConf(newTruckData);
                 this.initTableOptions(newTruckData);
             }
-            
-          });
+        });
     }
 
     ngOnInit(): void {
-
         let dataId = this.activated_route.snapshot.params.id;
-        let truckData = {...this.TruckItemStore?.getValue()?.entities[dataId]};
-       
+        let truckData = {
+            ...this.TruckItemStore?.getValue()?.entities[dataId],
+        };
+
         this.initTableOptions(truckData);
 
         this.tableService.currentActionAnimation
@@ -114,44 +114,41 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
         this.detailsPageDriverSer.pageDetailChangeId$
             .pipe(takeUntil(this.destroy$))
             .subscribe((id) => {
-
-
                 let query;
                 if (this.truckDetailListQuery.hasEntity(id)) {
                     query = this.truckDetailListQuery
                         .selectEntity(id)
                         .pipe(take(1));
-                        query.pipe(takeUntil(this.destroy$)).subscribe({
-                            next: (res: any) => {
-                                this.truckConf(res);
-                                this.initTableOptions(res);
-                                this.newTruckId = id;
-                                if (this.router.url.includes('details')) {
-                                    this.router.navigate([`/truck/${res.id}/details`]);
-                                }
-        
-                                this.cdRef.detectChanges();
-                            },
-                            error: () => {},
-                        });
+                    query.pipe(takeUntil(this.destroy$)).subscribe({
+                        next: (res: any) => {
+                            this.truckConf(res);
+                            this.initTableOptions(res);
+                            this.newTruckId = id;
+                            if (this.router.url.includes('details')) {
+                                this.router.navigate([
+                                    `/list/truck/${res.id}/details`,
+                                ]);
+                            }
+
+                            this.cdRef.detectChanges();
+                        },
+                        error: () => {},
+                    });
                 } else {
                     //query = this.truckTService.getTruckById(id);
 
                     this.newTruckId = id;
-                    this.router.navigate([`/truck/${id}/details`]);
+                    this.router.navigate([`/list/truck/${id}/details`]);
                     this.cdRef.detectChanges();
                 }
-                
             });
 
-            
         this.truckConf(truckData);
     }
 
     public isEmpty(obj: Record<string, any>): boolean {
         return Object.keys(obj).length === 0;
-      }
-
+    }
 
     /**Function retrun id */
     public identity(index: number, item: any): number {
@@ -165,7 +162,6 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
         this.truckTService
             .getTruckById(id, true)
             .subscribe((item) => (this.truckObject = item));
-            
     }
     public deleteTruckById(id: number) {
         let status = this.truckObject.status == 0 ? 'inactive' : 'active';
@@ -186,14 +182,14 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
                 next: () => {
                     if (this.truckMinimalStore.getValue()?.ids?.length >= 1) {
                         this.router.navigate([
-                            `/truck/${
+                            `/list/truck/${
                                 this.truckList[this.currentIndex].id
                             }/details`,
                         ]);
                     }
                 },
                 error: () => {
-                    this.router.navigate(['/truck']);
+                    this.router.navigate(['/list/truck']);
                 },
             });
     }
@@ -202,10 +198,7 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
         this.truckTService
             .changeTruckStatus(id, status)
             .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {},
-                error: () => {},
-            });
+            .subscribe();
     }
     public optionsDrop(event: any) {
         this.dropService.dropActionHeaderTruck(
@@ -318,7 +311,9 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
 
     public onModalAction(action: string): void {
         let dataId = this.activated_route.snapshot.params.id;
-        let truckData = {...this.TruckItemStore?.getValue()?.entities[dataId]};
+        let truckData = {
+            ...this.TruckItemStore?.getValue()?.entities[dataId],
+        };
         const truck = truckData;
 
         switch (action.toLowerCase()) {
@@ -371,21 +366,21 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
         this.DetailsDataService.setNewData(data);
         this.truckDetailsConfig = [
             {
-                 id: 0,
-                 name: 'Truck Details',
-                 template: 'general',
-                 data: data,
-                 status: data?.status == 0 ? true : false,
-             },
+                id: 0,
+                name: 'Truck Details',
+                template: 'general',
+                data: data,
+                status: data?.status == 0 ? true : false,
+            },
             {
-                 id: 1,
-                 name: 'Registration',
-                 template: 'registration',
-                 length: data?.registrations?.length
-                     ? data.registrations.length
-                     : 0,
-                 data: data.registrations,
-                 status: data?.status == 0 ? true : false,
+                id: 1,
+                name: 'Registration',
+                template: 'registration',
+                length: data?.registrations?.length
+                    ? data.registrations.length
+                    : 0,
+                data: data.registrations,
+                status: data?.status == 0 ? true : false,
             },
             {
                 id: 2,

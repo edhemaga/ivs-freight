@@ -38,27 +38,30 @@ import { convertDateFromBackend } from '../../../../utils/methods.calculations';
     templateUrl: './truck-details-item.component.html',
     styleUrls: ['./truck-details-item.component.scss'],
     encapsulation: ViewEncapsulation.None,
-    animations: [card_component_animation('showHideCardBody'), trigger('cardAnimation', [
-        state('in', style({ opacity: 1, 'max-height': '0px'})),
-        transition(':enter', [
-            animate(
-                5100,
-                keyframes([
-                    style({ opacity: 0, 'max-height': '0px' }),
-                    style({ opacity: 1, 'max-height' : '600px' }),
-                ])
-            ),
+    animations: [
+        card_component_animation('showHideCardBody'),
+        trigger('cardAnimation', [
+            state('in', style({ opacity: 1, 'max-height': '0px' })),
+            transition(':enter', [
+                animate(
+                    5100,
+                    keyframes([
+                        style({ opacity: 0, 'max-height': '0px' }),
+                        style({ opacity: 1, 'max-height': '600px' }),
+                    ])
+                ),
+            ]),
+            transition(':leave', [
+                animate(
+                    5100,
+                    keyframes([
+                        style({ opacity: 1, 'max-height': '600px' }),
+                        style({ opacity: 0, 'max-height': '0px' }),
+                    ])
+                ),
+            ]),
         ]),
-        transition(':leave', [
-            animate(
-                5100,
-                keyframes([
-                    style({ opacity: 1, 'max-height' : '600px' }),
-                    style({ opacity: 0, 'max-height' : '0px' }),
-                ])
-            ),
-        ]),
-    ]),],
+    ],
 })
 export class TruckDetailsItemComponent implements OnInit, OnDestroy, OnChanges {
     @ViewChild('autosize', { static: false }) autosize: CdkTextareaAutosize;
@@ -303,41 +306,20 @@ export class TruckDetailsItemComponent implements OnInit, OnDestroy, OnChanges {
         this.commonTruckService
             .deleteRegistrationById(id)
             .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {
-                   
-                },
-                error: () => {
-                   
-                },
-            });
+            .subscribe();
     }
 
     private deleteInspectionByIdFunction(id: number) {
         this.commonTruckService
             .deleteInspectionById(id)
             .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {
-                
-                },
-                error: () => {
-                   
-                },
-            });
+            .subscribe();
     }
     private deleteTitleByIdFunction(id: number) {
         this.commonTruckService
             .deleteTitleById(id)
             .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {
-                   
-                },
-                error: () => {
-                    
-                },
-            });
+            .subscribe();
     }
     public onFileAction(action: string) {
         onFileActionMethods(action);
@@ -399,10 +381,9 @@ export class TruckDetailsItemComponent implements OnInit, OnDestroy, OnChanges {
         }
     }
 
-    public formatDate(mod){
+    public formatDate(mod) {
         return convertDateFromBackend(mod);
     }
-
 
     ngOnDestroy(): void {
         this.destroy$.next();
