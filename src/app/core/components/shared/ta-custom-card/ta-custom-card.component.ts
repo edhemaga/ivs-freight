@@ -38,8 +38,9 @@ export class TaCustomCardComponent {
     @Input() hasWeeklyStatus: string = null;
     @Input() hasDownload: string = null;
     @Input() customTextAction: string = null;
-    @Input() hasDeleteAction: boolean;
-    @Input() hasPayrollStatus: boolean;
+    @Input() hasDeleteAction: boolean = false;
+    @Input() hasPayrollStatus: boolean = false;
+    @Input() bottomCollapseArrow: boolean = false;
 
     @Input() controlName: FormControl;
 

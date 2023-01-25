@@ -21,6 +21,8 @@ import { Observable }                                        from 'rxjs';
 // @ts-ignore
 import { CompanyOfficeListResponse } from '../model/companyOfficeListResponse';
 // @ts-ignore
+import { CompanyOfficeMarkerResponse } from '../model/companyOfficeMarkerResponse';
+// @ts-ignore
 import { CompanyOfficeModalResponse } from '../model/companyOfficeModalResponse';
 // @ts-ignore
 import { CompanyOfficeResponse } from '../model/companyOfficeResponse';
@@ -160,6 +162,126 @@ export class CompanyOfficeService {
         return this.httpClient.request<boolean>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
+                responseType: <any>responseType_,
+                withCredentials: this.configuration.withCredentials,
+                headers: localVarHeaders,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * @param northEastLatitude 
+     * @param northEastLongitude 
+     * @param southWestLatitude 
+     * @param southWestLongitude 
+     * @param pageIndex 
+     * @param pageSize 
+     * @param companyId 
+     * @param sort 
+     * @param search 
+     * @param search1 
+     * @param search2 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public apiCompanyofficeClustersGet(northEastLatitude?: number, northEastLongitude?: number, southWestLatitude?: number, southWestLongitude?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<Array<CompanyOfficeMarkerResponse>>;
+    public apiCompanyofficeClustersGet(northEastLatitude?: number, northEastLongitude?: number, southWestLatitude?: number, southWestLongitude?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<Array<CompanyOfficeMarkerResponse>>>;
+    public apiCompanyofficeClustersGet(northEastLatitude?: number, northEastLongitude?: number, southWestLatitude?: number, southWestLongitude?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<Array<CompanyOfficeMarkerResponse>>>;
+    public apiCompanyofficeClustersGet(northEastLatitude?: number, northEastLongitude?: number, southWestLatitude?: number, southWestLongitude?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+        if (northEastLatitude !== undefined && northEastLatitude !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>northEastLatitude, 'NorthEastLatitude');
+        }
+        if (northEastLongitude !== undefined && northEastLongitude !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>northEastLongitude, 'NorthEastLongitude');
+        }
+        if (southWestLatitude !== undefined && southWestLatitude !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>southWestLatitude, 'SouthWestLatitude');
+        }
+        if (southWestLongitude !== undefined && southWestLongitude !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>southWestLongitude, 'SouthWestLongitude');
+        }
+        if (pageIndex !== undefined && pageIndex !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>pageIndex, 'PageIndex');
+        }
+        if (pageSize !== undefined && pageSize !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>pageSize, 'PageSize');
+        }
+        if (companyId !== undefined && companyId !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>companyId, 'CompanyId');
+        }
+        if (sort !== undefined && sort !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>sort, 'Sort');
+        }
+        if (search !== undefined && search !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>search, 'Search');
+        }
+        if (search1 !== undefined && search1 !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>search1, 'Search1');
+        }
+        if (search2 !== undefined && search2 !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>search2, 'Search2');
+        }
+
+        let localVarHeaders = this.defaultHeaders;
+
+        let localVarCredential: string | undefined;
+        // authentication (bearer) required
+        localVarCredential = this.configuration.lookupCredential('bearer');
+        if (localVarCredential) {
+            localVarHeaders = localVarHeaders.set('Authorization', 'Bearer ' + localVarCredential);
+        }
+
+        let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (localVarHttpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'text/plain',
+                'application/json',
+                'text/json'
+            ];
+            localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+        let localVarHttpContext: HttpContext | undefined = options && options.context;
+        if (localVarHttpContext === undefined) {
+            localVarHttpContext = new HttpContext();
+        }
+
+
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
+        }
+
+        let localVarPath = `/api/companyoffice/clusters`;
+        return this.httpClient.request<Array<CompanyOfficeMarkerResponse>>('get', `${this.configuration.basePath}${localVarPath}`,
+            {
+                context: localVarHttpContext,
+                params: localVarQueryParameters,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,

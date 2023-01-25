@@ -30,15 +30,15 @@
                 left: 1px;
             }
 
-            .payroll-left-counter{
+            .payroll-left-counter {
                 display: flex;
-                background-color: #F3F3F3;
+                background-color: #f3f3f3;
                 justify-content: center;
                 align-items: center;
                 min-width: 26px;
                 margin-right: 4px;
                 height: 26px;
-                color: #2F2F2F;
+                color: #2f2f2f;
                 font-size: 14px;
                 font-weight: 700;
                 border-radius: 2px;
@@ -496,6 +496,34 @@
                 animation: selectFix 1.5s ease;
             }
 
+        }
+    }
+
+    .bottom-collapse-arrow {
+        position: absolute;
+        left: 50%;
+        top: 100%;
+        z-index: 99999;
+        cursor: pointer;
+        width: 18px;
+        height: 20px;
+        line-height: 18px;
+        svg {
+            transform: rotate(180deg);
+            transition: all 0.3s ease-in-out;
+            path {
+                fill: #919191;
+            }
+        }
+
+        &.rotate {
+            svg {
+                transform: rotate(0deg);
+                transition: all 0.3s ease-in-out;
+                path {
+                    fill: #aaaaaa;
+                }
+            }
         }
     }
 }

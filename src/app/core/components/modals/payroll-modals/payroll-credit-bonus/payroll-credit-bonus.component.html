@@ -1,5 +1,7 @@
 <app-ta-modal
-    [modalTitle]="editData?.type !== 'edit' ? 'Add Credit' : 'Edit Credit'"
+    [modalTitle]="
+        !editData?.type.includes('edit') ? 'Add Credit' : 'Edit Credit'
+    "
     [editData]="editData"
     [isModalValid]="payrollCreditForm.valid && isFormDirty"
     [saveAndAddNew]="editData?.type !== 'edit'"
@@ -48,26 +50,8 @@
                 <div class="col-7" *ngIf="selectedTab === 2">
                     <app-ta-input-dropdown
                         formControlName="truckId"
-                        [inputConfig]="{
-                            name: 'Input Dropdown',
-                            type: 'text',
-                            label: 'Truck',
-                            isDropdown: true,
-                            dropdownImageInput: {
-                                withText: true,
-                                svg: false,
-                                image: true,
-                                url: selectedDriver?.logoName,
-                                nameInitialsInsteadUrl:
-                                    !selectedDriver?.logoName
-                                        ? selectedDriver?.name
-                                        : null,
-                                template: 'user'
-                            },
-                            isRequired: true,
-                            textTransform: 'capitalize',
-                            dropdownWidthClass: 'w-col-256'
-                        }"
+                        [template]="'double-text-template'"
+                        [inputConfig]="truckDropdownsConfig"
                         [options]="labelsTrucks"
                         [activeItem]="selectedTruck"
                         (selectedItem)="onSelectDropdown($event, 'truck')"

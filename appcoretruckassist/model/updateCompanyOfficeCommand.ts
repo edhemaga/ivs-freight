@@ -23,6 +23,8 @@ export interface UpdateCompanyOfficeCommand {
     phone?: string | null;
     extensionPhone?: string | null;
     address?: AddressEntity;
+    longitude?: number | null;
+    latitude?: number | null;
     rent?: number | null;
     payPeriod?: PayPeriod;
     weeklyDay?: DayOfWeek;
