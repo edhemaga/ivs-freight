@@ -9,17 +9,14 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { MarkerNamesResponsePagination } from './markerNamesResponsePagination';
+import { CompanyOfficeDepartmentContactResponse } from './companyOfficeDepartmentContactResponse';
 
 
-export interface ClusterResponse { 
+export interface CompanyOfficeMarkerResponse { 
     id?: number | null;
     name?: string | null;
-    favourite?: boolean;
-    pagination?: MarkerNamesResponsePagination;
-    pricePerGallon?: number | null;
     latitude?: number;
     longitude?: number;
-    count?: number;
+    departmentContacts?: Array<CompanyOfficeDepartmentContactResponse> | null;
 }
 
