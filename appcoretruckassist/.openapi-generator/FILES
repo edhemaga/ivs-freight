@@ -47,6 +47,7 @@ api/shipper.service.ts
 api/state.service.ts
 api/stop.service.ts
 api/tableConfig.service.ts
+api/tag.service.ts
 api/telematics.service.ts
 api/terminal.service.ts
 api/test.service.ts
@@ -310,6 +311,8 @@ model/drugAndAlcoholFeedbackResponse.ts
 model/drugAndAlcoholReviewResponse.ts
 model/editFuelCardCommand.ts
 model/editIntegrationCommand.ts
+model/editTagCommand.ts
+model/editTagsCommand.ts
 model/educationFeedbackResponse.ts
 model/educationReviewResponse.ts
 model/efsIntegrationConnectDisconnectCommand.ts
@@ -628,6 +631,7 @@ model/switchDispatchCommand.ts
 model/switchDispatchesCommand.ts
 model/tableConfigResponse.ts
 model/tableType.ts
+model/tagResponse.ts
 model/terminalListResponse.ts
 model/terminalResponse.ts
 model/terminalResponsePagination.ts
