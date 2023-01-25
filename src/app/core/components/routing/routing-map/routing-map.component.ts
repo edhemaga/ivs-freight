@@ -604,7 +604,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
                     switch (res.type) {
                         case 'delete': {
                             if (res.template === 'route') {
-                                this.deleteRouteLine(res.data);
+                                this.showHideRouteLine(res.data, true);
 
                                 this.focusedRouteIndex = null;
 
@@ -670,10 +670,11 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
                             routeIndex
                         );
                     } else {
-                        this.deleteRouteLine(
+                        this.showHideRouteLine(
                             this.tableData[this.selectedMapIndex].routes[
                                 routeIndex
-                            ]
+                            ],
+                            true
                         );
                     }
 
@@ -997,6 +998,8 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
 
             this.focusRoute(routeIndex);
         }
+
+        this.showHideRouteLine(route, route.hidden);
     }
 
     resizeCard(event, route) {
@@ -1864,7 +1867,10 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
         });
 
         this.inputAddress.map((addressInput, inputIndex) => {
-            if (inputIndex == i && this.tableData[this.selectedMapIndex].routes[i].isFocused) {
+            if (
+                inputIndex == i &&
+                this.tableData[this.selectedMapIndex].routes[i].isFocused
+            ) {
                 addressInput.addressExpand();
                 addressInput.inputDropdown?.inputRef?.input.nativeElement.focus();
                 setTimeout(() => {
@@ -2029,7 +2035,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
                         this.focusRoute(routeIndex);
                     }
 
-                    this.deleteRouteLine(route);
+                    this.showHideRouteLine(route, true);
 
                     route.stops.map((stop) => {
                         if (stop.isSelected) {
@@ -2053,9 +2059,13 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
                     //this.calculateDistanceBetweenStops(index);
                     this.calculateRouteWidth(item);
                     if (item.stops?.length > 1) {
-                        this.decodeRouteShape(item, routeIndex);
+                        if (this.routePolylines[item.id]) {
+                            this.showHideRouteLine(item, false);
+                        } else {
+                            this.decodeRouteShape(item, routeIndex);
+                        }
                     } else {
-                        this.deleteRouteLine(item);
+                        this.showHideRouteLine(item, true);
                     }
                 }
             );
@@ -2949,6 +2959,8 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
                     return item.id === mapId;
                 });
 
+                console.log('getRouteList mapIndex', mapIndex);
+                console.log('getRouteList tableData', this.tableData);
                 this.tableData[mapIndex].routes = [];
 
                 var routesArr = routes.pagination.data;
@@ -3003,7 +3015,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
                         if (item.stops?.length > 1) {
                             this.decodeRouteShape(item, routeIndex);
                         } else {
-                            this.deleteRouteLine(item);
+                            this.showHideRouteLine(item, true);
                         }
                     });
                 }
@@ -3085,10 +3097,21 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
 
                     var mainthis = this;
                     this.routePolylines[route.id].setMap(this.agmMap);
-                    google.maps.event.addListener(this.routePolylines[route.id], 'click', () => {
-                        console.log('polyline click', route, routeIndex);
-                        mainthis.focusRoute(routeIndex);
-                    });
+                    google.maps.event.addListener(
+                        this.routePolylines[route.id],
+                        'click',
+                        () => {
+                            console.log('polyline click', route, routeIndex);
+
+                            const routeLineIndex = mainthis.tableData[
+                                mainthis.selectedMapIndex
+                            ].routes.findIndex((item) => {
+                                return item.id === route.id;
+                            });
+
+                            mainthis.focusRoute(routeLineIndex);
+                        }
+                    );
                 },
                 error: () => {
                     console.log('decodeRouteShape error');
@@ -3175,10 +3198,13 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
             });
     }
 
-    deleteRouteLine(route) {
+    showHideRouteLine(route, hide?) {
         if (this.routePolylines[route.id]) {
-            this.routePolylines[route.id].setMap(null);
-            this.routePolylines[route.id] = null;
+            if (hide) {
+                this.routePolylines[route.id].setMap(null);
+            } else {
+                this.routePolylines[route.id].setMap(this.agmMap);
+            }
         }
     }
 }

@@ -28,6 +28,7 @@
         height: 100vh;
         padding-left: 0px;
         z-index: 1;
+        user-select: none;
 
         .route-card-container {
             position: absolute;
@@ -163,6 +164,7 @@
 
     pointer-events: all;
     cursor: pointer;
+    user-select: auto;
 
     z-index: 1;
 

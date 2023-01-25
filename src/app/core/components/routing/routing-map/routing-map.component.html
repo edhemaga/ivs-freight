@@ -1497,7 +1497,7 @@
                                                     : 'visible'
                                         }"
                                         [ngClass]="
-                                            route.isFocused ? 'route-zIndex-999' :
+                                            route.isFocused ? 'route-zIndex-998' :
                                             'route-zIndex-' + (tableData[selectedMapIndex].routes.length -i)
                                         "
                                         (click)="stopMarkerClick($event, i, j)"
@@ -1507,8 +1507,8 @@
                                     >
                                         <svg
                                             *ngIf="
-                                                j == 0 ||
-                                                j == route.stops.length - 1
+                                                j > 0 &&
+                                                j < route.stops.length - 1
                                             "
                                             (mouseenter)="
                                                 route.stops[j].hovered = true
@@ -1543,8 +1543,8 @@
                                         </svg>
                                         <svg
                                             *ngIf="
-                                                j > 0 &&
-                                                j < route.stops.length - 1
+                                                j == 0 ||
+                                                j == route.stops.length - 1
                                             "
                                             (mouseenter)="
                                                 route.stops[j].hovered = true
@@ -1586,7 +1586,7 @@
                                         </svg>
                                     </div>
                                     <div
-                                        class="stop-picker-address smaller-marker-address"
+                                        class="stop-picker-address smaller-marker-address route-zIndex-999"
                                         [ngClass]="{
                                             'small-marker-tooltip':
                                                 !route.isFocused

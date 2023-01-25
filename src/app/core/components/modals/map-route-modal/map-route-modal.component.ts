@@ -242,6 +242,11 @@ export class MapRouteModalComponent implements OnInit, OnDestroy {
     private updateRoute(id: number) {
         const form = this.mapRouteForm.value;
 
+        this.editData.stops.map((stop) => {
+            stop.latitude = stop.lat;
+            stop.longitude = stop.long;
+        });
+
         const newData: any = {
             id: id,
             name: form.routeName,
