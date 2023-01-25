@@ -23,8 +23,43 @@
             <div class="border-item"></div>
             <app-payroll-table
                 [tableSettings]="tableSettings"
+                [tableSettingsResizable]="tableSettingsResizable"
                 [tableData]="reportMainData.loads"
+                [isResizableTable]="true"
+                [tableAddClas]="'resizable-table'"
             ></app-payroll-table>
+            <div class="small-table-holder-main">
+                <div class="small-tables">
+                    <app-payroll-small-tables
+                        [title]="'Credit'"
+                        [type]="'credit'"
+                    ></app-payroll-small-tables>
+                </div>
+                <div class="small-tables">
+                    <app-payroll-small-tables
+                        [title]="'Bonus'"
+                        [type]="'bonus'"
+                    ></app-payroll-small-tables>
+                </div>
+                <div class="small-tables">
+                    <app-payroll-small-tables
+                        [title]="'Deduction'"
+                        [type]="'deduction'"
+                    ></app-payroll-small-tables>
+                </div>
+            </div>
+            <div class="map-holder">
+                <agm-map
+                    [latitude]="mapLatitude"
+                    [longitude]="mapLongitude"
+                    [restriction]="mapRestrictions"
+                    [streetViewControl]="false"
+                    [styles]="styles"
+                    [zoom]="mapZoom"
+                    [usePanning]="true"
+                    [keyboardShortcuts]="false"
+                ></agm-map>
+            </div>
         </div>
     </div>
     <div class="right-report-info">
@@ -65,12 +100,34 @@
                 <div class="payroll-report-money-item d-flex">
                     <div class="payroll-report-money-item-left d-flex">
                         <svg-icon
+                            [src]="'assets/svg/payroll/equal.svg'"
+                        ></svg-icon>
+                        <div class="sal-info">Load Pay</div>
+                    </div>
+                    <div class="payroll-report-money-item-right">$2,342.21</div>
+                </div>
+                <div class="payroll-report-money-item d-flex">
+                    <div class="payroll-report-money-item-left d-flex">
+                        <svg-icon
                             [src]="'assets/svg/payroll/addition.svg'"
+                        ></svg-icon>
+                        <div class="sal-info">Bonus</div>
+                    </div>
+                    <div class="payroll-report-money-item-right">$280.00</div>
+                </div>
+
+                <div class="payroll-report-money-item d-flex">
+                    <div class="payroll-report-money-item-left d-flex">
+                        <svg-icon
+                            [src]="'assets/svg/payroll/equal.svg'"
                         ></svg-icon>
                         <div class="sal-info">Salary</div>
                     </div>
-                    <div class="payroll-report-money-item-right">$2,622.21</div>
+                    <div class="payroll-report-money-item-right salary">
+                        $2,622.21
+                    </div>
                 </div>
+
                 <div class="payroll-report-money-item d-flex">
                     <div class="payroll-report-money-item-left d-flex">
                         <svg-icon
@@ -78,27 +135,20 @@
                         ></svg-icon>
                         <div class="sal-info">Credit</div>
                     </div>
-                    <div class="payroll-report-money-item-right">$2,622.21</div>
-                </div>
-
-                <div class="payroll-report-money-item d-flex">
-                    <div class="payroll-report-money-item-left d-flex">
-                        <svg-icon
-                            [src]="'assets/svg/payroll/addition.svg'"
-                        ></svg-icon>
-                        <div class="sal-info">Fuel</div>
+                    <div class="payroll-report-money-item-right credit">
+                        $2,622.21
                     </div>
-                    <div class="payroll-report-money-item-right">$2,622.21</div>
                 </div>
-
                 <div class="payroll-report-money-item d-flex">
                     <div class="payroll-report-money-item-left d-flex">
                         <svg-icon
-                            [src]="'assets/svg/payroll/addition.svg'"
+                            [src]="'assets/svg/payroll/deduction.svg'"
                         ></svg-icon>
                         <div class="sal-info">Deduction</div>
                     </div>
-                    <div class="payroll-report-money-item-right">$2,622.21</div>
+                    <div class="payroll-report-money-item-right deduction">
+                        $2,622.21
+                    </div>
                 </div>
 
                 <!-- Total -->
@@ -108,13 +158,40 @@
                     <div class="payroll-report-money-item-left d-flex">
                         <div class="sal-info">Total</div>
                     </div>
-                    <div class="payroll-report-money-item-right">$2,622.21</div>
+                    <div class="payroll-report-money-item-right total">
+                        $2,622.21
+                    </div>
                 </div>
             </div>
         </div>
         <div class="report-card">
             <div class="report-card-title">Payment method</div>
             <div class="border-item"></div>
+            <div class="input-field-report d-flex">
+                <div class="pay-amount">Pay Amount</div>
+                <app-ta-input
+                    [inputConfig]="{
+                        id: 'amount',
+                        name: 'Price',
+                        type: 'text',
+                        priceSeparator: true,
+                        minLength: 4,
+                        maxLength: 13,
+                        hideRequiredCheck: true,
+                        hideErrorMessage: true,
+                        blackInput: true
+                    }"
+                    [formControl]="payAmount"
+                ></app-ta-input>
+                <div class="small-text">
+                    1.0$ Fee per transaction Bank Account ****8785 with
+                    CarrierAssist Pay
+                </div>
+            </div>
+            <div class="report-buttons">
+                <div class="report-button active">CarrierAssist Pay</div>
+                <div class="report-button">Mark as Paid</div>
+            </div>
         </div>
     </div>
 </div>

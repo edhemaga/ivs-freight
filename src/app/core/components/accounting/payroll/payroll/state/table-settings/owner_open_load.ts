@@ -51,3 +51,72 @@ export const owner_open_loads = [
         highlighted: true
     }
 ];
+
+
+
+export const owner_open_loads_resizable = [
+    {
+        field: "Total",
+        data_field: "referenceNumber",
+        template: "bold-normal-template",
+        value: "Total",
+        colspan: 2
+    },
+    {
+        field: "",
+        data_field: "",
+        template: "semibold-normal-template",
+        value: "",
+        colspan: 1
+    },
+    {
+        field: "",
+        data_field: "",
+        template: "semibold-normal-template",
+        value: "",
+        colspan: 1
+    },
+    {
+        field: "",
+        data_field: "",
+        template: "semibold-normal-template",
+        value: "",
+        colspan: 1
+    },
+    {
+        field: "Loaded",
+        data_field: "loaded",
+        template: "semibold-normal-template",
+        value: "1,982.7",
+        colspan: 1
+    },
+    {
+        field: "Empty",
+        data_field: "empty",
+        template: "semibold-normal-template",
+        value: "503.4",
+        colspan: 1
+    },
+    {
+        field: "Miles",
+        data_field: "miles",
+        template: "semibold-normal-template",
+        value: "2,487.1",
+        colspan: 1
+    },
+    {
+        field: "Revenue",
+        data_field: "revenue",
+        template: "semibold-normal-template",
+        value: "$37,908.15",
+        colspan: 1
+    },
+    {
+        field: "Subtotal",
+        data_field: "subtotal",
+        template: "bold-normal-template",
+        highlighted: true,
+        value: "$3,316.57",
+        colspan: 1
+    }
+];

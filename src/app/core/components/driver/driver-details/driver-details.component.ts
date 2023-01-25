@@ -485,7 +485,7 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
                     }
                 },
                 error: () => {
-                    this.router.navigate(['/list//driver']);
+                    this.router.navigate(['/list/driver']);
                 },
             });
     }
