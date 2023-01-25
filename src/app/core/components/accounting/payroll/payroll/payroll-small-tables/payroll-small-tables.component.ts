@@ -12,6 +12,7 @@ import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.serv
 export class PayrollSmallTablesComponent implements OnInit {
     @Input() title: string;
     @Input() type: string;
+    @Input() reportMainData: any;
     constructor(private modalService: ModalService) {}
 
     ngOnInit(): void {}
@@ -19,6 +20,9 @@ export class PayrollSmallTablesComponent implements OnInit {
     public openAddNew() {
         switch (this.type) {
             case 'credit': {
+                console.log(this.reportMainData);
+
+                console.log(this.reportMainData.owner.id);
                 this.modalService.openModal(PayrollCreditBonusComponent, {
                     size: 'small',
                 });
