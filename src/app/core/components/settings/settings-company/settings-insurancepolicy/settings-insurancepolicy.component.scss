@@ -168,10 +168,8 @@
         width: 18px;
         height: 18px;
         cursor: pointer;
-        &:hover {
-            path {
-                stroke: rgb(66, 157, 209);
-            }
+        path {
+            fill: #AAAAAA;
         }
     }
 }

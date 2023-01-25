@@ -47,6 +47,7 @@ import { ShipperService } from './api/shipper.service';
 import { StateService } from './api/state.service';
 import { StopService } from './api/stop.service';
 import { TableConfigService } from './api/tableConfig.service';
+import { TagService } from './api/tag.service';
 import { TelematicsService } from './api/telematics.service';
 import { TerminalService } from './api/terminal.service';
 import { TestService } from './api/test.service';
