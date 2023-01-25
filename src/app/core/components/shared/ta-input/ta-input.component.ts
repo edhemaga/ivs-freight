@@ -135,22 +135,12 @@ export class TaInputComponent
     }
     ngOnChanges(changes: SimpleChanges): void {
         if (changes.inputConfig.currentValue?.multipleInputValues?.options) {
-            console.log(
-                'changes.ininputConfig.currentValue?.multipleInputValues?.optionsputConfig.currentValue?.multipleInputValues?.options: ',
-                changes.inputConfig.currentValue?.multipleInputValues?.options
-            );
             this.inputConfig.multipleInputValues.options =
                 changes.inputConfig.currentValue?.multipleInputValues?.options;
-
-            console.log(
-                'after changes: ',
-                this.inputConfig.multipleInputValues.options
-            );
         }
     }
 
     ngOnInit(): void {
-        console.log('inputConfig.multipleInputValues.options: ');
         // Toggle label transition animation
         $('.input-label').addClass('no-transition');
 

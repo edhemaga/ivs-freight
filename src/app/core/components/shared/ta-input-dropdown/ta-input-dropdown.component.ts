@@ -133,20 +133,22 @@ export class TaInputDropdownComponent
             changes.activeItem?.currentValue !==
             changes.activeItem?.previousValue
         ) {
-            setTimeout(() => {
-                this.getSuperControl.patchValue(
-                    changes.activeItem.currentValue?.number
-                        ? changes.activeItem.currentValue?.number
-                        : changes.activeItem.currentValue?.name
-                        ? changes.activeItem.currentValue?.name
-                        : null
-                );
+            if (!this.inputConfig?.name?.toLowerCase()?.includes('address')) {
+                setTimeout(() => {
+                    this.getSuperControl.patchValue(
+                        changes.activeItem.currentValue?.number
+                            ? changes.activeItem.currentValue?.number
+                            : changes.activeItem.currentValue?.name
+                            ? changes.activeItem.currentValue?.name
+                            : null
+                    );
 
-                this.inputConfig = {
-                    ...this.inputConfig,
-                    blackInput: false,
-                };
-            }, 350);
+                    this.inputConfig = {
+                        ...this.inputConfig,
+                        blackInput: false,
+                    };
+                }, 350);
+            }
         }
 
         // MultiSelect Selected Items From Backend
@@ -301,6 +303,7 @@ export class TaInputDropdownComponent
         }
         // Pick the item
         else {
+            this.inputConfig.selectedDropdown = true;
             // Dropdown labels option selected
             if (this.inputConfig.dropdownLabel) {
                 if (this.labelMode === 'Label') {
@@ -372,6 +375,7 @@ export class TaInputDropdownComponent
     public onClearSearch(): void {
         this.options = this.originalOptions;
         this.activeItem = null;
+        this.inputConfig.selectedDropdown = false;
         this.getSuperControl.patchValue(null);
         this.inputConfig = {
             ...this.inputConfig,

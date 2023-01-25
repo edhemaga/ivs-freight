@@ -187,6 +187,7 @@
                     }} {{ inputConfig.customClass }}"
                 >
                     <svg-icon
+                        *ngIf="!option?.isDriver"
                         [ngClass]="{
                             active: option.id === activeItem?.id,
                             'no-svg': !option?.logoName,
@@ -204,6 +205,31 @@
                             option.name.trim().replace(' ', '').toLowerCase()
                         }}"
                     ></svg-icon>
+                    <img
+                        *ngIf="option.logoName && option?.isDriver"
+                        [alt]="option.name"
+                        [ngClass]="{
+                            active: option.id === activeItem?.id
+                        }"
+                        [src]="
+                            this.imageBase64Service.sanitizer(option.logoName)
+                        "
+                        [ngStyle]="{ 'margin-right': '6px' }"
+                        class="svg-template-logo"
+                    />
+                    <div
+                        *ngIf="!option.logoName && option?.isDriver"
+                        class="no-profile-image"
+                        [ngStyle]="{ 'margin-right': '6px' }"
+                    >
+                        <app-profile-images
+                            [indx]="0"
+                            [name]="option.name"
+                            [size]="'small'"
+                            [type]="'user'"
+                        >
+                        </app-profile-images>
+                    </div>
                     <!-- Text -->
                     <div
                         [innerHtml]="

@@ -980,7 +980,10 @@
                 inputConfig?.dropdownImageInput?.template === 'color',
             'dropdown-input-image-user':
                 inputConfig?.dropdownImageInput?.withText &&
-                inputConfig?.dropdownImageInput?.template === 'user',
+                inputConfig?.dropdownImageInput?.template === 'user' &&
+                (inputConfig.selectedDropdown ||
+                    (inputConfig.placeholder && focusInput) ||
+                    getSuperControl.value),
             'dropdown-input-image-without-text-transparent':
                 inputConfig?.dropdownImageInput &&
                 !inputConfig?.dropdownImageInput?.withText &&
