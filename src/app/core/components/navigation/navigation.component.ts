@@ -429,11 +429,17 @@ export class NavigationComponent implements OnInit, OnDestroy {
     }
 
     public isActiveRouteOnReload(route: string): boolean {
-        let ruteName = this.router.url.split('/');
-        let t =
-            ruteName[1].charAt(0).toUpperCase() +
-            ruteName[1].substr(1).toLowerCase();
-        return route === t;
+        // console.log(route);
+        if (route == '/dispatcher') {
+            let t = 'Dispatch';
+            return route === t;
+        } else {
+            let ruteName = this.router.url.split('/');
+            let t =
+                ruteName[1].charAt(0).toUpperCase() +
+                ruteName[1].substr(1).toLowerCase();
+            return route === t;
+        }
     }
 
     public identity(index, item): number {

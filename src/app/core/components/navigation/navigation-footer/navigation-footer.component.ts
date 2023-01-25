@@ -7,8 +7,6 @@ import {
     OnDestroy,
     ChangeDetectionStrategy,
     ChangeDetectorRef,
-    OnChanges,
-    SimpleChanges,
 } from '@angular/core';
 import { FooterData } from '../model/navigation.model';
 import { footerData } from '../model/navigation-data';
@@ -32,7 +30,7 @@ import { TaUserService } from '../../../services/user/user.service';
         navigation_magic_line('showHideDetailsMagicLine'),
     ],
 })
-export class NavigationFooterComponent implements OnInit, OnChanges, OnDestroy {
+export class NavigationFooterComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
     @Input() isNavigationHovered: boolean = false;
     @Input() isUserCompanyDetailsOpen: boolean = false;
@@ -65,9 +63,7 @@ export class NavigationFooterComponent implements OnInit, OnChanges, OnDestroy {
         private userService: TaUserService,
         private cdRef: ChangeDetectorRef
     ) {}
-    ngOnChanges(changes: SimpleChanges): void {
-        // console.log(this.subrouteContainerOpened);
-    }
+
     ngOnInit() {
         this.navigationService.getValueNavHovered().subscribe((value) => {
             this.mouseOverMiddleNav = value;

@@ -52,7 +52,7 @@ export class NavigationModalsComponent {
         accountingNavigationData;
 
     public changeTextHoverOnCloseModal: boolean = false;
-
+    public Title: string = 'Add New';
     constructor(
         private modalService: ModalService,
         private navigationService: NavigationService

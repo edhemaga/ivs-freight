@@ -259,9 +259,9 @@ export const navigationData: Navigation[] = [
         id: 11,
         name: 'Telematic',
         image: 'ic_gps.svg',
-        route: 'telematic',
+        route: '/telematic',
         isRouteActive: false,
-        construction: true,
+        construction: false,
     },
     {
         id: 12,
@@ -273,9 +273,9 @@ export const navigationData: Navigation[] = [
     },
     {
         id: 13,
-        name: 'File Manager',
+        name: 'File Menager',
         image: 'ic_file_manager-new.svg',
-        route: 'file-manager',
+        route: 'file-menager',
         isRouteActive: false,
         files: 83,
         construction: true,

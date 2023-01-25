@@ -1,7 +1,7 @@
 <div class="details-container-items">
     <div *ngFor="let item of trailerDetailsConfig; trackBy: identity">
         <app-ta-details-header
-            [route]="'/trailer'"
+            [route]="'/list/trailer'"
             [tooltipHeaderName]="'Back to Trailer List'"
             [headerText]="item.name"
             [counterData]="item.length"
