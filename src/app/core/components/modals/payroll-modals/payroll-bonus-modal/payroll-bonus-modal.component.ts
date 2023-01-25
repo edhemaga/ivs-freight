@@ -50,8 +50,11 @@ export class PayrollBonusModalComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.createForm();
         this.getModalDropdowns();
-        if (this.editData?.type === 'edit') {
-            this.getByIdBonus(1);
+        if (
+            this.editData?.type === 'edit' ||
+            (this.editData?.type === 'new' && this.editData?.data?.id)
+        ) {
+            this.getByIdBonus(this.editData.data.id);
         }
     }
 
@@ -213,18 +216,51 @@ export class PayrollBonusModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (res: PayrollBonusResponse) => {
-                    this.payrollBonusForm.patchValue({
-                        driverId: res.driver.firstName.concat(
+                    // If Edit Bonus by Id
+                    if (this.editData.type === 'edit') {
+                        this.payrollBonusForm.patchValue({
+                            driverId: res.driver.firstName.concat(
+                                ' ',
+                                res.driver.lastName
+                            ),
+                            date: res.date
+                                ? convertDateFromBackend(res.date)
+                                : null,
+                            description: res.description,
+                            amount: convertNumberInThousandSep(res.amount),
+                        });
+                    }
+
+                    this.selectedDriver = {
+                        id: res.driver.id,
+                        name: res.driver.firstName.concat(
                             ' ',
                             res.driver.lastName
                         ),
-                        date: res.date
-                            ? convertDateFromBackend(res.date)
-                            : null,
-                        description: res.description,
-                        amount: convertNumberInThousandSep(res.amount),
-                    });
-                    this.selectedDriver = res.driver;
+                        logoName:
+                            res.driver.avatar === null ||
+                            res.driver.avatar === undefined ||
+                            res.driver.avatar === ''
+                                ? null
+                                : res.driver.avatar,
+                        isDriver: true,
+                    };
+
+                    // If Add New By Id
+                    if (
+                        this.editData?.data?.id &&
+                        this.editData?.type === 'new'
+                    ) {
+                        this.payrollBonusForm.patchValue({
+                            driverId: res.driver.firstName.concat(
+                                ' ',
+                                res.driver.lastName
+                            ),
+                        });
+                        this.labelsDriver = this.labelsDriver.filter(
+                            (item) => item.id === this.selectedDriver.id
+                        );
+                    }
                 },
                 error: () => {},
             });
@@ -247,6 +283,7 @@ export class PayrollBonusModalComponent implements OnInit, OnDestroy {
                                     ? null
                                     : item.avatar,
                             isDriver: true,
+                            additionalText: 'Kucas',
                         };
                     });
                 },

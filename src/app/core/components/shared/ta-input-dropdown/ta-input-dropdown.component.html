@@ -1155,7 +1155,6 @@
                             options.length === 1 &&
                             options[0].name === 'No Results',
                         'add-new': option.name === 'ADD NEW',
-                        active: option.id === activeItem?.id,
                         'all-assigned':
                             option.name.toLowerCase() === 'all assigned'
                     }"
@@ -1190,6 +1189,9 @@
                                       ]
                         "
                         class="svgtext-template-text additional-text"
+                        [ngClass]="{
+                            active: option.id === activeItem?.id
+                        }"
                     ></div>
                 </div>
             </div>

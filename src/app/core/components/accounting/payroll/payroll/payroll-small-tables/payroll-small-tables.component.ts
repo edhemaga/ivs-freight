@@ -23,27 +23,63 @@ export class PayrollSmallTablesComponent implements OnInit {
                 console.log(this.reportMainData);
 
                 console.log(this.reportMainData.owner.id);
-                this.modalService.openModal(PayrollCreditBonusComponent, {
-                    size: 'small',
-                });
+                this.modalService.openModal(
+                    PayrollCreditBonusComponent,
+                    {
+                        size: 'small',
+                    },
+                    {
+                        type: 'new', // 'edit' stavljas ako treba kad se azurira postojeci
+                        data: {
+                            id: 4, // TODO: a moze iz store-a da izvuces i da mi prosledis sve podatke o vozacu
+                        }, // da ne bi morao da pozivam kod sebe get by id, samo javi kad zavrsis
+                    }
+                );
                 break;
             }
             case 'bonus': {
-                this.modalService.openModal(PayrollBonusModalComponent, {
-                    size: 'small',
-                });
+                this.modalService.openModal(
+                    PayrollBonusModalComponent,
+                    {
+                        size: 'small',
+                    },
+                    {
+                        type: 'new', // 'edit' stavljas ako treba kad se azurira postojeci
+                        data: {
+                            id: 4, // TODO: a moze iz store-a da izvuces i da mi prosledis sve podatke o vozacu
+                        }, // da ne bi morao da pozivam kod sebe get by id, samo javi kad zavrsis
+                    }
+                );
                 break;
             }
             case 'deduction': {
-                this.modalService.openModal(PayrollDeducationModalComponent, {
-                    size: 'small',
-                });
+                this.modalService.openModal(
+                    PayrollDeducationModalComponent,
+                    {
+                        size: 'small',
+                    },
+                    {
+                        type: 'new', // 'edit' stavljas ako treba kad se azurira postojeci
+                        data: {
+                            id: 4, // TODO: a moze iz store-a da izvuces i da mi prosledis sve podatke o vozacu
+                        }, // da ne bi morao da pozivam kod sebe get by id, samo javi kad zavrsis
+                    }
+                );
                 break;
             }
             default: {
-                this.modalService.openModal(PayrollDeducationModalComponent, {
-                    size: 'small',
-                });
+                this.modalService.openModal(
+                    PayrollDeducationModalComponent,
+                    {
+                        size: 'small',
+                    },
+                    {
+                        type: 'new', // 'edit' stavljas ako treba kad se azurira postojeci
+                        data: {
+                            id: 4, // TODO: a moze iz store-a da izvuces i da mi prosledis sve podatke o vozacu
+                        }, // da ne bi morao da pozivam kod sebe get by id, samo javi kad zavrsis
+                    }
+                );
                 break;
             }
         }
