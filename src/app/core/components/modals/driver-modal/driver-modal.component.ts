@@ -570,7 +570,6 @@ export class DriverModalComponent implements OnInit, OnDestroy {
     }
 
     public onFilesEvent(event: any) {
-        
         switch (event.action) {
             case 'add': {
                 this.documents = event.files;
@@ -594,8 +593,17 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                 break;
             }
             case 'tag': {
-                
-                console.log(event, 'event')
+                let changedTag = false;
+                event.files.map((item) => {
+                    if (item.tagChanged) {
+                        changedTag = true;
+                    }
+                });
+
+                this.driverForm
+                    .get('tags')
+                    .patchValue(changedTag ? true : null);
+                break;
             }
             default: {
                 break;

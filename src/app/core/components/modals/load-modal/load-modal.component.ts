@@ -47,6 +47,7 @@ import { RoutingResponse } from '../../../../../../appcoretruckassist/model/rout
 import { LoadStopItemAutocompleteDescriptionResponse } from '../../../../../../appcoretruckassist/model/loadStopItemAutocompleteDescriptionResponse';
 import { ViewChild } from '@angular/core';
 import { trigger, transition, style, animate } from '@angular/animations';
+import { EditTagsService } from 'src/app/core/services/shared/editTags.service';
 
 interface IStopRoutes {
     longitude: number;
@@ -406,7 +407,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         private loadService: LoadTService,
         private modalService: ModalService,
         private ngbActiveModal: NgbActiveModal,
-        private financialCalculationPipe: FinancialCalculationPipe
+        private financialCalculationPipe: FinancialCalculationPipe,
+        private tagsService: EditTagsService
     ) {}
 
     public originHeight: number;
@@ -1553,15 +1555,16 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
 
     // Documents
     public onFilesEvent(event: any) {
-        this.documents = event.files;
         switch (event.action) {
             case 'add': {
+                this.documents = event.files;
                 this.loadForm
                     .get('files')
                     .patchValue(JSON.stringify(event.files));
                 break;
             }
             case 'delete': {
+                this.documents = event.files;
                 this.loadForm
                     .get('files')
                     .patchValue(
@@ -1572,6 +1575,19 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 }
 
                 this.fileModified = true;
+                break;
+            }
+            case 'tag': {
+                let changedTag = false;
+                event.files.map((item) => {
+                    if (item.tagChanged) {
+                        changedTag = true;
+                    }
+                });
+
+                this.loadForm
+                    .get('tags')
+                    .patchValue(changedTag ? true : null);
                 break;
             }
             default: {
@@ -3181,6 +3197,22 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 break;
             }
         }
+    }
+
+    updateTags() {
+        let tags = [];
+
+        this.documents.map((item) => {
+            if (item?.tagChanged && item?.fileId) {
+                var tagsData = {
+                    storageId: item.fileId,
+                    tagId: item.tagId?.length ? item.tagId[0] : null,
+                };
+                tags.push(tagsData);
+            }
+        });
+
+        this.tagsService.updateTag({tags: tags}).subscribe();
     }
 
     ngOnDestroy(): void {

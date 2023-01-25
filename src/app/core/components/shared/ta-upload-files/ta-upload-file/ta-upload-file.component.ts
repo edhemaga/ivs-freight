@@ -29,6 +29,7 @@ export interface UploadFile {
     tagId?: any;
     incorrect?: boolean;
     tagChanged?: boolean;
+    savedTag?: any;
 }
 @Component({
     selector: 'app-ta-upload-file',
@@ -108,6 +109,10 @@ export class TaUploadFileComponent implements OnInit, OnDestroy {
 
         if (!this.file?.extension) {
             this.fileExtension = this.urlExt.transform(this.file.url);
+        }
+
+        if (this.file?.tags?.length && this.hasTagsDropdown) {
+            this.file.savedTag = this.file.tags[0];
         }
     }
 
@@ -248,7 +253,8 @@ export class TaUploadFileComponent implements OnInit, OnDestroy {
                 setTimeout(() => {
                     this.file.tags = item.tagName;
                     this.file.tagId = [item.tagId];
-                    this.file.tagChanged = true;
+                    this.file.tagChanged =
+                        this.file.savedTag != item.tagName ? true : false;
                     const action = 'tag';
                     if (!this.t2.isOpen()) {
                         this.fileAction.emit({ file: this.file, action });
@@ -266,6 +272,9 @@ export class TaUploadFileComponent implements OnInit, OnDestroy {
         setTimeout(() => {
             this.file.tags = null;
             this.file.tagId = [];
+            const action = 'tag';
+            this.file.tagChanged = this.file.savedTag ? true : false;
+            this.fileAction.emit({ file: this.file, action });
             this.ref.detectChanges();
         }, 200);
     }

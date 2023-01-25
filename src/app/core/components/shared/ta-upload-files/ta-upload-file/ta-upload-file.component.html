@@ -353,10 +353,10 @@
 
 <ng-template #tagsPopover let-data="data">
     <div class="tags_main_holder">
-        <div class="remove_tag_holder" *ngIf="file?.tags" (click)="removeTag()">
+        <div class="remove_tag_holder" *ngIf="file?.tags?.length" (click)="removeTag()">
             <div class="remove_tag">Remove Tag</div>
         </div>
-        <div class="remove_tag_border_holder" *ngIf="file?.tags">
+        <div class="remove_tag_border_holder" *ngIf="file?.tags?.length">
             <div class="remove_tag_border"></div>
         </div>
         <div
