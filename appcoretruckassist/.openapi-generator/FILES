@@ -171,6 +171,7 @@ model/companyModalResponse.ts
 model/companyOfficeDepartmentContactCommand.ts
 model/companyOfficeDepartmentContactResponse.ts
 model/companyOfficeListResponse.ts
+model/companyOfficeMarkerResponse.ts
 model/companyOfficeModalResponse.ts
 model/companyOfficeResponse.ts
 model/companyOfficeResponsePagination.ts

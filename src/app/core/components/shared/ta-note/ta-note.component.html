@@ -65,7 +65,7 @@
             [class.expanded]="isExpanded"
             class="k-widget k-editor custom_editor"
             [class.dark]="type == 'dark'"
-            [ngStyle]="{ width: noteWidth + 'px' }"
+            [ngStyle]="{ width: parentWidth ? _parentWidth + 'px' : _noteWidth + 'px' }"
         >
             <div
                 (blur)="prepareForTextRange()"
