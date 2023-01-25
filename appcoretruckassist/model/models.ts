@@ -105,6 +105,7 @@ export * from './companyModalResponse';
 export * from './companyOfficeDepartmentContactCommand';
 export * from './companyOfficeDepartmentContactResponse';
 export * from './companyOfficeListResponse';
+export * from './companyOfficeMarkerResponse';
 export * from './companyOfficeModalResponse';
 export * from './companyOfficeResponse';
 export * from './companyOfficeResponsePagination';

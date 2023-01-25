@@ -21,5 +21,7 @@ export interface SignUpCompanyCommand {
     phone?: string | null;
     email?: string | null;
     password?: string | null;
+    longitude?: number | null;
+    latitude?: number | null;
 }
 
