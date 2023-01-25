@@ -22,7 +22,7 @@
                         >
                         </svg-icon>
                     </div>
-
+                    
                     <div class="model-name">
                         <div class="svg-wrapper">
                             <svg-icon
@@ -407,68 +407,6 @@
                         </p>
                     </div>
                 </div>
-                <!--
-                <div
-                    class="wrapper-owner"
-                    [@ownerDetailsAnimation]="togglerOwner ? 'true' : 'false'"
-                >
-                    <div class="owner-items">
-                        <svg-icon
-                            class="icons-details"
-                            src="assets/svg/common/ic_phone.svg"
-                        ></svg-icon>
-
-                        <app-ta-copy [copyValue]="truck?.owner?.phone">
-                        </app-ta-copy>
-                    </div>
-                    <div class="owner-items">
-                        <svg-icon
-                            class="icons-details"
-                            src="assets/svg/common/ic_email.svg"
-                        ></svg-icon>
-                        <app-ta-copy [copyValue]="truck?.owner?.email">
-                        </app-ta-copy>
-                    </div>
-                    <div class="owner-items">
-                        <svg-icon
-                            src="assets/svg/common/ic_address.svg"
-                        ></svg-icon>
-                        <p class="information-value">
-                            {{ truck.owner.address.address }}
-                        </p>
-                    </div>
-                </div>
-                <div [ngClass]="{ 'rotate-owner': togglerOwner }">
-                    <div
-                        (click)="togglerOwner = !togglerOwner"
-                        class="single-icon-wrapper"
-                    >
-                        <span
-                            [tooltipBackground]="'#6c6c6c'"
-                            ngbTooltip
-                            [mainTooltip]="
-                                togglerOwner ? 'Hide Contact' : 'Show More'
-                            "
-                            position="top"
-                        >
-                            <svg-icon
-                                class="icon-rotate"
-                                src="assets/svg/common/fill_arrow_down.svg"
-                            ></svg-icon>
-                        </span>
-                        <span
-                            tooltipBackground="#6c6c6c"
-                            ngbTooltip
-                            [mainTooltip]="
-                                togglerOwner ? 'Hide Contact' : 'Show More'
-                            "
-                            position="top"
-                            class="hide-show"
-                        >
-                        </span>
-                    </div>
-                </div>
-            -->
             </app-ta-custom-card>
 
             <!--------Perfomance--------->
@@ -636,6 +574,7 @@
                 <app-ta-input-note
                     [formControl]="noteControl"
                     [note]="truck.note"
+                    [blankNote]=" truck?.note ? true : false"
                     [isVisibleDivider]="false"
                     [isVisibleNote]="true"
                     [isVisibleArrow]="true"

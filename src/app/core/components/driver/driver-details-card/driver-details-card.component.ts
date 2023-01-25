@@ -211,7 +211,11 @@ export class DriverDetailsCardComponent
     ) {}
     ngOnChanges(changes: SimpleChanges) {
         if (!changes?.driver?.firstChange && changes?.driver.currentValue && changes?.driver.currentValue.id ) {
-            this.note.patchValue(changes?.driver?.currentValue?.note);
+            if ( changes?.driver?.currentValue?.note ) {
+                this.note.patchValue(changes?.driver?.currentValue?.note);
+            } else {
+                this.note.reset();
+            }
             this.getExpireDate(changes?.driver?.currentValue);
             this.getYearsAndDays(changes?.driver?.currentValue);
             this.widthOfProgress();

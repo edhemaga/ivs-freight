@@ -156,12 +156,13 @@
                         trailer?.emptyWeight ||
                         trailer?.mileage ||
                         trailer?.axles ||
-                        trailer?.tireSize?.name
+                        trailer?.tireSize?.name ||
+                        trailer?.reeferUnit?.name
                     "
                     class="common-template"
                 >
                     <div
-                        *ngIf="trailer.emptyWeight"
+                        *ngIf="trailer?.emptyWeight"
                         class="common-template-item"
                     >
                         <div class="common-template-item-name">
@@ -171,20 +172,26 @@
                             {{ trailer.emptyWeight | taThousandSeparator }} Ibs
                         </div>
                     </div>
-                    <div *ngIf="trailer.mileage" class="common-template-item">
+                    <div *ngIf="trailer?.mileage" class="common-template-item">
                         <div class="common-template-item-name">Mileage</div>
                         <div class="common-template-item-value">
                             {{ trailer.mileage | taThousandSeparator }} mi
                         </div>
                     </div>
-                    <div *ngIf="trailer.axles" class="common-template-item">
+                    <div *ngIf="trailer?.reeferUnit?.name" class="common-template-item">
+                        <div class="common-template-item-name">Reefer Unit</div>
+                        <div class="common-template-item-value">
+                            {{ trailer?.reeferUnit?.name }}
+                        </div>
+                    </div>
+                    <div *ngIf="trailer?.axles" class="common-template-item">
                         <div class="common-template-item-name">Axles</div>
                         <div class="common-template-item-value">
                             {{ trailer.axles }}
                         </div>
                     </div>
                     <div
-                        *ngIf="trailer.tireSize.name"
+                        *ngIf="trailer?.tireSize?.name"
                         class="common-template-item"
                     >
                         <div class="common-template-item-name">Tire Size</div>
@@ -193,7 +200,7 @@
                         </div>
                     </div>
                     <div
-                        *ngIf="trailer.suspension.name"
+                        *ngIf="trailer?.suspension?.name"
                         class="common-template-item"
                     >
                         <div class="common-template-item-name">Suspension</div>
@@ -203,7 +210,7 @@
                     </div>
 
                     <div
-                        *ngIf="trailer.insurancePolicy"
+                        *ngIf="trailer?.insurancePolicy"
                         class="common-template-item"
                     >
                         <div class="common-template-item-name">
@@ -220,7 +227,8 @@
                         !trailer?.emptyWeight &&
                         !trailer?.mileage &&
                         !trailer?.axles &&
-                        !trailer?.tireSize?.name
+                        !trailer?.tireSize?.name &&
+                        !trailer?.reeferUnit?.name
                     "
                 >
                     No Additional Details
@@ -271,71 +279,6 @@
                             </p>
                         </div>
                     </div>
-                    <!--    
-                    <div [@ownerDetailsAnimation]="toggleOwner ? 'true' : 'false'">
-                        <div class="wrapper-owner-items">
-                            <div class="owner-items">
-                                <svg-icon
-                                    class="icons-details"
-                                    src="assets/svg/common/ic_phone.svg"
-                                ></svg-icon>
-                                <app-ta-copy
-                                    [copyValue]="trailer?.owner?.phone"
-                                >
-                                </app-ta-copy>
-                            </div>
-                            <div class="owner-items">
-                                <svg-icon
-                                    class="icons-details"
-                                    src="assets/svg/common/ic_email.svg"
-                                ></svg-icon>
-                                <app-ta-copy
-                                    [copyValue]="trailer?.owner?.email"
-                                >
-                                </app-ta-copy>
-                            </div>
-                            <div class="owner-items">
-                                <svg-icon
-                                    src="assets/svg/common/ic_address.svg"
-                                ></svg-icon>
-                                <p class="information-value">
-                                    {{ trailer.owner.address.address }}
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                
-                    <div [ngClass]="{ 'transform-arrow': toggleOwner }">
-                        <div
-                            (click)="toggleOwner = !toggleOwner"
-                            class="icon-show"
-                        >
-                            <span
-                                tooltipBackground="#6c6c6c"
-                                ngbTooltip
-                                [mainTooltip]="
-                                    toggleOwner ? 'HIDE CONTACT' : 'Show More'
-                                "
-                                position="top"
-                            >
-                                <svg-icon
-                                    class="arrow-down-employment"
-                                    src="assets/svg/common/fill_arrow_down.svg"
-                                ></svg-icon>
-                            </span>
-                            <span
-                                tooltipBackground="#6c6c6c"
-                                ngbTooltip
-                                [mainTooltip]="
-                                    toggleOwner ? 'Hide Contact' : 'Show More'
-                                "
-                                position="top"
-                                class="hide-show"
-                            >
-                            </span>
-                        </div>
-                    </div>
-                -->
                 </div>
             </app-ta-custom-card>
 

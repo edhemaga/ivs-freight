@@ -224,6 +224,10 @@ p {
     .card-name-cmp {
         font-weight: 600 !important;
         text-transform: uppercase;
+
+        .open-name{
+            color: #424242 !important;
+        }
     }
     .drop-comm {
         position: relative;

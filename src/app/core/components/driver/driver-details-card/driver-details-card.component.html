@@ -721,6 +721,7 @@
                         [placeholder]="'Write something.'"
                         [customClass]="'note-small'"
                         [note]="driverObject?.note"
+                        [blankNote]=" driverObject?.note ? true : false"
                         [noteType]="'details-card'"
                         [entityId]="driver.id"
                         [entityType]="'Driver'"
