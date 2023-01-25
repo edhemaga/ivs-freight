@@ -2,7 +2,7 @@
     [modalTitle]="!editData?.type.includes('edit') ? 'Add Bonus' : 'Edit Bonus'"
     [editData]="editData"
     [isModalValid]="payrollBonusForm.valid && isFormDirty"
-    [saveAndAddNew]="editData?.type !== 'edit'"
+    [saveAndAddNew]="!editData?.type.includes('edit')"
     (action)="onModalAction($event)"
 >
     <form origin [formGroup]="payrollBonusForm" class="form-container">
@@ -26,6 +26,7 @@
                                 : null,
                             template: 'user'
                         },
+                        blackInput: true,
                         isRequired: true,
                         textTransform: 'capitalize',
                         dropdownWidthClass: 'w-col-256'

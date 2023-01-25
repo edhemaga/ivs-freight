@@ -49,11 +49,10 @@ export class PayrollBonusModalComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.createForm();
+
         this.getModalDropdowns();
-        if (
-            this.editData?.type === 'edit' ||
-            (this.editData?.type === 'new' && this.editData?.data?.id)
-        ) {
+
+        if (this.editData?.type === 'edit') {
             this.getByIdBonus(this.editData.data.id);
         }
     }
@@ -160,6 +159,11 @@ export class PayrollBonusModalComponent implements OnInit, OnDestroy {
                         this.formService.resetForm(this.payrollBonusForm);
 
                         this.selectedDriver = null;
+                        this.modalService.setModalSpinner({
+                            action: null,
+                            status: false,
+                            close: false,
+                        });
                     } else {
                         this.modalService.setModalSpinner({
                             action: null,
@@ -216,20 +220,17 @@ export class PayrollBonusModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (res: PayrollBonusResponse) => {
-                    // If Edit Bonus by Id
-                    if (this.editData.type === 'edit') {
-                        this.payrollBonusForm.patchValue({
-                            driverId: res.driver.firstName.concat(
-                                ' ',
-                                res.driver.lastName
-                            ),
-                            date: res.date
-                                ? convertDateFromBackend(res.date)
-                                : null,
-                            description: res.description,
-                            amount: convertNumberInThousandSep(res.amount),
-                        });
-                    }
+                    this.payrollBonusForm.patchValue({
+                        driverId: res.driver.firstName.concat(
+                            ' ',
+                            res.driver.lastName
+                        ),
+                        date: res.date
+                            ? convertDateFromBackend(res.date)
+                            : null,
+                        description: res.description,
+                        amount: convertNumberInThousandSep(res.amount),
+                    });
 
                     this.selectedDriver = {
                         id: res.driver.id,
@@ -245,22 +246,6 @@ export class PayrollBonusModalComponent implements OnInit, OnDestroy {
                                 : res.driver.avatar,
                         isDriver: true,
                     };
-
-                    // If Add New By Id
-                    if (
-                        this.editData?.data?.id &&
-                        this.editData?.type === 'new'
-                    ) {
-                        this.payrollBonusForm.patchValue({
-                            driverId: res.driver.firstName.concat(
-                                ' ',
-                                res.driver.lastName
-                            ),
-                        });
-                        this.labelsDriver = this.labelsDriver.filter(
-                            (item) => item.id === this.selectedDriver.id
-                        );
-                    }
                 },
                 error: () => {},
             });
@@ -283,9 +268,22 @@ export class PayrollBonusModalComponent implements OnInit, OnDestroy {
                                     ? null
                                     : item.avatar,
                             isDriver: true,
-                            additionalText: 'Kucas',
                         };
                     });
+
+                    // If Add New By Id
+                    if (
+                        this.editData?.data?.driverId &&
+                        this.editData?.type === 'new'
+                    ) {
+                        this.labelsDriver = this.labelsDriver.filter(
+                            (item) => item.id === this.editData?.data?.driverId
+                        );
+                        this.selectedDriver = this.labelsDriver[0];
+                        this.payrollBonusForm.patchValue({
+                            driverId: this.labelsDriver[0].name,
+                        });
+                    }
                 },
                 error: () => {},
             });

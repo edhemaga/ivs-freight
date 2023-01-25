@@ -4,7 +4,7 @@
     "
     [editData]="editData"
     [isModalValid]="payrollCreditForm.valid && isFormDirty"
-    [saveAndAddNew]="editData?.type !== 'edit'"
+    [saveAndAddNew]="!editData?.type.includes('edit')"
     (action)="onModalAction($event)"
 >
     <div origin>
@@ -22,6 +22,7 @@
                 <div class="col-7" *ngIf="selectedTab === 1">
                     <app-ta-input-dropdown
                         formControlName="driverId"
+                        [template]="'svgtext-template'"
                         [inputConfig]="{
                             name: 'Input Dropdown',
                             type: 'text',
@@ -38,6 +39,7 @@
                                         : null,
                                 template: 'user'
                             },
+                            blackInput: true,
                             isRequired: true,
                             textTransform: 'capitalize',
                             dropdownWidthClass: 'w-col-256'
