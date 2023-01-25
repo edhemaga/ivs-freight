@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, tap } from 'rxjs';
+import { BehaviorSubject, Observable, Subject, tap } from 'rxjs';
 
 import {
     AccountService,
@@ -26,6 +26,10 @@ export class AuthStoreService {
     private forgotPasswordTokenSubject: BehaviorSubject<string> =
         new BehaviorSubject<string>(null);
 
+    private _multipleCompanies: any;
+
+    private multipleCompanies = new Subject<any>();
+    userHasMultipleCompaniesObservable = this.multipleCompanies.asObservable();
     constructor(
         private accountService: AccountService,
         private router: Router,
@@ -48,18 +52,29 @@ export class AuthStoreService {
         return this.signUpUserInfoSubject.asObservable();
     }
 
-    public accountLogin(data: SignInCommand): Observable<SignInResponse> {
+    public accountLogin(data?: SignInCommand): Observable<SignInResponse> {
         return this.accountService.apiAccountLoginPost(data).pipe(
             tap((user: SignInResponse) => {
                 // Production
                 // this.authStore.set({ 1: user });
                 // Develop
-                localStorage.setItem('user', JSON.stringify(user));
-                this.router.navigate(['/dashboard']);
+                if (user.companies.length > 1) {
+                    this.moreThenOneCompany = user;
+                } else {
+                    localStorage.setItem('user', JSON.stringify(user));
+                    this.router.navigate(['/dashboard']);
+                }
             })
         );
     }
 
+    get moreThenOneCompany() {
+        return this._multipleCompanies;
+    }
+    set moreThenOneCompany(value) {
+        this._multipleCompanies = value;
+        this.multipleCompanies.next(value);
+    }
     public accountLogut(): void {
         // ---- PRODUCTION MODE ----
         this.persistStorage.clearStore();
