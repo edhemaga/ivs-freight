@@ -1736,9 +1736,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                     }
                 });
 
-                this.loadForm
-                    .get('tags')
-                    .patchValue(changedTag ? true : null);
+                this.loadForm.get('tags').patchValue(changedTag ? true : null);
                 break;
             }
             default: {
@@ -3109,20 +3107,18 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         let documents = [];
         let tagsArray = [];
         this.documents.map((item) => {
-            if(item.tagId?.length)
-            tagsArray.push(
-                {
+            if (item.tagId?.length)
+                tagsArray.push({
                     fileName: item.realFile.name,
-                    tagIds: item.tagId
-                }
-            );
+                    tagIds: item.tagId,
+                });
 
             if (item.realFile) {
                 documents.push(item.realFile);
             }
         });
 
-        if(!tagsArray.length) {
+        if (!tagsArray.length) {
             tagsArray = null;
         }
 
@@ -3304,6 +3300,14 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     }
 
     private premmapedAdditionalBillingRate(action: string) {
+        console.log(
+            'this.originalAdditionalBillingTypes: ',
+            this.originalAdditionalBillingTypes
+        );
+        console.log(
+            'this.additionalBillings(): ',
+            this.additionalBillings().value
+        );
         return this.originalAdditionalBillingTypes
             .map((item) => {
                 const biilingRate = this.additionalBillings().controls.find(
@@ -3317,7 +3321,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                         : null,
                 };
             })
-            .filter((item, index) => index !== 0);
+            .filter((item) => item.id !== 6);
     }
 
     private premmapedStops() {
@@ -3673,7 +3677,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             }
         });
 
-        this.tagsService.updateTag({tags: tags}).subscribe();
+        this.tagsService.updateTag({ tags: tags }).subscribe();
     }
 
     // MODAL TABLE
