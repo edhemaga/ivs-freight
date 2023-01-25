@@ -478,12 +478,14 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
                         this.modalService.setModalSpinner({
                             action: null,
                             status: true,
+                            close: false,
                         });
                     } else {
                         this.updateCompanyDivision(this.editData.company.id);
                         this.modalService.setModalSpinner({
                             action: null,
                             status: true,
+                            close: false,
                         });
                     }
                 } else {
@@ -491,6 +493,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
                     this.modalService.setModalSpinner({
                         action: null,
                         status: true,
+                        close: false,
                     });
                 }
 
@@ -502,6 +505,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
                     this.modalService.setModalSpinner({
                         action: 'delete',
                         status: true,
+                        close: false,
                     });
                 }
                 break;
@@ -1113,7 +1117,22 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
         this.settingsCompanyService
             .addCompanyDivision(newData)
             .pipe(takeUntil(this.destroy$))
-            .subscribe();
+            .subscribe({
+                next: () => {
+                    this.modalService.setModalSpinner({
+                        action: null,
+                        status: true,
+                        close: true,
+                    });
+                },
+                error: () => {
+                    this.modalService.setModalSpinner({
+                        action: null,
+                        status: false,
+                        close: false,
+                    });
+                },
+            });
     }
 
     private editCompanyDivision() {
@@ -1331,14 +1350,44 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
         this.settingsCompanyService
             .updateCompanyDivision(newData)
             .pipe(takeUntil(this.destroy$))
-            .subscribe();
+            .subscribe({
+                next: () => {
+                    this.modalService.setModalSpinner({
+                        action: null,
+                        status: true,
+                        close: true,
+                    });
+                },
+                error: () => {
+                    this.modalService.setModalSpinner({
+                        action: null,
+                        status: false,
+                        close: false,
+                    });
+                },
+            });
     }
 
     public deleteCompanyDivisionById(id: number) {
         this.settingsCompanyService
             .deleteCompanyDivisionById(id)
             .pipe(takeUntil(this.destroy$))
-            .subscribe();
+            .subscribe({
+                next: () => {
+                    this.modalService.setModalSpinner({
+                        action: 'delete',
+                        status: true,
+                        close: true,
+                    });
+                },
+                error: () => {
+                    this.modalService.setModalSpinner({
+                        action: 'delete',
+                        status: false,
+                        close: false,
+                    });
+                },
+            });
     }
 
     public updateCompany() {
@@ -1612,7 +1661,22 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
         this.settingsCompanyService
             .updateCompany(newData)
             .pipe(takeUntil(this.destroy$))
-            .subscribe();
+            .subscribe({
+                next: () => {
+                    this.modalService.setModalSpinner({
+                        action: null,
+                        status: true,
+                        close: true,
+                    });
+                },
+                error: () => {
+                    this.modalService.setModalSpinner({
+                        action: null,
+                        status: false,
+                        close: false,
+                    });
+                },
+            });
     }
 
     private editCompany() {

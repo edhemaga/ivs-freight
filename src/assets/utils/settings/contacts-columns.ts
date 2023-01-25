@@ -49,7 +49,7 @@ export function getToolsContactsColumnDefinition() {
             export: true,
             resizable: true,
             link: {
-                routerLinkStart: '/contact/',
+                routerLinkStart: '/list/contact/',
                 routerLinkEnd: '/details',
             },
         },

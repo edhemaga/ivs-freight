@@ -1,7 +1,7 @@
 <div class="repair-details-container">
     <div *ngFor="let item of shopRepairConfig; trackBy: identity">
         <app-ta-details-header
-            [route]="'/repair'"
+            [route]="'/list/repair'"
             [tooltipHeaderName]="'Back to Repair List'"
             [headerText]="item.nameDefault"
             [counterData]="item.length"

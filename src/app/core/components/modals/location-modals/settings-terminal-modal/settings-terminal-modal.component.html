@@ -50,7 +50,7 @@
                                             type: 'text',
                                             label: 'Terminal Name',
                                             isRequired: true,
-                                            textTransform: 'capitalize',
+                                            textTransform: 'uppercase',
                                             autoFocus:
                                                 editData?.type !== 'edit',
                                             minLength: 1,
@@ -490,7 +490,6 @@
                                     type: 'text',
                                     label: 'Rent',
                                     placeholderIcon: 'dollar',
-                                    customClass: 'dollar-placeholderIcon',
                                     thousandSeparator: true,
                                     minLength: 4,
                                     maxLength: 8

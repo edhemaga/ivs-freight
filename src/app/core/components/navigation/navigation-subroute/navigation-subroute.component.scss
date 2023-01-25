@@ -67,18 +67,31 @@
             top: 4px;
             color: $nav-white;
         }
-
+        .route-not-active {
+            color: #787878;
+        }
         &:hover {
             transition: $nav-transition-5;
             color: $nav-text-color-hover;
             .nav-item-arrow_top {
                 opacity: 1;
+                z-index: 9;
+            }
+        }
+        .nav-item-arrow_top {
+            z-index: 9;
+
+            &:hover {
+                svg {
+                    path {
+                        fill: $nav-white;
+                    }
+                }
             }
         }
     }
     .subroutes:last-of-type {
         top: 20px;
-        background: red;
     }
     .subroute-active {
         color: $nav-active-lighter;

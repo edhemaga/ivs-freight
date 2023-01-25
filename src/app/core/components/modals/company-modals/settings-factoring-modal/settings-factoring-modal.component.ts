@@ -109,6 +109,7 @@ export class SettingsFactoringModalComponent implements OnInit, OnDestroy {
                 this.modalService.setModalSpinner({
                     action: null,
                     status: true,
+                    close: false,
                 });
 
                 break;
@@ -118,6 +119,7 @@ export class SettingsFactoringModalComponent implements OnInit, OnDestroy {
                 this.modalService.setModalSpinner({
                     action: 'delete',
                     status: true,
+                    close: false,
                 });
 
                 break;
@@ -153,14 +155,44 @@ export class SettingsFactoringModalComponent implements OnInit, OnDestroy {
         this.settingsCompanyService
             .updateFactoringCompany(newData)
             .pipe(takeUntil(this.destroy$))
-            .subscribe();
+            .subscribe({
+                next: () => {
+                    this.modalService.setModalSpinner({
+                        action: null,
+                        status: true,
+                        close: true,
+                    });
+                },
+                error: () => {
+                    this.modalService.setModalSpinner({
+                        action: null,
+                        status: false,
+                        close: false,
+                    });
+                },
+            });
     }
 
     private deleteFactoringCompanyById() {
         this.settingsCompanyService
             .deleteFactoringCompanyById(this.editData.company.id)
             .pipe(takeUntil(this.destroy$))
-            .subscribe();
+            .subscribe({
+                next: () => {
+                    this.modalService.setModalSpinner({
+                        action: 'delete',
+                        status: true,
+                        close: true,
+                    });
+                },
+                error: () => {
+                    this.modalService.setModalSpinner({
+                        action: 'delete',
+                        status: false,
+                        close: false,
+                    });
+                },
+            });
     }
 
     private editFactoringCompany(company: any) {

@@ -331,7 +331,7 @@
                                         id: 'Price' + ind,
                                         name: 'Price',
                                         type: 'text',
-                                        thousandSeparator: true,
+                                        priceSeparator: true,
                                         blueInputColor:
                                             selectedPM[ind]?.logoName &&
                                             !selectedPM[
@@ -394,7 +394,7 @@
                 <div *ngIf="selectedHeaderTab === 2" class="row item-total-row">
                     <p class="item-total">
                         <span class="item-total-text">TOTAL</span>
-                        {{ subtotal | sumArrays | currency }}
+                        {{ subtotal | priceCalculationArray }}
                     </p>
                 </div>
             </app-ta-custom-card>
@@ -403,13 +403,13 @@
         <app-ta-custom-card
             [cardName]="'Service'"
             [disableAnimation]="disableCardAnimation"
-            [hasCounter]="pickedServices() ? pickedServices() : 0"
+            [hasCounter]="services | activeItems"
             [isCardOpen]="true"
         >
             <div class="repair-shop-services">
                 <div
-                    (click)="repair.active = !repair.active"
                     *ngFor="let repair of services; trackBy: identity"
+                    (click)="activeRepairService(repair)"
                     [ngClass]="{ active: repair.active }"
                     class="repair-shop-service"
                 >
@@ -418,7 +418,7 @@
                 </div>
             </div>
         </app-ta-custom-card>
-        <div *ngIf="selectedHeaderTab === 2" class="ta-card-body-overflow-none">
+        <div class="ta-card-body-overflow-none">
             <app-ta-custom-card
                 [cardName]="'Documents'"
                 [disableAnimation]="disableCardAnimation"
@@ -431,6 +431,8 @@
                     [files]="documents"
                     [showDropzone]="true"
                     [size]="'large'"
+                    [hasTagsDropdown]="true"
+                    [tags]="tags"
                 ></app-ta-upload-files>
             </app-ta-custom-card>
         </div>

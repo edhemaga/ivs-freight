@@ -243,7 +243,6 @@
                                         label: 'Loaded Mi',
                                         isRequired: true,
                                         placeholderIcon: 'dollar',
-                                        customClass: 'dollar-placeholderIcon',
                                         min: 0,
                                         max: 10,
                                         maxLength: 4
@@ -258,7 +257,6 @@
                                         label: 'Empty Mi',
                                         isRequired: true,
                                         placeholderIcon: 'dollar',
-                                        customClass: 'dollar-placeholderIcon',
                                         min: 0,
                                         max: 10,
                                         maxLength: 4
@@ -274,7 +272,6 @@
                                         label: 'Per Mile',
                                         isRequired: true,
                                         placeholderIcon: 'dollar',
-                                        customClass: 'dollar-placeholderIcon',
                                         min: 0,
                                         max: 10,
                                         maxLength: 4
@@ -288,7 +285,6 @@
                                         label: 'Per Stop',
                                         type: 'text',
                                         placeholderIcon: 'dollar',
-                                        customClass: 'dollar-placeholderIcon',
                                         thousandSeparator: true,
                                         min: 0,
                                         max: 5000
@@ -316,7 +312,6 @@
                                         label: 'Loaded Mi',
                                         placeholderIcon: 'dollar',
                                         isRequired: true,
-                                        customClass: 'dollar-placeholderIcon',
                                         min: 0,
                                         max: 10,
                                         maxLength: 4
@@ -331,7 +326,6 @@
                                         label: 'Empty Mi',
                                         placeholderIcon: 'dollar',
                                         isRequired: true,
-                                        customClass: 'dollar-placeholderIcon',
                                         min: 0,
                                         max: 10,
                                         maxLength: 4
@@ -347,7 +341,6 @@
                                         label: 'Per Mile',
                                         isRequired: true,
                                         placeholderIcon: 'dollar',
-                                        customClass: 'dollar-placeholderIcon',
                                         min: 0,
                                         max: 10,
                                         maxLength: 4
@@ -361,7 +354,6 @@
                                         label: 'Per Stop',
                                         type: 'text',
                                         placeholderIcon: 'dollar',
-                                        customClass: 'dollar-placeholderIcon',
                                         thousandSeparator: true,
                                         min: 0,
                                         max: 5000
@@ -471,7 +463,6 @@
                                         label: 'Rate',
                                         type: 'text',
                                         placeholderIcon: 'dollar',
-                                        customClass: 'dollar-placeholderIcon',
                                         thousandSeparator: true,
                                         isRequired: true,
                                         min: 0,
@@ -499,7 +490,6 @@
                                         label: 'Team Rate',
                                         type: 'text',
                                         placeholderIcon: 'dollar',
-                                        customClass: 'dollar-placeholderIcon',
                                         thousandSeparator: true,
                                         isRequired: true,
                                         min: 0,
@@ -749,6 +739,8 @@
                                 [showDropzone]="true"
                                 (onFileEvent)="onFilesEvent($event)"
                                 [customClassName]="'modals'"
+                                [hasTagsDropdown]="true"
+                                [tags]="tags"
                             ></app-ta-upload-files>
                         </app-ta-custom-card>
                     </div>

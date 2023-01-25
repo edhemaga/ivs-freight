@@ -7,9 +7,12 @@ import { Injectable } from '@angular/core';
 export class NavigationService {
     private navigationActive: BehaviorSubject<boolean>;
     private navigationHovered: BehaviorSubject<boolean>;
+    private footerNavigationHover: BehaviorSubject<boolean>;
+
     constructor() {
         this.navigationActive = new BehaviorSubject<boolean>(true);
-        this.navigationHovered = new BehaviorSubject<boolean>(true);
+        this.navigationHovered = new BehaviorSubject<boolean>(false);
+        this.footerNavigationHover = new BehaviorSubject<boolean>(false);
     }
     getValueWhichNavIsOpen(): Observable<boolean> {
         return this.navigationActive.asObservable();
@@ -22,6 +25,12 @@ export class NavigationService {
     }
     setValueNavHovered(newValue): void {
         this.navigationHovered.next(newValue);
+    }
+    getValueFootHovered(): Observable<boolean> {
+        return this.footerNavigationHover.asObservable();
+    }
+    setValueFootHovered(newValue): void {
+        this.footerNavigationHover.next(newValue);
     }
     private navigationDropdownActivationSubject: BehaviorSubject<{
         name: string;

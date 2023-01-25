@@ -17,6 +17,7 @@ export interface ClusterResponse {
     name?: string | null;
     favourite?: boolean;
     pagination?: MarkerNamesResponsePagination;
+    pricePerGallon?: number | null;
     latitude?: number;
     longitude?: number;
     count?: number;

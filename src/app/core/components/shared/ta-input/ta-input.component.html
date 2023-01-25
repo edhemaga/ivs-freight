@@ -480,7 +480,9 @@
                         : null
                     : null
             "
-            [src]="inputConfig.placeholderIcon?.toLowerCase() | taSvg: 'common'"
+            [src]="
+                inputConfig.placeholderIcon?.toLowerCase() | taSvg : 'common'
+            "
         ></svg-icon>
     </div>
 
@@ -494,7 +496,7 @@
             getSuperControl.value.toString().length * 7 +
             'px'
         "
-        [src]="inputConfig.placeholderText?.toLowerCase() | taSvg: 'common'"
+        [src]="inputConfig.placeholderText?.toLowerCase() | taSvg : 'common'"
     >
     </svg-icon>
 
@@ -720,7 +722,7 @@
 
             <!-- Text -->
             <span
-                *ngIf="!item?.isProgressBar && item.value"
+                *ngIf="!item?.isProgressBar"
                 class="multiple-input-text"
                 [ngStyle]="{
                     color: '#2F2F2F'
@@ -840,7 +842,7 @@
     <!-- Single Input Value -->
     <input
         #input
-        [type]="inputConfig.type | inputType: togglePassword"
+        [type]="inputConfig.type | inputType : togglePassword"
         [id]="inputConfig.id ? inputConfig.id : inputConfig.name"
         [name]="inputConfig.name"
         [disabled]="inputConfig.isDisabled"
@@ -875,13 +877,14 @@
             disabled: !getSuperControl.value && inputConfig.isDisabled,
             'disabled-filled': getSuperControl.value && inputConfig.isDisabled,
             'valid-focus-in':
-                getSuperControl.value &&
-                getSuperControl.valid &&
-                focusInput &&
-                !isVisiblePasswordEye &&
-                !isVisibleCommands &&
-                !inputConfig?.dropdownImageInput?.url &&
-                !inputConfig.blackInput,
+                (getSuperControl.value &&
+                    getSuperControl.valid &&
+                    focusInput &&
+                    !isVisiblePasswordEye &&
+                    !isVisibleCommands &&
+                    !inputConfig?.dropdownImageInput?.url &&
+                    !inputConfig.blackInput) ||
+                (inputConfig.multipleInputValues?.options.length && focusInput),
             'valid-focus-out-filled':
                 (((getSuperControl.value &&
                     getSuperControl.valid &&
@@ -896,7 +899,9 @@
                     getSuperControl.value &&
                     getSuperControl.valid &&
                     !focusInput &&
-                    !inputConfig.isDisabled),
+                    !inputConfig.isDisabled) ||
+                (inputConfig.multipleInputValues?.options.length &&
+                    !focusInput),
             'invalid-focus-in':
                 getSuperControl.value &&
                 getSuperControl.invalid &&
@@ -915,7 +920,12 @@
                         getSuperControl.invalid &&
                         !focusInput)) &&
                 !inputConfig.blackInput,
-
+            'invalid-focus-out-empty':
+                !getSuperControl.value &&
+                getSuperControl.invalid &&
+                (touchedInput || getSuperControl.touched) &&
+                inputConfig.multipleLabel?.labels.length &&
+                !inputConfig.multipleInputValues?.options.length,
             'password-eye':
                 inputConfig.type === 'password' &&
                 isVisiblePasswordEye &&
@@ -989,22 +999,19 @@
             'cursor-on-right-side': inputConfig?.inputCursorOnRightSide,
             'merged-dropdown': inputConfig.mergedDropdown
         }"
-        (keypress)="manipulateWithInput($event)"
-        (keyup)="onKeyUp($event)"
+        (keypress)="onKeypress($event)"
+        (keydown)="onKeydown($event)"
+        (keyup)="onKeyup($event)"
         (blur)="onBlur($event)"
         (focus)="onFocus($event)"
         (select)="selectionChange($event)"
         (paste)="onPaste($event)"
         (input)="
-            onChange($event.target.value); transformText($event.target.value)
+            onChange($event.target.value);
+            transformText($event.target.value, false)
         "
         [(ngModel)]="input.value"
     />
-
-    <!--  'invalid-focus-out-empty':
-                !getSuperControl.value &&
-                getSuperControl.invalid &&
-                (touchedInput || getSuperControl.touched), -->
 
     <!-- Input Label -->
     <label
@@ -1100,7 +1107,7 @@
             (inputConfig?.placeholderIconFolllowTextOnRightSide
                 ? inputConfig?.placeholderIconFolllowTextOnRightSide.toLowerCase()
                 : inputConfig.placeholderIconRightSide?.toLowerCase()
-            ) | taSvg: 'common'
+            ) | taSvg : 'common'
         "
     ></svg-icon>
 
@@ -1116,7 +1123,7 @@
         "
         class="input-error {{ inputConfig.customClass }}"
     >
-        {{ getSuperControl.errors | inputError: inputConfig.name }}
+        {{ getSuperControl.errors | inputError : inputConfig.name }}
     </span>
 </div>
 

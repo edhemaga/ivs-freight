@@ -11,6 +11,8 @@ import { DriversActiveQuery } from '../../../driver/state/driver-active-state/dr
 import { DriversActiveState } from '../../../driver/state/driver-active-state/driver-active.store';
 import { DriversInactiveQuery } from '../../../driver/state/driver-inactive-state/driver-inactive.query';
 import { DriversInactiveState } from '../../../driver/state/driver-inactive-state/driver-inactive.store';
+import { PayrollQuery } from './state/payroll.query';
+import { Observable } from 'rxjs';
 
 @Component({
     selector: 'app-payroll',
@@ -34,17 +36,27 @@ export class PayrollComponent implements OnInit, AfterViewInit {
     driversActive: DriversActiveState[] = [];
     driversInactive: DriversInactiveState[] = [];
     mapingIndex: number = 0;
+    payrollData: Observable<any>;
+
+    tableExpanded: boolean = true;
+    reportTableData: any = {};
 
     constructor(
         private driversActiveQuery: DriversActiveQuery,
         private driversInactiveQuery: DriversInactiveQuery,
-        private nameInitialsPipe: NameInitialsPipe
+        private nameInitialsPipe: NameInitialsPipe,
+        private pquery: PayrollQuery
     ) {}
 
     ngAfterViewInit(): void {
         setTimeout(() => {
             this.observTableContainer();
         }, 10);
+    }
+
+    expandTable(data: any){
+        this.reportTableData = data;
+        this.tableExpanded = !this.tableExpanded;
     }
 
     observTableContainer() {
@@ -59,6 +71,13 @@ export class PayrollComponent implements OnInit, AfterViewInit {
 
     ngOnInit(): void {
         this.initTableOptions();
+
+        this.payrollData = this.pquery.payrolldata$;
+
+        this.pquery.payrolldata$.subscribe(data => {
+            console.log("WHAT IS DATA");
+            console.log(data);
+        });
 
         const driverCount = JSON.parse(
             localStorage.getItem('driverTableCount')
@@ -156,6 +175,7 @@ export class PayrollComponent implements OnInit, AfterViewInit {
             toolbarActions: {
                 showMoneyFilter: true,
                 hideOpenModalButton: true,
+                hideWidth: true
             },
             actions: this.getTableActions(),
         };

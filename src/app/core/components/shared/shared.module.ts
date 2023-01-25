@@ -127,6 +127,7 @@ import { PayrollBonusModalComponent } from '../modals/payroll-modals/payroll-bon
 import { PayrollCreditBonusComponent } from '../modals/payroll-modals/payroll-credit-bonus/payroll-credit-bonus.component';
 import { PayrollDeducationModalComponent } from '../modals/payroll-modals/payroll-deducation-modal/payroll-deducation-modal.component';
 import { TaNoticeOfAsignmentComponent } from './ta-notice-of-asignment/ta-notice-of-asignment.component';
+import { TooltipSlideComponent } from './tooltip-slide/tooltip-slide.component';
 
 export function playerFactory() {
     return import('lottie-web');
@@ -243,6 +244,7 @@ export function playerFactory() {
         TableModalComponent,
         TaPickupDeliveryComponent,
         TaNoticeOfAsignmentComponent,
+        TooltipSlideComponent,
     ],
     imports: [
         CommonModule,
@@ -410,6 +412,7 @@ export function playerFactory() {
         TaPickupDeliveryComponent,
         TableModalComponent,
         TaNoticeOfAsignmentComponent,
+        TooltipSlideComponent,
     ],
     providers: [],
     schemas: [CUSTOM_ELEMENTS_SCHEMA],

@@ -225,6 +225,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
                 this.modalService.setModalSpinner({
                     action: 'save and add new',
                     status: true,
+                    close: false,
                 });
                 this.addNewAfterSave = true;
                 break;
@@ -239,12 +240,14 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
                     this.modalService.setModalSpinner({
                         action: null,
                         status: true,
+                        close: false,
                     });
                 } else {
                     this.addRepairShop();
                     this.modalService.setModalSpinner({
                         action: null,
                         status: true,
+                        close: false,
                     });
                 }
                 break;
@@ -255,6 +258,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
                     this.modalService.setModalSpinner({
                         action: 'delete',
                         status: true,
+                        close: false,
                     });
                 }
                 break;
@@ -356,8 +360,13 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             });
     }
 
-    public pickedServices() {
-        return this.services.filter((item) => item.active).length;
+    public activeRepairService(service) {
+        service.active = !service.active;
+        this.services = [...this.services];
+
+        this.repairShopForm
+            .get('servicesHelper')
+            .patchValue(JSON.stringify(this.services));
     }
 
     public addContacts(event: { check: boolean; action: string }) {
@@ -588,6 +597,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             note: [null],
             contacts: this.formBuilder.array([]),
             files: [null],
+            servicesHelper: [null],
         });
 
         this.inputService.customInputValidator(
@@ -710,6 +720,10 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
                             active: item.active,
                         };
                     });
+
+                    this.repairShopForm
+                        .get('servicesHelper')
+                        .patchValue(JSON.stringify(this.services));
 
                     // Contacts
                     if (res.contacts) {
@@ -875,6 +889,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             openHoursSameAllDays,
             startTimeAllDays,
             endTimeAllDays,
+            servicesHelper,
             ...form
         } = this.repairShopForm.value;
 
@@ -979,6 +994,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
                         this.modalService.setModalSpinner({
                             action: 'save and add new',
                             status: false,
+                            close: false,
                         });
 
                         this.services = this.services.map((item) => {
@@ -1015,9 +1031,21 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
                         this.documents = [];
 
                         this.addNewAfterSave = false;
+                    } else {
+                        this.modalService.setModalSpinner({
+                            action: null,
+                            status: true,
+                            close: true,
+                        });
                     }
                 },
-                error: () => {},
+                error: () => {
+                    this.modalService.setModalSpinner({
+                        action: null,
+                        status: false,
+                        close: false,
+                    });
+                },
             });
     }
 
@@ -1029,6 +1057,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             openHoursSameAllDays,
             startTimeAllDays,
             endTimeAllDays,
+            servicesHelper,
             ...form
         } = this.repairShopForm.value;
 
@@ -1105,14 +1134,44 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
         this.shopService
             .updateRepairShop(newData)
             .pipe(takeUntil(this.destroy$))
-            .subscribe();
+            .subscribe({
+                next: () => {
+                    this.modalService.setModalSpinner({
+                        action: null,
+                        status: true,
+                        close: true,
+                    });
+                },
+                error: () => {
+                    this.modalService.setModalSpinner({
+                        action: null,
+                        status: false,
+                        close: false,
+                    });
+                },
+            });
     }
 
     private deleteRepairShopById(id: number) {
         this.shopService
             .deleteRepairShopById(id)
             .pipe(takeUntil(this.destroy$))
-            .subscribe();
+            .subscribe({
+                next: () => {
+                    this.modalService.setModalSpinner({
+                        action: 'delete',
+                        status: true,
+                        close: true,
+                    });
+                },
+                error: () => {
+                    this.modalService.setModalSpinner({
+                        action: 'delete',
+                        status: false,
+                        close: false,
+                    });
+                },
+            });
     }
 
     private getRepairShopModalDropdowns() {
@@ -1131,6 +1190,10 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
                             active: false,
                         };
                     });
+
+                    this.repairShopForm
+                        .get('servicesHelper')
+                        .patchValue(JSON.stringify(this.services));
                 },
                 error: () => {},
             });

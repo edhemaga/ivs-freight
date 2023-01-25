@@ -1,52 +1,64 @@
 <div
     *ngIf="isNavItemHovered && isActiveSubroute && !route.isRouteActive"
     class="nav-item-hover"
-    [ngClass]="{ 'route-hover': isNavigationHovered }"
+    [ngClass]="{
+        'route-hover': isNavigationHovered
+    }"
 ></div>
 <div
     class="{{ class }}"
     class="nav-item"
     [ngClass]="{
-        'nav-width': isNavigationHovered
+        'nav-width': isNavigationHovered,
+        'nav-item-parent-active':
+            selectedRoute == route.name && !subrouteContainerOpened
     }"
-    (mouseenter)="onNavItemHover(true)"
-    (mouseleave)="onNavItemHover(false)"
-    (click)="onRouteAction()"
+    (mouseenter)="onNavItemHover(true); showToolTip = true"
+    (mouseleave)="onNavItemHover(false); showToolTip = false"
+    (click)="onRouteAction(route.id)"
 >
     <div
-        *ngIf="!isNavigationHovered"
-        class="tooltip"
-        ngbTooltip
-        [openTooltipDelay]="100"
-        mainTooltip="{{ route.name }}"
-        tooltipBackground="#2F2F2F"
-        position="right"
-    ></div>
+        class="tooltip-right"
+        [ngClass]="{ 'hide-tooltip': isNavigationHovered }"
+    >
+        <app-tooltip-slide
+            [show]="showToolTip"
+            [name]="route.name"
+        ></app-tooltip-slide>
+    </div>
     <div
         [ngClass]="{
             'nav-item-active-box':
-                ((route.isRouteActive && footerRouteActive) ||
+                (route.isRouteActive ||
+                    footerRouteActive ||
                     route.isSubrouteActive) &&
+                footerRouteActive &&
                 !isNavigationHovered &&
                 !isSettingsPanelOpen &&
                 !isUserPanelOpen &&
-                footerRouteActive
+                selectedRoute == route.name &&
+                !middleIsHovered &&
+                !footerHovered
         }"
     ></div>
 
     <svg-icon
         class="{{ class }}"
-        class="nav-item-img nav-item-img-active"
+        class="nav-item-img-active"
         src="{{ route.image }}"
         [ngClass]="{
+            'nav-item-img': !route.construction,
             'route-clicked-svg':
                 route.isRouteActive &&
                 route.arrow &&
                 closeDropdownOnNavClose &&
                 !isSettingsPanelOpen &&
                 !isUserPanelOpen,
-            'nav-item-svg-active':
-                selectedRoute == route.route
+            'nav-item-svg-active': selectedRoute == route.name,
+            'route-not-active-svg':
+                route.construction == true && isNavigationHovered,
+            'route-closed-nav-svg-not-active':
+                route.construction == true && !isNavigationHovered
         }"
     ></svg-icon>
 
@@ -74,12 +86,7 @@
             *ngIf="isNavigationHovered"
             class="nav-item-name"
             [ngClass]="{
-                'nav-item-name-active':
-                    ((route.isRouteActive && footerRouteActive) ||
-                        route.isSubrouteActive) &&
-                    !isSettingsPanelOpen &&
-                    !isUserPanelOpen &&
-                    footerRouteActive,
+                'nav-item-name-active': selectedRoute == route.name,
 
                 'active-text':
                     route.isRouteActive &&
@@ -87,14 +94,22 @@
                     closeDropdownOnNavClose &&
                     !isSettingsPanelOpen &&
                     !isUserPanelOpen &&
-                    !settingsPage
+                    !settingsPage,
+
+                'route-not-active': route.construction == true
             }"
+            [@showHideDetails]="isNavigationHovered ? 'true' : 'false'"
         >
             {{ route.name }}
+            <!-- prettier-ignore -->
             <span
+            [@showHideDetails]="isNavigationHovered ? 'true' : 'false'"
                 class="subroute"
-                *ngIf="route.id === activeRouteIdFromLocalStorage"
+                *ngIf="
+                     route.id == activeRouteIdFromLocalStorage && !activeLinkHighlight
+                "
             >
+          
                 [{{ activeRouteName | titlecase }}]
             </span>
         </p>
@@ -125,7 +140,8 @@
                     !isSettingsPanelOpen &&
                     !isUserPanelOpen,
 
-                'nav-item-arrow-first': route.id === 3
+                'nav-item-arrow-first': route.id === 3,
+                'nav-openend-svg': isNavigationHovered
             }"
             *ngIf="route.arrow && isNavigationHovered"
             src="{{ route.arrow }}"
@@ -134,7 +150,7 @@
             *ngIf="isNavigationHovered && !route.arrow && !message && !files"
             class="nav-item-arrow_top"
             src="assets/svg/common/arrow_top_right.svg"
-            (click)="openLinkInNewWindow(route.route)"
+            (click)="openLinkInNewWindow(route.route); $event.stopPropagation()"
             (mouseenter)="hoveredArrow(true)"
             (mouseleave)="hoveredArrow(false)"
             [ngClass]="{ 'hovered-arrow': arrowHovered }"

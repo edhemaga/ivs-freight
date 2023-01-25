@@ -44,12 +44,6 @@ import { FormControl, FormGroup } from '@angular/forms';
     providers: [NameInitialsPipe, TaThousandSeparatorPipe],
 })
 export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
-    public testControl: FormGroup = new FormGroup({
-        email: new FormControl(null),
-        password: new FormControl(null),
-        phone: new FormControl(null),
-    });
-
     private destroy$ = new Subject<void>();
 
     tableOptions: any = {};
@@ -341,37 +335,6 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.loadingPage = false;
     }
 
-    modalColumns: any[] = [];
-    modalViewData: any[] = [];
-    modalTestInitialization() {
-        this.modalColumns = getLoadModalColumnDefinition();
-
-        console.log('modalTestInitialization');
-        console.log(this.modalColumns);
-
-        for (let i = 0; i < 3; i++) {
-            this.modalViewData.push({
-                tableDescription: {
-                    text: 'Jaffa Cakes',
-                    extraText: '',
-                },
-                tableQuantity: {
-                    text: 230,
-                    extraText: 'Boxes',
-                },
-                tableBolNo: {
-                    text: 1598550,
-                    extraText: '',
-                },
-                tableWeight: {
-                    text: '2,360',
-                    extraText: 'lbs',
-                },
-                tableAction: 'delete',
-            });
-        }
-    }
-
     ngAfterViewInit(): void {
         setTimeout(() => {
             this.observTableContainer();
@@ -615,10 +578,10 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
             tableDOB: data.dateOfBirth
                 ? this.datePipe.transform(data.dateOfBirth, 'MM/dd/yy')
                 : '',
-            tableAssignedUnitTruck: 'Nema podatak sa back-a',
-            tableAssignedUnitTruckType: 'Nema podatak sa back-a',
-            tableAssignedUnitTrailer: 'Nema podatak sa back-a',
-            tableAssignedUnitTrailerType: 'Nema podatak sa back-a',
+            tableAssignedUnitTruck: 'NA',
+            tableAssignedUnitTruckType: 'NA',
+            tableAssignedUnitTrailer: 'NA',
+            tableAssignedUnitTrailerType: 'NA',
             tablePayrollDetailType: data?.payType?.name
                 ? data.payType.name
                 : '',
@@ -631,14 +594,14 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 ? data.owner.name
                 : '',
             tableOwnerDetailsEin: data?.owner?.ssnEin ? data.owner.ssnEin : '',
-            tableOffDutyLocation: 'Nema podatak sa back-a',
+            tableOffDutyLocation: 'NA',
             tableEmergContact: data?.emergencyContactPhone
                 ? data.emergencyContactPhone
                 : '',
-            tableTwicExp: 'Nema podatak sa back-a',
+            tableTwicExp: 'NA',
             tableFuelCardDetailNumber: data?.fuelCard ? data.fuelCard : '',
-            tableFuelCardDetailType: 'Nema podatak sa back-a',
-            tableFuelCardDetailAccount: 'Nema podatak sa back-a',
+            tableFuelCardDetailType: 'NA',
+            tableFuelCardDetailAccount: 'NA',
             tableCdlDetailNumber: data?.cdlNumber
                 ? data.cdlNumber
                 : data?.cdls?.length
@@ -647,8 +610,8 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
             tableCdlDetailState: data.address.stateShortName
                 ? data.address.stateShortName
                 : '',
-            tableCdlDetailEndorsment: 'Nema podatak sa back-a',
-            tableCdlDetailRestriction: 'Nema podatak sa back-a',
+            tableCdlDetailEndorsment: 'NA',
+            tableCdlDetailRestriction: 'NA',
             tableCdlDetailExpiration: {
                 expirationDays: data?.cdlExpirationDays
                     ? this.thousandSeparator.transform(data.cdlExpirationDays)
@@ -658,10 +621,10 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                         ? 100 - data.cdlPercentage
                         : null,
             },
-            tableTestDetailsType: 'Nema podatak sa back-a',
-            tableTestDetailsReason: 'Nema podatak sa back-a',
-            tableTestDetailsIssued: 'Nema podatak sa back-a',
-            tableTestDetailsResult: 'Nema podatak sa back-a',
+            tableTestDetailsType: 'NA',
+            tableTestDetailsReason: 'NA',
+            tableTestDetailsIssued: 'NA',
+            tableTestDetailsResult: 'NA',
             tableMedicalData: {
                 expirationDays: data?.medicalExpirationDays
                     ? this.thousandSeparator.transform(
@@ -696,9 +659,9 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
             tabelHired: data.hired
                 ? this.datePipe.transform(data.hired, 'MM/dd/yy')
                 : '',
-            tableTerminated: 'Nema podatak sa back-a',
-            tableAdded: 'Nema podatak sa back-a',
-            tableEdited: 'Nema podatak sa back-a',
+            tableTerminated: 'NA',
+            tableAdded: 'NA',
+            tableEdited: 'NA',
             tableAttachments: data?.files ? data.files : [],
         };
     }
@@ -1151,5 +1114,39 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
             document.querySelector('.table-container')
         );
         this.resizeObserver.disconnect();
+    }
+
+    public testControl: FormGroup = new FormGroup({
+        email: new FormControl(null),
+        password: new FormControl(null),
+        phone: new FormControl(null),
+    });
+    modalColumns: any[] = [];
+    modalViewData: any[] = [];
+    
+    modalTestInitialization() {
+        this.modalColumns = getLoadModalColumnDefinition();
+
+        for (let i = 0; i < 3; i++) {
+            this.modalViewData.push({
+                tableDescription: {
+                    text: 'Jaffa Cakes',
+                    extraText: '',
+                },
+                tableQuantity: {
+                    text: 230,
+                    extraText: 'Boxes',
+                },
+                tableBolNo: {
+                    text: 1598550,
+                    extraText: '',
+                },
+                tableWeight: {
+                    text: '2,360',
+                    extraText: 'lbs',
+                },
+                tableAction: 'delete',
+            });
+        }
     }
 }

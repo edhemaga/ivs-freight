@@ -8,6 +8,7 @@ export interface Navigation {
     isSubrouteActive?: boolean;
     messages?: number;
     files?: number;
+    construction?: boolean;
 }
 export interface NavigationSubRoute {
     name: string;
@@ -38,6 +39,7 @@ export interface FooterData {
     arrow?: string;
     isRouteActive?: boolean;
     notification?: number;
+    construction?: boolean;
 }
 export interface Settings {
     id: number;

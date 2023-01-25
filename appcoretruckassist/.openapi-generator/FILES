@@ -47,6 +47,7 @@ api/shipper.service.ts
 api/state.service.ts
 api/stop.service.ts
 api/tableConfig.service.ts
+api/tag.service.ts
 api/telematics.service.ts
 api/terminal.service.ts
 api/test.service.ts
@@ -84,7 +85,6 @@ model/addIntegrationCommand.ts
 model/addressEntity.ts
 model/addressListResponse.ts
 model/addressResponse.ts
-model/apiCategory.ts
 model/applicantAdminResponse.ts
 model/applicantCompanyInfoResponse.ts
 model/applicantFileResponse.ts
@@ -172,6 +172,7 @@ model/companyModalResponse.ts
 model/companyOfficeDepartmentContactCommand.ts
 model/companyOfficeDepartmentContactResponse.ts
 model/companyOfficeListResponse.ts
+model/companyOfficeMarkerResponse.ts
 model/companyOfficeModalResponse.ts
 model/companyOfficeResponse.ts
 model/companyOfficeResponsePagination.ts
@@ -289,6 +290,9 @@ model/dispatchResponsePagination.ts
 model/dispatchShortResponse.ts
 model/dispatchStatus.ts
 model/dispatchStatusResponse.ts
+model/dispatcherFilterListResponse.ts
+model/dispatcherFilterResponse.ts
+model/dispatcherFilterResponsePagination.ts
 model/driverAccidentResponse.ts
 model/driverDispatchResponse.ts
 model/driverFilterListResponse.ts
@@ -307,6 +311,8 @@ model/drugAndAlcoholFeedbackResponse.ts
 model/drugAndAlcoholReviewResponse.ts
 model/editFuelCardCommand.ts
 model/editIntegrationCommand.ts
+model/editTagCommand.ts
+model/editTagsCommand.ts
 model/educationFeedbackResponse.ts
 model/educationReviewResponse.ts
 model/efsIntegrationConnectDisconnectCommand.ts
@@ -542,6 +548,7 @@ model/renewCdlCommand.ts
 model/reorderDispatchCommand.ts
 model/reorderDispatchesCommand.ts
 model/repairAutocompleteDescriptionResponse.ts
+model/repairCategoryFilterResponse.ts
 model/repairItemResponse.ts
 model/repairListResponse.ts
 model/repairModalResponse.ts
@@ -624,6 +631,7 @@ model/switchDispatchCommand.ts
 model/switchDispatchesCommand.ts
 model/tableConfigResponse.ts
 model/tableType.ts
+model/tagResponse.ts
 model/terminalListResponse.ts
 model/terminalResponse.ts
 model/terminalResponsePagination.ts
@@ -662,7 +670,9 @@ model/truckAccidentResponse.ts
 model/truckAutocompleteModelResponse.ts
 model/truckDispatchModalResponse.ts
 model/truckEngineModelResponse.ts
+model/truckFilterListResponse.ts
 model/truckFilterResponse.ts
+model/truckFilterResponsePagination.ts
 model/truckGrossWeightResponse.ts
 model/truckListResponse.ts
 model/truckMakeResponse.ts

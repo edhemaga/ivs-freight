@@ -37,6 +37,7 @@ export class TaUploadFilesComponent implements OnInit {
     @Input() showDropzone: boolean = false;
     @Input() dontUseSlider: boolean = false;
     @Input() dropzoneFocus: boolean = false;
+    @Input() onlyOneTagFile: boolean = false;
 
     @Output() onFileEvent: EventEmitter<{
         files: UploadFile[] | UploadFile | any;
@@ -85,7 +86,7 @@ export class TaUploadFilesComponent implements OnInit {
         switch (data.action) {
             case 'tag': {
                 this.onFileEvent.emit({
-                    files: data.file,
+                    files: !this.onlyOneTagFile ? this.files : data.file,
                     action: data.action,
                 });
                 break;

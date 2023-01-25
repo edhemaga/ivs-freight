@@ -8,7 +8,8 @@
                 *ngIf="
                     toastrType == 'toast-success' &&
                     !retryBtnHovered &&
-                    !retryStarted
+                    !retryStarted &&
+                    !manuallyStarted
                 "
                 >{{ actionTitle }} {{ actionType }}</span
             >
@@ -16,7 +17,8 @@
                 *ngIf="
                     toastrType == 'toast-error' &&
                     !retryBtnHovered &&
-                    !retryStarted
+                    !retryStarted &&
+                    !manuallyStarted
                 "
                 >FAILED TO {{ actionTitle }} {{ actionType }}</span
             >
@@ -37,7 +39,7 @@
     </div>
     <div class="buttons_holder">
         <div
-            *ngIf="!retryStarted && toastrType == 'toast-error'"
+            *ngIf="!retryStarted && toastrType == 'toast-error' && !manuallyStarted"
             class="closeToastrBtn retryButton"
             (click)="clickOnRetry()"
             (mouseenter)="retryBtnHovered = true"

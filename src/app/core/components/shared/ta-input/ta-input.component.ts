@@ -27,6 +27,7 @@ import {
 } from '../../../utils/methods.calculations';
 import { FormService } from 'src/app/core/services/form/form.service';
 import { ImageBase64Service } from '../../../utils/base64.image';
+import * as CurrencyFormatter from 'currency-formatter';
 @Component({
     selector: 'app-ta-input',
     templateUrl: './ta-input.component.html',
@@ -114,6 +115,9 @@ export class TaInputComponent
     public savedFocusEl: any = null;
 
     public focusBlur: any;
+
+    private cursorPosition: number;
+    private priceCounter: number = 0;
 
     constructor(
         @Self() public superControl: NgControl,
@@ -542,7 +546,79 @@ export class TaInputComponent
         }, time);
     }
 
-    public onKeyUp(event): void {
+    public onKeydown(event) {
+        this.capsLockOn = event.getModifierState('CapsLock');
+
+        if (this.inputConfig.textTransform === 'capitalize') {
+            if (event.getModifierState('CapsLock')) {
+                event.preventDefault();
+                return;
+            }
+            // Check if shift key is pressed
+            if (event.shiftKey) {
+                event.preventDefault();
+                return;
+            }
+        }
+
+        if (event.keyCode === 9) {
+            this.inputService.dropDownKeyNavigation$.next({
+                keyCode: event.keyCode,
+                data: null,
+            });
+        }
+    }
+
+    public onKeyup(event): void {
+        if (this.inputConfig.priceSeparator && this.getSuperControl.value) {
+            if (
+                this.getSuperControl.value
+                    .toString()
+                    .split('')
+                    .every((value) => {
+                        return value === '0';
+                    }) &&
+                this.getSuperControl.value.split('').length > 0
+            ) {
+                this.getSuperControl.patchValue('0');
+                return;
+            }
+
+            if (this.getSuperControl.value.toString()) {
+                const options = { currency: 'USD' };
+                this.getSuperControl.patchValue(
+                    CurrencyFormatter.format(
+                        this.getSuperControl.value,
+                        options
+                    )
+                );
+
+                if (
+                    event.key !== 'ArrowRight' &&
+                    event.key !== 'ArrowLeft' &&
+                    this.priceCounter == 0
+                ) {
+                    this.cursorPosition =
+                        this.input.nativeElement.selectionStart;
+                    const dotPosition = this.input.nativeElement.value
+                        .toString()
+                        .lastIndexOf('.');
+                    if (dotPosition !== -1) {
+                        this.cursorPosition = dotPosition;
+                    }
+                    this.priceCounter++;
+                } else {
+                    this.cursorPosition =
+                        this.input.nativeElement.selectionStart;
+                }
+
+                this.input.nativeElement.setSelectionRange(
+                    this.cursorPosition,
+                    this.cursorPosition
+                );
+            }
+        }
+
         if (
             event.keyCode == 8 &&
             !(this.inputConfig.isDropdown || this.inputConfig.dropdownLabel)
@@ -558,6 +634,16 @@ export class TaInputComponent
             if (!this.input.nativeElement.value) {
                 this.clearInput(event);
             }
+        }
+
+        // Capslock
+        if (
+            event.keyCode === 20 ||
+            (event.keyCode === 16 &&
+                this.inputConfig.textTransform === 'capitalize')
+        ) {
+            event.preventDefault();
+            return;
         }
 
         if (
@@ -600,8 +686,6 @@ export class TaInputComponent
                 });
             }
         }
-
-        this.capsLockOn = !!event.getModifierState('CapsLock');
     }
 
     public transformText(value: string, paste?: boolean) {
@@ -675,7 +759,6 @@ export class TaInputComponent
                     )
                 );
         }
-
         /**
          *  Custom Validation For This Type of Input Below, DONT TOUCH !
          */
@@ -901,7 +984,7 @@ export class TaInputComponent
         }
     }
 
-    public manipulateWithInput(event: KeyboardEvent): boolean {
+    public onKeypress(event: KeyboardEvent): boolean {
         // Disable first character to be space
         if (
             !this.input.nativeElement.value &&
@@ -917,6 +1000,7 @@ export class TaInputComponent
                 'shop name',
                 'fuel stop',
                 'producer name',
+                'terminal name',
             ].includes(this.inputConfig.name.toLowerCase())
         ) {
             if (
@@ -1363,7 +1447,7 @@ export class TaInputComponent
 
         // All Simbols
         if (
-            ['username', 'nickname', 'terminal name', 'password'].includes(
+            ['username', 'nickname', 'password'].includes(
                 this.inputConfig.name.toLowerCase()
             )
         ) {

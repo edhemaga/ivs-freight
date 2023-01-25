@@ -48,7 +48,7 @@ export function getOwnerColumnDefinition() {
             export: true,
             resizable: true,
             link: {
-                routerLinkStart: '/owner/',
+                routerLinkStart: '/list/owner/',
                 routerLinkEnd: '/details',
             },
         },

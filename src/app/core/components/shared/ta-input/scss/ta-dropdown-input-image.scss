@@ -15,7 +15,8 @@
         height: 18px;
         border-radius: 50%;
         object-fit: cover;
-        top: 4px;
+        top: 50%;
+        transform: translateY(-50%);
     }
 
     &.load-broker {

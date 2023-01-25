@@ -20,7 +20,7 @@ export const navigation_route_animation = (type: string) =>
         ),
         state('false', style({ transform: 'translateX(-20px)', opacity: 0 })),
         transition('true => false', [animate('0s ease-in-out')]),
-        transition('false => true', [animate('0.3s ease-in-out')]),
+        transition('false => true', [animate('0.2s ease-in-out')]),
     ]);
 
 export const navigation_header_animation = (type: string) =>

@@ -1,7 +1,10 @@
 <div
     class="toolbar-container"
     [ngClass]="{ mapToolbarStyle: isMapShowning }"
-    [ngStyle]="{ width: toolbarWidth, 'max-width.px': maxToolbarWidth }"
+    [ngStyle]="{
+        width: !options.toolbarActions.hideWidth ? toolbarWidth : 'auto',
+        'max-width.px': maxToolbarWidth
+    }"
 >
     <!-- LIST NAME -->
     <div
@@ -67,7 +70,10 @@
     ></app-toolbar-filters>
 
     <!-- TOOLBAR ACTIONS -->
-    <div class="table-actions">
+    <div
+        class="table-actions"
+        [class.m-0]="options.toolbarActions.hideOpenModalButton"
+    >
         <div class="actions-container">
             <!-- Activation -->
             <div
@@ -155,13 +161,18 @@
             </div>
 
             <!-- Dispatchboard table options -->
-
             <div
                 class="lock-unlock-dispatch"
                 *ngIf="options.toolbarActions.showDispatchSettings"
                 (click)="onToolBarAction('toggle-locked')"
             >
-                <svg-icon [src]="dispathcboardTableLocked ? 'assets/svg/common/ic_lock.svg' : 'assets/svg/common/ic_unlock.svg'"></svg-icon>
+                <svg-icon
+                    [src]="
+                        dispathcboardTableLocked
+                            ? 'assets/svg/common/ic_lock.svg'
+                            : 'assets/svg/common/ic_unlock.svg'
+                    "
+                ></svg-icon>
             </div>
             <!-- BORDER -->
             <div
@@ -364,6 +375,7 @@
                                     type="checkbox"
                                 />
                                 <label
+                                    [ngClass]="{'some-selected': column.areSomeSelected}"
                                     class="columns-options-label"
                                     for="checkbox{{ i }}"
                                 ></label>

@@ -41,6 +41,7 @@
                 cdkDrag
                 cdkDragLockAxis="y"
                 cdkDragPreviewContainer="parent"
+                cdkDragBoundary=".dispatch-table"
             >
                 <td class="truck-field" cdkDragHandle>
                     <div
@@ -716,24 +717,33 @@
                                 >
                                     <div class="pick-load-box pickup-box">
                                         <svg-icon
-                                            *ngIf="item.activeLoad
-                                            .pickupCount < 9"
+                                            *ngIf="
+                                                item.activeLoad.pickupCount < 9
+                                            "
                                             src="
                                                 assets/svg/svg_numbers/olddash/svg_num_box_{{
-                                                item.activeLoad
-                                                    .pickupCount
+                                                item.activeLoad.pickupCount
                                             }}.svg
                                             "
                                         ></svg-icon>
                                         <svg-icon
-                                            *ngIf="item.activeLoad
-                                            .pickupCount > 9"
+                                            *ngIf="
+                                                item.activeLoad.pickupCount > 9
+                                            "
                                             src="assets/svg/svg_numbers/svg_num_over.svg
                                         "
                                         ></svg-icon>
                                         <div class="pick-load-info">
                                             <div class="pick-load-info-address">
-                                                {{item.activeLoad.pickup.shipper.address.city}}, {{item.activeLoad.pickup.shipper.address.stateShortName}}
+                                                {{
+                                                    item.activeLoad.pickup
+                                                        .shipper.address.city
+                                                }},
+                                                {{
+                                                    item.activeLoad.pickup
+                                                        .shipper.address
+                                                        .stateShortName
+                                                }}
                                             </div>
                                             <div class="pick-load-info-time">
                                                 05/09/21
@@ -742,24 +752,35 @@
                                     </div>
                                     <div class="pick-load-box delivery-box">
                                         <svg-icon
-                                            *ngIf="item.activeLoad
-                                            .deliveryCount < 9"
+                                            *ngIf="
+                                                item.activeLoad.deliveryCount <
+                                                9
+                                            "
                                             src="
                                                 assets/svg/svg_numbers/olddash/svg_num_box_{{
-                                                item.activeLoad
-                                                    .deliveryCount
+                                                item.activeLoad.deliveryCount
                                             }}.svg
                                             "
                                         ></svg-icon>
                                         <svg-icon
-                                            *ngIf="item.activeLoad
-                                            .deliveryCount > 9"
+                                            *ngIf="
+                                                item.activeLoad.deliveryCount >
+                                                9
+                                            "
                                             src="assets/svg/svg_numbers/svg_num_over.svg
                                         "
                                         ></svg-icon>
                                         <div class="pick-load-info">
                                             <div class="pick-load-info-address">
-                                                {{item.activeLoad.delivery.shipper.address.city}}, {{item.activeLoad.delivery.shipper.address.stateShortName}}
+                                                {{
+                                                    item.activeLoad.delivery
+                                                        .shipper.address.city
+                                                }},
+                                                {{
+                                                    item.activeLoad.delivery
+                                                        .shipper.address
+                                                        .stateShortName
+                                                }}
                                             </div>
                                             <div class="pick-load-info-time">
                                                 05/09/21
@@ -781,9 +802,18 @@
                     </div>
                 </td>
                 <td class="parking-field">
-                    <div class="main_inside filled">
-                        <div class="padding-inside">
-                            <div class="info-item">
+                    <div
+                        class="main_inside parking-field-new {{
+                            item.parkingSlot ? 'filled' : 'addNew'
+                        }} "
+
+                        [class.unassigned]="!item.parkingSlot"
+                    >
+                        <div
+                            class="padding-inside"
+                            *ngIf="openParkingDropdown != rowIndex"
+                        > 
+                            <!-- <div class="info-item">
                                 <div class="parking-field d-flex">
                                     <svg-icon
                                         src="assets/svg/dispatchboard/parking.svg"
@@ -791,7 +821,47 @@
                                     </svg-icon>
                                     <div class="parking-number">8650</div>
                                 </div>
+                            </div> -->
+                            <div
+                                *ngIf="item.truck || item.trailer"
+                                class="add_new"
+                                (click)="showParkingDropdown(rowIndex)"
+                            >
+                                <svg-icon
+                                    src="assets/svg/dispatchboard/parking.svg"
+                                >
+                                </svg-icon>
+                                <div class="text">Assign</div>
                             </div>
+                        </div>
+                        <div
+                            class="drop-item"
+                            *ngIf="openParkingDropdown == rowIndex"
+                        >
+                            <app-ta-input-dropdown
+                                [formControl]="truckFormControll"
+                                [template]="'double-text-template'"
+                                [inputConfig]="{
+                                    name: 'Input Dropdown',
+                                    type: 'text',
+                                    isDropdown: true,
+                                    placeholder: 'Unit No.',
+                                    autoFocus: true,
+                                    blackInput: true,
+                                    hideDropdownArrow: true,
+                                    hideRequiredCheck: true,
+                                    hideDangerMark: true,
+                                    hideErrorMessage: true,
+                                    mergedDropdown: true,
+                                    transformText: 'capitalize',
+                                    dropdownWidthClass: 'w-col-98'
+                                }"
+                                [canAddNew]="true"
+                                [canOpenModal]="true"
+                                [options]="parking"
+                                [activeItem]="selectedLabel"
+                                (selectedItem)="addParking($event)"
+                            ></app-ta-input-dropdown>
                         </div>
                     </div>
                 </td>
@@ -823,6 +893,7 @@
                                 [dispatchIndex]="rowIndex"
                                 [parking]="false"
                                 [noteWidth]="213"
+                                [parentWidth]="'.note-field'"
                                 [type]="'dark'"
                                 (saveNoteValue)="saveNoteValue($event)"
                             >
@@ -1157,7 +1228,7 @@
             </tr>
         </tbody>
     </table>
-    <div class="table-info d-flex">
+    <div class="table-info d-flex" [ngStyle]="{ 'width.px': toolbarWidth }">
         <div class="table-inside-info">
             <div class="table-info-field truck-filed">
                 {{ dData.truckCount }}

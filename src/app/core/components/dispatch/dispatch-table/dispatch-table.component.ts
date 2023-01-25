@@ -108,10 +108,12 @@ export class DispatchTableComponent implements OnInit {
     }
 
     @Input() dDataIndx: number;
+    @Input() toolbarWidth: number = 0;
 
     public selectedColor: any = {};
 
     openedTruckDropdown: number = -1;
+    openParkingDropdown: number = -1;
     openedTrailerDropdown: number = -1;
     openedDriverDropdown: number = -1;
     statusOpenedIndex: number = -1;
@@ -139,6 +141,17 @@ export class DispatchTableComponent implements OnInit {
     openedHosData = [];
 
     tooltip: any;
+
+    parking: any[] = [
+        {
+            id: 1,
+            name: "2334"
+        },
+        {
+            id:2,
+            name: "5555"
+        }
+    ]
 
     options: Options = {
         floor: 0,
@@ -180,6 +193,10 @@ export class DispatchTableComponent implements OnInit {
 
     showTruckDropdown(ind: number) {
         this.openedTruckDropdown = ind;
+    }
+
+    showParkingDropdown(ind: number){
+        this.openParkingDropdown = ind;
     }
 
     showTrailerDropdown(ind: number) {
@@ -234,6 +251,12 @@ export class DispatchTableComponent implements OnInit {
         }
 
         this.openedTrailerDropdown = -1;
+    }
+
+    addParking(e){
+        console.log("ADD PARKING HERE", e);
+
+        this.openParkingDropdown = -1;
     }
 
     handleInputSelect(e: any) {

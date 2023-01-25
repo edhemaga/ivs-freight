@@ -12,9 +12,10 @@
 
 .stops-header-bar {
     display: grid;
-    grid-template-columns: 25px 263px 222px 1fr;
+    grid-template-columns: 25px 263px 226px 1fr;
     align-items: center;
     padding: 0 18px;
+    margin-bottom: 8px;
 
     p {
         margin: 0;
@@ -35,6 +36,8 @@
     ::ng-deep {
         .divider {
             width: 606px !important;
+            height: 1px !important;
+            background-color: rgb(145, 145, 145, 0.4) !important;
         }
     }
 }

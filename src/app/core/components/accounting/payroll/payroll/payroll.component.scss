@@ -1,5 +1,5 @@
 .payroll-tables-holder {
-    margin-right: 6px;
+    //margin-right: 6px;
     margin-top: 12px;
     .card-holder {
         .ta-card-header {
@@ -7,6 +7,7 @@
             border-radius: 3px;
             height: 34px !important;
             transition: none !important;
+            margin: 3px 0;
             .header-content {
                 left: 0 !important;
             }
@@ -32,11 +33,28 @@
 }
 
 .table-container {
-    width: calc(100% - 92px);
+    width: 100%;
     position: absolute;
     top: 0;
 
     .columns-container {
         height: 28px !important;
+    }
+
+    .ta-card-header{
+        &.active ~ .ta-card-body{
+            margin-bottom: 10px;
+        }
+    }
+    .payroll-main{
+        flex: 1;
+
+        &.open{
+            max-width: 500px;
+        }
+    }
+
+    .report-hold{
+        flex: 1;
     }
 }
