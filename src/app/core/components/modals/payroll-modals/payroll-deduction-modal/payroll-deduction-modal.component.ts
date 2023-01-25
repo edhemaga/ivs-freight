@@ -32,13 +32,13 @@ export class PayrollDeductionModalComponent implements OnInit {
         {
             id: 1,
             name: 'DRIVER',
-            disabled: true,
+            checked: true,
             color: '3074D3',
         },
         {
             id: 2,
             name: 'TRUCK',
-            disabled: true,
+            checked: false,
             color: '3074D3',
         },
     ];
