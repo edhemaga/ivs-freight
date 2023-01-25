@@ -15,7 +15,7 @@
     }"
     (mouseenter)="onNavItemHover(true); showToolTip = true"
     (mouseleave)="onNavItemHover(false); showToolTip = false"
-    (click)="onRouteAction(); routeIndex(route.id)"
+    (click)="onRouteAction(route.id)"
 >
     <div
         class="tooltip-right"
@@ -44,9 +44,10 @@
 
     <svg-icon
         class="{{ class }}"
-        class="nav-item-img nav-item-img-active"
+        class="nav-item-img-active"
         src="{{ route.image }}"
         [ngClass]="{
+            'nav-item-img': !route.construction,
             'route-clicked-svg':
                 route.isRouteActive &&
                 route.arrow &&
@@ -100,10 +101,15 @@
             [@showHideDetails]="isNavigationHovered ? 'true' : 'false'"
         >
             {{ route.name }}
+            <!-- prettier-ignore -->
             <span
+            [@showHideDetails]="isNavigationHovered ? 'true' : 'false'"
                 class="subroute"
-                *ngIf="route.id === activeRouteIdFromLocalStorage"
+                *ngIf="
+                     route.id == activeRouteIdFromLocalStorage && !activeLinkHighlight
+                "
             >
+          
                 [{{ activeRouteName | titlecase }}]
             </span>
         </p>

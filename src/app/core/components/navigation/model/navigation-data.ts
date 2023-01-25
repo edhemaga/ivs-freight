@@ -5,7 +5,6 @@ import {
     NavigationUserPanel,
     Settings,
 } from './navigation.model';
-
 export const navigationData: Navigation[] = [
     {
         id: 1,
@@ -260,9 +259,9 @@ export const navigationData: Navigation[] = [
         id: 11,
         name: 'Telematic',
         image: 'ic_gps.svg',
-        route: 'telematic',
+        route: '/telematic',
         isRouteActive: false,
-        construction: true,
+        construction: false,
     },
     {
         id: 12,
@@ -274,9 +273,9 @@ export const navigationData: Navigation[] = [
     },
     {
         id: 13,
-        name: 'File Manager',
+        name: 'File Menager',
         image: 'ic_file_manager-new.svg',
-        route: 'file-manager',
+        route: 'file-menager',
         isRouteActive: false,
         files: 83,
         construction: true,
@@ -549,7 +548,7 @@ export const settings: Settings[] = [
             },
             {
                 name: 'Training Material',
-                image: 'assets/svg/applicant/case.svg',
+                image: 'assets/svg/applicant/book.svg',
                 route: '/training-material',
                 activeRouteFlegId: 34,
                 construction: true,

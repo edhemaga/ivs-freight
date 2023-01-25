@@ -371,6 +371,8 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
     sendRepairData() {
         this.initTableOptions();
 
+        this.checkActiveViewMode();
+
         const repairTruckTrailerCount = JSON.parse(
             localStorage.getItem('repairTruckTrailerTableCount')
         );
@@ -429,6 +431,29 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
         const td = this.tableData.find((t) => t.field === this.selectedTab);
 
         this.setRepairData(td);
+    }
+
+    // Check If Selected Tab Has Active View Mode
+    checkActiveViewMode(){
+        if(this.activeViewMode === 'Map'){
+            let hasMapView = false;
+
+            let viewModeOptions = this.tableOptions.toolbarActions.viewModeOptions;
+
+            viewModeOptions.map((viewMode: any) => {
+                if (viewMode.name === 'Map') {
+                    hasMapView = true;
+                }
+            });
+
+            if(!hasMapView){
+                this.activeViewMode = 'List';
+
+                viewModeOptions = this.getViewModeOptions();
+            }
+
+            this.tableOptions.toolbarActions.viewModeOptions = [...viewModeOptions];
+        }
     }
 
     // Get Tab Data From Store Or Via Api
@@ -499,10 +524,10 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                 : data?.trailer?.trailerNumber
                 ? data.trailer.trailerNumber
                 : '',
-            tableType: 'Nema podatak sa beka',
-            tableMake: 'Nema podatak sa beka',
-            tableModel: 'Nema podatak sa beka',
-            tableYear: 'Nema podatak sa beka',
+            tableType: 'NA',
+            tableMake: 'NA',
+            tableModel: 'NA',
+            tableYear: 'NA',
             tableOdometer: data.odometer
                 ? this.thousandSeparator.transform(data.odometer)
                 : '',
@@ -566,7 +591,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
             tableBankDetailsBankName: data?.bank?.name ? data.bank.name : '',
             tableBankDetailsRouting: data?.routing ? data.routing : '',
             tableBankDetailsAccount: data?.account ? data.account : '',
-            tableRepairCountBill: 'Nema podatak sa beka',
+            tableRepairCountBill: 'NA',
             tableRepairCountOrder: data?.order
                 ? this.thousandSeparator.transform(data.order)
                 : '',

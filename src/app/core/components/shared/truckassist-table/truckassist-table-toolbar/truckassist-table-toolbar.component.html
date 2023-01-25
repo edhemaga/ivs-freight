@@ -1,7 +1,10 @@
 <div
     class="toolbar-container"
     [ngClass]="{ mapToolbarStyle: isMapShowning }"
-    [ngStyle]="{ width: toolbarWidth, 'max-width.px': maxToolbarWidth }"
+    [ngStyle]="{
+        width: !options.toolbarActions.hideWidth ? toolbarWidth : 'auto',
+        'max-width.px': maxToolbarWidth
+    }"
 >
     <!-- LIST NAME -->
     <div
@@ -158,7 +161,6 @@
             </div>
 
             <!-- Dispatchboard table options -->
-
             <div
                 class="lock-unlock-dispatch"
                 *ngIf="options.toolbarActions.showDispatchSettings"
@@ -373,6 +375,7 @@
                                     type="checkbox"
                                 />
                                 <label
+                                    [ngClass]="{'some-selected': column.areSomeSelected}"
                                     class="columns-options-label"
                                     for="checkbox{{ i }}"
                                 ></label>
