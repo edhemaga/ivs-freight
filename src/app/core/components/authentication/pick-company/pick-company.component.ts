@@ -1,4 +1,11 @@
-import { Component, Input, OnInit } from '@angular/core';
+import {
+    Component,
+    HostListener,
+    ViewChild,
+    ElementRef,
+    Input,
+    OnInit,
+} from '@angular/core';
 
 @Component({
     selector: 'app-pick-company',
@@ -7,7 +14,5 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class PickCompanyComponent implements OnInit {
     @Input() userData: any;
-    constructor() {}
-
-    ngOnInit(): void {}
+    ngOnInit() {}
 }

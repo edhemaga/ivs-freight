@@ -10,6 +10,7 @@ import { RegisterComponent } from './register/register/register.component';
 import { ThankYouComponent } from './thank-you-page/thank-you.component';
 import { AccountActivatedPageComponent } from './account-activated-page/account-activated-page.component';
 import { RegisterUserComponent } from './register-user/register-user.component';
+import { SelectCompanyComponent } from './select-company/select-company.component';
 
 const routes: Routes = [
     {
@@ -22,6 +23,11 @@ const routes: Routes = [
         component: LoginComponent,
         data: { title: 'Login' },
     },
+    // {
+    //     path: 'select-company',
+    //     component: SelectCompanyComponent,
+    //     data: { title: 'Select Company' },
+    // },
     {
         path: 'register',
         component: RegisterComponent,

@@ -26,9 +26,7 @@
                         "polyfills": "src/polyfills.ts",
                         "tsConfig": "tsconfig.app.json",
                         "inlineStyleLanguage": "scss",
-                        "assets": [
-                            "src/assets"
-                        ],
+                        "assets": ["src/assets"],
                         "styles": [
                             "src/styles.scss",
                             "./node_modules/bootstrap/dist/css/bootstrap.min.css",
@@ -130,9 +128,7 @@
                         "tsConfig": "tsconfig.spec.json",
                         "karmaConfig": "karma.conf.js",
                         "inlineStyleLanguage": "scss",
-                        "assets": [
-                            "src/assets"
-                        ],
+                        "assets": ["src/assets"],
                         "styles": ["src/styles.scss"],
                         "scripts": [
                             "./node_modules/jquery/dist/jquery.min.js",

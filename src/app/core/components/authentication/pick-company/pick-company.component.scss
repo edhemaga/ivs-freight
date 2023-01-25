@@ -23,14 +23,13 @@
     margin-top: 200px;
     margin-bottom: 22px;
 }
-.carousel {
-    .carousel-indicators {
+
+.row {
+    .carousel-holder {
+        display: flex;
+        justify-content: center;
     }
-    .carousel-inner {
-        .carousel-item {
-            img {
-                height: 314px !important;
-            }
-        }
+    .card {
+        width: 314px;
     }
 }

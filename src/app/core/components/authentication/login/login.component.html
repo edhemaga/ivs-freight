@@ -123,6 +123,10 @@
         </div>
     </div>
     <div class="select-companies" *ngIf="showHideIfMoreThenOneCompany">
-        <!-- <app-select-company [userData]="userData"></app-select-company> -->
+        <app-select-company
+            [userData]="userData"
+            [lastLoginInCompany]="lastLoginInCompany"
+            (goBackToLogin)="goBackToLogin($event)"
+        ></app-select-company>
     </div>
 </div>

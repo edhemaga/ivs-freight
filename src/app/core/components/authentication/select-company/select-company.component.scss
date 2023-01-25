@@ -1,77 +1,224 @@
+@import 'ngx-owl-carousel-o/lib/styles/scss/owl.carousel';
+@import 'ngx-owl-carousel-o/lib/styles/scss/owl.theme.default';
 .select_company_main {
     width: 100%;
     min-height: 100vh;
     height: 100%;
     margin: auto;
-    padding-top: 120px;
+    padding-top: 200px;
     text-align: center;
     background: white;
 
-    &_logo {
-        margin-bottom: 60px;
-    }
-
-    &_wrapper {
-        width: 1500px;
-        margin: auto auto 40px;
-        text-align: center;
-        cursor: move;
-        height: 120px;
-        overflow-y: visible;
-        //overflow-x: clip;
-    }
-
-    &_title {
-        margin: 0 auto 40px;
-        font-size: 52px;
-        height: 63px;
-        display: flex;
-        justify-content: space-around;
-        align-items: center;
-        font-weight: 900;
-        width: 705px;
-        color: #707070;
-
-        span {
-            color: #5673aa;
-        }
-    }
-
-    &_info {
-        text-align: center;
-        font-size: 26px;
-        font-weight: 700;
-        margin: 0 auto 55px;
-        color: #707070;
-    }
-
-    &_button {
-        width: 320px;
-        height: 50px;
-        background: #5673aa;
-        border-radius: 3px;
-        font-size: 14px;
-        font-weight: 700;
-        color: white;
+    .row {
         display: flex;
         justify-content: center;
+    }
+    .user-name {
+        width: fit-content;
+        font-size: 48px;
+        font-weight: 700;
+        color: #424242;
+        margin-bottom: 12px;
+    }
+    .sub-text {
+        width: fit-content;
+        font-size: 17px;
+        font-weight: 700;
+        color: #aaaaaa;
+        font-family: Montserrat;
+        margin-bottom: 42px;
+    }
+    .user-img {
+        width: auto;
+        height: 74px;
+        margin-bottom: 22px;
+    }
+
+    .row {
+        .carousel-holder {
+            display: flex;
+            justify-content: center;
+        }
+        .card {
+            width: 314px;
+        }
+    }
+    .bottons {
+        margin-top: 62px;
+        flex-direction: column;
+        justify-content: center;
         align-items: center;
-        margin: 0 auto 262px;
-        cursor: pointer;
-        text-transform: uppercase;
+        .select_company_main_button {
+            background-color: #3074d3;
+            height: 62px;
+            width: 420px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 700;
+            color: #ffffff;
+            border-radius: 3px;
+            margin-bottom: 22px;
+            cursor: pointer;
+            &:hover {
+                background-color: #255bb9;
+            }
+        }
+        .logout {
+            width: 180px;
+            height: 42px;
+            color: #424242;
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+        }
     }
+}
 
-    &_footer {
-        width: 100%;
-        height: 42px;
-        background-color: #5673aa;
-        position: absolute;
-        bottom: 0;
-    }
-
-    &_no-url {
-        color: #5673aa;
-        font-size: 32px;
-        font-weight: 800;
+owl-carousel-o {
+    // display: flex;
+    // flex-direction: column;
+    // justify-content: center;
+    // align-items: center;
+    ::ng-deep {
+        .owl-theme {
+            position: relative;
+            display: flex;
+            align-items: center;
+            height: 284px;
+            .owl-stage-outer {
+                margin-bottom: 30px;
+                width: 100%;
+                overflow-x: hidden;
+                owl-stage {
+                    div {
+                        // overflow-x: hidden;
+                        height: fit-content;
+                        padding: 32px 0 12px 0;
+                    }
+                }
+                .owl-stage {
+                    display: flex;
+                    align-items: center;
+                    .owl-item {
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        width: auto;
+                        height: 120px;
+                        opacity: 0.2;
+                        cursor: pointer;
+                        border-radius: 3px;
+                        &:hover {
+                            background-color: #eeeeee;
+                            opacity: 1;
+                        }
+                        .slider {
+                            width: 300px !important;
+                            height: 100%;
+                            .company-name {
+                                font-size: 21px;
+                                font-weight: 700;
+                            }
+                            .last-login {
+                                display: flex;
+                                flex-direction: column;
+                                justify-content: flex-end;
+                                height: 100%;
+                                padding-bottom: 32px;
+                                .text {
+                                    color: #424242;
+                                    font-size: 14px;
+                                    font-weight: 400;
+                                }
+                                .time {
+                                    color: #424242;
+                                    font-size: 14px;
+                                    font-weight: 700;
+                                }
+                            }
+                        }
+                        .without-company {
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
+                            padding: 0;
+                        }
+                    }
+                    .center {
+                        box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.15);
+                        height: 206px;
+                        opacity: 1;
+                        transition: all 0.3s ease-in-out;
+                        padding: 0;
+                        &:hover {
+                            background-color: transparent;
+                        }
+                    }
+                }
+            }
+            .owl-nav {
+                position: absolute;
+                width: 117%;
+                height: 20px;
+                top: 119px;
+                left: -50px;
+                display: flex;
+                justify-content: space-between;
+                .owl-prev {
+                    text-indent: 100%;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    position: relative;
+                    height: 20px;
+                    width: 20px;
+                    cursor: pointer;
+                    &::after {
+                        position: absolute;
+                        content: url('../../../../../assets/svg/applicant/next-arrow.svg');
+                        rotate: 180deg;
+                        top: -4px;
+                        right: -16px;
+                    }
+                }
+                .owl-next {
+                    text-indent: 100%;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    position: relative;
+                    height: 20px;
+                    width: 20px;
+                    cursor: pointer;
+                    &::after {
+                        position: absolute;
+                        top: 3px;
+                        left: -18px;
+                        content: url('../../../../../assets/svg/applicant/next-arrow.svg');
+                    }
+                }
+            }
+            .owl-dots {
+                position: absolute;
+                bottom: 0;
+                width: 100%;
+                height: 20px;
+                display: flex;
+                justify-content: center;
+                gap: 2px;
+                .owl-dot {
+                    width: 16px;
+                    height: 8px;
+                    background: #dadada;
+                    border-radius: 10px;
+                    cursor: pointer;
+                }
+                .active {
+                    width: 32px;
+                    background: #919191;
+                    transition: width 0.3s ease-in-out;
+                }
+            }
+        }
     }
 }

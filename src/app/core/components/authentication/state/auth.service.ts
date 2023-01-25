@@ -60,6 +60,8 @@ export class AuthStoreService {
                 // Develop
                 if (user.companies.length > 1) {
                     this.moreThenOneCompany = user;
+                    // localStorage.setItem('user', JSON.stringify(user));
+                    this.router.navigate(['/select-company']);
                 } else {
                     localStorage.setItem('user', JSON.stringify(user));
                     this.router.navigate(['/dashboard']);
@@ -122,6 +124,7 @@ export class AuthStoreService {
     public selectCompanyAccount(
         data: SelectCompanyCommand
     ): Observable<SelectCompanyResponse> {
+        console.log(this.accountService.apiAccountSelectcompanyPost(data));
         return this.accountService.apiAccountSelectcompanyPost(data);
     }
 }

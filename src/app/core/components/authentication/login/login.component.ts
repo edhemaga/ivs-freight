@@ -17,6 +17,7 @@ import moment from 'moment';
 
 import { Subject, takeUntil } from 'rxjs';
 import { passwordValidation } from '../../shared/ta-input/ta-input.regex-validations';
+import { convertDateFromBackend } from 'src/app/core/utils/methods.calculations';
 
 @Component({
     selector: 'app-login',
@@ -30,6 +31,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     public copyrightYear!: number;
     public showHideIfMoreThenOneCompany: boolean = false;
     public userData: any;
+    lastLoginInCompany;
     constructor(
         private formBuilder: FormBuilder,
         private authStoreService: AuthStoreService,
@@ -38,14 +40,34 @@ export class LoginComponent implements OnInit, OnDestroy {
         private authSecurityService: AuthSecurityService,
         private cdRef: ChangeDetectorRef
     ) {}
+    calculateDiff(dateSent) {
+        let currentDate = new Date();
+        dateSent = new Date(dateSent);
 
+        return Math.floor(
+            (Date.UTC(
+                currentDate.getFullYear(),
+                currentDate.getMonth(),
+                currentDate.getDate()
+            ) -
+                Date.UTC(
+                    dateSent.getFullYear(),
+                    dateSent.getMonth(),
+                    dateSent.getDate()
+                )) /
+                (1000 * 60 * 60 * 24)
+        );
+    }
     ngOnInit() {
         this.authStoreService.userHasMultipleCompaniesObservable.subscribe(
             (res) => {
-                this.userData = res.companies;
+                this.userData = res;
+                console.log(res);
+                this.lastLoginInCompany = this.calculateDiff(
+                    convertDateFromBackend(res.companies.lastLogin)
+                );
                 this.showHideIfMoreThenOneCompany = true;
                 this.cdRef.detectChanges();
-                console.log(res);
             }
         );
         this.createForm();
@@ -70,15 +92,14 @@ export class LoginComponent implements OnInit, OnDestroy {
             this.destroy$
         );
     }
-
+    goBackToLogin(event) {
+        this.showHideIfMoreThenOneCompany = event;
+    }
     public userLogin() {
         if (this.loginForm.invalid) {
             this.inputService.markInvalid(this.loginForm);
             return false;
         }
-        // this.loginForm.value
-        // email: 'vladimir.mil21@gmail.com',
-        //         password: 'mnogodobra',
         this.authStoreService
             .accountLogin(this.loginForm.value)
             .pipe(takeUntil(this.destroy$))
