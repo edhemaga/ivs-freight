@@ -41,6 +41,7 @@ import {
     convertNumberInThousandSep,
     convertThousanSepInNumber,
 } from '../../../utils/methods.calculations';
+import { EditTagsService } from 'src/app/core/services/shared/editTags.service';
 
 @Component({
     selector: 'app-driver-modal',
@@ -138,7 +139,8 @@ export class DriverModalComponent implements OnInit, OnDestroy {
         private modalService: ModalService,
         private uploadFileService: TaUploadFileService,
         private bankVerificationService: BankVerificationService,
-        private formService: FormService
+        private formService: FormService,
+        private tagsService: EditTagsService
     ) {}
 
     public get offDutyLocations(): FormArray {
@@ -568,15 +570,17 @@ export class DriverModalComponent implements OnInit, OnDestroy {
     }
 
     public onFilesEvent(event: any) {
-        this.documents = event.files;
+        
         switch (event.action) {
             case 'add': {
+                this.documents = event.files;
                 this.driverForm
                     .get('files')
                     .patchValue(JSON.stringify(event.files));
                 break;
             }
             case 'delete': {
+                this.documents = event.files;
                 this.driverForm
                     .get('files')
                     .patchValue(
@@ -588,6 +592,10 @@ export class DriverModalComponent implements OnInit, OnDestroy {
 
                 this.fileModified = true;
                 break;
+            }
+            case 'tag': {
+                
+                console.log(event, 'event')
             }
             default: {
                 break;
@@ -1157,20 +1165,18 @@ export class DriverModalComponent implements OnInit, OnDestroy {
         let documents = [];
         let tagsArray = [];
         this.documents.map((item) => {
-            if(item.tagId?.length)
-            tagsArray.push(
-                {
+            if (item.tagId?.length)
+                tagsArray.push({
                     fileName: item.realFile.name,
-                    tagIds: item.tagId
-                }
-            );
+                    tagIds: item.tagId,
+                });
 
             if (item.realFile) {
                 documents.push(item.realFile);
             }
         });
 
-        if(!tagsArray.length) {
+        if (!tagsArray.length) {
             tagsArray = null;
         }
 
@@ -1545,11 +1551,22 @@ export class DriverModalComponent implements OnInit, OnDestroy {
         } = this.driverForm.value;
 
         let documents = [];
-        this.documents?.map((item) => {
+        let tagsArray = [];
+        this.documents.map((item) => {
+            if (item.tagId?.length && item?.realFile?.name)
+                tagsArray.push({
+                    fileName: item.realFile.name,
+                    tagIds: item.tagId,
+                });
+
             if (item.realFile) {
                 documents.push(item.realFile);
             }
         });
+
+        if (!tagsArray.length) {
+            tagsArray = null;
+        }
 
         const newData: any = {
             id: id,
@@ -1784,12 +1801,15 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             filesForDeleteIds: this.filesForDelete,
             longitude: this.longitude,
             latitude: this.latitude,
+            tags: tagsArray,
         };
 
         this.driverTService
             .updateDriver(newData)
             .pipe(takeUntil(this.destroy$))
-            .subscribe();
+            .subscribe((res) => {
+                this.updateTags();
+            });
     }
 
     private getDriverById(id: number): void {
@@ -2078,6 +2098,22 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                 },
                 error: () => {},
             });
+    }
+
+    updateTags() {
+        let tags = [];
+
+        this.documents.map((item) => {
+            if (item?.tagChanged && item?.fileId) {
+                var tagsData = {
+                    storageId: item.fileId,
+                    tagId: item.tagId?.length ? item.tagId[0] : null,
+                };
+                tags.push(tagsData);
+            }
+        });
+
+        this.tagsService.updateTag({tags: tags}).subscribe();
     }
 
     ngOnDestroy(): void {

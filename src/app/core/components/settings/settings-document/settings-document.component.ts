@@ -13,6 +13,7 @@ export class SettingsDocumentComponent implements OnInit {
     constructor(private settingsCompanyService: SettingsCompanyService) {}
 
     public documents: any = [];
+    public tags: any = [];
     public showDropzone: boolean = false;
     selectedTab: string = 'active';
     tableOptions: any = {
@@ -70,6 +71,7 @@ export class SettingsDocumentComponent implements OnInit {
         .pipe(takeUntil(this.destroy$))
         .subscribe((res)=>{
             this.documents = res?.files?.data;
+            this.tags = res?.tags;
             this.tableData[0].length = this.documents.length;
         });
     }
@@ -125,6 +127,9 @@ export class SettingsDocumentComponent implements OnInit {
                     .subscribe();
                 }
                 break;
+            }
+            case 'tag': {
+                console.log(event, 'tagsss')
             }
             default: {
                 break;

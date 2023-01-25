@@ -241,6 +241,8 @@ export * from './drugAndAlcoholFeedbackResponse';
 export * from './drugAndAlcoholReviewResponse';
 export * from './editFuelCardCommand';
 export * from './editIntegrationCommand';
+export * from './editTagCommand';
+export * from './editTagsCommand';
 export * from './educationFeedbackResponse';
 export * from './educationReviewResponse';
 export * from './efsIntegrationConnectDisconnectCommand';

@@ -28,6 +28,7 @@ export interface UploadFile {
     realFile?: File;
     tagId?: any;
     incorrect?: boolean;
+    tagChanged?: boolean;
 }
 @Component({
     selector: 'app-ta-upload-file',
@@ -83,7 +84,7 @@ export class TaUploadFileComponent implements OnInit, OnDestroy {
         private inputService: TaInputService,
         private urlExt: UrlExtensionPipe,
         private ref: ChangeDetectorRef,
-        private detailsDataService: DetailsDataService,
+        private detailsDataService: DetailsDataService
     ) {}
 
     ngOnInit(): void {
@@ -112,7 +113,7 @@ export class TaUploadFileComponent implements OnInit, OnDestroy {
 
     ngAfterViewInit(): void {
         this.setTags();
-        if(this.file.tags?.length) {
+        if (this.file.tags?.length) {
             this.categoryTag = this.file.tags[0];
         }
     }
@@ -124,8 +125,12 @@ export class TaUploadFileComponent implements OnInit, OnDestroy {
                 : pdf._pdfInfo.numPages.toString().concat(' ', 'PAGES');
     }
 
-    public pageRendered(pdf){
-        if(this.hasLandscapeOption && pdf.pageNumber == 1 && pdf.source.width > pdf.source.height) {
+    public pageRendered(pdf) {
+        if (
+            this.hasLandscapeOption &&
+            pdf.pageNumber == 1 &&
+            pdf.source.width > pdf.source.height
+        ) {
             this.landscapeCheck.emit(true);
         }
     }
@@ -184,7 +189,12 @@ export class TaUploadFileComponent implements OnInit, OnDestroy {
     }
 
     public onEditFile() {
-        if (this.customClassName !== 'driver-details-pdf' && this.customClassName !== 'landscape-details-view' && this.reviewMode != 'REVIEW_MODE' && !this.inputRef?.focusInput) {
+        if (
+            this.customClassName !== 'driver-details-pdf' &&
+            this.customClassName !== 'landscape-details-view' &&
+            this.reviewMode != 'REVIEW_MODE' &&
+            !this.inputRef?.focusInput
+        ) {
             this.editFile = true;
             this.fileNewName.patchValue(this.file.fileName);
             const timeout = setTimeout(() => {
@@ -219,10 +229,10 @@ export class TaUploadFileComponent implements OnInit, OnDestroy {
 
     public setTags() {
         if (this.hasTagsDropdown && this.tags?.length) {
-            this.tags.map((item, i)=>{
+            this.tags.map((item, i) => {
                 item = {
                     ...item,
-                    checked: false
+                    checked: false,
                 };
 
                 this.tagsOptions.push(item);
@@ -235,9 +245,14 @@ export class TaUploadFileComponent implements OnInit, OnDestroy {
             if (item.tagName == tag) {
                 item.checked = true;
 
-                setTimeout(()=>{
+                setTimeout(() => {
                     this.file.tags = item.tagName;
                     this.file.tagId = [item.tagId];
+                    this.file.tagChanged = true;
+                    const action = 'tag';
+                    if (!this.t2.isOpen()) {
+                        this.fileAction.emit({ file: this.file, action });
+                    }
                     this.ref.detectChanges();
                 }, 200);
             } else {
@@ -248,14 +263,14 @@ export class TaUploadFileComponent implements OnInit, OnDestroy {
     }
 
     public removeTag() {
-        setTimeout(()=>{
+        setTimeout(() => {
             this.file.tags = null;
             this.file.tagId = [];
             this.ref.detectChanges();
         }, 200);
     }
 
-    public openDeletePopup(name){
+    public openDeletePopup(name) {
         this.detailsDataService.setDocumentName(name);
         this.isFileDelete = true;
     }
