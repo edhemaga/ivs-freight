@@ -663,11 +663,7 @@
 
     <!-- Multiple Input Values -->
     <div
-        *ngIf="
-            inputConfig?.multipleInputValues?.options?.length &&
-            getSuperControl.value &&
-            !focusInput
-        "
+        *ngIf="inputConfig?.multipleInputValues?.options?.length && !focusInput"
         class="input-control {{
             inputConfig?.multipleInputValues?.customClass
         }}"
@@ -707,22 +703,22 @@
 
             <svg-icon
                 *ngIf="item?.logoName && item?.isSvg"
-                class="{{ item?.subFolder }} {{
-                    item?.logoType.trim().replace(' ', '').toLowerCase()
-                }}"
+                class="{{ item?.subFolder }}"
                 [ngClass]="{
-                    trailerContainer:
-                        item?.logoType.trim().replace(' ', '') === 'Container',
-                    lowboyrgn:
-                        item?.logoType.trim().replace(' ', '') ===
-                        'Low Boy / RGN'
+                    'dispatch-semi-truck': item.id === 1,
+                    'dispatch-semi-sleeper': item.id === 2,
+                    'dispatch-box-truck': item.id === 3,
+                    'dispatch-cargo-van': item.id === 4,
+                    'dispatch-tow-truck': item.id === 5,
+                    'dispatch-car-hauler': item.id === 6,
+                    'dispatch-spotter': item.id === 7
                 }"
                 [src]="item?.logoName"
             ></svg-icon>
 
             <!-- Text -->
             <span
-                *ngIf="!item?.isProgressBar && item.value"
+                *ngIf="!item?.isProgressBar"
                 class="multiple-input-text"
                 [ngStyle]="{
                     color: '#2F2F2F'
@@ -877,13 +873,14 @@
             disabled: !getSuperControl.value && inputConfig.isDisabled,
             'disabled-filled': getSuperControl.value && inputConfig.isDisabled,
             'valid-focus-in':
-                getSuperControl.value &&
-                getSuperControl.valid &&
-                focusInput &&
-                !isVisiblePasswordEye &&
-                !isVisibleCommands &&
-                !inputConfig?.dropdownImageInput?.url &&
-                !inputConfig.blackInput,
+                (getSuperControl.value &&
+                    getSuperControl.valid &&
+                    focusInput &&
+                    !isVisiblePasswordEye &&
+                    !isVisibleCommands &&
+                    !inputConfig?.dropdownImageInput?.url &&
+                    !inputConfig.blackInput) ||
+                (inputConfig.multipleInputValues?.options.length && focusInput),
             'valid-focus-out-filled':
                 (((getSuperControl.value &&
                     getSuperControl.valid &&
@@ -898,7 +895,9 @@
                     getSuperControl.value &&
                     getSuperControl.valid &&
                     !focusInput &&
-                    !inputConfig.isDisabled),
+                    !inputConfig.isDisabled) ||
+                (inputConfig.multipleInputValues?.options.length &&
+                    !focusInput),
             'invalid-focus-in':
                 getSuperControl.value &&
                 getSuperControl.invalid &&
@@ -917,7 +916,12 @@
                         getSuperControl.invalid &&
                         !focusInput)) &&
                 !inputConfig.blackInput,
-
+            'invalid-focus-out-empty':
+                !getSuperControl.value &&
+                getSuperControl.invalid &&
+                (touchedInput || getSuperControl.touched) &&
+                inputConfig.multipleLabel?.labels.length &&
+                !inputConfig.multipleInputValues?.options.length,
             'password-eye':
                 inputConfig.type === 'password' &&
                 isVisiblePasswordEye &&
@@ -976,7 +980,10 @@
                 inputConfig?.dropdownImageInput?.template === 'color',
             'dropdown-input-image-user':
                 inputConfig?.dropdownImageInput?.withText &&
-                inputConfig?.dropdownImageInput?.template === 'user',
+                inputConfig?.dropdownImageInput?.template === 'user' &&
+                (inputConfig.selectedDropdown ||
+                    (inputConfig.placeholder && focusInput) ||
+                    getSuperControl.value),
             'dropdown-input-image-without-text-transparent':
                 inputConfig?.dropdownImageInput &&
                 !inputConfig?.dropdownImageInput?.withText &&
@@ -1004,11 +1011,6 @@
         "
         [(ngModel)]="input.value"
     />
-
-    <!--  'invalid-focus-out-empty':
-                !getSuperControl.value &&
-                getSuperControl.invalid &&
-                (touchedInput || getSuperControl.touched), -->
 
     <!-- Input Label -->
     <label

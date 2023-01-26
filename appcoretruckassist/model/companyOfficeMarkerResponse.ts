@@ -9,12 +9,14 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { CompanyOfficeDepartmentContactResponse } from './companyOfficeDepartmentContactResponse';
 
 
-export type ApiCategory = 'EFSFUEL' | 'ACCIDENTVIOLATION';
-
-export const ApiCategory = {
-    Efsfuel: 'EFSFUEL' as ApiCategory,
-    Accidentviolation: 'ACCIDENTVIOLATION' as ApiCategory
-};
+export interface CompanyOfficeMarkerResponse { 
+    id?: number | null;
+    name?: string | null;
+    latitude?: number;
+    longitude?: number;
+    departmentContacts?: Array<CompanyOfficeDepartmentContactResponse> | null;
+}
 

@@ -34,7 +34,9 @@
         position: absolute;
         top: -11px;
     }
-
+    .route-not-active {
+        color: #787878;
+    }
     .nav-footer-item-scaleWidth {
         // width: 0px !important;
     }
@@ -85,6 +87,22 @@
                     height: 8px;
                 }
             }
+            .route-not-active-svg {
+                svg {
+                    path {
+                        transition: fill 0.4s ease;
+                        fill: #787878;
+                    }
+                }
+            }
+            .route-closed-nav-svg-not-active {
+                svg {
+                    path {
+                        transition: fill 0.4s ease;
+                        fill: #e1e1e1;
+                    }
+                }
+            }
             .active-img {
                 svg {
                     path {
@@ -128,20 +146,20 @@
                 padding: 8px 0;
             }
         }
-        .tooltip {
-            position: absolute;
-            width: 36px;
-            height: 28px;
-            left: -8px;
-            padding-left: 35px;
-        }
     }
 
     .nav-footer-item {
         height: 28px;
         display: flex;
         align-items: center;
-
+        .tooltip-right {
+            position: relative;
+            bottom: 13px;
+            right: 8px;
+        }
+        .hide-tooltip {
+            display: none;
+        }
         &:nth-last-child(2) {
             // display: none;
             order: 3;
@@ -207,7 +225,6 @@
         }
 
         .nav-footer-hover {
-            width: 178px;
             height: 30px;
             position: absolute;
             right: 5px;
@@ -334,6 +351,18 @@
 .magic-line-not-hovered {
     width: 38px !important;
     left: -9px;
+}
+.animate-magic-line {
+    max-width: 238px;
+    animation: grow0 0.4s forwards;
+}
+@keyframes grow0 {
+    from {
+        width: 36px;
+    }
+    to {
+        width: 238px;
+    }
 }
 .nav-footer-width {
     width: 238px;

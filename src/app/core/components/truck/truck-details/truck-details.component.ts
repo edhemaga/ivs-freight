@@ -126,7 +126,7 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
                             this.newTruckId = id;
                             if (this.router.url.includes('details')) {
                                 this.router.navigate([
-                                    `/truck/${res.id}/details`,
+                                    `/list/truck/${res.id}/details`,
                                 ]);
                             }
 
@@ -138,7 +138,7 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
                     //query = this.truckTService.getTruckById(id);
 
                     this.newTruckId = id;
-                    this.router.navigate([`/truck/${id}/details`]);
+                    this.router.navigate([`/list/truck/${id}/details`]);
                     this.cdRef.detectChanges();
                 }
             });
@@ -182,14 +182,14 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
                 next: () => {
                     if (this.truckMinimalStore.getValue()?.ids?.length >= 1) {
                         this.router.navigate([
-                            `/truck/${
+                            `/list/truck/${
                                 this.truckList[this.currentIndex].id
                             }/details`,
                         ]);
                     }
                 },
                 error: () => {
-                    this.router.navigate(['/truck']);
+                    this.router.navigate(['/list/truck']);
                 },
             });
     }

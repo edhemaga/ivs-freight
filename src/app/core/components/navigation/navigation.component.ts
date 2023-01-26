@@ -47,9 +47,13 @@ export class NavigationComponent implements OnInit, OnDestroy {
     public footerRouteActive: boolean = true;
     private destroy$ = new Subject<void>();
     public subrouteContainerOpened: boolean = false;
+    public index: number;
+    public openedDropdown: boolean = false;
+    public hideSubrouteTitle: number = -1;
     closeDropdownOnNavClose: boolean;
     @ViewChild('navbar') navbar: ElementRef;
     selectedRoute: string = '';
+    selectedSubRoute: string = '';
     companiesExists: boolean;
     routeIndexSelected: boolean;
     constructor(
@@ -59,16 +63,8 @@ export class NavigationComponent implements OnInit, OnDestroy {
         private DetailsDataService: DetailsDataService,
         private activatedRoute: ActivatedRoute
     ) {}
-    oneUserCompany($event) {
-        this.companiesExists = $event;
-        this.cdRef.detectChanges();
-    }
-    routeIndex($event) {
-        this.routeIndexSelected = $event;
-    }
-    test(test) {
-        console.log(test);
-        this.subrouteContainerOpened = test;
+    hideSubrouteFromChild($event) {
+        this.hideSubrouteTitle = $event;
     }
     ngOnInit(): void {
         this.navigationService.getValueNavHovered().subscribe((value) => {
@@ -142,8 +138,41 @@ export class NavigationComponent implements OnInit, OnDestroy {
                 if (url.url === '/dispatcher') {
                     this.selectedRoute = 'Dispatch';
                     this.cdRef.detectChanges();
+                } else if (url.url === '/file-manager') {
+                    this.selectedRoute = 'File Manager';
+                    this.cdRef.detectChanges();
                 } else {
                     let ruteName = url.url.split('/');
+                    if (ruteName[2]) {
+                        if (ruteName[2] == 'sms') {
+                            this.selectedSubRoute = 'SMS';
+                            this.cdRef.detectChanges();
+                        } else if (ruteName[2] == 'todo') {
+                            this.selectedSubRoute = 'To-Do';
+                            this.cdRef.detectChanges();
+                        } else if (ruteName[2] == 'scheduled-insurance') {
+                            this.selectedSubRoute = 'Scheduled Ins.';
+                            this.cdRef.detectChanges();
+                        } else if (ruteName[2] == 'mvr') {
+                            this.selectedSubRoute = 'MVR';
+                            this.cdRef.detectChanges();
+                        } else if (ruteName[2] == 'mvr') {
+                            this.selectedSubRoute = 'MVR';
+                            this.cdRef.detectChanges();
+                        } else if (ruteName[2] == 'pm') {
+                            this.selectedSubRoute = 'PM';
+                            this.cdRef.detectChanges();
+                        } else if (ruteName[2] == 'ifta') {
+                            this.selectedSubRoute = 'IFTA';
+                            this.cdRef.detectChanges();
+                        } else {
+                            let t =
+                                ruteName[2].charAt(0).toUpperCase() +
+                                ruteName[2].substr(1).toLowerCase();
+                            this.selectedSubRoute = t;
+                            this.cdRef.detectChanges();
+                        }
+                    }
                     let t =
                         ruteName[1].charAt(0).toUpperCase() +
                         ruteName[1].substr(1).toLowerCase();
@@ -151,6 +180,37 @@ export class NavigationComponent implements OnInit, OnDestroy {
                     this.cdRef.detectChanges();
                 }
             });
+    }
+    getIndex(ind) {
+        this.index = ind;
+        // console.log(
+        //     this.navigation,
+        //     this.isNavigationHovered,
+        //     this.closeDropdownOnNavClose,
+        //     this.isModalPanelOpen,
+        //     this.isUserPanelOpen,
+        //     this.isSettingsPanelOpen,
+        //     this.isUserCompanyDetailsOpen
+        // );
+        // console.log(this.navigation, 'asasfasff');
+    }
+
+    oneUserCompany($event) {
+        this.companiesExists = $event;
+        this.cdRef.detectChanges();
+    }
+    routeIndex($event) {
+        this.routeIndexSelected = $event;
+        this.cdRef.detectChanges();
+    }
+    dropdownOpened(event) {
+        this.openedDropdown = event;
+    }
+    isSubrouteContainerOpen(event) {
+        // console.log(event);
+
+        this.subrouteContainerOpened = event;
+        this.cdRef.detectChanges();
     }
     //Midle navigation hovered hide magic line in footer nav
     onMidleNavHover(event) {
@@ -192,6 +252,7 @@ export class NavigationComponent implements OnInit, OnDestroy {
         ) {
             //If this elements close navigation
             if (
+                event.target.classList.contains('modal-item') ||
                 event.target.classList.contains('tooltip-notifications') ||
                 event.target.classList.contains('open-navigation') ||
                 event.target.classList.contains('notification-svg ') ||
@@ -231,7 +292,7 @@ export class NavigationComponent implements OnInit, OnDestroy {
                 this.isActiveMagicLine = true;
                 this.isModalPanelOpen = false;
                 this.isActiveSubroute = false;
-
+                this.openedDropdown = false;
                 this.navigationService.onDropdownActivation({
                     name: 'Settings',
                     type: false,
@@ -247,6 +308,7 @@ export class NavigationComponent implements OnInit, OnDestroy {
             this.isModalPanelOpen = false;
             this.isActiveSubroute = false;
             this.isNavigationHovered = false;
+            this.openedDropdown = false;
             this.navigationService.onDropdownActivation({
                 name: 'Settings',
                 type: false,
@@ -367,11 +429,17 @@ export class NavigationComponent implements OnInit, OnDestroy {
     }
 
     public isActiveRouteOnReload(route: string): boolean {
-        let ruteName = this.router.url.split('/');
-        let t =
-            ruteName[1].charAt(0).toUpperCase() +
-            ruteName[1].substr(1).toLowerCase();
-        return route === t;
+        // console.log(route);
+        if (route == '/dispatcher') {
+            let t = 'Dispatch';
+            return route === t;
+        } else {
+            let ruteName = this.router.url.split('/');
+            let t =
+                ruteName[1].charAt(0).toUpperCase() +
+                ruteName[1].substr(1).toLowerCase();
+            return route === t;
+        }
     }
 
     public identity(index, item): number {

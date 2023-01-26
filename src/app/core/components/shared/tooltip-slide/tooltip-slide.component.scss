@@ -6,6 +6,8 @@
     height: 28px !important;
     left: 0px;
     top: 0;
+    z-index: 9;
+    user-select: none;
     .tooltiptext {
         visibility: hidden;
         width: max-content;
@@ -24,11 +26,9 @@
         padding: 2px 6px 2px 6px;
         top: 4px;
     }
-    &:hover {
-        .tooltiptext {
-            animation: moveToRight 0.1s normal forwards;
-            visibility: visible;
-            opacity: 1;
-        }
+    .tooltiptext {
+        animation: moveToRight 0.1s normal forwards;
+        visibility: visible;
+        opacity: 1;
     }
 }

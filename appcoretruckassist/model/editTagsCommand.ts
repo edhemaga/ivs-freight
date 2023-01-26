@@ -9,10 +9,10 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { TrailerFilterResponsePagination } from './trailerFilterResponsePagination';
+import { EditTagCommand } from './editTagCommand';
 
 
-export interface TrailerFilterListResponse { 
-    pagination?: TrailerFilterResponsePagination;
+export interface EditTagsCommand { 
+    tags?: Array<EditTagCommand> | null;
 }
 

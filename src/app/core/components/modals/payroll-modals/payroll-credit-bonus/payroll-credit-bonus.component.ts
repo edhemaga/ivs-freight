@@ -1,8 +1,21 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Subject } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
+import { FormService } from '../../../../services/form/form.service';
+import { PayrollCreditService } from '../../../accounting/payroll/payroll/state/payroll-credit.service';
+import { PayrollCreditModalResponse } from '../../../../../../../appcoretruckassist/model/payrollCreditModalResponse';
+import { ITaInput } from '../../../shared/ta-input/ta-input.config';
+import { PayrollCreditResponse } from '../../../../../../../appcoretruckassist/model/payrollCreditResponse';
+import {
+    convertDateToBackend,
+    convertThousanSepInNumber,
+} from '../../../../utils/methods.calculations';
+import {
+    convertDateFromBackend,
+    convertNumberInThousandSep,
+} from '../../../../utils/methods.calculations';
 
 @Component({
     selector: 'app-payroll-credit-bonus',
@@ -25,6 +38,7 @@ export class PayrollCreditBonusComponent implements OnInit {
         {
             id: 2,
             name: 'TRUCK',
+            checked: false,
             color: '3074D3',
         },
     ];
@@ -41,22 +55,73 @@ export class PayrollCreditBonusComponent implements OnInit {
 
     public isFormDirty: boolean = false;
 
+    public truckDropdownsConfig: ITaInput = {
+        name: 'Input Dropdown',
+        type: 'text',
+        label: 'Truck',
+        isDropdown: true,
+        isRequired: true,
+        textTransform: 'capitalize',
+        blackInput: true,
+        dropdownWidthClass: 'w-col-256',
+    };
+
     constructor(
         private formBuilder: FormBuilder,
         private inputService: TaInputService,
-        private modalService: ModalService
+        private modalService: ModalService,
+        private formService: FormService,
+        private payrolCreditService: PayrollCreditService
     ) {}
 
     ngOnInit() {
         this.createForm();
+        this.getModalDropdowns();
 
-        if (this.editData.type === 'edit') {
-            this.getByIdCredit(1);
+        if (this.editData?.type === 'edit') {
+            this.getByIdCredit(this.editData.data.id);
         }
     }
 
     public tabChange(event: any): void {
         this.selectedTab = event.id;
+
+        this.tabs = this.tabs.map((item) => {
+            return {
+                ...item,
+                checked: item.id === this.selectedTab,
+            };
+        });
+
+        if (this.selectedTab === 1) {
+            this.inputService.changeValidators(
+                this.payrollCreditForm.get('truckId'),
+                false,
+                [],
+                false
+            );
+            this.inputService.changeValidators(
+                this.payrollCreditForm.get('driverId'),
+                true,
+                [],
+                false
+            );
+        }
+
+        if (this.selectedTab === 2) {
+            this.inputService.changeValidators(
+                this.payrollCreditForm.get('truckId'),
+                true,
+                [],
+                false
+            );
+            this.inputService.changeValidators(
+                this.payrollCreditForm.get('driverId'),
+                false,
+                [],
+                false
+            );
+        }
     }
 
     private createForm() {
@@ -67,6 +132,13 @@ export class PayrollCreditBonusComponent implements OnInit {
             description: [null, Validators.required],
             amount: [null, Validators.required],
         });
+
+        this.formService.checkFormChange(this.payrollCreditForm, 400);
+        this.formService.formValueChange$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((isFormChange: boolean) => {
+                this.isFormDirty = isFormChange;
+            });
     }
 
     public onModalAction(data: { action: string; bool: boolean }) {
@@ -116,13 +188,169 @@ export class PayrollCreditBonusComponent implements OnInit {
         }
     }
 
-    public updateCredit(id: number) {}
-
-    public addCredit() {
-        // TODO: dodati addNewAfterSave
+    public updateCredit(id: number) {
+        this.payrolCreditService
+            .updatePayrollCredit({
+                id: id,
+                ...this.payrollCreditForm.value,
+                driverId: this.selectedDriver ? this.selectedDriver.id : null,
+                truckId: this.selectedTruck ? this.selectedTruck.id : null,
+                date: convertDateToBackend(
+                    this.payrollCreditForm.get('date').value
+                ),
+                amount: convertThousanSepInNumber(
+                    this.payrollCreditForm.get('amount').value
+                ),
+            })
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: () => {
+                    this.modalService.setModalSpinner({
+                        action: null,
+                        status: true,
+                        close: true,
+                    });
+                },
+                error: () => {
+                    this.modalService.setModalSpinner({
+                        action: null,
+                        status: false,
+                        close: false,
+                    });
+                },
+            });
     }
 
-    public getByIdCredit(id: number) {}
+    public addCredit() {
+        this.payrolCreditService
+            .addPayrollCredit({
+                ...this.payrollCreditForm.value,
+                driverId: this.selectedDriver ? this.selectedDriver.id : null,
+                truckId: this.selectedTruck ? this.selectedTruck.id : null,
+                date: convertDateToBackend(
+                    this.payrollCreditForm.get('date').value
+                ),
+                amount: convertThousanSepInNumber(
+                    this.payrollCreditForm.get('amount').value
+                ),
+            })
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: () => {
+                    if (this.addNewAfterSave) {
+                        this.formService.resetForm(this.payrollCreditForm);
+                        this.selectedDriver = null;
+                        this.selectedTruck = null;
+                        this.tabChange({ id: 1 });
+                        this.modalService.setModalSpinner({
+                            action: null,
+                            status: false,
+                            close: false,
+                        });
+                    } else {
+                        this.modalService.setModalSpinner({
+                            action: null,
+                            status: true,
+                            close: true,
+                        });
+                    }
+                },
+                error: () => {
+                    this.modalService.setModalSpinner({
+                        action: null,
+                        status: false,
+                        close: false,
+                    });
+                },
+            });
+    }
+
+    public getByIdCredit(id: number) {
+        this.payrolCreditService
+            .getPayrollCreditById(id)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: (res: PayrollCreditResponse) => {
+                    this.payrollCreditForm.patchValue({
+                        driverId: res.driver
+                            ? res.driver.firstName.concat(
+                                  ' ',
+                                  res.driver.lastName
+                              )
+                            : null,
+                        truckId: null,
+                        date: convertDateFromBackend(res.date),
+                        description: res.description,
+                        amount: convertNumberInThousandSep(res.amount),
+                    });
+
+                    this.selectedDriver = {
+                        id: res.driver.id,
+                        name: res.driver.firstName.concat(
+                            ' ',
+                            res.driver.lastName
+                        ),
+                        logoName:
+                            res.driver.avatar === null ||
+                            res.driver.avatar === undefined ||
+                            res.driver.avatar === ''
+                                ? null
+                                : res.driver.avatar,
+                        isDriver: true,
+                    };
+
+                    this.selectedTruck = null;
+
+                    this.tabChange({ id: res.driver ? 1 : 2 });
+                },
+                error: () => {},
+            });
+    }
+
+    public getModalDropdowns() {
+        this.payrolCreditService
+            .getPayrollCreditModal()
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: (res: PayrollCreditModalResponse) => {
+                    this.labelsDriver = res.drivers.map((item) => {
+                        return {
+                            id: item.id,
+                            name: item.firstName.concat(' ', item.lastName),
+                            logoName:
+                                item.avatar === null ||
+                                item.avatar === undefined ||
+                                item.avatar === ''
+                                    ? null
+                                    : item.avatar,
+                            isDriver: true,
+                        };
+                    });
+                    this.labelsTrucks = [
+                        {
+                            id: 1,
+                            name: '418952',
+                            additionalText: 'R2 LOGISTICS',
+                        },
+                    ];
+
+                    // If Add New By Id
+                    if (
+                        this.editData?.data?.driverId &&
+                        this.editData?.type === 'new'
+                    ) {
+                        this.labelsDriver = this.labelsDriver.filter(
+                            (item) => item.id === this.editData?.data?.driverId
+                        );
+                        this.selectedDriver = this.labelsDriver[0];
+                        this.payrollCreditForm.patchValue({
+                            driverId: this.labelsDriver[0].name,
+                        });
+                    }
+                },
+                error: () => {},
+            });
+    }
 
     public onSelectDropdown(event: any, action: string) {
         switch (action) {
@@ -132,6 +360,29 @@ export class PayrollCreditBonusComponent implements OnInit {
             }
             case 'truck': {
                 this.selectedTruck = event;
+                if (this.selectedTruck) {
+                    this.truckDropdownsConfig = {
+                        ...this.truckDropdownsConfig,
+                        multipleInputValues: {
+                            options: [
+                                {
+                                    value: event?.name,
+                                },
+                                {
+                                    value: event?.additionalText,
+                                },
+                            ],
+                            customClass: 'double-text-dropdown',
+                        },
+                    };
+                } else {
+                    this.truckDropdownsConfig = {
+                        ...this.truckDropdownsConfig,
+                        multipleInputValues: null,
+                    };
+                }
+
+                break;
             }
             default: {
                 break;

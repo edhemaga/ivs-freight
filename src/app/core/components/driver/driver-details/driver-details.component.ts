@@ -170,7 +170,7 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
                             this.detailCongif(res);
                             this.newDriverId = id;
                             if (this.router.url.includes('details')) {
-                                this.router.navigate([`/driver/${res.id}/details`]);
+                                this.router.navigate([`/list/driver/${res.id}/details`]);
                             }
     
                             this.cdRef.detectChanges();
@@ -181,7 +181,7 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
                 } else {
                     //query = this.driverService.getDriverById(id);
                     this.newDriverId = id;
-                    this.router.navigate([`/driver/${id}/details`]);
+                    this.router.navigate([`/list/driver/${id}/details`]);
                     this.cdRef.detectChanges();        
                 }
                 
@@ -478,14 +478,14 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
                         this.driverMinimimalListStore.getValue().ids.length >= 1
                     ) {
                         this.router.navigate([
-                            `/driver/${
+                            `/list//driver/${
                                 this.driversList[this.currentIndex].id
                             }/details`,
                         ]);
                     }
                 },
                 error: () => {
-                    this.router.navigate(['/driver']);
+                    this.router.navigate(['/list/driver']);
                 },
             });
     }

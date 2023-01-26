@@ -7,8 +7,6 @@ import {
     OnDestroy,
     ChangeDetectionStrategy,
     ChangeDetectorRef,
-    OnChanges,
-    SimpleChanges,
 } from '@angular/core';
 import { FooterData } from '../model/navigation.model';
 import { footerData } from '../model/navigation-data';
@@ -32,7 +30,7 @@ import { TaUserService } from '../../../services/user/user.service';
         navigation_magic_line('showHideDetailsMagicLine'),
     ],
 })
-export class NavigationFooterComponent implements OnInit, OnChanges, OnDestroy {
+export class NavigationFooterComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
     @Input() isNavigationHovered: boolean = false;
     @Input() isUserCompanyDetailsOpen: boolean = false;
@@ -42,6 +40,9 @@ export class NavigationFooterComponent implements OnInit, OnChanges, OnDestroy {
     @Input() showHideLineIfSettingsActive: boolean;
     @Input() isActiveFooterRouteClick: boolean;
     @Input() isActiveSubroute: boolean;
+    @Input() subrouteContainerOpened: boolean;
+    @Input() selectedRoute: string;
+    @Input() selectedSubRoute: string;
     @Output() onActivateFooterRoutes = new EventEmitter<boolean>();
     @Output() userActivatedSettingsRoute = new EventEmitter<boolean>();
 
@@ -54,6 +55,7 @@ export class NavigationFooterComponent implements OnInit, OnChanges, OnDestroy {
     public notificationsActive: boolean = false;
     public showMagicLine: boolean;
     public midleRouteActive: boolean = false;
+    public showToolTip: boolean;
     constructor(
         private router: Router,
         private navigationService: NavigationService,
@@ -61,9 +63,7 @@ export class NavigationFooterComponent implements OnInit, OnChanges, OnDestroy {
         private userService: TaUserService,
         private cdRef: ChangeDetectorRef
     ) {}
-    ngOnChanges(changes: SimpleChanges): void {
-        // console.log(this.settingsRouteActivated, this.notificationsActive);
-    }
+
     ngOnInit() {
         this.navigationService.getValueNavHovered().subscribe((value) => {
             this.mouseOverMiddleNav = value;

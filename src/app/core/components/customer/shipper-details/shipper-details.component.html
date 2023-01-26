@@ -1,7 +1,7 @@
 <div class="repair-details-container">
     <div *ngFor="let item of shipperConfig; trackBy: identity">
         <app-ta-details-header
-            [route]="'/customer'"
+            [route]="'/list/customer'"
             [tooltipHeaderName]="'Back to Shipper List'"
             [headerText]="item.nameDefault"
             [counterData]="item.length"

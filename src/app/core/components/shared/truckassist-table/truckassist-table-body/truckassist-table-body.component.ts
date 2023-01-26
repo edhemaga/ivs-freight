@@ -377,6 +377,7 @@ export class TruckassistTableBodyComponent
     goToDetails(route: any, row: any) {
         const link =
             route.link.routerLinkStart + row['id'] + route.link.routerLinkEnd;
+   
         this.detailsDataService.setNewData(row);
         this.router.navigate([link]);
     }

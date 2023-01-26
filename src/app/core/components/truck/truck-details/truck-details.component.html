@@ -2,7 +2,7 @@
     <div *ngFor="let item of truckDetailsConfig; trackBy: identity">
         <app-ta-details-header
             [options]="dataTest"
-            [route]="'/truck'"
+            [route]="'/list/truck'"
             [tooltipHeaderName]="'Back to Truck List'"
             [headerText]="item.name"
             [counterData]="item.length"

@@ -17,5 +17,6 @@ export interface CompanyShortResponse {
     logo?: string | null;
     isDivision?: boolean;
     isActive?: boolean;
+    lastLogin?: string | null;
 }
 

@@ -89,11 +89,14 @@ export class TruckassistTableToolbarComponent
     tableConfigurationType: TableType;
     showResetOption: boolean;
     tableReseting: boolean;
+    selectedViewMode: string;
 
     constructor(private tableService: TruckassistTableService) {}
 
     // --------------------------------NgOnInit---------------------------------
     ngOnInit(): void {
+        this.getSelectedViewMode();
+
         this.getSelectedTabTableData();
 
         this.getToolbarWidth();
@@ -132,6 +135,8 @@ export class TruckassistTableToolbarComponent
     ngOnChanges(changes: SimpleChanges) {
         if (!changes?.options?.firstChange && changes?.options) {
             this.options = changes.options.currentValue;
+
+            this.getSelectedViewMode();
         }
 
         if (
@@ -177,6 +182,17 @@ export class TruckassistTableToolbarComponent
             : true;
 
         this.tableConfigurationType = td.tableConfiguration;
+    }
+
+    // Get Selected View Mode
+    getSelectedViewMode() {
+        if (this.options.toolbarActions?.viewModeOptions) {
+            this.options.toolbarActions.viewModeOptions.map((viewMode: any) => {
+                if (viewMode.active) {
+                    this.selectedViewMode = viewMode.name;
+                }
+            });
+        }
     }
 
     // Get Toolbar Width
@@ -263,6 +279,7 @@ export class TruckassistTableToolbarComponent
                             isOpen: false,
                             isGroup: true,
                             areAllActive: false,
+                            areSomeSelected: false,
                             optionsGroupName: curentGroupName,
                             group: [],
                         });
@@ -312,6 +329,8 @@ export class TruckassistTableToolbarComponent
 
     // Chnage View Mode
     changeModeView(modeView: any) {
+        this.selectedViewMode = modeView.mode;
+
         this.toolBarAction.emit({
             action: 'view-mode',
             mode: modeView.mode,
@@ -351,7 +370,10 @@ export class TruckassistTableToolbarComponent
 
     //  On Toolbar Option Actions
     onOptions(action: any) {
-        if (action.text === 'Unlock table' || action.text === 'Lock table') {
+        if (
+            (action.text === 'Unlock table' || action.text === 'Lock table') &&
+            this.selectedViewMode === 'List'
+        ) {
             action.active = !action.active;
 
             this.tableLocked = !this.tableLocked;
@@ -372,7 +394,7 @@ export class TruckassistTableToolbarComponent
                 const tableConfig = localStorage.getItem(
                     `table-${this.tableConfigurationType}-Configuration`
                 );
- 
+
                 this.tableService
                     .sendTableConfig({
                         tableType: this.tableConfigurationType,
@@ -394,8 +416,6 @@ export class TruckassistTableToolbarComponent
             });
         } else if (action.text === 'Reset Table') {
             this.onResetTable();
-        } else {
-            alert('Treba da se odradi!');
         }
     }
 
@@ -410,6 +430,8 @@ export class TruckassistTableToolbarComponent
                             numOfSelected++;
                         }
                     });
+
+                    columns.areSomeSelected = numOfSelected ? true : false;
 
                     columns.areAllActive =
                         numOfSelected === columns.group.length;

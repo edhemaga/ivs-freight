@@ -279,7 +279,6 @@
     }
 
     &.load-dispatches-ttd,
-    &.load-broker-contact,
     &.load-broker,
     &.load-shipper,
     &.load-shipper-contact {
@@ -297,8 +296,40 @@
         }
     }
 
+    &.double-text-dropdown {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-48%);
+        background-color: transparent !important;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding-right: 26px;
+
+        span {
+            &:last-child {
+                .multiple-input-text {
+                    color: #919191 !important;
+                    font-size: 11px;
+                    font-weight: 400;
+
+                    &.focusable-text {
+                        color: #6f9ee0 !important;
+                        font-size: 11px;
+                        font-weight: 400;
+                    }
+                }
+            }
+
+            &.focusable-text {
+                color: #6f9ee0 !important;
+            }
+        }
+    }
+
     &.load-dispatches-ttd {
         grid-template-columns: repeat(2, 156px) 150px 122px;
+        padding-top: 3px;
 
         span {
             &:nth-child(1),
@@ -338,6 +369,10 @@
             &.focusable-text {
                 color: #6f9ee0 !important;
             }
+
+            span {
+                line-height: 22px;
+            }
         }
 
         .focusable-svg {
@@ -353,6 +388,12 @@
 
         .focusable-image {
             opacity: 0.6;
+        }
+
+        .trailerContainer {
+            width: max-content !important;
+            padding: 0px !important;
+            margin: 0px !important;
         }
     }
 
@@ -403,22 +444,38 @@
 
     &.load-broker-contact,
     &.load-shipper-contact {
-        grid-template-columns: 148px 131px;
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background-color: transparent !important;
+        display: grid;
         align-items: center;
-        grid-column-gap: 10px;
-        -moz-column-gap: 10px;
-        column-gap: 10px;
+
+        grid-template-columns: repeat(2, 1fr);
+        align-items: center;
+        grid-column-gap: 20px;
+        -moz-column-gap: 20px;
+        column-gap: 20px;
         -webkit-user-select: none;
         -moz-user-select: none;
         -ms-user-select: none;
         user-select: none;
         height: 25px;
+        padding-right: 35px;
 
         span {
+            overflow: hidden;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
             span {
                 overflow: hidden;
                 text-overflow: ellipsis;
                 white-space: nowrap;
+            }
+            &:nth-child(2) {
+                justify-self: flex-end;
             }
         }
     }

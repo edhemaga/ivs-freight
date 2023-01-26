@@ -37,12 +37,18 @@
         }
     }
 
+    .modal-horizontal-scroll-bar{
+        height: 6px;
+        background: #EEEEEE;
+        border-radius: 2px;
+    }
+
     .horizontal-scroll-bar {
         width: 100%;
         position: absolute;
         left: 0;
         user-select: none;
-        margin-top: -15px;
+        // margin-top: -15px;
 
         .horizontal-bar {
             position: absolute;

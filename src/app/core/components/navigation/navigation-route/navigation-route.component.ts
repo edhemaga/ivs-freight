@@ -8,6 +8,8 @@ import {
     EventEmitter,
     OnInit,
     SimpleChanges,
+    OnChanges,
+    ChangeDetectorRef,
 } from '@angular/core';
 import {
     navigation_magic_line,
@@ -25,7 +27,7 @@ import { NavigationService } from '../services/navigation.service';
         navigation_magic_line('magicLine'),
     ],
 })
-export class NavigationRouteComponent implements OnInit {
+export class NavigationRouteComponent implements OnInit, OnChanges {
     @Input() route: Navigation;
     @Input() isNavigationHovered: boolean = false;
     @Input() isActiveSubroute: boolean = false;
@@ -33,16 +35,23 @@ export class NavigationRouteComponent implements OnInit {
     @Input() files: number;
     @Input() class: string;
     @Input() closeDropdownOnNavClose: boolean;
-    @Input() activeLink: boolean = false;
+
     @Input() isSettingsPanelOpen: boolean = false;
     @Input() isUserPanelOpen: boolean = false;
     @Input() isActiveFooterRoute: boolean = false;
     @Input() index: number;
+    @Input() ind: number;
     @Input() middleIsHovered: boolean = false;
     @Input() selectedRoute: string = '';
-
+    @Input() selectedSubRoute: string = '';
+    @Input() subrouteContainerOpened: boolean = false;
+    @Input() openedDropdown: boolean = false;
+    @Input() hideSubrouteTitle: number = -1;
     @Output() onRouteEvent = new EventEmitter<NavigationSubRoutes>();
     @Output() itemIndex = new EventEmitter<Number>();
+    @Output() hideSubrouteFromChild = new EventEmitter<boolean>();
+    @Input() isLocalDropdownOpen: boolean = false;
+
     public activeRouteName: string;
     public activeRouteIdFromLocalStorage: number;
     public isNavItemHovered: boolean = false;
@@ -51,27 +60,28 @@ export class NavigationRouteComponent implements OnInit {
     public arrowHovered: boolean;
     public footerRouteActive: boolean;
     public footerHovered: boolean;
+    public textSubRoute: string = '';
+
+    public _activeLink = undefined;
+    public activeLinkHighlight: boolean = false;
+
+    @Input() set activeLink(value) {
+        if (typeof this._activeLink == 'undefined' && value) {
+            this._activeLink = value;
+        } else if (typeof this._activeLink != 'undefined') {
+            this.activeLinkHighlight = value;
+        }
+    }
     showToolTip: boolean;
     routeId: string;
+    public rHide: boolean = false;
     // routeName: string;
     constructor(
         public router: Router,
         public navigationService: NavigationService,
-        public activatedroute: ActivatedRoute
+        public activatedroute: ActivatedRoute,
+        private cdRef: ChangeDetectorRef
     ) {}
-    routeIndex(ind) {
-        // this.itemIndex.emit(ind);
-    }
-    //Get subroute name
-    ngOnChanges(changes: SimpleChanges) {
-        let router = StaticInjectorService.Injector.get(Router);
-        let n = router.url.split('/');
-        if (n[2]) {
-            this.activeRouteName = n[2];
-        } else {
-            this.activeRouteName = n[1];
-        }
-    }
 
     ngOnInit() {
         this.timeout = setTimeout(() => {
@@ -88,6 +98,25 @@ export class NavigationRouteComponent implements OnInit {
         //     console.log(val.urlAfterRedirects);
         // });
     }
+
+    //Get subroute name
+    ngOnChanges(changes: SimpleChanges) {
+        // console.log(this.ind, this.index);
+
+        this.textSubRoute = this.selectedSubRoute;
+        this.activeRouteIdFromLocalStorage = parseInt(
+            localStorage.getItem('subroute_active')
+        );
+
+        let router = StaticInjectorService.Injector.get(Router);
+        let n = router.url.split('/');
+        if (n[2]) {
+            this.activeRouteName = n[2];
+        } else {
+            this.activeRouteName = n[1];
+        }
+    }
+
     //Arrow clicked open link in new window
     public openLinkInNewWindow(item) {
         window.open(item, '_blank');
@@ -96,7 +125,9 @@ export class NavigationRouteComponent implements OnInit {
     public hoveredArrow(event) {
         this.arrowHovered = event;
     }
-    public onRouteAction() {
+    public onRouteAction(ind?) {
+        ind && this.hideSubrouteFromChild.emit(ind);
+
         this.onRouteEvent.emit({
             routeId: this.route.id,
             routes: this.route.route,

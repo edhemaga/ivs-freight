@@ -187,6 +187,7 @@
                     }} {{ inputConfig.customClass }}"
                 >
                     <svg-icon
+                        *ngIf="!option?.isDriver"
                         [ngClass]="{
                             active: option.id === activeItem?.id,
                             'no-svg': !option?.logoName,
@@ -204,6 +205,31 @@
                             option.name.trim().replace(' ', '').toLowerCase()
                         }}"
                     ></svg-icon>
+                    <img
+                        *ngIf="option.logoName && option?.isDriver"
+                        [alt]="option.name"
+                        [ngClass]="{
+                            active: option.id === activeItem?.id
+                        }"
+                        [src]="
+                            this.imageBase64Service.sanitizer(option.logoName)
+                        "
+                        [ngStyle]="{ 'margin-right': '6px' }"
+                        class="svg-template-logo"
+                    />
+                    <div
+                        *ngIf="!option.logoName && option?.isDriver"
+                        class="no-profile-image"
+                        [ngStyle]="{ 'margin-right': '6px' }"
+                    >
+                        <app-profile-images
+                            [indx]="0"
+                            [name]="option.name"
+                            [size]="'small'"
+                            [type]="'user'"
+                        >
+                        </app-profile-images>
+                    </div>
                     <!-- Text -->
                     <div
                         [innerHtml]="
@@ -581,14 +607,16 @@
                         *ngIf="options[0].name !== 'No Results'"
                         class="load-dispatches-container  {{
                             option?.truck?.subFolder
-                        }} {{
-                            option?.truck?.logoType
-                                ? option?.truck?.logoType
-                                      .trim()
-                                      .replace(' ', '')
-                                      .toLowerCase()
-                                : null
                         }}"
+                        [ngClass]="{
+                            'dispatch-semi-truck': option.id === 1,
+                            'dispatch-semi-sleeper': option.id === 2,
+                            'dispatch-box-truck': option.id === 3,
+                            'dispatch-cargo-van': option.id === 4,
+                            'dispatch-tow-truck': option.id === 5,
+                            'dispatch-car-hauler': option.id === 6,
+                            'dispatch-spotter': option.id === 7
+                        }"
                     >
                         <svg-icon [src]="option.truck?.logoName"></svg-icon>
                         <div
@@ -620,16 +648,7 @@
                     <!-- Trailer -->
                     <div
                         *ngIf="options[0].name !== 'No Results'"
-                        class="load-dispatches-container {{
-                            option?.trailer?.subFolder
-                        }} {{
-                            option?.trailer?.logoType
-                                ? option?.trailer?.logoType
-                                      .trim()
-                                      .replace(' ', '')
-                                      .toLowerCase()
-                                : null
-                        }}"
+                        class="load-dispatches-container"
                         [ngClass]="{
                             trailerContainer: option?.trailer?.logoType
                                 ? option?.trailer?.logoType
@@ -745,7 +764,11 @@
                         let indx = index
                     "
                     [ngClass]="{
-                        disabled: option?.disabled || option.dnu || option.ban,
+                        disabled:
+                            option?.disabled ||
+                            option?.dnu ||
+                            option?.ban ||
+                            option?.availableCreditType?.name === 'Empty',
                         'no-result':
                             options.length === 1 &&
                             options[0].name === 'No Results',
@@ -784,8 +807,19 @@
                         ></div>
                     </div>
                     <div
-                        *ngIf="!['ADD NEW', 'No Results'].includes(option.name)"
                         class="load-broker-progress-status"
+                        [ngStyle]="{
+                            visibility:
+                                (!['ADD NEW', 'No Results'].includes(
+                                    option.name
+                                ) &&
+                                    option.availableCreditType?.name !==
+                                        'Unlimited') ||
+                                option.dnu ||
+                                option.ban
+                                    ? 'visible'
+                                    : 'hidden'
+                        }"
                     >
                         <app-load-modal-progress-bar
                             [availableCredit]="
@@ -801,7 +835,10 @@
                     </div>
                     <div
                         *ngIf="!['ADD NEW', 'No Results'].includes(option.name)"
-                        [ngClass]="{ active: option.id === activeItem?.id }"
+                        [ngClass]="{
+                            active: option.id === activeItem?.id,
+                            hasOneValue: option.loadsCount === 1
+                        }"
                         class="load-broker-load-counter"
                     >
                         {{ option.loadsCount }}
@@ -822,10 +859,7 @@
                 >
                     <p
                         (click)="onActiveItem(option)"
-                        *ngIf="
-                            options.length !== 1 &&
-                            options[0].name !== 'No Results'
-                        "
+                        *ngIf="options[0].name !== 'No Results'"
                         [ngClass]="{
                             'add-new': option.name === 'ADD NEW'
                         }"
@@ -1121,7 +1155,6 @@
                             options.length === 1 &&
                             options[0].name === 'No Results',
                         'add-new': option.name === 'ADD NEW',
-                        active: option.id === activeItem?.id,
                         'all-assigned':
                             option.name.toLowerCase() === 'all assigned'
                     }"
@@ -1156,6 +1189,9 @@
                                       ]
                         "
                         class="svgtext-template-text additional-text"
+                        [ngClass]="{
+                            active: option.id === activeItem?.id
+                        }"
                     ></div>
                 </div>
             </div>

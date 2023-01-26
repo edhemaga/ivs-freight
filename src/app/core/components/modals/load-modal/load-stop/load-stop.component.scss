@@ -2,10 +2,10 @@
     width: 616px;
     height: auto;
     border-radius: 2px;
+    overflow: hidden;
 
     // Stop Header
     .load-stop-header-bar {
-        background-color: rgb(111, 158, 224, 0.2);
         display: flex;
         align-items: center;
         gap: 10px;
@@ -13,6 +13,8 @@
         padding: 10px;
         margin-bottom: 17px;
         cursor: pointer;
+        background-color: #eeeeee;
+        transition: all 0.3s ease-in-out;
 
         .load-stop-counter-container {
             background-color: #4db6a2;
@@ -42,7 +44,7 @@
 
         .load-stop-header-content {
             display: grid;
-            grid-template-columns: 260px 147px 123px 1fr;
+            grid-template-columns: 260px 147px 123px 0px 16px;
             grid-template-rows: 20px;
             -moz-column-gap: 4px;
             column-gap: 4px;
@@ -124,13 +126,15 @@
                         gap: 4px;
                         position: relative;
                         bottom: 1px;
-                        right: 4px;
+                        left: 1px;
 
                         p {
                             color: #919191;
                             font-weight: 500;
 
                             line-height: 14px;
+                            top: 50%;
+                            transform: translateY(2%);
                         }
                     }
                 }
@@ -139,7 +143,6 @@
             .load-stop-header-remove-btn {
                 display: none;
                 position: relative;
-                left: 6px;
                 line-height: 18px;
                 cursor: pointer;
 
@@ -150,10 +153,6 @@
                         }
                     }
                 }
-            }
-
-            &.extra-stop {
-                grid-template-columns: 520px 0px 0px 0px 1fr;
             }
         }
 
@@ -198,6 +197,9 @@
         }
 
         &:hover {
+            background-color: #dadada;
+            cursor: pointer;
+
             .load-stop-header-content {
                 .load-stop-header-remove-btn {
                     display: inline-block;
@@ -224,12 +226,34 @@
         }
     }
 
+    &.valid {
+        .load-stop-header-bar {
+            background-color: rgb(111, 158, 224, 0.2) !important;
+        }
+        &:hover {
+            .load-stop-header-bar {
+                background-color: rgb(111, 158, 224, 0.3) !important;
+            }
+        }
+    }
+
+    &.invalid {
+        .load-stop-header-bar {
+            background-color: rgb(229, 115, 115, 0.2) !important;
+        }
+
+        &:hover {
+            .load-stop-header-bar {
+                background-color: rgb(229, 115, 115, 0.3) !important;
+            }
+        }
+    }
+
     &.active {
-        border-color: #2f2f2f !important;
-        border-width: 1px !important;
-        border-style: solid !important;
         padding: 4px !important;
         margin-bottom: 4px;
+        border-radius: 3px;
+        box-shadow: 0 0 4px rgba(0, 0, 0, 0.16);
 
         .load-stop-header-bar {
             background-color: #2f2f2f !important;
@@ -275,6 +299,118 @@
 
                 .load-stop-header-remove-btn {
                     left: 3px !important;
+                }
+            }
+        }
+
+        &.valid {
+            .load-stop-header-bar {
+                background: #3074d3 !important;
+
+                .load-stop-header-content {
+                    .origin-destination-no-filled-container {
+                        p {
+                            color: #ffffff !important;
+                        }
+                    }
+                    .load-stop-inner-content {
+                        .load-stop-content-up {
+                            p {
+                                color: #ffffff !important;
+                            }
+
+                            &-deadhead {
+                                p {
+                                    color: #ffffff !important;
+
+                                    span {
+                                        color: #ffffff !important;
+                                    }
+                                }
+                            }
+                        }
+
+                        .load-stop-content-down {
+                            p {
+                                color: rgb(255, 255, 255, 0.4) !important;
+                            }
+
+                            &-deadhead {
+                                p {
+                                    color: rgb(255, 255, 255, 0.4) !important;
+                                }
+
+                                .shipperContact-avatar {
+                                    svg {
+                                        path {
+                                            fill: rgb(
+                                                255,
+                                                255,
+                                                255,
+                                                0.4
+                                            ) !important;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        &.invalid {
+            .load-stop-header-bar {
+                background-color: #ef5350 !important;
+
+                .load-stop-header-content {
+                    .origin-destination-no-filled-container {
+                        p {
+                            color: #ffffff !important;
+                        }
+                    }
+                    .load-stop-inner-content {
+                        .load-stop-content-up {
+                            p {
+                                color: #ffffff !important;
+                            }
+
+                            &-deadhead {
+                                p {
+                                    color: #ffffff !important;
+
+                                    span {
+                                        color: #ffffff !important;
+                                    }
+                                }
+                            }
+                        }
+
+                        .load-stop-content-down {
+                            p {
+                                color: rgb(255, 255, 255, 0.4) !important;
+                            }
+
+                            &-deadhead {
+                                p {
+                                    color: rgb(255, 255, 255, 0.4) !important;
+                                }
+
+                                .shipperContact-avatar {
+                                    svg {
+                                        path {
+                                            fill: rgb(
+                                                255,
+                                                255,
+                                                255,
+                                                0.4
+                                            ) !important;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }

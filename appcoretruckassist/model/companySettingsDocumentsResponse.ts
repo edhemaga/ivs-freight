@@ -9,10 +9,12 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { TagResponse } from './tagResponse';
 import { FileResponsePagination } from './fileResponsePagination';
 
 
 export interface CompanySettingsDocumentsResponse { 
     files?: FileResponsePagination;
+    tags?: Array<TagResponse> | null;
 }
 

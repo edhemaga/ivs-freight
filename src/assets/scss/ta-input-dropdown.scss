@@ -58,7 +58,9 @@
             }
 
             //------------------------ Svg-Template-Logo Template ------------------------
-            .dropdown-option:not(:hover):not(.active):not(.dropdown-option-hovered) {
+            .dropdown-option:not(:hover):not(.active):not(
+                    .dropdown-option-hovered
+                ) {
                 .svg-template-logo {
                     height: 18px;
 
@@ -104,6 +106,18 @@
                         font-weight: 400;
                         color: #919191;
                         line-height: 14px;
+
+                        &.active {
+                            color: #6f9ee0;
+                        }
+                    }
+
+                    &:hover {
+                        .additional-text {
+                            &.active {
+                                color: #3074d3;
+                            }
+                        }
                     }
                 }
 
@@ -135,8 +149,7 @@
                 }
 
                 &.disabled {
-                    color: #aaaaaa;
-                    font-style: italic;
+                    color: #6c6c6c;
                     pointer-events: none;
                     -webkit-user-select: none;
                     -moz-user-select: none;
@@ -760,6 +773,12 @@
                             }
                         }
                     }
+
+                    &.trailerContainer {
+                        width: max-content !important;
+                        padding: 0px !important;
+                        margin: 0px !important;
+                    }
                 }
 
                 .load-dispatch-driver-rate {
@@ -854,6 +873,10 @@
                     &.active {
                         color: #6f9ee0;
                         background-color: rgb(111, 158, 224, 0.2);
+                    }
+
+                    &.hasOneValue {
+                        max-width: 19px !important;
                     }
                 }
             }
