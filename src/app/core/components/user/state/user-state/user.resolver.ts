@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Resolve } from '@angular/router';
-import { GetCompanyUserListResponse } from 'appcoretruckassist';
-import { Observable, of } from 'rxjs';
-import { catchError, tap } from 'rxjs/operators';
+import { forkJoin, Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
+import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { UserTService } from '../user.service';
 import { UserState, UserStore } from './user.store';
 
@@ -12,20 +12,30 @@ import { UserState, UserStore } from './user.store';
 export class UserResolver implements Resolve<UserState> {
     constructor(
         private userService: UserTService,
-        private userStore: UserStore
+        private userStore: UserStore,
+        private tableService: TruckassistTableService
     ) {}
-    resolve(): Observable<UserState | boolean> {
-        return this.userService.getUsers(1, 1, 25).pipe(
-            catchError(() => {
-                return of('No user data...');
-            }),
-            tap((userPagination: GetCompanyUserListResponse) => {
+    resolve(): Observable<any> {
+        return forkJoin([
+            this.userService.getUsers(1, 1, 25),
+            this.tableService.getTableConfig(22),
+        ]).pipe(
+            tap(([userPagination, tableConfig]) => {
                 localStorage.setItem(
                     'userTableCount',
                     JSON.stringify({
                         users: userPagination.activeCount,
                     })
                 );
+
+                if (tableConfig) {
+                    const config = JSON.parse(tableConfig.config);
+
+                    localStorage.setItem(
+                        `table-${tableConfig.tableType}-Configuration`,
+                        JSON.stringify(config)
+                    );
+                }
 
                 this.userStore.set(userPagination.pagination.data);
             })

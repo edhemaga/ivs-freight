@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Resolve } from '@angular/router';
 import { TrailerListResponse } from 'appcoretruckassist';
-import { Observable, of } from 'rxjs';
+import { forkJoin, Observable, of } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
+import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { TrailerTService } from '../trailer.service';
 import { TrailerActiveState, TrailerActiveStore } from './trailer-active.store';
 
@@ -12,14 +13,15 @@ import { TrailerActiveState, TrailerActiveStore } from './trailer-active.store';
 export class TrailerActiveResolver implements Resolve<TrailerActiveState> {
     constructor(
         private trailerService: TrailerTService,
-        private trailerStore: TrailerActiveStore
+        private trailerStore: TrailerActiveStore,
+        private tableService: TruckassistTableService
     ) {}
-    resolve(): Observable<TrailerActiveState | boolean> {
-        return this.trailerService.getTrailers(1, 1, 25).pipe(
-            catchError(() => {
-                return of('No active trailer...');
-            }),
-            tap((trailerPagination: TrailerListResponse) => {
+    resolve(): Observable<any> {
+        return forkJoin([
+            this.trailerService.getTrailers(1, 1, 25),
+            this.tableService.getTableConfig(9),
+        ]).pipe(
+            tap(([trailerPagination, tableConfig]) => {
                 localStorage.setItem(
                     'trailerTableCount',
                     JSON.stringify({
@@ -27,6 +29,15 @@ export class TrailerActiveResolver implements Resolve<TrailerActiveState> {
                         inactive: trailerPagination.inactiveCount,
                     })
                 );
+
+                if (tableConfig) {
+                    const config = JSON.parse(tableConfig.config);
+
+                    localStorage.setItem(
+                        `table-${tableConfig.tableType}-Configuration`,
+                        JSON.stringify(config)
+                    );
+                }
 
                 this.trailerStore.set(trailerPagination.pagination.data);
             })

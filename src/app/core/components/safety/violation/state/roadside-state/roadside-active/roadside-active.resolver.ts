@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Resolve } from '@angular/router';
-import { RoadsideInspectionListResponse } from 'appcoretruckassist';
-import { Observable, of } from 'rxjs';
-import { catchError, tap } from 'rxjs/operators';
+import { forkJoin, Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
+import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { RoadsideService } from '../../roadside.service';
 import {
     RoadsideActiveState,
@@ -15,14 +15,15 @@ import {
 export class RoadsideActiveResolver implements Resolve<RoadsideActiveState> {
     constructor(
         private roadsideService: RoadsideService,
-        private roadsideStore: RoadsideActiveStore
+        private roadsideStore: RoadsideActiveStore,
+        private tableService: TruckassistTableService
     ) {}
-    resolve(): Observable<RoadsideActiveState | boolean> {
-        return this.roadsideService.getRoadsideList(true, 1, 1, 25).pipe(
-            catchError(() => {
-                return of('No roadside active data...');
-            }),
-            tap((roadsidePagination: RoadsideInspectionListResponse) => {
+    resolve(): Observable<any> {
+        return forkJoin([
+            this.roadsideService.getRoadsideList(true, 1, 1, 25),
+            this.tableService.getTableConfig(20),
+        ]).pipe(
+            tap(([roadsidePagination, tableConfig]) => {
                 localStorage.setItem(
                     'roadsideTableCount',
                     JSON.stringify({
@@ -31,6 +32,15 @@ export class RoadsideActiveResolver implements Resolve<RoadsideActiveState> {
                         //categoryReport: roadsidePagination.categoryReport,
                     })
                 );
+
+                if (tableConfig) {
+                    const config = JSON.parse(tableConfig.config);
+
+                    localStorage.setItem(
+                        `table-${tableConfig.tableType}-Configuration`,
+                        JSON.stringify(config)
+                    );
+                }
 
                 this.roadsideStore.set(roadsidePagination.pagination.data);
             })

@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Resolve } from '@angular/router';
 import { PMTrailerUnitListResponse } from 'appcoretruckassist';
-import { Observable, of } from 'rxjs';
+import { forkJoin, Observable, of } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
+import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { PmTService } from '../pm.service';
 import { PmTrailerState, PmTrailerStore } from './pm-trailer.store';
 
@@ -12,27 +13,34 @@ import { PmTrailerState, PmTrailerStore } from './pm-trailer.store';
 export class pmTrailerResolver implements Resolve<PmTrailerState> {
     constructor(
         private pmService: PmTService,
-        private pmTrailerStore: PmTrailerStore
+        private pmTrailerStore: PmTrailerStore,
+        private tableService: TruckassistTableService
     ) {}
-    resolve(): Observable<PmTrailerState | boolean> {
-        return this.pmService
-            .getPMTrailerUnitList(undefined, undefined, 1, 25)
-            .pipe(
-                catchError(() => {
-                    return of('No pm trailers data...');
-                }),
-                tap((pmTrailerPagination: PMTrailerUnitListResponse) => {
-                    localStorage.setItem(
-                        'pmTrailerTableCount',
-                        JSON.stringify({
-                            pmTrailer: pmTrailerPagination.pmTrailerCount,
-                        })
-                    );
+    resolve(): Observable<any> {
+        return forkJoin([
+            this.pmService
+            .getPMTrailerUnitList(undefined, undefined, 1, 25),
+            this.tableService.getTableConfig(14),
+        ]).pipe(
+            tap(([pmTrailerPagination, tableConfig]) => {
+                localStorage.setItem(
+                    'pmTrailerTableCount',
+                    JSON.stringify({
+                        pmTrailer: pmTrailerPagination.pmTrailerCount,
+                    })
+                );
 
-                    this.pmTrailerStore.set(
-                        pmTrailerPagination.pagination.data
+                if (tableConfig) {
+                    const config = JSON.parse(tableConfig.config);
+
+                    localStorage.setItem(
+                        `table-${tableConfig.tableType}-Configuration`,
+                        JSON.stringify(config)
                     );
-                })
-            );
+                }
+
+                this.pmTrailerStore.set(pmTrailerPagination.pagination.data);
+            })
+        );
     }
 }
