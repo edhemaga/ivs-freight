@@ -732,7 +732,12 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
             );
             const previousIndex = orderPosition[0];
             const nextIndex = orderPosition[1];
+
             moveItemInArray(event.container.data, previousIndex, nextIndex);
+
+            this.tableData[this.selectedMapIndex].routes.map((route, routeIndex) => {
+                route.orderNumber = routeIndex + 1;
+            });
         } else if (event.previousContainer !== event.container) {
             var currentTime = new Date().getTime();
 
@@ -1844,24 +1849,25 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
                             }
                         });
                     }
+
+                    if (this.routePolylines[route.id]) {
+                        this.focusPolyline(route, route.isFocused);
+                    }
                 }
             } else {
+                const routeFocused = route.isFocused;
+
                 route.isFocused = false;
+
+                if (this.routePolylines[route.id] && routeFocused) {
+                    this.focusPolyline(route, false);
+                }
 
                 route.stops.map((stop) => {
                     if (stop.isSelected) {
                         stop.isSelected = false;
                         this.focusedStopIndex = null;
                     }
-                });
-            }
-
-            if (this.routePolylines[route.id]) {
-                this.routePolylines[route.id].setOptions({
-                    zIndex: route.isFocused
-                        ? 999
-                        : this.tableData[this.selectedMapIndex].routes.length -
-                          index,
                 });
             }
         });
@@ -2959,6 +2965,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
                     return item.id === mapId;
                 });
 
+                const oldRoutes = this.tableData[mapIndex].routes ? [...this.tableData[mapIndex].routes] : [];
                 console.log('getRouteList mapIndex', mapIndex);
                 console.log('getRouteList tableData', this.tableData);
                 this.tableData[mapIndex].routes = [];
@@ -2989,6 +2996,12 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
                         stopsArr.push(stopObj);
                     });
 
+                    var oldRoute = oldRoutes.find(
+                        (route2) => route.id == route2.id
+                    );
+                    
+                    const routeOrderNumber = oldRoute?.orderNumber ? oldRoute.orderNumber : index+1;
+
                     var newRoute = {
                         id: route.id,
                         name: route.name,
@@ -3003,9 +3016,10 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
                         stops: stopsArr,
                         color: this.findRouteColor(),
                         isFocused: this.focusedRouteIndex == index,
+                        orderNumber: routeOrderNumber
                     };
-
-                    this.tableData[mapIndex].routes.push(newRoute);
+                    
+                    this.tableData[mapIndex].routes.splice(routeOrderNumber-1, 0, newRoute);
                 });
 
                 if (this.selectedMapIndex == mapIndex) {
@@ -3082,36 +3096,32 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
                         polyLineCoordinates.push(coordinates);
                     });
 
+                    var lineSymbol = {
+                        path: 'M 0,-1 0,1',
+                        strokeOpacity: 1,
+                        scale: 4
+                    };
+
                     //const polyLineCoordinates = res;
                     this.routePolylines[route.id] = new google.maps.Polyline({
                         path: polyLineCoordinates,
                         geodesic: true,
                         strokeColor: route.color,
                         strokeOpacity: 1.0,
-                        strokeWeight: 6,
+                        strokeWeight: 2,
+                        // icons: [{
+                        //     icon: lineSymbol,
+                        //     offset: '0',
+                        //     repeat: '20px'
+                        // }], - dashed line
                         zIndex: route.isFocused
                             ? 999
                             : this.tableData[this.selectedMapIndex].routes
                                   .length - routeIndex,
                     });
 
-                    var mainthis = this;
                     this.routePolylines[route.id].setMap(this.agmMap);
-                    google.maps.event.addListener(
-                        this.routePolylines[route.id],
-                        'click',
-                        () => {
-                            console.log('polyline click', route, routeIndex);
-
-                            const routeLineIndex = mainthis.tableData[
-                                mainthis.selectedMapIndex
-                            ].routes.findIndex((item) => {
-                                return item.id === route.id;
-                            });
-
-                            mainthis.focusRoute(routeLineIndex);
-                        }
-                    );
+                    this.addPolylineListeners(route);
                 },
                 error: () => {
                     console.log('decodeRouteShape error');
@@ -3206,5 +3216,82 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
                 this.routePolylines[route.id].setMap(this.agmMap);
             }
         }
+    }
+
+    addPolylineListeners(route) {
+        var mainthis = this;
+
+        google.maps.event.addListener(
+            this.routePolylines[route.id],
+            'click',
+            () => {
+                const routeLineIndex = mainthis.tableData[
+                    mainthis.selectedMapIndex
+                ].routes.findIndex((item) => {
+                    return item.id === route.id;
+                });
+
+                mainthis.focusRoute(routeLineIndex);
+            }
+        );
+
+        google.maps.event.addListener(
+            this.routePolylines[route.id],
+            'mouseover',
+            () => {
+                mainthis.focusPolyline(route, true);
+            }
+        );
+
+        google.maps.event.addListener(
+            this.routePolylines[route.id],
+            'mouseout',
+            () => {
+                mainthis.focusPolyline(route, false);
+            }
+        );
+    }
+
+    focusPolyline(route, focus) {
+        const routeLineIndex = this.tableData[
+            this.selectedMapIndex
+        ].routes.findIndex((item) => {
+            return item.id === route.id;
+        });
+
+        const animationDirection = focus || route.isFocused ? 1 : 0;
+        var currentValue = this.routePolylines[route.id].strokeWeight;
+        const endValue = focus || route.isFocused ? 4 : 2;
+
+        if ( this.routePolylines[route.id].animationInterval ) clearInterval(this.routePolylines[route.id].animationInterval);
+
+        this.routePolylines[route.id].animationInterval = setInterval(() => {
+            if ( animationDirection == 1 && currentValue < endValue ) {
+                currentValue += 0.1;
+            } else if ( animationDirection == 0 && currentValue > endValue ) {
+                currentValue -= 0.1;
+            } else if ( currentValue == endValue ) {
+                clearInterval(this.routePolylines[route.id].animationInterval);
+            }
+
+            this.routePolylines[route.id].setOptions({
+                strokeWeight: currentValue
+            });
+        }, 5);
+
+        this.routePolylines[route.id].setOptions({
+            zIndex: focus || route.isFocused
+                ? 999
+                : this.tableData[this.selectedMapIndex].routes.length -
+                  routeLineIndex
+        });
+
+        route.lineHover = focus;
+    }
+
+    hoverStop(route, stop, hover) {
+        stop.hovered = hover;
+
+        this.focusPolyline(route, hover);
     }
 }

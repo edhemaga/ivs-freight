@@ -112,6 +112,15 @@
             left: 50%;
             cursor: pointer;
             transform: translateX(-50%);
+
+            svg {
+                transform: scale(1);
+                transition: all 0.2s ease-in-out;
+
+                &.smaller-circle {
+                    transform: scale(0.667);
+                }
+            }
         }
 
         &.stop-picker-icon {
