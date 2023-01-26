@@ -4,10 +4,12 @@ import {
     ElementRef,
     EventEmitter,
     Input,
+    OnChanges,
     OnDestroy,
     OnInit,
     Output,
     Self,
+    SimpleChanges,
     ViewChild,
     ViewEncapsulation,
 } from '@angular/core';
@@ -40,7 +42,7 @@ import * as CurrencyFormatter from 'currency-formatter';
     encapsulation: ViewEncapsulation.None,
 })
 export class TaInputComponent
-    implements OnInit, OnDestroy, ControlValueAccessor
+    implements OnInit, OnChanges, OnDestroy, ControlValueAccessor
 {
     private destroy$ = new Subject<void>();
     @ViewChild('input', { static: true }) public input: ElementRef;
@@ -130,6 +132,12 @@ export class TaInputComponent
         public imageBase64Service: ImageBase64Service
     ) {
         this.superControl.valueAccessor = this;
+    }
+    ngOnChanges(changes: SimpleChanges): void {
+        if (changes.inputConfig.currentValue?.multipleInputValues?.options) {
+            this.inputConfig.multipleInputValues.options =
+                changes.inputConfig.currentValue?.multipleInputValues?.options;
+        }
     }
 
     ngOnInit(): void {

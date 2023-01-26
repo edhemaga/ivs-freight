@@ -1,7 +1,9 @@
 <app-ta-modal
-    [modalTitle]="editData?.type !== 'edit' ? 'Add Broker' : 'Edit Broker'"
+    [modalTitle]="
+        !editData?.type?.includes('edit') ? 'Add Broker' : 'Edit Broker'
+    "
     [editData]="editData"
-    [editName]="editData?.data?.businessName"
+    [editName]="brokerName"
     [isModalValid]="brokerForm.valid && isFormDirty"
     [saveAndAddNew]="editData?.type !== 'edit'"
     [customClass]="'modal-container-M'"
