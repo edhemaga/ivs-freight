@@ -103,6 +103,8 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
 
     public disableCardAnimation: boolean = false;
 
+    public shipperName: string = '';
+
     constructor(
         private formBuilder: FormBuilder,
         private inputService: TaInputService,
@@ -117,30 +119,32 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
         this.createForm();
         this.getShipperDropdowns();
 
-        if (this.editData?.id) {
+        // From Another Modal Data
+        if (this.editData?.type === 'edit-contact') {
             this.disableCardAnimation = true;
             this.editShipperById(this.editData.id);
-            this.tabs.push({
-                id: 3,
-                name: 'Review',
-            });
-            this.ratingChanges();
-        }
-
-        // From Another Modal Data
-        if (this.editData?.extraPayload?.type === 'edit-contact') {
-            this.disableCardAnimation = true;
-            this.editShipperById(this.editData.extraPayload.data.id);
             setTimeout(() => {
                 this.tabs = this.tabs.map((item, index) => {
                     return {
                         ...item,
-                        disabled: index === 0,
+                        disabled: index !== 1,
                         checked: index === 1,
                     };
                 });
                 this.selectedTab = 2;
             }, 50);
+        }
+        // Normal Get By Id
+        else {
+            if (this.editData?.id) {
+                this.disableCardAnimation = true;
+                this.editShipperById(this.editData.id);
+                this.tabs.push({
+                    id: 3,
+                    name: 'Review',
+                });
+                this.ratingChanges();
+            }
         }
 
         // Open Tab Position
@@ -243,12 +247,8 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
                     this.inputService.markInvalid(this.shipperForm);
                     return;
                 }
-                if (['edit'].includes(this.editData?.type)) {
-                    this.updateShipper(
-                        this.editData?.extraPayload?.type === 'edit-contact'
-                            ? this.editData.extraPayload.data.id
-                            : this.editData.id
-                    );
+                if (this.editData?.type.includes('edit')) {
+                    this.updateShipper(this.editData.id);
                     this.modalService.setModalSpinner({
                         action: null,
                         status: true,
@@ -806,6 +806,8 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
                         note: res.note,
                         shipperContacts: [],
                     });
+
+                    this.shipperName = res.businessName;
 
                     this.selectedAddress = res.address;
                     this.isPhoneExtExist = !!res.phoneExt;

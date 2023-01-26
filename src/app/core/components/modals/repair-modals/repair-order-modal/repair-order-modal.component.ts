@@ -32,6 +32,7 @@ import {
     convertThousanSepInNumber,
     convertNumberInPrice,
 } from '../../../../utils/methods.calculations';
+import { EditTagsService } from 'src/app/core/services/shared/editTags.service';
 
 @Component({
     selector: 'app-repair-order-modal',
@@ -92,6 +93,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
     public isFormDirty: boolean;
     public selectedRepairType: any = null;
     public addNewAfterSave: boolean = false;
+    public tags: any[] = [];
     private destroy$ = new Subject<void>();
 
     constructor(
@@ -102,7 +104,8 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
         private ngbActiveModal: NgbActiveModal,
         private priceArrayPipe: PriceCalculationArraysPipe,
         private formService: FormService,
-        private DetailsDataService: DetailsDataService
+        private DetailsDataService: DetailsDataService,
+        private tagsService: EditTagsService
     ) {}
 
     public get items(): FormArray {
@@ -532,15 +535,16 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
     }
 
     public onFilesEvent(event: any) {
-        this.documents = event.files;
         switch (event.action) {
             case 'add': {
+                this.documents = event.files;
                 this.repairOrderForm
                     .get('files')
                     .patchValue(JSON.stringify(event.files));
                 break;
             }
             case 'delete': {
+                this.documents = event.files;
                 this.repairOrderForm
                     .get('files')
                     .patchValue(
@@ -551,6 +555,19 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                 }
 
                 this.fileModified = true;
+                break;
+            }
+            case 'tag': {
+                let changedTag = false;
+                event.files.map((item) => {
+                    if (item.tagChanged) {
+                        changedTag = true;
+                    }
+                });
+
+                this.repairOrderForm
+                    .get('tags')
+                    .patchValue(changedTag ? true : null);
                 break;
             }
             default: {
@@ -628,6 +645,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
             note: [null],
             servicesHelper: [null],
             files: [null],
+            tags: [null],
         });
 
         this.formService.checkFormChange(this.repairOrderForm);
@@ -746,6 +764,8 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
 
                     // Repair Shops
                     this.labelsRepairShop = [...res.repairShops];
+
+                    this.tags = res.tags;
                 },
                 error: () => {},
             });
@@ -756,11 +776,22 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
             this.repairOrderForm.value;
 
         let documents = [];
+        let tagsArray = [];
         this.documents.map((item) => {
+            if (item.tagId?.length)
+                tagsArray.push({
+                    fileName: item.realFile.name,
+                    tagIds: item.tagId,
+                });
+
             if (item.realFile) {
                 documents.push(item.realFile);
             }
         });
+
+        if (!tagsArray.length) {
+            tagsArray = null;
+        }
 
         let newData: any = null;
 
@@ -786,6 +817,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                 }),
                 items: this.premmapedItems(),
                 files: documents,
+                tags: tagsArray,
             };
         } else {
             newData = {
@@ -818,6 +850,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                 }),
                 items: this.premmapedItems(),
                 files: documents,
+                tags: tagsArray,
             };
         }
 
@@ -903,11 +936,22 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
             this.repairOrderForm.value;
 
         let documents = [];
+        let tagsArray = [];
         this.documents.map((item) => {
+            if (item.tagId?.length && item?.realFile?.name)
+                tagsArray.push({
+                    fileName: item.realFile.name,
+                    tagIds: item.tagId,
+                });
+
             if (item.realFile) {
                 documents.push(item.realFile);
             }
         });
+
+        if (!tagsArray.length) {
+            tagsArray = null;
+        }
 
         let newData: any = null;
 
@@ -936,6 +980,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                 items: this.premmapedItems(),
                 files: documents ? documents : this.repairOrderForm.value.files,
                 filesForDeleteIds: this.filesForDelete,
+                tags: tagsArray,
             };
         } else {
             newData = {
@@ -972,6 +1017,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                 items: this.premmapedItems(),
                 files: documents ? documents : this.repairOrderForm.value.files,
                 filesForDeleteIds: this.filesForDelete,
+                tags: tagsArray,
             };
         }
 
@@ -980,6 +1026,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
+                    this.updateTags();
                     this.modalService.setModalSpinner({
                         action: null,
                         status: true,
@@ -1333,5 +1380,21 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                     },
                 });
         }
+    }
+
+    updateTags() {
+        let tags = [];
+
+        this.documents.map((item) => {
+            if (item?.tagChanged && item?.fileId) {
+                var tagsData = {
+                    storageId: item.fileId,
+                    tagId: item.tagId?.length ? item.tagId[0] : null,
+                };
+                tags.push(tagsData);
+            }
+        });
+
+        this.tagsService.updateTag({ tags: tags }).subscribe();
     }
 }

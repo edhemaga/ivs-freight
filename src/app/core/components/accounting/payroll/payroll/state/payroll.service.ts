@@ -30,8 +30,7 @@ export class PayrollStoreService {
         private ps: PayrollService
     ) {}
 
-
-    getPayrollOwnerOpenReport(id: number){
+    getPayrollOwnerOpenReport(id: number) {
         return this.ps.apiPayrollOwnerIdGet(id);
     }
 

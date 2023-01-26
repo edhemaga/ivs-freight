@@ -106,6 +106,18 @@
                         font-weight: 400;
                         color: #919191;
                         line-height: 14px;
+
+                        &.active {
+                            color: #6f9ee0;
+                        }
+                    }
+
+                    &:hover {
+                        .additional-text {
+                            &.active {
+                                color: #3074d3;
+                            }
+                        }
                     }
                 }
 
@@ -760,6 +772,12 @@
                                 fill: #6f9ee0 !important;
                             }
                         }
+                    }
+
+                    &.trailerContainer {
+                        width: max-content !important;
+                        padding: 0px !important;
+                        margin: 0px !important;
                     }
                 }
 

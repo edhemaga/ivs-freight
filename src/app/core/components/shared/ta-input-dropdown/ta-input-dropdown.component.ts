@@ -129,6 +129,28 @@ export class TaInputDropdownComponent
             }
         }
 
+        if (
+            changes.activeItem?.currentValue !==
+            changes.activeItem?.previousValue
+        ) {
+            if (!this.inputConfig?.name?.toLowerCase()?.includes('address')) {
+                setTimeout(() => {
+                    this.getSuperControl.patchValue(
+                        changes.activeItem.currentValue?.number
+                            ? changes.activeItem.currentValue?.number
+                            : changes.activeItem.currentValue?.name
+                            ? changes.activeItem.currentValue?.name
+                            : null
+                    );
+
+                    this.inputConfig = {
+                        ...this.inputConfig,
+                        blackInput: false,
+                    };
+                }, 350);
+            }
+        }
+
         // MultiSelect Selected Items From Backend
         if (
             this.inputConfig.multiselectDropdown &&
@@ -281,6 +303,7 @@ export class TaInputDropdownComponent
         }
         // Pick the item
         else {
+            this.inputConfig.selectedDropdown = true;
             // Dropdown labels option selected
             if (this.inputConfig.dropdownLabel) {
                 if (this.labelMode === 'Label') {
@@ -352,6 +375,7 @@ export class TaInputDropdownComponent
     public onClearSearch(): void {
         this.options = this.originalOptions;
         this.activeItem = null;
+        this.inputConfig.selectedDropdown = false;
         this.getSuperControl.patchValue(null);
         this.inputConfig = {
             ...this.inputConfig,
@@ -1021,7 +1045,7 @@ export class TaInputDropdownComponent
                             blackInput: false,
                         };
                         clearTimeout(timeout);
-                    }, 200);
+                    }, 300);
                 }
             }
             this.popoverRef.close();
