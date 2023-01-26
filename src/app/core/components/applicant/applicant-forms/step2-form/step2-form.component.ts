@@ -265,7 +265,7 @@ export class Step2FormComponent
         private inputService: TaInputService,
         private formService: FormService,
         private applicantQuery: ApplicantQuery,
-        private changeRef: ChangeDetectorRef
+        private changeDetectorRef: ChangeDetectorRef
     ) {}
 
     ngOnInit(): void {
@@ -337,8 +337,10 @@ export class Step2FormComponent
                 changes.markFormInvalid?.previousValue !==
                 changes.markFormInvalid?.currentValue
             ) {
-                console.log('this.workExperienceForm', this.workExperienceForm);
+                console.log('USLO');
+
                 this.inputService.markInvalid(this.workExperienceForm);
+
                 this.markInvalidEmitter.emit(false);
             }
 
@@ -380,7 +382,6 @@ export class Step2FormComponent
                 this.patchForm(changes.formValuesToPatch.currentValue);
 
                 if (this.selectedMode !== SelectedMode.REVIEW) {
-                    console.log('USLO');
                     this.startValueChangesMonitoring();
                 }
             }, 50);
@@ -391,7 +392,7 @@ export class Step2FormComponent
         return this.workExperienceForm?.get('classesOfEquipment') as FormArray;
     }
 
-    public trackByIdentity = (index: number, _: any): number => index;
+    public trackByIdentity = (_: number, item: any): any => item;
 
     private createForm(): void {
         this.workExperienceForm = this.formBuilder.group({
@@ -516,6 +517,7 @@ export class Step2FormComponent
     }
 
     public patchClassOfEquipment(equipmentValue: any): void {
+        console.log('equipmentValue', equipmentValue);
         if (equipmentValue.length) {
             this.classesOfEquipment.clear();
 
@@ -547,11 +549,6 @@ export class Step2FormComponent
                         (item) =>
                             item.name === selectedEquipmentItem.trailerLength
                     );
-
-                console.log(
-                    'this.selectedVehicleTypeArr',
-                    this.selectedVehicleTypeArr
-                );
 
                 const vehicleTypeId = this.selectedVehicleTypeArr[i]?.id;
 
@@ -705,73 +702,45 @@ export class Step2FormComponent
     }
 
     public onDeleteClassOfEquipment(index: number): void {
-        console.log('index', index);
-
         this.classesOfEquipment.removeAt(index);
 
         this.selectedVehicleTypeArr.splice(index, 1);
         this.selectedTrailerTypeArr.splice(index, 1);
         this.selectedTrailerLengthArr.splice(index, 1);
+
         this.isTruckSelectedArr.splice(index, 1);
         this.isBoxTruckSelectedArr.splice(index, 1);
+
         this.filteredTrailerTypeArr.splice(index, 1);
         this.filteredLengthTypeArr.splice(index, 1);
 
-        console.log('this.classesOfEquipment', this.classesOfEquipment.value);
-        console.log('this.selectedVehicleTypeArr', this.selectedVehicleTypeArr);
+        if (this.classesOfEquipment.controls.length === 1) {
+            const classOfEquipmentItem = this.classesOfEquipment.value[0];
 
-        this.changeRef.detectChanges();
-        /*  const classesOfEquipmentValue = this.classesOfEquipment.value;
-
-        for (let i = 0; i < classesOfEquipmentValue.length; i++) {
-            const selectedClassOfEquipment = classesOfEquipmentValue[i];
-
-            this.classesOfEquipment.at(i).patchValue({
-                vehicleType: selectedClassOfEquipment.vehicleType,
-                trailerType: selectedClassOfEquipment.trailerType,
-                trailerLength: selectedClassOfEquipment.trailerLength,
-                fmCSA: selectedClassOfEquipment.fmCSA,
-                cfrPart: selectedClassOfEquipment.cfrPart,
-            });
-        }
- */
-        const ClassOfEquipmentItem = this.classesOfEquipment.value[index];
-
-        /*    this.selectedVehicleTypeArr[index] = this.vehicleType.find(
-            (item) => item.name === ClassOfEquipmentItem.vehicleType
-        );
-        this.selectedTrailerTypeArr[index] = this.trailerType.find(
-            (item) => item.name === ClassOfEquipmentItem.trailerType
-        );
-        this.selectedTrailerLengthArr[index] = this.trailerLengthType.find(
-            (item) => item.name === ClassOfEquipmentItem.trailerLength
-        ); */
-
-        /* if (this.classesOfEquipment.length === 1) {
             setTimeout(() => {
-                if (ClassOfEquipmentItem.cfrPart) {
+                if (classOfEquipmentItem.cfrPart) {
                     this.cfrPartRadios[0].checked = true;
                 } else {
                     this.cfrPartRadios[1].checked = true;
 
-                    if (ClassOfEquipmentItem.cfrPart === null) {
+                    if (classOfEquipmentItem.cfrPart === null) {
                         this.cfrPartRadios[0].checked = false;
                         this.cfrPartRadios[1].checked = false;
                     }
                 }
 
-                if (ClassOfEquipmentItem.fmCSA) {
+                if (classOfEquipmentItem.fmCSA) {
                     this.fmcsaRadios[0].checked = true;
                 } else {
                     this.fmcsaRadios[1].checked = true;
 
-                    if (ClassOfEquipmentItem.fmCSA === null) {
+                    if (classOfEquipmentItem.fmCSA === null) {
                         this.fmcsaRadios[0].checked = false;
                         this.fmcsaRadios[1].checked = false;
                     }
                 }
             }, 50);
-        } */
+        }
     }
 
     public handleInputSelect(
@@ -984,11 +953,7 @@ export class Step2FormComponent
         }
     }
 
-    public onGetBtnClickValue(
-        event: any,
-        classOfEquipmentBtn?: boolean,
-        type?: number
-    ): void {
+    public onGetBtnClickValue(event: any, classOfEquipmentBtn?: boolean): void {
         if (classOfEquipmentBtn) {
             this.onAddClassOfEquipment();
         } else {
@@ -1305,8 +1270,6 @@ export class Step2FormComponent
             }
         }
 
-        console.log('formValue', formValue);
-
         this.workExperienceForm.patchValue({
             employer: formValue?.employer,
             employerPhone: formValue?.employerPhone,
@@ -1396,9 +1359,9 @@ export class Step2FormComponent
                 newFormValues.classesOfEquipment = JSON.stringify(
                     updatedClassesOfEquipment
                 );
-                /* 
+
                 console.log('prev', previousFormValues);
-                console.log('new', newFormValues); */
+                console.log('new', newFormValues);
 
                 if (isFormValueEqual(previousFormValues, newFormValues)) {
                     this.isWorkExperienceEdited = false;

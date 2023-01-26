@@ -1,6 +1,8 @@
 /* eslint-disable no-unused-vars */
 
 import {
+    AfterContentChecked,
+    ChangeDetectorRef,
     Component,
     OnDestroy,
     OnInit,
@@ -50,7 +52,7 @@ import {
     templateUrl: './step3.component.html',
     styleUrls: ['./step3.component.scss'],
 })
-export class Step3Component implements OnInit, OnDestroy {
+export class Step3Component implements OnInit, OnDestroy, AfterContentChecked {
     @ViewChildren('cmp') set content(content: QueryList<any>) {
         if (content) {
             const radioButtonsArray = content.toArray();
@@ -63,7 +65,7 @@ export class Step3Component implements OnInit, OnDestroy {
 
     private destroy$ = new Subject<void>();
 
-    public selectedMode: string = SelectedMode.REVIEW;
+    public selectedMode: string = SelectedMode.APPLICANT;
 
     public subscription: Subscription;
 
@@ -166,7 +168,8 @@ export class Step3Component implements OnInit, OnDestroy {
         private router: Router,
         private applicantActionsService: ApplicantActionsService,
         private applicantStore: ApplicantStore,
-        private applicantQuery: ApplicantQuery
+        private applicantQuery: ApplicantQuery,
+        private changeDetectorRef: ChangeDetectorRef
     ) {}
 
     ngOnInit(): void {
@@ -175,6 +178,10 @@ export class Step3Component implements OnInit, OnDestroy {
         this.getStepValuesFromStore();
 
         this.getDropdownLists();
+    }
+
+    ngAfterContentChecked(): void {
+        this.changeDetectorRef.detectChanges();
     }
 
     public trackByIdentity = (index: number, _: any): number => index;

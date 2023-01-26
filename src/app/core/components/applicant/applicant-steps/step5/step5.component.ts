@@ -1,6 +1,12 @@
 /* eslint-disable no-unused-vars */
 
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import {
+    AfterContentChecked,
+    ChangeDetectorRef,
+    Component,
+    OnDestroy,
+    OnInit,
+} from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
@@ -41,10 +47,10 @@ import {
     templateUrl: './step5.component.html',
     styleUrls: ['./step5.component.scss'],
 })
-export class Step5Component implements OnInit, OnDestroy {
+export class Step5Component implements OnInit, OnDestroy, AfterContentChecked {
     private destroy$ = new Subject<void>();
 
-    public selectedMode: string = SelectedMode.REVIEW;
+    public selectedMode: string = SelectedMode.APPLICANT;
 
     public applicantId: number;
 
@@ -99,7 +105,8 @@ export class Step5Component implements OnInit, OnDestroy {
         private router: Router,
         private applicantActionsService: ApplicantActionsService,
         private applicantStore: ApplicantStore,
-        private applicantQuery: ApplicantQuery
+        private applicantQuery: ApplicantQuery,
+        private changeDetectorRef: ChangeDetectorRef
     ) {}
 
     ngOnInit(): void {
@@ -110,6 +117,10 @@ export class Step5Component implements OnInit, OnDestroy {
         this.getDropdownLists();
 
         this.getStepValuesFromStore();
+    }
+
+    ngAfterContentChecked(): void {
+        this.changeDetectorRef.detectChanges();
     }
 
     public trackByIdentity = (index: number, _: any): number => index;
