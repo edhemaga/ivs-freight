@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Resolve } from '@angular/router';
-import { Observable, of } from 'rxjs';
+import { forkJoin, Observable, of } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
+import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { ApplicantTService } from '../applicant.service';
 import {
     ApplicantTableState,
@@ -14,17 +15,23 @@ import {
 export class ApplicantTableResolver implements Resolve<ApplicantTableState> {
     constructor(
         private applicantService: ApplicantTService,
-        private store: ApplicantTableStore
+        private store: ApplicantTableStore,
+        private tableService: TruckassistTableService
     ) {}
 
-    resolve(): Observable<ApplicantTableState | boolean> {
-        return this.applicantService
-            .getApplicantAdminList(undefined, undefined, undefined, 1, 25)
+    resolve(): Observable<any> {
+        return forkJoin([
+            this.applicantService.getApplicantAdminList(
+                undefined,
+                undefined,
+                undefined,
+                1,
+                25
+            ),
+            this.tableService.getTableConfig(7),
+        ])
             .pipe(
-                catchError(() => {
-                    return of('No applicants data...');
-                }),
-                tap((applicantPagination: any) => {
+                tap(([applicantPagination, tableConfig]) => {
                     localStorage.setItem(
                         'applicantTableCount',
                         JSON.stringify({
@@ -32,8 +39,17 @@ export class ApplicantTableResolver implements Resolve<ApplicantTableState> {
                         })
                     );
 
+                    if (tableConfig) {
+                        const config = JSON.parse(tableConfig.config);
+
+                        localStorage.setItem(
+                            `table-${tableConfig.tableType}-Configuration`,
+                            JSON.stringify(config)
+                        );
+                    }
+
                     this.store.set(applicantPagination.pagination.data);
                 })
-            );
+            )
     }
 }

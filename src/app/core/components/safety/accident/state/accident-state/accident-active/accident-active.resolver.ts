@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Resolve } from '@angular/router';
-import { AccidentListResponse } from 'appcoretruckassist';
-import { Observable, of } from 'rxjs';
-import { catchError, tap } from 'rxjs/operators';
+import { forkJoin, Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
+import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { AccidentTService } from '../../accident.service';
 import {
     AccidentActiveState,
@@ -15,11 +15,12 @@ import {
 export class AccidentActiveResolver implements Resolve<AccidentActiveState> {
     constructor(
         private accidentService: AccidentTService,
-        private accidentStore: AccidentActiveStore
+        private accidentStore: AccidentActiveStore,
+        private tableService: TruckassistTableService
     ) {}
-    resolve(): Observable<AccidentActiveState | boolean> {
-        return this.accidentService
-            .getAccidentList(
+    resolve(): Observable<any> {
+        return forkJoin([
+            this.accidentService.getAccidentList(
                 true,
                 true,
                 undefined,
@@ -36,24 +37,31 @@ export class AccidentActiveResolver implements Resolve<AccidentActiveState> {
                 undefined,
                 1,
                 25
-            )
-            .pipe(
-                catchError(() => {
-                    return of('No accident active data...');
-                }),
-                tap((acidentPagination: AccidentListResponse) => {
-                    localStorage.setItem(
-                        'accidentTableCount',
-                        JSON.stringify({
-                            active: acidentPagination.active,
-                            inactive: acidentPagination.inactive,
-                            nonReportableCount:
-                                acidentPagination.nonReportableCount,
-                        })
-                    );
+            ),
+            this.tableService.getTableConfig(21),
+        ]).pipe(
+            tap(([acidentPagination, tableConfig]) => {
+                localStorage.setItem(
+                    'accidentTableCount',
+                    JSON.stringify({
+                        active: acidentPagination.active,
+                        inactive: acidentPagination.inactive,
+                        nonReportableCount:
+                            acidentPagination.nonReportableCount,
+                    })
+                );
 
-                    this.accidentStore.set(acidentPagination.pagination.data);
-                })
-            );
+                if (tableConfig) {
+                    const config = JSON.parse(tableConfig.config);
+
+                    localStorage.setItem(
+                        `table-${tableConfig.tableType}-Configuration`,
+                        JSON.stringify(config)
+                    );
+                }
+
+                this.accidentStore.set(acidentPagination.pagination.data);
+            })
+        );
     }
 }
