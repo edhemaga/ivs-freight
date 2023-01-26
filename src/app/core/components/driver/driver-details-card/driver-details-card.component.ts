@@ -239,11 +239,13 @@ export class DriverDetailsCardComponent
         this.getDriverById(this.driver.id);
         this.note.patchValue(this.driver.note);
 
-        let currentIndex = this.driversDropdowns.findIndex(
-            (driver) => driver.id === this.driver.id
-        );
-        
-        this.currentDriverIndex = currentIndex;
+        setTimeout(()=>{
+            let currentIndex = this.driversDropdowns.findIndex(
+                (driver) => driver.id === this.driver.id
+            );
+            
+            this.currentDriverIndex = currentIndex;
+        }, 300)
         
         // Confirmation Subscribe
         if (this.templateCard) {
