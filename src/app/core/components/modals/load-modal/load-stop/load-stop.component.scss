@@ -13,6 +13,7 @@
         padding: 10px;
         margin-bottom: 17px;
         cursor: pointer;
+        background-color: #eeeeee;
         transition: all 0.3s ease-in-out;
 
         .load-stop-counter-container {
@@ -43,7 +44,7 @@
 
         .load-stop-header-content {
             display: grid;
-            grid-template-columns: 260px 147px 123px 1fr;
+            grid-template-columns: 260px 147px 123px 0px 16px;
             grid-template-rows: 20px;
             -moz-column-gap: 4px;
             column-gap: 4px;
@@ -132,6 +133,8 @@
                             font-weight: 500;
 
                             line-height: 14px;
+                            top: 50%;
+                            transform: translateY(2%);
                         }
                     }
                 }
@@ -140,7 +143,6 @@
             .load-stop-header-remove-btn {
                 display: none;
                 position: relative;
-                left: 6px;
                 line-height: 18px;
                 cursor: pointer;
 
@@ -151,10 +153,6 @@
                         }
                     }
                 }
-            }
-
-            &.extra-stop {
-                grid-template-columns: 520px 0px 0px 0px 1fr;
             }
         }
 

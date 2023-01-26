@@ -1,4 +1,5 @@
 export interface IMultipleInput {
+    id?: any;
     value: string | number;
     second_value?: string | number;
     logoName?: string;
@@ -114,6 +115,7 @@ export interface ITaInput {
         class?: string; // colors store in front-end
         remove?: boolean; // remove svg in focus mode and when user are typing
     };
+    selectedDropdown?: boolean;
     mergedDropdown?: boolean;
 
     // Label dropdown

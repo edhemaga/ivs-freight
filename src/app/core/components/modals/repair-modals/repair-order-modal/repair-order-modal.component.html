@@ -418,7 +418,7 @@
                 </div>
             </div>
         </app-ta-custom-card>
-        <div *ngIf="selectedHeaderTab === 2" class="ta-card-body-overflow-none">
+        <div class="ta-card-body-overflow-none">
             <app-ta-custom-card
                 [cardName]="'Documents'"
                 [disableAnimation]="disableCardAnimation"
@@ -431,6 +431,8 @@
                     [files]="documents"
                     [showDropzone]="true"
                     [size]="'large'"
+                    [hasTagsDropdown]="true"
+                    [tags]="tags"
                 ></app-ta-upload-files>
             </app-ta-custom-card>
         </div>

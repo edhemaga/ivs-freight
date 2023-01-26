@@ -8,7 +8,9 @@
         class="ta-card-header"
         [class.no-data]="!hasBodyData"
         [class.disabled]="disabledCard"
-        [class.active]="hasPayrollStatus && _isCardOpen && _isCardOpen != 'null'"
+        [class.active]="
+            hasPayrollStatus && _isCardOpen && _isCardOpen != 'null'
+        "
         (mouseenter)="isHeaderHover = true"
         (mouseleave)="isHeaderHover = false"
         (click)="isCardOpenEvent($event)"
@@ -235,4 +237,11 @@
             <ng-content></ng-content>
         </div>
     </div>
+    <svg-icon
+        *ngIf="bottomCollapseArrow && hasBodyData"
+        class="bottom-collapse-arrow"
+        [ngClass]="{ rotate: _isCardOpen && _isCardOpen != 'null' }"
+        src="assets/svg/common/ic_arrow_down_updated.svg"
+        (click)="isCardOpenEvent($event)"
+    ></svg-icon>
 </div>

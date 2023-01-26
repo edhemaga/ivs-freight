@@ -1,13 +1,13 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Subject, takeUntil } from 'rxjs';
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
-import { FormService } from '../../../../services/form/form.service';
-import { PayrollCreditService } from '../../../accounting/payroll/payroll/state/payroll-credit.service';
-import { PayrollCreditModalResponse } from '../../../../../../../appcoretruckassist/model/payrollCreditModalResponse';
+import { Subject, takeUntil } from 'rxjs';
 import { ITaInput } from '../../../shared/ta-input/ta-input.config';
-import { PayrollCreditResponse } from '../../../../../../../appcoretruckassist/model/payrollCreditResponse';
+import { PayrollDeductionService } from '../../../accounting/payroll/payroll/state/payroll-deduction.service';
+import { FormService } from '../../../../services/form/form.service';
+import { PayrollDeductionModalResponse } from '../../../../../../../appcoretruckassist/model/payrollDeductionModalResponse';
+import { PayrollDeductionResponse } from '../../../../../../../appcoretruckassist/model/payrollDeductionResponse';
 import {
     convertDateToBackend,
     convertThousanSepInNumber,
@@ -18,14 +18,14 @@ import {
 } from '../../../../utils/methods.calculations';
 
 @Component({
-    selector: 'app-payroll-credit-bonus',
-    templateUrl: './payroll-credit-bonus.component.html',
-    styleUrls: ['./payroll-credit-bonus.component.scss'],
+    selector: 'app-payroll-deduction-modal',
+    templateUrl: './payroll-deduction-modal.component.html',
+    styleUrls: ['./payroll-deduction-modal.component.scss'],
 })
-export class PayrollCreditBonusComponent implements OnInit {
+export class PayrollDeductionModalComponent implements OnInit {
     @Input() editData: any;
 
-    public payrollCreditForm: FormGroup;
+    public payrollDeductionForm: FormGroup;
 
     public selectedTab: number = 1;
     public tabs: any[] = [
@@ -42,6 +42,27 @@ export class PayrollCreditBonusComponent implements OnInit {
             color: '3074D3',
         },
     ];
+
+    public selectedTab2: number = 3;
+    public tabs2: any[] = [
+        {
+            id: 3,
+            name: 'WEEKLY', // 2
+            disabled: true,
+            color: '3074D3',
+        },
+        {
+            id: 4,
+            name: 'MONTHLY', // 1
+            disabled: true,
+            color: '3074D3',
+        },
+    ];
+
+    public animationObject = {
+        value: this.selectedTab,
+        params: { height: '0px' },
+    };
 
     public labelsTrucks: any[] = [];
     public labelsDriver: any[] = [];
@@ -70,70 +91,50 @@ export class PayrollCreditBonusComponent implements OnInit {
         private formBuilder: FormBuilder,
         private inputService: TaInputService,
         private modalService: ModalService,
-        private formService: FormService,
-        private payrolCreditService: PayrollCreditService
+        private payrollDeductionService: PayrollDeductionService,
+        private formService: FormService
     ) {}
 
     ngOnInit() {
         this.createForm();
         this.getModalDropdowns();
-
+        this.trackReccuringAndLimiting();
         if (this.editData?.type === 'edit') {
-            this.getByIdCredit(this.editData.data.id);
+            this.getByIdDeduction(this.editData.data.id);
         }
     }
 
-    public tabChange(event: any): void {
-        this.selectedTab = event.id;
-
-        this.tabs = this.tabs.map((item) => {
-            return {
-                ...item,
-                checked: item.id === this.selectedTab,
-            };
-        });
-
-        if (this.selectedTab === 1) {
-            this.inputService.changeValidators(
-                this.payrollCreditForm.get('truckId'),
-                false,
-                [],
-                false
-            );
-            this.inputService.changeValidators(
-                this.payrollCreditForm.get('driverId'),
-                true,
-                [],
-                false
-            );
-        }
-
-        if (this.selectedTab === 2) {
-            this.inputService.changeValidators(
-                this.payrollCreditForm.get('truckId'),
-                true,
-                [],
-                false
-            );
-            this.inputService.changeValidators(
-                this.payrollCreditForm.get('driverId'),
-                false,
-                [],
-                false
-            );
+    public tabChange(event: any, action): void {
+        switch (action) {
+            case 'main-tabs': {
+                this.selectedTab = event.id;
+                break;
+            }
+            case 'week-mon-tabs': {
+                this.selectedTab2 = event.id;
+                break;
+            }
+            default: {
+                break;
+            }
         }
     }
 
     private createForm() {
-        this.payrollCreditForm = this.formBuilder.group({
+        this.payrollDeductionForm = this.formBuilder.group({
             driverId: [null, Validators.required],
             truckId: [null],
             date: [null, Validators.required],
             description: [null, Validators.required],
             amount: [null, Validators.required],
+            recurring: [false],
+            recurringType: [null],
+            limited: [false],
+            numberOfPayments: [null],
+            limitedNumber: [null],
         });
 
-        this.formService.checkFormChange(this.payrollCreditForm, 400);
+        this.formService.checkFormChange(this.payrollDeductionForm, 400);
         this.formService.formValueChange$
             .pipe(takeUntil(this.destroy$))
             .subscribe((isFormChange: boolean) => {
@@ -147,11 +148,11 @@ export class PayrollCreditBonusComponent implements OnInit {
                 break;
             }
             case 'save and add new': {
-                if (this.payrollCreditForm.invalid || !this.isFormDirty) {
-                    this.inputService.markInvalid(this.payrollCreditForm);
+                if (this.payrollDeductionForm.invalid || !this.isFormDirty) {
+                    this.inputService.markInvalid(this.payrollDeductionForm);
                     return;
                 }
-                this.addCredit();
+                this.addDeduction();
                 this.modalService.setModalSpinner({
                     action: 'save and add new',
                     status: true,
@@ -161,19 +162,19 @@ export class PayrollCreditBonusComponent implements OnInit {
                 break;
             }
             case 'save': {
-                if (this.payrollCreditForm.invalid || !this.isFormDirty) {
-                    this.inputService.markInvalid(this.payrollCreditForm);
+                if (this.payrollDeductionForm.invalid || !this.isFormDirty) {
+                    this.inputService.markInvalid(this.payrollDeductionForm);
                     return;
                 }
                 if (this.editData?.type === 'edit') {
-                    this.updateCredit(this.editData?.id);
+                    this.updateDeduction(this.editData?.id);
                     this.modalService.setModalSpinner({
                         action: null,
                         status: true,
                         close: false,
                     });
                 } else {
-                    this.addCredit();
+                    this.addDeduction();
                     this.modalService.setModalSpinner({
                         action: null,
                         status: true,
@@ -188,19 +189,27 @@ export class PayrollCreditBonusComponent implements OnInit {
         }
     }
 
-    public updateCredit(id: number) {
-        this.payrolCreditService
-            .updatePayrollCredit({
+    public updateDeduction(id: number) {
+        const recType = this.tabs2.find((item) => item.checked);
+
+        this.payrollDeductionService
+            .updatePayrollDeduction({
                 id: id,
-                ...this.payrollCreditForm.value,
+                ...this.payrollDeductionForm,
                 driverId: this.selectedDriver ? this.selectedDriver.id : null,
                 truckId: this.selectedTruck ? this.selectedTruck.id : null,
                 date: convertDateToBackend(
-                    this.payrollCreditForm.get('date').value
+                    this.payrollDeductionForm.get('date').value
                 ),
                 amount: convertThousanSepInNumber(
-                    this.payrollCreditForm.get('amount').value
+                    this.payrollDeductionForm.get('amount').value
                 ),
+                limitedNumber: this.payrollDeductionForm.get('recurring').value
+                    ? convertThousanSepInNumber(
+                          this.payrollDeductionForm.get('limitedNumber').value
+                      )
+                    : null,
+                recurringType: recType ? recType.name : null,
             })
             .pipe(takeUntil(this.destroy$))
             .subscribe({
@@ -221,27 +230,35 @@ export class PayrollCreditBonusComponent implements OnInit {
             });
     }
 
-    public addCredit() {
-        this.payrolCreditService
-            .addPayrollCredit({
-                ...this.payrollCreditForm.value,
+    public addDeduction() {
+        const recType = this.tabs2.find((item) => item.checked);
+        this.payrollDeductionService
+            .addPayrollDeduction({
+                ...this.payrollDeductionForm,
                 driverId: this.selectedDriver ? this.selectedDriver.id : null,
                 truckId: this.selectedTruck ? this.selectedTruck.id : null,
                 date: convertDateToBackend(
-                    this.payrollCreditForm.get('date').value
+                    this.payrollDeductionForm.get('date').value
                 ),
                 amount: convertThousanSepInNumber(
-                    this.payrollCreditForm.get('amount').value
+                    this.payrollDeductionForm.get('amount').value
                 ),
+                limitedNumber: this.payrollDeductionForm.get('recurring').value
+                    ? convertThousanSepInNumber(
+                          this.payrollDeductionForm.get('limitedNumber').value
+                      )
+                    : null,
+                recurringType: recType ? recType.name : null,
             })
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
                     if (this.addNewAfterSave) {
-                        this.formService.resetForm(this.payrollCreditForm);
+                        this.formService.resetForm(this.payrollDeductionForm);
                         this.selectedDriver = null;
                         this.selectedTruck = null;
-                        this.tabChange({ id: 1 });
+                        this.tabChange({ id: 1 }, 'main-tabs');
+                        this.tabChange({ id: 3 }, 'week-mon-tabs');
                         this.modalService.setModalSpinner({
                             action: null,
                             status: false,
@@ -265,54 +282,48 @@ export class PayrollCreditBonusComponent implements OnInit {
             });
     }
 
-    public getByIdCredit(id: number) {
-        this.payrolCreditService
-            .getPayrollCreditById(id)
+    public getByIdDeduction(id: number) {
+        this.payrollDeductionService
+            .getPayrollDeductionById(id)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: (res: PayrollCreditResponse) => {
-                    this.payrollCreditForm.patchValue({
+                next: (res: PayrollDeductionResponse) => {
+                    this.payrollDeductionForm.patchValue({
                         driverId: res.driver
                             ? res.driver.firstName.concat(
                                   ' ',
                                   res.driver.lastName
                               )
                             : null,
-                        truckId: null,
+                        truckId: res.truck ? res.truck.truckNumber : null,
                         date: convertDateFromBackend(res.date),
                         description: res.description,
                         amount: convertNumberInThousandSep(res.amount),
+                        recurringType: res.recurringType,
+                        recurring: false, // TODO: Backend
+                        limited: false, // TODO: Backend
+                        numberOfPayments: null, // TODO: Backend
+                        limitedNumber: res.limitedNumber
+                            ? convertNumberInThousandSep(res.limitedNumber)
+                            : null,
                     });
 
-                    this.selectedDriver = {
-                        id: res.driver.id,
-                        name: res.driver.firstName.concat(
-                            ' ',
-                            res.driver.lastName
-                        ),
-                        logoName:
-                            res.driver.avatar === null ||
-                            res.driver.avatar === undefined ||
-                            res.driver.avatar === ''
-                                ? null
-                                : res.driver.avatar,
-                        isDriver: true,
-                    };
-
-                    this.selectedTruck = null;
-
-                    this.tabChange({ id: res.driver ? 1 : 2 });
+                    this.tabChange({ id: res.driver ? 1 : 2 }, 'main-tabs');
+                    this.tabChange(
+                        { id: res.recurringType.name === 'Monthly' ? 4 : 3 },
+                        'week-mon-tabs'
+                    );
                 },
                 error: () => {},
             });
     }
 
     public getModalDropdowns() {
-        this.payrolCreditService
-            .getPayrollCreditModal()
+        this.payrollDeductionService
+            .getPayrollDeductionModal()
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: (res: PayrollCreditModalResponse) => {
+                next: (res: PayrollDeductionModalResponse) => {
                     this.labelsDriver = res.drivers.map((item) => {
                         return {
                             id: item.id,
@@ -343,7 +354,7 @@ export class PayrollCreditBonusComponent implements OnInit {
                             (item) => item.id === this.editData?.data?.driverId
                         );
                         this.selectedDriver = this.labelsDriver[0];
-                        this.payrollCreditForm.patchValue({
+                        this.payrollDeductionForm.patchValue({
                             driverId: this.labelsDriver[0].name,
                         });
                     }
@@ -360,6 +371,7 @@ export class PayrollCreditBonusComponent implements OnInit {
             }
             case 'truck': {
                 this.selectedTruck = event;
+
                 if (this.selectedTruck) {
                     this.truckDropdownsConfig = {
                         ...this.truckDropdownsConfig,
@@ -381,12 +393,50 @@ export class PayrollCreditBonusComponent implements OnInit {
                         multipleInputValues: null,
                     };
                 }
-
-                break;
             }
             default: {
                 break;
             }
         }
+    }
+
+    public trackReccuringAndLimiting() {
+        this.payrollDeductionForm
+            .get('recurring')
+            .valueChanges.pipe(takeUntil(this.destroy$))
+            .subscribe((value) => {
+                if (value) {
+                    this.tabs2 = this.tabs2.map((item, index) => {
+                        return {
+                            ...item,
+                            checked: index === 0,
+                            disabled: false,
+                        };
+                    });
+                } else {
+                    this.tabs2 = this.tabs2.map((item) => {
+                        return {
+                            ...item,
+                            checked: false,
+                            disabled: true,
+                        };
+                    });
+                }
+            });
+
+        this.payrollDeductionForm
+            .get('limited')
+            .valueChanges.pipe(takeUntil(this.destroy$))
+            .subscribe((value) => {
+                if (value) {
+                    this.payrollDeductionForm
+                        .get('numberOfPayments')
+                        .patchValue(0);
+                } else {
+                    this.payrollDeductionForm
+                        .get('numberOfPayments')
+                        .patchValue(null);
+                }
+            });
     }
 }

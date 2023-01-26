@@ -9,12 +9,14 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { TagResponse } from './tagResponse';
-import { FileResponsePagination } from './fileResponsePagination';
+import { CompanyOfficeDepartmentContactResponse } from './companyOfficeDepartmentContactResponse';
 
 
-export interface CompanySettingsDocumentsResponse { 
-    files?: FileResponsePagination;
-    tags?: Array<TagResponse> | null;
+export interface CompanyOfficeMarkerResponse { 
+    id?: number | null;
+    name?: string | null;
+    latitude?: number;
+    longitude?: number;
+    departmentContacts?: Array<CompanyOfficeDepartmentContactResponse> | null;
 }
 

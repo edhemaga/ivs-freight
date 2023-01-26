@@ -10,6 +10,7 @@
  * Do not edit the class manually.
  */
 import { TruckMinimalResponse } from './truckMinimalResponse';
+import { TagResponse } from './tagResponse';
 import { TrailerMinimalResponse } from './trailerMinimalResponse';
 import { ServiceTypeResponse } from './serviceTypeResponse';
 import { PMTrailerShortResponse } from './pMTrailerShortResponse';
@@ -24,5 +25,6 @@ export interface RepairModalResponse {
     trailers?: Array<TrailerMinimalResponse> | null;
     pmTrucks?: Array<PMTruckShortResponse> | null;
     pmTrailers?: Array<PMTrailerShortResponse> | null;
+    tags?: Array<TagResponse> | null;
 }
 

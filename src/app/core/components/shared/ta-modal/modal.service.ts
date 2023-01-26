@@ -55,8 +55,7 @@ export class ModalService {
 
     public setProjectionModal(data: {
         action: string;
-        payload: { key: string; value: any };
-        extraPayload?: any;
+        payload: { key: string; value: any; id?: any };
         component: any;
         size: string;
         type?: string;
@@ -82,7 +81,7 @@ export class ModalService {
                         canOpenModal: true,
                         key: data.payload.key,
                         type: data.type,
-                        extraPayload: data.extraPayload,
+                        id: data.payload?.id,
                     }
                 );
                 clearTimeout(timeout);
