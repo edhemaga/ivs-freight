@@ -2167,7 +2167,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             }
         });
 
-        this.tagsService.updateTag({tags: tags}).subscribe();
+        this.tagsService.updateTag({ tags: tags }).subscribe();
     }
 
     ngOnDestroy(): void {

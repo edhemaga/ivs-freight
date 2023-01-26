@@ -1091,11 +1091,6 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                                 },
                                 isDisabled: false,
                             };
-
-                            console.log(
-                                'shipper contact config: ',
-                                this.loadPickupShipperContactsInputConfig
-                            );
                         } else {
                             this.selectedPickupShipperContact = null;
                             this.labelsShipperContacts = [
@@ -1117,7 +1112,6 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                     }
                     // Restart value if clear
                     else {
-                        console.log('uso u else');
                         this.labelsShipperContacts = this.originShipperContacts;
 
                         this.loadPickupShipperInputConfig = {
@@ -2067,7 +2061,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     }
 
     public removeAdditionalPayment() {
-        this.isVisibleBillDropdown = false;
+        this.isVisiblePayment = false;
         this.inputService.changeValidators(
             this.loadForm.get('advancePay'),
             false
@@ -2617,7 +2611,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                                         item.driver?.lastName
                                     ),
                                     logoName: item.driver?.avatar,
-                                    owner: index === 1 || index === 3,
+                                    owner: !!item.driver?.owner,
                                 },
                                 coDriver: {
                                     ...item.coDriver,
@@ -3300,14 +3294,6 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     }
 
     private premmapedAdditionalBillingRate(action: string) {
-        console.log(
-            'this.originalAdditionalBillingTypes: ',
-            this.originalAdditionalBillingTypes
-        );
-        console.log(
-            'this.additionalBillings(): ',
-            this.additionalBillings().value
-        );
         return this.originalAdditionalBillingTypes
             .map((item) => {
                 const biilingRate = this.additionalBillings().controls.find(
@@ -3321,7 +3307,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                         : null,
                 };
             })
-            .filter((item) => item.id !== 6);
+            .filter((item) => item.additionalBillingType !== 6);
     }
 
     private premmapedStops() {
