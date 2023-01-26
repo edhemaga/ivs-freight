@@ -405,7 +405,7 @@ export class TaModalComponent implements OnInit, OnDestroy {
                             break;
                         }
                     }
-
+                    console.log('modal ....: ', data);
                     if (
                         !['save and add new', 'load-template'].includes(
                             data.action
