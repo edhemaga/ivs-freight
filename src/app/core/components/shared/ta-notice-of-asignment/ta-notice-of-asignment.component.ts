@@ -93,13 +93,13 @@ export class TaNoticeOfAsignmentComponent
     fontFamilyList: any[] = [
         {
             id: 1,
-            name: 'Arial',
-            showName: 'Arial',
+            name: 'Large',
+            showName: 'Large',
         },
         {
             id: 2,
-            name: 'Courier New',
-            showName: 'Courier N.',
+            name: 'Medium',
+            showName: 'Medium',
         },
         {
             id: 3,
@@ -108,57 +108,19 @@ export class TaNoticeOfAsignmentComponent
         },
         {
             id: 4,
-            name: 'Georgia',
-            showName: 'Georgia',
-        },
-        {
-            id: 5,
-            name: 'Impact',
-            showName: 'Impact',
-        },
-        {
-            id: 6,
-            name: 'Lucida Grande',
-            showName: 'Lucida Grande',
-        },
-        {
-            id: 7,
-            name: 'Tahoma',
-            showName: 'Tahoma',
-        },
-        {
-            id: 8,
-            name: 'Times New Roman',
-            showName: 'Times New R.',
+            name: 'Small',
+            showName: 'Small',
         },
     ];
 
     showDropdown: boolean;
     customSelectColor: any[] = [
-        '#D1D1D1',
-        '#919191',
-        '#3D3D3D',
-        '#9842D8',
-        '#7040A1',
-        '#442265',
-        '#F84D9F',
-        '#CF3991',
-        '#873565',
-        '#FF7B1D',
-        '#FF5C50',
-        '#E61D0D',
-        '#FFE567',
-        '#FFD400',
-        '#FFAA00',
-        '#50DC96',
-        '#00C76E',
-        '#009E61',
-        '#31E5DD',
-        '#00C4BB',
-        '#008C8F',
-        '#49CBFF',
-        '#00ACF0',
-        '#0093CE',
+        '#3C3C3C',
+        '#3074D3',
+        '#26A690',
+        '#EF5350',
+        '#FFA726',
+        '#AB47BC',
     ];
     activeOptions: any = {
         bold: false,

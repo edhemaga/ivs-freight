@@ -6,10 +6,10 @@
     .custom_select_holder {
         min-width: 52px;
         height: 26px;
-        margin-right: 12px;
+        margin-right: 8px;
 
         &.font-family {
-            width: 100px;
+            width: 134px;
         }
 
         &.font-size {
@@ -313,16 +313,23 @@
 .wysiwyg_button_group {
     align-items: center;
 
-    background-color: #F3F3F3;
-    margin-right: 12px;
+    background-color: #eeeeee;
+    margin-right: 8px;
     border-radius: 2px;
+    padding: 4px 2px;
 
     .sysiwyg_button_item {
-        width: 26px;
-        height: 26px;
         display: flex;
         align-items: center;
         justify-content: center;
+
+        padding: 2px;
+        margin: 0px 2px;
+        width: 18px;
+        height: 18px;
+        border-radius: 1px;
+
+        cursor: pointer;
 
         svg-icon {
             display: flex;
@@ -335,23 +342,22 @@
         }
 
         &:hover {
-            cursor: pointer;
-
-            svg {
-                path {
-                    fill: #6c6c6c;
+            svg-icon {
+                svg {
+                    path {
+                        fill: #6c6c6c;
+                    }
                 }
             }
         }
 
         &.active {
-            background-color: #b7b7b7;
-            border-radius: 2px;
+            background-color: #42424233;
 
-            svg-icon {
-                svg {
+            &.active {
+                svg-icon {
                     path {
-                        fill: #fff;
+                        fill: #424242 !important;
                     }
                 }
             }
@@ -365,49 +371,78 @@
     }
 
     .text-align-buttons {
-        background-color: #F3F3F3;
+        background-color: #eeeeee;
+        padding: 0px 2px;
         border-radius: 2px;
         align-items: center;
     }
 
     .align-buttons {
-        width: 26px;
-        height: 26px;
         display: flex;
         justify-content: center;
         align-items: center;
-        border-radius: 3px;
+
+        padding: 2px;
+        width: 18px;
+        height: 18px;
+        margin: 0px 2px;
+
+        border-radius: 1px;
+        cursor: pointer;
 
         svg {
             display: flex;
 
-            rect {
+            path {
                 fill: #919191;
             }
 
             &:hover {
-                cursor: pointer;
-
-                rect {
+                path {
                     fill: #6c6c6c;
                 }
             }
         }
 
         &.active {
-            background-color: #b7b7b7;
+            background-color: #42424233;
 
             svg {
-                rect,
                 path {
-                    fill: #fff;
+                    fill: #424242;
                 }
             }
         }
     }
 
     .paragraph-buttons {
-        margin-left: 12px;
+        margin-left: 8px;
+    }
+}
+
+.color_picker_holder {
+    display: flex;
+    padding: 4px;
+    gap: 4px;
+
+    margin-left: 8px;
+
+    background-color: #eeeeee;
+    border-radius: 1px;
+
+    .color_main_hold {
+        display: flex;
+        flex-direction: row;
+        align-items: flex-start;
+        gap: 4px;
+
+        .color_picker_color {
+            width: 18px;
+            height: 18px;
+
+            border-radius: 1px;
+            cursor: pointer;
+        }
     }
 }
 

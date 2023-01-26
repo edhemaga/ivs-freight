@@ -36,7 +36,7 @@
             </ng-template>
         </ng-select> -->
     </div>
-    <div *ngIf="settings.fontSize" class="custom_select_holder font-size">
+    <!--<div *ngIf="settings.fontSize" class="custom_select_holder font-size">
         <app-ta-input-dropdown
             formControlName="fontSize"
             [inputConfig]="{
@@ -52,35 +52,15 @@
             [activeItem]="activeFontSize"
             (selectedItem)="changeFontSize($event)"
         ></app-ta-input-dropdown>
-        <!-- <ng-select
+         <ng-select
             (change)="changeFontSize($event)"
             [(ngModel)]="selectedFontSize"
             [clearable]="false"
             [items]="[8, 10, 12, 14, 18, 22, 28, 36]"
             [searchable]="false"
         >
-        </ng-select> -->
-    </div>
-    <div *ngIf="settings.colorPicker" class="wysiwyg_color_picker">
-        <div
-            (click)="toggleDropdown()"
-            [class.active]="showDropdown"
-            [ngStyle]="{ 'background-color': selectedPaternColor }"
-            class="wysiwyg_choosen_color"
-        ></div>
-        <div *ngIf="showDropdown" class="wysiwyg_color_dropdown">
-            <div class="text-color">Text color</div>
-            <div class="color_holder">
-                <div
-                    (click)="changeTextColor(i)"
-                    *ngFor="let item of [].constructor(24); let i = index"
-                    [class.active]="
-                        customSelectColor[i] === selectedPaternColor
-                    "
-                ></div>
-            </div>
-        </div>
-    </div>
+        </ng-select>
+    </div>-->
     <div *ngIf="settings.textTransform" class="wysiwyg_button_group d-flex">
         <div
             (click)="executeEditor('bold')"
@@ -153,33 +133,43 @@
                 </ng-template>
             </ng-select>
         </div> -->
-        <div
-            class="text-align-buttons d-flex"
-        >
+        <div class="text-align-buttons d-flex">
             <div
                 (click)="executeEditor('justifyLeft')"
                 [class.active]="activeOptions.justifyLeft"
                 class="align-buttons"
             >
-                <svg-icon src="assets/svg/common/align-left.svg"></svg-icon>
+                <svg-icon
+                    src="assets/svg/common/align-left-icon.svg"
+                ></svg-icon>
+            </div>
+            <div
+                (click)="executeEditor('justifyCenter')"
+                [class.active]="activeOptions.justifyCenter"
+                class="align-buttons"
+            >
+                <svg-icon
+                    src="assets/svg/common/align-center-icon.svg"
+                ></svg-icon>
             </div>
             <div
                 (click)="executeEditor('justifyRight')"
                 [class.active]="activeOptions.justifyRight"
                 class="align-buttons"
             >
-                <svg-icon src="assets/svg/common/align-right.svg"></svg-icon>
+                <svg-icon
+                    src="assets/svg/common/align-right-icon.svg"
+                ></svg-icon>
             </div>
-            <!-- <div
-                (click)="executeEditor('justifyCenter')"
-                [class.active]="activeOptions.justifyCenter"
+            <div
+                (click)="executeEditor('justifyFull')"
+                [class.active]="activeOptions.justifyFull"
                 class="align-buttons"
             >
-                <svg-icon src="assets/img/svgs/align-middle.svg"></svg-icon>
-            </div> -->
-            <!-- <div class="align-buttons active" (click)="executeEditor('bold')">
-            <svg-icon src="assets/img/svgs/align-all.svg"></svg-icon>
-        </div> -->
+                <svg-icon
+                    src="assets/svg/common/align-full-icon.svg"
+                ></svg-icon>
+            </div>
         </div>
         <div *ngIf="settings.textIndent" class="paragraph-buttons d-flex">
             <div
@@ -214,6 +204,39 @@
             >
                 <svg-icon src="assets/img/svgs/ordered-list.svg"></svg-icon>
             </div>
+        </div>
+    </div>
+    <!-- <div *ngIf="settings.colorPicker" class="wysiwyg_color_picker">
+        <div
+            (click)="toggleDropdown()"
+            [class.active]="showDropdown"
+            [ngStyle]="{ 'background-color': selectedPaternColor }"
+            class="wysiwyg_choosen_color"
+        ></div>
+        <div *ngIf="showDropdown" class="wysiwyg_color_dropdown">
+            <div class="text-color">Text color</div>
+            <div class="color_holder">
+                <div
+                    (click)="changeTextColor(i)"
+                    *ngFor="let item of [].constructor(24); let i = index"
+                    [class.active]="
+                        customSelectColor[i] === selectedPaternColor
+                    "
+                ></div>
+            </div>
+        </div>
+    </div> -->
+    <div class="color_picker_holder">
+        <div
+            class="color_main_hold"
+            *ngFor="let item of customSelectColor; let i = index"
+        >
+            <div
+                class="color_picker_color"
+                [ngStyle]="{
+                    'background-color': item
+                }"
+            ></div>
         </div>
     </div>
 </div>
