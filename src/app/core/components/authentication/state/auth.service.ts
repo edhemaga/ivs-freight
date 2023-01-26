@@ -58,9 +58,10 @@ export class AuthStoreService {
                 // Production
                 // this.authStore.set({ 1: user });
                 // Develop
+                console.log(user);
                 if (user.companies.length > 1) {
                     this.moreThenOneCompany = user;
-                    // localStorage.setItem('user', JSON.stringify(user));
+                    localStorage.setItem('user', JSON.stringify(user));
                     this.router.navigate(['/select-company']);
                 } else {
                     localStorage.setItem('user', JSON.stringify(user));

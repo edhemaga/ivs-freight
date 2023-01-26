@@ -17,6 +17,7 @@ export class HideContentGuard implements CanActivate {
 
         // ----------------------- DEVELOP MODE ----------------------------
         const user = JSON.parse(localStorage.getItem('user'));
+
         if (user) {
             this.router.navigate(['/dashboard']);
             return false;
