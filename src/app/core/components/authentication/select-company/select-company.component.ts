@@ -88,17 +88,11 @@ export class SelectCompanyComponent
             margin: 12,
             navText: ['', ''],
             responsive: {
-                // 0: {
-                //     items:
-                //         this.userData.companies.lenght < 5
-                //             ? this.userData.companies.lenght
-                //             : 5,
-                // },
                 0: {
-                    items: 1,
-                },
-                150: {
-                    items: 2,
+                    items:
+                        this.userData.companies.lenght < 5
+                            ? this.userData.companies.lenght
+                            : 5,
                 },
             },
             nav: true,
