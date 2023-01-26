@@ -9,12 +9,10 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { TagResponse } from './tagResponse';
-import { FileResponsePagination } from './fileResponsePagination';
+import { EditTagCommand } from './editTagCommand';
 
 
-export interface CompanySettingsDocumentsResponse { 
-    files?: FileResponsePagination;
-    tags?: Array<TagResponse> | null;
+export interface EditTagsCommand { 
+    tags?: Array<EditTagCommand> | null;
 }
 

@@ -24,7 +24,7 @@ import { RegisterUserComponent } from './register-user/register-user.component';
 import { HelperSignupUserComponent } from './helper-signup-user/helper-signup-user.component';
 import { SharedModule } from '../shared/shared.module';
 import { PickCompanyComponent } from './pick-company/pick-company.component';
-import { CarouselModule } from 'ngx-owl-carousel-o';
+
 @NgModule({
     declarations: [
         LoginComponent,
@@ -50,8 +50,8 @@ import { CarouselModule } from 'ngx-owl-carousel-o';
         GooglePlaceModule,
         AngularSvgIconModule,
         NgbTooltipModule,
-        CarouselModule,
     ],
+    exports: [SelectCompanyComponent],
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class AuthModule {}
