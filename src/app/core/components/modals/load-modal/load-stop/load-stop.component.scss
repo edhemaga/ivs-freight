@@ -169,6 +169,8 @@
                     left: 1px;
                     p {
                         position: relative;
+                        width: -webkit-max-content;
+                        width: -moz-max-content;
                         width: max-content;
                         margin: 0;
                         padding: 0;
@@ -269,6 +271,7 @@
                 }
                 .load-stop-inner-content {
                     .load-stop-content-up {
+                        line-height: 14px;
                         p {
                             color: #ffffff !important;
                         }
@@ -285,6 +288,7 @@
                     }
 
                     .load-stop-content-down {
+                        line-height: 14px;
                         p {
                             color: #919191 !important;
                         }
@@ -332,12 +336,12 @@
 
                         .load-stop-content-down {
                             p {
-                                color: rgb(255, 255, 255, 0.4) !important;
+                                color: rgb(255, 255, 255, 0.7) !important;
                             }
 
                             &-deadhead {
                                 p {
-                                    color: rgb(255, 255, 255, 0.4) !important;
+                                    color: rgb(255, 255, 255, 0.7) !important;
                                 }
 
                                 .shipperContact-avatar {
@@ -347,7 +351,7 @@
                                                 255,
                                                 255,
                                                 255,
-                                                0.4
+                                                0.7
                                             ) !important;
                                         }
                                     }
@@ -388,12 +392,12 @@
 
                         .load-stop-content-down {
                             p {
-                                color: rgb(255, 255, 255, 0.4) !important;
+                                color: rgb(255, 255, 255, 0.7) !important;
                             }
 
                             &-deadhead {
                                 p {
-                                    color: rgb(255, 255, 255, 0.4) !important;
+                                    color: rgb(255, 255, 255, 0.7) !important;
                                 }
 
                                 .shipperContact-avatar {
@@ -403,7 +407,7 @@
                                                 255,
                                                 255,
                                                 255,
-                                                0.4
+                                                0.7
                                             ) !important;
                                         }
                                     }

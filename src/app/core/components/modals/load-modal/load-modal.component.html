@@ -378,8 +378,10 @@
                     "
                     [timeRange]="
                         loadForm.get('pickupTimeFrom').value
+                            | loadTimeType
                             | loadDatetimeRange
-                                : loadForm.get('pickupTimeTo').value
+                                : (loadForm.get('pickupTimeTo').value
+                                      | loadTimeType)
                     "
                     [legMile]="loadForm.get('pickuplegMiles').value"
                     [isEmptyLoad]="true"
@@ -604,14 +606,6 @@
                                 [shipperAddress]="
                                     selectedExtraStopShipper[indx]?.address
                                 "
-                                [timeRange]="
-                                    loadExtraStops().at(indx).get('timeFrom')
-                                        .value
-                                        | loadDatetimeRange
-                                            : loadExtraStops()
-                                                  .at(indx)
-                                                  .get('timeTo').value
-                                "
                                 [dateRange]="
                                     loadExtraStops().at(indx).get('dateFrom')
                                         .value
@@ -619,6 +613,16 @@
                                             : loadExtraStops()
                                                   .at(indx)
                                                   .get('dateTo').value
+                                "
+                                [timeRange]="
+                                    loadExtraStops().at(indx).get('timeFrom')
+                                        .value
+                                        | loadTimeType
+                                        | loadDatetimeRange
+                                            : (loadExtraStops()
+                                                  .at(indx)
+                                                  .get('timeTo').value
+                                                  | loadTimeType)
                                 "
                                 [legMile]="
                                     loadExtraStops().at(indx).get('legMiles')
@@ -948,8 +952,10 @@
                     "
                     [timeRange]="
                         loadForm.get('deliveryTimeFrom').value
+                            | loadTimeType
                             | loadDatetimeRange
-                                : loadForm.get('deliveryTimeTo').value
+                                : (loadForm.get('deliveryTimeTo').value
+                                      | loadTimeType)
                     "
                     [legMile]="loadForm.get('deliverylegMiles').value"
                     [isEmptyLoad]="false"
