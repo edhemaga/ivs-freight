@@ -128,8 +128,8 @@ export class SelectCompanyComponent
         //     }
         // });
         // console.log();
-        localStorage.setItem('user', JSON.stringify(this.userData));
-        window.location.reload();
+        // localStorage.setItem('user', JSON.stringify(this.userData));
+        // window.location.reload();
         // this.accountStoreService
         //     .selectCompanyAccount({
         //         companyId: parseInt(this.selectedCompanyID),
