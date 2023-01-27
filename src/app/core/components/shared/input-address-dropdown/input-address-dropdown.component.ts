@@ -231,9 +231,9 @@ export class InputAddressDropdownComponent
             (type == 'confirm' && this.currentAddressData) ||
             type == 'cancel'
         ) {
-            if (type == 'confirm') {
-                this.commandEvent.emit(this.currentAddressData);
-            }
+            if ( !this.currentAddressData ) this.currentAddressData = {};
+            this.currentAddressData.type = type;
+            this.commandEvent.emit(this.currentAddressData);
 
             this.closeAddress();
             this.clearInput(e);
