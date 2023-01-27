@@ -724,7 +724,10 @@
                 [ngStyle]="{
                     color: '#2F2F2F'
                 }"
-                [ngClass]="{ counter: item?.isCounter }"
+                [ngClass]="{
+                    counter: item?.isCounter,
+                    'counter-one': item?.value === 1
+                }"
             >
                 {{ item.value }}
                 <span
@@ -817,7 +820,8 @@
                 [ngClass]="{
                     'focusable-text': focusInput,
                     counter: item?.isCounter,
-                    'counter-focus': item?.isCounter && focusInput
+                    'counter-focus': item?.isCounter && focusInput,
+                    'counter-one': item?.value === 1
                 }"
                 [ngStyle]="{
                     color: '#6F9EE0'

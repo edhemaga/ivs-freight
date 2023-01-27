@@ -7,7 +7,7 @@ import {
 } from 'src/assets/utils/settings/application-consts';
 
 @Pipe({
-    name: 'colorFinder'
+    name: 'colorFinder',
 })
 export class ColorFinderPipe implements PipeTransform {
     transform(value: string, id: number): string {

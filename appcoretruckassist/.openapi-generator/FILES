@@ -158,6 +158,7 @@ model/companyAccountModalResponse.ts
 model/companyAccountResponse.ts
 model/companyAccountResponsePagination.ts
 model/companyAdditionalInfo.ts
+model/companyAdditionalInfoResponse.ts
 model/companyContactLabelCountResponse.ts
 model/companyContactLabelCountResponsePagination.ts
 model/companyContactLabelResponse.ts

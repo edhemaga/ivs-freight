@@ -64,6 +64,7 @@ export class TaModalComponent implements OnInit, OnDestroy {
     @Input() applicantText: boolean;
     @Input() profileUpdateText: boolean;
     @Input() customClass: string;
+    @Input() partClass: string;
     @Input() isModalValid: boolean;
     @Input() disableFooter: boolean;
     @Input() disableDelete: boolean;

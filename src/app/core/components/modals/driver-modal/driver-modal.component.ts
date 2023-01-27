@@ -1857,6 +1857,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (res: any) => {
+                    console.log('driver res: ', res);
                     this.driverForm.patchValue({
                         firstName: res.firstName,
                         lastName: res.lastName,
@@ -1995,6 +1996,18 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                                 : null,
                             { emitEvent: false }
                         );
+
+                    this.driverForm
+                        .get('perMileSolo')
+                        .patchValue(res.perMileSolo, {
+                            emitEvent: false,
+                        });
+
+                    this.driverForm
+                        .get('perMileTeam')
+                        .patchValue(res.perMileSolo, {
+                            emitEvent: false,
+                        });
 
                     res.firstName =
                         res.firstName.charAt(0).toUpperCase() +

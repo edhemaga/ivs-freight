@@ -7,6 +7,7 @@
     [specificCaseModalName]="true"
     [isModalValid]="loadForm.valid && isFormDirty"
     [customClass]="loadModalSize"
+    [partClass]="'load-modal-origin-part'"
     [isVisibleHazardous]="isHazardousPicked"
     [isVisibleMap]="true"
     [loadModalTemplate]="true"
@@ -20,6 +21,7 @@
         #originElement
         [formGroup]="loadForm"
         class="form-container form-container-without-mb"
+        [ngStyle]="{ width: '640px !important' }"
     >
         <!-------------------------------- FTL Tab -------------------------------->
         <div class="m-tab">
@@ -471,7 +473,8 @@
                                 label: pickupDateRange ? 'Date From' : 'Date',
                                 placeholderIcon: 'date',
                                 isRequired: true,
-                                customClass: 'datetimeclass'
+                                customClass:
+                                    'datetimeclass line-input-26-in-card'
                             }"
                             (blurInput)="
                                 loadForm.get('pickupDateFrom').markAsTouched()
@@ -499,7 +502,8 @@
                                 isDropdown: true,
                                 label: 'Date To',
                                 placeholderIcon: 'date',
-                                customClass: 'datetimeclass'
+                                customClass:
+                                    'datetimeclass line-input-26-in-card'
                             }"
                             (blurInput)="
                                 loadForm.get('pickupDateTo').markAsTouched()
@@ -519,7 +523,8 @@
                                 placeholderIcon: 'time',
                                 isDropdown: true,
                                 isRequired: true,
-                                customClass: 'datetimeclass'
+                                customClass:
+                                    'datetimeclass line-input-26-in-card'
                             }"
                             (blurInput)="
                                 loadForm.get('pickupTimeFrom').markAsTouched()
@@ -536,7 +541,8 @@
                                 isDropdown: true,
                                 isRequired: true,
                                 isDisabled: selectedStopTimePickup === 6,
-                                customClass: 'datetimeclass'
+                                customClass:
+                                    'datetimeclass line-input-26-in-card'
                             }"
                             (blurInput)="
                                 loadForm.get('pickupTimeTo').markAsTouched()
@@ -1221,6 +1227,7 @@
                                 label: 'Base Rate',
                                 labelInInput: true,
                                 isRequired: true,
+                                priceSeparator: true,
                                 placeholderIconRightSide: 'dollar',
                                 placeholderIconColor: 'green',
                                 inputCursorOnRightSide: true,
@@ -1242,6 +1249,7 @@
                                 label: 'Driver Rate',
                                 labelInInput: true,
                                 isRequired: true,
+                                priceSeparator: true,
                                 placeholderIconRightSide: 'dollar',
                                 placeholderIconColor: 'purple',
                                 inputCursorOnRightSide: true,
@@ -1264,6 +1272,7 @@
                                 type: 'text',
                                 label: 'Adjusted',
                                 labelInInput: true,
+                                priceSeparator: true,
                                 placeholderIconRightSide: 'dollar',
                                 placeholderIconColor: 'purple',
                                 inputCursorOnRightSide: true,
@@ -1292,6 +1301,7 @@
                                             type: 'text',
                                             label: additional.get('name').value,
                                             labelInInput: true,
+                                            priceSeparator: true,
                                             placeholderIconRightSide:
                                                 'dollar-additional-load',
                                             placeholderIconColor: 'blue',
@@ -1341,6 +1351,7 @@
                                 label: 'Advance',
                                 labelInInput: true,
                                 isRequired: true,
+                                priceSeparator: true,
                                 placeholderIconRightSide: 'dollar',
                                 placeholderIconColor: 'purple',
                                 inputCursorOnRightSide: true,

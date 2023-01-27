@@ -13,6 +13,7 @@ import {
     FormControl,
 } from '@angular/forms';
 import {
+    ChangeDetectorRef,
     Component,
     DoCheck,
     ElementRef,
@@ -415,7 +416,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         private modalService: ModalService,
         private ngbActiveModal: NgbActiveModal,
         private financialCalculationPipe: FinancialCalculationPipe,
-        private tagsService: EditTagsService
+        private tagsService: EditTagsService,
+        private cdRef: ChangeDetectorRef
     ) {}
 
     public originHeight: number;
@@ -434,6 +436,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         if (this.originElement) {
             this.originHeight =
                 this.originElement.nativeElement.getBoundingClientRect().height;
+            this.cdRef.detectChanges();
         }
     }
 
@@ -698,6 +701,15 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
 
                     this.loadDispatchesTTDInputConfig = {
                         ...this.loadDispatchesTTDInputConfig,
+                        multipleLabel: {
+                            labels: [
+                                'Truck',
+                                'Trailer',
+                                'Driver',
+                                event?.payType ? 'Driver Pay' : null,
+                            ],
+                            customClass: 'load-dispatches-ttd',
+                        },
                         multipleInputValues: {
                             options: [
                                 {
@@ -780,6 +792,15 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 } else {
                     this.loadDispatchesTTDInputConfig = {
                         ...this.loadDispatchesTTDInputConfig,
+                        multipleLabel: {
+                            labels: [
+                                'Truck',
+                                'Trailer',
+                                'Driver',
+                                'Driver Pay',
+                            ],
+                            customClass: 'load-dispatches-ttd',
+                        },
                         multipleInputValues: null,
                     };
 
@@ -2558,6 +2579,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (res: LoadModalResponse) => {
+                    console.log('load modal: ', res);
                     this.loadNumber = res.loadNumber;
                     this.tags = res.tags;
 
