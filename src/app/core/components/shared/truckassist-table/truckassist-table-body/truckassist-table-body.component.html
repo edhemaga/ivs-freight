@@ -648,10 +648,10 @@
                                 >
                                     <div class="inv-ageing-container">
                                         <div class="bfb-container">
-                                            {{ row[column.field].bfb }}
+                                            {{ row[column.field]?.bfb }}
                                         </div>
                                         <div class="dnu-container">
-                                            {{ row[column.field].dnu }}
+                                            {{ row[column.field]?.dnu }}
                                         </div>
                                         <div
                                             class="inv-ageing-text"
@@ -1109,9 +1109,9 @@
                                             (click)="onLike(row)"
                                             [ngClass]="{
                                                 'did-like-icon':
-                                                    row[column.field].hasLiked,
+                                                    row[column.field]?.hasLiked,
                                                 'like-icon':
-                                                    !row[column.field].hasLiked
+                                                    !row[column.field]?.hasLiked
                                             }"
                                         ></div>
                                         <div
@@ -2112,10 +2112,10 @@
                                 >
                                     <div class="inv-ageing-container">
                                         <div class="bfb-container">
-                                            {{ row[column.field].bfb }}
+                                            {{ row[column.field]?.bfb }}
                                         </div>
                                         <div class="dnu-container">
-                                            {{ row[column.field].dnu }}
+                                            {{ row[column.field]?.dnu }}
                                         </div>
                                         <div
                                             class="inv-ageing-text"
@@ -2231,9 +2231,9 @@
                                             (click)="onLike(row, column)"
                                             [ngClass]="{
                                                 'did-like-icon':
-                                                    row[column.field].hasLiked,
+                                                    row[column.field]?.hasLiked,
                                                 'like-icon':
-                                                    !row[column.field].hasLiked
+                                                    !row[column.field]?.hasLiked
                                             }"
                                         ></div>
                                         <div
