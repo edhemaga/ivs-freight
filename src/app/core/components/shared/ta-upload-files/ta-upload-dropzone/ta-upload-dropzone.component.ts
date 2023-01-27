@@ -40,7 +40,7 @@ export class TaUploadDropzoneComponent {
         dropZoneType: 'files', // files | image | media
         dropZoneSvg: 'assets/svg/common/ic_files_dropzone.svg',
         dropZoneAvailableFiles:
-            'application/pdf, application/png, application/jpg',
+            'application/pdf, application/png, application/jpg, application/jpeg',
         multiple: true,
         globalDropZone: false,
     };
@@ -99,19 +99,19 @@ export class TaUploadDropzoneComponent {
     }
 
     @HostListener('window:dragenter', ['$event'])
-        onWindowDragEnter(event: any): void {
+    onWindowDragEnter(event: any): void {
         event.preventDefault();
         event.stopPropagation();
         this.windowDragOver = true;
         const target = this.dropzoneFocusElem?.nativeElement;
-        if(target) {
+        if (target) {
             target.addEventListener('dragleave', (event) => {
-                setTimeout(()=>{
-                    if(!this.textChangeOverModal) {
+                setTimeout(() => {
+                    if (!this.textChangeOverModal) {
                         this.windowDragOver = false;
                         target.removeAllListeners();
                     }
-                },100);
+                }, 100);
             });
         }
     }
@@ -127,7 +127,7 @@ export class TaUploadDropzoneComponent {
     private async addFiles(files: FileList) {
         for (let index = 0; index < files.length; index++) {
             const file = files.item(index);
-            const prevent = index == files.length -1 ? false : true;
+            const prevent = index == files.length - 1 ? false : true;
             await this.addFile(file, prevent);
         }
     }

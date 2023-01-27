@@ -93,16 +93,12 @@ export class SettingsDocumentComponent implements OnInit {
             case 'add': {
                 this.tableData[0].length = event.files.length;
                 let documents = [];
-                console.log(event.files, 'what files you get')
-                console.log(this.documents, 'what files you get222')
                 event.files.map((item) => {
                     if (item.realFile && !item.alreadyUploaded) {
                         item.alreadyUploaded = true;
                         documents.push(item.realFile);
                     }
                 });
-
-                console.log(documents, 'what files you send')
 
                 let newData: any = {
                     files: documents,

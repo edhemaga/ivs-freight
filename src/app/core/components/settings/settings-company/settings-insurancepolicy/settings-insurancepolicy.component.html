@@ -31,7 +31,9 @@
             <app-ta-re-card
                 [cardNameCommon]="insurance?.producerName"
                 [haveHeaderText]="true"
-                [cardDocumentCounter]="insurance?.files.length ? insurance?.files.length : 0"
+                [cardDocumentCounter]="
+                    insurance?.files.length ? insurance?.files.length : 0
+                "
                 [options]="dropOptions"
                 [optionsId]="insurance.id"
                 (resizePage)="toggleResizePage(i)"
@@ -401,7 +403,11 @@
                                     [countBackgroud]="'#F3F3F3'"
                                     [countHeight]="'24px'"
                                     [countWidth]="'24px'"
-                                    [count]="insurance?.files.length ? insurance?.files.length : 0"
+                                    [count]="
+                                        insurance?.files.length
+                                            ? insurance?.files.length
+                                            : 0
+                                    "
                                 >
                                 </app-ta-counter>
                                 <p class="details-document-name">Document</p>
@@ -413,7 +419,11 @@
                             </svg-icon>
                         </div>
                     </div>
-                    <div class="card-pdf">
+                    <div
+                        class="card-pdf"
+                        [class.extended]="insurance?.files?.length > 1"
+                        [class.disabled]="!insurance?.files?.length"
+                    >
                         <app-ta-upload-files
                             [files]="insurance?.files"
                             [customClassName]="'company-details-pdf'"

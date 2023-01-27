@@ -27,7 +27,6 @@ export class TaNoticeOfAsignmentComponent
     implements OnInit, ControlValueAccessor, OnDestroy
 {
     @Input() sidebarWidth: any;
-    @Input() selectedEditor: any;
     @Input() range: any;
     @Input() settings: any;
     @Input() noticeValue: any;
@@ -35,81 +34,31 @@ export class TaNoticeOfAsignmentComponent
     selectedFontSize = 14;
     activeFont: any = { id: 3, name: 'Default', showName: 'Default' };
     activeFontSize: any;
-    textAlignImages: any[] = [
-        {
-            img: 'align-left.svg',
-            value: 'justifyLeft',
-        },
-        {
-            img: 'align-right.svg',
-            value: 'justifyRight',
-        },
-        {
-            img: 'align-middle.svg',
-            value: 'justifyCenter',
-        },
-        // {
-        //   img: "align-all.svg",
-        //   value: "justifyLeft"
-        // }
-    ];
-    selectedAlign: any = { img: 'align-left.svg', value: 'justifyLeft' };
 
-    fontSizes: any[] = [
-        {
-            id: 1,
-            name: 8,
-        },
-        {
-            id: 2,
-            name: 10,
-        },
-        {
-            id: 3,
-            name: 12,
-        },
-        {
-            id: 4,
-            name: 14,
-        },
-        {
-            id: 5,
-            name: 18,
-        },
-        {
-            id: 6,
-            name: 22,
-        },
-        {
-            id: 8,
-            name: 28,
-        },
-        {
-            id: 9,
-            name: 36,
-        },
-    ];
-
-    fontFamilyList: any[] = [
+    fontSizeList: any[] = [
         {
             id: 1,
             name: 'Large',
             showName: 'Large',
+            additionalText: 24,
         },
         {
             id: 2,
             name: 'Medium',
             showName: 'Medium',
+            additionalText: 17,
         },
         {
             id: 3,
             name: 'Default',
             showName: 'Default',
+            additionalText: 14,
         },
         {
             id: 4,
             name: 'Small',
             showName: 'Small',
+            additionalText: 11,
         },
     ];
 
@@ -157,15 +106,9 @@ export class TaNoticeOfAsignmentComponent
     writeValue(obj: any): void {
         this.noticeRef.nativeElement.value = obj;
     }
-    registerOnChange(fn: any): void {
-        throw new Error('Method not implemented.');
-    }
-    registerOnTouched(fn: any): void {
-        throw new Error('Method not implemented.');
-    }
-    setDisabledState?(isDisabled: boolean): void {
-        throw new Error('Method not implemented.');
-    }
+    registerOnChange(fn: any): void {}
+    registerOnTouched(fn: any): void {}
+    setDisabledState?(isDisabled: boolean): void {}
 
     ngOnInit(): void {
         this.activeFont = { id: 3, name: 'Default', showName: 'Default' };
@@ -197,7 +140,6 @@ export class TaNoticeOfAsignmentComponent
     }
 
     selectFontFamily(e): void {
-        console.log('fontfamily', e);
         this.noticeRef.nativeElement.focus();
         this.activeFont = e;
         this.executeEditor('fontName', e.name);
@@ -235,19 +177,19 @@ export class TaNoticeOfAsignmentComponent
                 document.execCommand('styleWithCSS', false, 'false');
                 document.execCommand(action, false, null);
             } else {
-                if (this.selectedEditor) {
-                    this.selectedEditor.focus();
+                if (this.noticeRef) {
+                    this.noticeRef.nativeElement.focus();
                 }
                 document.execCommand(action, false, null);
             }
         } else if (action == 'foreColor') {
             setTimeout(() => {
-                if (this.selectedEditor) {
-                    this.selectedEditor.focus();
+                if (this.noticeRef?.nativeElement) {
+                    this.noticeRef.nativeElement.focus();
                 }
                 setTimeout(() => {
-                    if (this.selectedEditor) {
-                        this.selectedEditor.focus();
+                    if (this.noticeRef?.nativeElement) {
+                        this.noticeRef.nativeElement.focus();
                     }
                     this.selectedPaternColor = color;
                     document.execCommand('foreColor', false, color);
@@ -263,22 +205,25 @@ export class TaNoticeOfAsignmentComponent
         }, 500);
     }
 
-    changeFontSize(size) {
+    changeFontSize(event) {
+        const fontSize = event.additionalText;
         document.execCommand('fontSize', false, '7');
-        const fontElements = this.selectedEditor.getElementsByTagName('font');
+        const fontElements =
+            this.noticeRef.nativeElement.getElementsByTagName('font');
         for (let i = 0, len = fontElements.length; i < len; ++i) {
             if (
-                fontElements[i].size == '7' ||
-                fontElements[i].size == 'xxx-large'
+                fontElements[i].fontSize == '7' ||
+                fontElements[i].fontSize == 'xxx-large'
             ) {
                 fontElements[i].removeAttribute('size');
-                fontElements[i].style.fontSize = `${size}px`;
+                fontElements[i].style.fontSize = `${fontSize}px`;
             }
         }
-        const spanElements = this.selectedEditor.getElementsByTagName('span');
+        const spanElements =
+            this.noticeRef.nativeElement.getElementsByTagName('span');
         for (let i = 0; i < spanElements.length; ++i) {
             if (spanElements[i].style.fontSize == 'xxx-large') {
-                spanElements[i].style.fontSize = `${size}px`;
+                spanElements[i].style.fontSize = `${fontSize}px`;
             }
         }
 
@@ -288,30 +233,11 @@ export class TaNoticeOfAsignmentComponent
     public checkActiveItems() {
         const selection = window.getSelection();
         if (selection.rangeCount > 0) {
-            // console.log(selection.getRangeAt(0).startContainer.parentNode);
-
             for (const act in this.activeOptions) {
                 this.activeOptions[act] = document.queryCommandState(act);
                 this.selectedPaternColor =
                     document.queryCommandValue('ForeColor');
             }
-        }
-
-        const finded_family = this.fontFamilyList.find((item) => {
-            return item.name.includes(
-                document
-                    .queryCommandValue('fontName')
-                    .replace('"', '')
-                    .replace('"', '')
-            );
-        });
-
-        if (finded_family) {
-            this.selectedFontFamily = finded_family.id;
-        } else {
-            this.selectedFontFamily =
-                document.queryCommandValue('fontName').includes('Montserrat') &&
-                3;
         }
     }
 
@@ -326,7 +252,7 @@ export class TaNoticeOfAsignmentComponent
         setTimeout(() => {
             this.checkActiveItems();
         }, 100);
-        this.selectedEditor = e.target;
+        this.noticeRef.nativeElement = e.target;
     }
 
     updateNoteMain(e): void {

@@ -86,7 +86,7 @@ export class TaModalComponent implements OnInit, OnDestroy {
         dropZoneType: 'files', // files | image | media
         dropZoneSvg: 'assets/svg/common/ic_files_dropzone.svg',
         dropZoneAvailableFiles:
-            'application/pdf, application/png, application/jpg',
+            'application/pdf, application/png, application/jpg, application/jpeg',
         multiple: true,
         globalDropZone: true,
     };

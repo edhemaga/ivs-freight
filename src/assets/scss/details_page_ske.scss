@@ -427,6 +427,10 @@ p {
     padding: 0 5px;
     margin-bottom: 12px;
 
+    &.extended {
+        margin-bottom: 30px;
+    }
+
     &.disabled {
         height: 0 !important;
         margin: 0 !important;
