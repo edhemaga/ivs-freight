@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Resolve } from '@angular/router';
-import { GetCompanyContactListResponse } from 'appcoretruckassist';
-import { Observable, of } from 'rxjs';
-import { catchError, tap } from 'rxjs/operators';
+import { forkJoin, Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
+import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { ContactTService } from '../contact.service';
 import { ContactState, ContactStore } from './contact.store';
 
@@ -12,20 +12,30 @@ import { ContactState, ContactStore } from './contact.store';
 export class ContactResolver implements Resolve<ContactState> {
     constructor(
         private contactService: ContactTService,
-        private contactStore: ContactStore
+        private contactStore: ContactStore,
+        private tableService: TruckassistTableService
     ) {}
-    resolve(): Observable<ContactState | boolean> {
-        return this.contactService.getContacts(null, 1, 25).pipe(
-            catchError(() => {
-                return of('No contact data...');
-            }),
-            tap((contactPagination: GetCompanyContactListResponse) => {
+    resolve(): Observable<any> {
+        return forkJoin([
+            this.contactService.getContacts(null, 1, 25),
+            this.tableService.getTableConfig(19),
+        ]).pipe(
+            tap(([contactPagination, tableConfig]) => {
                 localStorage.setItem(
                     'contactTableCount',
                     JSON.stringify({
                         contact: contactPagination.count,
                     })
                 );
+
+                if (tableConfig) {
+                    const config = JSON.parse(tableConfig.config);
+
+                    localStorage.setItem(
+                        `table-${tableConfig.tableType}-Configuration`,
+                        JSON.stringify(config)
+                    );
+                }
 
                 this.contactStore.set(contactPagination.pagination.data);
             })

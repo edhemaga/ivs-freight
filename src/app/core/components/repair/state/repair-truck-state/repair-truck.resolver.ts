@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Resolve } from '@angular/router';
-import { RepairListResponse } from 'appcoretruckassist';
-import { Observable, of } from 'rxjs';
-import { catchError, tap } from 'rxjs/operators';
+import { forkJoin, Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
+import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { RepairTService } from '../repair.service';
 import { RepairTruckState, RepairTruckStore } from './repair-truck.store';
 
@@ -12,12 +12,13 @@ import { RepairTruckState, RepairTruckStore } from './repair-truck.store';
 export class RepairTruckResolver implements Resolve<RepairTruckState> {
     constructor(
         private repairService: RepairTService,
-        private repairTruckStore: RepairTruckStore
+        private repairTruckStore: RepairTruckStore,
+        private tableService: TruckassistTableService
     ) {}
 
-    resolve(): Observable<RepairTruckState | boolean> {
-        return this.repairService
-            .getRepairList(
+    resolve(): Observable<any> {
+        return forkJoin([
+            this.repairService.getRepairList(
                 undefined,
                 1,
                 undefined,
@@ -30,24 +31,31 @@ export class RepairTruckResolver implements Resolve<RepairTruckState> {
                 undefined,
                 1,
                 25
-            )
-            .pipe(
-                catchError(() => {
-                    return of('No repair trucks data...');
-                }),
-                tap((repairTruckPagination: RepairListResponse) => {
-                    localStorage.setItem(
-                        'repairTruckTrailerTableCount',
-                        JSON.stringify({
-                            repairTrucks: repairTruckPagination.truckCount,
-                            repairTrailers: repairTruckPagination.trailerCount,
-                        })
-                    );
+            ),
+            this.tableService.getTableConfig(10),
+        ]).pipe(
+            tap(([repairTruckPagination, tableConfig]) => {
+                localStorage.setItem(
+                    'repairTruckTrailerTableCount',
+                    JSON.stringify({
+                        repairTrucks: repairTruckPagination.truckCount,
+                        repairTrailers: repairTruckPagination.trailerCount,
+                    })
+                );
 
-                    this.repairTruckStore.set(
-                        repairTruckPagination.pagination.data
+                if (tableConfig) {
+                    const config = JSON.parse(tableConfig.config);
+
+                    localStorage.setItem(
+                        `table-${tableConfig.tableType}-Configuration`,
+                        JSON.stringify(config)
                     );
-                })
-            );
+                }
+
+                this.repairTruckStore.set(
+                    repairTruckPagination.pagination.data
+                );
+            })
+        );
     }
 }
