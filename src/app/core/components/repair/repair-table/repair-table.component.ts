@@ -212,7 +212,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                 // On Add Repair
                 if (res.animation === 'add' && this.selectedTab === res.tab) {
                     this.viewData.push(
-                        res.tab === 'active' || res.tab === 'inctive'
+                        res.tab !== 'repair-shop'
                             ? this.mapTruckAndTrailerData(res.data)
                             : this.mapShopData(res.data)
                     );
@@ -240,7 +240,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                     this.selectedTab === res.tab
                 ) {
                     const updatedRepair =
-                        res.tab === 'active' || res.tab === 'inctive'
+                        res.tab !== 'repair-shop'
                             ? this.mapTruckAndTrailerData(res.data)
                             : this.mapShopData(res.data);
 
@@ -434,11 +434,12 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     // Check If Selected Tab Has Active View Mode
-    checkActiveViewMode(){
-        if(this.activeViewMode === 'Map'){
+    checkActiveViewMode() {
+        if (this.activeViewMode === 'Map') {
             let hasMapView = false;
 
-            let viewModeOptions = this.tableOptions.toolbarActions.viewModeOptions;
+            let viewModeOptions =
+                this.tableOptions.toolbarActions.viewModeOptions;
 
             viewModeOptions.map((viewMode: any) => {
                 if (viewMode.name === 'Map') {
@@ -446,13 +447,15 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                 }
             });
 
-            if(!hasMapView){
+            if (!hasMapView) {
                 this.activeViewMode = 'List';
 
                 viewModeOptions = this.getViewModeOptions();
             }
 
-            this.tableOptions.toolbarActions.viewModeOptions = [...viewModeOptions];
+            this.tableOptions.toolbarActions.viewModeOptions = [
+                ...viewModeOptions,
+            ];
         }
     }
 
@@ -511,6 +514,9 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
         } else {
             this.viewData = [];
         }
+
+        console.log('Repair Data');
+        console.log(this.viewData);
     }
 
     // Map Truck And Trailer Data
