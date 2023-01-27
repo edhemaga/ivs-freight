@@ -50,7 +50,16 @@
             p {
                 font-size: 12px;
                 margin-top: -5px !important;
-                user-select: none;
+
+                &::-moz-selection {
+                    color: #6c6c6c;
+                    background: rgb(108, 108, 108, 0.2);
+                }
+
+                &::selection {
+                    color: #6c6c6c;
+                    background: rgb(108, 108, 108, 0.2);
+                }
             }
         }
 
@@ -364,266 +373,6 @@
             }
         }
 
-        /* .violations-view-container {
-            width: 616px;
-
-            .line-container {
-                position: relative;
-
-                .review-feedback-container {
-                    position: absolute;
-                    top: 0;
-                    right: 0;
-                    transform: translateX(calc(100% + 5px));
-                    width: 429px;
-                }
-            }
-
-            .title-container {
-                width: 100%;
-                margin-bottom: 6px;
-                padding-left: 6px;
-
-                .date-title-box,
-                .vehicle-title-box,
-                .location-title-box,
-                .description-title-box {
-                    p {
-                        color: $bw5;
-                        font-size: 12px;
-
-                        &::-moz-selection {
-                            color: $bw5;
-                            background: rgb(145, 145, 145, 0.2);
-                        }
-
-                        &::selection {
-                            color: $bw5;
-                            background: rgb(145, 145, 145, 0.2);
-                        }
-
-                        span {
-                            color: $progress-danger;
-
-                            &::-moz-selection {
-                                color: $bw5;
-                                background: rgb(145, 145, 145, 0.2);
-                            }
-
-                            &::selection {
-                                color: $bw5;
-                                background: rgb(145, 145, 145, 0.2);
-                            }
-                        }
-                    }
-
-                    &.date-title-box {
-                        width: 43px;
-                        margin-right: 52px;
-                    }
-
-                    &.vehicle-title-box {
-                        width: 115px;
-                        margin-right: 18px;
-                    }
-
-                    &.location-title-box {
-                        width: 75px;
-                        margin-right: 72px;
-                    }
-
-                    &.description-title-box {
-                        width: 191px;
-                    }
-                }
-            }
-
-            .violation-info-container {
-                width: 100%;
-                height: 26px;
-                margin-bottom: 2px;
-                padding: 4px 6px;
-                border-radius: 2px;
-                font-size: 14px;
-                background: $ta-light-grey-4;
-                color: $bw6-2;
-                transition: color 0.2s ease-in-out, background 0.2s ease-in-out;
-
-                &:hover {
-                    background: $bw2;
-                    color: $ta-light-grey-3;
-
-                    .info-btn-container {
-                        .btn-container {
-                            .edit-icon,
-                            .delete-icon {
-                                opacity: 1;
-                                visibility: visible;
-                                display: flex;
-                            }
-                        }
-
-                        .btn-container.active {
-                            .review-icon-box {
-                                .review-icon {
-                                    visibility: visible !important;
-                                    opacity: 1 !important;
-                                }
-                            }
-                        }
-                    }
-                }
-
-                p {
-                    line-height: 18px;
-
-                    &::-moz-selection {
-                        color: $bw6-2;
-                        background: rgb(108, 108, 108, 0.2);
-                    }
-
-                    &::selection {
-                        color: $bw6-2;
-                        background: rgb(108, 108, 108, 0.2);
-                    }
-                }
-
-                .date-box,
-                .vehicle-box,
-                .location-box,
-                .description-box {
-                    &.date-box {
-                        width: 71px;
-                        margin-right: 24px;
-                    }
-
-                    &.vehicle-box {
-                        width: 109px;
-                        margin-right: 24px;
-                    }
-
-                    &.location-box {
-                        width: 123px;
-                        margin-right: 24px;
-                    }
-
-                    &.description-box {
-                        margin-right: 3px;
-                    }
-                }
-
-                .review-icon-box {
-                    margin-left: 25px;
-                }
-
-                .btn-container {
-                    width: 42px;
-
-                    &.active {
-                        .edit-icon,
-                        .delete-icon,
-                        .review-icon {
-                            visibility: hidden !important;
-                            opacity: 0 !important;
-
-                            &.edit-icon,
-                            &.delete-icon {
-                                display: none !important;
-                            }
-
-                            &.review-icon.active {
-                                visibility: visible !important;
-                                opacity: 1 !important;
-                            }
-                        }
-                    }
-
-                    .edit-icon,
-                    .delete-icon,
-                    .review-icon,
-                    .feedback-icon {
-                        cursor: pointer;
-                        transition: opacity 0.2s ease-in-out,
-                            visibility 0.2s ease-in-out;
-
-                        svg {
-                            path {
-                                fill: $bw4;
-                            }
-                        }
-
-                        &:hover {
-                            svg {
-                                path {
-                                    transition: fill 0.2s ease-in-out;
-                                    fill: $bw6-2;
-                                }
-                            }
-                        }
-
-                        &.edit-icon,
-                        &.delete-icon {
-                            margin-right: 4px;
-                            opacity: 0;
-                            visibility: hidden;
-
-                            &.delete-icon {
-                                margin-right: 0;
-                            }
-                        }
-
-                        &.review-icon {
-                            svg {
-                                path {
-                                    transition: fill 0.3s ease-in-out;
-                                    fill: $ta-red-2 !important;
-                                }
-
-                                rect {
-                                    transition: fill 0.3s ease-in-out;
-                                    fill: $bw2 !important;
-                                }
-                            }
-
-                            &:hover {
-                                svg {
-                                    path {
-                                        fill: $white !important;
-                                    }
-
-                                    rect {
-                                        fill: $ta-red-2 !important;
-                                    }
-                                }
-                            }
-
-                            &.active {
-                                svg {
-                                    path {
-                                        fill: $white !important;
-                                    }
-
-                                    rect {
-                                        fill: $ta-red-3 !important;
-                                    }
-                                }
-                            }
-                        }
-
-                        &.feedback-icon {
-                            margin-left: 4px;
-
-                            svg {
-                                path {
-                                    fill: $ta-red-2;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        } */
-
         .btn-instead-form-container {
             margin-top: 22px;
         }
@@ -637,7 +386,16 @@
                 line-height: 14px;
                 font-size: 12px;
                 margin-top: -5px !important;
-                user-select: none;
+
+                &::-moz-selection {
+                    color: #6c6c6c;
+                    background: rgb(108, 108, 108, 0.2);
+                }
+
+                &::selection {
+                    color: #6c6c6c;
+                    background: rgb(108, 108, 108, 0.2);
+                }
             }
         }
     }

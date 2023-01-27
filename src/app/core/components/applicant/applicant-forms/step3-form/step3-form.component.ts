@@ -286,7 +286,7 @@ export class Step3FormComponent
         this.licenseForm.patchValue({
             licenseNumber: formValue?.licenseNumber,
             country: formValue?.country,
-            state: formValue?.stateShort,
+            state: formValue?.stateShort ?? null,
             classType: formValue?.classType,
             expDate: formValue?.expDate,
         });

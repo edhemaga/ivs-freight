@@ -133,12 +133,31 @@
             p {
                 font-size: 14px;
                 line-height: 18px;
-                user-select: none;
                 margin-top: 5px !important;
                 color: $black;
 
+                &::-moz-selection {
+                    color: $ta-black;
+                    background: rgb(47, 47, 47, 0.2);
+                }
+
+                &::selection {
+                    color: $ta-black;
+                    background: rgb(47, 47, 47, 0.2);
+                }
+
                 a {
                     color: $ta-blue;
+
+                    &::-moz-selection {
+                        color: $ta-blue;
+                        background: rgb(83, 107, 194, 0.2);
+                    }
+
+                    &::selection {
+                        color: $ta-blue;
+                        background: rgb(83, 107, 194, 0.2);
+                    }
                 }
             }
         }

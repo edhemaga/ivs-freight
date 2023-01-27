@@ -50,9 +50,18 @@
             p {
                 font-size: 14px;
                 line-height: 18px;
-                user-select: none;
                 margin-top: 5px !important;
                 color: $black;
+
+                &::-moz-selection {
+                    color: $ta-black;
+                    background: rgb(47, 47, 47, 0.2);
+                }
+
+                &::selection {
+                    color: $ta-black;
+                    background: rgb(47, 47, 47, 0.2);
+                }
             }
         }
 
@@ -135,6 +144,7 @@
                 border-radius: 2px;
                 text-transform: uppercase;
                 font-size: 14px;
+                margin-bottom: 4px;
 
                 p {
                     color: $bw6-2;

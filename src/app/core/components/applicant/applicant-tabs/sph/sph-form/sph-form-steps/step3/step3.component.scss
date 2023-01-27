@@ -66,8 +66,17 @@
             font-size: 12px;
             line-height: 22px;
             cursor: pointer;
-            user-select: none;
             margin-top: -3px !important;
+
+            &::-moz-selection {
+                color: #6c6c6c;
+                background: rgb(108, 108, 108, 0.2);
+            }
+
+            &::selection {
+                color: #6c6c6c;
+                background: rgb(108, 108, 108, 0.2);
+            }
         }
     }
 
@@ -105,7 +114,7 @@
         margin: 0 auto 10px auto;
 
         .question-container {
-            margin-bottom: 22px;
+            margin-bottom: 6px;
             width: 100%;
 
             .title-box {
@@ -142,6 +151,8 @@
                 .required {
                     font-size: 11px;
                     color: $ta-red-2;
+                    visibility: hidden;
+                    opacity: 0;
 
                     &::-moz-selection {
                         color: $ta-red-2;
@@ -152,6 +163,11 @@
                         color: $ta-red-2;
                         background: rgb(239, 83, 80, 0.2);
                     }
+                }
+
+                .required-active {
+                    visibility: visible;
+                    opacity: 1;
                 }
             }
 

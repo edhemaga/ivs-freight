@@ -371,8 +371,6 @@ export class Step3Component implements OnInit, AfterViewInit, OnDestroy {
                 ];
 
                 if (value) {
-                    console.log(this.drugAndAlcoholTestingHistoryForm.value);
-
                     const {
                         applicantNotSubject,
                         employmentFromDate,
@@ -617,8 +615,6 @@ export class Step3Component implements OnInit, AfterViewInit, OnDestroy {
             address: applicantNotSubject ? null : selectedAddress,
             hasPositiveTests: applicantNotSubject ? null : aspRehabilitation,
         };
-
-        console.log('saveData', saveData);
 
         this.applicantActionsService
             .createDrugAndAlcoholSphForm(saveData)
