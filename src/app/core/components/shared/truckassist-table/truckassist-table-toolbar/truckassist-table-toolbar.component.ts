@@ -217,6 +217,10 @@ export class TruckassistTableToolbarComponent
                 }
             });
         }
+
+        if(this.selectedViewMode !== 'Map'){
+            this.isMapShowning = false;
+        }
     }
 
     // Get Toolbar Width
@@ -361,6 +365,9 @@ export class TruckassistTableToolbarComponent
         });
 
         this.isMapShowning = modeView.mode === 'Map';
+
+        console.log('isMapShowning')
+        console.log(this.isMapShowning)
     }
 
     // Delete Selected Rows
