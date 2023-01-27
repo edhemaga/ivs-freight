@@ -123,7 +123,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
         dropZoneType: 'files',
         dropZoneSvg: 'assets/svg/common/ic_files_dropzone.svg',
         dropZoneAvailableFiles:
-            'application/pdf, application/png, application/jpg',
+            'application/pdf, image/png, image/jpeg, image/jpg',
         multiple: true,
         globalDropZone: true,
     };
@@ -377,7 +377,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                 dropZoneType: 'files',
                 dropZoneSvg: 'assets/svg/common/ic_files_dropzone.svg',
                 dropZoneAvailableFiles:
-                    'application/pdf, application/png, application/jpg',
+                    'application/pdf, image/png, image/jpeg, image/jpg',
                 multiple: true,
                 globalDropZone: false,
             };
@@ -2167,7 +2167,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             }
         });
 
-        this.tagsService.updateTag({tags: tags}).subscribe();
+        this.tagsService.updateTag({ tags: tags }).subscribe();
     }
 
     ngOnDestroy(): void {
