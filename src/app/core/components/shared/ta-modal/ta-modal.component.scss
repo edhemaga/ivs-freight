@@ -85,13 +85,14 @@
             width: 615px;
         }
 
-        .modal-original-part {
-            width: 640px;
-        }
-
         .modal-additional-part {
             width: 640px;
         }
+    }
+
+    // This class set up, because load modal has two parts (origin - additional)
+    .load-modal-origin-part {
+        width: 640px !important;
     }
 
     &.modal-container-XS {

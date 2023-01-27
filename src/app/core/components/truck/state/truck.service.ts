@@ -91,15 +91,15 @@ export class TruckTService implements OnDestroy {
                                 localStorage.getItem('truckTableCount')
                             );
 
-                            truckCount.active++;
+                            // truckCount.active++;
 
-                            localStorage.setItem(
-                                'truckTableCount',
-                                JSON.stringify({
-                                    active: truckCount.active,
-                                    inactive: truckCount.inactive,
-                                })
-                            );
+                            // localStorage.setItem(
+                            //     'truckTableCount',
+                            //     JSON.stringify({
+                            //         active: truckCount.active,
+                            //         inactive: truckCount.inactive,
+                            //     })
+                            // );
 
                             this.tableService.sendActionAnimation({
                                 animation: 'add',
@@ -129,17 +129,15 @@ export class TruckTService implements OnDestroy {
                             this.truckActiveStore.remove(
                                 ({ id }) => id === data.id
                             );
-                            
 
                             this.truckMinimalStore.remove(
                                 ({ id }) => id === data.id
                             );
-                                
 
                             truck.registrations = storedTruckData.registrations;
                             truck.titles = storedTruckData.titles;
                             truck.inspections = storedTruckData.inspections;
-                            
+
                             this.truckMinimalStore.add(truck);
                             this.tdlStore.add(truck);
                             this.truckItem.set([truck]);

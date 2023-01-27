@@ -71,6 +71,9 @@
 
     &.in-label {
         top: 4px;
+        font-size: 11px !important;
+        font-weight: 400 !important;
+        transition: none !important;
 
         &.focus {
             color: #ffffff !important;

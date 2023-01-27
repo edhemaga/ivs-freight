@@ -305,10 +305,13 @@ ngb-modal-window[aria-hidden='true'] {
                         border-radius: 2px;
                         margin-right: 9px;
                         cursor: pointer !important;
-                        padding-bottom: 1px;
+                        position: relative;
                         transition: all 0.3s ease-in-out;
 
                         svg-icon {
+                            position: absolute;
+                            top: 47%;
+                            transform: translateY(-50%);
                             svg {
                                 path {
                                     fill: #919191;
