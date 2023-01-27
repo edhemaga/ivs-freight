@@ -141,6 +141,7 @@ export class TaUploadFileComponent implements OnInit, OnDestroy {
     }
 
     public onAction(action: string) {
+        this.detailsDataService.setDocumentName(this.file.fileName);
         switch (action) {
             case 'tag': {
                 if (this.file.tags) {
