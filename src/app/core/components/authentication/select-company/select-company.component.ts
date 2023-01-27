@@ -29,9 +29,9 @@ export class SelectCompanyComponent
     customOptions: any;
     selectedCompanyID: any;
 
-    @Input() userData: SignInResponse;
+    // @Input() userData: SignInResponse;
     @Input() lastLoginInCompany: number = 0;
-    // userData: SignInResponse;
+    userData: SignInResponse;
     setWidth: number;
     test: number = 190;
     @Output() goBackToLogin = new EventEmitter<boolean>();
@@ -50,59 +50,59 @@ export class SelectCompanyComponent
     ngOnInit(): void {
         this.userData = JSON.parse(localStorage.getItem('user'));
 
-        // this.userData = {
-        //     firstName: 'vladimir',
-        //     companies: [
-        //         {
-        //             id: 1,
-        //             companyName: 'Test',
-        //             logo: null,
-        //             isActive: true,
-        //         },
-        //         {
-        //             id: 2,
-        //             companyName: 'Test23s',
-        //             logo: null,
-        //             isActive: false,
-        //         },
-        //         {
-        //             id: 3,
-        //             companyName: 'agw',
-        //             logo: null,
-        //             isActive: false,
-        //         },
-        //         {
-        //             id: 4,
-        //             companyName: 'aerhrnaer',
-        //             logo: null,
-        //             isActive: false,
-        //         },
-        //         {
-        //             id: 5,
-        //             companyName: 'arhehr',
-        //             logo: null,
-        //             isActive: false,
-        //         },
-        //         // {
-        //         //     id: 6,
-        //         //     companyName: 'sdg',
-        //         //     logo: null,
-        //         //     isActive: false,
-        //         // },
-        //         // {
-        //         //     id: 7,
-        //         //     companyName: '13245',
-        //         //     logo: null,
-        //         //     isActive: false,
-        //         // },
-        //         // {
-        //         //     id: 8,
-        //         //     companyName: 'T1233s',
-        //         //     logo: null,
-        //         //     isActive: false,
-        //         // },
-        //     ],
-        // };
+        this.userData = {
+            firstName: 'vladimir',
+            companies: [
+                {
+                    id: 1,
+                    companyName: 'Test',
+                    logo: null,
+                    isActive: true,
+                },
+                {
+                    id: 2,
+                    companyName: 'Test23s',
+                    logo: null,
+                    isActive: false,
+                },
+                {
+                    id: 3,
+                    companyName: 'agw',
+                    logo: null,
+                    isActive: false,
+                },
+                {
+                    id: 4,
+                    companyName: 'aerhrnaer',
+                    logo: null,
+                    isActive: false,
+                },
+                {
+                    id: 5,
+                    companyName: 'arhehr',
+                    logo: null,
+                    isActive: false,
+                },
+                // {
+                //     id: 6,
+                //     companyName: 'sdg',
+                //     logo: null,
+                //     isActive: false,
+                // },
+                // {
+                //     id: 7,
+                //     companyName: '13245',
+                //     logo: null,
+                //     isActive: false,
+                // },
+                // {
+                //     id: 8,
+                //     companyName: 'T1233s',
+                //     logo: null,
+                //     isActive: false,
+                // },
+            ],
+        };
 
         // @ts-ignore
         this.customOptions = {
@@ -148,10 +148,11 @@ export class SelectCompanyComponent
         });
         let calculateElementsWidth = lenght * 190 + 300 - 190;
         this.setWidth = calculateElementsWidth;
-        console.log(this.el.nativeElement.querySelector(`.owl-stage`));
-        (document.querySelector('.owl-stage') as HTMLElement).style.width =
-            calculateElementsWidth.toString().concat('px');
-        setTimeout(() => {}, 400);
+        setTimeout(() => {
+            console.log(this.el.nativeElement.querySelector(`.owl-stage`));
+            (document.querySelector('.owl-stage') as HTMLElement).style.width =
+                calculateElementsWidth.toString().concat('px');
+        }, 400);
     }
     onCompanySelect() {
         this.accountStoreService
