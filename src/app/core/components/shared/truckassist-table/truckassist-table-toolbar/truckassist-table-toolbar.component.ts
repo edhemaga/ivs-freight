@@ -214,12 +214,12 @@ export class TruckassistTableToolbarComponent
             this.options.toolbarActions.viewModeOptions.map((viewMode: any) => {
                 if (viewMode.active) {
                     this.selectedViewMode = viewMode.name;
+
+                    if (this.selectedViewMode !== 'Map' && this.isMapShowning) {
+                        this.isMapShowning = false;
+                    }
                 }
             });
-        }
-
-        if(this.selectedViewMode !== 'Map'){
-            this.isMapShowning = false;
         }
     }
 
@@ -366,8 +366,8 @@ export class TruckassistTableToolbarComponent
 
         this.isMapShowning = modeView.mode === 'Map';
 
-        console.log('isMapShowning')
-        console.log(this.isMapShowning)
+        console.log('isMapShowning');
+        console.log(this.isMapShowning);
     }
 
     // Delete Selected Rows

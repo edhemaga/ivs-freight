@@ -450,8 +450,8 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
             tableDriver: 'NA',
             tableTrailer: 'NA',
             tableTrailerType: 'NA',
-            tabelOwnerDetailesName: data?.owner?.name ? data.owner.name : '',
-            tabelOwnerDetailesComm: data?.commission
+            tabelOwnerDetailsName: data?.owner?.name ? data.owner.name : '',
+            tabelOwnerDetailsComm: data?.commission
                 ? data.commission + '%'
                 : '',
             textWeightGross: data?.truckGrossWeight?.name
@@ -484,10 +484,10 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
             tabelAxle: data?.axles ? data.axles : '',
             tabelBrakes: data?.brakes?.name ? data.brakes.name : '',
             tableTireSize: data?.tireSize?.name ? data.tireSize.name : '',
-            tableWheelsMaterialFront: data?.frontWheels?.name
+            tableWheelCompositionFront: data?.frontWheels?.name
                 ? data.frontWheels.name
                 : '',
-            tableWheelsMaterialRear: data?.rearWheels?.name
+            tableWheelCompositionRear: data?.rearWheels?.name
                 ? data.rearWheels.name
                 : '',
             tableAPUnit: data?.apUnit?.name ? data.apUnit.name : '',
