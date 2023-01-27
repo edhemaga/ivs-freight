@@ -143,7 +143,6 @@ export class InputAddressDropdownComponent
                         this.inputDropdown.inputRef.focusInput
                     ) {
                         this.requestSent = false;
-                        this.getSuperControl.setErrors({ invalid: true });
                         const addressData = {
                             address: {},
                             valid: false,
@@ -169,6 +168,15 @@ export class InputAddressDropdownComponent
                 })
             )
             .subscribe((res) => {
+                if (
+                    !this.activeAddress ||
+                    this.activeAddress?.address != this.getSuperControl.value
+                ) {
+                    this.getSuperControl.setErrors({ invalid: true });
+                } else {
+                    this.getSuperControl.setErrors(null);
+                }
+
                 this.inputConfig.loadingSpinner = {
                     isLoading: false,
                 };
@@ -193,6 +201,9 @@ export class InputAddressDropdownComponent
             if (!this.requestSent) {
                 this.getSuperControl.setErrors({ invalid: true });
             }
+            if (this.getSuperControl.value == this.activeAddress?.address) {
+                this.getSuperControl.setErrors(null);
+            }
         }, 200);
         this.closeDropdown.emit(e);
     }
@@ -212,16 +223,19 @@ export class InputAddressDropdownComponent
     public onSelectDropdown(event: any, action: string) {
         switch (action) {
             case 'address': {
-                this.activeAddress = event;
+                this.activeAddress = event
+                    ? { ...event, address: event?.name }
+                    : null;
                 if (event?.name) {
                     this.getAddressData(event.name);
                     this.getSuperControl.setValue(event.name);
                     this.getSuperControl.setErrors(null);
+
                     this.chosenFromDropdown = true;
                 } else {
+                    this.onClearInputEvent();
                     this.currentAddressData = null;
                     this.addresList = [];
-                    this.getSuperControl.setValue(null);
                 }
                 break;
             }
@@ -299,15 +313,18 @@ export class InputAddressDropdownComponent
         this.incorrectEvent.emit(event);
     }
 
-    onClearInputEvent(e: any) {
-        if (e) {
-            const addressData = {
-                address: {},
-                valid: false,
-                longLat: [],
-            };
-            this.selectedAddress.emit(addressData);
+    onClearInputEvent(e?: any) {
+        if (this.inputConfig.isRequired) {
+            setTimeout(() => {
+                this.getSuperControl.setErrors({ required: true });
+            }, 300);
         }
+        const addressData = {
+            address: {},
+            valid: false,
+            longLat: [],
+        };
+        this.selectedAddress.emit(addressData);
     }
 
     ngOnDestroy(): void {
