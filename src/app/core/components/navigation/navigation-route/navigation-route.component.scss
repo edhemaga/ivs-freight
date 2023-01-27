@@ -119,6 +119,8 @@
         .nav-item-name-active {
             font-weight: 700;
             color: $nav-active-lighter;
+            width: 175px;
+            display: flex;
         }
         .nav-item-arrow {
             position: absolute;
