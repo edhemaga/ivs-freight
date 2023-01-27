@@ -346,6 +346,15 @@ export class SettingsCompanyService implements OnDestroy {
         return this.settingService.apiCompanyDocumentsPost();
     }
 
+
+    public getCompanyInsurance(id: any){
+        return this.settingService.apiCompanyInsurancepolicyIdGet(id);
+    }
+
+    public getCompanyPayroll(id: any){
+        return this.settingService.apiCompanyInsurancepolicyIdGet(id);
+    }
+
     ngOnDestroy(): void {
         this.destroy$.next();
         this.destroy$.complete();
