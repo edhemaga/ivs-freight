@@ -825,11 +825,11 @@ export function getDriverColumnsDefinition() {
         },
         {
             ngTemplate: 'progress',
-            title: 'Mvr Details Expiration',
+            title: 'MVR Details Expiration',
             field: 'tableMvrDetailsExpiration',
             name: 'Mvr Details Expiration',
             sortName: 'mvrIssue',
-            groupName:'Mvr Details ',
+            groupName:'MVR Details ',
             hidden: false,
             isPined: false,
             width: 130,

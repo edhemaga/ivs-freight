@@ -8,6 +8,7 @@ import { UserQuery } from '../state/user-state/user.query';
 import { UserState } from '../state/user-state/user.store';
 import { formatPhonePipe } from 'src/app/core/pipes/formatPhone.pipe';
 import { NameInitialsPipe } from 'src/app/core/pipes/nameinitials';
+import { ImageBase64Service } from 'src/app/core/utils/base64.image';
 
 @Component({
     selector: 'app-user-table',
@@ -34,7 +35,8 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
         private tableService: TruckassistTableService,
         private userQuery: UserQuery,
         private phoneFormater: formatPhonePipe,
-        private nameInitialsPipe: NameInitialsPipe
+        private nameInitialsPipe: NameInitialsPipe,
+        private imageBase64Service: ImageBase64Service,
     ) {}
 
     // ---------------------------  NgOnInit ----------------------------------
@@ -342,7 +344,9 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     data?.firstName && data?.lastName
                         ? data.firstName + ' ' + data.lastName
                         : '',
-                avatar: data?.avatar ? data.avatar : '',
+                avatar: data?.avatar
+                    ? this.imageBase64Service.sanitizer(data.avatar)
+                    : '',
                 avatarColor: this.getAvatarColors(),
                 textShortName: this.nameInitialsPipe.transform(
                     data?.firstName && data?.lastName
