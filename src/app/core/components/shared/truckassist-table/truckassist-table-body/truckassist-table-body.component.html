@@ -659,7 +659,7 @@
                                                 width: column.width - 42 + 'px'
                                             }"
                                         >
-                                            {{ row[column.field].amount }}
+                                            {{ row[column.field]?.amount }}
                                         </div>
                                     </div>
                                 </div>
@@ -2123,7 +2123,7 @@
                                                 width: column.width - 42 + 'px'
                                             }"
                                         >
-                                            {{ row[column.field].amount }}
+                                            {{ row[column.field]?.amount }}
                                         </div>
                                     </div>
                                 </div>
