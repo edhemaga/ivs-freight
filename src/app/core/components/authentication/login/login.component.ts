@@ -31,7 +31,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     public copyrightYear!: number;
     public showHideIfMoreThenOneCompany: boolean = false;
     public userData: any;
-    lastLoginInCompany;
+    public lastLoginInCompany: number;
     constructor(
         private formBuilder: FormBuilder,
         private authStoreService: AuthStoreService,
@@ -40,7 +40,26 @@ export class LoginComponent implements OnInit, OnDestroy {
         private authSecurityService: AuthSecurityService,
         private cdRef: ChangeDetectorRef
     ) {}
-    calculateDiff(dateSent) {
+
+    ngOnInit() {
+        this.authStoreService.userHasMultipleCompaniesObservable.subscribe(
+            (res) => {
+                this.lastLoginInCompany = this.calculateDiff(
+                    convertDateFromBackend(res.companies.lastLogin)
+                );
+                this.cdRef.detectChanges();
+                this.userData = res;
+
+                console.log(res);
+                this.showHideIfMoreThenOneCompany = true;
+            }
+        );
+        this.createForm();
+
+        this.copyrightYear = moment().year();
+        this.resetSubject();
+    }
+    public calculateDiff(dateSent) {
         let currentDate = new Date();
         dateSent = new Date(dateSent);
 
@@ -58,27 +77,6 @@ export class LoginComponent implements OnInit, OnDestroy {
                 (1000 * 60 * 60 * 24)
         );
     }
-    ngOnInit() {
-        this.authStoreService.userHasMultipleCompaniesObservable.subscribe(
-            (res) => {
-                this.userData = res;
-                console.log(res);
-                this.lastLoginInCompany = this.calculateDiff(
-                    convertDateFromBackend(res.companies.lastLogin)
-                );
-                this.showHideIfMoreThenOneCompany = true;
-                this.cdRef.detectChanges();
-            }
-        );
-        this.createForm();
-
-        this.copyrightYear = moment().year();
-
-        this.resetSubject();
-        // Delete this line bellow
-        // this.userLogin();
-    }
-
     private createForm(): void {
         this.loginForm = this.formBuilder.group({
             email: [null, [Validators.required]],

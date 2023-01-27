@@ -14,44 +14,55 @@
     </div>
     <div class="select_company_main_wrapper">
         <div class="container">
-            <div class="row" *ngIf="userData?.companies">
-                <owl-carousel-o [options]="customOptions">
-                    <ng-container *ngFor="let item of userData.companies">
-                        <ng-template carouselSlide>
-                            <div
-                                class="slider"
-                                [ngClass]="{
-                                    'without-company': !item.isActive
-                                }"
-                                [id]="item.id"
+            <div class="row carouser-holder" *ngIf="userData?.companies">
+                <owl-carousel-o
+                    [options]="customOptions"
+                    [width]="setWidth"
+                    #owlCarousel
+                >
+                    <ng-template
+                        *ngFor="let item of userData.companies"
+                        carouselSlide
+                    >
+                        <div
+                            class="slider"
+                            [ngStyle]="{ width: test + 'px' }"
+                            [ngStyle]="{ width: '190px' }"
+                            [id]="item.id"
+                        >
+                            <span
+                                class="company-name"
+                                *ngIf="item.logo == null"
+                                >{{ item.companyName }}</span
                             >
-                                <span class="company-name">{{
-                                    item.companyName
-                                }}</span>
-                                <div *ngIf="item.isActive" class="last-login">
-                                    <span class="text"> Last login </span>
-                                    <span
-                                        class="time"
-                                        *ngIf="lastLoginInCompany == '0'"
-                                    >
-                                        Today
-                                    </span>
-                                    <span
-                                        class="time"
-                                        *ngIf="lastLoginInCompany == '1'"
-                                    >
-                                        Yesterday
-                                    </span>
-                                    <span
-                                        class="time"
-                                        *ngIf="lastLoginInCompany > '1'"
-                                    >
-                                        {{ lastLoginInCompany }}
-                                    </span>
-                                </div>
+                            <img
+                                class="logo"
+                                *ngIf="item.logo != null"
+                                src="{{ 'data:image/jpg;base64,' + item.logo }}"
+                            />
+                            <div *ngIf="item?.isActive" class="last-login">
+                                <span class="text"> Last login </span>
+                                <span
+                                    class="time"
+                                    *ngIf="lastLoginInCompany == 0"
+                                >
+                                    Today
+                                </span>
+                                <span
+                                    class="time"
+                                    *ngIf="lastLoginInCompany == 1"
+                                >
+                                    Yesterday
+                                </span>
+                                <span
+                                    class="time"
+                                    *ngIf="lastLoginInCompany > 1"
+                                >
+                                    {{ lastLoginInCompany }}
+                                </span>
                             </div>
-                        </ng-template>
-                    </ng-container>
+                        </div>
+                    </ng-template>
                 </owl-carousel-o>
             </div>
             <div class="row bottons">
