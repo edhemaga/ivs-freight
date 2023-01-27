@@ -19,6 +19,7 @@
         font-weight: 700;
         color: #424242;
         margin-bottom: 12px;
+        user-select: none;
     }
     .sub-text {
         width: fit-content;
@@ -27,20 +28,20 @@
         color: #aaaaaa;
         font-family: Montserrat;
         margin-bottom: 42px;
+        user-select: none;
     }
     .user-img {
         width: auto;
         height: 74px;
         margin-bottom: 22px;
+        user-select: none;
     }
 
     .row {
+        user-select: none;
         .carousel-holder {
             display: flex;
             justify-content: center;
-        }
-        .card {
-            width: 314px;
         }
     }
     .bottons {
@@ -60,6 +61,7 @@
             color: #ffffff;
             border-radius: 3px;
             margin-bottom: 22px;
+            user-select: none;
             cursor: pointer;
             &:hover {
                 background-color: #255bb9;
@@ -72,6 +74,7 @@
             font-weight: 700;
             font-size: 14px;
             cursor: pointer;
+            user-select: none;
         }
     }
 }
@@ -128,10 +131,12 @@
                                 .company-name {
                                     font-size: 21px;
                                     font-weight: 700;
+                                    user-select: none;
                                 }
                                 .logo {
                                     width: 250px;
                                     height: 80px;
+                                    user-select: none;
                                 }
                                 .last-login {
                                     display: flex;
@@ -139,6 +144,7 @@
                                     justify-content: flex-end;
                                     position: relative;
                                     bottom: 10px;
+                                    user-select: none;
                                     .text {
                                         color: #424242;
                                         font-size: 14px;

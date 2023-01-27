@@ -2,8 +2,16 @@
     <div class="row">
         <img
             class="user-img"
+            *ngIf="userData?.avatar != null"
+            src="{{ 'data:image/jpg;base64,' + userData?.avatar }}"
+            draggable="false"
+        />
+        <img
+            class="user-img"
+            *ngIf="userData?.avatar == null"
             src="../../../../../assets/svg/user-in-color.svg"
             alt=""
+            draggable="false"
         />
     </div>
     <div class="row">
