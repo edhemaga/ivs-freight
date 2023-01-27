@@ -467,6 +467,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
             return this.repairTrucks?.length ? this.repairTrucks : [];
         } else if (dataType === 'inactive') {
             this.repairTrailers = this.repairTrailerQuery.getAll();
+            
             return this.repairTrailers?.length ? this.repairTrailers : [];
         } else if (dataType === 'repair-shop') {
             this.repairShops = this.shopQuery.getAll();
