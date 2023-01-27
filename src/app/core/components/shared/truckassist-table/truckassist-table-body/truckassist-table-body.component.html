@@ -4,12 +4,14 @@
             #tableScrollRef
             [itemSize]="35"
             [ngStyle]="{
-                height:
-                    viewData.length * 32 +
-                    (viewData.length - 1) * 2 +
-                    500 +
-                    'px',
-                'max-height': 1048 + 'px'
+                'height.px':
+                    activeAttachment !== -1 || activeMedia !== -1 || activeInsurance !== -1 
+                        ? viewData.length * 32 +
+                          (viewData.length - 1) * 2 +
+                          22 +
+                          300
+                        : viewData.length * 32 + (viewData.length - 1) * 2 + 22,
+                'max-height.px': 1048
             }"
         >
             <app-custom-scrollbar
@@ -3436,7 +3438,6 @@
                             </td>
                         </div>
                     </div>
-
                     <!-- Attachment Dropdown -->
                     <div
                         class="attachemnt-dropdown"
