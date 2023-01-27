@@ -525,13 +525,13 @@ export class TruckassistTableBodyComponent
             }
 
             this.filesService.getFiles(entity, row.id).subscribe((res) => {
+                this.activeAttachment = row.id;
+                row.tableAttachments = res;
+
                 if (res?.length == 1) {
                     if (popup.isOpen()) {
                         popup.close();
                     } else {
-                        this.activeAttachment = row.id;
-                        row.tableAttachments = res;
-
                         popup.open({ data: res });
                     }
                 }
