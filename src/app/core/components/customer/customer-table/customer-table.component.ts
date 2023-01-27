@@ -307,7 +307,7 @@ export class CustomerTableComponent
                     contentType: 'edit',
                     show: true,
                     svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
-                    iconName: 'edit'
+                    iconName: 'edit',
                 },
                 {
                     title: 'Delete',
@@ -323,7 +323,7 @@ export class CustomerTableComponent
                     danger: true,
                     svg: 'assets/svg/truckassist-table/dropdown/content/delete.svg',
                     iconName: 'delete',
-                    redIcon: true, 
+                    redIcon: true,
                 },
             ],
         };
@@ -352,7 +352,7 @@ export class CustomerTableComponent
         );
 
         if (this.selectedTab === 'active') {
-            this.brokers = this.brokerQuery.getAll().length
+             this.brokers = this.brokerQuery.getAll().length
                 ? this.brokerQuery.getAll()
                 : [];
         } else {
@@ -396,11 +396,12 @@ export class CustomerTableComponent
     }
 
     // Check If Selected Tab Has Active View Mode
-    checkActiveViewMode(){
-        if(this.activeViewMode === 'Map'){
+    checkActiveViewMode() {
+        if (this.activeViewMode === 'Map') {
             let hasMapView = false;
 
-            let viewModeOptions = this.tableOptions.toolbarActions.viewModeOptions;
+            let viewModeOptions =
+                this.tableOptions.toolbarActions.viewModeOptions;
 
             viewModeOptions.map((viewMode: any) => {
                 if (viewMode.name === 'Map') {
@@ -408,13 +409,15 @@ export class CustomerTableComponent
                 }
             });
 
-            if(!hasMapView){
+            if (!hasMapView) {
                 this.activeViewMode = 'List';
 
                 viewModeOptions = this.getViewModeOptions();
             }
 
-            this.tableOptions.toolbarActions.viewModeOptions = [...viewModeOptions];
+            this.tableOptions.toolbarActions.viewModeOptions = [
+                ...viewModeOptions,
+            ];
         }
     }
 
@@ -476,8 +479,7 @@ export class CustomerTableComponent
                 ? // ? data.mainPoBox.poBox + ' ' + data.mainPoBox.city + ' ' + data.mainPoBox.state + ' ' + data.mainPoBox.zipCode
                   'Treba da se postavo odgovarajuci redosled za po box address'
                 : '',
-            tablePaymentDetailAvailCredit:
-                'NA',
+            tablePaymentDetailAvailCredit: 'NA',
             tablePaymentDetailCreditLimit: data?.creditLimit
                 ? '$' + this.thousandSeparator.transform(data.creditLimit)
                 : '',
@@ -565,8 +567,8 @@ export class CustomerTableComponent
                 ? this.datePipe.transform(data.createdAt, 'MM/dd/yy')
                 : '',
             tableEdited: 'NA', // data.updatedAt
-                //? this.datePipe.transform(data.updatedAt, 'MM/dd/yy')
-                //: '',
+            //? this.datePipe.transform(data.updatedAt, 'MM/dd/yy')
+            //: '',
         };
     }
 

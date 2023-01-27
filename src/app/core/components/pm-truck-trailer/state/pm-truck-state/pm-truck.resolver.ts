@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Resolve } from '@angular/router';
-import { PMTruckUnitListResponse } from 'appcoretruckassist';
-import { Observable, of } from 'rxjs';
-import { catchError, tap } from 'rxjs/operators';
+import { forkJoin, Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
+import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { PmTService } from '../pm.service';
 import { PmTruckState, PmTruckStore } from './pm-truck.store';
 
@@ -12,23 +12,34 @@ import { PmTruckState, PmTruckStore } from './pm-truck.store';
 export class pmTruckResolver implements Resolve<PmTruckState> {
     constructor(
         private pmService: PmTService,
-        private pmTruckStore: PmTruckStore
+        private pmTruckStore: PmTruckStore,
+        private tableService: TruckassistTableService
     ) {}
-    resolve(): Observable<PmTruckState | boolean> {
-        return this.pmService
-            .getPMTrailerUnitList(undefined, undefined, 1, 25)
-            .pipe(
-                catchError(() => {
-                    return of('No pm trucks data...');
-                }),
-                tap((pmTruckPagination: PMTruckUnitListResponse) => {
+    resolve(): Observable<any> {
+        return forkJoin([
+            this.pmService
+            .getPMTrailerUnitList(undefined, undefined, 1, 25),
+            this.tableService.getTableConfig(13),
+        ]).pipe(
+            tap(([pmTruckPagination, tableConfig]) => {
+                localStorage.setItem(
+                    'pmTruckTableCount',
+                    JSON.stringify({
+                        pmTruck: pmTruckPagination.pmTruckCount,
+                    })
+                );
+
+                if (tableConfig) {
+                    const config = JSON.parse(tableConfig.config);
+
                     localStorage.setItem(
-                        'pmTruckTableCount',
-                        JSON.stringify({
-                            pmTruck: pmTruckPagination.pmTruckCount,
-                        })
+                        `table-${tableConfig.tableType}-Configuration`,
+                        JSON.stringify(config)
                     );
-                })
-            );
+                }
+
+                this.pmTruckStore.set(pmTruckPagination.pagination.data);
+            })
+        );
     }
 }

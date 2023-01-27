@@ -79,7 +79,6 @@ export class TruckassistTableToolbarComponent
     activeTableData: any = {};
     toolbarWidth: string = '';
     maxToolbarWidth: number = 0;
-    inactiveTimeOutInterval: any;
     timeOutToaggleColumn: any;
     timeOutToaggleGroupColumn: any;
     columnsOptions: any[] = [];
@@ -90,6 +89,31 @@ export class TruckassistTableToolbarComponent
     showResetOption: boolean;
     tableReseting: boolean;
     selectedViewMode: string;
+
+    // tableTypes = [
+    //     { configType: 'LOAD_TEMPLATE', id: 1 },DONE
+    //     { configType: 'LOAD_CLOSED', id: 2 }, DONE
+    //     { configType: 'LOAD_REGULAR', id: 3 }, DONE
+    //     { configType: 'BROKER', id: 4 }, DONE
+    //     { configType: 'SHIPPER', id: 5 }, DONE
+    //     { configType: 'DRIVER', id: 6 }, DONE
+    //     { configType: 'APPLICANT', id: 7 }, DONE
+    //     { configType: 'TRUCK', id: 8 }, DONE
+    //     { configType: 'TRAILER', id: 9 }, DONE
+    //     { configType: 'REPAIR_TRUCK', id: 10 }, DONE
+    //     { configType: 'REPAIR_TRAILER', id: 11 }, DONE
+    //     { configType: 'REPAIR_SHOP', id: 12 }, DONE
+    //     { configType: 'PM_TRUCK', id: 13 }, DONE
+    //     { configType: 'PM_TRAILER', id: 14 }, DONE
+    //     { configType: 'FUEL_TRANSACTION', id: 15 }, DONE
+    //     { configType: 'FUEL_STOP', id: 16 }, DONE
+    //     { configType: 'OWNER', id: 17 }, DONE
+    //     { configType: 'ACCOUNT', id: 18 }, DONE
+    //     { configType: 'CONTACT', id: 19 }, DONE
+    //     { configType: 'ROADSIDE_INSPECTION', id: 20 }, DONE
+    //     { configType: 'ACCIDENT', id: 21 }, DONE
+    //     { configType: 'USER', id: 22 }, DONE
+    // ];
 
     constructor(private tableService: TruckassistTableService) {}
 
@@ -299,9 +323,9 @@ export class TruckassistTableToolbarComponent
                     });
                 }
             });
-
-            this.tableReseting = false;
         }
+
+        this.tableReseting = false;
     }
 
     // Select Tab
@@ -419,6 +443,7 @@ export class TruckassistTableToolbarComponent
         }
     }
 
+    // Check Are All Selected In Group
     checkAreAllSelectedInGroup() {
         this.columnsOptionsWithGroups = this.columnsOptionsWithGroups.map(
             (columns) => {
@@ -450,6 +475,13 @@ export class TruckassistTableToolbarComponent
             localStorage.removeItem(
                 `table-${this.tableConfigurationType}-Configuration`
             );
+
+            this.tableService
+                .sendTableConfig({
+                    tableType: this.tableConfigurationType,
+                    config: null,
+                })
+                .subscribe(() => {});
 
             this.tableService.sendResetColumns(true);
         }
@@ -551,7 +583,6 @@ export class TruckassistTableToolbarComponent
         this.tableService.sendUnlockTable({});
         this.tableService.sendToaggleColumn(null);
         this.tableService.sendResetColumns(false);
-        clearTimeout(this.inactiveTimeOutInterval);
 
         const tableConfig = localStorage.getItem(
             `table-${this.tableConfigurationType}-Configuration`
