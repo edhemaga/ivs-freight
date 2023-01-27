@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Resolve } from '@angular/router';
-import { LoadListResponse } from 'appcoretruckassist';
-import { Observable, of } from 'rxjs';
-import { catchError, tap } from 'rxjs/operators';
+import { forkJoin, Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
+import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { LoadTService } from '../load.service';
 import { LoadClosedState, LoadClosedStore } from './load-closed.store';
 
@@ -12,12 +12,13 @@ import { LoadClosedState, LoadClosedStore } from './load-closed.store';
 export class LoadClosedResolver implements Resolve<LoadClosedState> {
     constructor(
         private loadService: LoadTService,
-        private loadClosedStore: LoadClosedStore
+        private loadClosedStore: LoadClosedStore,
+        private tableService: TruckassistTableService
     ) {}
 
-    resolve(): Observable<LoadClosedState | boolean> {
-        return this.loadService
-            .getLoadList(
+    resolve(): Observable<any> {
+        return forkJoin([
+            this.loadService.getLoadList(
                 undefined,
                 3,
                 undefined,
@@ -30,12 +31,11 @@ export class LoadClosedResolver implements Resolve<LoadClosedState> {
                 undefined,
                 1,
                 25
-            )
+            ),
+            this.tableService.getTableConfig(2),
+        ])
             .pipe(
-                catchError(() => {
-                    return of('No load closed data...');
-                }),
-                tap((loadPagination: LoadListResponse) => {
+                tap(([loadPagination, tableConfig]) => {
                     localStorage.setItem(
                         'loadTableCount',
                         JSON.stringify({
@@ -46,8 +46,17 @@ export class LoadClosedResolver implements Resolve<LoadClosedState> {
                         })
                     );
 
+                    if (tableConfig) {
+                        const config = JSON.parse(tableConfig.config);
+
+                        localStorage.setItem(
+                            `table-${tableConfig.tableType}-Configuration`,
+                            JSON.stringify(config)
+                        );
+                    }
+
                     this.loadClosedStore.set(loadPagination.pagination.data);
                 })
-            );
+            )
     }
 }
