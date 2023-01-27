@@ -490,8 +490,8 @@ export class CustomerTableComponent
                 ? data.daysToPay + ' days'
                 : '',
             tablePaymentDetailInvAgeing: {
-                bfb: 0,
-                dnu: 0,
+                bfb: '0',
+                dnu: '0',
                 amount: 'Template se promenio',
             },
             tableLoads: data?.loadCount
