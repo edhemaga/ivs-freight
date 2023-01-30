@@ -5,13 +5,20 @@
             [itemSize]="35"
             [ngStyle]="{
                 'height.px':
-                    activeAttachment !== -1 || activeMedia !== -1 || activeInsurance !== -1 
+                    activeAttachment !== -1 ||
+                    activeMedia !== -1 ||
+                    activeInsurance !== -1
                         ? viewData.length * 32 +
                           (viewData.length - 1) * 2 +
                           22 +
                           300
                         : viewData.length * 32 + (viewData.length - 1) * 2 + 22,
-                'max-height.px': 1048
+                'max-height.px':
+                    activeAttachment !== -1 ||
+                    activeMedia !== -1 ||
+                    activeInsurance !== -1
+                        ? 1348
+                        : 1048
             }"
         >
             <app-custom-scrollbar

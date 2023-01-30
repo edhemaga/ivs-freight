@@ -365,9 +365,6 @@ export class TruckassistTableToolbarComponent
         });
 
         this.isMapShowning = modeView.mode === 'Map';
-
-        console.log('isMapShowning');
-        console.log(this.isMapShowning);
     }
 
     // Delete Selected Rows
@@ -529,22 +526,40 @@ export class TruckassistTableToolbarComponent
     }
 
     // Toaggle All In Group
-    onToaggleAllInGroup(columnGroup: any) {
-        columnGroup.areAllActive = !columnGroup.areAllActive;
+    onToaggleAllInGroup(i: number) {
+        const columnsOptionsWithGroups = [...this.columnsOptionsWithGroups];
+        const tableColumns = [...this.columns];
 
-        columnGroup.group.map((c) => {
+
+        columnsOptionsWithGroups[i] = {
+            ...columnsOptionsWithGroups[i],
+            areAllActive: columnsOptionsWithGroups[i].areSomeSelected
+                ? false
+                : !columnsOptionsWithGroups[i].areAllActive,
+            areSomeSelected: !columnsOptionsWithGroups[i].areSomeSelected,
+        };
+
+        columnsOptionsWithGroups[i].group.map((c) => {
             if (!c.isPined) {
-                c.hidden = columnGroup.areAllActive ? false : true;
+                c.hidden = columnsOptionsWithGroups[i].areAllActive
+                    ? false
+                    : true;
 
-                this.columns.filter((column, index) => {
+                tableColumns.filter((column, index) => {
                     if (column.title === c.title) {
-                        column.hidden = columnGroup.areAllActive ? false : true;
+                        column.hidden = columnsOptionsWithGroups[i]
+                            .areAllActive
+                            ? false
+                            : true;
 
                         this.setTableConfig(column, index);
                     }
                 });
             }
         });
+
+        this.columnsOptionsWithGroups = [...columnsOptionsWithGroups];
+        this.columns = [...tableColumns];
     }
 
     // Toaggle Group Column
