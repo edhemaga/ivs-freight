@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 
@@ -36,8 +36,8 @@ export class MvrAuthorizationComponent implements OnInit, OnDestroy {
 
     public isValidLoad: boolean;
 
-    public mvrAuthorizationForm: FormGroup;
-    public dontHaveMvrForm: FormGroup;
+    public mvrAuthorizationForm: UntypedFormGroup;
+    public dontHaveMvrForm: UntypedFormGroup;
 
     public applicantId: number;
     public mvrAuthId: number | null = null;
@@ -74,7 +74,7 @@ export class MvrAuthorizationComponent implements OnInit, OnDestroy {
     public hasIncorrectFields: boolean = false;
 
     constructor(
-        private formBuilder: FormBuilder,
+        private formBuilder: UntypedFormBuilder,
         private inputService: TaInputService,
         private router: Router,
         private applicantStore: ApplicantStore,

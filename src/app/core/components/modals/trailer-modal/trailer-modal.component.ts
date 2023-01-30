@@ -1,5 +1,5 @@
 import { HttpResponseBase } from '@angular/common/http';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import {
     Component,
     Input,
@@ -54,7 +54,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
 
     @Input() editData: any;
 
-    public trailerForm: FormGroup;
+    public trailerForm: UntypedFormGroup;
     public trailerType: any[] = [];
     public trailerMakeType: any[] = [];
     public colorType: any[] = [];
@@ -102,7 +102,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
     public fileModified: boolean = false;
 
     constructor(
-        private formBuilder: FormBuilder,
+        private formBuilder: UntypedFormBuilder,
         private inputService: TaInputService,
         private trailerModalService: TrailerTService,
         private modalService: ModalService,

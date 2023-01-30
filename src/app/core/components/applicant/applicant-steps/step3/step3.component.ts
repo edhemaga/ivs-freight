@@ -9,7 +9,7 @@ import {
     QueryList,
     ViewChildren,
 } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { UntypedFormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
 import { Subject, Subscription, takeUntil } from 'rxjs';
@@ -69,8 +69,8 @@ export class Step3Component implements OnInit, OnDestroy, AfterContentChecked {
 
     public subscription: Subscription;
 
-    public permitForm: FormGroup;
-    public licenseForm: FormGroup;
+    public permitForm: UntypedFormGroup;
+    public licenseForm: UntypedFormGroup;
 
     public formStatus: string = 'INVALID';
     public markFormInvalid: boolean;
@@ -163,7 +163,7 @@ export class Step3Component implements OnInit, OnDestroy, AfterContentChecked {
     public isBottomFormFeedbackValueUpdated: boolean = false;
 
     constructor(
-        private formBuilder: FormBuilder,
+        private formBuilder: UntypedFormBuilder,
         private inputService: TaInputService,
         private router: Router,
         private applicantActionsService: ApplicantActionsService,

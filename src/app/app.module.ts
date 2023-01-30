@@ -68,7 +68,7 @@ import { UnderConstructionComponent } from './core/components/under-construction
             toastComponent: CustomToastMessagesComponent, // added custom toast!
         }),
         NgIdleModule.forRoot(),
-        ApiModule,
+        ApiModule
     ],
     providers: [
         {

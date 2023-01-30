@@ -12,7 +12,7 @@ import {
     SimpleChanges,
     ViewChild,
 } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { UntypedFormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 
 import {
     Subscription,
@@ -89,7 +89,7 @@ export class Step4FormComponent
 
     private subscription: Subscription;
 
-    public accidentForm: FormGroup;
+    public accidentForm: UntypedFormGroup;
 
     public selectedAddress: AddressEntity;
     public selectedVehicleType: any = null;
@@ -151,7 +151,7 @@ export class Step4FormComponent
     public isCardReviewedIncorrect: boolean = false;
 
     constructor(
-        private formBuilder: FormBuilder,
+        private formBuilder: UntypedFormBuilder,
         private inputService: TaInputService,
         private formService: FormService,
         private applicantQuery: ApplicantQuery

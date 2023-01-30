@@ -31,7 +31,7 @@ import {
     usdotValidation,
 } from '../../../shared/ta-input/ta-input.regex-validations';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormArray, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import {
     AddressEntity,
     CompanyModalResponse,
@@ -70,7 +70,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
     @Input() editData: any;
 
-    public companyForm: FormGroup;
+    public companyForm: UntypedFormGroup;
 
     public selectedTab: number = 1;
     public tabs: any[] = [
@@ -251,7 +251,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
     public disableCardAnimation: boolean = false;
 
     constructor(
-        private formBuilder: FormBuilder,
+        private formBuilder: UntypedFormBuilder,
         private inputService: TaInputService,
         private modalService: ModalService,
         private settingsCompanyService: SettingsCompanyService,
@@ -528,8 +528,8 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
     }
 
     // Department FormArray
-    public get departmentContacts(): FormArray {
-        return this.companyForm.get('departmentContacts') as FormArray;
+    public get departmentContacts(): UntypedFormArray {
+        return this.companyForm.get('departmentContacts') as UntypedFormArray;
     }
 
     private createDepartmentContacts(data?: {
@@ -538,7 +538,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
         phone: any;
         extensionPhone: any;
         email: any;
-    }): FormGroup {
+    }): UntypedFormGroup {
         return this.formBuilder.group({
             id: [data?.id ? data.id : 0],
             departmentId: [
@@ -617,8 +617,8 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
     }
 
     // bankAccounts FormArray
-    public get bankAccounts(): FormArray {
-        return this.companyForm.get('bankAccounts') as FormArray;
+    public get bankAccounts(): UntypedFormArray {
+        return this.companyForm.get('bankAccounts') as UntypedFormArray;
     }
 
     private createBankAccount(data?: {
@@ -626,7 +626,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
         bankId: any;
         routing: any;
         account: any;
-    }): FormGroup {
+    }): UntypedFormGroup {
         return this.formBuilder.group({
             id: [data?.id ? data.id : 0],
             bankId: [data?.bankId ? data.bankId : null, [...bankValidation]],
@@ -672,8 +672,8 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
     }
 
     // Bank Card Form Array
-    public get bankCards(): FormArray {
-        return this.companyForm.get('bankCards') as FormArray;
+    public get bankCards(): UntypedFormArray {
+        return this.companyForm.get('bankCards') as UntypedFormArray;
     }
 
     private createBankCard(data?: {
@@ -682,7 +682,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
         card: any;
         cvc: any;
         expireDate: any;
-    }): FormGroup {
+    }): UntypedFormGroup {
         return this.formBuilder.group({
             id: [data?.id ? data.id : 0],
             nickname: [

@@ -1,6 +1,6 @@
-import { FormGroup, Validators } from '@angular/forms';
+import { UntypedFormGroup, Validators } from '@angular/forms';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
+import { UntypedFormBuilder } from '@angular/forms';
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { CommonTruckTrailerService } from '../common-truck-trailer.service';
 import { InspectionResponse } from 'appcoretruckassist';
@@ -23,7 +23,7 @@ export class TtFhwaInspectionModalComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
     @Input() editData: any;
 
-    public fhwaInspectionForm: FormGroup;
+    public fhwaInspectionForm: UntypedFormGroup;
 
     public documents: any[] = [];
     public fileModified: boolean = false;
@@ -34,7 +34,7 @@ export class TtFhwaInspectionModalComponent implements OnInit, OnDestroy {
     public disableCardAnimation: boolean = false;
 
     constructor(
-        private formBuilder: FormBuilder,
+        private formBuilder: UntypedFormBuilder,
         private commonTruckTrailerService: CommonTruckTrailerService,
         private inputService: TaInputService,
         private modalService: ModalService,

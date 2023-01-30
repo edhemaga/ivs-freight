@@ -11,7 +11,7 @@ import { DashboardMapComponent } from './dashboard-map/dashboard-map.component';
 import { DashboardStateTrackingComponent } from './dashboard-state-tracking/dashboard-state-tracking.component';
 import { DashboardStateUsaComponent } from './dashboard-state-tracking/dashboard-state-usa/dashboard-state-usa.component';
 import { TaNoteModule } from '../shared/ta-note/ta-note.module';
-import { TruckassistSearchModule } from '../shared/truckassist-search/truckassist-search.module';
+import { CarrierSearchComponent } from '../standalone-components/carrier-search/carrier-search.component';
 
 @NgModule({
     declarations: [
@@ -29,7 +29,7 @@ import { TruckassistSearchModule } from '../shared/truckassist-search/truckassis
         ReactiveFormsModule,
         SharedModule,
         TaNoteModule,
-        TruckassistSearchModule,
+        CarrierSearchComponent
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })

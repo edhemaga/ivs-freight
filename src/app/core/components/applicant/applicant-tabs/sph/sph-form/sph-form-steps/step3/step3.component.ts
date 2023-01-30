@@ -6,7 +6,7 @@ import {
     AfterViewInit,
     OnDestroy,
 } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { UntypedFormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
 import { Subject, takeUntil } from 'rxjs';
@@ -48,7 +48,7 @@ export class Step3Component implements OnInit, AfterViewInit, OnDestroy {
 
     private destroy$ = new Subject<void>();
 
-    public drugAndAlcoholTestingHistoryForm: FormGroup;
+    public drugAndAlcoholTestingHistoryForm: UntypedFormGroup;
 
     public radioButtonsArray: any;
     public alcoholTestRadios: any;
@@ -212,7 +212,7 @@ export class Step3Component implements OnInit, AfterViewInit, OnDestroy {
     ];
 
     constructor(
-        private formBuilder: FormBuilder,
+        private formBuilder: UntypedFormBuilder,
         private router: Router,
         private inputService: TaInputService,
         private applicantActionsService: ApplicantActionsService,
