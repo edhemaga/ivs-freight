@@ -77,7 +77,7 @@ export function getTrailerColumnDefinition() {
             disabled: false,
             export: true,
             resizable: true,
-            svgUrl: 'assets/svg/truckassist-table/trailer/',
+            svgUrl: 'assets/svg/common/trailers/',
             classField: 'tableTrailerTypeClass',
             svgDimensions: {
                 width: 42,

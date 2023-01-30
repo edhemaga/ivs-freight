@@ -98,7 +98,7 @@
                 <div
                     class="d-flex align-items-center justify-content-between question-container"
                     *ngFor="
-                        let question of questions | slice: 0:5;
+                        let question of questions | slice : 0 : 5;
                         let i = index;
                         trackBy: trackByIdentity
                     "
@@ -112,16 +112,16 @@
                             <span class="required-star">*</span>
                         </p>
 
-                        <ng-container
-                            *ngIf="
-                                displayRadioRequiredNoteArray[i]
-                                    .displayRadioRequiredNote
-                            "
+                        <p
+                            class="m-0 ta-font-semi-bold required"
+                            [ngClass]="{
+                                'required-active':
+                                    displayRadioRequiredNoteArray[i]
+                                        .displayRadioRequiredNote
+                            }"
                         >
-                            <p class="m-0 ta-font-semi-bold required">
-                                Required
-                            </p>
-                        </ng-container>
+                            Required
+                        </p>
                     </div>
 
                     <div class="radios-box">

@@ -63,7 +63,7 @@ export class Step8Component implements OnInit, OnDestroy {
 
     private destroy$ = new Subject<void>();
 
-    public selectedMode: string = SelectedMode.REVIEW;
+    public selectedMode: string = SelectedMode.APPLICANT;
 
     public drugTestRadios: any;
 
@@ -618,8 +618,6 @@ export class Step8Component implements OnInit, OnDestroy {
             ).length;
 
             if (hasIncorrectValues) {
-                console.log('filteredIncorrectValues', filteredIncorrectValues);
-
                 this.subscription = this.drugAlcoholStatementForm.valueChanges
                     .pipe(
                         distinctUntilChanged(),

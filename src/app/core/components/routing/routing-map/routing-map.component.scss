@@ -28,6 +28,7 @@
         height: 100vh;
         padding-left: 0px;
         z-index: 1;
+        user-select: none;
 
         .route-card-container {
             position: absolute;
@@ -111,6 +112,15 @@
             left: 50%;
             cursor: pointer;
             transform: translateX(-50%);
+
+            svg {
+                transform: scale(1);
+                transition: all 0.2s ease-in-out;
+
+                &.smaller-circle {
+                    transform: scale(0.667);
+                }
+            }
         }
 
         &.stop-picker-icon {
@@ -163,6 +173,7 @@
 
     pointer-events: all;
     cursor: pointer;
+    user-select: auto;
 
     z-index: 1;
 
@@ -429,6 +440,10 @@
 
         .loaded-stop-background {
             //display: none;
+        }
+
+        .address_holder .main_address_holder.not_expanded input {
+            background-color: #f3f3f3 !important;
         }
     }
 

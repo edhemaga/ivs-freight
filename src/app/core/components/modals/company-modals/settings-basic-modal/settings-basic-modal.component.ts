@@ -260,8 +260,8 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
     ) {}
 
     ngOnInit(): void {
-        this.checkForCompany();
         this.getModalDropdowns();
+        this.checkForCompany();
     }
 
     private checkForCompany() {
@@ -284,20 +284,14 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
         }
 
         if (this.editData.type === 'edit-company') {
-            const timeout = setTimeout(() => {
-                this.editCompany();
-                this.disableCardAnimation = true;
-                clearTimeout(timeout);
-            });
+            this.editCompany();
+            this.disableCardAnimation = true;
         }
 
         if (this.editData?.type === 'payroll-tab') {
-            const timeout = setTimeout(() => {
-                this.tabChange({ id: 3 });
-                this.disableCardAnimation = true;
-                this.editCompany();
-                clearTimeout(timeout);
-            });
+            this.tabChange({ id: 3 });
+            this.disableCardAnimation = true;
+            this.editCompany();
         }
     }
 
@@ -836,7 +830,9 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
                         .setErrors({ invalid: true });
                 } else {
                     this.companyForm.get('soloLoadedMile').setErrors(null);
-                    this.companyForm.get('soloEmptyMile').patchValue(value);
+                    if (!this.companyForm.get('soloEmptyMile').value) {
+                        this.companyForm.get('soloEmptyMile').patchValue(value);
+                    }
                 }
             });
 
@@ -876,7 +872,9 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
                         .setErrors({ invalid: true });
                 } else {
                     this.companyForm.get('teamLoadedMile').setErrors(null);
-                    this.companyForm.get('teamEmptyMile').patchValue(value);
+                    if (this.companyForm.get('teamEmptyMile').value) {
+                        this.companyForm.get('teamEmptyMile').patchValue(value);
+                    }
                 }
             });
 
@@ -944,21 +942,40 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
             .subscribe((val) => {
                 if (val) {
                     if (['Solo', 'Combined'].includes(this.selectedFleetType)) {
-                        if (this.companyForm.get('soloEmptyMile').value) {
+                        if (this.companyForm.get('soloLoadedMile').value) {
                             this.companyForm
                                 .get('perMileSolo')
                                 .patchValue(
-                                    this.companyForm.get('soloEmptyMile').value
+                                    this.companyForm.get('soloLoadedMile').value
                                 );
                         }
                     }
 
                     if (['Team', 'Combined'].includes(this.selectedFleetType)) {
-                        if (this.companyForm.get('teamEmptyMile').value) {
+                        if (this.companyForm.get('teamLoadedMile').value) {
                             this.companyForm
                                 .get('perMileTeam')
                                 .patchValue(
-                                    this.companyForm.get('teamEmptyMile').value
+                                    this.companyForm.get('teamLoadedMile').value
+                                );
+                        }
+                    }
+                } else {
+                    if (['Solo', 'Combined'].includes(this.selectedFleetType)) {
+                        if (this.companyForm.get('perMileSolo').value) {
+                            this.companyForm
+                                .get('soloLoadedMile')
+                                .patchValue(
+                                    this.companyForm.get('perMileSolo').value
+                                );
+                        }
+                    }
+                    if (['Team', 'Combined'].includes(this.selectedFleetType)) {
+                        if (this.companyForm.get('perMileTeam').value) {
+                            this.companyForm
+                                .get('teamLoadedMile')
+                                .patchValue(
+                                    this.companyForm.get('perMileTeam').value
                                 );
                         }
                     }
@@ -2044,9 +2061,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
 
                         this.companyForm
                             .get('soloLoadedMile')
-                            .patchValue(payroll.solo.loadedMile, {
-                                emitEvent: false,
-                            });
+                            .patchValue(payroll.solo.loadedMile);
 
                         this.companyForm
                             .get('soloPerStop')
@@ -2107,9 +2122,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
 
                         this.companyForm
                             .get('loadedAndEmptySameRate')
-                            .patchValue(payroll.loadedAndEmptySameRate, {
-                                emitEvent: false,
-                            });
+                            .patchValue(payroll.loadedAndEmptySameRate);
 
                         this.companyForm
                             .get('driverSoloDefaultCommission')

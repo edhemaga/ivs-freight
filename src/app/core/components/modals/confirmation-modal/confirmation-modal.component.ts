@@ -4,7 +4,7 @@ import { ConfirmationService } from './confirmation.service';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 export interface Confirmation {
-    template: string; // examples: driver, broker, shipper.....
+    template: string; // examples: driver, broker, shipper, cdl.....
     type:
         | 'delete'
         | 'multiple delete'
@@ -12,9 +12,9 @@ export interface Confirmation {
         | 'activate'
         | 'deactivate'
         | 'info'; // if type is info => subtype must be: archive | ban list | dnu | void;
-    id?: number;
+    id?: number; // id for item
     data?: any;
-    array?: any[];
+    array?: any[]; // multiple array of objects
     subType?: 'archive' | 'ban list' | 'dnu' | 'cdl void'; // if subType set, must set and subTypeStatus (except when subType: cdl void)
     subTypeStatus?: 'move' | 'remove'; // example: move -> 'Move to Ban List', remove -> 'Remove from Ban List', void -> void
     cdlStatus?: 'New' | 'Renew' | 'Activate';

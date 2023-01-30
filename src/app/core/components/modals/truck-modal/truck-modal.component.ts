@@ -856,6 +856,11 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                                     type: 'Truck',
                                     closing: 'slowlest',
                                 });
+                                this.modalService.setModalSpinner({
+                                    action: null,
+                                    status: true,
+                                    close: true,
+                                });
                                 break;
                             }
                             default: {

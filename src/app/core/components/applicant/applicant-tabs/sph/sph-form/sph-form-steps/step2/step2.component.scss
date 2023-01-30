@@ -168,7 +168,7 @@
 
             .question-container {
                 width: 616px;
-                margin-bottom: 22px;
+                margin-bottom: 18px;
 
                 &:last-child {
                     margin-bottom: 0;
@@ -208,6 +208,8 @@
                     .required {
                         font-size: 11px;
                         color: $ta-red-2;
+                        visibility: hidden;
+                        opacity: 0;
 
                         &::-moz-selection {
                             color: $ta-red-2;
@@ -218,6 +220,11 @@
                             color: $ta-red-2;
                             background: rgb(239, 83, 80, 0.2);
                         }
+                    }
+
+                    .required-active {
+                        visibility: visible;
+                        opacity: 1;
                     }
                 }
 
@@ -261,7 +268,7 @@
 
         .consider-question-container {
             width: 616px;
-            margin-bottom: 12px;
+            margin-bottom: 8px;
 
             .title-box {
                 p {
@@ -297,6 +304,8 @@
                 .required {
                     font-size: 11px;
                     color: $ta-red-2;
+                    visibility: hidden;
+                    opacity: 0;
 
                     &::-moz-selection {
                         color: $ta-red-2;
@@ -307,6 +316,11 @@
                         color: $ta-red-2;
                         background: rgb(239, 83, 80, 0.2);
                     }
+                }
+
+                .required-active {
+                    visibility: visible;
+                    opacity: 1;
                 }
             }
 

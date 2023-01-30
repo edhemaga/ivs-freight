@@ -449,8 +449,18 @@ export class Step4FormComponent
     }
 
     public onAddAccident(): void {
-        if (this.accidentForm.invalid) {
-            this.inputService.markInvalid(this.accidentForm);
+        if (
+            this.accidentForm.invalid ||
+            this.accidentForm.get('hazmatSpill').value === null
+        ) {
+            if (this.accidentForm.invalid) {
+                this.inputService.markInvalid(this.accidentForm);
+            }
+
+            if (this.accidentForm.get('hazmatSpill').value === null) {
+                this.radioRequiredNoteEmitter.emit(true);
+            }
+
             return;
         }
 

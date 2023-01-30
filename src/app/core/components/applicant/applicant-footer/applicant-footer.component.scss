@@ -162,7 +162,7 @@
                 p {
                     font-size: 14px;
                     color: $ta-black;
-                    line-height: 20px;
+                    line-height: 18px;
 
                     &::-moz-selection {
                         color: $ta-black;
@@ -179,6 +179,7 @@
                 .location-icon,
                 .document-icon {
                     margin-right: 6px;
+                    line-height: 18px;
 
                     svg {
                         path {

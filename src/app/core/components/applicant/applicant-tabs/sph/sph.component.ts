@@ -34,7 +34,7 @@ import { SelectedMode } from '../../state/enum/selected-mode.enum';
 export class SphComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
 
-    public selectedMode: string = SelectedMode.APPLICANT;
+    public selectedMode: string = SelectedMode.REVIEW;
 
     public isValidLoad: boolean;
 

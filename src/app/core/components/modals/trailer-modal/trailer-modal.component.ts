@@ -399,6 +399,11 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
                                     type: 'Trailer',
                                     closing: 'slowlest',
                                 });
+                                this.modalService.setModalSpinner({
+                                    action: null,
+                                    status: true,
+                                    close: true,
+                                });
                                 break;
                             }
                             default: {

@@ -394,29 +394,75 @@
             }
         }
 
-        .ta-upload-file-image {
-            max-width: 160px;
-            max-height: 160px;
-            -o-object-fit: fill;
-            object-fit: fill;
-            border-radius: 1px;
-            vertical-align: middle;
-            margin-top: 6px;
-            top: 50%;
-            left: 50%;
-            position: relative;
-            transform: translate(-50%, -50%);
-            -webkit-user-select: none !important;
-            -moz-user-select: none !important;
-            -ms-user-select: none !important;
-            user-select: none !important;
-            box-shadow: 0 0 4px rgb(0, 0, 0, 0.15);
+        .image_main_holder {
+            height: 160px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 160px;
 
-            &.details_image {
-                left: 49%;
+            .ta-upload-file-image {
+                max-width: 160px;
+                max-height: 157px;
+                object-fit: fill;
+                border-radius: 1px;
+                vertical-align: middle;
+                margin-top: 4px;
+                -webkit-user-select: none !important;
+                -moz-user-select: none !important;
+                -ms-user-select: none !important;
+                user-select: none !important;
+                box-shadow: 0 0 4px rgb(0, 0, 0, 0.15);
 
-                max-width: 276px;
-                max-height: 276px;
+                &.details_image {
+                    left: 49%;
+
+                    max-width: 276px;
+                    max-height: 276px;
+                }
+            }
+
+            &.company-details-pdf {
+                width: 378px;
+                height: 378px;
+
+                .ta-upload-file-image {
+                    max-width: 378px;
+                    max-height: 378px;
+                }
+            }
+
+            &.table-details {
+                margin-top: 4px;
+                width: 192px;
+                height: 188px;
+
+                .ta-upload-file-image {
+                    max-width: 192px;
+                    max-height: 188px;
+                }
+            }
+
+            &.driver-card-pdf {
+                margin-top: 4px;
+                width: 420px;
+                height: 418px;
+
+                .ta-upload-file-image {
+                    max-width: 420px;
+                    max-height: 418px;
+                }
+            }
+
+            &.driver-details-pdf {
+                margin-top: 4px;
+                width: 308px;
+                height: 306px;
+
+                .ta-upload-file-image {
+                    max-width: 308px;
+                    max-height: 306px;
+                }
             }
         }
 
@@ -831,7 +877,7 @@
             }
 
             &.details_title {
-                max-width: 304px;
+                max-width: 100%;
             }
 
             &.todo_title {

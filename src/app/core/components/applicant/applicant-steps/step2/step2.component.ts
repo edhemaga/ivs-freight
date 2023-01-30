@@ -1,6 +1,12 @@
 /* eslint-disable no-unused-vars */
 
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import {
+    Component,
+    OnInit,
+    OnDestroy,
+    ChangeDetectorRef,
+    AfterContentChecked,
+} from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
 
@@ -39,7 +45,7 @@ import {
     templateUrl: './step2.component.html',
     styleUrls: ['./step2.component.scss'],
 })
-export class Step2Component implements OnInit, OnDestroy {
+export class Step2Component implements OnInit, OnDestroy, AfterContentChecked {
     private destroy$ = new Subject<void>();
 
     public selectedMode: string = SelectedMode.APPLICANT;
@@ -72,7 +78,7 @@ export class Step2Component implements OnInit, OnDestroy {
 
             isDrivingPosition: true,
             classesOfEquipment: [
-                /*  {
+                {
                     vehicleType: 'Semi Truck',
                     trailerType: 'Reefer',
                     trailerLength: '20 ft',
@@ -80,7 +86,7 @@ export class Step2Component implements OnInit, OnDestroy {
                     fmCSA: true,
                 },
                 {
-                    vehicleType: 'Tow Truck',
+                    vehicleType: 'Semi Sleeper',
                     trailerType: 'Dry Van',
                     trailerLength: '22 ft',
                     cfrPart: false,
@@ -92,7 +98,7 @@ export class Step2Component implements OnInit, OnDestroy {
                     trailerLength: '24 ft',
                     cfrPart: true,
                     fmCSA: false,
-                }, */
+                },
             ],
         },
     ];
@@ -148,11 +154,11 @@ export class Step2Component implements OnInit, OnDestroy {
         private router: Router,
         private applicantActionsService: ApplicantActionsService,
         private applicantStore: ApplicantStore,
-        private applicantQuery: ApplicantQuery
+        private applicantQuery: ApplicantQuery,
+        private changeDetectorRef: ChangeDetectorRef
     ) {}
 
     ngOnInit(): void {
-        console.log('arr', this.workExperienceArray);
         this.createForm();
 
         this.getStepValuesFromStore();
@@ -160,6 +166,10 @@ export class Step2Component implements OnInit, OnDestroy {
         this.getDropdownLists();
 
         this.hasNoWorkExperience();
+    }
+
+    ngAfterContentChecked(): void {
+        this.changeDetectorRef.detectChanges();
     }
 
     public trackByIdentity = (index: number, _: any): number => index;
@@ -561,33 +571,6 @@ export class Step2Component implements OnInit, OnDestroy {
             this.workExperienceArray[this.workExperienceArray.length - 1].id =
                 null;
         }
-
-        /*  this.workExperienceArray = [...this.workExperienceArray, event];
-
-        if (this.lastWorkExperienceCard.id) {
-            this.workExperienceArray[this.workExperienceArray.length - 1].id =
-                this.lastWorkExperienceCard.id;
-
-            this.lastWorkExperienceCard.id = null;
-        } else {
-            this.workExperienceArray[this.workExperienceArray.length - 1].id =
-                null;
-        }
-
-        const firstEmptyObjectInList = this.openAnnotationArray.find(
-            (item) => Object.keys(item).length === 0
-        );
-
-        const indexOfFirstEmptyObjectInList = this.openAnnotationArray.indexOf(
-            firstEmptyObjectInList
-        );
-
-        this.openAnnotationArray[indexOfFirstEmptyObjectInList] = {
-            lineIndex: this.openAnnotationArray.indexOf(firstEmptyObjectInList),
-            lineInputs: [false],
-            displayAnnotationButton: false,
-            displayAnnotationTextArea: false,
-        }; */
     }
 
     public onEditWorkExperience(index: number): void {
@@ -614,29 +597,6 @@ export class Step2Component implements OnInit, OnDestroy {
             this.feedbackValuesToPatch =
                 this.stepFeedbackValues[this.selectedWorkExperienceIndex];
         }
-
-        /* if (this.isEditing) {
-            this.isEditing = false;
-            this.workExperienceArray[
-                this.selectedWorkExperienceIndex
-            ].isEditingWorkExperience = false;
-
-            this.selectedWorkExperienceIndex = -1;
-        }
-
-        this.selectedWorkExperienceIndex = index;
-
-        this.isEditing = true;
-        this.workExperienceArray[index].isEditingWorkExperience = true;
-
-        const selectedWorkExperience = this.workExperienceArray[index];
-
-        this.formValuesToPatch = selectedWorkExperience;
-
-        if (this.selectedMode === SelectedMode.FEEDBACK) {
-            this.feedbackValuesToPatch =
-                this.stepFeedbackValues[this.selectedWorkExperienceIndex];
-        } */
     }
 
     public cancelWorkExperienceEditing(_: any): void {
@@ -683,18 +643,6 @@ export class Step2Component implements OnInit, OnDestroy {
         }
 
         this.selectedWorkExperienceIndex = -1;
-
-        /*  this.isEditing = false;
-        this.workExperienceArray[
-            this.selectedWorkExperienceIndex
-        ].isEditingWorkExperience = false;
-
-        this.selectedWorkExperienceIndex = -1;
-
-        if (this.selectedMode === SelectedMode.FEEDBACK) {
-            this.feedbackValuesToPatch =
-                this.stepFeedbackValues[this.stepFeedbackValues.length - 1];
-        } */
     }
 
     public saveEditedWorkExperience(event: any): void {
@@ -735,23 +683,6 @@ export class Step2Component implements OnInit, OnDestroy {
         };
 
         this.selectedWorkExperienceIndex = -1;
-
-        /* this.isEditing = false;
-        this.workExperienceArray[
-            this.selectedWorkExperienceIndex
-        ].isEditingWorkExperience = false;
-
-        this.workExperienceArray[this.selectedWorkExperienceIndex] = {
-            ...this.workExperienceArray[this.selectedWorkExperienceIndex],
-            ...event,
-        };
-
-        this.selectedWorkExperienceIndex = -1;
-
-        if (this.selectedMode === SelectedMode.FEEDBACK) {
-            this.feedbackValuesToPatch =
-                this.stepFeedbackValues[this.stepFeedbackValues.length - 1];
-        } */
     }
 
     public onGetBtnClickValue(event: any): void {
@@ -1256,8 +1187,6 @@ export class Step2Component implements OnInit, OnDestroy {
                     fax: item.employerFax,
                     address: item.employerAddress,
                     isDrivingPosition: item.isDrivingPosition,
-                    /*    cfrPart: item.cfrPart,
-                    fmcsa: item.fmCSA, */
                     reasonForLeaving: this.reasonsForLeaving.find(
                         (reasonItem) =>
                             reasonItem.name === item.reasonForLeaving

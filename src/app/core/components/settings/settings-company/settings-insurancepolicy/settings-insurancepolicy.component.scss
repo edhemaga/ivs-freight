@@ -180,8 +180,11 @@
 }
 .card-pdf {
     padding: 0 5px;
-    margin-bottom: 16px;
-    padding-bottom: 16px;
+    margin-bottom: 12px;
+
+    &.extended {
+        margin-bottom: 30px;
+    }
 }
 .body-show {
     margin-top: 12px !important;

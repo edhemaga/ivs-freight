@@ -54,9 +54,9 @@
                             withText: true,
                             svg: true,
                             image: false,
-                            url: selectedTruckType?.logoName,
+                            url: selectedTruckType?.truckType?.logoName,
                             template: 'truck',
-                            class: selectedTruckType?.name
+                            class: selectedTruckType?.truckType?.name
                                 ?.trim()
                                 .replace(' ', '')
                                 .toLowerCase()

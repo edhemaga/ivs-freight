@@ -132,7 +132,7 @@
 
                         <!-- LICENSE -->
 
-                        <ng-container *ngIf="lastValidLicense.license">
+                        <ng-container *ngIf="licences.length">
                             <div
                                 class="d-flex flex-column justify-content-center license-view-container"
                                 [ngStyle]="{
@@ -183,51 +183,59 @@
                                     </div>
                                 </div>
 
-                                <div
-                                    class="d-flex align-items-center"
-                                    [ngClass]="
-                                        selectedMode === 'FEEDBACK_MODE'
-                                            ? 'license-info-container license-info-container-feedback'
-                                            : 'license-info-container'
+                                <ng-container
+                                    *ngFor="
+                                        let licence of licences;
+                                        let i = index;
+                                        trackBy: trackByIdentity
                                     "
                                 >
                                     <div
-                                        class="d-flex align-items-center driver-box"
+                                        class="d-flex align-items-center"
+                                        [ngClass]="
+                                            selectedMode === 'FEEDBACK_MODE'
+                                                ? 'license-info-container license-info-container-feedback'
+                                                : 'license-info-container'
+                                        "
                                     >
-                                        <p class="m-0 ta-font-regular">
-                                            {{ lastValidLicense?.name }}
-                                        </p>
-                                    </div>
-                                    <div
-                                        class="d-flex align-items-center license-box"
-                                    >
-                                        <p class="m-0 ta-font-regular">
-                                            {{ lastValidLicense?.license }}
-                                        </p>
-                                    </div>
-                                    <div
-                                        class="d-flex align-items-center state-box"
-                                    >
-                                        <p class="m-0 ta-font-regular">
-                                            {{ lastValidLicense?.state }}
-                                        </p>
-                                    </div>
-                                    <div
-                                        class="d-flex align-items-center class-box"
-                                    >
-                                        <p class="m-0 ta-font-regular">
-                                            {{ lastValidLicense?.classType }}
-                                        </p>
-                                    </div>
+                                        <div
+                                            class="d-flex align-items-center driver-box"
+                                        >
+                                            <p class="m-0 ta-font-regular">
+                                                {{ licence?.name }}
+                                            </p>
+                                        </div>
+                                        <div
+                                            class="d-flex align-items-center license-box"
+                                        >
+                                            <p class="m-0 ta-font-regular">
+                                                {{ licence?.license }}
+                                            </p>
+                                        </div>
+                                        <div
+                                            class="d-flex align-items-center state-box"
+                                        >
+                                            <p class="m-0 ta-font-regular">
+                                                {{ licence?.state }}
+                                            </p>
+                                        </div>
+                                        <div
+                                            class="d-flex align-items-center class-box"
+                                        >
+                                            <p class="m-0 ta-font-regular">
+                                                {{ licence?.classType }}
+                                            </p>
+                                        </div>
 
-                                    <div
-                                        class="d-flex align-items-center date-box"
-                                    >
-                                        <p class="m-0 ta-font-regular">
-                                            {{ lastValidLicense?.expDate }}
-                                        </p>
+                                        <div
+                                            class="d-flex align-items-center date-box"
+                                        >
+                                            <p class="m-0 ta-font-regular">
+                                                {{ licence?.expDate }}
+                                            </p>
+                                        </div>
                                     </div>
-                                </div>
+                                </ng-container>
                             </div>
                         </ng-container>
 
@@ -333,7 +341,7 @@
                                         [showDropzone]="
                                             selectedMode === 'APPLICANT_MODE'
                                         "
-                                        [isRequired]="true"
+                                        [isRequired]="!documents.length"
                                         [showRequired]="
                                             displayDocumentsRequiredNote
                                         "
@@ -413,7 +421,9 @@
 
                         <!-- SIGNATURE PAD -->
 
-                        <div class="d-flex signature-pad-container">
+                        <div
+                            class="d-flex justify-content-center signature-pad-container"
+                        >
                             <app-applicant-signature-pad
                                 [mode]="selectedMode"
                                 [signatureImgSrc]="signatureImgSrc"

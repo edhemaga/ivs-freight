@@ -15,7 +15,7 @@
     }"
     (mouseenter)="onNavItemHover(true); showToolTip = true"
     (mouseleave)="onNavItemHover(false); showToolTip = false"
-    (click)="onRouteAction(route.id)"
+    (click)="onRouteAction(route.id); routeWithSubRoutesClick(route.arrow)"
 >
     <div
         class="tooltip-right"
@@ -103,14 +103,14 @@
             {{ route.name }}
             <!-- prettier-ignore -->
             <span
-            [@showHideDetails]="isNavigationHovered ? 'true' : 'false'"
+            
                 class="subroute"
                 *ngIf="
                      route.id == activeRouteIdFromLocalStorage && !activeLinkHighlight
                 "
             >
           
-                [{{ activeRouteName | titlecase }}]
+                &nbsp;[{{ activeRouteName | titlecase }}]
             </span>
         </p>
         <div

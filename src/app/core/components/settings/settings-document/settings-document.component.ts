@@ -94,7 +94,8 @@ export class SettingsDocumentComponent implements OnInit {
                 this.tableData[0].length = event.files.length;
                 let documents = [];
                 event.files.map((item) => {
-                    if (item.realFile) {
+                    if (item.realFile && !item.alreadyUploaded) {
+                        item.alreadyUploaded = true;
                         documents.push(item.realFile);
                     }
                 });

@@ -473,24 +473,6 @@ const routes: Routes = [
         canActivate: [ApplicantGuard],
     },
     {
-        path: 'ssn-card/:id',
-        loadChildren: () =>
-            import(
-                './core/components/applicant/applicant-tabs/ssn-card/ssn-card.module'
-            ).then((m) => m.SsnCardModule),
-        canActivate: [ApplicantGuard],
-        resolve: { applicant: ApplicantResolver },
-    },
-    {
-        path: 'cdl-card/:id',
-        loadChildren: () =>
-            import(
-                './core/components/applicant/applicant-tabs/cdl-card/cdl-card.module'
-            ).then((m) => m.CdlCardModule),
-        canActivate: [ApplicantGuard],
-        resolve: { applicant: ApplicantResolver },
-    },
-    {
         path: 'applicant/end',
         component: ApplicantEndScreenComponent,
         data: { title: 'End Screen' },
