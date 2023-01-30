@@ -202,13 +202,6 @@ export class CdlTService implements OnDestroy {
         );
     }
     public deactivateCdlById(id: number, driverIdMod: number) {
-
-
-        console.log('---here----- deactivateCdlById')
-        console.log('---here----- id', id);
-        console.log('---here----- driverId', driverIdMod);
-
-
         return this.cdlService.apiCdlDeactivateIdPut(driverIdMod).pipe(
             tap((res: any) => {
                 let driverId = this.driverItemStore.getValue().ids[0];

@@ -48,7 +48,8 @@ export class DropDownService {
         trailerId?: number,
         data?: any,
         nameTruck?: string,
-        hasActiveCdl?: boolean
+        hasActiveCdl?: boolean,
+        cdlsArray?: any
     ) {
         switch (name) {
             case 'delete-cdl': {
@@ -288,6 +289,7 @@ export class DropDownService {
                         subType: 'cdl void',
                         cdlStatus: 'New',
                         modalHeader: true,
+                        cdlsArray: cdlsArray?.length > 0 ? cdlsArray : []
                     }
                 );
                 break;
@@ -321,8 +323,8 @@ export class DropDownService {
                                 data,
                             },
                             template: 'cdl',
-                            type: 'info',
-                            subType: 'cdl void',
+                            type: 'activate',
+                            //subType: 'cdl void',
                             cdlStatus: 'Activate',
                             modalHeader: true,
                         }

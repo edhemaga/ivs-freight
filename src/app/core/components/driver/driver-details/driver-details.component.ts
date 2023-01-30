@@ -130,7 +130,12 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
                             break;
                         }
                         case 'activate': {
-                            this.changeDriverStatus(res.id);
+                            if ( res?.cdlStatus && res?.cdlStatus == 'Activate' ) {
+                                this.activateCdl(res.data.id);
+                            } else {
+                                this.changeDriverStatus(res.id);
+                            }
+                            
                             break;
                         }
                         case 'deactivate': {
@@ -138,18 +143,13 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
                             break;
                         }
                         case 'info': {
-                            //console.log('---res----', res);
-                            //console.log('---res----', this.DetailsDataService.cdlId);
                             if (res.cdlStatus === 'New') {
-                                //console.log('---res.data', res.data);
                                 let driverId = res.data.data.id ? res.data.data.id : res.data.driver.id;
-                                //console.log("---driverId-", driverId);
-                                //console.log("---CDL ID-", res.data.id);
-                                //console.log('---this.DetailsDataService.cdlId----', this.DetailsDataService.cdlId);
                                 this.deactivateCdl(res.data.id, driverId);
-                                if ( this.DetailsDataService.cdlId != res.data.id) {
+                                if ( this.DetailsDataService.cdlId != res.data.id || res?.data?.newCdlID ) {
+                                    let newCdlId = res?.data?.newCdlID ? res?.data?.newCdlID : this.DetailsDataService.cdlId;
                                     setTimeout(()=>{
-                                        this.activateCdl(this.DetailsDataService.cdlId);
+                                        this.activateCdl(newCdlId);
                                     }, 1000);
                                     
                                 }
@@ -528,7 +528,6 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
 
         switch (action) {
             case 'CDL': {
-                console.log('----here-----')
                 if (!this.arrayActiveCdl.includes(true)) {
                     this.modalService.openModal(
                         DriverCdlModalComponent,

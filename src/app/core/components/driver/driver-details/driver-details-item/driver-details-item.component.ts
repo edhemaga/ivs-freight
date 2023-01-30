@@ -36,6 +36,7 @@ import {
 } from '@angular/animations';
 import { Titles } from 'src/app/core/utils/application.decorators';
 import { convertDateFromBackend } from '../../../../utils/methods.calculations';
+import { GetMvrModalResponse } from '../../../../../../../appcoretruckassist';
 
 @Titles()
 @Component({
@@ -456,7 +457,6 @@ export class DriverDetailsItemComponent
     public preloadData(data: any, title?: any){
         if ( title == 'cdl' ) {
             this.dataCdl = data;
-            console.log('---here----')
         } else if ( title == 'test' ) {
             this.dataTest = data;
         } else if ( title == 'med' ) {
@@ -468,16 +468,30 @@ export class DriverDetailsItemComponent
 
     public optionsEvent(any: any, action: string) {
         const name = dropActionNameDriver(any, action);
-        console.log('-------open here-----')
-        console.log('-------open here-----any', any)
-        console.log('-------open here-----action', action)
-        console.log('-------open here-----name', name)
+        let driverId = this.drivers[0].data.id;
+        let dataCdls;
+       
         let dataForCdl;
         if (
             (this.activeCdl.length && any.type === 'activate-item') ||
             any.type === 'deactivate-item'
         ) {
             dataForCdl = this.activeCdl;
+            
+            this.mvrService
+            .getMvrModal(driverId)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: (res: GetMvrModalResponse) => {
+                    dataCdls = res?.cdls?.map((item) => {
+                        return {
+                            ...item,
+                            name: item.cdlNumber,
+                        };
+                    })
+                },
+                error: () => {},
+            });
         } else {
             dataForCdl = this.dataCdl;
         }
@@ -496,6 +510,9 @@ export class DriverDetailsItemComponent
                 null,
                 null,
                 this.drivers[0].data, 
+                null,
+                null,
+                dataCdls,
             );
         }, 100);
     }
@@ -538,8 +555,8 @@ export class DriverDetailsItemComponent
                 {
                     data: { ...cdl, state: cdl.state.stateShortName, data },
                     template: 'cdl',
-                    type: 'info',
-                    subType: 'cdl void',
+                    type: 'activate',
+                    //subType: 'cdl void',
                     cdlStatus: 'Activate',
                     modalHeader: true,
                 }
