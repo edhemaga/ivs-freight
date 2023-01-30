@@ -474,6 +474,8 @@ export class TruckassistTableToolbarComponent
             action.text === 'Reset Table' &&
             !this.optionsPopupContent[2].isInactive
         ) {
+            this.onShowOptions(this.optionsPopup);
+
             this.modalService.openModal(
                 ConfirmationModalComponent,
                 { size: 'small' },
