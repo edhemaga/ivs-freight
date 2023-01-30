@@ -456,6 +456,7 @@ export class DriverDetailsItemComponent
     public preloadData(data: any, title?: any){
         if ( title == 'cdl' ) {
             this.dataCdl = data;
+            console.log('---here----')
         } else if ( title == 'test' ) {
             this.dataTest = data;
         } else if ( title == 'med' ) {
@@ -467,6 +468,10 @@ export class DriverDetailsItemComponent
 
     public optionsEvent(any: any, action: string) {
         const name = dropActionNameDriver(any, action);
+        console.log('-------open here-----')
+        console.log('-------open here-----any', any)
+        console.log('-------open here-----action', action)
+        console.log('-------open here-----name', name)
         let dataForCdl;
         if (
             (this.activeCdl.length && any.type === 'activate-item') ||

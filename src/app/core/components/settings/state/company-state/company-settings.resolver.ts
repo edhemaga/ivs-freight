@@ -15,35 +15,6 @@ export class companySettingsResolver implements Resolve<CompanyResponse[]> {
         private companyStore: CompanyStore
     ) {}
     resolve(): Observable<CompanyResponse[]> | Observable<any> {
-
-        const companyData$ = this.settingsCompanyService.getCompany();
-        const copmanyInsurance$ = this.settingsCompanyService.getCompanyInsurance();
-        const copmanyPayroll$ = this.settingsCompanyService.getCompanyPayroll();
-
-        return forkJoin({
-            companyData: companyData$,
-            copmanyInsurance: copmanyInsurance$,
-            copmanyPayroll: copmanyPayroll$,
-        }).pipe(
-            tap((data) => {
-
-                let companyResponse = data.companyData;
-                localStorage.setItem(
-                    'companiesCount',
-                    JSON.stringify({
-                        numberOfCompany: companyResponse.divisions.length,
-                    })
-                );
-                let insArray = [];
-                insArray.push(data.copmanyInsurance);
-                companyResponse.insurancePoliciesNewData = insArray;
-                companyResponse.companyPayrollsNewData = data.copmanyPayroll;
-                this.companyStore.set([companyResponse]);
-                //console.log('--data---', data);
-                //console.log('--companyResponse---', companyResponse);
-            })
-        );
-        /*
         return this.settingsCompanyService.getCompany().pipe(
             catchError((error) => {
                 return of('error');
@@ -61,6 +32,6 @@ export class companySettingsResolver implements Resolve<CompanyResponse[]> {
                 console.log(companyResponse);
                 this.companyStore.set([companyResponse]);
             })
-        ); */
+        );
     }
 }

@@ -143,9 +143,9 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
                             if (res.cdlStatus === 'New') {
                                 //console.log('---res.data', res.data);
                                 let driverId = res.data.data.id ? res.data.data.id : res.data.driver.id;
-                                console.log("---driverId-", driverId);
-                                console.log("---CDL ID-", res.data.id);
-                                console.log('---this.DetailsDataService.cdlId----', this.DetailsDataService.cdlId);
+                                //console.log("---driverId-", driverId);
+                                //console.log("---CDL ID-", res.data.id);
+                                //console.log('---this.DetailsDataService.cdlId----', this.DetailsDataService.cdlId);
                                 this.deactivateCdl(res.data.id, driverId);
                                 if ( this.DetailsDataService.cdlId != res.data.id) {
                                     setTimeout(()=>{

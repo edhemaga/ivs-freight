@@ -229,38 +229,6 @@ export class SettingsCompanyService implements OnDestroy {
     public deleteInsurancePolicyById(id: number): Observable<any> {
         return this.settingService.apiCompanyInsurancepolicyIdDelete(id).pipe(
             tap((r) => {
-
-                let companyData = JSON.parse(
-                    JSON.stringify(
-                        this.companyStore?.getValue()?.entities[this.companyId]
-                    )
-                );
-
-                const copmanyInsurance = this.getCompanyInsurance()
-                    .pipe(takeUntil(this.destroy$))
-                    .subscribe({
-                        next: (res: any) => {
-                            let insArray = [];
-                            
-                            if ( res ) {
-                                insArray.push(res);
-                            }
-                            
-                            companyData.insurancePolicies = insArray;
-                            this.companyStore.update(this.companyId, {
-                                insurancePolicies: companyData.insurancePolicies,
-                            }); 
-                            
-                            this.tableService.sendActionAnimation({
-                                animation: 'update',
-                                data: companyData,
-                                id: companyData.id,
-                            });
-                            copmanyInsurance.unsubscribe(); 
-                        }
-                    })
-
-                /*
                 const companySub = this.getCompany()
                     .pipe(takeUntil(this.destroy$))
                     .subscribe({
@@ -274,7 +242,7 @@ export class SettingsCompanyService implements OnDestroy {
                             companySub.unsubscribe();
                         },
                     });
-                */    
+                  
             })
         );
     }
@@ -283,34 +251,6 @@ export class SettingsCompanyService implements OnDestroy {
         this.formDataService.extractFormDataFromFunction(data);
         return this.settingService.apiCompanyInsurancepolicyPost().pipe(
             tap(() => {
-
-                let companyData = JSON.parse(
-                    JSON.stringify(
-                        this.companyStore?.getValue()?.entities[this.companyId]
-                    )
-                );
-
-                const copmanyInsurance = this.getCompanyInsurance()
-                    .pipe(takeUntil(this.destroy$))
-                    .subscribe({
-                        next: (res: any) => {
-                            let insArray = [];
-                            insArray.push(res);
-                            companyData.insurancePolicies = insArray;
-                            this.companyStore.update(this.companyId, {
-                                insurancePolicies: companyData.insurancePolicies,
-                            }); 
-                            
-                            this.tableService.sendActionAnimation({
-                                animation: 'update',
-                                data: companyData,
-                                id: companyData.id,
-                            });
-                            copmanyInsurance.unsubscribe(); 
-                        }
-                    })
-
-                /*
                 const companySub = this.getCompany()
                     .pipe(takeUntil(this.destroy$))
                     .subscribe({
@@ -325,8 +265,6 @@ export class SettingsCompanyService implements OnDestroy {
                             companySub.unsubscribe();
                         },
                     });
-                */
-
             })
         );
     }
@@ -334,42 +272,12 @@ export class SettingsCompanyService implements OnDestroy {
     public updateInsurancePolicy(data: any): Observable<object> {
         this.formDataService.extractFormDataFromFunction(data);
         return this.settingService.apiCompanyInsurancepolicyPut().pipe(
-            tap(() => {
-                
-                let companyData = JSON.parse(
-                    JSON.stringify(
-                        this.companyStore?.getValue()?.entities[this.companyId]
-                    )
-                );
-                      
-                
-                const copmanyInsurance = this.getCompanyInsurance()
-                    .pipe(takeUntil(this.destroy$))
-                    .subscribe({
-                        next: (res: any) => {
-                            let insArray = [];
-                            insArray.push(res);
-                            companyData.insurancePolicies = insArray;
-                            this.companyStore.update(this.companyId, {
-                                insurancePolicies: companyData.insurancePolicies,
-                            }); 
-                            
-                            this.tableService.sendActionAnimation({
-                                animation: 'update',
-                                data: companyData,
-                                id: companyData.id,
-                            });
-                            copmanyInsurance.unsubscribe(); 
-                        }
-                    })
-                
-                /*
+            tap(() => {    
                 const companySub = this.getCompany()
                     .pipe(takeUntil(this.destroy$))
                     .subscribe({
                         next: (company: CompanyResponse | any) => {
                             this.companyStore.add(company);
-                            console.log('----company', company)
                             this.tableService.sendActionAnimation({
                                 animation: 'update',
                                 data: company,
@@ -379,7 +287,6 @@ export class SettingsCompanyService implements OnDestroy {
                             companySub.unsubscribe();
                         },
                     });
-                */
             })
         );
     }

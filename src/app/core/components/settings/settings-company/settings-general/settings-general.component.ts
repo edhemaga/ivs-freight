@@ -44,7 +44,6 @@ export class SettingsGeneralComponent implements OnInit, OnDestroy, OnChanges {
     ) {}
 
     ngOnChanges(changes: SimpleChanges): void {
-        //console.log('---changes--', changes);
         if (changes?.companyData?.currentValue?.divisions?.length < 1) {
             this.companyDivision = true;
             this.hasArrow = true;
@@ -58,8 +57,7 @@ export class SettingsGeneralComponent implements OnInit, OnDestroy, OnChanges {
             changes?.companyData?.currentValue !==
             changes?.companyData?.previousValue
         ) {
-            this.companyData = changes?.companyData?.currentValue?.companyData ? changes?.companyData?.currentValue?.companyData : changes?.companyData?.currentValue ;
-            console.log('----this.companyData', this.companyData);
+            this.companyData = changes?.companyData?.currentValue;
         }
         if (this.companyData?.name.length > 13) {
             this.changeFont = true;

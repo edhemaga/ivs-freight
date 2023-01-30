@@ -52,8 +52,6 @@ export class SettingsCompanyComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe((res: any) => {
                 if (res.animation) {
-                    console.log('---res', res);
-                    console.log('---res', res.data);
                     this.dataCompany = res.data.divisions;
                     this.data = res.data;
                     this.getCompanyDivision();
@@ -92,7 +90,7 @@ export class SettingsCompanyComponent implements OnInit, OnDestroy {
     }
 
     public getData(data: any) {
-        this.data = data?.companyData ? data?.companyData : data;
+        this.data = data;
     }
     public selectCompanyFunction() {
         return this.settingCompanyQuery
