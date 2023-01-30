@@ -120,3 +120,9 @@
         }
     }
 }
+@media only screen and (max-height: 800px) {
+    .modal-nav-panel {
+        height: 500px;
+        overflow-y: scroll;
+    }
+}
