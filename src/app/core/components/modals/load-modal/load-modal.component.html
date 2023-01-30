@@ -472,9 +472,7 @@
                                 isDropdown: true,
                                 label: pickupDateRange ? 'Date From' : 'Date',
                                 placeholderIcon: 'date',
-                                isRequired: true,
-                                customClass:
-                                    'datetimeclass line-input-26-in-card'
+                                isRequired: true
                             }"
                             (blurInput)="
                                 loadForm.get('pickupDateFrom').markAsTouched()
@@ -501,9 +499,7 @@
                                 type: 'text',
                                 isDropdown: true,
                                 label: 'Date To',
-                                placeholderIcon: 'date',
-                                customClass:
-                                    'datetimeclass line-input-26-in-card'
+                                placeholderIcon: 'date'
                             }"
                             (blurInput)="
                                 loadForm.get('pickupDateTo').markAsTouched()
@@ -522,9 +518,7 @@
                                         : 'From',
                                 placeholderIcon: 'time',
                                 isDropdown: true,
-                                isRequired: true,
-                                customClass:
-                                    'datetimeclass line-input-26-in-card'
+                                isRequired: true
                             }"
                             (blurInput)="
                                 loadForm.get('pickupTimeFrom').markAsTouched()
@@ -540,9 +534,7 @@
                                 placeholderIcon: 'time',
                                 isDropdown: true,
                                 isRequired: true,
-                                isDisabled: selectedStopTimePickup === 6,
-                                customClass:
-                                    'datetimeclass line-input-26-in-card'
+                                isDisabled: selectedStopTimePickup === 6
                             }"
                             (blurInput)="
                                 loadForm.get('pickupTimeTo').markAsTouched()

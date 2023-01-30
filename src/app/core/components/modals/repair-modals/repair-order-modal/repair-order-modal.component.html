@@ -147,6 +147,19 @@
                     </div>
                     <div class="clear-selected-item">
                         <div
+                            (click)="openRepairShop(selectedRepairShop)"
+                            class="clear-x"
+                            mainTooltip="Edit"
+                            ngbTooltip
+                            position="top"
+                            tooltipBackground="#3074d3"
+                        >
+                            <svg-icon
+                                src="assets/svg/ic_spec_input_pen.svg"
+                            ></svg-icon>
+                        </div>
+
+                        <div
                             (click)="
                                 selectedRepairShop = null;
                                 repairOrderForm

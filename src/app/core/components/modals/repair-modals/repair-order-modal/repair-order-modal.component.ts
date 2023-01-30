@@ -1392,6 +1392,35 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
         }
     }
 
+    public openRepairShop(repairShop: any) {
+        console.log(repairShop);
+
+        this.ngbActiveModal.close();
+        this.modalService.setProjectionModal({
+            action: 'open',
+            payload: {
+                key: 'repair-modal',
+                value: {
+                    ...this.repairOrderForm.value,
+                    selectedUnit: this.selectedUnit,
+                    services: this.services,
+                    selectedRepairShop: this.selectedRepairShop,
+                    headerTabs: this.headerTabs,
+                    selectedHeaderTab: this.selectedHeaderTab,
+                    typeOfRepair: this.typeOfRepair,
+                    items_array: this.items.value,
+                    subtotal: this.subtotal,
+                    selectedPM: this.selectedPM,
+                    selectedPMIndex: this.selectedPMIndex,
+                },
+                id: this.selectedRepairShop.id,
+            },
+            component: RepairShopModalComponent,
+            size: 'small',
+            type: this.repairOrderForm.get('unitType').value,
+        });
+    }
+
     updateTags() {
         let tags = [];
 

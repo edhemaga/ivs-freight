@@ -62,7 +62,6 @@ export interface ITaInput {
     addressFlag?: string; // added text in right corner and this flag will be disabled clear button, invalid danger mark\
     // Custom classes
     // - 'input-32' -> height: 32px,
-    // - 'line-input-26-in-card' -> when input implement in custom-card and not aligned
     // - 'datetimeclass' -> date/time pickers
     customClass?: string;
 
