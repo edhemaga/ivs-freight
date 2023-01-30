@@ -324,11 +324,3 @@
         opacity: 1;
     }
 }
-@keyframes moveToRight {
-    0% {
-        transform: translateX(0px);
-    }
-    100% {
-        transform: translateX(48px);
-    }
-}
