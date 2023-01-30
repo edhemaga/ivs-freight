@@ -16,35 +16,40 @@ export class companySettingsResolver implements Resolve<CompanyResponse[]> {
     ) {}
     resolve(): Observable<CompanyResponse[]> | Observable<any> {
 
+        const companyData$ = this.settingsCompanyService.getCompany();
+        const copmanyInsurance$ = this.settingsCompanyService.getCompanyInsurance();
+        const copmanyPayroll$ = this.settingsCompanyService.getCompanyPayroll();
 
+        return forkJoin({
+            companyData: companyData$,
+            copmanyInsurance: copmanyInsurance$,
+            copmanyPayroll: copmanyPayroll$,
+        }).pipe(
+            tap((data) => {
 
-
+                let companyResponse = data.companyData;
+                localStorage.setItem(
+                    'companiesCount',
+                    JSON.stringify({
+                        numberOfCompany: companyResponse.divisions.length,
+                    })
+                );
+                let insArray = [];
+                insArray.push(data.copmanyInsurance);
+                companyResponse.insurancePoliciesNewData = insArray;
+                companyResponse.companyPayrollsNewData = data.copmanyPayroll;
+                this.companyStore.set([companyResponse]);
+                //console.log('--data---', data);
+                //console.log('--companyResponse---', companyResponse);
+            })
+        );
+        /*
         return this.settingsCompanyService.getCompany().pipe(
             catchError((error) => {
                 return of('error');
             }),
             tap((companyResponse: CompanyResponse) => {
 
-                let companyId = companyResponse.id;
-                /*
-                const insuranceData$ = this.settingsCompanyService.getCompanyInsurance(
-                    companyId,
-                );
-
-                const payrollData$ = this.settingsCompanyService.getCompanyPayroll(
-                    companyId,
-                );
-
-
-                forkJoin({
-                    shipperData: insuranceData$,
-                    shipperLoads: payrollData$,
-                }).pipe(
-                    tap((data) => {
-                        console.log('--data--', data);
-                    })
-                );   
-                    */
                 localStorage.setItem(
                     'companiesCount',
                     JSON.stringify({
@@ -54,9 +59,8 @@ export class companySettingsResolver implements Resolve<CompanyResponse[]> {
                 
                 console.log("WHAT IS COMPANY RESPONSE");
                 console.log(companyResponse);
-                console.log(companyId);
                 this.companyStore.set([companyResponse]);
             })
-        );
+        ); */
     }
 }

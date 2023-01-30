@@ -158,6 +158,7 @@ model/companyAccountModalResponse.ts
 model/companyAccountResponse.ts
 model/companyAccountResponsePagination.ts
 model/companyAdditionalInfo.ts
+model/companyAdditionalInfoResponse.ts
 model/companyContactLabelCountResponse.ts
 model/companyContactLabelCountResponsePagination.ts
 model/companyContactLabelResponse.ts
@@ -548,6 +549,7 @@ model/renewCdlCommand.ts
 model/reorderDispatchCommand.ts
 model/reorderDispatchesCommand.ts
 model/repairAutocompleteDescriptionResponse.ts
+model/repairCategoryFilterResponse.ts
 model/repairItemResponse.ts
 model/repairListResponse.ts
 model/repairModalResponse.ts
@@ -651,9 +653,7 @@ model/trafficViolationItemReviewResponse.ts
 model/trailerAccidentResponse.ts
 model/trailerAutocompleteModelResponse.ts
 model/trailerDispatchModalResponse.ts
-model/trailerFilterListResponse.ts
 model/trailerFilterResponse.ts
-model/trailerFilterResponsePagination.ts
 model/trailerLengthResponse.ts
 model/trailerListResponse.ts
 model/trailerMakeResponse.ts
@@ -671,7 +671,9 @@ model/truckAccidentResponse.ts
 model/truckAutocompleteModelResponse.ts
 model/truckDispatchModalResponse.ts
 model/truckEngineModelResponse.ts
+model/truckFilterListResponse.ts
 model/truckFilterResponse.ts
+model/truckFilterResponsePagination.ts
 model/truckGrossWeightResponse.ts
 model/truckListResponse.ts
 model/truckMakeResponse.ts

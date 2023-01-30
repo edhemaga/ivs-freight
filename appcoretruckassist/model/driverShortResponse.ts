@@ -36,6 +36,8 @@ export interface DriverShortResponse {
     payType?: EnumValue;
     solo?: PerMileEntity;
     team?: PerMileEntity;
+    perMileSolo?: number | null;
+    perMileTeam?: number | null;
     commissionSolo?: number | null;
     commissionTeam?: number | null;
     soloFlatRate?: number | null;
