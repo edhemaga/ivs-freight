@@ -509,7 +509,16 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
             .getFuelConsumption(id, 1)
             .pipe(takeUntil(this.destroy$))
             .subscribe((item) => {
-                console.log(item, 'itemmm')
+                console.log(item.truckFuelConsumptionCharts, 'itemmm');
+                console.log(this.payrollChartConfig.dataProperties[1].defaultConfig.data, 'itemmm 222');
+                let revenue = [];
+                item.truckFuelConsumptionCharts.map((data, index)=>{
+                    revenue.push(data.costPerGallon)
+                });
+
+                this.payrollChartConfig.dataProperties[1].defaultConfig.data = revenue;
+
+                console.log(this.payrollChartConfig.dataProperties[1].defaultConfig.data, 'itemmm 333');
             });
     }
 
