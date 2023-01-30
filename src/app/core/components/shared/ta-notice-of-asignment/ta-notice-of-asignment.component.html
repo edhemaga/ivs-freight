@@ -1,0 +1,150 @@
+<div class="custom_editor_holder d-flex" [formGroup]="noticeForm">
+    <div *ngIf="settings.fontSize" class="custom_select_holder font-family">
+        <app-ta-input-dropdown
+            formControlName="fontSize"
+            [template]="'double-text-template'"
+            [inputConfig]="{
+                name: 'Input Dropdown',
+                type: 'text',
+                label: activeFont?.name,
+                placeholderInsteadOfLabel: true,
+                isDropdown: true,
+                dropdownWidthClass: 'w-col-134',
+                hideClear: true,
+                blackInput: true
+            }"
+            [options]="fontSizeList"
+            [activeItem]="activeFont"
+            (selectedItem)="changeFontSize($event)"
+        ></app-ta-input-dropdown>
+    </div>
+    <div *ngIf="settings.textTransform" class="wysiwyg_button_group d-flex">
+        <div
+            (click)="executeEditor('bold')"
+            [class.active]="activeOptions.bold"
+            class="sysiwyg_button_item"
+        >
+            <svg-icon
+                src="assets/svg/truckassist-table/note/bold-icon.svg"
+            ></svg-icon>
+        </div>
+        <div
+            (click)="executeEditor('italic')"
+            [class.active]="activeOptions.italic"
+            class="sysiwyg_button_item"
+        >
+            <svg-icon
+                src="assets/svg/truckassist-table/note/italic-icon.svg"
+            ></svg-icon>
+        </div>
+        <div
+            (click)="executeEditor('underline')"
+            [class.active]="activeOptions.underline"
+            class="sysiwyg_button_item"
+        >
+            <svg-icon
+                src="assets/svg/truckassist-table/note/underline-icon.svg"
+            ></svg-icon>
+        </div>
+    </div>
+    <div
+        [class.small_width]="sidebarWidth < 528"
+        class="wysiwyg-text-transform-buttons d-flex"
+    >
+        <div class="text-align-buttons d-flex">
+            <div
+                (click)="executeEditor('justifyLeft')"
+                [class.active]="activeOptions.justifyLeft"
+                class="align-buttons"
+            >
+                <svg-icon
+                    src="assets/svg/common/align-left-icon.svg"
+                ></svg-icon>
+            </div>
+            <div
+                (click)="executeEditor('justifyCenter')"
+                [class.active]="activeOptions.justifyCenter"
+                class="align-buttons"
+            >
+                <svg-icon
+                    src="assets/svg/common/align-center-icon.svg"
+                ></svg-icon>
+            </div>
+            <div
+                (click)="executeEditor('justifyRight')"
+                [class.active]="activeOptions.justifyRight"
+                class="align-buttons"
+            >
+                <svg-icon
+                    src="assets/svg/common/align-right-icon.svg"
+                ></svg-icon>
+            </div>
+            <div
+                (click)="executeEditor('justifyFull')"
+                [class.active]="activeOptions.justifyFull"
+                class="align-buttons"
+            >
+                <svg-icon
+                    src="assets/svg/common/align-full-icon.svg"
+                ></svg-icon>
+            </div>
+        </div>
+        <div *ngIf="settings.textIndent" class="paragraph-buttons d-flex">
+            <div
+                (click)="executeEditor('indent')"
+                [class.active]="activeOptions.indent"
+                class="align-buttons"
+            >
+                <svg-icon src="assets/img/svgs/paragraph-inside.svg"></svg-icon>
+            </div>
+            <div
+                (click)="executeEditor('outdent')"
+                [class.active]="activeOptions.outdent"
+                class="align-buttons"
+            >
+                <svg-icon
+                    src="assets/img/svgs/paragraph-outside.svg"
+                ></svg-icon>
+            </div>
+        </div>
+        <div *ngIf="settings.textLists" class="paragraph-buttons d-flex">
+            <div
+                (click)="executeEditor('insertUnorderedList')"
+                [class.active]="activeOptions.insertUnorderedList"
+                class="align-buttons"
+            >
+                <svg-icon src="assets/img/svgs/unordered-list.svg"></svg-icon>
+            </div>
+            <div
+                (click)="executeEditor('insertOrderedList')"
+                [class.active]="activeOptions.insertOrderedList"
+                class="align-buttons"
+            >
+                <svg-icon src="assets/img/svgs/ordered-list.svg"></svg-icon>
+            </div>
+        </div>
+    </div>
+    <div class="color_picker_holder">
+        <div
+            class="color_main_hold"
+            *ngFor="let item of customSelectColor; let i = index"
+        >
+            <div
+                class="color_picker_color"
+                [ngStyle]="{
+                    'background-color': item
+                }"
+            ></div>
+        </div>
+    </div>
+</div>
+<div class="w-100">
+    <div
+        #noticeRef
+        (focus)="focusElement($event)"
+        (keyup)="updateNoteMain($event)"
+        [innerHTML]="noticeValue | safeHtml"
+        class="notice_editor"
+        contenteditable
+    ></div>
+</div>

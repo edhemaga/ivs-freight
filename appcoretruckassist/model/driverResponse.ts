@@ -45,6 +45,8 @@ export interface DriverResponse {
     fleetType?: EnumValue;
     soloDriver?: boolean | null;
     teamDriver?: boolean | null;
+    perMileSolo?: number | null;
+    perMileTeam?: number | null;
     commissionSolo?: number | null;
     commissionTeam?: number | null;
     soloFlatRate?: number | null;

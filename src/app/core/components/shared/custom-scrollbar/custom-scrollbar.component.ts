@@ -210,6 +210,7 @@ export class CustomScrollbarComponent
                         this.tableNotPinedBoundingRect.width
                 ) {
                     this.bar.nativeElement.style.transform = `translateX(${offsetBar}px)`;
+                    
                     this.scrollEvent.emit({
                         eventAction: 'scrolling',
                         scrollPosition: offsetBar * this.tableScrollRatioFull,

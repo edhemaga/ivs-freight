@@ -56,6 +56,7 @@ export class NavigationComponent implements OnInit, OnDestroy {
     selectedSubRoute: string = '';
     companiesExists: boolean;
     routeIndexSelected: boolean;
+    subrouteClicked: boolean = false;
     constructor(
         private cdRef: ChangeDetectorRef,
         private router: Router,
@@ -86,6 +87,7 @@ export class NavigationComponent implements OnInit, OnDestroy {
                             this.isUserPanelOpen = false;
                             this.isSettingsPanelOpen = false;
                             this.isUserCompanyDetailsOpen = false;
+                            this.subrouteClicked = false;
                         } else {
                             this.isModalPanelOpen = data.type;
                         }
@@ -97,6 +99,7 @@ export class NavigationComponent implements OnInit, OnDestroy {
                             this.isUserPanelOpen = false;
                             this.isUserCompanyDetailsOpen = false;
                             this.isSettingsPanelOpen = data.type;
+                            this.subrouteClicked = false;
                         } else {
                             this.isSettingsPanelOpen = data.type;
                         }
@@ -108,6 +111,7 @@ export class NavigationComponent implements OnInit, OnDestroy {
                             this.isSettingsPanelOpen = false;
                             this.isUserPanelOpen = data.type;
                             this.isUserCompanyDetailsOpen = false;
+                            this.subrouteClicked = false;
                         } else {
                             this.isUserPanelOpen = data.type;
                         }
@@ -119,6 +123,7 @@ export class NavigationComponent implements OnInit, OnDestroy {
                             this.isUserPanelOpen = false;
                             this.isSettingsPanelOpen = false;
                             this.isUserCompanyDetailsOpen = data.type;
+                            this.subrouteClicked = false;
                         } else {
                             this.isUserCompanyDetailsOpen = data.type;
                         }
@@ -194,7 +199,9 @@ export class NavigationComponent implements OnInit, OnDestroy {
         // );
         // console.log(this.navigation, 'asasfasff');
     }
-
+    routeWithSubRouteClicked(event) {
+        this.subrouteClicked = event;
+    }
     oneUserCompany($event) {
         this.companiesExists = $event;
         this.cdRef.detectChanges();
@@ -207,8 +214,6 @@ export class NavigationComponent implements OnInit, OnDestroy {
         this.openedDropdown = event;
     }
     isSubrouteContainerOpen(event) {
-        // console.log(event);
-
         this.subrouteContainerOpened = event;
         this.cdRef.detectChanges();
     }

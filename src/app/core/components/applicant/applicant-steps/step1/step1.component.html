@@ -138,6 +138,7 @@
                             name: 'datepicker',
                             type: 'text',
                             label: 'DOB',
+                            isDropdown: true,
                             placeholderIcon: 'date',
                             isRequired: true,
                             customClass: 'datetimeclass',
@@ -1070,16 +1071,16 @@
                                 <span class="required-star">*</span>
                             </p>
 
-                            <ng-container
-                                *ngIf="
-                                    displayRadioRequiredNoteArray[i]
-                                        .displayRadioRequiredNote
-                                "
+                            <p
+                                class="m-0 ta-font-semi-bold required"
+                                [ngClass]="{
+                                    'required-active':
+                                        displayRadioRequiredNoteArray[i]
+                                            .displayRadioRequiredNote
+                                }"
                             >
-                                <p class="m-0 ta-font-semi-bold required">
-                                    Required
-                                </p>
-                            </ng-container>
+                                Required
+                            </p>
                         </div>
 
                         <div class="question-radios-box">

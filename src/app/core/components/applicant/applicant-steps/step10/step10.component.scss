@@ -27,9 +27,18 @@
         p {
             font-size: 14px;
             line-height: 18px;
-            user-select: none;
             margin-top: 5px !important;
             color: $black;
+
+            &::-moz-selection {
+                color: $black;
+                background: rgb(66, 66, 66, 0.2);
+            }
+
+            &::selection {
+                color: $black;
+                background: rgb(66, 66, 66, 0.2);
+            }
         }
     }
 

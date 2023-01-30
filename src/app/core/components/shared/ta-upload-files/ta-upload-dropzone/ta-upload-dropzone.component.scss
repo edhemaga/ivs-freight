@@ -42,11 +42,15 @@
 
     .ta-upload-dropzone-close {
         position: absolute;
-        top: 8px;
-        right: 8px;
+        top: 6px;
+        right: 11px;
         
         svg {
             cursor: pointer;
+
+            path {
+                fill: #919191;
+            }
         }
     }
 

@@ -223,21 +223,25 @@
         ></pdf-viewer>
 
         <!-- Image Content -->
-        <img
-            class="ta-upload-file-image"
-            [class.details_image]="type == 'details' || type == 'todo'"
-            *ngIf="
-                file?.extension?.toLowerCase() != 'pdf' &&
-                fileExtension != 'pdf'
-            "
-            [src]="file?.url"
-            [alt]="file?.fileName"
-        />
+        <div class="image_main_holder {{ customClassName }}">
+            <img
+                class="ta-upload-file-image"
+                [class.details_image]="type == 'details' || type == 'todo'"
+                *ngIf="
+                    file?.extension?.toLowerCase() != 'pdf' &&
+                    fileExtension != 'pdf'
+                "
+                [src]="file?.url"
+                [alt]="file?.fileName"
+            />
+        </div>
 
         <!-- Tag Content -->
         <div
             *ngIf="
-                (hasTagsDropdown || customClassName == 'table-details') &&
+                (hasTagsDropdown ||
+                    customClassName == 'table-details' ||
+                    customClassName == 'driver-card-pdf') &&
                 file?.tags &&
                 file?.tags != '' &&
                 file?.tags != 'No Tag'
@@ -353,7 +357,11 @@
 
 <ng-template #tagsPopover let-data="data">
     <div class="tags_main_holder">
-        <div class="remove_tag_holder" *ngIf="file?.tags?.length" (click)="removeTag()">
+        <div
+            class="remove_tag_holder"
+            *ngIf="file?.tags?.length"
+            (click)="removeTag()"
+        >
             <div class="remove_tag">Remove Tag</div>
         </div>
         <div class="remove_tag_border_holder" *ngIf="file?.tags?.length">

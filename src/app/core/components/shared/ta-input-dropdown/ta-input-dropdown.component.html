@@ -609,16 +609,26 @@
                             option?.truck?.subFolder
                         }}"
                         [ngClass]="{
-                            'dispatch-semi-truck': option.id === 1,
-                            'dispatch-semi-sleeper': option.id === 2,
-                            'dispatch-box-truck': option.id === 3,
-                            'dispatch-cargo-van': option.id === 4,
-                            'dispatch-tow-truck': option.id === 5,
-                            'dispatch-car-hauler': option.id === 6,
-                            'dispatch-spotter': option.id === 7
+                            'dispatch-semi-truck':
+                                option?.truck?.truckType?.id === 1,
+                            'dispatch-semi-sleeper':
+                                option?.truck?.truckType?.id === 2,
+                            'dispatch-box-truck':
+                                option?.truck?.truckType?.id === 3,
+                            'dispatch-cargo-van':
+                                option?.truck?.truckType?.id === 4,
+                            'dispatch-tow-truck':
+                                option?.truck?.truckType?.id === 5,
+                            'dispatch-car-hauler':
+                                option?.truck?.truckType?.id === 6,
+                            'dispatch-spotter':
+                                option?.truck?.truckType?.id === 7
                         }"
                     >
-                        <svg-icon [src]="option.truck?.logoName"></svg-icon>
+                        <svg-icon
+                            class="load-dispatches-svg"
+                            [src]="option.truck?.logoName"
+                        ></svg-icon>
                         <div
                             [innerHtml]="
                                 option?.truck?.name
@@ -662,7 +672,10 @@
                                 : false
                         }"
                     >
-                        <svg-icon [src]="option?.trailer?.logoName"></svg-icon>
+                        <svg-icon
+                            class="load-dispatches-svg"
+                            [src]="option?.trailer?.logoName"
+                        ></svg-icon>
                         <div
                             [innerHtml]="
                                 option?.trailer?.name
@@ -690,10 +703,6 @@
                                 active:
                                     option.driver?.id === activeItem?.driver?.id
                             }"
-                            [ngStyle]="{
-                                position: 'relative',
-                                bottom: '1px'
-                            }"
                             [src]="
                                 this.imageBase64Service.sanitizer(
                                     option?.driver?.logoName
@@ -703,10 +712,6 @@
                         />
                         <div
                             *ngIf="!option.driver?.logoName"
-                            [ngStyle]="{
-                                position: 'relative',
-                                bottom: '1px'
-                            }"
                             class="no-profile-image"
                         >
                             <app-profile-images

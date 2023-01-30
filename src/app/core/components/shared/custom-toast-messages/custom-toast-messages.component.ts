@@ -246,6 +246,10 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
             api: 'load',
             value: 'LOAD',
         },
+        {
+            api: 'tag',
+            value: 'TAG'
+        }
     ];
     constructor(
         protected toastrService: ToastrService,
@@ -1025,6 +1029,13 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
                 }
 
                 this.message = fileName;
+                break;
+            case 'TAG':
+
+                    if ( !this.httpRequest?.body?.tags[0]?.tagId ){
+                        this.actionTitle = this.toastrType == 'toast-error' ? 'REMOVE' : 'REMOVED';
+                    }
+                    this.message = this.DetailsDataService.documentName ? this.DetailsDataService.documentName : '';
                 break;
         }
 

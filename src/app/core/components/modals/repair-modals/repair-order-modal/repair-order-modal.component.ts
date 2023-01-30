@@ -627,11 +627,6 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
         this.popoverRef.close();
     }
 
-    ngOnDestroy(): void {
-        this.destroy$.next();
-        this.destroy$.complete();
-    }
-
     private createForm() {
         this.repairOrderForm = this.formBuilder.group({
             repairType: ['Order'],
@@ -913,10 +908,16 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                         this.filesForDelete = [];
 
                         this.addNewAfterSave = false;
-                    } else {
+
                         this.modalService.setModalSpinner({
                             action: 'save and add new',
                             status: false,
+                            close: false,
+                        });
+                    } else {
+                        this.modalService.setModalSpinner({
+                            action: null,
+                            status: true,
                             close: true,
                         });
                     }
@@ -1166,9 +1167,13 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                         'edit-mode'
                     );
 
-                    // Truck/Trailer Unit number
                     this.selectedUnit =
-                        res.unitType.name === 'Truck' ? res.truck : res.trailer;
+                        res.unitType.name === 'Truck'
+                            ? { ...res.truck, name: res.truck.truckNumber }
+                            : {
+                                  ...res.trailer,
+                                  name: res.trailer.trailerNumber,
+                              };
 
                     this.selectedHeaderTab =
                         res.repairType.name === 'Bill' ||
@@ -1211,7 +1216,6 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                             res.date && this.selectedHeaderTab === 2
                                 ? res.invoice
                                 : null,
-                        repairShopId: res.repairShop ? res.repairShop.id : null,
                         items: [],
                         note: res.note,
                     });
@@ -1247,6 +1251,12 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                                         address: res.address.address,
                                         pinned: res.pinned,
                                     };
+                                    this.repairOrderForm
+                                        .get('repairShopId')
+                                        .patchValue(
+                                            this.selectedRepairShop.id,
+                                            { emitEvent: false }
+                                        );
                                 },
                                 error: () => {},
                             });
@@ -1396,5 +1406,10 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
         });
 
         this.tagsService.updateTag({ tags: tags }).subscribe();
+    }
+
+    ngOnDestroy(): void {
+        this.destroy$.next();
+        this.destroy$.complete();
     }
 }

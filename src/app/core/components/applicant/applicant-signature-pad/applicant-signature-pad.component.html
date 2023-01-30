@@ -1,6 +1,9 @@
 <!-- SIGNATURE PAD -->
 
-<div *ngIf="mode === 'APPLICANT_MODE' && !signatureImgSrc">
+<div
+    class="signature-pad-container"
+    *ngIf="mode === 'APPLICANT_MODE' && !signatureImgSrc"
+>
     <signature-pad
         #signature
         [options]="signaturePadOptions"
@@ -23,7 +26,7 @@
                 <div
                     ngbTooltip
                     mainTooltip="Undo"
-                    tooltipBackground="#6C6C6C"
+                    tooltipBackground="#424242"
                     position="top"
                 >
                     <svg-icon
@@ -51,7 +54,7 @@
                 <div
                     ngbTooltip
                     mainTooltip="Clear"
-                    tooltipBackground="#6C6C6C"
+                    tooltipBackground="#424242"
                     position="top"
                 >
                     <svg-icon

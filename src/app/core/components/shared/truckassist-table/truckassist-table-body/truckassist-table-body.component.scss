@@ -501,6 +501,7 @@ table {
                         // USER AVATAR COLUMN
                         .user-avatar-container {
                             cursor: pointer;
+                            min-width: 20px;
                             width: 20px;
                             height: 20px;
                             margin-right: 6px;
@@ -912,7 +913,7 @@ table {
                                     }
                                 }
 
-                                .ic_trailer_tanker-liquid {
+                                .ic_trailer_tanker {
                                     svg {
                                         path {
                                             fill: #1e9df3;
@@ -960,10 +961,18 @@ table {
                                     }
                                 }
 
-                                .ic_trailer-tanker-dryBulk {
+                                .ic_trailer_tanker_pneumatic {
                                     svg {
                                         path {
                                             fill: #f3f3f3;
+                                        }
+                                    }
+                                }
+
+                                .ic_carhauler_stinger {
+                                    svg {
+                                        path {
+                                            fill: #F276EF;
                                         }
                                     }
                                 }

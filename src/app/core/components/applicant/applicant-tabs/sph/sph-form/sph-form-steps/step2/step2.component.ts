@@ -1,5 +1,7 @@
 import {
+    AfterContentChecked,
     AfterViewInit,
+    ChangeDetectorRef,
     Component,
     OnDestroy,
     OnInit,
@@ -43,7 +45,9 @@ import {
     templateUrl: './step2.component.html',
     styleUrls: ['./step2.component.scss'],
 })
-export class Step2Component implements OnInit, OnDestroy, AfterViewInit {
+export class Step2Component
+    implements OnInit, OnDestroy, AfterViewInit, AfterContentChecked
+{
     @ViewChildren('cmp') components: QueryList<any>;
 
     private destroy$ = new Subject<void>();
@@ -170,7 +174,8 @@ export class Step2Component implements OnInit, OnDestroy, AfterViewInit {
         private inputService: TaInputService,
         private applicantActionsService: ApplicantActionsService,
         private applicantStore: ApplicantStore,
-        private applicantQuery: ApplicantQuery
+        private applicantQuery: ApplicantQuery,
+        private changeDetectorRef: ChangeDetectorRef
     ) {}
 
     ngOnInit(): void {
@@ -181,8 +186,6 @@ export class Step2Component implements OnInit, OnDestroy, AfterViewInit {
         this.hasNoSafetyPerformanceToReport();
 
         this.getStepValuesFromStore();
-
-        console.log(this.applicantStore);
     }
 
     ngAfterViewInit(): void {
@@ -191,6 +194,10 @@ export class Step2Component implements OnInit, OnDestroy, AfterViewInit {
         this.workForCompanyRadios = radioButtonsArray[0].buttons;
         this.motorVehicleForCompanyRadios = radioButtonsArray[1].buttons;
         this.consideredForEmploymentAgainRadios = radioButtonsArray[2].buttons;
+    }
+
+    ngAfterContentChecked(): void {
+        this.changeDetectorRef.detectChanges();
     }
 
     public trackByIdentity = (index: number, _: any): number => index;
@@ -225,7 +232,6 @@ export class Step2Component implements OnInit, OnDestroy, AfterViewInit {
     }
 
     public patchStepValues(stepValues: any): void {
-        console.log('stepValues', stepValues);
         const {
             workForCompany,
             workFrom,
@@ -747,8 +753,6 @@ export class Step2Component implements OnInit, OnDestroy, AfterViewInit {
                 ? []
                 : [...filteredAccidentArray, filteredLastAccidentCard],
         };
-
-        console.log('saveData', saveData);
 
         this.applicantActionsService
             .createAccidentHistorySphForm(saveData)

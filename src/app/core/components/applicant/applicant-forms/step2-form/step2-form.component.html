@@ -373,6 +373,7 @@
                         name: 'datepicker',
                         type: 'text',
                         label: 'From',
+                        isDropdown: true,
                         placeholderIcon: 'date',
                         isRequired: true,
                         customClass: 'datetimeclass',
@@ -399,6 +400,7 @@
                         name: 'datepicker',
                         type: 'text',
                         label: 'To',
+                        isDropdown: true,
                         placeholderIcon: 'date',
                         isRequired: true,
                         customClass: 'datetimeclass',
@@ -555,7 +557,11 @@
                         'margin-top':
                             classesOfEquipment?.controls.length === 1
                                 ? '28px'
-                                : '12px'
+                                : '12px',
+                        'padding-right':
+                            classesOfEquipment?.controls.length === 1
+                                ? 0
+                                : '1px'
                     }"
                 >
                     <!-- CREATED CLASS OF EQUIPMENT DATA -->
@@ -622,6 +628,9 @@
                                                 [inputConfig]="{
                                                     name: 'Input Dropdown',
                                                     type: 'text',
+                                                    label: 'Vehicle Type',
+                                                    placeholder: 'Vehicle Type',
+                                                    placeholderInsteadOfLabel: true,
                                                     isDisabled:
                                                         selectedMode !==
                                                         'APPLICANT_MODE',
@@ -671,6 +680,9 @@
                                                 [inputConfig]="{
                                                     name: 'Input Dropdown',
                                                     type: 'text',
+                                                    label: 'Trailer Type',
+                                                    placeholder: 'Trailer Type',
+                                                    placeholderInsteadOfLabel: true,
                                                     isDisabled:
                                                         (selectedMode ===
                                                             'APPLICANT_MODE' &&
@@ -749,6 +761,9 @@
                                                 [inputConfig]="{
                                                     name: 'Input Dropdown',
                                                     type: 'text',
+                                                    label: 'Length',
+                                                    placeholder: 'Length',
+                                                    placeholderInsteadOfLabel: true,
                                                     isDisabled:
                                                         (selectedMode ===
                                                             'APPLICANT_MODE' &&

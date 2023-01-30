@@ -4,12 +4,14 @@
             #tableScrollRef
             [itemSize]="35"
             [ngStyle]="{
-                height:
-                    viewData.length * 32 +
-                    (viewData.length - 1) * 2 +
-                    500 +
-                    'px',
-                'max-height': 1048 + 'px'
+                'height.px':
+                    activeAttachment !== -1 || activeMedia !== -1 || activeInsurance !== -1 
+                        ? viewData.length * 32 +
+                          (viewData.length - 1) * 2 +
+                          22 +
+                          300
+                        : viewData.length * 32 + (viewData.length - 1) * 2 + 22,
+                'max-height.px': 1048
             }"
         >
             <app-custom-scrollbar
@@ -648,10 +650,10 @@
                                 >
                                     <div class="inv-ageing-container">
                                         <div class="bfb-container">
-                                            {{ row[column.field].bfb }}
+                                            {{ row[column.field]?.bfb }}
                                         </div>
                                         <div class="dnu-container">
-                                            {{ row[column.field].dnu }}
+                                            {{ row[column.field]?.dnu }}
                                         </div>
                                         <div
                                             class="inv-ageing-text"
@@ -659,7 +661,7 @@
                                                 width: column.width - 42 + 'px'
                                             }"
                                         >
-                                            {{ row[column.field].amount }}
+                                            {{ row[column.field]?.amount }}
                                         </div>
                                     </div>
                                 </div>
@@ -1109,9 +1111,9 @@
                                             (click)="onLike(row)"
                                             [ngClass]="{
                                                 'did-like-icon':
-                                                    row[column.field].hasLiked,
+                                                    row[column.field]?.hasLiked,
                                                 'like-icon':
-                                                    !row[column.field].hasLiked
+                                                    !row[column.field]?.hasLiked
                                             }"
                                         ></div>
                                         <div
@@ -1122,7 +1124,7 @@
                                                 class="raiting-counter like-counter"
                                             >
                                                 {{
-                                                    row[column.field].likeCount
+                                                    row[column.field]?.likeCount
                                                 }}
                                             </div>
                                             <div
@@ -1130,7 +1132,7 @@
                                             >
                                                 {{
                                                     row[column.field]
-                                                        .dislikeCount
+                                                        ?.dislikeCount
                                                 }}
                                             </div>
                                         </div>
@@ -1140,10 +1142,10 @@
                                             [ngClass]="{
                                                 'did-dislike-icon':
                                                     row[column.field]
-                                                        .hasDislike,
+                                                        ?.hasDislike,
                                                 'dislike-icon':
                                                     !row[column.field]
-                                                        .hasDislike
+                                                        ?.hasDislike
                                             }"
                                         ></div>
                                     </div>
@@ -2112,10 +2114,10 @@
                                 >
                                     <div class="inv-ageing-container">
                                         <div class="bfb-container">
-                                            {{ row[column.field].bfb }}
+                                            {{ row[column.field]?.bfb }}
                                         </div>
                                         <div class="dnu-container">
-                                            {{ row[column.field].dnu }}
+                                            {{ row[column.field]?.dnu }}
                                         </div>
                                         <div
                                             class="inv-ageing-text"
@@ -2123,7 +2125,7 @@
                                                 width: column.width - 42 + 'px'
                                             }"
                                         >
-                                            {{ row[column.field].amount }}
+                                            {{ row[column.field]?.amount }}
                                         </div>
                                     </div>
                                 </div>
@@ -2231,9 +2233,9 @@
                                             (click)="onLike(row, column)"
                                             [ngClass]="{
                                                 'did-like-icon':
-                                                    row[column.field].hasLiked,
+                                                    row[column.field]?.hasLiked,
                                                 'like-icon':
-                                                    !row[column.field].hasLiked
+                                                    !row[column.field]?.hasLiked
                                             }"
                                         ></div>
                                         <div
@@ -2244,7 +2246,7 @@
                                                 class="raiting-counter like-counter"
                                             >
                                                 {{
-                                                    row[column.field].likeCount
+                                                    row[column.field]?.likeCount
                                                 }}
                                             </div>
                                             <div
@@ -2252,7 +2254,7 @@
                                             >
                                                 {{
                                                     row[column.field]
-                                                        .dislikeCount
+                                                        ?.dislikeCount
                                                 }}
                                             </div>
                                         </div>
@@ -2262,10 +2264,10 @@
                                             [ngClass]="{
                                                 'did-dislike-icon':
                                                     row[column.field]
-                                                        .hasDislike,
+                                                        ?.hasDislike,
                                                 'dislike-icon':
                                                     !row[column.field]
-                                                        .hasDislike
+                                                        ?.hasDislike
                                             }"
                                         ></div>
                                     </div>
@@ -3436,13 +3438,13 @@
                             </td>
                         </div>
                     </div>
-
                     <!-- Attachment Dropdown -->
                     <div
                         class="attachemnt-dropdown"
                         [ngClass]="{
                             'attachemnt-dropdown-active':
-                                activeAttachment === row.id && row.tableAttachments?.length > 1
+                                activeAttachment === row.id &&
+                                row.tableAttachments?.length > 1
                         }"
                     >
                         <div class="attachemnt-dropdown-content">

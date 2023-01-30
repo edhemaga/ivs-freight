@@ -49,6 +49,7 @@ export class NavigationRouteComponent implements OnInit, OnChanges {
     @Input() hideSubrouteTitle: number = -1;
     @Output() onRouteEvent = new EventEmitter<NavigationSubRoutes>();
     @Output() itemIndex = new EventEmitter<Number>();
+    @Output() routeWithSubRouteClicked = new EventEmitter<boolean>();
     @Output() hideSubrouteFromChild = new EventEmitter<boolean>();
     @Input() isLocalDropdownOpen: boolean = false;
 
@@ -64,7 +65,8 @@ export class NavigationRouteComponent implements OnInit, OnChanges {
 
     public _activeLink = undefined;
     public activeLinkHighlight: boolean = false;
-
+    public showToolTip: boolean;
+    public routeId: string;
     @Input() set activeLink(value) {
         if (typeof this._activeLink == 'undefined' && value) {
             this._activeLink = value;
@@ -72,17 +74,22 @@ export class NavigationRouteComponent implements OnInit, OnChanges {
             this.activeLinkHighlight = value;
         }
     }
-    showToolTip: boolean;
-    routeId: string;
-    public rHide: boolean = false;
-    // routeName: string;
     constructor(
         public router: Router,
         public navigationService: NavigationService,
         public activatedroute: ActivatedRoute,
         private cdRef: ChangeDetectorRef
     ) {}
-
+    routeWithSubRoutesClick(event) {
+        console.log(event);
+        if (event != undefined) {
+            console.log(true);
+            this.routeWithSubRouteClicked.emit(true);
+        } else {
+            this.routeWithSubRouteClicked.emit(false);
+            console.log(false);
+        }
+    }
     ngOnInit() {
         this.timeout = setTimeout(() => {
             this.isActiveRouteOnReload(window.location.pathname);

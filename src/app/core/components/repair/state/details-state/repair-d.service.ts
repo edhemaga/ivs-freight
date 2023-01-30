@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { Observable, Subject, of } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { RepairShopService } from '../../../../../../../appcoretruckassist/api/repairShop.service';
 import { RepairDStore } from './repair-d.store';
 import { RepairListResponse } from '../../../../../../../appcoretruckassist/model/repairListResponse';
@@ -64,7 +64,6 @@ export class RepairDService {
             search1,
             search2
         );
-        return of();
     }
 
     // Get Repair Minimal List
