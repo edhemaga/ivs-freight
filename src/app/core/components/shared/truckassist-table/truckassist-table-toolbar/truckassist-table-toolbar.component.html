@@ -290,7 +290,11 @@
                     ></svg-icon>
 
                     <svg-icon
-                        (click)="onResetTable()"
+                        (click)="
+                            onOptions({
+                                text: 'Reset Table'
+                            })
+                        "
                         *ngIf="option.backToListIcon && option.active"
                         class="columns-active-icon"
                         [svgStyle]="{
@@ -377,7 +381,9 @@
                                     type="checkbox"
                                 />
                                 <label
-                                    [ngClass]="{'some-selected': column.areSomeSelected}"
+                                    [ngClass]="{
+                                        'some-selected': column.areSomeSelected
+                                    }"
                                     class="columns-options-label"
                                     for="checkbox{{ i }}"
                                 ></label>
