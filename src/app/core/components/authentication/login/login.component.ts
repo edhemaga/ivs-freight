@@ -33,7 +33,6 @@ export class LoginComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
     public loginForm: UntypedFormGroup;
 
-    public loginForm: FormGroup;
     public copyrightYear!: number;
     public showHideIfMoreThenOneCompany: boolean = false;
     public userData: any;
