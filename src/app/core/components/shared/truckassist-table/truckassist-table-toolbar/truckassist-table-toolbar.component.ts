@@ -11,7 +11,7 @@ import {
 import { TableType } from 'appcoretruckassist';
 import { Subject, takeUntil } from 'rxjs';
 import { TruckassistTableService } from '../../../../services/truckassist-table/truckassist-table.service';
-import { FormControl } from '@angular/forms';
+import { UntypedFormControl } from '@angular/forms';
 import { Titles } from 'src/app/core/utils/application.decorators';
 
 @Titles()
@@ -24,7 +24,7 @@ export class TruckassistTableToolbarComponent
     implements OnInit, OnChanges, OnDestroy
 {
     private destroy$ = new Subject<void>();
-    dropdownSelection = new FormControl();
+    dropdownSelection = new UntypedFormControl();
     @Output() toolBarAction: EventEmitter<any> = new EventEmitter();
     @Input() tableData: any[];
     @Input() options: any;
@@ -214,6 +214,10 @@ export class TruckassistTableToolbarComponent
             this.options.toolbarActions.viewModeOptions.map((viewMode: any) => {
                 if (viewMode.active) {
                     this.selectedViewMode = viewMode.name;
+
+                    if (this.selectedViewMode !== 'Map' && this.isMapShowning) {
+                        this.isMapShowning = false;
+                    }
                 }
             });
         }
@@ -361,6 +365,9 @@ export class TruckassistTableToolbarComponent
         });
 
         this.isMapShowning = modeView.mode === 'Map';
+
+        console.log('isMapShowning');
+        console.log(this.isMapShowning);
     }
 
     // Delete Selected Rows

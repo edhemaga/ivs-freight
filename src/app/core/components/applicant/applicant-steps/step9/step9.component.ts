@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
 import { Subject, takeUntil } from 'rxjs';
@@ -26,14 +26,14 @@ import {
 export class Step9Component implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
 
-    public selectedMode: string = SelectedMode.REVIEW;
+    public selectedMode: string = SelectedMode.APPLICANT;
 
     public applicantId: number;
 
-    public driverRightsForm: FormGroup;
+    public driverRightsForm: UntypedFormGroup;
 
     constructor(
-        private formBuilder: FormBuilder,
+        private formBuilder: UntypedFormBuilder,
         private inputService: TaInputService,
         private router: Router,
         private applicantStore: ApplicantStore,

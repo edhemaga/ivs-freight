@@ -35,7 +35,7 @@ import { getDriverColumnsDefinition } from '../../../../../assets/utils/settings
 import { ApplicantModalComponent } from '../../modals/applicant-modal/applicant-modal.component';
 import { ApplicantTableQuery } from '../state/applicant-state/applicant-table.query';
 import { getLoadModalColumnDefinition } from 'src/assets/utils/settings/modal-columns-configuration/table-load-modal-columns';
-import { FormControl, FormGroup } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 
 @Component({
     selector: 'app-driver-table',
@@ -1116,10 +1116,10 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.resizeObserver.disconnect();
     }
 
-    public testControl: FormGroup = new FormGroup({
-        email: new FormControl(null),
-        password: new FormControl(null),
-        phone: new FormControl(null),
+    public testControl: UntypedFormGroup = new UntypedFormGroup({
+        email: new UntypedFormControl(null),
+        password: new UntypedFormControl(null),
+        phone: new UntypedFormControl(null),
     });
     modalColumns: any[] = [];
     modalViewData: any[] = [];

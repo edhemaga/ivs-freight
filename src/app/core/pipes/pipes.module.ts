@@ -35,11 +35,12 @@ import { FormControlPipe } from '../components/shared/ta-input/form-control.pipe
 import { ActiveLoadStatusPipe } from '../components/modals/load-modal/load-modal-statuses/activeLoadStatus.pipe';
 import { UrlExtensionPipe } from './url-extension.pipe';
 import { ByteConvertPipe } from './byte-convert.pipe';
-import { LoadDatetimeRangePipe } from '../components/modals/load-modal/load-datetime-range.pipe';
 import { FinancialCalculationPipe } from '../components/modals/load-modal/load-financial/financialCalculation.pipe';
 import { TableModalInputConfigPipe } from './tableModalInputConfig.pipe';
 import { PriceCalculationArraysPipe } from './price-calculation-arrays.pipe';
 import { ActiveItemsPipe } from './activeItems.pipe';
+import { LoadTimeTypePipe } from '../components/modals/load-modal/pipes/load-time-type.pipe';
+import { LoadDatetimeRangePipe } from '../components/modals/load-modal/pipes/load-datetime-range.pipe';
 
 @NgModule({
     declarations: [
@@ -83,6 +84,7 @@ import { ActiveItemsPipe } from './activeItems.pipe';
         TableModalInputConfigPipe,
         PriceCalculationArraysPipe,
         ActiveItemsPipe,
+        LoadTimeTypePipe,
     ],
     imports: [CommonModule],
     exports: [
@@ -126,6 +128,7 @@ import { ActiveItemsPipe } from './activeItems.pipe';
         TableModalInputConfigPipe,
         PriceCalculationArraysPipe,
         ActiveItemsPipe,
+        LoadTimeTypePipe,
     ],
     providers: [
         DatePipe,

@@ -60,7 +60,6 @@ import {
     UpdateWorkExperienceReviewCommand,
     CreatePspAuthReviewCommand,
     CreateMedicalCertificateReviewCommand,
-    CreateCdlCardReviewCommand,
     CreatePersonalInfoCommand,
     CreateSphReviewCommand,
     CreateHosRulesReviewCommand,
@@ -164,18 +163,6 @@ export class ApplicantActionsService {
         return this.applicantService.apiApplicantMvrPost(data);
     }
 
-    public createSsnCard(data: any): Observable<CreateWithUploadsResponse> {
-        this.formDataService.extractFormDataFromFunction(data);
-
-        return this.applicantService.apiApplicantSsnPost();
-    }
-
-    public createCdlCard(data: any): Observable<CreateWithUploadsResponse> {
-        this.formDataService.extractFormDataFromFunction(data);
-
-        return this.applicantService.apiApplicantCdlcardPost(data);
-    }
-
     /* BACKEND PUT ACTION FUNCTIONS - APPLICANT & FEEDBACK MODE */
 
     public updatePersonalInfo(
@@ -276,18 +263,6 @@ export class ApplicantActionsService {
 
     public updateHosRules(data: UpdateHosRulesCommand): Observable<object> {
         return this.applicantService.apiApplicantHosrulesPut(data);
-    }
-
-    public updateSsnCard(data: any): Observable<CreateWithUploadsResponse> {
-        this.formDataService.extractFormDataFromFunction(data);
-
-        return this.applicantService.apiApplicantSsnPut(data);
-    }
-
-    public updateCdlCard(data: any) {
-        this.formDataService.extractFormDataFromFunction(data);
-
-        return this.applicantService.apiApplicantCdlcardPut(data);
     }
 
     /* BACKEND POST ACTION FUNCTIONS - REVIEW MODE */
@@ -400,12 +375,6 @@ export class ApplicantActionsService {
         data: CreateHosRulesReviewCommand
     ): Observable<CreateResponse> {
         return this.applicantService.apiApplicantHosrulesReviewPost(data);
-    }
-
-    public createCdlCardReview(
-        data: CreateCdlCardReviewCommand
-    ): Observable<CreateResponse> {
-        return this.applicantService.apiApplicantCdlcardReviewPost(data);
     }
 
     public invitePreviousEmployerSphForm(

@@ -490,13 +490,14 @@
             ></svg-icon>
             <span class="marker-info-text">{{ item?.phone }}</span>
             <span
-                [tooltipBackground]="copiedPhone ? '#536BC2' : '#6c6c6c'"
-                ngbTooltip
-                [mainTooltip]="copiedPhone ? 'Copied' : 'Copy'"
-                position="top"
                 class="tooltip-copy"
                 (click)="copyText(item?.phone, 'phone')"
+                (mouseenter)="copyHover('phone', true)"
+                (mouseleave)="copyHover('phone', false)"
             >
+                <div class="copy-tooltip" [ngClass]="{ 'active-tooltip': copiedPhone }" *ngIf="copyPhoneHover">
+                    {{ copiedPhone ? 'Copied' : 'Copy' }}
+                </div>
                 <svg-icon
                     class="copy-icon"
                     src="assets/svg/common/ic_copy.svg"
@@ -516,13 +517,14 @@
             ></svg-icon>
             <span class="marker-info-text">{{ item?.email }}</span>
             <span
-                [tooltipBackground]="copiedEmail ? '#536BC2' : '#6c6c6c'"
-                ngbTooltip
-                [mainTooltip]="copiedEmail ? 'Copied' : 'Copy'"
-                position="top"
                 class="tooltip-copy"
                 (click)="copyText(item?.email, 'email')"
+                (mouseenter)="copyHover('email', true)"
+                (mouseleave)="copyHover('email', false)"
             >
+                <div class="copy-tooltip" [ngClass]="{ 'active-tooltip': copiedEmail }" *ngIf="copyEmailHover">
+                    {{ copiedEmail ? 'Copied' : 'Copy' }}
+                </div>
                 <svg-icon
                     class="copy-icon"
                     src="assets/svg/common/ic_copy.svg"
@@ -602,13 +604,14 @@
                 </div>
             </div>
             <span
-                [tooltipBackground]="copiedAddress ? '#536BC2' : '#6c6c6c'"
-                ngbTooltip
-                [mainTooltip]="copiedAddress ? 'Copied' : 'Copy'"
-                position="top"
                 class="tooltip-copy"
                 (click)="copyText(item?.address.address, 'address')"
+                (mouseenter)="copyHover('address', true)"
+                (mouseleave)="copyHover('address', false)"
             >
+                <div class="copy-tooltip address-tooltip" [ngClass]="{ 'active-tooltip': copiedAddress }" *ngIf="copyAddressHover">
+                    {{ copiedAddress ? 'Copied' : 'Copy' }}
+                </div>
                 <svg-icon
                     class="copy-icon"
                     src="assets/svg/common/ic_copy.svg"
@@ -753,20 +756,20 @@
                         <div
                             class="marker-info-text"
                             *ngIf="
-                                item.openHours[0].startTime &&
-                                item.openHours[0].startTime != 'null' &&
-                                item.openHours[0].startTime != 'Invalid date'
+                                item.openHours[0]?.startTime &&
+                                item.openHours[0]?.startTime != 'null' &&
+                                item.openHours[0]?.startTime != 'Invalid date'
                             "
                         >
-                            {{ item.openHours[0].startTime }} -
-                            {{ item.openHours[0].endTime }}
+                            {{ item.openHours[0]?.startTime }} -
+                            {{ item.openHours[0]?.endTime }}
                         </div>
                         <div
                             class="marker-info-text"
                             *ngIf="
-                                !item.openHours[0].startTime ||
-                                item.openHours[0].startTime == 'null' ||
-                                item.openHours[0].startTime == 'Invalid date'
+                                !item.openHours[0]?.startTime ||
+                                item.openHours[0]?.startTime == 'null' ||
+                                item.openHours[0]?.startTime == 'Invalid date'
                             "
                         >
                             Closed
@@ -828,7 +831,7 @@
                         <app-ta-counter
                             [count]="
                                 type == 'shipper'
-                                    ? '769'
+                                    ? (item.pickups + item.deliveries)
                                     : type == 'repairShop'
                                     ? item.order
                                     : type == 'accident' || type == 'inspection'
@@ -861,16 +864,20 @@
             >
                 <div class="marker-dual-info-container">
                     <div class="marker-info-text mg-bottom-4">
-                        <span class="marker-bold-text">632</span> Picked Up
+                        <span class="marker-bold-text">{{ item.pickups }}</span> Picked Up
                     </div>
                     <div class="marker-like-text">
                         Avg. Loading
-                        <span class="marker-bold-text">22m 37s</span>
+                        <span class="marker-bold-text">{{ item.avgPickupTime != null ? item.avgPickupTime : '0m' }}</span>
                     </div>
                 </div>
                 <div class="marker-dual-info-container">
-                    <div class="marker-info-text">
-                        <span class="marker-bold-text">127</span> Delivered
+                    <div class="marker-info-text mg-bottom-4">
+                        <span class="marker-bold-text">{{ item.deliveries }}</span> Delivered
+                    </div>
+                    <div class="marker-like-text">
+                        Avg. Offloading
+                        <span class="marker-bold-text">{{ item.avgDeliveryTime != null ? item.avgDeliveryTime : '0m' }}</span>
                     </div>
                 </div>
             </div>

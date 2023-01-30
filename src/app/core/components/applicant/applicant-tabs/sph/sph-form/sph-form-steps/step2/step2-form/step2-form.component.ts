@@ -12,7 +12,7 @@ import {
     ViewChild,
     OnChanges,
 } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 
 import {
     Subscription,
@@ -47,7 +47,6 @@ import { AddressEntity } from 'appcoretruckassist';
 export class SphStep2FormComponent
     implements OnInit, AfterViewInit, OnDestroy, OnChanges
 {
-    private destroy$ = new Subject<void>();
     @ViewChild(TaInputRadiobuttonsComponent)
     component: TaInputRadiobuttonsComponent;
 
@@ -65,20 +64,20 @@ export class SphStep2FormComponent
     @Output() lastFormValuesEmitter = new EventEmitter<any>();
     @Output() radioRequiredNoteEmitter = new EventEmitter<any>();
 
-    public accidentForm: FormGroup;
+    private destroy$ = new Subject<void>();
+
+    public subscription: Subscription;
+
+    public accidentForm: UntypedFormGroup;
 
     public accidentArray: SphFormAccidentModel[] = [];
 
     public isAccidentEdited?: boolean;
 
+    public selectedAddress: AddressEntity = null;
     public editingCardAddress: any;
 
-    public subscription: Subscription;
-
-    public selectedAddress: AddressEntity = null;
-
     public hazmatSpillRadios: any;
-
     public hazmatAnswerChoices: AnswerChoices[] = [
         {
             id: 7,
@@ -97,7 +96,7 @@ export class SphStep2FormComponent
     ];
 
     constructor(
-        private formBuilder: FormBuilder,
+        private formBuilder: UntypedFormBuilder,
         private inputService: TaInputService,
         private formService: FormService
     ) {}
@@ -273,8 +272,18 @@ export class SphStep2FormComponent
     }
 
     public onAddAnotherAccident(): void {
-        if (this.accidentForm.invalid) {
-            this.inputService.markInvalid(this.accidentForm);
+        if (
+            this.accidentForm.invalid ||
+            this.accidentForm.get('hazmatSpill').value === null
+        ) {
+            if (this.accidentForm.invalid) {
+                this.inputService.markInvalid(this.accidentForm);
+            }
+
+            if (this.accidentForm.get('hazmatSpill').value === null) {
+                this.radioRequiredNoteEmitter.emit(true);
+            }
+
             return;
         }
 

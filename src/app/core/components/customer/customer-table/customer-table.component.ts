@@ -490,8 +490,8 @@ export class CustomerTableComponent
                 ? data.daysToPay + ' days'
                 : '',
             tablePaymentDetailInvAgeing: {
-                bfb: 0,
-                dnu: 0,
+                bfb: '0',
+                dnu: '0',
                 amount: 'Template se promenio',
             },
             tableLoads: data?.loadCount
@@ -1062,7 +1062,7 @@ export class CustomerTableComponent
         if (listChanged || mapListResponse.changedSort) {
             if (mapListResponse.changedSort)
                 this.mapListData = mapListResponse.pagination.data;
-            this.tableData[1].length = mapListResponse.pagination.count;
+            //this.tableData[1].length = mapListResponse.pagination.count;
             this.ref.detectChanges();
         }
     }

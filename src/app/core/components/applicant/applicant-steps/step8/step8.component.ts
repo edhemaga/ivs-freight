@@ -7,7 +7,7 @@ import {
     QueryList,
     ViewChildren,
 } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
 import {
@@ -63,7 +63,7 @@ export class Step8Component implements OnInit, OnDestroy {
 
     private destroy$ = new Subject<void>();
 
-    public selectedMode: string = SelectedMode.REVIEW;
+    public selectedMode: string = SelectedMode.APPLICANT;
 
     public drugTestRadios: any;
 
@@ -74,8 +74,8 @@ export class Step8Component implements OnInit, OnDestroy {
     public stepValues: any;
     public previousStepValues: any;
 
-    public drugTestForm: FormGroup;
-    public drugAlcoholStatementForm: FormGroup;
+    public drugTestForm: UntypedFormGroup;
+    public drugAlcoholStatementForm: UntypedFormGroup;
 
     public applicantId: number;
     public drugAndAlcoholId: number | null = null;
@@ -141,7 +141,7 @@ export class Step8Component implements OnInit, OnDestroy {
     public isFeedbackValueUpdated: boolean = false;
 
     constructor(
-        private formBuilder: FormBuilder,
+        private formBuilder: UntypedFormBuilder,
         private inputService: TaInputService,
         private router: Router,
         private applicantStore: ApplicantStore,
@@ -618,8 +618,6 @@ export class Step8Component implements OnInit, OnDestroy {
             ).length;
 
             if (hasIncorrectValues) {
-                console.log('filteredIncorrectValues', filteredIncorrectValues);
-
                 this.subscription = this.drugAlcoholStatementForm.valueChanges
                     .pipe(
                         distinctUntilChanged(),

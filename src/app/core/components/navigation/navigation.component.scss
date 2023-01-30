@@ -10,7 +10,6 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    padding: 12px;
     color: $nav-text-color;
     font-size: $nav-font-size;
     font-weight: $nav-font-medium;
@@ -25,6 +24,7 @@
         padding: 10px 0px;
         border-radius: 3px;
         z-index: -1;
+        margin: 12px;
     }
 
     .new-magic-line {

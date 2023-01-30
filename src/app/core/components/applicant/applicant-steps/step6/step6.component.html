@@ -120,13 +120,18 @@
 
         <!-- REQUIRED -->
 
-        <ng-container *ngIf="displayGradeRequiredNote">
-            <div
-                class="d-flex justify-content-center align-items-center required-container"
+        <div
+            class="d-flex justify-content-center align-items-center required-container"
+        >
+            <p
+                class="m-0 ta-font-semi-bold required"
+                [ngClass]="{
+                    'required-active': displayGradeRequiredNote
+                }"
             >
-                <p class="m-0 ta-font-semi-bold">Required</p>
-            </div>
-        </ng-container>
+                Required
+            </p>
+        </div>
     </div>
 
     <!-- FORM SECTION -->
@@ -139,7 +144,7 @@
                 <div
                     class="d-flex flex-column question-container"
                     *ngFor="
-                        let question of questions | slice: 0:3;
+                        let question of questions | slice : 0 : 3;
                         let i = index;
                         trackBy: trackByIdentity
                     "
@@ -163,16 +168,16 @@
                                 <span class="required-star">*</span>
                             </p>
 
-                            <ng-container
-                                *ngIf="
-                                    displayRadioRequiredNoteArray[i]
-                                        .displayRadioRequiredNote
-                                "
+                            <p
+                                class="m-0 ta-font-semi-bold required"
+                                [ngClass]="{
+                                    'required-active':
+                                        displayRadioRequiredNoteArray[i]
+                                            .displayRadioRequiredNote
+                                }"
                             >
-                                <p class="m-0 ta-font-semi-bold required">
-                                    Required
-                                </p>
-                            </ng-container>
+                                Required
+                            </p>
                         </div>
 
                         <div class="radios-box">
@@ -298,7 +303,7 @@
                 <div
                     class="d-flex align-items-center question-container"
                     *ngFor="
-                        let question of questions | slice: 3;
+                        let question of questions | slice : 3;
                         let i = index;
                         trackBy: trackByIdentity
                     "
@@ -328,16 +333,16 @@
                                     <span class="required-star">*</span>
                                 </p>
 
-                                <ng-container
-                                    *ngIf="
-                                        displayRadioRequiredNoteArray[i + 3]
-                                            .displayRadioRequiredNote
-                                    "
+                                <p
+                                    class="m-0 ta-font-semi-bold required"
+                                    [ngClass]="{
+                                        'required-active':
+                                            displayRadioRequiredNoteArray[i + 3]
+                                                .displayRadioRequiredNote
+                                    }"
                                 >
-                                    <p class="m-0 ta-font-semi-bold required">
-                                        Required
-                                    </p>
-                                </ng-container>
+                                    Required
+                                </p>
                             </div>
 
                             <div class="radios-box">
@@ -382,6 +387,7 @@
                                             name: 'datepicker',
                                             type: 'text',
                                             label: 'From',
+                                            isDropdown: true,
                                             placeholderIcon: 'date',
                                             isRequired: true,
                                             customClass: 'datetimeclass',
@@ -402,6 +408,7 @@
                                         "
                                     ></app-ta-input>
                                 </div>
+
                                 <div class="date-group date-to-group">
                                     <app-ta-input
                                         formControlName="driverForCompanyToExplain"
@@ -409,6 +416,7 @@
                                             name: 'datepicker',
                                             type: 'text',
                                             label: 'To',
+                                            isDropdown: true,
                                             placeholderIcon: 'date',
                                             isRequired: true,
                                             customClass: 'datetimeclass',

@@ -141,7 +141,6 @@
             }
         }
     },
-    "defaultProject": "carrierassist-fe",
     "cli": {
         "analytics": false
     }

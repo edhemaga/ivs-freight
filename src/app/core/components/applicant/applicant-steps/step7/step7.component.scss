@@ -3,6 +3,18 @@
 .step-container {
     padding-top: 22px;
 
+    br {
+        &::-moz-selection {
+            color: $bw6-2;
+            background: rgb(108, 108, 108, 0.2);
+        }
+
+        &::selection {
+            color: $bw6-2;
+            background: rgb(108, 108, 108, 0.2);
+        }
+    }
+
     .step-title {
         color: $ta-blue-5;
         font-size: 32px;
@@ -219,7 +231,16 @@
             p {
                 font-size: 12px;
                 margin-top: -5px !important;
-                user-select: none;
+
+                &::-moz-selection {
+                    color: #6c6c6c;
+                    background: rgb(108, 108, 108, 0.2);
+                }
+
+                &::selection {
+                    color: #6c6c6c;
+                    background: rgb(108, 108, 108, 0.2);
+                }
             }
         }
 
@@ -314,8 +335,42 @@
             margin: 0 auto;
 
             .question-container {
-                margin-bottom: 12px;
+                padding-left: 1px;
+                margin-bottom: 8px;
                 width: 100%;
+
+                &:last-child {
+                    margin-bottom: 0;
+                }
+
+                .review-feedback {
+                    height: 26px;
+                    position: absolute;
+                    right: -6px;
+                    top: 0;
+                }
+
+                .required {
+                    font-size: 11px;
+                    color: $ta-red-2;
+                    visibility: hidden;
+                    opacity: 0;
+
+                    &::-moz-selection {
+                        color: $ta-red-2;
+                        background: rgb(239, 83, 80, 0.2);
+                    }
+
+                    &::selection {
+                        color: $ta-red-2;
+                        background: rgb(239, 83, 80, 0.2);
+                    }
+                }
+
+                .required-active {
+                    visibility: visible;
+                    opacity: 1;
+                }
 
                 .title-box {
                     .question-title {
@@ -403,6 +458,11 @@
                         width: 100%;
                     }
                 }
+
+                .explain-container {
+                    width: 616px;
+                    margin-top: 4px;
+                }
             }
         }
 
@@ -413,7 +473,16 @@
             p {
                 font-size: 12px;
                 margin-top: -5px !important;
-                user-select: none;
+
+                &::-moz-selection {
+                    color: #6c6c6c;
+                    background: rgb(108, 108, 108, 0.2);
+                }
+
+                &::selection {
+                    color: #6c6c6c;
+                    background: rgb(108, 108, 108, 0.2);
+                }
 
                 &:last-of-type {
                     margin-top: -2px !important;

@@ -1,13 +1,15 @@
 /* eslint-disable no-unused-vars */
 
 import {
+    AfterContentChecked,
+    ChangeDetectorRef,
     Component,
     OnDestroy,
     OnInit,
     QueryList,
     ViewChildren,
 } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { UntypedFormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
 import { Subject, Subscription, takeUntil } from 'rxjs';
@@ -50,7 +52,7 @@ import {
     templateUrl: './step3.component.html',
     styleUrls: ['./step3.component.scss'],
 })
-export class Step3Component implements OnInit, OnDestroy {
+export class Step3Component implements OnInit, OnDestroy, AfterContentChecked {
     @ViewChildren('cmp') set content(content: QueryList<any>) {
         if (content) {
             const radioButtonsArray = content.toArray();
@@ -67,8 +69,8 @@ export class Step3Component implements OnInit, OnDestroy {
 
     public subscription: Subscription;
 
-    public permitForm: FormGroup;
-    public licenseForm: FormGroup;
+    public permitForm: UntypedFormGroup;
+    public licenseForm: UntypedFormGroup;
 
     public formStatus: string = 'INVALID';
     public markFormInvalid: boolean;
@@ -161,12 +163,13 @@ export class Step3Component implements OnInit, OnDestroy {
     public isBottomFormFeedbackValueUpdated: boolean = false;
 
     constructor(
-        private formBuilder: FormBuilder,
+        private formBuilder: UntypedFormBuilder,
         private inputService: TaInputService,
         private router: Router,
         private applicantActionsService: ApplicantActionsService,
         private applicantStore: ApplicantStore,
-        private applicantQuery: ApplicantQuery
+        private applicantQuery: ApplicantQuery,
+        private changeDetectorRef: ChangeDetectorRef
     ) {}
 
     ngOnInit(): void {
@@ -175,6 +178,10 @@ export class Step3Component implements OnInit, OnDestroy {
         this.getStepValuesFromStore();
 
         this.getDropdownLists();
+    }
+
+    ngAfterContentChecked(): void {
+        this.changeDetectorRef.detectChanges();
     }
 
     public trackByIdentity = (index: number, _: any): number => index;

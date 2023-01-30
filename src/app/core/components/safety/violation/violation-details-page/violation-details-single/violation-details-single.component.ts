@@ -1,5 +1,5 @@
 import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { UntypedFormControl } from '@angular/forms';
 import { onFileActionMethods } from 'src/app/core/utils/methods.globals';
 import { card_component_animation } from '../../../../shared/animations/card-component.animations';
 import { RoadsideInspectionResponse } from '../../../../../../../../appcoretruckassist/model/roadsideInspectionResponse';
@@ -14,7 +14,7 @@ import { RoadsideInspectionResponse } from '../../../../../../../../appcoretruck
 export class ViolationDetailsSingleComponent implements OnInit {
     @Input() violationData: any;
     public toggler: boolean[] = [];
-    public note: FormControl = new FormControl();
+    public note: UntypedFormControl = new UntypedFormControl();
     constructor() {}
 
     ngOnInit(): void {}

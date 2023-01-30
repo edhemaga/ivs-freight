@@ -6,7 +6,7 @@ import {
     OnChanges,
     SimpleChanges,
 } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { UntypedFormGroup } from '@angular/forms';
 import { OnDestroy } from '@angular/core';
 
 @Component({
@@ -19,7 +19,7 @@ export class TableModalComponent implements OnInit, OnChanges, OnDestroy {
     @Input() viewData: any[];
     @Input() midSectionWidth: number;
     @Input() modalScrollStyleOptions: any;
-    @Input() formGroup: FormGroup;
+    @Input() formGroup: UntypedFormGroup;
 
     tableFixedColumns: any[] = [];
     tableScrollableColumns: any[] = [];

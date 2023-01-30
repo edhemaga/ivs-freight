@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { Subject, takeUntil } from 'rxjs';
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
@@ -25,7 +25,7 @@ import {
 export class PayrollCreditBonusComponent implements OnInit {
     @Input() editData: any;
 
-    public payrollCreditForm: FormGroup;
+    public payrollCreditForm: UntypedFormGroup;
 
     public selectedTab: number = 1;
     public tabs: any[] = [
@@ -67,7 +67,7 @@ export class PayrollCreditBonusComponent implements OnInit {
     };
 
     constructor(
-        private formBuilder: FormBuilder,
+        private formBuilder: UntypedFormBuilder,
         private inputService: TaInputService,
         private modalService: ModalService,
         private formService: FormService,

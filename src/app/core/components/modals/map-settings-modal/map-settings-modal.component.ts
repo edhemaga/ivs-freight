@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit, Input } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { UntypedFormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { Subject, takeUntil } from 'rxjs';
 import { FormService } from '../../../services/form/form.service';
 import { ModalService } from '../../shared/ta-modal/modal.service';
@@ -14,7 +14,7 @@ import { UpdateMapCommand } from 'appcoretruckassist';
     styleUrls: ['./map-settings-modal.component.scss'],
 })
 export class MapSettingsModalComponent implements OnInit, OnDestroy {
-    public mapSettingsForm: FormGroup;
+    public mapSettingsForm: UntypedFormGroup;
     public isFormDirty: boolean = false;
     @Input() editData: any;
 
@@ -60,7 +60,7 @@ export class MapSettingsModalComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
 
     constructor(
-        private formBuilder: FormBuilder,
+        private formBuilder: UntypedFormBuilder,
         private formService: FormService,
         private modalService: ModalService,
         private inputService: TaInputService,

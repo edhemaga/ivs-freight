@@ -4,7 +4,7 @@
 >
     <label
         *ngFor="let button of buttons; trackBy: identity"
-        class="radio-button-label"
+        class="d-flex justify-content-center align-items-center radio-button-label"
         [ngClass]="{
             checked: button.checked,
             'no-checked': !button.checked,

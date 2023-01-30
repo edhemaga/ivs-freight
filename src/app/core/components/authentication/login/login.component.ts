@@ -6,7 +6,11 @@ import {
     OnInit,
 } from '@angular/core';
 
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+    UntypedFormBuilder,
+    UntypedFormGroup,
+    Validators,
+} from '@angular/forms';
 
 import { AuthStoreService } from './../state/auth.service';
 import { NotificationService } from '../../../services/notification/notification.service';
@@ -27,13 +31,15 @@ import { convertDateFromBackend } from 'src/app/core/utils/methods.calculations'
 })
 export class LoginComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
+    public loginForm: UntypedFormGroup;
+
     public loginForm: FormGroup;
     public copyrightYear!: number;
     public showHideIfMoreThenOneCompany: boolean = false;
     public userData: any;
     public lastLoginInCompany: number;
     constructor(
-        private formBuilder: FormBuilder,
+        private formBuilder: UntypedFormBuilder,
         private authStoreService: AuthStoreService,
         private notification: NotificationService,
         private inputService: TaInputService,

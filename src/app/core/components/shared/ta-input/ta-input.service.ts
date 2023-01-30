@@ -2,8 +2,8 @@ import { Subject, takeUntil } from 'rxjs';
 import { Injectable } from '@angular/core';
 import {
     AbstractControl,
-    FormArray,
-    FormGroup,
+    UntypedFormArray,
+    UntypedFormGroup,
     Validators,
 } from '@angular/forms';
 import validator from 'validator';
@@ -40,17 +40,17 @@ export class TaInputService {
     /**
      * @param formGroup FormGroup - The form group to touch
      */
-    public markInvalid(formGroup: FormGroup): boolean {
+    public markInvalid(formGroup: UntypedFormGroup): boolean {
         if (formGroup.invalid) {
             Object.keys(formGroup.controls).forEach((key: any) => {
                 formGroup.get(key).markAsTouched();
                 formGroup.get(key).updateValueAndValidity();
 
-                if ((<FormArray>formGroup.get(key)).controls?.length) {
-                    for (const nestedFormGroup of (<FormArray>(
+                if ((<UntypedFormArray>formGroup.get(key)).controls?.length) {
+                    for (const nestedFormGroup of (<UntypedFormArray>(
                         formGroup.get(key)
                     )).controls) {
-                        this.markInvalid(<FormGroup>nestedFormGroup);
+                        this.markInvalid(<UntypedFormGroup>nestedFormGroup);
                     }
                 }
             });

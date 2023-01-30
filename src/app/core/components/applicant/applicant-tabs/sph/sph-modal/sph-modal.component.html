@@ -190,7 +190,7 @@
                         <div
                             class="d-flex align-items-center question-container"
                             *ngFor="
-                                let question of questions | slice: 0:2;
+                                let question of questions | slice : 0 : 2;
                                 let i = index;
                                 trackBy: trackByIdentity
                             "
@@ -211,176 +211,11 @@
                                     <div class="radios-box">
                                         <app-ta-input-radiobuttons
                                             [buttons]="question.answerChoices"
+                                            [disabled]="true"
                                             (changedValue)="
                                                 handleInputSelect($event)
                                             "
                                         ></app-ta-input-radiobuttons>
-                                    </div>
-                                </div>
-
-                                <!-- DATE EXPLAIN  -->
-
-                                <div
-                                    class="d-flex"
-                                    *ngIf="i === 0"
-                                    [ngStyle]="{
-                                        margin:
-                                            accidentHistoryForm.get(
-                                                'applicantWorkForCompany'
-                                            ).value === 'YES'
-                                                ? '22px auto 10px auto'
-                                                : '0 auto'
-                                    }"
-                                >
-                                    <div
-                                        class="d-flex"
-                                        *ngIf="
-                                            accidentHistoryForm.get(
-                                                'applicantWorkForCompany'
-                                            ).value === 'YES'
-                                        "
-                                    >
-                                        <div class="date-group">
-                                            <app-ta-input
-                                                formControlName="applicantWorkForCompanyBeforeExplain"
-                                                [inputConfig]="{
-                                                    name: 'datepicker',
-                                                    type: 'text',
-                                                    label: 'From',
-                                                    placeholderIcon: 'date',
-                                                    isRequired: true,
-                                                    customClass: 'datetimeclass'
-                                                }"
-                                            ></app-ta-input>
-                                        </div>
-                                        <div class="date-group">
-                                            <app-ta-input
-                                                formControlName="applicantWorkForCompanyToExplain"
-                                                [inputConfig]="{
-                                                    name: 'datepicker',
-                                                    type: 'text',
-                                                    label: 'To',
-                                                    placeholderIcon: 'date',
-                                                    isRequired: true,
-                                                    customClass: 'datetimeclass'
-                                                }"
-                                            ></app-ta-input>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- VEHICLE EXPLAIN -->
-
-                                <div
-                                    class="d-flex"
-                                    *ngIf="i === 1"
-                                    [ngStyle]="{
-                                        margin:
-                                            accidentHistoryForm.get(
-                                                question.formControlName
-                                            ).value === 'YES'
-                                                ? '22px auto 10px auto'
-                                                : '0 auto 32px auto'
-                                    }"
-                                >
-                                    <div
-                                        class="d-flex"
-                                        *ngIf="
-                                            accidentHistoryForm.get(
-                                                question.formControlName
-                                            ).value === 'YES'
-                                        "
-                                    >
-                                        <div
-                                            class="d-flex align-items-center explain-container"
-                                        >
-                                            <!-- VEHICLE TYPE -->
-
-                                            <div class="group">
-                                                <app-ta-input-dropdown
-                                                    formControlName="vehicleType"
-                                                    [template]="
-                                                        'svgtext-template'
-                                                    "
-                                                    [inputConfig]="{
-                                                        name: 'Input Dropdown',
-                                                        type: 'text',
-                                                        label: 'Vehicle type',
-                                                        isRequired: true,
-                                                        isDropdown: true,
-                                                        dropdownWidthClass:
-                                                            'w-col-302',
-                                                        dropdownImageInput: {
-                                                            withText: true,
-                                                            svg: true,
-                                                            image: false,
-                                                            url: selectedVehicleType?.logoName,
-                                                            template: 'truck',
-                                                            class: selectedVehicleType?.name
-                                                                ?.trim()
-                                                                .replace(
-                                                                    ' ',
-                                                                    ''
-                                                                )
-                                                                .toLowerCase()
-                                                        },
-                                                        customClass:
-                                                            'truck-trailer-dropdown'
-                                                    }"
-                                                    [options]="vehicleType"
-                                                ></app-ta-input-dropdown>
-                                            </div>
-
-                                            <!-- TRAILER TYPE -->
-
-                                            <div class="group">
-                                                <app-ta-input-dropdown
-                                                    formControlName="trailerType"
-                                                    [template]="
-                                                        'svgtext-template'
-                                                    "
-                                                    [inputConfig]="{
-                                                        name: 'Input Dropdown',
-                                                        type: 'text',
-                                                        label: 'Trailer type',
-                                                        isRequired: true,
-                                                        isDropdown: true,
-                                                        dropdownWidthClass:
-                                                            'w-col-302',
-                                                        customClass:
-                                                            'truck-trailer-dropdown',
-                                                        dropdownImageInput: {
-                                                            withText: true,
-                                                            svg: true,
-                                                            image: false,
-                                                            url: selectedTrailerType?.logoName,
-                                                            template: 'trailer',
-                                                            class: [
-                                                                'Tanker',
-                                                                'Tanker Pneumatic'
-                                                            ].includes(
-                                                                selectedTrailerType?.name
-                                                            )
-                                                                ? 'tanker'
-                                                                : selectedTrailerType?.name
-                                                                      ?.toLowerCase()
-                                                                      ?.includes(
-                                                                          'rgn'
-                                                                      )
-                                                                ? 'low-boy-rgn'
-                                                                : selectedTrailerType?.name
-                                                                      ?.trim()
-                                                                      .replace(
-                                                                          ' ',
-                                                                          ''
-                                                                      )
-                                                                      .toLowerCase()
-                                                        }
-                                                    }"
-                                                    [options]="trailerType"
-                                                ></app-ta-input-dropdown>
-                                            </div>
-                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -398,7 +233,8 @@
                                 label: 'Reason for leaving',
                                 isRequired: true,
                                 isDropdown: true,
-                                dropdownWidthClass: 'w-col-616'
+                                dropdownWidthClass: 'w-col-616',
+                                isDisabled: true
                             }"
                             [options]="reasonsForLeaving"
                         ></app-ta-input-dropdown>
@@ -419,6 +255,7 @@
                         <div class="radios-box">
                             <app-ta-input-radiobuttons
                                 [buttons]="questions[2].answerChoices"
+                                [disabled]="true"
                             ></app-ta-input-radiobuttons>
                         </div>
                     </div>
@@ -433,6 +270,7 @@
                                 'Check here, if there is no safety performance history to report'
                             "
                             [customClass]="'bold-12'"
+                            [disabledStillCheckMark]="true"
                         >
                         </app-ta-checkbox>
                     </div>
@@ -450,7 +288,8 @@
                                         label: 'Date',
                                         placeholderIcon: 'date',
                                         isRequired: true,
-                                        customClass: 'datetimeclass'
+                                        customClass: 'datetimeclass',
+                                        isDisabled: true
                                     }"
                                 ></app-ta-input>
                             </div>
@@ -465,7 +304,8 @@
                                         textTransform: 'capitalize',
                                         dropdownWidthClass: 'w-col-445',
                                         minLength: 6,
-                                        maxLength: 256
+                                        maxLength: 256,
+                                        isDisabled: true
                                     }"
                                     [placeholderType]="'shortAddress'"
                                 ></app-input-address-dropdown>
@@ -485,7 +325,8 @@
                                         minLength: 2,
                                         maxLength: 160,
                                         textTransform: 'capitalize',
-                                        isRequired: true
+                                        isRequired: true,
+                                        isDisabled: true
                                     }"
                                 ></app-ta-input>
                             </div>
@@ -508,6 +349,7 @@
                                 <div class="radios-box">
                                     <app-ta-input-radiobuttons
                                         [buttons]="hazmatAnswerChoices"
+                                        [disabled]="true"
                                     ></app-ta-input-radiobuttons>
                                 </div>
                             </div>
@@ -527,12 +369,14 @@
                                             hideRequiredCheck: true,
                                             hideClear: true,
                                             hideErrorMessage: true,
-                                            textAlign: 'center'
+                                            textAlign: 'center',
+                                            isDisabled: true
                                         }"
                                         [name]="'Injuries #'"
                                         [type]="'applicant'"
                                         [elementOrder]="1"
                                         [minimum]="0"
+                                        [disabledArrow]="true"
                                     ></app-ta-input-arrows>
                                 </div>
                                 <div
@@ -547,12 +391,14 @@
                                             hideRequiredCheck: true,
                                             hideClear: true,
                                             hideErrorMessage: true,
-                                            textAlign: 'center'
+                                            textAlign: 'center',
+                                            isDisabled: true
                                         }"
                                         [name]="'Fatalities #'"
                                         [type]="'applicant'"
                                         [elementOrder]="2"
                                         [minimum]="0"
+                                        [disabledArrow]="true"
                                     ></app-ta-input-arrows>
                                 </div>
                             </div>
@@ -615,31 +461,17 @@
                             'Please check here if applicant was not subject to Department of Transportation (DOT) testing'
                         "
                         [customClass]="'bold-12'"
+                        [disabledStillCheckMark]="true"
                     >
                     </app-ta-checkbox>
 
-                    <p
-                        class="m-0 text-center ta-font-bold"
-                        [ngStyle]="{
-                            color: drugAndAlcoholTestingHistoryForm.get(
-                                'applicantNotSubject'
-                            ).value
-                                ? '#3c3c3c'
-                                : '#6c6c6c'
-                        }"
-                        (click)="handleCheckboxParagraphClick()"
-                    >
+                    <p class="m-0 text-center ta-font-bold">
                         requirements while employed by you.
                     </p>
                 </div>
 
                 <div
                     class="d-flex flex-column justify-content-center align-items-center"
-                    *ngIf="
-                        !drugAndAlcoholTestingHistoryForm.get(
-                            'applicantNotSubject'
-                        ).value
-                    "
                 >
                     <!-- DATE OF EMPLOYMENT -->
 
@@ -654,7 +486,8 @@
                                     label: 'From',
                                     placeholderIcon: 'date',
                                     isRequired: true,
-                                    customClass: 'datetimeclass'
+                                    customClass: 'datetimeclass',
+                                    isDisabled: true
                                 }"
                             ></app-ta-input>
                         </div>
@@ -667,7 +500,8 @@
                                     label: 'To',
                                     placeholderIcon: 'date',
                                     isRequired: true,
-                                    customClass: 'datetimeclass'
+                                    customClass: 'datetimeclass',
+                                    isDisabled: true
                                 }"
                             ></app-ta-input>
                         </div>
@@ -682,7 +516,7 @@
                             class="d-flex align-items-center justify-content-between question-container"
                             *ngFor="
                                 let question of drugAndAlcoholQuestions
-                                    | slice: 0:5;
+                                    | slice : 0 : 5;
                                 let i = index;
                                 trackBy: trackByIdentity
                             "
@@ -697,6 +531,7 @@
                             <div class="radios-box">
                                 <app-ta-input-radiobuttons
                                     [buttons]="question.answerChoices"
+                                    [disabled]="true"
                                 ></app-ta-input-radiobuttons>
                             </div>
                         </div>
@@ -713,7 +548,8 @@
                                     type: 'text',
                                     label: 'Name of SAP',
                                     isRequired: true,
-                                    textTransform: 'capitalize'
+                                    textTransform: 'capitalize',
+                                    isDisabled: true
                                 }"
                             ></app-ta-input>
                         </div>
@@ -727,7 +563,8 @@
                                     isRequired: true,
                                     placeholderIcon: 'phone',
                                     mask: '(000) 000-0000',
-                                    maxLength: 14
+                                    maxLength: 14,
+                                    isDisabled: true
                                 }"
                             ></app-ta-input>
                         </div>
@@ -748,7 +585,8 @@
                                     textTransform: 'capitalize',
                                     dropdownWidthClass: 'w-col-445',
                                     minLength: 6,
-                                    maxLength: 256
+                                    maxLength: 256,
+                                    isDisabled: true
                                 }"
                                 [placeholderType]="'longAddress'"
                             ></app-input-address-dropdown>
@@ -762,7 +600,8 @@
                                     label: 'Unit #',
                                     textTransform: 'uppercase',
                                     minLength: 1,
-                                    maxLength: 10
+                                    maxLength: 10,
+                                    isDisabled: true
                                 }"
                             ></app-ta-input>
                         </div>
@@ -785,6 +624,7 @@
                                 [buttons]="
                                     drugAndAlcoholQuestions[5].answerChoices
                                 "
+                                [disabled]="true"
                             ></app-ta-input-radiobuttons>
                         </div>
                     </div>

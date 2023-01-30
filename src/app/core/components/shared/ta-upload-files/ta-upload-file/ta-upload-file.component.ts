@@ -10,7 +10,7 @@ import {
     ViewChild,
     ViewEncapsulation,
 } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { UntypedFormControl } from '@angular/forms';
 import { PDFDocumentProxy } from 'ng2-pdf-viewer';
 import { Subject, takeUntil, debounceTime, distinctUntilChanged } from 'rxjs';
 import { TaInputComponent } from '../../ta-input/ta-input.component';
@@ -61,7 +61,7 @@ export class TaUploadFileComponent implements OnInit, OnDestroy {
     @Input() feedbackText: string;
     @Input() categoryTag: string;
 
-    public documentReviewInputControl: FormControl = new FormControl(null);
+    public documentReviewInputControl: UntypedFormControl = new UntypedFormControl(null);
     public documentReviewInputVisible: boolean = false;
     @Output() documentReviewInputEvent: EventEmitter<{
         file: UploadFile;
@@ -69,7 +69,7 @@ export class TaUploadFileComponent implements OnInit, OnDestroy {
     }> = new EventEmitter<{ file: UploadFile; message: string }>(null);
 
     public editFile: boolean = false;
-    public fileNewName: FormControl = new FormControl();
+    public fileNewName: UntypedFormControl = new UntypedFormControl();
     public numberOfFilePages: string = '0';
 
     public isFileDelete: boolean = false;
@@ -141,6 +141,7 @@ export class TaUploadFileComponent implements OnInit, OnDestroy {
     }
 
     public onAction(action: string) {
+        this.detailsDataService.setDocumentName(this.file.fileName);
         switch (action) {
             case 'tag': {
                 if (this.file.tags) {

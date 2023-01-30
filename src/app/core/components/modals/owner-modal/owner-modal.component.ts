@@ -16,7 +16,7 @@ import {
     OwnerModalResponse,
     OwnerResponse,
 } from '../../../../../../appcoretruckassist';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import {
     Component,
     Input,
@@ -46,7 +46,7 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
     @ViewChild(TabSwitcherComponent) tabSwitcher: any;
     @Input() editData: any;
     public isFormDirty: boolean;
-    public ownerForm: FormGroup;
+    public ownerForm: UntypedFormGroup;
     public selectedTab: number = 1;
     public tabs: any[] = [
         {
@@ -71,7 +71,7 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
 
     constructor(
-        private formBuilder: FormBuilder,
+        private formBuilder: UntypedFormBuilder,
         private inputService: TaInputService,
         private modalService: ModalService,
         private ownerModalService: OwnerTService,

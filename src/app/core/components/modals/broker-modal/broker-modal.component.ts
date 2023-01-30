@@ -1,5 +1,5 @@
 import { AddressEntity } from '../../../../../../appcoretruckassist';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormArray, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import {
     Component,
     Input,
@@ -62,7 +62,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
     @Input() editData: any;
 
-    public brokerForm: FormGroup;
+    public brokerForm: UntypedFormGroup;
 
     public selectedTab: number = 1;
     public tabs: any[] = [
@@ -161,7 +161,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
     public brokerName: string = '';
 
     constructor(
-        private formBuilder: FormBuilder,
+        private formBuilder: UntypedFormBuilder,
         private inputService: TaInputService,
         private modalService: ModalService,
         private brokerModalService: BrokerTService,
@@ -272,8 +272,8 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
             });
     }
 
-    public get brokerContacts(): FormArray {
-        return this.brokerForm.get('brokerContacts') as FormArray;
+    public get brokerContacts(): UntypedFormArray {
+        return this.brokerForm.get('brokerContacts') as UntypedFormArray;
     }
 
     private createBrokerContacts(data?: {
@@ -282,7 +282,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
         phone: string;
         extensionPhone: string;
         email: string;
-    }): FormGroup {
+    }): UntypedFormGroup {
         return this.formBuilder.group({
             contactName: [
                 data?.contactName ? data.contactName : null,

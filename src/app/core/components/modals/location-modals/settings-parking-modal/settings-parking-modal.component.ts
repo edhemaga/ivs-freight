@@ -1,5 +1,5 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import {
     AddressEntity,
     CompanyOfficeModalResponse,
@@ -41,7 +41,7 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
     @Input() editData: any;
 
-    public parkingForm: FormGroup;
+    public parkingForm: UntypedFormGroup;
 
     public selectedTab: number = 1;
     public tabs: any[] = [
@@ -118,7 +118,7 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
     public disableCardAnimation: boolean = false;
 
     constructor(
-        private formBuilder: FormBuilder,
+        private formBuilder: UntypedFormBuilder,
         private inputService: TaInputService,
         private modalService: ModalService,
         private settingsLocationService: SettingsLocationService,

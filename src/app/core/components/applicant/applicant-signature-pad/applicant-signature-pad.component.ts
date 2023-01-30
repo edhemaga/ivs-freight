@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+
 import {
     AfterViewInit,
     Component,
@@ -31,6 +33,13 @@ export class ApplicantSignaturePadComponent
     @ViewChild('signature')
     public signaturePad: SignaturePadComponent;
 
+    @Input() mode: string;
+    @Input() signatureImgSrc: any = null;
+    @Input() displayRequiredNote: boolean = false;
+
+    @Output() signatureEmitter: EventEmitter<any> = new EventEmitter();
+    @Output() removeRequiredNoteEmitter: EventEmitter<any> = new EventEmitter();
+
     public signaturePadOptions: NgSignaturePadOptions = {
         minWidth: 5,
         canvasWidth: 616,
@@ -41,13 +50,6 @@ export class ApplicantSignaturePadComponent
     public signature: string;
 
     public displayActionButtons: boolean = false;
-
-    @Input() mode: string;
-    @Input() signatureImgSrc: any = null;
-    @Input() displayRequiredNote: boolean = false;
-
-    @Output() signatureEmitter: EventEmitter<any> = new EventEmitter();
-    @Output() removeRequiredNoteEmitter: EventEmitter<any> = new EventEmitter();
 
     constructor(public imageBase64Service: ImageBase64Service) {}
 

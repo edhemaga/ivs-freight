@@ -5,14 +5,15 @@ import {
     UpdateCommentCommand,
 } from 'appcoretruckassist';
 import {
-    FormArray,
-    FormBuilder,
-    FormGroup,
+    UntypedFormArray,
+    UntypedFormBuilder,
+    UntypedFormGroup,
     Validators,
     AbstractControl,
-    FormControl,
+    UntypedFormControl,
 } from '@angular/forms';
 import {
+    ChangeDetectorRef,
     Component,
     DoCheck,
     ElementRef,
@@ -80,7 +81,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
 
     @Input() editData: any;
 
-    public loadForm: FormGroup;
+    public loadForm: UntypedFormGroup;
     public isFormDirty: boolean;
 
     public loadModalSize: string = 'modal-container-M';
@@ -406,7 +407,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     tableModalOpen: string = '';
 
     constructor(
-        private formBuilder: FormBuilder,
+        private formBuilder: UntypedFormBuilder,
         private inputService: TaInputService,
         private formService: FormService,
         private commentsService: CommentsService,
@@ -415,7 +416,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         private modalService: ModalService,
         private ngbActiveModal: NgbActiveModal,
         private financialCalculationPipe: FinancialCalculationPipe,
-        private tagsService: EditTagsService
+        private tagsService: EditTagsService,
+        private cdRef: ChangeDetectorRef
     ) {}
 
     public originHeight: number;
@@ -434,6 +436,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         if (this.originElement) {
             this.originHeight =
                 this.originElement.nativeElement.getBoundingClientRect().height;
+            this.cdRef.detectChanges();
         }
     }
 
@@ -698,6 +701,15 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
 
                     this.loadDispatchesTTDInputConfig = {
                         ...this.loadDispatchesTTDInputConfig,
+                        multipleLabel: {
+                            labels: [
+                                'Truck',
+                                'Trailer',
+                                'Driver',
+                                event?.payType ? 'Driver Pay' : null,
+                            ],
+                            customClass: 'load-dispatches-ttd',
+                        },
                         multipleInputValues: {
                             options: [
                                 {
@@ -780,6 +792,15 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 } else {
                     this.loadDispatchesTTDInputConfig = {
                         ...this.loadDispatchesTTDInputConfig,
+                        multipleLabel: {
+                            labels: [
+                                'Truck',
+                                'Trailer',
+                                'Driver',
+                                'Driver Pay',
+                            ],
+                            customClass: 'load-dispatches-ttd',
+                        },
                         multipleInputValues: null,
                     };
 
@@ -1091,11 +1112,6 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                                 },
                                 isDisabled: false,
                             };
-
-                            console.log(
-                                'shipper contact config: ',
-                                this.loadPickupShipperContactsInputConfig
-                            );
                         } else {
                             this.selectedPickupShipperContact = null;
                             this.labelsShipperContacts = [
@@ -1117,7 +1133,6 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                     }
                     // Restart value if clear
                     else {
-                        console.log('uso u else');
                         this.labelsShipperContacts = this.originShipperContacts;
 
                         this.loadPickupShipperInputConfig = {
@@ -1782,8 +1797,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     }
 
     // ****************  Billing Payment ****************
-    public additionalBillings(): FormArray {
-        return this.loadForm.get('additionalBillings') as FormArray;
+    public additionalBillings(): UntypedFormArray {
+        return this.loadForm.get('additionalBillings') as UntypedFormArray;
     }
 
     public createAdditionaBilling(data: {
@@ -2067,7 +2082,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     }
 
     public removeAdditionalPayment() {
-        this.isVisibleBillDropdown = false;
+        this.isVisiblePayment = false;
         this.inputService.changeValidators(
             this.loadForm.get('advancePay'),
             false
@@ -2173,7 +2188,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         }, 100);
     }
 
-    public newLoadExtraStop(): FormGroup {
+    public newLoadExtraStop(): UntypedFormGroup {
         return this.formBuilder.group({
             id: [null],
             stopType: ['Pickup'],
@@ -2219,8 +2234,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         };
     }
 
-    public loadExtraStops(): FormArray {
-        return this.loadForm.get('extraStops') as FormArray;
+    public loadExtraStops(): UntypedFormArray {
+        return this.loadForm.get('extraStops') as UntypedFormArray;
     }
 
     public removeLoadExtraStop(index: number) {
@@ -2287,18 +2302,18 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         this.modalInitialization();
     }
 
-    public loadPickupStopItems(): FormArray {
-        return this.loadForm.get('pickupItems') as FormArray;
+    public loadPickupStopItems(): UntypedFormArray {
+        return this.loadForm.get('pickupItems') as UntypedFormArray;
     }
 
-    public loadDeliveryStopItems(): FormArray {
-        return this.loadForm.get('deliveryItems') as FormArray;
+    public loadDeliveryStopItems(): UntypedFormArray {
+        return this.loadForm.get('deliveryItems') as UntypedFormArray;
     }
 
-    public loadExtraStopItems(loadStopIndex: number): FormArray {
+    public loadExtraStopItems(loadStopIndex: number): UntypedFormArray {
         return this.loadExtraStops()
             .at(loadStopIndex)
-            .get('items') as FormArray;
+            .get('items') as UntypedFormArray;
     }
 
     public removeLoadStopItem(
@@ -2328,7 +2343,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     }
 
     // Common fields
-    public newLoadStopItems(): FormGroup {
+    public newLoadStopItems(): UntypedFormGroup {
         return this.formBuilder.group({
             id: [null],
             bolNumber: [null],
@@ -2564,6 +2579,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (res: LoadModalResponse) => {
+                    console.log('load modal: ', res);
                     this.loadNumber = res.loadNumber;
                     this.tags = res.tags;
 
@@ -2617,7 +2633,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                                         item.driver?.lastName
                                     ),
                                     logoName: item.driver?.avatar,
-                                    owner: index === 1 || index === 3,
+                                    owner: !!item.driver?.owner,
                                 },
                                 coDriver: {
                                     ...item.coDriver,
@@ -3300,14 +3316,6 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     }
 
     private premmapedAdditionalBillingRate(action: string) {
-        console.log(
-            'this.originalAdditionalBillingTypes: ',
-            this.originalAdditionalBillingTypes
-        );
-        console.log(
-            'this.additionalBillings(): ',
-            this.additionalBillings().value
-        );
         return this.originalAdditionalBillingTypes
             .map((item) => {
                 const biilingRate = this.additionalBillings().controls.find(
@@ -3321,7 +3329,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                         : null,
                 };
             })
-            .filter((item) => item.id !== 6);
+            .filter((item) => item.additionalBillingType !== 6);
     }
 
     private premmapedStops() {
@@ -3681,10 +3689,10 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     }
 
     // MODAL TABLE
-    public testControl: FormGroup = new FormGroup({
-        email: new FormControl(null),
-        password: new FormControl(null),
-        phone: new FormControl(null),
+    public testControl: UntypedFormGroup = new UntypedFormGroup({
+        email: new UntypedFormControl(null),
+        password: new UntypedFormControl(null),
+        phone: new UntypedFormControl(null),
     });
     modalColumns: any[] = [];
     modalViewData: any[] = [];

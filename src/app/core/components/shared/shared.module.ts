@@ -108,7 +108,6 @@ import { CustomToastMessagesComponent } from './custom-toast-messages/custom-toa
 import { SvgDefinitionsComponent } from '../../../svg-definitions/svg-definitions.component';
 import { TaCustomCardV2Component } from './ta-custom-card-v2/ta-custom-card-v2.component';
 import { InputAddressDropdownComponent } from './input-address-dropdown/input-address-dropdown.component';
-import { ApplicantReviewFeedbackComponent } from './applicant-review-feedback/applicant-review-feedback.component';
 import { LoadModalHazardousComponent } from '../modals/load-modal/load-modal-hazardous/load-modal-hazardous.component';
 import { LoadModalStatusesComponent } from '../modals/load-modal/load-modal-statuses/load-modal-statuses.component';
 import { MapSettingsModalComponent } from '../modals/map-settings-modal/map-settings-modal.component';
@@ -125,6 +124,7 @@ import { TableModalComponent } from './table-modal/table-modal.component';
 import { TaPickupDeliveryComponent } from './ta-pickup-delivery/ta-pickup-delivery.component';
 import { PayrollBonusModalComponent } from '../modals/payroll-modals/payroll-bonus-modal/payroll-bonus-modal.component';
 import { PayrollCreditBonusComponent } from '../modals/payroll-modals/payroll-credit-bonus/payroll-credit-bonus.component';
+import { TaNoticeOfAsignmentComponent } from './ta-notice-of-asignment/ta-notice-of-asignment.component';
 import { PayrollDeductionModalComponent } from '../modals/payroll-modals/payroll-deduction-modal/payroll-deduction-modal.component';
 import { TooltipSlideComponent } from './tooltip-slide/tooltip-slide.component';
 import { CarouselModule } from 'ngx-owl-carousel-o';
@@ -176,7 +176,6 @@ export function playerFactory() {
         TaUploadFileComponent,
         TaInputDropdownLabelComponent,
         TaUploadFilesComponent,
-        ApplicantReviewFeedbackComponent,
         TaTimePeriodComponent,
         AutoclosePopoverComponent,
         TaInputSwitchOnOffComponent,
@@ -243,6 +242,7 @@ export function playerFactory() {
         GpsProgressbarComponent,
         TableModalComponent,
         TaPickupDeliveryComponent,
+        TaNoticeOfAsignmentComponent,
         TooltipSlideComponent,
     ],
     imports: [
@@ -308,8 +308,6 @@ export function playerFactory() {
         ProfileImagesModule,
         AgmSnazzyInfoWindowModule,
         AgmDirectionModule,
-        ApplicantReviewFeedbackComponent,
-        CarouselModule,
 
         // Components
         TabSwitcherComponent,
@@ -412,6 +410,7 @@ export function playerFactory() {
         TaCheckboxCardComponent,
         TaPickupDeliveryComponent,
         TableModalComponent,
+        TaNoticeOfAsignmentComponent,
         TooltipSlideComponent,
     ],
     providers: [],

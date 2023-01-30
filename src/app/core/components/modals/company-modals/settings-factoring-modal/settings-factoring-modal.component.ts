@@ -3,8 +3,8 @@ import {
     addressUnitValidation,
     addressValidation,
 } from '../../../shared/ta-input/ta-input.regex-validations';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { SettingsCompanyService } from '../../../settings/state/company-state/settings-company.service';
 import { UpdateFactoringCompanyCommand } from 'appcoretruckassist';
 import { Subject, takeUntil } from 'rxjs';
@@ -21,9 +21,10 @@ import { FormService } from '../../../../services/form/form.service';
 })
 export class SettingsFactoringModalComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
+    @ViewChild('noticeOfAssignment', { static: false }) public noticeOfAssignment: any;
     @Input() editData: any;
 
-    public factoringForm: FormGroup;
+    public factoringForm: UntypedFormGroup;
 
     public selectedAddress: AddressEntity = null;
 
@@ -31,8 +32,21 @@ export class SettingsFactoringModalComponent implements OnInit, OnDestroy {
 
     public disableCardAnimation: boolean = false;
 
+    noticeValue: any = '';
+    range: any;
+    selectedEditor: HTMLAnchorElement;
+    wysiwigSettings: any = {
+        fontFamily: true,
+        fontSize: true,
+        colorPicker: true,
+        textTransform: true,
+        textAligment: true,
+        textIndent: false,
+        textLists: false
+      };
+
     constructor(
-        private formBuilder: FormBuilder,
+        private formBuilder: UntypedFormBuilder,
         private inputService: TaInputService,
         private modalService: ModalService,
         private settingsCompanyService: SettingsCompanyService,

@@ -91,6 +91,7 @@ export * from './companyAccountModalResponse';
 export * from './companyAccountResponse';
 export * from './companyAccountResponsePagination';
 export * from './companyAdditionalInfo';
+export * from './companyAdditionalInfoResponse';
 export * from './companyContactLabelCountResponse';
 export * from './companyContactLabelCountResponsePagination';
 export * from './companyContactLabelResponse';

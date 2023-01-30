@@ -8,7 +8,7 @@ import {
     QueryList,
     AfterViewInit,
 } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators, UntypedFormArray } from '@angular/forms';
 import { Router } from '@angular/router';
 
 import {
@@ -105,7 +105,7 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
     public previousAddressesId: number[];
     public previousAddressesReviewId: number[] = [];
 
-    public personalInfoForm: FormGroup;
+    public personalInfoForm: UntypedFormGroup;
 
     public selectedBank: any = null;
     public selectedAddresses: AddressEntity[] | any = [];
@@ -383,7 +383,7 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
     public isFeedbackValueUpdated: boolean = false;
 
     constructor(
-        private formBuilder: FormBuilder,
+        private formBuilder: UntypedFormBuilder,
         private router: Router,
         private inputService: TaInputService,
         private applicantActionsService: ApplicantActionsService,
@@ -404,8 +404,8 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
         this.personalInfoRadios = this.components.toArray();
     }
 
-    public get previousAddresses(): FormArray {
-        return this.personalInfoForm.get('previousAddresses') as FormArray;
+    public get previousAddresses(): UntypedFormArray {
+        return this.personalInfoForm.get('previousAddresses') as UntypedFormArray;
     }
 
     public trackByIdentity = (index: number, _: any): number => index;
@@ -1172,7 +1172,7 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
         }
     }
 
-    private createNewAddress(): FormGroup {
+    private createNewAddress(): UntypedFormGroup {
         this.cardReviewIndex++;
 
         return this.formBuilder.group({

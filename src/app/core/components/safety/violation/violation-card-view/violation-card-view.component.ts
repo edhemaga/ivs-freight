@@ -6,7 +6,7 @@ import {
     OnChanges,
     SimpleChanges,
 } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { UntypedFormControl } from '@angular/forms';
 import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
 import { RoadsideMinimalListQuery } from '../state/roadside-details-state/roadside-minimal-list-state/roadside-minimal.query';
 
@@ -20,7 +20,7 @@ export class ViolationCardViewComponent implements OnInit, OnChanges {
     @Input() public violationCardData: any;
     @Input() public templateCard: boolean;
     public violationDropdown: any;
-    public noteControl: FormControl = new FormControl();
+    public noteControl: UntypedFormControl = new UntypedFormControl();
     public dummyDataSpecial: any;
     public violationList: any[] = this.violationMinimalQuery.getAll();
     public specialChecksCounter: number = 0;

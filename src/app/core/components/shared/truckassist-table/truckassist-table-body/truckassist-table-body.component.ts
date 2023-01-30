@@ -353,7 +353,7 @@ export class TruckassistTableBodyComponent
     goToDetails(route: any, row: any) {
         const link =
             route.link.routerLinkStart + row['id'] + route.link.routerLinkEnd;
-   
+
         this.detailsDataService.setNewData(row);
         this.router.navigate([link]);
     }
@@ -486,8 +486,26 @@ export class TruckassistTableBodyComponent
         this.activeDescriptionDropdown = popup.isOpen() ? row.id : -1;
     }
 
-    /* Dropdown Actions */
+    // Dropdown Actions
     onDropAction(action: any) {
+        // To Unselect All Selected Rows
+        if (action.name === 'activate-item') {
+            this.mySelection = [];
+
+            this.tableService.sendRowsSelected(this.mySelection);
+
+            const viewData = this.viewData;
+
+            console.log(this.viewData);
+
+            viewData.map((v) => {
+                v.isSelected = false;
+            });
+
+            this.viewData = [...viewData];
+        }
+
+        // Send Drop Action
         this.bodyActions.emit({
             id: this.dropDownActive,
             data: this.rowData,
@@ -509,7 +527,8 @@ export class TruckassistTableBodyComponent
             this.filesService.getFiles(entity, row.id).subscribe((res) => {
                 this.activeAttachment = row.id;
                 row.tableAttachments = res;
-                if(res?.length == 1) {
+
+                if (res?.length == 1) {
                     if (popup.isOpen()) {
                         popup.close();
                     } else {

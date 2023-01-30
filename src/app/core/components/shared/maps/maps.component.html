@@ -37,9 +37,7 @@
         <!-- single markers -->
         <div *ngFor="let latlong of viewData; let i = index">
             <agm-marker
-                *ngIf="
-                    latlong.showMarker
-                "
+                *ngIf="latlong.showMarker"
                 (markerClick)="clickedMarker(latlong.id, $event)"
                 [label]="
                     mapType == 'shipper'
@@ -104,7 +102,11 @@
                                     'selected-marker': latlong.isSelected,
                                     'fuel-marker': mapType == 'fuelStop'
                                 }"
-                                *ngIf="latlong.status != 2 && !latlong.pinned && !latlong.favourite"
+                                *ngIf="
+                                    latlong.status != 2 &&
+                                    !latlong.pinned &&
+                                    !latlong.favourite
+                                "
                             ></svg-icon>
                             <svg-icon
                                 class="marker-icon permanently-closed-icon"
@@ -169,7 +171,12 @@
                                             mapType == 'inspection'
                                         "
                                     >
-                                        <div *ngIf="mapType == 'fuelStop' && latlong?.pricePerGallon">
+                                        <div
+                                            *ngIf="
+                                                mapType == 'fuelStop' &&
+                                                latlong?.pricePerGallon
+                                            "
+                                        >
                                             ${{ latlong?.pricePerGallon }}
                                         </div>
                                         <div *ngIf="mapType == 'inspection'">
@@ -474,6 +481,65 @@
             </agm-marker>
         </div>
 
+        <!-- Copmany Offices -->
+        <div *ngFor="let latlong of companyOffices; let i = index">
+            <agm-marker
+                *ngIf="latlong.showMarker"
+                [label]="latlong.name"
+                [latitude]="latlong.latitude"
+                [longitude]="latlong.longitude"
+                [agmFitBounds]="true"
+                [visible]="false"
+            >
+                <agm-snazzy-info-window
+                    [closeOnMapClick]="false"
+                    [closeWhenOthersOpen]="false"
+                    [isOpen]="true"
+                    [latitude]="latlong.latitude"
+                    [longitude]="latlong.longitude"
+                    [maxHeight]="32"
+                    [maxWidth]="26"
+                    [openOnMarkerClick]="false"
+                    [pointer]="false"
+                    [showCloseButton]="false"
+                    [panOnOpen]="false"
+                    placement="bottom"
+                >
+                    <ng-template>
+                        <div
+                            class="marker-container"
+                            (mousewheel)="markerZoom($event, latlong)"
+                        >
+                            <svg-icon
+                                class="marker-icon"
+                                src="assets/svg/common/ic_marker_office.svg"
+                            ></svg-icon>
+
+                            <div
+                                [ngClass]="{
+                                    'hide-marker':
+                                        !latlong.isSelected && markerSelected,
+                                    'hide-marker-tooltip': latlong.isSelected
+                                }"
+                            >
+                                <div
+                                    class="marker-tooltip"
+                                    [ngClass]="{
+                                        'hide-marker-tooltip':
+                                            latlong.isSelected
+                                    }"
+                                >
+                                    <div>
+                                        {{ latlong.name }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </ng-template>
+                </agm-snazzy-info-window>
+            </agm-marker>
+        </div>
+
         <!-- location filter -->
         <agm-circle
             *ngIf="locationFilterOn"
@@ -639,7 +705,16 @@
                                                     font-family="Montserrat-Bold, Montserrat"
                                                     font-weight="700"
                                                 >
-                                                    <tspan>{{ route.stops[j].stopNumber != null ? route.stops[j].stopNumber : j + 1 }}</tspan>
+                                                    <tspan>
+                                                        {{
+                                                            route.stops[j]
+                                                                .stopNumber !=
+                                                            null
+                                                                ? route.stops[j]
+                                                                      .stopNumber
+                                                                : j + 1
+                                                        }}
+                                                    </tspan>
                                                 </text>
                                             </g>
                                         </svg>
@@ -696,7 +771,9 @@
                                         ? route.routeColor
                                         : routeColors[0],
                                     strokeWeight: 6,
-                                    zIndex: route.stops[j].zIndex ? route.stops[j].zIndex : 1
+                                    zIndex: route.stops[j].zIndex
+                                        ? route.stops[j].zIndex
+                                        : 1
                                 },
                                 suppressMarkers: true
                             }"
@@ -718,7 +795,9 @@
                                 polylineOptions: {
                                     strokeColor: '#fff',
                                     strokeWeight: 3,
-                                    zIndex: route.stops[j].zIndex ? route.stops[j].zIndex : 2
+                                    zIndex: route.stops[j].zIndex
+                                        ? route.stops[j].zIndex
+                                        : 2
                                 },
                                 suppressMarkers: true
                             }"

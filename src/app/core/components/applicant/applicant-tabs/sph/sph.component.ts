@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 
@@ -34,11 +34,11 @@ import { SelectedMode } from '../../state/enum/selected-mode.enum';
 export class SphComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
 
-    public selectedMode: string = SelectedMode.APPLICANT;
+    public selectedMode: string = SelectedMode.REVIEW;
 
     public isValidLoad: boolean;
 
-    public sphForm: FormGroup;
+    public sphForm: UntypedFormGroup;
 
     public applicantId: number;
     public queryParamId: number | string | null = null;
@@ -50,7 +50,7 @@ export class SphComponent implements OnInit, OnDestroy {
     public applicantCardInfo: any;
 
     constructor(
-        private formBuilder: FormBuilder,
+        private formBuilder: UntypedFormBuilder,
         private modalService: ModalService,
         private inputService: TaInputService,
         private router: Router,

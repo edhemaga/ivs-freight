@@ -1,4 +1,4 @@
-import { FormControl } from '@angular/forms';
+import { UntypedFormControl } from '@angular/forms';
 import {
     Component,
     Input,
@@ -30,8 +30,8 @@ export class TaTabSwitchComponent implements OnInit, AfterViewInit, OnChanges {
     @Output() saveCustomRange = new EventEmitter<any>();
     @ViewChild('t2') t2: any;
 
-    public date1: FormControl = new FormControl();
-    public date2: FormControl = new FormControl();
+    public date1: UntypedFormControl = new UntypedFormControl();
+    public date2: UntypedFormControl = new UntypedFormControl();
     tooltip: any;
 
     switchItems: any[] = [
