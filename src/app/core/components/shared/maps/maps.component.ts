@@ -612,8 +612,8 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
                     clustersObj.northEastLongitude,
                     clustersObj.southWestLatitude,
                     clustersObj.southWestLongitude,
-                    null,
-                    null,
+                    this.mapListPagination.pageIndex,
+                    this.mapListPagination.pageSize,
                     null,
                     this.sortBy,
                     this.searchText
@@ -636,6 +636,7 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
                     });
 
                     mapListData.changedSort = changedSearchOrSort;
+                    mapListData.addData = this.mapListPagination.pageIndex > 1 ? true : false;
 
                     this.updateMapList.emit(mapListData);
                     this.mapsService.searchLoadingChanged.next(false);
@@ -926,8 +927,8 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
                     null, //costTo,
                     null, //ppgFrom,
                     null, //ppgTo,
-                    null, //pageIndex,
-                    null, //pageSize,
+                    this.mapListPagination.pageIndex, //pageIndex,
+                    this.mapListPagination.pageSize, //pageSize,
                     null, //companyId
                     this.sortBy, //this.sortBy
                     this.searchText
@@ -950,6 +951,7 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
                     });
 
                     mapListData.changedSort = changedSearchOrSort;
+                    mapListData.addData = this.mapListPagination.pageIndex > 1 ? true : false;
 
                     this.updateMapList.emit(mapListData);
                     this.mapsService.searchLoadingChanged.next(false);

@@ -643,18 +643,21 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
     updateMapList(mapListResponse) {
         var newMapList = mapListResponse.pagination.data;
         var listChanged = false;
+        var addData = mapListResponse.addData ? true : false;
 
-        for (var i = 0; i < this.mapListData.length; i++) {
-            let item = this.mapListData[i];
+        if ( !addData ) {
+            for (var i = 0; i < this.mapListData.length; i++) {
+                let item = this.mapListData[i];
 
-            let itemIndex = newMapList.findIndex(
-                (item2) => item2.id === item.id
-            );
+                let itemIndex = newMapList.findIndex(
+                    (item2) => item2.id === item.id
+                );
 
-            if (itemIndex == -1) {
-                this.mapListData.splice(i, 1);
-                listChanged = true;
-                i--;
+                if (itemIndex == -1) {
+                    this.mapListData.splice(i, 1);
+                    listChanged = true;
+                    i--;
+                }
             }
         }
 
@@ -666,9 +669,13 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
             );
 
             if (itemIndex == -1) {
-                this.mapListData.splice(b, 0, item);
-                listChanged = true;
-                b--;
+                if ( addData ) {
+                    this.mapListData.push(item);
+                } else {
+                    this.mapListData.splice(b, 0, item);
+                    listChanged = true;
+                    b--;
+                }
             }
         }
 
