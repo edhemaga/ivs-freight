@@ -5,7 +5,7 @@ import {
     ViewEncapsulation,
     OnDestroy,
 } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { UntypedFormControl } from '@angular/forms';
 import { CalendarOptions, FullCalendarComponent } from '@fullcalendar/angular';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
@@ -25,7 +25,7 @@ import { Subject, takeUntil } from 'rxjs';
 export class CalendarComponent implements OnInit, OnDestroy {
     @ViewChild('fullcalendar', { static: false })
     fullcalendar: FullCalendarComponent;
-    public inputDate: FormControl = new FormControl(true);
+    public inputDate: UntypedFormControl = new UntypedFormControl(true);
 
     private destroy$ = new Subject<void>();
 

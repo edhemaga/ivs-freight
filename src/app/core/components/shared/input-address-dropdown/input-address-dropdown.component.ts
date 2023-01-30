@@ -22,8 +22,8 @@ import {
 import { AddressService } from 'src/app/core/services/shared/address.service';
 import { AddressEntity } from 'appcoretruckassist';
 import {
-    FormBuilder,
-    FormGroup,
+    UntypedFormBuilder,
+    UntypedFormGroup,
     NgControl,
     ControlValueAccessor,
 } from '@angular/forms';
@@ -42,7 +42,7 @@ export class InputAddressDropdownComponent
     implements OnInit, ControlValueAccessor, OnDestroy
 {
     private destroy$ = new Subject<void>();
-    public addressForm!: FormGroup;
+    public addressForm!: UntypedFormGroup;
     @ViewChild('inputDropdown') inputDropdown: any;
     @Input() activeAddress: any;
     addresList: any[] = [];
@@ -103,7 +103,7 @@ export class InputAddressDropdownComponent
     constructor(
         @Self() public superControl: NgControl,
         private addressService: AddressService,
-        private formBuilder: FormBuilder,
+        private formBuilder: UntypedFormBuilder,
         private ref: ChangeDetectorRef
     ) {
         this.superControl.valueAccessor = this;

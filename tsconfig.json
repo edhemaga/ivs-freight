@@ -10,7 +10,7 @@
     "resolveJsonModule": true,
     "experimentalDecorators": true,
     "importHelpers": true,
-    "target": "es2017",
+    "target": "es2020",
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "typeRoots": ["node_modules/@types", "types"],

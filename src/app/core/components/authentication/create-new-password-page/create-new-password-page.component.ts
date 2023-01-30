@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { HttpResponseBase } from '@angular/common/http';
 import { Router } from '@angular/router';
 
@@ -24,14 +24,14 @@ import { SetNewPasswordCommand } from 'appcoretruckassist/model/setNewPasswordCo
 export class CreateNewPasswordPageComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
 
-    public createNewPasswordForm: FormGroup;
+    public createNewPasswordForm: UntypedFormGroup;
 
     public copyrightYear: number;
 
     public isValidLoad: boolean;
 
     constructor(
-        private formBuilder: FormBuilder,
+        private formBuilder: UntypedFormBuilder,
         private inputService: TaInputService,
         private authStoreService: AuthStoreService,
         private notification: NotificationService,

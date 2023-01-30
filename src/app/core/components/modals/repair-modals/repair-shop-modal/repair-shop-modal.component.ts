@@ -6,7 +6,7 @@ import {
     OnInit,
     ViewEncapsulation,
 } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormArray, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import {
     AddressEntity,
     CreateResponse,
@@ -57,7 +57,7 @@ import { debounceTime } from 'rxjs/operators';
 })
 export class RepairShopModalComponent implements OnInit, OnDestroy {
     @Input() editData: any;
-    public repairShopForm: FormGroup;
+    public repairShopForm: UntypedFormGroup;
     public selectedTab: number = 1;
     public tabs: any[] = [
         {
@@ -117,7 +117,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
 
     constructor(
-        private formBuilder: FormBuilder,
+        private formBuilder: UntypedFormBuilder,
         private inputService: TaInputService,
         private shopService: RepairTService,
         private modalService: ModalService,
@@ -269,12 +269,12 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
         }
     }
 
-    public get openHours(): FormArray {
-        return this.repairShopForm.get('openHours') as FormArray;
+    public get openHours(): UntypedFormArray {
+        return this.repairShopForm.get('openHours') as UntypedFormArray;
     }
 
-    public get contacts(): FormArray {
-        return this.repairShopForm.get('contacts') as FormArray;
+    public get contacts(): UntypedFormArray {
+        return this.repairShopForm.get('contacts') as UntypedFormArray;
     }
 
     public trackOpenHours() {
@@ -620,7 +620,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
         dayOfWeek: number,
         startTime?: any,
         endTime?: any
-    ): FormGroup {
+    ): UntypedFormGroup {
         return this.formBuilder.group({
             isDay: [isDay],
             dayOfWeek: [dayOfWeek],
@@ -637,7 +637,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
         phone: string;
         phoneExt: string;
         email: string;
-    }): FormGroup {
+    }): UntypedFormGroup {
         return this.formBuilder.group({
             id: [data?.id ? data.id : null],
             fullName: [

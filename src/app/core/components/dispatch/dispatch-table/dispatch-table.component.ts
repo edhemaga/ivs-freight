@@ -8,7 +8,7 @@ import {
     OnInit,
     ViewEncapsulation,
 } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { UntypedFormControl } from '@angular/forms';
 import { NgbTooltip } from '@ng-bootstrap/ng-bootstrap';
 import {
     CreateDispatchCommand,
@@ -46,8 +46,8 @@ import { DriverModalComponent } from '../../modals/driver-modal/driver-modal.com
 export class DispatchTableComponent implements OnInit {
     checkForEmpty: string = '';
     dData: DispatchBoardLocalResponse = {};
-    truckFormControll: FormControl = new FormControl();
-    truckAddress: FormControl = new FormControl(null);
+    truckFormControll: UntypedFormControl = new UntypedFormControl();
+    truckAddress: UntypedFormControl = new UntypedFormControl(null);
     truckList: any[];
     trailerList: any[];
     driverList: any[];

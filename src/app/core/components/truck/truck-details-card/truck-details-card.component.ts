@@ -8,7 +8,7 @@ import {
     Input,
     SimpleChanges,
 } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { UntypedFormControl } from '@angular/forms';
 import { Subject, takeUntil } from 'rxjs';
 import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
 import { card_component_animation } from '../../shared/animations/card-component.animations';
@@ -48,10 +48,10 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
     @ViewChild('stackedBarChart', { static: false })
     public stackedBarChart: any;
     @ViewChild('payrollChart', { static: false }) public payrollChart: any;
-    public noteControl: FormControl = new FormControl();
-    public fhwaNote: FormControl = new FormControl();
-    public registrationNote: FormControl = new FormControl();
-    public titleNote: FormControl = new FormControl();
+    public noteControl: UntypedFormControl = new UntypedFormControl();
+    public fhwaNote: UntypedFormControl = new UntypedFormControl();
+    public registrationNote: UntypedFormControl = new UntypedFormControl();
+    public titleNote: UntypedFormControl = new UntypedFormControl();
     public buttonsArrayPerfomance: any;
     public buttonsArrayFuel: any;
     public buttonsArrayRevenue: any;

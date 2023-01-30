@@ -11,7 +11,7 @@ import {
     Output,
     SimpleChanges,
 } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 
 import {
     distinctUntilChanged,
@@ -69,7 +69,7 @@ export class Step6FormComponent
 
     public subscription: Subscription;
 
-    public contactForm: FormGroup;
+    public contactForm: UntypedFormGroup;
 
     public isContactEdited: boolean;
 
@@ -104,7 +104,7 @@ export class Step6FormComponent
     public isCardReviewedIncorrect: boolean = false;
 
     constructor(
-        private formBuilder: FormBuilder,
+        private formBuilder: UntypedFormBuilder,
         private inputService: TaInputService,
         private formService: FormService
     ) {}

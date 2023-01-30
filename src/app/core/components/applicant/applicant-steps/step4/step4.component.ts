@@ -5,7 +5,7 @@ import {
     OnDestroy,
     OnInit,
 } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 
 import { Subject, takeUntil } from 'rxjs';
@@ -48,7 +48,7 @@ export class Step4Component implements OnInit, OnDestroy, AfterContentChecked {
 
     public selectedMode: string = SelectedMode.APPLICANT;
 
-    public accidentForm: FormGroup;
+    public accidentForm: UntypedFormGroup;
 
     public formStatus: string = 'INVALID';
     public markFormInvalid: boolean;
@@ -93,7 +93,7 @@ export class Step4Component implements OnInit, OnDestroy, AfterContentChecked {
     public isFeedbackValueUpdated: boolean = false;
 
     constructor(
-        private formBuilder: FormBuilder,
+        private formBuilder: UntypedFormBuilder,
         private router: Router,
         private applicantActionsService: ApplicantActionsService,
         private applicantStore: ApplicantStore,

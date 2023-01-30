@@ -1,5 +1,5 @@
 import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { UntypedFormControl } from '@angular/forms';
 
 @Component({
     selector: 'app-fuel-details-item',
@@ -9,7 +9,7 @@ import { FormControl } from '@angular/forms';
 })
 export class FuelDetailsItemComponent implements OnInit {
     @Input() fuelData: any;
-    public noteControl: FormControl = new FormControl();
+    public noteControl: UntypedFormControl = new UntypedFormControl();
     public dummyDataVehicle: any[] = [];
     public dummyDataFuel: any[] = [];
     public dummyData: any;

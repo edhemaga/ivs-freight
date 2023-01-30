@@ -5,7 +5,7 @@ import {
     convertPriceInNumber,
 } from '../../../../utils/methods.calculations';
 import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormArray, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { RepairTService } from '../../../repair/state/repair.service';
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { RepairModalResponse, RepairShopResponse } from 'appcoretruckassist';
@@ -44,7 +44,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
     @ViewChild('t2') public popoverRef: NgbPopover;
     @Input() editData: any;
     public disableCardAnimation: boolean = false;
-    public repairOrderForm: FormGroup;
+    public repairOrderForm: UntypedFormGroup;
     public selectedHeaderTab: number = 1;
     public headerTabs = [
         {
@@ -97,7 +97,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
 
     constructor(
-        private formBuilder: FormBuilder,
+        private formBuilder: UntypedFormBuilder,
         private inputService: TaInputService,
         private repairService: RepairTService,
         private modalService: ModalService,
@@ -108,8 +108,8 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
         private tagsService: EditTagsService
     ) {}
 
-    public get items(): FormArray {
-        return this.repairOrderForm.get('items') as FormArray;
+    public get items(): UntypedFormArray {
+        return this.repairOrderForm.get('items') as UntypedFormArray;
     }
 
     ngOnInit() {
@@ -667,7 +667,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
         subtotal?: any;
         pmTruckId?: any;
         pmTrailerId?: any;
-    }): FormGroup {
+    }): UntypedFormGroup {
         return this.formBuilder.group({
             id: [data.id],
             orderingId: [data.orderingId],

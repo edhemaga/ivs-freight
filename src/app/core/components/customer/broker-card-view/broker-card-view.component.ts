@@ -9,7 +9,7 @@ import {
     SimpleChanges,
     ViewChild,
 } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { UntypedFormControl } from '@angular/forms';
 import { BrokerQuery } from '../state/broker-state/broker.query';
 import { DetailsPageService } from '../../../services/details-page/details-page-ser.service';
 
@@ -26,7 +26,7 @@ export class BrokerCardViewComponent implements OnInit, OnChanges {
     @Input() templateCard: boolean;
     public brokerDropdowns: any[] = [];
     public brokerList: any[] = this.brokerMinimalQuery.getAll();
-    public note: FormControl = new FormControl();
+    public note: UntypedFormControl = new UntypedFormControl();
     public tabsBroker: any;
     public invoiceAgeingCounter: number = 0;
     public getPercntageOfPaid: number = 0;

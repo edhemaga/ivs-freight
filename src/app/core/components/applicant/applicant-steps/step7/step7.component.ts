@@ -5,7 +5,7 @@ import {
     QueryList,
     ViewChildren,
 } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormArray, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
 import {
@@ -79,7 +79,7 @@ export class Step7Component implements OnInit, OnDestroy {
     public stepHasReviewValues: boolean = false;
     public stepValues: any;
 
-    public sevenDaysHosForm: FormGroup;
+    public sevenDaysHosForm: UntypedFormGroup;
 
     public applicantInviteDate: string;
 
@@ -205,7 +205,7 @@ export class Step7Component implements OnInit, OnDestroy {
     public isFeedbackValueUpdated: boolean = false;
 
     constructor(
-        private formBuilder: FormBuilder,
+        private formBuilder: UntypedFormBuilder,
         private inputService: TaInputService,
         private router: Router,
         private applicantStore: ApplicantStore,
@@ -223,8 +223,8 @@ export class Step7Component implements OnInit, OnDestroy {
         this.getLastSevenDaysFromDateOfInvitation();
     }
 
-    public get hosArray(): FormArray {
-        return this.sevenDaysHosForm.get('hosArray') as FormArray;
+    public get hosArray(): UntypedFormArray {
+        return this.sevenDaysHosForm.get('hosArray') as UntypedFormArray;
     }
 
     public trackByIdentity = (index: number, _: any): number => index;
@@ -555,7 +555,7 @@ export class Step7Component implements OnInit, OnDestroy {
         }
     }
 
-    public createHos(): FormGroup {
+    public createHos(): UntypedFormGroup {
         return this.formBuilder.group({
             hos: [null, Validators.required],
         });

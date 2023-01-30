@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { HttpResponseBase } from '@angular/common/http';
 
@@ -35,14 +35,14 @@ export class RegisterComponent implements OnInit, OnDestroy {
 
     private destroy$ = new Subject<void>();
 
-    public registerForm!: FormGroup;
+    public registerForm!: UntypedFormGroup;
 
     public copyrightYear!: number;
 
     public selectedAddress: AddressEntity = null;
 
     constructor(
-        private formBuilder: FormBuilder,
+        private formBuilder: UntypedFormBuilder,
         private router: Router,
         private notification: NotificationService,
         private authStoreService: AuthStoreService,

@@ -3,7 +3,7 @@ import { PayrollStoreService } from '../state/payroll.service';
 import { commision_driver_open_loads } from '../state/table-settings/commision_driver_open_loads';
 import { owner_open_loads, owner_open_loads_resizable } from '../state/table-settings/owner_open_load';
 import * as AppConst from 'src/app/const';
-import { FormControl } from '@angular/forms';
+import { UntypedFormControl } from '@angular/forms';
 
 @Component({
     selector: 'app-payroll-report',
@@ -16,7 +16,7 @@ export class PayrollReportComponent implements OnInit {
     tableSettings: any[] = [];
     tableSettingsResizable: any[] = [];
 
-    public payAmount: FormControl = new FormControl();
+    public payAmount: UntypedFormControl = new UntypedFormControl();
 
     mapLatitude: number = 41.860119;
     mapLongitude: number = -87.660156;

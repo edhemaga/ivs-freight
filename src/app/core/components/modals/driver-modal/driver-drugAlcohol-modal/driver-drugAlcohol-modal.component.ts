@@ -1,5 +1,5 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import {
     DriverListResponse,
     GetTestModalResponse,
@@ -26,7 +26,7 @@ import {
 export class DriverDrugAlcoholModalComponent implements OnInit, OnDestroy {
     @Input() editData: any;
 
-    public drugForm: FormGroup;
+    public drugForm: UntypedFormGroup;
 
     public isFormDirty: boolean;
 
@@ -58,7 +58,7 @@ export class DriverDrugAlcoholModalComponent implements OnInit, OnDestroy {
     public disableCardAnimation: boolean = false;
 
     constructor(
-        private formBuilder: FormBuilder,
+        private formBuilder: UntypedFormBuilder,
         private driverService: DriverTService,
         private testService: TestTService,
         private inputService: TaInputService,

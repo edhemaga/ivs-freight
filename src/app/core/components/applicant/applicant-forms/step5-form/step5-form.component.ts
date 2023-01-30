@@ -14,7 +14,7 @@ import {
 
 import moment from 'moment';
 
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 
 import {
     Subscription,
@@ -80,7 +80,7 @@ export class Step5FormComponent
 
     private subscription: Subscription;
 
-    public violationsForm: FormGroup;
+    public violationsForm: UntypedFormGroup;
 
     public isViolationEdited: boolean;
 
@@ -123,7 +123,7 @@ export class Step5FormComponent
     public isCardReviewedIncorrect: boolean = false;
 
     constructor(
-        private formBuilder: FormBuilder,
+        private formBuilder: UntypedFormBuilder,
         private inputService: TaInputService,
         private formService: FormService,
         private applicantQuery: ApplicantQuery
