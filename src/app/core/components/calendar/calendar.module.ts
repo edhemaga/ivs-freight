@@ -6,13 +6,11 @@ import { CommonModule } from '@angular/common';
 
 import { CalendarRoutingModule } from './calendar-routing.module';
 import { CalendarComponent } from './calendar/calendar.component';
-import dayGridPlugin from '@fullcalendar/daygrid';
-import interactionPlugin from '@fullcalendar/interaction';
 import { CalendarMonthComponent } from './calendar-month/calendar-month.component';
 
 import { TruckassistSearchModule } from '../shared/truckassist-search/truckassist-search.module';
 
-FullCalendarModule.registerPlugins([dayGridPlugin, interactionPlugin]);
+// FullCalendarModule.registerPlugins([dayGridPlugin, interactionPlugin]);
 
 @NgModule({
     declarations: [CalendarComponent, CalendarMonthComponent],

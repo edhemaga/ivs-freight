@@ -13,7 +13,7 @@ import { SignalRService } from './../../../services/dispatchboard/app-signalr.se
 import { MapsService } from '../../../services/shared/maps.service';
 import { TelematicStateService } from '../state/telematic-state.service';
 import { GpsServiceService } from '../../../../global/services/gps-service.service';
-import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormArray, UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { TruckTService } from '../../truck/state/truck.service';
 import { TrailerTService } from '../../trailer/state/trailer.service';
 import { TruckListResponse, TrailerListResponse } from 'appcoretruckassist';
@@ -55,7 +55,7 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
     legendExpanded: boolean = true;
     legendActive: boolean = false;
 
-    searchForm!: FormGroup;
+    searchForm!: UntypedFormGroup;
 
     selectedTab: string = 'live';
 
@@ -283,7 +283,7 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
     gpsDevicesList: any[] = [];
     selectedDeviceUnit: any = {};
 
-    deviceInputs: FormArray = this.formBuilder.array([]);
+    deviceInputs: UntypedFormArray = this.formBuilder.array([]);
     filteredAssignedDevices: any[] = [];
     filteredUnassignedDevices: any[] = [];
     searchAssignedText: string = '';
@@ -292,7 +292,7 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
 
     columnsMenuOpen: boolean = false;
     columnsDropdownShown: boolean = false;
-    columnCheckboxes: FormArray = this.formBuilder.array([]);
+    columnCheckboxes: UntypedFormArray = this.formBuilder.array([]);
 
     focusedDeviceId: number = 0;
     regularViewColumnIndex: number = null;
@@ -304,7 +304,7 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
         private mapsService: MapsService,
         private telematicService: TelematicStateService,
         private gpsService: GpsServiceService,
-        private formBuilder: FormBuilder,
+        private formBuilder: UntypedFormBuilder,
         private truckService: TruckTService,
         private trailerService: TrailerTService,
         private sanitizer: DomSanitizer,

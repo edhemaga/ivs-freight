@@ -5,8 +5,8 @@ import {
     ViewEncapsulation,
     OnDestroy,
 } from '@angular/core';
-import { FormControl } from '@angular/forms';
-import { CalendarOptions, FullCalendarComponent } from '@fullcalendar/angular';
+import { UntypedFormControl } from '@angular/forms';
+import { FullCalendarComponent } from '@fullcalendar/angular';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 
@@ -25,7 +25,7 @@ import { Subject, takeUntil } from 'rxjs';
 export class CalendarComponent implements OnInit, OnDestroy {
     @ViewChild('fullcalendar', { static: false })
     fullcalendar: FullCalendarComponent;
-    public inputDate: FormControl = new FormControl(true);
+    public inputDate: UntypedFormControl = new UntypedFormControl(true);
 
     private destroy$ = new Subject<void>();
 
@@ -697,7 +697,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
     colorIndx1: any;
     colorIndx2: any;
 
-    calendarOptions: CalendarOptions;
+    calendarOptions: any;
 
     public searchCalendarOptions = {
         gridNameTitle: 'Calendar',
@@ -839,26 +839,26 @@ export class CalendarComponent implements OnInit, OnDestroy {
     }
 
     public checkCalendarTitle() {
-        const calendarApi = this.fullcalendar.getApi();
-        if (this.currentCalendarView === 'day') {
-            this.calendarTitle = moment(
-                calendarApi.currentData.currentDate
-            ).format('MMMM D, YYYY');
-        } else if (
-            this.currentCalendarView === 'week' ||
-            this.currentCalendarView === 'month'
-        ) {
-            this.calendarTitle = moment(
-                calendarApi.currentData.currentDate
-            ).format('MMMM, YYYY');
-        } else if (
-            this.currentCalendarView === 'year' ||
-            this.currentCalendarView === 'schedule'
-        ) {
-            this.calendarTitle = moment(
-                calendarApi.currentData.currentDate
-            ).format('YYYY');
-        }
+        // const calendarApi = this.fullcalendar.getApi();
+        // if (this.currentCalendarView === 'day') {
+        //     this.calendarTitle = moment(
+        //         calendarApi.currentData.currentDate
+        //     ).format('MMMM D, YYYY');
+        // } else if (
+        //     this.currentCalendarView === 'week' ||
+        //     this.currentCalendarView === 'month'
+        // ) {
+        //     this.calendarTitle = moment(
+        //         calendarApi.currentData.currentDate
+        //     ).format('MMMM, YYYY');
+        // } else if (
+        //     this.currentCalendarView === 'year' ||
+        //     this.currentCalendarView === 'schedule'
+        // ) {
+        //     this.calendarTitle = moment(
+        //         calendarApi.currentData.currentDate
+        //     ).format('YYYY');
+        // }
     }
 
     resizeEvent(mod) {
@@ -916,10 +916,6 @@ export class CalendarComponent implements OnInit, OnDestroy {
         if (!this.fullcalendar) return false;
         const calendarApi = this.fullcalendar.getApi();
         calendarApi.changeView(view);
-        console.log(
-            calendarApi.currentData.viewTitle,
-            'calendarApi.currentData.viewTitle'
-        );
         if (this.calendarGridView == 'timeGridWeek') {
             //this.calendarTitle = calendarApi.currentData.viewTitle.split(",")[0];
         } else {

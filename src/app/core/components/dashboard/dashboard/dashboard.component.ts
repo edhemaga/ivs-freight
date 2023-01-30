@@ -12,7 +12,7 @@ import { DashboardService } from '../../../services/dashboard/dashboard.service'
 import { SharedService } from '../../../services/shared/shared.service';
 import { DashboardStats } from '../state/dashboard.model';
 import { ActivatedRoute } from '@angular/router';
-import { FormControl } from '@angular/forms';
+import { UntypedFormControl } from '@angular/forms';
 import { FormDataService } from 'src/app/core/services/formData/form-data.service';
 import { DriverService } from '../../../../../../appcoretruckassist/api/driver.service';
 
@@ -24,7 +24,7 @@ import { DriverService } from '../../../../../../appcoretruckassist/api/driver.s
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DashboardComponent implements OnInit, OnDestroy {
-    public inputDate: FormControl = new FormControl();
+    public inputDate: UntypedFormControl = new UntypedFormControl();
     dashboardStats: Observable<DashboardStats[]>;
 
     color: string = '#eee';

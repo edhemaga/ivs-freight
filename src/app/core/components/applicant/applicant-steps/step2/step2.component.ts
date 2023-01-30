@@ -7,7 +7,7 @@ import {
     ChangeDetectorRef,
     AfterContentChecked,
 } from '@angular/core';
-import { FormGroup, FormBuilder } from '@angular/forms';
+import { UntypedFormGroup, UntypedFormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
 
 import { Subject, takeUntil } from 'rxjs';
@@ -52,7 +52,7 @@ export class Step2Component implements OnInit, OnDestroy, AfterContentChecked {
 
     public applicantId: number;
 
-    public workExperienceForm: FormGroup;
+    public workExperienceForm: UntypedFormGroup;
 
     public formStatus: string = 'INVALID';
     public markFormInvalid: boolean;
@@ -150,7 +150,7 @@ export class Step2Component implements OnInit, OnDestroy, AfterContentChecked {
     public isFeedbackValueUpdated: boolean = false;
 
     constructor(
-        private formBuilder: FormBuilder,
+        private formBuilder: UntypedFormBuilder,
         private router: Router,
         private applicantActionsService: ApplicantActionsService,
         private applicantStore: ApplicantStore,

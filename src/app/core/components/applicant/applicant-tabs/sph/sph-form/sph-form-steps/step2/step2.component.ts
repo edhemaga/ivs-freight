@@ -8,7 +8,7 @@ import {
     QueryList,
     ViewChildren,
 } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
 import { Subject, takeUntil } from 'rxjs';
@@ -52,7 +52,7 @@ export class Step2Component
 
     private destroy$ = new Subject<void>();
 
-    public accidentHistoryForm: FormGroup;
+    public accidentHistoryForm: UntypedFormGroup;
 
     public formStatus: string = 'INVALID';
     public markFormInvalid: boolean;
@@ -169,7 +169,7 @@ export class Step2Component
     ];
 
     constructor(
-        private formBuilder: FormBuilder,
+        private formBuilder: UntypedFormBuilder,
         private router: Router,
         private inputService: TaInputService,
         private applicantActionsService: ApplicantActionsService,

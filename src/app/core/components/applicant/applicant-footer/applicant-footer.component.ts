@@ -9,7 +9,7 @@ import {
     SimpleChanges,
     OnChanges,
 } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormArray, UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 
 import { Subject, takeUntil } from 'rxjs';
@@ -54,7 +54,7 @@ export class ApplicantFooterComponent implements OnInit, OnDestroy, OnChanges {
 
     public selectedMode: string = SelectedMode.APPLICANT;
 
-    public sphTabForm: FormGroup;
+    public sphTabForm: UntypedFormGroup;
 
     public dateOfApplication: string;
     public copyrightYear: string;
@@ -125,7 +125,7 @@ export class ApplicantFooterComponent implements OnInit, OnDestroy, OnChanges {
     public previousEmployersList: any = [];
 
     constructor(
-        private formBuilder: FormBuilder,
+        private formBuilder: UntypedFormBuilder,
         private zone: NgZone,
         private router: Router,
         private applicantQuery: ApplicantQuery,
@@ -169,8 +169,8 @@ export class ApplicantFooterComponent implements OnInit, OnDestroy, OnChanges {
         }
     }
 
-    public get previousRequests(): FormArray {
-        return this.sphTabForm.get('requests') as FormArray;
+    public get previousRequests(): UntypedFormArray {
+        return this.sphTabForm.get('requests') as UntypedFormArray;
     }
 
     public trackByIdentity = (index: number, _: any): number => index;
@@ -247,7 +247,7 @@ export class ApplicantFooterComponent implements OnInit, OnDestroy, OnChanges {
         }
     }
 
-    private createNewRequest(): FormGroup {
+    private createNewRequest(): UntypedFormGroup {
         return this.formBuilder.group({
             dateOfRequest: [null],
             timeOfRequest: [null],

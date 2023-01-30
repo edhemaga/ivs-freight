@@ -5,12 +5,12 @@ import {
     UpdateCommentCommand,
 } from 'appcoretruckassist';
 import {
-    FormArray,
-    FormBuilder,
-    FormGroup,
+    UntypedFormArray,
+    UntypedFormBuilder,
+    UntypedFormGroup,
     Validators,
     AbstractControl,
-    FormControl,
+    UntypedFormControl,
 } from '@angular/forms';
 import {
     ChangeDetectorRef,
@@ -81,7 +81,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
 
     @Input() editData: any;
 
-    public loadForm: FormGroup;
+    public loadForm: UntypedFormGroup;
     public isFormDirty: boolean;
 
     public loadModalSize: string = 'modal-container-M';
@@ -407,7 +407,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     tableModalOpen: string = '';
 
     constructor(
-        private formBuilder: FormBuilder,
+        private formBuilder: UntypedFormBuilder,
         private inputService: TaInputService,
         private formService: FormService,
         private commentsService: CommentsService,
@@ -1797,8 +1797,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     }
 
     // ****************  Billing Payment ****************
-    public additionalBillings(): FormArray {
-        return this.loadForm.get('additionalBillings') as FormArray;
+    public additionalBillings(): UntypedFormArray {
+        return this.loadForm.get('additionalBillings') as UntypedFormArray;
     }
 
     public createAdditionaBilling(data: {
@@ -2188,7 +2188,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         }, 100);
     }
 
-    public newLoadExtraStop(): FormGroup {
+    public newLoadExtraStop(): UntypedFormGroup {
         return this.formBuilder.group({
             id: [null],
             stopType: ['Pickup'],
@@ -2234,8 +2234,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         };
     }
 
-    public loadExtraStops(): FormArray {
-        return this.loadForm.get('extraStops') as FormArray;
+    public loadExtraStops(): UntypedFormArray {
+        return this.loadForm.get('extraStops') as UntypedFormArray;
     }
 
     public removeLoadExtraStop(index: number) {
@@ -2302,18 +2302,18 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         this.modalInitialization();
     }
 
-    public loadPickupStopItems(): FormArray {
-        return this.loadForm.get('pickupItems') as FormArray;
+    public loadPickupStopItems(): UntypedFormArray {
+        return this.loadForm.get('pickupItems') as UntypedFormArray;
     }
 
-    public loadDeliveryStopItems(): FormArray {
-        return this.loadForm.get('deliveryItems') as FormArray;
+    public loadDeliveryStopItems(): UntypedFormArray {
+        return this.loadForm.get('deliveryItems') as UntypedFormArray;
     }
 
-    public loadExtraStopItems(loadStopIndex: number): FormArray {
+    public loadExtraStopItems(loadStopIndex: number): UntypedFormArray {
         return this.loadExtraStops()
             .at(loadStopIndex)
-            .get('items') as FormArray;
+            .get('items') as UntypedFormArray;
     }
 
     public removeLoadStopItem(
@@ -2343,7 +2343,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     }
 
     // Common fields
-    public newLoadStopItems(): FormGroup {
+    public newLoadStopItems(): UntypedFormGroup {
         return this.formBuilder.group({
             id: [null],
             bolNumber: [null],
@@ -3689,10 +3689,10 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     }
 
     // MODAL TABLE
-    public testControl: FormGroup = new FormGroup({
-        email: new FormControl(null),
-        password: new FormControl(null),
-        phone: new FormControl(null),
+    public testControl: UntypedFormGroup = new UntypedFormGroup({
+        email: new UntypedFormControl(null),
+        password: new UntypedFormControl(null),
+        phone: new UntypedFormControl(null),
     });
     modalColumns: any[] = [];
     modalViewData: any[] = [];
