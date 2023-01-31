@@ -98,7 +98,7 @@ export class ViolationDetailsPageComponent implements OnInit {
         this.violationInitCongif = [
             {
                 id: 0,
-                name: 'Roadside Insp. Details',
+                name: 'Roadside Insp. Detail',
                 template: 'general',
                 data: data,
                 secondName: '',

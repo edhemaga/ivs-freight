@@ -77,7 +77,7 @@ export class LoadDetailsComponent implements OnInit, OnChanges, OnDestroy {
         this.loadConfig = [
             {
                 id: 0,
-                name: `${data?.statusType?.name} Load Details`,
+                name: `${data?.statusType?.name} Load Detail`,
                 template: 'general',
                 data: data,
             },

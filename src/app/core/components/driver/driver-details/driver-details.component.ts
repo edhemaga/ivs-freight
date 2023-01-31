@@ -223,7 +223,7 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
         this.driverDetailsConfig = [
             {
                 id: 0,
-                name: 'Driver Details',
+                name: 'Driver Detail',
                 template: 'general',
                 data: dataDriver,
             },

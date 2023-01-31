@@ -79,7 +79,7 @@ export class FuelDetailsComponent implements OnInit {
         this.fuelConfig = [
             {
                 id: 0,
-                name: 'Fuel Stop Details',
+                name: 'Fuel Stop Detail',
                 template: 'general',
                 data: data,
             },
