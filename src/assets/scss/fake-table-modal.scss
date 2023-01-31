@@ -737,21 +737,23 @@
         .common-fake-table-label {
             p {
                 &:nth-child(1) {
-                    margin-left: 1px;
+                    margin-left: 23px;
                 }
 
                 &:nth-child(2) {
-                    margin-left: 136px;
+                    margin-left: 105px;
                 }
 
                 &:nth-child(3) {
-                    margin-left: 116px;
+                    margin-left: 118px;
                 }
             }
         }
         .common-fake-table-body {
             .common-fake-table-card {
                 grid-template-columns: 1fr repeat(2, 140px);
+                padding: 0 10px;
+                border-radius: 2px;
             }
         }
     }

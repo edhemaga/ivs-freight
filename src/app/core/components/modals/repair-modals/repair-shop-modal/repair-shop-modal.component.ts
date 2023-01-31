@@ -116,6 +116,8 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
     public latitude: number;
     private destroy$ = new Subject<void>();
 
+    public repairShopName: string = null;
+
     constructor(
         private formBuilder: UntypedFormBuilder,
         private inputService: TaInputService,
@@ -145,8 +147,11 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             this.editRepairShopById(this.editData.id);
             this.ratingChanges();
         }
-
-        if (!this.editData || this.editData?.canOpenModal) {
+        console.log('repair shop on init: ', this.editData);
+        if (
+            !this.editData ||
+            (this.editData?.canOpenModal && !this.editData?.id)
+        ) {
             for (let i = 0; i < this.openHoursDays.length; i++) {
                 this.addOpenHours(
                     this.openHoursDays[i],
@@ -701,7 +706,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
                         account: res.account,
                         note: res.note,
                     });
-
+                    this.repairShopName = res.name;
                     this.selectedAddress = res.address;
                     this.selectedBank = res.bank;
                     this.isBankSelected = !!this.selectedBank;
@@ -710,6 +715,8 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
                     this.documents = res.files;
                     this.longitude = res.longitude;
                     this.latitude = res.latitude;
+
+                    console.log(this.repairShopName);
 
                     // Services
                     this.services = res.serviceTypes.map((item) => {
@@ -1136,6 +1143,28 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
+                    if (this.editData?.canOpenModal) {
+                        switch (this.editData?.key) {
+                            case 'repair-modal': {
+                                this.modalService.setProjectionModal({
+                                    action: 'close',
+                                    payload: {
+                                        key: this.editData?.key,
+                                        value: null,
+                                    },
+                                    component: RepairOrderModalComponent,
+                                    size: 'large',
+                                    type: this.editData?.type,
+                                    closing: 'slowlest',
+                                });
+                                break;
+                            }
+                            default: {
+                                break;
+                            }
+                        }
+                    }
+
                     this.modalService.setModalSpinner({
                         action: null,
                         status: true,
