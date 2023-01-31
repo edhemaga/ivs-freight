@@ -2008,3 +2008,12 @@
         }
     }
 }
+
+
+// REMOVE POPOVER ARROW GLOBAL
+
+ngb-popover-window{
+    .popover-arrow{
+        display: none !important;
+    }
+}

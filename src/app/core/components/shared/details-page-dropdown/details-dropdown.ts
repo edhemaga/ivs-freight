@@ -17,13 +17,14 @@ import {
     trigger,
     state,
 } from '@angular/animations';
+import { Options } from '@popperjs/core/lib/popper';
+import { ChangeDetectorRef } from '@angular/core';
 
 @Component({
     selector: 'app-details-page-dropdown',
     templateUrl: './details-dropdown.html',
     styleUrls: ['./details-dropdown.scss'],
     encapsulation: ViewEncapsulation.None,
-    changeDetection: ChangeDetectionStrategy.OnPush,
     animations: [
         trigger('SubtypeAnimation', [
             state(
@@ -69,6 +70,7 @@ import {
     ],
 })
 export class DetailsDropdownComponent implements OnInit, OnChanges {
+    
     @Input() options: any;
     @Input() id: number;
     @Input() customClassDropDown: string;
@@ -83,9 +85,10 @@ export class DetailsDropdownComponent implements OnInit, OnChanges {
     dropDownActive: number = -1;
     subtypeHovered: any = false;
 
-    constructor(private DetailsDataService: DetailsDataService) {}
+    constructor(private DetailsDataService: DetailsDataService, private chnd: ChangeDetectorRef) {}
 
     ngOnChanges(changes: SimpleChanges): void {
+        console.log("CHANGESSS", changes);
         if (changes?.options?.currentValue) {
             this.options = changes.options.currentValue;
             this.setDropContent();
@@ -110,6 +113,7 @@ export class DetailsDropdownComponent implements OnInit, OnChanges {
         }
 
         this.dropDownActive = tooltip.isOpen() ? this.id : -1;
+        this.chnd.detectChanges();
     }
 
     setDropContent() {
@@ -118,6 +122,12 @@ export class DetailsDropdownComponent implements OnInit, OnChanges {
             for (let i = 0; i < this.options.length; i++) {
                 this.dropContent.push(this.options[i]);
             }
+
+            setTimeout(() => {
+                this.chnd.detectChanges();
+                console.log("UPADDTEE");
+            }, 3000);
+            
         }
     }
     /**Function retrun id */
@@ -171,4 +181,29 @@ export class DetailsDropdownComponent implements OnInit, OnChanges {
             item['openSubtype'] = false;
         });
     }
+
+    popperOptions = (options: Partial<Options>) => {
+        // add your own modifier
+        options.modifiers?.push({
+          name: 'custom',
+          enabled: true,
+          phase: 'main',
+          effect: ({ state, instance }) => {
+            console.log("UPDATEEE",state, instance);
+            setTimeout(() => {
+                instance.update();
+                this.chnd.detectChanges();
+            }, 400);
+            
+            const observer = new ResizeObserver(() => instance.update());
+            observer.observe(state.elements!.reference as any);
+            return () => {
+              observer.disconnect();
+            };
+          },
+          fn: () => {},
+        });
+    
+        return options;
+      };
 }
