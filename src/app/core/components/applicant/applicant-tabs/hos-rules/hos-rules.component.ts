@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 
 import { Subject, takeUntil } from 'rxjs';
@@ -30,13 +30,13 @@ export class HosRulesComponent implements OnInit, OnDestroy {
 
     public isValidLoad: boolean;
 
-    public hosRulesForm: FormGroup;
+    public hosRulesForm: UntypedFormGroup;
 
     public applicantId: number;
     public queryParamId: number | string | null = null;
 
     constructor(
-        private formBuilder: FormBuilder,
+        private formBuilder: UntypedFormBuilder,
         private inputService: TaInputService,
         private router: Router,
         private applicantStore: ApplicantStore,

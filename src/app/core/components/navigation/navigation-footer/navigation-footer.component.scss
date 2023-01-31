@@ -37,9 +37,6 @@
     .route-not-active {
         color: #787878;
     }
-    .nav-footer-item-scaleWidth {
-        // width: 0px !important;
-    }
 
     &:nth-child(1) {
         .hide-user {
@@ -49,11 +46,8 @@
             }
         }
         .notification {
-            // width: 230px;
             div {
-                // width: 230px;
                 .nav-footer-rightSide {
-                    // width: 230px;
                     p {
                         z-index: 1;
                     }
@@ -154,14 +148,13 @@
         align-items: center;
         .tooltip-right {
             position: relative;
-            bottom: 13px;
+            bottom: 15px;
             right: 8px;
         }
         .hide-tooltip {
             display: none;
         }
         &:nth-last-child(2) {
-            // display: none;
             order: 3;
         }
         .nav-footer-image-user {
@@ -263,11 +256,6 @@
     }
 
     .nav-footer-item-active {
-        // color: $nav-active;
-        // background-color: $nav-hover-color;
-        // width: 171px;
-        // border-radius: 3px;
-
         .nav-footer-image {
             svg {
                 // info
@@ -283,11 +271,6 @@
                     fill: $nav-svg-active;
                 }
             }
-        }
-
-        .nav-footer-text {
-            // color: $nav-active-lighter;
-            // font-weight: $nav-font-bold !important;
         }
 
         &:hover {
@@ -328,9 +311,6 @@
             width: 238px;
             left: -8px;
             background-color: $nav-hover-color;
-        }
-        &.show {
-            // animation: showMagicLine 1s;
         }
     }
 }

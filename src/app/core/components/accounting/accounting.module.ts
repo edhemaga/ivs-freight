@@ -27,7 +27,6 @@ import { PayrollSmallTablesComponent } from './payroll/payroll/payroll-small-tab
         SharedModule,
         TruckassistTableModule
     ],
-    entryComponents: [AccountingIndexComponent],
     exports: [AccountingIndexComponent, PayrollTableComponent]
 })
 export class AccountingModule {}

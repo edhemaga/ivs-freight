@@ -50,7 +50,7 @@ export class TelematicStateService implements OnDestroy {
     }
 
     getAllGpsData(request) {
-        return this.telematicsService.apiTelematicsDataAllGet(request);
+        return this.telematicsService.apiTelematicsDataAllGet();
     }
 
     getUnassignedGpsData(request) {

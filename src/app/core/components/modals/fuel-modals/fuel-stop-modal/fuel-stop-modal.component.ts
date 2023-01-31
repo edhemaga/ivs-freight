@@ -6,7 +6,7 @@ import {
     phoneFaxRegex,
 } from '../../../shared/ta-input/ta-input.regex-validations';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { AddressEntity } from 'appcoretruckassist';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
@@ -26,7 +26,7 @@ import {
 })
 export class FuelStopModalComponent implements OnInit, OnDestroy {
     @Input() editData: any;
-    public fuelStopForm: FormGroup;
+    public fuelStopForm: UntypedFormGroup;
     public fuelStops: any[] = [];
     public selectedFuelStop: any = null;
     public selectedAddress: AddressEntity;
@@ -43,7 +43,7 @@ export class FuelStopModalComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
 
     constructor(
-        private formBuilder: FormBuilder,
+        private formBuilder: UntypedFormBuilder,
         private inputService: TaInputService,
         private modalService: ModalService,
         private formService: FormService,

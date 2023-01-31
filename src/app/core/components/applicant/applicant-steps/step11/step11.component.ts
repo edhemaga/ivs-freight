@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
 import { Subject, takeUntil } from 'rxjs';
@@ -30,7 +30,7 @@ export class Step11Component implements OnInit, OnDestroy {
 
     public selectedMode: string = SelectedMode.APPLICANT;
 
-    public authorizationForm: FormGroup;
+    public authorizationForm: UntypedFormGroup;
 
     public applicantId: number;
 
@@ -39,7 +39,7 @@ export class Step11Component implements OnInit, OnDestroy {
     public displaySignatureRequiredNote: boolean = false;
 
     constructor(
-        private formBuilder: FormBuilder,
+        private formBuilder: UntypedFormBuilder,
         private inputService: TaInputService,
         private router: Router,
         private applicantStore: ApplicantStore,

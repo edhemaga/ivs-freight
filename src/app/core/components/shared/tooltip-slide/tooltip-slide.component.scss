@@ -27,8 +27,16 @@
         top: 4px;
     }
     .tooltiptext {
-        animation: moveToRight 0.1s normal forwards;
+        animation: moveToRight 0.3s normal forwards;
         visibility: visible;
         opacity: 1;
+    }
+    @keyframes moveToRight {
+        0% {
+            transform: translateX(36px);
+        }
+        100% {
+            transform: translateX(48px);
+        }
     }
 }

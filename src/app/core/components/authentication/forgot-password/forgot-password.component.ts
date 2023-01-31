@@ -1,6 +1,6 @@
 import { HttpResponseBase } from '@angular/common/http';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
 import { Subject, takeUntil } from 'rxjs';
@@ -20,12 +20,12 @@ import { ForgotPasswordCommand } from 'appcoretruckassist/model/forgotPasswordCo
 })
 export class ForgotPasswordComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
-    public forgotPasswordForm!: FormGroup;
+    public forgotPasswordForm!: UntypedFormGroup;
 
     public copyrightYear: number;
 
     constructor(
-        private formBuilder: FormBuilder,
+        private formBuilder: UntypedFormBuilder,
         private authStoreService: AuthStoreService,
         private inputService: TaInputService,
         private notification: NotificationService,

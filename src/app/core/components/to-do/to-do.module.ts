@@ -10,7 +10,7 @@ import { GridsterModule } from 'angular-gridster2';
 import { AppTooltipeModule } from '../shared/app-tooltip/app-tooltip.module';
 import { NgxSmoothDnDModule } from 'ngx-smooth-dnd';
 import { TruckassistProgressExpirationModule } from './../shared/truckassist-progress-expiration/truckassist-progress-expiration.module';
-import { TruckassistSearchModule } from '../shared/truckassist-search/truckassist-search.module';
+import { CarrierSearchComponent } from '../standalone-components/carrier-search/carrier-search.component';
 
 @NgModule({
     declarations: [ToDoListCardComponent],
@@ -23,7 +23,7 @@ import { TruckassistSearchModule } from '../shared/truckassist-search/truckassis
         SharedModule,
         NgxSmoothDnDModule,
         TruckassistProgressExpirationModule,
-        TruckassistSearchModule,
+        CarrierSearchComponent,
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })

@@ -10,7 +10,7 @@ import {
     ChangeDetectorRef,
     ViewChild,
 } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { distinctUntilChanged, Subject, takeUntil } from 'rxjs';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
 import { TruckTService } from '../../truck/state/truck.service';
@@ -158,8 +158,8 @@ export class MapToolbarComponent implements OnInit, OnChanges, OnDestroy {
         },
     ];
 
-    mapForm!: FormGroup;
-    routeForm!: FormGroup;
+    mapForm!: UntypedFormGroup;
+    routeForm!: UntypedFormGroup;
 
     truckType: any[] = [
         {
@@ -211,7 +211,7 @@ export class MapToolbarComponent implements OnInit, OnChanges, OnDestroy {
     truckList: any[] = [];
 
     constructor(
-        private formBuilder: FormBuilder,
+        private formBuilder: UntypedFormBuilder,
         private ref: ChangeDetectorRef,
         private inputService: TaInputService,
         private truckService: TruckTService,

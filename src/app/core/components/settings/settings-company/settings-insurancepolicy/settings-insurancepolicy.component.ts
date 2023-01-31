@@ -16,7 +16,7 @@ import { ModalService } from '../../../shared/ta-modal/modal.service';
 import { ConfirmationService } from '../../../modals/confirmation-modal/confirmation.service';
 import { Subject, takeUntil } from 'rxjs';
 import { card_component_animation } from '../../../shared/animations/card-component.animations';
-import { FormControl } from '@angular/forms';
+import { UntypedFormControl } from '@angular/forms';
 import { OnDestroy } from '@angular/core';
 import { onFileActionMethods } from 'src/app/core/utils/methods.globals';
 @Component({
@@ -28,7 +28,7 @@ import { onFileActionMethods } from 'src/app/core/utils/methods.globals';
 })
 export class SettingsInsurancepolicyComponent implements OnChanges, OnDestroy {
     @Input() public insurancePolicyData: any;
-    public insuranceNote: FormControl = new FormControl();
+    public insuranceNote: UntypedFormControl = new UntypedFormControl();
 
     public copyPolicyName: boolean[] = [];
     public dropOptions: any;

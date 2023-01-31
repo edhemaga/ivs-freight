@@ -1,4 +1,4 @@
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import {
     Component,
     Input,
@@ -38,7 +38,7 @@ export class AccountModalComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
     @Input() editData: any;
 
-    public accountForm: FormGroup;
+    public accountForm: UntypedFormGroup;
 
     public accountLabels: any[] = [];
     public selectedAccountLabel: any = null;
@@ -51,7 +51,7 @@ export class AccountModalComponent implements OnInit, OnDestroy {
     public addNewAfterSave: boolean = false;
 
     constructor(
-        private formBuilder: FormBuilder,
+        private formBuilder: UntypedFormBuilder,
         private inputService: TaInputService,
         private modalService: ModalService,
         private accountService: AccountTService,

@@ -1,6 +1,6 @@
 import { PmTService } from '../../../pm-truck-trailer/state/pm.service';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormArray, UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 
 import {
     PMTrailerListResponse,
@@ -32,14 +32,14 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
 
     @Input() editData: any;
 
-    public PMform: FormGroup;
+    public PMform: UntypedFormGroup;
 
     public isFormDirty: boolean;
 
     public disableCardAnimation: boolean = false;
 
     constructor(
-        private formBuilder: FormBuilder,
+        private formBuilder: UntypedFormBuilder,
         private pmTService: PmTService,
         private inputService: TaInputService,
         private modalService: ModalService,
@@ -70,12 +70,12 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
             });
     }
 
-    public get defaultPMs(): FormArray {
-        return this.PMform.get('defaultPMs') as FormArray;
+    public get defaultPMs(): UntypedFormArray {
+        return this.PMform.get('defaultPMs') as UntypedFormArray;
     }
 
-    public get newPMs(): FormArray {
-        return this.PMform.get('newPMs') as FormArray;
+    public get newPMs(): UntypedFormArray {
+        return this.PMform.get('newPMs') as UntypedFormArray;
     }
 
     private createDefaultPMs(
@@ -85,7 +85,7 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
         title: string,
         mileage: string,
         status: string
-    ): FormGroup {
+    ): UntypedFormGroup {
         return this.formBuilder.group({
             id: [id],
             isChecked: [isChecked],
@@ -104,7 +104,7 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
         mileage: string,
         value: string,
         hidden: boolean
-    ): FormGroup {
+    ): UntypedFormGroup {
         return this.formBuilder.group({
             id: [id],
             isChecked: [isChecked],

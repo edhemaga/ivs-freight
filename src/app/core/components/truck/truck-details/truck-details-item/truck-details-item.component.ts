@@ -9,7 +9,7 @@ import {
     ViewChildren,
     SimpleChanges,
 } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { UntypedFormControl } from '@angular/forms';
 import { Subject, takeUntil } from 'rxjs';
 import { DropDownService } from 'src/app/core/services/details-page/drop-down.service';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
@@ -69,11 +69,11 @@ export class TruckDetailsItemComponent implements OnInit, OnDestroy, OnChanges {
     @ViewChildren('registrationUpload') registrationUpload: any;
     @ViewChildren('titleUpload') titleUpload: any;
     @Input() truck: any | any = null;
-    public note: FormControl = new FormControl();
-    public fhwaNote: FormControl = new FormControl();
-    public purchaseNote: FormControl = new FormControl();
-    public registrationNote: FormControl = new FormControl();
-    public titleNote: FormControl = new FormControl();
+    public note: UntypedFormControl = new UntypedFormControl();
+    public fhwaNote: UntypedFormControl = new UntypedFormControl();
+    public purchaseNote: UntypedFormControl = new UntypedFormControl();
+    public registrationNote: UntypedFormControl = new UntypedFormControl();
+    public titleNote: UntypedFormControl = new UntypedFormControl();
     public toggler: boolean[] = [];
     public cardNumberFake = '125335533513';
     private destroy$ = new Subject<void>();

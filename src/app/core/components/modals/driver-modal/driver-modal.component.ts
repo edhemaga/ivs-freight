@@ -1,4 +1,4 @@
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormArray, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { distinctUntilChanged, Subject, takeUntil } from 'rxjs';
 import { Options } from '@angular-slider/ngx-slider';
 import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
@@ -53,7 +53,7 @@ import { EditTagsService } from 'src/app/core/services/shared/editTags.service';
 export class DriverModalComponent implements OnInit, OnDestroy {
     @ViewChild(TaTabSwitchComponent) tabSwitch: TaTabSwitchComponent;
     @Input() editData: any;
-    public driverForm: FormGroup;
+    public driverForm: UntypedFormGroup;
     public labelsBank: any[] = [];
     public labelsPayType: any[] = [];
     public isOwner: boolean = false;
@@ -133,7 +133,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
 
     constructor(
-        private formBuilder: FormBuilder,
+        private formBuilder: UntypedFormBuilder,
         private inputService: TaInputService,
         private driverTService: DriverTService,
         private modalService: ModalService,
@@ -143,8 +143,8 @@ export class DriverModalComponent implements OnInit, OnDestroy {
         private tagsService: EditTagsService
     ) {}
 
-    public get offDutyLocations(): FormArray {
-        return this.driverForm.get('offDutyLocations') as FormArray;
+    public get offDutyLocations(): UntypedFormArray {
+        return this.driverForm.get('offDutyLocations') as UntypedFormArray;
     }
 
     ngOnInit(): void {
@@ -773,7 +773,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
         addressUnit: string;
         street: string;
         streetNumber: string;
-    }): FormGroup {
+    }): UntypedFormGroup {
         return this.formBuilder.group({
             id: [data?.id ? data.id : 0],
             nickname: [

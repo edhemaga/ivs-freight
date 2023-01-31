@@ -1,5 +1,5 @@
 import { EventEmitter, Injectable } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { UntypedFormGroup } from '@angular/forms';
 import { NotificationService } from '../notification/notification.service';
 import { Observable, Subject, tap } from 'rxjs';
 import { environment } from '../../../../environments/environment';
@@ -86,7 +86,7 @@ export class SharedService {
      *
      * @param formGroup FormGroup - The form group to touch
      */
-    public markInvalid(formGroup: FormGroup, isSpecialCase?: boolean) {
+    public markInvalid(formGroup: UntypedFormGroup, isSpecialCase?: boolean) {
         if (!isSpecialCase) {
         }
 
@@ -230,7 +230,7 @@ export class SharedService {
         });
     }
 
-    public selectAddress(form: FormGroup, address: any) {
+    public selectAddress(form: UntypedFormGroup, address: any) {
         const ret: AddressEntity = {
             address: address.formatted_address,
             streetNumber: this.retrieveAddressComponents(
@@ -626,7 +626,7 @@ export class SharedService {
         );
     }
 
-    public touchFormFields(formGroup: FormGroup) {
+    public touchFormFields(formGroup: UntypedFormGroup) {
         (Object as any).values(formGroup.controls).forEach((control: any) => {
             control.markAsTouched();
         });

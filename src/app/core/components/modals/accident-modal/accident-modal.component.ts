@@ -4,7 +4,7 @@ import {
     vinNumberValidation,
 } from '../../shared/ta-input/ta-input.regex-validations';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormArray, UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { tab_modal_animation } from '../../shared/animations/tabs-modal.animation';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
 import { AddressEntity } from 'appcoretruckassist';
@@ -28,7 +28,7 @@ export class AccidentModalComponent implements OnInit, OnDestroy {
 
     @Input() editData: any;
 
-    public accidentForm: FormGroup;
+    public accidentForm: UntypedFormGroup;
 
     public selectedTab: number = 1;
     public tabs: any[] = [
@@ -76,7 +76,7 @@ export class AccidentModalComponent implements OnInit, OnDestroy {
     public disableCardAnimation: boolean = false;
 
     constructor(
-        private formBuilder: FormBuilder,
+        private formBuilder: UntypedFormBuilder,
         private inputService: TaInputService,
         private modalService: ModalService,
         private formService: FormService,
@@ -163,12 +163,12 @@ export class AccidentModalComponent implements OnInit, OnDestroy {
         };
     }
 
-    public get violations(): FormArray {
-        return this.accidentForm.get('violations') as FormArray;
+    public get violations(): UntypedFormArray {
+        return this.accidentForm.get('violations') as UntypedFormArray;
     }
 
-    public get insurances(): FormArray {
-        return this.accidentForm.get('insuranceType') as FormArray;
+    public get insurances(): UntypedFormArray {
+        return this.accidentForm.get('insuranceType') as UntypedFormArray;
     }
 
     private createInsurance(data?: {
@@ -177,7 +177,7 @@ export class AccidentModalComponent implements OnInit, OnDestroy {
         insuranceAdjuster: string;
         phone: string;
         email: string;
-    }): FormGroup {
+    }): UntypedFormGroup {
         return this.formBuilder.group({
             insuranceType: [data?.insuranceType ? data.insuranceType : null],
             claimNumber: [data?.claimNumber ? data.claimNumber : null],
