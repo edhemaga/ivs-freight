@@ -747,11 +747,6 @@ export class TaInputComponent
                     let cursorPosition =
                         this.input.nativeElement.selectionStart;
 
-                    console.log(
-                        'cursor position witdot: ',
-                        this.input.nativeElement.selectionStart,
-                        this.hasDecimalIndex
-                    );
                     if (this.hasDecimalIndex >= 0) {
                         cursorPosition =
                             this.getSuperControl.value.indexOf('.');
@@ -791,11 +786,6 @@ export class TaInputComponent
                         this.getSuperControl.patchValue(
                             integerPart + '.' + decimalPart
                         );
-
-                        console.log(
-                            'after settimeout: ',
-                            this.getSuperControl.value
-                        );
                     }, 200);
                 }
             }, 1000);
@@ -807,27 +797,7 @@ export class TaInputComponent
                         this.getSuperControl.value
                     )
                 );
-                console.log(
-                    'cursor position without dot: ',
-                    this.input.nativeElement.selectionStart
-                );
             }
-
-            // setTimeout(() => {
-            // let cursorPosition = this.input.nativeElement.selectionStart;
-            // if (this.hasDecimalIndex >= 0) {
-            //     cursorPosition = this.getSuperControl.value.indexOf('.');
-            //     this.input.nativeElement.setSelectionRange(
-            //         cursorPosition,
-            //         cursorPosition
-            //     );
-            // } else {
-            //     this.input.nativeElement.setSelectionRange(
-            //         cursorPosition,
-            //         cursorPosition
-            //     );
-            // }
-            // }, 700);
         }
 
         /**
@@ -1096,9 +1066,6 @@ export class TaInputComponent
                         integerPart + '.' + decimalPart
                     );
                 }
-
-                console.log('on key press value: ', this.getSuperControl.value);
-                // this.transformText(this.getSuperControl.value);
 
                 return true;
             }
