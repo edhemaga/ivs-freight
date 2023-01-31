@@ -49,11 +49,7 @@
                 src="assets/svg/truckassist-table/note/underline-icon.svg"
             ></svg-icon>
         </div>
-        <div
-            class="note_border_line"
-            [class.dark]="type == 'dark'"
-            *ngIf="!parking"
-        ></div>
+        <div class="note_separator"></div>
     </div>
     <div
         (click)="togglePattern()"

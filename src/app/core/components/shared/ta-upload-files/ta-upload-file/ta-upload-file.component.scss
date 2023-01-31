@@ -464,6 +464,17 @@
                     max-height: 306px;
                 }
             }
+
+            &.company-documents {
+                height: 289px;
+                width: 294px;
+                margin-top: 4px;
+
+                .ta-upload-file-image {
+                    max-width: 294px;
+                    max-height: 294px;
+                }
+            }
         }
 
         .ta-upload-file-number-of-pages {
