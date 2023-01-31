@@ -1,5 +1,5 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormArray, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { Subject, takeUntil, switchMap, of } from 'rxjs';
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
@@ -39,7 +39,7 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
 
     @Input() editData: any;
 
-    public fuelForm: FormGroup;
+    public fuelForm: UntypedFormGroup;
 
     public truckType: any[] = [];
     public fuelStops: any[] = [];
@@ -68,7 +68,7 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
     public disableCardAnimation: boolean = false;
 
     constructor(
-        private formBuilder: FormBuilder,
+        private formBuilder: UntypedFormBuilder,
         private inputService: TaInputService,
         private modalService: ModalService,
         private formService: FormService,
@@ -153,8 +153,8 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
         }
     }
 
-    public get fuelItems(): FormArray {
-        return this.fuelForm.get('fuelItems') as FormArray;
+    public get fuelItems(): UntypedFormArray {
+        return this.fuelForm.get('fuelItems') as UntypedFormArray;
     }
 
     private createFuelItems(data?: {
@@ -164,7 +164,7 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
         qty?: string;
         price?: string;
         subtotal?: string;
-    }): FormGroup {
+    }): UntypedFormGroup {
         return this.formBuilder.group({
             id: [data?.id ? data.id : 0],
             reorderingNumber: [

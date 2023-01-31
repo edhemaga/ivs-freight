@@ -472,9 +472,7 @@
                                 isDropdown: true,
                                 label: pickupDateRange ? 'Date From' : 'Date',
                                 placeholderIcon: 'date',
-                                isRequired: true,
-                                customClass:
-                                    'datetimeclass line-input-26-in-card'
+                                isRequired: true
                             }"
                             (blurInput)="
                                 loadForm.get('pickupDateFrom').markAsTouched()
@@ -501,9 +499,7 @@
                                 type: 'text',
                                 isDropdown: true,
                                 label: 'Date To',
-                                placeholderIcon: 'date',
-                                customClass:
-                                    'datetimeclass line-input-26-in-card'
+                                placeholderIcon: 'date'
                             }"
                             (blurInput)="
                                 loadForm.get('pickupDateTo').markAsTouched()
@@ -522,9 +518,7 @@
                                         : 'From',
                                 placeholderIcon: 'time',
                                 isDropdown: true,
-                                isRequired: true,
-                                customClass:
-                                    'datetimeclass line-input-26-in-card'
+                                isRequired: true
                             }"
                             (blurInput)="
                                 loadForm.get('pickupTimeFrom').markAsTouched()
@@ -540,9 +534,7 @@
                                 placeholderIcon: 'time',
                                 isDropdown: true,
                                 isRequired: true,
-                                isDisabled: selectedStopTimePickup === 6,
-                                customClass:
-                                    'datetimeclass line-input-26-in-card'
+                                isDisabled: selectedStopTimePickup === 6
                             }"
                             (blurInput)="
                                 loadForm.get('pickupTimeTo').markAsTouched()
@@ -1222,18 +1214,18 @@
                         <app-ta-input
                             formControlName="baseRate"
                             [inputConfig]="{
-                                name: 'base-rate',
+                                name: 'price-separator',
                                 type: 'text',
                                 label: 'Base Rate',
                                 labelInInput: true,
                                 isRequired: true,
                                 priceSeparator: true,
+                                priceSeparatorLimitation: 6,
                                 placeholderIconRightSide: 'dollar',
                                 placeholderIconColor: 'green',
                                 inputCursorOnRightSide: true,
                                 hideErrorMessage: true,
-                                hideRequiredCheck: true,
-                                thousandSeparator: true
+                                hideRequiredCheck: true
                             }"
                         ></app-ta-input>
                         <!-- Driver Rate -->
@@ -1244,18 +1236,18 @@
                             "
                             formControlName="driverRate"
                             [inputConfig]="{
-                                name: 'base-rate',
+                                name: 'price-separator',
                                 type: 'text',
                                 label: 'Driver Rate',
                                 labelInInput: true,
                                 isRequired: true,
                                 priceSeparator: true,
+                                priceSeparatorLimitation: 6,
                                 placeholderIconRightSide: 'dollar',
                                 placeholderIconColor: 'purple',
                                 inputCursorOnRightSide: true,
                                 hideErrorMessage: true,
-                                hideRequiredCheck: true,
-                                thousandSeparator: true
+                                hideRequiredCheck: true
                             }"
                         ></app-ta-input>
                         <!-- Adjusted Rate -->
@@ -1268,19 +1260,19 @@
                             "
                             formControlName="adjustedRate"
                             [inputConfig]="{
-                                name: 'base-rate',
+                                name: 'price-separator',
                                 type: 'text',
                                 label: 'Adjusted',
                                 labelInInput: true,
                                 priceSeparator: true,
+                                priceSeparatorLimitation: 6,
                                 placeholderIconRightSide: 'dollar',
                                 placeholderIconColor: 'purple',
                                 inputCursorOnRightSide: true,
                                 removeInput: true,
                                 hideErrorMessage: true,
                                 hideRequiredCheck: true,
-                                hideDangerMark: true,
-                                thousandSeparator: true
+                                hideDangerMark: true
                             }"
                             (clear)="removeAdditionalBilling('adjusted')"
                         ></app-ta-input>
@@ -1297,11 +1289,12 @@
                                     <app-ta-input
                                         formControlName="billingValue"
                                         [inputConfig]="{
-                                            name: 'base-rate',
+                                            name: 'price-separator',
                                             type: 'text',
                                             label: additional.get('name').value,
                                             labelInInput: true,
                                             priceSeparator: true,
+                                            priceSeparatorLimitation: 6,
                                             placeholderIconRightSide:
                                                 'dollar-additional-load',
                                             placeholderIconColor: 'blue',
@@ -1310,8 +1303,7 @@
                                             isRequired: true,
                                             hideErrorMessage: true,
                                             hideRequiredCheck: true,
-                                            hideDangerMark: true,
-                                            thousandSeparator: true
+                                            hideDangerMark: true
                                         }"
                                         (clear)="
                                             removeAdditionalBilling(
@@ -1346,19 +1338,19 @@
                             *ngIf="isVisiblePayment"
                             formControlName="advancePay"
                             [inputConfig]="{
-                                name: 'base-rate',
+                                name: 'price-separator',
                                 type: 'text',
                                 label: 'Advance',
                                 labelInInput: true,
                                 isRequired: true,
                                 priceSeparator: true,
+                                priceSeparatorLimitation: 6,
                                 placeholderIconRightSide: 'dollar',
                                 placeholderIconColor: 'purple',
                                 inputCursorOnRightSide: true,
                                 hideErrorMessage: true,
                                 hideRequiredCheck: true,
                                 hideDangerMark: true,
-                                thousandSeparator: true,
                                 removeInput: true
                             }"
                             (clear)="removeAdditionalPayment()"

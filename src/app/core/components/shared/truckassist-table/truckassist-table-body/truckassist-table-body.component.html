@@ -3185,18 +3185,11 @@
                                     }"
                                 >
                                     <div
-                                        #t3="ngbPopover"
-                                        (hidden)="activeAttachment = -1"
-                                        [ngbPopover]="filesPopover"
-                                        [autoClose]="'outside'"
-                                        container="body"
-                                        [placement]="'bottom-left'"
-                                        popoverClass="files-popover"
-                                        triggers="manual"
-                                        (click)="onShowAttachments(row, t3)"
+                                        (click)="onShowAttachments(row)"
                                         [ngClass]="{
                                             'action-active':
-                                                activeAttachment === row.id
+                                                activeAttachment === row.id &&
+                                                row.tableAttachments?.length
                                         }"
                                         class="attachments-icon-container"
                                     >
@@ -3450,8 +3443,7 @@
                         class="attachemnt-dropdown"
                         [ngClass]="{
                             'attachemnt-dropdown-active':
-                                activeAttachment === row.id &&
-                                row.tableAttachments?.length > 1
+                                activeAttachment === row.id
                         }"
                     >
                         <div class="attachemnt-dropdown-content">
@@ -3784,14 +3776,6 @@
                             <div class="document-container">
                                 <!-- Title -->
                                 <div class="document-title">
-                                    <div class="document-count-title">
-                                        {{ row?.tableAttachments?.length }}
-                                        {{
-                                            row?.tableAttachments?.length > 1
-                                                ? 'DOCUMENTS'
-                                                : 'DOCUMENT'
-                                        }}
-                                    </div>
                                     <div class="download-document-btn">
                                         <svg-icon
                                             class="paid-icon"
@@ -4031,15 +4015,4 @@
             Active
         </div>
     </div>
-</ng-template>
-
-<!-- FILES -->
-<ng-template #filesPopover let-data="data">
-    <app-ta-upload-files
-        [customClassName]="'table-details'"
-        [files]="data"
-        [size]="'extralarge'"
-        [reviewMode]="'REVIEW_MODE'"
-        [slideWidth]="209"
-    ></app-ta-upload-files>
 </ng-template>

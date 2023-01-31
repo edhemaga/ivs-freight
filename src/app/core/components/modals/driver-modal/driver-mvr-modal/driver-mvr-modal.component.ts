@@ -1,4 +1,4 @@
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { GetMvrModalResponse, MvrResponse } from 'appcoretruckassist';
 import { DriverTService } from '../../../driver/state/driver.service';
@@ -22,7 +22,7 @@ import { DriverListResponse } from '../../../../../../../appcoretruckassist/mode
 export class DriverMvrModalComponent implements OnInit, OnDestroy {
     @Input() editData: any;
 
-    public mvrForm: FormGroup;
+    public mvrForm: UntypedFormGroup;
 
     public isFormDirty: boolean = false;
 
@@ -43,7 +43,7 @@ export class DriverMvrModalComponent implements OnInit, OnDestroy {
     public disableCardAnimation: boolean = false;
 
     constructor(
-        private formBuilder: FormBuilder,
+        private formBuilder: UntypedFormBuilder,
         private driverService: DriverTService,
         private inputService: TaInputService,
         private modalService: ModalService,

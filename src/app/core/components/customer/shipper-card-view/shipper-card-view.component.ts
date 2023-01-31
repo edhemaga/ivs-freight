@@ -7,7 +7,7 @@ import {
     ViewEncapsulation,
     ViewChild,
 } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { UntypedFormControl } from '@angular/forms';
 import { ShipperMinimalListQuery } from '../state/shipper-state/shipper-details-state/shipper-minimal-list-state/shipper-minimal.query';
 import { DetailsPageService } from '../../../services/details-page/details-page-ser.service';
 
@@ -24,7 +24,7 @@ export class ShipperCardViewComponent implements OnInit, OnChanges {
     @Input() templateCard: boolean;
     public shipperDropdowns: any[] = [];
     public shipperList: any[] = this.shipperMinimalListQuery.getAll();
-    public note: FormControl = new FormControl();
+    public note: UntypedFormControl = new UntypedFormControl();
     public shipperTabs: any[] = [];
 
     stackedBarChartConfig: any = {

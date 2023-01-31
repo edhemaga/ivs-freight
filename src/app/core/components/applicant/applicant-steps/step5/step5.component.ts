@@ -7,7 +7,7 @@ import {
     OnDestroy,
     OnInit,
 } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { UntypedFormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
 import { Subject, takeUntil } from 'rxjs';
@@ -54,11 +54,11 @@ export class Step5Component implements OnInit, OnDestroy, AfterContentChecked {
 
     public applicantId: number;
 
-    public violationsForm: FormGroup;
-    public trafficViolationsForm: FormGroup;
-    public notBeenConvictedForm: FormGroup;
-    public onlyOneHoldLicenseForm: FormGroup;
-    public certifyForm: FormGroup;
+    public violationsForm: UntypedFormGroup;
+    public trafficViolationsForm: UntypedFormGroup;
+    public notBeenConvictedForm: UntypedFormGroup;
+    public onlyOneHoldLicenseForm: UntypedFormGroup;
+    public certifyForm: UntypedFormGroup;
 
     public formStatus: string = 'INVALID';
     public markFormInvalid: boolean;
@@ -100,7 +100,7 @@ export class Step5Component implements OnInit, OnDestroy, AfterContentChecked {
     public isFeedbackValueUpdated: boolean = false;
 
     constructor(
-        private formBuilder: FormBuilder,
+        private formBuilder: UntypedFormBuilder,
         private inputService: TaInputService,
         private router: Router,
         private applicantActionsService: ApplicantActionsService,

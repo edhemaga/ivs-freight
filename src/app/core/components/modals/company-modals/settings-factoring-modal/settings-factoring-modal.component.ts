@@ -3,7 +3,7 @@ import {
     addressUnitValidation,
     addressValidation,
 } from '../../../shared/ta-input/ta-input.regex-validations';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { SettingsCompanyService } from '../../../settings/state/company-state/settings-company.service';
 import { UpdateFactoringCompanyCommand } from 'appcoretruckassist';
@@ -24,7 +24,7 @@ export class SettingsFactoringModalComponent implements OnInit, OnDestroy {
     @ViewChild('noticeOfAssignment', { static: false }) public noticeOfAssignment: any;
     @Input() editData: any;
 
-    public factoringForm: FormGroup;
+    public factoringForm: UntypedFormGroup;
 
     public selectedAddress: AddressEntity = null;
 
@@ -46,7 +46,7 @@ export class SettingsFactoringModalComponent implements OnInit, OnDestroy {
       };
 
     constructor(
-        private formBuilder: FormBuilder,
+        private formBuilder: UntypedFormBuilder,
         private inputService: TaInputService,
         private modalService: ModalService,
         private settingsCompanyService: SettingsCompanyService,

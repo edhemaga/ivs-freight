@@ -1,6 +1,6 @@
 import { SettingsLocationService } from '../../../settings/state/location-state/settings-location.service';
-import { FormArray, Validators } from '@angular/forms';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormArray, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import {
     Component,
     Input,
@@ -49,7 +49,7 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
     @Input() editData: any;
 
-    public officeForm: FormGroup;
+    public officeForm: UntypedFormGroup;
 
     public selectedTab: number = 1;
 
@@ -92,7 +92,7 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
     };
 
     constructor(
-        private formBuilder: FormBuilder,
+        private formBuilder: UntypedFormBuilder,
         private inputService: TaInputService,
         private modalService: ModalService,
         private settingsLocationService: SettingsLocationService,
@@ -212,8 +212,8 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
         }
     }
 
-    public get departmentContacts(): FormArray {
-        return this.officeForm.get('departmentContacts') as FormArray;
+    public get departmentContacts(): UntypedFormArray {
+        return this.officeForm.get('departmentContacts') as UntypedFormArray;
     }
 
     private createDepartmentContacts(data?: {
@@ -222,7 +222,7 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
         phone: any;
         extensionPhone: any;
         email: any;
-    }): FormGroup {
+    }): UntypedFormGroup {
         return this.formBuilder.group({
             id: [data?.id ? data.id : 0],
             departmentId: [

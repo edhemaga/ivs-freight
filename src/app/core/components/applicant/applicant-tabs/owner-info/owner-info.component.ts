@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 
 import {
@@ -77,7 +77,7 @@ export class OwnerInfoComponent implements OnInit, OnDestroy {
     public queryParamId: number | string | null = null;
     public ownerInfoCompanyId: number;
 
-    public ownerInfoForm: FormGroup;
+    public ownerInfoForm: UntypedFormGroup;
 
     public stepValues: any;
     public stepHasValues: boolean = false;
@@ -246,7 +246,7 @@ export class OwnerInfoComponent implements OnInit, OnDestroy {
     public isFeedbackValueUpdated: boolean = false;
 
     constructor(
-        private formBuilder: FormBuilder,
+        private formBuilder: UntypedFormBuilder,
         private inputService: TaInputService,
         private applicantActionsService: ApplicantActionsService,
         private bankVerificationService: BankVerificationService,

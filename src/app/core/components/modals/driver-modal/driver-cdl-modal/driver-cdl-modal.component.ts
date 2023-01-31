@@ -1,4 +1,4 @@
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { CdlResponse, GetCdlModalResponse } from 'appcoretruckassist';
 import { CdlTService } from '../../../driver/state/cdl.service';
@@ -26,7 +26,7 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
     @Input() editData: any;
 
-    public cdlForm: FormGroup;
+    public cdlForm: UntypedFormGroup;
 
     public modalName: string = null;
 
@@ -53,7 +53,7 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
     public disableCardAnimation: boolean = false;
 
     constructor(
-        private formBuilder: FormBuilder,
+        private formBuilder: UntypedFormBuilder,
         private driverService: DriverTService,
         private cdlService: CdlTService,
         private inputService: TaInputService,

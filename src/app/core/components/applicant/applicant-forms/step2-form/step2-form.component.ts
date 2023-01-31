@@ -15,7 +15,7 @@ import {
     ViewChildren,
     ViewEncapsulation,
 } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators, UntypedFormArray } from '@angular/forms';
 
 import {
     Subscription,
@@ -109,7 +109,7 @@ export class Step2FormComponent
 
     public subscription: Subscription;
 
-    public workExperienceForm: FormGroup;
+    public workExperienceForm: UntypedFormGroup;
 
     public isWorkExperienceEdited: boolean;
 
@@ -261,7 +261,7 @@ export class Step2FormComponent
     public isCardReviewedIncorrect: boolean = false;
 
     constructor(
-        private formBuilder: FormBuilder,
+        private formBuilder: UntypedFormBuilder,
         private inputService: TaInputService,
         private formService: FormService,
         private applicantQuery: ApplicantQuery,
@@ -388,8 +388,8 @@ export class Step2FormComponent
         }
     }
 
-    public get classesOfEquipment(): FormArray {
-        return this.workExperienceForm?.get('classesOfEquipment') as FormArray;
+    public get classesOfEquipment(): UntypedFormArray {
+        return this.workExperienceForm?.get('classesOfEquipment') as UntypedFormArray;
     }
 
     public trackByIdentity = (_: number, item: any): any => item;
@@ -628,7 +628,7 @@ export class Step2FormComponent
         }
     }
 
-    private createClassOfEquipment(): FormGroup {
+    private createClassOfEquipment(): UntypedFormGroup {
         this.displaySwitchCfrPartRequiredStateArray = [
             ...this.displaySwitchCfrPartRequiredStateArray,
             false,
@@ -651,7 +651,7 @@ export class Step2FormComponent
         if (this.classesOfEquipment.invalid) {
             this.classesOfEquipment.controls.forEach((_, index) => {
                 this.inputService.markInvalid(
-                    this.classesOfEquipment.at(index) as FormGroup
+                    this.classesOfEquipment.at(index) as UntypedFormGroup
                 );
 
                 if (this.classesOfEquipment.at(index).get('cfrPart').invalid) {
