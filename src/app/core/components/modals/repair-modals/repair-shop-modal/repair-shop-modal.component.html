@@ -1,10 +1,13 @@
 <app-ta-modal
     (action)="onModalAction($event)"
     [editData]="editData"
-    [editName]="editData?.data?.name"
+    [editName]="repairShopName"
+    [specificCaseModalName]="editData?.type !== 'edit' && repairShopName"
     [isModalValid]="repairShopForm.valid && isFormDirty"
     [modalTitle]="
-        editData?.type !== 'edit' ? 'Add Repair Shop' : 'Edit Repair Shop'
+        editData?.type !== 'edit' && !(editData?.canOpenModal && editData?.id)
+            ? 'Add Repair Shop'
+            : 'Edit Repair Shop'
     "
     [saveAndAddNew]="editData?.type !== 'edit'"
 >
@@ -38,7 +41,12 @@
                                     label: 'Shop Name',
                                     isRequired: true,
                                     textTransform: 'uppercase',
-                                    autoFocus: editData?.type !== 'edit',
+                                    autoFocus:
+                                        editData?.type !== 'edit' &&
+                                        !(
+                                            editData?.canOpenModal &&
+                                            editData?.id
+                                        ),
                                     minLength: 2,
                                     maxLength: 64
                                 }"
