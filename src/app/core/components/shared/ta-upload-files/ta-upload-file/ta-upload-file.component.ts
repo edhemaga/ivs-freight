@@ -104,6 +104,7 @@ export class TaUploadFileComponent implements OnInit, OnDestroy {
             });
 
         if (!this.file.realFile) {
+            console.log(this.file, 'file')
             let setName = '';
             const name = this.file.fileName.split('');
             name.map((item, i) => {
@@ -111,7 +112,7 @@ export class TaUploadFileComponent implements OnInit, OnDestroy {
                     setName = setName + item;
                 }
             });
-            this.file.fileName = setName;
+            //this.file.fileName = setName;
         }
 
         if (this.isReview) {
