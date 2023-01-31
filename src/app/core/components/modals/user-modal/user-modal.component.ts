@@ -11,7 +11,7 @@ import {
     routingBankValidation,
     salaryValidation,
 } from '../../shared/ta-input/ta-input.regex-validations';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import {
     Component,
     Input,
@@ -63,7 +63,7 @@ import { CheckUserByEmailResponse } from '../../../../../../appcoretruckassist/m
 })
 export class UserModalComponent implements OnInit, OnDestroy {
     @Input() editData: any;
-    public userForm: FormGroup;
+    public userForm: UntypedFormGroup;
     public selectedTab: number = 1;
     public tabs: any[] = [
         {
@@ -145,7 +145,7 @@ export class UserModalComponent implements OnInit, OnDestroy {
     public isUserReturned: boolean = false;
 
     constructor(
-        private formBuilder: FormBuilder,
+        private formBuilder: UntypedFormBuilder,
         private inputService: TaInputService,
         private modalService: ModalService,
         private companyUserService: UserTService,

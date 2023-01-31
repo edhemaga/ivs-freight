@@ -6,7 +6,7 @@ import {
 } from '../../../shared/ta-input/ta-input.regex-validations';
 import { Validators } from '@angular/forms';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import {
     AddressEntity,
     RepairShopModalResponse,
@@ -39,7 +39,7 @@ export class SettingsRepairshopModalComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
     @Input() editData: any;
 
-    public repairShopForm: FormGroup;
+    public repairShopForm: UntypedFormGroup;
 
     public selectedTab: number = 1;
     public tabs: any[] = [
@@ -80,7 +80,7 @@ export class SettingsRepairshopModalComponent implements OnInit, OnDestroy {
     public disableCardAnimation: boolean = false;
 
     constructor(
-        private formBuilder: FormBuilder,
+        private formBuilder: UntypedFormBuilder,
         private inputService: TaInputService,
         private modalService: ModalService,
         private repairService: RepairTService,

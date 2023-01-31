@@ -1,5 +1,5 @@
 import { Component, Input, OnInit, OnDestroy } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import {
     creditLimitValidation,
     descriptionPayrollBonusValidation,
@@ -28,7 +28,7 @@ import {
 export class PayrollBonusModalComponent implements OnInit, OnDestroy {
     @Input() editData: any;
 
-    public payrollBonusForm: FormGroup;
+    public payrollBonusForm: UntypedFormGroup;
 
     public labelsDriver: any[] = [];
     public selectedDriver: any = null;
@@ -40,7 +40,7 @@ export class PayrollBonusModalComponent implements OnInit, OnDestroy {
     public addNewAfterSave: boolean = false;
 
     constructor(
-        private formBuilder: FormBuilder,
+        private formBuilder: UntypedFormBuilder,
         private inputService: TaInputService,
         private modalService: ModalService,
         private payrollBonusService: PayrollBonusService,

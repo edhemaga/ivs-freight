@@ -9,7 +9,7 @@ import {
     Input,
     SimpleChanges,
 } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { UntypedFormControl } from '@angular/forms';
 import moment from 'moment';
 import { Subject, takeUntil } from 'rxjs';
 import { DropDownService } from 'src/app/core/services/details-page/drop-down.service';
@@ -75,10 +75,10 @@ export class DriverDetailsItemComponent
     private destroy$ = new Subject<void>();
     @ViewChild('autosize', { static: false }) autosize: CdkTextareaAutosize;
     @Input() drivers: any = null;
-    public cdlNote: FormControl = new FormControl();
-    public mvrNote: FormControl = new FormControl();
-    public testNote: FormControl = new FormControl();
-    public medNote: FormControl = new FormControl();
+    public cdlNote: UntypedFormControl = new UntypedFormControl();
+    public mvrNote: UntypedFormControl = new UntypedFormControl();
+    public testNote: UntypedFormControl = new UntypedFormControl();
+    public medNote: UntypedFormControl = new UntypedFormControl();
     public toggler: boolean[] = [];
     public showMoreEmployment: boolean = false;
     public dataDropDown: any;

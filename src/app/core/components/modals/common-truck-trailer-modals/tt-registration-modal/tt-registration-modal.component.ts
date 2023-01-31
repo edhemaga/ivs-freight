@@ -1,6 +1,6 @@
 import { Validators } from '@angular/forms';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 
 import {
     RegistrationModalResponse,
@@ -27,7 +27,7 @@ export class TtRegistrationModalComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
     @Input() editData: any;
 
-    public registrationForm: FormGroup;
+    public registrationForm: UntypedFormGroup;
 
     public documents: any[] = [];
     public fileModified: boolean = false;
@@ -43,7 +43,7 @@ export class TtRegistrationModalComponent implements OnInit, OnDestroy {
     public registrationExpirationDate: boolean = false;
 
     constructor(
-        private formBuilder: FormBuilder,
+        private formBuilder: UntypedFormBuilder,
         private commonTruckTrailerService: CommonTruckTrailerService,
         private inputService: TaInputService,
         private modalService: ModalService,

@@ -6,7 +6,7 @@ import {
     OnChanges,
     SimpleChanges,
 } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { UntypedFormControl } from '@angular/forms';
 import { LoadResponse } from 'appcoretruckassist';
 import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
 import { LoadMinimalListQuery } from '../state/load-details-state/load-minimal-list-state/load-details-minimal.query';
@@ -20,7 +20,7 @@ import { LoadMinimalListQuery } from '../state/load-details-state/load-minimal-l
 export class LoadCardViewComponent implements OnInit, OnChanges {
     @Input() load: LoadResponse | any;
     @Input() templateCard: boolean;
-    public loadNote: FormControl = new FormControl();
+    public loadNote: UntypedFormControl = new UntypedFormControl();
     public loadDropdowns: any[] = [];
     public loadList: any[] = this.lmquery.getAll();
     public currentLoadIndex: any;

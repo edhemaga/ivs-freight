@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { FormService } from 'src/app/core/services/form/form.service';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
@@ -17,7 +17,7 @@ import { NotificationService } from '../../../services/notification/notification
 export class MapRouteModalComponent implements OnInit, OnDestroy {
     @Input() editData: any;
 
-    public mapRouteForm: FormGroup;
+    public mapRouteForm: UntypedFormGroup;
     public isFormDirty: boolean = false;
 
     public routeTabs: { id: number; name: string; checked: boolean }[] = [
@@ -48,7 +48,7 @@ export class MapRouteModalComponent implements OnInit, OnDestroy {
     public addNewAfterSave: boolean = false;
 
     constructor(
-        private formBuilder: FormBuilder,
+        private formBuilder: UntypedFormBuilder,
         private formService: FormService,
         private modalService: ModalService,
         private inputService: TaInputService,

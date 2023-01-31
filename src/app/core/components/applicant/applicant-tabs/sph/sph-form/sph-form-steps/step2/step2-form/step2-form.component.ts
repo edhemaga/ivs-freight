@@ -12,7 +12,7 @@ import {
     ViewChild,
     OnChanges,
 } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 
 import {
     Subscription,
@@ -68,7 +68,7 @@ export class SphStep2FormComponent
 
     public subscription: Subscription;
 
-    public accidentForm: FormGroup;
+    public accidentForm: UntypedFormGroup;
 
     public accidentArray: SphFormAccidentModel[] = [];
 
@@ -96,7 +96,7 @@ export class SphStep2FormComponent
     ];
 
     constructor(
-        private formBuilder: FormBuilder,
+        private formBuilder: UntypedFormBuilder,
         private inputService: TaInputService,
         private formService: FormService
     ) {}

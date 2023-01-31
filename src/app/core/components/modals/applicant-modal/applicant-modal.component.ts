@@ -4,7 +4,7 @@ import {
     phoneFaxRegex,
 } from '../../shared/ta-input/ta-input.regex-validations';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { Subject, takeUntil } from 'rxjs';
@@ -23,7 +23,7 @@ export class ApplicantModalComponent implements OnInit, OnDestroy {
 
     @Input() editData: any;
 
-    public applicantForm: FormGroup;
+    public applicantForm: UntypedFormGroup;
 
     private addNewApplicant: boolean = false;
     public applicantFullName: string = null;
@@ -31,7 +31,7 @@ export class ApplicantModalComponent implements OnInit, OnDestroy {
     public isFormDirty: boolean = false;
 
     constructor(
-        private formBuilder: FormBuilder,
+        private formBuilder: UntypedFormBuilder,
         private inputService: TaInputService,
         private modalService: ModalService,
         private applicantService: ApplicantTService,

@@ -2,10 +2,9 @@ import {
     convertDateFromBackend,
     convertDateToBackend,
     convertNumberInThousandSep,
-    convertPriceInNumber,
 } from '../../../../utils/methods.calculations';
 import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormArray, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { RepairTService } from '../../../repair/state/repair.service';
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { RepairModalResponse, RepairShopResponse } from 'appcoretruckassist';
@@ -30,7 +29,7 @@ import { DetailsDataService } from '../../../../services/details-data/details-da
 import { PriceCalculationArraysPipe } from '../../../../pipes/price-calculation-arrays.pipe';
 import {
     convertThousanSepInNumber,
-    convertNumberInPrice,
+    convertNumberWithCurrencyFormatterToBackend,
 } from '../../../../utils/methods.calculations';
 import { EditTagsService } from 'src/app/core/services/shared/editTags.service';
 
@@ -44,7 +43,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
     @ViewChild('t2') public popoverRef: NgbPopover;
     @Input() editData: any;
     public disableCardAnimation: boolean = false;
-    public repairOrderForm: FormGroup;
+    public repairOrderForm: UntypedFormGroup;
     public selectedHeaderTab: number = 1;
     public headerTabs = [
         {
@@ -97,7 +96,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
 
     constructor(
-        private formBuilder: FormBuilder,
+        private formBuilder: UntypedFormBuilder,
         private inputService: TaInputService,
         private repairService: RepairTService,
         private modalService: ModalService,
@@ -108,8 +107,8 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
         private tagsService: EditTagsService
     ) {}
 
-    public get items(): FormArray {
-        return this.repairOrderForm.get('items') as FormArray;
+    public get items(): UntypedFormArray {
+        return this.repairOrderForm.get('items') as UntypedFormArray;
     }
 
     ngOnInit() {
@@ -667,7 +666,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
         subtotal?: any;
         pmTruckId?: any;
         pmTrailerId?: any;
-    }): FormGroup {
+    }): UntypedFormGroup {
         return this.formBuilder.group({
             id: [data.id],
             orderingId: [data.orderingId],
@@ -833,7 +832,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                 invoice: invoice,
                 total:
                     this.repairOrderForm.get('repairType').value === 'Bill'
-                        ? convertNumberInPrice(
+                        ? convertNumberWithCurrencyFormatterToBackend(
                               this.priceArrayPipe.transform(this.subtotal)
                           )
                         : null,
@@ -1270,18 +1269,14 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                                     id: res.items[i].id,
                                     orderingId: ++this.itemsCounter,
                                     description: res.items[i].description,
-                                    price: res.items[i].price
-                                        ? convertNumberInPrice(
-                                              res.items[i].price
-                                          )
-                                        : null,
+                                    price: res.items[i].price,
                                     quantity: res.items[i].price
                                         ? res.items[i].quantity
                                             ? res.items[i].quantity
                                             : 1
                                         : res.items[i].quantity,
                                     subtotal: res.items[i].subtotal
-                                        ? convertNumberInPrice(
+                                        ? convertNumberWithCurrencyFormatterToBackend(
                                               res.items[i].subtotal
                                           )
                                         : null,
@@ -1348,14 +1343,14 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                 price:
                     this.selectedHeaderTab === 2
                         ? item.get('price').value
-                            ? convertPriceInNumber(item.get('price').value)
-                            : null
                         : null,
                 quantity: item.get('quantity').value,
                 subtotal:
                     this.selectedHeaderTab === 2
                         ? this.subtotal[index].value
-                            ? convertNumberInPrice(this.subtotal[index].value)
+                            ? convertNumberWithCurrencyFormatterToBackend(
+                                  this.subtotal[index].value
+                              )
                             : null
                         : null,
                 pmTruckId:
@@ -1390,6 +1385,33 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                     },
                 });
         }
+    }
+
+    public openRepairShop(repairShop: any) {
+        this.ngbActiveModal.close();
+        this.modalService.setProjectionModal({
+            action: 'open',
+            payload: {
+                key: 'repair-modal',
+                value: {
+                    ...this.repairOrderForm.value,
+                    selectedUnit: this.selectedUnit,
+                    services: this.services,
+                    selectedRepairShop: this.selectedRepairShop,
+                    headerTabs: this.headerTabs,
+                    selectedHeaderTab: this.selectedHeaderTab,
+                    typeOfRepair: this.typeOfRepair,
+                    items_array: this.items.value,
+                    subtotal: this.subtotal,
+                    selectedPM: this.selectedPM,
+                    selectedPMIndex: this.selectedPMIndex,
+                },
+                id: this.selectedRepairShop.id,
+            },
+            component: RepairShopModalComponent,
+            size: 'small',
+            type: this.repairOrderForm.get('unitType').value,
+        });
     }
 
     updateTags() {

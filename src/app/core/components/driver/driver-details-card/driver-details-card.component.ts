@@ -13,7 +13,7 @@ import {
     ViewChild,
     ViewEncapsulation,
 } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { UntypedFormControl } from '@angular/forms';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { DriverCdlModalComponent } from '../../modals/driver-modal/driver-cdl-modal/driver-cdl-modal.component';
 import { DriverDrugAlcoholModalComponent } from '../../modals/driver-modal/driver-drugAlcohol-modal/driver-drugAlcohol-modal.component';
@@ -51,11 +51,11 @@ export class DriverDetailsCardComponent
     @ViewChild('revenueChart', { static: false }) public revenueChart: any;
     @Input() driver: any;
     @Input() templateCard: boolean;
-    public note: FormControl = new FormControl();
-    public cdlNote: FormControl = new FormControl();
-    public testNote: FormControl = new FormControl();
-    public medicalNote: FormControl = new FormControl();
-    public mvrNote: FormControl = new FormControl();
+    public note: UntypedFormControl = new UntypedFormControl();
+    public cdlNote: UntypedFormControl = new UntypedFormControl();
+    public testNote: UntypedFormControl = new UntypedFormControl();
+    public medicalNote: UntypedFormControl = new UntypedFormControl();
+    public mvrNote: UntypedFormControl = new UntypedFormControl();
     public isAccountVisibleDriver: boolean = false;
     public toggler: boolean[] = [];
     public dataTest: any;

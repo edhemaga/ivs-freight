@@ -8,7 +8,7 @@ import {
     OnDestroy,
     ViewChild,
 } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { UntypedFormControl } from '@angular/forms';
 import { RepairShopResponse } from 'appcoretruckassist';
 import { map, Subject, takeUntil } from 'rxjs';
 import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
@@ -30,7 +30,7 @@ export class ShopRepairCardViewComponent
     public reparExpensesChart: any;
     @Input() repairShopCardViewData: RepairShopResponse;
     @Input() templateCard: boolean;
-    public noteControl: FormControl = new FormControl();
+    public noteControl: UntypedFormControl = new UntypedFormControl();
     public count: number;
     public tabs: any;
     public shopsDropdowns: any[] = [];

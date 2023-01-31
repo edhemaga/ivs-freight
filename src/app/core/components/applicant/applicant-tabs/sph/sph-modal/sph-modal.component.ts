@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 
 import { Subject, takeUntil } from 'rxjs';
 
@@ -33,9 +33,9 @@ import {
 export class SphModalComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
 
-    public prospectiveEmployerForm: FormGroup;
-    public accidentHistoryForm: FormGroup;
-    public drugAndAlcoholTestingHistoryForm: FormGroup;
+    public prospectiveEmployerForm: UntypedFormGroup;
+    public accidentHistoryForm: UntypedFormGroup;
+    public drugAndAlcoholTestingHistoryForm: UntypedFormGroup;
 
     public vehicleType: TruckTypeResponse[] = [];
     public trailerType: TrailerTypeResponse[] = [];
@@ -264,7 +264,7 @@ export class SphModalComponent implements OnInit, OnDestroy {
     ];
 
     constructor(
-        private formBuilder: FormBuilder,
+        private formBuilder: UntypedFormBuilder,
         private applicantQuery: ApplicantQuery
     ) {}
 

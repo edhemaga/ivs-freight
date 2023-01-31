@@ -7,18 +7,30 @@ ngb-modal-window[aria-hidden='true'] {
 .modal {
     z-index: 1000;
 
-    &.fade .modal-dialog {
-        -webkit-animation-name: fade-in-scale-animation 0.5s;
-        animation-name: fade-in-scale-animation 0.5s;
+    // &.fade .modal-dialog {
+    //     -webkit-animation-name: fade-in-scale-animation 0.5s;
+    //     animation-name: fade-in-scale-animation 0.5s;
+    // }
+
+    // &.show .modal-dialog {
+    //     opacity: 0;
+    //     transform: scale(0.6) !important;
+    //     transition: all 0.3s ease-out !important;
+    // }
+
+    // &.modal-animation .modal-dialog {
+    //     opacity: 1;
+    //     transform: scale(1) !important;
+    // }
+
+
+    .modal-dialog{
+        opacity: 0;
+        transform: scale(0.6) !important;
+        transition: all 0.4s ease-out !important;
     }
 
     &.show .modal-dialog {
-        opacity: 0;
-        transform: scale(0.6) !important;
-        transition: all 0.3s ease-out !important;
-    }
-
-    &.modal-animation .modal-dialog {
         opacity: 1;
         transform: scale(1) !important;
     }
@@ -610,7 +622,7 @@ body.modal-open {
     }
 
     .modal-backdrop {
-        &.fade {
+        &.show:not(.fade) {
             transition: background-color 2s ease-out !important;
             opacity: 1 !important;
             background-color: rgba(0, 0, 0, 0.6);

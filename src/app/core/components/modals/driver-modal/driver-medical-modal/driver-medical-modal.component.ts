@@ -1,5 +1,5 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { DriverListResponse, MedicalResponse } from 'appcoretruckassist';
 import { Subject, takeUntil } from 'rxjs';
 import { DriverTService } from '../../../driver/state/driver.service';
@@ -22,7 +22,7 @@ export class DriverMedicalModalComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
     @Input() editData: any;
 
-    public medicalForm: FormGroup;
+    public medicalForm: UntypedFormGroup;
 
     public isFormDirty: boolean;
 
@@ -38,7 +38,7 @@ export class DriverMedicalModalComponent implements OnInit, OnDestroy {
     public disableCardAnimation: boolean = false;
 
     constructor(
-        private formBuilder: FormBuilder,
+        private formBuilder: UntypedFormBuilder,
         private driverService: DriverTService,
         private inputService: TaInputService,
         private medicalService: MedicalTService,

@@ -16,7 +16,7 @@ import {
 } from '@angular/cdk/drag-drop';
 import * as AppConst from '../../../../const';
 import { MapsService } from '../../../services/shared/maps.service';
-import { FormBuilder, FormGroup, FormArray } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, UntypedFormArray } from '@angular/forms';
 import { AddressEntity } from 'appcoretruckassist';
 import { addressValidation } from '../../shared/ta-input/ta-input.regex-validations';
 import { imageMapType } from 'src/assets/utils/methods-global';
@@ -207,12 +207,12 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
     public mapLongitude: number = -87.660156;
     public mapZoom: number = 1;
 
-    public addressForm: FormGroup;
+    public addressForm: UntypedFormGroup;
     public addressFlag: string = 'Empty';
 
     public selectedAddress: AddressEntity = null;
 
-    addressInputs: FormArray = this.formBuilder.array([]);
+    addressInputs: UntypedFormArray = this.formBuilder.array([]);
 
     public markerOptions = {
         origin: {
@@ -566,11 +566,11 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
 
     routePolylines: any = {};
     
-    editStopForm!: FormGroup;
+    editStopForm!: UntypedFormGroup;
 
     constructor(
         private mapsService: MapsService,
-        private formBuilder: FormBuilder,
+        private formBuilder: UntypedFormBuilder,
         private ref: ChangeDetectorRef,
         private modalService: ModalService,
         private confirmationService: ConfirmationService,

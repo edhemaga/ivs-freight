@@ -10,7 +10,7 @@ import {
     OnChanges,
     SimpleChanges,
 } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { MapsAPILoader } from '@agm/core';
 import * as AppConst from 'src/app/const';
 import { MapsService } from '../../../services/shared/maps.service';
@@ -86,8 +86,8 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
         strictBounds: true,
     };
 
-    public searchForm!: FormGroup;
-    public locationForm!: FormGroup;
+    public searchForm!: UntypedFormGroup;
+    public locationForm!: UntypedFormGroup;
     public sortTypes: any[] = [];
     public sortDirection: string = 'asc';
     public activeSortType: any = {};
@@ -140,7 +140,7 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
 
     constructor(
         private ref: ChangeDetectorRef,
-        private formBuilder: FormBuilder,
+        private formBuilder: UntypedFormBuilder,
         private mapsAPILoader: MapsAPILoader,
         private mapsService: MapsService,
         private repairShopService: RepairTService,
@@ -522,6 +522,7 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
                                     );
 
                                 if (clusterIndex == -1) {
+                                    console.log("CHASTERS ARE ADDDING IT");
                                     this.clusterMarkers.push(clusterItem);
                                 }
 
@@ -1346,6 +1347,10 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
                     }
                 },
             });
+    }
+
+    public identity(index: number, item: any): number {
+        return item.id;
     }
 
     ngOnDestroy(): void {
