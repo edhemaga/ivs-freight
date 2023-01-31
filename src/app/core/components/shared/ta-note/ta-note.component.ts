@@ -1,6 +1,7 @@
 import {
     ChangeDetectorRef,
     Component,
+    ElementRef,
     EventEmitter,
     Input,
     OnDestroy,
@@ -45,10 +46,18 @@ export class TaNoteComponent implements OnInit, OnDestroy {
     @Input() openAllNotesText: any;
     @Input() parking: any = false;
     @Input() dispatchIndex: number = -1;
-    @Input() noteWidth: number = 250;
     @Input() type: string;
+    @Input() parentWidth: string;
     @ViewChild('main_editor', { static: false }) public main_editor: any;
     @ViewChild('note_popover', { static: false }) note_popover: any;
+
+    _noteWidth: number = 250;
+    _parentWidth: number = 250;
+
+    @Input() set noteWidth(value) {
+        this._noteWidth = value;
+    }
+
     tooltip: any;
     showCollorPattern: boolean;
     buttonsExpanded = false;
@@ -85,7 +94,8 @@ export class TaNoteComponent implements OnInit, OnDestroy {
         private sharedService: SharedService,
         private ref: ChangeDetectorRef,
         private noteService: NoteUpdateService,
-        private DetailsDataService: DetailsDataService
+        private DetailsDataService: DetailsDataService,
+        private elRef: ElementRef
     ) {}
 
     ngOnInit(): void {
@@ -94,8 +104,22 @@ export class TaNoteComponent implements OnInit, OnDestroy {
 
     ngAfterViewInit(): void {
         this.value = this.note;
+        this.setNoteParentWidth();
 
         this.correctEntityType();
+    }
+
+    setNoteParentWidth() {
+        if (this.parentWidth) {
+            setTimeout(() => {
+                const parentWidth = this.elRef.nativeElement
+                .closest(this.parentWidth)
+                .getBoundingClientRect();
+                this._parentWidth = parentWidth.width;
+                this.ref.detectChanges();
+
+            }, 1000);
+        }
     }
 
     checkFocus(e) {

@@ -87,30 +87,6 @@ export class TruckassistTableBodyComponent
     statusDropdownData: any;
     showInspectinDescriptionEdit: boolean;
     editInspectinDescriptionText: string = '';
-    // tableTypes = [
-    //     { configType: 'LOAD_TEMPLATE', id: 1 },
-    //     { configType: 'LOAD_CLOSED', id: 2 },
-    //     { configType: 'LOAD_REGULAR', id: 3 },
-    //     { configType: 'BROKER', id: 4 },
-    //     { configType: 'SHIPPER', id: 5 },
-    //     { configType: 'DRIVER', id: 6 },
-    //     { configType: 'APPLICANT', id: 7 },
-    //     { configType: 'TRUCK', id: 8 },
-    //     { configType: 'TRAILER', id: 9 },
-    //     { configType: 'REPAIR_TRUCK', id: 10 },
-    //     { configType: 'REPAIR_TRAILER', id: 11 },
-    //     { configType: 'REPAIR_SHOP', id: 12 },
-    //     { configType: 'PM_TRUCK', id: 13 },
-    //     { configType: 'PM_TRAILER', id: 14 },
-    //     { configType: 'FUEL_TRANSACTION', id: 15 },
-    //     { configType: 'FUEL_STOP', id: 16 },
-    //     { configType: 'OWNER', id: 17 },
-    //     { configType: 'ACCOUNT', id: 18 },
-    //     { configType: 'CONTACT', id: 19 },
-    //     { configType: 'ROADSIDE_INSPECTION', id: 20 },
-    //     { configType: 'ACCIDENT', id: 21 },
-    //     { configType: 'USER', id: 22 },
-    // ];
 
     constructor(
         private router: Router,
@@ -377,6 +353,7 @@ export class TruckassistTableBodyComponent
     goToDetails(route: any, row: any) {
         const link =
             route.link.routerLinkStart + row['id'] + route.link.routerLinkEnd;
+
         this.detailsDataService.setNewData(row);
         this.router.navigate([link]);
     }
@@ -509,8 +486,26 @@ export class TruckassistTableBodyComponent
         this.activeDescriptionDropdown = popup.isOpen() ? row.id : -1;
     }
 
-    /* Dropdown Actions */
+    // Dropdown Actions
     onDropAction(action: any) {
+        // To Unselect All Selected Rows
+        if (action.name === 'activate-item') {
+            this.mySelection = [];
+
+            this.tableService.sendRowsSelected(this.mySelection);
+
+            const viewData = this.viewData;
+
+            console.log(this.viewData);
+
+            viewData.map((v) => {
+                v.isSelected = false;
+            });
+
+            this.viewData = [...viewData];
+        }
+
+        // Send Drop Action
         this.bodyActions.emit({
             id: this.dropDownActive,
             data: this.rowData,
@@ -532,7 +527,8 @@ export class TruckassistTableBodyComponent
             this.filesService.getFiles(entity, row.id).subscribe((res) => {
                 this.activeAttachment = row.id;
                 row.tableAttachments = res;
-                if(res?.length == 1) {
+
+                if (res?.length == 1) {
                     if (popup.isOpen()) {
                         popup.close();
                     } else {

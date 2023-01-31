@@ -37,6 +37,7 @@
                                         name: 'datepicker',
                                         type: 'text',
                                         label: 'Issue date',
+                                        isDropdown: true,
                                         placeholderIcon: 'date',
                                         isRequired: true,
                                         customClass: 'datetimeclass',
@@ -60,6 +61,7 @@
                                         name: 'datepicker',
                                         type: 'text',
                                         label: 'Exp. date',
+                                        isDropdown: true,
                                         placeholderIcon: 'date',
                                         isRequired: true,
                                         customClass: 'datetimeclass',
@@ -149,7 +151,7 @@
                                 [showDropzone]="
                                     selectedMode === 'APPLICANT_MODE'
                                 "
-                                [isRequired]="true"
+                                [isRequired]="!documents.length"
                                 [showRequired]="displayDocumentsRequiredNote"
                                 [isReview]="selectedMode === 'REVIEW_MODE'"
                                 [reviewMode]="

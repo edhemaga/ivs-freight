@@ -187,6 +187,7 @@
                     }} {{ inputConfig.customClass }}"
                 >
                     <svg-icon
+                        *ngIf="!option?.isDriver"
                         [ngClass]="{
                             active: option.id === activeItem?.id,
                             'no-svg': !option?.logoName,
@@ -204,6 +205,31 @@
                             option.name.trim().replace(' ', '').toLowerCase()
                         }}"
                     ></svg-icon>
+                    <img
+                        *ngIf="option.logoName && option?.isDriver"
+                        [alt]="option.name"
+                        [ngClass]="{
+                            active: option.id === activeItem?.id
+                        }"
+                        [src]="
+                            this.imageBase64Service.sanitizer(option.logoName)
+                        "
+                        [ngStyle]="{ 'margin-right': '6px' }"
+                        class="svg-template-logo"
+                    />
+                    <div
+                        *ngIf="!option.logoName && option?.isDriver"
+                        class="no-profile-image"
+                        [ngStyle]="{ 'margin-right': '6px' }"
+                    >
+                        <app-profile-images
+                            [indx]="0"
+                            [name]="option.name"
+                            [size]="'small'"
+                            [type]="'user'"
+                        >
+                        </app-profile-images>
+                    </div>
                     <!-- Text -->
                     <div
                         [innerHtml]="
@@ -581,16 +607,28 @@
                         *ngIf="options[0].name !== 'No Results'"
                         class="load-dispatches-container  {{
                             option?.truck?.subFolder
-                        }} {{
-                            option?.truck?.logoType
-                                ? option?.truck?.logoType
-                                      .trim()
-                                      .replace(' ', '')
-                                      .toLowerCase()
-                                : null
                         }}"
+                        [ngClass]="{
+                            'dispatch-semi-truck':
+                                option?.truck?.truckType?.id === 1,
+                            'dispatch-semi-sleeper':
+                                option?.truck?.truckType?.id === 2,
+                            'dispatch-box-truck':
+                                option?.truck?.truckType?.id === 3,
+                            'dispatch-cargo-van':
+                                option?.truck?.truckType?.id === 4,
+                            'dispatch-tow-truck':
+                                option?.truck?.truckType?.id === 5,
+                            'dispatch-car-hauler':
+                                option?.truck?.truckType?.id === 6,
+                            'dispatch-spotter':
+                                option?.truck?.truckType?.id === 7
+                        }"
                     >
-                        <svg-icon [src]="option.truck?.logoName"></svg-icon>
+                        <svg-icon
+                            class="load-dispatches-svg"
+                            [src]="option.truck?.logoName"
+                        ></svg-icon>
                         <div
                             [innerHtml]="
                                 option?.truck?.name
@@ -620,16 +658,7 @@
                     <!-- Trailer -->
                     <div
                         *ngIf="options[0].name !== 'No Results'"
-                        class="load-dispatches-container {{
-                            option?.trailer?.subFolder
-                        }} {{
-                            option?.trailer?.logoType
-                                ? option?.trailer?.logoType
-                                      .trim()
-                                      .replace(' ', '')
-                                      .toLowerCase()
-                                : null
-                        }}"
+                        class="load-dispatches-container"
                         [ngClass]="{
                             trailerContainer: option?.trailer?.logoType
                                 ? option?.trailer?.logoType
@@ -643,7 +672,10 @@
                                 : false
                         }"
                     >
-                        <svg-icon [src]="option?.trailer?.logoName"></svg-icon>
+                        <svg-icon
+                            class="load-dispatches-svg"
+                            [src]="option?.trailer?.logoName"
+                        ></svg-icon>
                         <div
                             [innerHtml]="
                                 option?.trailer?.name
@@ -671,10 +703,6 @@
                                 active:
                                     option.driver?.id === activeItem?.driver?.id
                             }"
-                            [ngStyle]="{
-                                position: 'relative',
-                                bottom: '1px'
-                            }"
                             [src]="
                                 this.imageBase64Service.sanitizer(
                                     option?.driver?.logoName
@@ -684,10 +712,6 @@
                         />
                         <div
                             *ngIf="!option.driver?.logoName"
-                            [ngStyle]="{
-                                position: 'relative',
-                                bottom: '1px'
-                            }"
                             class="no-profile-image"
                         >
                             <app-profile-images
@@ -1136,7 +1160,6 @@
                             options.length === 1 &&
                             options[0].name === 'No Results',
                         'add-new': option.name === 'ADD NEW',
-                        active: option.id === activeItem?.id,
                         'all-assigned':
                             option.name.toLowerCase() === 'all assigned'
                     }"
@@ -1171,6 +1194,9 @@
                                       ]
                         "
                         class="svgtext-template-text additional-text"
+                        [ngClass]="{
+                            active: option.id === activeItem?.id
+                        }"
                     ></div>
                 </div>
             </div>

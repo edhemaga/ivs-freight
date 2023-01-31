@@ -212,7 +212,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                 // On Add Repair
                 if (res.animation === 'add' && this.selectedTab === res.tab) {
                     this.viewData.push(
-                        res.tab === 'active' || res.tab === 'inctive'
+                        res.tab !== 'repair-shop'
                             ? this.mapTruckAndTrailerData(res.data)
                             : this.mapShopData(res.data)
                     );
@@ -240,7 +240,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                     this.selectedTab === res.tab
                 ) {
                     const updatedRepair =
-                        res.tab === 'active' || res.tab === 'inctive'
+                        res.tab !== 'repair-shop'
                             ? this.mapTruckAndTrailerData(res.data)
                             : this.mapShopData(res.data);
 
@@ -371,6 +371,8 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
     sendRepairData() {
         this.initTableOptions();
 
+        this.checkActiveViewMode();
+
         const repairTruckTrailerCount = JSON.parse(
             localStorage.getItem('repairTruckTrailerTableCount')
         );
@@ -431,6 +433,32 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
         this.setRepairData(td);
     }
 
+    // Check If Selected Tab Has Active View Mode
+    checkActiveViewMode() {
+        if (this.activeViewMode === 'Map') {
+            let hasMapView = false;
+
+            let viewModeOptions =
+                this.tableOptions.toolbarActions.viewModeOptions;
+
+            viewModeOptions.map((viewMode: any) => {
+                if (viewMode.name === 'Map') {
+                    hasMapView = true;
+                }
+            });
+
+            if (!hasMapView) {
+                this.activeViewMode = 'List';
+
+                viewModeOptions = this.getViewModeOptions();
+            }
+
+            this.tableOptions.toolbarActions.viewModeOptions = [
+                ...viewModeOptions,
+            ];
+        }
+    }
+
     // Get Tab Data From Store Or Via Api
     getTabData(dataType: string) {
         if (dataType === 'active') {
@@ -439,6 +467,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
             return this.repairTrucks?.length ? this.repairTrucks : [];
         } else if (dataType === 'inactive') {
             this.repairTrailers = this.repairTrailerQuery.getAll();
+            
             return this.repairTrailers?.length ? this.repairTrailers : [];
         } else if (dataType === 'repair-shop') {
             this.repairShops = this.shopQuery.getAll();
@@ -486,6 +515,9 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
         } else {
             this.viewData = [];
         }
+
+        console.log('Repair Data');
+        console.log(this.viewData);
     }
 
     // Map Truck And Trailer Data
@@ -499,10 +531,10 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                 : data?.trailer?.trailerNumber
                 ? data.trailer.trailerNumber
                 : '',
-            tableType: 'Nema podatak sa beka',
-            tableMake: 'Nema podatak sa beka',
-            tableModel: 'Nema podatak sa beka',
-            tableYear: 'Nema podatak sa beka',
+            tableType: 'NA',
+            tableMake: 'NA',
+            tableModel: 'NA',
+            tableYear: 'NA',
             tableOdometer: data.odometer
                 ? this.thousandSeparator.transform(data.odometer)
                 : '',
@@ -566,7 +598,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
             tableBankDetailsBankName: data?.bank?.name ? data.bank.name : '',
             tableBankDetailsRouting: data?.routing ? data.routing : '',
             tableBankDetailsAccount: data?.account ? data.account : '',
-            tableRepairCountBill: 'Nema podatak sa beka',
+            tableRepairCountBill: 'NA',
             tableRepairCountOrder: data?.order
                 ? this.thousandSeparator.transform(data.order)
                 : '',
@@ -1024,7 +1056,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
         if (listChanged || mapListResponse.changedSort) {
             if (mapListResponse.changedSort)
                 this.mapListData = mapListResponse.pagination.data;
-            this.tableData[2].length = mapListResponse.pagination.count;
+            //this.tableData[2].length = mapListResponse.pagination.count;
             this.ref.detectChanges();
         }
     }

@@ -663,11 +663,7 @@
 
     <!-- Multiple Input Values -->
     <div
-        *ngIf="
-            inputConfig?.multipleInputValues?.options?.length &&
-            getSuperControl.value &&
-            !focusInput
-        "
+        *ngIf="inputConfig?.multipleInputValues?.options?.length && !focusInput"
         class="input-control {{
             inputConfig?.multipleInputValues?.customClass
         }}"
@@ -677,7 +673,8 @@
             style="display: flex; gap: 6px; align-items: center"
             *ngFor="
                 let item of inputConfig.multipleInputValues.options;
-                let indx = index
+                let indx = index;
+                trackBy: trackIdentity
             "
         >
             <!-- Image / SVG -->
@@ -707,15 +704,15 @@
 
             <svg-icon
                 *ngIf="item?.logoName && item?.isSvg"
-                class="{{ item?.subFolder }} {{
-                    item?.logoType.trim().replace(' ', '').toLowerCase()
-                }}"
+                class="{{ item?.subFolder }}"
                 [ngClass]="{
-                    trailerContainer:
-                        item?.logoType.trim().replace(' ', '') === 'Container',
-                    lowboyrgn:
-                        item?.logoType.trim().replace(' ', '') ===
-                        'Low Boy / RGN'
+                    'dispatch-semi-truck': item.id === 1,
+                    'dispatch-semi-sleeper': item.id === 2,
+                    'dispatch-box-truck': item.id === 3,
+                    'dispatch-cargo-van': item.id === 4,
+                    'dispatch-tow-truck': item.id === 5,
+                    'dispatch-car-hauler': item.id === 6,
+                    'dispatch-spotter': item.id === 7
                 }"
                 [src]="item?.logoName"
             ></svg-icon>
@@ -727,7 +724,10 @@
                 [ngStyle]="{
                     color: '#2F2F2F'
                 }"
-                [ngClass]="{ counter: item?.isCounter }"
+                [ngClass]="{
+                    counter: item?.isCounter,
+                    'counter-one': item?.value === 1
+                }"
             >
                 {{ item.value }}
                 <span
@@ -772,7 +772,8 @@
             style="display: flex; gap: 6px; align-items: center"
             *ngFor="
                 let item of inputConfig.multipleInputValues.options;
-                let indx = index
+                let indx = index;
+                trackBy: trackIdentity
             "
         >
             <!-- Image / SVG -->
@@ -819,7 +820,8 @@
                 [ngClass]="{
                     'focusable-text': focusInput,
                     counter: item?.isCounter,
-                    'counter-focus': item?.isCounter && focusInput
+                    'counter-focus': item?.isCounter && focusInput,
+                    'counter-one': item?.value === 1
                 }"
                 [ngStyle]="{
                     color: '#6F9EE0'
@@ -984,7 +986,10 @@
                 inputConfig?.dropdownImageInput?.template === 'color',
             'dropdown-input-image-user':
                 inputConfig?.dropdownImageInput?.withText &&
-                inputConfig?.dropdownImageInput?.template === 'user',
+                inputConfig?.dropdownImageInput?.template === 'user' &&
+                (inputConfig.selectedDropdown ||
+                    (inputConfig.placeholder && focusInput) ||
+                    getSuperControl.value),
             'dropdown-input-image-without-text-transparent':
                 inputConfig?.dropdownImageInput &&
                 !inputConfig?.dropdownImageInput?.withText &&

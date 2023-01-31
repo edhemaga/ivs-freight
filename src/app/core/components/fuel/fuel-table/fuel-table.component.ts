@@ -357,24 +357,10 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
               ];
     }
 
-    getGridColumns(configType: string) {
-        const tableColumnsConfig = JSON.parse(
-            localStorage.getItem(`table-${configType}-Configuration`)
-        );
-
-        if (configType === 'FUEL_TRANSACTION') {
-            return tableColumnsConfig
-                ? tableColumnsConfig
-                : getFuelTransactionColumnDefinition();
-        } else {
-            return tableColumnsConfig
-                ? tableColumnsConfig
-                : getFuelStopColumnDefinition();
-        }
-    }
-
     sendFuelData() {
         this.initTableOptions();
+
+        this.checkActiveViewMode();
 
         const fuelCount = JSON.parse(localStorage.getItem('fuelTableCount'));
 
@@ -406,6 +392,45 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
         const td = this.tableData.find((t) => t.field === this.selectedTab);
 
         this.setFuelData(td);
+    }
+
+    // Check If Selected Tab Has Active View Mode
+    checkActiveViewMode(){
+        if(this.activeViewMode === 'Map'){
+            let hasMapView = false;
+
+            let viewModeOptions = this.tableOptions.toolbarActions.viewModeOptions;
+
+            viewModeOptions.map((viewMode: any) => {
+                if (viewMode.name === 'Map') {
+                    hasMapView = true;
+                }
+            });
+
+            if(!hasMapView){
+                this.activeViewMode = 'List';
+
+                viewModeOptions = this.getViewModeOptions();
+            }
+
+            this.tableOptions.toolbarActions.viewModeOptions = [...viewModeOptions];
+        }
+    }
+
+    getGridColumns(configType: string) {
+        const tableColumnsConfig = JSON.parse(
+            localStorage.getItem(`table-${configType}-Configuration`)
+        );
+
+        if (configType === 'FUEL_TRANSACTION') {
+            return tableColumnsConfig
+                ? tableColumnsConfig
+                : getFuelTransactionColumnDefinition();
+        } else {
+            return tableColumnsConfig
+                ? tableColumnsConfig
+                : getFuelStopColumnDefinition();
+        }
     }
 
     getTabData() {
@@ -650,7 +675,7 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
         if (listChanged || mapListResponse.changedSort) {
             if (mapListResponse.changedSort)
                 this.mapListData = mapListResponse.pagination.data;
-            this.tableData[1].length = mapListResponse.pagination.count;
+            //this.tableData[1].length = mapListResponse.pagination.count;
             this.ref.detectChanges();
         }
     }

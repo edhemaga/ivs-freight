@@ -307,7 +307,7 @@ export class CustomerTableComponent
                     contentType: 'edit',
                     show: true,
                     svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
-                    iconName: 'edit'
+                    iconName: 'edit',
                 },
                 {
                     title: 'Delete',
@@ -323,7 +323,7 @@ export class CustomerTableComponent
                     danger: true,
                     svg: 'assets/svg/truckassist-table/dropdown/content/delete.svg',
                     iconName: 'delete',
-                    redIcon: true, 
+                    redIcon: true,
                 },
             ],
         };
@@ -345,12 +345,14 @@ export class CustomerTableComponent
     sendCustomerData() {
         this.initTableOptions();
 
+        this.checkActiveViewMode();
+
         const brokerShipperCount = JSON.parse(
             localStorage.getItem('brokerShipperTableCount')
         );
 
         if (this.selectedTab === 'active') {
-            this.brokers = this.brokerQuery.getAll().length
+             this.brokers = this.brokerQuery.getAll().length
                 ? this.brokerQuery.getAll()
                 : [];
         } else {
@@ -388,12 +390,35 @@ export class CustomerTableComponent
             },
         ];
 
-        console.log('Broker Data');
-        console.log(this.tableData[1].data);
-
         const td = this.tableData.find((t) => t.field === this.selectedTab);
 
         this.setCustomerData(td);
+    }
+
+    // Check If Selected Tab Has Active View Mode
+    checkActiveViewMode() {
+        if (this.activeViewMode === 'Map') {
+            let hasMapView = false;
+
+            let viewModeOptions =
+                this.tableOptions.toolbarActions.viewModeOptions;
+
+            viewModeOptions.map((viewMode: any) => {
+                if (viewMode.name === 'Map') {
+                    hasMapView = true;
+                }
+            });
+
+            if (!hasMapView) {
+                this.activeViewMode = 'List';
+
+                viewModeOptions = this.getViewModeOptions();
+            }
+
+            this.tableOptions.toolbarActions.viewModeOptions = [
+                ...viewModeOptions,
+            ];
+        }
     }
 
     getGridColumns(configType: string) {
@@ -454,8 +479,7 @@ export class CustomerTableComponent
                 ? // ? data.mainPoBox.poBox + ' ' + data.mainPoBox.city + ' ' + data.mainPoBox.state + ' ' + data.mainPoBox.zipCode
                   'Treba da se postavo odgovarajuci redosled za po box address'
                 : '',
-            tablePaymentDetailAvailCredit:
-                'Nema apodatka sa beka, progres je u pitanju',
+            tablePaymentDetailAvailCredit: 'NA',
             tablePaymentDetailCreditLimit: data?.creditLimit
                 ? '$' + this.thousandSeparator.transform(data.creditLimit)
                 : '',
@@ -466,8 +490,8 @@ export class CustomerTableComponent
                 ? data.daysToPay + ' days'
                 : '',
             tablePaymentDetailInvAgeing: {
-                bfb: 0,
-                dnu: 0,
+                bfb: '0',
+                dnu: '0',
                 amount: 'Template se promenio',
             },
             tableLoads: data?.loadCount
@@ -506,7 +530,7 @@ export class CustomerTableComponent
             ...data,
             isSelected: false,
             tableAddress: data?.address?.address ? data.address.address : '',
-            tableLoads: 'Nema podatak sa beka',
+            tableLoads: 'NA',
             tableAverageWatingTimePickup: data?.avgPickupTime
                 ? data.avgPickupTime
                 : '',
@@ -542,9 +566,9 @@ export class CustomerTableComponent
             tableAdded: data.createdAt
                 ? this.datePipe.transform(data.createdAt, 'MM/dd/yy')
                 : '',
-            tableEdited: 'Nema podatak sa beka', // data.updatedAt
-                //? this.datePipe.transform(data.updatedAt, 'MM/dd/yy')
-                //: '',
+            tableEdited: 'NA', // data.updatedAt
+            //? this.datePipe.transform(data.updatedAt, 'MM/dd/yy')
+            //: '',
         };
     }
 
@@ -1038,7 +1062,7 @@ export class CustomerTableComponent
         if (listChanged || mapListResponse.changedSort) {
             if (mapListResponse.changedSort)
                 this.mapListData = mapListResponse.pagination.data;
-            this.tableData[1].length = mapListResponse.pagination.count;
+            //this.tableData[1].length = mapListResponse.pagination.count;
             this.ref.detectChanges();
         }
     }

@@ -12,7 +12,7 @@ import {
     OnInit,
     ViewEncapsulation,
 } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { GetTruckModalResponse, VinDecodeResponse } from 'appcoretruckassist';
 
 import { tab_modal_animation } from '../../shared/animations/tabs-modal.animation';
@@ -52,7 +52,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
 
     @Input() editData: any;
 
-    public truckForm: FormGroup;
+    public truckForm: UntypedFormGroup;
     public truckType: any[] = [];
     public truckMakeType: any[] = [];
     public colorType: any[] = [];
@@ -128,7 +128,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
     public fileModified: boolean = false;
 
     constructor(
-        private formBuilder: FormBuilder,
+        private formBuilder: UntypedFormBuilder,
         private inputService: TaInputService,
         private truckModalService: TruckTService,
         private modalService: ModalService,
@@ -855,6 +855,11 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                                     size: 'large',
                                     type: 'Truck',
                                     closing: 'slowlest',
+                                });
+                                this.modalService.setModalSpinner({
+                                    action: null,
+                                    status: true,
+                                    close: true,
                                 });
                                 break;
                             }

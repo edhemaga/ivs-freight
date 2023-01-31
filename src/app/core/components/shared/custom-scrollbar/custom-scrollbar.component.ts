@@ -57,7 +57,6 @@ export class CustomScrollbarComponent
     ) {}
 
     ngOnInit(): void {
-        console.log(this.scrollBarOptions);
         this.ngZone.runOutsideAngular(() => {
             document.addEventListener('mouseup', this.onMouseUpHandler);
 
@@ -211,6 +210,7 @@ export class CustomScrollbarComponent
                         this.tableNotPinedBoundingRect.width
                 ) {
                     this.bar.nativeElement.style.transform = `translateX(${offsetBar}px)`;
+                    
                     this.scrollEvent.emit({
                         eventAction: 'scrolling',
                         scrollPosition: offsetBar * this.tableScrollRatioFull,

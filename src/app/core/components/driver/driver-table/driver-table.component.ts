@@ -35,7 +35,7 @@ import { getDriverColumnsDefinition } from '../../../../../assets/utils/settings
 import { ApplicantModalComponent } from '../../modals/applicant-modal/applicant-modal.component';
 import { ApplicantTableQuery } from '../state/applicant-state/applicant-table.query';
 import { getLoadModalColumnDefinition } from 'src/assets/utils/settings/modal-columns-configuration/table-load-modal-columns';
-import { FormControl, FormGroup } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 
 @Component({
     selector: 'app-driver-table',
@@ -578,10 +578,10 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
             tableDOB: data.dateOfBirth
                 ? this.datePipe.transform(data.dateOfBirth, 'MM/dd/yy')
                 : '',
-            tableAssignedUnitTruck: 'Nema podatak sa back-a',
-            tableAssignedUnitTruckType: 'Nema podatak sa back-a',
-            tableAssignedUnitTrailer: 'Nema podatak sa back-a',
-            tableAssignedUnitTrailerType: 'Nema podatak sa back-a',
+            tableAssignedUnitTruck: 'NA',
+            tableAssignedUnitTruckType: 'NA',
+            tableAssignedUnitTrailer: 'NA',
+            tableAssignedUnitTrailerType: 'NA',
             tablePayrollDetailType: data?.payType?.name
                 ? data.payType.name
                 : '',
@@ -594,14 +594,14 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 ? data.owner.name
                 : '',
             tableOwnerDetailsEin: data?.owner?.ssnEin ? data.owner.ssnEin : '',
-            tableOffDutyLocation: 'Nema podatak sa back-a',
+            tableOffDutyLocation: 'NA',
             tableEmergContact: data?.emergencyContactPhone
                 ? data.emergencyContactPhone
                 : '',
-            tableTwicExp: 'Nema podatak sa back-a',
+            tableTwicExp: 'NA',
             tableFuelCardDetailNumber: data?.fuelCard ? data.fuelCard : '',
-            tableFuelCardDetailType: 'Nema podatak sa back-a',
-            tableFuelCardDetailAccount: 'Nema podatak sa back-a',
+            tableFuelCardDetailType: 'NA',
+            tableFuelCardDetailAccount: 'NA',
             tableCdlDetailNumber: data?.cdlNumber
                 ? data.cdlNumber
                 : data?.cdls?.length
@@ -610,8 +610,8 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
             tableCdlDetailState: data.address.stateShortName
                 ? data.address.stateShortName
                 : '',
-            tableCdlDetailEndorsment: 'Nema podatak sa back-a',
-            tableCdlDetailRestriction: 'Nema podatak sa back-a',
+            tableCdlDetailEndorsment: 'NA',
+            tableCdlDetailRestriction: 'NA',
             tableCdlDetailExpiration: {
                 expirationDays: data?.cdlExpirationDays
                     ? this.thousandSeparator.transform(data.cdlExpirationDays)
@@ -621,10 +621,10 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                         ? 100 - data.cdlPercentage
                         : null,
             },
-            tableTestDetailsType: 'Nema podatak sa back-a',
-            tableTestDetailsReason: 'Nema podatak sa back-a',
-            tableTestDetailsIssued: 'Nema podatak sa back-a',
-            tableTestDetailsResult: 'Nema podatak sa back-a',
+            tableTestDetailsType: 'NA',
+            tableTestDetailsReason: 'NA',
+            tableTestDetailsIssued: 'NA',
+            tableTestDetailsResult: 'NA',
             tableMedicalData: {
                 expirationDays: data?.medicalExpirationDays
                     ? this.thousandSeparator.transform(
@@ -659,9 +659,9 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
             tabelHired: data.hired
                 ? this.datePipe.transform(data.hired, 'MM/dd/yy')
                 : '',
-            tableTerminated: 'Nema podatak sa back-a',
-            tableAdded: 'Nema podatak sa back-a',
-            tableEdited: 'Nema podatak sa back-a',
+            tableTerminated: 'NA',
+            tableAdded: 'NA',
+            tableEdited: 'NA',
             tableAttachments: data?.files ? data.files : [],
         };
     }
@@ -1116,10 +1116,10 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.resizeObserver.disconnect();
     }
 
-    public testControl: FormGroup = new FormGroup({
-        email: new FormControl(null),
-        password: new FormControl(null),
-        phone: new FormControl(null),
+    public testControl: UntypedFormGroup = new UntypedFormGroup({
+        email: new UntypedFormControl(null),
+        password: new UntypedFormControl(null),
+        phone: new UntypedFormControl(null),
     });
     modalColumns: any[] = [];
     modalViewData: any[] = [];

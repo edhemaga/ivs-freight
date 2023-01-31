@@ -2,10 +2,9 @@ import {
     convertDateFromBackend,
     convertDateToBackend,
     convertNumberInThousandSep,
-    convertPriceInNumber,
 } from '../../../../utils/methods.calculations';
 import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormArray, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { RepairTService } from '../../../repair/state/repair.service';
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { RepairModalResponse, RepairShopResponse } from 'appcoretruckassist';
@@ -30,8 +29,9 @@ import { DetailsDataService } from '../../../../services/details-data/details-da
 import { PriceCalculationArraysPipe } from '../../../../pipes/price-calculation-arrays.pipe';
 import {
     convertThousanSepInNumber,
-    convertNumberInPrice,
+    convertNumberWithCurrencyFormatterToBackend,
 } from '../../../../utils/methods.calculations';
+import { EditTagsService } from 'src/app/core/services/shared/editTags.service';
 
 @Component({
     selector: 'app-repair-order-modal',
@@ -43,7 +43,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
     @ViewChild('t2') public popoverRef: NgbPopover;
     @Input() editData: any;
     public disableCardAnimation: boolean = false;
-    public repairOrderForm: FormGroup;
+    public repairOrderForm: UntypedFormGroup;
     public selectedHeaderTab: number = 1;
     public headerTabs = [
         {
@@ -92,21 +92,23 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
     public isFormDirty: boolean;
     public selectedRepairType: any = null;
     public addNewAfterSave: boolean = false;
+    public tags: any[] = [];
     private destroy$ = new Subject<void>();
 
     constructor(
-        private formBuilder: FormBuilder,
+        private formBuilder: UntypedFormBuilder,
         private inputService: TaInputService,
         private repairService: RepairTService,
         private modalService: ModalService,
         private ngbActiveModal: NgbActiveModal,
         private priceArrayPipe: PriceCalculationArraysPipe,
         private formService: FormService,
-        private DetailsDataService: DetailsDataService
+        private DetailsDataService: DetailsDataService,
+        private tagsService: EditTagsService
     ) {}
 
-    public get items(): FormArray {
-        return this.repairOrderForm.get('items') as FormArray;
+    public get items(): UntypedFormArray {
+        return this.repairOrderForm.get('items') as UntypedFormArray;
     }
 
     ngOnInit() {
@@ -532,15 +534,16 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
     }
 
     public onFilesEvent(event: any) {
-        this.documents = event.files;
         switch (event.action) {
             case 'add': {
+                this.documents = event.files;
                 this.repairOrderForm
                     .get('files')
                     .patchValue(JSON.stringify(event.files));
                 break;
             }
             case 'delete': {
+                this.documents = event.files;
                 this.repairOrderForm
                     .get('files')
                     .patchValue(
@@ -551,6 +554,19 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                 }
 
                 this.fileModified = true;
+                break;
+            }
+            case 'tag': {
+                let changedTag = false;
+                event.files.map((item) => {
+                    if (item.tagChanged) {
+                        changedTag = true;
+                    }
+                });
+
+                this.repairOrderForm
+                    .get('tags')
+                    .patchValue(changedTag ? true : null);
                 break;
             }
             default: {
@@ -610,11 +626,6 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
         this.popoverRef.close();
     }
 
-    ngOnDestroy(): void {
-        this.destroy$.next();
-        this.destroy$.complete();
-    }
-
     private createForm() {
         this.repairOrderForm = this.formBuilder.group({
             repairType: ['Order'],
@@ -628,6 +639,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
             note: [null],
             servicesHelper: [null],
             files: [null],
+            tags: [null],
         });
 
         this.formService.checkFormChange(this.repairOrderForm);
@@ -654,7 +666,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
         subtotal?: any;
         pmTruckId?: any;
         pmTrailerId?: any;
-    }): FormGroup {
+    }): UntypedFormGroup {
         return this.formBuilder.group({
             id: [data.id],
             orderingId: [data.orderingId],
@@ -746,6 +758,8 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
 
                     // Repair Shops
                     this.labelsRepairShop = [...res.repairShops];
+
+                    this.tags = res.tags;
                 },
                 error: () => {},
             });
@@ -756,11 +770,22 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
             this.repairOrderForm.value;
 
         let documents = [];
+        let tagsArray = [];
         this.documents.map((item) => {
+            if (item.tagId?.length)
+                tagsArray.push({
+                    fileName: item.realFile.name,
+                    tagIds: item.tagId,
+                });
+
             if (item.realFile) {
                 documents.push(item.realFile);
             }
         });
+
+        if (!tagsArray.length) {
+            tagsArray = null;
+        }
 
         let newData: any = null;
 
@@ -786,6 +811,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                 }),
                 items: this.premmapedItems(),
                 files: documents,
+                tags: tagsArray,
             };
         } else {
             newData = {
@@ -806,7 +832,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                 invoice: invoice,
                 total:
                     this.repairOrderForm.get('repairType').value === 'Bill'
-                        ? convertNumberInPrice(
+                        ? convertNumberWithCurrencyFormatterToBackend(
                               this.priceArrayPipe.transform(this.subtotal)
                           )
                         : null,
@@ -818,6 +844,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                 }),
                 items: this.premmapedItems(),
                 files: documents,
+                tags: tagsArray,
             };
         }
 
@@ -880,10 +907,16 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                         this.filesForDelete = [];
 
                         this.addNewAfterSave = false;
-                    } else {
+
                         this.modalService.setModalSpinner({
                             action: 'save and add new',
                             status: false,
+                            close: false,
+                        });
+                    } else {
+                        this.modalService.setModalSpinner({
+                            action: null,
+                            status: true,
                             close: true,
                         });
                     }
@@ -903,11 +936,22 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
             this.repairOrderForm.value;
 
         let documents = [];
+        let tagsArray = [];
         this.documents.map((item) => {
+            if (item.tagId?.length && item?.realFile?.name)
+                tagsArray.push({
+                    fileName: item.realFile.name,
+                    tagIds: item.tagId,
+                });
+
             if (item.realFile) {
                 documents.push(item.realFile);
             }
         });
+
+        if (!tagsArray.length) {
+            tagsArray = null;
+        }
 
         let newData: any = null;
 
@@ -936,6 +980,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                 items: this.premmapedItems(),
                 files: documents ? documents : this.repairOrderForm.value.files,
                 filesForDeleteIds: this.filesForDelete,
+                tags: tagsArray,
             };
         } else {
             newData = {
@@ -972,6 +1017,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                 items: this.premmapedItems(),
                 files: documents ? documents : this.repairOrderForm.value.files,
                 filesForDeleteIds: this.filesForDelete,
+                tags: tagsArray,
             };
         }
 
@@ -980,6 +1026,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
+                    this.updateTags();
                     this.modalService.setModalSpinner({
                         action: null,
                         status: true,
@@ -1119,9 +1166,13 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                         'edit-mode'
                     );
 
-                    // Truck/Trailer Unit number
                     this.selectedUnit =
-                        res.unitType.name === 'Truck' ? res.truck : res.trailer;
+                        res.unitType.name === 'Truck'
+                            ? { ...res.truck, name: res.truck.truckNumber }
+                            : {
+                                  ...res.trailer,
+                                  name: res.trailer.trailerNumber,
+                              };
 
                     this.selectedHeaderTab =
                         res.repairType.name === 'Bill' ||
@@ -1164,7 +1215,6 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                             res.date && this.selectedHeaderTab === 2
                                 ? res.invoice
                                 : null,
-                        repairShopId: res.repairShop ? res.repairShop.id : null,
                         items: [],
                         note: res.note,
                     });
@@ -1200,6 +1250,12 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                                         address: res.address.address,
                                         pinned: res.pinned,
                                     };
+                                    this.repairOrderForm
+                                        .get('repairShopId')
+                                        .patchValue(
+                                            this.selectedRepairShop.id,
+                                            { emitEvent: false }
+                                        );
                                 },
                                 error: () => {},
                             });
@@ -1213,18 +1269,14 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                                     id: res.items[i].id,
                                     orderingId: ++this.itemsCounter,
                                     description: res.items[i].description,
-                                    price: res.items[i].price
-                                        ? convertNumberInPrice(
-                                              res.items[i].price
-                                          )
-                                        : null,
+                                    price: res.items[i].price,
                                     quantity: res.items[i].price
                                         ? res.items[i].quantity
                                             ? res.items[i].quantity
                                             : 1
                                         : res.items[i].quantity,
                                     subtotal: res.items[i].subtotal
-                                        ? convertNumberInPrice(
+                                        ? convertNumberWithCurrencyFormatterToBackend(
                                               res.items[i].subtotal
                                           )
                                         : null,
@@ -1291,14 +1343,14 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                 price:
                     this.selectedHeaderTab === 2
                         ? item.get('price').value
-                            ? convertPriceInNumber(item.get('price').value)
-                            : null
                         : null,
                 quantity: item.get('quantity').value,
                 subtotal:
                     this.selectedHeaderTab === 2
                         ? this.subtotal[index].value
-                            ? convertNumberInPrice(this.subtotal[index].value)
+                            ? convertNumberWithCurrencyFormatterToBackend(
+                                  this.subtotal[index].value
+                              )
                             : null
                         : null,
                 pmTruckId:
@@ -1333,5 +1385,53 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                     },
                 });
         }
+    }
+
+    public openRepairShop(repairShop: any) {
+        this.ngbActiveModal.close();
+        this.modalService.setProjectionModal({
+            action: 'open',
+            payload: {
+                key: 'repair-modal',
+                value: {
+                    ...this.repairOrderForm.value,
+                    selectedUnit: this.selectedUnit,
+                    services: this.services,
+                    selectedRepairShop: this.selectedRepairShop,
+                    headerTabs: this.headerTabs,
+                    selectedHeaderTab: this.selectedHeaderTab,
+                    typeOfRepair: this.typeOfRepair,
+                    items_array: this.items.value,
+                    subtotal: this.subtotal,
+                    selectedPM: this.selectedPM,
+                    selectedPMIndex: this.selectedPMIndex,
+                },
+                id: this.selectedRepairShop.id,
+            },
+            component: RepairShopModalComponent,
+            size: 'small',
+            type: this.repairOrderForm.get('unitType').value,
+        });
+    }
+
+    updateTags() {
+        let tags = [];
+
+        this.documents.map((item) => {
+            if (item?.tagChanged && item?.fileId) {
+                var tagsData = {
+                    storageId: item.fileId,
+                    tagId: item.tagId?.length ? item.tagId[0] : null,
+                };
+                tags.push(tagsData);
+            }
+        });
+
+        this.tagsService.updateTag({ tags: tags }).subscribe();
+    }
+
+    ngOnDestroy(): void {
+        this.destroy$.next();
+        this.destroy$.complete();
     }
 }

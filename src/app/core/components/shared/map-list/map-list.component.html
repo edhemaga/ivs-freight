@@ -1,6 +1,6 @@
 <div class="map-list-container">
     <div class="map-list">
-        <div class="map-list-header" [formGroup]="searchForm">
+        <div class="map-list-header" [formGroup]="searchForm" *ngIf="searchForm">
             <div class="map-list-search">
                 <app-ta-input
                     formControlName="search"

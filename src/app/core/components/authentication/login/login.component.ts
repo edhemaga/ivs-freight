@@ -5,7 +5,7 @@ import {
     OnInit,
 } from '@angular/core';
 
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 
 import { AuthStoreService } from './../state/auth.service';
 import { NotificationService } from '../../../services/notification/notification.service';
@@ -25,12 +25,12 @@ import { passwordValidation } from '../../shared/ta-input/ta-input.regex-validat
 })
 export class LoginComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
-    public loginForm: FormGroup;
+    public loginForm: UntypedFormGroup;
 
     public copyrightYear!: number;
 
     constructor(
-        private formBuilder: FormBuilder,
+        private formBuilder: UntypedFormBuilder,
         private authStoreService: AuthStoreService,
         private notification: NotificationService,
         private inputService: TaInputService,
@@ -69,7 +69,7 @@ export class LoginComponent implements OnInit, OnDestroy {
             .accountLogin(this.loginForm.value)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: () => {
+                next: (res) => {
                     this.notification.success('Login is success', 'Success');
                 },
                 error: () => {

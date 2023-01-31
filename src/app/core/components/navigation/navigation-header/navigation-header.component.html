@@ -12,9 +12,20 @@
     >
         <div class="nav-header-bottom-leftSide">
             <div
+                class="tooltip-right"
+                [ngClass]="{ 'hide-tooltip': isNavigationHovered }"
+            >
+                <app-tooltip-slide
+                    [show]="showToolTipPlus"
+                    [name]="'Add Anything'"
+                ></app-tooltip-slide>
+            </div>
+            <div
                 class="nav-header-bottom-plus"
                 (click)="onAction('Open Panel')"
                 [ngClass]="{ 'dark-svg': isNavigationHovered }"
+                (mouseenter)="showToolTipPlus = true"
+                (mouseleave)="showToolTipPlus = false"
             >
                 <svg-icon
                     [ngClass]="{ 'light-svg': isNavigationHovered }"
@@ -22,6 +33,7 @@
                 ></svg-icon>
             </div>
             <p
+                *ngIf="isNavigationHovered"
                 [@showHideDetails]="isNavigationHovered ? 'true' : 'false'"
                 class="ta-font-bold"
             >
@@ -31,17 +43,20 @@
 
         <div
             class="nav-header-bottom-rightSide"
+            *ngIf="isNavigationHovered"
             [@showHideDetails]="isNavigationHovered ? 'true' : 'false'"
         >
             <div
                 class="nav-header-bottom-rightSide-search"
+                (mouseenter)="showToolTip = true"
+                (mouseleave)="showToolTip = false"
                 (click)="onAction('Search')"
             >
                 <svg-icon src="assets/svg/common/ic_search.svg"></svg-icon>
 
                 <div class="tooltip-right">
                     <app-tooltip-slide
-                        [show]="true"
+                        [show]="showToolTip"
                         [name]="'Search anything'"
                     ></app-tooltip-slide>
                 </div>

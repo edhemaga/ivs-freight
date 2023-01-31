@@ -1,18 +1,20 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
-import { filter, startWith } from 'rxjs';
+import { filter, startWith, Subscription } from 'rxjs';
 
 @Component({
     selector: 'app-under-construction',
     templateUrl: './under-construction.component.html',
     styleUrls: ['./under-construction.component.scss'],
 })
-export class UnderConstructionComponent implements OnInit {
+export class UnderConstructionComponent implements OnInit, OnDestroy {
     public title: string = '';
+    subscription: Subscription;
+
     constructor(private router: Router) {}
 
     ngOnInit(): void {
-        this.router.events
+        this.subscription = this.router.events
             .pipe(
                 filter((event) => event instanceof NavigationEnd),
                 startWith(this.router)
@@ -22,9 +24,13 @@ export class UnderConstructionComponent implements OnInit {
                 if (ruteName[2]) {
                     this.title = ruteName[2];
                 } else {
-                    this.title = ruteName[1];
+                    ruteName[1] == 'file-menager'
+                        ? (this.title = 'file menager')
+                        : (this.title = ruteName[1]);
                 }
-                console.log(url.url);
             });
+    }
+    ngOnDestroy(): void {
+        this.subscription.unsubscribe();
     }
 }

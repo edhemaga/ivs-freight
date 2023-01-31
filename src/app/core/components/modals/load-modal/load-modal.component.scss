@@ -10,9 +10,10 @@
     }
 }
 
+// Stops
 .stops-header-bar {
     display: grid;
-    grid-template-columns: 25px 263px 226px 1fr;
+    grid-template-columns: 23px 224px 273px 1fr;
     align-items: center;
     padding: 0 18px;
     margin-bottom: 8px;
@@ -91,6 +92,7 @@
     }
 }
 
+// Billing
 .load-financial-container {
     display: grid;
     grid-template-columns: 198px 196px 1fr;

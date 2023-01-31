@@ -5,10 +5,10 @@ import {
 } from '../../shared/ta-input/ta-input.regex-validations';
 import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import {
-    FormBuilder,
-    FormGroup,
+    UntypedFormBuilder,
+    UntypedFormGroup,
     Validators,
-    FormArray,
+    UntypedFormArray,
     AbstractControl,
 } from '@angular/forms';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
@@ -43,7 +43,7 @@ export class ContactModalComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
     @Input() editData: any;
 
-    public contactForm: FormGroup;
+    public contactForm: UntypedFormGroup;
 
     public sharedDepartments: any[] = [];
     public selectedSharedDepartment: any = null;
@@ -93,7 +93,7 @@ export class ContactModalComponent implements OnInit, OnDestroy {
     public addNewAfterSave: boolean = false;
 
     constructor(
-        private formBuilder: FormBuilder,
+        private formBuilder: UntypedFormBuilder,
         private inputService: TaInputService,
         private modalService: ModalService,
         private contactService: ContactTService,
@@ -137,8 +137,8 @@ export class ContactModalComponent implements OnInit, OnDestroy {
             });
     }
 
-    public get contactPhones(): FormArray {
-        return this.contactForm.get('contactPhones') as FormArray;
+    public get contactPhones(): UntypedFormArray {
+        return this.contactForm.get('contactPhones') as UntypedFormArray;
     }
 
     public createContactPhones(element?: any) {
@@ -169,8 +169,8 @@ export class ContactModalComponent implements OnInit, OnDestroy {
         }
     }
 
-    public get contactEmails(): FormArray {
-        return this.contactForm.get('contactEmails') as FormArray;
+    public get contactEmails(): UntypedFormArray {
+        return this.contactForm.get('contactEmails') as UntypedFormArray;
     }
 
     public createContactEmails(element?: any) {

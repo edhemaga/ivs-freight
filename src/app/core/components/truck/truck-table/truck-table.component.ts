@@ -67,7 +67,6 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
     ) {}
 
     ngOnInit(): void {
-        console.log('Pocinje ngOnInit za Truck');
         this.sendTruckData();
 
         // Confirmation Subscribe
@@ -405,9 +404,6 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
             },
         ];
 
-        console.log('Truck Data');
-        console.log(this.tableData[0].data);
-
         const td = this.tableData.find((t) => t.field === this.selectedTab);
 
         this.setTruckData(td);
@@ -432,6 +428,10 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
             this.viewData = this.viewData.map((data) => {
                 return this.mapTruckData(data);
             });
+
+            // for(let i = 0; i < 22; i++){
+            //     this.viewData.push(this.viewData[0]);
+            // }
         } else {
             this.viewData = [];
         }
@@ -447,11 +447,11 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
             textYear: data.year ? data.year : '',
             tableColor: data?.color?.code ? data.color.code : '',
             colorName: data?.color?.name ? data.color.name : '',
-            tableDriver: 'Nema podatak sa back-a',
-            tableTrailer: 'Nema podatak sa back-a',
-            tableTrailerType: 'Nema podatak sa back-a',
-            tabelOwnerDetailesName: data?.owner?.name ? data.owner.name : '',
-            tabelOwnerDetailesComm: data?.commission
+            tableDriver: 'NA',
+            tableTrailer: 'NA',
+            tableTrailerType: 'NA',
+            tabelOwnerDetailsName: data?.owner?.name ? data.owner.name : '',
+            tabelOwnerDetailsComm: data?.commission
                 ? data.commission + '%'
                 : '',
             textWeightGross: data?.truckGrossWeight?.name
@@ -484,10 +484,10 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
             tabelAxle: data?.axles ? data.axles : '',
             tabelBrakes: data?.brakes?.name ? data.brakes.name : '',
             tableTireSize: data?.tireSize?.name ? data.tireSize.name : '',
-            tableWheelsMaterialFront: data?.frontWheels?.name
+            tableWheelCompositionFront: data?.frontWheels?.name
                 ? data.frontWheels.name
                 : '',
-            tableWheelsMaterialRear: data?.rearWheels?.name
+            tableWheelCompositionRear: data?.rearWheels?.name
                 ? data.rearWheels.name
                 : '',
             tableAPUnit: data?.apUnit?.name ? data.apUnit.name : '',
@@ -509,16 +509,16 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
             tableLicencePlateDetailNumber: data?.licensePlate
                 ? data.licensePlate
                 : '',
-            tableLicencePlateDetailST: 'Nema podatak sa back-a',
-            tableLicencePlateDetailExpiration: 'Nema podatak sa back-a',
+            tableLicencePlateDetailST: 'NA',
+            tableLicencePlateDetailExpiration: 'NA',
             tableFhwaInspectionTerm: data?.fhwaExp
                 ? data.fhwaExp + ' months'
                 : '',
-            tableFhwaInspectionExpiration: 'Nema podatak sa back-a',
-            tableTitleNumber: 'Nema podatak sa back-a',
-            tableTitleST: 'Nema podatak sa back-a',
-            tableTitleIssued: 'Nema podatak sa back-a',
-            tableTitlePurchase: 'Nema podatak sa back-a',
+            tableFhwaInspectionExpiration: 'NA',
+            tableTitleNumber: 'NA',
+            tableTitleST: 'NA',
+            tableTitleIssued: 'NA',
+            tableTitlePurchase: 'NA',
             tablePurchasePrice: data?.purchasePrice
                 ? '$' + this.thousandSeparator.transform(data.purchasePrice)
                 : '',
@@ -526,7 +526,7 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 ? this.datePipe.transform(data.purchaseDate, 'MM/dd/yy')
                 : '',
 
-            tableTerminated: 'Nema podatak sa back-a',
+            tableTerminated: 'NA',
             tableAdded: data.createdAt
                 ? this.datePipe.transform(data.createdAt, 'MM/dd/yy')
                 : '',

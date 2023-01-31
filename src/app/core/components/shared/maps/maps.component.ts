@@ -10,7 +10,7 @@ import {
     OnChanges,
     SimpleChanges,
 } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { MapsAPILoader } from '@agm/core';
 import * as AppConst from 'src/app/const';
 import { MapsService } from '../../../services/shared/maps.service';
@@ -27,6 +27,7 @@ import {
 } from '../../modals/confirmation-modal/confirmation-modal.component';
 import { ConfirmationService } from '../../modals/confirmation-modal/confirmation.service';
 import { ModalService } from './../../shared/ta-modal/modal.service';
+import { CompanyTOfficeService } from '../../settings/settings-location/settings-office/state/company-office.service';
 
 @Component({
     selector: 'app-maps',
@@ -85,8 +86,8 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
         strictBounds: true,
     };
 
-    public searchForm!: FormGroup;
-    public locationForm!: FormGroup;
+    public searchForm!: UntypedFormGroup;
+    public locationForm!: UntypedFormGroup;
     public sortTypes: any[] = [];
     public sortDirection: string = 'asc';
     public activeSortType: any = {};
@@ -135,9 +136,11 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
     public clusterDetailedInfo: any = {};
     public lastClusterCoordinates: any = {};
 
+    public companyOffices: any = [];
+
     constructor(
         private ref: ChangeDetectorRef,
-        private formBuilder: FormBuilder,
+        private formBuilder: UntypedFormBuilder,
         private mapsAPILoader: MapsAPILoader,
         private mapsService: MapsService,
         private repairShopService: RepairTService,
@@ -146,7 +149,8 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
         private notificationService: NotificationService,
         private routingService: RoutingStateService,
         private modalService: ModalService,
-        private confirmationService: ConfirmationService
+        private confirmationService: ConfirmationService,
+        private companyOfficeService: CompanyTOfficeService
     ) {}
 
     ngOnInit(): void {
@@ -194,10 +198,10 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
             map.addListener('idle', () => {
                 // update the coordinates here
 
-                var mapCenter = map.getCenter();
+                // var mapCenter = map.getCenter();
 
-                this.mapLatitude = mapCenter.lat();
-                this.mapLongitude = mapCenter.lng();
+                // this.mapLatitude = mapCenter.lat();
+                // this.mapLongitude = mapCenter.lng();
 
                 clearTimeout(this.clustersTimeout);
 
@@ -518,6 +522,7 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
                                     );
 
                                 if (clusterIndex == -1) {
+                                    console.log("CHASTERS ARE ADDDING IT");
                                     this.clusterMarkers.push(clusterItem);
                                 }
 
@@ -548,6 +553,9 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
                             item.showMarker
                         ) {
                             item.showMarker = false;
+                            item.isSelected = false;
+                            this.markerSelected = false;
+                            this.mapsService.selectedMarker(0);
                         }
                     });
 
@@ -571,6 +579,10 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
                             setTimeout(() => {
                                 cluster.fadeOut = false;
                                 cluster.showMarker = false;
+                                cluster.detailedInfo = false;
+                                cluster.isSelected = false;
+                                this.mapsService.selectedMarker(0);
+                                this.clusterDetailedInfo = false;
                                 this.ref.detectChanges();
                             }, 200);
                         }
@@ -697,6 +709,9 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
                             item.showMarker
                         ) {
                             item.showMarker = false;
+                            item.isSelected = false;
+                            this.markerSelected = false;
+                            this.mapsService.selectedMarker(0);
                         }
                     });
 
@@ -720,6 +735,10 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
                             setTimeout(() => {
                                 cluster.fadeOut = false;
                                 cluster.showMarker = false;
+                                cluster.detailedInfo = false;
+                                cluster.isSelected = false;
+                                this.mapsService.selectedMarker(0);
+                                this.clusterDetailedInfo = false;
                                 this.ref.detectChanges();
                             }, 200);
                         }
@@ -832,6 +851,9 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
                             item.showMarker
                         ) {
                             item.showMarker = false;
+                            item.isSelected = false;
+                            this.markerSelected = false;
+                            this.mapsService.selectedMarker(0);
                         }
                     });
 
@@ -855,6 +877,10 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
                             setTimeout(() => {
                                 cluster.fadeOut = false;
                                 cluster.showMarker = false;
+                                cluster.detailedInfo = false;
+                                cluster.isSelected = false;
+                                this.mapsService.selectedMarker(0);
+                                this.clusterDetailedInfo = false;
                                 this.ref.detectChanges();
                             }, 200);
                         }
@@ -906,6 +932,47 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
                     this.mapsService.searchLoadingChanged.next(false);
                 });
         }
+
+        // this.companyOfficeService
+        //     .getOfficeClusters(
+        //         clustersObj.northEastLatitude,
+        //         clustersObj.northEastLongitude,
+        //         clustersObj.southWestLatitude,
+        //         clustersObj.southWestLongitude
+        //     )
+        //     .pipe(takeUntil(this.destroy$))
+        //     .subscribe((companyOffices: any) => {
+        //         console.log('companyOffices', companyOffices);
+        //         var markersToShow = [];
+
+        //         companyOffices.map((clusterItem) => {
+        //             let markerIndex = this.companyOffices.findIndex(
+        //                 (item) => item.id === clusterItem.id
+        //             );
+
+        //             if (markerIndex == -1) {
+        //                 this.companyOffices.push(clusterItem);
+        //             }
+
+        //             markersToShow.push(clusterItem.id);
+        //         });
+
+        //         this.companyOffices.map((item) => {
+        //             if (
+        //                 markersToShow.includes(item.id) &&
+        //                 !item.showMarker
+        //             ) {
+        //                 item.showMarker = true;
+        //             } else if (
+        //                 !markersToShow.includes(item.id) &&
+        //                 item.showMarker
+        //             ) {
+        //                 item.showMarker = false;
+        //             }
+        //         });
+
+        //         this.ref.detectChanges();
+        //     });
     }
 
     clickedCluster(cluster) {
@@ -1280,6 +1347,10 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
                     }
                 },
             });
+    }
+
+    public identity(index: number, item: any): number {
+        return item.id;
     }
 
     ngOnDestroy(): void {

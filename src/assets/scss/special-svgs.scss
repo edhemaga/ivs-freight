@@ -71,6 +71,70 @@
         color: #ffffff;
         transition: all 0.3s ease-in-out;
     }
+
+    // DISPATCHES TRUCKS
+
+    &.dispatch-semi-truck {
+        svg {
+            path {
+                fill: #97d568;
+            }
+        }
+    }
+
+    &.dispatch-semi-sleeper {
+        svg {
+            #Ellipse_9856,
+            #Ellipse_9857,
+            #Ellipse_9858,
+            path {
+                fill: #ffb74d;
+            }
+        }
+    }
+
+    &.dispatch-box-truck {
+        svg {
+            path {
+                fill: #e57373;
+            }
+        }
+    }
+
+    &.dispatch-cargo-van {
+        svg {
+            path {
+                fill: #68c3ff;
+            }
+        }
+    }
+
+    &.dispatch-tow-truck {
+        svg {
+            path {
+                fill: #ba68c8;
+            }
+        }
+    }
+
+    &.dispatch-car-hauler {
+        svg {
+            #Ellipse_9856,
+            #Ellipse_9857,
+            #Ellipse_9858,
+            path {
+                fill: #59a5a5;
+            }
+        }
+    }
+
+    &.dispatch-spotter {
+        svg {
+            path {
+                fill: #415fc1;
+            }
+        }
+    }
 }
 
 // --------------------- TRAILERS ---------------------
@@ -116,7 +180,6 @@
     }
 
     &.trailerContainer {
-        padding-left: 0px;
         svg {
             path {
                 fill: #ffa726;
@@ -532,9 +595,6 @@
         }
 
         &.trailerContainer {
-            max-width: max-content !important;
-            padding: 0px !important;
-            margin: 0px !important;
             svg {
                 path {
                     fill: #ffa726;

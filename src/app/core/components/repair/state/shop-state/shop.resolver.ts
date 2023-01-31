@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Resolve } from '@angular/router';
-import { Observable, of } from 'rxjs';
-import { catchError, tap } from 'rxjs/operators';
+import { forkJoin, Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
 import { ShopState, ShopStore } from './shop.store';
 import { RepairTService } from '../repair.service';
-import { RepairShopListResponse } from 'appcoretruckassist';
+import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 
 @Injectable({
     providedIn: 'root',
@@ -12,12 +12,13 @@ import { RepairShopListResponse } from 'appcoretruckassist';
 export class ShopResolver implements Resolve<ShopState> {
     constructor(
         private repairService: RepairTService,
-        private shopStore: ShopStore
+        private shopStore: ShopStore,
+        private tableService: TruckassistTableService
     ) {}
 
-    resolve(): Observable<ShopState | boolean> {
-        return this.repairService
-            .getRepairShopList(
+    resolve(): Observable<any> {
+        return forkJoin([
+            this.repairService.getRepairShopList(
                 1,
                 undefined,
                 undefined,
@@ -29,21 +30,28 @@ export class ShopResolver implements Resolve<ShopState> {
                 undefined,
                 1,
                 25
-            )
-            .pipe(
-                catchError(() => {
-                    return of('No shops data...');
-                }),
-                tap((repairPagination: RepairShopListResponse) => {
-                    localStorage.setItem(
-                        'repairShopTableCount',
-                        JSON.stringify({
-                            repairShops: repairPagination.repairShopCount,
-                        })
-                    );
+            ),
+            this.tableService.getTableConfig(12),
+        ]).pipe(
+            tap(([repairPagination, tableConfig]) => {
+                localStorage.setItem(
+                    'repairShopTableCount',
+                    JSON.stringify({
+                        repairShops: repairPagination.repairShopCount,
+                    })
+                );
 
-                    this.shopStore.set(repairPagination.pagination.data);
-                })
-            );
+                if (tableConfig) {
+                    const config = JSON.parse(tableConfig.config);
+
+                    localStorage.setItem(
+                        `table-${tableConfig.tableType}-Configuration`,
+                        JSON.stringify(config)
+                    );
+                }
+
+                this.shopStore.set(repairPagination.pagination.data);
+            })
+        );
     }
 }

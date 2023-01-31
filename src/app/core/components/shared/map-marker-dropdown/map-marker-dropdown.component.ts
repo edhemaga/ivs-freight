@@ -5,6 +5,7 @@ import {
     Output,
     EventEmitter,
     ChangeDetectorRef,
+    ChangeDetectionStrategy,
 } from '@angular/core';
 import { card_component_animation } from '../../shared/animations/card-component.animations';
 import { DetailsDataService } from 'src/app/core/services/details-data/details-data.service';
@@ -14,6 +15,7 @@ import { DetailsDataService } from 'src/app/core/services/details-data/details-d
     templateUrl: './map-marker-dropdown.component.html',
     styleUrls: ['./map-marker-dropdown.component.scss'],
     animations: [card_component_animation('showHideCardBody')],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MapMarkerDropdownComponent implements OnInit {
     @Input() title: string = '';
@@ -42,6 +44,10 @@ export class MapMarkerDropdownComponent implements OnInit {
         '#919191',
     ];
 
+    public copyPhoneHover: boolean = false;
+    public copyEmailHover: boolean = false;
+    public copyAddressHover: boolean = false;
+
     constructor(
         private ref: ChangeDetectorRef,
         private detailsDataService: DetailsDataService
@@ -60,6 +66,7 @@ export class MapMarkerDropdownComponent implements OnInit {
                 this.copiedPhone = true;
                 setTimeout(() => {
                     this.copiedPhone = false;
+                    this.ref.detectChanges();
                 }, 2100);
                 break;
 
@@ -67,6 +74,7 @@ export class MapMarkerDropdownComponent implements OnInit {
                 this.copiedEmail = true;
                 setTimeout(() => {
                     this.copiedEmail = false;
+                    this.ref.detectChanges();
                 }, 2100);
                 break;
 
@@ -74,6 +82,7 @@ export class MapMarkerDropdownComponent implements OnInit {
                 this.copiedAddress = true;
                 setTimeout(() => {
                     this.copiedAddress = false;
+                    this.ref.detectChanges();
                 }, 2100);
                 break;
         }
@@ -89,6 +98,8 @@ export class MapMarkerDropdownComponent implements OnInit {
         selBox.select();
         document.execCommand('copy');
         document.body.removeChild(selBox);
+        
+        this.ref.detectChanges();
     }
 
     toggleWorkingHours() {
@@ -143,6 +154,7 @@ export class MapMarkerDropdownComponent implements OnInit {
     }
 
     openClusterItemInfo(item2) {
+        
         this.showClusterItemInfo.emit([this.item, item2]);
     }
 
@@ -155,5 +167,17 @@ export class MapMarkerDropdownComponent implements OnInit {
         ) {
             this.loadMoreData.emit(this.item);
         }
+    }
+    
+    copyHover(type, hover) {
+        if ( type == 'address' ) {
+            this.copyAddressHover = hover;
+        } else if ( type == 'phone' ) {
+            this.copyPhoneHover = hover;
+        } else {
+            this.copyEmailHover = hover;
+        }
+        
+        this.ref.detectChanges();
     }
 }

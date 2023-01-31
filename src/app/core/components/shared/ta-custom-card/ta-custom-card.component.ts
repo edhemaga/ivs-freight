@@ -1,4 +1,4 @@
-import { FormControl } from '@angular/forms';
+import { UntypedFormControl } from '@angular/forms';
 import {
     Component,
     EventEmitter,
@@ -38,10 +38,11 @@ export class TaCustomCardComponent {
     @Input() hasWeeklyStatus: string = null;
     @Input() hasDownload: string = null;
     @Input() customTextAction: string = null;
-    @Input() hasDeleteAction: boolean;
-    @Input() hasPayrollStatus: boolean;
+    @Input() hasDeleteAction: boolean = false;
+    @Input() hasPayrollStatus: boolean = false;
+    @Input() bottomCollapseArrow: boolean = false;
 
-    @Input() controlName: FormControl;
+    @Input() controlName: UntypedFormControl;
 
     @Input() tooltipName: string = '';
     noActive: string;

@@ -296,6 +296,37 @@
         }
     }
 
+    &.double-text-dropdown {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-48%);
+        background-color: transparent !important;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding-right: 26px;
+
+        span {
+            &:last-child {
+                .multiple-input-text {
+                    color: #919191 !important;
+                    font-size: 11px;
+                    font-weight: 400;
+
+                    &.focusable-text {
+                        color: #6f9ee0 !important;
+                        font-size: 11px;
+                        font-weight: 400;
+                    }
+                }
+            }
+
+            &.focusable-text {
+                color: #6f9ee0 !important;
+            }
+        }
+    }
+
     &.load-dispatches-ttd {
         grid-template-columns: repeat(2, 156px) 150px 122px;
         padding-top: 3px;
@@ -326,6 +357,7 @@
                     color: #919191 !important;
                     font-size: 11px;
                     font-weight: 400;
+                    line-height: 24px !important;
 
                     &.focusable-text {
                         color: #6f9ee0 !important;
@@ -340,7 +372,7 @@
             }
 
             span {
-                line-height: 22px;
+                line-height: 23px;
             }
         }
 
@@ -357,6 +389,12 @@
 
         .focusable-image {
             opacity: 0.6;
+        }
+
+        .trailerContainer {
+            width: max-content !important;
+            padding: 0px !important;
+            margin: 0px !important;
         }
     }
 
@@ -396,6 +434,11 @@
                         &.counter-focus {
                             color: #6f9ee0;
                             background-color: rgb(111, 158, 224, 0.2);
+                        }
+
+                        &.counter-one {
+                            max-width: none !important;
+                            width: 19px !important;
                         }
                     }
                 }
@@ -490,6 +533,11 @@
                         &.counter-focus {
                             color: #6f9ee0;
                             background-color: rgb(111, 158, 224, 0.2);
+                        }
+
+                        &.counter-one {
+                            max-width: none !important;
+                            width: 19px !important;
                         }
                     }
                 }

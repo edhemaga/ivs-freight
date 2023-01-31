@@ -14,14 +14,11 @@
         >
             <p>{{ stopNumber }}</p>
         </div>
-        <div
-            class="load-stop-header-content"
-            [ngClass]="{ 'extra-stop': !firstOrLast && !shipper }"
-        >
+        <div class="load-stop-header-content">
             <!-- Number Of Stop -->
             <div
                 *ngIf="!shipper && state !== 'invalid'"
-                class="origin-destination-no-filled-container"
+                class="origin-destination-no-filled-container first-container-required"
             >
                 <p>
                     {{
@@ -36,65 +33,64 @@
             </div>
 
             <!-- Shipper, Address -->
-            <div class="load-stop-inner-content">
-                <div
-                    *ngIf="!shipper && state === 'invalid'"
-                    class="load-stop-content-up load-stop-content-up-name"
+            <div *ngIf="state" class="load-stop-inner-content first-container">
+                <!-- Required Message -->
+                <ng-container
+                    *ngIf="!shipper && !shipperAddress && state === 'invalid'"
                 >
-                    <p [ngStyle]="{ color: '#F44336' }">Required</p>
-                </div>
-                <div
-                    *ngIf="!shipperAddress && state === 'invalid'"
-                    class="load-stop-content-down"
-                >
-                    <p [ngStyle]="{ color: '#EF5350' }">
-                        Fill all necessary fields
-                    </p>
-                </div>
-
-                <div
-                    *ngIf="shipper"
-                    class="load-stop-content-up load-stop-content-up-name"
-                >
-                    <p>{{ shipper }}</p>
-                </div>
-                <div *ngIf="shipperAddress" class="load-stop-content-down">
-                    <p>{{ shipperAddress }}</p>
-                </div>
+                    <div class="load-stop-content-up load-stop-content-up-name">
+                        <p [ngStyle]="{ color: '#F44336' }">Required</p>
+                    </div>
+                    <div class="load-stop-content-down">
+                        <p [ngStyle]="{ color: '#EF5350' }">
+                            Fill all necessary fields
+                        </p>
+                    </div>
+                </ng-container>
+                <!-- Data -->
+                <ng-container *ngIf="shipper && shipperAddress">
+                    <div class="load-stop-content-up load-stop-content-up-name">
+                        <p>{{ shipper }}</p>
+                    </div>
+                    <div class="load-stop-content-down">
+                        <p>{{ shipperAddress }}</p>
+                    </div>
+                </ng-container>
             </div>
 
             <!-- Date, Time -->
-            <div class="load-stop-inner-content">
-                <div
-                    *ngIf="!dateRange && state === 'invalid'"
-                    class="load-stop-content-up load-stop-content-up-name"
+            <div class="load-stop-inner-content second-container">
+                <!-- Required Message -->
+                <ng-container
+                    *ngIf="(!dateRange || !timeRange) && state === 'invalid'"
                 >
-                    <p [ngStyle]="{ color: '#F44336' }">Required</p>
-                </div>
-                <div
-                    *ngIf="!timeRange && state === 'invalid'"
-                    class="load-stop-content-down"
-                >
-                    <p [ngStyle]="{ color: '#EF5350' }">
-                        Fill all necessary fields
-                    </p>
-                </div>
-                <div
-                    *ngIf="dateRange"
-                    class="load-stop-content-up load-stop-content-up-datetime"
-                >
-                    <p>{{ dateRange }}</p>
-                </div>
-                <div *ngIf="timeRange" class="load-stop-content-down">
-                    <p>{{ timeRange }}</p>
-                </div>
+                    <div class="load-stop-content-up load-stop-content-up-name">
+                        <p [ngStyle]="{ color: '#F44336' }">Required</p>
+                    </div>
+                    <div class="load-stop-content-down">
+                        <p [ngStyle]="{ color: '#EF5350' }">
+                            Fill all necessary fields
+                        </p>
+                    </div>
+                </ng-container>
+                <!-- Data -->
+                <ng-container *ngIf="dateRange && timeRange">
+                    <div
+                        class="load-stop-content-up load-stop-content-up-datetime"
+                    >
+                        <p>{{ dateRange }}</p>
+                    </div>
+                    <div class="load-stop-content-down">
+                        <p>{{ timeRange }}</p>
+                    </div>
+                </ng-container>
             </div>
 
             <!-- Leg, Deadhead, Shipper Contact -->
-            <div class="load-stop-inner-content">
+            <div class="load-stop-inner-content third-container">
                 <div
-                    *ngIf="legMile"
                     class="load-stop-content-up load-stop-content-up-deadhead"
+                    [ngStyle]="{ visibility: legMile ? 'visible' : 'hidden' }"
                 >
                     <p>
                         {{ isEmptyLoad ? 'DEADHEAD' : 'LEG' }}

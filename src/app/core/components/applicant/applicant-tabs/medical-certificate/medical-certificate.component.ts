@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 
 import { Subject, takeUntil } from 'rxjs';
@@ -36,7 +36,7 @@ export class MedicalCertificateComponent implements OnInit, OnDestroy {
 
     public isValidLoad: boolean;
 
-    public medicalCertificateForm: FormGroup;
+    public medicalCertificateForm: UntypedFormGroup;
 
     public applicantId: number;
     public medicalCertificateId: number | null = null;
@@ -72,7 +72,7 @@ export class MedicalCertificateComponent implements OnInit, OnDestroy {
 
     constructor(
         private route: ActivatedRoute,
-        private formBuilder: FormBuilder,
+        private formBuilder: UntypedFormBuilder,
         private inputService: TaInputService,
         private router: Router,
         private applicantStore: ApplicantStore,
@@ -130,7 +130,6 @@ export class MedicalCertificateComponent implements OnInit, OnDestroy {
     public patchStepValues(
         stepValues: MedicalCertificateFeedbackResponse
     ): void {
-        console.log('stepValues', stepValues);
         const { issueDate, expireDate, files, id } = stepValues;
 
         this.medicalCertificateId = id;
@@ -168,7 +167,6 @@ export class MedicalCertificateComponent implements OnInit, OnDestroy {
     }
 
     public onFilesAction(event: any): void {
-        console.log('event', event);
         this.documents = event.files;
 
         this.displayDocumentsRequiredNote = false;
@@ -339,8 +337,6 @@ export class MedicalCertificateComponent implements OnInit, OnDestroy {
             }),
         };
 
-        console.log('saveData', saveData);
-
         const selectMatchingBackendMethod = () => {
             if (
                 this.selectedMode === SelectedMode.APPLICANT &&
@@ -408,8 +404,6 @@ export class MedicalCertificateComponent implements OnInit, OnDestroy {
                 };
             }),
         };
-
-        console.log('saveData', saveData);
 
         const selectMatchingBackendMethod = () => {
             if (

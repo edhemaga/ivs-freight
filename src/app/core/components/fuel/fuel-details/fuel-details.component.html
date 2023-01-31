@@ -1,7 +1,7 @@
 <div class="repair-details-container">
     <div *ngFor="let item of fuelConfig; trackBy: identity">
         <app-ta-details-header
-            [route]="'/fuel'"
+            [route]="'/list/fuel'"
             [tooltipHeaderName]="'Back to Fuel List'"
             [headerText]="item.name"
             [hasIcon]="item.icon"

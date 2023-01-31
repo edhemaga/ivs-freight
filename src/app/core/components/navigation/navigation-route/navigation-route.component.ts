@@ -9,6 +9,7 @@ import {
     OnInit,
     SimpleChanges,
     OnChanges,
+    ChangeDetectorRef,
 } from '@angular/core';
 import {
     navigation_magic_line,
@@ -34,7 +35,7 @@ export class NavigationRouteComponent implements OnInit, OnChanges {
     @Input() files: number;
     @Input() class: string;
     @Input() closeDropdownOnNavClose: boolean;
-    @Input() activeLink: boolean = false;
+
     @Input() isSettingsPanelOpen: boolean = false;
     @Input() isUserPanelOpen: boolean = false;
     @Input() isActiveFooterRoute: boolean = false;
@@ -44,9 +45,14 @@ export class NavigationRouteComponent implements OnInit, OnChanges {
     @Input() selectedRoute: string = '';
     @Input() selectedSubRoute: string = '';
     @Input() subrouteContainerOpened: boolean = false;
-
+    @Input() openedDropdown: boolean = false;
+    @Input() hideSubrouteTitle: number = -1;
     @Output() onRouteEvent = new EventEmitter<NavigationSubRoutes>();
     @Output() itemIndex = new EventEmitter<Number>();
+    @Output() routeWithSubRouteClicked = new EventEmitter<boolean>();
+    @Output() hideSubrouteFromChild = new EventEmitter<boolean>();
+    @Input() isLocalDropdownOpen: boolean = false;
+
     public activeRouteName: string;
     public activeRouteIdFromLocalStorage: number;
     public isNavItemHovered: boolean = false;
@@ -56,16 +62,34 @@ export class NavigationRouteComponent implements OnInit, OnChanges {
     public footerRouteActive: boolean;
     public footerHovered: boolean;
     public textSubRoute: string = '';
-    showToolTip: boolean;
-    routeId: string;
-    hide: number;
-    // routeName: string;
+
+    public _activeLink = undefined;
+    public activeLinkHighlight: boolean = false;
+    public showToolTip: boolean;
+    public routeId: string;
+    @Input() set activeLink(value) {
+        if (typeof this._activeLink == 'undefined' && value) {
+            this._activeLink = value;
+        } else if (typeof this._activeLink != 'undefined') {
+            this.activeLinkHighlight = value;
+        }
+    }
     constructor(
         public router: Router,
         public navigationService: NavigationService,
-        public activatedroute: ActivatedRoute
+        public activatedroute: ActivatedRoute,
+        private cdRef: ChangeDetectorRef
     ) {}
-
+    routeWithSubRoutesClick(event) {
+        console.log(event);
+        if (event != undefined) {
+            console.log(true);
+            this.routeWithSubRouteClicked.emit(true);
+        } else {
+            this.routeWithSubRouteClicked.emit(false);
+            console.log(false);
+        }
+    }
     ngOnInit() {
         this.timeout = setTimeout(() => {
             this.isActiveRouteOnReload(window.location.pathname);
@@ -81,10 +105,7 @@ export class NavigationRouteComponent implements OnInit, OnChanges {
         //     console.log(val.urlAfterRedirects);
         // });
     }
-    routeIndex(ind) {
-        this.hide = ind;
-        console.log(this.hide === this.activeRouteIdFromLocalStorage);
-    }
+
     //Get subroute name
     ngOnChanges(changes: SimpleChanges) {
         // console.log(this.ind, this.index);
@@ -111,7 +132,9 @@ export class NavigationRouteComponent implements OnInit, OnChanges {
     public hoveredArrow(event) {
         this.arrowHovered = event;
     }
-    public onRouteAction() {
+    public onRouteAction(ind?) {
+        ind && this.hideSubrouteFromChild.emit(ind);
+
         this.onRouteEvent.emit({
             routeId: this.route.id,
             routes: this.route.route,

@@ -425,8 +425,11 @@ p {
 }
 .card-pdf {
     padding: 0 5px;
-    margin-bottom: 16px;
-    padding-bottom: 16px;
+    margin-bottom: 12px;
+
+    &.extended {
+        margin-bottom: 30px;
+    }
 
     &.disabled {
         height: 0 !important;
@@ -919,7 +922,7 @@ p {
 .note-cards {
     .note-body {
         // height: 40px !important;
-        padding: 0 2px !important;
+        padding-right: 2px !important;
         // margin-bottom: 7px !important;
         .note-textarea {
             color: #6c6c6c !important;

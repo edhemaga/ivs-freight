@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { HttpResponseBase } from '@angular/common/http';
 
@@ -32,14 +32,14 @@ import { SignupUserCommand } from 'appcoretruckassist/model/models';
 export class RegisterUserComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
 
-    public registerUserForm!: FormGroup;
+    public registerUserForm!: UntypedFormGroup;
 
     private signUpUserCode: string;
 
     public copyrightYear!: number;
 
     constructor(
-        private formBuilder: FormBuilder,
+        private formBuilder: UntypedFormBuilder,
         private inputService: TaInputService,
         private authStoreService: AuthStoreService,
         private notification: NotificationService,

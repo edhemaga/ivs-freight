@@ -79,7 +79,7 @@
                             <div
                                 class="circles-holder truck_{{
                                     'truck'
-                                        | colorFinder: item.truck.truckType.id
+                                        | colorFinder : item.truck.truckType.id
                                 }}"
                                 *ngIf="item.truck"
                             >
@@ -159,7 +159,7 @@
                         cdkDropList
                         [cdkDropListSortPredicate]="trailerPositionPrediction"
                         (cdkDropListDropped)="dropTrailer($event, rowIndex)"
-                        id="{{ rowIndex | cdkid: gridIndex:'trailer' }}"
+                        id="{{ rowIndex | cdkid : gridIndex : 'trailer' }}"
                         [cdkDropListData]="dData"
                         [cdkDropListConnectedTo]="
                             rowIndex
@@ -301,7 +301,7 @@
                         [class.filled]="item.driver"
                         cdkDropList
                         (cdkDropListDropped)="dropDriver($event, rowIndex)"
-                        id="{{ rowIndex | cdkid: gridIndex:'driver' }}"
+                        id="{{ rowIndex | cdkid : gridIndex : 'driver' }}"
                         [cdkDropListData]="dData"
                         [cdkDropListConnectedTo]="
                             rowIndex
@@ -806,13 +806,12 @@
                         class="main_inside parking-field-new {{
                             item.parkingSlot ? 'filled' : 'addNew'
                         }} "
-
                         [class.unassigned]="!item.parkingSlot"
                     >
                         <div
                             class="padding-inside"
                             *ngIf="openParkingDropdown != rowIndex"
-                        > 
+                        >
                             <!-- <div class="info-item">
                                 <div class="parking-field d-flex">
                                     <svg-icon
@@ -853,7 +852,7 @@
                                     hideDangerMark: true,
                                     hideErrorMessage: true,
                                     mergedDropdown: true,
-                                    transformText: 'capitalize',
+                                    textTransform: 'capitalize',
                                     dropdownWidthClass: 'w-col-98'
                                 }"
                                 [canAddNew]="true"
@@ -893,6 +892,7 @@
                                 [dispatchIndex]="rowIndex"
                                 [parking]="false"
                                 [noteWidth]="213"
+                                [parentWidth]="'.note-field'"
                                 [type]="'dark'"
                                 (saveNoteValue)="saveNoteValue($event)"
                             >
@@ -995,7 +995,7 @@
                         cdkDropList
                         [cdkDropListSortPredicate]="trailerPositionPrediction"
                         (cdkDropListDropped)="dropTrailer($event, -1)"
-                        id="{{ -1 | cdkid: gridIndex:'trailer' }}"
+                        id="{{ -1 | cdkid : gridIndex : 'trailer' }}"
                         [cdkDropListData]="dData"
                         [cdkDropListConnectedTo]="
                             -1
@@ -1071,7 +1071,7 @@
                         class="main_inside"
                         cdkDropList
                         (cdkDropListDropped)="dropDriver($event, -1)"
-                        id="{{ -1 | cdkid: gridIndex:'driver' }}"
+                        id="{{ -1 | cdkid : gridIndex : 'driver' }}"
                         [cdkDropListData]="dData"
                         [cdkDropListConnectedTo]="
                             -1
@@ -1284,7 +1284,7 @@
                 #firstList="cdkDropList"
                 (cdkDropListDropped)="dropHosList($event, data)"
                 [cdkDropListConnectedTo]="[secondList]"
-                [cdkDropListData]="openedHosData | hosFilter: 'off'"
+                [cdkDropListData]="openedHosData | hosFilter : 'off'"
                 cdkDropList
                 class="ngx-slider-list"
             >
@@ -1294,7 +1294,7 @@
                     cdkDragPreviewContainer="parent"
                     class="ngx-slider-item off-items"
                     *ngFor="
-                        let item of openedHosData | hosFilter: 'off';
+                        let item of openedHosData | hosFilter : 'off';
                         let i = index
                     "
                 >
@@ -1348,7 +1348,7 @@
                 #secondList="cdkDropList"
                 (cdkDropListDropped)="dropHosList($event, data)"
                 [cdkDropListConnectedTo]="[firstList]"
-                [cdkDropListData]="openedHosData | hosFilter: 'on'"
+                [cdkDropListData]="openedHosData | hosFilter : 'on'"
                 cdkDropList
                 class="ngx-slider-list"
             >
@@ -1358,7 +1358,7 @@
                     cdkDragPreviewContainer="parent"
                     class="ngx-slider-item on-items"
                     *ngFor="
-                        let item of openedHosData | hosFilter: 'on';
+                        let item of openedHosData | hosFilter : 'on';
                         let i = index
                     "
                 >

@@ -48,12 +48,15 @@ export class NavigationComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
     public subrouteContainerOpened: boolean = false;
     public index: number;
+    public openedDropdown: boolean = false;
+    public hideSubrouteTitle: number = -1;
     closeDropdownOnNavClose: boolean;
     @ViewChild('navbar') navbar: ElementRef;
     selectedRoute: string = '';
     selectedSubRoute: string = '';
     companiesExists: boolean;
     routeIndexSelected: boolean;
+    subrouteClicked: boolean = false;
     constructor(
         private cdRef: ChangeDetectorRef,
         private router: Router,
@@ -61,7 +64,9 @@ export class NavigationComponent implements OnInit, OnDestroy {
         private DetailsDataService: DetailsDataService,
         private activatedRoute: ActivatedRoute
     ) {}
-
+    hideSubrouteFromChild($event) {
+        this.hideSubrouteTitle = $event;
+    }
     ngOnInit(): void {
         this.navigationService.getValueNavHovered().subscribe((value) => {
             this.middleIsHovered = value;
@@ -82,6 +87,7 @@ export class NavigationComponent implements OnInit, OnDestroy {
                             this.isUserPanelOpen = false;
                             this.isSettingsPanelOpen = false;
                             this.isUserCompanyDetailsOpen = false;
+                            this.subrouteClicked = false;
                         } else {
                             this.isModalPanelOpen = data.type;
                         }
@@ -93,6 +99,7 @@ export class NavigationComponent implements OnInit, OnDestroy {
                             this.isUserPanelOpen = false;
                             this.isUserCompanyDetailsOpen = false;
                             this.isSettingsPanelOpen = data.type;
+                            this.subrouteClicked = false;
                         } else {
                             this.isSettingsPanelOpen = data.type;
                         }
@@ -104,6 +111,7 @@ export class NavigationComponent implements OnInit, OnDestroy {
                             this.isSettingsPanelOpen = false;
                             this.isUserPanelOpen = data.type;
                             this.isUserCompanyDetailsOpen = false;
+                            this.subrouteClicked = false;
                         } else {
                             this.isUserPanelOpen = data.type;
                         }
@@ -115,6 +123,7 @@ export class NavigationComponent implements OnInit, OnDestroy {
                             this.isUserPanelOpen = false;
                             this.isSettingsPanelOpen = false;
                             this.isUserCompanyDetailsOpen = data.type;
+                            this.subrouteClicked = false;
                         } else {
                             this.isUserCompanyDetailsOpen = data.type;
                         }
@@ -190,6 +199,9 @@ export class NavigationComponent implements OnInit, OnDestroy {
         // );
         // console.log(this.navigation, 'asasfasff');
     }
+    routeWithSubRouteClicked(event) {
+        this.subrouteClicked = event;
+    }
     oneUserCompany($event) {
         this.companiesExists = $event;
         this.cdRef.detectChanges();
@@ -197,6 +209,9 @@ export class NavigationComponent implements OnInit, OnDestroy {
     routeIndex($event) {
         this.routeIndexSelected = $event;
         this.cdRef.detectChanges();
+    }
+    dropdownOpened(event) {
+        this.openedDropdown = event;
     }
     isSubrouteContainerOpen(event) {
         this.subrouteContainerOpened = event;
@@ -282,7 +297,7 @@ export class NavigationComponent implements OnInit, OnDestroy {
                 this.isActiveMagicLine = true;
                 this.isModalPanelOpen = false;
                 this.isActiveSubroute = false;
-
+                this.openedDropdown = false;
                 this.navigationService.onDropdownActivation({
                     name: 'Settings',
                     type: false,
@@ -298,6 +313,7 @@ export class NavigationComponent implements OnInit, OnDestroy {
             this.isModalPanelOpen = false;
             this.isActiveSubroute = false;
             this.isNavigationHovered = false;
+            this.openedDropdown = false;
             this.navigationService.onDropdownActivation({
                 name: 'Settings',
                 type: false,
@@ -418,11 +434,17 @@ export class NavigationComponent implements OnInit, OnDestroy {
     }
 
     public isActiveRouteOnReload(route: string): boolean {
-        let ruteName = this.router.url.split('/');
-        let t =
-            ruteName[1].charAt(0).toUpperCase() +
-            ruteName[1].substr(1).toLowerCase();
-        return route === t;
+        // console.log(route);
+        if (route == '/dispatcher') {
+            let t = 'Dispatch';
+            return route === t;
+        } else {
+            let ruteName = this.router.url.split('/');
+            let t =
+                ruteName[1].charAt(0).toUpperCase() +
+                ruteName[1].substr(1).toLowerCase();
+            return route === t;
+        }
     }
 
     public identity(index, item): number {

@@ -12,7 +12,7 @@
                 ></app-profile-images>
                 <div class="marker-business-name text-ellipsis">
                     {{ title }}
-                    <ng-container *ngIf="type == 'fuelStop'">- {{ item.store }}</ng-container>
+                    <ng-container *ngIf="type == 'fuelStop'">- {{ item?.store }}</ng-container>
                 </div>
                 <span
                     *ngIf="
@@ -173,10 +173,10 @@
         </div>
         <div
             class="marker-distance-left"
-            [ngClass]="{ 'mg-top-4': item.status == 2 }"
-            *ngIf="locationFilterOn && item.distanceBetween"
+            [ngClass]="{ 'mg-top-4': item?.status == 2 }"
+            *ngIf="locationFilterOn && item?.distanceBetween"
         >
-            <span class="marker-title">{{ item.distanceBetween }} mi </span>
+            <span class="marker-title">{{ item?.distanceBetween }} mi </span>
             <span class="marker-info-text">away </span>
             <span class="marker-time-left-text">
                 <span class="marker-bold-text">- 1 hour 27 minutes</span> est.
@@ -360,18 +360,18 @@
                     </div>
                     <div class="unit-status-text blue-text mg-top-4">
                         {{
-                            item.motionStatus == 'MOTION'
+                            item?.motionStatus == 'MOTION'
                                 ? 'Moving'
-                                : item.motionStatus == 'PARKING'
+                                : item?.motionStatus == 'PARKING'
                                 ? 'Parking'
-                                : item.motionStatus == 'EXTENDED_STOP'
+                                : item?.motionStatus == 'EXTENDED_STOP'
                                 ? 'Ext. Stop'
                                 : 'Short Stop'
                         }}
                         <span
                             class="marker-bold-text"
                             *ngIf="item?.headingString"
-                            >- {{ item.headingString }}</span
+                            >- {{ item?.headingString }}</span
                         >
                     </div>
                     <div class="marker-info-text mg-top-2">
@@ -490,13 +490,14 @@
             ></svg-icon>
             <span class="marker-info-text">{{ item?.phone }}</span>
             <span
-                [tooltipBackground]="copiedPhone ? '#536BC2' : '#6c6c6c'"
-                ngbTooltip
-                [mainTooltip]="copiedPhone ? 'Copied' : 'Copy'"
-                position="top"
                 class="tooltip-copy"
                 (click)="copyText(item?.phone, 'phone')"
+                (mouseenter)="copyHover('phone', true)"
+                (mouseleave)="copyHover('phone', false)"
             >
+                <div class="copy-tooltip" [ngClass]="{ 'active-tooltip': copiedPhone }" *ngIf="copyPhoneHover">
+                    {{ copiedPhone ? 'Copied' : 'Copy' }}
+                </div>
                 <svg-icon
                     class="copy-icon"
                     src="assets/svg/common/ic_copy.svg"
@@ -506,7 +507,7 @@
         </div>
         <div
             class="marker-info-container"
-            *ngIf="item.email"
+            *ngIf="item?.email"
             [ngClass]="{ copied: copiedEmail }"
         >
             <svg-icon
@@ -516,13 +517,14 @@
             ></svg-icon>
             <span class="marker-info-text">{{ item?.email }}</span>
             <span
-                [tooltipBackground]="copiedEmail ? '#536BC2' : '#6c6c6c'"
-                ngbTooltip
-                [mainTooltip]="copiedEmail ? 'Copied' : 'Copy'"
-                position="top"
                 class="tooltip-copy"
                 (click)="copyText(item?.email, 'email')"
+                (mouseenter)="copyHover('email', true)"
+                (mouseleave)="copyHover('email', false)"
             >
+                <div class="copy-tooltip" [ngClass]="{ 'active-tooltip': copiedEmail }" *ngIf="copyEmailHover">
+                    {{ copiedEmail ? 'Copied' : 'Copy' }}
+                </div>
                 <svg-icon
                     class="copy-icon"
                     src="assets/svg/common/ic_copy.svg"
@@ -547,7 +549,7 @@
                     </div>
                 </div>
             </div>
-            <div class="marker-dual-info-container" *ngIf="item.eventTime">
+            <div class="marker-dual-info-container" *ngIf="item?.eventTime">
                 <div class="marker-date-holder accident-date">
                     <svg-icon
                         src="assets/svg/common/ic_time.svg"
@@ -588,8 +590,8 @@
                     <div class="title-text">
                         {{
                             item?.address.city
-                                ? item.address.city
-                                : item.address.county
+                                ? item?.address.city
+                                : item?.address.county
                         }}, {{ item?.address.stateShortName
                         }}<span
                             class="title-text"
@@ -602,13 +604,14 @@
                 </div>
             </div>
             <span
-                [tooltipBackground]="copiedAddress ? '#536BC2' : '#6c6c6c'"
-                ngbTooltip
-                [mainTooltip]="copiedAddress ? 'Copied' : 'Copy'"
-                position="top"
                 class="tooltip-copy"
                 (click)="copyText(item?.address.address, 'address')"
+                (mouseenter)="copyHover('address', true)"
+                (mouseleave)="copyHover('address', false)"
             >
+                <div class="copy-tooltip address-tooltip" [ngClass]="{ 'active-tooltip': copiedAddress }" *ngIf="copyAddressHover">
+                    {{ copiedAddress ? 'Copied' : 'Copy' }}
+                </div>
                 <svg-icon
                     class="copy-icon"
                     src="assets/svg/common/ic_copy.svg"
@@ -723,16 +726,16 @@
                         <div
                             class="marker-info-text"
                             *ngIf="
-                                item.openHours && item.openHours[6]?.startTime
+                                item?.openHours && item?.openHours[6]?.startTime
                             "
                         >
-                            {{ item.openHours[6].startTime }} -
-                            {{ item.openHours[6].endTime }}
+                            {{ item?.openHours[6].startTime }} -
+                            {{ item?.openHours[6].endTime }}
                         </div>
                         <div
                             class="marker-info-text"
                             *ngIf="
-                                !item.openHours || !item.openHours[6]?.startTime
+                                !item?.openHours || !item?.openHours[6]?.startTime
                             "
                         >
                             Closed
@@ -753,20 +756,20 @@
                         <div
                             class="marker-info-text"
                             *ngIf="
-                                item.openHours[0].startTime &&
-                                item.openHours[0].startTime != 'null' &&
-                                item.openHours[0].startTime != 'Invalid date'
+                                item?.openHours[0]?.startTime &&
+                                item?.openHours[0]?.startTime != 'null' &&
+                                item?.openHours[0]?.startTime != 'Invalid date'
                             "
                         >
-                            {{ item.openHours[0].startTime }} -
-                            {{ item.openHours[0].endTime }}
+                            {{ item?.openHours[0]?.startTime }} -
+                            {{ item?.openHours[0]?.endTime }}
                         </div>
                         <div
                             class="marker-info-text"
                             *ngIf="
-                                !item.openHours[0].startTime ||
-                                item.openHours[0].startTime == 'null' ||
-                                item.openHours[0].startTime == 'Invalid date'
+                                !item?.openHours[0]?.startTime ||
+                                item?.openHours[0]?.startTime == 'null' ||
+                                item?.openHours[0]?.startTime == 'Invalid date'
                             "
                         >
                             Closed
@@ -828,13 +831,13 @@
                         <app-ta-counter
                             [count]="
                                 type == 'shipper'
-                                    ? '769'
+                                    ? (item?.pickups + item?.deliveries)
                                     : type == 'repairShop'
-                                    ? item.order
+                                    ? item?.order
                                     : type == 'accident' || type == 'inspection'
                                     ? '9'
                                     : type == 'fuelStop'
-                                    ? (item.fuelTransactions ? item.fuelTransactions.length : '769')
+                                    ? (item?.fuelTransactions ? item?.fuelTransactions.length : '769')
                                     : ''
                             "
                             [countBackground]="'#424242'"
@@ -851,7 +854,7 @@
                     *ngIf="type == 'repairShop' || type == 'fuelStop'"
                 >
                     <span class="marker-bold-text blue-text"
-                        >${{ item.totalCost != null ? item.totalCost : item.cost != null ? item.cost : '0' }} </span
+                        >${{ item?.totalCost != null ? item?.totalCost : item?.cost != null ? item?.cost : '0' }} </span
                     ><span class="load-text font-weight-normal">Cost</span>
                 </div>
             </div>
@@ -861,16 +864,20 @@
             >
                 <div class="marker-dual-info-container">
                     <div class="marker-info-text mg-bottom-4">
-                        <span class="marker-bold-text">632</span> Picked Up
+                        <span class="marker-bold-text">{{ item?.pickups }}</span> Picked Up
                     </div>
                     <div class="marker-like-text">
                         Avg. Loading
-                        <span class="marker-bold-text">22m 37s</span>
+                        <span class="marker-bold-text">{{ item?.avgPickupTime != null ? item?.avgPickupTime : '0m' }}</span>
                     </div>
                 </div>
                 <div class="marker-dual-info-container">
-                    <div class="marker-info-text">
-                        <span class="marker-bold-text">127</span> Delivered
+                    <div class="marker-info-text mg-bottom-4">
+                        <span class="marker-bold-text">{{ item?.deliveries }}</span> Delivered
+                    </div>
+                    <div class="marker-like-text">
+                        Avg. Offloading
+                        <span class="marker-bold-text">{{ item?.avgDeliveryTime != null ? item?.avgDeliveryTime : '0m' }}</span>
                     </div>
                 </div>
             </div>
@@ -908,7 +915,7 @@
                     <div class="marker-like-text marker-bold-text mg-bottom-4">
                         {{ item?.status == 2 ? 'Perm. Closed' : 'Last Used' }}
                     </div>
-                    <div class="marker-info-text">{{ item.lastUsed != null ? item.lastUsed : '&nbsp;' }}</div>
+                    <div class="marker-info-text">{{ item?.lastUsed != null ? item?.lastUsed : '&nbsp;' }}</div>
                 </div>
             </div>
         </div>
@@ -924,20 +931,20 @@
                     <div class="marker-info-text driver-name-container">
                         <app-profile-images
                             [indx]="1"
-                            [size]="item.coDriver ? 'medium' : 'small'"
-                            [name]="item.driverFullName"
+                            [size]="item?.coDriver ? 'medium' : 'small'"
+                            [name]="item?.driverFullName"
                             [type]="'driver'"
                         ></app-profile-images>
                         <span class="title-text mg-left-6"
                             >{{ item?.firstName }}
-                            <br class="title-text" *ngIf="item.coDriver" />
-                            {{ item.lastName }}</span
+                            <br class="title-text" *ngIf="item?.coDriver" />
+                            {{ item?.lastName }}</span
                         >
                     </div>
                 </div>
                 <div
                     class="marker-dual-info-container mg-bottom-4"
-                    *ngIf="item.coDriver"
+                    *ngIf="item?.coDriver"
                 >
                     <div class="marker-like-text marker-bold-text mg-bottom-4">
                         Co-Driver
@@ -946,12 +953,12 @@
                         <app-profile-images
                             [indx]="0"
                             [size]="'medium'"
-                            [name]="item.driverFullName"
+                            [name]="item?.driverFullName"
                             [type]="'driver'"
                         ></app-profile-images>
                         <span class="title-text mg-left-6"
                             >{{ item?.firstName }} <br class="title-text" />
-                            {{ item.lastName }}</span
+                            {{ item?.lastName }}</span
                         >
                     </div>
                 </div>
@@ -1024,7 +1031,7 @@
         <div
             class="cluster-list-item"
             (click)="openClusterItemInfo(item2)"
-            *ngFor="let item2 of item.pagination.data"
+            *ngFor="let item2 of item?.pagination.data"
         >
             <span class="cluster-list-name">{{ item2.name }}</span>
             

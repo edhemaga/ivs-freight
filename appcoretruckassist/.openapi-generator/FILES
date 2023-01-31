@@ -47,6 +47,7 @@ api/shipper.service.ts
 api/state.service.ts
 api/stop.service.ts
 api/tableConfig.service.ts
+api/tag.service.ts
 api/telematics.service.ts
 api/terminal.service.ts
 api/test.service.ts
@@ -157,6 +158,7 @@ model/companyAccountModalResponse.ts
 model/companyAccountResponse.ts
 model/companyAccountResponsePagination.ts
 model/companyAdditionalInfo.ts
+model/companyAdditionalInfoResponse.ts
 model/companyContactLabelCountResponse.ts
 model/companyContactLabelCountResponsePagination.ts
 model/companyContactLabelResponse.ts
@@ -171,6 +173,7 @@ model/companyModalResponse.ts
 model/companyOfficeDepartmentContactCommand.ts
 model/companyOfficeDepartmentContactResponse.ts
 model/companyOfficeListResponse.ts
+model/companyOfficeMarkerResponse.ts
 model/companyOfficeModalResponse.ts
 model/companyOfficeResponse.ts
 model/companyOfficeResponsePagination.ts
@@ -309,6 +312,8 @@ model/drugAndAlcoholFeedbackResponse.ts
 model/drugAndAlcoholReviewResponse.ts
 model/editFuelCardCommand.ts
 model/editIntegrationCommand.ts
+model/editTagCommand.ts
+model/editTagsCommand.ts
 model/educationFeedbackResponse.ts
 model/educationReviewResponse.ts
 model/efsIntegrationConnectDisconnectCommand.ts
@@ -544,6 +549,7 @@ model/renewCdlCommand.ts
 model/reorderDispatchCommand.ts
 model/reorderDispatchesCommand.ts
 model/repairAutocompleteDescriptionResponse.ts
+model/repairCategoryFilterResponse.ts
 model/repairItemResponse.ts
 model/repairListResponse.ts
 model/repairModalResponse.ts
@@ -626,6 +632,7 @@ model/switchDispatchCommand.ts
 model/switchDispatchesCommand.ts
 model/tableConfigResponse.ts
 model/tableType.ts
+model/tagResponse.ts
 model/terminalListResponse.ts
 model/terminalResponse.ts
 model/terminalResponsePagination.ts

@@ -1,3 +1,3 @@
 <div class="tooltipholder" *ngIf="show">
-    <span class="tooltiptext">{{ name }}</span>
+    <span [ngClass]="{ tooltiptext: show }">{{ name }}</span>
 </div>

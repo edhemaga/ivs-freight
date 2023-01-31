@@ -1,120 +1,234 @@
 <div class="payroll-table-main">
-    <table>
+    <table class="{{tableAddClas}}">
         <thead>
             <tr>
-                <th *ngFor="let h of tableSettings">
-                    <div class="thead-box d-flex">
-                        <div class="thead-border {{h.hasBorder}}" *ngIf="h.hasBorder"></div>
-                        <div class="field-subtitle">{{h.textAbove}}</div>
-                        <div class="field-title">{{ h.field }}</div>
-                    </div>
-                </th>
+                <ng-container *ngFor="let h of tableSettings">
+                    <th
+                        *ngIf="
+                            expandedTable ||
+                            (!expandedTable && !h.hideNotExpanded)
+                        "
+                    >
+                        <div class="thead-box d-flex">
+                            <div
+                                class="thead-border {{ h.hasBorder }}"
+                                *ngIf="h.hasBorder"
+                            ></div>
+                            <div class="field-subtitle">{{ h.textAbove }}</div>
+                            <div class="field-title">{{ h.field }}</div>
+                        </div>
+                    </th>
+                </ng-container>
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let tr of tableData">
-                <td *ngFor="let h of tableSettings">
-                    <div class="table-box" [ngSwitch]="h.template">
-                        <div class="table-hold-box" *ngSwitchCase="'bold-normal-template'">
-                            <div class="bold-normal-template" [innerHTML]="tr | payrolltablepipe : h"></div>
-                        </div>
+            <ng-container *ngFor="let tr of tableData; let rowIndex = index">
+                <tr (click)="openReport(tr)">
+                    <ng-container *ngFor="let h of tableSettings">
+                        <td
+                            *ngIf="
+                                expandedTable ||
+                                (!expandedTable && !h.hideNotExpanded)
+                            "
+                        >
+                            <div class="table-box" [ngSwitch]="h.template">
+                                <div
+                                    class="table-hold-box"
+                                    *ngSwitchCase="'bold-normal-template'"
+                                >
+                                    <div
+                                        class="bold-normal-template"
+                                        [innerHTML]="tr | payrolltablepipe : h"
+                                    ></div>
+                                </div>
 
-                        <div class="table-hold-box" *ngSwitchCase="'status-template'">
-                            <div class="status-template d-flex">
-                                <svg-icon
-                                    src="assets/svg/common/ic_danger.svg"
-                                ></svg-icon>
-                                <span>444 DAYS</span>
+                                <div
+                                    class="table-hold-box"
+                                    *ngSwitchCase="'status-template'"
+                                >
+                                    <div class="status-template d-flex">
+                                        <svg-icon
+                                            src="assets/svg/common/ic_danger.svg"
+                                        ></svg-icon>
+                                        <span>444 DAYS</span>
+                                    </div>
+                                </div>
+
+                                <div
+                                    class="table-hold-box d-flex"
+                                    *ngSwitchCase="'bold-image-template'"
+                                >
+                                    <app-profile-images
+                                        [indx]="rowIndex"
+                                        [name]="tr | payrolltablepipe : h"
+                                        [size]="'small'"
+                                        [withTooltip]="false"
+                                    ></app-profile-images>
+                                    <div
+                                        class="bold-normal-template image-right"
+                                        [innerHTML]="tr | payrolltablepipe : h"
+                                    ></div>
+                                </div>
+
+                                <div
+                                    class="table-hold-box"
+                                    *ngSwitchCase="'pickup-template'"
+                                >
+                                    <div class="pick-load-box">
+                                        {{ tr.pickup.pickupCount }}
+                                        <svg-icon
+                                            *ngIf="tr.pickupCount < 9"
+                                            src="
+                                            assets/svg/svg_numbers/olddash/svg_num_box_{{
+                                                tr.pickupCount
+                                            }}.svg
+                                        "
+                                        ></svg-icon>
+                                        <svg-icon
+                                            *ngIf="tr.pickupCount > 9"
+                                            src="assets/svg/svg_numbers/svg_num_over.svg
+                                    "
+                                        ></svg-icon>
+                                        <div class="pick-load-info">
+                                            <div class="pick-load-info-address">
+                                                {{
+                                                    tr.pickup.shipper.address
+                                                        .city
+                                                }},
+                                                {{
+                                                    tr.pickup.shipper.address
+                                                        .stateShortName
+                                                }}
+                                            </div>
+                                            <div class="pick-load-info-time">
+                                                05/09/21
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div
+                                    class="table-hold-box"
+                                    *ngSwitchCase="'delivery-template'"
+                                >
+                                    <div class="pick-load-box delivery-box">
+                                        <svg-icon
+                                            *ngIf="tr.deliveryCount < 9"
+                                            src="
+                                            assets/svg/svg_numbers/olddash/svg_num_box_{{
+                                                tr.deliveryCount
+                                            }}.svg
+                                        "
+                                        ></svg-icon>
+                                        <svg-icon
+                                            *ngIf="tr.deliveryCount > 9"
+                                            src="assets/svg/svg_numbers/svg_num_over.svg
+                                    "
+                                        ></svg-icon>
+                                        <div class="pick-load-info">
+                                            <div class="pick-load-info-address">
+                                                {{
+                                                    tr.delivery.shipper.address
+                                                        .city
+                                                }},
+                                                {{
+                                                    tr.delivery.shipper.address
+                                                        .stateShortName
+                                                }}
+                                            </div>
+                                            <div class="pick-load-info-time">
+                                                05/09/21
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div
+                                    class="table-hold-box"
+                                    *ngSwitchCase="'medium-normal-template'"
+                                >
+                                    <div
+                                        class="medium-normal-template"
+                                        [innerHTML]="
+                                            tr | payrolltablepipe : h : rowIndex
+                                        "
+                                    ></div>
+                                </div>
+
+                                <div
+                                    class="table-hold-box"
+                                    *ngSwitchCase="'semibold-normal-template'"
+                                    [class.highlighted]="h.highlighted"
+                                >
+                                    <div
+                                        class="semibold-normal-template"
+                                        [innerHTML]="
+                                            tr | payrolltablepipe : h : rowIndex
+                                        "
+                                    ></div>
+                                </div>
+
+                                <div class="table-hold-box" *ngSwitchDefault>
+                                    <div
+                                        class="normal-template"
+                                        [innerHTML]="tr | payrolltablepipe : h"
+                                    ></div>
+                                </div>
                             </div>
-                        </div>
+                        </td>
+                    </ng-container>
+                </tr>
+                <tr *ngIf="isResizableTable" class="reorder-row">
+                    <ng-container *ngFor="let h of tableSettingsResizable">
+                        <td [attr.colspan]="h.colspan">
+                            <div class="table-box" [ngSwitch]="h.template">
+                                <div
+                                    class="table-hold-box"
+                                    *ngSwitchCase="'bold-normal-template'"
+                                    [class.highlighted-last]="h.highlighted"
+                                >
+                                    <div class="bold-normal-template">
+                                        {{ h.value }}
+                                    </div>
+                                </div>
 
-                        <div class="table-hold-box" *ngSwitchDefault>
-                            <div class="normal-template" [innerHTML]="tr | payrolltablepipe : h"></div>
-                        </div>
-                    </div>
-                </td>
+                                <div
+                                    class="table-hold-box"
+                                    *ngSwitchCase="'medium-normal-template'"
+                                >
+                                    <div class="medium-normal-template">
+                                        {{ h.value }}
+                                    </div>
+                                </div>
 
+                                <div
+                                    class="table-hold-box"
+                                    *ngSwitchCase="'medium-normal-template'"
+                                >
+                                    <div class="medium-normal-template">
+                                        {{ h.value }}
+                                    </div>
+                                </div>
 
-                <!-- 
-                <td>
-                    <div class="table-box">
-                        <div class="table-hold-box">
-                            <div class="bold-normal-template">5240C</div>
-                        </div>
-                    </div>
-                </td>
-                <td>
-                    <div class="table-box">
-                        <div class="table-hold-box">
-                            <div class="bold-normal-template">
-                                Aleksandar Djordjevic
+                                <div
+                                    class="table-hold-box"
+                                    *ngSwitchCase="'semibold-normal-template'"
+                                >
+                                    <div class="semibold-normal-template">
+                                        {{ h.value }}
+                                    </div>
+                                </div>
+
+                                <div class="table-hold-box" *ngSwitchDefault>
+                                    <div class="normal-template">
+                                        {{ h.value }}
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                    </div>
-                </td>
-                <td>
-                    <div class="table-box">
-                        <div class="table-hold-box">
-                            <div class="normal-template">LA59OSK</div>
-                        </div>
-                    </div>
-                </td>
-                <td>
-                    <div class="table-box">
-                        <div class="table-hold-box">
-                            <div class="normal-template">04/05/24</div>
-                        </div>
-                    </div>
-                </td>
-                <td>
-                    <div class="table-box">
-                        <div class="table-hold-box">
-                            <div class="normal-template">5</div>
-                        </div>
-                    </div>
-                </td>
-                <td>
-                    <div class="table-box">
-                        <div class="table-hold-box">
-                            <div class="normal-template">$50,326.57</div>
-                        </div>
-                    </div>
-                </td>
-                <td>
-                    <div class="table-box">
-                        <div class="table-hold-box">
-                            <div class="normal-template">17.5%</div>
-                        </div>
-                    </div>
-                </td>
-                <td>
-                    <div class="table-box">
-                        <div class="table-hold-box">
-                            <div class="normal-template">$1,842.06</div>
-                        </div>
-                    </div>
-                </td>
-                <td>
-                    <div class="table-box">
-                        <div class="table-hold-box">
-                            <div class="bold-normal-template">$2,146.92</div>
-                        </div>
-                    </div>
-                </td>
-                <td>
-                    <div class="table-box">
-                        <div class="table-hold-box">
-                            <div class="status-template d-flex">
-                                <svg-icon
-                                    src="assets/svg/common/ic_danger.svg"
-                                ></svg-icon>
-                                <span>444 DAYS</span>
-                            </div>
-                        </div>
-                    </div>
-                </td> 
-                -->
-            </tr>
+                        </td>
+                    </ng-container>
+                </tr>
+            </ng-container>
         </tbody>
     </table>
 </div>

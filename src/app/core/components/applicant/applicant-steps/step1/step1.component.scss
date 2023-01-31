@@ -577,7 +577,7 @@
         margin-bottom: 20px;
 
         .question-container {
-            margin-bottom: 12px;
+            margin-bottom: 8px;
             position: relative;
 
             &:last-child {
@@ -594,6 +594,8 @@
             .required {
                 font-size: 11px;
                 color: $ta-red-2;
+                visibility: hidden;
+                opacity: 0;
 
                 &::-moz-selection {
                     color: $ta-red-2;
@@ -604,6 +606,11 @@
                     color: $ta-red-2;
                     background: rgb(239, 83, 80, 0.2);
                 }
+            }
+
+            .required-active {
+                visibility: visible;
+                opacity: 1;
             }
 
             .question-title {
@@ -677,7 +684,7 @@
 
         .explain-container {
             width: 616px;
-            margin-top: 12px;
+            margin-top: 4px;
         }
     }
 
@@ -744,12 +751,6 @@
                 }
             }
         }
-    }
-
-    .required-note {
-        font-size: 10px;
-        color: $progress-danger;
-        line-height: 3px;
     }
 }
 

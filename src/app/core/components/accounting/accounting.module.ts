@@ -8,6 +8,9 @@ import { AccountingPayrollComponent } from './accounting-payroll/accounting-payr
 import { TruckassistTableModule } from '../shared/truckassist-table/truckassist-table.module';
 import { PayrollTableComponent } from './payroll/payroll/payroll-table/payroll-table.component';
 import { PayrollTablePipe } from './payroll/payroll/pipe/payroll-table.pipe';
+import { PayrollReportComponent } from './payroll/payroll/payroll-report/payroll-report.component';
+import { PayrollSmallTablesComponent } from './payroll/payroll/payroll-small-tables/payroll-small-tables.component';
+import { AngularSvgIconModule } from 'angular-svg-icon';
 
 @NgModule({
     declarations: [
@@ -15,15 +18,17 @@ import { PayrollTablePipe } from './payroll/payroll/pipe/payroll-table.pipe';
         PayrollComponent,
         AccountingPayrollComponent,
         PayrollTableComponent,
-        PayrollTablePipe
+        PayrollTablePipe,
+        PayrollReportComponent,
+        PayrollSmallTablesComponent
     ],
     imports: [
         CommonModule,
         AccountingRoutingModule,
         SharedModule,
-        TruckassistTableModule
+        TruckassistTableModule,
+        AngularSvgIconModule
     ],
-    entryComponents: [AccountingIndexComponent],
-    exports: [AccountingIndexComponent]
+    exports: [AccountingIndexComponent, PayrollTableComponent]
 })
 export class AccountingModule {}

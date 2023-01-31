@@ -36,6 +36,9 @@
             cursor: pointer;
             top: -2px;
             position: relative;
+            width: 20px;
+            height: 20px;
+            right: -4px;
             svg {
                 position: relative;
                 top: 50%;
@@ -115,5 +118,11 @@
                 }
             }
         }
+    }
+}
+@media only screen and (max-height: 800px) {
+    .modal-nav-panel {
+        height: 500px;
+        overflow-y: scroll;
     }
 }

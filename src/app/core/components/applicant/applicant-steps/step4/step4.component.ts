@@ -1,5 +1,11 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import {
+    AfterContentChecked,
+    ChangeDetectorRef,
+    Component,
+    OnDestroy,
+    OnInit,
+} from '@angular/core';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 
 import { Subject, takeUntil } from 'rxjs';
@@ -37,12 +43,12 @@ import {
     templateUrl: './step4.component.html',
     styleUrls: ['./step4.component.scss'],
 })
-export class Step4Component implements OnInit, OnDestroy {
+export class Step4Component implements OnInit, OnDestroy, AfterContentChecked {
     private destroy$ = new Subject<void>();
 
     public selectedMode: string = SelectedMode.APPLICANT;
 
-    public accidentForm: FormGroup;
+    public accidentForm: UntypedFormGroup;
 
     public formStatus: string = 'INVALID';
     public markFormInvalid: boolean;
@@ -87,11 +93,12 @@ export class Step4Component implements OnInit, OnDestroy {
     public isFeedbackValueUpdated: boolean = false;
 
     constructor(
-        private formBuilder: FormBuilder,
+        private formBuilder: UntypedFormBuilder,
         private router: Router,
         private applicantActionsService: ApplicantActionsService,
         private applicantStore: ApplicantStore,
-        private applicantQuery: ApplicantQuery
+        private applicantQuery: ApplicantQuery,
+        private changeDetectorRef: ChangeDetectorRef
     ) {}
 
     ngOnInit(): void {
@@ -102,6 +109,10 @@ export class Step4Component implements OnInit, OnDestroy {
         this.getDropdownLists();
 
         this.hasNoAccidents();
+    }
+
+    ngAfterContentChecked(): void {
+        this.changeDetectorRef.detectChanges();
     }
 
     public trackByIdentity = (index: number, _): number => index;

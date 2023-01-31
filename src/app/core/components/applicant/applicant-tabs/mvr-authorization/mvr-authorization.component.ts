@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 
@@ -36,8 +36,8 @@ export class MvrAuthorizationComponent implements OnInit, OnDestroy {
 
     public isValidLoad: boolean;
 
-    public mvrAuthorizationForm: FormGroup;
-    public dontHaveMvrForm: FormGroup;
+    public mvrAuthorizationForm: UntypedFormGroup;
+    public dontHaveMvrForm: UntypedFormGroup;
 
     public applicantId: number;
     public mvrAuthId: number | null = null;
@@ -46,7 +46,7 @@ export class MvrAuthorizationComponent implements OnInit, OnDestroy {
     public stepHasValues: boolean = false;
     public stepHasReviewValues: boolean = false;
 
-    public lastValidLicense: any;
+    public licences: any = [];
 
     public previousStepValues: any;
 
@@ -74,7 +74,7 @@ export class MvrAuthorizationComponent implements OnInit, OnDestroy {
     public hasIncorrectFields: boolean = false;
 
     constructor(
-        private formBuilder: FormBuilder,
+        private formBuilder: UntypedFormBuilder,
         private inputService: TaInputService,
         private router: Router,
         private applicantStore: ApplicantStore,
@@ -93,6 +93,8 @@ export class MvrAuthorizationComponent implements OnInit, OnDestroy {
 
         this.requestDrivingRecordFromEmployer();
     }
+
+    public trackByIdentity = (index: number, _: any): number => index;
 
     private createForm(): void {
         this.mvrAuthorizationForm = this.formBuilder.group({
@@ -123,26 +125,20 @@ export class MvrAuthorizationComponent implements OnInit, OnDestroy {
                 if (res && res.id == this.queryParamId) {
                     this.isValidLoad = true;
 
+                    this.applicantId = res.id;
+
                     const personalInfo = res.personalInfo;
                     const cdlInformation = res.cdlInformation;
 
-                    const lastLicenseAdded =
-                        cdlInformation?.licences[
-                            cdlInformation.licences.length - 1
-                        ];
-
-                    this.lastValidLicense = {
-                        license: lastLicenseAdded?.licenseNumber,
-                        state: lastLicenseAdded?.state?.stateShortName,
-                        classType: lastLicenseAdded?.classType?.name,
-                        expDate: convertDateFromBackend(
-                            lastLicenseAdded?.expDate
-                        ),
-                    };
-
-                    this.lastValidLicense.name = personalInfo?.fullName;
-
-                    this.applicantId = res.id;
+                    this.licences = cdlInformation?.licences.map((item) => {
+                        return {
+                            license: item.licenseNumber,
+                            state: item.state?.stateShortName,
+                            classType: item.classType?.name,
+                            expDate: convertDateFromBackend(item?.expDate),
+                            name: personalInfo?.fullName,
+                        };
+                    });
 
                     if (res.mvrAuth) {
                         this.patchStepValues(res.mvrAuth);
@@ -158,7 +154,6 @@ export class MvrAuthorizationComponent implements OnInit, OnDestroy {
     }
 
     public patchStepValues(stepValues: MvrAuthFeedbackResponse): void {
-        console.log('stepValues', stepValues);
         const {
             isEmployee,
             isPeriodicallyObtained,
@@ -468,8 +463,6 @@ export class MvrAuthorizationComponent implements OnInit, OnDestroy {
             }),
         };
 
-        console.log('saveData', saveData);
-
         const selectMatchingBackendMethod = () => {
             if (
                 this.selectedMode === SelectedMode.APPLICANT &&
@@ -542,8 +535,6 @@ export class MvrAuthorizationComponent implements OnInit, OnDestroy {
                   })
                 : [],
         };
-
-        console.log('saveData', saveData);
 
         const selectMatchingBackendMethod = () => {
             if (

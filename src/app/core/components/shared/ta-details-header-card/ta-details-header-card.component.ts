@@ -8,7 +8,7 @@ import {
     SimpleChanges,
     ViewEncapsulation,
 } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { UntypedFormControl } from '@angular/forms';
 import { DriversMinimalListQuery } from '../../driver/state/driver-details-minimal-list-state/driver-minimal-list.query';
 import { DriversItemStore } from '../../driver/state/driver-details-state/driver-details.store';
 
@@ -42,7 +42,7 @@ export class TaDetailsHeaderCardComponent implements OnInit, OnChanges {
     @Input() public dateChecked: string = '';
     @Input() public lastEdit: string = '';
     @Input() public haveDropSVG: boolean;
-    public inputFormControl: FormControl = new FormControl();
+    public inputFormControl: UntypedFormControl = new UntypedFormControl();
     public driversList: any[] = this.driverMinimalQuery.getAll();
     public selectedDropdown: boolean = false;
     public selectedDropdownSecond: boolean = false;

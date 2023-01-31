@@ -1,4 +1,4 @@
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormArray, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { distinctUntilChanged, Subject, takeUntil } from 'rxjs';
 import { Options } from '@angular-slider/ngx-slider';
 import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
@@ -41,6 +41,7 @@ import {
     convertNumberInThousandSep,
     convertThousanSepInNumber,
 } from '../../../utils/methods.calculations';
+import { EditTagsService } from 'src/app/core/services/shared/editTags.service';
 
 @Component({
     selector: 'app-driver-modal',
@@ -52,7 +53,7 @@ import {
 export class DriverModalComponent implements OnInit, OnDestroy {
     @ViewChild(TaTabSwitchComponent) tabSwitch: TaTabSwitchComponent;
     @Input() editData: any;
-    public driverForm: FormGroup;
+    public driverForm: UntypedFormGroup;
     public labelsBank: any[] = [];
     public labelsPayType: any[] = [];
     public isOwner: boolean = false;
@@ -122,26 +123,28 @@ export class DriverModalComponent implements OnInit, OnDestroy {
         dropZoneType: 'files',
         dropZoneSvg: 'assets/svg/common/ic_files_dropzone.svg',
         dropZoneAvailableFiles:
-            'application/pdf, application/png, application/jpg',
+            'application/pdf, image/png, image/jpeg, image/jpg',
         multiple: true,
-        globalDropZone: false,
+        globalDropZone: true,
     };
     public longitude: number;
     public latitude: number;
+    public tags: any[] = [];
     private destroy$ = new Subject<void>();
 
     constructor(
-        private formBuilder: FormBuilder,
+        private formBuilder: UntypedFormBuilder,
         private inputService: TaInputService,
         private driverTService: DriverTService,
         private modalService: ModalService,
         private uploadFileService: TaUploadFileService,
         private bankVerificationService: BankVerificationService,
-        private formService: FormService
+        private formService: FormService,
+        private tagsService: EditTagsService
     ) {}
 
-    public get offDutyLocations(): FormArray {
-        return this.driverForm.get('offDutyLocations') as FormArray;
+    public get offDutyLocations(): UntypedFormArray {
+        return this.driverForm.get('offDutyLocations') as UntypedFormArray;
     }
 
     ngOnInit(): void {
@@ -374,7 +377,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                 dropZoneType: 'files',
                 dropZoneSvg: 'assets/svg/common/ic_files_dropzone.svg',
                 dropZoneAvailableFiles:
-                    'application/pdf, application/png, application/jpg',
+                    'application/pdf, image/png, image/jpeg, image/jpg',
                 multiple: true,
                 globalDropZone: false,
             };
@@ -571,15 +574,16 @@ export class DriverModalComponent implements OnInit, OnDestroy {
     }
 
     public onFilesEvent(event: any) {
-        this.documents = event.files;
         switch (event.action) {
             case 'add': {
+                this.documents = event.files;
                 this.driverForm
                     .get('files')
                     .patchValue(JSON.stringify(event.files));
                 break;
             }
             case 'delete': {
+                this.documents = event.files;
                 this.driverForm
                     .get('files')
                     .patchValue(
@@ -590,6 +594,19 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                 }
 
                 this.fileModified = true;
+                break;
+            }
+            case 'tag': {
+                let changedTag = false;
+                event.files.map((item) => {
+                    if (item.tagChanged) {
+                        changedTag = true;
+                    }
+                });
+
+                this.driverForm
+                    .get('tags')
+                    .patchValue(changedTag ? true : null);
                 break;
             }
             default: {
@@ -726,6 +743,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             pushNotificationPayroll: [false],
             smsNotificationPayroll: [false],
             files: [null],
+            tags: [null],
         });
 
         this.inputService.customInputValidator(
@@ -755,7 +773,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
         addressUnit: string;
         street: string;
         streetNumber: string;
-    }): FormGroup {
+    }): UntypedFormGroup {
         return this.formBuilder.group({
             id: [data?.id ? data.id : 0],
             nickname: [
@@ -960,6 +978,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                         .patchValue(data.mvrExpiration);
                     this.fleetType = data.fleetType;
                     this.hasMilesSameRate = data.loadedAndEmptySameRate;
+                    this.tags = data.tags;
 
                     if (['Solo', 'Combined'].includes(this.fleetType)) {
                         this.driverForm
@@ -1156,11 +1175,22 @@ export class DriverModalComponent implements OnInit, OnDestroy {
         } = this.driverForm.value;
 
         let documents = [];
+        let tagsArray = [];
         this.documents.map((item) => {
+            if (item.tagId?.length)
+                tagsArray.push({
+                    fileName: item.realFile.name,
+                    tagIds: item.tagId,
+                });
+
             if (item.realFile) {
                 documents.push(item.realFile);
             }
         });
+
+        if (!tagsArray.length) {
+            tagsArray = null;
+        }
 
         const newData: any = {
             ...form,
@@ -1388,6 +1418,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             files: documents,
             longitude: this.longitude,
             latitude: this.latitude,
+            tags: tagsArray,
         };
 
         this.driverTService
@@ -1545,11 +1576,22 @@ export class DriverModalComponent implements OnInit, OnDestroy {
         } = this.driverForm.value;
 
         let documents = [];
-        this.documents?.map((item) => {
+        let tagsArray = [];
+        this.documents.map((item) => {
+            if (item.tagId?.length && item?.realFile?.name)
+                tagsArray.push({
+                    fileName: item.realFile.name,
+                    tagIds: item.tagId,
+                });
+
             if (item.realFile) {
                 documents.push(item.realFile);
             }
         });
+
+        if (!tagsArray.length) {
+            tagsArray = null;
+        }
 
         const newData: any = {
             id: id,
@@ -1784,6 +1826,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             filesForDeleteIds: this.filesForDelete,
             longitude: this.longitude,
             latitude: this.latitude,
+            tags: tagsArray,
         };
 
         this.driverTService
@@ -1796,6 +1839,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                         status: true,
                         close: true,
                     });
+                    this.updateTags();
                 },
                 error: () => {
                     this.modalService.setModalSpinner({
@@ -1813,6 +1857,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (res: any) => {
+                    console.log('driver res: ', res);
                     this.driverForm.patchValue({
                         firstName: res.firstName,
                         lastName: res.lastName,
@@ -1951,6 +1996,18 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                                 : null,
                             { emitEvent: false }
                         );
+
+                    this.driverForm
+                        .get('perMileSolo')
+                        .patchValue(res.perMileSolo, {
+                            emitEvent: false,
+                        });
+
+                    this.driverForm
+                        .get('perMileTeam')
+                        .patchValue(res.perMileSolo, {
+                            emitEvent: false,
+                        });
 
                     res.firstName =
                         res.firstName.charAt(0).toUpperCase() +
@@ -2108,6 +2165,22 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                 },
                 error: () => {},
             });
+    }
+
+    updateTags() {
+        let tags = [];
+
+        this.documents.map((item) => {
+            if (item?.tagChanged && item?.fileId) {
+                var tagsData = {
+                    storageId: item.fileId,
+                    tagId: item.tagId?.length ? item.tagId[0] : null,
+                };
+                tags.push(tagsData);
+            }
+        });
+
+        this.tagsService.updateTag({ tags: tags }).subscribe();
     }
 
     ngOnDestroy(): void {

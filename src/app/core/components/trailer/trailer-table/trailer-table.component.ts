@@ -407,6 +407,8 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
             this.viewData = this.viewData.map((data) => {
                 return this.mapTrailerData(data);
             });
+
+            console.log(this.viewData);
         } else {
             this.viewData = [];
         }
@@ -428,14 +430,14 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
             tabelLength: data?.trailerLength?.name
                 ? data.trailerLength.name
                 : '',
-            tableDriver: 'Nema taj podatak sa back-a',
-            tableTruck: 'Nema taj podatak sa back-a',
-            tableTruckType: 'Nema taj podatak sa back-a',
+            tableDriver: 'NA',
+            tableTruck: 'NA',
+            tableTruckType: 'NA',
             tableOwner: data?.owner?.name ? data.owner.name : '',
             tableWeightEmpty: data?.emptyWeight
                 ? this.thousandSeparator.transform(data.emptyWeight) + ' lbs.'
                 : '',
-            tableWeightVolume: 'Nema taj podatak sa back-a',
+            tableWeightVolume: 'NA',
             tableAxle: data?.axles ? data?.axles : '',
             tableSuspension: data?.suspension?.name ? data.suspension.name : '',
             tableTireSize: data?.tireSize?.name ? data.tireSize.name : '',
@@ -445,24 +447,24 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
             tableMileage: data?.mileage
                 ? this.thousandSeparator.transform(data.mileage)
                 : '',
-            tableLicencePlateDetailNumber: 'Nema taj podatak sa back-a',
-            tableLicencePlateDetailST: 'Nema taj podatak sa back-a',
-            tableLicencePlateDetailExpiration: 'Nema taj podatak sa back-a',
+            tableLicencePlateDetailNumber: 'NA',
+            tableLicencePlateDetailST: 'NA',
+            tableLicencePlateDetailExpiration: 'NA',
             tableFHWAInspectionTerm: data?.fhwaExp
                 ? data?.fhwaExp + ' months'
                 : '',
-            tableFHWAInspectionExpiration: 'Nema taj podatak sa back-a',
-            tableTitleNumber: 'Nema taj podatak sa back-a',
-            tableTitleST: 'Nema taj podatak sa back-a',
-            tableTitlePurchase: 'Nema taj podatak sa back-a',
-            tableTitleIssued: 'Nema taj podatak sa back-a',
+            tableFHWAInspectionExpiration: 'NA',
+            tableTitleNumber: 'NA',
+            tableTitleST: 'NA',
+            tableTitlePurchase: 'NA',
+            tableTitleIssued: 'NA',
             tablePurchaseDate: data.purchaseDate
                 ? this.datePipe.transform(data.purchaseDate, 'MM/dd/yy')
                 : '',
             tablePurchasePrice: data?.purchasePrice
                 ? '$' + this.thousandSeparator.transform(data.purchasePrice)
                 : '',
-            tableTerminated: 'Nema taj podatak sa back-a',
+            tableTerminated: 'NA',
             tableAdded: data.createdAt
                 ? this.datePipe.transform(data.createdAt, 'MM/dd/yy')
                 : '',

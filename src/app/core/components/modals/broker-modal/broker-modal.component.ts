@@ -1,5 +1,5 @@
 import { AddressEntity } from '../../../../../../appcoretruckassist';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormArray, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import {
     Component,
     Input,
@@ -62,7 +62,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
     @Input() editData: any;
 
-    public brokerForm: FormGroup;
+    public brokerForm: UntypedFormGroup;
 
     public selectedTab: number = 1;
     public tabs: any[] = [
@@ -158,8 +158,10 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
     public longitude: number;
     public latitude: number;
 
+    public brokerName: string = '';
+
     constructor(
-        private formBuilder: FormBuilder,
+        private formBuilder: UntypedFormBuilder,
         private inputService: TaInputService,
         private modalService: ModalService,
         private brokerModalService: BrokerTService,
@@ -174,32 +176,32 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
         this.isCredit({ id: 301, name: 'Custom', checked: true });
         this.followIsBillingAddressSame();
 
-        if (this.editData?.id) {
+        // From Another Modal Data
+        if (this.editData?.type === 'edit-contact') {
             this.disableCardAnimation = true;
             this.editBrokerById(this.editData.id);
-            this.tabs.push({
-                id: 3,
-                name: 'Review',
-            });
-            this.ratingChanges();
-        }
-
-        console.log('editdata: ', this.editData);
-
-        // From Another Modal Data
-        if (this.editData?.extraPayload?.type === 'edit-contact') {
-            this.disableCardAnimation = true;
-            this.editBrokerById(this.editData.extraPayload.data.id);
             setTimeout(() => {
                 this.tabs = this.tabs.map((item, index) => {
                     return {
                         ...item,
-                        disabled: index === 0,
+                        disabled: index !== 1,
                         checked: index === 1,
                     };
                 });
                 this.selectedTab = 2;
             }, 50);
+        }
+        // normal get by id broker
+        else {
+            if (this.editData?.id) {
+                this.disableCardAnimation = true;
+                this.editBrokerById(this.editData.id);
+                this.tabs.push({
+                    id: 3,
+                    name: 'Review',
+                });
+                this.ratingChanges();
+            }
         }
 
         // Open Tab Position
@@ -270,8 +272,8 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
             });
     }
 
-    public get brokerContacts(): FormArray {
-        return this.brokerForm.get('brokerContacts') as FormArray;
+    public get brokerContacts(): UntypedFormArray {
+        return this.brokerForm.get('brokerContacts') as UntypedFormArray;
     }
 
     private createBrokerContacts(data?: {
@@ -280,7 +282,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
         phone: string;
         extensionPhone: string;
         email: string;
-    }): FormGroup {
+    }): UntypedFormGroup {
         return this.formBuilder.group({
             contactName: [
                 data?.contactName ? data.contactName : null,
@@ -452,12 +454,9 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                         this.inputService.markInvalid(this.brokerForm);
                         return;
                     }
-                    if (['edit'].includes(this.editData?.type)) {
-                        this.updateBroker(
-                            this.editData?.extraPayload?.type === 'edit-contact'
-                                ? this.editData.extraPayload.data.id
-                                : this.editData.id
-                        );
+
+                    if (this.editData?.type.includes('edit')) {
+                        this.updateBroker(this.editData.id);
                         this.modalService.setModalSpinner({
                             action: null,
                             status: true,
@@ -1147,6 +1146,8 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                         dnu: reasponse.dnu,
                         brokerContacts: [],
                     });
+
+                    this.brokerName = reasponse.businessName;
 
                     this.modalService.changeModalStatus({
                         name: 'dnu',

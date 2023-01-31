@@ -7,6 +7,7 @@
     [specificCaseModalName]="true"
     [isModalValid]="loadForm.valid && isFormDirty"
     [customClass]="loadModalSize"
+    [partClass]="'load-modal-origin-part'"
     [isVisibleHazardous]="isHazardousPicked"
     [isVisibleMap]="true"
     [loadModalTemplate]="true"
@@ -20,6 +21,7 @@
         #originElement
         [formGroup]="loadForm"
         class="form-container form-container-without-mb"
+        [ngStyle]="{ width: '640px !important' }"
     >
         <!-------------------------------- FTL Tab -------------------------------->
         <div class="m-tab">
@@ -180,7 +182,7 @@
                     marginTop: '18px',
                     marginBottom: '22px'
                 }"
-                [isCardOpen]="false"
+                [isCardOpen]="requirementsSectionOpened"
             >
                 <div class="row">
                     <div class="col-6">
@@ -378,8 +380,10 @@
                     "
                     [timeRange]="
                         loadForm.get('pickupTimeFrom').value
+                            | loadTimeType
                             | loadDatetimeRange
-                                : loadForm.get('pickupTimeTo').value
+                                : (loadForm.get('pickupTimeTo').value
+                                      | loadTimeType)
                     "
                     [legMile]="loadForm.get('pickuplegMiles').value"
                     [isEmptyLoad]="true"
@@ -390,7 +394,9 @@
                         loadForm.get('pickupShipper').valid &&
                         loadForm.get('pickupDateFrom').valid &&
                         loadForm.get('pickupTimeFrom').valid &&
-                        loadForm.get('pickupTimeTo').valid
+                        (selectedStopTimePickup === 6
+                            ? !loadForm.get('pickupTimeTo').errors
+                            : loadForm.get('pickupTimeTo').valid)
                             ? 'valid'
                             : (loadForm.get('pickupShipper').errors &&
                                   loadForm.get('pickupShipper').touched) ||
@@ -466,8 +472,7 @@
                                 isDropdown: true,
                                 label: pickupDateRange ? 'Date From' : 'Date',
                                 placeholderIcon: 'date',
-                                isRequired: true,
-                                customClass: 'datetimeclass'
+                                isRequired: true
                             }"
                             (blurInput)="
                                 loadForm.get('pickupDateFrom').markAsTouched()
@@ -494,8 +499,7 @@
                                 type: 'text',
                                 isDropdown: true,
                                 label: 'Date To',
-                                placeholderIcon: 'date',
-                                customClass: 'datetimeclass'
+                                placeholderIcon: 'date'
                             }"
                             (blurInput)="
                                 loadForm.get('pickupDateTo').markAsTouched()
@@ -514,8 +518,7 @@
                                         : 'From',
                                 placeholderIcon: 'time',
                                 isDropdown: true,
-                                isRequired: true,
-                                customClass: 'datetimeclass'
+                                isRequired: true
                             }"
                             (blurInput)="
                                 loadForm.get('pickupTimeFrom').markAsTouched()
@@ -531,8 +534,7 @@
                                 placeholderIcon: 'time',
                                 isDropdown: true,
                                 isRequired: true,
-                                isDisabled: selectedStopTimePickup === 6,
-                                customClass: 'datetimeclass'
+                                isDisabled: selectedStopTimePickup === 6
                             }"
                             (blurInput)="
                                 loadForm.get('pickupTimeTo').markAsTouched()
@@ -546,6 +548,8 @@
                             [hasCounter]="2"
                             [hasActionSvg]="'assets/svg/common/ic_plus.svg'"
                             [hasBodyData]="true"
+                            [hasArrow]="true"
+                            [bottomCollapseArrow]="true"
                             [disableAnimation]="disableCardAnimation"
                             [animationMarginParams]="{
                                 marginTop: '10px',
@@ -600,14 +604,6 @@
                                 [shipperAddress]="
                                     selectedExtraStopShipper[indx]?.address
                                 "
-                                [timeRange]="
-                                    loadExtraStops().at(indx).get('timeFrom')
-                                        .value
-                                        | loadDatetimeRange
-                                            : loadExtraStops()
-                                                  .at(indx)
-                                                  .get('timeTo').value
-                                "
                                 [dateRange]="
                                     loadExtraStops().at(indx).get('dateFrom')
                                         .value
@@ -615,6 +611,16 @@
                                             : loadExtraStops()
                                                   .at(indx)
                                                   .get('dateTo').value
+                                "
+                                [timeRange]="
+                                    loadExtraStops().at(indx).get('timeFrom')
+                                        .value
+                                        | loadTimeType
+                                        | loadDatetimeRange
+                                            : (loadExtraStops()
+                                                  .at(indx)
+                                                  .get('timeTo').value
+                                                  | loadTimeType)
                                 "
                                 [legMile]="
                                     loadExtraStops().at(indx).get('legMiles')
@@ -629,6 +635,49 @@
                                 [isCardOpen]="
                                     loadExtraStops().at(indx).get('openClose')
                                         .value
+                                "
+                                [state]="
+                                    loadExtraStops().at(indx).get('shipperId')
+                                        .valid &&
+                                    loadExtraStops().at(indx).get('dateFrom')
+                                        .valid &&
+                                    loadExtraStops().at(indx).get('timeFrom')
+                                        .valid &&
+                                    loadExtraStops().at(indx).get('timeTo')
+                                        .valid
+                                        ? 'valid'
+                                        : (loadExtraStops()
+                                              .at(indx)
+                                              .get('shipperId').errors &&
+                                              loadExtraStops()
+                                                  .at(indx)
+                                                  .get('shipperId').touched) ||
+                                          (loadExtraStops()
+                                              .at(indx)
+                                              .get('dateFrom').errors &&
+                                              loadExtraStops()
+                                                  .at(indx)
+                                                  .get('dateFrom').touched) ||
+                                          (loadExtraStops()
+                                              .at(indx)
+                                              .get('dateTo').errors &&
+                                              loadExtraStops()
+                                                  .at(indx)
+                                                  .get('dateTo').touched) ||
+                                          (loadExtraStops()
+                                              .at(indx)
+                                              .get('timeFrom').errors &&
+                                              loadExtraStops()
+                                                  .at(indx)
+                                                  .get('timeFrom').touched) ||
+                                          (loadExtraStops()
+                                              .at(indx)
+                                              .get('timeTo').errors &&
+                                              loadExtraStops()
+                                                  .at(indx)
+                                                  .get('timeTo').touched)
+                                        ? 'invalid'
+                                        : null
                                 "
                                 (delete)="removeLoadExtraStop(indx)"
                                 (toggle)="
@@ -678,6 +727,12 @@
                                                     'shipper-extra-stops',
                                                     indx
                                                 )
+                                            "
+                                            (closeDropdown)="
+                                                loadExtraStops()
+                                                    .at(indx)
+                                                    .get('shipperId')
+                                                    .markAsTouched()
                                             "
                                         ></app-ta-input-dropdown>
                                     </div>
@@ -740,6 +795,12 @@
                                             isRequired: true,
                                             customClass: 'datetimeclass'
                                         }"
+                                        (blurInput)="
+                                            loadExtraStops()
+                                                .at(indx)
+                                                .get('dateFrom')
+                                                .markAsTouched()
+                                        "
                                     ></app-ta-input>
                                     <div
                                         *ngIf="!loadExtraStopsDateRange[indx]"
@@ -767,6 +828,12 @@
                                             placeholderIcon: 'date',
                                             customClass: 'datetimeclass'
                                         }"
+                                        (blurInput)="
+                                            loadExtraStops()
+                                                .at(indx)
+                                                .get('dateTo')
+                                                .markAsTouched()
+                                        "
                                     ></app-ta-input>
 
                                     <!-- Time Picker -->
@@ -785,6 +852,12 @@
                                             isRequired: true,
                                             customClass: 'datetimeclass'
                                         }"
+                                        (blurInput)="
+                                            loadExtraStops()
+                                                .at(indx)
+                                                .get('timeFrom')
+                                                .markAsTouched()
+                                        "
                                     ></app-ta-input>
                                     <!-- Time Picker -->
                                     <app-ta-input
@@ -803,6 +876,12 @@
                                                 ?.startsWith('9'),
                                             customClass: 'datetimeclass'
                                         }"
+                                        (blurInput)="
+                                            loadExtraStops()
+                                                .at(indx)
+                                                .get('timeTo')
+                                                .markAsTouched()
+                                        "
                                     ></app-ta-input>
                                 </div>
                                 <div class="stop-items-wrapper">
@@ -871,8 +950,10 @@
                     "
                     [timeRange]="
                         loadForm.get('deliveryTimeFrom').value
+                            | loadTimeType
                             | loadDatetimeRange
-                                : loadForm.get('deliveryTimeTo').value
+                                : (loadForm.get('deliveryTimeTo').value
+                                      | loadTimeType)
                     "
                     [legMile]="loadForm.get('deliverylegMiles').value"
                     [isEmptyLoad]="false"
@@ -885,7 +966,9 @@
                         loadForm.get('deliveryShipper').valid &&
                         loadForm.get('deliveryDateFrom').valid &&
                         loadForm.get('deliveryTimeFrom').valid &&
-                        loadForm.get('deliveryTimeTo').valid
+                        (selectedStopTimeDelivery === 8
+                            ? !loadForm.get('deliveryTimeTo').errors
+                            : loadForm.get('deliveryTimeTo').valid)
                             ? 'valid'
                             : (loadForm.get('deliveryShipper').errors &&
                                   loadForm.get('deliveryShipper').touched) ||
@@ -1131,17 +1214,17 @@
                         <app-ta-input
                             formControlName="baseRate"
                             [inputConfig]="{
-                                name: 'base-rate',
+                                name: 'price-separator',
                                 type: 'text',
                                 label: 'Base Rate',
                                 labelInInput: true,
                                 isRequired: true,
+                                priceSeparator: true,
                                 placeholderIconRightSide: 'dollar',
                                 placeholderIconColor: 'green',
                                 inputCursorOnRightSide: true,
                                 hideErrorMessage: true,
-                                hideRequiredCheck: true,
-                                thousandSeparator: true
+                                hideRequiredCheck: true
                             }"
                         ></app-ta-input>
                         <!-- Driver Rate -->
@@ -1152,17 +1235,17 @@
                             "
                             formControlName="driverRate"
                             [inputConfig]="{
-                                name: 'base-rate',
+                                name: 'price-separator',
                                 type: 'text',
                                 label: 'Driver Rate',
                                 labelInInput: true,
                                 isRequired: true,
+                                priceSeparator: true,
                                 placeholderIconRightSide: 'dollar',
                                 placeholderIconColor: 'purple',
                                 inputCursorOnRightSide: true,
                                 hideErrorMessage: true,
-                                hideRequiredCheck: true,
-                                thousandSeparator: true
+                                hideRequiredCheck: true
                             }"
                         ></app-ta-input>
                         <!-- Adjusted Rate -->
@@ -1175,18 +1258,18 @@
                             "
                             formControlName="adjustedRate"
                             [inputConfig]="{
-                                name: 'base-rate',
+                                name: 'price-separator',
                                 type: 'text',
                                 label: 'Adjusted',
                                 labelInInput: true,
+                                priceSeparator: true,
                                 placeholderIconRightSide: 'dollar',
                                 placeholderIconColor: 'purple',
                                 inputCursorOnRightSide: true,
                                 removeInput: true,
                                 hideErrorMessage: true,
                                 hideRequiredCheck: true,
-                                hideDangerMark: true,
-                                thousandSeparator: true
+                                hideDangerMark: true
                             }"
                             (clear)="removeAdditionalBilling('adjusted')"
                         ></app-ta-input>
@@ -1203,10 +1286,11 @@
                                     <app-ta-input
                                         formControlName="billingValue"
                                         [inputConfig]="{
-                                            name: 'base-rate',
+                                            name: 'price-separator',
                                             type: 'text',
                                             label: additional.get('name').value,
                                             labelInInput: true,
+                                            priceSeparator: true,
                                             placeholderIconRightSide:
                                                 'dollar-additional-load',
                                             placeholderIconColor: 'blue',
@@ -1215,8 +1299,7 @@
                                             isRequired: true,
                                             hideErrorMessage: true,
                                             hideRequiredCheck: true,
-                                            hideDangerMark: true,
-                                            thousandSeparator: true
+                                            hideDangerMark: true
                                         }"
                                         (clear)="
                                             removeAdditionalBilling(
@@ -1251,18 +1334,18 @@
                             *ngIf="isVisiblePayment"
                             formControlName="advancePay"
                             [inputConfig]="{
-                                name: 'base-rate',
+                                name: 'price-separator',
                                 type: 'text',
                                 label: 'Advance',
                                 labelInInput: true,
                                 isRequired: true,
+                                priceSeparator: true,
                                 placeholderIconRightSide: 'dollar',
                                 placeholderIconColor: 'purple',
                                 inputCursorOnRightSide: true,
                                 hideErrorMessage: true,
                                 hideRequiredCheck: true,
                                 hideDangerMark: true,
-                                thousandSeparator: true,
                                 removeInput: true
                             }"
                             (clear)="removeAdditionalPayment()"
@@ -1328,6 +1411,8 @@
                     [showDropzone]="true"
                     (onFileEvent)="onFilesEvent($event)"
                     [customClassName]="'modals'"
+                    [hasTagsDropdown]="true"
+                    [tags]="tags"
                 ></app-ta-upload-files>
             </app-ta-custom-card>
 

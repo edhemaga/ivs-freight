@@ -55,51 +55,38 @@ export class RepairTService implements OnDestroy {
         this.formDataService.extractFormDataFromFunction(data);
         return this.repairService.apiRepairPost().pipe(
             tap((res: any) => {
-                // const subShop = this.getRepairShopById(data.repairShopId)
-                //     .pipe(takeUntil(this.destroy$))
-                //     .subscribe({
-                //         next: (shop: RepairShopResponse | any) => {
-                //             this.tableService.sendActionAnimation({
-                //                 animation: 'update',
-                //                 tab: 'repair-shop',
-                //                 data: shop,
-                //                 id: shop.id,
-                //             });
-                //             subShop.unsubscribe();
-                //         },
-                //     });
-                // const subRepair = this.getRepairById(res.id)
-                //     .pipe(takeUntil(this.destroy$))
-                //     .subscribe({
-                //         next: (repair: RepairResponse | any) => {
-                //             const repairCount = JSON.parse(
-                //                 localStorage.getItem(
-                //                     'repairTruckTrailerTableCount'
-                //                 )
-                //             );
-                //             if (repair.truckId) {
-                //                 this.repairTruckStore.add(repair);
-                //                 repairCount.repairTrucks++;
-                //             } else if (repair.trailerId) {
-                //                 this.repairTrailerStore.add(repair);
-                //                 repairCount.repairTrailers++;
-                //             }
-                //             localStorage.setItem(
-                //                 'repairTruckTrailerTableCount',
-                //                 JSON.stringify({
-                //                     repairTrucks: repairCount.repairTrucks,
-                //                     repairTrailers: repairCount.repairTrailers,
-                //                 })
-                //             );
-                //             this.tableService.sendActionAnimation({
-                //                 animation: 'add',
-                //                 tab: repair?.truckId ? 'active' : 'inactive',
-                //                 data: repair,
-                //                 id: repair.id,
-                //             });
-                //             subRepair.unsubscribe();
-                //         },
-                //     });
+                const subRepair = this.getRepairById(res.id)
+                    .pipe(takeUntil(this.destroy$))
+                    .subscribe({
+                        next: (repair: RepairResponse | any) => {
+                            const repairCount = JSON.parse(
+                                localStorage.getItem(
+                                    'repairTruckTrailerTableCount'
+                                )
+                            );
+                            if (repair.truckId) {
+                                this.repairTruckStore.add(repair);
+                                repairCount.repairTrucks++;
+                            } else if (repair.trailerId) {
+                                this.repairTrailerStore.add(repair);
+                                repairCount.repairTrailers++;
+                            }
+                            localStorage.setItem(
+                                'repairTruckTrailerTableCount',
+                                JSON.stringify({
+                                    repairTrucks: repairCount.repairTrucks,
+                                    repairTrailers: repairCount.repairTrailers,
+                                })
+                            );
+                            this.tableService.sendActionAnimation({
+                                animation: 'add',
+                                tab: repair?.truckId ? 'active' : 'inactive',
+                                data: repair,
+                                id: repair.id,
+                            });
+                            subRepair.unsubscribe();
+                        },
+                    });
             })
         );
     }
@@ -108,19 +95,6 @@ export class RepairTService implements OnDestroy {
         this.formDataService.extractFormDataFromFunction(data);
         return this.repairService.apiRepairPut().pipe(
             tap(() => {
-                const subShop = this.getRepairShopById(data.repairShopId)
-                    .pipe(takeUntil(this.destroy$))
-                    .subscribe({
-                        next: (shop: RepairShopResponse | any) => {
-                            this.tableService.sendActionAnimation({
-                                animation: 'update',
-                                tab: 'repair-shop',
-                                data: shop,
-                                id: shop.id,
-                            });
-                            subShop.unsubscribe();
-                        },
-                    });
                 const subRepair = this.getRepairById(data.id)
                     .pipe(takeUntil(this.destroy$))
                     .subscribe({
@@ -139,8 +113,7 @@ export class RepairTService implements OnDestroy {
                             }
                             this.tableService.sendActionAnimation({
                                 animation: 'update',
-                                tab: 'repair',
-                                //tab: repair?.truckId ? 'active' : 'inactive',
+                                tab: repair?.truckId ? 'active' : 'inactive',
                                 data: repair,
                                 id: repair.id,
                             });
@@ -314,27 +287,30 @@ export class RepairTService implements OnDestroy {
                     .pipe(takeUntil(this.destroy$))
                     .subscribe({
                         next: (shop: RepairShopResponse | any) => {
-                            this.shopStore.remove(({ id }) => id === data.id);               
+                            this.shopStore.remove(({ id }) => id === data.id);
                             this.shopStore.add(shop);
 
-                            this.rDs.update((store) => {                         
+                            this.rDs.update((store) => {
                                 let ind;
-                                let shopStored = JSON.parse(JSON.stringify(store));
-                                shopStored.repairShop.map((data: any, index: any) => {
-                                    if (data.id == shop.id){
-                                        ind = index;
+                                let shopStored = JSON.parse(
+                                    JSON.stringify(store)
+                                );
+                                shopStored.repairShop.map(
+                                    (data: any, index: any) => {
+                                        if (data.id == shop.id) {
+                                            ind = index;
+                                        }
                                     }
-                                });
-                                
+                                );
+
                                 shopStored.repairShop[ind] = shop;
-                                
+
                                 return {
                                     ...store,
                                     repairShop: [...shopStored.repairShop],
                                 };
-                                
                             });
-                            
+
                             this.tableService.sendActionAnimation({
                                 animation: 'update',
                                 tab: 'repair-shop',
@@ -607,41 +583,36 @@ export class RepairTService implements OnDestroy {
         });
     }
 
-    public deleteReview(reviewId, shopId){
+    public deleteReview(reviewId, shopId) {
         let shopStored = JSON.parse(JSON.stringify(this.rDs?.getValue()));
         let shopData = shopStored?.repairShop;
         let currentShop;
         let shopIndex;
-        shopData.map(
-            (shop: any, ind: any) => { 
-                if ( shop.id == shopId ) {
-                    currentShop = shop;
-                    shopIndex = ind;
-                }
+        shopData.map((shop: any, ind: any) => {
+            if (shop.id == shopId) {
+                currentShop = shop;
+                shopIndex = ind;
             }
-        );
+        });
 
         currentShop?.reviews.map((item: any, index: any) => {
-            if ( item.id == reviewId ){
+            if (item.id == reviewId) {
                 currentShop?.reviews.splice(index, 1);
-            }})
+            }
+        });
 
-
-        
         shopData[shopIndex] = currentShop;
 
-        this.shopStore.remove(({ id }) => id === shopId);               
+        this.shopStore.remove(({ id }) => id === shopId);
         this.shopStore.add(currentShop);
 
-        
-        this.rDs.update((store) => {                         
+        this.rDs.update((store) => {
             shopStored.repairShop[shopIndex] = currentShop;
-            
+
             return {
                 ...store,
                 repairShop: [...shopStored.repairShop],
             };
-            
         });
 
         this.tableService.sendActionAnimation({
@@ -652,7 +623,7 @@ export class RepairTService implements OnDestroy {
         });
     }
 
-    public addNewReview(data, shopId){
+    public addNewReview(data, shopId) {
         console.log('--data', data);
         console.log('--currentId', shopId);
 
@@ -660,30 +631,26 @@ export class RepairTService implements OnDestroy {
         let shopData = shopStored?.repairShop;
         let currentShop;
         let shopIndex;
-        shopData.map(
-            (shop: any, ind: any) => { 
-                if ( shop.id == shopId ) {
-                    currentShop = shop;
-                    shopIndex = ind;
-                }
+        shopData.map((shop: any, ind: any) => {
+            if (shop.id == shopId) {
+                currentShop = shop;
+                shopIndex = ind;
             }
-        );
+        });
         currentShop?.reviews.push(data);
 
         shopData[shopIndex] = currentShop;
 
-        this.shopStore.remove(({ id }) => id === shopId);               
+        this.shopStore.remove(({ id }) => id === shopId);
         this.shopStore.add(currentShop);
 
-        
-        this.rDs.update((store) => {                         
+        this.rDs.update((store) => {
             shopStored.repairShop[shopIndex] = currentShop;
-            
+
             return {
                 ...store,
                 repairShop: [...shopStored.repairShop],
             };
-            
         });
 
         this.tableService.sendActionAnimation({

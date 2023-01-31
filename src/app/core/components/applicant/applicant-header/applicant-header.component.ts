@@ -28,7 +28,7 @@ export class ApplicantHeaderComponent implements OnInit, OnChanges {
 
     private destroy$ = new Subject<void>();
 
-    public selectedMode: string = SelectedMode.APPLICANT;
+    public selectedMode: string = SelectedMode.REVIEW;
 
     public applicantId: number;
 
@@ -68,16 +68,6 @@ export class ApplicantHeaderComponent implements OnInit, OnChanges {
             iconSrc: 'assets/svg/applicant/clock.svg',
             route: '/hos-rules',
         },
-        {
-            title: 'SSN Card',
-            iconSrc: 'assets/svg/applicant/ssn.svg',
-            route: '/ssn-card',
-        },
-        {
-            title: 'CDL Card',
-            iconSrc: 'assets/svg/applicant/card.svg',
-            route: '/cdl-card',
-        },
     ];
 
     public isTabCompletedArray: { id: number; isCompleted: boolean }[] = [
@@ -88,8 +78,6 @@ export class ApplicantHeaderComponent implements OnInit, OnChanges {
         { id: 4, isCompleted: false },
         { id: 5, isCompleted: false },
         { id: 6, isCompleted: false },
-        { id: 7, isCompleted: false },
-        { id: 8, isCompleted: false },
     ];
 
     public isTabReviewedArray: {
@@ -104,8 +92,6 @@ export class ApplicantHeaderComponent implements OnInit, OnChanges {
         { id: 4, isReviewed: false, hasIncorrectAnswer: false },
         { id: 5, isReviewed: false, hasIncorrectAnswer: false },
         { id: 6, isReviewed: false, hasIncorrectAnswer: false },
-        { id: 7, isReviewed: false, hasIncorrectAnswer: false },
-        { id: 8, isReviewed: false, hasIncorrectAnswer: false },
     ];
 
     feedbackStoreArr = [
@@ -116,8 +102,6 @@ export class ApplicantHeaderComponent implements OnInit, OnChanges {
         { id: 4, hasIncorrectAnswer: false },
         { id: 5, hasIncorrectAnswer: false },
         { id: 6, hasIncorrectAnswer: false },
-        { id: 7, hasIncorrectAnswer: false },
-        { id: 8, hasIncorrectAnswer: false },
     ];
 
     constructor(private applicantQuery: ApplicantQuery) {}
@@ -206,20 +190,6 @@ export class ApplicantHeaderComponent implements OnInit, OnChanges {
                                 return {
                                     ...item,
                                     isCompleted: res.hosRule ? true : false,
-                                };
-                            }
-
-                            if (index === 7) {
-                                return {
-                                    ...item,
-                                    isCompleted: res.ssnCard ? true : false,
-                                };
-                            }
-
-                            if (index === 8) {
-                                return {
-                                    ...item,
-                                    isCompleted: res.cdlCard ? true : false,
                                 };
                             }
                         }

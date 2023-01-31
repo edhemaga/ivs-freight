@@ -1,6 +1,6 @@
 export const environment = {
-    API_ENDPOINT: 'https://api-stage.carrierassist.io',
-    GPS_ENDPOINT: 'https://apiex.truckassist.io',
+    API_ENDPOINT: 'https://api-stage.carriera.io',
+    GPS_ENDPOINT: 'https://api-stage.carriera.io',
     staging: true,
     production: false,
     perPage: 1000,

@@ -38,6 +38,7 @@
         [routerLink]="item.route"
         routerLinkActive="{{ ind !== 2 ? 'nav-footer-item-active' : '' }}"
         (mouseenter)="showToolTip = true"
+        (mouseleave)="showToolTip = false"
     >
         <div
             class="tooltip-right"
@@ -91,7 +92,9 @@
                     <div *ngIf="item.text !== ''" class="wrapper">
                         <div
                             class="nav-footer-hover"
-                            [ngClass]="{ 'nav-footer-hover-user': ind === 2 }"
+                            [ngClass]="{
+                                'nav-footer-hover-user': ind === 2
+                            }"
                         ></div>
                         <div
                             class="status-marker-container-notification-1 close"
@@ -187,6 +190,7 @@
                         <div
                             *ngIf="currentUserStatus && (item.text | userData)"
                             class="status-marker-container"
+                            (mouseenter)="showToolTip = false"
                         >
                             <div
                                 [ngClass]="{

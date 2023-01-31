@@ -10,7 +10,7 @@ import {
     SimpleChanges,
     ViewEncapsulation,
 } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { UntypedFormControl } from '@angular/forms';
 import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
 import { DetailsActiveItemPipe } from 'src/app/core/pipes/detailsActiveItem.pipe';
 import { ImageBase64Service } from 'src/app/core/utils/base64.image';
@@ -30,7 +30,7 @@ export class SettingsGeneralComponent implements OnInit, OnDestroy, OnChanges {
     @Output() selectDropDown = new EventEmitter<boolean>();
 
     public isAccountVisible: boolean = false;
-    public inputFormControl: FormControl = new FormControl();
+    public inputFormControl: UntypedFormControl = new UntypedFormControl();
     public optionsDivisonId: number;
 
     public toggleSelect: boolean;

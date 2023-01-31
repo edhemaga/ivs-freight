@@ -109,7 +109,7 @@ export class ShopRepairDetailsComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe((id: number) => {
                 if (this.router.url.includes('shop-details') && id) {
-                    this.router.navigate([`/repair/${id}/shop-details`]);
+                    this.router.navigate([`/list/repair/${id}/shop-details`]);
                     this.getRepairShopDataFromStore(id);
                     this.cdRef.detectChanges();
                 }
@@ -303,12 +303,12 @@ export class ShopRepairDetailsComponent implements OnInit, OnDestroy {
                             .pagination.count >= 1
                     ) {
                         this.router.navigate([
-                            `/repair/${repairId}/shop-details`,
+                            `/list/repair/${repairId}/shop-details`,
                         ]);
                     }
                 },
                 error: (error) => {
-                    this.router.navigate(['/repair']);
+                    this.router.navigate(['/list/repair']);
                 },
             });
     }

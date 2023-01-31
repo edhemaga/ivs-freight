@@ -1,4 +1,5 @@
 export interface IMultipleInput {
+    id?: any;
     value: string | number;
     second_value?: string | number;
     logoName?: string;
@@ -61,7 +62,6 @@ export interface ITaInput {
     addressFlag?: string; // added text in right corner and this flag will be disabled clear button, invalid danger mark\
     // Custom classes
     // - 'input-32' -> height: 32px,
-    // - 'line-input-26-in-card' -> when input implement in custom-card and not aligned
     // - 'datetimeclass' -> date/time pickers
     customClass?: string;
 
@@ -114,6 +114,7 @@ export interface ITaInput {
         class?: string; // colors store in front-end
         remove?: boolean; // remove svg in focus mode and when user are typing
     };
+    selectedDropdown?: boolean;
     mergedDropdown?: boolean;
 
     // Label dropdown
