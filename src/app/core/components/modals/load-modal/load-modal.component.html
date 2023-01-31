@@ -472,7 +472,8 @@
                                 isDropdown: true,
                                 label: pickupDateRange ? 'Date From' : 'Date',
                                 placeholderIcon: 'date',
-                                isRequired: true
+                                isRequired: true,
+                                customClass: 'datetimeclass'
                             }"
                             (blurInput)="
                                 loadForm.get('pickupDateFrom').markAsTouched()
@@ -499,7 +500,8 @@
                                 type: 'text',
                                 isDropdown: true,
                                 label: 'Date To',
-                                placeholderIcon: 'date'
+                                placeholderIcon: 'date',
+                                customClass: 'datetimeclass'
                             }"
                             (blurInput)="
                                 loadForm.get('pickupDateTo').markAsTouched()
@@ -513,17 +515,19 @@
                                 name: 'timepicker',
                                 type: 'text',
                                 label:
-                                    selectedStopTimePickup === 6
+                                    selectedStopTimePickup === 8
                                         ? 'At'
                                         : 'From',
                                 placeholderIcon: 'time',
                                 isDropdown: true,
-                                isRequired: true
+                                isRequired: true,
+                                customClass: 'datetimeclass'
                             }"
                             (blurInput)="
-                                loadForm.get('pickupTimeFrom').markAsTouched()
+                                loadForm.get('deliveryTimeFrom').markAsTouched()
                             "
                         ></app-ta-input>
+
                         <!-- Time Picker -->
                         <app-ta-input
                             formControlName="pickupTimeTo"
@@ -534,7 +538,8 @@
                                 placeholderIcon: 'time',
                                 isDropdown: true,
                                 isRequired: true,
-                                isDisabled: selectedStopTimePickup === 6
+                                isDisabled: selectedStopTimePickup === 6,
+                                customClass: 'datetimeclass'
                             }"
                             (blurInput)="
                                 loadForm.get('pickupTimeTo').markAsTouched()
