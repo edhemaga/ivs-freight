@@ -147,9 +147,9 @@
         display: flex;
         align-items: center;
         .tooltip-right {
-            position: relative;
-            bottom: 15px;
-            right: 8px;
+            position: fixed;
+            bottom: 134px;
+            left: 19px;
         }
         .hide-tooltip {
             display: none;
