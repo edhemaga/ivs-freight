@@ -23,7 +23,7 @@
 <ng-template #dropdownPopover let-data="data">
     <div class="dropdown-main-popover-body">
         <div class="details-dropdown-body">
-            <div *ngFor="let action of options;let i=index; trackBy:identity">
+            <div *ngFor="let action of data;let i=index; trackBy:identity">
                 <div
                     class="action-holder"
                     @showAnimation

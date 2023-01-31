@@ -25,6 +25,7 @@ import { ChangeDetectorRef } from '@angular/core';
     templateUrl: './details-dropdown.html',
     styleUrls: ['./details-dropdown.scss'],
     encapsulation: ViewEncapsulation.None,
+    changeDetection: ChangeDetectionStrategy.OnPush,
     animations: [
         trigger('SubtypeAnimation', [
             state(
@@ -80,7 +81,6 @@ export class DetailsDropdownComponent implements OnInit, OnChanges {
     @Input() public placement: string = 'bottom-right';
     @Output() dropDownActions: EventEmitter<any> = new EventEmitter();
     @Output() openModalAction: EventEmitter<any> = new EventEmitter();
-    dropContent: any[] = [];
     tooltip: any;
     dropDownActive: number = -1;
     subtypeHovered: any = false;
@@ -88,10 +88,10 @@ export class DetailsDropdownComponent implements OnInit, OnChanges {
     constructor(private DetailsDataService: DetailsDataService, private chnd: ChangeDetectorRef) {}
 
     ngOnChanges(changes: SimpleChanges): void {
-        console.log("CHANGESSS", changes);
+        
         if (changes?.options?.currentValue) {
+            console.log("CHANGES OPTIONS", changes?.options);
             this.options = changes.options.currentValue;
-            this.setDropContent();
         }
 
         if (changes?.id?.currentValue) {
@@ -106,7 +106,7 @@ export class DetailsDropdownComponent implements OnInit, OnChanges {
         if (tooltip.isOpen()) {
             tooltip.close();
         } else {
-            tooltip.open({ data: this.dropContent });
+            tooltip.open({ data: [...this.options] });
             if (this.data) {
                 this.DetailsDataService.setNewData(this.data);
             }
@@ -116,20 +116,6 @@ export class DetailsDropdownComponent implements OnInit, OnChanges {
         this.chnd.detectChanges();
     }
 
-    setDropContent() {
-        /* Drop Down Actions*/
-        if (this.options.length) {
-            for (let i = 0; i < this.options.length; i++) {
-                this.dropContent.push(this.options[i]);
-            }
-
-            setTimeout(() => {
-                this.chnd.detectChanges();
-                console.log("UPADDTEE");
-            }, 3000);
-            
-        }
-    }
     /**Function retrun id */
     public identity(index: number, item: any): number {
         return item.id;
@@ -189,9 +175,12 @@ export class DetailsDropdownComponent implements OnInit, OnChanges {
           enabled: true,
           phase: 'main',
           effect: ({ state, instance }) => {
-            console.log("UPDATEEE",state, instance);
+            console.log(state);
+            console.log(instance);
+
+            instance.forceUpdate();
             setTimeout(() => {
-                instance.update();
+                instance.forceUpdate();
                 this.chnd.detectChanges();
             }, 400);
             
@@ -201,7 +190,8 @@ export class DetailsDropdownComponent implements OnInit, OnChanges {
               observer.disconnect();
             };
           },
-          fn: () => {},
+          fn: () => {
+          },
         });
     
         return options;
