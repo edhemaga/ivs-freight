@@ -59,6 +59,7 @@ export class DropDownService {
                         ...dataCdl,
                         state: dataCdl.state.stateShortName,
                     },
+                    cdlsArray: cdlsArray?.length > 0 ? cdlsArray : []
                 };
                 this.modalService.openModal(
                     ConfirmationModalComponent,

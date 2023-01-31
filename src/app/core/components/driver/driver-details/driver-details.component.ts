@@ -507,8 +507,6 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
             .deactivateCdlById(id, driverId)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: () => {},
-                error: () => {},
             });
     }
 
@@ -517,8 +515,6 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
             .activateCdlById(id)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: () => {},
-                error: () => {},
             });
     }
     public onModalAction(action: string): void {

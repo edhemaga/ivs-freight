@@ -147,6 +147,13 @@ export class DriverDetailsItemComponent
                         case 'delete': {
                             if (res.template === 'cdl') {
                                 this.deleteCdlByIdFunction(res.id);
+                                if ( res?.data?.newCdlID ) {
+
+                                    setTimeout(()=>{
+                                        this.activateCdl(res?.data?.newCdlID); 
+                                    }, 1000)
+                                   
+                                }
                             } else if (res.template === 'medical') {
                                 this.deleteMedicalByIdFunction(res.id);
                             } else if (res.template === 'mvr') {
@@ -227,6 +234,16 @@ export class DriverDetailsItemComponent
             this.getExpireDate();
         }
     }
+
+    private activateCdl(id: number) {
+        this.cdlService
+            .activateCdlById(id)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+            });
+    }
+
+
     /**Function for dots in cards */
     public initTableOptions(data: any): void {
         this.arrayOfRenewCdl = [];
@@ -469,8 +486,27 @@ export class DriverDetailsItemComponent
     public optionsEvent(any: any, action: string) {
         const name = dropActionNameDriver(any, action);
         let driverId = this.drivers[0].data.id;
-        let dataCdls;
-       
+        let dataCdls: any = [];
+      
+       //console.log('---any', any);
+       //console.log('---this.activeCdl', this.activeCdl);
+
+        if ( this.activeCdl.length && this.activeCdl[0].id == any.id && ( any.type == 'deactivate-item' || any.type == 'delete-item' ) ) {
+            this.mvrService
+            .getMvrModal(driverId)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: (res: GetMvrModalResponse) => {
+                    res?.cdls?.map((item) => {
+                        if ( item.id != any.id ) {
+                            dataCdls.push({...item, name: item.cdlNumber});
+                        }
+                    })
+                },
+            });
+        }
+
+
         let dataForCdl;
         if (
             (this.activeCdl.length && any.type === 'activate-item') ||
@@ -478,20 +514,7 @@ export class DriverDetailsItemComponent
         ) {
             dataForCdl = this.activeCdl;
             
-            this.mvrService
-            .getMvrModal(driverId)
-            .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: (res: GetMvrModalResponse) => {
-                    dataCdls = res?.cdls?.map((item) => {
-                        return {
-                            ...item,
-                            name: item.cdlNumber,
-                        };
-                    })
-                },
-                error: () => {},
-            });
+            
         } else {
             dataForCdl = this.dataCdl;
         }
@@ -514,7 +537,7 @@ export class DriverDetailsItemComponent
                 null,
                 dataCdls,
             );
-        }, 100);
+        }, 200);
     }
     public openCommand(cdl?: any, modal?: string) {
 
