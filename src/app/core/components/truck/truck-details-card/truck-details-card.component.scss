@@ -279,3 +279,9 @@ app-truck-details-card {
         }
     }
 }
+
+.chart_hold {
+    &.extend {
+        overflow: auto;
+    }
+}

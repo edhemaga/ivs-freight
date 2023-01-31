@@ -460,6 +460,8 @@
                     </div>
                     <app-ta-chart
                         #stackedBarChart
+                        class="chart_hold"
+                        [class.extend]="stackedBarChartConfig.extendFull"
                         [chartConfig]="stackedBarChartConfig"
                         [axesProperties]="stackedBarAxes"
                         [legendAttributes]="stackedBarChartLegend"

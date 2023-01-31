@@ -14,34 +14,42 @@ import { DetailsPageService } from 'src/app/core/services/details-page/details-p
 import { card_component_animation } from '../../shared/animations/card-component.animations';
 import { TrucksMinimalListQuery } from '../state/truck-details-minima-list-state/truck-details-minimal.query';
 import { TruckTService } from '../state/truck.service';
-import { animate, style, transition, trigger, state } from '@angular/animations';
+import {
+    animate,
+    style,
+    transition,
+    trigger,
+    state,
+} from '@angular/animations';
 
 @Component({
     selector: 'app-truck-details-card',
     templateUrl: './truck-details-card.component.html',
     styleUrls: ['./truck-details-card.component.scss'],
     encapsulation: ViewEncapsulation.None,
-    animations: [card_component_animation('showHideCardBody'), 
-    trigger('ownerDetailsAnimation', [
-      state(
-        'true',
-        style({
-          height: '*',
-          overflow: 'hidden',
-          opacity: 1,
-        })
-      ),
-      state(
-        'false',
-        style({
-          height: '0px',
-          overflow: 'hidden',
-          opacity: 0,
-        })
-      ),
-      transition('false <=> true', [animate('0.2s ease')]),
-      transition('true <=> false', [animate('0.2s ease')]), 
-    ]),],
+    animations: [
+        card_component_animation('showHideCardBody'),
+        trigger('ownerDetailsAnimation', [
+            state(
+                'true',
+                style({
+                    height: '*',
+                    overflow: 'hidden',
+                    opacity: 1,
+                })
+            ),
+            state(
+                'false',
+                style({
+                    height: '0px',
+                    overflow: 'hidden',
+                    opacity: 0,
+                })
+            ),
+            transition('false <=> true', [animate('0.2s ease')]),
+            transition('true <=> false', [animate('0.2s ease')]),
+        ]),
+    ],
 })
 export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
     @ViewChild('revenueChart', { static: false }) public revenueChart: any;
@@ -64,6 +72,19 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
     @Input() truck: any | any;
     public ownersData: any;
     public truck_list: any[] = this.truckMinimalListQuery.getAll();
+    public monthList: any[] = [
+        'JAN',
+        'FEB',
+        'MAR',
+        'APR',
+        'JUN',
+        'JUL',
+        'AUG',
+        'SEP',
+        'OCT',
+        'NOV',
+        'DEC',
+    ];
 
     payrollChartConfig: any = {
         dataProperties: [
@@ -388,12 +409,12 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
         this.initTableOptions();
 
         let array1 = [...this.truck.ownerHistories];
-        
+
         array1.sort((a, b) => {
             return b.id - a.id;
         });
         //this.truck.ownerHistories = array1;
-        this.ownersData = array1;   
+        this.ownersData = array1;
 
         let currentIndex = this.truck_list.findIndex(
             (truck) => truck.id === this.truck.id
@@ -506,19 +527,60 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
 
     public getFuelChartData(id: number) {
         this.truckService
-            .getFuelConsumption(id, 1)
+            .getExpenses(id, 1)
             .pipe(takeUntil(this.destroy$))
             .subscribe((item) => {
-                console.log(item.truckFuelConsumptionCharts, 'itemmm');
-                console.log(this.payrollChartConfig.dataProperties[1].defaultConfig.data, 'itemmm 222');
-                let revenue = [];
-                item.truckFuelConsumptionCharts.map((data, index)=>{
-                    revenue.push(data.costPerGallon)
+                console.log(item, 'itemmm');
+                this.stackedBarChartConfig.dataLabels = [];
+                this.stackedBarChartConfig.chartValues = [item.fuelCost, item.repairCost, item.totalCost];
+                this.stackedBarChartLegend[0].value = item.fuelCost;
+                this.stackedBarChartLegend[1].value = item.repairCost;
+                this.stackedBarChartLegend[2].value = item.totalCost;
+                console.log(
+                    this.stackedBarChartConfig.dataLabels,
+                    'itemmm 222'
+                );
+                let fuelCost = [];
+                let repairCost = [];
+                let labels = [];
+                if (item?.truckExpensesCharts?.length > 12) {
+                    this.stackedBarChartConfig.extendFull = true;
+                    this.stackedBarChartConfig.chartWidth = item?.truckExpensesCharts?.length * 33;
+                    this.stackedBarChartConfig.chartWidth = this.stackedBarChartConfig.chartWidth.toString();
+                } else {
+                    this.stackedBarChartConfig.extendFull = false;
+                    this.stackedBarChartConfig.chartWidth = '417';
+                }
+                item.truckExpensesCharts.map((data, index) => {
+                    fuelCost.push(data.fuelCost);
+                    repairCost.push(data.repairCost);
+                    labels.push([data.day, this.monthList[data.month - 1]]);
                 });
 
-                this.payrollChartConfig.dataProperties[1].defaultConfig.data = revenue;
+                this.stackedBarChartConfig.dataLabels = labels;
+                console.log(
+                    this.stackedBarChartConfig.dataLabels,
+                    'itemmm 33333444'
+                );
+                this.stackedBarChartConfig.dataProperties[0].defaultConfig.data =
+                    fuelCost;
+                this.stackedBarChartConfig.dataProperties[1].defaultConfig.data =
+                    repairCost;
 
-                console.log(this.payrollChartConfig.dataProperties[1].defaultConfig.data, 'itemmm 333');
+                console.log(
+                    this.stackedBarChartConfig.dataProperties[0].defaultConfig
+                        .data,
+                    'itemmm 32333'
+                );
+                console.log(
+                    this.stackedBarChartConfig.dataProperties[1].defaultConfig
+                        .data,
+                    'itemmm 333'
+                );
+
+                this.stackedBarChart.setChartData();
+                this.stackedBarChart.chartDataCheck(this.stackedBarChartConfig.chartValues);
+                this.stackedBarChart.saveValues = JSON.parse(JSON.stringify(this.stackedBarChartLegend));
             });
     }
 
@@ -570,7 +632,6 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
         return index;
     }
     public getTruckDropdown() {
-
         this.truckDropDowns = this.truckMinimalListQuery
             .getAll()
             .map((item) => {
@@ -582,7 +643,7 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
                     folder: 'common/trucks',
                     active: item.id === this.truck.id,
                 };
-            });     
+            });
     }
 
     public onSelectedTruck(event: any) {

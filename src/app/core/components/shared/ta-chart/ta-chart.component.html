@@ -34,6 +34,9 @@
     (mouseleave)="chartHoverOut()"
     [class.remove_chart_margin]="removeChartMargin"
     [class.add_inside]="hoveringStatus && hoverTimeDisplay"
+    [ngStyle]="{
+        width: chartConfig.extendFull ? chartConfig.chartWidth + 'px' : 'auto'
+    }"
 >
     <div
         class="chart_hover_background"

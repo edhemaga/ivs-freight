@@ -436,7 +436,7 @@ export class TaChartComponent implements OnInit {
                             fontSize: 11,
                             fontFamily: 'Montserrat',
                             fontStyle: 'bold',
-                            autoSkip: false,
+                            autoSkip: true,
                             maxRotation: 0,
                             minRotation: 0,
                         },

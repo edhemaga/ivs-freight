@@ -9,14 +9,10 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { TrailerFilterResponsePagination } from './trailerFilterResponsePagination';
 
 
-export interface CompanyShortResponse { 
-    id?: number;
-    companyName?: string | null;
-    logo?: string | null;
-    isDivision?: boolean;
-    isActive?: boolean;
-    lastLogin?: string | null;
+export interface TrailerFilterListResponse { 
+    pagination?: TrailerFilterResponsePagination;
 }
 
