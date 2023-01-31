@@ -83,7 +83,6 @@
         [@showHideDetails]="isNavigationHovered ? 'true' : 'false'"
     >
         <p
-            *ngIf="isNavigationHovered"
             class="nav-item-name"
             [ngClass]="{
                 'nav-item-name-active': selectedRoute == route.name,
@@ -96,7 +95,9 @@
                     !isUserPanelOpen &&
                     !settingsPage,
 
-                'route-not-active': route.construction == true
+                'route-not-active': route.construction == true,
+                'route-name-files': files,
+                'route-name-message': message
             }"
             [@showHideDetails]="isNavigationHovered ? 'true' : 'false'"
         >
@@ -143,7 +144,7 @@
                 'nav-item-arrow-first': route.id === 3,
                 'nav-openend-svg': isNavigationHovered
             }"
-            *ngIf="route.arrow && isNavigationHovered"
+            *ngIf="route.arrow"
             src="{{ route.arrow }}"
         ></svg-icon>
         <svg-icon

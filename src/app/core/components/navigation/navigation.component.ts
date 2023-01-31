@@ -229,12 +229,14 @@ export class NavigationComponent implements OnInit, OnDestroy {
     }
     //On outside of navbar close navbar
     closeNavbar(event) {
+        console.log(event.target);
         if (
             //If this elements keep open navigation
             event.target.parentElement?.classList.contains(
                 'nav-header-top-logo'
             ) ||
             event.target.classList.contains('subroute') ||
+            event.target.classList.contains('item-name') ||
             this.navbar.nativeElement.contains(event.target || 'panel-user') ||
             event.target.classList.contains('modal-nav-close') ||
             event.target.classList.contains('panel-user') ||
@@ -247,6 +249,9 @@ export class NavigationComponent implements OnInit, OnDestroy {
             event.target.classList.contains('modal-nav-close-text') ||
             event.target.classList.contains('user-company-header') ||
             event.target.classList.contains('tooltip') ||
+            event.target.classList.contains('panel-name') ||
+            event.target.classList?.contains('user-profile') ||
+            event.target.classList.contains('magic-line-footer') ||
             event.target.parentElement?.parentElement?.classList.contains(
                 'modal-nav-close-svg'
             ) ||
@@ -303,8 +308,9 @@ export class NavigationComponent implements OnInit, OnDestroy {
                     type: false,
                 });
                 return (this.isNavigationHovered = false);
+            } else {
+                this.isNavigationHovered = true;
             }
-            this.isNavigationHovered = true;
         } else {
             this.isUserCompanyDetailsOpen = false;
             this.closeDropdownOnNavClose = false;

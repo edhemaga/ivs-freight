@@ -29,7 +29,7 @@
         font-size: $nav-font-size;
 
         margin: 0;
-        margin-left: 12px;
+        margin-left: 8px;
 
         position: absolute;
         top: -11px;
@@ -230,7 +230,7 @@
         .nav-footer-hover-user {
             height: 40px;
             left: -11px;
-            width: 186px;
+            // width: 186px;
             border-radius: 3px;
         }
 
@@ -308,9 +308,20 @@
             border-radius: 3px;
         }
         .nav-item-active-box-active {
-            width: 238px;
+            max-width: 238px;
+            animation: magiclinetransition 0.5s forwards;
             left: -8px;
             background-color: $nav-hover-color;
+        }
+        @keyframes magiclinetransition {
+            from {
+                background-color: transparent;
+                width: 36px;
+            }
+            to {
+                background-color: $nav-hover-color;
+                width: 238px;
+            }
         }
     }
 }

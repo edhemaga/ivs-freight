@@ -55,10 +55,6 @@
             align-items: center;
         }
 
-        .user-content-logout {
-            // color: $nav-important;
-        }
-
         &:nth-child(1) {
             margin-top: 0px !important;
         }
@@ -75,17 +71,7 @@
                 border-radius: 3px;
             }
 
-            // .user-content-svg {
-            //     svg {
-            //         path {
-            //             fill: $nav-svg-hover;
-            //         }
-            //     }
-            // }
-
             .user-content-logout {
-                // color: $nav-important-hover !important;
-
                 svg {
                     #person-to-portal {
                         fill: $nav-important !important;
@@ -103,10 +89,6 @@
                     }
                 }
             }
-
-            // .user-content-text {
-            //     color: $nav-text-color-hover;
-            // }
         }
     }
     .hide-company {
