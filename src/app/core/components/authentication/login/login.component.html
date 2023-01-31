@@ -124,8 +124,8 @@
     </div>
     <div class="select-companies" *ngIf="showHideIfMoreThenOneCompany">
         <app-select-company
-            [userData]="userData"
             [lastLoginInCompany]="lastLoginInCompany"
+            [userData]="userData"
             (goBackToLogin)="goBackToLogin($event)"
         ></app-select-company>
     </div>

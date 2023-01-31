@@ -24,7 +24,7 @@ import { RegisterUserComponent } from './register-user/register-user.component';
 import { HelperSignupUserComponent } from './helper-signup-user/helper-signup-user.component';
 import { SharedModule } from '../shared/shared.module';
 import { PickCompanyComponent } from './pick-company/pick-company.component';
-
+import { SlickCarouselModule } from 'ngx-slick-carousel';
 @NgModule({
     declarations: [
         LoginComponent,
@@ -50,6 +50,7 @@ import { PickCompanyComponent } from './pick-company/pick-company.component';
         GooglePlaceModule,
         AngularSvgIconModule,
         NgbTooltipModule,
+        SlickCarouselModule,
     ],
     exports: [SelectCompanyComponent],
     schemas: [CUSTOM_ELEMENTS_SCHEMA],

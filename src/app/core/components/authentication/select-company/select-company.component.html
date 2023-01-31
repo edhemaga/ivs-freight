@@ -1,5 +1,5 @@
 <div class="select_company_main">
-    <!-- <div class="row">
+    <div class="row">
         <img
             class="user-img"
             *ngIf="userData?.avatar != null"
@@ -13,80 +13,72 @@
             alt=""
             draggable="false"
         />
-    </div> -->
+    </div>
     <div class="row">
         <h1 class="user-name">Hi {{ userData?.firstName }}</h1>
     </div>
     <div class="row">
         <p class="sub-text">Please chose your company</p>
     </div>
-    <div class="select_company_main_wrapper">
-        <div class="container">
-            <div class="row carouser-holder" *ngIf="userData?.companies">
-                <owl-carousel-o
-                    [options]="customOptions"
-                    [width]="setWidth"
-                    #owlCarousel
-                >
-                    <ng-template
-                        *ngFor="let item of userData.companies"
-                        carouselSlide
-                    >
-                        <div
-                            class="slider"
-                            [ngStyle]="{ width: test + 'px' }"
-                            [ngStyle]="{ width: '190px' }"
-                            [id]="item.id"
-                        >
-                            <span
-                                class="company-name"
-                                *ngIf="item.logo == null"
-                                >{{ item.companyName }}</span
-                            >
-                            <img
-                                class="logo"
-                                *ngIf="item.logo != null"
-                                src="{{ 'data:image/jpg;base64,' + item.logo }}"
-                            />
-                            <div *ngIf="item?.isActive" class="last-login">
-                                <span class="text"> Last login </span>
-                                <span
-                                    class="time"
-                                    *ngIf="lastLoginInCompany == 0"
-                                >
-                                    Today
-                                </span>
-                                <span
-                                    class="time"
-                                    *ngIf="lastLoginInCompany == 1"
-                                >
-                                    Yesterday
-                                </span>
-                                <span
-                                    class="time"
-                                    *ngIf="lastLoginInCompany > 1"
-                                >
-                                    {{ lastLoginInCompany }}
-                                </span>
-                            </div>
-                        </div>
-                    </ng-template>
-                </owl-carousel-o>
-            </div>
-            <div class="row bottons">
-                <div
-                    (click)="onCompanySelect()"
-                    class="select_company_main_button"
-                >
-                    SELECT
+    <div class="row">
+        <ngx-slick-carousel
+            #slickModal="slick-carousel"
+            class="carousel"
+            [config]="slideConfig"
+        >
+            <div
+                ngxSlickItem
+                *ngFor="let item of userData?.companies"
+                class="slide"
+            >
+                <div class="slide-inner" [id]="item.id">
+                    <span class="company-name" *ngIf="item.logo == null">{{
+                        item.companyName
+                    }}</span>
+                    <img
+                        class="logo"
+                        *ngIf="item.logo != null"
+                        src="{{ 'data:image/jpg;base64,' + item.logo }}"
+                    />
+                    <div *ngIf="item?.isActive" class="last-login">
+                        <span class="text"> Last login </span>
+                        <span class="time" *ngIf="lastLoginInCompany == 0">
+                            Today
+                        </span>
+                        <span class="time" *ngIf="lastLoginInCompany == 1">
+                            Yesterday
+                        </span>
+                        <span class="time" *ngIf="lastLoginInCompany > 1">
+                            {{ lastLoginInCompany }}
+                        </span>
+                    </div>
                 </div>
-                <div class="logout" (click)="goToLogin()">Logout</div>
             </div>
-            <div class="row">
-                <svg-icon
-                    src="assets/svg/applicant/new-logo-dark.svg"
-                ></svg-icon>
+        </ngx-slick-carousel>
+        <form
+            [formGroup]="saveCompany"
+            class="save-company"
+            [ngClass]="{ 'dots-active': dotsTrue }"
+        >
+            <div class="d-flex checkbox-container">
+                <app-ta-checkbox
+                    formControlName="savedCompany"
+                    [name]="'Remember this company'"
+                    [label]="'Remember this company'"
+                    [customClass]="'medium'"
+                ></app-ta-checkbox>
             </div>
+        </form>
+        <!-- <button (click)="slickModal.slickGoTo(2)">slickGoto 2</button> -->
+        <!-- <button (click)="slickModal.unslick()">unslick</button> -->
+    </div>
+    <div class="row bottons">
+        <div (click)="onCompanySelect()" class="select_company_main_button">
+            SELECT
         </div>
+        <div class="logout" (click)="goToLogin()">Logout</div>
+    </div>
+    <div class="row logo-bottom">
+        <svg-icon src="assets/svg/applicant/new-logo-dark.svg"></svg-icon>
     </div>
 </div>

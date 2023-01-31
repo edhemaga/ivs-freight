@@ -55,7 +55,7 @@ export class LoginComponent implements OnInit, OnDestroy {
                 this.cdRef.detectChanges();
                 this.userData = res;
 
-                console.log(res);
+                console.log(this.lastLoginInCompany);
                 this.showHideIfMoreThenOneCompany = true;
             }
         );
@@ -63,6 +63,9 @@ export class LoginComponent implements OnInit, OnDestroy {
 
         this.copyrightYear = moment().year();
         this.resetSubject();
+    }
+    goBackToLogin(event) {
+        this.showHideIfMoreThenOneCompany = event;
     }
     public calculateDiff(dateSent) {
         let currentDate = new Date();
@@ -95,9 +98,7 @@ export class LoginComponent implements OnInit, OnDestroy {
             this.destroy$
         );
     }
-    goBackToLogin(event) {
-        this.showHideIfMoreThenOneCompany = event;
-    }
+
     public userLogin() {
         if (this.loginForm.invalid) {
             this.inputService.markInvalid(this.loginForm);
