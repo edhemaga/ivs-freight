@@ -1214,7 +1214,7 @@
                         <app-ta-input
                             formControlName="baseRate"
                             [inputConfig]="{
-                                name: 'base-rate',
+                                name: 'price-separator',
                                 type: 'text',
                                 label: 'Base Rate',
                                 labelInInput: true,
@@ -1224,8 +1224,7 @@
                                 placeholderIconColor: 'green',
                                 inputCursorOnRightSide: true,
                                 hideErrorMessage: true,
-                                hideRequiredCheck: true,
-                                thousandSeparator: true
+                                hideRequiredCheck: true
                             }"
                         ></app-ta-input>
                         <!-- Driver Rate -->
@@ -1236,7 +1235,7 @@
                             "
                             formControlName="driverRate"
                             [inputConfig]="{
-                                name: 'base-rate',
+                                name: 'price-separator',
                                 type: 'text',
                                 label: 'Driver Rate',
                                 labelInInput: true,
@@ -1246,8 +1245,7 @@
                                 placeholderIconColor: 'purple',
                                 inputCursorOnRightSide: true,
                                 hideErrorMessage: true,
-                                hideRequiredCheck: true,
-                                thousandSeparator: true
+                                hideRequiredCheck: true
                             }"
                         ></app-ta-input>
                         <!-- Adjusted Rate -->
@@ -1260,7 +1258,7 @@
                             "
                             formControlName="adjustedRate"
                             [inputConfig]="{
-                                name: 'base-rate',
+                                name: 'price-separator',
                                 type: 'text',
                                 label: 'Adjusted',
                                 labelInInput: true,
@@ -1271,8 +1269,7 @@
                                 removeInput: true,
                                 hideErrorMessage: true,
                                 hideRequiredCheck: true,
-                                hideDangerMark: true,
-                                thousandSeparator: true
+                                hideDangerMark: true
                             }"
                             (clear)="removeAdditionalBilling('adjusted')"
                         ></app-ta-input>
@@ -1289,7 +1286,7 @@
                                     <app-ta-input
                                         formControlName="billingValue"
                                         [inputConfig]="{
-                                            name: 'base-rate',
+                                            name: 'price-separator',
                                             type: 'text',
                                             label: additional.get('name').value,
                                             labelInInput: true,
@@ -1302,8 +1299,7 @@
                                             isRequired: true,
                                             hideErrorMessage: true,
                                             hideRequiredCheck: true,
-                                            hideDangerMark: true,
-                                            thousandSeparator: true
+                                            hideDangerMark: true
                                         }"
                                         (clear)="
                                             removeAdditionalBilling(
@@ -1338,7 +1334,7 @@
                             *ngIf="isVisiblePayment"
                             formControlName="advancePay"
                             [inputConfig]="{
-                                name: 'base-rate',
+                                name: 'price-separator',
                                 type: 'text',
                                 label: 'Advance',
                                 labelInInput: true,
@@ -1350,7 +1346,6 @@
                                 hideErrorMessage: true,
                                 hideRequiredCheck: true,
                                 hideDangerMark: true,
-                                thousandSeparator: true,
                                 removeInput: true
                             }"
                             (clear)="removeAdditionalPayment()"

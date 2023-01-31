@@ -29,7 +29,6 @@ import {
 } from '../../../utils/methods.calculations';
 import { FormService } from 'src/app/core/services/form/form.service';
 import { ImageBase64Service } from '../../../utils/base64.image';
-import * as CurrencyFormatter from 'currency-formatter';
 @Component({
     selector: 'app-ta-input',
     templateUrl: './ta-input.component.html',
@@ -581,55 +580,6 @@ export class TaInputComponent
     }
 
     public onKeyup(event): void {
-        if (this.inputConfig.priceSeparator && this.getSuperControl.value) {
-            if (
-                this.getSuperControl.value
-                    .toString()
-                    .split('')
-                    .every((value) => {
-                        return value === '0';
-                    }) &&
-                this.getSuperControl.value.split('').length > 0
-            ) {
-                this.getSuperControl.patchValue('0');
-                return;
-            }
-
-            if (this.getSuperControl.value.toString()) {
-                const options = { currency: 'USD' };
-                this.getSuperControl.patchValue(
-                    CurrencyFormatter.format(
-                        this.getSuperControl.value,
-                        options
-                    )
-                );
-
-                if (
-                    event.key !== 'ArrowRight' &&
-                    event.key !== 'ArrowLeft' &&
-                    this.priceCounter == 0
-                ) {
-                    this.cursorPosition =
-                        this.input.nativeElement.selectionStart;
-                    const dotPosition = this.input.nativeElement.value
-                        .toString()
-                        .lastIndexOf('.');
-                    if (dotPosition !== -1) {
-                        this.cursorPosition = dotPosition;
-                    }
-                    this.priceCounter++;
-                } else {
-                    this.cursorPosition =
-                        this.input.nativeElement.selectionStart;
-                }
-
-                this.input.nativeElement.setSelectionRange(
-                    this.cursorPosition,
-                    this.cursorPosition
-                );
-            }
-        }
-
         if (
             event.keyCode == 8 &&
             !(this.inputConfig.isDropdown || this.inputConfig.dropdownLabel)
@@ -699,7 +649,7 @@ export class TaInputComponent
         }
     }
 
-    public transformText(value: string, paste?: boolean) {
+    public transformText(value?: string, paste?: boolean) {
         if (paste) {
             if (!this.inputSelection) {
                 this.input.nativeElement.value += value;
@@ -726,7 +676,9 @@ export class TaInputComponent
         }
         // not paste
         else {
-            this.input.nativeElement.value = value;
+            if (value) {
+                this.input.nativeElement.value = value;
+            }
         }
 
         switch (this.inputConfig.textTransform) {
@@ -770,6 +722,114 @@ export class TaInputComponent
                     )
                 );
         }
+
+        if (this.inputConfig.priceSeparator && this.getSuperControl.value) {
+            if (
+                this.getSuperControl.value
+                    .toString()
+                    .split('')
+                    .every((value) => {
+                        return value === '0';
+                    }) &&
+                this.getSuperControl.value.split('').length > 0
+            ) {
+                this.getSuperControl.patchValue('0');
+                return;
+            }
+
+            let priceSeparatorTimeout = setTimeout(() => {
+                this.getSuperControl.patchValue(
+                    this.thousandSeparatorPipe.transform(
+                        this.getSuperControl.value
+                    )
+                );
+                if (this.getSuperControl.value.indexOf('.') >= 0) {
+                    let cursorPosition =
+                        this.input.nativeElement.selectionStart;
+
+                    console.log(
+                        'cursor position witdot: ',
+                        this.input.nativeElement.selectionStart,
+                        this.hasDecimalIndex
+                    );
+                    if (this.hasDecimalIndex >= 0) {
+                        cursorPosition =
+                            this.getSuperControl.value.indexOf('.');
+                        this.input.nativeElement.setSelectionRange(
+                            cursorPosition,
+                            cursorPosition
+                        );
+                    } else {
+                        this.input.nativeElement.setSelectionRange(
+                            cursorPosition,
+                            cursorPosition
+                        );
+                    }
+                }
+
+                if (this.getSuperControl.value.indexOf('.') === -1) {
+                    this.hasDecimalIndex = -1;
+                } else {
+                    // 0. Check for Dot position
+                    this.hasDecimalIndex =
+                        this.getSuperControl.value.indexOf('.');
+
+                    // 1. Divide number on decimal and integer part
+                    const integerPart = this.getSuperControl.value.slice(
+                        0,
+                        this.hasDecimalIndex
+                    );
+                    let decimalPart = this.getSuperControl.value.slice(
+                        this.hasDecimalIndex + 1
+                    );
+
+                    // 2. Get only two numbers of decimal part
+                    decimalPart = decimalPart.slice(0, 2);
+
+                    // 3. Set formatted number
+                    setTimeout(() => {
+                        this.getSuperControl.patchValue(
+                            integerPart + '.' + decimalPart
+                        );
+
+                        console.log(
+                            'after settimeout: ',
+                            this.getSuperControl.value
+                        );
+                    }, 200);
+                }
+            }, 1000);
+
+            if (this.getSuperControl.value.indexOf('.') === -1) {
+                clearTimeout(priceSeparatorTimeout);
+                this.getSuperControl.patchValue(
+                    this.thousandSeparatorPipe.transform(
+                        this.getSuperControl.value
+                    )
+                );
+                console.log(
+                    'cursor position without dot: ',
+                    this.input.nativeElement.selectionStart
+                );
+            }
+
+            // setTimeout(() => {
+            // let cursorPosition = this.input.nativeElement.selectionStart;
+            // if (this.hasDecimalIndex >= 0) {
+            //     cursorPosition = this.getSuperControl.value.indexOf('.');
+            //     this.input.nativeElement.setSelectionRange(
+            //         cursorPosition,
+            //         cursorPosition
+            //     );
+            // } else {
+            //     this.input.nativeElement.setSelectionRange(
+            //         cursorPosition,
+            //         cursorPosition
+            //     );
+            // }
+            // }, 700);
+        }
+
         /**
          *  Custom Validation For This Type of Input Below, DONT TOUCH !
          */
@@ -995,12 +1055,53 @@ export class TaInputComponent
         }
     }
 
+    public hasDecimalIndex: number = -1;
     public onKeypress(event: KeyboardEvent): boolean {
         // Disable first character to be space
         if (
             !this.input.nativeElement.value &&
             /^\s*$/.test(String.fromCharCode(event.charCode))
         ) {
+            event.preventDefault();
+            return false;
+        }
+
+        if (this.inputConfig.priceSeparator) {
+            if (
+                this.inputService
+                    .getInputRegexPattern('price-separator')
+                    .test(String.fromCharCode(event.charCode))
+            ) {
+                //  Disable multiple dots
+                this.disableMultiplePoints(event);
+
+                // Find index of dot
+                this.hasDecimalIndex =
+                    this.getSuperControl?.value?.indexOf('.');
+
+                if (this.hasDecimalIndex && this.hasDecimalIndex >= 0) {
+                    // 1. Divide number on decimal and integer part
+                    const integerPart = this.getSuperControl.value.slice(
+                        0,
+                        this.hasDecimalIndex
+                    );
+                    let decimalPart = this.getSuperControl.value.slice(
+                        this.hasDecimalIndex + 1
+                    );
+                    // 2. Get only two numbers of decimal part
+                    decimalPart = decimalPart.slice(0, 2);
+
+                    // 3. Set formatted number
+                    this.getSuperControl.patchValue(
+                        integerPart + '.' + decimalPart
+                    );
+                }
+
+                console.log('on key press value: ', this.getSuperControl.value);
+                // this.transformText(this.getSuperControl.value);
+
+                return true;
+            }
             event.preventDefault();
             return false;
         }
@@ -1028,7 +1129,6 @@ export class TaInputComponent
             return false;
         }
 
-        // Only numbers
         if (
             [
                 'ein',
@@ -1073,19 +1173,12 @@ export class TaInputComponent
                 'fuel tank size',
                 'device no',
                 'weight',
-                'base-rate',
-                'adjusted-rate',
-                'advance-pay-rate',
-                'layover-rate',
-                'lumper-rate',
-                'fuel-surcharge-rate',
-                'escort-rate',
-                'detention-rate',
                 'fuel per miles',
                 'fuel price map',
                 'amount',
             ].includes(this.inputConfig.name.toLowerCase())
         ) {
+            // Only numbers
             if (
                 this.inputService
                     .getInputRegexPattern('qty')
