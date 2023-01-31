@@ -16,7 +16,7 @@ import {
     SwitchDispatchCommand,
     UpdateDispatchCommand,
 } from 'appcoretruckassist';
-import { LabelType, Options } from 'ng5-slider';
+import { Options } from 'ng5-slider';
 import { catchError, of } from 'rxjs';
 import { ColorFinderPipe } from '../pipes/color-finder.pipe';
 import { DispatchBoardLocalResponse } from '../state/dispatcher.model';
@@ -145,13 +145,13 @@ export class DispatchTableComponent implements OnInit {
     parking: any[] = [
         {
             id: 1,
-            name: "2334"
+            name: '2334',
         },
         {
-            id:2,
-            name: "5555"
-        }
-    ]
+            id: 2,
+            name: '5555',
+        },
+    ];
 
     options: Options = {
         floor: 0,
@@ -195,7 +195,7 @@ export class DispatchTableComponent implements OnInit {
         this.openedTruckDropdown = ind;
     }
 
-    showParkingDropdown(ind: number){
+    showParkingDropdown(ind: number) {
         this.openParkingDropdown = ind;
     }
 
@@ -253,8 +253,8 @@ export class DispatchTableComponent implements OnInit {
         this.openedTrailerDropdown = -1;
     }
 
-    addParking(e){
-        console.log("ADD PARKING HERE", e);
+    addParking(e) {
+        console.log('ADD PARKING HERE', e);
 
         this.openParkingDropdown = -1;
     }

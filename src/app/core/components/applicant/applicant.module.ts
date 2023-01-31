@@ -15,6 +15,7 @@ import { ApplicantWelcomeScreenComponent } from './applicant-welcome-screen/appl
 import { ApplicantEndScreenComponent } from './applicant-end-screen/applicant-end-screen.component';
 import { ApplicantNextBackBtnComponent } from './applicant-next-back-btn/applicant-next-back-btn.component';
 import { ApplicantAddSaveBtnComponent } from './applicant-add-save-btn/applicant-add-save-btn.component';
+import { ApplicantReviewFeedbackComponent } from './applicant-review-feedback/applicant-review-feedback.component';
 
 import { Step1Component } from './applicant-steps/step1/step1.component';
 import { Step2Component } from './applicant-steps/step2/step2.component';
@@ -46,6 +47,7 @@ import { SharedModule } from '../shared/shared.module';
         ApplicantAddSaveBtnComponent,
         ApplicantWelcomeScreenComponent,
         ApplicantEndScreenComponent,
+        ApplicantReviewFeedbackComponent,
 
         Step1Component,
         Step2Component,
@@ -80,6 +82,7 @@ import { SharedModule } from '../shared/shared.module';
         ApplicantHeaderComponent,
         ApplicantFooterComponent,
         ApplicantSignaturePadComponent,
+        ApplicantReviewFeedbackComponent,
     ],
 })
 export class ApplicantModule {}

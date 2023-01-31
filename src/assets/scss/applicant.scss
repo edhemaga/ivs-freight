@@ -5,6 +5,18 @@
         }
     }
 
+    &:hover {
+        .input-container .input-custom-group .input-control.disabled {
+            background: $ta-light-grey !important;
+        }
+    }
+
+    &.valid {
+        .input-container .input-custom-group .input-control.disabled {
+            background: transparent !important;
+        }
+    }
+
     .input-container .input-control {
         background: $bw2;
         transition: background 0.2s ease-in-out;
@@ -14,9 +26,12 @@
         background: $ta-light-grey !important;
     }
 
-    .input-container .input-control.valid-focus-out-filled/* ,
-    .input-container .input-control.invalid-focus-out-filled */ {
+    .input-container .input-control.valid-focus-out-filled {
         background: transparent !important;
+    }
+
+    .input-container .input-custom-group .input-control.disabled {
+        background: $bw2 !important;
     }
 
     .input-container

@@ -182,9 +182,12 @@ export class MapRouteModalComponent implements OnInit, OnDestroy {
             .subscribe((trucks: TruckListResponse) => {
                 this.truckType = trucks.pagination.data.map((truck) => {
                     return {
-                        ...truck.truckType,
+                        id: truck.id,
+                        name: truck.truckNumber,
+                        truckType: truck.truckType,
                         folder: 'common',
                         subFolder: 'trucks',
+                        logoName: truck.truckType.logoName
                     };
                 });
             });
@@ -238,6 +241,11 @@ export class MapRouteModalComponent implements OnInit, OnDestroy {
 
     private updateRoute(id: number) {
         const form = this.mapRouteForm.value;
+
+        this.editData.stops.map((stop) => {
+            stop.latitude = stop.lat;
+            stop.longitude = stop.long;
+        });
 
         const newData: any = {
             id: id,

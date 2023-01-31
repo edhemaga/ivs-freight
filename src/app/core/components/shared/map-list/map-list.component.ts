@@ -54,6 +54,7 @@ export class MapListComponent
     searchIsActive: boolean = false;
     searchText: string = '';
     searchLoading: boolean = false;
+    searchTimeout: any;
 
     constructor(
         private formBuilder: FormBuilder,
@@ -85,7 +86,11 @@ export class MapListComponent
             .pipe(takeUntil(this.destroy$))
             .subscribe((changes) => {
                 this.searchText = changes.search;
-                this.onSearch();
+
+                clearTimeout(this.searchTimeout);
+                this.searchTimeout = setTimeout(() => {
+                    this.onSearch();
+                }, 300);
             });
 
         this.mapsService.selectedMarkerChange
@@ -126,7 +131,9 @@ export class MapListComponent
                     document.querySelectorAll<HTMLElement>('.map-list-body')[0];
                 mapListElement.style.height = '';
 
-                this.checkResizeButton();
+                setTimeout(() => {
+                    this.checkResizeButton();
+                }, 100);
             } else {
                 var mapListElement =
                     document.querySelectorAll<HTMLElement>('.map-list-body')[0];
@@ -141,7 +148,9 @@ export class MapListComponent
                     mapListElement.style.height = '';
                     this.mapListExpanded = true;
 
-                    this.checkResizeButton();
+                    setTimeout(() => {
+                        this.checkResizeButton();
+                    }, 100);
                 } else {
                     this.calculateMapListSize();
                 }
@@ -239,6 +248,8 @@ export class MapListComponent
         } else {
             this.showExpandButton = false;
         }
+
+        this.ref.detectChanges();
     }
 
     sortData() {

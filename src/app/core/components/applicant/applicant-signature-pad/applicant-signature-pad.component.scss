@@ -1,119 +1,144 @@
 @import 'src/theme/variables.scss';
 
-app-applicant-signature-pad {
-    .signature-pad-canvas {
-        border: none !important;
-        border-top-left-radius: 3px;
-        border-top-right-radius: 3px;
-        background: $ta-light-grey-2;
+.signature-pad-container {
+    &:hover .signature-pad-bottom-container {
+        background: $ta-light-grey !important;
     }
-}
 
-.signature-pad-bottom-container {
-    padding: 5px 0;
-    height: 28px;
-    border-bottom-left-radius: 3px;
-    border-bottom-right-radius: 3px;
+    &:hover {
+        .signature-pad-canvas {
+            background: $bw5;
+        }
+    }
 
-    p {
-        height: 15px;
-        font-size: 12px;
-        margin-left: 176px !important;
+    app-applicant-signature-pad {
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
         user-select: none;
 
-        span {
-            color: $ta-red-3;
+        .signature-pad-canvas {
+            border: none !important;
+            border-top-left-radius: 3px;
+            border-top-right-radius: 3px;
+            background: $ta-light-grey-6;
+
+            transition: background 0.2s ease-in-out;
         }
     }
 
-    .btn-container {
-        height: 18px;
-        margin-left: auto;
-        margin-right: 6px;
+    .signature-pad-bottom-container {
+        padding: 5px 0;
+        height: 28px;
+        border-bottom-left-radius: 3px;
+        border-bottom-right-radius: 3px;
+        transition: background 0.2s ease-in-out;
 
-        .undo-icon,
-        .confirm-icon,
-        .clear-icon {
-            cursor: pointer;
+        p {
+            height: 15px;
+            font-size: 12px;
+            margin-left: 176px !important;
 
-            &:hover {
-                svg {
-                    rect {
-                        fill: $bw6-2;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+
+            span {
+                color: $ta-red-3;
+            }
+        }
+
+        .btn-container {
+            height: 18px;
+            margin-left: auto;
+            margin-right: 6px;
+
+            .undo-icon,
+            .confirm-icon,
+            .clear-icon {
+                cursor: pointer;
+
+                &:hover {
+                    svg {
+                        rect {
+                            fill: $ta-black;
+                        }
                     }
                 }
-            }
 
-            svg {
-                rect {
-                    transition: fill 0.3s ease-in-out;
-                    fill: $bw4;
-                }
-
-                path {
-                    fill: $white;
-                }
-            }
-
-            &.confirm-icon,
-            &.undo-icon {
-                margin-right: 4px;
-            }
-        }
-    }
-}
-
-.required-container {
-    margin-top: 8px;
-
-    p {
-        font-size: 14px;
-        color: $ta-red-2;
-
-        &::-moz-selection {
-            color: $ta-red-2;
-            background: rgb(239, 83, 80, 0.2);
-        }
-
-        &::selection {
-            color: $ta-red-2;
-            background: rgb(239, 83, 80, 0.2);
-        }
-    }
-}
-
-.signature-image-container {
-    &:hover .clear-signature-container {
-        visibility: visible;
-        opacity: 1;
-    }
-
-    img {
-        padding: 6px;
-        border-bottom: 0.1px solid $ta-light-grey-2;
-    }
-
-    .clear-signature-container {
-        margin-left: 22px;
-        margin-bottom: 4px;
-        width: 28px;
-        height: 28px;
-        border-radius: 2px;
-        background: transparent;
-        cursor: pointer;
-        visibility: hidden;
-        opacity: 0;
-        transition: visibility 0.3s ease-in-out, opacity 0.3s ease-in-out,
-            background 0.3s ease-in-out;
-
-        &:hover {
-            background: $ta-black;
-
-            .clear-signature-icon {
                 svg {
-                    path {
+                    rect {
                         transition: fill 0.3s ease-in-out;
+                        fill: $bw5;
+                    }
+
+                    path {
                         fill: $white;
+                    }
+                }
+
+                &.confirm-icon,
+                &.undo-icon {
+                    margin-right: 4px;
+                }
+            }
+        }
+    }
+
+    .required-container {
+        margin-top: 8px;
+
+        p {
+            font-size: 14px;
+            color: $ta-red-2;
+
+            &::-moz-selection {
+                color: $ta-red-2;
+                background: rgb(239, 83, 80, 0.2);
+            }
+
+            &::selection {
+                color: $ta-red-2;
+                background: rgb(239, 83, 80, 0.2);
+            }
+        }
+    }
+
+    .signature-image-container {
+        &:hover .clear-signature-container {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        img {
+            width: 400px;
+            padding: 6px;
+            border-bottom: 0.1px solid $ta-light-grey-2;
+        }
+
+        .clear-signature-container {
+            margin-left: 22px;
+            margin-bottom: 4px;
+            width: 28px;
+            height: 28px;
+            border-radius: 2px;
+            background: transparent;
+            cursor: pointer;
+            visibility: hidden;
+            opacity: 0;
+            transition: visibility 0.3s ease-in-out, opacity 0.3s ease-in-out,
+                background 0.3s ease-in-out;
+
+            &:hover {
+                background: $ta-black;
+
+                .clear-signature-icon {
+                    svg {
+                        path {
+                            transition: fill 0.3s ease-in-out;
+                            fill: $white;
+                        }
                     }
                 }
             }

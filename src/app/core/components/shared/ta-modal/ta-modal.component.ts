@@ -64,6 +64,7 @@ export class TaModalComponent implements OnInit, OnDestroy {
     @Input() applicantText: boolean;
     @Input() profileUpdateText: boolean;
     @Input() customClass: string;
+    @Input() partClass: string;
     @Input() isModalValid: boolean;
     @Input() disableFooter: boolean;
     @Input() disableDelete: boolean;
@@ -86,7 +87,7 @@ export class TaModalComponent implements OnInit, OnDestroy {
         dropZoneType: 'files', // files | image | media
         dropZoneSvg: 'assets/svg/common/ic_files_dropzone.svg',
         dropZoneAvailableFiles:
-            'application/pdf, application/png, application/jpg',
+            'application/pdf, image/png, image/jpeg, image/jpg',
         multiple: true,
         globalDropZone: true,
     };

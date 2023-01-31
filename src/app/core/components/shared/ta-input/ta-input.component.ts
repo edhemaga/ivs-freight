@@ -557,7 +557,10 @@ export class TaInputComponent
     public onKeydown(event) {
         this.capsLockOn = event.getModifierState('CapsLock');
 
-        if (this.inputConfig.textTransform === 'capitalize') {
+        if (
+            this.inputConfig.textTransform === 'capitalize' &&
+            this.inputConfig.name !== 'Allow All'
+        ) {
             if (event.getModifierState('CapsLock')) {
                 event.preventDefault();
                 return;
@@ -1276,6 +1279,14 @@ export class TaInputComponent
                     .test(String.fromCharCode(event.charCode))
             ) {
                 this.disableConsecutivelySpaces(event);
+                return true;
+            }
+            event.preventDefault();
+            return false;
+        }
+
+        if (['allow all'].includes(this.inputConfig.name.toLowerCase())) {
+            if (/.*/.test(String.fromCharCode(event.charCode))) {
                 return true;
             }
             event.preventDefault();
