@@ -807,7 +807,7 @@ export class TaInputComponent
                     let decimalPart = this.getSuperControl.value.slice(
                         this.hasDecimalIndex + 1
                     );
-
+                    // 99,000.93
                     // 4.3 If has dot, but remove character (always must has two decimal characters)
 
                     if (decimalPart?.length === 1) {
