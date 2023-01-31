@@ -1,0 +1,23 @@
+<button
+    class="ta-font-bold button-container"
+    [ngClass]="{ 'btn-blue': blueText }"
+    type="submit"
+    (click)="onGetClickValue()"
+>
+    {{ btnText }}
+</button>
+
+<ng-container *ngIf="requestedResend">
+    <div class="d-flex align-items-center sent-container">
+        <svg-icon
+            class="check-icon"
+            [ngClass]="{
+                'rotate-icon': openHavingTroubleContent
+            }"
+            src="assets/svg/applicant/check.svg"
+            [svgStyle]="{ 'width.px': 13, 'height.px': 10 }"
+        ></svg-icon>
+
+        <p class="m-0 ta-font-regular">Sent just now</p>
+    </div>
+</ng-container>

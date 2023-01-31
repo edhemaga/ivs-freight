@@ -48,6 +48,7 @@
         "@ng-select/ng-select": "^8.1.1",
         "@ngneat/until-destroy": "^9.2.1",
         "@openapitools/openapi-generator-cli": "^2.5.2",
+        "@types/bootstrap": "^5.2.6",
         "@types/chart.js": "^2.9.30",
         "@types/chartjs-plugin-annotation": "^0.5.2",
         "@types/crypto-js": "^4.1.1",

@@ -1,0 +1,10 @@
+<button
+    class="d-flex justify-content-center align-items-center ta-font-bold button-container"
+    type="submit"
+    [ngClass]="{
+        disabled: disabledValue
+    }"
+    (click)="onGetClickValue()"
+>
+    {{ loginBtn ? 'Login' : 'Confirm' }}
+</button>

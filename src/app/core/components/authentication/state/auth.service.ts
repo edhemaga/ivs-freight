@@ -48,6 +48,38 @@ export class AuthStoreService {
         return this.signUpUserInfoSubject.asObservable();
     }
 
+    public accountLogut(): void {
+        // ---- PRODUCTION MODE ----
+        this.persistStorage.clearStore();
+        this.persistStorage.destroy();
+        this.router.navigate(['/auth/login']);
+        // ---- DEVELOP MODE ----
+        localStorage.removeItem('user');
+    }
+
+    public signUpUser(data: SignupUserCommand): Observable<any> {
+        return this.accountService.apiAccountSignupuserPut(data, 'response');
+    }
+
+    public selectCompanyAccount(
+        data: SelectCompanyCommand
+    ): Observable<SelectCompanyResponse> {
+        return this.accountService.apiAccountSelectcompanyPost(data);
+    }
+
+    /* DONE */
+
+    public signUpCompany(data: SignUpCompanyCommand): Observable<object> {
+        return this.accountService.apiAccountSignupcompanyPost(
+            data,
+            'response'
+        );
+    }
+
+    public verifyOwner(data: VerifyOwnerCommand): Observable<object> {
+        return this.accountService.apiAccountVerifyownerPut(data, 'response');
+    }
+
     public accountLogin(data: SignInCommand): Observable<SignInResponse> {
         return this.accountService.apiAccountLoginPost(data).pipe(
             tap((user: SignInResponse) => {
@@ -58,15 +90,6 @@ export class AuthStoreService {
                 this.router.navigate(['/dashboard']);
             })
         );
-    }
-
-    public accountLogut(): void {
-        // ---- PRODUCTION MODE ----
-        this.persistStorage.clearStore();
-        this.persistStorage.destroy();
-        this.router.navigate(['/auth/login']);
-        // ---- DEVELOP MODE ----
-        localStorage.removeItem('user');
     }
 
     public forgotPassword(data: ForgotPasswordCommand): Observable<object> {
@@ -87,26 +110,5 @@ export class AuthStoreService {
             data,
             'response'
         );
-    }
-
-    public signUpCompany(data: SignUpCompanyCommand): Observable<object> {
-        return this.accountService.apiAccountSignupcompanyPost(
-            data,
-            'response'
-        );
-    }
-
-    public signUpUser(data: SignupUserCommand): Observable<any> {
-        return this.accountService.apiAccountSignupuserPut(data, 'response');
-    }
-
-    public verifyOwner(data: VerifyOwnerCommand): Observable<object> {
-        return this.accountService.apiAccountVerifyownerPut(data, 'response');
-    }
-
-    public selectCompanyAccount(
-        data: SelectCompanyCommand
-    ): Observable<SelectCompanyResponse> {
-        return this.accountService.apiAccountSelectcompanyPost(data);
     }
 }

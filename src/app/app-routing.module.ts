@@ -8,8 +8,8 @@ import { ApplicantWelcomeScreenComponent } from './core/components/applicant/app
 import { ApplicantEndScreenComponent } from './core/components/applicant/applicant-end-screen/applicant-end-screen.component';
 import { DriverActiveResolver } from './core/components/driver/state/driver-active-state/driver-active.resolver';
 import { HelperSignupUserComponent } from './core/components/authentication/helper-signup-user/helper-signup-user.component';
-import { HelperComponent } from './core/components/authentication/helper/helper.component';
-import { HelperForgotPasswordComponent } from './core/components/authentication/helper-forgot-password/helper-forgot-password.component';
+import { RegisterCompanyHelperComponent } from './core/components/website/components/website-sidebar/sidebar-content/register-company-content/register-company-helper/register-company-helper.component';
+import { ResetPasswordHelperComponent } from './core/components/website/components/website-sidebar/sidebar-content/login-content/reset-password-helper/reset-password-helper.component';
 import { BrokerResolver } from './core/components/customer/state/broker-state/broker.resolver';
 import { ShipperResolver } from './core/components/customer/state/shipper-state/shipper.resolver';
 import { ShopResolver } from './core/components/repair/state/shop-state/shop.resolver';
@@ -33,7 +33,6 @@ import { LoadPandingResolver } from './core/components/load/state/load-pending-s
 import { LoadClosedResolver } from './core/components/load/state/load-closed-state/load-closed.resolver';
 import { LoadActiveResolver } from './core/components/load/state/load-active-state/load-active.resolver';
 import { LoadTemplateResolver } from './core/components/load/state/load-template-state/load-template.resolver';
-import { UserResolver } from './core/components/user/state/user-state/user.resolver';
 import { RoadsideActiveResolver } from './core/components/safety/violation/state/roadside-state/roadside-active/roadside-active.resolver';
 import { RoadsideInactiveResolver } from './core/components/safety/violation/state/roadside-state/roadside-inactive/roadside-inactive.resolver';
 import { AccidentActiveResolver } from './core/components/safety/accident/state/accident-state/accident-active/accident-active.resolver';
@@ -63,20 +62,20 @@ const routes: Routes = [
     {
         path: 'api/account/signupuser',
         component: HelperSignupUserComponent,
-        data: { title: 'Helper Component Route' },
-        canActivate: [HideContentGuard],
+        data: { title: 'Helper Component Route' } /* 
+        canActivate: [HideContentGuard], */,
     },
     {
         path: 'api/account/verifyowner',
-        component: HelperComponent,
-        data: { title: 'Helper Component Route' },
-        canActivate: [HideContentGuard],
+        component: RegisterCompanyHelperComponent,
+        data: { title: 'Helper Component Route' } /* 
+        canActivate: [HideContentGuard], */,
     },
     {
         path: 'api/account/verifyforgotpassword',
-        component: HelperForgotPasswordComponent,
-        data: { title: 'Helper Component Route' },
-        canActivate: [HideContentGuard],
+        component: ResetPasswordHelperComponent,
+        data: { title: 'Helper Component Route' } /* 
+        canActivate: [HideContentGuard], */,
     },
 
     // Auth Routes
@@ -537,13 +536,20 @@ const routes: Routes = [
         component: UnderConstructionComponent,
         data: { title: 'Notifications' },
     },
+    /* WEBSITE */
+    {
+        path: 'website',
+        loadChildren: () =>
+            import('./core/components/website/website.module').then(
+                (m) => m.WebsiteModule
+            ),
+    },
 
     { path: '**', redirectTo: 'dashboard' },
 ];
 
 @NgModule({
     imports: [RouterModule.forRoot(routes)],
-
     exports: [RouterModule],
 })
 export class AppRoutingModule {}
