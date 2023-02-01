@@ -592,13 +592,6 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
         isSearch?: boolean,
         isShowMore?: boolean
     ) {
-        console.log('filter');
-        console.log(filter);
-        console.log('isSearch');
-        console.log(isSearch);
-        console.log('isShowMore');
-        console.log(isShowMore);
-
         this.truckService
             .getTruckList(
                 filter.active,
@@ -625,9 +618,6 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
                         ].length = trucks.pagination.count;
                     }
                 } else {
-                    console.log('Show More za truckBackFilter');
-                    console.log(trucks.pagination.data);
-
                     let newData = [...this.viewData];
 
                     trucks.pagination.data.map((data: any) => {
@@ -635,8 +625,6 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     });
 
                     this.viewData = [...newData];
-
-                    console.log(this.viewData);
                 }
             });
     }
