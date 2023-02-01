@@ -11,10 +11,11 @@
  */
 
 
-export type PayrollDeductionType = 'Driver' | 'Truck';
+export type PayrollDeductionType = 'Driver' | 'Truck' | 'Trailer';
 
 export const PayrollDeductionType = {
     Driver: 'Driver' as PayrollDeductionType,
-    Truck: 'Truck' as PayrollDeductionType
+    Truck: 'Truck' as PayrollDeductionType,
+    Trailer: 'Trailer' as PayrollDeductionType
 };
 
