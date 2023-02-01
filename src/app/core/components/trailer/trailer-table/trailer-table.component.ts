@@ -576,6 +576,7 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
         } else if (event.action === 'tab-selected') {
             this.selectedTab = event.tabData.field;
 
+            this.backFilterQuery.active = this.selectedTab === 'active' ? 1 : 0;
             this.backFilterQuery.pageIndex = 1;
 
             this.sendTrailerData();
@@ -612,8 +613,6 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
         switch (event.type) {
             case 'show-more': {
                 this.backFilterQuery.pageIndex++;
-                this.backFilterQuery.active =
-                    this.selectedTab === 'active' ? 1 : 0;
 
                 this.trailerBackFilter(this.backFilterQuery, false, true);
                 break;
