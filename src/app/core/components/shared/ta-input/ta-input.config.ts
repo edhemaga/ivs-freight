@@ -125,4 +125,5 @@ export interface ITaInput {
     // MultiSelect Dropdown
     multiselectDropdown?: boolean;
     multiSelectDropdownActive?: boolean;
+    isFromDate?: boolean;
 }
