@@ -57,7 +57,7 @@ export class TaTabSwitchComponent implements OnInit, AfterViewInit, OnChanges {
         x: '0px',
     };
 
-    indexSwitch: number = 0;
+    indexSwitch: number = -1;
     data1Valid: boolean;
     data2Valid: boolean;
 
@@ -101,8 +101,8 @@ export class TaTabSwitchComponent implements OnInit, AfterViewInit, OnChanges {
 
     public setSwitchActive(tabs) {
         const selectedIndex = tabs?.findIndex((item) => item.checked && !item.disabled);
-        //if( selectedIndex == -1 ) return;
-        this.indexSwitch = selectedIndex == -1 ? 0 : selectedIndex;
+        this.indexSwitch = selectedIndex;
+        if( selectedIndex == -1 ) return;
 
         this.hoverStyle = this.getElementOffset(
             this.elem.nativeElement.children[0].children[this.indexSwitch]

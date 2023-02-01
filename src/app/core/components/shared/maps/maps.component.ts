@@ -107,6 +107,7 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
     public locationRange: any = 100;
 
     public markerAnimations: any = {};
+    public clusterAnimation: any = {};
     public showMarkerWindow: any = {};
     public dropDownActive: number = -1;
     public mapZoom: number = 1;
@@ -129,6 +130,7 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
     public mapZoomTime: number = 0;
 
     public clusterMarkers: any[] = [];
+
     public clustersTimeout: any;
 
     public searchText: string = '';
@@ -156,6 +158,7 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
     ngOnInit(): void {
         this.showHideMarkers();
         this.markersDropAnimation();
+        this.clusterDropAnimation();
 
         this.addMapListSearchListener();
         this.addDeleteListener();
@@ -313,22 +316,31 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
     }
 
     markersDropAnimation() {
-        var mainthis = this;
-
         setTimeout(() => {
             this.viewData.map((data: any) => {
-                if (!mainthis.markerAnimations[data.id]) {
-                    mainthis.markerAnimations[data.id] = true;
+                if (!this.markerAnimations[data.id]) {
+                    this.markerAnimations[data.id] = true;
                 }
             });
 
             setTimeout(() => {
                 this.viewData.map((data: any) => {
-                    if (!mainthis.showMarkerWindow[data.id]) {
-                        mainthis.showMarkerWindow[data.id] = true;
+                    if (!this.showMarkerWindow[data.id]) {
+                        this.showMarkerWindow[data.id] = true;
                     }
                 });
             }, 100);
+        }, 1000);
+    }
+
+    clusterDropAnimation(){
+         setTimeout(() => {
+            this.clusterMarkers.map((data: any) => {
+                console.log(data);
+                if (!this.clusterAnimation[data.id]) {
+                    this.clusterAnimation[data.id] = true;
+                }
+            });
         }, 1000);
     }
 
@@ -456,6 +468,8 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
         }
     }
 
+    showAllmarkers: boolean = false;
+
     callClusters(
         clustersObj,
         changedSearchOrSort,
@@ -495,6 +509,7 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
                     var clustersToShow = [];
                     var markersToShow = [];
                     var newMarkersAdded = false;
+                    var newClusterAdded = false;
 
                     clustersResponse.map((clusterItem) => {
                         if (clusterPagination) {
@@ -522,8 +537,8 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
                                     );
 
                                 if (clusterIndex == -1) {
-                                    console.log("CHASTERS ARE ADDDING IT");
-                                    this.clusterMarkers.push(clusterItem);
+                                    this.clusterMarkers = [...this.clusterMarkers, clusterItem];
+                                    newClusterAdded = true;
                                 }
 
                                 clustersToShow.push(clusterItem.latitude);
@@ -588,7 +603,10 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
                         }
                     });
 
+                    this.showAllmarkers = true;
+
                     if (newMarkersAdded) this.markersDropAnimation();
+                    if ( newClusterAdded ) this.clusterDropAnimation();
 
                     this.ref.detectChanges();
                 });
@@ -650,6 +668,7 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
                     var clustersToShow = [];
                     var markersToShow = [];
                     var newMarkersAdded = false;
+                    var newClusterAdded = false;
 
                     clustersResponse.map((clusterItem) => {
                         if (clusterPagination) {
@@ -680,6 +699,7 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
 
                                 if (clusterIndex == -1) {
                                     this.clusterMarkers.push(clusterItem);
+                                    newClusterAdded = true;
                                 }
 
                                 clustersToShow.push(clusterItem.latitude);
@@ -745,6 +765,7 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
                     });
 
                     if (newMarkersAdded) this.markersDropAnimation();
+                    if ( newClusterAdded ) this.clusterDropAnimation();
 
                     this.ref.detectChanges();
                 });
@@ -812,6 +833,7 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
                     var clustersToShow = [];
                     var markersToShow = [];
                     var newMarkersAdded = false;
+                    var newClusterAdded = false;
 
                     clustersResponse.map((clusterItem) => {
                         if (clusterItem.count > 1) {
@@ -823,6 +845,7 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
 
                             if (clusterIndex == -1) {
                                 this.clusterMarkers.push(clusterItem);
+                                newClusterAdded = true;
                             }
 
                             clustersToShow.push(clusterItem.latitude);
@@ -887,6 +910,7 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
                     });
 
                     if (newMarkersAdded) this.markersDropAnimation();
+                    if ( newClusterAdded ) this.clusterDropAnimation();
 
                     this.ref.detectChanges();
                 });

@@ -345,6 +345,7 @@
                                         name: 'price-separator',
                                         type: 'text',
                                         priceSeparator: true,
+                                        priceSeparatorLimitation: 6,
                                         blueInputColor:
                                             selectedPM[ind]?.logoName &&
                                             !selectedPM[
@@ -385,7 +386,10 @@
                                     *ngIf="selectedHeaderTab === 2"
                                     class="item-subtotal"
                                 >
-                                    {{ subtotal[ind].value | currency }}
+                                    {{
+                                        subtotal[ind].value
+                                            | priceCalculationArray
+                                    }}
                                 </p>
 
                                 <div
@@ -433,7 +437,7 @@
         </app-ta-custom-card>
         <div class="ta-card-body-overflow-none">
             <app-ta-custom-card
-                [cardName]="'Documents'"
+                [cardName]="'Document'"
                 [disableAnimation]="disableCardAnimation"
                 [hasCounter]="documents.length ? documents.length : 0"
                 [isCardOpen]="documents.length > 0"

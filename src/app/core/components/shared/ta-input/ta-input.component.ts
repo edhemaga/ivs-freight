@@ -117,8 +117,10 @@ export class TaInputComponent
 
     public focusBlur: any;
 
-    private cursorPosition: number;
-    private priceCounter: number = 0;
+    // Price Separator
+    public cursorPosition: number;
+    public hasDecimalIndex: number = -1;
+    public originPriceSeparatorLimit: number;
 
     constructor(
         @Self() public superControl: NgControl,
@@ -139,6 +141,14 @@ export class TaInputComponent
         }
     }
 
+    setTimePickerTime(){
+        if (this.inputConfig.name === 'timepicker')
+                this.dateTimeInputDate = new Date(
+                    moment().format('MM/DD/YYYY') +
+                        (this.inputConfig?.isFromDate ? ' 12:15' : ' 12:00')
+                );
+    }
+
     ngOnInit(): void {
         // Toggle label transition animation
         $('.input-label').addClass('no-transition');
@@ -152,6 +162,8 @@ export class TaInputComponent
             this.inputConfig.name === 'datepicker' ||
             this.inputConfig.name === 'timepicker'
         ) {
+            
+            this.setTimePickerTime();
             this.calendarService.dateChanged
                 .pipe(takeUntil(this.destroy$))
                 .subscribe((date) => {
@@ -490,6 +502,7 @@ export class TaInputComponent
             }
         }
 
+        this.setTimePickerTime();
         this.newInputChanged = true;
         this.focusInput = false;
         this.showDateInput = false;
@@ -724,6 +737,7 @@ export class TaInputComponent
         }
 
         if (this.inputConfig.priceSeparator && this.getSuperControl.value) {
+            // 0. Don't allow 0 as first character
             if (
                 this.getSuperControl.value
                     .toString()
@@ -737,66 +751,62 @@ export class TaInputComponent
                 return;
             }
 
-            let priceSeparatorTimeout = setTimeout(() => {
-                this.getSuperControl.patchValue(
-                    this.thousandSeparatorPipe.transform(
-                        this.getSuperControl.value
-                    )
-                );
-                if (this.getSuperControl.value.indexOf('.') >= 0) {
-                    let cursorPosition =
-                        this.input.nativeElement.selectionStart;
+            // 4. If user set dot
+            if (this.getSuperControl.value.indexOf('.') >= 0) {
+                // 4.1. Check for Dot position
+                this.hasDecimalIndex = this.getSuperControl.value.indexOf('.');
 
-                    if (this.hasDecimalIndex >= 0) {
-                        cursorPosition =
-                            this.getSuperControl.value.indexOf('.');
-                        this.input.nativeElement.setSelectionRange(
-                            cursorPosition,
-                            cursorPosition
-                        );
-                    } else {
-                        this.input.nativeElement.setSelectionRange(
-                            cursorPosition,
-                            cursorPosition
-                        );
-                    }
-                }
+                // 4.2. Divide number on decimal and integer part
+                let integerPart = this.thousandSeparatorPipe.transform(
+                    this.getSuperControl.value
+                        .slice(0, this.hasDecimalIndex)
+                        .slice(0, this.inputConfig.priceSeparatorLimitation)
+                );
+
+                let decimalPart = this.getSuperControl.value.slice(
+                    this.hasDecimalIndex + 1
+                );
+
+                // 4.4. Get only two numbers of decimal part
+                decimalPart = decimalPart.slice(0, 2);
+
+                // 4.5. Set formatted number
+                this.getSuperControl.patchValue(
+                    integerPart + '.' + decimalPart
+                );
+                this.hasDecimalIndex = this.getSuperControl.value.indexOf('.');
+            }
+            // 5. If user doesn't set dot
+            else {
+                this.hasDecimalIndex = -1;
 
                 if (this.getSuperControl.value.indexOf('.') === -1) {
-                    this.hasDecimalIndex = -1;
-                } else {
-                    // 0. Check for Dot position
-                    this.hasDecimalIndex =
-                        this.getSuperControl.value.indexOf('.');
-
-                    // 1. Divide number on decimal and integer part
-                    const integerPart = this.getSuperControl.value.slice(
-                        0,
-                        this.hasDecimalIndex
-                    );
-                    let decimalPart = this.getSuperControl.value.slice(
-                        this.hasDecimalIndex + 1
+                    // Transform value with thousand separator
+                    this.getSuperControl.patchValue(
+                        this.thousandSeparatorPipe.transform(
+                            this.getSuperControl.value
+                        )
                     );
 
-                    // 2. Get only two numbers of decimal part
-                    decimalPart = decimalPart.slice(0, 2);
+                    // Limit validation
+                    this.originPriceSeparatorLimit =
+                        this.inputConfig.priceSeparatorLimitation;
 
-                    // 3. Set formatted number
-                    setTimeout(() => {
-                        this.getSuperControl.patchValue(
-                            integerPart + '.' + decimalPart
-                        );
-                    }, 200);
+                    // Cut value
+                    this.getSuperControl.patchValue(
+                        this.getSuperControl.value.slice(
+                            0,
+                            this.inputConfig.priceSeparatorLimitation
+                        )
+                    );
+
+                    // Transform value again after cutting
+                    this.getSuperControl.patchValue(
+                        this.thousandSeparatorPipe.transform(
+                            this.getSuperControl.value
+                        )
+                    );
                 }
-            }, 1000);
-
-            if (this.getSuperControl.value.indexOf('.') === -1) {
-                clearTimeout(priceSeparatorTimeout);
-                this.getSuperControl.patchValue(
-                    this.thousandSeparatorPipe.transform(
-                        this.getSuperControl.value
-                    )
-                );
             }
         }
 
@@ -1025,7 +1035,6 @@ export class TaInputComponent
         }
     }
 
-    public hasDecimalIndex: number = -1;
     public onKeypress(event: KeyboardEvent): boolean {
         // Disable first character to be space
         if (
@@ -1058,10 +1067,17 @@ export class TaInputComponent
                     let decimalPart = this.getSuperControl.value.slice(
                         this.hasDecimalIndex + 1
                     );
-                    // 2. Get only two numbers of decimal part
+
+                    // 2. Disable more than two decimals
+                    if (decimalPart.length > 2) {
+                        event.preventDefault();
+                        return;
+                    }
+
+                    // 3. Get only two numbers of decimal part
                     decimalPart = decimalPart.slice(0, 2);
 
-                    // 3. Set formatted number
+                    // 4. Set formatted number
                     this.getSuperControl.patchValue(
                         integerPart + '.' + decimalPart
                     );
@@ -2370,7 +2386,7 @@ export class TaInputComponent
                 } else {
                     this.span1.nativeElement.innerHTML = 'HH';
                     this.span2.nativeElement.innerHTML = 'MM';
-                    this.dateTimeInputDate = new Date();
+                    this.setTimePickerTime();
                     this.showDateInput = false;
                     //this.resetForms(); // PITANJE STO SE OVO SKLANJA I UOPSTE STO JE TREBALO
                 }

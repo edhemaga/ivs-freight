@@ -54,6 +54,7 @@ export interface ITaInput {
     readOnly?: boolean;
     thousandSeparator?: boolean; // type of input must be 'text'
     priceSeparator?: boolean;
+    priceSeparatorLimitation?: number; // 7 - 999,999.00 ; 6 - 99,000.00 ; 5 - 9,000.00 itd... (must including and comma)
     loadingSpinner?: {
         size?: string; // small, big
         color?: string; // black, gray, white, blueLight, blueDark
@@ -124,4 +125,5 @@ export interface ITaInput {
     // MultiSelect Dropdown
     multiselectDropdown?: boolean;
     multiSelectDropdownActive?: boolean;
+    isFromDate?: boolean;
 }

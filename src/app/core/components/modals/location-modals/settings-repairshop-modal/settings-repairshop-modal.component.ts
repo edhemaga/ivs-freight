@@ -46,6 +46,7 @@ export class SettingsRepairshopModalComponent implements OnInit, OnDestroy {
         {
             id: 1,
             name: 'Basic',
+            checked: true
         },
         {
             id: 2,
