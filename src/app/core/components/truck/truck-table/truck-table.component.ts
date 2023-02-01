@@ -510,11 +510,33 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 ? data.licensePlate
                 : '',
             tableLicencePlateDetailST: 'NA',
-            tableLicencePlateDetailExpiration: 'NA',
+            tableLicencePlateDetailExpiration: {
+                expirationDays: data?.registrationExpirationDays
+                    ? this.thousandSeparator.transform(
+                          data.registrationExpirationDays
+                      )
+                    : null,
+                percentage:
+                    data?.registrationPercentage ||
+                    data?.registrationPercentage === 0
+                        ? 100 - data.registrationPercentage
+                        : null,
+            },
             tableFhwaInspectionTerm: data?.fhwaExp
                 ? data.fhwaExp + ' months'
                 : '',
-            tableFhwaInspectionExpiration: 'NA',
+            tableFhwaInspectionExpiration: {
+                expirationDays: data?.inspectionExpirationDays
+                    ? this.thousandSeparator.transform(
+                          data.inspectionExpirationDays
+                      )
+                    : null,
+                percentage:
+                    data?.inspectionPercentage ||
+                    data?.inspectionPercentage === 0
+                        ? 100 - data.inspectionPercentage
+                        : null,
+            },
             tableTitleNumber: 'NA',
             tableTitleST: 'NA',
             tableTitleIssued: 'NA',
@@ -570,6 +592,13 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
         isSearch?: boolean,
         isShowMore?: boolean
     ) {
+        console.log('filter');
+        console.log(filter);
+        console.log('isSearch');
+        console.log(isSearch);
+        console.log('isShowMore');
+        console.log(isShowMore);
+
         this.truckService
             .getTruckList(
                 filter.active,
@@ -596,6 +625,9 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
                         ].length = trucks.pagination.count;
                     }
                 } else {
+                    console.log('Show More za truckBackFilter');
+                    console.log(trucks.pagination.data);
+
                     let newData = [...this.viewData];
 
                     trucks.pagination.data.map((data: any) => {
@@ -603,6 +635,8 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     });
 
                     this.viewData = [...newData];
+
+                    console.log(this.viewData);
                 }
             });
     }
@@ -614,6 +648,7 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
             this.selectedTab = event.tabData.field;
 
             this.backFilterQuery.pageIndex = 1;
+            this.backFilterQuery.active = this.selectedTab === 'active' ? 1 : 0;
 
             this.sendTruckData();
         } else if (event.action === 'view-mode') {

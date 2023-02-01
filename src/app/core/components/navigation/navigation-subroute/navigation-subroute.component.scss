@@ -95,6 +95,8 @@
     }
     .subroute-active {
         color: $nav-active-lighter;
+        cursor: default;
+        user-select: none;
         &:hover {
             color: $nav-active !important;
 
@@ -246,6 +248,20 @@
     .new-magic-line-selected:nth-child(13) ~ .new-magic-line {
         transform: translateY(345px);
     }
+}
+.hide {
+    overflow: hidden;
+    max-height: 0;
+    transition: max-height 0.3s ease-out;
+}
+.other-container-opened {
+    overflow: hidden;
+    max-height: 0;
+    transition: max-height 0s ease-out;
+}
+.show {
+    max-height: 500px;
+    transition: max-height 0.3s ease-in;
 }
 @keyframes append-animate {
     from {

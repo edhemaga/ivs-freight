@@ -1,21 +1,29 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import * as CurrencyFormatter from 'currency-formatter';
+import { convertNumberWithCurrencyFormatterToBackend } from '../utils/methods.calculations';
 
 @Pipe({
     name: 'priceCalculationArray',
 })
 export class PriceCalculationArraysPipe implements PipeTransform {
     transform(
-        array: { id?: number; value?: number; reorderingNumber?: number }[],
-        args?: any
+        array:
+            | { id?: number; value?: number; reorderingNumber?: number }[]
+            | any
     ): number {
-        const options = { currency: 'USD' };
+        if (array.length) {
+            array = array.map((item) =>
+                isNaN(item.value) || !item.value ? 0 : item.value
+            );
+            const formatted = convertNumberWithCurrencyFormatterToBackend(
+                array.reduce((accumulator, item) => {
+                    return accumulator + item;
+                }, 0)
+            );
 
-        return CurrencyFormatter.format(
-            array.reduce((accumulator, item: any) => {
-                return accumulator + parseFloat(item.value ? item.value : 0);
-            }, 0),
-            options
-        );
+            return formatted ? parseFloat(formatted) : 0;
+        } else {
+            const number = convertNumberWithCurrencyFormatterToBackend(array);
+            return isNaN(array) || !array ? 0 : parseFloat(number);
+        }
     }
 }

@@ -36,4 +36,8 @@ export class PayrollDeductionService {
     ): Observable<PayrollDeductionResponse> {
         return this.payrollService.apiPayrollDeductionIdGet(id);
     }
+
+    public deletePayrollDeductionById(id: number): Observable<any> {
+        return this.payrollService.apiPayrollDeductionIdDelete(id);
+    }
 }
