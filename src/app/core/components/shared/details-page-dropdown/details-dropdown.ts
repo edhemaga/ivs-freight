@@ -90,7 +90,6 @@ export class DetailsDropdownComponent implements OnInit, OnChanges {
     ngOnChanges(changes: SimpleChanges): void {
         
         if (changes?.options?.currentValue) {
-            console.log("CHANGES OPTIONS", changes?.options);
             this.options = changes.options.currentValue;
         }
 
@@ -175,8 +174,6 @@ export class DetailsDropdownComponent implements OnInit, OnChanges {
           enabled: true,
           phase: 'main',
           effect: ({ state, instance }) => {
-            console.log(state);
-            console.log(instance);
 
             instance.forceUpdate();
             setTimeout(() => {
