@@ -304,7 +304,6 @@ export * from './getFuelModalResponse';
 export * from './getFuelStopModalResponse';
 export * from './getHazardousMaterialDropdownModalQuery';
 export * from './getMapListResponse';
-export * from './getMobileRepairShopCountResponse';
 export * from './getModalFuelStopFranchiseByIdResponse';
 export * from './getModalFuelStopFranchiseResponse';
 export * from './getMvrModalResponse';

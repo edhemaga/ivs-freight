@@ -34,4 +34,8 @@ export class PayrollBonusService {
     public getPayrollBonusById(id: number): Observable<PayrollBonusResponse> {
         return this.payrollService.apiPayrollBonusIdGet(id);
     }
+
+    public deletePayrollBonusById(id: number): Observable<any> {
+        return this.payrollService.apiPayrollBonusIdDelete(id);
+    }
 }

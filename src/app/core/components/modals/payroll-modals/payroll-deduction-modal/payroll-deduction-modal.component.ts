@@ -103,6 +103,13 @@ export class PayrollDeductionModalComponent implements OnInit {
         this.createForm();
         this.getModalDropdowns();
         this.trackReccuringAndLimiting();
+        this.editData = {
+            ...this.editData,
+            type: 'edit',
+            data: {
+                id: 1,
+            },
+        };
         if (this.editData?.type === 'edit') {
             this.getByIdDeduction(this.editData.data.id);
         }
@@ -112,6 +119,35 @@ export class PayrollDeductionModalComponent implements OnInit {
         switch (action) {
             case 'main-tabs': {
                 this.selectedTab = event.id;
+
+                this.tabs = this.tabs.map((item) => {
+                    return {
+                        ...item,
+                        checked: item.id === this.selectedTab,
+                    };
+                });
+
+                if (this.selectedTab === 1) {
+                    this.inputService.changeValidators(
+                        this.payrollDeductionForm.get('driverId')
+                    );
+                    this.inputService.changeValidators(
+                        this.payrollDeductionForm.get('truckId'),
+                        false,
+                        [],
+                        false
+                    );
+                } else {
+                    this.inputService.changeValidators(
+                        this.payrollDeductionForm.get('truckId')
+                    );
+                    this.inputService.changeValidators(
+                        this.payrollDeductionForm.get('driverId'),
+                        false,
+                        [],
+                        false
+                    );
+                }
                 break;
             }
             case 'week-mon-tabs': {
@@ -171,7 +207,7 @@ export class PayrollDeductionModalComponent implements OnInit {
                     return;
                 }
                 if (this.editData?.type === 'edit') {
-                    this.updateDeduction(this.editData?.id);
+                    this.updateDeduction(this.editData?.data?.id);
                     this.modalService.setModalSpinner({
                         action: null,
                         status: true,
@@ -187,6 +223,15 @@ export class PayrollDeductionModalComponent implements OnInit {
                 }
                 break;
             }
+            case 'delete': {
+                this.deletePayrollCreeditById(this.editData?.data.id);
+                this.modalService.setModalSpinner({
+                    action: 'delete',
+                    status: true,
+                    close: false,
+                });
+                break;
+            }
             default: {
                 break;
             }
@@ -194,10 +239,12 @@ export class PayrollDeductionModalComponent implements OnInit {
     }
 
     public updateDeduction(id: number) {
+        const reccType = this.tabs2.find((item) => item.checked);
         this.payrollDeductionService
             .updatePayrollDeduction({
                 ...this.payrollDeductionForm.value,
                 id: id,
+                ...this.payrollDeductionForm.value,
                 type: this.tabs.find((item) => item.checked).id,
                 driverId:
                     this.tabs.find((item) => item.checked).id === 1
@@ -217,11 +264,16 @@ export class PayrollDeductionModalComponent implements OnInit {
                 amount: convertThousanSepInNumber(
                     this.payrollDeductionForm.get('amount').value
                 ),
-                recurringType:
-                    this.tabs2.find((item) => item.checked).id === 3 ? 2 : 1,
+                recurringType: reccType ? (reccType.id === 3 ? 2 : 1) : null,
                 limitedNumber: this.payrollDeductionForm.get('recurring').value
-                    ? convertThousanSepInNumber(
+                    ? parseInt(
                           this.payrollDeductionForm.get('limitedNumber').value
+                      )
+                    : null,
+                limitedAmount: this.payrollDeductionForm.get('limitedAmount')
+                    .value
+                    ? convertThousanSepInNumber(
+                          this.payrollDeductionForm.get('limitedAmount').value
                       )
                     : null,
             })
@@ -268,10 +320,16 @@ export class PayrollDeductionModalComponent implements OnInit {
                 amount: convertThousanSepInNumber(
                     this.payrollDeductionForm.get('amount').value
                 ),
-                recurringType: reccType ? (reccType.id === 3 ? 2 : 1) : false,
+                recurringType: reccType ? (reccType.id === 3 ? 2 : 1) : null,
                 limitedNumber: this.payrollDeductionForm.get('recurring').value
-                    ? convertThousanSepInNumber(
+                    ? parseInt(
                           this.payrollDeductionForm.get('limitedNumber').value
+                      )
+                    : null,
+                limitedAmount: this.payrollDeductionForm.get('limitedAmount')
+                    .value
+                    ? convertThousanSepInNumber(
+                          this.payrollDeductionForm.get('limitedAmount').value
                       )
                     : null,
             })
@@ -282,13 +340,24 @@ export class PayrollDeductionModalComponent implements OnInit {
                         this.formService.resetForm(this.payrollDeductionForm);
                         this.selectedDriver = null;
                         this.selectedTruck = null;
-                        this.tabChange({ id: 1 }, 'main-tabs');
-                        this.tabChange({ id: 3 }, 'week-mon-tabs');
+
+                        this.payrollDeductionForm
+                            .get('recurring')
+                            .patchValue(false);
+                        this.payrollDeductionForm
+                            .get('limited')
+                            .patchValue(false);
+
                         this.modalService.setModalSpinner({
-                            action: null,
+                            action: 'save and add new',
                             status: false,
                             close: false,
                         });
+
+                        setTimeout(() => {
+                            this.tabChange({ id: 1 }, 'main-tabs');
+                            this.tabChange({ id: 3 }, 'week-mon-tabs');
+                        }, 150);
                     } else {
                         this.modalService.setModalSpinner({
                             action: null,
@@ -304,6 +373,22 @@ export class PayrollDeductionModalComponent implements OnInit {
                         close: false,
                     });
                 },
+            });
+    }
+
+    public deletePayrollCreeditById(id: number) {
+        this.payrollDeductionService
+            .deletePayrollDeductionById(id)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: () => {
+                    this.modalService.setModalSpinner({
+                        action: 'delete',
+                        status: true,
+                        close: true,
+                    });
+                },
+                error: () => {},
             });
     }
 
@@ -324,12 +409,14 @@ export class PayrollDeductionModalComponent implements OnInit {
                         date: convertDateFromBackend(res.date),
                         description: res.description,
                         amount: convertNumberInThousandSep(res.amount),
-                        recurringType: res.recurringType.id,
+                        recurringType: res.recurringType
+                            ? res.recurringType.id
+                            : null,
                         recurring: !!res.recurringType?.name,
-                        // limited: res.limitedAmount && res.limitedNumber,
-                        // limitedAmount: res.limitedAmount
-                        //     ? convertNumberInThousandSep(res.limitedAmount)
-                        //     : null,
+                        limited: !!(res.limitedAmount && res.limitedNumber),
+                        limitedAmount: res.limitedAmount
+                            ? convertNumberInThousandSep(res.limitedAmount)
+                            : null,
                         limitedNumber: res.limitedNumber,
                     });
 
@@ -373,11 +460,20 @@ export class PayrollDeductionModalComponent implements OnInit {
                         };
                     }
 
-                    this.tabChange({ id: res.driver ? 1 : 2 }, 'main-tabs');
-                    this.tabChange(
-                        { id: res.recurringType.name === 'Monthly' ? 4 : 3 },
-                        'week-mon-tabs'
-                    );
+                    setTimeout(() => {
+                        this.tabChange({ id: res.type.id }, 'main-tabs');
+                        if (res.recurringType) {
+                            this.tabChange(
+                                {
+                                    id:
+                                        res.recurringType.name === 'Monthly'
+                                            ? 4
+                                            : 3,
+                                },
+                                'week-mon-tabs'
+                            );
+                        }
+                    }, 150);
                 },
                 error: () => {},
             });
