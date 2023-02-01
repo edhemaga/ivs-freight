@@ -72,7 +72,10 @@ export class WebsiteSidebarComponent implements OnInit, OnDestroy {
                     }
 
                     if (
-                        this.selectedContentType === ConstantString.START_TRIAL
+                        this.selectedContentType ===
+                            ConstantString.START_TRIAL ||
+                        this.selectedContentType ===
+                            ConstantString.REGISTER_USER
                     ) {
                         this.selectedContentWidth = 680;
                     }

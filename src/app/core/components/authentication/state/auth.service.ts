@@ -48,19 +48,6 @@ export class AuthStoreService {
         return this.signUpUserInfoSubject.asObservable();
     }
 
-    public accountLogut(): void {
-        // ---- PRODUCTION MODE ----
-        this.persistStorage.clearStore();
-        this.persistStorage.destroy();
-        this.router.navigate(['/auth/login']);
-        // ---- DEVELOP MODE ----
-        localStorage.removeItem('user');
-    }
-
-    public signUpUser(data: SignupUserCommand): Observable<any> {
-        return this.accountService.apiAccountSignupuserPut(data, 'response');
-    }
-
     public selectCompanyAccount(
         data: SelectCompanyCommand
     ): Observable<SelectCompanyResponse> {
@@ -110,5 +97,18 @@ export class AuthStoreService {
             data,
             'response'
         );
+    }
+
+    public signUpUser(data: SignupUserCommand): Observable<any> {
+        return this.accountService.apiAccountSignupuserPut(data, 'response');
+    }
+
+    public accountLogut(): void {
+        // ---- PRODUCTION MODE ----
+        this.persistStorage.clearStore();
+        this.persistStorage.destroy();
+        this.router.navigate(['/auth/login']);
+        // ---- DEVELOP MODE ----
+        localStorage.removeItem('user');
     }
 }

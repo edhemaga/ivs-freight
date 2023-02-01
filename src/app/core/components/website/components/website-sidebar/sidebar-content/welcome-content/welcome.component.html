@@ -4,9 +4,15 @@
     <div class="d-flex flex-column content-header">
         <h2 class="m-0 ta-font-bold">Welcome</h2>
 
-        <h3 class="m-0 ta-font-bold">{{ userInfo.companyName }}</h3>
+        <ng-container *ngIf="!registerUserWelcome">
+            <h3 class="m-0 ta-font-bold">{{ userInfo.companyName }}</h3>
 
-        <h4 class="m-0 ta-font-regular">{{ userInfo.name }}</h4>
+            <h4 class="m-0 ta-font-regular">{{ userInfo.name }}</h4>
+        </ng-container>
+
+        <ng-container *ngIf="registerUserWelcome">
+            <h4 class="m-0 ta-font-bold register-user">{{ userInfo.name }}</h4>
+        </ng-container>
 
         <h5 class="m-0 ta-font-bold">
             Your email address <span>is verified</span>
@@ -19,8 +25,8 @@
 
     <!-- LOGIN BUTTON -->
 
-    <app-website-confirm-btn
+    <app-sidebar-confirm-btn
         [loginBtn]="true"
         (clickValueEmitter)="onGetBtnClickValue($event)"
-    ></app-website-confirm-btn>
+    ></app-sidebar-confirm-btn>
 </div>

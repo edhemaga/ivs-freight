@@ -11,7 +11,7 @@ import { NavigationUserPanel } from '../model/navigation.model';
 import { Router } from '@angular/router';
 import { debounceTime, Subject, takeUntil } from 'rxjs';
 import { NavigationService } from '../services/navigation.service';
-import { AuthStoreService } from '../../authentication/state/auth.service';
+import { WebsiteAuthStoreService } from '../../website/state/service/website-auth-store.service';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { ProfileUpdateModalComponent } from '../../modals/profile-update-modal/profile-update-modal.component';
 import { TaUserService } from '../../../services/user/user.service';
@@ -41,7 +41,7 @@ export class NavigationUserProfileComponent implements OnInit, OnDestroy {
     public loggedUser: any = null;
     constructor(
         public router: Router,
-        private authService: AuthStoreService,
+        private websiteAuthStoreService: WebsiteAuthStoreService,
         private navigationService: NavigationService,
         private modalService: ModalService,
         private userService: TaUserService,
@@ -113,7 +113,7 @@ export class NavigationUserProfileComponent implements OnInit, OnDestroy {
             }
             case 'logout': {
                 localStorage.clear();
-                this.authService.accountLogut();
+                this.websiteAuthStoreService.accountLogout();
                 break;
             }
             default:

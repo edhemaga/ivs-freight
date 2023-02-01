@@ -1,11 +1,11 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 @Component({
-    selector: 'app-website-confirm-btn',
-    templateUrl: './website-confirm-btn.component.html',
-    styleUrls: ['./website-confirm-btn.component.scss'],
+    selector: 'app-sidebar-confirm-btn',
+    templateUrl: './sidebar-confirm-btn.component.html',
+    styleUrls: ['./sidebar-confirm-btn.component.scss'],
 })
-export class WebsiteConfirmBtnComponent implements OnInit {
+export class SidebarConfirmBtnComponent implements OnInit {
     @Input() disabledValue?: boolean = false;
     @Input() loginBtn?: boolean = false;
 

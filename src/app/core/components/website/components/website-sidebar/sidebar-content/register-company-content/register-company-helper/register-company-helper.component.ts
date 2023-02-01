@@ -32,7 +32,7 @@ export class RegisterCompanyHelperComponent implements OnInit, OnDestroy {
 
         this.route.queryParams.subscribe((params) => {
             if (!params[ConstantString.EMAIL_HASH]) {
-                this.router.navigate([ConstantString.AUTH]);
+                this.router.navigate([ConstantString.WEBSITE]);
 
                 isValid = false;
 

@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { WebsiteResendBtnComponent } from './website-resend-btn.component';
+import { RegisterUserComponent } from './register-user.component';
 
-describe('WebsiteResendBtnComponent', () => {
-  let component: WebsiteResendBtnComponent;
-  let fixture: ComponentFixture<WebsiteResendBtnComponent>;
+describe('RegisterUserComponent', () => {
+  let component: RegisterUserComponent;
+  let fixture: ComponentFixture<RegisterUserComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ WebsiteResendBtnComponent ]
+      declarations: [ RegisterUserComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(WebsiteResendBtnComponent);
+    fixture = TestBed.createComponent(RegisterUserComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

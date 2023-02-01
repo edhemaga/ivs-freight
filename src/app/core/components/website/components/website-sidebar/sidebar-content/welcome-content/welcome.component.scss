@@ -40,6 +40,11 @@
             font-size: 17px;
             line-height: 21px;
             margin-bottom: 58px !important;
+
+            &.register-user {
+                font-size: 22px;
+                line-height: 28px;
+            }
         }
 
         h5 {
@@ -66,7 +71,7 @@
             color: $ta-light-grey-2;
             font-size: 17px;
             line-height: 21px;
-            margin-bottom: 214px !important;
+            margin-bottom: 58px !important;
         }
 
         p {

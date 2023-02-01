@@ -1,63 +1,69 @@
-/* eslint-disable no-unused-vars */
-
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { Subject, takeUntil, tap } from 'rxjs';
 
 import { TaInputService } from 'src/app/core/components/shared/ta-input/ta-input.service';
-import { WebsiteAuthStoreService } from './../../../../../state/service/website-auth-store.service';
-import { WebsiteActionsService } from '../../../../../state/service/website-actions.service';
+import { WebsiteActionsService } from 'src/app/core/components/website/state/service/website-actions.service';
+import { WebsiteAuthStoreService } from 'src/app/core/components/website/state/service/website-auth-store.service';
 
 import {
     addressUnitValidation,
     addressValidation,
-    einNumberRegex,
     firstNameValidation,
     lastNameValidation,
     passwordValidation,
     phoneFaxRegex,
 } from 'src/app/core/components/shared/ta-input/ta-input.regex-validations';
 
-import { AddressEntity, SignUpCompanyCommand } from 'appcoretruckassist';
-import { ConstantString } from '../../../../../state/enum/const-string.enum';
+import { ConstantString } from 'src/app/core/components/website/state/enum/const-string.enum';
 
 @Component({
-    selector: 'app-register-company',
-    templateUrl: './register-company.component.html',
-    styleUrls: ['./register-company.component.scss'],
+    selector: 'app-register-user',
+    templateUrl: './register-user.component.html',
+    styleUrls: ['./register-user.component.scss'],
 })
-export class RegisterCompanyComponent implements OnInit, OnDestroy {
-    @ViewChild('inputAddress', { static: false }) public inputAddress: any;
-
+export class RegisterUserComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
 
-    public registerCompanyForm: FormGroup;
+    public registerUserForm: FormGroup;
 
-    public selectedAddress: AddressEntity = null;
+    private registerUserCode: string = null;
+
+    public userInfo: {
+        companyName: string;
+        firstName: string;
+        lastName: string;
+        email: string;
+    } = {
+        companyName: 'ivs freight inc.',
+        firstName: 'Aleksandar',
+        lastName: 'Djordjevic',
+        email: 'aleksandar@gmail.com',
+    };
 
     constructor(
         private formBuilder: FormBuilder,
         private inputService: TaInputService,
-        private websiteAuthStoreService: WebsiteAuthStoreService,
-        private websiteActionsService: WebsiteActionsService
+        private websiteActionsService: WebsiteActionsService,
+        private websiteAuthStoreService: WebsiteAuthStoreService
     ) {}
 
     ngOnInit(): void {
         this.createForm();
 
+        this.patchForm();
+
         this.passwordsNotSame();
     }
 
     private createForm(): void {
-        this.registerCompanyForm = this.formBuilder.group({
+        this.registerUserForm = this.formBuilder.group({
             firstName: [null, [Validators.required, ...firstNameValidation]],
             lastName: [null, [Validators.required, ...lastNameValidation]],
-            companyName: [null, Validators.required],
-            ein: [null, [Validators.required, einNumberRegex]],
-            address: [null, [Validators.required, ...addressValidation]],
+            address: [null, [...addressValidation]],
             addressUnit: [null, [...addressUnitValidation]],
-            phone: [null, [Validators.required, phoneFaxRegex]],
+            phone: [null, [phoneFaxRegex]],
             email: [null, [Validators.required]],
             password: [null, [Validators.required, ...passwordValidation]],
             confirmPassword: [
@@ -67,42 +73,42 @@ export class RegisterCompanyComponent implements OnInit, OnDestroy {
         });
 
         this.inputService.customInputValidator(
-            this.registerCompanyForm.get(ConstantString.EMAIL_ADDRESS),
+            this.registerUserForm.get(ConstantString.EMAIL_ADDRESS),
             ConstantString.EMAIL_ADDRESS,
             this.destroy$
         );
     }
 
-    public handleAddressChange(event: {
-        address: any;
-        longLat: any;
-        valid: boolean;
-    }): void {
-        this.selectedAddress = event.address;
+    private patchForm(): void {
+        this.websiteActionsService.getRegisterUserInfoSubject$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res: any) => {
+                this.registerUserForm.patchValue({
+                    firstName: res.firstName,
+                    lastName: res.lastName,
+                    email: res.email,
+                });
 
-        if (!event.valid) {
-            this.registerCompanyForm
-                .get(ConstantString.ADDRESS)
-                .setErrors({ invalid: true });
-        }
+                this.registerUserCode = res.code;
+            });
     }
 
-    private passwordsNotSame(): void {
-        this.registerCompanyForm
+    public passwordsNotSame(): void {
+        this.registerUserForm
             .get(ConstantString.CONFIRM_PASSWORD)
             .valueChanges.pipe(takeUntil(this.destroy$))
             .subscribe((value) => {
                 if (
                     value?.toLowerCase() ===
-                    this.registerCompanyForm
+                    this.registerUserForm
                         .get(ConstantString.PASSWORD)
                         .value?.toLowerCase()
                 ) {
-                    this.registerCompanyForm
+                    this.registerUserForm
                         .get(ConstantString.CONFIRM_PASSWORD)
                         .setErrors(null);
                 } else {
-                    this.registerCompanyForm
+                    this.registerUserForm
                         .get(ConstantString.CONFIRM_PASSWORD)
                         .setErrors({
                             invalid: true,
@@ -111,50 +117,35 @@ export class RegisterCompanyComponent implements OnInit, OnDestroy {
             });
     }
 
-    public onKeyDown(event: { keyCode: number }): void {
+    public onKeyDown(event: any): void {
         if (event.keyCode === 13) {
-            this.registerCompany();
+            this.registerUser();
         }
     }
 
     public onGetBtnClickValue(event: { notDisabledClick: boolean }): void {
         if (event.notDisabledClick) {
-            this.registerCompany();
+            this.registerUser();
         }
     }
 
-    private registerCompany(): void {
-        if (
-            this.inputAddress?.inputDropdown?.inputRef?.focusInput &&
-            this.inputAddress?.addresList?.length
-        ) {
-            return;
-        }
-
-        if (this.registerCompanyForm.invalid) {
-            this.inputService.markInvalid(this.registerCompanyForm);
+    public registerUser(): void {
+        if (this.registerUserForm.invalid) {
+            this.inputService.markInvalid(this.registerUserForm);
 
             return;
         }
 
-        const {
-            address,
-            addressUnit,
-            confirmPassword,
-            ...registerCompanyForm
-        } = this.registerCompanyForm.value;
+        const { email, password } = this.registerUserForm.value;
 
-        this.selectedAddress.addressUnit = this.registerCompanyForm.get(
-            ConstantString.ADDRESS_UNIT
-        ).value;
-
-        const saveData: SignUpCompanyCommand = {
-            ...registerCompanyForm,
-            address: this.selectedAddress,
+        const saveData: any = {
+            email,
+            password,
+            code: this.registerUserCode,
         };
 
         this.websiteAuthStoreService
-            .registerCompany(saveData)
+            .registerUser(saveData)
             .pipe(
                 takeUntil(this.destroy$),
                 tap(() => {
@@ -165,7 +156,7 @@ export class RegisterCompanyComponent implements OnInit, OnDestroy {
                     localStorage.setItem(
                         ConstantString.CONFIRMATION_EMAIL,
                         JSON.stringify(
-                            this.registerCompanyForm.get(
+                            this.registerUserForm.get(
                                 ConstantString.EMAIL_ADDRESS
                             ).value
                         )

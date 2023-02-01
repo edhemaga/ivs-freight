@@ -1,9 +1,11 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { BehaviorSubject, Observable, tap } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 
 import { WebsiteActionsService } from './website-actions.service';
+
+import { PersistState } from '@datorama/akita';
 
 import {
     AccountService,
@@ -12,6 +14,7 @@ import {
     SignInCommand,
     SignInResponse,
     SignUpCompanyCommand,
+    SignupUserCommand,
     VerifyForgotPasswordCommand,
     VerifyOwnerCommand,
 } from 'appcoretruckassist';
@@ -21,24 +24,13 @@ import { ConstantString } from '../enum/const-string.enum';
     providedIn: 'root',
 })
 export class WebsiteAuthStoreService {
-    private resetPasswordTokenSubject: BehaviorSubject<string> =
-        new BehaviorSubject<string>(null);
-
     constructor(
+        @Inject('persistStorage')
+        private persistStorage: PersistState,
         private router: Router,
         private accountService: AccountService,
         private websiteActionsService: WebsiteActionsService
     ) {}
-
-    public setResetPasswordToken(token: string) {
-        this.resetPasswordTokenSubject.next(token);
-    }
-
-    get getResetPasswordToken$() {
-        return this.resetPasswordTokenSubject.asObservable();
-    }
-
-    /* BACKEND ACTIONS */
 
     public registerCompany(data: SignUpCompanyCommand): Observable<object> {
         return this.accountService.apiAccountSignupcompanyPost(
@@ -78,6 +70,16 @@ export class WebsiteAuthStoreService {
         );
     }
 
+    public accountLogout(): void {
+        // ---- PRODUCTION MODE ----
+        this.persistStorage.clearStore();
+        this.persistStorage.destroy();
+        this.router.navigate(['/website']);
+
+        // ---- DEVELOP MODE ----
+        localStorage.removeItem('user');
+    }
+
     public resetPassword(data: ForgotPasswordCommand): Observable<object> {
         return this.accountService.apiAccountForgotpasswordPut(
             data,
@@ -98,7 +100,7 @@ export class WebsiteAuthStoreService {
                     ConstantString.CREATE_NEW_PASSWORD
                 );
 
-                this.setResetPasswordToken(res.token);
+                this.websiteActionsService.setResetPasswordToken(res.token);
             })
         );
     }
@@ -115,5 +117,9 @@ export class WebsiteAuthStoreService {
                     );
                 })
             );
+    }
+
+    public registerUser(data: SignupUserCommand): Observable<any> {
+        return this.accountService.apiAccountSignupuserPut(data, 'response');
     }
 }

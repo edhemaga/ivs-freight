@@ -7,41 +7,45 @@ import { SharedModule } from '../shared/shared.module';
 
 import { WebsiteMainComponent } from './components/website-main/website-main.component';
 import { WebsiteNavbarComponent } from './components/website-navbar/website-navbar.component';
-import { WebsiteConfirmBtnComponent } from './components/website-confirm-btn/website-confirm-btn.component';
-import { WebsiteResendBtnComponent } from './components/website-resend-btn/website-resend-btn.component';
+import { SidebarConfirmBtnComponent } from './components/website-sidebar/sidebar-btn/sidebar-confirm-btn/sidebar-confirm-btn.component';
+import { SidebarResendBtnComponent } from './components/website-sidebar/sidebar-btn/sidebar-resend-btn/sidebar-resend-btn.component';
 
 import { WebsiteSidebarComponent } from './components/website-sidebar/website-sidebar.component';
 import { RegisterCompanyComponent } from './components/website-sidebar/sidebar-content/register-company-content/register-company/register-company.component';
 import { ConfirmationComponent } from './components/website-sidebar/sidebar-content/confirmation-content/confirmation.component';
 import { RegisterCompanyHelperComponent } from './components/website-sidebar/sidebar-content/register-company-content/register-company-helper/register-company-helper.component';
-import { RegisterCompanyWelcomeComponent } from './components/website-sidebar/sidebar-content/register-company-content/register-company-welcome/register-company-welcome.component';
+import { WelcomeComponent } from './components/website-sidebar/sidebar-content/welcome-content/welcome.component';
 import { LoginComponent } from './components/website-sidebar/sidebar-content/login-content/login/login.component';
 import { ResetPasswordComponent } from './components/website-sidebar/sidebar-content/login-content/reset-password/reset-password.component';
 import { CreateNewPasswordComponent } from './components/website-sidebar/sidebar-content/login-content/create-new-password/create-new-password.component';
 import { ResetPasswordHelperComponent } from './components/website-sidebar/sidebar-content/login-content/reset-password-helper/reset-password-helper.component';
 import { ResendConfirmationComponent } from './components/website-sidebar/sidebar-content/login-content/resend-confirmation/resend-confirmation.component';
 import { PasswordUpdatedComponent } from './components/website-sidebar/sidebar-content/login-content/password-updated/password-updated.component';
+import { RegisterUserComponent } from './components/website-sidebar/sidebar-content/register-user-content/register-user/register-user.component';
+import { RegisterUserHelperComponent } from './components/website-sidebar/sidebar-content/register-user-content/register-user-helper/register-user-helper.component';
 
 @NgModule({
     declarations: [
         WebsiteMainComponent,
         WebsiteNavbarComponent,
-        WebsiteConfirmBtnComponent,
-        WebsiteResendBtnComponent,
 
         /* SIDEBAR */
 
         WebsiteSidebarComponent,
+        SidebarConfirmBtnComponent,
+        SidebarResendBtnComponent,
         RegisterCompanyComponent,
         ConfirmationComponent,
         RegisterCompanyHelperComponent,
-        RegisterCompanyWelcomeComponent,
+        WelcomeComponent,
         LoginComponent,
         ResetPasswordComponent,
         CreateNewPasswordComponent,
         ResetPasswordHelperComponent,
         ResendConfirmationComponent,
         PasswordUpdatedComponent,
+        RegisterUserComponent,
+        RegisterUserHelperComponent,
     ],
     imports: [CommonModule, WebsiteRoutingModule, SharedModule],
 })
@@ -50,7 +54,6 @@ export class WebsiteModule {}
 /* 
 
 DEPENDENCIES
-
 
 AngularSvgIconModule
 app-ta-input

@@ -31,7 +31,7 @@
             </ng-container>
 
             <ng-container *ngIf="selectedContentType === 'start trial welcome'">
-                <app-register-company-welcome></app-register-company-welcome>
+                <app-welcome></app-welcome>
             </ng-container>
 
             <ng-container *ngIf="selectedContentType === 'login'">
@@ -60,6 +60,16 @@
 
             <ng-container *ngIf="selectedContentType === 'resend confirmation'">
                 <app-resend-confirmation></app-resend-confirmation>
+            </ng-container>
+
+            <ng-container *ngIf="selectedContentType === 'register user'">
+                <app-register-user></app-register-user>
+            </ng-container>
+
+            <ng-container
+                *ngIf="selectedContentType === 'register user welcome'"
+            >
+                <app-welcome [registerUserWelcome]="true"></app-welcome>
             </ng-container>
         </div>
     </div>

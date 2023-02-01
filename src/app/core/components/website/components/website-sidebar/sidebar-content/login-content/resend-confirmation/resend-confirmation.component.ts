@@ -38,8 +38,8 @@ export class ResendConfirmationComponent implements OnInit, OnDestroy {
         });
 
         this.inputService.customInputValidator(
-            this.resendConfirmationForm.get(ConstantString.EMAIL),
-            ConstantString.EMAIL,
+            this.resendConfirmationForm.get(ConstantString.EMAIL_ADDRESS),
+            ConstantString.EMAIL_ADDRESS,
             this.destroy$
         );
     }

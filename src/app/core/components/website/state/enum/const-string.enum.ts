@@ -8,11 +8,13 @@ export enum ConstantString {
     START_TRIAL_CONFIRMATION = 'start trial confirmation',
     START_TRIAL_WELCOME = 'start trial welcome',
     RESEND_CONFIRMATION = 'resend confirmation',
+    REGISTER_USER = 'register user',
+    REGISTER_USER_WELCOME = 'register user welcome',
 
     DOCUMENT = 'document',
     HIDE_BS_OFFCANVAS = 'hide.bs.offcanvas',
 
-    EMAIL = 'email',
+    EMAIL_ADDRESS = 'email',
     ADDRESS = 'address',
     ADDRESS_UNIT = 'addressUnit',
     PASSWORD = 'password',
@@ -21,8 +23,10 @@ export enum ConstantString {
 
     EMAIL_HASH = 'EmailHash',
     CODE = 'Code',
+    FIRST_NAME = 'FirstName',
+    LAST_NAME = 'LastName',
+    EMAIL = 'Email',
 
-    AUTH = '/auth',
     WEBSITE = '/website',
 
     LOGIN_BTN = 'login-btn',

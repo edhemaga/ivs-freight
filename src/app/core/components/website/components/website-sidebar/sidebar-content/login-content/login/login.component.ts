@@ -42,8 +42,8 @@ export class LoginComponent implements OnInit, OnDestroy {
         });
 
         this.inputService.customInputValidator(
-            this.loginForm.get(ConstantString.EMAIL),
-            ConstantString.EMAIL,
+            this.loginForm.get(ConstantString.EMAIL_ADDRESS),
+            ConstantString.EMAIL_ADDRESS,
             this.destroy$
         );
     }

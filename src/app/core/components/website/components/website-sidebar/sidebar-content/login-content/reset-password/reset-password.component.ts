@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
-import { Subject, takeUntil } from 'rxjs';
+import { Subject, takeUntil, tap } from 'rxjs';
 
 import { TaInputService } from 'src/app/core/components/shared/ta-input/ta-input.service';
 import { WebsiteAuthStoreService } from 'src/app/core/components/website/state/service/website-auth-store.service';
@@ -39,8 +39,8 @@ export class ResetPasswordComponent implements OnInit, OnDestroy {
         });
 
         this.inputService.customInputValidator(
-            this.resetPasswordForm.get(ConstantString.EMAIL),
-            ConstantString.EMAIL,
+            this.resetPasswordForm.get(ConstantString.EMAIL_ADDRESS),
+            ConstantString.EMAIL_ADDRESS,
             this.destroy$
         );
     }
@@ -79,14 +79,15 @@ export class ResetPasswordComponent implements OnInit, OnDestroy {
         }
 
         const saveData: ForgotPasswordCommand = {
-            email: this.resetPasswordForm.get(ConstantString.EMAIL).value,
+            email: this.resetPasswordForm.get(ConstantString.EMAIL_ADDRESS)
+                .value,
         };
 
         this.websiteAuthStoreService
             .resetPassword(saveData)
-            .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {
+            .pipe(
+                takeUntil(this.destroy$),
+                tap(() => {
                     this.websiteActionsService.setSidebarContentType(
                         ConstantString.RESET_PASSWORD_CONFIRMATION
                     );
@@ -94,12 +95,14 @@ export class ResetPasswordComponent implements OnInit, OnDestroy {
                     localStorage.setItem(
                         ConstantString.CONFIRMATION_EMAIL,
                         JSON.stringify(
-                            this.resetPasswordForm.get(ConstantString.EMAIL)
-                                .value
+                            this.resetPasswordForm.get(
+                                ConstantString.EMAIL_ADDRESS
+                            ).value
                         )
                     );
-                },
-            });
+                })
+            )
+            .subscribe();
     }
 
     ngOnDestroy(): void {

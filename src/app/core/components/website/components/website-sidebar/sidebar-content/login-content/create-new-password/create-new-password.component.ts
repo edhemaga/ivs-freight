@@ -117,9 +117,11 @@ export class CreateNewPasswordComponent implements OnInit, OnDestroy {
             ).value,
         };
 
-        this.websiteAuthStoreService.getResetPasswordToken$
+        this.websiteActionsService.getResetPasswordToken$
             .pipe(takeUntil(this.destroy$))
             .subscribe((token) => {
+                /* WEBSITE AUTH STORE SERVICE*/
+
                 localStorage.setItem('user', JSON.stringify({ token: token }));
 
                 this.websiteAuthStoreService

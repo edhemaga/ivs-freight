@@ -37,10 +37,10 @@
 
     <!-- LOGIN BUTTON -->
 
-    <app-website-confirm-btn
+    <app-sidebar-confirm-btn
         [loginBtn]="true"
         (clickValueEmitter)="onGetBtnClickValue($event, 'login-btn')"
-    ></app-website-confirm-btn>
+    ></app-sidebar-confirm-btn>
 
     <!-- DIDN'T RECEIVE EMAIL -->
 
@@ -49,10 +49,10 @@
     >
         <p class="m-0 ta-font-regular">Didn't receive email?</p>
 
-        <app-website-resend-btn
+        <app-sidebar-resend-btn
             [btnText]="'RESEND EMAIL'"
             [requestedResend]="requestedResendEmail"
             (clickValueEmitter)="onGetBtnClickValue($event)"
-        ></app-website-resend-btn>
+        ></app-sidebar-resend-btn>
     </div>
 </div>
