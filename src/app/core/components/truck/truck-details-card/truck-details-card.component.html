@@ -100,6 +100,10 @@
                 [tooltipName]="'Dispatch History'"
                 [hasHeaderSvg]="'assets/svg/common/ic_half_time.svg'"
                 [isCardOpen]="true"
+                [animationMarginParams]="{
+                    marginTop: '0px',
+                    marginBottom: '10px'
+                }"
             >
                 <div class="assignTo">
                     <div class="assignTo-item first" *ngIf="truck?.assignedTo?.trailer?.id">
@@ -131,6 +135,10 @@
                 [bodyTemplate]="'card'"
                 [isCardOpen]="true"
                 [cardName]="'Additional Details'"
+                [animationMarginParams]="{
+                    marginTop: '0px',
+                    marginBottom: '10px'
+                }"
             >
                 <div class="common-template">
                     <div
@@ -362,6 +370,10 @@
                 [cardName]=" ownerCardOpened ? 'Owner' : 'Owner ' + truck.owner.name "
                 [bodyTemplate]="'card'"
                 [isCardOpen]="true"
+                [animationMarginParams]="{
+                    marginTop: '0px',
+                    marginBottom: '10px'
+                }"
                 (onOpenCard)="onOpenCloseCard($event)"
             >
                 <div class="common-template">
@@ -506,6 +518,10 @@
                 [bodyTemplate]="'card'"
                 [hasHeaderSvg]="'assets/svg/common/arrow_top_right.svg'"
                 class="item-cards"
+                [animationMarginParams]="{
+                    marginTop: '0px',
+                    marginBottom: '10px'
+                }"
             >
                 <div class="owner-history-container">
                     <div class="status-container">
