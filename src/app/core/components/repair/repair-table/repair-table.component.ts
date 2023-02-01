@@ -515,9 +515,6 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
         } else {
             this.viewData = [];
         }
-
-        console.log('Repair Data');
-        console.log(this.viewData);
     }
 
     // Map Truck And Trailer Data
@@ -781,6 +778,8 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
         if (event.action === 'tab-selected') {
             this.selectedTab = event.tabData.field;
 
+            this.backFilterQuery.unitType = this.selectedTab === 'active' ? 1 : 2;
+
             this.backFilterQuery.pageIndex = 1;
             this.shopFilterQuery.pageIndex = 1;
 
@@ -848,7 +847,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
 
             this.selectedTab !== 'repair-shop'
                 ? this.repairBackFilter(this.backFilterQuery, false, true)
-                : this.shopBackFilter(this.backFilterQuery, false, true);
+                : this.shopBackFilter(this.shopFilterQuery, false, true);
         }
         // Edit
         else if (event.type === 'edit') {
