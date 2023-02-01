@@ -239,25 +239,26 @@ export class TruckassistTableBodyComponent
 
     // --------------------------------NgAfterViewInit---------------------------------
     ngAfterViewInit(): void {
-        setTimeout(() => {
-            if (this.viewData.length) {
-                const tableContainer =
-                    document.querySelector('.table-container');
+        // For Virtual Scroll
+        // setTimeout(() => {
+        //     if (this.viewData.length) {
+        //         const tableContainer =
+        //             document.querySelector('.table-container');
 
-                const cdkVirtualScrollSpacer = document.querySelector(
-                    '.cdk-virtual-scroll-spacer'
-                );
+        //         const cdkVirtualScrollSpacer = document.querySelector(
+        //             '.cdk-virtual-scroll-spacer'
+        //         );
 
-                const pageHeight =
-                    tableContainer.clientHeight -
-                    1018 +
-                    cdkVirtualScrollSpacer.clientHeight;
+        //         const pageHeight =
+        //             tableContainer.clientHeight -
+        //             1018 +
+        //             cdkVirtualScrollSpacer.clientHeight;
 
-                this.sharedService.emitUpdateScrollHeight.emit({
-                    tablePageHeight: pageHeight,
-                });
-            }
-        }, 10);
+        //         this.sharedService.emitUpdateScrollHeight.emit({
+        //             tablePageHeight: pageHeight,
+        //         });
+        //     }
+        // }, 10);
 
         this.getNotPinedMaxWidth();
     }

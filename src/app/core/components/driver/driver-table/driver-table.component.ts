@@ -963,6 +963,9 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
         };
         if (event.type === 'show-more') {
             this.backFilterQuery.pageIndex++;
+
+            this.backFilterQuery.active = this.selectedTab === 'active' ? 1 : 0;
+
             this.driverBackFilter(this.backFilterQuery, false, true);
         } else if (event.type === 'edit') {
             if (this.selectedTab === 'applicants') {
@@ -1123,7 +1126,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
     });
     modalColumns: any[] = [];
     modalViewData: any[] = [];
-    
+
     modalTestInitialization() {
         this.modalColumns = getLoadModalColumnDefinition();
 
