@@ -117,8 +117,10 @@ export class TaInputComponent
 
     public focusBlur: any;
 
-    private cursorPosition: number;
-    private priceCounter: number = 0;
+    // Price Separator
+    public cursorPosition: number;
+    public hasDecimalIndex: number = -1;
+    public originPriceSeparatorLimit: number;
 
     constructor(
         @Self() public superControl: NgControl,
@@ -309,6 +311,18 @@ export class TaInputComponent
         // Password
         if (this.inputConfig.type === 'password') {
             this.isVisiblePasswordEye = true;
+        }
+
+        // Price Separator
+        if (this.inputConfig.priceSeparator) {
+            if (this.getSuperControl.value?.indexOf('.') >= 0) {
+                setTimeout(() => {
+                    this.input.nativeElement.setSelectionRange(
+                        this.getSuperControl.value.indexOf('.'),
+                        this.getSuperControl.value.indexOf('.')
+                    );
+                }, 100);
+            }
         }
 
         // Input Commands
@@ -724,6 +738,7 @@ export class TaInputComponent
         }
 
         if (this.inputConfig.priceSeparator && this.getSuperControl.value) {
+            // 0. Don't allow 0 as first character
             if (
                 this.getSuperControl.value
                     .toString()
@@ -738,60 +753,107 @@ export class TaInputComponent
             }
 
             let priceSeparatorTimeout = setTimeout(() => {
+                // 1.  Format number with thousand separator
                 this.getSuperControl.patchValue(
                     this.thousandSeparatorPipe.transform(
                         this.getSuperControl.value
                     )
                 );
-                if (this.getSuperControl.value.indexOf('.') >= 0) {
-                    let cursorPosition =
-                        this.input.nativeElement.selectionStart;
 
-                    if (this.hasDecimalIndex >= 0) {
-                        cursorPosition =
-                            this.getSuperControl.value.indexOf('.');
-                        this.input.nativeElement.setSelectionRange(
-                            cursorPosition,
-                            cursorPosition
-                        );
-                    } else {
-                        this.input.nativeElement.setSelectionRange(
-                            cursorPosition,
-                            cursorPosition
-                        );
-                    }
+                // 2. If has decimal part, set cursor before dot
+                if (
+                    this.getSuperControl.value.indexOf('.') >= 0 &&
+                    this.input.nativeElement.selectionStart >
+                        this.getSuperControl.value.indexOf('.')
+                ) {
+                    setTimeout(() => {
+                        let cursorPosition =
+                            this.input.nativeElement.selectionStart;
+
+                        if (this.hasDecimalIndex >= 0) {
+                            cursorPosition =
+                                this.getSuperControl.value.indexOf('.');
+                            this.input.nativeElement.setSelectionRange(
+                                cursorPosition,
+                                cursorPosition
+                            );
+                        } else {
+                            this.input.nativeElement.setSelectionRange(
+                                cursorPosition,
+                                cursorPosition
+                            );
+                        }
+                    }, 500);
                 }
 
+                // 3. If remove dot user, reset hasDecimalIndex
                 if (this.getSuperControl.value.indexOf('.') === -1) {
                     this.hasDecimalIndex = -1;
-                } else {
-                    // 0. Check for Dot position
+                }
+                // 4. If user set dot
+                else {
+                    // 4.1. Check for Dot position
+
                     this.hasDecimalIndex =
                         this.getSuperControl.value.indexOf('.');
 
-                    // 1. Divide number on decimal and integer part
-                    const integerPart = this.getSuperControl.value.slice(
-                        0,
-                        this.hasDecimalIndex
+                    // 4.2. Divide number on decimal and integer part
+                    let integerPart = this.thousandSeparatorPipe.transform(
+                        this.getSuperControl.value
+                            .slice(0, this.hasDecimalIndex)
+                            .slice(0, this.inputConfig.priceSeparatorLimitation)
                     );
+
                     let decimalPart = this.getSuperControl.value.slice(
                         this.hasDecimalIndex + 1
                     );
+                    // 99,000.93
+                    // 4.3 If has dot, but remove character (always must has two decimal characters)
 
-                    // 2. Get only two numbers of decimal part
+                    if (decimalPart?.length === 1) {
+                        decimalPart += '0';
+                    }
+
+                    // 4.4. Get only two numbers of decimal part
                     decimalPart = decimalPart.slice(0, 2);
 
-                    // 3. Set formatted number
-                    setTimeout(() => {
-                        this.getSuperControl.patchValue(
-                            integerPart + '.' + decimalPart
-                        );
-                    }, 200);
-                }
-            }, 1000);
+                    // 4.5. Set formatted number
 
+                    this.getSuperControl.patchValue(
+                        integerPart + '.' + decimalPart
+                    );
+                    this.hasDecimalIndex =
+                        this.getSuperControl.value.indexOf('.');
+
+                    clearTimeout(priceSeparatorTimeout);
+                }
+            }, 900);
+
+            // If use doesn't set dot
             if (this.getSuperControl.value.indexOf('.') === -1) {
+                // Decline timeout
                 clearTimeout(priceSeparatorTimeout);
+
+                // Transform value with thousand separator
+                this.getSuperControl.patchValue(
+                    this.thousandSeparatorPipe.transform(
+                        this.getSuperControl.value
+                    )
+                );
+
+                // Limit validation
+                this.originPriceSeparatorLimit =
+                    this.inputConfig.priceSeparatorLimitation;
+
+                // Cut value
+                this.getSuperControl.patchValue(
+                    this.getSuperControl.value.slice(
+                        0,
+                        this.inputConfig.priceSeparatorLimitation
+                    )
+                );
+
+                // Transform value again after cutting
                 this.getSuperControl.patchValue(
                     this.thousandSeparatorPipe.transform(
                         this.getSuperControl.value
@@ -1025,7 +1087,6 @@ export class TaInputComponent
         }
     }
 
-    public hasDecimalIndex: number = -1;
     public onKeypress(event: KeyboardEvent): boolean {
         // Disable first character to be space
         if (
