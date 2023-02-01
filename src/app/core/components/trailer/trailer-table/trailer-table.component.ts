@@ -407,9 +407,6 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
             this.viewData = this.viewData.map((data) => {
                 return this.mapTrailerData(data);
             });
-
-            console.log('Trailer Data');
-            console.log(this.viewData);
         } else {
             this.viewData = [];
         }
@@ -615,6 +612,9 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
         switch (event.type) {
             case 'show-more': {
                 this.backFilterQuery.pageIndex++;
+                this.backFilterQuery.active =
+                    this.selectedTab === 'active' ? 1 : 0;
+
                 this.trailerBackFilter(this.backFilterQuery, false, true);
                 break;
             }
