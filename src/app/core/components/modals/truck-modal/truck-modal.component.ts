@@ -12,7 +12,11 @@ import {
     OnInit,
     ViewEncapsulation,
 } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import {
+    UntypedFormBuilder,
+    UntypedFormGroup,
+    Validators,
+} from '@angular/forms';
 import { GetTruckModalResponse, VinDecodeResponse } from 'appcoretruckassist';
 
 import { tab_modal_animation } from '../../shared/animations/tabs-modal.animation';
@@ -70,6 +74,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
     public fuelTypes: any[] = [];
     public truckLengths: any[] = [];
     public tollTransponders: any[] = [];
+    public wheelBaseTypes: any[] = [];
 
     public selectedBrakes: any = null;
     public selectedShifter: any = null;
@@ -85,6 +90,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
     public selectedAPUnit: any = null;
     public selectedGearRatio: any = null;
     public selectedTollTransponders: any = null;
+    public selectedWheelBase: any = null;
 
     public selectedTruckLengthId: any = null;
 
@@ -191,6 +197,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
             brakes: [null],
             frontWheels: [null],
             rearWheels: [null],
+            wheelBase: [null],
             transmissionModel: [null],
             fuelType: [null],
             shifter: [null],
@@ -208,6 +215,8 @@ export class TruckModalComponent implements OnInit, OnDestroy {
             dcInverter: [false],
             blower: [false],
             pto: [false],
+            headacheRack: [false],
+            dashCam: [false],
             files: [null],
         });
 
@@ -447,6 +456,10 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                 this.selectedTruckLengthId = event;
                 break;
             }
+            case 'wheel-base': {
+                this.selectedWheelBase = event;
+                break;
+            }
             default: {
                 break;
             }
@@ -544,6 +557,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                         };
                     });
                     this.rearWheels = this.frontWheels = res.wheelsTypes;
+                    // this.wheelBase = res.wheelBase;
                     this.fuelTypes = res.fuelTypes;
                     this.truckForm.get('fhwaExp').patchValue(res.fhwaExp);
                 },
@@ -597,6 +611,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                         frontWheels: res.frontWheels
                             ? res.frontWheels.name
                             : null,
+                        // wheelBase: res.wheelBase ? res.wheelBase.name : null,
                         rearWheels: res.rearWheels ? res.rearWheels.name : null,
                         transmissionModel: res.transmissionModel,
                         shifter: res.shifter ? res.shifter.name : null,
@@ -618,6 +633,8 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                         doubleBunk: res.doubleBunk,
                         refrigerator: res.refrigerator,
                         dcInverter: res.dcInverter,
+                        // headacheRack: res.headacheRack,
+                        // dashCam: res.dashCam,
                         blower: res.blower,
                         pto: res.pto,
                         fhwaExp: res.fhwaExp ? res.fhwaExp : 12,
@@ -632,6 +649,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                     this.selectedFrontWheels = res.frontWheels
                         ? res.frontWheels
                         : null;
+                    // this.selectedWheelBase = res.wheelBase ? res.wheelBase : null;
                     this.selectedGearRatio = res.gearRatio
                         ? res.gearRatio
                         : null;
@@ -696,6 +714,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                 fuelTankSize: res.fuelTankSize,
                 brakes: res.brakes,
                 frontWheels: res.frontWheels,
+                wheelBase: res.wheelBase,
                 rearWheels: res.rearWheels,
                 transmissionModel: res.transmissionModel,
                 shifter: res.shifter,
@@ -712,6 +731,8 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                 doubleBunk: res.doubleBunk,
                 refrigerator: res.refrigerator,
                 dcInverter: res.dcInverter,
+                headacheRack: res.headacheRack,
+                dashCam: res.dashCam,
                 blower: res.blower,
                 pto: res.pto,
             });
@@ -790,6 +811,9 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                 : null,
             frontWheels: this.selectedFrontWheels
                 ? this.selectedFrontWheels.name
+                : null,
+            wheelBase: this.selectedWheelBase
+                ? this.selectedWheelBase.name
                 : null,
             rearWheels: this.selectedRearWheels
                 ? this.selectedRearWheels.name
@@ -932,6 +956,9 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                 : null,
             frontWheels: this.selectedFrontWheels
                 ? this.selectedFrontWheels.name
+                : null,
+            wheelBase: this.selectedWheelBase
+                ? this.selectedWheelBase.name
                 : null,
             rearWheels: this.selectedRearWheels
                 ? this.selectedRearWheels.name
