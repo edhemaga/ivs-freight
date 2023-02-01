@@ -1,13 +1,5 @@
 <table class="truckassist-table-body-style">
     <tbody *ngIf="viewData.length">
-        <!-- activeAttachment !== -1 ||
-                    activeMedia !== -1 ||
-                    activeInsurance !== -1
-                        ? viewData.length * 32 +
-                          (viewData.length - 1) * 2 +
-                          22 +
-                          300
-                        : viewData.length * 32 + (viewData.length - 1) * 2 + 22 -->
         <cdk-virtual-scroll-viewport
             #tableScrollRef
             [itemSize]="35"
