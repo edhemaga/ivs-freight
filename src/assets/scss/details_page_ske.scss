@@ -127,7 +127,11 @@ p {
         overflow: hidden;
         width: 440px;
         background-color: $color-white;
-        padding: 9px 6px 4px 6px;
+        padding: 1px 8px 4px 8px;
+
+        &.trailer-details-card{
+            padding: 0px 6px 4px 6px;
+        }
     }
 }
 .assignTo {
@@ -968,7 +972,7 @@ p {
     grid-template-columns: 130px 130px 130px;
     row-gap: 10px;
     column-gap: 10px;
-    padding: 0 4px;
+    padding: 0 2px;
     .mileage-template-item {
         display: flex;
         flex-direction: column;
@@ -1089,7 +1093,7 @@ p {
 
 .note-details-holder{
     padding-right: 6px;
-    padding-left: 4px;
+    padding-left: 3px;
 
     .note-container {
         .note-header {

@@ -92,7 +92,7 @@
         class="wrapper-additional-cards"
         [ngClass]="{ 'bind-height': !templateCard }"
     >
-        <div class="details-cards">
+        <div class="details-cards trailer-details-card">
             <!-- Assigned to -->
             <app-ta-custom-card
                 [cardName]="'Assigned To'"
@@ -101,6 +101,10 @@
                 [hasHeaderSvg]="'assets/svg/common/ic_half_time.svg'"
                 [isCardOpen]="true"
                 [bodyTemplate]="'card'"
+                [animationMarginParams]="{
+                    marginTop: '0px',
+                    marginBottom: '10px'
+                }"
                 class="first-custom-card"
             >
                 <div class="assignTo">
@@ -150,6 +154,10 @@
                 [cardName]="'Additional Details'"
                 [isCardOpen]="true"
                 [bodyTemplate]="'card'"
+                [animationMarginParams]="{
+                    marginTop: '0px',
+                    marginBottom: '10px'
+                }"
             >
                 <div
                     *ngIf="
@@ -240,6 +248,10 @@
                 [cardName]=" ownerCardOpened ? 'Owner' : 'Owner ' + trailer.owner.name "
                 [isCardOpen]="true"
                 [bodyTemplate]="'card'"
+                [animationMarginParams]="{
+                    marginTop: '0px',
+                    marginBottom: '10px'
+                }"
                 (onOpenCard)="onOpenCloseCard($event)"
             >
                 <div class="owner-container">
@@ -289,6 +301,10 @@
                 [tooltipName]="'View in Modal'"
                 [bodyTemplate]="'card'"
                 [hasHeaderSvg]="'assets/svg/common/arrow_top_right.svg'"
+                [animationMarginParams]="{
+                    marginTop: '0px',
+                    marginBottom: '10px'
+                }"
             >
                 <div class="owner-history-container">
                     <div class="status-container">
