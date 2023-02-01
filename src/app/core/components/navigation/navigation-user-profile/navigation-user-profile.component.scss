@@ -14,6 +14,29 @@
     user-select: none;
     .wrapper-elements {
         position: relative;
+        .items {
+            &:hover {
+                svg {
+                    path {
+                        fill: $nav-white;
+                    }
+                }
+                .user-content-logout {
+                    svg {
+                        path {
+                            fill: #ef9a9a;
+                        }
+                    }
+                }
+                .user-content-status {
+                    svg {
+                        #minus-circle {
+                            fill: #ffcc80;
+                        }
+                    }
+                }
+            }
+        }
     }
     p {
         margin: 0;
@@ -82,7 +105,7 @@
             .user-content-status {
                 svg {
                     #minus-circle {
-                        fill: $user-busy-status-hover !important;
+                        fill: $user-busy-status-hover;
                     }
                     #check-circle {
                         fill: $user-active-status-hover !important;
@@ -194,11 +217,11 @@
 }
 
 .user-content:nth-child(2):hover ~ .new-magic-line {
-    transform: translateY(-92px) !important;
+    transform: translateY(-91px) !important;
 }
 
 .user-content:nth-child(2) ~ .new-magic-line {
-    transform: translateY(-92px);
+    transform: translateY(-91px);
 }
 
 .user-content:nth-child(3):hover ~ .new-magic-line {

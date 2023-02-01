@@ -42,7 +42,7 @@
     }
     .navigation-top {
         padding: 0px 6px;
-        overflow-x: hidden;
+        min-height: 90px;
     }
     .navigation-middle {
         overflow-y: scroll;
@@ -113,17 +113,16 @@
         z-index: -1;
     }
     .animate-magic-line {
-        max-width: 238px;
-        animation: magiclinetransition 0.5s forwards;
+        width: 238px;
+        background: $nav-hover-color;
+        animation: magiclinecolortransition 0.5s ease;
     }
-    @keyframes magiclinetransition {
+    @keyframes magiclinecolortransition {
         from {
             background-color: transparent;
-            width: 36px;
         }
         to {
             background-color: $nav-hover-color;
-            width: 238px;
         }
     }
 

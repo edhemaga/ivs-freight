@@ -65,6 +65,7 @@
                 justify-content: center;
                 z-index: 9;
                 background: rgba(48, 116, 211, 0.1);
+                transition: all 0.3s;
                 svg {
                     position: relative;
                     top: -0.9px;
@@ -83,6 +84,7 @@
             }
             .dark-svg {
                 background: $nav-svg-active;
+                transition: all 0.3s;
                 svg {
                     path {
                         fill: $nav-white;
@@ -130,65 +132,6 @@
                 left: -8px;
                 bottom: 25px;
             }
-            // &-notes {
-            //     margin: 0 6px;
-            //     background: $nav-hover-darker;
-            //     border-radius: 50%;
-            //     padding: 7px;
-            //     position: relative;
-            //     width: 32px;
-            //     height: 32px;
-
-            //     svg-icon {
-            //         svg {
-            //             position: absolute;
-            //             top: 50%;
-            //             left: 50%;
-            //             transform: translate(-50%, -50%);
-            //         }
-            //     }
-
-            //     &:hover {
-            //         transition: $nav-transition;
-            //         background-color: $nav-hover-lightcolor;
-
-            //         svg-icon {
-            //             svg {
-            //                 #Path_35726 {
-            //                     fill: $nav-svg-hover !important;
-            //                 }
-
-            //                 #Path_35727 {
-            //                     fill: $nav-svg-hover !important;
-            //                 }
-            //             }
-            //         }
-            //     }
-            // }
-
-            // &-bell {
-            //     background: $nav-hover-darker;
-            //     border-radius: 50%;
-            //     padding: 7px;
-            //     position: relative;
-            //     width: 32px;
-            //     height: 32px;
-            //     svg {
-            //         position: absolute;
-            //         top: 50%;
-            //         left: 50%;
-            //         transform: translate(-50%, -50%);
-            //     }
-            //     &:hover {
-            //         transition: $nav-transition;
-            //         background-color: $nav-hover-lightcolor;
-            //         svg {
-            //             #Path_35724 {
-            //                 fill: $nav-svg-hover !important;
-            //             }
-            //         }
-            //     }
-            // }
         }
         .nav-header-bottom-rightSide-search {
             &:hover {

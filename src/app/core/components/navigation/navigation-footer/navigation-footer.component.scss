@@ -308,7 +308,7 @@
             border-radius: 3px;
         }
         .nav-item-active-box-active {
-            max-width: 238px;
+            width: 238px;
             animation: magiclinetransition 0.5s forwards;
             left: -8px;
             background-color: $nav-hover-color;
@@ -316,11 +316,9 @@
         @keyframes magiclinetransition {
             from {
                 background-color: transparent;
-                width: 36px;
             }
             to {
                 background-color: $nav-hover-color;
-                width: 238px;
             }
         }
     }
@@ -345,16 +343,8 @@
 }
 .animate-magic-line {
     max-width: 238px;
-    animation: grow0 0.4s forwards;
 }
-@keyframes grow0 {
-    from {
-        width: 36px;
-    }
-    to {
-        width: 238px;
-    }
-}
+
 .nav-footer-width {
     width: 238px;
     .magic-line-footer {

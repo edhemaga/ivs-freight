@@ -30,7 +30,7 @@
     >
         <app-tooltip-slide
             [show]="showToolTip"
-            [name]="'Settings'"
+            [name]="'Company'"
         ></app-tooltip-slide>
     </div>
     <div
@@ -56,7 +56,10 @@
                 <svg-icon
                     src="{{ item.image }}"
                     class="svg-settings"
-                    [ngClass]="{ 'route-not-active-svg': item.construction }"
+                    [ngClass]="{
+                        'route-not-active-svg': item.construction,
+                        'active-icon': isActiveRouteOnReload(item.route)
+                    }"
                 ></svg-icon>
                 <p
                     [ngClass]="{

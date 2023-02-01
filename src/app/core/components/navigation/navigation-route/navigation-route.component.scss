@@ -126,11 +126,9 @@
         .nav-item-name-active {
             font-weight: 700;
             color: $nav-active-lighter;
-            width: 175px;
             display: flex;
         }
         .nav-item-arrow {
-            // position: absolute;
             right: 0px;
             transform: rotate(0deg);
             transition: $nav-transition;
@@ -223,6 +221,7 @@
     }
 }
 .nav-item-parent-active {
+    cursor: default;
     &:hover {
         .nav-item-img {
             svg {

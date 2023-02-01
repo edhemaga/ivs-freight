@@ -54,7 +54,7 @@
             *ngIf="
                 !mouseOverMiddleNav &&
                 !mouseOverFooter &&
-                notificationsActive &&
+                selectedRoute == 'Notifications' &&
                 item.notification &&
                 !subrouteContainerOpened &&
                 !isSettingsPanelOpen
@@ -112,7 +112,7 @@
                             class="notification-svg"
                             src="{{ item.image }}"
                             [ngClass]="{
-                                'active-img': notificationsActive,
+                                'active-img': selectedRoute == 'Notifications',
                                 close: item.notification,
                                 'route-closed-nav-svg-not-active':
                                     item.construction == true &&
@@ -148,7 +148,8 @@
                                     isNavigationHovered
                                 "
                                 [ngClass]="{
-                                    'active-route': notificationsActive,
+                                    'active-route':
+                                        selectedRoute == 'Notifications',
                                     'route-not-active': item.construction
                                 }"
                             >

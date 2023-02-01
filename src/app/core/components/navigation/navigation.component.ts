@@ -143,8 +143,8 @@ export class NavigationComponent implements OnInit, OnDestroy {
                 if (url.url === '/dispatcher') {
                     this.selectedRoute = 'Dispatch';
                     this.cdRef.detectChanges();
-                } else if (url.url === '/file-manager') {
-                    this.selectedRoute = 'File Manager';
+                } else if (url.url === '/file-menager') {
+                    this.selectedRoute = 'File Menager';
                     this.cdRef.detectChanges();
                 } else {
                     let ruteName = url.url.split('/');
@@ -188,16 +188,6 @@ export class NavigationComponent implements OnInit, OnDestroy {
     }
     getIndex(ind) {
         this.index = ind;
-        // console.log(
-        //     this.navigation,
-        //     this.isNavigationHovered,
-        //     this.closeDropdownOnNavClose,
-        //     this.isModalPanelOpen,
-        //     this.isUserPanelOpen,
-        //     this.isSettingsPanelOpen,
-        //     this.isUserCompanyDetailsOpen
-        // );
-        // console.log(this.navigation, 'asasfasff');
     }
     routeWithSubRouteClicked(event) {
         this.subrouteClicked = event;
@@ -229,7 +219,6 @@ export class NavigationComponent implements OnInit, OnDestroy {
     }
     //On outside of navbar close navbar
     closeNavbar(event) {
-        console.log(event.target);
         if (
             //If this elements keep open navigation
             event.target.parentElement?.classList.contains(
