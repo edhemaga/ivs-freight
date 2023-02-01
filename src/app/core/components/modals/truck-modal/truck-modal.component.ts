@@ -98,6 +98,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
         {
             id: 1,
             name: 'Basic',
+            checked: true
         },
         {
             id: 2,

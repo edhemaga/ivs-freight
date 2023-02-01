@@ -16,7 +16,7 @@ export interface UpdatePayrollCreditCommand {
     id?: number;
     type?: PayrollCreditType;
     driverId?: number | null;
-    truckId?: number | null;
+    ownerId?: number | null;
     date?: string;
     description?: string | null;
     amount?: number;

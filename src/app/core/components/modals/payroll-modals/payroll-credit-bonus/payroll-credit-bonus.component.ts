@@ -170,7 +170,7 @@ export class PayrollCreditBonusComponent implements OnInit {
                     return;
                 }
                 if (this.editData?.type === 'edit') {
-                    this.updateCredit(this.editData?.id);
+                    this.updateCredit(this.editData?.data?.id);
                     this.modalService.setModalSpinner({
                         action: null,
                         status: true,
@@ -184,6 +184,15 @@ export class PayrollCreditBonusComponent implements OnInit {
                         close: false,
                     });
                 }
+                break;
+            }
+            case 'delete': {
+                this.deletePayrollCreeditById(this.editData?.data.id);
+                this.modalService.setModalSpinner({
+                    action: 'delete',
+                    status: true,
+                    close: false,
+                });
                 break;
             }
             default: {
@@ -269,7 +278,7 @@ export class PayrollCreditBonusComponent implements OnInit {
                         this.selectedTruck = null;
                         this.tabChange({ id: 1 });
                         this.modalService.setModalSpinner({
-                            action: null,
+                            action: 'save and add new',
                             status: false,
                             close: false,
                         });
@@ -304,7 +313,7 @@ export class PayrollCreditBonusComponent implements OnInit {
                                   res.driver.lastName
                               )
                             : null,
-                        truckId: res.truck ? res.truck.truckNumber : null,
+                        // truckId: res.truck ? res.truck.truckNumber : null,
                         date: convertDateFromBackend(res.date),
                         description: res.description,
                         amount: convertNumberInThousandSep(res.amount),
@@ -327,30 +336,32 @@ export class PayrollCreditBonusComponent implements OnInit {
                         };
                     }
 
-                    if (res.truck) {
-                        this.selectedTruck = {
-                            ...res.truck,
-                            name: res.truck.truckNumber,
-                            additionalText: res.truck.owner,
-                        };
+                    // if (res.truck) {
+                    //     this.selectedTruck = {
+                    //         ...res.truck,
+                    //         name: res.truck.truckNumber,
+                    //         additionalText: res.truck.owner,
+                    //     };
 
-                        this.truckDropdownsConfig = {
-                            ...this.truckDropdownsConfig,
-                            multipleInputValues: {
-                                options: [
-                                    {
-                                        value: res.truck?.truckNumber,
-                                    },
-                                    {
-                                        value: res?.truck?.owner,
-                                    },
-                                ],
-                                customClass: 'double-text-dropdown',
-                            },
-                        };
-                    }
+                    //     this.truckDropdownsConfig = {
+                    //         ...this.truckDropdownsConfig,
+                    //         multipleInputValues: {
+                    //             options: [
+                    //                 {
+                    //                     value: res.truck?.truckNumber,
+                    //                 },
+                    //                 {
+                    //                     value: res?.truck?.owner,
+                    //                 },
+                    //             ],
+                    //             customClass: 'double-text-dropdown',
+                    //         },
+                    //     };
+                    // }
 
-                    this.tabChange({ id: res.driver ? 1 : 2 });
+                    setTimeout(() => {
+                        this.tabChange({ id: res.type.id });
+                    }, 150);
                 },
                 error: () => {},
             });
@@ -375,12 +386,12 @@ export class PayrollCreditBonusComponent implements OnInit {
                             isDriver: true,
                         };
                     });
-                    this.labelsTrucks = res.trucks.map((item) => {
-                        return {
-                            ...item,
-                            name: item.truckNumber,
-                        };
-                    });
+                    // this.labelsTrucks = res.trucks.map((item) => {
+                    //     return {
+                    //         ...item,
+                    //         name: item.truckNumber,
+                    //     };
+                    // });
 
                     // If Add New By Id
                     if (
@@ -396,6 +407,22 @@ export class PayrollCreditBonusComponent implements OnInit {
                         });
                         this.selectedTruck = null;
                     }
+                },
+                error: () => {},
+            });
+    }
+
+    public deletePayrollCreeditById(id: number) {
+        this.payrolCreditService
+            .deletePayrollCreditById(id)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: () => {
+                    this.modalService.setModalSpinner({
+                        action: 'delete',
+                        status: true,
+                        close: true,
+                    });
                 },
                 error: () => {},
             });
