@@ -164,7 +164,7 @@
         class="card-footer-cmp"
         [ngClass]="{ 'hide-padding': resPage, 'insuranceCard' : insuranceCard }"
         *ngIf="( isCardOpen || forcedOpen) && hasFooter"
-        [@footerOpenAnimation]="animationStarted ? 'true' : 'false'"
+        [@footerOpenAnimation]="animationStarted || isCardOpen ? 'true' : 'false'"
     >
         <div class="icon-counter">
             <svg-icon
