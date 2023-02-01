@@ -255,6 +255,33 @@ export class TaReCardComponent implements OnInit {
                 }
             });
         } else if (this.cardNameCurrent == 'cdl') {
+            let endDate = moment(this.mainData.expDate);
+            let daysDiff = endDate.diff(moment(), 'days');
+
+            this.options.actions.map((action, index) => {
+                if ( index == 8 ) {
+                    if ( this.mainData?.status == 0 ) {
+                        action.title = 'Activate';
+                        action.name = 'activate-item';
+                        action.iconName = 'activate-item';
+                        action.redIcon = false;
+                        action.blueIcon = true;
+                    } else {
+                        action.title = 'Void';
+                        action.name = 'deactivate-item';
+                        action.iconName = 'deactivate-item';
+                        action.redIcon = true;
+                        action.blueIcon = false; 
+                    }
+                } else if ( index == 3 ) {
+                    if (daysDiff < -365) {
+                        action.disabled = true;
+                    } else {
+                        action.disabled = false;
+                    }
+                }
+            })
+            
         }
     }
 }
