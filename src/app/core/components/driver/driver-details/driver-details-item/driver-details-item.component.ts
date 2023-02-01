@@ -269,7 +269,7 @@ export class DriverDetailsItemComponent
                 this.arrayOfRenewCdl.push(false);
             }
         });
-
+        
         this.dataDropDown = {
             disabledMutedStyle: null,
             toolbarActions: {
@@ -540,12 +540,7 @@ export class DriverDetailsItemComponent
         }, 200);
     }
     public openCommand(cdl?: any, modal?: string) {
-
-
-        console.log('---here---', cdl)
-        console.log('---modal---', modal)
         if (this.activeCdl.length) {
-            console.log('--iff--')
             let data = this.drivers;
             this.modalService.openModal(
                 ConfirmationModalComponent,
@@ -570,7 +565,6 @@ export class DriverDetailsItemComponent
                 }
             );
         } else {
-            console.log('--else--')
             let data = this.drivers;
             this.modalService.openModal(
                 ConfirmationModalComponent,
