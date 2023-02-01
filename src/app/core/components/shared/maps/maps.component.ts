@@ -522,6 +522,7 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
                                     );
 
                                 if (clusterIndex == -1) {
+                                    console.log("CHASTERS ARE ADDDING IT");
                                     this.clusterMarkers.push(clusterItem);
                                 }
 
@@ -1346,6 +1347,10 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
                     }
                 },
             });
+    }
+
+    public identity(index: number, item: any): number {
+        return item.id;
     }
 
     ngOnDestroy(): void {

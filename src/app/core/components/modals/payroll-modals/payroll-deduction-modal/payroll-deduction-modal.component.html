@@ -85,8 +85,7 @@
                             minLength: 2,
                             maxLength: 160,
                             textTransform: 'capitalize',
-                            isRequired: true,
-                            customClass: 'line-input-26-in-card'
+                            isRequired: true
                         }"
                     ></app-ta-input>
                 </div>
@@ -134,7 +133,7 @@
                 <div class="number-of-payments-container">
                     <p class="no-of-payments">No. of Payments</p>
                     <app-ta-input
-                        formControlName="numberOfPayments"
+                        formControlName="limitedNumber"
                         [inputConfig]="{
                             name: 'numberOfPayment',
                             type: 'text',
@@ -158,7 +157,7 @@
                 </div>
 
                 <app-ta-input
-                    formControlName="limitedNumber"
+                    formControlName="limitedAmount"
                     [inputConfig]="{
                         name: 'Amount',
                         label: 'Amount',

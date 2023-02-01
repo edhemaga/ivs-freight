@@ -12,6 +12,7 @@ import { DashboardStateTrackingComponent } from './dashboard-state-tracking/dash
 import { DashboardStateUsaComponent } from './dashboard-state-tracking/dashboard-state-usa/dashboard-state-usa.component';
 import { TaNoteModule } from '../shared/ta-note/ta-note.module';
 import { CarrierSearchComponent } from '../standalone-components/carrier-search/carrier-search.component';
+import { SlickCarouselModule } from 'ngx-slick-carousel';
 
 @NgModule({
     declarations: [
@@ -29,7 +30,8 @@ import { CarrierSearchComponent } from '../standalone-components/carrier-search/
         ReactiveFormsModule,
         SharedModule,
         TaNoteModule,
-        CarrierSearchComponent
+        CarrierSearchComponent,
+        SlickCarouselModule
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })

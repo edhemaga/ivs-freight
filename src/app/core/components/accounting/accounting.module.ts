@@ -10,6 +10,7 @@ import { PayrollTableComponent } from './payroll/payroll/payroll-table/payroll-t
 import { PayrollTablePipe } from './payroll/payroll/pipe/payroll-table.pipe';
 import { PayrollReportComponent } from './payroll/payroll/payroll-report/payroll-report.component';
 import { PayrollSmallTablesComponent } from './payroll/payroll/payroll-small-tables/payroll-small-tables.component';
+import { AngularSvgIconModule } from 'angular-svg-icon';
 
 @NgModule({
     declarations: [
@@ -25,7 +26,8 @@ import { PayrollSmallTablesComponent } from './payroll/payroll/payroll-small-tab
         CommonModule,
         AccountingRoutingModule,
         SharedModule,
-        TruckassistTableModule
+        TruckassistTableModule,
+        AngularSvgIconModule
     ],
     exports: [AccountingIndexComponent, PayrollTableComponent]
 })

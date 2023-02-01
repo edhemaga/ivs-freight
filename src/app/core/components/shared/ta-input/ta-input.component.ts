@@ -29,7 +29,6 @@ import {
 } from '../../../utils/methods.calculations';
 import { FormService } from 'src/app/core/services/form/form.service';
 import { ImageBase64Service } from '../../../utils/base64.image';
-import * as CurrencyFormatter from 'currency-formatter';
 @Component({
     selector: 'app-ta-input',
     templateUrl: './ta-input.component.html',
@@ -118,8 +117,10 @@ export class TaInputComponent
 
     public focusBlur: any;
 
-    private cursorPosition: number;
-    private priceCounter: number = 0;
+    // Price Separator
+    public cursorPosition: number;
+    public hasDecimalIndex: number = -1;
+    public originPriceSeparatorLimit: number;
 
     constructor(
         @Self() public superControl: NgControl,
@@ -310,6 +311,18 @@ export class TaInputComponent
         // Password
         if (this.inputConfig.type === 'password') {
             this.isVisiblePasswordEye = true;
+        }
+
+        // Price Separator
+        if (this.inputConfig.priceSeparator) {
+            if (this.getSuperControl.value?.indexOf('.') >= 0) {
+                setTimeout(() => {
+                    this.input.nativeElement.setSelectionRange(
+                        this.getSuperControl.value.indexOf('.'),
+                        this.getSuperControl.value.indexOf('.')
+                    );
+                }, 100);
+            }
         }
 
         // Input Commands
@@ -581,55 +594,6 @@ export class TaInputComponent
     }
 
     public onKeyup(event): void {
-        if (this.inputConfig.priceSeparator && this.getSuperControl.value) {
-            if (
-                this.getSuperControl.value
-                    .toString()
-                    .split('')
-                    .every((value) => {
-                        return value === '0';
-                    }) &&
-                this.getSuperControl.value.split('').length > 0
-            ) {
-                this.getSuperControl.patchValue('0');
-                return;
-            }
-
-            if (this.getSuperControl.value.toString()) {
-                const options = { currency: 'USD' };
-                this.getSuperControl.patchValue(
-                    CurrencyFormatter.format(
-                        this.getSuperControl.value,
-                        options
-                    )
-                );
-
-                if (
-                    event.key !== 'ArrowRight' &&
-                    event.key !== 'ArrowLeft' &&
-                    this.priceCounter == 0
-                ) {
-                    this.cursorPosition =
-                        this.input.nativeElement.selectionStart;
-                    const dotPosition = this.input.nativeElement.value
-                        .toString()
-                        .lastIndexOf('.');
-                    if (dotPosition !== -1) {
-                        this.cursorPosition = dotPosition;
-                    }
-                    this.priceCounter++;
-                } else {
-                    this.cursorPosition =
-                        this.input.nativeElement.selectionStart;
-                }
-
-                this.input.nativeElement.setSelectionRange(
-                    this.cursorPosition,
-                    this.cursorPosition
-                );
-            }
-        }
-
         if (
             event.keyCode == 8 &&
             !(this.inputConfig.isDropdown || this.inputConfig.dropdownLabel)
@@ -699,7 +663,7 @@ export class TaInputComponent
         }
     }
 
-    public transformText(value: string, paste?: boolean) {
+    public transformText(value?: string, paste?: boolean) {
         if (paste) {
             if (!this.inputSelection) {
                 this.input.nativeElement.value += value;
@@ -726,7 +690,9 @@ export class TaInputComponent
         }
         // not paste
         else {
-            this.input.nativeElement.value = value;
+            if (value) {
+                this.input.nativeElement.value = value;
+            }
         }
 
         switch (this.inputConfig.textTransform) {
@@ -770,6 +736,132 @@ export class TaInputComponent
                     )
                 );
         }
+
+        if (this.inputConfig.priceSeparator && this.getSuperControl.value) {
+            // 0. Don't allow 0 as first character
+            if (
+                this.getSuperControl.value
+                    .toString()
+                    .split('')
+                    .every((value) => {
+                        return value === '0';
+                    }) &&
+                this.getSuperControl.value.split('').length > 0
+            ) {
+                this.getSuperControl.patchValue('0');
+                return;
+            }
+
+            let priceSeparatorTimeout = setTimeout(() => {
+                // 1.  Format number with thousand separator
+                this.getSuperControl.patchValue(
+                    this.thousandSeparatorPipe.transform(
+                        this.getSuperControl.value
+                    )
+                );
+
+                // 2. If has decimal part, set cursor before dot
+                if (
+                    this.getSuperControl.value.indexOf('.') >= 0 &&
+                    this.input.nativeElement.selectionStart >
+                        this.getSuperControl.value.indexOf('.')
+                ) {
+                    setTimeout(() => {
+                        let cursorPosition =
+                            this.input.nativeElement.selectionStart;
+
+                        if (this.hasDecimalIndex >= 0) {
+                            cursorPosition =
+                                this.getSuperControl.value.indexOf('.');
+                            this.input.nativeElement.setSelectionRange(
+                                cursorPosition,
+                                cursorPosition
+                            );
+                        } else {
+                            this.input.nativeElement.setSelectionRange(
+                                cursorPosition,
+                                cursorPosition
+                            );
+                        }
+                    }, 500);
+                }
+
+                // 3. If remove dot user, reset hasDecimalIndex
+                if (this.getSuperControl.value.indexOf('.') === -1) {
+                    this.hasDecimalIndex = -1;
+                }
+                // 4. If user set dot
+                else {
+                    // 4.1. Check for Dot position
+
+                    this.hasDecimalIndex =
+                        this.getSuperControl.value.indexOf('.');
+
+                    // 4.2. Divide number on decimal and integer part
+                    let integerPart = this.thousandSeparatorPipe.transform(
+                        this.getSuperControl.value
+                            .slice(0, this.hasDecimalIndex)
+                            .slice(0, this.inputConfig.priceSeparatorLimitation)
+                    );
+
+                    let decimalPart = this.getSuperControl.value.slice(
+                        this.hasDecimalIndex + 1
+                    );
+                    // 99,000.93
+                    // 4.3 If has dot, but remove character (always must has two decimal characters)
+
+                    if (decimalPart?.length === 1) {
+                        decimalPart += '0';
+                    }
+
+                    // 4.4. Get only two numbers of decimal part
+                    decimalPart = decimalPart.slice(0, 2);
+
+                    // 4.5. Set formatted number
+
+                    this.getSuperControl.patchValue(
+                        integerPart + '.' + decimalPart
+                    );
+                    this.hasDecimalIndex =
+                        this.getSuperControl.value.indexOf('.');
+
+                    clearTimeout(priceSeparatorTimeout);
+                }
+            }, 900);
+
+            // If use doesn't set dot
+            if (this.getSuperControl.value.indexOf('.') === -1) {
+                // Decline timeout
+                clearTimeout(priceSeparatorTimeout);
+
+                // Transform value with thousand separator
+                this.getSuperControl.patchValue(
+                    this.thousandSeparatorPipe.transform(
+                        this.getSuperControl.value
+                    )
+                );
+
+                // Limit validation
+                this.originPriceSeparatorLimit =
+                    this.inputConfig.priceSeparatorLimitation;
+
+                // Cut value
+                this.getSuperControl.patchValue(
+                    this.getSuperControl.value.slice(
+                        0,
+                        this.inputConfig.priceSeparatorLimitation
+                    )
+                );
+
+                // Transform value again after cutting
+                this.getSuperControl.patchValue(
+                    this.thousandSeparatorPipe.transform(
+                        this.getSuperControl.value
+                    )
+                );
+            }
+        }
+
         /**
          *  Custom Validation For This Type of Input Below, DONT TOUCH !
          */
@@ -1005,6 +1097,43 @@ export class TaInputComponent
             return false;
         }
 
+        if (this.inputConfig.priceSeparator) {
+            if (
+                this.inputService
+                    .getInputRegexPattern('price-separator')
+                    .test(String.fromCharCode(event.charCode))
+            ) {
+                //  Disable multiple dots
+                this.disableMultiplePoints(event);
+
+                // Find index of dot
+                this.hasDecimalIndex =
+                    this.getSuperControl?.value?.indexOf('.');
+
+                if (this.hasDecimalIndex && this.hasDecimalIndex >= 0) {
+                    // 1. Divide number on decimal and integer part
+                    const integerPart = this.getSuperControl.value.slice(
+                        0,
+                        this.hasDecimalIndex
+                    );
+                    let decimalPart = this.getSuperControl.value.slice(
+                        this.hasDecimalIndex + 1
+                    );
+                    // 2. Get only two numbers of decimal part
+                    decimalPart = decimalPart.slice(0, 2);
+
+                    // 3. Set formatted number
+                    this.getSuperControl.patchValue(
+                        integerPart + '.' + decimalPart
+                    );
+                }
+
+                return true;
+            }
+            event.preventDefault();
+            return false;
+        }
+
         if (
             [
                 'business name',
@@ -1028,7 +1157,6 @@ export class TaInputComponent
             return false;
         }
 
-        // Only numbers
         if (
             [
                 'ein',
@@ -1073,19 +1201,12 @@ export class TaInputComponent
                 'fuel tank size',
                 'device no',
                 'weight',
-                'base-rate',
-                'adjusted-rate',
-                'advance-pay-rate',
-                'layover-rate',
-                'lumper-rate',
-                'fuel-surcharge-rate',
-                'escort-rate',
-                'detention-rate',
                 'fuel per miles',
                 'fuel price map',
                 'amount',
             ].includes(this.inputConfig.name.toLowerCase())
         ) {
+            // Only numbers
             if (
                 this.inputService
                     .getInputRegexPattern('qty')
