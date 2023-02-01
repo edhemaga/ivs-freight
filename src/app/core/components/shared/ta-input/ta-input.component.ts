@@ -313,18 +313,6 @@ export class TaInputComponent
             this.isVisiblePasswordEye = true;
         }
 
-        // Price Separator
-        if (this.inputConfig.priceSeparator) {
-            if (this.getSuperControl.value?.indexOf('.') >= 0) {
-                setTimeout(() => {
-                    this.input.nativeElement.setSelectionRange(
-                        this.getSuperControl.value.indexOf('.'),
-                        this.getSuperControl.value.indexOf('.')
-                    );
-                }, 100);
-            }
-        }
-
         // Input Commands
         if (this.inputConfig.commands?.active) {
             this.isVisibleCommands = true;
@@ -752,113 +740,62 @@ export class TaInputComponent
                 return;
             }
 
-            let priceSeparatorTimeout = setTimeout(() => {
-                // 1.  Format number with thousand separator
-                this.getSuperControl.patchValue(
-                    this.thousandSeparatorPipe.transform(
-                        this.getSuperControl.value
-                    )
+            // 4. If user set dot
+            if (this.getSuperControl.value.indexOf('.') >= 0) {
+                // 4.1. Check for Dot position
+                this.hasDecimalIndex = this.getSuperControl.value.indexOf('.');
+
+                // 4.2. Divide number on decimal and integer part
+                let integerPart = this.thousandSeparatorPipe.transform(
+                    this.getSuperControl.value
+                        .slice(0, this.hasDecimalIndex)
+                        .slice(0, this.inputConfig.priceSeparatorLimitation)
                 );
 
-                // 2. If has decimal part, set cursor before dot
-                if (
-                    this.getSuperControl.value.indexOf('.') >= 0 &&
-                    this.input.nativeElement.selectionStart >
-                        this.getSuperControl.value.indexOf('.')
-                ) {
-                    setTimeout(() => {
-                        let cursorPosition =
-                            this.input.nativeElement.selectionStart;
+                let decimalPart = this.getSuperControl.value.slice(
+                    this.hasDecimalIndex + 1
+                );
 
-                        if (this.hasDecimalIndex >= 0) {
-                            cursorPosition =
-                                this.getSuperControl.value.indexOf('.');
-                            this.input.nativeElement.setSelectionRange(
-                                cursorPosition,
-                                cursorPosition
-                            );
-                        } else {
-                            this.input.nativeElement.setSelectionRange(
-                                cursorPosition,
-                                cursorPosition
-                            );
-                        }
-                    }, 500);
-                }
+                // 4.4. Get only two numbers of decimal part
+                decimalPart = decimalPart.slice(0, 2);
 
-                // 3. If remove dot user, reset hasDecimalIndex
+                // 4.5. Set formatted number
+                this.getSuperControl.patchValue(
+                    integerPart + '.' + decimalPart
+                );
+                this.hasDecimalIndex = this.getSuperControl.value.indexOf('.');
+            }
+            // 5. If user doesn't set dot
+            else {
+                this.hasDecimalIndex = -1;
+
                 if (this.getSuperControl.value.indexOf('.') === -1) {
-                    this.hasDecimalIndex = -1;
-                }
-                // 4. If user set dot
-                else {
-                    // 4.1. Check for Dot position
-
-                    this.hasDecimalIndex =
-                        this.getSuperControl.value.indexOf('.');
-
-                    // 4.2. Divide number on decimal and integer part
-                    let integerPart = this.thousandSeparatorPipe.transform(
-                        this.getSuperControl.value
-                            .slice(0, this.hasDecimalIndex)
-                            .slice(0, this.inputConfig.priceSeparatorLimitation)
-                    );
-
-                    let decimalPart = this.getSuperControl.value.slice(
-                        this.hasDecimalIndex + 1
-                    );
-                    // 99,000.93
-                    // 4.3 If has dot, but remove character (always must has two decimal characters)
-
-                    if (decimalPart?.length === 1) {
-                        decimalPart += '0';
-                    }
-
-                    // 4.4. Get only two numbers of decimal part
-                    decimalPart = decimalPart.slice(0, 2);
-
-                    // 4.5. Set formatted number
-
+                    // Transform value with thousand separator
                     this.getSuperControl.patchValue(
-                        integerPart + '.' + decimalPart
+                        this.thousandSeparatorPipe.transform(
+                            this.getSuperControl.value
+                        )
                     );
-                    this.hasDecimalIndex =
-                        this.getSuperControl.value.indexOf('.');
 
-                    clearTimeout(priceSeparatorTimeout);
+                    // Limit validation
+                    this.originPriceSeparatorLimit =
+                        this.inputConfig.priceSeparatorLimitation;
+
+                    // Cut value
+                    this.getSuperControl.patchValue(
+                        this.getSuperControl.value.slice(
+                            0,
+                            this.inputConfig.priceSeparatorLimitation
+                        )
+                    );
+
+                    // Transform value again after cutting
+                    this.getSuperControl.patchValue(
+                        this.thousandSeparatorPipe.transform(
+                            this.getSuperControl.value
+                        )
+                    );
                 }
-            }, 900);
-
-            // If use doesn't set dot
-            if (this.getSuperControl.value.indexOf('.') === -1) {
-                // Decline timeout
-                clearTimeout(priceSeparatorTimeout);
-
-                // Transform value with thousand separator
-                this.getSuperControl.patchValue(
-                    this.thousandSeparatorPipe.transform(
-                        this.getSuperControl.value
-                    )
-                );
-
-                // Limit validation
-                this.originPriceSeparatorLimit =
-                    this.inputConfig.priceSeparatorLimitation;
-
-                // Cut value
-                this.getSuperControl.patchValue(
-                    this.getSuperControl.value.slice(
-                        0,
-                        this.inputConfig.priceSeparatorLimitation
-                    )
-                );
-
-                // Transform value again after cutting
-                this.getSuperControl.patchValue(
-                    this.thousandSeparatorPipe.transform(
-                        this.getSuperControl.value
-                    )
-                );
             }
         }
 
@@ -1119,10 +1056,17 @@ export class TaInputComponent
                     let decimalPart = this.getSuperControl.value.slice(
                         this.hasDecimalIndex + 1
                     );
-                    // 2. Get only two numbers of decimal part
+
+                    // 2. Disable more than two decimals
+                    if (decimalPart.length > 2) {
+                        event.preventDefault();
+                        return;
+                    }
+
+                    // 3. Get only two numbers of decimal part
                     decimalPart = decimalPart.slice(0, 2);
 
-                    // 3. Set formatted number
+                    // 4. Set formatted number
                     this.getSuperControl.patchValue(
                         integerPart + '.' + decimalPart
                     );

@@ -34,4 +34,8 @@ export class PayrollCreditService {
     public getPayrollCreditById(id: number): Observable<PayrollCreditResponse> {
         return this.payrollService.apiPayrollCreditIdGet(id);
     }
+
+    public deletePayrollCreditById(id: number): Observable<any> {
+        return this.payrollService.apiPayrollCreditIdDelete(id);
+    }
 }
