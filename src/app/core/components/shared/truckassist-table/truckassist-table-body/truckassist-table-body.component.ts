@@ -1,5 +1,4 @@
 import {
-    AfterContentInit,
     AfterViewInit,
     ChangeDetectionStrategy,
     ChangeDetectorRef,
@@ -41,7 +40,7 @@ import { FilesService } from 'src/app/core/services/shared/files.service';
     ],
 })
 export class TruckassistTableBodyComponent
-    implements OnInit, OnChanges, AfterViewInit, OnDestroy, AfterContentInit
+    implements OnInit, OnChanges, AfterViewInit, OnDestroy
 {
     private destroy$ = new Subject<void>();
     @ViewChild('tableScrollRef', { static: false })
@@ -99,6 +98,9 @@ export class TruckassistTableBodyComponent
 
     // --------------------------------NgOnInit---------------------------------
     ngOnInit(): void {
+        console.log('View Data');
+        console.log(this.viewData);
+
         // Get Selected Tab Data
         this.getSelectedTabTableData();
 
@@ -256,8 +258,7 @@ export class TruckassistTableBodyComponent
         this.getNotPinedMaxWidth();
     }
 
-    ngAfterContentInit(): void {}
-
+    // Horizontal Scroll
     onHorizontalScroll(scrollEvent: any) {
         if (scrollEvent.eventAction === 'scrolling') {
             document
@@ -529,7 +530,7 @@ export class TruckassistTableBodyComponent
                     this.activeAttachment = row.id;
                     row.tableAttachments = res;
                 }
-                
+
                 this.changeDetectorRef.detectChanges();
             });
         } else {
@@ -578,14 +579,5 @@ export class TruckassistTableBodyComponent
         this.destroy$.next();
         this.destroy$.complete();
         this.tableService.sendRowsSelected([]);
-    }
-
-    // --------------------------------TODO---------------------------------
-    onShowItemDrop(index: number) {
-        alert('Treba da se odradi');
-    }
-
-    saveNote(note: string, row: any) {
-        alert('Treba da se odradi');
     }
 }

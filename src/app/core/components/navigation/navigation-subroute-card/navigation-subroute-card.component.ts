@@ -19,7 +19,6 @@ export class NavigationSubrouteCardComponent implements OnChanges {
     @Output() subrouteContainerActive = new EventEmitter<Boolean>();
     constructor(private cdRef: ChangeDetectorRef) {}
     ngOnChanges(changes: SimpleChanges) {
-        console.log(this.contentHeight);
         this.subrouteContainerActive.emit(this.isNavigationCardActive);
         this.cdRef.detectChanges();
     }
