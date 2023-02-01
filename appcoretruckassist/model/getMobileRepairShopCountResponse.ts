@@ -11,10 +11,9 @@
  */
 
 
-export type PayrollCreditType = 'Driver' | 'Owner';
-
-export const PayrollCreditType = {
-    Driver: 'Driver' as PayrollCreditType,
-    Owner: 'Owner' as PayrollCreditType
-};
+export interface GetMobileRepairShopCountResponse { 
+    repairShopCount?: number;
+    truckRepairCount?: number;
+    trailerRepairCount?: number;
+}
 

@@ -18,6 +18,7 @@ export interface UpdatePayrollDeductionCommand {
     type?: PayrollDeductionType;
     driverId?: number | null;
     truckId?: number | null;
+    trailerId?: number | null;
     date?: string;
     description?: string | null;
     amount?: number;
@@ -25,6 +26,6 @@ export interface UpdatePayrollDeductionCommand {
     recurringType?: PayrollDeductionRecurringType;
     limited?: boolean;
     limitedNumber?: number | null;
-    limitedAmount?: number | null;
+    limitedLevy?: number | null;
 }
 
