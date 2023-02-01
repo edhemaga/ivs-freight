@@ -1,21 +1,23 @@
-import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
 import {
     Component,
     Input,
-    OnInit,
     OnChanges,
-    SimpleChanges,
     OnDestroy,
+    OnInit,
+    SimpleChanges,
 } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
+import { AngularSvgIconModule } from 'angular-svg-icon';
 
 @Component({
-    selector: 'app-truckassist-search',
-    templateUrl: './truckassist-search.component.html',
-    styleUrls: ['./truckassist-search.component.scss'],
+    selector: 'app-carrier-search',
+    standalone: true,
+    imports: [CommonModule, AngularSvgIconModule],
+    templateUrl: './carrier-search.component.html',
+    styleUrls: ['./carrier-search.component.scss'],
 })
-export class TruckassistSearchComponent
-    implements OnInit, OnChanges, OnDestroy
-{
+export class CarrierSearchComponent implements OnInit, OnChanges, OnDestroy {
     @Input() searchType: string = '';
     @Input() selectedTabData: any = {};
     chips: any[] = [];

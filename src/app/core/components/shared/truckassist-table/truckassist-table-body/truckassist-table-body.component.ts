@@ -516,7 +516,7 @@ export class TruckassistTableBodyComponent
     }
 
     // Show Attachments
-    onShowAttachments(row: any, popup) {
+    onShowAttachments(row: any) {
         if (this.activeAttachment !== row.id) {
             let entity = this.activeTableData?.gridNameTitle;
 
@@ -525,16 +525,11 @@ export class TruckassistTableBodyComponent
             }
 
             this.filesService.getFiles(entity, row.id).subscribe((res) => {
-                this.activeAttachment = row.id;
-                row.tableAttachments = res;
-
-                if (res?.length == 1) {
-                    if (popup.isOpen()) {
-                        popup.close();
-                    } else {
-                        popup.open({ data: res });
-                    }
+                if (res?.length) {
+                    this.activeAttachment = row.id;
+                    row.tableAttachments = res;
                 }
+                
                 this.changeDetectorRef.detectChanges();
             });
         } else {

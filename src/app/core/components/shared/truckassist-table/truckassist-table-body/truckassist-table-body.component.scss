@@ -2230,18 +2230,6 @@ table {
                             top: 2px;
                             z-index: 100;
 
-                            .document-count-title {
-                                font-size: 14px;
-                                font-weight: bold;
-                                color: #919191;
-                                margin-left: 4px;
-
-                                &::selection {
-                                    color: #919191;
-                                    background: #91919120;
-                                }
-                            }
-
                             .download-document-btn {
                                 cursor: pointer;
                                 user-select: none;

@@ -5,7 +5,6 @@ import { CommonModule } from '@angular/common';
 import { TruckassistTableBodyComponent } from './truckassist-table-body/truckassist-table-body.component';
 import { TruckassistTableHeadComponent } from './truckassist-table-head/truckassist-table-head.component';
 import { TruckassistTableToolbarComponent } from './truckassist-table-toolbar/truckassist-table-toolbar.component';
-import { TruckassistSearchModule } from '../truckassist-search/truckassist-search.module';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { TruckassistReveiwModule } from '../truckassist-reveiw/truckassist-reveiw.module';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -19,6 +18,7 @@ import { DirectivesModule } from '../../../directives/directives.module';
 import { PipesModule } from '../../../pipes/pipes.module';
 import { SharedModule } from '../shared.module';
 import { ToolbarFiltersComponent } from './truckassist-table-toolbar/toolbar-filters/toolbar-filters.component';
+import { CarrierSearchComponent } from '../../standalone-components/carrier-search/carrier-search.component';
 
 @NgModule({
     declarations: [
@@ -31,7 +31,7 @@ import { ToolbarFiltersComponent } from './truckassist-table-toolbar/toolbar-fil
     ],
     imports: [
         CommonModule,
-        TruckassistSearchModule,
+        CarrierSearchComponent,
         AngularSvgIconModule,
         TruckassistReveiwModule,
         NgbModule,
