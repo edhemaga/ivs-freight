@@ -385,6 +385,9 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
         const td = this.tableData.find((t) => t.field === this.selectedTab);
 
+        console.log('Truck Data');
+        console.log(td.data);
+
         this.setTrailerData(td);
     }
 
@@ -407,8 +410,6 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
             this.viewData = this.viewData.map((data) => {
                 return this.mapTrailerData(data);
             });
-
-            console.log(this.viewData);
         } else {
             this.viewData = [];
         }
@@ -449,11 +450,33 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 : '',
             tableLicencePlateDetailNumber: 'NA',
             tableLicencePlateDetailST: 'NA',
-            tableLicencePlateDetailExpiration: 'NA',
+            tableLicencePlateDetailExpiration: {
+                expirationDays: data?.registrationExpirationDays
+                    ? this.thousandSeparator.transform(
+                          data.registrationExpirationDays
+                      )
+                    : null,
+                percentage:
+                    data?.registrationPercentage ||
+                    data?.registrationPercentage === 0
+                        ? 100 - data.registrationPercentage
+                        : null,
+            },
             tableFHWAInspectionTerm: data?.fhwaExp
                 ? data?.fhwaExp + ' months'
                 : '',
-            tableFHWAInspectionExpiration: 'NA',
+            tableFHWAInspectionExpiration: {
+                expirationDays: data?.inspectionExpirationDays
+                    ? this.thousandSeparator.transform(
+                          data.inspectionExpirationDays
+                      )
+                    : null,
+                percentage:
+                    data?.inspectionPercentage ||
+                    data?.inspectionPercentage === 0
+                        ? 100 - data.inspectionPercentage
+                        : null,
+            },
             tableTitleNumber: 'NA',
             tableTitleST: 'NA',
             tableTitlePurchase: 'NA',
