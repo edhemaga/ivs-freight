@@ -108,6 +108,7 @@ export class TaChartComponent implements OnInit {
             responsive: this.chartConfig['dontUseResponsive'] ? false : true,
             maintainAspectRatio: false,
             cutoutPercentage: 90,
+            
             animation: {
                 duration: this.chartConfig['allowAnimation']
                     ? this.animationDuration
@@ -437,6 +438,7 @@ export class TaChartComponent implements OnInit {
                             fontFamily: 'Montserrat',
                             fontStyle: 'bold',
                             autoSkip: true,
+                            autoSkipPadding: 12,
                             maxRotation: 0,
                             minRotation: 0,
                         },
@@ -585,9 +587,8 @@ export class TaChartComponent implements OnInit {
                 hasData = true;
             }
         });
-        if (hasData) {
-            this.noChartData = false;
-        }
+
+        this.noChartData = hasData ? false : true;
     }
 
     setChartLegendData(elements: any) {

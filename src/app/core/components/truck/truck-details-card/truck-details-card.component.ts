@@ -234,7 +234,7 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
             },
         ],
         showLegend: false,
-        chartValues: [150, 257.7, 190, 568.85],
+        chartValues: [0, 0, 0],
         defaultType: 'bar',
         chartWidth: '417',
         chartHeight: '130',
@@ -368,7 +368,7 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
             minValue: 0,
             maxValue: 60,
             stepSize: 15,
-            showGridLines: true,
+            showGridLines: false,
         },
         verticalRightAxes: {
             visible: true,
@@ -532,24 +532,27 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
             .subscribe((item) => {
                 console.log(item, 'itemmm');
                 this.stackedBarChartConfig.dataLabels = [];
-                this.stackedBarChartConfig.chartValues = [item.fuelCost, item.repairCost, item.totalCost];
+                this.stackedBarChartConfig.chartValues = [
+                    item.fuelCost,
+                    item.repairCost,
+                    item.totalCost,
+                ];
                 this.stackedBarChartLegend[0].value = item.fuelCost;
                 this.stackedBarChartLegend[1].value = item.repairCost;
                 this.stackedBarChartLegend[2].value = item.totalCost;
                 console.log(
-                    this.stackedBarChartConfig.dataLabels,
+                    this.stackedBarChartLegend[0].barThickness,
                     'itemmm 222'
                 );
                 let fuelCost = [];
                 let repairCost = [];
                 let labels = [];
-                if (item?.truckExpensesCharts?.length > 12) {
-                    this.stackedBarChartConfig.extendFull = true;
-                    this.stackedBarChartConfig.chartWidth = item?.truckExpensesCharts?.length * 33;
-                    this.stackedBarChartConfig.chartWidth = this.stackedBarChartConfig.chartWidth.toString();
+                if (item?.truckExpensesCharts?.length > 17) {
+                    this.stackedBarChartConfig.dataProperties[0].defaultConfig.barThickness = 10;
+                    this.stackedBarChartConfig.dataProperties[0].defaultConfig.barThickness = 10;
                 } else {
-                    this.stackedBarChartConfig.extendFull = false;
-                    this.stackedBarChartConfig.chartWidth = '417';
+                    this.stackedBarChartConfig.dataProperties[0].defaultConfig.barThickness = 18;
+                    this.stackedBarChartConfig.dataProperties[0].defaultConfig.barThickness = 18;
                 }
                 item.truckExpensesCharts.map((data, index) => {
                     fuelCost.push(data.fuelCost);
@@ -559,7 +562,7 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
 
                 this.stackedBarChartConfig.dataLabels = labels;
                 console.log(
-                    this.stackedBarChartConfig.dataLabels,
+                    this.stackedBarChartLegend[0].barThickness,
                     'itemmm 33333444'
                 );
                 this.stackedBarChartConfig.dataProperties[0].defaultConfig.data =
@@ -579,8 +582,12 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
                 );
 
                 this.stackedBarChart.setChartData();
-                this.stackedBarChart.chartDataCheck(this.stackedBarChartConfig.chartValues);
-                this.stackedBarChart.saveValues = JSON.parse(JSON.stringify(this.stackedBarChartLegend));
+                this.stackedBarChart.chartDataCheck(
+                    this.stackedBarChartConfig.chartValues
+                );
+                this.stackedBarChart.saveValues = JSON.parse(
+                    JSON.stringify(this.stackedBarChartLegend)
+                );
             });
     }
 
