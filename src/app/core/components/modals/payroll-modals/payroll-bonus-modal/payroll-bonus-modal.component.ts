@@ -1,5 +1,9 @@
 import { Component, Input, OnInit, OnDestroy } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import {
+    UntypedFormBuilder,
+    UntypedFormGroup,
+    Validators,
+} from '@angular/forms';
 import {
     creditLimitValidation,
     descriptionPayrollBonusValidation,
@@ -101,7 +105,7 @@ export class PayrollBonusModalComponent implements OnInit, OnDestroy {
                     return;
                 }
                 if (this.editData?.type === 'edit') {
-                    this.updateBonus(this.editData?.id);
+                    this.updateBonus(this.editData?.data?.id);
                     this.modalService.setModalSpinner({
                         action: null,
                         status: true,
@@ -115,6 +119,15 @@ export class PayrollBonusModalComponent implements OnInit, OnDestroy {
                         close: false,
                     });
                 }
+                break;
+            }
+            case 'delete': {
+                this.deletePayrollBonusById(this.editData?.data.id);
+                this.modalService.setModalSpinner({
+                    action: 'delete',
+                    status: true,
+                    close: false,
+                });
                 break;
             }
             default: {
@@ -289,6 +302,21 @@ export class PayrollBonusModalComponent implements OnInit, OnDestroy {
             });
     }
 
+    public deletePayrollBonusById(id: number) {
+        this.payrollBonusService
+            .deletePayrollBonusById(id)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: () => {
+                    this.modalService.setModalSpinner({
+                        action: 'delete',
+                        status: true,
+                        close: true,
+                    });
+                },
+                error: () => {},
+            });
+    }
     ngOnDestroy(): void {
         this.destroy$.next();
         this.destroy$.complete();

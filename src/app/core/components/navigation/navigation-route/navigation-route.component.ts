@@ -81,13 +81,10 @@ export class NavigationRouteComponent implements OnInit, OnChanges {
         private cdRef: ChangeDetectorRef
     ) {}
     routeWithSubRoutesClick(event) {
-        console.log(event);
         if (event != undefined) {
-            console.log(true);
             this.routeWithSubRouteClicked.emit(true);
         } else {
             this.routeWithSubRouteClicked.emit(false);
-            console.log(false);
         }
     }
     ngOnInit() {
@@ -101,15 +98,10 @@ export class NavigationRouteComponent implements OnInit, OnChanges {
         this.navigationService.getValueFootHovered().subscribe((value) => {
             this.footerHovered = value;
         });
-        // this.router.events.subscribe((val: any) => {
-        //     console.log(val.urlAfterRedirects);
-        // });
     }
 
     //Get subroute name
     ngOnChanges(changes: SimpleChanges) {
-        // console.log(this.ind, this.index);
-
         this.textSubRoute = this.selectedSubRoute;
         this.activeRouteIdFromLocalStorage = parseInt(
             localStorage.getItem('subroute_active')

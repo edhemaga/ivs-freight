@@ -386,7 +386,10 @@
                                     *ngIf="selectedHeaderTab === 2"
                                     class="item-subtotal"
                                 >
-                                    {{ subtotal[ind].value | currency }}
+                                    {{
+                                        subtotal[ind].value
+                                            | priceCalculationArray
+                                    }}
                                 </p>
 
                                 <div

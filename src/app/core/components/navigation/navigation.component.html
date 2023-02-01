@@ -1,5 +1,13 @@
-<!-- (mouseenter)="onHoveredNavigation(true)"
-(mouseleave)="onHoveredNavigation(false)" -->
+<!--   *ngIf="
+                            isNavigationHovered &&
+                            item.isRouteActive &&
+                            !isModalPanelOpen &&
+                            closeDropdownOnNavClose &&
+                            !isUserPanelOpen &&
+                            !isSettingsPanelOpen &&
+                            !isUserCompanyDetailsOpen &&
+                            subrouteClicked
+                        " -->
 <div class="navigation">
     <div
         class="nav-holder"
@@ -106,7 +114,7 @@
                     </app-navigation-route>
 
                     <app-navigation-subroute
-                        *ngIf="
+                        [openCloseContainer]="
                             isNavigationHovered &&
                             item.isRouteActive &&
                             !isModalPanelOpen &&
@@ -120,6 +128,7 @@
                         [selectedSubRoute]="selectedSubRoute"
                         [isActiveSubroute]="isActiveSubroute"
                         [isNavigationHovered]="isNavigationHovered"
+                        [otherContainerOpened]="openedDropdown"
                         (onSubrouteActiveEvent)="onRouteEvent($event)"
                         (subRouteIndex)="routeIndex($event)"
                     >
@@ -177,6 +186,7 @@
         >
             <app-navigation-footer
                 (click)="onHoveredNavigation(true)"
+                [subrouteContainerOpened]="openedDropdown"
                 [isNavigationHovered]="isNavigationHovered"
                 [isUserCompanyDetailsOpen]="isUserCompanyDetailsOpen"
                 [isSettingsPanelOpen]="isSettingsPanelOpen"
@@ -187,7 +197,6 @@
                 [isActiveSubroute]="isActiveSubroute"
                 [selectedRoute]="selectedRoute"
                 [selectedSubRoute]="selectedSubRoute"
-                [subrouteContainerOpened]="subrouteContainerOpened"
                 (onActivateFooterRoutes)="onActivateFooterRoute($event)"
             >
             </app-navigation-footer>

@@ -21,7 +21,7 @@
         background: $nav-white;
         padding: 0 6px;
         width: 48px;
-        padding: 10px 0px;
+        padding: 10px 0px 7px 0px;
         border-radius: 3px;
         z-index: -1;
         margin: 12px;
@@ -42,6 +42,7 @@
     }
     .navigation-top {
         padding: 0px 6px;
+        min-height: 93px;
     }
     .navigation-middle {
         overflow-y: scroll;
@@ -62,6 +63,7 @@
     .navigation-bottom {
         padding: 0px 6px;
         position: relative;
+        overflow-x: hidden;
     }
     .wrapper-line {
         @media only screen and (min-width: 300px) {
@@ -111,17 +113,16 @@
         z-index: -1;
     }
     .animate-magic-line {
-        max-width: 238px;
-        animation: magiclinetransition 0.5s forwards;
+        width: 238px;
+        background: $nav-hover-color;
+        animation: magiclinecolortransition 0.5s ease;
     }
-    @keyframes magiclinetransition {
+    @keyframes magiclinecolortransition {
         from {
             background-color: transparent;
-            width: 36px;
         }
         to {
             background-color: $nav-hover-color;
-            width: 238px;
         }
     }
 
