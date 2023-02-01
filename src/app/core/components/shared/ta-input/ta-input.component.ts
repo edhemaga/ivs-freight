@@ -141,6 +141,14 @@ export class TaInputComponent
         }
     }
 
+    setTimePickerTime(){
+        if (this.inputConfig.name === 'timepicker')
+                this.dateTimeInputDate = new Date(
+                    moment().format('MM/DD/YYYY') +
+                        (this.inputConfig?.isFromDate ? ' 12:15' : ' 12:00')
+                );
+    }
+
     ngOnInit(): void {
         // Toggle label transition animation
         $('.input-label').addClass('no-transition');
@@ -154,6 +162,8 @@ export class TaInputComponent
             this.inputConfig.name === 'datepicker' ||
             this.inputConfig.name === 'timepicker'
         ) {
+            
+            this.setTimePickerTime();
             this.calendarService.dateChanged
                 .pipe(takeUntil(this.destroy$))
                 .subscribe((date) => {
@@ -492,6 +502,7 @@ export class TaInputComponent
             }
         }
 
+        this.setTimePickerTime();
         this.newInputChanged = true;
         this.focusInput = false;
         this.showDateInput = false;
@@ -2375,7 +2386,7 @@ export class TaInputComponent
                 } else {
                     this.span1.nativeElement.innerHTML = 'HH';
                     this.span2.nativeElement.innerHTML = 'MM';
-                    this.dateTimeInputDate = new Date();
+                    this.setTimePickerTime();
                     this.showDateInput = false;
                     //this.resetForms(); // PITANJE STO SE OVO SKLANJA I UOPSTE STO JE TREBALO
                 }
