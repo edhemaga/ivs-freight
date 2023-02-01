@@ -6,17 +6,24 @@ import { convertNumberWithCurrencyFormatterToBackend } from '../utils/methods.ca
 })
 export class PriceCalculationArraysPipe implements PipeTransform {
     transform(
-        array: { id?: number; value?: number; reorderingNumber?: number }[],
-        args?: any
+        array:
+            | { id?: number; value?: number; reorderingNumber?: number }[]
+            | any
     ): number {
-        return parseFloat(
-            convertNumberWithCurrencyFormatterToBackend(
-                array.reduce((accumulator, item: any) => {
-                    return (
-                        accumulator + parseFloat(item.value ? item.value : 0)
-                    );
+        if (array.length) {
+            array = array.map((item) =>
+                isNaN(item.value) || !item.value ? 0 : item.value
+            );
+            const formatted = convertNumberWithCurrencyFormatterToBackend(
+                array.reduce((accumulator, item) => {
+                    return accumulator + item;
                 }, 0)
-            )
-        );
+            );
+
+            return formatted ? parseFloat(formatted) : 0;
+        } else {
+            const number = convertNumberWithCurrencyFormatterToBackend(array);
+            return isNaN(array) || !array ? 0 : parseFloat(number);
+        }
     }
 }

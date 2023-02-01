@@ -735,7 +735,7 @@ export class TaInputComponent
                     )
                 );
         }
-
+        console.log('transform text: ', this.getSuperControl.value);
         if (this.inputConfig.priceSeparator && this.getSuperControl.value) {
             // 0. Don't allow 0 as first character
             if (
@@ -767,14 +767,21 @@ export class TaInputComponent
                     this.hasDecimalIndex + 1
                 );
 
+                if (!integerPart) {
+                    integerPart = '0';
+                }
+
                 // 4.4. Get only two numbers of decimal part
                 decimalPart = decimalPart.slice(0, 2);
 
-                // 4.5. Set formatted number
-                this.getSuperControl.patchValue(
-                    integerPart + '.' + decimalPart
-                );
-                this.hasDecimalIndex = this.getSuperControl.value.indexOf('.');
+                if (decimalPart) {
+                    // 4.5. Set formatted number
+                    this.getSuperControl.patchValue(
+                        integerPart + '.' + decimalPart
+                    );
+                    this.hasDecimalIndex =
+                        this.getSuperControl.value.indexOf('.');
+                }
             }
             // 5. If user doesn't set dot
             else {
@@ -1045,6 +1052,7 @@ export class TaInputComponent
             return false;
         }
 
+        console.log('on key press: ', this.getSuperControl.value);
         if (this.inputConfig.priceSeparator) {
             if (
                 this.inputService
@@ -1060,10 +1068,15 @@ export class TaInputComponent
 
                 if (this.hasDecimalIndex && this.hasDecimalIndex >= 0) {
                     // 1. Divide number on decimal and integer part
-                    const integerPart = this.getSuperControl.value.slice(
+                    let integerPart = this.getSuperControl.value.slice(
                         0,
                         this.hasDecimalIndex
                     );
+
+                    if (!integerPart) {
+                        integerPart = '0';
+                    }
+
                     let decimalPart = this.getSuperControl.value.slice(
                         this.hasDecimalIndex + 1
                     );

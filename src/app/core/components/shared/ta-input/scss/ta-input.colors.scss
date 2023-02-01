@@ -308,6 +308,7 @@ $input-required-check-normal: $input-blue-color-6;
 
 // --------------------------------------------------------------------
 
+// ---------------------------- INACTIVE ----------------------------------------
 // Inactive State Empty
 $inactive-empty-input: #eeeeee;
 $inactive-empty-label: #919191;
@@ -319,8 +320,9 @@ $inactive-filled-input: #f7f7f7;
 $inactive-filled-label: #2f2f2f;
 $inactive-filled-content: #2f2f2f;
 $inactive-filled-placeholderIcon: #cccccc;
-$inactive-empty-placeholderIcon-pipe: rgba(204, 204, 204, 0.4); // #CCCCCC
+$inactive-filled-placeholderIcon-pipe: rgba(204, 204, 204, 0.4); // #CCCCCC
 
+// ------------------------------ DEFAULT --------------------------------------
 // Default Empty
 $default-input: #eeeeee;
 $default-label: #2f2f2f;
@@ -336,6 +338,7 @@ $default-focus-label: #2f2f2f;
 $default-focus-placeholderIcon: #cccccc;
 $default-focus-placehilderIcon-pipe: rgb(204, 204, 204, 0.4); // #CCCCCC
 
+// ------------------------------ VALID --------------------------------------
 // Valid
 $valid-input: rgba(111, 158, 224, 0.2); // #6F9EE0
 $valid-label: #2f2f2f;
@@ -346,7 +349,18 @@ $valid-clear: #6f9ee0;
 
 // Valid Hover
 $valid-input-hover: rgb(111, 158, 224, 0.4); // #6F9EE0
+$valid-clear-hover: #3074d3;
+
+// Valid Focus
+$valid-focus-input: #255bb9;
+$valid-focus-placeholderIcon: #98b9ea;
+$valid-focus-placeholderIcon-pipe: rgb(152, 185, 234, 0.4); // #98B9EA
+$valid-focus-clear: rgb(111, 158, 224, 0.4); // #6F9EE0
+
+// Valid Focus Hover
+$valid-focus-clear-hover: #ffffff;
+
+// ------------------------------- INVALID -------------------------------------
 
 // Requiered Star
-
 $required-input-star: #ef5350;
