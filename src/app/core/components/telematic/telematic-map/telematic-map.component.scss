@@ -53,9 +53,10 @@
     transition: 0.2s;
     opacity: 1;
 
-    &.trailer-marker {
+    .trailer-marker {
         svg {
             width: 45px;
+            transform-origin: 28px 17px;
         }
     }
 
@@ -63,7 +64,7 @@
         width: 29px;
         outline: none;
         //transform-origin: 17px 28px;
-        transform-origin: 14.5px 27px;
+        transform-origin: 17px 28px;
 
         #Path_39129 {
             opacity: 1;
@@ -78,10 +79,21 @@
         #Ellipse_7909 {
             transition: opacity 0.15s;
         }
+
+        &.trailer-marker {
+            svg {
+                width: 45px;
+            }
+        }
     }
 
-    &.selected-marker {
-        transform: translate(-55%, -15%) scale(2) !important;
+    .selected-marker {
+        //transform: translate(-55%, -15%) scale(2) !important;
+        transform: translate(0%, 0%) scale(2) !important;
+
+        &.motion-icon {
+            transform: translate(0%, -35%) scale(2) !important;
+        }
 
         svg {
             #Path_39129 {
@@ -103,8 +115,16 @@
         transform: translate(-50%, 0%) scale(0.5) !important;
     }
 
-    &.hide-marker {
+    .hide-marker {
         opacity: 0;
+    }
+
+    @for $i from 0 through 999 {
+        .rotate-#{$i} {
+            svg { 
+                transform: rotate($i + deg);
+            }
+        }
     }
 }
 
@@ -477,15 +497,45 @@
         }
     }
 
+    &.short-stop-color-unassigned {
+        #Ellipse_7909, #Path_41064, #Path_41067 {
+            fill: #FFCC80;
+        }
+    }
+
     &.ext-stop-color {
         #Ellipse_7909, #Path_41064, #Path_41067 {
             fill: #EF5350;
         }
     }
 
+    &.ext-stop-color-unassigned {
+        #Ellipse_7909, #Path_41064, #Path_41067 {
+            fill: #EF9A9A;
+        }
+    }
+
     &.parking-color {
         #Ellipse_7909, #Path_41064, #Path_41067 {
             fill: #919191;
+        }
+    }
+
+    &.parking-color-unassigned {
+        #Ellipse_7909, #Path_41064, #Path_41067 {
+            fill: #B7B7B7;
+        }
+    }
+
+    &.motion-color {
+        #Ellipse_7909, #Path_41050 {
+            fill: #536BC2;
+        }
+    }
+
+    &.motion-color-unassigned {
+        #Ellipse_7909, #Path_41050 {
+            fill: #97A8DC;
         }
     }
 }

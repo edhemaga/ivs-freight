@@ -81,6 +81,14 @@
 
             pointer-events: none;
 
+            &:has(.gps-marker-container) {
+                z-index: 998;
+
+                &:has(.show-marker-dropdown) {
+                    z-index: 999;
+                }
+            }
+
             &:has(.show-marker-dropdown) {
                 z-index: 999;
             }
