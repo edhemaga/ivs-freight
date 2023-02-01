@@ -49,11 +49,11 @@ export class LoginComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.authStoreService.userHasMultipleCompaniesObservable.subscribe(
             (res) => {
+                this.userData = res;
                 this.lastLoginInCompany = this.calculateDiff(
                     convertDateFromBackend(res.companies.lastLogin)
                 );
                 this.cdRef.detectChanges();
-                this.userData = res;
 
                 console.log(this.lastLoginInCompany);
                 this.showHideIfMoreThenOneCompany = true;

@@ -32,8 +32,8 @@ export class SelectCompanyComponent
     selectedCompanyID: any;
     saveCompany;
     dotsTrue: boolean;
-    @Input() lastLoginInCompany: number = 1;
     @Input() userData: SignInResponse;
+    @Input() lastLoginInCompany;
     // userData: SignInResponse;
     setWidth: number;
     @Output() goBackToLogin = new EventEmitter<boolean>();
@@ -46,7 +46,7 @@ export class SelectCompanyComponent
         private formBuilder: UntypedFormBuilder
     ) {}
     ngOnChanges(changes: SimpleChanges): void {
-        console.log(changes);
+        console.log(this.lastLoginInCompany);
     }
     ngOnInit(): void {
         this.userData = JSON.parse(localStorage.getItem('user'));
@@ -78,13 +78,15 @@ export class SelectCompanyComponent
         this.router.navigate(['/auth/login']);
     }
     ngAfterViewInit() {
-        const center: any = this.document.querySelectorAll('.slick-center');
-        this.selectedCompanyID = center[0]?.firstChild?.id;
+        // const center: any = this.document.querySelectorAll('.slick-center');
+        // this.selectedCompanyID = center[0]?.firstChild?.id;
     }
     onCompanySelect() {
+        const center: any = this.document.querySelectorAll('.slick-center');
+        let id = center[0]?.firstChild?.id;
         this.accountStoreService
             .selectCompanyAccount({
-                companyId: parseInt(this.selectedCompanyID),
+                companyId: parseInt(id),
             })
             .pipe(
                 tap((res: SelectCompanyResponse) => {
