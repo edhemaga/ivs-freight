@@ -1,18 +1,27 @@
 <table class="truckassist-table-body-style">
     <tbody *ngIf="viewData.length">
-        <cdk-virtual-scroll-viewport
-            #tableScrollRef
-            [itemSize]="35"
-            [ngStyle]="{
-                'height.px':
-                    activeAttachment !== -1 ||
+        <!-- activeAttachment !== -1 ||
                     activeMedia !== -1 ||
                     activeInsurance !== -1
                         ? viewData.length * 32 +
                           (viewData.length - 1) * 2 +
                           22 +
                           300
-                        : viewData.length * 32 + (viewData.length - 1) * 2 + 22,
+                        : viewData.length * 32 + (viewData.length - 1) * 2 + 22 -->
+        <cdk-virtual-scroll-viewport
+            #tableScrollRef
+            [itemSize]="35"
+            minBufferPx="500"
+            maxBufferPx="1000"
+            [ngStyle]="{
+                'height.px': activeAttachment !== -1 ||
+                activeMedia !== -1 ||
+                activeInsurance !== -1
+                    ? viewData.length * 32 +
+                      (viewData.length - 1) * 2 +
+                      22 +
+                      300
+                    : viewData.length * 32 + (viewData.length - 1) * 2 + 22,
                 'max-height.px':
                     activeAttachment !== -1 ||
                     activeMedia !== -1 ||
@@ -852,7 +861,7 @@
                                     }"
                                 >
                                     <!-- [innerHtml]=" row[column.field] ? (row[column.field] | taHighlight:
-              highlightingWords) : '' " -->
+      highlightingWords) : '' " -->
                                     <span
                                         *ngIf="!row.isRepairOrder"
                                         class="table-total"
@@ -2427,7 +2436,7 @@
                                     }"
                                 >
                                     <!-- [innerHtml]=" row[column.field] ? (row[column.field] | taHighlight:
-            highlightingWords) : '' " -->
+    highlightingWords) : '' " -->
                                     <span
                                         *ngIf="!row.isRepairOrder"
                                         class="table-total"
@@ -3438,6 +3447,7 @@
                             </td>
                         </div>
                     </div>
+
                     <!-- Attachment Dropdown -->
                     <div
                         class="attachemnt-dropdown"
