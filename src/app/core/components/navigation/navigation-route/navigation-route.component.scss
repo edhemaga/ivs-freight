@@ -221,7 +221,6 @@
     }
 }
 .nav-item-parent-active {
-    cursor: default;
     &:hover {
         .nav-item-img {
             svg {
@@ -245,6 +244,9 @@
             }
         }
     }
+}
+.disable-cursor {
+    cursor: default;
 }
 .hide-tooltip {
     display: none;
@@ -271,6 +273,7 @@
         transition: all 0.5s ease-in-out;
         .nav-item-name {
             margin-left: 1px;
+            transition: all 0.1s;
         }
         .hide-subrout {
             display: none;

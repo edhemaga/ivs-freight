@@ -128,7 +128,7 @@
         display: inline-block;
         position: absolute;
         left: 4px;
-        top: 1px;
+        top: 3px;
         content: '';
         height: 27px;
         width: 231px;
@@ -253,6 +253,7 @@
     overflow: hidden;
     max-height: 0;
     transition: max-height 0.3s ease-out;
+    background: rgba(170, 170, 170, 0.1);
 }
 .other-container-opened {
     overflow: hidden;

@@ -1,12 +1,14 @@
 <div class="holder">
     <div class="parent">
         <div
+            class="items-holder"
             [style.height.px]="
                 contentHeight
                     | dynamicNavHeight : isNavigationCardActive && isRouteActive
             "
             [ngClass]="{
-                'subroute-card': isNavigationCardActive && isRouteActive
+                'subroute-card': isNavigationCardActive && isRouteActive,
+                'slow-animatiton': slowAnimation && isNavigationCardActive
             }"
         ></div>
     </div>

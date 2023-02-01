@@ -85,7 +85,13 @@
                         !isSettingsPanelOpen &&
                         !isUserCompanyDetailsOpen
                     "
-                    [isNavigationHovered]="isNavigationHovered"
+                    [slowAnimation]="
+                        !isSettingsPanelOpen &&
+                        !isActiveSubroute &&
+                        !isUserPanelOpen &&
+                        !isModalPanelOpen &&
+                        !openedDropdown
+                    "
                     [contentHeight]="item.route.length"
                 >
                     <app-navigation-route
