@@ -313,18 +313,6 @@ export class TaInputComponent
             this.isVisiblePasswordEye = true;
         }
 
-        // Price Separator
-        if (this.inputConfig.priceSeparator) {
-            if (this.getSuperControl.value?.indexOf('.') >= 0) {
-                setTimeout(() => {
-                    this.input.nativeElement.setSelectionRange(
-                        this.getSuperControl.value.indexOf('.'),
-                        this.getSuperControl.value.indexOf('.')
-                    );
-                }, 100);
-            }
-        }
-
         // Input Commands
         if (this.inputConfig.commands?.active) {
             this.isVisibleCommands = true;
@@ -760,32 +748,6 @@ export class TaInputComponent
                     )
                 );
 
-                // 2. If has decimal part, set cursor before dot
-                if (
-                    this.getSuperControl.value.indexOf('.') >= 0 &&
-                    this.input.nativeElement.selectionStart >
-                        this.getSuperControl.value.indexOf('.')
-                ) {
-                    setTimeout(() => {
-                        let cursorPosition =
-                            this.input.nativeElement.selectionStart;
-
-                        if (this.hasDecimalIndex >= 0) {
-                            cursorPosition =
-                                this.getSuperControl.value.indexOf('.');
-                            this.input.nativeElement.setSelectionRange(
-                                cursorPosition,
-                                cursorPosition
-                            );
-                        } else {
-                            this.input.nativeElement.setSelectionRange(
-                                cursorPosition,
-                                cursorPosition
-                            );
-                        }
-                    }, 500);
-                }
-
                 // 3. If remove dot user, reset hasDecimalIndex
                 if (this.getSuperControl.value.indexOf('.') === -1) {
                     this.hasDecimalIndex = -1;
@@ -793,7 +755,6 @@ export class TaInputComponent
                 // 4. If user set dot
                 else {
                     // 4.1. Check for Dot position
-
                     this.hasDecimalIndex =
                         this.getSuperControl.value.indexOf('.');
 
@@ -807,9 +768,8 @@ export class TaInputComponent
                     let decimalPart = this.getSuperControl.value.slice(
                         this.hasDecimalIndex + 1
                     );
-                    // 99,000.93
-                    // 4.3 If has dot, but remove character (always must has two decimal characters)
 
+                    // 4.3 If has dot, but remove character (always must has two decimal characters)
                     if (decimalPart?.length === 1) {
                         decimalPart += '0';
                     }
@@ -818,7 +778,6 @@ export class TaInputComponent
                     decimalPart = decimalPart.slice(0, 2);
 
                     // 4.5. Set formatted number
-
                     this.getSuperControl.patchValue(
                         integerPart + '.' + decimalPart
                     );
@@ -1119,6 +1078,12 @@ export class TaInputComponent
                     let decimalPart = this.getSuperControl.value.slice(
                         this.hasDecimalIndex + 1
                     );
+
+                    if (decimalPart.length > 2) {
+                        event.preventDefault();
+                        return; 
+                    }
+
                     // 2. Get only two numbers of decimal part
                     decimalPart = decimalPart.slice(0, 2);
 

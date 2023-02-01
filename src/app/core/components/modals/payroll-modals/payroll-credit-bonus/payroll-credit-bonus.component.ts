@@ -304,7 +304,7 @@ export class PayrollCreditBonusComponent implements OnInit {
                                   res.driver.lastName
                               )
                             : null,
-                        truckId: res.truck ? res.truck.truckNumber : null,
+                        // truckId: res.truck ? res.truck.truckNumber : null,
                         date: convertDateFromBackend(res.date),
                         description: res.description,
                         amount: convertNumberInThousandSep(res.amount),
@@ -327,28 +327,28 @@ export class PayrollCreditBonusComponent implements OnInit {
                         };
                     }
 
-                    if (res.truck) {
-                        this.selectedTruck = {
-                            ...res.truck,
-                            name: res.truck.truckNumber,
-                            additionalText: res.truck.owner,
-                        };
+                    // if (res.truck) {
+                    //     this.selectedTruck = {
+                    //         ...res.truck,
+                    //         name: res.truck.truckNumber,
+                    //         additionalText: res.truck.owner,
+                    //     };
 
-                        this.truckDropdownsConfig = {
-                            ...this.truckDropdownsConfig,
-                            multipleInputValues: {
-                                options: [
-                                    {
-                                        value: res.truck?.truckNumber,
-                                    },
-                                    {
-                                        value: res?.truck?.owner,
-                                    },
-                                ],
-                                customClass: 'double-text-dropdown',
-                            },
-                        };
-                    }
+                    //     this.truckDropdownsConfig = {
+                    //         ...this.truckDropdownsConfig,
+                    //         multipleInputValues: {
+                    //             options: [
+                    //                 {
+                    //                     value: res.truck?.truckNumber,
+                    //                 },
+                    //                 {
+                    //                     value: res?.truck?.owner,
+                    //                 },
+                    //             ],
+                    //             customClass: 'double-text-dropdown',
+                    //         },
+                    //     };
+                    // }
 
                     this.tabChange({ id: res.driver ? 1 : 2 });
                 },
@@ -375,12 +375,12 @@ export class PayrollCreditBonusComponent implements OnInit {
                             isDriver: true,
                         };
                     });
-                    this.labelsTrucks = res.trucks.map((item) => {
-                        return {
-                            ...item,
-                            name: item.truckNumber,
-                        };
-                    });
+                    // this.labelsTrucks = res.trucks.map((item) => {
+                    //     return {
+                    //         ...item,
+                    //         name: item.truckNumber,
+                    //     };
+                    // });
 
                     // If Add New By Id
                     if (

@@ -326,10 +326,10 @@ export class PayrollDeductionModalComponent implements OnInit {
                         amount: convertNumberInThousandSep(res.amount),
                         recurringType: res.recurringType.id,
                         recurring: !!res.recurringType?.name,
-                        limited: res.limitedAmount && res.limitedNumber,
-                        limitedAmount: res.limitedAmount
-                            ? convertNumberInThousandSep(res.limitedAmount)
-                            : null,
+                        // limited: res.limitedAmount && res.limitedNumber,
+                        // limitedAmount: res.limitedAmount
+                        //     ? convertNumberInThousandSep(res.limitedAmount)
+                        //     : null,
                         limitedNumber: res.limitedNumber,
                     });
 
