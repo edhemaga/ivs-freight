@@ -252,8 +252,12 @@
 .hide {
     overflow: hidden;
     max-height: 0;
-    transition: max-height 0.3s ease-out;
     background: rgba(170, 170, 170, 0.1);
+}
+.hide-with-animation {
+    overflow: hidden;
+    max-height: 0;
+    transition: max-height 0.3s ease-out;
 }
 .other-container-opened {
     overflow: hidden;

@@ -38,13 +38,20 @@ export class NavigationSubrouteComponent implements OnChanges {
     @Output() onSubrouteActiveEvent = new EventEmitter<NavigationSubRoutes>();
     @Output() subRouteIndex = new EventEmitter<Number>();
     public isMagicLineActive: boolean = false;
+    public doAnimation: boolean = false;
     constructor(private router: Router) {}
 
     subrouteIndex(index) {
         this.subRouteIndex.emit(index);
     }
     ngOnChanges(changes: SimpleChanges): void {
-        console.log(this.otherContainerOpened);
+        if (changes.otherContainerOpened != undefined) {
+            let prev = changes?.otherContainerOpened;
+            console.log(prev);
+            if (prev.currentValue == true && prev.previousValue == false) {
+                this.doAnimation = true;
+            }
+        }
     }
     public onSubrouteAction(subroute: NavigationSubRoutes) {
         if (this.subroute.id === subroute.activeRouteFlegId) {

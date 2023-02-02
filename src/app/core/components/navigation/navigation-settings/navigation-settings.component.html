@@ -1,4 +1,6 @@
 <!-- item.name == selectedRoute -->
+<!-- *ngIf="isSettingsPanelOpen && isNavigationHovered" -->
+
 <div
     class="holder"
     (click)="onUserPanelClose()"
@@ -35,13 +37,18 @@
     </div>
     <div
         class="parent"
-        *ngIf="isSettingsPanelOpen && isNavigationHovered"
+        [ngClass]="{
+            'opened-settings': isSettingsPanelOpen && isNavigationHovered,
+            'closed-settings': !isSettingsPanelOpen
+        }"
     ></div>
 
     <div
-        *ngIf="isSettingsPanelOpen && isNavigationHovered"
+        [ngClass]="{
+            'opened-settings': isSettingsPanelOpen && isNavigationHovered,
+            'closed-settings': !isSettingsPanelOpen
+        }"
         class="wrapper"
-        [@dropDownMenu]
     >
         <div
             class="items"
@@ -78,10 +85,7 @@
                 ></svg-icon>
             </div>
         </div>
-        <div
-            [@showHideDetails]="isActiveMagicLine ? 'false' : 'true'"
-            class="new-magic-line"
-        ></div>
+        <div class="new-magic-line" *ngIf="isSettingsPanelOpen"></div>
     </div>
 
     <div

@@ -2,6 +2,8 @@
 .holder {
     position: relative;
     left: -8px;
+    overflow-y: hidden;
+    overflow-x: hidden;
     .parent {
         position: relative;
         left: -20px;
@@ -19,7 +21,7 @@
             left: 20px;
             z-index: -1;
             max-height: 500px;
-            transition: max-height 0.3s ease-in;
+            transition: max-height 0.28s ease-in;
         }
         .slow-animatiton {
             max-height: 0;

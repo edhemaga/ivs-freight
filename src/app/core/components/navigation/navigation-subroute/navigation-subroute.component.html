@@ -3,6 +3,7 @@
     class="subroutes-container"
     [ngClass]="{
         hide: !openCloseContainer,
+        'hide-with-animation': !openCloseContainer && doAnimation,
         show: openCloseContainer,
         'other-container-opened': otherContainerOpened
     }"

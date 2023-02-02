@@ -81,9 +81,12 @@ export class NavigationRouteComponent implements OnInit, OnChanges {
         private cdRef: ChangeDetectorRef
     ) {}
     routeWithSubRoutesClick(event) {
+        // console.log(event);
         if (event != undefined) {
+            // console.log(true);
             this.routeWithSubRouteClicked.emit(true);
         } else {
+            // console.log(false);
             this.routeWithSubRouteClicked.emit(false);
         }
     }

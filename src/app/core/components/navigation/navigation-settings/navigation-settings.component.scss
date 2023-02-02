@@ -3,6 +3,8 @@
 .holder {
     padding: 4px 0;
     position: relative;
+    left: -8px;
+    padding-left: 8px;
     .tooltip-right {
         left: 18px;
         position: fixed;
@@ -16,13 +18,13 @@
         width: 38px;
         height: 28px;
         position: absolute;
-        left: -9px;
+        left: -1px;
         border-radius: 3px;
         bottom: 3px;
     }
     .nav-item-active-box-active {
         width: 238px;
-        left: -8px;
+        left: 0px;
         animation: magiclinetransition 0.5s forwards;
     }
     @keyframes magiclinetransition {
@@ -36,7 +38,7 @@
     .parent {
         z-index: -1;
         position: absolute;
-        left: -9px;
+        left: 0px;
         top: 0;
         bottom: 0;
         right: 0;
@@ -45,6 +47,7 @@
         transition: $nav-transition;
         background: rgba(170, 170, 170, 10%);
     }
+
     .tooltip {
         position: absolute;
         width: 36px;
@@ -172,7 +175,7 @@
             width: 0;
             .nav-item-arrow {
                 position: absolute;
-                right: 10px;
+                right: 16px;
                 transform: rotate(180deg);
                 transition: all 0.3s ease-in-out;
                 z-index: 1;
@@ -258,7 +261,8 @@
     }
 }
 .nav-width {
-    width: 230px;
+    width: 240px;
+    overflow-y: hidden;
 }
 .new-magic-line {
     display: inline-block;
@@ -379,7 +383,15 @@
     //     transform: translateY(-27px);
     // }
 }
-
+.closed-settings {
+    max-height: 0;
+    transition: all 0.3s ease-out;
+    overflow: hidden;
+}
+.opened-settings {
+    max-height: 500px;
+    transition: all 0.3s ease-in;
+}
 @keyframes append-animate {
     from {
         transform: translateY(32px);
