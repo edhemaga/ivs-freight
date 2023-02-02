@@ -470,6 +470,8 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
             this.selectedTab = event.tabData.field;
 
             this.backFilterQuery.pageIndex = 1;
+            this.backFilterQuery.active =
+                    this.selectedTab === 'active' ? 1 : 0;
 
             this.sendOwnerData();
         } else if (event.action === 'view-mode') {

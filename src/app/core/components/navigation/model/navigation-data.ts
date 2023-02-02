@@ -508,15 +508,15 @@ export const footerData: FooterData[] = [
 export const settings: Settings[] = [
     {
         id: 34,
-        image: 'assets/svg/common/ic_settings.svg',
-        text: 'Settings',
+        image: 'assets/svg/common/ic_company.svg',
+        text: 'Company',
         arrow: 'assets/svg/common/ic_arrow-down.svg',
         isRouteActive: false,
         isSubrouteActive: false,
         route: [
             {
-                name: 'Company',
-                image: 'assets/svg/common/ic_company.svg',
+                name: 'Settings',
+                image: 'assets/svg/common/ic_settings.svg',
                 route: '/company',
                 activeRouteFlegId: 34,
             },

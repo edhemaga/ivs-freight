@@ -143,8 +143,8 @@ export class NavigationComponent implements OnInit, OnDestroy {
                 if (url.url === '/dispatcher') {
                     this.selectedRoute = 'Dispatch';
                     this.cdRef.detectChanges();
-                } else if (url.url === '/file-manager') {
-                    this.selectedRoute = 'File Manager';
+                } else if (url.url === '/file-menager') {
+                    this.selectedRoute = 'File Menager';
                     this.cdRef.detectChanges();
                 } else {
                     let ruteName = url.url.split('/');
@@ -188,16 +188,6 @@ export class NavigationComponent implements OnInit, OnDestroy {
     }
     getIndex(ind) {
         this.index = ind;
-        // console.log(
-        //     this.navigation,
-        //     this.isNavigationHovered,
-        //     this.closeDropdownOnNavClose,
-        //     this.isModalPanelOpen,
-        //     this.isUserPanelOpen,
-        //     this.isSettingsPanelOpen,
-        //     this.isUserCompanyDetailsOpen
-        // );
-        // console.log(this.navigation, 'asasfasff');
     }
     routeWithSubRouteClicked(event) {
         this.subrouteClicked = event;
@@ -235,6 +225,7 @@ export class NavigationComponent implements OnInit, OnDestroy {
                 'nav-header-top-logo'
             ) ||
             event.target.classList.contains('subroute') ||
+            event.target.classList.contains('item-name') ||
             this.navbar.nativeElement.contains(event.target || 'panel-user') ||
             event.target.classList.contains('modal-nav-close') ||
             event.target.classList.contains('panel-user') ||
@@ -247,6 +238,9 @@ export class NavigationComponent implements OnInit, OnDestroy {
             event.target.classList.contains('modal-nav-close-text') ||
             event.target.classList.contains('user-company-header') ||
             event.target.classList.contains('tooltip') ||
+            event.target.classList.contains('panel-name') ||
+            event.target.classList?.contains('user-profile') ||
+            event.target.classList.contains('magic-line-footer') ||
             event.target.parentElement?.parentElement?.classList.contains(
                 'modal-nav-close-svg'
             ) ||
@@ -303,8 +297,9 @@ export class NavigationComponent implements OnInit, OnDestroy {
                     type: false,
                 });
                 return (this.isNavigationHovered = false);
+            } else {
+                this.isNavigationHovered = true;
             }
-            this.isNavigationHovered = true;
         } else {
             this.isUserCompanyDetailsOpen = false;
             this.closeDropdownOnNavClose = false;

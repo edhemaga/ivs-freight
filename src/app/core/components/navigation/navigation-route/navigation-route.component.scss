@@ -52,7 +52,7 @@
         height: 10px;
     }
     .message {
-        position: absolute;
+        position: relative;
         right: 8px;
         background: rgba(229, 115, 115, 20%);
         border-radius: 50%;
@@ -100,7 +100,7 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        width: 100%;
+        width: 238px;
         line-height: 16px;
         padding-top: 2px;
 
@@ -111,7 +111,14 @@
             line-height: 17px;
             color: $nav-white;
             font-weight: 400;
+            width: 181px;
             user-select: none;
+        }
+        .route-name-files {
+            width: 202px;
+        }
+        .route-name-message {
+            width: 183px;
         }
         .route-not-active {
             color: #787878;
@@ -119,27 +126,22 @@
         .nav-item-name-active {
             font-weight: 700;
             color: $nav-active-lighter;
-            width: 175px;
             display: flex;
         }
         .nav-item-arrow {
-            position: absolute;
             right: 0px;
             transform: rotate(0deg);
             transition: $nav-transition;
             width: 12px;
             height: 12px;
             line-height: 9px;
-            animation: arrowtransition 0.4s forwards;
+            opacity: 0;
         }
-        @keyframes arrowtransition {
-            from {
-                opacity: 0;
-            }
-            to {
-                opacity: 1;
-            }
+        .nav-openend-svg {
+            transition: opacity 0.3s;
+            opacity: 1;
         }
+
         .nav-item-arrow-rotate {
             transform: rotate(180deg);
             transition: $nav-transition;
@@ -219,6 +221,7 @@
     }
 }
 .nav-item-parent-active {
+    cursor: default;
     &:hover {
         .nav-item-img {
             svg {
