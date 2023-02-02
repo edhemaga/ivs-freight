@@ -10,7 +10,7 @@
  * Do not edit the class manually.
  */
 import { LoadStopType } from './loadStopType';
-//import { LoadStopItemCommand } from './loadStopItemCommand';
+import { LoadStopItemCommand } from './loadStopItemCommand';
 
 
 export interface LoadStopCommand { 
@@ -31,6 +31,6 @@ export interface LoadStopCommand {
     legHours?: number | null;
     legMinutes?: number | null;
     shape?: string | null;
-    items?: Array<any> | null;
+    items?: Array<LoadStopItemCommand> | null;
 }
 
