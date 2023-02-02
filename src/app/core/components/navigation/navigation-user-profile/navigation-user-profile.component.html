@@ -1,9 +1,24 @@
+<!-- *ngIf="isUserPanelOpen" -->
 <div
-    [ngClass]="{ 'user-panel': isNavigationHovered }"
+    [ngClass]="{
+        'user-panel': isNavigationHovered
+    }"
     class="wrapper"
-    *ngIf="isUserPanelOpen"
+    *ngIf="!isUserCompanyDetailsOpen"
 >
-    <div *ngIf="isNavigationHovered" class="wrapper-elements" [@dropDownMenu]>
+    <div
+        [ngClass]="{
+            'background-on-user-panel': isUserPanelOpen,
+            'remove-background-on-user-panel': !isUserPanelOpen
+        }"
+    ></div>
+    <div
+        class="wrapper-elements"
+        [ngClass]="{
+            'show-panel': isNavigationHovered && isUserPanelOpen,
+            'hide-panel': !isUserPanelOpen
+        }"
+    >
         <div
             class="items"
             *ngFor="let item of userNavigationData; trackBy: identity"
@@ -62,20 +77,16 @@
             </div>
         </div>
         <div
+            *ngIf="isNavigationHovered && isUserPanelOpen"
             [@showHideDetails]="
-                true && !true && !true && true && isActiveMagicLine
-                    ? 'true'
-                    : 'true'
+                isNavigationHovered && isUserPanelOpen ? 'true' : 'true'
             "
             class="new-magic-line"
         ></div>
     </div>
 
-    <div
-        *ngIf="isUserPanelOpen"
-        class="panel-user"
-        (click)="onUserPanelClose()"
-    >
+    <!-- *ngIf="isUserPanelOpen" -->
+    <div class="panel-user" (click)="onUserPanelClose(!test)">
         <img
             class="panel-image"
             [src]="

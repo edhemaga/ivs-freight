@@ -4,10 +4,8 @@
     position: relative;
     z-index: 99;
     width: 238px;
-    padding: 4px 4px 44px 4px;
+    padding: 4px 4px 40px 4px;
     border-radius: 2px;
-    box-shadow: $nav-boxshadow;
-    background-color: $nav-transparent;
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
@@ -184,6 +182,21 @@
     margin-top: 15px;
 }
 .wrapper {
+    .background-on-user-panel {
+        background-color: $nav-transparent;
+        max-height: 0;
+        transition: max-height 0.3s ease-out;
+        overflow: hidden;
+        height: 100%;
+        width: 230px;
+        position: absolute;
+        bottom: 44px;
+    }
+    .remove-background-on-user-panel {
+        max-height: 0;
+        transition: max-height 5s ease-out;
+        overflow: hidden;
+    }
     div {
         .new-magic-line {
             display: inline-block;
@@ -207,7 +220,16 @@
         }
     }
 }
-
+.hide-panel {
+    max-height: 0;
+    transition: max-height 0.3s ease-out;
+    overflow: hidden;
+}
+.show-panel {
+    max-height: 500px;
+    transition: max-height 0.3s ease-in;
+    overflow: hidden;
+}
 .user-content:nth-child(1):hover ~ .new-magic-line {
     transform: translateY(-121px) !important;
 }

@@ -81,9 +81,9 @@ $notification: #e57373;
     display: flex;
     justify-content: center;
     align-items: center;
-    position: absolute;
-    bottom: 12px;
-    left: 17px;
+    position: fixed;
+    bottom: 27px;
+    left: 38px;
 
     .status-marker {
         width: 10px;

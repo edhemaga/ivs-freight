@@ -35,9 +35,11 @@ export class NavigationUserProfileComponent implements OnInit, OnDestroy {
     @Input() isNavigationHovered: boolean = false;
     @Input() isUserPanelOpen: boolean = false;
     @Input() companiesExists: boolean;
+    @Input() isUserCompanyDetailsOpen: boolean;
     public userNavigationData: NavigationUserPanel[] = userNavigationData;
     public currentUserStatus: string = 'online';
-
+    test: boolean = false;
+    isActiveMagicLine = true;
     public loggedUser: any = null;
     constructor(
         public router: Router,
@@ -49,6 +51,7 @@ export class NavigationUserProfileComponent implements OnInit, OnDestroy {
     ) {}
 
     ngOnInit() {
+        console.log(this.isUserPanelOpen);
         // ----------------------- PRODUCSTION MODE ----------------------------
         // if(this.authQuery.getEntity(1)) {
         //   const currentUser: SignInResponse = this.authQuery.getEntity(1);
@@ -82,10 +85,12 @@ export class NavigationUserProfileComponent implements OnInit, OnDestroy {
                 }
             });
     }
-    public onUserPanelClose() {
+    public onUserPanelClose(event) {
+        console.log(event);
+        this.test = event;
         this.navigationService.onDropdownActivation({
             name: 'User Panel',
-            type: false,
+            type: event,
         });
     }
 

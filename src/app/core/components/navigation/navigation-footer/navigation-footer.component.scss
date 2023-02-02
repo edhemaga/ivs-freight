@@ -136,9 +136,9 @@
                 opacity: 0;
                 top: -10px;
             }
-            .user-profile {
-                padding: 8px 0;
-            }
+            // .user-profile {
+            //     padding: 8px 0;
+            // }
         }
     }
 
@@ -330,7 +330,7 @@
     position: absolute;
     height: 28px !important;
     width: 36px;
-    bottom: 47px;
+    bottom: 3px;
     background: $nav-hover-ligh;
     z-index: 0;
     transition: all 0.2s ease-in;
