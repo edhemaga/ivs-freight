@@ -90,7 +90,7 @@
             }
 
             &:has(.show-marker-dropdown) {
-                z-index: 999;
+                z-index: 1000!important;
             }
 
             &:has(.focused-route-wrapper) {
@@ -1002,5 +1002,13 @@
 
     &.regular-weight {
         font-weight: 400;
+    }
+}
+
+.gm-style div[aria-label='Map'] {
+    :nth-child(1) {
+        :nth-child(1) {
+            z-index: 104 !important;
+        }
     }
 }
