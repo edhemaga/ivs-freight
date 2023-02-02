@@ -21,7 +21,7 @@ const routes: Routes = [
             loadItem: LoatItemResolver,
             loadMinimalList: LoadMinimalListResolver,
         },
-        data: { title: 'Load Details' },
+        data: { title: 'Load Detail' },
     },
     {
         path: 'card',
