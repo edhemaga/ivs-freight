@@ -49,5 +49,15 @@
         color: $ta-review-green-2;
         font-size: 14px;
         line-height: 18px;
+
+        &::-moz-selection {
+            color: $ta-review-green-2;
+            background: rgb(38, 166, 144, 0.2);
+        }
+
+        &::selection {
+            color: $ta-review-green-2;
+            background: rgb(38, 166, 144, 0.2);
+        }
     }
 }

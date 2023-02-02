@@ -8,6 +8,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 export class SidebarConfirmBtnComponent implements OnInit {
     @Input() disabledValue?: boolean = false;
     @Input() loginBtn?: boolean = false;
+    @Input() displaySpinner?: boolean = false;
 
     @Output() clickValueEmitter = new EventEmitter<any>();
 

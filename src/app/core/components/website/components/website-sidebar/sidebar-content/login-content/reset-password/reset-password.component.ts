@@ -22,6 +22,8 @@ export class ResetPasswordComponent implements OnInit, OnDestroy {
 
     public openHavingTroubleContent: boolean = false;
 
+    public displaySpinner: boolean = false;
+
     constructor(
         private formBuilder: FormBuilder,
         private inputService: TaInputService,
@@ -73,10 +75,13 @@ export class ResetPasswordComponent implements OnInit, OnDestroy {
     }
 
     public resetPassword(): void {
+        console.log('uslo');
         if (this.resetPasswordForm.invalid) {
             this.inputService.markInvalid(this.resetPasswordForm);
             return;
         }
+
+        this.displaySpinner = true;
 
         const saveData: ForgotPasswordCommand = {
             email: this.resetPasswordForm.get(ConstantString.EMAIL_ADDRESS)
@@ -87,19 +92,30 @@ export class ResetPasswordComponent implements OnInit, OnDestroy {
             .resetPassword(saveData)
             .pipe(
                 takeUntil(this.destroy$),
-                tap(() => {
-                    this.websiteActionsService.setSidebarContentType(
-                        ConstantString.RESET_PASSWORD_CONFIRMATION
-                    );
+                tap({
+                    next: () => {
+                        this.websiteActionsService.setSidebarContentType(
+                            ConstantString.RESET_PASSWORD_REQUESTED
+                        );
 
-                    localStorage.setItem(
-                        ConstantString.CONFIRMATION_EMAIL,
-                        JSON.stringify(
-                            this.resetPasswordForm.get(
-                                ConstantString.EMAIL_ADDRESS
-                            ).value
-                        )
-                    );
+                        localStorage.setItem(
+                            ConstantString.CONFIRMATION_EMAIL,
+                            JSON.stringify(
+                                this.resetPasswordForm.get(
+                                    ConstantString.EMAIL_ADDRESS
+                                ).value
+                            )
+                        );
+
+                        this.displaySpinner = false;
+                    },
+                    error: () => {
+                        this.displaySpinner = false;
+
+                        this.resetPasswordForm
+                            .get(ConstantString.EMAIL_ADDRESS)
+                            .setErrors({ userDoesntExist: true });
+                    },
                 })
             )
             .subscribe();

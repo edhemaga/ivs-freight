@@ -72,7 +72,8 @@
 
         <app-sidebar-confirm-btn
             [disabledValue]="loginForm.invalid"
-            (clickValueEmitter)="onGetBtnClickValue($event)"
+            [displaySpinner]="displaySpinner"
+            (clickValueEmitter)="onGetBtnClickValue($event, 'login-btn')"
         ></app-sidebar-confirm-btn>
 
         <!-- HAVING TROUBLE TO LOGIN -->

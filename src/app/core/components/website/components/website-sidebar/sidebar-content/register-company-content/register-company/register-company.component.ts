@@ -36,6 +36,8 @@ export class RegisterCompanyComponent implements OnInit, OnDestroy {
 
     public selectedAddress: AddressEntity = null;
 
+    public displaySpinner: boolean = false;
+
     constructor(
         private formBuilder: FormBuilder,
         private inputService: TaInputService,
@@ -88,25 +90,26 @@ export class RegisterCompanyComponent implements OnInit, OnDestroy {
     }
 
     private passwordsNotSame(): void {
-        this.registerCompanyForm
-            .get(ConstantString.CONFIRM_PASSWORD)
-            .valueChanges.pipe(takeUntil(this.destroy$))
+        const confirmPasswordControl = this.registerCompanyForm.get(
+            ConstantString.CONFIRM_PASSWORD
+        );
+
+        confirmPasswordControl.valueChanges
+            .pipe(takeUntil(this.destroy$))
             .subscribe((value) => {
                 if (
                     value?.toLowerCase() ===
-                    this.registerCompanyForm
-                        .get(ConstantString.PASSWORD)
-                        .value?.toLowerCase()
+                        this.registerCompanyForm
+                            .get(ConstantString.PASSWORD)
+                            .value?.toLowerCase() &&
+                    value &&
+                    confirmPasswordControl.value
                 ) {
-                    this.registerCompanyForm
-                        .get(ConstantString.CONFIRM_PASSWORD)
-                        .setErrors(null);
+                    confirmPasswordControl.setErrors(null);
                 } else {
-                    this.registerCompanyForm
-                        .get(ConstantString.CONFIRM_PASSWORD)
-                        .setErrors({
-                            invalid: true,
-                        });
+                    confirmPasswordControl.setErrors({
+                        invalid: true,
+                    });
                 }
             });
     }
@@ -134,8 +137,12 @@ export class RegisterCompanyComponent implements OnInit, OnDestroy {
         if (this.registerCompanyForm.invalid) {
             this.inputService.markInvalid(this.registerCompanyForm);
 
+            console.log('form', this.registerCompanyForm);
+
             return;
         }
+
+        this.displaySpinner = true;
 
         const {
             address,
@@ -157,19 +164,42 @@ export class RegisterCompanyComponent implements OnInit, OnDestroy {
             .registerCompany(saveData)
             .pipe(
                 takeUntil(this.destroy$),
-                tap(() => {
-                    this.websiteActionsService.setSidebarContentType(
-                        ConstantString.START_TRIAL_CONFIRMATION
-                    );
+                tap({
+                    next: () => {
+                        this.websiteActionsService.setSidebarContentType(
+                            ConstantString.START_TRIAL_CONFIRMATION
+                        );
 
-                    localStorage.setItem(
-                        ConstantString.CONFIRMATION_EMAIL,
-                        JSON.stringify(
-                            this.registerCompanyForm.get(
-                                ConstantString.EMAIL_ADDRESS
-                            ).value
-                        )
-                    );
+                        localStorage.setItem(
+                            ConstantString.CONFIRMATION_EMAIL,
+                            JSON.stringify(
+                                this.registerCompanyForm.get(
+                                    ConstantString.EMAIL_ADDRESS
+                                ).value
+                            )
+                        );
+
+                        this.displaySpinner = false;
+                    },
+                    error: (error: any) => {
+                        this.displaySpinner = false;
+
+                        const errorMessage = error.error.error;
+
+                        if (errorMessage === ConstantString.EIN_ALREADY_EXIST) {
+                            this.registerCompanyForm
+                                .get(ConstantString.EIN)
+                                .setErrors({ einAlreadyExist: true });
+                        }
+
+                        if (
+                            errorMessage === ConstantString.EMAIL_ALREADY_EXIST
+                        ) {
+                            this.registerCompanyForm
+                                .get(ConstantString.EMAIL_ADDRESS)
+                                .setErrors({ emailAlreadyExist: true });
+                        }
+                    },
                 })
             )
             .subscribe();

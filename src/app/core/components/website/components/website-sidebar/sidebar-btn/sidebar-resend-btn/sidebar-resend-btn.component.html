@@ -1,6 +1,6 @@
 <button
     class="ta-font-bold button-container"
-    [ngClass]="{ 'btn-blue': blueText }"
+    [ngClass]="{ 'btn-blue': blueText, disabled: sentAgoBtnDisabled }"
     type="submit"
     (click)="onGetClickValue()"
 >
@@ -8,7 +8,10 @@
 </button>
 
 <ng-container *ngIf="requestedResend">
-    <div class="d-flex align-items-center sent-container">
+    <div
+        class="d-flex align-items-center sent-container"
+        [@displaySentContainer]
+    >
         <svg-icon
             class="check-icon"
             [ngClass]="{
@@ -18,6 +21,15 @@
             [svgStyle]="{ 'width.px': 13, 'height.px': 10 }"
         ></svg-icon>
 
-        <p class="m-0 ta-font-regular">Sent just now</p>
+        <p class="m-0 ta-font-regular">
+            Sent
+            {{
+                sentAgoCounter === 1
+                    ? sentAgoCounter + ' minute ago'
+                    : sentAgoCounter > 1
+                    ? sentAgoCounter + ' minutes ago'
+                    : 'just now'
+            }}
+        </p>
     </div>
 </ng-container>

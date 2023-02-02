@@ -4,6 +4,7 @@
     tabindex="-1"
     id="sidebar"
     aria-labelledby="sidebarLabel"
+    data-bs-backdrop="false"
 >
     <div class="d-flex flex-column justify-content-center">
         <div class="d-flex align-items-center sidebar-header">
@@ -27,11 +28,31 @@
             <ng-container
                 *ngIf="selectedContentType === 'start trial confirmation'"
             >
-                <app-confirmation></app-confirmation>
+                <app-confirmation
+                    [registerCompanyConfirmation]="true"
+                ></app-confirmation>
             </ng-container>
 
             <ng-container *ngIf="selectedContentType === 'start trial welcome'">
                 <app-welcome></app-welcome>
+            </ng-container>
+
+            <ng-container *ngIf="selectedContentType === 'register user'">
+                <app-register-user></app-register-user>
+            </ng-container>
+
+            <ng-container
+                *ngIf="selectedContentType === 'register user confirmation'"
+            >
+                <app-confirmation
+                    [registerUserConfirmation]="true"
+                ></app-confirmation>
+            </ng-container>
+
+            <ng-container
+                *ngIf="selectedContentType === 'register user welcome'"
+            >
+                <app-welcome [registerUserWelcome]="true"></app-welcome>
             </ng-container>
 
             <ng-container *ngIf="selectedContentType === 'login'">
@@ -43,10 +64,10 @@
             </ng-container>
 
             <ng-container
-                *ngIf="selectedContentType === 'reset password confirmation'"
+                *ngIf="selectedContentType === 'reset password requested'"
             >
                 <app-confirmation
-                    [passwordResetConfirmation]="true"
+                    [passwordResetRequested]="true"
                 ></app-confirmation>
             </ng-container>
 
@@ -62,14 +83,12 @@
                 <app-resend-confirmation></app-resend-confirmation>
             </ng-container>
 
-            <ng-container *ngIf="selectedContentType === 'register user'">
-                <app-register-user></app-register-user>
-            </ng-container>
-
             <ng-container
-                *ngIf="selectedContentType === 'register user welcome'"
+                *ngIf="selectedContentType === 'resend confirmation requested'"
             >
-                <app-welcome [registerUserWelcome]="true"></app-welcome>
+                <app-confirmation
+                    [resendConfirmationRequested]="true"
+                ></app-confirmation>
             </ng-container>
         </div>
     </div>

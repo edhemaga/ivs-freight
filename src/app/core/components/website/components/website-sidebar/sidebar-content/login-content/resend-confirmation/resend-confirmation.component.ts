@@ -21,6 +21,8 @@ export class ResendConfirmationComponent implements OnInit, OnDestroy {
 
     public openHavingTroubleContent: boolean = false;
 
+    public displaySpinner: boolean = false;
+
     constructor(
         private formBuilder: FormBuilder,
         private inputService: TaInputService,
@@ -71,7 +73,13 @@ export class ResendConfirmationComponent implements OnInit, OnDestroy {
         }
     }
 
-    private resendConfirmation(): void {}
+    private resendConfirmation(): void {
+        this.displaySpinner = true;
+
+        this.websiteActionsService.setSidebarContentType(
+            ConstantString.RESEND_CONFIRMATION_REQUESTED
+        );
+    }
 
     ngOnDestroy(): void {
         this.destroy$.next();

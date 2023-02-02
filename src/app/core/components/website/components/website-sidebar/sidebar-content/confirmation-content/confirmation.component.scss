@@ -24,6 +24,11 @@
         h2 {
             font-size: 48px;
             line-height: 60px;
+            margin-bottom: 42px !important;
+
+            &.confirmation-true {
+                margin-bottom: 9px !important;
+            }
         }
 
         h5 {

@@ -184,7 +184,7 @@
                 <app-ta-input
                     formControlName="confirmPassword"
                     [inputConfig]="{
-                        name: 'Password',
+                        name: 'Confirm Password',
                         type: 'password',
                         label: 'Confirm Password',
                         placeholderIcon: 'password',
@@ -202,6 +202,7 @@
         <div class="btn-container">
             <app-sidebar-confirm-btn
                 [disabledValue]="registerCompanyForm.invalid"
+                [displaySpinner]="displaySpinner"
                 (clickValueEmitter)="onGetBtnClickValue($event)"
             ></app-sidebar-confirm-btn>
         </div>

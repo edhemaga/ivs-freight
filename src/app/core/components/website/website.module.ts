@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { WebsiteRoutingModule } from './website-routing.module';
 
 import { SharedModule } from '../shared/shared.module';
+import { TaSpinnerModule } from '../shared/ta-spinner/ta-spinner.module';
 
 import { WebsiteMainComponent } from './components/website-main/website-main.component';
 import { WebsiteNavbarComponent } from './components/website-navbar/website-navbar.component';
@@ -28,9 +29,7 @@ import { RegisterUserHelperComponent } from './components/website-sidebar/sideba
     declarations: [
         WebsiteMainComponent,
         WebsiteNavbarComponent,
-
         /* SIDEBAR */
-
         WebsiteSidebarComponent,
         SidebarConfirmBtnComponent,
         SidebarResendBtnComponent,
@@ -47,7 +46,12 @@ import { RegisterUserHelperComponent } from './components/website-sidebar/sideba
         RegisterUserComponent,
         RegisterUserHelperComponent,
     ],
-    imports: [CommonModule, WebsiteRoutingModule, SharedModule],
+    imports: [
+        CommonModule,
+        WebsiteRoutingModule,
+        SharedModule,
+        TaSpinnerModule,
+    ],
 })
 export class WebsiteModule {}
 
@@ -58,5 +62,6 @@ DEPENDENCIES
 AngularSvgIconModule
 app-ta-input
 app-ta-checkbox
+TaSpinnerModule
 
 */

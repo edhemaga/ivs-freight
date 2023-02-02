@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
-import { Subject, takeUntil } from 'rxjs';
+import { Subject, takeUntil, tap } from 'rxjs';
 
 import { TaInputService } from 'src/app/core/components/shared/ta-input/ta-input.service';
 import { WebsiteAuthStoreService } from '../../../../../state/service/website-auth-store.service';
@@ -22,6 +22,8 @@ export class LoginComponent implements OnInit, OnDestroy {
     public loginForm: FormGroup;
 
     public openHavingTroubleContent: boolean = false;
+
+    public displaySpinner: boolean = false;
 
     constructor(
         private formBuilder: FormBuilder,
@@ -88,9 +90,22 @@ export class LoginComponent implements OnInit, OnDestroy {
             return false;
         }
 
+        this.displaySpinner = true;
+
         this.websiteAuthStoreService
             .accountLogin(this.loginForm.value)
-            .pipe(takeUntil(this.destroy$))
+            .pipe(
+                takeUntil(this.destroy$),
+                tap({
+                    next: () => {
+                        this.displaySpinner = false;
+                    },
+                    error: (error: any) => {
+                        this.displaySpinner = false;
+                        console.log('error', error);
+                    },
+                })
+            )
             .subscribe();
     }
 

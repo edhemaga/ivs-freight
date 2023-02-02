@@ -53,9 +53,11 @@ export class WebsiteSidebarComponent implements OnInit, OnDestroy {
                             ConstantString.START_TRIAL_WELCOME ||
                         this.selectedContentType === ConstantString.LOGIN ||
                         this.selectedContentType ===
-                            ConstantString.RESET_PASSWORD_CONFIRMATION ||
+                            ConstantString.RESET_PASSWORD_REQUESTED ||
                         this.selectedContentType ===
-                            ConstantString.PASSWORD_UPDATED
+                            ConstantString.PASSWORD_UPDATED ||
+                        this.selectedContentType ===
+                            ConstantString.REGISTER_USER_CONFIRMATION
                     ) {
                         this.selectedContentWidth = 480;
                     }
@@ -90,17 +92,13 @@ export class WebsiteSidebarComponent implements OnInit, OnDestroy {
     }
 
     private listenForSidebarHideEvent(): void {
-        this.renderer2.listen(
-            ConstantString.DOCUMENT,
-            ConstantString.HIDE_BS_OFFCANVAS,
-            (_) => {
-                this.selectedContentType = null;
+        this.renderer2.listen('document', 'hidden.bs.offcanvas', (_) => {
+            this.selectedContentType = null;
 
-                this.websiteActionsService.setSidebarContentType(
-                    this.selectedContentType
-                );
-            }
-        );
+            this.websiteActionsService.setSidebarContentType(
+                this.selectedContentType
+            );
+        });
     }
 
     private showSidebar(): void {

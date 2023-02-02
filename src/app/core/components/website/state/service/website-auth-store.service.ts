@@ -10,6 +10,8 @@ import { PersistState } from '@datorama/akita';
 import {
     AccountService,
     ForgotPasswordCommand,
+    ResendSignUpCompanyCommand,
+    ResendSignUpUserCommand,
     SetNewPasswordCommand,
     SignInCommand,
     SignInResponse,
@@ -37,6 +39,12 @@ export class WebsiteAuthStoreService {
             data,
             'response'
         );
+    }
+
+    public resendRegisterCompany(
+        data: ResendSignUpCompanyCommand
+    ): Observable<any> {
+        return this.accountService.apiAccountResendsignupcompanyPut(data);
     }
 
     public registerCompanyVerifyOwner(
@@ -121,5 +129,9 @@ export class WebsiteAuthStoreService {
 
     public registerUser(data: SignupUserCommand): Observable<any> {
         return this.accountService.apiAccountSignupuserPut(data, 'response');
+    }
+
+    public resendRegisterUser(data: ResendSignUpUserCommand): Observable<any> {
+        return this.accountService.apiAccountResendsignupuserPut(data);
     }
 }

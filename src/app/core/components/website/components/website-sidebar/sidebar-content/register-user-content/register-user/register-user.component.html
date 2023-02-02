@@ -169,6 +169,7 @@
         <div class="btn-container">
             <app-sidebar-confirm-btn
                 [disabledValue]="registerUserForm.invalid"
+                [displaySpinner]="displaySpinner"
                 (clickValueEmitter)="onGetBtnClickValue($event)"
             ></app-sidebar-confirm-btn>
         </div>

@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
-import { Subject, takeUntil } from 'rxjs';
+import { Subject, takeUntil, tap } from 'rxjs';
 
 import { TaInputService } from 'src/app/core/components/shared/ta-input/ta-input.service';
 import { WebsiteAuthStoreService } from 'src/app/core/components/website/state/service/website-auth-store.service';
@@ -29,6 +29,8 @@ export class CreateNewPasswordComponent implements OnInit, OnDestroy {
         email: 'aleksandar@gmail.com',
         imgSrc: null,
     };
+
+    public displaySpinner: boolean = false;
 
     constructor(
         private formBuilder: FormBuilder,
@@ -111,6 +113,8 @@ export class CreateNewPasswordComponent implements OnInit, OnDestroy {
             return;
         }
 
+        this.displaySpinner = true;
+
         const saveData: SetNewPasswordCommand = {
             newPassword: this.createNewPasswordForm.get(
                 ConstantString.NEW_PASSWORD
@@ -126,7 +130,14 @@ export class CreateNewPasswordComponent implements OnInit, OnDestroy {
 
                 this.websiteAuthStoreService
                     .createNewPassword(saveData)
-                    .pipe(takeUntil(this.destroy$))
+                    .pipe(
+                        takeUntil(this.destroy$),
+                        tap({
+                            next: () => {
+                                this.displaySpinner = false;
+                            },
+                        })
+                    )
                     .subscribe();
             });
     }

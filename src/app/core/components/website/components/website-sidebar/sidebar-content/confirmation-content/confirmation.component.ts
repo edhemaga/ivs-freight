@@ -1,6 +1,9 @@
 import { Component, OnDestroy, OnInit, Input } from '@angular/core';
 
+import { Subject, takeUntil } from 'rxjs';
+
 import { WebsiteActionsService } from 'src/app/core/components/website/state/service/website-actions.service';
+import { WebsiteAuthStoreService } from '../../../../state/service/website-auth-store.service';
 
 import { ConstantString } from 'src/app/core/components/website/state/enum/const-string.enum';
 
@@ -10,13 +13,21 @@ import { ConstantString } from 'src/app/core/components/website/state/enum/const
     styleUrls: ['./confirmation.component.scss'],
 })
 export class ConfirmationComponent implements OnInit, OnDestroy {
-    @Input() passwordResetConfirmation?: boolean = false;
+    @Input() resendConfirmationRequested?: boolean = false;
+    @Input() passwordResetRequested?: boolean = false;
+    @Input() registerCompanyConfirmation?: boolean = false;
+    @Input() registerUserConfirmation?: boolean = false;
+
+    private destroy$ = new Subject<void>();
 
     public confirmationEmail: string = null;
 
     public requestedResendEmail?: boolean = false;
 
-    constructor(private websiteActionsService: WebsiteActionsService) {}
+    constructor(
+        private websiteActionsService: WebsiteActionsService,
+        private websiteAuthStoreService: WebsiteAuthStoreService
+    ) {}
 
     ngOnInit(): void {
         this.getConfirmationEmail();
@@ -24,7 +35,7 @@ export class ConfirmationComponent implements OnInit, OnDestroy {
 
     public onGetBtnClickValue(
         event: { notDisabledClick: boolean },
-        type?: string
+        type: string
     ): void {
         if (event.notDisabledClick) {
             if (type === ConstantString.LOGIN_BTN) {
@@ -33,6 +44,14 @@ export class ConfirmationComponent implements OnInit, OnDestroy {
                 );
             } else {
                 this.requestedResendEmail = true;
+
+                if (this.registerCompanyConfirmation) {
+                    this.resendRegisterConfirmation(ConstantString.COMPANY);
+                }
+
+                if (this.registerUserConfirmation) {
+                    this.resendRegisterConfirmation(ConstantString.USER);
+                }
             }
         }
     }
@@ -43,7 +62,28 @@ export class ConfirmationComponent implements OnInit, OnDestroy {
         );
     }
 
+    private resendRegisterConfirmation(type): void {
+        const email = this.confirmationEmail;
+
+        if (type === ConstantString.COMPANY) {
+            this.websiteAuthStoreService
+                .resendRegisterCompany({ email })
+                .pipe(takeUntil(this.destroy$))
+                .subscribe();
+        }
+
+        if (type === ConstantString.USER) {
+            this.websiteAuthStoreService
+                .resendRegisterUser({ email })
+                .pipe(takeUntil(this.destroy$))
+                .subscribe();
+        }
+    }
+
     ngOnDestroy(): void {
         localStorage.removeItem(ConstantString.CONFIRMATION_EMAIL);
+
+        this.destroy$.next();
+        this.destroy$.complete();
     }
 }

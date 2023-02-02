@@ -64,6 +64,14 @@ export class InputErrorPipe implements PipeTransform {
                     }
                 }
             }
+
+            if (value['userDoesntExist']) {
+                errorMessageValue = "This user doesn't exist";
+            }
+
+            if (value['einAlreadyExist'] || value['emailAlreadyExist']) {
+                errorMessageValue = 'Already in use';
+            }
         }
         return errorMessageValue;
     }

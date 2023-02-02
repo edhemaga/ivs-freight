@@ -35,11 +35,15 @@ export class WebsiteNavbarComponent implements OnInit, OnDestroy {
     public trackByIdentity = (index: number, _: any): number => index;
 
     public handleNavbarBtnClick(type: string): void {
-        const selectedType = type.toLowerCase();
+        if (this.isSidebarOpen) {
+            this.isSidebarOpen = false;
+        } else {
+            const selectedType = type.toLowerCase();
 
-        this.isSidebarOpen = true;
+            this.isSidebarOpen = true;
 
-        this.websiteActionsService.setSidebarContentType(selectedType);
+            this.websiteActionsService.setSidebarContentType(selectedType);
+        }
     }
 
     private checkIsSidebarOpen(): void {

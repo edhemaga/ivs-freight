@@ -42,6 +42,8 @@ export class RegisterUserComponent implements OnInit, OnDestroy {
         email: 'aleksandar@gmail.com',
     };
 
+    public displaySpinner: boolean = false;
+
     constructor(
         private formBuilder: FormBuilder,
         private inputService: TaInputService,
@@ -93,26 +95,27 @@ export class RegisterUserComponent implements OnInit, OnDestroy {
             });
     }
 
-    public passwordsNotSame(): void {
-        this.registerUserForm
-            .get(ConstantString.CONFIRM_PASSWORD)
-            .valueChanges.pipe(takeUntil(this.destroy$))
+    private passwordsNotSame(): void {
+        const confirmPasswordControl = this.registerUserForm.get(
+            ConstantString.CONFIRM_PASSWORD
+        );
+
+        confirmPasswordControl.valueChanges
+            .pipe(takeUntil(this.destroy$))
             .subscribe((value) => {
                 if (
                     value?.toLowerCase() ===
-                    this.registerUserForm
-                        .get(ConstantString.PASSWORD)
-                        .value?.toLowerCase()
+                        this.registerUserForm
+                            .get(ConstantString.PASSWORD)
+                            .value?.toLowerCase() &&
+                    value &&
+                    confirmPasswordControl.value
                 ) {
-                    this.registerUserForm
-                        .get(ConstantString.CONFIRM_PASSWORD)
-                        .setErrors(null);
+                    confirmPasswordControl.setErrors(null);
                 } else {
-                    this.registerUserForm
-                        .get(ConstantString.CONFIRM_PASSWORD)
-                        .setErrors({
-                            invalid: true,
-                        });
+                    confirmPasswordControl.setErrors({
+                        invalid: true,
+                    });
                 }
             });
     }
@@ -136,6 +139,8 @@ export class RegisterUserComponent implements OnInit, OnDestroy {
             return;
         }
 
+        this.displaySpinner = true;
+
         const { email, password } = this.registerUserForm.value;
 
         const saveData: any = {
@@ -148,19 +153,27 @@ export class RegisterUserComponent implements OnInit, OnDestroy {
             .registerUser(saveData)
             .pipe(
                 takeUntil(this.destroy$),
-                tap(() => {
-                    this.websiteActionsService.setSidebarContentType(
-                        ConstantString.START_TRIAL_CONFIRMATION
-                    );
+                tap({
+                    next: () => {
+                        this.websiteActionsService.setSidebarContentType(
+                            ConstantString.REGISTER_USER_CONFIRMATION
+                        );
 
-                    localStorage.setItem(
-                        ConstantString.CONFIRMATION_EMAIL,
-                        JSON.stringify(
-                            this.registerUserForm.get(
-                                ConstantString.EMAIL_ADDRESS
-                            ).value
-                        )
-                    );
+                        localStorage.setItem(
+                            ConstantString.CONFIRMATION_EMAIL,
+                            JSON.stringify(
+                                this.registerUserForm.get(
+                                    ConstantString.EMAIL_ADDRESS
+                                ).value
+                            )
+                        );
+
+                        this.displaySpinner = false;
+                    },
+                    error: (error: any) => {
+                        this.displaySpinner = false;
+                        console.log('error', error);
+                    },
                 })
             )
             .subscribe();
