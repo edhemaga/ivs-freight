@@ -86,7 +86,6 @@ export class NavigationUserProfileComponent implements OnInit, OnDestroy {
             });
     }
     public onUserPanelClose(event) {
-        console.log(event);
         this.test = event;
         this.navigationService.onDropdownActivation({
             name: 'User Panel',

@@ -1,11 +1,12 @@
 <!-- routerLinkActive="subroute-active" -->
+<!-- ,
+        'other-container-opened': otherContainerOpened -->
 <div
     class="subroutes-container"
     [ngClass]="{
         hide: !openCloseContainer,
         'hide-with-animation': !openCloseContainer && doAnimation,
-        show: openCloseContainer,
-        'other-container-opened': otherContainerOpened
+        show: openCloseContainer
     }"
 >
     <div

@@ -50,6 +50,7 @@
                 .nav-footer-rightSide {
                     p {
                         z-index: 1;
+                        top: -10px;
                     }
                 }
                 img {
@@ -134,7 +135,7 @@
                 position: absolute;
                 right: 8px;
                 opacity: 0;
-                top: -10px;
+                top: -9px;
             }
             // .user-profile {
             //     padding: 8px 0;

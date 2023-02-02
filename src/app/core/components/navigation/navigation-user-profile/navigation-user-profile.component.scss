@@ -117,7 +117,7 @@
         display: none;
         height: 0;
     }
-    .panel-user {
+    .user-holder {
         display: flex;
         align-items: center;
         height: 44px;
@@ -179,23 +179,44 @@
     bottom: 5px;
     left: 4px;
     position: relative;
-    margin-top: 15px;
+    margin-top: 16px;
 }
 .wrapper {
-    .background-on-user-panel {
-        background-color: $nav-transparent;
-        max-height: 0;
-        transition: max-height 0.3s ease-out;
-        overflow: hidden;
-        height: 100%;
-        width: 230px;
+    .parent {
         position: absolute;
-        bottom: 44px;
-    }
-    .remove-background-on-user-panel {
-        max-height: 0;
-        transition: max-height 5s ease-out;
-        overflow: hidden;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 100%;
+        .background-on-user-panel {
+            background-color: $nav-transparent;
+            height: 192px;
+            transition: max-height 0.3s ease-out;
+            overflow: hidden;
+            width: 100%;
+            position: relative;
+            bottom: 0;
+            top: 0;
+            left: 0;
+            right: 0;
+        }
+        .remove-background-on-user-panel {
+            overflow: hidden;
+            background-color: $nav-transparent;
+            position: relative;
+            animation: list-separator 0.3s;
+            height: 193px;
+            visibility: hidden;
+            transition: visibility 0.2s;
+        }
+        @keyframes lineInserted {
+            from {
+                transform: translateY(0px);
+            }
+            to {
+                transform: translateY(90px);
+            }
+        }
     }
     div {
         .new-magic-line {
