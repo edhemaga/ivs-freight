@@ -996,3 +996,11 @@
         font-weight: 400;
     }
 }
+
+.gm-style div[aria-label='Map'] {
+    :nth-child(1) {
+        :nth-child(1) {
+            z-index: 104 !important;
+        }
+    }
+}
