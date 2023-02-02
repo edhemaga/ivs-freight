@@ -350,12 +350,16 @@ export class TruckassistTableBodyComponent
 
     // Go To Details Page
     goToDetails(route: any, row: any) {
-        const link =
-            route.link.routerLinkStart + row['id'] + route.link.routerLinkEnd;
+        if (!route.link?.doesNotHaveRout) {
+            const link =
+                route.link.routerLinkStart +
+                row['id'] +
+                route.link.routerLinkEnd;
 
-        this.detailsDataService.setNewData(row);
+            this.detailsDataService.setNewData(row);
 
-        this.router.navigate([link]);
+            this.router.navigate([link]);
+        }
     }
 
     // Select Row

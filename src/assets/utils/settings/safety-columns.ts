@@ -43,6 +43,7 @@ export function getAccidentColumns() {
             export: true,
             resizable: true,
             link: {
+                doesNotHaveRout: true,
                 routerLinkStart: '/safety/accident/',
                 routerLinkEnd: '/details',
             },
@@ -389,6 +390,7 @@ export function getRoadsideInspectionColums() {
             export: true,
             resizable: true,
             link: {
+                doesNotHaveRout: true,
                 routerLinkStart: '/safety/violation/',
                 routerLinkEnd: '/details',
             },
