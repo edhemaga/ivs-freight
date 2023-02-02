@@ -164,6 +164,7 @@ export class TruckassistTableBodyComponent
         this.sharedService.emitTableScrolling
             .pipe(takeUntil(this.destroy$))
             .subscribe((offSet: any) => {
+                console.log('Scrolling Virtual Container')
                 if (offSet < 84) {
                     this.virtualScrollViewport.scrollToOffset(0);
                 } else if (offSet > 84) {
@@ -175,6 +176,9 @@ export class TruckassistTableBodyComponent
     // --------------------------------NgOnChanges---------------------------------
     ngOnChanges(changes: SimpleChanges): void {
         if (!changes?.viewData?.firstChange && changes?.viewData) {
+            console.log('View Data');
+            console.log(this.viewData);
+
             clearTimeout(this.viewDataTimeOut);
 
             this.viewData = [...changes.viewData.currentValue];
@@ -235,25 +239,26 @@ export class TruckassistTableBodyComponent
 
     // --------------------------------NgAfterViewInit---------------------------------
     ngAfterViewInit(): void {
-        setTimeout(() => {
-            if (this.viewData.length) {
-                const tableContainer =
-                    document.querySelector('.table-container');
+        // For Virtual Scroll
+        // setTimeout(() => {
+        //     if (this.viewData.length) {
+        //         const tableContainer =
+        //             document.querySelector('.table-container');
 
-                const cdkVirtualScrollSpacer = document.querySelector(
-                    '.cdk-virtual-scroll-spacer'
-                );
+        //         const cdkVirtualScrollSpacer = document.querySelector(
+        //             '.cdk-virtual-scroll-spacer'
+        //         );
 
-                const pageHeight =
-                    tableContainer.clientHeight -
-                    1018 +
-                    cdkVirtualScrollSpacer.clientHeight;
+        //         const pageHeight =
+        //             tableContainer.clientHeight -
+        //             1018 +
+        //             cdkVirtualScrollSpacer.clientHeight;
 
-                this.sharedService.emitUpdateScrollHeight.emit({
-                    tablePageHeight: pageHeight,
-                });
-            }
-        }, 10);
+        //         this.sharedService.emitUpdateScrollHeight.emit({
+        //             tablePageHeight: pageHeight,
+        //         });
+        //     }
+        // }, 10);
 
         this.getNotPinedMaxWidth();
     }

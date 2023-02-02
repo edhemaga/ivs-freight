@@ -558,6 +558,8 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
         } else if (event.action === 'tab-selected') {
             this.selectedTab = event.tabData.field;
 
+            // this.backFilterQuery.active = this.selectedTab === 'active' ? 1 : 0;
+
             this.sendFuelData();
         } else if (event.action === 'view-mode') {
             this.activeViewMode = event.mode;
