@@ -119,9 +119,10 @@ export class TaInputComponent
     public focusBlur: any;
 
     // Price Separator
-    public cursorPosition: number;
+    public cursorInputPosition: number;
     public hasDecimalIndex: number = -1;
     public originPriceSeparatorLimit: number;
+    public decimalIndexTimeout = null;
 
     constructor(
         @Self() public superControl: NgControl,
@@ -143,12 +144,12 @@ export class TaInputComponent
         }
     }
 
-    setTimePickerTime(){
+    setTimePickerTime() {
         if (this.inputConfig.name === 'timepicker')
-                this.dateTimeInputDate = new Date(
-                    moment().format('MM/DD/YYYY') +
-                        (this.inputConfig?.isFromDate ? ' 12:15' : ' 12:00')
-                );
+            this.dateTimeInputDate = new Date(
+                moment().format('MM/DD/YYYY') +
+                    (this.inputConfig?.isFromDate ? ' 12:15' : ' 12:00')
+            );
     }
 
     ngOnInit(): void {
@@ -159,12 +160,16 @@ export class TaInputComponent
             $('.input-label').removeClass('no-transition');
         }, 1000);
 
+        if (this.inputConfig.priceSeparator) {
+            this.originPriceSeparatorLimit =
+                this.inputConfig.priceSeparatorLimitation;
+        }
+
         // DatePicker
         if (
             this.inputConfig.name === 'datepicker' ||
             this.inputConfig.name === 'timepicker'
         ) {
-            
             this.setTimePickerTime();
             this.calendarService.dateChanged
                 .pipe(takeUntil(this.destroy$))
@@ -575,11 +580,12 @@ export class TaInputComponent
             this.inputConfig.textTransform === 'capitalize' &&
             this.inputConfig.name !== 'Allow All'
         ) {
+            // Check if capslock key is pressed
             if (event.getModifierState('CapsLock')) {
                 this.notificationService.triggerToastMessage(
                     'error',
                     'Illegal behavior',
-                    'Please turn of CAPSLOCK or stop hodling SHIFT'
+                    'Please turn off CAPSLOCK or stop hodling SHIFT'
                 );
                 event.preventDefault();
                 return;
@@ -589,7 +595,7 @@ export class TaInputComponent
                 this.notificationService.triggerToastMessage(
                     'error',
                     'ILLEGAL BEHAVIOR',
-                    'Please turn of CAPSLOCK or stop holding SHIFT'
+                    'Please turn off CAPSLOCK or stop holding SHIFT'
                 );
                 event.preventDefault();
                 return;
@@ -675,6 +681,8 @@ export class TaInputComponent
     }
 
     public transformText(value?: string, paste?: boolean) {
+        this.cursorInputPosition = this.input.nativeElement.selectionStart;
+
         if (paste) {
             if (!this.inputSelection) {
                 this.input.nativeElement.value += value;
@@ -768,6 +776,9 @@ export class TaInputComponent
                 // 4.1. Check for Dot position
                 this.hasDecimalIndex = this.getSuperControl.value.indexOf('.');
 
+                this.originPriceSeparatorLimit =
+                    this.inputConfig.priceSeparatorLimitation + 3;
+
                 // 4.2. Divide number on decimal and integer part
                 let integerPart = this.thousandSeparatorPipe.transform(
                     this.getSuperControl.value
@@ -787,12 +798,23 @@ export class TaInputComponent
                 decimalPart = decimalPart.slice(0, 2);
 
                 if (decimalPart) {
+                    clearTimeout(this.decimalIndexTimeout);
                     // 4.5. Set formatted number
                     this.getSuperControl.patchValue(
                         integerPart + '.' + decimalPart
                     );
                     this.hasDecimalIndex =
                         this.getSuperControl.value.indexOf('.');
+                } else {
+                    // 4.6 Delete dot if decimal was deleted
+                    this.decimalIndexTimeout = setTimeout(() => {
+                        this.getSuperControl.patchValue(integerPart);
+                        this.hasDecimalIndex = -1;
+                        this.input.nativeElement.setSelectionRange(
+                            this.input.nativeElement.selectionStart,
+                            this.input.nativeElement.selectionStart
+                        );
+                    }, 500);
                 }
             }
             // 5. If user doesn't set dot
@@ -827,6 +849,13 @@ export class TaInputComponent
                     );
                 }
             }
+
+            setTimeout(() => {
+                this.input.nativeElement.setSelectionRange(
+                    this.cursorInputPosition,
+                    this.cursorInputPosition
+                );
+            }, 30);
         }
 
         /**
@@ -1070,6 +1099,14 @@ export class TaInputComponent
                     .getInputRegexPattern('price-separator')
                     .test(String.fromCharCode(event.charCode))
             ) {
+                if (
+                    this.getSuperControl?.value?.length ===
+                        this.originPriceSeparatorLimit &&
+                    event.keyCode !== 46
+                ) {
+                    event.preventDefault();
+                    return;
+                }
                 //  Disable multiple dots
                 this.disableMultiplePoints(event);
 
@@ -1101,10 +1138,29 @@ export class TaInputComponent
                     // 3. Get only two numbers of decimal part
                     decimalPart = decimalPart.slice(0, 2);
 
+                    const currentPosition =
+                        this.input.nativeElement.selectionStart;
+
                     // 4. Set formatted number
                     this.getSuperControl.patchValue(
                         integerPart + '.' + decimalPart
                     );
+
+                    setTimeout(() => {
+                        if (event.keyCode === 51) {
+                            this.cursorInputPosition =
+                                this.input.nativeElement.selectionStart;
+                            this.input.nativeElement.setSelectionRange(
+                                currentPosition,
+                                currentPosition
+                            );
+                        } else {
+                            this.input.nativeElement.setSelectionRange(
+                                currentPosition + 1,
+                                currentPosition + 1
+                            );
+                        }
+                    }, 30);
                 }
 
                 return true;
