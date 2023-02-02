@@ -386,11 +386,10 @@
                     <div class="load-pickup-wrapper">
                         <div class="load-pickup-item">
                             <span class="load-header-pickup">First pickup</span>
-                            <span class="load-value-pickup"
-                                >{{ loadItem?.data?.firstPickupTime?.days }} day
-                                {{ loadItem?.data?.firstPickupTime?.hours }}
-                                hours</span
-                            >
+                            <span class="load-value-pickup">
+                                {{formatLoadPickupDay(loadItem?.data?.firstPickupTime?.days)}}
+                                {{formatLoadPickupTime(loadItem?.data?.firstPickupTime?.hours)}}
+                            </span>
                         </div>
                         <div class="load-pickup-item">
                             <span class="load-value-pickup"

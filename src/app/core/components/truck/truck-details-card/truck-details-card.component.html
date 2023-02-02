@@ -16,6 +16,7 @@
                         <svg-icon
                             class="truck truck-color-code"
                             [class.inactiveTruckLogo]="truck.status == 0"
+                            [class.whiteTruck]="truck?.color?.code == '#F9F9F9' "
                             src="{{
                                 'assets/svg/common/trucks/' +
                                     truck?.truckType?.logoName
@@ -40,7 +41,10 @@
                 </div>
                 <div class="details-header-data">
                     <div class="details-header-data-item">
-                        <div *ngIf="truck.color" class="light-green">
+                        <div *ngIf="truck.color" 
+                            class="light-green"
+                            [class.whiteColorCode]="truck?.color?.code == '#F9F9F9' "
+                            >
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 width="18"
