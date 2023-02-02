@@ -354,6 +354,7 @@ export class TruckassistTableBodyComponent
             route.link.routerLinkStart + row['id'] + route.link.routerLinkEnd;
 
         this.detailsDataService.setNewData(row);
+
         this.router.navigate([link]);
     }
 
