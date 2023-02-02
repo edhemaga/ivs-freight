@@ -175,8 +175,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
         private sharedService: SharedService,
         private route: ActivatedRoute,
         private formDataService: FormDataService,
-        private driverService: DriverService,
-        private modal: ModalService
+        private driverService: DriverService
     ) {}
 
     ngOnInit() {
