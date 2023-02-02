@@ -387,7 +387,7 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
         this.getTruckDropdown();
         this.buttonSwitcher();
         this.initTableOptions();
-
+        console.log('---this.truck--', this.truck);
         let array1 = [...this.truck.ownerHistories];
         
         array1.sort((a, b) => {

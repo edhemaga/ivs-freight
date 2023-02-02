@@ -15,6 +15,7 @@
                     <div class="svg-truck-wrapper">
                         <svg-icon
                             class="truck truck-color-code"
+                            [class.inactiveTruckLogo]="truck.status == 0"
                             src="{{
                                 'assets/svg/common/trucks/' +
                                     truck?.truckType?.logoName
