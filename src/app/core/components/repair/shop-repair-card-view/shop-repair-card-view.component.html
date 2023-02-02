@@ -2,8 +2,8 @@
     <app-ta-details-header-card
         [ngClass]="{ 'disabedPreviousArrow': shopIndex == 0, 'disableNextArrow': shopIndex == (shopsDropdowns.length -1 ) }"
         [cardDetailsDate]="repairShopCardViewData?.createdAt | formatDateP"
-        [tooltipNext]=" shopIndex == (shopsDropdowns.length -1 )  ?  'Disabled' : 'Next Repair' "
-        [tooltipPrevious]=" shopIndex == 0 ? 'Disabled' : 'Previous Repair' "
+        [tooltipNext]=" shopIndex == (shopsDropdowns.length -1 )  ?  '' : 'Next Repair' "
+        [tooltipPrevious]=" shopIndex == 0 ? '' : 'Previous Repair' "
         [searchInputName]="'Search Repair Shop'"
         [searchName]="'Listed to Favourites'"
         [options]="shopsDropdowns"
@@ -52,13 +52,19 @@
             </div>
         </div>
     </app-ta-details-header-card>
-    <div class="wrapper-additional-cards">
+    <div class="wrapper-additional-cards"
+        [ngClass]="{ 'bind-heigth': !templateCard }"
+    >
         <div class="repair-cards">
             <app-ta-custom-card
                 [bodyTemplate]="'card'"
                 [hasDivider]="false"
                 [cardName]="'Working Hours'"
                 [isCardOpen]="true"
+                [animationMarginParams]="{
+                    marginTop: '0px',
+                    marginBottom: '10px'
+                }"
             >
                 <div
                     class="working-hours-container"
@@ -200,6 +206,10 @@
                 [cardName]="'Service'"
                 [hasCounter]="count"
                 [isCardOpen]="true"
+                [animationMarginParams]="{
+                    marginTop: '0px',
+                    marginBottom: '10px'
+                }"
             >
                 <div class="service-container">
                     <div
@@ -232,6 +242,10 @@
                 [isCardOpen]="true"
                 [tooltipName]="'View in Modal'"
                 [hasHeaderSvg]="'assets/svg/common/arrow_top_right.svg'"
+                [animationMarginParams]="{
+                    marginTop: '0px',
+                    marginBottom: '10px'
+                }"
             >
                 <div
                     class="charts-template perfomance"

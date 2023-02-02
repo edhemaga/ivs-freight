@@ -26,8 +26,10 @@ export class TaInputNoteComponent implements OnInit, ControlValueAccessor {
     range: any;
     gotValue: boolean = false;
     showNote: any;
+    @Input() blankNote: boolean = false;
+
     @Input() set note(value) {
-        if (value && value != '' && value != 'null' && !this.gotValue) {
+        if (value && value != '' && value != 'null' && !this.gotValue || this.blankNote) {
             this.showNote = value;
         }
     }
@@ -40,6 +42,7 @@ export class TaInputNoteComponent implements OnInit, ControlValueAccessor {
     @Input() isVisibleDivider: boolean = true;
     @Input() public animationsDisabled = false;
     @Input() noteType: string = '';
+    
     savingNote: boolean = false;
     @Input() entityId: number = 0;
     @Input() entityType: string = '';

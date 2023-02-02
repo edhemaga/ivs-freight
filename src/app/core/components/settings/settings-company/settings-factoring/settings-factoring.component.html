@@ -56,7 +56,7 @@
             *ngIf="factoringData?.factoringCompany?.name"
         >
             <div class="settings-body-items">
-                <div class="single-item">
+                <div class="single-item" *ngIf="factoringData?.factoringCompany?.phone">
                     <svg-icon
                         class="company-icons"
                         src="assets/svg/common/ic_phone.svg"
@@ -66,7 +66,7 @@
                     >
                     </app-ta-copy>
                 </div>
-                <div class="single-item">
+                <div class="single-item" *ngIf="factoringData?.factoringCompany?.email">
                     <svg-icon
                         class="company-icons"
                         src="assets/svg/common/ic_email.svg"
@@ -76,7 +76,7 @@
                     >
                     </app-ta-copy>
                 </div>
-                <div class="single-item">
+                <div class="single-item" *ngIf="factoringData?.factoringCompany?.address?.address">
                     <svg-icon
                         class="company-icons"
                         src="assets/svg/truckassist-table/location-icon.svg"

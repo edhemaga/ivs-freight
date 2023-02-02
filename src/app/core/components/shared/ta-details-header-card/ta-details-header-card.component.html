@@ -55,7 +55,7 @@
                 ngbTooltip
                 [mainTooltip]="tooltipPrevious"
                 position="top"
-                tooltipBackground="#6C6C6C"
+                [tooltipBackground]=" !tooltipPrevious ? 'rgba(0,0,0,0)' : '#6C6C6C'"
                 class="previousArrow"
                 (click)="onAction('previous')"
             >
@@ -66,9 +66,9 @@
                 </svg-icon>
             </span>
             <span
-                tooltipBackground="#6C6C6C"
                 ngbTooltip
                 [mainTooltip]="tooltipNext"
+                [tooltipBackground]=" !tooltipNext ? 'rgba(0,0,0,0)' : '#6C6C6C'"
                 position="top"
                 class="nextArrow"
                 (click)="onAction('next')"

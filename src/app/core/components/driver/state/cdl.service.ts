@@ -156,6 +156,25 @@ export class CdlTService implements OnDestroy {
                 const dr = this.driverItemStore.getValue();
                 const driverData = JSON.parse(JSON.stringify(dr.entities));
                 let newData = driverData[driverId];
+                
+                let allCdls = this.cdlService.apiCdlListGet(driverId).subscribe({
+                    next: (resp: any) => {
+                        newData.cdls = resp;
+
+                        this.tableService.sendActionAnimation({
+                            animation: 'update',
+                            data: newData,
+                            id: newData.id,
+                        });
+                        
+                        this.dlStore.add(newData);
+                        this.driverItemStore.set([newData]);
+
+                        allCdls.unsubscribe();
+                    }
+                });
+                
+                /*
                 let cdlApi = this.cdlService.apiCdlIdGet(res.id).subscribe({
                     next: (resp: any) => {
 
@@ -178,16 +197,36 @@ export class CdlTService implements OnDestroy {
                         cdlApi.unsubscribe();
                     },
                 });
+                */
             })
         );
     }
-    public deactivateCdlById(id: number) {
-        return this.cdlService.apiCdlDeactivateIdPut(id).pipe(
+    public deactivateCdlById(id: number, driverIdMod: number) {
+        return this.cdlService.apiCdlDeactivateIdPut(driverIdMod).pipe(
             tap((res: any) => {
                 let driverId = this.driverItemStore.getValue().ids[0];
                 const dr = this.driverItemStore.getValue();
                 const driverData = JSON.parse(JSON.stringify(dr.entities));
                 let newData = driverData[driverId];
+                
+                let allCdls = this.cdlService.apiCdlListGet(driverId).subscribe({
+                    next: (resp: any) => {
+                        newData.cdls = resp;
+
+                        this.tableService.sendActionAnimation({
+                            animation: 'update',
+                            data: newData,
+                            id: newData.id,
+                        });
+                        
+                        this.dlStore.add(newData);
+                        this.driverItemStore.set([newData]);
+
+                        allCdls.unsubscribe();
+                    }
+                });
+
+                /*
                 let cdlApi = this.cdlService.apiCdlIdGet(res.id).subscribe({
                     next: (resp: any) => {
 
@@ -210,20 +249,43 @@ export class CdlTService implements OnDestroy {
                         cdlApi.unsubscribe();
                     },
                 });
+
+                */
             })
         );
     }
     public renewCdlUpdate(data: RenewCdlCommand): Observable<any> {
-        return this.cdlService.apiCdlRenewPut(data).pipe(
+        return this.cdlService.apiCdlRenewPost(data).pipe(
             tap((res: any) => {
                 let driverId = this.driverItemStore.getValue().ids[0];
                 const dr = this.driverItemStore.getValue();
                 const driverData = JSON.parse(JSON.stringify(dr.entities));
                 let newData = driverData[driverId];
+                
+                let allCdls = this.cdlService.apiCdlListGet(driverId).subscribe({
+                    next: (resp: any) => {
+                        newData.cdls = resp;
+
+                        this.tableService.sendActionAnimation({
+                            animation: 'update',
+                            data: newData,
+                            id: newData.id,
+                        });
+                        
+                        this.dlStore.add(newData);
+                        this.driverItemStore.set([newData]);
+
+                        allCdls.unsubscribe();
+                    }
+                });
+                
+
+                /*
                 let cdlApi = this.cdlService.apiCdlIdGet(res.id).subscribe({
                     next: (resp: any) => {
 
-                       
+                        console.log('---data---', data);
+                        console.log('---res---', res);
                         newData.cdls.map((reg: any, index: any) => {
                             if ( reg.id == resp.id ) {
                                 newData.cdls[index] = resp;  
@@ -242,6 +304,8 @@ export class CdlTService implements OnDestroy {
                         cdlApi.unsubscribe();
                     },
                 }); 
+                */
+
             })
         );
     }

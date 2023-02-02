@@ -42,7 +42,7 @@ import {
                 height: '*',
                 overflow: 'hidden',
                 opacity: 1,
-                'margin-left': '16px',
+                'margin-left': '12px',
                 'margin-right': '10px',
                 'padding-bottom': '11px',
                 'padding-top': '0px',
@@ -101,6 +101,7 @@ export class TaReCardComponent implements OnInit {
     @Output() public dropActions = new EventEmitter<any>();
     @Input() public weeklyWidth: string = '';
     @Input() public setPositionDrop: boolean;
+    @Input() public mvrPositionDrop: boolean;
     @Input() isDeactivated: any;
     @Input() noteIcons: string = '';
     @Input() cardNameCurrent: string;
@@ -138,9 +139,13 @@ export class TaReCardComponent implements OnInit {
     }
 
     public sendData(data: any) {
-        console.log('--sendData function---');
+        console.log('--sendData function---', data);
         this.data = data;
         this.DetailsDataService.setCardMainTitle(this.cardNameCommon);
+        if ( this.mainData?.id ){
+            this.DetailsDataService.setCdlId(this.mainData.id);
+        }
+        
         // api start after every click
         //this.dataDropDopwn.emit(data);
         if ( this.preloadData ) {
@@ -155,6 +160,11 @@ export class TaReCardComponent implements OnInit {
             return false;
         }
         let currentDate = moment().format('MM/DD/YYYY');
+
+        this.DetailsDataService.setCardMainTitle(this.cardNameCommon);
+        if ( this.mainData?.id ){
+            this.DetailsDataService.setCdlId(this.mainData.id);
+        }
         if (
             moment(this.expDateClose).isBefore(currentDate) ||
             this.isDeactivated ||
@@ -245,6 +255,33 @@ export class TaReCardComponent implements OnInit {
                 }
             });
         } else if (this.cardNameCurrent == 'cdl') {
+            let endDate = moment(this.mainData.expDate);
+            let daysDiff = endDate.diff(moment(), 'days');
+
+            this.options.actions.map((action, index) => {
+                if ( index == 8 ) {
+                    if ( this.mainData?.status == 0 ) {
+                        action.title = 'Activate';
+                        action.name = 'activate-item';
+                        action.iconName = 'activate-item';
+                        action.redIcon = false;
+                        action.blueIcon = true;
+                    } else {
+                        action.title = 'Void';
+                        action.name = 'deactivate-item';
+                        action.iconName = 'deactivate-item';
+                        action.redIcon = true;
+                        action.blueIcon = false; 
+                    }
+                } else if ( index == 3 ) {
+                    if (daysDiff < -365) {
+                        action.disabled = true;
+                    } else {
+                        action.disabled = false;
+                    }
+                }
+            })
+            
         }
     }
 }

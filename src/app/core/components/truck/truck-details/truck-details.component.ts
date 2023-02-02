@@ -367,7 +367,7 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
         this.truckDetailsConfig = [
             {
                 id: 0,
-                name: 'Truck Details',
+                name: 'Truck Detail',
                 template: 'general',
                 data: data,
                 status: data?.status == 0 ? true : false,

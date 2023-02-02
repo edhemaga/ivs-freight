@@ -21,7 +21,7 @@ const routes: Routes = [
             driver: DriverItemResolver,
             driverMinimal: DriverMinimalResolver,
         },
-        data: { title: 'Driver Details' },
+        data: { title: 'Driver Detail' },
     },
     {
         path: 'card',

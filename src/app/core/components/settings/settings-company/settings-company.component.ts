@@ -47,6 +47,7 @@ export class SettingsCompanyComponent implements OnInit, OnDestroy {
     ngOnInit(): void {
         this.selectCompanyFunction();
         this.getCompanyDivision();
+        
         this.tableService.currentActionAnimation
             .pipe(takeUntil(this.destroy$))
             .subscribe((res: any) => {
@@ -57,6 +58,7 @@ export class SettingsCompanyComponent implements OnInit, OnDestroy {
                     this.cdRef.detectChanges();
                 }
             });
+           
         this.getData(this.activated.snapshot.data.company);
 
         this.detailsPageSer.pageDetailChangeId$
@@ -84,11 +86,10 @@ export class SettingsCompanyComponent implements OnInit, OnDestroy {
                         },
                     });
             });
-
         this.DetailsDataService.setNewData(this.data);
     }
 
-    public getData(data: CompanyResponse) {
+    public getData(data: any) {
         this.data = data;
     }
     public selectCompanyFunction() {
