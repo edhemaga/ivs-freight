@@ -1137,6 +1137,7 @@
     <div class="datetime-dropdown-holder">
         <app-custom-datetime-pickers
             [calendarType]="inputConfig.name === 'datepicker' ? 'date' : 'time'"
+            [inputConfig]="inputConfig"
             [placeholder]="'MM/DD/YY'"
             [dateTime]="dateTimeInputDate"
             (closePopover)="closePopover()"

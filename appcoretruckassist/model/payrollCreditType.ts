@@ -11,10 +11,10 @@
  */
 
 
-export type PayrollCreditType = 'Driver' | 'Truck';
+export type PayrollCreditType = 'Driver' | 'Owner';
 
 export const PayrollCreditType = {
     Driver: 'Driver' as PayrollCreditType,
-    Truck: 'Truck' as PayrollCreditType
+    Owner: 'Owner' as PayrollCreditType
 };
 

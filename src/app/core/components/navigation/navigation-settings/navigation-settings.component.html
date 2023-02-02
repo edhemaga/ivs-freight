@@ -30,7 +30,7 @@
     >
         <app-tooltip-slide
             [show]="showToolTip"
-            [name]="'Settings'"
+            [name]="'Company'"
         ></app-tooltip-slide>
     </div>
     <div
@@ -56,9 +56,17 @@
                 <svg-icon
                     src="{{ item.image }}"
                     class="svg-settings"
-                    [ngClass]="{ 'route-not-active-svg': item.construction }"
+                    [ngClass]="{
+                        'route-not-active-svg': item.construction,
+                        'active-icon': isActiveRouteOnReload(item.route)
+                    }"
                 ></svg-icon>
-                <p [ngClass]="{ 'route-not-active': item.construction }">
+                <p
+                    [ngClass]="{
+                        'route-not-active': item.construction,
+                        'actived-text': isActiveRouteOnReload(item.route)
+                    }"
+                >
                     {{ item.name }}
                 </p>
                 <svg-icon
@@ -92,11 +100,28 @@
         <p
             [@showHideDetails]="isNavigationHovered ? 'true' : 'false'"
             [ngClass]="{
-                'activated-settings': isSettingsPanelOpen
+                'activated-settings': isSettingsPanelOpen,
+                'item-width': isNavigationHovered
             }"
         >
-            <span class="item-name" *ngIf="isNavigationHovered"> Settings</span>
+            <span
+                class="item-name"
+                *ngIf="isNavigationHovered"
+                [ngClass]="{
+                    'activated-text': isSettingsPanelOpen
+                }"
+                [@showHideDetails]="isNavigationHovered ? 'true' : 'false'"
+            >
+                Company
+                <span
+                    [@showHideDetails]="isNavigationHovered ? 'true' : 'false'"
+                    class="item-name"
+                    *ngIf="!isSettingsPanelOpen && selectedRoute == 'Settings'"
+                    >[{{ selectedSubRoute }}]</span
+                ></span
+            >
             <svg-icon
+                [@showHideDetails]="isNavigationHovered ? 'true' : 'false'"
                 class="nav-item-arrow nav-item-arrow-active"
                 [ngClass]="{
                     'nav-item-arrow-rotate': isSettingsPanelOpen
