@@ -66,7 +66,7 @@
         //transform-origin: 17px 28px;
         transform-origin: 17px 28px;
 
-        #Path_39129 {
+        #Path_39129, #Path_41058 {
             opacity: 1;
             transition: opacity 0.15s;
         }
@@ -76,7 +76,7 @@
             transition: opacity 0.15s;
         }
 
-        #Ellipse_7909 {
+        #Ellipse_7909, #Path_41050 {
             transition: opacity 0.15s;
         }
 
@@ -96,7 +96,7 @@
         }
 
         svg {
-            #Path_39129 {
+            #Path_39129, #Path_41058 {
                 opacity: 0;
                 transition: opacity 0.15s;
             }
@@ -107,6 +107,10 @@
 
             #Ellipse_7909 {
                 transform: translate(15px, 0px) scale(1.125);
+            }
+
+            #Path_41050 {
+                transform: translate(29.5px, -19px) rotate(90deg) scale(1.125);
             }
         }
     }
