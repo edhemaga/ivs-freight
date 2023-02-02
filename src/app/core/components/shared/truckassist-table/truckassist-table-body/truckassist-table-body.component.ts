@@ -98,9 +98,6 @@ export class TruckassistTableBodyComponent
 
     // --------------------------------NgOnInit---------------------------------
     ngOnInit(): void {
-        console.log('View Data');
-        console.log(this.viewData);
-
         // Get Selected Tab Data
         this.getSelectedTabTableData();
 
@@ -161,24 +158,20 @@ export class TruckassistTableBodyComponent
             });
 
         // Scrolling Virtual Container
-        this.sharedService.emitTableScrolling
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((offSet: any) => {
-                console.log('Scrolling Virtual Container')
-                if (offSet < 84) {
-                    this.virtualScrollViewport.scrollToOffset(0);
-                } else if (offSet > 84) {
-                    this.virtualScrollViewport.scrollToOffset(offSet);
-                }
-            });
+        // this.sharedService.emitTableScrolling
+        //     .pipe(takeUntil(this.destroy$))
+        //     .subscribe((offSet: any) => {
+        //         if (offSet < 84) {
+        //             this.virtualScrollViewport.scrollToOffset(0);
+        //         } else if (offSet > 84) {
+        //             this.virtualScrollViewport.scrollToOffset(offSet);
+        //         }
+        //     });
     }
 
     // --------------------------------NgOnChanges---------------------------------
     ngOnChanges(changes: SimpleChanges): void {
         if (!changes?.viewData?.firstChange && changes?.viewData) {
-            console.log('View Data');
-            console.log(this.viewData);
-
             clearTimeout(this.viewDataTimeOut);
 
             this.viewData = [...changes.viewData.currentValue];
@@ -357,11 +350,16 @@ export class TruckassistTableBodyComponent
 
     // Go To Details Page
     goToDetails(route: any, row: any) {
-        const link =
-            route.link.routerLinkStart + row['id'] + route.link.routerLinkEnd;
+        if (!route.link?.doesNotHaveRout) {
+            const link =
+                route.link.routerLinkStart +
+                row['id'] +
+                route.link.routerLinkEnd;
 
-        this.detailsDataService.setNewData(row);
-        this.router.navigate([link]);
+            this.detailsDataService.setNewData(row);
+
+            this.router.navigate([link]);
+        }
     }
 
     // Select Row
@@ -501,8 +499,6 @@ export class TruckassistTableBodyComponent
             this.tableService.sendRowsSelected(this.mySelection);
 
             const viewData = this.viewData;
-
-            console.log(this.viewData);
 
             viewData.map((v) => {
                 v.isSelected = false;

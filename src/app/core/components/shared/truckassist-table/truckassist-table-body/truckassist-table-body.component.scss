@@ -568,14 +568,14 @@ table {
                             align-items: center;
                             cursor: pointer;
 
+                            &:hover {
+                                color: #5673aa !important;
+                                transition: 0.25s;
+                            }
+
                             &::selection {
                                 color: #6c6c6c;
                                 background: #6c6c6c20;
-                            }
-
-                            &:hover {
-                                color: #5673aa;
-                                transition: 0.25s;
                             }
                         }
 
