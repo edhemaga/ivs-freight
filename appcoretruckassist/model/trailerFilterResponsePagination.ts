@@ -9,12 +9,13 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { TrailerFilterResponse } from './trailerFilterResponse';
 
 
-export type PayrollCreditType = 'Driver' | 'Truck';
-
-export const PayrollCreditType = {
-    Driver: 'Driver' as PayrollCreditType,
-    Truck: 'Truck' as PayrollCreditType
-};
+export interface TrailerFilterResponsePagination { 
+    pageIndex?: number;
+    pageSize?: number;
+    count?: number;
+    data?: Array<TrailerFilterResponse> | null;
+}
 

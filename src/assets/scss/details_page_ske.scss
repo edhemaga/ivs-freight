@@ -127,14 +127,18 @@ p {
         overflow: hidden;
         width: 440px;
         background-color: $color-white;
-        padding: 9px 6px 4px 6px;
+        padding: 1px 8px 4px 8px;
+
+        &.trailer-details-card{
+            padding: 0px 6px 4px 6px;
+        }
     }
 }
 .assignTo {
     display: grid;
     grid-template-columns: 202px 202px;
     column-gap: 12px;
-    padding: 0 6px;
+    padding: 0 0px;
     .assignTo-vehicle {
         svg {
             width: 55px;
@@ -275,7 +279,7 @@ p {
     padding: 0 6px;
     .card-body-cdl {
         display: grid;
-        padding: 0 10px;
+        padding: 0 6px;
         .card-restriction-endorsment {
             display: grid;
             grid-template-columns: 110px 131px;
@@ -757,7 +761,7 @@ p {
             margin-top: 12px;
 
             p {
-                font-size: 14px;
+                font-size: 18px;
                 font-weight: 500;
                 color: #6c6c6c;
                 &::-moz-selection {
@@ -828,7 +832,7 @@ p {
     display: grid;
     grid-template-columns: 215px 1fr;
     row-gap: 12px;
-    padding: 0 10px;
+    padding: 0 4px;
     // margin-top: -7px;
     .common-item-wrapper {
         display: flex;
@@ -968,7 +972,7 @@ p {
     grid-template-columns: 130px 130px 130px;
     row-gap: 10px;
     column-gap: 10px;
-    padding: 0 10px;
+    padding: 0 2px;
     .mileage-template-item {
         display: flex;
         flex-direction: column;
@@ -1089,7 +1093,7 @@ p {
 
 .note-details-holder{
     padding-right: 6px;
-    padding-left: 4px;
+    padding-left: 3px;
 
     .note-container {
         .note-header {

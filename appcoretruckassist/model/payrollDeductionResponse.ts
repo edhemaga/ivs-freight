@@ -10,7 +10,6 @@
  * Do not edit the class manually.
  */
 import { TruckMinimalResponse } from './truckMinimalResponse';
-import { TrailerMinimalResponse } from './trailerMinimalResponse';
 import { EnumValue } from './enumValue';
 import { DriverMinimalResponse } from './driverMinimalResponse';
 
@@ -23,14 +22,13 @@ export interface PayrollDeductionResponse {
     driver?: DriverMinimalResponse;
     payrollOwnerId?: number | null;
     truck?: TruckMinimalResponse;
-    trailer?: TrailerMinimalResponse;
     date?: string;
     description?: string | null;
     amount?: number;
     recurringType?: EnumValue;
     currentRecurrance?: number | null;
     limitedNumber?: number | null;
-    limitedLevy?: number | null;
+    limitedAmount?: number | null;
     createdAt?: string;
     updatedAt?: string;
 }

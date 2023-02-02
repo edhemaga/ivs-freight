@@ -9,9 +9,9 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { TruckMinimalResponse } from './truckMinimalResponse';
 import { EnumValue } from './enumValue';
 import { DriverMinimalResponse } from './driverMinimalResponse';
-import { OwnerShortResponse } from './ownerShortResponse';
 
 
 export interface PayrollCreditResponse { 
@@ -21,7 +21,7 @@ export interface PayrollCreditResponse {
     payrollDriverCommissionId?: number | null;
     driver?: DriverMinimalResponse;
     payrollOwnerId?: number | null;
-    owner?: OwnerShortResponse;
+    truck?: TruckMinimalResponse;
     date?: string;
     description?: string | null;
     amount?: number;

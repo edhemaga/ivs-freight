@@ -116,7 +116,8 @@
                         src="assets/svg/common/ic_address.svg"
                     ></svg-icon>
                     <p class="basic-data-value">
-                        {{ companyData?.address?.address }}
+                        <app-ta-copy [copyValue]="companyData?.address?.address">
+                        </app-ta-copy>
                     </p>
                 </div>
                 <div class="basic-data" *ngIf="companyData?.phone">

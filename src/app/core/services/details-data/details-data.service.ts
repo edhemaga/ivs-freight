@@ -14,6 +14,7 @@ export class DetailsDataService {
     public stopName: any;
     public documentName: any;
     public unitValue: any;
+    public cdlId: any;
 
     constructor() {}
 
@@ -37,6 +38,10 @@ export class DetailsDataService {
 
     setCardMainTitle(mod) {
         this.cardMainTitle = mod;
+    }
+
+    setCdlId(mod){
+        this.cdlId = mod;
     }
 
     changeRateStatus(type, mod) {
