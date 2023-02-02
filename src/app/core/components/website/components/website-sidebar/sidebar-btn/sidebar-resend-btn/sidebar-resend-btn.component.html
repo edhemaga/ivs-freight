@@ -8,10 +8,7 @@
 </button>
 
 <ng-container *ngIf="requestedResend">
-    <div
-        class="d-flex align-items-center sent-container"
-        [@displaySentContainer]
-    >
+    <div class="d-flex align-items-center sent-container" [@fadeInAnimation]>
         <svg-icon
             class="check-icon"
             [ngClass]="{

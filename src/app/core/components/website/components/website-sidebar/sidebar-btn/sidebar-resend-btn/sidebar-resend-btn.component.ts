@@ -7,23 +7,14 @@ import {
     OnChanges,
     SimpleChanges,
 } from '@angular/core';
-import { trigger, style, animate, transition } from '@angular/animations';
+
+import { scrollButtonAnimation } from '../../../../state/utils/animation';
 
 @Component({
     selector: 'app-sidebar-resend-btn',
     templateUrl: './sidebar-resend-btn.component.html',
     styleUrls: ['./sidebar-resend-btn.component.scss'],
-    animations: [
-        trigger('displaySentContainer', [
-            transition(':enter', [
-                style({ opacity: 0, visibility: 'hidden' }),
-                animate(
-                    '0.2s ease-in-out',
-                    style({ opacity: 1, visibility: 'visible' })
-                ),
-            ]),
-        ]),
-    ],
+    animations: [scrollButtonAnimation()],
 })
 export class SidebarResendBtnComponent implements OnInit, OnChanges {
     @Input() btnText: string = null;

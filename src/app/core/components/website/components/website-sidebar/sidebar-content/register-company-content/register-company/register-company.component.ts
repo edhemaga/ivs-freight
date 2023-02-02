@@ -137,8 +137,6 @@ export class RegisterCompanyComponent implements OnInit, OnDestroy {
         if (this.registerCompanyForm.invalid) {
             this.inputService.markInvalid(this.registerCompanyForm);
 
-            console.log('form', this.registerCompanyForm);
-
             return;
         }
 

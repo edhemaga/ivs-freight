@@ -14,11 +14,14 @@ import { WebsiteActionsService } from '../../state/service/website-actions.servi
 
 import { ConstantString } from '../../state/enum/const-string.enum';
 
+import { scrollButtonAnimation } from '../../state/utils/animation';
+
 @Component({
     selector: 'app-website-sidebar',
     templateUrl: './website-sidebar.component.html',
     styleUrls: ['./website-sidebar.component.scss'],
     encapsulation: ViewEncapsulation.None,
+    animations: [scrollButtonAnimation()],
 })
 export class WebsiteSidebarComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
