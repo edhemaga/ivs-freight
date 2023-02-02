@@ -70,9 +70,10 @@ export class WebsiteAuthStoreService {
             tap((user: SignInResponse) => {
                 this.router.navigate(['/dashboard']);
 
-                // Production
+                // ---- PRODUCTION MODE ----
                 // this.authStore.set({ 1: user });
-                // Develop
+
+                // ---- DEVELOP MODE ----
                 localStorage.setItem('user', JSON.stringify(user));
             })
         );

@@ -8,7 +8,7 @@ const routes: Routes = [
         path: '',
         component: WebsiteMainComponent,
         data: { title: 'Website' },
-        children: [],
+        children: [{ path: '**', redirectTo: '/website', pathMatch: 'full' }],
     },
 ];
 
