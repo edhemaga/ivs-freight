@@ -333,7 +333,7 @@ export class ShopRepairDetailsComponent implements OnInit, OnDestroy {
         this.shopRepairConfig = [
             {
                 id: 0,
-                nameDefault: 'Repair Shop Details',
+                nameDefault: 'Repair Shop Detail',
                 template: 'general',
                 data: data,
             },

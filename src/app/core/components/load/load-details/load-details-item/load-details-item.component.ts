@@ -21,6 +21,7 @@ import { ReviewCommentModal } from '../../../shared/ta-user-review/ta-user-revie
 })
 export class LoadDetailsItemComponent implements OnInit, OnChanges, OnDestroy {
     @Input() loadData: any;
+    @Input() routeData: any;
     public comments: any[] = [];
     private destroy$ = new Subject<void>();
     public totalLegMiles: any;

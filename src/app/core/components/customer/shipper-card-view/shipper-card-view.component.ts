@@ -10,6 +10,7 @@ import {
 import { UntypedFormControl } from '@angular/forms';
 import { ShipperMinimalListQuery } from '../state/shipper-state/shipper-details-state/shipper-minimal-list-state/shipper-minimal.query';
 import { DetailsPageService } from '../../../services/details-page/details-page-ser.service';
+import moment from 'moment';
 
 @Component({
     selector: 'app-shipper-card-view',
@@ -153,7 +154,7 @@ export class ShipperCardViewComponent implements OnInit, OnChanges {
                 };
             });
     }
-
+    
     public tabsButton() {
         this.shipperTabs = [
             {
@@ -240,5 +241,10 @@ export class ShipperCardViewComponent implements OnInit, OnChanges {
                 break;
             }
         }
+    }
+
+    public converTime(mod){
+        let time_string = moment(mod,'HH:mm').format('hh:mm A');
+        return time_string;
     }
 }

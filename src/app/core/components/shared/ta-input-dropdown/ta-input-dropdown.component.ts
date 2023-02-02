@@ -31,7 +31,7 @@ import { ImageBase64Service } from '../../../utils/base64.image';
     animations: [input_dropdown_animation('showHideDropdownOptions')],
 })
 export class TaInputDropdownComponent
-    implements
+    implements 
         OnInit,
         AfterViewInit,
         OnDestroy,

@@ -34,7 +34,7 @@
     // top: 12px;
 }
 .insuarance-card-top-container {
-    padding: 0 10px;
+    padding: 0 4px;
     display: flex;
     flex-direction: column;
     padding-bottom: 10px;
@@ -58,6 +58,10 @@
             font-size: 18px;
             font-weight: $settings-font-medium;
             color: $settings-gray-dark;
+            max-width: 100%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
 
             &::-moz-selection {
                 color: $settings-gray-dark;
@@ -73,6 +77,7 @@
             padding: 2.5px 6px;
             margin-left: 6px;
             border-radius: 2px;
+            user-select: none;
             .rating-value {
                 font-size: 12px;
                 font-weight: 700;

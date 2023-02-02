@@ -1,5 +1,4 @@
 import {
-    AfterContentInit,
     AfterViewInit,
     ChangeDetectionStrategy,
     ChangeDetectorRef,
@@ -41,7 +40,7 @@ import { FilesService } from 'src/app/core/services/shared/files.service';
     ],
 })
 export class TruckassistTableBodyComponent
-    implements OnInit, OnChanges, AfterViewInit, OnDestroy, AfterContentInit
+    implements OnInit, OnChanges, AfterViewInit, OnDestroy
 {
     private destroy$ = new Subject<void>();
     @ViewChild('tableScrollRef', { static: false })
@@ -99,6 +98,9 @@ export class TruckassistTableBodyComponent
 
     // --------------------------------NgOnInit---------------------------------
     ngOnInit(): void {
+        console.log('View Data');
+        console.log(this.viewData);
+
         // Get Selected Tab Data
         this.getSelectedTabTableData();
 
@@ -162,6 +164,7 @@ export class TruckassistTableBodyComponent
         this.sharedService.emitTableScrolling
             .pipe(takeUntil(this.destroy$))
             .subscribe((offSet: any) => {
+                console.log('Scrolling Virtual Container')
                 if (offSet < 84) {
                     this.virtualScrollViewport.scrollToOffset(0);
                 } else if (offSet > 84) {
@@ -173,6 +176,9 @@ export class TruckassistTableBodyComponent
     // --------------------------------NgOnChanges---------------------------------
     ngOnChanges(changes: SimpleChanges): void {
         if (!changes?.viewData?.firstChange && changes?.viewData) {
+            console.log('View Data');
+            console.log(this.viewData);
+
             clearTimeout(this.viewDataTimeOut);
 
             this.viewData = [...changes.viewData.currentValue];
@@ -233,31 +239,31 @@ export class TruckassistTableBodyComponent
 
     // --------------------------------NgAfterViewInit---------------------------------
     ngAfterViewInit(): void {
-        setTimeout(() => {
-            if (this.viewData.length) {
-                const tableContainer =
-                    document.querySelector('.table-container');
+        // For Virtual Scroll
+        // setTimeout(() => {
+        //     if (this.viewData.length) {
+        //         const tableContainer =
+        //             document.querySelector('.table-container');
 
-                const cdkVirtualScrollSpacer = document.querySelector(
-                    '.cdk-virtual-scroll-spacer'
-                );
+        //         const cdkVirtualScrollSpacer = document.querySelector(
+        //             '.cdk-virtual-scroll-spacer'
+        //         );
 
-                const pageHeight =
-                    tableContainer.clientHeight -
-                    1018 +
-                    cdkVirtualScrollSpacer.clientHeight;
+        //         const pageHeight =
+        //             tableContainer.clientHeight -
+        //             1018 +
+        //             cdkVirtualScrollSpacer.clientHeight;
 
-                this.sharedService.emitUpdateScrollHeight.emit({
-                    tablePageHeight: pageHeight,
-                });
-            }
-        }, 10);
+        //         this.sharedService.emitUpdateScrollHeight.emit({
+        //             tablePageHeight: pageHeight,
+        //         });
+        //     }
+        // }, 10);
 
         this.getNotPinedMaxWidth();
     }
 
-    ngAfterContentInit(): void {}
-
+    // Horizontal Scroll
     onHorizontalScroll(scrollEvent: any) {
         if (scrollEvent.eventAction === 'scrolling') {
             document
@@ -516,7 +522,7 @@ export class TruckassistTableBodyComponent
     }
 
     // Show Attachments
-    onShowAttachments(row: any, popup) {
+    onShowAttachments(row: any) {
         if (this.activeAttachment !== row.id) {
             let entity = this.activeTableData?.gridNameTitle;
 
@@ -525,16 +531,11 @@ export class TruckassistTableBodyComponent
             }
 
             this.filesService.getFiles(entity, row.id).subscribe((res) => {
-                this.activeAttachment = row.id;
-                row.tableAttachments = res;
-
-                if (res?.length == 1) {
-                    if (popup.isOpen()) {
-                        popup.close();
-                    } else {
-                        popup.open({ data: res });
-                    }
+                if (res?.length) {
+                    this.activeAttachment = row.id;
+                    row.tableAttachments = res;
                 }
+
                 this.changeDetectorRef.detectChanges();
             });
         } else {
@@ -583,14 +584,5 @@ export class TruckassistTableBodyComponent
         this.destroy$.next();
         this.destroy$.complete();
         this.tableService.sendRowsSelected([]);
-    }
-
-    // --------------------------------TODO---------------------------------
-    onShowItemDrop(index: number) {
-        alert('Treba da se odradi');
-    }
-
-    saveNote(note: string, row: any) {
-        alert('Treba da se odradi');
     }
 }

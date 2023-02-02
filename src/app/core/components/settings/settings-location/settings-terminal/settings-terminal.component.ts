@@ -77,12 +77,12 @@ export class SettingsTerminalComponent implements OnInit, OnDestroy {
             .subscribe((item) => (this.terminalData = item.pagination));
     }
 
-    public optionsEvent(any: any, action: string) {
-        this.getTerminalById(any.id);
+    public optionsEvent(eventData: any, action: string) {
+        this.getTerminalById(eventData.id);
         setTimeout(() => {
-            const name = dropActionNameDriver(any, action);
+            const name = dropActionNameDriver(eventData, action);
             this.dropDownService.dropActionCompanyLocation(
-                any,
+                eventData,
                 name,
                 this.terminalDataById
             );

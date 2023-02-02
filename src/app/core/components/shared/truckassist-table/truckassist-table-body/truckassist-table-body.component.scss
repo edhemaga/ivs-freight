@@ -4,7 +4,7 @@ table {
     height: fit-content;
 
     tbody {
-        display: flex;
+        // display: flex;
 
         tr {
             width: fit-content;
@@ -2230,18 +2230,6 @@ table {
                             top: 2px;
                             z-index: 100;
 
-                            .document-count-title {
-                                font-size: 14px;
-                                font-weight: bold;
-                                color: #919191;
-                                margin-left: 4px;
-
-                                &::selection {
-                                    color: #919191;
-                                    background: #91919120;
-                                }
-                            }
-
                             .download-document-btn {
                                 cursor: pointer;
                                 user-select: none;
@@ -2624,6 +2612,7 @@ table {
 
 // SHOW MORE
 .show-more-container {
+    margin-bottom: 12px;
     height: 18px;
     width: fit-content;
     margin-top: 3px;
@@ -2658,6 +2647,11 @@ table {
         font-size: 14px;
         font-weight: bold;
         color: #6c6c6c;
+
+        &:hover{
+            color: #5673aa;
+            transform: 0.25s;
+        }
 
         &::selection {
             color: #6c6c6c;

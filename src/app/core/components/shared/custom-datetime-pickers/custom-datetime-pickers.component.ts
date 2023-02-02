@@ -21,6 +21,7 @@ import moment from 'moment';
 export class CustomDatetimePickersComponent implements OnInit {
     @Input() dateTime: Date;
     @ViewChild('ref', { read: ViewContainerRef }) ref: ViewContainerRef;
+    @Input() inputConfig: any;
 
     @Output() closePopover: EventEmitter<any> = new EventEmitter();
 
@@ -115,7 +116,7 @@ export class CustomDatetimePickersComponent implements OnInit {
         const dateInputArray = moment(this.dateTime).format('H/m/A').split('/');
         console.log(dateInputArray);
         this.scrollTypes.hourScroll = dateInputArray[0];
-        this.scrollTypes.minutesScroll = dateInputArray[1];
+        this.scrollTypes.minutesScroll = this.timeMinutes.indexOf(dateInputArray[1]); 
         this.scrollTypes.pmAmScroll = dateInputArray[2] == 'AM' ? 0 : 1;
     }
 

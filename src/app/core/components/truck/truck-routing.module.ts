@@ -21,7 +21,7 @@ const routes: Routes = [
             truck: TruckItemResolver,
             truckMinimal: TruckMinimalResolver,
         },
-        data: { title: 'Truck details' },
+        data: { title: 'Truck detail' },
     },
     {
         path: 'card',
