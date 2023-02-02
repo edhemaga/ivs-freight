@@ -2,8 +2,8 @@
     <app-ta-details-header-card
         [ngClass]="{ 'disabedPreviousArrow': truckIndex == 0, 'disableNextArrow': truckIndex == (truck_list.length -1 ) }"
         [cardDetailsDate]="truck.createdAt | formatDateP"
-        [tooltipNext]=" truckIndex == (truck_list.length -1 )  ?  'Disabled' : 'Next Truck' "
-        [tooltipPrevious]=" truckIndex == 0 ? 'Disabled' : 'Previous Truck' "
+        [tooltipNext]=" truckIndex == (truck_list.length -1 )  ?  '' : 'Next Truck' "
+        [tooltipPrevious]=" truckIndex == 0 ? '' : 'Previous Truck' "
         [searchInputName]="'Search Truck'"
         [options]="truckDropDowns"
         (selectValue)="onSelectedTruck($event)"
@@ -22,7 +22,7 @@
                         >
                         </svg-icon>
                     </div>
-
+                    
                     <div class="model-name">
                         <div class="svg-wrapper">
                             <svg-icon
@@ -100,6 +100,10 @@
                 [tooltipName]="'Dispatch History'"
                 [hasHeaderSvg]="'assets/svg/common/ic_half_time.svg'"
                 [isCardOpen]="true"
+                [animationMarginParams]="{
+                    marginTop: '0px',
+                    marginBottom: '10px'
+                }"
             >
                 <div class="assignTo">
                     <div class="assignTo-item first" *ngIf="truck?.assignedTo?.trailer?.id">
@@ -131,6 +135,10 @@
                 [bodyTemplate]="'card'"
                 [isCardOpen]="true"
                 [cardName]="'Additional Details'"
+                [animationMarginParams]="{
+                    marginTop: '0px',
+                    marginBottom: '10px'
+                }"
             >
                 <div class="common-template">
                     <div
@@ -359,9 +367,14 @@
             <!--------Owner--------->
             <app-ta-custom-card
                 class="item-cards"
-                [cardName]="'Owner'"
+                [cardName]=" ownerCardOpened ? 'Owner' : 'Owner ' + truck.owner.name "
                 [bodyTemplate]="'card'"
                 [isCardOpen]="true"
+                [animationMarginParams]="{
+                    marginTop: '0px',
+                    marginBottom: '10px'
+                }"
+                (onOpenCard)="onOpenCloseCard($event)"
             >
                 <div class="common-template">
                     <div class="common-template-item">
@@ -379,7 +392,6 @@
                 </div>
                 <div
                     class="wrapper-owner"
-                    [@ownerDetailsAnimation]="togglerOwner ? 'true' : 'false'"
                 >
                     <div class="owner-items">
                         <svg-icon
@@ -403,38 +415,8 @@
                             src="assets/svg/common/ic_address.svg"
                         ></svg-icon>
                         <p class="information-value">
-                            {{ truck.owner.address.address }}
+                            <app-ta-copy [copyValue]="truck?.owner?.address?.address"></app-ta-copy>
                         </p>
-                    </div>
-                </div>
-                <div [ngClass]="{ 'rotate-owner': togglerOwner }">
-                    <div
-                        (click)="togglerOwner = !togglerOwner"
-                        class="single-icon-wrapper"
-                    >
-                        <span
-                            [tooltipBackground]="'#6c6c6c'"
-                            ngbTooltip
-                            [mainTooltip]="
-                                togglerOwner ? 'Hide Contact' : 'Show More'
-                            "
-                            position="top"
-                        >
-                            <svg-icon
-                                class="icon-rotate"
-                                src="assets/svg/common/fill_arrow_down.svg"
-                            ></svg-icon>
-                        </span>
-                        <span
-                            tooltipBackground="#6c6c6c"
-                            ngbTooltip
-                            [mainTooltip]="
-                                togglerOwner ? 'Hide Contact' : 'Show More'
-                            "
-                            position="top"
-                            class="hide-show"
-                        >
-                        </span>
                     </div>
                 </div>
             </app-ta-custom-card>
@@ -536,6 +518,10 @@
                 [bodyTemplate]="'card'"
                 [hasHeaderSvg]="'assets/svg/common/arrow_top_right.svg'"
                 class="item-cards"
+                [animationMarginParams]="{
+                    marginTop: '0px',
+                    marginBottom: '10px'
+                }"
             >
                 <div class="owner-history-container">
                     <div class="status-container">
@@ -604,6 +590,7 @@
                 <app-ta-input-note
                     [formControl]="noteControl"
                     [note]="truck.note"
+                    [blankNote]=" truck?.note ? true : false"
                     [isVisibleDivider]="false"
                     [isVisibleNote]="true"
                     [isVisibleArrow]="true"

@@ -130,7 +130,12 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
                             break;
                         }
                         case 'activate': {
-                            this.changeDriverStatus(res.id);
+                            if ( res?.cdlStatus && res?.cdlStatus == 'Activate' ) {
+                                this.activateCdl(res.data.id);
+                            } else {
+                                this.changeDriverStatus(res.id);
+                            }
+                            
                             break;
                         }
                         case 'deactivate': {
@@ -139,7 +144,15 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
                         }
                         case 'info': {
                             if (res.cdlStatus === 'New') {
-                                this.deactivateCdl(res.data.id);
+                                let driverId = res.data.data.id ? res.data.data.id : res.data.driver.id;
+                                this.deactivateCdl(res.data.id, driverId);
+                                if ( this.DetailsDataService.cdlId != res.data.id || res?.data?.newCdlID ) {
+                                    let newCdlId = res?.data?.newCdlID ? res?.data?.newCdlID : this.DetailsDataService.cdlId;
+                                    setTimeout(()=>{
+                                        this.activateCdl(newCdlId);
+                                    }, 1000);
+                                    
+                                }
                             } else {
                                 this.activateCdl(res.data.id);
                             }
@@ -210,7 +223,7 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
         this.driverDetailsConfig = [
             {
                 id: 0,
-                name: 'Driver Details',
+                name: 'Driver Detail',
                 template: 'general',
                 data: dataDriver,
             },
@@ -489,13 +502,11 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
                 },
             });
     }
-    private deactivateCdl(id: number) {
+    private deactivateCdl(id: number, driverId: number) {
         this.cdlService
-            .deactivateCdlById(id)
+            .deactivateCdlById(id, driverId)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: () => {},
-                error: () => {},
             });
     }
 
@@ -504,8 +515,6 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
             .activateCdlById(id)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: () => {},
-                error: () => {},
             });
     }
     public onModalAction(action: string): void {
@@ -522,6 +531,12 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
                         { id: this.driverId, type: 'new-licence' }
                     );
                 } else {
+                    this.modalService.openModal(
+                        DriverCdlModalComponent,
+                        { size: 'small' },
+                        { id: this.driverId, type: 'new-licence' }
+                    );
+                    /*
                     const data = {
                         ...this.driverObject,
                         data: {
@@ -553,6 +568,7 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
                             modalHeader: true,
                         }
                     );
+                    */
                 }
                 break;
             }

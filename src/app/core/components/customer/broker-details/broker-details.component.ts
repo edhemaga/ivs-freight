@@ -195,7 +195,7 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
         this.brokerConfig = [
             {
                 id: 0,
-                nameDefault: 'Broker Details',
+                nameDefault: 'Broker Detail',
                 template: 'general',
                 data: data,
             },

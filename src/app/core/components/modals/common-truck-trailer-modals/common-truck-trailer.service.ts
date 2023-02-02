@@ -163,11 +163,11 @@ export class CommonTruckTrailerService {
                     const truckData = JSON.parse(JSON.stringify(tr.entities));
                     let newData = truckData[data.truckId];
 
-                    let inspApi = this.trailerService
-                        .getTrailerInspectionByInspectionId(newInspId)
+                    let inspApi = this.truckService
+                        .getTruckInspectionsById(data.truckId)
                         .subscribe({
                             next: (resp: any) => {
-                                newData.inspections.push(resp);
+                                newData.inspections = resp;
                                 this.tableService.sendActionAnimation({
                                     animation: 'update',
                                     data: newData,
@@ -186,10 +186,10 @@ export class CommonTruckTrailerService {
                     let newData = trailerData[data.trailerId];
 
                     let inspApi = this.trailerService
-                        .getTrailerInspectionByInspectionId(newInspId)
+                        .getTrailerInspectionsById(data.trailerId)
                         .subscribe({
                             next: (resp: any) => {
-                                newData.inspections.push(resp);
+                                newData.inspections = resp;
                                 this.tableService.sendActionAnimation({
                                     animation: 'update',
                                     data: newData,

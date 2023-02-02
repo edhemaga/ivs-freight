@@ -124,6 +124,11 @@ $color-gray-dark: #6c6c6c;
     max-width: 440px;
     margin-top: 8px;
 }
+
+.bind-heigth {
+    max-height: fit-content !important;
+}
+
 .wrapper-additional-cards {
     max-height: calc(77vh - 74px);
     min-height: calc(20vh - 10px);
@@ -140,7 +145,7 @@ $color-gray-dark: #6c6c6c;
 }
 .cards-item-wrapper-1 {
     overflow: hidden;
-    height: calc(100vh - 62px);
+    //height: calc(100vh - 62px);
 }
 .details-cards {
     background-color: #ffffff;
@@ -172,9 +177,7 @@ $color-gray-dark: #6c6c6c;
     width: 60px;
     height: 18px;
 }
-.bind-heigth {
-    max-height: fit-content !important;
-}
+
 .activate-button-card {
     width: 398px !important;
 }

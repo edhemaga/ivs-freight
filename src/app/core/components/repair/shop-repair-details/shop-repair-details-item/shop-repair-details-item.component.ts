@@ -141,11 +141,11 @@ export class ShopRepairDetailsItemComponent implements OnInit, OnChanges {
         this.showRepairItems[index] = !this.showRepairItems[index];
     }
 
-    public optionsEvent(any: any, action: string) {
-        const name = dropActionNameDriver(any, action);
+    public optionsEvent(eventData: any, action: string) {
+        const name = dropActionNameDriver(eventData, action);
         setTimeout(() => {
             this.dropDownService.dropActions(
-                any,
+                eventData,
                 name,
                 null,
                 null,
@@ -154,7 +154,7 @@ export class ShopRepairDetailsItemComponent implements OnInit, OnChanges {
                 null,
                 null,
                 null,
-                any,
+                eventData,
                 null,
                 null
             );
