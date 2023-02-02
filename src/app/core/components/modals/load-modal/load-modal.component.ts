@@ -3601,7 +3601,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     }
 
     public identity(index: number, item: any): number {
-        return item.id;
+        return index;
     }
 
     public onBlurDescription(action: string, ind?: number) {
