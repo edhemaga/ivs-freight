@@ -1374,7 +1374,7 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
     }
 
     public identity(index: number, item: any): number {
-        return item.id;
+        return index;
     }
 
     ngOnDestroy(): void {

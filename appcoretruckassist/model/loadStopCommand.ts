@@ -10,7 +10,6 @@
  * Do not edit the class manually.
  */
 import { LoadStopType } from './loadStopType';
-//import { LoadStopItemCommand } from './loadStopItemCommand';
 
 
 export interface LoadStopCommand { 
