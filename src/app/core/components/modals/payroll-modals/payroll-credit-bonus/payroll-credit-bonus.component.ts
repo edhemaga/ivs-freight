@@ -336,28 +336,28 @@ export class PayrollCreditBonusComponent implements OnInit {
                         };
                     }
 
-                    // if (res.truck) {
-                    //     this.selectedTruck = {
-                    //         ...res.truck,
-                    //         name: res.truck.truckNumber,
-                    //         additionalText: res.truck.owner,
-                    //     };
+                    if (res.truck) {
+                        this.selectedTruck = {
+                            ...res.truck,
+                            name: res.truck.truckNumber,
+                            additionalText: res.truck.owner,
+                        };
 
-                    //     this.truckDropdownsConfig = {
-                    //         ...this.truckDropdownsConfig,
-                    //         multipleInputValues: {
-                    //             options: [
-                    //                 {
-                    //                     value: res.truck?.truckNumber,
-                    //                 },
-                    //                 {
-                    //                     value: res?.truck?.owner,
-                    //                 },
-                    //             ],
-                    //             customClass: 'double-text-dropdown',
-                    //         },
-                    //     };
-                    // }
+                        this.truckDropdownsConfig = {
+                            ...this.truckDropdownsConfig,
+                            multipleInputValues: {
+                                options: [
+                                    {
+                                        value: res.truck?.truckNumber,
+                                    },
+                                    {
+                                        value: res?.truck?.owner,
+                                    },
+                                ],
+                                customClass: 'double-text-dropdown',
+                            },
+                        };
+                    }
 
                     setTimeout(() => {
                         this.tabChange({ id: res.type.id });
@@ -386,12 +386,12 @@ export class PayrollCreditBonusComponent implements OnInit {
                             isDriver: true,
                         };
                     });
-                    // this.labelsTrucks = res.trucks.map((item) => {
-                    //     return {
-                    //         ...item,
-                    //         name: item.truckNumber,
-                    //     };
-                    // });
+                    this.labelsTrucks = res.trucks.map((item) => {
+                        return {
+                            ...item,
+                            name: item.truckNumber,
+                        };
+                    });
 
                     // If Add New By Id
                     if (

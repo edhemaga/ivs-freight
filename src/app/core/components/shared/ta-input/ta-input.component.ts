@@ -29,6 +29,7 @@ import {
 } from '../../../utils/methods.calculations';
 import { FormService } from 'src/app/core/services/form/form.service';
 import { ImageBase64Service } from '../../../utils/base64.image';
+import { NotificationService } from '../../../services/notification/notification.service';
 @Component({
     selector: 'app-ta-input',
     templateUrl: './ta-input.component.html',
@@ -130,7 +131,8 @@ export class TaInputComponent
         private thousandSeparatorPipe: TaThousandSeparatorPipe,
         private refChange: ChangeDetectorRef,
         private formService: FormService,
-        public imageBase64Service: ImageBase64Service
+        public imageBase64Service: ImageBase64Service,
+        private notificationService: NotificationService
     ) {
         this.superControl.valueAccessor = this;
     }
@@ -574,11 +576,21 @@ export class TaInputComponent
             this.inputConfig.name !== 'Allow All'
         ) {
             if (event.getModifierState('CapsLock')) {
+                this.notificationService.triggerToastMessage(
+                    'error',
+                    'Illegal behavior',
+                    'Please turn of CAPSLOCK or stop hodling SHIFT'
+                );
                 event.preventDefault();
                 return;
             }
             // Check if shift key is pressed
             if (event.shiftKey) {
+                this.notificationService.triggerToastMessage(
+                    'error',
+                    'ILLEGAL BEHAVIOR',
+                    'Please turn of CAPSLOCK or stop holding SHIFT'
+                );
                 event.preventDefault();
                 return;
             }
@@ -735,7 +747,7 @@ export class TaInputComponent
                     )
                 );
         }
-        console.log('transform text: ', this.getSuperControl.value);
+
         if (this.inputConfig.priceSeparator && this.getSuperControl.value) {
             // 0. Don't allow 0 as first character
             if (
@@ -1052,7 +1064,6 @@ export class TaInputComponent
             return false;
         }
 
-        console.log('on key press: ', this.getSuperControl.value);
         if (this.inputConfig.priceSeparator) {
             if (
                 this.inputService

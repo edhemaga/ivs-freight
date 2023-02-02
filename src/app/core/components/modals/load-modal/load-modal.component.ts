@@ -1029,6 +1029,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 } else {
                     this.selectedPickupShipper = event;
 
+                    console.log(this.selectedPickupShipper);
+
                     // Draw Stop on map
                     this.drawStopOnMap();
 
@@ -3601,7 +3603,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     }
 
     public identity(index: number, item: any): number {
-        return item.id;
+        return index;
     }
 
     public onBlurDescription(action: string, ind?: number) {
