@@ -483,22 +483,22 @@ export class DriverDetailsItemComponent
         }
     }
 
-    public optionsEvent(any: any, action: string) {
-        const name = dropActionNameDriver(any, action);
+    public optionsEvent(eventData: any, action: string) {
+        const name = dropActionNameDriver(eventData, action);
         let driverId = this.drivers[0].data.id;
         let dataCdls: any = [];
       
        //console.log('---any', any);
        //console.log('---this.activeCdl', this.activeCdl);
 
-        if ( this.activeCdl.length && this.activeCdl[0].id == any.id && ( any.type == 'deactivate-item' || any.type == 'delete-item' ) ) {
+        if ( this.activeCdl.length && this.activeCdl[0].id == eventData.id && ( eventData.type == 'deactivate-item' || eventData.type == 'delete-item' ) ) {
             this.mvrService
             .getMvrModal(driverId)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (res: GetMvrModalResponse) => {
                     res?.cdls?.map((item) => {
-                        if ( item.id != any.id ) {
+                        if ( item.id != eventData.id ) {
                             dataCdls.push({...item, name: item.cdlNumber});
                         }
                     })
@@ -509,8 +509,8 @@ export class DriverDetailsItemComponent
 
         let dataForCdl;
         if (
-            (this.activeCdl.length && any.type === 'activate-item') ||
-            any.type === 'deactivate-item'
+            (this.activeCdl.length && eventData.type === 'activate-item') ||
+            eventData.type === 'deactivate-item'
         ) {
             dataForCdl = this.activeCdl;
             
@@ -523,7 +523,7 @@ export class DriverDetailsItemComponent
         
         setTimeout(() => {
             this.dropDownService.dropActions(
-                any,
+                eventData,
                 name,
                 dataForCdl,
                 this.dataMvr,

@@ -372,10 +372,10 @@ export class DriverDetailsCardComponent
             this.driver.id
         );
     }
-    public optionsEvent(any: any, action: string) {
-        const name = dropActionNameDriver(any, action);
+    public optionsEvent(eventData: any, action: string) {
+        const name = dropActionNameDriver(eventData, action);
         this.dropDownService.dropActions(
-            any,
+            eventData,
             name,
             this.dataCDl,
             this.dataMvr,

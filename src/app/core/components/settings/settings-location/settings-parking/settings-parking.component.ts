@@ -129,13 +129,13 @@ public currentDate: any;
             .subscribe((item) => (this.parkingDataById = item));
     }
 
-    public optionsEvent(any: any, action: string) {
-        this.getParkingById(any.id);
+    public optionsEvent(eventData: any, action: string) {
+        this.getParkingById(eventData.id);
 
         setTimeout(() => {
-            const name = dropActionNameDriver(any, action);
+            const name = dropActionNameDriver(eventData, action);
             this.dropDownService.dropActionCompanyLocation(
-                any,
+                eventData,
                 name,
                 this.parkingDataById
             );
