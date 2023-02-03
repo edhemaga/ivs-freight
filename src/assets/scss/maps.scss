@@ -1005,10 +1005,12 @@
     }
 }
 
-.gm-style div[aria-label='Map'] {
-    :nth-child(1) {
+.routing-container {
+    .gm-style div[aria-label='Map'] {
         :nth-child(1) {
-            z-index: 104 !important;
+            :nth-child(1) {
+                z-index: 104 !important;
+            }
         }
     }
 }
