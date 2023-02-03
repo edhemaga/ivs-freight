@@ -87,3 +87,46 @@ export const DropDownAnimation = trigger('dropDownMenu', [
         ]),
     ]),
 ]);
+
+//Animation modal
+export const smoothHeight = (type: string) =>
+    trigger(type, [
+        state(
+            'true',
+            style({
+                width: '238px',
+                height: '721px',
+                borderRadius: '3px',
+            })
+        ),
+        state(
+            'false',
+            style({
+                width: '36px',
+                height: '36px',
+                borderRadius: '36px',
+            })
+        ),
+        transition('false <=> true', [animate('0.3s ease-in-out')]),
+    ]);
+
+export const moveElementsTopDownModal = (type: string) =>
+    trigger(type, [
+        state(
+            'true',
+            style({
+                height: '28px',
+                transform: 'translateX(0px)',
+                opacity: 1,
+            })
+        ),
+        state(
+            'false',
+            style({
+                height: '14px',
+                transform: 'translateX(-20px)',
+                opacity: 0,
+            })
+        ),
+        transition('false <=> true', [animate('0.3s ease-in-out')]),
+    ]);

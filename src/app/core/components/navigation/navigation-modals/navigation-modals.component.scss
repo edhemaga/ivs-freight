@@ -7,14 +7,22 @@
     padding: 10px 6px 6px 6px;
     border-radius: 3px;
     box-shadow: $nav-boxshadow;
-    left: 15.8px;
+    left: 17.8px;
     width: 242px;
+    width: 36px;
+    height: 36px;
     background-color: $nav-svg-active;
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
-
+    overflow: hidden;
+    .modal-inner {
+        width: 230px;
+        position: absolute;
+        left: 4px;
+        top: 13px;
+    }
     p {
         margin: 0;
         font-size: $nav-font-size;
@@ -34,18 +42,19 @@
             align-items: flex-start;
             border-radius: 50%;
             cursor: pointer;
-            top: -2px;
+            top: -5px;
             position: relative;
             width: 20px;
             height: 20px;
-            right: -4px;
+            right: 1px;
+            transform: rotate(45deg);
             svg {
                 position: relative;
                 top: 50%;
                 left: 50%;
                 transform: translate(-50%, -50%);
                 path {
-                    fill: $nav-active-lighter;
+                    fill: $nav-white;
                 }
             }
             &:hover {
@@ -95,12 +104,13 @@
             color: $nav-white;
             justify-content: space-between;
             p {
-                line-height: 28px;
-                padding: 0px 10px;
+                height: 28px;
+                padding: 4px 0px 0px 10px;
                 border-radius: 3px;
                 transition: all 0.2s ease-in-out;
                 position: relative;
                 width: 112px;
+
                 &:hover {
                     transition: $nav-transition;
                     background-color: $nav-hover-hover;
@@ -115,6 +125,40 @@
                     width: 2px;
                     height: 26px;
                     background: $nav-blue-3;
+                }
+            }
+        }
+    }
+}
+.show-modal {
+    .modal-inner {
+        .modal-nav-close {
+            .modal-nav-close-text {
+                .modal-nav-close-svg {
+                    svg {
+                        transform: rotate(-45deg);
+                        transition: all 0.3s;
+                        top: 2px;
+                        left: 4px;
+                        position: absolute;
+                    }
+                }
+            }
+        }
+    }
+}
+.hide-modal {
+    .modal-inner {
+        .modal-nav-close {
+            .modal-nav-close-text {
+                .modal-nav-close-svg {
+                    svg {
+                        transform: rotate(0deg);
+                        transition: all 0.3s;
+                        top: 2px;
+                        left: 4px;
+                        position: absolute;
+                    }
                 }
             }
         }

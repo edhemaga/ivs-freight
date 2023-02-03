@@ -45,14 +45,7 @@
             .hide-tooltip {
                 display: none;
             }
-            p {
-                transition: $nav-transition;
-                color: $nav-text-color-darker;
-                margin: 0;
-                display: flex;
-                width: 70px;
-                opacity: 0;
-            }
+
             .nav-header-bottom-plus {
                 border-radius: 50%;
                 padding: 0 8px;
@@ -81,44 +74,20 @@
                     }
                 }
             }
-            .dark-svg {
-                background: $nav-svg-active;
-                svg {
-                    path {
-                        fill: $nav-white;
-                    }
-                }
-                &:hover {
-                    background: $nav-white;
-                    svg {
-                        path {
-                            fill: $nav-svg-active;
-                        }
-                    }
-                }
-            }
         }
-
-        .nav-header-bottom-rightSide {
+        .svg-holder {
+            width: 25px;
+            height: 25px;
+            position: absolute;
+            right: 3px;
+            top: 4px;
             display: flex;
             align-items: center;
-            justify-content: space-between;
-            padding-right: 8px;
-            cursor: pointer;
-            &-search {
-                border-radius: 50%;
-                padding: 8px;
-                position: relative;
-                width: 22px;
-                height: 22px;
-                svg {
-                    position: absolute;
-                    top: 50%;
-                    left: 50%;
-                    transform: translate(-50%, -50%);
-                    width: 19px;
-                    height: 19px;
-                    &:hover {
+            justify-content: center;
+            z-index: 11;
+            .dark-svg {
+                &:hover {
+                    svg {
                         path {
                             fill: $nav-white;
                         }
@@ -127,9 +96,35 @@
             }
             .tooltip-right {
                 position: absolute;
-                left: -8px;
-                bottom: 25px;
+                right: 29px;
+                bottom: 26px;
             }
+        }
+        .nav-header-bottom-rightSide {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-right: 8px;
+            cursor: pointer;
+            width: 100%;
+            &-search {
+                border-radius: 50%;
+                padding: 8px 0 0 0px;
+                position: relative;
+                margin-left: 45px;
+                width: 100%;
+                height: 22px;
+                z-index: 100;
+                p {
+                    transition: $nav-transition;
+                    color: $nav-text-color-darker;
+                    margin: 0;
+                    display: flex;
+                    width: 70px;
+                    opacity: 0;
+                }
+            }
+
             // &-notes {
             //     margin: 0 6px;
             //     background: $nav-hover-darker;
