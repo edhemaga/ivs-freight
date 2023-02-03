@@ -42,11 +42,6 @@ export class ShipperDetailsSingleComponent implements OnInit, OnChanges {
         }
     }
     ngOnInit(): void {
-        console.log('----shipper--', this.shipper[0].data.loadStops);
-
-        this.shipper[0].data.loadStops.map((loads: any) => {
-            console.log('----loads', loads);
-        })
     }
 
     /**Function return id */

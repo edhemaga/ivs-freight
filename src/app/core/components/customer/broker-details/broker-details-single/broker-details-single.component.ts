@@ -47,7 +47,6 @@ export class BrokerDetailsSingleComponent implements OnInit, OnChanges {
     }
     ngOnInit(): void {
         this.initTableOptions();
-        console.log('---brokerData----', this.brokerData[0].data?.loadStops?.loads?.data)
     }
 
     /**Function return id */
