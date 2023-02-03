@@ -118,9 +118,14 @@
                             <svg-icon
                                 src="assets/svg/common/ic_phone.svg"
                             ></svg-icon>
-                            <p>
-                                {{ selectedRepairShop?.phone | formatPhoneP }}
-                            </p>
+
+                            <app-ta-copy
+                                [copyValue]="
+                                    selectedRepairShop?.phone | formatPhoneP
+                                "
+                                [textFontSize]="'11px'"
+                                [textColor]="'#424242'"
+                            ></app-ta-copy>
                         </div>
 
                         <div
@@ -130,7 +135,12 @@
                             <svg-icon
                                 src="assets/svg/common/ic_email.svg"
                             ></svg-icon>
-                            <p>{{ selectedRepairShop?.email }}</p>
+
+                            <app-ta-copy
+                                [copyValue]="selectedRepairShop?.email"
+                                [textFontSize]="'11px'"
+                                [textColor]="'#424242'"
+                            ></app-ta-copy>
                         </div>
 
                         <div
@@ -139,10 +149,14 @@
                         >
                             <svg-icon
                                 src="assets/svg/common/ic_address.svg"
+                                [ngStyle]="{ 'padding-bottom': '4px' }"
                             ></svg-icon>
-                            <p>
-                                {{ selectedRepairShop?.address }}
-                            </p>
+
+                            <app-ta-copy
+                                [copyValue]="selectedRepairShop?.address"
+                                [textFontSize]="'11px'"
+                                [textColor]="'#424242'"
+                            ></app-ta-copy>
                         </div>
                     </div>
                     <div class="clear-selected-item">
