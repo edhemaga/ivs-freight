@@ -5,6 +5,16 @@
                 showVerticalScrollBar: false,
                 showHorizontalScrollBar: true
             }"
+            [horizontalScrollHeight]="
+                activeAttachment !== -1 ||
+                activeMedia !== -1 ||
+                activeInsurance !== -1
+                    ? viewData.length * 32 +
+                      (viewData.length - 1) * 2 +
+                      22 +
+                      300
+                    : viewData.length * 32 + (viewData.length - 1) * 2 + 22
+            "
             (scrollEvent)="onHorizontalScroll($event)"
         >
             <tr
