@@ -123,6 +123,7 @@ export class TaInputComponent
     public hasDecimalIndex: number = -1;
     public originPriceSeparatorLimit: number;
     public decimalIndexTimeout = null;
+    public isDotDeleted: boolean = false;
 
     constructor(
         @Self() public superControl: NgControl,
@@ -394,6 +395,38 @@ export class TaInputComponent
             return;
         }
 
+        // Price Separator - remove dot on focus out
+        if (
+            this.inputConfig.priceSeparator &&
+            this.getSuperControl.value.indexOf('.') >= 0
+        ) {
+            // 4.1. Check for Dot position
+            this.hasDecimalIndex = this.getSuperControl.value.indexOf('.');
+
+            let integerPart = this.thousandSeparatorPipe.transform(
+                this.getSuperControl.value
+                    .slice(0, this.hasDecimalIndex)
+                    .slice(0, this.inputConfig.priceSeparatorLimitation)
+            );
+
+            let decimalPart = this.getSuperControl.value.slice(
+                this.hasDecimalIndex + 1
+            );
+
+            // 4.4. Get only two numbers of decimal part
+            decimalPart = decimalPart.slice(0, 2);
+
+            if (!decimalPart) {
+                this.hasDecimalIndex = -1;
+                this.getSuperControl.patchValue(integerPart);
+                this.input.nativeElement.setSelectionRange(
+                    this.input.nativeElement.selectionStart,
+                    this.input.nativeElement.selectionStart
+                );
+                this.numberOfPoints = 0;
+            }
+        }
+
         // Dropdown
         if (this.inputConfig.isDropdown || this.inputConfig.dropdownLabel) {
             if (
@@ -574,33 +607,9 @@ export class TaInputComponent
     }
 
     public onKeydown(event) {
-        this.capsLockOn = event.getModifierState('CapsLock');
+        this.capsLockOn = event.getModifierState('CapsLock') || event.shiftKey;
 
-        if (
-            this.inputConfig.textTransform === 'capitalize' &&
-            this.inputConfig.name !== 'Allow All'
-        ) {
-            // Check if capslock key is pressed
-            if (event.getModifierState('CapsLock')) {
-                this.notificationService.triggerToastMessage(
-                    'error',
-                    'Illegal behavior',
-                    'Please turn off CAPSLOCK or stop hodling SHIFT'
-                );
-                event.preventDefault();
-                return;
-            }
-            // Check if shift key is pressed
-            if (event.shiftKey) {
-                this.notificationService.triggerToastMessage(
-                    'error',
-                    'ILLEGAL BEHAVIOR',
-                    'Please turn off CAPSLOCK or stop holding SHIFT'
-                );
-                event.preventDefault();
-                return;
-            }
-        }
+        this.isDotDeleted = this.getSuperControl?.value?.includes('.');
 
         if (event.keyCode === 9) {
             this.inputService.dropDownKeyNavigation$.next({
@@ -611,6 +620,10 @@ export class TaInputComponent
     }
 
     public onKeyup(event): void {
+        // Reset function property for disabling multiple dots
+        if (this.isDotDeleted && !this.getSuperControl?.value?.includes('.')) {
+            this.numberOfPoints = 0;
+        }
         if (
             event.keyCode == 8 &&
             !(this.inputConfig.isDropdown || this.inputConfig.dropdownLabel)
@@ -626,16 +639,6 @@ export class TaInputComponent
             if (!this.input.nativeElement.value) {
                 this.clearInput(event);
             }
-        }
-
-        // Capslock
-        if (
-            event.keyCode === 20 ||
-            (event.keyCode === 16 &&
-                this.inputConfig.textTransform === 'capitalize')
-        ) {
-            event.preventDefault();
-            return;
         }
 
         if (
@@ -718,7 +721,7 @@ export class TaInputComponent
             case 'capitalize': {
                 this.input.nativeElement.value =
                     this.input.nativeElement.value.charAt(0)?.toUpperCase() +
-                    this.input.nativeElement.value.substring(1);
+                    this.input.nativeElement.value.substring(1).toLowerCase();
                 this.getSuperControl.patchValue(this.input.nativeElement.value);
                 break;
             }
@@ -805,16 +808,6 @@ export class TaInputComponent
                     );
                     this.hasDecimalIndex =
                         this.getSuperControl.value.indexOf('.');
-                } else {
-                    // 4.6 Delete dot if decimal was deleted
-                    this.decimalIndexTimeout = setTimeout(() => {
-                        this.getSuperControl.patchValue(integerPart);
-                        this.hasDecimalIndex = -1;
-                        this.input.nativeElement.setSelectionRange(
-                            this.input.nativeElement.selectionStart,
-                            this.input.nativeElement.selectionStart
-                        );
-                    }, 500);
                 }
             }
             // 5. If user doesn't set dot
@@ -1114,7 +1107,7 @@ export class TaInputComponent
                 this.hasDecimalIndex =
                     this.getSuperControl?.value?.indexOf('.');
 
-                if (this.hasDecimalIndex && this.hasDecimalIndex >= 0) {
+                if (this.hasDecimalIndex >= 0) {
                     // 1. Divide number on decimal and integer part
                     let integerPart = this.getSuperControl.value.slice(
                         0,
