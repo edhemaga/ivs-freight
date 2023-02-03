@@ -3,7 +3,6 @@ import {
     CdlResponse,
     CdlService,
     CreateResponse,
-    DriverResponse,
     GetCdlModalResponse,
 } from 'appcoretruckassist';
 import { Observable, Subject, tap } from 'rxjs';
@@ -37,47 +36,51 @@ export class CdlTService implements OnDestroy {
         this.formDataService.extractFormDataFromFunction(data);
         return this.cdlService.apiCdlPost().pipe(
             tap((res: CreateResponse) => {
-                let driverId = data.driverId ? data.driverId : this.driverItemStore.getValue().ids[0]; 
+                let driverId = data.driverId
+                    ? data.driverId
+                    : this.driverItemStore.getValue().ids[0];
                 const dr = this.driverItemStore.getValue();
                 const driverData = JSON.parse(JSON.stringify(dr.entities));
                 let newData = driverData[driverId];
 
                 // get all cdls on driver, sorted by backend side
-                let allCdls = this.cdlService.apiCdlListGet(driverId).subscribe({
-                    next: (resp: any) => {
-                        newData.cdls = resp;
+                let allCdls = this.cdlService
+                    .apiCdlListGet(driverId)
+                    .subscribe({
+                        next: (resp: any) => {
+                            newData.cdls = resp;
 
-                        this.tableService.sendActionAnimation({
-                            animation: 'update',
-                            data: newData,
-                            id: newData.id,
-                        });
-                        
-                        this.dlStore.add(newData);
-                        this.driverItemStore.set([newData]);
+                            this.tableService.sendActionAnimation({
+                                animation: 'update',
+                                data: newData,
+                                id: newData.id,
+                            });
 
-                        allCdls.unsubscribe();
-                    }
-                });
+                            this.dlStore.add(newData);
+                            this.driverItemStore.set([newData]);
+
+                            allCdls.unsubscribe();
+                        },
+                    });
 
                 // get added cdl
                 /*
                 let cdlApi = this.cdlService.apiCdlIdGet(res.id).subscribe({
                     next: (resp: any) => {
                         newData.cdls.push(resp);
-                        
+
                         this.tableService.sendActionAnimation({
                             animation: 'update',
                             data: newData,
                             id: newData.id,
                         });
-                        
+
                         this.dlStore.add(newData);
                         this.driverItemStore.set([newData]);
-                      
+
                         cdlApi.unsubscribe();
                     },
-                });  
+                });
 
                 */
             })
@@ -97,27 +100,26 @@ export class CdlTService implements OnDestroy {
 
                 let cdlApi = this.cdlService.apiCdlIdGet(res.id).subscribe({
                     next: (resp: any) => {
-
-                       
                         newData.cdls.map((reg: any, index: any) => {
-                            if ( reg.id == resp.id ) {
-                                newData.cdls[index] = resp;  
+                            if (reg.id == resp.id) {
+                                newData.cdls[index] = resp;
                             }
-                        })
+                        });
 
                         this.tableService.sendActionAnimation({
                             animation: 'update',
                             data: newData,
                             id: newData.id,
                         });
-                        
+
                         this.dlStore.add(newData);
                         this.driverItemStore.set([newData]);
-                      
+
                         cdlApi.unsubscribe();
                     },
-                });          
-            }));
+                });
+            })
+        );
     }
 
     public deleteCdlById(id: number): Observable<any> {
@@ -130,10 +132,10 @@ export class CdlTService implements OnDestroy {
 
                 let indexNum;
                 newData.cdls.map((reg: any, index: any) => {
-                    if ( reg.id == id ) {
+                    if (reg.id == id) {
                         indexNum = index;
                     }
-                })
+                });
 
                 newData.cdls.splice(indexNum, 1);
 
@@ -142,9 +144,9 @@ export class CdlTService implements OnDestroy {
                     data: newData,
                     id: newData.id,
                 });
-                
+
                 this.dlStore.add(newData);
-                this.driverItemStore.set([newData]); 
+                this.driverItemStore.set([newData]);
             })
         );
     }
@@ -152,48 +154,48 @@ export class CdlTService implements OnDestroy {
     public activateCdlById(id: number): Observable<any> {
         return this.cdlService.apiCdlActivateIdPut(id).pipe(
             tap((res: any) => {
-                let driverId = this.driverItemStore.getValue().ids[0]; 
+                let driverId = this.driverItemStore.getValue().ids[0];
                 const dr = this.driverItemStore.getValue();
                 const driverData = JSON.parse(JSON.stringify(dr.entities));
                 let newData = driverData[driverId];
-                
-                let allCdls = this.cdlService.apiCdlListGet(driverId).subscribe({
-                    next: (resp: any) => {
-                        newData.cdls = resp;
 
-                        this.tableService.sendActionAnimation({
-                            animation: 'update',
-                            data: newData,
-                            id: newData.id,
-                        });
-                        
-                        this.dlStore.add(newData);
-                        this.driverItemStore.set([newData]);
+                let allCdls = this.cdlService
+                    .apiCdlListGet(driverId)
+                    .subscribe({
+                        next: (resp: any) => {
+                            newData.cdls = resp;
 
-                        allCdls.unsubscribe();
-                    }
-                });
-                
+                            this.tableService.sendActionAnimation({
+                                animation: 'update',
+                                data: newData,
+                                id: newData.id,
+                            });
+
+                            this.dlStore.add(newData);
+                            this.driverItemStore.set([newData]);
+
+                            allCdls.unsubscribe();
+                        },
+                    });
+
                 /*
                 let cdlApi = this.cdlService.apiCdlIdGet(res.id).subscribe({
                     next: (resp: any) => {
-
-                       
                         newData.cdls.map((reg: any, index: any) => {
-                            if ( reg.id == resp.id ) {
-                                newData.cdls[index] = resp;  
+                            if (reg.id == resp.id) {
+                                newData.cdls[index] = resp;
                             }
-                        })
+                        });
 
                         this.tableService.sendActionAnimation({
                             animation: 'update',
                             data: newData,
                             id: newData.id,
                         });
-                        
+
                         this.dlStore.add(newData);
                         this.driverItemStore.set([newData]);
-                      
+
                         cdlApi.unsubscribe();
                     },
                 });
@@ -208,44 +210,44 @@ export class CdlTService implements OnDestroy {
                 const dr = this.driverItemStore.getValue();
                 const driverData = JSON.parse(JSON.stringify(dr.entities));
                 let newData = driverData[driverId];
-                
-                let allCdls = this.cdlService.apiCdlListGet(driverId).subscribe({
-                    next: (resp: any) => {
-                        newData.cdls = resp;
 
-                        this.tableService.sendActionAnimation({
-                            animation: 'update',
-                            data: newData,
-                            id: newData.id,
-                        });
-                        
-                        this.dlStore.add(newData);
-                        this.driverItemStore.set([newData]);
+                let allCdls = this.cdlService
+                    .apiCdlListGet(driverId)
+                    .subscribe({
+                        next: (resp: any) => {
+                            newData.cdls = resp;
 
-                        allCdls.unsubscribe();
-                    }
-                });
+                            this.tableService.sendActionAnimation({
+                                animation: 'update',
+                                data: newData,
+                                id: newData.id,
+                            });
+
+                            this.dlStore.add(newData);
+                            this.driverItemStore.set([newData]);
+
+                            allCdls.unsubscribe();
+                        },
+                    });
 
                 /*
                 let cdlApi = this.cdlService.apiCdlIdGet(res.id).subscribe({
                     next: (resp: any) => {
-
-                       
                         newData.cdls.map((reg: any, index: any) => {
-                            if ( reg.id == resp.id ) {
-                                newData.cdls[index] = resp;  
+                            if (reg.id == resp.id) {
+                                newData.cdls[index] = resp;
                             }
-                        })
+                        });
 
                         this.tableService.sendActionAnimation({
                             animation: 'update',
                             data: newData,
                             id: newData.id,
                         });
-                        
+
                         this.dlStore.add(newData);
                         this.driverItemStore.set([newData]);
-                      
+
                         cdlApi.unsubscribe();
                     },
                 });
@@ -261,24 +263,25 @@ export class CdlTService implements OnDestroy {
                 const dr = this.driverItemStore.getValue();
                 const driverData = JSON.parse(JSON.stringify(dr.entities));
                 let newData = driverData[driverId];
-                
-                let allCdls = this.cdlService.apiCdlListGet(driverId).subscribe({
-                    next: (resp: any) => {
-                        newData.cdls = resp;
 
-                        this.tableService.sendActionAnimation({
-                            animation: 'update',
-                            data: newData,
-                            id: newData.id,
-                        });
-                        
-                        this.dlStore.add(newData);
-                        this.driverItemStore.set([newData]);
+                let allCdls = this.cdlService
+                    .apiCdlListGet(driverId)
+                    .subscribe({
+                        next: (resp: any) => {
+                            newData.cdls = resp;
 
-                        allCdls.unsubscribe();
-                    }
-                });
-                
+                            this.tableService.sendActionAnimation({
+                                animation: 'update',
+                                data: newData,
+                                id: newData.id,
+                            });
+
+                            this.dlStore.add(newData);
+                            this.driverItemStore.set([newData]);
+
+                            allCdls.unsubscribe();
+                        },
+                    });
 
                 /*
                 let cdlApi = this.cdlService.apiCdlIdGet(res.id).subscribe({
@@ -286,26 +289,29 @@ export class CdlTService implements OnDestroy {
 
                         console.log('---data---', data);
                         console.log('---res---', res);
+
                         newData.cdls.map((reg: any, index: any) => {
-                            if ( reg.id == resp.id ) {
-                                newData.cdls[index] = resp;  
+                            if (reg.id == resp.id) {
+                                newData.cdls[index] = resp;
                             }
-                        })
+                        });
 
                         this.tableService.sendActionAnimation({
                             animation: 'update',
                             data: newData,
                             id: newData.id,
                         });
-                        
+
                         this.dlStore.add(newData);
                         this.driverItemStore.set([newData]);
-                      
+
                         cdlApi.unsubscribe();
                     },
-                }); 
-                */
 
+                });
+
+                });
+                */
             })
         );
     }
