@@ -23,8 +23,12 @@ table {
                 height: 100%;
                 display: flex;
 
-                .not-pined-columns {
-                    td {
+                .not-pined-columns{
+                    .space-left{
+                        margin-left: 11px;
+                    }
+
+                    td{
                         margin-right: 6px;
                     }
                 }
@@ -1540,6 +1544,7 @@ table {
                         }
 
                         .password-text-showing {
+                            overflow: hidden;
                             font-size: 14px;
                             font-weight: 400;
                             color: #6c6c6c;
@@ -2659,16 +2664,31 @@ table {
         }
 
         // Border Scroll Section
-        .border-scroll-section {
-            width: 4px;
+        .border-scroll-section-container{
+            position: relative;
+
+            .border-scroll-section {
+                position: absolute;
+                width: 8px;
+                height: 32px;
+                margin-top: -2px;
+            }
         }
 
+        .border-scroll-section-container-right{
+            margin-right: 7px;
+
+            .border-scroll-section{
+                left: -8px;
+            }
+        }
+        
         .border-left {
-            background-image: linear-gradient(to right, #eeeeee, #f7f7f700);
+            background-image: linear-gradient(to right, #eeeeee, #eeeeee00);
         }
 
         .border-right {
-            background-image: linear-gradient(to right, #f7f7f700, #eeeeee);
+            background-image: linear-gradient(to right, #eeeeee00, #eeeeee);
         }
     }
 }
