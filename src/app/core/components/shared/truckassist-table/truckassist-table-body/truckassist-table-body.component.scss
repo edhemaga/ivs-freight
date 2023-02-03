@@ -485,12 +485,6 @@ table {
                             font-size: 14px;
                             font-weight: bold;
                             align-items: center;
-                            cursor: pointer;
-
-                            &:hover {
-                                color: #5673aa;
-                                transition: 0.25s;
-                            }
 
                             &::selection {
                                 color: #6c6c6c;
@@ -566,16 +560,19 @@ table {
                             white-space: nowrap;
                             text-overflow: ellipsis;
                             align-items: center;
+
+                            &::selection {
+                                color: #6c6c6c;
+                                background: #6c6c6c20;
+                            }
+                        }
+
+                        .has-details-page{
                             cursor: pointer;
 
                             &:hover {
                                 color: #5673aa !important;
                                 transition: 0.25s;
-                            }
-
-                            &::selection {
-                                color: #6c6c6c;
-                                background: #6c6c6c20;
                             }
                         }
 
