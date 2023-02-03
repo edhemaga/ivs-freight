@@ -15,7 +15,10 @@ export class FormService implements OnDestroy {
     public formValueChange$: Subject<boolean> = new Subject<boolean>();
     public formReset$: Subject<boolean> = new Subject<boolean>();
 
-    public checkFormChange(form: UntypedFormGroup, debounceTimeProp: number = 100) {
+    public checkFormChange(
+        form: UntypedFormGroup,
+        debounceTimeProp: number = 100
+    ) {
         // When the form loads, changes are made for each control separately
         // and it is hard to determine when it has actually finished initializing,
         // To solve it, we keep updating the original value, until the form goes
@@ -47,7 +50,7 @@ export class FormService implements OnDestroy {
             .subscribe(() => {
                 let current_value = form.value;
 
-                console.log('diff: ', diff(this.originalValue, current_value));
+                // console.log('diff: ', diff(this.originalValue, current_value));
                 if (
                     Object.keys(diff(this.originalValue, current_value))
                         .length !== 0

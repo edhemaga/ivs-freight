@@ -1290,6 +1290,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
                     : this.tableData[this.selectedMapIndex].routes[
                           this.focusedRouteIndex
                       ].stops.length;
+            var insertBefore = this.insertBeforeActive > -1;
 
             this.tableData[this.selectedMapIndex].routes[
                 this.focusedRouteIndex
@@ -1347,6 +1348,15 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
                     .pipe(takeUntil(this.destroy$))
                     .subscribe();
             } else {
+                if ( insertBefore ) {
+                    this.tableData[this.selectedMapIndex].routes[
+                        this.focusedRouteIndex
+                    ].stops.map((stop, stopIndex) => {
+                        stop.id = stop.id ? stop.id : 0;
+                        stop.orderNumber = stopIndex + 1;
+                    });
+                }
+
                 this.getRouteShape(route);
             }
 
@@ -2244,7 +2254,43 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
                 ].stops.length - 1
             );
 
-            this.calculateDistanceBetweenStops(this.focusedRouteIndex);
+            var stopArr = [];
+            this.tableData[this.selectedMapIndex].routes[
+                this.focusedRouteIndex
+            ].stops.map((stop, stopIndex) => {
+                stop.orderNumber = stopIndex + 1;
+
+                var stopObj = <any>{
+                    id: stop.id ? stop.id : 0,
+                    address: stop.address,
+                    leg: 0,
+                    total: 0,
+                    longitude: stop.long,
+                    latitude: stop.lat,
+                    orderNumber: stop.orderNumber,
+                    shape: stop.shape ? stop.shape : '',
+                };
+    
+                stopArr.push(stopObj);
+            });
+
+            if ( this.tableData[this.selectedMapIndex].routes[this.focusedRouteIndex].stops.length > 1) {
+                this.getRouteShape(this.tableData[this.selectedMapIndex].routes[this.focusedRouteIndex]);
+            } else {
+                var updateRouteObj = {
+                    id: this.tableData[this.selectedMapIndex].routes[this.focusedRouteIndex].id,
+                    name: this.tableData[this.selectedMapIndex].routes[this.focusedRouteIndex].name,
+                    shape: null,
+                    stops: stopArr,
+                };
+
+                this.routingService
+                    .updateRoute(updateRouteObj)
+                    .pipe(takeUntil(this.destroy$))
+                    .subscribe();
+            }
+
+            //this.calculateDistanceBetweenStops(this.focusedRouteIndex);
             this.calculateRouteWidth(
                 this.tableData[this.selectedMapIndex].routes[
                     this.focusedRouteIndex
