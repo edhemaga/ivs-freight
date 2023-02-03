@@ -15,7 +15,6 @@
         top: 0;
         width: 100vw;
         height: 100vh;
-        padding-left: 56px;
         z-index: 1;
     }
 }
@@ -26,7 +25,6 @@
     top: 0;
     width: 100vw;
     height: 100vh;
-    padding-left: 56px;
     z-index: 1;
 
     agm-map {
@@ -35,8 +33,9 @@
     }
 }
 
-.si-pointer-bottom, .si-close-button {
-    display: none!important;
+.si-pointer-bottom,
+.si-close-button {
+    display: none !important;
 }
 
 .gps-marker-container {
@@ -47,7 +46,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    
+
     pointer-events: auto;
     transform: translateX(-16px);
     transition: 0.2s;
@@ -179,7 +178,7 @@
     &.unassigned-devices {
         padding: 8px;
         height: max-content;
-        max-height: calc( 100% - 81px );
+        max-height: calc(100% - 81px);
 
         .gps-legend-header {
             height: 26px;
@@ -235,7 +234,7 @@
         height: 2px;
         margin: 12px 0px;
 
-        background: #F3F3F3;
+        background: #f3f3f3;
         border-radius: 1px;
     }
 }
@@ -283,7 +282,7 @@
         width: 2px;
         height: 22px;
         margin: 0px 8px;
-        background: #F3F3F3;
+        background: #f3f3f3;
         border-radius: 1px;
     }
 
@@ -296,7 +295,7 @@
     &.manage-device-active {
         height: 26px;
         width: 161px;
-        background: #6C6C6C;
+        background: #6c6c6c;
         border-radius: 2px;
         padding-left: 6px;
         padding-right: 12px;
@@ -308,15 +307,15 @@
         }
 
         .marker-info-text {
-            color: #FFFFFF;
+            color: #ffffff;
 
             &::-moz-selection {
-                color: #FFFFFF;
-                background: #FFFFFF33;
+                color: #ffffff;
+                background: #ffffff33;
             }
             &::selection {
-                color: #FFFFFF;
-                background: #FFFFFF33;
+                color: #ffffff;
+                background: #ffffff33;
             }
         }
     }
@@ -343,7 +342,7 @@
 
 .gps-list-scroll {
     overflow: auto;
-    max-height: calc( 100vh - 336px ); //calc( 100vh - 156px );
+    max-height: calc(100vh - 336px); //calc( 100vh - 156px );
 
     &.trailer-list {
         max-height: 161px;
@@ -359,7 +358,7 @@
 
     background: #fff;
 
-    border-bottom: 1px solid #F3F3F3;
+    border-bottom: 1px solid #f3f3f3;
     border-radius: 2px;
 
     transition: 0.2s ease-in-out;
@@ -369,12 +368,12 @@
     }
 
     &:hover {
-        background: #F7F7F7;
+        background: #f7f7f7;
         cursor: pointer;
     }
 
     &.selected-row {
-        background: #E5E5E5;
+        background: #e5e5e5;
     }
 
     .row-info {
@@ -383,7 +382,7 @@
         padding-right: 5px;
 
         font-size: 14px;
-        color: #6C6C6C;
+        color: #6c6c6c;
         line-height: 18px;
         text-align: left;
     }
@@ -428,63 +427,87 @@
     align-items: center;
 
     &.short-stop-color {
-        #Ellipse_8454, #Ellipse_8450, #Path_41075, #Path_41047 {
-            fill: #FFCC80;
+        #Ellipse_8454,
+        #Ellipse_8450,
+        #Path_41075,
+        #Path_41047 {
+            fill: #ffcc80;
         }
     }
 
     &.short-stop-color-assigned {
-        #Ellipse_8454, #Ellipse_8450, #Path_41075, #Path_41047 {
-            fill: #FFB74D;
+        #Ellipse_8454,
+        #Ellipse_8450,
+        #Path_41075,
+        #Path_41047 {
+            fill: #ffb74d;
         }
     }
 
     &.ext-stop-color {
-        #Ellipse_8454, #Ellipse_8450, #Path_41075, #Path_41047 {
-            fill: #EF9A9A;
+        #Ellipse_8454,
+        #Ellipse_8450,
+        #Path_41075,
+        #Path_41047 {
+            fill: #ef9a9a;
         }
     }
 
     &.ext-stop-color-assigned {
-        #Ellipse_8454, #Ellipse_8450, #Path_41075, #Path_41047 {
-            fill: #E57373;
+        #Ellipse_8454,
+        #Ellipse_8450,
+        #Path_41075,
+        #Path_41047 {
+            fill: #e57373;
         }
     }
 
     &.parking-color {
-        #Ellipse_8454, #Ellipse_8450, #Path_41075, #Path_41047 {
-            fill: #CCCCCC;
+        #Ellipse_8454,
+        #Ellipse_8450,
+        #Path_41075,
+        #Path_41047 {
+            fill: #cccccc;
         }
     }
 
     &.parking-color-assigned {
-        #Ellipse_8454, #Ellipse_8450, #Path_41075, #Path_41047 {
-            fill: #B7B7B7;
+        #Ellipse_8454,
+        #Ellipse_8450,
+        #Path_41075,
+        #Path_41047 {
+            fill: #b7b7b7;
         }
     }
 
     &.motion-color-assigned {
         #Path_51255 {
-            fill: #6D82C7;
+            fill: #6d82c7;
         }
     }
 }
 
 .motion-status-marker {
     &.short-stop-color {
-        #Ellipse_7909, #Path_41064, #Path_41067 {
-            fill: #FFA726;
+        #Ellipse_7909,
+        #Path_41064,
+        #Path_41067 {
+            fill: #ffa726;
         }
     }
 
     &.ext-stop-color {
-        #Ellipse_7909, #Path_41064, #Path_41067 {
-            fill: #EF5350;
+        #Ellipse_7909,
+        #Path_41064,
+        #Path_41067 {
+            fill: #ef5350;
         }
     }
 
     &.parking-color {
-        #Ellipse_7909, #Path_41064, #Path_41067 {
+        #Ellipse_7909,
+        #Path_41064,
+        #Path_41067 {
             fill: #919191;
         }
     }
@@ -553,10 +576,10 @@
 
     // overflow-y: scroll;
     // transition: 0.2s;
-    
+
     //overflow: hidden;
     overflow: auto;
-    max-height: calc( 100vh - 156px );
+    max-height: calc(100vh - 156px);
 
     &::-webkit-scrollbar {
         width: 4px;
@@ -662,16 +685,17 @@
     transition: all 0.2s ease-in-out;
     overflow: hidden;
 
-    &.no-data-text, .no-data-text {
-        color: #B7B7B7;
+    &.no-data-text,
+    .no-data-text {
+        color: #b7b7b7;
 
         &::-moz-selection {
-            color: #B7B7B7;
-            background: #B7B7B733;
+            color: #b7b7b7;
+            background: #b7b7b733;
         }
         &::selection {
-            color: #B7B7B7;
-            background: #B7B7B733;
+            color: #b7b7b7;
+            background: #b7b7b733;
         }
     }
 }
@@ -691,7 +715,7 @@
         padding-left: 28px !important;
         font-size: 11px !important;
     }
-     
+
     .input-label {
         left: 28px !important;
         font-size: 11px !important;
@@ -707,7 +731,7 @@
                 height: 14px !important;
             }
         }
-        
+
         &::after {
             left: 18px !important;
         }

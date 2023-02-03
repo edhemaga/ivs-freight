@@ -180,6 +180,7 @@
     left: 4px;
     position: relative;
     margin-top: 16px;
+    user-select: none;
 }
 .wrapper {
     .parent {
@@ -199,6 +200,7 @@
             top: 0;
             left: 0;
             right: 0;
+            user-select: none;
         }
         .remove-background-on-user-panel {
             overflow: hidden;

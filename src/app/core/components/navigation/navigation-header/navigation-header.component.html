@@ -33,7 +33,6 @@
                 ></svg-icon>
             </div>
             <p
-                *ngIf="isNavigationHovered"
                 [@showHideDetails]="isNavigationHovered ? 'true' : 'false'"
                 class="ta-font-bold"
             >
@@ -41,7 +40,7 @@
             </p>
         </div>
 
-        <div class="nav-header-bottom-rightSide" *ngIf="isNavigationHovered">
+        <div class="nav-header-bottom-rightSide">
             <div
                 [@showHideDetails]="isNavigationHovered ? 'true' : 'false'"
                 class="nav-header-bottom-rightSide-search"
