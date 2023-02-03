@@ -6,6 +6,7 @@
                 </app-shipper-card-view>
             </div>
             <div *ngSwitchCase="'load'" class="load">
+            <!--    
                 <div
                     class="repair-container"
                     *ngIf="shipperData?.data?.loadStops?.length"
@@ -29,16 +30,6 @@
                     >
                         <div class="repair-items">
                             <div class="items-header">
-                                
-                                <div *ngFor="let stopData of loads.stops; index as i;" >
-                                    
-                                    <div *ngFor="let stopDataNew of stopData.stops;" >
-                                        {{stopDataNew.shipper.id}} eee
-                                    </div>
-                                    <!-- <div *ngIf="stopData.shipper.id == shipperData?.data?.id">hereeeee</div> -->
-                                </div>
-                                
-                                
                                 <div class="icon-svg-repair">
                                     <svg-icon
                                         class="arrow-ri"
@@ -116,6 +107,7 @@
                         <div class="divider"></div>
                     </div>
                 </div>
+            -->
             </div>
             <div *ngSwitchCase="'contact'" class="contact">
                 <div *ngIf="shipperContacts.length" class="contact-wrapper">

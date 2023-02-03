@@ -159,7 +159,7 @@ export class LoadDetailsItemComponent implements OnInit, OnChanges, OnDestroy {
 
     private formatLoadPickupTime(mod: any){
         let hours;
-        let hoursValue;
+        let hoursValue = 'hours';
 
         if ( mod < 0 ) {
             hours = Math.abs(mod);
