@@ -53,7 +53,6 @@ export interface TruckResponse {
     axles?: number | null;
     insurancePolicy?: string | null;
     mileage?: number | null;
-    wheelBase?: number | null;
     fhwaExp?: number;
     engineOilType?: EnumValue;
     gearRatio?: EnumValue;
@@ -62,8 +61,6 @@ export interface TruckResponse {
     tollTransponderDeviceNo?: string | null;
     doubleBunk?: boolean | null;
     refrigerator?: boolean | null;
-    headacheRack?: boolean | null;
-    dashCam?: boolean | null;
     dcInverter?: boolean | null;
     blower?: boolean | null;
     pto?: boolean | null;

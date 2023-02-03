@@ -23,6 +23,5 @@ export interface SignInResponse {
     driverId?: number | null;
     companies?: Array<CompanyShortResponse> | null;
     refreshToken?: string | null;
-    isFirstLogin?: boolean | null;
 }
 

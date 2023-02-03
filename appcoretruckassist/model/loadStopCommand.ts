@@ -11,6 +11,7 @@
  */
 import { LoadStopType } from './loadStopType';
 
+
 export interface LoadStopCommand {
     id?: number | null;
     stopType?: LoadStopType;
@@ -31,3 +32,4 @@ export interface LoadStopCommand {
     shape?: string | null;
     items?: Array<any> | null;
 }
+

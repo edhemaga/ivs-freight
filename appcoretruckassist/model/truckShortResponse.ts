@@ -50,7 +50,6 @@ export interface TruckShortResponse {
     axles?: number | null;
     insurancePolicy?: string | null;
     mileage?: number | null;
-    wheelBase?: number | null;
     licensePlate?: string | null;
     fhwaExp?: number;
     engineOilType?: EnumValue;
@@ -60,8 +59,6 @@ export interface TruckShortResponse {
     tollTransponderDeviceNo?: string | null;
     doubleBunk?: boolean | null;
     refrigerator?: boolean | null;
-    headacheRack?: boolean | null;
-    dashCam?: boolean | null;
     dcInverter?: boolean | null;
     blower?: boolean | null;
     pto?: boolean | null;
