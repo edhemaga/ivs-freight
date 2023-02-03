@@ -433,7 +433,10 @@
                                 </div>
                                 <span
                                     (click)="goToDetails(column, row)"
-                                    [ngClass]="{'has-details-page': !column.link?.doesNotHaveRout}"
+                                    [ngClass]="{
+                                        'has-details-page':
+                                            !column.link?.doesNotHaveRout
+                                    }"
                                     class="table-avatar-name"
                                     >{{ row[column.field] }}</span
                                 >
@@ -483,7 +486,10 @@
                                 </div>
                                 <span
                                     class="table-avatar-name"
-                                    [ngClass]="{'has-details-page': !column.link?.doesNotHaveRout}"
+                                    [ngClass]="{
+                                        'has-details-page':
+                                            !column.link?.doesNotHaveRout
+                                    }"
                                     *ngIf="row[column.field]?.name"
                                     >{{ row[column.field].name }}</span
                                 >
@@ -562,7 +568,10 @@
                                         width: column.width + 'px'
                                     }"
                                     class="table-name-link"
-                                    [ngClass]="{'has-details-page': !column.link?.doesNotHaveRout}"
+                                    [ngClass]="{
+                                        'has-details-page':
+                                            !column.link?.doesNotHaveRout
+                                    }"
                                     (click)="goToDetails(column, row)"
                                     >{{ row[column.field] }}</span
                                 >
@@ -1047,6 +1056,9 @@
 
                                 <div
                                     class="password-text-crypted"
+                                    [ngStyle]="{
+                                        width: column.width - 22 + 'px'
+                                    }"
                                     *ngIf="
                                         row[column.field].hiden &&
                                         !row[column.field].apiCallStarted
@@ -1058,6 +1070,9 @@
 
                                 <div
                                     class="password-text-showing"
+                                    [ngStyle]="{
+                                        width: column.width - 22 + 'px'
+                                    }"
                                     *ngIf="
                                         !row[column.field].hiden &&
                                         !row[column.field].apiCallStarted
@@ -1928,7 +1943,10 @@
                                 </div>
                                 <span
                                     (click)="goToDetails(column, row)"
-                                    [ngClass]="{'has-details-page': !column.link?.doesNotHaveRout}"
+                                    [ngClass]="{
+                                        'has-details-page':
+                                            !column.link?.doesNotHaveRout
+                                    }"
                                     class="table-avatar-name"
                                     >{{ row[column.field] }}</span
                                 >
@@ -1972,7 +1990,10 @@
                                         width: column.width + 'px'
                                     }"
                                     class="table-name-link"
-                                    [ngClass]="{'has-details-page': !column.link?.doesNotHaveRout}"
+                                    [ngClass]="{
+                                        'has-details-page':
+                                            !column.link?.doesNotHaveRout
+                                    }"
                                     (click)="goToDetails(column, row)"
                                     >{{ row[column.field] }}</span
                                 >
@@ -2506,6 +2527,9 @@
 
                                 <div
                                     class="password-text-crypted"
+                                    [ngStyle]="{
+                                        width: column.width - 22 + 'px'
+                                    }"
                                     *ngIf="
                                         row[column.field].hiden &&
                                         !row[column.field].apiCallStarted
@@ -2517,6 +2541,9 @@
 
                                 <div
                                     class="password-text-showing"
+                                    [ngStyle]="{
+                                        width: column.width - 22 + 'px'
+                                    }"
                                     *ngIf="
                                         !row[column.field].hiden &&
                                         !row[column.field].apiCallStarted
