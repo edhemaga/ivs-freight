@@ -398,7 +398,7 @@ export class TaInputComponent
         // Price Separator - remove dot on focus out
         if (
             this.inputConfig.priceSeparator &&
-            this.getSuperControl.value.indexOf('.') >= 0
+            this.getSuperControl?.value?.indexOf('.') >= 0
         ) {
             // 4.1. Check for Dot position
             this.hasDecimalIndex = this.getSuperControl.value.indexOf('.');
@@ -419,10 +419,6 @@ export class TaInputComponent
             if (!decimalPart) {
                 this.hasDecimalIndex = -1;
                 this.getSuperControl.patchValue(integerPart);
-                this.input.nativeElement.setSelectionRange(
-                    this.input.nativeElement.selectionStart,
-                    this.input.nativeElement.selectionStart
-                );
                 this.numberOfPoints = 0;
             }
         }
@@ -609,7 +605,9 @@ export class TaInputComponent
     public onKeydown(event) {
         this.capsLockOn = event.getModifierState('CapsLock') || event.shiftKey;
 
-        this.isDotDeleted = this.getSuperControl?.value?.includes('.');
+        if (this.inputConfig.priceSeparator) {
+            this.isDotDeleted = this.getSuperControl?.value?.includes('.');
+        }
 
         if (event.keyCode === 9) {
             this.inputService.dropDownKeyNavigation$.next({
@@ -845,10 +843,14 @@ export class TaInputComponent
 
             setTimeout(() => {
                 this.input.nativeElement.setSelectionRange(
-                    this.cursorInputPosition,
-                    this.cursorInputPosition
+                    this.cursorInputPosition +
+                        (this.getSuperControl.value.indexOf('.') === -1
+                            ? 1
+                            : 0),
+                    this.cursorInputPosition +
+                        (this.getSuperControl.value.indexOf('.') === -1 ? 1 : 0)
                 );
-            }, 30);
+            }, 0);
         }
 
         /**
@@ -1149,11 +1151,11 @@ export class TaInputComponent
                             );
                         } else {
                             this.input.nativeElement.setSelectionRange(
-                                currentPosition + 1,
-                                currentPosition + 1
+                                currentPosition,
+                                currentPosition
                             );
                         }
-                    }, 30);
+                    }, 0);
                 }
 
                 return true;

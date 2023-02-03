@@ -386,11 +386,7 @@
                                     *ngIf="selectedHeaderTab === 2"
                                     class="item-subtotal"
                                 >
-                                    {{
-                                        subtotal[ind].value
-                                            | priceCalculationArray
-                                            | currency
-                                    }}
+                                    {{ subtotal[ind].value | currency }}
                                 </p>
 
                                 <div
@@ -412,7 +408,7 @@
                 <div *ngIf="selectedHeaderTab === 2" class="row item-total-row">
                     <p class="item-total">
                         <span class="item-total-text">TOTAL</span>
-                        {{ subtotal | priceCalculationArray | currency }}
+                        {{ subtotal | priceCalculationArray }}
                     </p>
                 </div>
             </app-ta-custom-card>
