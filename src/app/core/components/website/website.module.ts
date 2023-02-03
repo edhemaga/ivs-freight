@@ -29,7 +29,9 @@ import { RegisterUserHelperComponent } from './components/website-sidebar/sideba
     declarations: [
         WebsiteMainComponent,
         WebsiteNavbarComponent,
+
         /* SIDEBAR */
+
         WebsiteSidebarComponent,
         SidebarConfirmBtnComponent,
         SidebarResendBtnComponent,

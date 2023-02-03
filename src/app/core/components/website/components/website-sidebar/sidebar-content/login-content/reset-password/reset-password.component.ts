@@ -75,7 +75,6 @@ export class ResetPasswordComponent implements OnInit, OnDestroy {
     }
 
     public resetPassword(): void {
-        console.log('uslo');
         if (this.resetPasswordForm.invalid) {
             this.inputService.markInvalid(this.resetPasswordForm);
             return;

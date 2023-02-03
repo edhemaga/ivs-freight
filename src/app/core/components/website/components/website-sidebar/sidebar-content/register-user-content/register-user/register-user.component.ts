@@ -172,7 +172,6 @@ export class RegisterUserComponent implements OnInit, OnDestroy {
                     },
                     error: (error: any) => {
                         this.displaySpinner = false;
-                        console.log('error', error);
                     },
                 })
             )
