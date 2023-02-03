@@ -19,6 +19,7 @@ import { UrlExtensionPipe } from 'src/app/core/pipes/url-extension.pipe';
 import { DetailsDataService } from '../../../../services/details-data/details-data.service';
 
 export interface UploadFile {
+    name?: any;
     fileName: string;
     url: string | any;
     extension?: string;
@@ -61,7 +62,8 @@ export class TaUploadFileComponent implements OnInit, OnDestroy {
     @Input() feedbackText: string;
     @Input() categoryTag: string;
 
-    public documentReviewInputControl: UntypedFormControl = new UntypedFormControl(null);
+    public documentReviewInputControl: UntypedFormControl =
+        new UntypedFormControl(null);
     public documentReviewInputVisible: boolean = false;
     @Output() documentReviewInputEvent: EventEmitter<{
         file: UploadFile;
@@ -102,6 +104,21 @@ export class TaUploadFileComponent implements OnInit, OnDestroy {
                     }
                 }
             });
+
+        if (!this.file.realFile) {
+            let setName = '';
+            const name = this.file.fileName
+                ? this.file.fileName.split('')
+                : this.file.name
+                ? this.file.name.split('')
+                : '';
+            name.map((item, i) => {
+                if (i < name.length - 4) {
+                    setName = setName + item;
+                }
+            });
+            //this.file.fileName = setName;
+        }
 
         if (this.isReview) {
             this.reviewInputControlChange();

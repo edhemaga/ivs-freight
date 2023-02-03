@@ -20,7 +20,7 @@ const routes: Routes = [
             trailer: TrailerItemResolver,
             trailerMinimal: TrailerMinimalResolver,
         },
-        data: { title: 'Trailer details' },
+        data: { title: 'Trailer detail' },
     },
 ];
 

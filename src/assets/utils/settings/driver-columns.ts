@@ -840,11 +840,6 @@ export function getDriverColumnsDefinition() {
             sortable: true,
             isActionColumn: false,
             isSelectColumn: false,
-            avatar: null,
-            progress: {
-                start: '',
-                end: 'mvrData[0].startDate',
-            },
             hoverTemplate: null,
             filterable: false,
             disabled: false,

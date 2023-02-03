@@ -3,8 +3,10 @@ import {
     Component,
     EventEmitter,
     Input,
+    OnChanges,
     OnInit,
     Output,
+    SimpleChanges,
 } from '@angular/core';
 import { Router } from '@angular/router';
 import { settings } from '../model/navigation-data';
@@ -24,7 +26,7 @@ import { NavigationService } from '../services/navigation.service';
         DropDownAnimation,
     ],
 })
-export class NavigationSettingsComponent implements OnInit {
+export class NavigationSettingsComponent implements OnInit, OnChanges {
     @Input() isNavigationHovered: boolean = false;
     @Input() isUserPanelOpen: boolean = false;
     @Input() isSettingsPanelOpen = false;
@@ -42,7 +44,15 @@ export class NavigationSettingsComponent implements OnInit {
         private router: Router,
         private navigationService: NavigationService
     ) {}
-
+    ngOnChanges(changes: SimpleChanges): void {
+        // console.log(
+        //     this.mouseOverMiddleNav,
+        //     this.mouseOverFooter,
+        //     this.isSettingsPanelOpen,
+        //     this.isUserPanelOpen,
+        //     this.subrouteContainerOpened
+        // );
+    }
     ngOnInit(): void {
         this.navigationService.navigationDropdownActivation$.subscribe(
             (res) => {

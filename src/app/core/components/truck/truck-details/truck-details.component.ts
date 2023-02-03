@@ -239,13 +239,6 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
                     title: 'border',
                 },
                 {
-                    title: 'View Details',
-                    name: 'view-details',
-                    svg: 'assets/svg/common/ic_hazardous-info.svg',
-                    iconName: 'view-details',
-                    show: true,
-                },
-                {
                     title: 'Add New',
                     svg: 'assets/svg/common/dropdown-arrow.svg',
                     iconName: 'add-new',
@@ -367,7 +360,7 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
         this.truckDetailsConfig = [
             {
                 id: 0,
-                name: 'Truck Details',
+                name: 'Truck Detail',
                 template: 'general',
                 data: data,
                 status: data?.status == 0 ? true : false,

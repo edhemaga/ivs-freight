@@ -515,9 +515,6 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
         } else {
             this.viewData = [];
         }
-
-        console.log('Repair Data');
-        console.log(this.viewData);
     }
 
     // Map Truck And Trailer Data
@@ -584,6 +581,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                 ? this.datePipe.transform(data.updatedAt, 'MM/dd/yy')
                 : '',
             tableAttachments: data?.files ? data.files : [],
+            fileCount: data?.fileCount,
         };
     }
 
@@ -623,6 +621,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                 : '',
             isFavorite: false,
             tableAttachments: data?.files ? data.files : [],
+            fileCount: data?.fileCount,
         };
     }
 
@@ -781,6 +780,8 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
         if (event.action === 'tab-selected') {
             this.selectedTab = event.tabData.field;
 
+            this.backFilterQuery.unitType = this.selectedTab === 'active' ? 1 : 2;
+
             this.backFilterQuery.pageIndex = 1;
             this.shopFilterQuery.pageIndex = 1;
 
@@ -848,7 +849,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
 
             this.selectedTab !== 'repair-shop'
                 ? this.repairBackFilter(this.backFilterQuery, false, true)
-                : this.shopBackFilter(this.backFilterQuery, false, true);
+                : this.shopBackFilter(this.shopFilterQuery, false, true);
         }
         // Edit
         else if (event.type === 'edit') {
@@ -1024,18 +1025,21 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
     updateMapList(mapListResponse) {
         var newMapList = mapListResponse.pagination.data;
         var listChanged = false;
+        var addData = mapListResponse.addData ? true : false;
 
-        for (var i = 0; i < this.mapListData.length; i++) {
-            let item = this.mapListData[i];
+        if ( !addData ) {
+            for (var i = 0; i < this.mapListData.length; i++) {
+                let item = this.mapListData[i];
 
-            let itemIndex = newMapList.findIndex(
-                (item2) => item2.id === item.id
-            );
+                let itemIndex = newMapList.findIndex(
+                    (item2) => item2.id === item.id
+                );
 
-            if (itemIndex == -1) {
-                this.mapListData.splice(i, 1);
-                listChanged = true;
-                i--;
+                if (itemIndex == -1) {
+                    this.mapListData.splice(i, 1);
+                    listChanged = true;
+                    i--;
+                }
             }
         }
 
@@ -1047,9 +1051,13 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
             );
 
             if (itemIndex == -1) {
-                this.mapListData.splice(b, 0, item);
-                listChanged = true;
-                b--;
+                if ( addData ) {
+                    this.mapListData.push(item);
+                } else {
+                    this.mapListData.splice(b, 0, item);
+                    listChanged = true;
+                    b--;
+                }
             }
         }
 

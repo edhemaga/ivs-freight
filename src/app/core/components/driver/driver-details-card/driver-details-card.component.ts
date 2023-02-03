@@ -211,7 +211,11 @@ export class DriverDetailsCardComponent
     ) {}
     ngOnChanges(changes: SimpleChanges) {
         if (!changes?.driver?.firstChange && changes?.driver.currentValue && changes?.driver.currentValue.id ) {
-            this.note.patchValue(changes?.driver?.currentValue?.note);
+            if ( changes?.driver?.currentValue?.note ) {
+                this.note.patchValue(changes?.driver?.currentValue?.note);
+            } else {
+                this.note.reset();
+            }
             this.getExpireDate(changes?.driver?.currentValue);
             this.getYearsAndDays(changes?.driver?.currentValue);
             this.widthOfProgress();
@@ -235,12 +239,14 @@ export class DriverDetailsCardComponent
         this.getDriverById(this.driver.id);
         this.note.patchValue(this.driver.note);
 
-        let currentIndex = this.driversList.findIndex(
-            (driver) => driver.id === this.driver.id
-        );
+        setTimeout(()=>{
+            let currentIndex = this.driversDropdowns.findIndex(
+                (driver) => driver.id === this.driver.id
+            );
+            
+            this.currentDriverIndex = currentIndex;
+        }, 300)
         
-        this.currentDriverIndex = currentIndex;
-
         // Confirmation Subscribe
         if (this.templateCard) {
             this.confirmationService.confirmationData$
@@ -366,10 +372,10 @@ export class DriverDetailsCardComponent
             this.driver.id
         );
     }
-    public optionsEvent(any: any, action: string) {
-        const name = dropActionNameDriver(any, action);
+    public optionsEvent(eventData: any, action: string) {
+        const name = dropActionNameDriver(eventData, action);
         this.dropDownService.dropActions(
-            any,
+            eventData,
             name,
             this.dataCDl,
             this.dataMvr,
@@ -573,6 +579,7 @@ export class DriverDetailsCardComponent
         }
         switch (action) {
             case 'CDL': {
+                console.log('--here-----')
                 this.modalService.openModal(
                     DriverCdlModalComponent,
                     { size: 'small' },
@@ -704,6 +711,9 @@ export class DriverDetailsCardComponent
                 active: item.id === this.driver.id,
             };
         });
+        this.driversDropdowns = this.driversDropdowns.sort(
+            (x, y) => Number(y.status) - Number(x.status)
+        );
     }
 
     public onSelectedDriver(event: any) {
@@ -722,25 +732,27 @@ export class DriverDetailsCardComponent
                     };
                 });
             this.detailsPageDriverSer.getDataDetailId(event.id);
+            this.driversDropdowns = this.driversDropdowns.sort(
+                (x, y) => Number(y.status) - Number(x.status)
+            );
         }
     }
 
     public onChangeDriver(action: string) {
-        let currentIndex = this.driversList.findIndex(
+        let currentIndex = this.driversDropdowns.findIndex(
             (driver) => driver.id === this.driver.id
         );
-
         switch (action) {
             case 'previous': {
                 currentIndex = --currentIndex;
                 if (currentIndex != -1) {
                     this.detailsPageDriverSer.getDataDetailId(
-                        this.driversList[currentIndex].id
+                        this.driversDropdowns[currentIndex].id
                     );
+                    /*
                     this.onSelectedDriver({
                         id: this.driversList[currentIndex].id,
-                    });
-
+                    });  */
                     this.currentDriverIndex = currentIndex;
                 }
                 break;
@@ -749,14 +761,16 @@ export class DriverDetailsCardComponent
                 currentIndex = ++currentIndex;
                 if (
                     currentIndex !== -1 &&
-                    this.driversList.length > currentIndex
+                    this.driversDropdowns.length > currentIndex
                 ) {
                     this.detailsPageDriverSer.getDataDetailId(
-                        this.driversList[currentIndex].id
+                        this.driversDropdowns[currentIndex].id
                     );
+                    /*
                     this.onSelectedDriver({
-                        id: this.driversList[currentIndex].id,
+                        id: this.driversList[currentIndex].id, 
                     });
+                    */
                     this.currentDriverIndex = currentIndex;
                 }
                 break;

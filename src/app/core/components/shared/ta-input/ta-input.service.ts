@@ -67,6 +67,8 @@ export class TaInputService {
     public getInputRegexPattern(inputName: string) {
         if (['business name', 'shop name', 'fuel stop'].includes(inputName)) {
             return /^[A-Za-z0-9!#'$&%()*+,./[:;=<>?çéâêîôûàèìòùëïü\s-]*$/g;
+        } else if ('price-separator' === inputName) {
+            return /^[0-9.]*$/;
         } else if (
             [
                 'ein',

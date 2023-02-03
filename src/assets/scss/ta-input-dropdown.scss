@@ -19,7 +19,7 @@
         // ---------------------------------------- DROPDOWN ----------------------------------------
         .dropdown-options {
             position: relative;
-            top: 4px;
+            top: 0px;
             left: 0px;
             z-index: 1000;
             max-height: 187px;
@@ -784,6 +784,8 @@
                     }
 
                     &.trailerContainer {
+                        width: -webkit-max-content !important;
+                        width: -moz-max-content !important;
                         width: max-content !important;
                         padding: 0px !important;
                         margin: 0px !important;
@@ -1294,7 +1296,6 @@
     padding: 6px;
     display: flex;
     flex-direction: column;
-    gap: 6px;
     background-color: rgb(111, 158, 224, 0.2);
     position: relative;
 
@@ -1323,10 +1324,16 @@
         margin: 0;
         display: flex;
         align-items: center;
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        -ms-user-select: none;
-        user-select: none;
+
+        &::-moz-selection {
+            color: #2f2f2f;
+            background-color: rgb(47, 47, 47, 0.2);
+        }
+
+        &::selection {
+            color: #2f2f2f;
+            background-color: rgb(47, 47, 47, 0.2);
+        }
 
         .selected-item-star {
             position: relative;
@@ -1376,12 +1383,9 @@
             align-items: center;
             gap: 4px;
 
-            line-height: 14px;
-
             svg-icon {
-                height: 14px;
                 width: 14px;
-                line-height: 12.5px;
+                padding-bottom: 1px;
 
                 svg {
                     width: 100%;
@@ -1390,21 +1394,6 @@
                         fill: #6f9ee0;
                     }
                 }
-            }
-
-            p {
-                margin: 0;
-                padding: 0;
-                font-size: 11px;
-                font-weight: 400;
-                color: #424242;
-                overflow: hidden;
-                text-overflow: ellipsis;
-                white-space: nowrap;
-                -webkit-user-select: none;
-                -moz-user-select: none;
-                -ms-user-select: none;
-                user-select: none;
             }
         }
     }
@@ -1473,7 +1462,9 @@
             }
         }
         .clear-selected-item {
-            display: inline-block;
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
 
         transition: all 0.3s ease-in-out;

@@ -388,7 +388,6 @@
                                             this.brokerForm.get('creditType')
                                                 .value !== 'Custom',
                                         placeholderIcon: 'dollar',
-                                        customClass: 'line-input-26-in-card',
                                         thousandSeparator: true,
                                         minLength: 4,
                                         maxLength: 11
@@ -440,7 +439,7 @@
                             [hasCounter]="
                                 documents.length ? documents.length : 0
                             "
-                            [cardName]="'Documents'"
+                            [cardName]="'Document'"
                             [disableAnimation]="disableCardAnimation"
                             [isCardOpen]="documents.length > 0"
                         >

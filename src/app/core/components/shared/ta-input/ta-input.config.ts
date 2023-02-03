@@ -54,6 +54,7 @@ export interface ITaInput {
     readOnly?: boolean;
     thousandSeparator?: boolean; // type of input must be 'text'
     priceSeparator?: boolean;
+    priceSeparatorLimitation?: number; // 7 - 999,999.00 ; 6 - 99,000.00 ; 5 - 9,000.00 itd... (must including and comma)
     loadingSpinner?: {
         size?: string; // small, big
         color?: string; // black, gray, white, blueLight, blueDark
@@ -62,7 +63,6 @@ export interface ITaInput {
     addressFlag?: string; // added text in right corner and this flag will be disabled clear button, invalid danger mark\
     // Custom classes
     // - 'input-32' -> height: 32px,
-    // - 'line-input-26-in-card' -> when input implement in custom-card and not aligned
     // - 'datetimeclass' -> date/time pickers
     customClass?: string;
 
@@ -125,4 +125,5 @@ export interface ITaInput {
     // MultiSelect Dropdown
     multiselectDropdown?: boolean;
     multiSelectDropdownActive?: boolean;
+    isFromDate?: boolean;
 }

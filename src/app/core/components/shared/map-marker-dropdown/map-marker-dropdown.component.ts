@@ -5,6 +5,7 @@ import {
     Output,
     EventEmitter,
     ChangeDetectorRef,
+    ChangeDetectionStrategy,
 } from '@angular/core';
 import { card_component_animation } from '../../shared/animations/card-component.animations';
 import { DetailsDataService } from 'src/app/core/services/details-data/details-data.service';
@@ -14,6 +15,7 @@ import { DetailsDataService } from 'src/app/core/services/details-data/details-d
     templateUrl: './map-marker-dropdown.component.html',
     styleUrls: ['./map-marker-dropdown.component.scss'],
     animations: [card_component_animation('showHideCardBody')],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MapMarkerDropdownComponent implements OnInit {
     @Input() title: string = '';
@@ -152,6 +154,7 @@ export class MapMarkerDropdownComponent implements OnInit {
     }
 
     openClusterItemInfo(item2) {
+        
         this.showClusterItemInfo.emit([this.item, item2]);
     }
 

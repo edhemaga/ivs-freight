@@ -663,6 +663,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
             tableAdded: 'NA',
             tableEdited: 'NA',
             tableAttachments: data?.files ? data.files : [],
+            fileCount: data?.fileCount,
         };
     }
 
@@ -926,6 +927,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
             this.selectedTab = event.tabData.field;
             this.mapingIndex = 0;
 
+            this.backFilterQuery.active = this.selectedTab === 'active' ? 1 : 0;
             this.backFilterQuery.pageIndex = 1;
 
             this.sendDriverData();
@@ -963,6 +965,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
         };
         if (event.type === 'show-more') {
             this.backFilterQuery.pageIndex++;
+
             this.driverBackFilter(this.backFilterQuery, false, true);
         } else if (event.type === 'edit') {
             if (this.selectedTab === 'applicants') {
@@ -1123,7 +1126,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
     });
     modalColumns: any[] = [];
     modalViewData: any[] = [];
-    
+
     modalTestInitialization() {
         this.modalColumns = getLoadModalColumnDefinition();
 

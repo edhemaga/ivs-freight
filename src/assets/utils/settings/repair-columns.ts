@@ -48,6 +48,7 @@ export function getRepairTruckAndTrailerColumnDefinition() {
             export: true,
             resizable: true,
             link: {
+                doesNotHaveRout: true,
                 routerLinkStart: '/list/repair/',
                 routerLinkEnd: '/truck-details',
             },
