@@ -171,7 +171,7 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
             });
     }
 
-    public brokerInitConfig(data: BrokerResponse) {
+    public brokerInitConfig(data: any) {
         this.currentIndex = this.brokerList.findIndex(
             (broker) => broker.id === data.id
         );
@@ -192,6 +192,8 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
             );
         }
 
+        console.log('--data---', data.loadStops.loads.data);
+
         this.brokerConfig = [
             {
                 id: 0,
@@ -205,12 +207,13 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
                 template: 'load',
                 icon: true,
                 hasArrowDown: true,
-                length: data?.loads?.length ? data.loads.length : 0,
+                length: data?.loadStops?.loads?.data?.length ? data?.loadStops?.loads?.data?.length : 0,
                 hasCost: true,
                 hide: false,
                 hasArrow: true,
                 customText: 'Revenue',
                 total: totalCost,
+                brokerDrop: data?.loadStops?.loads?.data ? data?.loadStops?.loads?.data : [],
                 icons: [
                     {
                         id: Math.random() * 1000,
@@ -279,6 +282,8 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
             },
         ];
         this.brokerId = data?.id ? data.id : null;
+
+        console.log('---conf', this.brokerConfig)
     }
     public getBrokerById(id: number) {
         this.brokerService
