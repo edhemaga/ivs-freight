@@ -62,5 +62,6 @@ export interface BrokerResponse {
     createdAt?: string;
     updatedAt?: string;
     loads?: Array<LoadResponse> | null;
+    fileCount?: number | null;
 }
 
