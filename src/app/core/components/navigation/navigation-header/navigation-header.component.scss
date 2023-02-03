@@ -79,14 +79,15 @@
             width: 25px;
             height: 25px;
             position: absolute;
-            right: 3px;
+            right: 8px;
             top: 4px;
             display: flex;
             align-items: center;
             justify-content: center;
             z-index: 11;
-            .dark-svg {
-                &:hover {
+            cursor: pointer;
+            &:hover {
+                .dark-svg {
                     svg {
                         path {
                             fill: $nav-white;

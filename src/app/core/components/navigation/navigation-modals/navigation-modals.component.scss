@@ -161,6 +161,26 @@
 .opened-navigation {
     background: $nav-svg-active;
 }
+.add-hover {
+    &:hover {
+        background-color: rgba(255, 255, 255, 1);
+        transition: all 0.3s;
+        .modal-inner {
+            .modal-nav-close {
+                .modal-nav-close-text {
+                    .modal-nav-close-svg {
+                        svg {
+                            path {
+                                transition: all 0.3s;
+                                fill: $nav-svg-active;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
 .show-modal {
     .modal-inner {
         .modal-nav-close {

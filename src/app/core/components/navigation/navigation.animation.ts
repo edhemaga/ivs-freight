@@ -107,7 +107,7 @@ export const smoothHeight = (type: string) =>
                 borderRadius: '36px',
             })
         ),
-        transition('false <=> true', [animate('0.3s ease-in-out')]),
+        transition('false <=> true', [animate('0.15s ease-in-out')]),
     ]);
 
 export const moveElementsTopDownModal = (type: string) =>

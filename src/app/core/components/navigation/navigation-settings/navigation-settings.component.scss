@@ -102,6 +102,7 @@
             &:hover {
                 .svg-settings {
                     path {
+                        transition: all 0.3s;
                         fill: $nav-white;
                     }
                 }
@@ -179,6 +180,7 @@
                 transform: rotate(180deg);
                 transition: all 0.3s ease-in-out;
                 z-index: 1;
+                top: 5px;
                 line-height: 9px;
             }
         }
@@ -195,31 +197,12 @@
                 }
             }
         }
-        .activated-text {
-            color: $nav-white !important;
+        .item-name {
+            transition: all 0.3s;
         }
-
-        &:hover {
-            .image-footer {
-                svg {
-                    path {
-                        fill: $nav-white;
-                    }
-                }
-            }
-
-            p {
-                span {
-                    color: $nav-white;
-                }
-                .nav-item-arrow {
-                    svg {
-                        path {
-                            fill: $nav-white;
-                        }
-                    }
-                }
-            }
+        .activated-text {
+            transition: all 0.3s;
+            color: $nav-white !important;
         }
     }
 }
@@ -263,6 +246,28 @@
 .nav-width {
     width: 240px;
     overflow: hidden;
+    &:hover {
+        .image-footer {
+            svg {
+                path {
+                    fill: $nav-white;
+                }
+            }
+        }
+
+        p {
+            span {
+                color: $nav-white;
+            }
+            .nav-item-arrow {
+                svg {
+                    path {
+                        fill: $nav-white;
+                    }
+                }
+            }
+        }
+    }
 }
 .new-magic-line {
     display: inline-block;

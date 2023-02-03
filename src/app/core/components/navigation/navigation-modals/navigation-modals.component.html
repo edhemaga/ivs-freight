@@ -4,7 +4,11 @@
         'show-modal': isNavigationHoveredAndPanelOpen,
         'hide-modal': !isNavigationHoveredAndPanelOpen,
         'opened-navigation': isNavigationHovered,
-        'closed-navigation': !isNavigationHovered
+        'closed-navigation': !isNavigationHovered,
+        'add-hover':
+            !OpenCloseModal &&
+            !isNavigationHoveredAndPanelOpen &&
+            isNavigationHovered
     }"
     [@showHideDetails]="isNavigationHoveredAndPanelOpen ? true : false"
 >

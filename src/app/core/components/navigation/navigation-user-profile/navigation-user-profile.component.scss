@@ -79,7 +79,20 @@
         &:nth-child(1) {
             margin-top: 0px !important;
         }
-
+        &:nth-child(2) {
+            svg {
+                path {
+                    fill: #ffa726;
+                }
+            }
+        }
+        &:nth-child(5) {
+            svg {
+                path {
+                    fill: #ef5350;
+                }
+            }
+        }
         &:hover {
             .user-content-hover {
                 display: inline;
@@ -190,7 +203,7 @@
         right: 0;
         height: 100%;
         .background-on-user-panel {
-            background-color: $nav-transparent;
+            background-color: rgba(170, 170, 170, 0.1);
             height: 192px;
             transition: max-height 0.3s ease-out;
             overflow: hidden;
@@ -204,7 +217,7 @@
         }
         .remove-background-on-user-panel {
             overflow: hidden;
-            background-color: $nav-transparent;
+            background-color: rgba(170, 170, 170, 0.1);
             position: relative;
             animation: list-separator 0.3s;
             height: 193px;

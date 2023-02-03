@@ -51,6 +51,26 @@
         width: 10px;
         height: 10px;
     }
+    .notification-light {
+        svg {
+            path {
+                &:nth-child(1) {
+                    transition: all 0.3s;
+                    fill: $nav-white;
+                }
+            }
+        }
+    }
+    .notification-dark {
+        svg {
+            path {
+                &:nth-child(1) {
+                    transition: all 0.3s;
+                    fill: $nav-dark;
+                }
+            }
+        }
+    }
     .message {
         position: relative;
         right: 8px;

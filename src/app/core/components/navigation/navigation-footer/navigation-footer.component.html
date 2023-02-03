@@ -93,17 +93,13 @@ item.notification &&
                             class="status-marker-container-notification-1 close"
                         >
                             <svg-icon
-                                *ngIf="
-                                    item.notification && !isNavigationHovered
-                                "
+                                *ngIf="item.notification"
+                                [ngClass]="{
+                                    'notification-light': !isNavigationHovered,
+                                    'notification-dark': isNavigationHovered
+                                }"
                                 class="notification-svg"
                                 src="../../../../../assets/svg/applicant/notification-light.svg"
-                            >
-                            </svg-icon>
-                            <svg-icon
-                                *ngIf="item.notification && isNavigationHovered"
-                                class="notification-svg"
-                                src="../../../../../assets/svg/applicant/notification.svg"
                             >
                             </svg-icon>
                         </div>
@@ -120,7 +116,9 @@ item.notification &&
 
                                 'route-not-active-svg':
                                     item.construction == true &&
-                                    isNavigationHovered
+                                    isNavigationHovered,
+                                'notification-light': !isNavigationHovered,
+                                'notification-dark': isNavigationHovered
                             }"
                         >
                         </svg-icon>

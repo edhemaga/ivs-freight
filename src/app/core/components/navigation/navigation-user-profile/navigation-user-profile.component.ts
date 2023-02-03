@@ -38,7 +38,6 @@ export class NavigationUserProfileComponent implements OnInit, OnDestroy {
     @Input() isUserCompanyDetailsOpen: boolean;
     public userNavigationData: NavigationUserPanel[] = userNavigationData;
     public currentUserStatus: string = 'online';
-    test: boolean = false;
     isActiveMagicLine = true;
     public loggedUser: any = null;
     constructor(
@@ -51,7 +50,6 @@ export class NavigationUserProfileComponent implements OnInit, OnDestroy {
     ) {}
 
     ngOnInit() {
-        console.log(this.isUserPanelOpen);
         // ----------------------- PRODUCSTION MODE ----------------------------
         // if(this.authQuery.getEntity(1)) {
         //   const currentUser: SignInResponse = this.authQuery.getEntity(1);
@@ -86,7 +84,6 @@ export class NavigationUserProfileComponent implements OnInit, OnDestroy {
             });
     }
     public onUserPanelClose(event) {
-        this.test = event;
         this.navigationService.onDropdownActivation({
             name: 'User Panel',
             type: event,
