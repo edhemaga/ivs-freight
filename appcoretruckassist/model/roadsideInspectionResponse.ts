@@ -78,5 +78,6 @@ export interface RoadsideInspectionResponse {
     createdAt?: string;
     updatedAt?: string;
     files?: Array<FileResponse> | null;
+    fileCount?: number | null;
 }
 
