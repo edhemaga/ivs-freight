@@ -30,7 +30,6 @@ export class ShipperResolver implements Resolve<ShipperState> {
                             JSON.stringify(config)
                         );
                     }
-
                     this.shipperStore.set(shipperPagination.pagination.data);
                 })
             )

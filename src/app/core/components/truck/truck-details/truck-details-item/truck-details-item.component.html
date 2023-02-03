@@ -284,17 +284,19 @@
                             ? 'assets/svg/truckassist-table/note/Note.svg'
                             : 'assets/svg/truckassist-table/note/Note - Empty.svg'
                     "
-                    [expDateClose]="'04/04/27' | formatDateP"
                     [optionsId]="title.id"
                     (dropActions)="optionsEvent($event, trucks.data, 'title')"
+                    [stateTooltipName]="title.state.stateName"
+                    [shortName]="title.state.stateShortName"
+                    [weeklyWidth]="'28'"
                 >
                     <div class="cards-container">
                         <div class="card-body-cdl">
                             <div class="card-row-endor">
                                 <div class="card-item">
-                                    <div class="card-item-name">State</div>
+                                    <div class="card-item-name">Purchased</div>
                                     <div class="card-item-value">
-                                        {{ title?.state?.stateShortName }}
+                                        {{ formatDate(title.purchaseDate) }}
                                     </div>
                                 </div>
                                 <div class="card-item">
@@ -302,22 +304,6 @@
                                     <div class="card-item-value">
                                         {{ formatDate(title.issueDate) }}
                                     </div>
-                                </div>
-                            </div>
-                            <div
-                                class="card-row-progress second-progress"
-                            >
-                                <div class="card-details-progress-container">
-                                    <app-truckassist-progress-expiration
-                                        [expireDate]="
-                                        formatDate(title.issueDate)
-                                        "
-                                        [startDate]="
-                                            formatDate(title.purchaseDate) 
-                                        "
-                                        [expiresSettings]="'details'"
-                                    >
-                                    </app-truckassist-progress-expiration>
                                 </div>
                             </div>
                         </div>

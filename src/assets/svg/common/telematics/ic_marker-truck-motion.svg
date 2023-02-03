@@ -1,0 +1,84 @@
+<svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                xmlns:xlink="http://www.w3.org/1999/xlink"
+                                width="34"
+                                height="45"
+                                viewBox="0 0 34 45"
+                            >
+                                <defs>
+                                    <linearGradient
+                                        id="gradient1"
+                                        x1="0.5"
+                                        x2="0.5"
+                                        y2="1"
+                                        gradientUnits="objectBoundingBox"
+                                    >
+                                        <stop
+                                            offset="0"
+                                            stop-color="#536bc2"
+                                            stop-opacity="0"
+                                        />
+                                        <stop offset="1" stop-color="#536bc2" />
+                                    </linearGradient>
+                                    <filter
+                                        id="Ellipse_7908"
+                                        x="0"
+                                        y="11"
+                                        width="34"
+                                        height="34"
+                                        filterUnits="userSpaceOnUse"
+                                    >
+                                        <feOffset input="SourceAlpha" />
+                                        <feGaussianBlur
+                                            stdDeviation="2"
+                                            result="blur"
+                                        />
+                                        <feFlood flood-opacity="0.149" />
+                                        <feComposite operator="in" in2="blur" />
+                                        <feComposite in="SourceGraphic" />
+                                    </filter>
+                                </defs>
+                                <g
+                                    id="Group_97179"
+                                    data-name="Group 97179"
+                                    transform="translate(-7 19)"
+                                >
+                                    <path
+                                        id="Path_39129"
+                                        data-name="Path 39129"
+                                        d="M0,0H18L14,28H4Z"
+                                        transform="translate(15 -19)"
+                                        fill="url(#gradient1)"
+                                    />
+                                    <g
+                                        transform="matrix(1, 0, 0, 1, 7, -19)"
+                                        filter="drop-shadow(0px 0px 4px #00000026)"
+                                    >
+                                        <circle
+                                            id="Ellipse_7908-2"
+                                            data-name="Ellipse 7908"
+                                            cx="11"
+                                            cy="11"
+                                            r="11"
+                                            transform="translate(28 39) rotate(180)"
+                                            fill="#fff"
+                                        />
+                                    </g>
+                                    <circle
+                                        id="Ellipse_7909"
+                                        data-name="Ellipse 7909"
+                                        cx="8"
+                                        cy="8"
+                                        r="8"
+                                        transform="translate(16 1)"
+                                        fill="#536bc2"
+                                    />
+                                    <path
+                                        id="Path_33426"
+                                        data-name="Path 33426"
+                                        d="M4.726.208,1.816,5.981a.378.378,0,0,0,.55.483L4.638,4.92a.756.756,0,0,1,.85,0L7.762,6.465a.378.378,0,0,0,.55-.483L5.4.208a.378.378,0,0,0-.675,0"
+                                        transform="translate(19 5)"
+                                        fill="#fff"
+                                    />
+                                </g>
+                            </svg>

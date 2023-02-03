@@ -140,6 +140,13 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
 
     public companyOffices: any = [];
 
+    public mapListPagination: any = {
+        count: 0,
+        data: [],
+        pageIndex: 1,
+        pageSize: 25
+    };
+
     constructor(
         private ref: ChangeDetectorRef,
         private formBuilder: UntypedFormBuilder,
@@ -188,6 +195,12 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
                 this.sortBy = category;
                 this.getClusters(true);
             });
+
+        this.mapsService.mapListScrollChange
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((data) => {
+                this.showMoreMapListData(data);
+            });
     }
 
     public getMapInstance(map) {
@@ -209,6 +222,7 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
                 clearTimeout(this.clustersTimeout);
 
                 this.clustersTimeout = setTimeout(() => {
+                    this.mapListPagination.pageIndex = 1;
                     this.getClusters(this.firstClusterCall);
 
                     if (this.firstClusterCall) {
@@ -477,7 +491,7 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
         addedNew?
     ) {
         var pageIndex = clusterPagination
-            ? clusterPagination.pagination.pageIndex
+            ? clusterPagination?.pagination.pageIndex
             : 1;
         var pageSize = 25;
 
@@ -617,8 +631,8 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
                     clustersObj.northEastLongitude,
                     clustersObj.southWestLatitude,
                     clustersObj.southWestLongitude,
-                    null,
-                    null,
+                    this.mapListPagination.pageIndex,
+                    this.mapListPagination.pageSize,
                     null,
                     this.sortBy,
                     this.searchText
@@ -626,6 +640,9 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
                 .pipe(takeUntil(this.destroy$))
                 .subscribe((mapListResponse: any) => {
                     var mapListData = { ...mapListResponse };
+
+                    this.mapListPagination = mapListData.pagination;
+
                     mapListData.pagination.data.map((data) => {
                         data.shopRaiting = {
                             hasLiked: data.currentCompanyUserRating === 1,
@@ -638,6 +655,7 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
                     });
 
                     mapListData.changedSort = changedSearchOrSort;
+                    mapListData.addData = this.mapListPagination.pageIndex > 1 ? true : false;
 
                     this.updateMapList.emit(mapListData);
                     this.mapsService.searchLoadingChanged.next(false);
@@ -780,8 +798,8 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
                     null, // shipperLat
                     null, // shipperDistance
                     null, // shipperStates
-                    null, // pageIndex
-                    null, // pageSize
+                    this.mapListPagination.pageIndex, // pageIndex
+                    this.mapListPagination.pageSize, // pageSize
                     null, // companyId
                     this.sortBy,
                     this.searchText,
@@ -791,6 +809,9 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
                 .pipe(takeUntil(this.destroy$))
                 .subscribe((mapListResponse: any) => {
                     var mapListData = { ...mapListResponse };
+
+                    this.mapListPagination = mapListData.pagination;
+
                     mapListData.pagination.data.map((data) => {
                         data.raiting = {
                             hasLiked: data.currentCompanyUserRating === 1,
@@ -803,6 +824,7 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
                     });
 
                     mapListData.changedSort = changedSearchOrSort;
+                    mapListData.addData = this.mapListPagination.pageIndex > 1 ? true : false;
 
                     this.updateMapList.emit(mapListData);
                     this.mapsService.searchLoadingChanged.next(false);
@@ -930,8 +952,8 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
                     null, //costTo,
                     null, //ppgFrom,
                     null, //ppgTo,
-                    null, //pageIndex,
-                    null, //pageSize,
+                    this.mapListPagination.pageIndex, //pageIndex,
+                    this.mapListPagination.pageSize, //pageSize,
                     null, //companyId
                     this.sortBy, //this.sortBy
                     this.searchText
@@ -939,6 +961,9 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
                 .pipe(takeUntil(this.destroy$))
                 .subscribe((mapListResponse: any) => {
                     var mapListData = { ...mapListResponse };
+
+                    this.mapListPagination = mapListData.pagination;
+
                     mapListData.pagination.data.map((data) => {
                         data.raiting = {
                             hasLiked: data.currentCompanyUserRating === 1,
@@ -951,6 +976,7 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
                     });
 
                     mapListData.changedSort = changedSearchOrSort;
+                    mapListData.addData = this.mapListPagination.pageIndex > 1 ? true : false;
 
                     this.updateMapList.emit(mapListData);
                     this.mapsService.searchLoadingChanged.next(false);
@@ -1324,6 +1350,25 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
         if (item.count / item.pagination.pageIndex > 25) {
             item.pagination.pageIndex++;
             this.callClusters(clustersObject, false, item);
+        }
+    }
+
+    showMoreMapListData(data) {
+        var bounds = this.agmMap.getBounds();
+        var ne = bounds.getNorthEast(); // LatLng of the north-east corner
+        var sw = bounds.getSouthWest(); // LatLng of the south-west corder
+
+        var clustersObject = {
+            northEastLatitude: ne.lat(),
+            northEastLongitude: ne.lng(),
+            southWestLatitude: sw.lat(),
+            southWestLongitude: sw.lng(),
+            zoomLevel: this.mapZoom,
+        };
+
+        if (data.length / this.mapListPagination.pageIndex >= 25) {
+            this.mapListPagination.pageIndex++;
+            this.callClusters(clustersObject, false);
         }
     }
 

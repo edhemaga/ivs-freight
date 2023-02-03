@@ -38,7 +38,7 @@ export class ShipperSingleResolver implements Resolve<any[]> {
         }).pipe(
             tap((data) => {
                 let shipperData = data.shipperData;
-                let loadData = data.shipperLoads.data;
+                let loadData = data.shipperLoads?.loads?.data;
                 shipperData.loadStops = loadData ? loadData : [];
                 this.sls.add(shipperData);
                 this.shipperDetailsStore.set([shipperData]);

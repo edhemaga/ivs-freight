@@ -508,6 +508,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 comments: data.comments,
             },
             tableAttachments: data?.files ? data.files : [],
+            fileCount: data?.fileCount,
         };
     }
 
