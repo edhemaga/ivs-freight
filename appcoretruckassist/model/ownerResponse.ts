@@ -30,6 +30,7 @@ export interface OwnerResponse {
     routingNumber?: string | null;
     address?: AddressEntity;
     files?: Array<FileResponse> | null;
+    fileCount?: number | null;
     createdAt?: string;
     updatedAt?: string;
 }

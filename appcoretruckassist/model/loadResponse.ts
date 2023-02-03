@@ -84,5 +84,6 @@ export interface LoadResponse {
     createdAt?: string;
     updatedAt?: string;
     files?: Array<FileResponse> | null;
+    fileCount?: number | null;
 }
 

@@ -3091,6 +3091,7 @@
                                 }"
                             >
                                 <div
+                                    *ngIf="row.fileCount"
                                     (click)="onShowAttachments(row)"
                                     [ngClass]="{
                                         'action-active':
@@ -3108,6 +3109,7 @@
                                             'height.px': '18'
                                         }"
                                     ></svg-icon>
+                                    <div class="file_count">{{row.fileCount}}</div>
                                 </div>
                             </div>
 

@@ -720,7 +720,73 @@ table {
                         }
 
                         .attachments-icon-container {
-                            padding: 3px;
+                            width: 44px;
+                            height: 26px;
+
+                            border-radius: 2px;
+                            padding: 4px;
+                            gap: 4px;
+                            margin-right: 8px;
+
+                            .file_count {
+                                min-width: 14px;
+                                height: 14px;
+
+                                font-weight: 700;
+                                font-size: 11px;
+                                line-height: 14px;
+                                color: #919191;
+                                text-align: center;
+
+                                user-select: none;
+                            }
+
+                            &:hover {
+                                background-color: #eeeeee;
+                                svg-icon {
+                                    svg {
+                                        path {
+                                            fill: #424242;
+                                        }
+                                    }
+                                }
+
+                                .file_count {
+                                    color: #424242;
+                                }
+                            }
+
+                            &.action-active {
+                                background-color: #424242 !important;
+
+                                svg-icon {
+                                    svg {
+                                        path {
+                                            fill: #dadada !important;
+                                        }
+                                    }
+                                }
+
+                                .file_count {
+                                    color: #dadada !important;
+                                }
+
+                                &:hover {
+                                    background-color: #1d1d1d !important;
+
+                                    svg-icon {
+                                        svg {
+                                            path {
+                                                fill: #ffffff !important;
+                                            }
+                                        }
+                                    }
+
+                                    .file_count {
+                                        color: #ffffff !important;
+                                    }
+                                }
+                            }
                         }
 
                         .action-active {
@@ -973,7 +1039,7 @@ table {
                                 .ic_carhauler_stinger {
                                     svg {
                                         path {
-                                            fill: #F276EF;
+                                            fill: #f276ef;
                                         }
                                     }
                                 }
@@ -2665,7 +2731,7 @@ table {
         font-weight: bold;
         color: #6c6c6c;
 
-        &:hover{
+        &:hover {
             color: #5673aa;
             transform: 0.25s;
         }
@@ -3014,7 +3080,7 @@ table {
 }
 
 // NG CLASS
-.pined-columns-margin{
+.pined-columns-margin {
     margin-right: 6px;
 }
 

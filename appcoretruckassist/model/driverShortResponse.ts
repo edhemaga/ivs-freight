@@ -59,5 +59,6 @@ export interface DriverShortResponse {
     mvrPercentage?: number | null;
     cdlPercentage?: number | null;
     medicalPercentage?: number | null;
+    fileCount?: number | null;
 }
 
