@@ -1619,12 +1619,14 @@
                     </div>
 
                     <!-- Border -->
-                    <div
-                        class="border-scroll-section"
-                        [ngClass]="{
-                            'border-left': showScrollSectionBorder
-                        }"
-                    ></div>
+                    <div class="border-scroll-section-container">
+                        <div
+                            class="border-scroll-section"
+                            [ngClass]="{
+                                'border-left': showScrollSectionBorder
+                            }"
+                        ></div>
+                    </div>
 
                     <!-- NOT PINED -->
                     <div
@@ -1634,7 +1636,13 @@
                     >
                         <td
                             class="not-pined-td"
-                            *ngFor="let column of notPinedColumns"
+                            *ngFor="
+                                let column of notPinedColumns;
+                                let c = index
+                            "
+                            [ngClass]="{
+                                'space-left': c === 0
+                            }"
                         >
                             <!-- NO TEMPLATE -->
                             <div
@@ -3056,12 +3064,14 @@
                     </div>
 
                     <!-- Border -->
-                    <div
-                        class="border-scroll-section"
-                        [ngClass]="{
-                            'border-right': showScrollSectionBorder
-                        }"
-                    ></div>
+                    <div class="border-scroll-section-container border-scroll-section-container-right">
+                        <div
+                            class="border-scroll-section"
+                            [ngClass]="{
+                                'border-right': showScrollSectionBorder
+                            }"
+                        ></div>
+                    </div>
 
                     <!-- ACTIONS -->
                     <div class="actions-columns" *ngIf="actionsColumns.length">
