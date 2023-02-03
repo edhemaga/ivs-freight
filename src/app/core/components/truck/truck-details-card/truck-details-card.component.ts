@@ -8,7 +8,7 @@ import {
     Input,
     SimpleChanges,
 } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { UntypedFormControl } from '@angular/forms';
 import { Subject, takeUntil } from 'rxjs';
 import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
 import { card_component_animation } from '../../shared/animations/card-component.animations';
@@ -48,10 +48,10 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
     @ViewChild('stackedBarChart', { static: false })
     public stackedBarChart: any;
     @ViewChild('payrollChart', { static: false }) public payrollChart: any;
-    public noteControl: FormControl = new FormControl();
-    public fhwaNote: FormControl = new FormControl();
-    public registrationNote: FormControl = new FormControl();
-    public titleNote: FormControl = new FormControl();
+    public noteControl: UntypedFormControl = new UntypedFormControl();
+    public fhwaNote: UntypedFormControl = new UntypedFormControl();
+    public registrationNote: UntypedFormControl = new UntypedFormControl();
+    public titleNote: UntypedFormControl = new UntypedFormControl();
     public buttonsArrayPerfomance: any;
     public buttonsArrayFuel: any;
     public buttonsArrayRevenue: any;
@@ -64,6 +64,7 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
     @Input() truck: any | any;
     public ownersData: any;
     public truck_list: any[] = this.truckMinimalListQuery.getAll();
+    public ownerCardOpened: boolean = true;
 
     payrollChartConfig: any = {
         dataProperties: [
@@ -386,7 +387,7 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
         this.getTruckDropdown();
         this.buttonSwitcher();
         this.initTableOptions();
-
+        
         let array1 = [...this.truck.ownerHistories];
         
         array1.sort((a, b) => {
@@ -622,6 +623,11 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
             }
         }
     }
+
+    public onOpenCloseCard(mod: any){
+        this.ownerCardOpened = mod;
+    }
+
     ngOnDestroy(): void {
         this.destroy$.next();
         this.destroy$.complete();

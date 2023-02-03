@@ -16,7 +16,7 @@
         (click)="isCardOpenEvent($event)"
     >
         <!-- Left side of header -->
-        <div class="header-content" [class.counter]="hasCounter">
+        <div class="header-content">
             <!-- Checkbox -->
             <app-ta-checkbox
                 *ngIf="hasCheckbox"
@@ -228,6 +228,7 @@
         <div
             [ngClass]="noActive"
             [ngStyle]="animationMarginParams"
+            [class.openedCardClass]="_isCardOpen"
             [@showHideCardBody]="{
                 value: _isCardOpen.toString(),
                 params: animationMarginParams

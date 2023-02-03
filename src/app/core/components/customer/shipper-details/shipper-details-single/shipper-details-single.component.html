@@ -6,6 +6,7 @@
                 </app-shipper-card-view>
             </div>
             <div *ngSwitchCase="'load'" class="load">
+            <!--    
                 <div
                     class="repair-container"
                     *ngIf="shipperData?.data?.loadStops?.length"
@@ -32,13 +33,13 @@
                                 <div class="icon-svg-repair">
                                     <svg-icon
                                         class="arrow-ri"
-                                        *ngIf="loads.stopType.name === 'Pickup'"
+                                        *ngIf="loads?.stopType?.name === 'Pickup'"
                                         src="assets/svg/common/ic_arrow-right-line.svg"
                                     ></svg-icon>
                                     <svg-icon
                                         class="arrow-le"
                                         *ngIf="
-                                            loads.stopType.name === 'Delivery'
+                                            loads?.stopType?.name === 'Delivery'
                                         "
                                         src="assets/svg/common/ic_arrow-line-left.svg"
                                     ></svg-icon>
@@ -84,21 +85,21 @@
                                 <span class="wait-time"
                                     ><span
                                         class="hours"
-                                        *ngIf="loads?.wait.days > 0"
-                                        >{{ loads?.wait.days }} d
+                                        *ngIf="loads?.wait?.days > 0"
+                                        >{{ loads?.wait?.days }} d
                                     </span>
                                     <span
                                         class="hours"
-                                        *ngIf="loads?.wait.hours > 0"
-                                        >{{ loads?.wait.hours }} h</span
+                                        *ngIf="loads?.wait?.hours > 0"
+                                        >{{ loads?.wait?.hours }} h</span
                                     >
                                     <span
                                         class="hours"
                                         *ngIf="
-                                            loads?.wait.hours <= 0 &&
-                                            loads?.wait.days <= 0
+                                            loads?.wait?.hours <= 0 &&
+                                            loads?.wait?.days <= 0
                                         "
-                                        >{{ loads?.wait.minutes }} min</span
+                                        >{{ loads?.wait?.minutes }} min</span
                                     >
                                 </span>
                             </div>
@@ -106,6 +107,7 @@
                         <div class="divider"></div>
                     </div>
                 </div>
+            -->
             </div>
             <div *ngSwitchCase="'contact'" class="contact">
                 <div *ngIf="shipperContacts.length" class="contact-wrapper">
@@ -118,6 +120,10 @@
                         [hasDivider]="false"
                         [cardName]="shipperContact.department.name"
                         [isCardOpen]="true"
+                        [animationMarginParams]="{
+                            marginTop: '0px',
+                            marginBottom: '10px'
+                        }"
                         class="shipper-contact-container"
                     >
                         <div

@@ -290,7 +290,11 @@
                     ></svg-icon>
 
                     <svg-icon
-                        (click)="onResetTable()"
+                        (click)="
+                            onOptions({
+                                text: 'Reset Table'
+                            })
+                        "
                         *ngIf="option.backToListIcon && option.active"
                         class="columns-active-icon"
                         [svgStyle]="{
@@ -320,6 +324,7 @@
                         let i = index
                     "
                 >
+                    <!-- For Regular Column -->
                     <div
                         (click)="onToaggleColumn(column, i)"
                         class="column"
@@ -360,6 +365,7 @@
                         </div>
                     </div>
 
+                    <!-- For Group -->
                     <div
                         class="group-columns-container"
                         *ngIf="column.isGroup"
@@ -369,13 +375,15 @@
                             <div class="checkbox">
                                 <input
                                     [checked]="column.areAllActive"
-                                    (click)="onToaggleAllInGroup(column)"
+                                    (click)="onToaggleAllInGroup(i)"
                                     class="columns-options-checkbox"
                                     id="checkbox{{ i }}"
                                     type="checkbox"
                                 />
                                 <label
-                                    [ngClass]="{'some-selected': column.areSomeSelected}"
+                                    [ngClass]="{
+                                        'some-selected': column.areSomeSelected
+                                    }"
                                     class="columns-options-label"
                                     for="checkbox{{ i }}"
                                 ></label>

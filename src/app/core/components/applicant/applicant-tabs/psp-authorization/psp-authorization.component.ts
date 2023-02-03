@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 
@@ -35,7 +35,7 @@ export class PspAuthorizationComponent implements OnInit, OnDestroy {
 
     public isValidLoad: boolean;
 
-    public pspAuthorizationForm: FormGroup;
+    public pspAuthorizationForm: UntypedFormGroup;
 
     public companyName: string;
 
@@ -49,7 +49,7 @@ export class PspAuthorizationComponent implements OnInit, OnDestroy {
     public applicantCardInfo: any;
 
     constructor(
-        private formBuilder: FormBuilder,
+        private formBuilder: UntypedFormBuilder,
         private inputService: TaInputService,
         private router: Router,
         private applicantStore: ApplicantStore,

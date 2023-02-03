@@ -1,6 +1,6 @@
 import { Validators } from '@angular/forms';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
 import {
     CommentResponse,
@@ -39,7 +39,7 @@ export class TaskModalComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
     @Input() editData: any;
 
-    public taskForm: FormGroup;
+    public taskForm: UntypedFormGroup;
 
     public resDepartments: any[] = [];
     public resCompanyUsers: any[] = [];
@@ -65,7 +65,7 @@ export class TaskModalComponent implements OnInit, OnDestroy {
     public disableCardAnimation: boolean = false;
 
     constructor(
-        private formBuilder: FormBuilder,
+        private formBuilder: UntypedFormBuilder,
         private inputService: TaInputService,
         private modalService: ModalService,
         private todoService: TodoTService,

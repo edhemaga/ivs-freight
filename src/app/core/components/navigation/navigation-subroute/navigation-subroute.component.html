@@ -1,5 +1,12 @@
 <!-- routerLinkActive="subroute-active" -->
-<div class="subroutes-container">
+<div
+    class="subroutes-container"
+    [ngClass]="{
+        hide: !openCloseContainer,
+        show: openCloseContainer,
+        'other-container-opened': otherContainerOpened
+    }"
+>
     <div
         *ngFor="let item of subroute.route; trackBy: identity"
         class="subroutes"
@@ -7,7 +14,9 @@
             'new-magic-line-selected': isActiveRouteOnReload(item.route)
         }"
         [routerLink]="item.route"
-        [ngClass]="{ 'subroute-active': selectedSubRoute == item.name }"
+        [ngClass]="{
+            'subroute-active': selectedSubRoute == item.name
+        }"
         (click)="onSubrouteAction(item); subrouteIndex(index)"
     >
         <svg-icon
@@ -29,5 +38,5 @@
         ></svg-icon>
     </div>
 
-    <div class="new-magic-line"></div>
+    <div *ngIf="openCloseContainer" class="new-magic-line"></div>
 </div>

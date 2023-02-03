@@ -25,7 +25,7 @@
     grid-template-columns: repeat(3, 130px);
     column-gap: 64px;
     row-gap: 12px;
-    padding-left: 10px;
+    padding-left: 4px;
     .additional-template-item {
         display: flex;
         flex-direction: column;
@@ -72,7 +72,7 @@
     grid-template-columns: 72px 160px 65px 50px;
     row-gap: 12px;
     column-gap: 65px;
-    padding-left: 10px;
+    padding-left: 4px;
     .bank-card-name-header {
         font-size: 12px;
         font-weight: $settings-font-semibold;
@@ -96,7 +96,7 @@
     grid-template-columns: 72px 160px 65px 50px;
     row-gap: 12px;
     column-gap: 65px;
-    padding-left: 10px;
+    padding-left: 4px;
     .bank-card-template-item-body {
         display: grid;
         grid-template-columns: 106px 194px 98px 50px;
@@ -147,7 +147,7 @@
         .basic-details {
             width: 100%;
             height: 256px;
-            margin-bottom: 15px;
+            //margin-bottom: 15px;
             border-radius: 3px;
             .basic-header {
                 width: 100%;
@@ -211,10 +211,12 @@
                     }
 
                     &:hover {
+                        /*
                         .basic-logo-edit {
                             transition: $settings-transition;
                             display: inline-block;
                         }
+                        */
                     }
                 }
 
@@ -299,7 +301,7 @@
 .cards-custom {
     padding: 0 6px;
     .ta-card-header {
-        padding: 0 6px !important;
+        padding: 0 4px !important;
     }
 }
 .show-hide {

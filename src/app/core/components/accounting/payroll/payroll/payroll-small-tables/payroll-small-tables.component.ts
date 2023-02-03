@@ -33,7 +33,7 @@ export class PayrollSmallTablesComponent implements OnInit {
                         type: 'new', // 'edit' stavljas ako treba kad se azurira postojeci
                         data: {
                             id: null, // id for edit,
-                            driverId: 4, // TODO: a moze iz store-a da izvuces i da mi prosledis sve podatke o vozacu
+                            driverId: 5, // TODO: a moze iz store-a da izvuces i da mi prosledis sve podatke o vozacu
                         }, // da ne bi morao da pozivam kod sebe get by id, samo javi kad zavrsis
                     }
                 );
@@ -49,7 +49,7 @@ export class PayrollSmallTablesComponent implements OnInit {
                         type: 'new', // 'edit' stavljas ako treba kad se azurira postojeci
                         data: {
                             id: null, // id for edit,
-                            driverId: 4, // TODO: a moze iz store-a da izvuces i da mi prosledis sve podatke o vozacu
+                            driverId: 5, // TODO: a moze iz store-a da izvuces i da mi prosledis sve podatke o vozacu
                         }, // da ne bi morao da pozivam kod sebe get by id, samo javi kad zavrsis
                     }
                 );
@@ -65,7 +65,7 @@ export class PayrollSmallTablesComponent implements OnInit {
                         type: 'new', // 'edit' stavljas ako treba kad se azurira postojeci
                         data: {
                             id: null, // id for edit,
-                            driverId: 4, // TODO: a moze iz store-a da izvuces i da mi prosledis sve podatke o vozacu
+                            driverId: 5, // TODO: a moze iz store-a da izvuces i da mi prosledis sve podatke o vozacu
                         }, // da ne bi morao da pozivam kod sebe get by id, samo javi kad zavrsis
                     }
                 );

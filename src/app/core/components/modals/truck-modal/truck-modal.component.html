@@ -271,7 +271,7 @@
                             [hasCounter]="
                                 documents.length ? documents.length : 0
                             "
-                            [cardName]="'Documents'"
+                            [cardName]="'Document'"
                             [isCardOpen]="documents.length > 0"
                         >
                             <app-ta-upload-files
@@ -447,21 +447,17 @@
 
                     <!-- Fifth Row -->
                     <div class="truck-additional-three-columns">
-                        <app-ta-input-dropdown
-                            formControlName="tireSizeId"
+                        <app-ta-input
+                            formControlName="wheelBase"
                             [inputConfig]="{
-                                name: 'Input Dropdown',
+                                name: 'Wheel Basee',
                                 type: 'text',
-                                label: 'Tire Size',
-                                isDropdown: true,
-                                dropdownWidthClass: 'w-col-164'
+                                label: 'Wheel Base',
+                                minLength: 1,
+                                maxLength: 10,
+                                thousandSeparator: true
                             }"
-                            [options]="tireSize"
-                            [activeItem]="selectedTireSize"
-                            (selectedItem)="
-                                onSelectDropdown($event, 'tire-size')
-                            "
-                        ></app-ta-input-dropdown>
+                        ></app-ta-input>
                         <app-ta-input-dropdown
                             formControlName="frontWheels"
                             [inputConfig]="{
@@ -511,13 +507,29 @@
                         ></app-ta-input-dropdown>
 
                         <app-ta-input-dropdown
+                            formControlName="tireSizeId"
+                            [inputConfig]="{
+                                name: 'Input Dropdown',
+                                type: 'text',
+                                label: 'Tire Size',
+                                isDropdown: true,
+                                dropdownWidthClass: 'w-col-134'
+                            }"
+                            [options]="tireSize"
+                            [activeItem]="selectedTireSize"
+                            (selectedItem)="
+                                onSelectDropdown($event, 'tire-size')
+                            "
+                        ></app-ta-input-dropdown>
+
+                        <app-ta-input-dropdown
                             formControlName="gearRatio"
                             [inputConfig]="{
                                 name: 'Input Dropdown',
                                 type: 'text',
                                 label: 'Gear Ratio',
                                 isDropdown: true,
-                                dropdownWidthClass: 'w-col-134'
+                                dropdownWidthClass: 'w-col-135'
                             }"
                             [options]="gearRatios"
                             [activeItem]="selectedGearRatio"
@@ -525,30 +537,21 @@
                                 onSelectDropdown($event, 'gear-ratio')
                             "
                         ></app-ta-input-dropdown>
-
-                        <div class="double-bank-checkbox">
-                            <app-ta-checkbox
-                                formControlName="doubleBunk"
-                                [name]="'Double Bunk'"
-                                [label]="'Double Bunk'"
-                                [customClass]="'regular'"
-                            ></app-ta-checkbox>
-                        </div>
                     </div>
 
                     <!-- Seventh Row -->
                     <div class="truck-additional-fifth-columns">
                         <app-ta-checkbox
-                            formControlName="refrigerator"
-                            [name]="'Refrigerator'"
-                            [label]="'Refrigerator'"
+                            formControlName="doubleBunk"
+                            [name]="'Double Bunk'"
+                            [label]="'Double Bunk'"
                             [customClass]="'regular'"
                         ></app-ta-checkbox>
 
                         <app-ta-checkbox
-                            formControlName="dcInverter"
-                            [name]="'DC Inverter'"
-                            [label]="'DC Inverter'"
+                            formControlName="refrigerator"
+                            [name]="'Refrigerator'"
+                            [label]="'Refrigerator'"
                             [customClass]="'regular'"
                         ></app-ta-checkbox>
 
@@ -563,6 +566,30 @@
                             formControlName="pto"
                             [name]="'PTO'"
                             [label]="'PTO'"
+                            [customClass]="'regular'"
+                        ></app-ta-checkbox>
+                    </div>
+
+                    <!-- Seventh and Half Row -->
+                    <div class="truck-additional-checkbox-second-row">
+                        <app-ta-checkbox
+                            formControlName="dcInverter"
+                            [name]="'DC Inverter'"
+                            [label]="'DC Inverter'"
+                            [customClass]="'regular'"
+                        ></app-ta-checkbox>
+
+                        <app-ta-checkbox
+                            formControlName="headacheRack"
+                            [name]="'Headache Rack'"
+                            [label]="'Headache Rack'"
+                            [customClass]="'regular'"
+                        ></app-ta-checkbox>
+
+                        <app-ta-checkbox
+                            formControlName="dashCam"
+                            [name]="'Dash Cam'"
+                            [label]="'Dash Cam'"
                             [customClass]="'regular'"
                         ></app-ta-checkbox>
                     </div>

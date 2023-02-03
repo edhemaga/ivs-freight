@@ -7,7 +7,7 @@ import {
     Input,
     SimpleChanges,
 } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { UntypedFormControl } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
 import { card_component_animation } from '../../shared/animations/card-component.animations';
@@ -49,10 +49,10 @@ export class TrailerDetailsCardComponent
 {
     @Input() trailer: any;
     @Input() templateCard: boolean = false;
-    public note: FormControl = new FormControl();
-    public titleNote: FormControl = new FormControl();
-    public registrationNote: FormControl = new FormControl();
-    public inspectionNote: FormControl = new FormControl();
+    public note: UntypedFormControl = new UntypedFormControl();
+    public titleNote: UntypedFormControl = new UntypedFormControl();
+    public registrationNote: UntypedFormControl = new UntypedFormControl();
+    public inspectionNote: UntypedFormControl = new UntypedFormControl();
     public toggler: boolean[] = [];
     public dataEdit: any;
     public toggleOwner: boolean;
@@ -60,6 +60,7 @@ export class TrailerDetailsCardComponent
     private destroy$ = new Subject<void>();
     public trailer_list: any[] = this.trailerMinimalQuery.getAll();
     public trailerIndex: any;
+    public ownerCardOpened: boolean = true;
     constructor(
         private detailsPageDriverSer: DetailsPageService,
         private trailerMinimalQuery: TrailersMinimalListQuery,
@@ -222,6 +223,10 @@ export class TrailerDetailsCardComponent
     public sortKeys = (a, b) => {
         return a.value.id > b.value.id ? -1 : 1;
     };
+
+    public onOpenCloseCard(mod: any){
+        this.ownerCardOpened = mod;
+    }
 
     ngOnDestroy(): void {
         this.destroy$.next();

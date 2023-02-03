@@ -123,6 +123,10 @@ $tab-colors: '26A690', 'EF5350', '3074D3';
             box-shadow: 0 0 2px #ffffff1a;
             height: calc(100% - 8px);
         }
+
+        &-header {
+            margin-top: 12px;
+        }
     }
 
     &.type3-modal-popup {
@@ -154,14 +158,14 @@ $tab-colors: '26A690', 'EF5350', '3074D3';
     }
 
     &.dark {
-        background-color: #1D1D1D;
+        background-color: #1d1d1d;
         border-radius: 2px;
 
         .tab-switch-items-holder {
-            color: #AAAAAA;
+            color: #aaaaaa;
 
             &.active {
-                color: #FFFFFF;
+                color: #ffffff;
             }
         }
     }

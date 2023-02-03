@@ -15,7 +15,7 @@ import {
     ViewEncapsulation,
     AfterContentInit,
 } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { MapsService } from '../../../services/shared/maps.service';
 import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
 import { Subject, takeUntil } from 'rxjs';
@@ -42,7 +42,7 @@ export class MapListComponent
     @Output() headActions: EventEmitter<any> = new EventEmitter();
     @ContentChildren('listCard') listCards!: QueryList<any>;
     public mapListExpanded: boolean = true;
-    public searchForm!: FormGroup;
+    public searchForm!: UntypedFormGroup;
     public sortDirection: string = 'desc';
     visibleColumns: any[] = [];
     pinedColumns: any[] = [];
@@ -57,7 +57,7 @@ export class MapListComponent
     searchTimeout: any;
 
     constructor(
-        private formBuilder: FormBuilder,
+        private formBuilder: UntypedFormBuilder,
         private ref: ChangeDetectorRef,
         private mapsService: MapsService,
         private tableService: TruckassistTableService,
@@ -493,8 +493,8 @@ export class MapListComponent
                 element.scrollHeight - element.scrollTop - element.clientHeight
             ) <= 3.0
         ) {
-            console.log('mapListScroll');
             //this.loadMoreData.emit(this.item);
+            this.mapsService.mapListScroll(this.mapListContent);
         }
     }
 

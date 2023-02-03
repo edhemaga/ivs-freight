@@ -1,4 +1,4 @@
-import { FormControl } from '@angular/forms';
+import { UntypedFormControl } from '@angular/forms';
 import {
     Component,
     EventEmitter,
@@ -42,7 +42,7 @@ export class TaCustomCardComponent {
     @Input() hasPayrollStatus: boolean = false;
     @Input() bottomCollapseArrow: boolean = false;
 
-    @Input() controlName: FormControl;
+    @Input() controlName: UntypedFormControl;
 
     @Input() tooltipName: string = '';
     noActive: string;
@@ -79,7 +79,6 @@ export class TaCustomCardComponent {
         if (!this.disabledCard) {
             event.preventDefault();
             event.stopPropagation();
-
             const oldNoActive = this.noActive;
             this.noActive = '';
             this._isCardOpen =

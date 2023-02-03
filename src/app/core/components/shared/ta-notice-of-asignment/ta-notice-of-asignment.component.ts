@@ -11,8 +11,8 @@ import {
 } from '@angular/core';
 import {
     ControlValueAccessor,
-    FormBuilder,
-    FormGroup,
+    UntypedFormBuilder,
+    UntypedFormGroup,
     NgControl,
 } from '@angular/forms';
 import { Subject, takeUntil } from 'rxjs';
@@ -89,7 +89,7 @@ export class TaNoticeOfAsignmentComponent
 
     isFormDirty: boolean = false;
     private destroy$ = new Subject<void>();
-    public noticeForm: FormGroup;
+    public noticeForm: UntypedFormGroup;
 
     selectedPaternColor = '#919191';
     @ViewChild('noticeRef', { static: true }) noticeRef: ElementRef;
@@ -98,7 +98,7 @@ export class TaNoticeOfAsignmentComponent
         @Self() public superControl: NgControl,
         private noticeService: NoticeService,
         private elementRef: ElementRef,
-        private formBuilder: FormBuilder,
+        private formBuilder: UntypedFormBuilder,
         private formService: FormService
     ) {
         this.superControl.valueAccessor = this;

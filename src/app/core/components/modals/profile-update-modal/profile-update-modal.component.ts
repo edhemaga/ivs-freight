@@ -8,7 +8,7 @@ import {
 import { phoneFaxRegex } from '../../shared/ta-input/ta-input.regex-validations';
 
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { tab_modal_animation } from '../../shared/animations/tabs-modal.animation';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
 import {
@@ -36,7 +36,7 @@ export class ProfileUpdateModalComponent implements OnInit, OnDestroy {
 
     public selectedTab: number = 1;
 
-    public profileUserForm: FormGroup;
+    public profileUserForm: UntypedFormGroup;
 
     public disableCardAnimation: boolean = false;
 
@@ -44,6 +44,7 @@ export class ProfileUpdateModalComponent implements OnInit, OnDestroy {
         {
             id: 1,
             name: 'Basic',
+            checked: true
         },
         {
             id: 2,
@@ -73,7 +74,7 @@ export class ProfileUpdateModalComponent implements OnInit, OnDestroy {
     public isFormDirty: boolean = false;
 
     constructor(
-        private formBuilder: FormBuilder,
+        private formBuilder: UntypedFormBuilder,
         private inputService: TaInputService,
         private userService: TaUserService,
         private modalService: ModalService,

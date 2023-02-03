@@ -41,7 +41,8 @@ export class ShipperDetailsSingleComponent implements OnInit, OnChanges {
             this.getReviews(changes.shipper.currentValue[0].data);
         }
     }
-    ngOnInit(): void {}
+    ngOnInit(): void {
+    }
 
     /**Function return id */
     public identity(index: number, item: any): number {

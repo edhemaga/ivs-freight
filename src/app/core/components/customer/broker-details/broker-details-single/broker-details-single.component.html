@@ -8,7 +8,7 @@
             <div *ngSwitchCase="'load'" class="load">
                 <div
                     class="broker-details-table-container"
-                    *ngIf="broker?.data?.loads?.length"
+                    *ngIf="broker?.data?.loadStops?.loads?.data?.length"
                 >
                     <div class="t-headear-broker">
                         <div class="t-head-items">
@@ -42,25 +42,25 @@
                         <div
                             class="t-body-broker"
                             *ngFor="
-                                let loads of broker?.data?.loads;
+                                let loads of broker?.data?.loadStops?.loads?.data;
                                 trackBy: identity
                             "
                         >
                             <div class="t-body-broker-items">
                                 <div class="t-body-items">
                                     <span class="load-name space-text">{{
-                                        loads.id
+                                        loads?.loadNumber
                                     }}</span>
                                     <span class="default-name">{{
-                                        loads.referenceNumber
+                                        loads?.referenceNumber
                                     }}</span>
                                 </div>
                                 <div class="t-body-items">
                                     <span class="default-name space-text">{{
-                                        loads?.dispatch.truck?.truckNumber
+                                        loads?.dispatch?.truck?.truckNumber
                                     }}</span>
                                     <span class="default-name">{{
-                                        loads?.dispatch.trailer?.trailerNumber
+                                        loads?.dispatch?.trailer?.trailerNumber
                                     }}</span>
                                 </div>
                                 <div class="t-body-items">
@@ -69,15 +69,15 @@
                                     }}</span>
                                     <span class="default-name"
                                         >{{
-                                            loads?.dispatch.driver?.firstName
+                                            loads?.dispatch?.driver?.firstName
                                                 .length > 6
-                                                ? loads?.dispatch.driver
+                                                ? loads?.dispatch?.driver
                                                       ?.firstName[0] + '.'
-                                                : loads?.dispatch.driver
+                                                : loads?.dispatch?.driver
                                                       ?.firstName
                                         }}
                                         {{
-                                            loads?.dispatch.driver?.lastName
+                                            loads?.dispatch?.driver?.lastName
                                         }}</span
                                     >
                                 </div>
@@ -122,42 +122,40 @@
                                     >
                                 </div>
                                 <div class="pickup-wrapper">
-                                    <div class="pickup-item">
-                                        <div class="counter-green">
-                                            {{ stopsDataPickup.stopOrder }}
+                                    
+                                    <div *ngFor="let stopData of loads.stops; index as i;" >
+                                        <div class="pickup-item" *ngIf="stopData.stopType.name == 'Pickup'">
+                                            <div class="counter-green">
+                                                {{i + 1}}
+                                            </div>
+                                            <div class="pickup-text">
+                                                <span class="name"
+                                                >
+                                                {{stopData.shipper.address.city}}, 
+                                                {{stopData.shipper.address.stateShortName}}
+                                                </span
+                                                >
+                                                <span class="date">{{
+                                                    stopData?.dateFrom
+                                                        | formatDateP
+                                                }}</span>
+                                            </div>
                                         </div>
-                                        <div class="pickup-text">
-                                            <span class="name"
-                                                >{{
-                                                    stopsDataPickup.addressCity
-                                                }},
-                                                {{
-                                                    stopsDataPickup.addressShortState
-                                                }}</span
-                                            >
-                                            <span class="date">{{
-                                                stopsDataPickup.date
-                                                    | formatDateP
-                                            }}</span>
-                                        </div>
-                                    </div>
-                                    <div class="pickup-item">
-                                        <div class="counter-red">
-                                            {{ stopsDataDelivery.stopOrder }}
-                                        </div>
-                                        <div class="pickup-text">
-                                            <span class="name"
-                                                >{{
-                                                    stopsDataDelivery.addressCity
-                                                }},
-                                                {{
-                                                    stopsDataDelivery.addressShortState
-                                                }}</span
-                                            >
-                                            <span class="date">{{
-                                                stopsDataDelivery.date
-                                                    | formatDateP
-                                            }}</span>
+                                        <div class="pickup-item" *ngIf="stopData.stopType.name == 'Delivery'">
+                                            <div class="counter-red">
+                                                {{i + 1}}
+                                            </div>
+                                            <div class="pickup-text">
+                                                <span class="name">
+                                                    {{stopData.shipper.address.city}}, 
+                                                    {{stopData.shipper.address.stateShortName}}    
+                                                </span
+                                                >
+                                                <span class="date">{{
+                                                    stopData?.dateFrom
+                                                        | formatDateP
+                                                }}</span>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -165,19 +163,18 @@
                                     <span
                                         class="load-name space-text load-total-rate"
                                         >{{
-                                            loads.totalRate | formatCurrency
+                                            loads?.totalRate | formatCurrency
                                         }}</span
                                     >
                                     <span class="default-name load-total-rate"
-                                        >{{ loads.totalMiles }} mi</span
+                                        >{{ loads?.totalMiles }} mi</span
                                     >
                                 </div>
                                 <div class="dots-vertical">
                                     <app-details-page-dropdown
                                         [options]="dotsData.actions"
-                                        [customClassDropDown]="
-                                            'drop-down-details-single'
-                                        "
+                                        
+                                        [placement]="'right-top right-bottom'"
                                     >
                                     </app-details-page-dropdown>
                                 </div>
@@ -199,6 +196,10 @@
                         [hasDivider]="i > 0 ? true : false"
                         [cardName]="brokerContact.department.name"
                         [isCardOpen]="true"
+                        [animationMarginParams]="{
+                            marginTop: '0px',
+                            marginBottom: '10px'
+                        }"
                         class="shipper-contact-container"
                     >
                         <div

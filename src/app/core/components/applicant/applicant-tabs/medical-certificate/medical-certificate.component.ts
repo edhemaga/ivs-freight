@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 
 import { Subject, takeUntil } from 'rxjs';
@@ -36,7 +36,7 @@ export class MedicalCertificateComponent implements OnInit, OnDestroy {
 
     public isValidLoad: boolean;
 
-    public medicalCertificateForm: FormGroup;
+    public medicalCertificateForm: UntypedFormGroup;
 
     public applicantId: number;
     public medicalCertificateId: number | null = null;
@@ -72,7 +72,7 @@ export class MedicalCertificateComponent implements OnInit, OnDestroy {
 
     constructor(
         private route: ActivatedRoute,
-        private formBuilder: FormBuilder,
+        private formBuilder: UntypedFormBuilder,
         private inputService: TaInputService,
         private router: Router,
         private applicantStore: ApplicantStore,

@@ -9,8 +9,6 @@ import {
     EventEmitter,
     Output,
     ChangeDetectionStrategy,
-    OnChanges,
-    SimpleChanges,
 } from '@angular/core';
 import { Router } from '@angular/router';
 import {
@@ -28,17 +26,17 @@ import {
         DropDownAnimation,
     ],
 })
-export class NavigationSubrouteComponent implements OnChanges {
+export class NavigationSubrouteComponent {
     @Input() subroute: Navigation;
     @Input() isNavigationHovered: boolean = false;
     @Input() index: number;
     @Input() selectedSubRoute: string;
+    @Input() openCloseContainer: boolean = false;
+    @Input() otherContainerOpened: boolean;
     @Output() onSubrouteActiveEvent = new EventEmitter<NavigationSubRoutes>();
     @Output() subRouteIndex = new EventEmitter<Number>();
     public isMagicLineActive: boolean = false;
     constructor(private router: Router) {}
-
-    ngOnChanges(changes: SimpleChanges): void {}
 
     subrouteIndex(index) {
         this.subRouteIndex.emit(index);

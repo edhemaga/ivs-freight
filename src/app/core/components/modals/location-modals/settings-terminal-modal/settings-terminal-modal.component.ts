@@ -6,7 +6,7 @@ import {
     phoneExtension,
     terminalNameValidation,
 } from '../../../shared/ta-input/ta-input.regex-validations';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import {
     AddressEntity,
@@ -43,13 +43,14 @@ import { FormService } from '../../../../services/form/form.service';
 export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
     @Input() editData: any;
-    public terminalForm: FormGroup;
+    public terminalForm: UntypedFormGroup;
 
     public selectedTab: number = 1;
     public tabs: any[] = [
         {
             id: 1,
             name: 'Basic',
+            checked: true
         },
         {
             id: 2,
@@ -118,7 +119,7 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
     public terminalName: string = null;
 
     constructor(
-        private formBuilder: FormBuilder,
+        private formBuilder: UntypedFormBuilder,
         private inputService: TaInputService,
         private modalService: ModalService,
         private settingsLocationService: SettingsLocationService,

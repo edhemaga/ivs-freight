@@ -116,7 +116,8 @@
                         src="assets/svg/common/ic_address.svg"
                     ></svg-icon>
                     <p class="basic-data-value">
-                        {{ companyData?.address?.address }}
+                        <app-ta-copy [copyValue]="companyData?.address?.address">
+                        </app-ta-copy>
                     </p>
                 </div>
                 <div class="basic-data" *ngIf="companyData?.phone">
@@ -186,6 +187,10 @@
                                 companyData?.scac || 
                                 companyData?.timeZone?.name || 
                                 companyData?.currency?.name ? false : true"
+                [animationMarginParams]="{
+                    marginTop: '0px',
+                    marginBottom: '10px'
+                }"                
             >
                 <div class="additional-template-data">
                     <div class="additional-template-item" *ngIf="companyData?.ifta">
@@ -244,6 +249,10 @@
                 [textBottomPossiton]="'-1px'"
                 *ngIf="companyData?.departmentContacts?.length"
                 [hasCounter]="companyData?.departmentContacts?.length"
+                [animationMarginParams]="{
+                    marginTop: '0px',
+                    marginBottom: '10px'
+                }"
             >
                 <div class="department-template-data">
                     <div class="department-template-item">
@@ -282,6 +291,10 @@
                 [bodyTemplate]="'card'"
                 [isCardOpen]="true"
                 *ngIf="companyData?.bankAccounts?.length"
+                [animationMarginParams]="{
+                    marginTop: '0px',
+                    marginBottom: '10px'
+                }"
             >
                 <div
                     class="additional-template-data"
@@ -322,6 +335,10 @@
                 [isCardOpen]="true"
                 *ngIf="companyData?.bankCards?.length"
                 [textBottomPossiton]="'-1px'"
+                [animationMarginParams]="{
+                    marginTop: '0px',
+                    marginBottom: '10px'
+                }"
             >
                 <div class="bank-card-template-data">
                     <div class="bank-card-template-item">
@@ -372,6 +389,10 @@
                 [cardName]="'Load Format & Customer Billing'"
                 [bodyTemplate]="'card'"
                 [isCardOpen]="true"
+                [animationMarginParams]="{
+                    marginTop: '0px',
+                    marginBottom: '10px'
+                }"
             >
                 <div class="additional-template-data">
                     <div class="additional-template-item">
@@ -450,6 +471,10 @@
                 [cardName]="'Expiration'"
                 [bodyTemplate]="'card'"
                 [isCardOpen]="true"
+                [animationMarginParams]="{
+                    marginTop: '0px',
+                    marginBottom: '10px'
+                }"
             >
                 <div class="additional-template-data">
                     <div class="additional-template-item">

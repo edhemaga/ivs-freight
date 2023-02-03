@@ -14,8 +14,8 @@ import {
     Output,
 } from '@angular/core';
 import {
-    FormBuilder,
-    FormGroup,
+    UntypedFormBuilder,
+    UntypedFormGroup,
 } from '@angular/forms';
 import { Options } from '@angular-slider/ngx-slider';
 import {
@@ -1184,13 +1184,13 @@ export class FilterComponent implements OnInit, AfterViewInit {
     showPart1: any = true;
     showPart2: any = true;
     showPart3: any = true;
-    public searchForm!: FormGroup;
-    public moneyForm!: FormGroup;
-    public locationForm!: FormGroup;
-    public payForm!: FormGroup;
-    public sliderForm!: FormGroup;
-    public rangeForm!: FormGroup;
-    public areaForm!: FormGroup; 
+    public searchForm!: UntypedFormGroup;
+    public moneyForm!: UntypedFormGroup;
+    public locationForm!: UntypedFormGroup;
+    public payForm!: UntypedFormGroup;
+    public sliderForm!: UntypedFormGroup;
+    public rangeForm!: UntypedFormGroup;
+    public areaForm!: UntypedFormGroup; 
 
     rangeValue: any = 0;
     usaSelectedStates: any[] = [];
@@ -1335,7 +1335,7 @@ export class FilterComponent implements OnInit, AfterViewInit {
     isAnimated: any = false;
 
     constructor(
-        private formBuilder: FormBuilder,
+        private formBuilder: UntypedFormBuilder,
         private thousandSeparator: TaThousandSeparatorPipe,
         private elementRef: ElementRef,
         private cdRef: ChangeDetectorRef

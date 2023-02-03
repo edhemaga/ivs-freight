@@ -3,7 +3,7 @@
 .input-icon {
     position: absolute;
     left: 6px;
-    top: 48%;
+    top: 46%;
     transform: translateY(-50%);
     z-index: 10;
     -webkit-user-select: none;
@@ -39,7 +39,7 @@
         background: $input-placeholder-icon-normal-after;
         position: absolute;
         left: 24px;
-        top: 51%;
+        top: 56%;
         transform: translateY(-50%);
     }
 
@@ -166,13 +166,6 @@
     }
 
     //------------------------- Custom class -------------------------
-
-    &.line-input-26-in-card {
-        top: 44%;
-        &::after {
-            top: 56%;
-        }
-    }
 
     &.discolor-placeholder {
         svg {

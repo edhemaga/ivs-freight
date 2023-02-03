@@ -1,5 +1,13 @@
-<div class="app-ta-copy-wrapper">
-    <div class="icon-text-cont" [ngClass]="{ copied: textCopied }">
+<div class="app-ta-copy-wrapper" (click)="copyText(copyValue)" (mouseleave)="textCopied = false">
+    <div 
+        class="icon-text-cont" 
+        [ngClass]="{ copied: textCopied }"
+        [tooltipBackground]="textCopied ? '#536BC2' : '#6c6c6c'"
+        ngbTooltip
+        [mainTooltip]="textCopied ? 'Copied' : 'Copy'"
+        position="top"
+        [autoClose]="false"
+        >
         <div
             class="copy-value"
             [ngStyle]="{
@@ -8,7 +16,10 @@
                 'font-weight': textFontWeight
             }"
         >
-            <span *ngIf="!accountCompany" class="copy-text">{{
+            <span 
+                *ngIf="!accountCompany" 
+                class="copy-text"
+                >{{
                 hasEye
                     ? (copyValue | hideAccount: 'account':isVisible)
                     : copyValue
@@ -42,17 +53,11 @@
                 ></svg-icon>
             </span>
             <span
-                [tooltipBackground]="textCopied ? '#536BC2' : '#6c6c6c'"
-                ngbTooltip
-                [mainTooltip]="textCopied ? 'Copied' : 'Copy'"
-                position="top"
-                [autoClose]="false"
-                (click)="copyText(copyValue)"
+                [ngClass]="{ copied: textCopied }"
             >
                 <svg-icon
                     class="card-icon-copy"
                     src="assets/svg/common/ic_copy.svg"
-                    (mouseleave)="textCopied = false"
                 ></svg-icon>
             </span>
         </div>

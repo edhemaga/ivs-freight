@@ -53,7 +53,22 @@
                         <span
                             *ngIf="isCardOpen || haveHeaderText || forcedOpen"
                             class="open-name disable-selection"
-                            >{{ cardNameCommon }}</span
+                            >
+                                <span *ngIf="!hasCopyIcon">{{ cardNameCommon }}</span>
+                                <span 
+                                    *ngIf="hasCopyIcon" 
+                                    ngbTooltip
+                                    [mainTooltip]="copiedCommon ? 'Copied' : 'Copy'"
+                                    position="top"
+                                    [autoClose]="false"
+                                    (click)="copyText(cardNameCommon, $event)"
+                                    [tooltipBackground]="
+                                        copiedCommon ? '#536BC2' : '#6c6c6c'
+                                    "
+                                    (mouseleave)="copiedCommon = false"
+                                >{{ cardNameCommon }}</span>
+                            
+                            </span
                         >
 
                         <span
@@ -141,7 +156,7 @@
         [ngClass]="{ active: ( isCardOpen || forcedOpen )}"
         
     >
-        <div [@cardOpenAnimation]="animationStarted ? 'true' : 'false'">
+        <div [@cardOpenAnimation]="animationStarted || isCardOpen ? 'true' : 'false'">
             <ng-content></ng-content>
         </div>
     </div>
@@ -149,7 +164,7 @@
         class="card-footer-cmp"
         [ngClass]="{ 'hide-padding': resPage, 'insuranceCard' : insuranceCard }"
         *ngIf="( isCardOpen || forcedOpen) && hasFooter"
-        [@footerOpenAnimation]="animationStarted ? 'true' : 'false'"
+        [@footerOpenAnimation]="animationStarted || isCardOpen ? 'true' : 'false'"
     >
         <div class="icon-counter">
             <svg-icon

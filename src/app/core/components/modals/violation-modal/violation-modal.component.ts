@@ -1,5 +1,5 @@
 import { Component, Input, OnInit, OnDestroy } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormArray, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { tab_modal_animation } from '../../shared/animations/tabs-modal.animation';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
 import { AddressEntity } from 'appcoretruckassist';
@@ -36,7 +36,7 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
 
     @Input() editData: any;
 
-    public violationForm: FormGroup;
+    public violationForm: UntypedFormGroup;
 
     public disableCardAnimation: boolean = false;
 
@@ -45,6 +45,7 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
         {
             id: 1,
             name: 'Basic',
+            checked: true
         },
         {
             id: 2,
@@ -167,7 +168,7 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
     public latitude: number;
 
     constructor(
-        private formBuilder: FormBuilder,
+        private formBuilder: UntypedFormBuilder,
         private inputService: TaInputService,
         private modalService: ModalService,
         private formService: FormService,
@@ -285,8 +286,8 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
         }
     }
 
-    public get violations(): FormArray {
-        return this.violationForm.get('violations') as FormArray;
+    public get violations(): UntypedFormArray {
+        return this.violationForm.get('violations') as UntypedFormArray;
     }
 
     public createViolation(data: {

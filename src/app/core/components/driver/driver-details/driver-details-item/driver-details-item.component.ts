@@ -9,7 +9,7 @@ import {
     Input,
     SimpleChanges,
 } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { UntypedFormControl } from '@angular/forms';
 import moment from 'moment';
 import { Subject, takeUntil } from 'rxjs';
 import { DropDownService } from 'src/app/core/services/details-page/drop-down.service';
@@ -36,6 +36,7 @@ import {
 } from '@angular/animations';
 import { Titles } from 'src/app/core/utils/application.decorators';
 import { convertDateFromBackend } from '../../../../utils/methods.calculations';
+import { GetMvrModalResponse } from '../../../../../../../appcoretruckassist';
 
 @Titles()
 @Component({
@@ -74,10 +75,10 @@ export class DriverDetailsItemComponent
     private destroy$ = new Subject<void>();
     @ViewChild('autosize', { static: false }) autosize: CdkTextareaAutosize;
     @Input() drivers: any = null;
-    public cdlNote: FormControl = new FormControl();
-    public mvrNote: FormControl = new FormControl();
-    public testNote: FormControl = new FormControl();
-    public medNote: FormControl = new FormControl();
+    public cdlNote: UntypedFormControl = new UntypedFormControl();
+    public mvrNote: UntypedFormControl = new UntypedFormControl();
+    public testNote: UntypedFormControl = new UntypedFormControl();
+    public medNote: UntypedFormControl = new UntypedFormControl();
     public toggler: boolean[] = [];
     public showMoreEmployment: boolean = false;
     public dataDropDown: any;
@@ -146,6 +147,13 @@ export class DriverDetailsItemComponent
                         case 'delete': {
                             if (res.template === 'cdl') {
                                 this.deleteCdlByIdFunction(res.id);
+                                if ( res?.data?.newCdlID ) {
+
+                                    setTimeout(()=>{
+                                        this.activateCdl(res?.data?.newCdlID); 
+                                    }, 1000)
+                                   
+                                }
                             } else if (res.template === 'medical') {
                                 this.deleteMedicalByIdFunction(res.id);
                             } else if (res.template === 'mvr') {
@@ -158,6 +166,7 @@ export class DriverDetailsItemComponent
                         case 'info': {
                             switch (res.template) {
                                 case 'cdl': {
+                                    /*
                                     const timeout = setTimeout(() => {                        
                                         this.modalService.openModal(
                                             DriverCdlModalComponent,
@@ -173,7 +182,7 @@ export class DriverDetailsItemComponent
                                         );
                                         clearTimeout(timeout);
                                     }, 300);
-
+                                    */
                                     break;
                                 }
                                 default: {
@@ -225,6 +234,16 @@ export class DriverDetailsItemComponent
             this.getExpireDate();
         }
     }
+
+    private activateCdl(id: number) {
+        this.cdlService
+            .activateCdlById(id)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+            });
+    }
+
+
     /**Function for dots in cards */
     public initTableOptions(data: any): void {
         this.arrayOfRenewCdl = [];
@@ -250,7 +269,7 @@ export class DriverDetailsItemComponent
                 this.arrayOfRenewCdl.push(false);
             }
         });
-
+        
         this.dataDropDown = {
             disabledMutedStyle: null,
             toolbarActions: {
@@ -464,14 +483,38 @@ export class DriverDetailsItemComponent
         }
     }
 
-    public optionsEvent(any: any, action: string) {
-        const name = dropActionNameDriver(any, action);
+    public optionsEvent(eventData: any, action: string) {
+        const name = dropActionNameDriver(eventData, action);
+        let driverId = this.drivers[0].data.id;
+        let dataCdls: any = [];
+      
+       //console.log('---any', any);
+       //console.log('---this.activeCdl', this.activeCdl);
+
+        if ( this.activeCdl.length && this.activeCdl[0].id == eventData.id && ( eventData.type == 'deactivate-item' || eventData.type == 'delete-item' ) ) {
+            this.mvrService
+            .getMvrModal(driverId)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: (res: GetMvrModalResponse) => {
+                    res?.cdls?.map((item) => {
+                        if ( item.id != eventData.id ) {
+                            dataCdls.push({...item, name: item.cdlNumber});
+                        }
+                    })
+                },
+            });
+        }
+
+
         let dataForCdl;
         if (
-            (this.activeCdl.length && any.type === 'activate-item') ||
-            any.type === 'deactivate-item'
+            (this.activeCdl.length && eventData.type === 'activate-item') ||
+            eventData.type === 'deactivate-item'
         ) {
             dataForCdl = this.activeCdl;
+            
+            
         } else {
             dataForCdl = this.dataCdl;
         }
@@ -480,7 +523,7 @@ export class DriverDetailsItemComponent
         
         setTimeout(() => {
             this.dropDownService.dropActions(
-                any,
+                eventData,
                 name,
                 dataForCdl,
                 this.dataMvr,
@@ -490,8 +533,11 @@ export class DriverDetailsItemComponent
                 null,
                 null,
                 this.drivers[0].data, 
+                null,
+                null,
+                dataCdls,
             );
-        }, 100);
+        }, 200);
     }
     public openCommand(cdl?: any, modal?: string) {
         if (this.activeCdl.length) {
@@ -526,8 +572,8 @@ export class DriverDetailsItemComponent
                 {
                     data: { ...cdl, state: cdl.state.stateShortName, data },
                     template: 'cdl',
-                    type: 'info',
-                    subType: 'cdl void',
+                    type: 'activate',
+                    //subType: 'cdl void',
                     cdlStatus: 'Activate',
                     modalHeader: true,
                 }

@@ -1,4 +1,4 @@
-import { FormControl } from '@angular/forms';
+import { UntypedFormControl } from '@angular/forms';
 import {
     Component,
     Input,
@@ -30,8 +30,8 @@ export class TaTabSwitchComponent implements OnInit, AfterViewInit, OnChanges {
     @Output() saveCustomRange = new EventEmitter<any>();
     @ViewChild('t2') t2: any;
 
-    public date1: FormControl = new FormControl();
-    public date2: FormControl = new FormControl();
+    public date1: UntypedFormControl = new UntypedFormControl();
+    public date2: UntypedFormControl = new UntypedFormControl();
     tooltip: any;
 
     switchItems: any[] = [
@@ -57,7 +57,7 @@ export class TaTabSwitchComponent implements OnInit, AfterViewInit, OnChanges {
         x: '0px',
     };
 
-    indexSwitch: number = 0;
+    indexSwitch: number = -1;
     data1Valid: boolean;
     data2Valid: boolean;
 
@@ -101,8 +101,8 @@ export class TaTabSwitchComponent implements OnInit, AfterViewInit, OnChanges {
 
     public setSwitchActive(tabs) {
         const selectedIndex = tabs?.findIndex((item) => item.checked && !item.disabled);
-        //if( selectedIndex == -1 ) return;
-        this.indexSwitch = selectedIndex == -1 ? 0 : selectedIndex;
+        this.indexSwitch = selectedIndex;
+        if( selectedIndex == -1 ) return;
 
         this.hoverStyle = this.getElementOffset(
             this.elem.nativeElement.children[0].children[this.indexSwitch]

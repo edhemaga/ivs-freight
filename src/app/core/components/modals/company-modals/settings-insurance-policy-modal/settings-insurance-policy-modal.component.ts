@@ -27,8 +27,8 @@ import { SettingsCompanyService } from '../../../settings/state/company-state/se
 import { distinctUntilChanged, Subject, takeUntil } from 'rxjs';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
 import {
-    FormGroup,
-    FormBuilder,
+    UntypedFormGroup,
+    UntypedFormBuilder,
     Validators,
     AbstractControl,
 } from '@angular/forms';
@@ -53,7 +53,7 @@ export class SettingsInsurancePolicyModalComponent
     private destroy$ = new Subject<void>();
     @Input() editData: any;
 
-    public insurancePolicyForm: FormGroup;
+    public insurancePolicyForm: UntypedFormGroup;
 
     public selectedAddress: AddressEntity;
 
@@ -79,7 +79,7 @@ export class SettingsInsurancePolicyModalComponent
     public disableCardAnimation: boolean = false;
 
     constructor(
-        private formBuilder: FormBuilder,
+        private formBuilder: UntypedFormBuilder,
         private inputService: TaInputService,
         private modalService: ModalService,
         private settingsCompanyService: SettingsCompanyService,

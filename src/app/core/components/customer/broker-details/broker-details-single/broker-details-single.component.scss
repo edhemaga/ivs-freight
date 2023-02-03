@@ -169,9 +169,13 @@ app-broker-details-single {
                 }
             }
             &:hover {
-                cursor: pointer;
-                background-color: #f3f3f3;
+                //cursor: pointer;
+                //background-color: #f3f3f3;
             }
+        }
+        &:hover{
+            cursor: pointer;
+            background-color: #f3f3f3;
         }
     }
     .pickup-wrapper {

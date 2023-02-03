@@ -79,7 +79,7 @@
                 pointer-events: none;
 
                 &:has(.show-marker-dropdown) {
-                    z-index: 999;
+                    z-index: 1000;
                 }
             }
 

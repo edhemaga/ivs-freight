@@ -17,6 +17,8 @@ import {
     trigger,
     state,
 } from '@angular/animations';
+import { Options } from '@popperjs/core/lib/popper';
+import { ChangeDetectorRef, OnDestroy } from '@angular/core';
 
 @Component({
     selector: 'app-details-page-dropdown',
@@ -68,7 +70,7 @@ import {
         ]),
     ],
 })
-export class DetailsDropdownComponent implements OnInit, OnChanges {
+export class DetailsDropdownComponent implements OnInit, OnChanges, OnDestroy {
     @Input() options: any;
     @Input() id: number;
     @Input() customClassDropDown: string;
@@ -78,17 +80,18 @@ export class DetailsDropdownComponent implements OnInit, OnChanges {
     @Input() public placement: string = 'bottom-right';
     @Output() dropDownActions: EventEmitter<any> = new EventEmitter();
     @Output() openModalAction: EventEmitter<any> = new EventEmitter();
-    dropContent: any[] = [];
     tooltip: any;
     dropDownActive: number = -1;
     subtypeHovered: any = false;
 
-    constructor(private DetailsDataService: DetailsDataService) {}
+    constructor(
+        private DetailsDataService: DetailsDataService,
+        private chnd: ChangeDetectorRef
+    ) {}
 
     ngOnChanges(changes: SimpleChanges): void {
         if (changes?.options?.currentValue) {
             this.options = changes.options.currentValue;
-            this.setDropContent();
         }
 
         if (changes?.id?.currentValue) {
@@ -103,23 +106,16 @@ export class DetailsDropdownComponent implements OnInit, OnChanges {
         if (tooltip.isOpen()) {
             tooltip.close();
         } else {
-            tooltip.open({ data: this.dropContent });
+            tooltip.open({ data: [...this.options] });
             if (this.data) {
                 this.DetailsDataService.setNewData(this.data);
             }
         }
 
         this.dropDownActive = tooltip.isOpen() ? this.id : -1;
+        this.chnd.detectChanges();
     }
 
-    setDropContent() {
-        /* Drop Down Actions*/
-        if (this.options.length) {
-            for (let i = 0; i < this.options.length; i++) {
-                this.dropContent.push(this.options[i]);
-            }
-        }
-    }
     /**Function retrun id */
     public identity(index: number, item: any): number {
         return item.id;
@@ -170,5 +166,34 @@ export class DetailsDropdownComponent implements OnInit, OnChanges {
         this.options.map((item) => {
             item['openSubtype'] = false;
         });
+    }
+
+    popperOptions = (options: Partial<Options>) => {
+        // add your own modifier
+        options.modifiers?.push({
+            name: 'custom',
+            enabled: true,
+            phase: 'main',
+            effect: ({ state, instance }) => {
+                instance.forceUpdate();
+                setTimeout(() => {
+                    instance.forceUpdate();
+                    this.chnd.detectChanges();
+                }, 400);
+
+                const observer = new ResizeObserver(() => instance.update());
+                observer.observe(state.elements!.reference as any);
+                return () => {
+                    observer.disconnect();
+                };
+            },
+            fn: () => {},
+        });
+
+        return options;
+    };
+
+    ngOnDestroy(){
+        this.tooltip?.close();
     }
 }

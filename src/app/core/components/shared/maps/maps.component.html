@@ -35,7 +35,7 @@
         (mapReady)="getMapInstance($event)"
     >
         <!-- single markers -->
-        <div *ngFor="let latlong of viewData; let i = index">
+        <div *ngFor="let latlong of viewData; let i = index; trackBy: identity">
             <agm-marker
                 *ngIf="latlong.showMarker"
                 (markerClick)="clickedMarker(latlong.id, $event)"
@@ -87,7 +87,7 @@
                     [showCloseButton]="false"
                     [panOnOpen]="false"
                     placement="bottom"
-                    *ngIf="!locationFilterOn || latlong.isShown != false"
+                    *ngIf="!locationFilterOn || latlong.showMarker != false"
                 >
                     <ng-template>
                         <div
@@ -230,7 +230,13 @@
         </div>
 
         <!-- cluster markers -->
-        <div *ngFor="let cluster of clusterMarkers; let i = index">
+        <div
+            *ngFor="
+                let cluster of clusterMarkers;
+                let i = index;
+                trackBy: identity
+            "
+        >
             <agm-marker
                 [label]="cluster.name != null ? cluster.name : ''"
                 [latitude]="cluster.latitude"
@@ -242,7 +248,7 @@
                 <agm-snazzy-info-window
                     [closeOnMapClick]="false"
                     [closeWhenOthersOpen]="false"
-                    [isOpen]="cluster.showMarker ? true : false"
+                    [isOpen]="clusterAnimation[cluster.id] && cluster.showMarker"
                     [latitude]="cluster.latitude"
                     [longitude]="cluster.longitude"
                     [maxHeight]="32"
@@ -275,7 +281,6 @@
                 }"
                 *ngIf="cluster.status != 2"
               ></svg-icon> -->
-
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -442,6 +447,7 @@
                                 [type]="'cluster'"
                                 [item]="cluster"
                                 [clusterItems]="cluster.data"
+                                [dropdownActions]="dropdownActions"
                                 (showClusterItemInfo)="
                                     showClusterItemInfo($event)
                                 "
@@ -482,7 +488,13 @@
         </div>
 
         <!-- Copmany Offices -->
-        <div *ngFor="let latlong of companyOffices; let i = index">
+        <div
+            *ngFor="
+                let latlong of companyOffices;
+                let i = index;
+                trackBy: identity
+            "
+        >
             <agm-marker
                 *ngIf="latlong.showMarker"
                 [label]="latlong.name"
@@ -554,12 +566,14 @@
 
         <!-- routes -->
         <ng-container *ngIf="mapType == 'routing' && routes?.length">
-            <ng-container *ngFor="let route of routes; let i = index">
+            <ng-container
+                *ngFor="let route of routes; let i = index; trackBy: identity"
+            >
                 <ng-container *ngIf="route.stops?.length">
                     <div
                         *ngFor="
                             let e of [].constructor(route.stops.length);
-                            let j = index
+                            let j = index;
                         "
                     >
                         <agm-marker
@@ -760,7 +774,7 @@
                     <div
                         *ngFor="
                             let e of [].constructor(route.stops.length - 1);
-                            let j = index
+                            let j = index;
                         "
                     >
                         <agm-direction

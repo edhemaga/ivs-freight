@@ -135,7 +135,7 @@ export class ShipperDetailsComponent implements OnInit, OnDestroy {
         this.shipperConfig = [
             {
                 id: 0,
-                nameDefault: 'Shipper Details',
+                nameDefault: 'Shipper Detail',
                 template: 'general',
                 data: data,
             },

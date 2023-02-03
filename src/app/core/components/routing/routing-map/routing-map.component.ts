@@ -16,7 +16,7 @@ import {
 } from '@angular/cdk/drag-drop';
 import * as AppConst from '../../../../const';
 import { MapsService } from '../../../services/shared/maps.service';
-import { FormBuilder, FormGroup, FormArray } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, UntypedFormArray } from '@angular/forms';
 import { AddressEntity } from 'appcoretruckassist';
 import { addressValidation } from '../../shared/ta-input/ta-input.regex-validations';
 import { imageMapType } from 'src/assets/utils/methods-global';
@@ -207,12 +207,12 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
     public mapLongitude: number = -87.660156;
     public mapZoom: number = 1;
 
-    public addressForm: FormGroup;
+    public addressForm: UntypedFormGroup;
     public addressFlag: string = 'Empty';
 
     public selectedAddress: AddressEntity = null;
 
-    addressInputs: FormArray = this.formBuilder.array([]);
+    addressInputs: UntypedFormArray = this.formBuilder.array([]);
 
     public markerOptions = {
         origin: {
@@ -566,11 +566,11 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
 
     routePolylines: any = {};
     
-    editStopForm!: FormGroup;
+    editStopForm!: UntypedFormGroup;
 
     constructor(
         private mapsService: MapsService,
-        private formBuilder: FormBuilder,
+        private formBuilder: UntypedFormBuilder,
         private ref: ChangeDetectorRef,
         private modalService: ModalService,
         private confirmationService: ConfirmationService,
@@ -1290,6 +1290,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
                     : this.tableData[this.selectedMapIndex].routes[
                           this.focusedRouteIndex
                       ].stops.length;
+            var insertBefore = this.insertBeforeActive > -1;
 
             this.tableData[this.selectedMapIndex].routes[
                 this.focusedRouteIndex
@@ -1347,6 +1348,15 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
                     .pipe(takeUntil(this.destroy$))
                     .subscribe();
             } else {
+                if ( insertBefore ) {
+                    this.tableData[this.selectedMapIndex].routes[
+                        this.focusedRouteIndex
+                    ].stops.map((stop, stopIndex) => {
+                        stop.id = stop.id ? stop.id : 0;
+                        stop.orderNumber = stopIndex + 1;
+                    });
+                }
+
                 this.getRouteShape(route);
             }
 
@@ -2244,7 +2254,43 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
                 ].stops.length - 1
             );
 
-            this.calculateDistanceBetweenStops(this.focusedRouteIndex);
+            var stopArr = [];
+            this.tableData[this.selectedMapIndex].routes[
+                this.focusedRouteIndex
+            ].stops.map((stop, stopIndex) => {
+                stop.orderNumber = stopIndex + 1;
+
+                var stopObj = <any>{
+                    id: stop.id ? stop.id : 0,
+                    address: stop.address,
+                    leg: 0,
+                    total: 0,
+                    longitude: stop.long,
+                    latitude: stop.lat,
+                    orderNumber: stop.orderNumber,
+                    shape: stop.shape ? stop.shape : '',
+                };
+    
+                stopArr.push(stopObj);
+            });
+
+            if ( this.tableData[this.selectedMapIndex].routes[this.focusedRouteIndex].stops.length > 1) {
+                this.getRouteShape(this.tableData[this.selectedMapIndex].routes[this.focusedRouteIndex]);
+            } else {
+                var updateRouteObj = {
+                    id: this.tableData[this.selectedMapIndex].routes[this.focusedRouteIndex].id,
+                    name: this.tableData[this.selectedMapIndex].routes[this.focusedRouteIndex].name,
+                    shape: null,
+                    stops: stopArr,
+                };
+
+                this.routingService
+                    .updateRoute(updateRouteObj)
+                    .pipe(takeUntil(this.destroy$))
+                    .subscribe();
+            }
+
+            //this.calculateDistanceBetweenStops(this.focusedRouteIndex);
             this.calculateRouteWidth(
                 this.tableData[this.selectedMapIndex].routes[
                     this.focusedRouteIndex

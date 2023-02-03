@@ -10,7 +10,7 @@ import {
     ViewChild,
     ViewEncapsulation,
 } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { UntypedFormControl } from '@angular/forms';
 import { PDFDocumentProxy } from 'ng2-pdf-viewer';
 import { Subject, takeUntil, debounceTime, distinctUntilChanged } from 'rxjs';
 import { TaInputComponent } from '../../ta-input/ta-input.component';
@@ -19,6 +19,7 @@ import { UrlExtensionPipe } from 'src/app/core/pipes/url-extension.pipe';
 import { DetailsDataService } from '../../../../services/details-data/details-data.service';
 
 export interface UploadFile {
+    name?: any;
     fileName: string;
     url: string | any;
     extension?: string;
@@ -61,7 +62,8 @@ export class TaUploadFileComponent implements OnInit, OnDestroy {
     @Input() feedbackText: string;
     @Input() categoryTag: string;
 
-    public documentReviewInputControl: FormControl = new FormControl(null);
+    public documentReviewInputControl: UntypedFormControl =
+        new UntypedFormControl(null);
     public documentReviewInputVisible: boolean = false;
     @Output() documentReviewInputEvent: EventEmitter<{
         file: UploadFile;
@@ -69,7 +71,7 @@ export class TaUploadFileComponent implements OnInit, OnDestroy {
     }> = new EventEmitter<{ file: UploadFile; message: string }>(null);
 
     public editFile: boolean = false;
-    public fileNewName: FormControl = new FormControl();
+    public fileNewName: UntypedFormControl = new UntypedFormControl();
     public numberOfFilePages: string = '0';
 
     public isFileDelete: boolean = false;
@@ -102,6 +104,22 @@ export class TaUploadFileComponent implements OnInit, OnDestroy {
                     }
                 }
             });
+
+        if (!this.file.realFile) {
+            console.log(this.file, 'file');
+            let setName = '';
+            const name = this.file.fileName
+                ? this.file.fileName.split('')
+                : this.file.name
+                ? this.file.name.split('')
+                : '';
+            name.map((item, i) => {
+                if (i < name.length - 4) {
+                    setName = setName + item;
+                }
+            });
+            //this.file.fileName = setName;
+        }
 
         if (this.isReview) {
             this.reviewInputControlChange();

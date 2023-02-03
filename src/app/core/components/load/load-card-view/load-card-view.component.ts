@@ -6,7 +6,7 @@ import {
     OnChanges,
     SimpleChanges,
 } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { UntypedFormControl } from '@angular/forms';
 import { LoadResponse } from 'appcoretruckassist';
 import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
 import { LoadMinimalListQuery } from '../state/load-details-state/load-minimal-list-state/load-details-minimal.query';
@@ -20,9 +20,10 @@ import { LoadMinimalListQuery } from '../state/load-details-state/load-minimal-l
 export class LoadCardViewComponent implements OnInit, OnChanges {
     @Input() load: LoadResponse | any;
     @Input() templateCard: boolean;
-    public loadNote: FormControl = new FormControl();
+    public loadNote: UntypedFormControl = new UntypedFormControl();
     public loadDropdowns: any[] = [];
     public loadList: any[] = this.lmquery.getAll();
+    public currentLoadIndex: any;
     constructor(
         private lmquery: LoadMinimalListQuery,
         private detailsPageDriverSer: DetailsPageService
@@ -33,13 +34,19 @@ export class LoadCardViewComponent implements OnInit, OnChanges {
     }
     ngOnInit(): void {
         this.loadNote.patchValue(this.load?.note);
+        //console.log('*---load', this.load)
+
+        let currentIndex = this.loadList.findIndex(
+            (brokerId) => brokerId.id === this.load.id
+        );
+        this.currentLoadIndex = currentIndex;
     }
     public getLoadDropdown() {
         this.loadDropdowns = this.lmquery.getAll().map((item) => {
             return {
                 id: item.id,
                 name: 'Invoice' + ' ' + item.loadNumber,
-                svg: item.type.name === 'LTL' ? 'ic_ltl-status.svg' : null,
+                svg: item?.type?.name === 'LTL' ? 'ic_ltl-status.svg' : null,
                 folder: 'common',
                 status: item.status,
                 active: item.id === this.load.id,
@@ -74,6 +81,7 @@ export class LoadCardViewComponent implements OnInit, OnChanges {
                         this.loadList[currentIndex].id
                     );
                     this.onSelectLoad({ id: this.loadList[currentIndex].id });
+                    this.currentLoadIndex = currentIndex;
                 }
                 break;
             }
@@ -87,6 +95,7 @@ export class LoadCardViewComponent implements OnInit, OnChanges {
                         this.loadList[currentIndex].id
                     );
                     this.onSelectLoad({ id: this.loadList[currentIndex].id });
+                    this.currentLoadIndex = currentIndex; 
                 }
                 break;
             }

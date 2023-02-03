@@ -33,10 +33,22 @@
             </div>
 
             <!-- Shipper, Address -->
-            <div *ngIf="state" class="load-stop-inner-content first-container">
+            <div
+                class="load-stop-inner-content first-container"
+                [ngStyle]="{
+                    display:
+                        (state && state === 'invalid') || shipper
+                            ? 'flex'
+                            : 'none'
+                }"
+            >
                 <!-- Required Message -->
                 <ng-container
-                    *ngIf="!shipper && !shipperAddress && state === 'invalid'"
+                    *ngIf="
+                        !shipper &&
+                        !shipperAddress &&
+                        state && state === 'invalid'
+                    "
                 >
                     <div class="load-stop-content-up load-stop-content-up-name">
                         <p [ngStyle]="{ color: '#F44336' }">Required</p>
@@ -62,7 +74,10 @@
             <div class="load-stop-inner-content second-container">
                 <!-- Required Message -->
                 <ng-container
-                    *ngIf="(!dateRange || !timeRange) && state === 'invalid'"
+                    *ngIf="
+                        (!dateRange || !timeRange) &&
+                        state && state === 'invalid'
+                    "
                 >
                     <div class="load-stop-content-up load-stop-content-up-name">
                         <p [ngStyle]="{ color: '#F44336' }">Required</p>

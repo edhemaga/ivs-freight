@@ -5,7 +5,7 @@
     align-items: center;
     grid-template-columns: 150px 200px;
     column-gap: 70px;
-    padding: 10px 16px;
+    padding: 6px 16px;
     .load-status-time {
         flex-direction: column;
         .load-status-item-status {
@@ -90,22 +90,22 @@
     }
 }
 .note-item {
-    margin-left: 6px;
+    margin-left: 4px;
     margin-right: 7px;
     .note-body {
-        margin-left: 4px;
+        //margin-left: 4px;
     }
 }
 .load-broker-container {
-    padding: 0 10px;
+    padding: 0 4px;
     display: flex;
     flex-direction: column;
     .company-name {
         font-size: 18px;
         font-weight: 500;
         color: #6c6c6c;
-        margin-top: -4px;
-        margin-bottom: 12px;
+        //margin-top: -4px;
+        //margin-bottom: 12px;
         &::-moz-selection {
             color: #6c6c6c;
             background: rgb(108, 108, 108, 0.2);
@@ -119,7 +119,7 @@
         font-size: 14px;
         font-weight: 500;
         color: #6c6c6c;
-        margin-bottom: 12px;
+        margin-top: 4px;
         &::-moz-selection {
             color: #6c6c6c;
             background: rgb(108, 108, 108, 0.2);
@@ -136,7 +136,7 @@
 
     .phone-ext-item-wrapper {
         align-items: center;
-        margin-bottom: 12px;
+        margin-top: 2px;
         .item-value {
             font-size: 14px;
             font-weight: 400;
@@ -156,7 +156,7 @@
     margin-left: 5px;
 }
 .load-assigned-container {
-    padding: 0 6px;
+    padding: 0 2px;
     .truck {
         width: 202px !important;
         margin-right: 12px;
@@ -203,18 +203,19 @@
     user-select: none;
 }
 .phone-ext-item-wrapper-last {
-    margin-bottom: 0 !important;
+    margin-bottom: 10px !important;
 }
 
 .flex-load {
     display: flex;
 }
 .load-details-container {
-    padding: 0 10px;
+    padding: 0 4px;
     .load-details-wrapper {
         display: grid;
         grid-template-columns: 210px 150px;
         row-gap: 12px;
+        margin-bottom: 10px;
         .load-details-header {
             font-size: 12px;
             font-weight: 600;
@@ -241,5 +242,11 @@
                 background: rgb(108, 108, 108, 0.2);
             }
         }
+    }
+}
+
+.card_files_holder {
+    &.active {
+        min-height: 448px;
     }
 }
