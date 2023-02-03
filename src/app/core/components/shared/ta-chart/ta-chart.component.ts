@@ -484,6 +484,16 @@ export class TaChartComponent implements OnInit {
         });
     }
 
+    updateChartData(hideAnimation) {
+        this.chartConfig['dataProperties'].map((item, indx) => {
+            this.lineChartType = this.chartConfig['defaultType'];
+            this.lineChartLabels = this.chartConfig['dataLabels'];
+        });
+
+        this.animationDuration = !hideAnimation ? 1000 : 0;
+        this.setChartOptions();
+    }
+
     setGradientBackground() {
         this.lineChartPlugins = [
             {

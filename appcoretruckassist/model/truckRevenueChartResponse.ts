@@ -9,12 +9,13 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { TruckFuelConsumptionChartResponse } from './truckFuelConsumptionChartResponse';
 
 
-export interface TruckFuelConsumptionResponse { 
-    milesPerGallon?: number | null;
-    costPerGallon?: number | null;
-    truckFuelConsumptionCharts?: Array<TruckFuelConsumptionChartResponse> | null;
+export interface TruckRevenueChartResponse { 
+    miles?: number | null;
+    revenue?: number | null;
+    day?: number | null;
+    month?: number | null;
+    year?: number | null;
 }
 

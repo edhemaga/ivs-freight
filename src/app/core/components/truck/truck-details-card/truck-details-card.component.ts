@@ -77,6 +77,7 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
         'FEB',
         'MAR',
         'APR',
+        'MAY',
         'JUN',
         'JUL',
         'AUG',
@@ -91,10 +92,7 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
             {
                 defaultConfig: {
                     type: 'line',
-                    data: [
-                        9000, 7500, 19000, 10000, 11000, 13500, 18000, 22000,
-                        17000, 10000, 11000, 14000,
-                    ],
+                    data: [],
                     label: 'Salary',
                     yAxisID: 'y-axis-1',
                     borderColor: '#6D82C7',
@@ -108,7 +106,7 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
             {
                 defaultConfig: {
                     type: 'bar',
-                    data: [33, 25, 42, 12, 23, 33, 50, 57, 34, 19, 12, 42],
+                    data: [],
                     label: 'Miles',
                     yAxisID: 'y-axis-0',
                     borderColor: '#FFCC80',
@@ -119,7 +117,7 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
             },
         ],
         showLegend: false,
-        chartValues: [100, 100],
+        chartValues: [0, 0],
         defaultType: 'bar',
         chartWidth: '417',
         chartHeight: '130',
@@ -209,7 +207,7 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
             {
                 defaultConfig: {
                     type: 'bar',
-                    data: [20, 17, 40, 23, 27, 27, 29, 29, 31, 37, 37, 40],
+                    data: [],
                     label: 'Miles',
                     yAxisID: 'y-axis-0',
                     borderColor: '#FFCC80',
@@ -222,7 +220,7 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
             {
                 defaultConfig: {
                     type: 'bar',
-                    data: [20, 10, 18, 12, 15, 12, 14, 11, 13, 14, 15, 9],
+                    data: [],
                     label: 'Miles',
                     yAxisID: 'y-axis-0',
                     borderColor: '#97A8DC',
@@ -270,7 +268,7 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
             elementId: 1,
         },
         {
-            title: 'Revenue',
+            title: 'Cost Per Gallon',
             value: 19402,
             image: 'assets/svg/common/round_blue.svg',
             prefix: '$',
@@ -324,7 +322,7 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
             minValue: 0,
             maxValue: 60,
             stepSize: 15,
-            showGridLines: true,
+            showGridLines: false,
         },
         verticalRightAxes: {
             visible: true,
@@ -395,6 +393,8 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
             this.noteControl.patchValue(changes.truck.currentValue.note);
             this.getTruckDropdown();
         }
+        this.getExpensesChartData(changes.truck.currentValue.id, 1, false);
+        this.getFuelConsumtionChartData(changes.truck.currentValue.id, 1, false);
         this.changeColor();
         this.truckMinimalListQuery
             .selectAll()
@@ -403,6 +403,8 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
     }
     ngOnInit(): void {
         this.getTruckById(this.truck.id);
+        this.getExpensesChartData(this.truck.id, 1, false);
+        this.getFuelConsumtionChartData(this.truck.id, 1, false);
         this.noteControl.patchValue(this.truck.note);
         this.getTruckDropdown();
         this.buttonSwitcher();
@@ -521,13 +523,16 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe((item) => {
                 this.truck = item;
-                this.getFuelChartData(id);
             });
     }
 
-    public getFuelChartData(id: number) {
+    public getExpensesChartData(
+        id: number,
+        chartType: number,
+        hideAnimation?: boolean
+    ) {
         this.truckService
-            .getExpenses(id, 1)
+            .getExpenses(id, chartType)
             .pipe(takeUntil(this.destroy$))
             .subscribe((item) => {
                 console.log(item, 'itemmm');
@@ -540,53 +545,109 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
                 this.stackedBarChartLegend[0].value = item.fuelCost;
                 this.stackedBarChartLegend[1].value = item.repairCost;
                 this.stackedBarChartLegend[2].value = item.totalCost;
-                console.log(
-                    this.stackedBarChartLegend[0].barThickness,
-                    'itemmm 222'
-                );
-                let fuelCost = [];
-                let repairCost = [];
-                let labels = [];
+                let fuelCost = [],
+                    repairCost = [],
+                    labels = [],
+                    maxValue = 0;
                 if (item?.truckExpensesCharts?.length > 17) {
                     this.stackedBarChartConfig.dataProperties[0].defaultConfig.barThickness = 10;
-                    this.stackedBarChartConfig.dataProperties[0].defaultConfig.barThickness = 10;
+                    this.stackedBarChartConfig.dataProperties[1].defaultConfig.barThickness = 10;
                 } else {
                     this.stackedBarChartConfig.dataProperties[0].defaultConfig.barThickness = 18;
-                    this.stackedBarChartConfig.dataProperties[0].defaultConfig.barThickness = 18;
+                    this.stackedBarChartConfig.dataProperties[1].defaultConfig.barThickness = 18;
                 }
                 item.truckExpensesCharts.map((data, index) => {
                     fuelCost.push(data.fuelCost);
                     repairCost.push(data.repairCost);
-                    labels.push([data.day, this.monthList[data.month - 1]]);
+                    if (data.fuelCost + data.repairCost > maxValue) {
+                        maxValue =
+                            data.fuelCost +
+                            data.repairCost +
+                            ((data.fuelCost + data.repairCost) * 7) / 100;
+                    }
+                    if (data.day) {
+                        labels.push([data.day, this.monthList[data.month - 1]]);
+                    } else {
+                        labels.push([this.monthList[data.month - 1]]);
+                    }
                 });
 
+                this.stackedBarAxes['verticalLeftAxes']['maxValue'] = maxValue;
                 this.stackedBarChartConfig.dataLabels = labels;
-                console.log(
-                    this.stackedBarChartLegend[0].barThickness,
-                    'itemmm 33333444'
-                );
                 this.stackedBarChartConfig.dataProperties[0].defaultConfig.data =
                     fuelCost;
                 this.stackedBarChartConfig.dataProperties[1].defaultConfig.data =
                     repairCost;
-
-                console.log(
-                    this.stackedBarChartConfig.dataProperties[0].defaultConfig
-                        .data,
-                    'itemmm 32333'
-                );
-                console.log(
-                    this.stackedBarChartConfig.dataProperties[1].defaultConfig
-                        .data,
-                    'itemmm 333'
-                );
-
-                this.stackedBarChart.setChartData();
                 this.stackedBarChart.chartDataCheck(
                     this.stackedBarChartConfig.chartValues
                 );
+                this.stackedBarChart.updateChartData(hideAnimation);
                 this.stackedBarChart.saveValues = JSON.parse(
                     JSON.stringify(this.stackedBarChartLegend)
+                );
+            });
+    }
+
+    public getFuelConsumtionChartData(
+        id: number,
+        chartType: number,
+        hideAnimation?: boolean
+    ) {
+        this.truckService
+            .getFuelConsumption(id, chartType)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((item) => {
+                this.payrollChartConfig.dataLabels = [];
+                this.payrollChartConfig.chartValues = [
+                    item.milesPerGallon,
+                    item.costPerGallon,
+                ];
+                this.barChartLegend[0].value = item.milesPerGallon;
+                this.barChartLegend[1].value = item.costPerGallon;
+                let milesPerGallon = [],
+                    costPerGallon = [],
+                    labels = [],
+                    maxValue = 0,
+                    maxValue2 = 0;
+                if (item?.truckFuelConsumptionCharts?.length > 17) {
+                    this.payrollChartConfig.dataProperties[1].defaultConfig.barThickness = 10;
+                } else {
+                    this.payrollChartConfig.dataProperties[1].defaultConfig.barThickness = 18;
+                }
+                item.truckFuelConsumptionCharts.map((data, index) => {
+                    data.milesPerGallon =
+                        Math.floor(Math.random() * 1000) + 100;
+                    milesPerGallon.push(data.milesPerGallon);
+                    costPerGallon.push(data.costPerGallon);
+                    if (data.milesPerGallon > maxValue) {
+                        maxValue =
+                            data.milesPerGallon +
+                            (data.milesPerGallon * 7) / 100;
+                    }
+                    if (data.costPerGallon > maxValue2) {
+                        maxValue2 =
+                            data.costPerGallon + (data.costPerGallon * 7) / 100;
+                    }
+                    if (data.day) {
+                        labels.push([data.day, this.monthList[data.month - 1]]);
+                    } else {
+                        labels.push([this.monthList[data.month - 1]]);
+                    }
+                });
+
+                this.barAxes['verticalLeftAxes']['maxValue'] = maxValue;
+                this.barAxes['verticalRightAxes']['maxValue'] = maxValue2;
+                this.payrollChartConfig.dataLabels = labels;
+                this.payrollChartConfig.dataProperties[0].defaultConfig.data =
+                    costPerGallon;
+                this.payrollChartConfig.dataProperties[1].defaultConfig.data =
+                    milesPerGallon;
+                this.payrollChart.chartDataCheck(
+                    this.payrollChartConfig.chartValues
+                );
+                this.payrollChart.updateChartData(hideAnimation);
+                this.payrollChart.saveValues = JSON.parse(
+                    JSON.stringify(this.barChartLegend)
                 );
             });
     }
@@ -625,8 +686,43 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
             export: true,
         };
     }
-    public changeTabPerfomance(ev: any) {}
-    public changeTabFuel(ev: any) {}
+    public changeTabPerfomance(ev: any) {
+        console.log(ev, 'event');
+        let chartType =
+            ev.name == '1M'
+                ? 1
+                : ev.name == '3M'
+                ? 2
+                : ev.name == '6M'
+                ? 3
+                : ev.name == '1Y'
+                ? 4
+                : ev.name == 'YTD'
+                ? 5
+                : ev.name == 'ALL'
+                ? 6
+                : 1;
+
+        this.getExpensesChartData(this.truck.id, chartType);
+    }
+    public changeTabFuel(ev: any) {
+        let chartType =
+            ev.name == '1M'
+                ? 1
+                : ev.name == '3M'
+                ? 2
+                : ev.name == '6M'
+                ? 3
+                : ev.name == '1Y'
+                ? 4
+                : ev.name == 'YTD'
+                ? 5
+                : ev.name == 'ALL'
+                ? 6
+                : 1;
+
+        this.getFuelConsumtionChartData(this.truck.id, chartType);
+    }
     public changeTabRevenue(ev: any) {}
 
     /**Function for toggle page in cards */
