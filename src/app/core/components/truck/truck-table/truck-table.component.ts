@@ -556,6 +556,7 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 ? this.datePipe.transform(data.updatedAt, 'MM/dd/yy')
                 : '',
             tableAttachments: data?.files ? data.files : [],
+            fileCount: data?.fileCount,
         };
     }
 

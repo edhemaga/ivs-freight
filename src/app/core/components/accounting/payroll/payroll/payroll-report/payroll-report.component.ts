@@ -4,6 +4,7 @@ import { commision_driver_open_loads } from '../state/table-settings/commision_d
 import { owner_open_loads, owner_open_loads_resizable } from '../state/table-settings/owner_open_load';
 import * as AppConst from 'src/app/const';
 import { UntypedFormControl } from '@angular/forms';
+import { miles_driver_open_loads } from '../state/table-settings/miles_driver_open_loads';
 
 @Component({
     selector: 'app-payroll-report',
@@ -56,6 +57,15 @@ export class PayrollReportComponent implements OnInit {
                 this.tableSettings = commision_driver_open_loads;
                 this.ps
                     .getPayrollCommisionDriverOpenReport(data.id)
+                    .subscribe((res) => {
+                        this.reportMainData = res;
+                        this.dch.detectChanges();
+                    });
+                break;
+            default: 
+                this.tableSettings = miles_driver_open_loads;
+                this.ps
+                    .getPayrollMileageDriverOpenReport(data.id)
                     .subscribe((res) => {
                         this.reportMainData = res;
                         this.dch.detectChanges();
