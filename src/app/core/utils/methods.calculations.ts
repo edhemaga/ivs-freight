@@ -129,22 +129,19 @@ export const convertNumberInThousandSep = (value: number) => {
 };
 
 //------------------------------- SPECIFIC PRICE CONVERTORS -------------------------------
-export const convertNumberWithCurrencyFormatterToBackend = (value: number) => {
-    if (value) {
-        let hasDecimalIndex = value.toString().indexOf('.');
+export const convertNumberWithCurrencyFormatterToBackend = (
+    value: number,
+    hasDollar: boolean = false
+) => {
+    const formatedValue = value.toLocaleString('en-US', {
+        style: 'currency',
+        currency: 'USD',
+        minimumFractionDigits: 2,
+    });
 
-        let decimalPart = value.toString().slice(hasDecimalIndex + 1);
-
-        const formatedValue = value.toLocaleString('en-US', {
-            style: 'currency',
-            currency: 'USD',
-            minimumFractionDigits: decimalPart.length,
-        });
-
-        if (formatedValue.includes('$')) {
-            return formatedValue.slice(1);
-        }
-
-        return formatedValue;
+    if (formatedValue.includes('$') && !hasDollar) {
+        return formatedValue.slice(1);
     }
+
+    return formatedValue;
 };
