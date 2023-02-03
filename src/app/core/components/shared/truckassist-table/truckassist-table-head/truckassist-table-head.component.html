@@ -318,7 +318,14 @@
         </tr>
 
         <!-- Border -->
-        <div class="not-pined-border"></div>
+        <div class="border-scroll-section-container border-scroll-section-container-left">
+            <div
+                class="border-scroll-section"
+                [ngClass]="{
+                    'border-left': true
+                }"
+            ></div>
+        </div>
 
         <!-- Not Pined -->
         <tr
@@ -358,7 +365,8 @@
                         'resize-hit-limit':
                             resizeHitLimit === i && !resizeIsPined,
                         'remuve-head-title':
-                            column.width < 68 && !locked && !rezaizeing
+                            column.width < 68 && !locked && !rezaizeing,
+                        'space-left': i === 0
                     }"
                 >
                     <!-- Title -->
@@ -642,7 +650,14 @@
         </tr>
 
         <!-- Border -->
-        <div class="not-pined-border" [ngStyle]="{ width: 3 + 'px' }"></div>
+        <div class="border-scroll-section-container border-scroll-section-container-right">
+            <div
+                class="border-scroll-section"
+                [ngClass]="{
+                    'border-right': true
+                }"
+            ></div>
+        </div>
 
         <!-- Actions -->
         <tr class="tr actions-columns-container">
