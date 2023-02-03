@@ -1,8 +1,8 @@
 <div *ngIf="driver" class="cards-item-wrapper-1">
     <app-ta-details-header-card
-        [ngClass]="{ 'disabedPreviousArrow': currentDriverIndex == 0, 'disableNextArrow': currentDriverIndex == (driversList.length -1 ) }"
-        [tooltipNext]=" currentDriverIndex == (driversList.length -1 )  ?  'Disabled' : 'Next Driver' "
-        [tooltipPrevious]=" currentDriverIndex == 0 ? 'Disabled' : 'Previous Driver' "
+        [ngClass]="{ 'disabedPreviousArrow': currentDriverIndex == 0 || currentDriverIndex == -1 , 'disableNextArrow': currentDriverIndex == (driversList.length -1 ) }"
+        [tooltipNext]=" currentDriverIndex == (driversList.length -1 )  ?  '' : 'Next Driver' "
+        [tooltipPrevious]=" currentDriverIndex == 0 || currentDriverIndex == -1 ? '' : 'Previous Driver' "
         [searchName]="'Driver is Owner'"
         [cardDetailsDate]="driver.hired | formatDateP"
         [cardDetailsDateTerminated]="driver.dateTerminated | formatDateP"
@@ -69,7 +69,7 @@
     >
         <div class="details-cards">
             <!-- assignedTo -->
-            <app-ta-custom-card
+            <app-ta-custom-card 
                 [cardName]="
                     driver.status == 1 ? 'Assigned To' : 'View Dispatch History'
                 "
@@ -79,6 +79,7 @@
                 [isCardOpen]="true"
                 [bodyTemplate]="'card'"
                 class="first-custom-card"
+                
             >
                 <div class="assignTo">
                     <div class="assignTo-item first" *ngIf="driver?.assignedTo?.truck?.id">
@@ -158,6 +159,10 @@
                 [bodyTemplate]="'card'"
                 [cardName]="'Additional info'"
                 [isCardOpen]="false"
+                [animationMarginParams]="{
+                    marginTop: '0px',
+                    marginBottom: '10px'
+                }"
             >
                 <div class="additional-container">
                     <div class="addres-wrapper">
@@ -249,6 +254,10 @@
                 [isCardOpen]="false"
                 class="item-cards"
                 [bodyTemplate]="'card'"
+                [animationMarginParams]="{
+                    marginTop: '0px',
+                    marginBottom: '10px'
+                }"
             >
                 <div class="employment-history-container">
                     <div class="years-of-service">
@@ -440,6 +449,10 @@
                 "
                 [isCardOpen]="driver.owner ? true : false"
                 [hasArrow]="driver.owner ? true : false"
+                [animationMarginParams]="{
+                    marginTop: '0px',
+                    marginBottom: '10px'
+                }"
             >
                 <div *ngIf="driver.owner" class="purchase-template">
                     <div class="purchase-template-item">
@@ -486,6 +499,10 @@
                     driver.commissionSolo ? 'Commission Pay' : 'Mileage Pay'
                 "
                 [isCardOpen]="true"
+                [animationMarginParams]="{
+                    marginTop: '0px',
+                    marginBottom: '10px'
+                }"
             >
                 <div *ngIf="driver?.commissionSolo" class="purchase-template">
                     <div class="purchase-template-item">
@@ -583,6 +600,10 @@
                 class="item-cards"
                 [bodyTemplate]="'card'"
                 [hasHeaderSvg]="'assets/svg/common/arrow_top_right.svg'"
+                [animationMarginParams]="{
+                    marginTop: '0px',
+                    marginBottom: '10px'
+                }"
             >
                 <div
                     class="charts-template perfomance"
@@ -619,6 +640,10 @@
                 class="item-cards"
                 [customClassHeaderSvg]="true"
                 [bodyTemplate]="'card'"
+                [animationMarginParams]="{
+                    marginTop: '0px',
+                    marginBottom: '10px'
+                }"
             >
                 <div class="purchase-template">
                     <div class="purchase-template-item">
@@ -650,6 +675,10 @@
                 [isCardOpen]="false"
                 class="item-cards"
                 [bodyTemplate]="'card'"
+                [animationMarginParams]="{
+                    marginTop: '0px',
+                    marginBottom: '10px'
+                }"
             >
                 <div
                     *ngIf="
@@ -697,6 +726,10 @@
                 [hasCounter]="driver?.files?.length ? driver?.files.length : 0"
                 class="item-cards"
                 [bodyTemplate]="'card'"
+                [animationMarginParams]="{
+                    marginTop: '0px',
+                    marginBottom: '10px'
+                }"
             >
                 <div class="card_files_holder" [class.active]="driver?.files?.length > 1">
                     <app-ta-upload-files
@@ -721,6 +754,7 @@
                         [placeholder]="'Write something.'"
                         [customClass]="'note-small'"
                         [note]="driverObject?.note"
+                        [blankNote]=" driverObject?.note ? true : false"
                         [noteType]="'details-card'"
                         [entityId]="driver.id"
                         [entityType]="'Driver'"

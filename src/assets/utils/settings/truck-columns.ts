@@ -927,7 +927,7 @@ export function getTruckColumnDefinition() {
             linkField: null,
         },
         {
-            ngTemplate: 'text',
+            ngTemplate: 'progress',
             title: 'Licence Plate Detail Expiration',
             field: 'tableLicencePlateDetailExpiration',
             name: 'Licence Plate Detail Expiration',
@@ -979,7 +979,7 @@ export function getTruckColumnDefinition() {
             linkField: null,
         },
         {
-            ngTemplate: 'text',
+            ngTemplate: 'progress',
             title: 'Fhwa Inspection Expiration',
             field: 'tableFhwaInspectionExpiration',
             name: 'Fhwa Inspection Expiration',

@@ -59,7 +59,7 @@
         </p>
 
         <!-- Normal Header -->
-        <p
+        <div
             *ngIf="
                 !editData.rating &&
                 !editData.subTypeStatus &&
@@ -81,7 +81,7 @@
                     ? editData?.template + 's'
                     : editData?.template
             }}?
-        </p>
+        </div>
 
         <!-- Renew CDL -->
         <p
@@ -198,6 +198,28 @@
                 <p class="confirmation-text-2">
                     Expires: {{ editData?.data.expDate | formatDateP }}
                 </p>
+                <!-- CDL dropdown slecet if Cdl array is sent -->
+                <div *ngIf="editData?.cdlsArray?.length > 0">
+                    <div class="col-6 cdl-holder" [formGroup]="cdlForm">
+                        <app-ta-input-dropdown
+                            formControlName="cdlId"
+                            [inputConfig]="{
+                                name: 'Input Dropdown',
+                                type: 'text',
+                                label: 'CDL',
+                                isRequired: true,
+                                isDropdown: true,
+                                isDisabled: cdls?.length === 1,
+                                dropdownWidthClass: 'w-col-228'
+                            }"
+                            [options]="editData?.cdlsArray"
+                            [activeItem]="selectedCdl"
+                            (selectedItem)="onSelectDropdown($event, 'cdl')"
+                        ></app-ta-input-dropdown>
+                    </div>
+
+                </div>
+
                 <div
                     *ngIf="editData.subType === 'cdl void'"
                     class="confirmation-text-3 cdl-void-message"

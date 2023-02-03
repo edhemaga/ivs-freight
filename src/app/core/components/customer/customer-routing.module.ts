@@ -23,7 +23,7 @@ const routes: Routes = [
             shipper: ShipperSingleResolver,
             shipperMinimalList: ShipperMinimalListResolver,
         },
-        data: { title: 'Shipper details' },
+        data: { title: 'Shipper detail' },
     },
     {
         path: ':id/broker-details',

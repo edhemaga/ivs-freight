@@ -10,6 +10,7 @@ import { ConfirmationService } from '../../../modals/confirmation-modal/confirma
 import { SettingsLocationService } from '../../state/location-state/settings-location.service';
 import { CompanyParkingService } from './parking-state/company-parking.service';
 import { ActivatedRoute } from '@angular/router';
+import moment from 'moment';
 @Component({
     selector: 'app-settings-parking',
     templateUrl: './settings-parking.component.html',
@@ -33,6 +34,8 @@ export class SettingsParkingComponent implements OnInit, OnDestroy {
             value: 0,
         },
     ];
+public currentDate: any;
+
     constructor(
         private settingsLocationService: SettingsLocationService,
         private companyParkingService: CompanyParkingService,
@@ -75,7 +78,46 @@ export class SettingsParkingComponent implements OnInit, OnDestroy {
             });
         this.parkingData = this.activatedRoute.snapshot.data.parking.pagination;
         this.initOptions();
+        this.currentDate = moment(new Date()).format('MM/DD/YY');
     }
+
+    public getRentDate(mod){
+        
+        let day;
+        let currentDate = new Date();
+
+        if (mod == 1){
+            day = 1;
+        } else if ( mod == 2 ) {
+            day = 5;
+        } else if ( mod == 3 ) {
+            day = 10;
+        } else if ( mod == 4 ) {
+            day = 15;
+        } else if ( mod == 5 ) {
+            day = 20;
+        } else if ( mod == 6 ) {
+            day = 25;
+        } else {
+            day = new Date(currentDate.getFullYear(), currentDate.getMonth()).getUTCDate();
+        }
+
+        let currentDay = currentDate.getUTCDate();
+        let expDate;
+
+        if ( day > currentDay ) {
+            expDate = new Date();
+            expDate.setUTCDate(day);
+        } else {
+            expDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, currentDate.getDate());
+            expDate.setUTCDate(day);
+        }
+        
+        
+        expDate = moment(expDate).format('MM/DD/YY');
+        return expDate;
+    }
+
 
     public onAction(modal: { modalName: string; type: any }) {
         this.settingsLocationService.onModalAction(modal);
@@ -87,13 +129,13 @@ export class SettingsParkingComponent implements OnInit, OnDestroy {
             .subscribe((item) => (this.parkingDataById = item));
     }
 
-    public optionsEvent(any: any, action: string) {
-        this.getParkingById(any.id);
+    public optionsEvent(eventData: any, action: string) {
+        this.getParkingById(eventData.id);
 
         setTimeout(() => {
-            const name = dropActionNameDriver(any, action);
+            const name = dropActionNameDriver(eventData, action);
             this.dropDownService.dropActionCompanyLocation(
-                any,
+                eventData,
                 name,
                 this.parkingDataById
             );

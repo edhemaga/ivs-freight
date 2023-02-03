@@ -290,32 +290,39 @@ $border-radius: 3px;
 .disabedPreviousArrow{
     .arrows {
         .previousArrow {
-            &:hover {
-                //background: #ff0000 !important;
                 opacity: 0.5;
                 cursor: default !important ;
 
                 svg-icon{
                     cursor: default !important;
                 }
-            }
+
+            &:hover{
+                background-color: transparent !important;
+            }  
         }
+
+        
     }
 }
 
 .disableNextArrow{
     .arrows {
         .nextArrow {
-            &:hover {
-                //background: #ff0000 !important;
                 opacity: 0.5;
                 cursor: default !important ;
 
                 svg-icon{
                     cursor: default !important;
-                }
+                }  
+            
+            &:hover{
+                background-color: transparent !important;
             }
         }
+
+        
+        
     }
 }
 

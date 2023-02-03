@@ -1,3 +1,13 @@
+@keyframes selectFix {
+    from {
+        user-select: none;
+    }
+    to {
+        user-select: auto !important;
+    }
+}
+
+
 .ta-custom-card {
     display: block;
 
@@ -463,6 +473,7 @@
         }
 
         .content-holder {
+            //user-select: none;
             &.innactive {
                 height: 0px !important;
                 overflow: hidden !important;
@@ -475,6 +486,11 @@
                 overflow: visible !important;
                 opacity: 1 !important;
             }
+
+            &.openedCardClass{
+                animation: selectFix 1.5s ease;
+            }
+
         }
     }
 
@@ -506,3 +522,5 @@
         }
     }
 }
+
+

@@ -2,8 +2,8 @@
     <app-ta-details-header-card
         [ngClass]="{ 'disabedPreviousArrow': shipperIndex == 0, 'disableNextArrow': shipperIndex == (shipperList.length -1 ) }"
         [cardDetailsDate]="shipper?.createdAt | formatDateP"
-        [tooltipNext]=" shipperIndex == (shipperList.length -1 )  ?  'Disabled' : 'Next Shipper' "
-        [tooltipPrevious]=" shipperIndex == 0 ? 'Disabled' : 'Previous Shipper' "
+        [tooltipNext]=" shipperIndex == (shipperList.length -1 )  ?  '' : 'Next Shipper' "
+        [tooltipPrevious]=" shipperIndex == 0 ? '' : 'Previous Shipper' "
         [searchInputName]="'Search Shipper'"
         [dateChecked]="'5 days ago'"
         [options]="shipperDropdowns"
@@ -59,6 +59,10 @@
                 [hasDivider]="false"
                 [cardName]="'Avillable Hours'"
                 [isCardOpen]="true"
+                [animationMarginParams]="{
+                    marginTop: '0px',
+                    marginBottom: '10px'
+                }"
             >
                 <div class="hours-template">
                     <div class="hours-item">
@@ -73,8 +77,8 @@
                                 src="assets/svg/common/ic_appoiment.svg"
                             ></svg-icon>
                             <span class="value-item"
-                                >{{ shipper?.receivingFrom }} AM -
-                                {{ shipper?.receivingTo }} PM</span
+                                >{{converTime(shipper?.receivingFrom)}} -
+                                {{converTime(shipper?.receivingTo)}}</span
                             >
                         </div>
                         <span
@@ -92,8 +96,8 @@
                                 src="assets/svg/common/ic_appoiment.svg"
                             ></svg-icon>
                             <span class="value-item"
-                                >{{ shipper?.shippingFrom }} AM -
-                                {{ shipper?.shippingTo }} PM</span
+                                >{{converTime(shipper?.shippingFrom)}} -
+                                {{converTime(shipper?.shippingTo)}}</span
                             >
                         </div>
                         <span
@@ -111,6 +115,10 @@
                 [tooltipName]="'View in Modal'"
                 [hasHeaderSvg]="'assets/svg/common/arrow_top_right.svg'"
                 [isCardOpen]="true"
+                [animationMarginParams]="{
+                    marginTop: '0px',
+                    marginBottom: '10px'
+                }"
             >
                 <div
                     class="charts-template perfomance"

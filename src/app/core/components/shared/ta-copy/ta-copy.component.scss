@@ -19,6 +19,7 @@
     align-items: center;
     width: fit-content;
     gap: 6px;
+    cursor: pointer;
     .copy-value {
         white-space: nowrap;
         &::-moz-selection {
