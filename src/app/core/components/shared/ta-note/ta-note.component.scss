@@ -481,4 +481,9 @@
             }
         }
     }
+
+    &.closed_note_hold {
+        position: relative;
+        top: -6px;
+    }
 }
