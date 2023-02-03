@@ -6,12 +6,10 @@
     height: auto;
     padding: 10px 6px 6px 6px;
     border-radius: 3px;
-    box-shadow: $nav-boxshadow;
     left: 17.8px;
     width: 242px;
     width: 36px;
     height: 36px;
-    background-color: $nav-svg-active;
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
@@ -46,7 +44,7 @@
             position: relative;
             width: 20px;
             height: 20px;
-            right: 1px;
+            right: 1.3px;
             transform: rotate(45deg);
             svg {
                 position: relative;
@@ -130,6 +128,39 @@
         }
     }
 }
+.closed-navigation {
+    background: $nav-transparent;
+    .modal-inner {
+        .modal-nav-close {
+            .modal-nav-close-svg {
+                svg {
+                    path {
+                        fill: $nav-svg-active;
+                    }
+                }
+            }
+        }
+    }
+    &:hover {
+        background: $nav-svg-active;
+        transition: background 0.3s;
+        .modal-inner {
+            .modal-nav-close {
+                .modal-nav-close-svg {
+                    svg {
+                        path {
+                            fill: $nav-white;
+                            transition: all 0.3s;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+.opened-navigation {
+    background: $nav-svg-active;
+}
 .show-modal {
     .modal-inner {
         .modal-nav-close {
@@ -141,6 +172,10 @@
                         top: 2px;
                         left: 4px;
                         position: absolute;
+                        path {
+                            transition: all 0.3s;
+                            opacity: 0.5;
+                        }
                     }
                 }
             }
