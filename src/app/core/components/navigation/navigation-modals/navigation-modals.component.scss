@@ -177,6 +177,15 @@
                             opacity: 0.5;
                         }
                     }
+                    &:hover {
+                        svg {
+                            path {
+                                transition: all 0.3s;
+                                fill: $nav-white;
+                                opacity: 1;
+                            }
+                        }
+                    }
                 }
             }
         }
