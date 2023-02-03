@@ -25,7 +25,7 @@ import { ConstantString } from '../enum/const-string.enum';
 @Injectable({
     providedIn: 'root',
 })
-export class WebsiteAuthStoreService {
+export class WebsiteAuthService {
     constructor(
         @Inject('persistStorage')
         private persistStorage: PersistState,

@@ -3,7 +3,7 @@ import { Component, OnDestroy, OnInit, Input } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
 
 import { WebsiteActionsService } from 'src/app/core/components/website/state/service/website-actions.service';
-import { WebsiteAuthStoreService } from '../../../../state/service/website-auth-store.service';
+import { WebsiteAuthService } from '../../../../state/service/website-auth.service';
 
 import { ConstantString } from 'src/app/core/components/website/state/enum/const-string.enum';
 
@@ -26,7 +26,7 @@ export class ConfirmationComponent implements OnInit, OnDestroy {
 
     constructor(
         private websiteActionsService: WebsiteActionsService,
-        private websiteAuthStoreService: WebsiteAuthStoreService
+        private websiteAuthService: WebsiteAuthService
     ) {}
 
     ngOnInit(): void {
@@ -66,14 +66,14 @@ export class ConfirmationComponent implements OnInit, OnDestroy {
         const email = this.confirmationEmail;
 
         if (type === ConstantString.COMPANY) {
-            this.websiteAuthStoreService
+            this.websiteAuthService
                 .resendRegisterCompany({ email })
                 .pipe(takeUntil(this.destroy$))
                 .subscribe();
         }
 
         if (type === ConstantString.USER) {
-            this.websiteAuthStoreService
+            this.websiteAuthService
                 .resendRegisterUser({ email })
                 .pipe(takeUntil(this.destroy$))
                 .subscribe();

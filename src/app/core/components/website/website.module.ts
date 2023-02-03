@@ -25,6 +25,8 @@ import { PasswordUpdatedComponent } from './components/website-sidebar/sidebar-c
 import { RegisterUserComponent } from './components/website-sidebar/sidebar-content/register-user-content/register-user/register-user.component';
 import { RegisterUserHelperComponent } from './components/website-sidebar/sidebar-content/register-user-content/register-user-helper/register-user-helper.component';
 
+import { WebsiteUnderConstructionComponent } from './components/website-under-construction/website-under-construction.component';
+
 @NgModule({
     declarations: [
         WebsiteMainComponent,
@@ -47,6 +49,10 @@ import { RegisterUserHelperComponent } from './components/website-sidebar/sideba
         PasswordUpdatedComponent,
         RegisterUserComponent,
         RegisterUserHelperComponent,
+
+        /* SIDEBAR */
+
+        WebsiteUnderConstructionComponent,
     ],
     imports: [
         CommonModule,

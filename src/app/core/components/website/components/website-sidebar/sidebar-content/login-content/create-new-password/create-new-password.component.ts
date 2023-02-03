@@ -4,7 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subject, takeUntil, tap } from 'rxjs';
 
 import { TaInputService } from 'src/app/core/components/shared/ta-input/ta-input.service';
-import { WebsiteAuthStoreService } from 'src/app/core/components/website/state/service/website-auth-store.service';
+import { WebsiteAuthService } from 'src/app/core/components/website/state/service/website-auth.service';
 import { WebsiteActionsService } from 'src/app/core/components/website/state/service/website-actions.service';
 
 import { passwordValidation } from 'src/app/core/components/shared/ta-input/ta-input.regex-validations';
@@ -35,7 +35,7 @@ export class CreateNewPasswordComponent implements OnInit, OnDestroy {
     constructor(
         private formBuilder: FormBuilder,
         private inputService: TaInputService,
-        private websiteAuthStoreService: WebsiteAuthStoreService,
+        private websiteAuthService: WebsiteAuthService,
         private websiteActionsService: WebsiteActionsService
     ) {}
 
@@ -128,7 +128,7 @@ export class CreateNewPasswordComponent implements OnInit, OnDestroy {
 
                 localStorage.setItem('user', JSON.stringify({ token: token }));
 
-                this.websiteAuthStoreService
+                this.websiteAuthService
                     .createNewPassword(saveData)
                     .pipe(
                         takeUntil(this.destroy$),

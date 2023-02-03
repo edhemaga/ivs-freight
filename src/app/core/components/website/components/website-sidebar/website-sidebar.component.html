@@ -21,86 +21,75 @@
         </div>
 
         <div class="d-flex flex-column sidebar-main">
-            <ng-container *ngIf="selectedContentType === 'start trial'">
-                <app-register-company [@fadeInAnimation]></app-register-company>
-            </ng-container>
+            <app-register-company
+                *ngIf="selectedContentType === 'start trial'"
+                [@fadeInAnimation]
+            ></app-register-company>
 
-            <ng-container
+            <app-confirmation
                 *ngIf="selectedContentType === 'start trial confirmation'"
-            >
-                <app-confirmation
-                    [@fadeInAnimation]
-                    [registerCompanyConfirmation]="true"
-                ></app-confirmation>
-            </ng-container>
+                [@fadeInAnimation]
+                [registerCompanyConfirmation]="true"
+            ></app-confirmation>
 
-            <ng-container *ngIf="selectedContentType === 'start trial welcome'">
-                <app-welcome [@fadeInAnimation]></app-welcome>
-            </ng-container>
+            <app-welcome
+                *ngIf="selectedContentType === 'start trial welcome'"
+                [@fadeInAnimation]
+            ></app-welcome>
 
-            <ng-container *ngIf="selectedContentType === 'register user'">
-                <app-register-user [@fadeInAnimation]></app-register-user>
-            </ng-container>
+            <app-register-user
+                *ngIf="selectedContentType === 'register user'"
+                [@fadeInAnimation]
+            ></app-register-user>
 
-            <ng-container
+            <app-confirmation
                 *ngIf="selectedContentType === 'register user confirmation'"
-            >
-                <app-confirmation
-                    [@fadeInAnimation]
-                    [registerUserConfirmation]="true"
-                ></app-confirmation>
-            </ng-container>
+                [@fadeInAnimation]
+                [registerUserConfirmation]="true"
+            ></app-confirmation>
 
-            <ng-container
+            <app-welcome
                 *ngIf="selectedContentType === 'register user welcome'"
-            >
-                <app-welcome
-                    [@fadeInAnimation]
-                    [registerUserWelcome]="true"
-                ></app-welcome>
-            </ng-container>
+                [@fadeInAnimation]
+                [registerUserWelcome]="true"
+            ></app-welcome>
 
-            <ng-container *ngIf="selectedContentType === 'login'">
-                <app-login [@fadeInAnimation]></app-login>
-            </ng-container>
+            <app-login
+                *ngIf="selectedContentType === 'login'"
+                [@fadeInAnimation]
+            ></app-login>
 
-            <ng-container *ngIf="selectedContentType === 'reset password'">
-                <app-reset-password [@fadeInAnimation]></app-reset-password>
-            </ng-container>
+            <app-reset-password
+                *ngIf="selectedContentType === 'reset password'"
+                [@fadeInAnimation]
+            ></app-reset-password>
 
-            <ng-container
+            <app-confirmation
                 *ngIf="selectedContentType === 'reset password requested'"
-            >
-                <app-confirmation
-                    [@fadeInAnimation]
-                    [passwordResetRequested]="true"
-                ></app-confirmation>
-            </ng-container>
+                [@fadeInAnimation]
+                [passwordResetRequested]="true"
+            ></app-confirmation>
 
-            <ng-container *ngIf="selectedContentType === 'create new password'">
-                <app-create-new-password
-                    [@fadeInAnimation]
-                ></app-create-new-password>
-            </ng-container>
+            <app-create-new-password
+                *ngIf="selectedContentType === 'create new password'"
+                [@fadeInAnimation]
+            ></app-create-new-password>
 
-            <ng-container *ngIf="selectedContentType === 'password updated'">
-                <app-password-updated [@fadeInAnimation]></app-password-updated>
-            </ng-container>
+            <app-password-updated
+                *ngIf="selectedContentType === 'password updated'"
+                [@fadeInAnimation]
+            ></app-password-updated>
 
-            <ng-container *ngIf="selectedContentType === 'resend confirmation'">
-                <app-resend-confirmation
-                    [@fadeInAnimation]
-                ></app-resend-confirmation>
-            </ng-container>
+            <app-resend-confirmation
+                *ngIf="selectedContentType === 'resend confirmation'"
+                [@fadeInAnimation]
+            ></app-resend-confirmation>
 
-            <ng-container
+            <app-confirmation
                 *ngIf="selectedContentType === 'resend confirmation requested'"
-            >
-                <app-confirmation
-                    [@fadeInAnimation]
-                    [resendConfirmationRequested]="true"
-                ></app-confirmation>
-            </ng-container>
+                [@fadeInAnimation]
+                [resendConfirmationRequested]="true"
+            ></app-confirmation>
         </div>
     </div>
 </div>

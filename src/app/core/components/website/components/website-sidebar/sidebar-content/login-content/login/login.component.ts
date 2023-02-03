@@ -4,7 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subject, takeUntil, tap } from 'rxjs';
 
 import { TaInputService } from 'src/app/core/components/shared/ta-input/ta-input.service';
-import { WebsiteAuthStoreService } from '../../../../../state/service/website-auth-store.service';
+import { WebsiteAuthService } from '../../../../../state/service/website-auth.service';
 import { WebsiteActionsService } from '../../../../../state/service/website-actions.service';
 
 import { passwordValidation } from 'src/app/core/components/shared/ta-input/ta-input.regex-validations';
@@ -28,7 +28,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     constructor(
         private formBuilder: FormBuilder,
         private inputService: TaInputService,
-        private websiteAuthStoreService: WebsiteAuthStoreService,
+        private websiteAuthService: WebsiteAuthService,
         private websiteActionsService: WebsiteActionsService
     ) {}
 
@@ -92,7 +92,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 
         this.displaySpinner = true;
 
-        this.websiteAuthStoreService
+        this.websiteAuthService
             .accountLogin(this.loginForm.value)
             .pipe(
                 takeUntil(this.destroy$),
@@ -102,7 +102,6 @@ export class LoginComponent implements OnInit, OnDestroy {
                     },
                     error: (error: any) => {
                         this.displaySpinner = false;
-                        console.log('error', error);
                     },
                 })
             )

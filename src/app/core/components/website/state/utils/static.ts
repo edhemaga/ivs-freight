@@ -4,15 +4,15 @@ export const NAVBAR_MENU_ITEMS: NavigationModel[] = [
     {
         title: 'Features',
         iconSrc: 'assets/svg/website/arrow-down.svg',
-        route: '/features',
+        route: '/website/features',
     },
     {
         title: 'Pricing',
-        route: '/pricing',
+        route: '/website/pricing',
     },
     {
         title: 'Support',
-        route: '/support',
+        route: '/website/support',
     },
     {
         title: 'Login',

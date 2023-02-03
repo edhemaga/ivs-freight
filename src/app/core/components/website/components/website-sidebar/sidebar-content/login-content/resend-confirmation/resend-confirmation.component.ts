@@ -7,7 +7,7 @@ import { TaInputService } from 'src/app/core/components/shared/ta-input/ta-input
 import { ConstantString } from 'src/app/core/components/website/state/enum/const-string.enum';
 import { WebsiteActionsService } from 'src/app/core/components/website/state/service/website-actions.service';
 
-import { WebsiteAuthStoreService } from 'src/app/core/components/website/state/service/website-auth-store.service';
+import { WebsiteAuthService } from 'src/app/core/components/website/state/service/website-auth.service';
 
 @Component({
     selector: 'app-resend-confirmation',
@@ -26,7 +26,7 @@ export class ResendConfirmationComponent implements OnInit, OnDestroy {
     constructor(
         private formBuilder: FormBuilder,
         private inputService: TaInputService,
-        private websiteAuthStoreService: WebsiteAuthStoreService,
+        private websiteAuthService: WebsiteAuthService,
         private websiteActionsService: WebsiteActionsService
     ) {}
 

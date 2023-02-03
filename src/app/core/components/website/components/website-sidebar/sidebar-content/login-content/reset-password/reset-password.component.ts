@@ -4,7 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subject, takeUntil, tap } from 'rxjs';
 
 import { TaInputService } from 'src/app/core/components/shared/ta-input/ta-input.service';
-import { WebsiteAuthStoreService } from 'src/app/core/components/website/state/service/website-auth-store.service';
+import { WebsiteAuthService } from 'src/app/core/components/website/state/service/website-auth.service';
 import { WebsiteActionsService } from 'src/app/core/components/website/state/service/website-actions.service';
 
 import { ForgotPasswordCommand } from 'appcoretruckassist';
@@ -27,7 +27,7 @@ export class ResetPasswordComponent implements OnInit, OnDestroy {
     constructor(
         private formBuilder: FormBuilder,
         private inputService: TaInputService,
-        private websiteAuthStoreService: WebsiteAuthStoreService,
+        private websiteAuthService: WebsiteAuthService,
         private websiteActionsService: WebsiteActionsService
     ) {}
 
@@ -87,7 +87,7 @@ export class ResetPasswordComponent implements OnInit, OnDestroy {
                 .value,
         };
 
-        this.websiteAuthStoreService
+        this.websiteAuthService
             .resetPassword(saveData)
             .pipe(
                 takeUntil(this.destroy$),

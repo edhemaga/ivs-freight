@@ -6,7 +6,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subject, takeUntil, tap } from 'rxjs';
 
 import { TaInputService } from 'src/app/core/components/shared/ta-input/ta-input.service';
-import { WebsiteAuthStoreService } from './../../../../../state/service/website-auth-store.service';
+import { WebsiteAuthService } from '../../../../../state/service/website-auth.service';
 import { WebsiteActionsService } from '../../../../../state/service/website-actions.service';
 
 import {
@@ -41,7 +41,7 @@ export class RegisterCompanyComponent implements OnInit, OnDestroy {
     constructor(
         private formBuilder: FormBuilder,
         private inputService: TaInputService,
-        private websiteAuthStoreService: WebsiteAuthStoreService,
+        private websiteAuthService: WebsiteAuthService,
         private websiteActionsService: WebsiteActionsService
     ) {}
 
@@ -158,7 +158,7 @@ export class RegisterCompanyComponent implements OnInit, OnDestroy {
             address: this.selectedAddress,
         };
 
-        this.websiteAuthStoreService
+        this.websiteAuthService
             .registerCompany(saveData)
             .pipe(
                 takeUntil(this.destroy$),

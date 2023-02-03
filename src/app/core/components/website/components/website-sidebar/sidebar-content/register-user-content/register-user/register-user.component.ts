@@ -5,7 +5,7 @@ import { Subject, takeUntil, tap } from 'rxjs';
 
 import { TaInputService } from 'src/app/core/components/shared/ta-input/ta-input.service';
 import { WebsiteActionsService } from 'src/app/core/components/website/state/service/website-actions.service';
-import { WebsiteAuthStoreService } from 'src/app/core/components/website/state/service/website-auth-store.service';
+import { WebsiteAuthService } from 'src/app/core/components/website/state/service/website-auth.service';
 
 import {
     addressUnitValidation,
@@ -48,7 +48,7 @@ export class RegisterUserComponent implements OnInit, OnDestroy {
         private formBuilder: FormBuilder,
         private inputService: TaInputService,
         private websiteActionsService: WebsiteActionsService,
-        private websiteAuthStoreService: WebsiteAuthStoreService
+        private websiteAuthService: WebsiteAuthService
     ) {}
 
     ngOnInit(): void {
@@ -149,7 +149,7 @@ export class RegisterUserComponent implements OnInit, OnDestroy {
             code: this.registerUserCode,
         };
 
-        this.websiteAuthStoreService
+        this.websiteAuthService
             .registerUser(saveData)
             .pipe(
                 takeUntil(this.destroy$),

@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 import { Subject, takeUntil } from 'rxjs';
 
-import { WebsiteAuthStoreService } from 'src/app/core/components/website/state/service/website-auth-store.service';
+import { WebsiteAuthService } from 'src/app/core/components/website/state/service/website-auth.service';
 
 import { ConstantString } from 'src/app/core/components/website/state/enum/const-string.enum';
 
@@ -18,7 +18,7 @@ export class RegisterCompanyHelperComponent implements OnInit, OnDestroy {
     private verifyData: { emailHash: string; code: string };
 
     constructor(
-        private websiteAuthStoreService: WebsiteAuthStoreService,
+        private websiteAuthService: WebsiteAuthService,
         private route: ActivatedRoute,
         private router: Router
     ) {}
@@ -50,7 +50,7 @@ export class RegisterCompanyHelperComponent implements OnInit, OnDestroy {
         });
 
         if (isValid) {
-            this.websiteAuthStoreService
+            this.websiteAuthService
                 .registerCompanyVerifyOwner(this.verifyData)
                 .pipe(takeUntil(this.destroy$))
                 .subscribe();
