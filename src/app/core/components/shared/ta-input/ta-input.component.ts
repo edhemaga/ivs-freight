@@ -603,7 +603,8 @@ export class TaInputComponent
     }
 
     public onKeydown(event) {
-        this.capsLockOn = event.getModifierState('CapsLock') || event.shiftKey;
+        this.capsLockOn =
+            event?.getModifierState('CapsLock') || event?.shiftKey;
 
         if (this.inputConfig.priceSeparator) {
             this.isDotDeleted = this.getSuperControl?.value?.includes('.');

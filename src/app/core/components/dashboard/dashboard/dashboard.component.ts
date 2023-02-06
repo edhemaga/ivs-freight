@@ -15,6 +15,9 @@ import { ActivatedRoute } from '@angular/router';
 import { UntypedFormControl } from '@angular/forms';
 import { FormDataService } from 'src/app/core/services/formData/form-data.service';
 import { DriverService } from '../../../../../../appcoretruckassist/api/driver.service';
+import { SignInResponse } from '../../../../../../appcoretruckassist/model/signInResponse';
+import { ModalService } from '../../shared/ta-modal/modal.service';
+import { SettingsBasicModalComponent } from '../../modals/company-modals/settings-basic-modal/settings-basic-modal.component';
 
 @Component({
     selector: 'app-dashboard',
@@ -175,12 +178,31 @@ export class DashboardComponent implements OnInit, OnDestroy {
         private sharedService: SharedService,
         private route: ActivatedRoute,
         private formDataService: FormDataService,
-        private driverService: DriverService
+        private driverService: DriverService,
+        private modalService: ModalService
     ) {}
 
     ngOnInit() {
         //this.dashboardStoreService.addStats();
         this.dashboardStats = this.route.snapshot.data['dashboard'];
+
+        const loggedUser: SignInResponse = JSON.parse(
+            localStorage.getItem('user')
+        );
+
+        if (!loggedUser.areSettingsUpdated) {
+            this.modalService.openModal(
+                SettingsBasicModalComponent,
+                {
+                    size: 'medium',
+                },
+                {
+                    type: 'edit-company-first-login',
+                },
+                null,
+                false
+            );
+        }
 
         // const data = {
         //     "firstName": "Drivece",
