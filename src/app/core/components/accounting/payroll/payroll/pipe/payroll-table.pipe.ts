@@ -1,10 +1,14 @@
+import { CurrencyPipe, DatePipe } from '@angular/common';
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
     name: 'payrolltablepipe',
 })
 export class PayrollTablePipe implements PipeTransform {
-    constructor() {}
+    constructor(
+        private datePipe: DatePipe,
+        private currencyPipe: CurrencyPipe
+    ) {}
 
     transform(data, field, index) {
         if (field.isIndexIncrement) {
@@ -22,6 +26,14 @@ export class PayrollTablePipe implements PipeTransform {
                     returnValue = returnValue[item];
                 }
             });
+
+            if (field.isDate) {
+                returnValue = this.datePipe.transform(returnValue, 'MM/dd/YY');
+            }
+
+            if (field.isCurrency) {
+                returnValue = this.currencyPipe.transform(returnValue, 'USD');
+            }
 
             return returnValue;
         } else {

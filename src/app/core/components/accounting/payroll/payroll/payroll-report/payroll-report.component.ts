@@ -1,7 +1,16 @@
-import { ChangeDetectorRef, Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
+import {
+    ChangeDetectorRef,
+    Component,
+    Input,
+    OnInit,
+    ViewEncapsulation,
+} from '@angular/core';
 import { PayrollStoreService } from '../state/payroll.service';
 import { commision_driver_open_loads } from '../state/table-settings/commision_driver_open_loads';
-import { owner_open_loads, owner_open_loads_resizable } from '../state/table-settings/owner_open_load';
+import {
+    owner_open_loads,
+    owner_open_loads_resizable,
+} from '../state/table-settings/owner_open_load';
 import * as AppConst from 'src/app/const';
 import { UntypedFormControl } from '@angular/forms';
 import { miles_driver_open_loads } from '../state/table-settings/miles_driver_open_loads';
@@ -10,12 +19,13 @@ import { miles_driver_open_loads } from '../state/table-settings/miles_driver_op
     selector: 'app-payroll-report',
     templateUrl: './payroll-report.component.html',
     styleUrls: ['./payroll-report.component.scss'],
-    encapsulation: ViewEncapsulation.None
+    encapsulation: ViewEncapsulation.None,
 })
 export class PayrollReportComponent implements OnInit {
-    reportMainData: any = { loads: [] };
+    reportMainData: any = { loads: [], truck: {}, owner: {}, driver: {} };
     tableSettings: any[] = [];
     tableSettingsResizable: any[] = [];
+    title: string = '';
 
     public payAmount: UntypedFormControl = new UntypedFormControl();
 
@@ -44,6 +54,7 @@ export class PayrollReportComponent implements OnInit {
     ngOnInit(): void {}
 
     getDataBasedOnTitle(data: { id: number; title: string }) {
+        this.title = data.title;
         switch (data.title) {
             case 'Owner':
                 this.tableSettings = owner_open_loads;
@@ -62,7 +73,7 @@ export class PayrollReportComponent implements OnInit {
                         this.dch.detectChanges();
                     });
                 break;
-            default: 
+            case 'Driver (Miles)':
                 this.tableSettings = miles_driver_open_loads;
                 this.ps
                     .getPayrollMileageDriverOpenReport(data.id)
