@@ -14,7 +14,8 @@ export const driver_miles_table_settings = [
     {
         field: "PERIOD",
         template: "normal-template",
-        data_field: "period"
+        data_field: "period",
+        isDate: true
     },
     {
         field: "TOTAL",
