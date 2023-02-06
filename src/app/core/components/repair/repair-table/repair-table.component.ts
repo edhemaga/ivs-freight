@@ -581,6 +581,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                 ? this.datePipe.transform(data.updatedAt, 'MM/dd/yy')
                 : '',
             tableAttachments: data?.files ? data.files : [],
+            fileCount: data?.fileCount,
         };
     }
 
@@ -620,6 +621,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                 : '',
             isFavorite: false,
             tableAttachments: data?.files ? data.files : [],
+            fileCount: data?.fileCount,
         };
     }
 

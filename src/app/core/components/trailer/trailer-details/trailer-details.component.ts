@@ -227,13 +227,6 @@ export class TrailerDetailsComponent implements OnInit, OnDestroy {
                     title: 'border',
                 },
                 {
-                    title: 'View Details',
-                    name: 'view-details',
-                    svg: 'assets/svg/common/ic_hazardous-info.svg',
-                    show: true,
-                    iconName: 'view-details',
-                },
-                {
                     title: 'Add New',
                     svg: 'assets/svg/common/dropdown-arrow.svg',
                     disabled: data.status == 0 ? true : false,

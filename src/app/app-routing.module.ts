@@ -33,7 +33,6 @@ import { LoadPandingResolver } from './core/components/load/state/load-pending-s
 import { LoadClosedResolver } from './core/components/load/state/load-closed-state/load-closed.resolver';
 import { LoadActiveResolver } from './core/components/load/state/load-active-state/load-active.resolver';
 import { LoadTemplateResolver } from './core/components/load/state/load-template-state/load-template.resolver';
-import { UserResolver } from './core/components/user/state/user-state/user.resolver';
 import { RoadsideActiveResolver } from './core/components/safety/violation/state/roadside-state/roadside-active/roadside-active.resolver';
 import { RoadsideInactiveResolver } from './core/components/safety/violation/state/roadside-state/roadside-inactive/roadside-inactive.resolver';
 import { AccidentActiveResolver } from './core/components/safety/accident/state/accident-state/accident-active/accident-active.resolver';
@@ -48,6 +47,7 @@ import { DispatcherResolverService } from './core/components/dispatch/state/disp
 import { UnderConstructionComponent } from './core/components/under-construction/under-construction.component';
 import { HideContentGuard } from './core/guards/hideContent.guard';
 import { ApplicantGuard } from './core/guards/applicant.guard';
+import { SelectCompanyComponent } from './core/components/authentication/select-company/select-company.component';
 
 const routes: Routes = [
     // Auth Routes
@@ -80,7 +80,12 @@ const routes: Routes = [
     },
 
     // Auth Routes
-
+    {
+        path: 'select-company',
+        component: SelectCompanyComponent,
+        data: { title: 'Select Company' },
+        canActivate: [AuthGuard],
+    },
     {
         path: 'dashboard',
         loadChildren: () =>

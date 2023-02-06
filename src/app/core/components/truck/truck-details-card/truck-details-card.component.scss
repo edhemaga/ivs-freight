@@ -8,8 +8,29 @@ app-truck-details-card {
         svg {
             path {
                 fill: $color-truck !important;
-                stroke: #c3c3c3;
             }
+        }
+
+        &.whiteTruck{
+            svg {
+                path {
+                    stroke: #AAAAAA;
+                    stroke-width:1.5;
+                }
+            }
+        }
+
+        &.inactiveTruckLogo{
+            
+            svg {
+                position: relative;
+                left: -30px;
+                transform: scaleX(-1);
+                path {
+                        fill: #AAAAAA !important;
+                        stroke: transparent;
+                   }
+                }
         }
     }
     .custom-card-single {
@@ -276,6 +297,15 @@ app-truck-details-card {
             .card-icon {
                 display: flex;
                 cursor: pointer;
+            }
+        }
+    }
+
+    .whiteColorCode{
+        svg {
+            path {
+                stroke: #AAAAAA;
+                stroke-width:1.5;
             }
         }
     }

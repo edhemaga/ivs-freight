@@ -117,16 +117,48 @@ export class BrokerDetailsSingleComponent implements OnInit, OnChanges {
                     name: 'edit',
                     svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
                     show: true,
+                    iconName: 'edit',
                 },
-
+                {
+                    title: 'border'
+                },
+                {
+                    title: 'View Details',
+                    name: 'view-details',
+                    svg: 'assets/svg/common/ic_hazardous-info.svg',
+                    iconName: 'view-details',
+                    show: true,
+                },
+                {
+                    title: 'border'
+                },
+                {
+                    title: 'Share',
+                    name: 'share',
+                    svg: 'assets/svg/common/share-icon.svg',
+                    iconName: 'share',
+                    show: true,
+                },
+                {
+                    title: 'Print',
+                    name: 'print',
+                    svg: 'assets/svg/common/ic_fax.svg',
+                    iconName: 'print',
+                    show: true,
+                },
+                {
+                    title: 'border'
+                },
                 {
                     title: 'Delete',
                     name: 'delete-item',
                     type: 'driver',
                     text: 'Are you sure you want to delete driver(s)?',
                     svg: 'assets/svg/common/ic_trash.svg',
+                    iconName: 'delete',
                     danger: true,
                     show: true,
+                    redIcon: true
                 },
             ],
             export: true,

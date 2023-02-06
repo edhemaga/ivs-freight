@@ -45,13 +45,19 @@ export class DetailsDataService {
     }
 
     changeRateStatus(type, mod) {
-        // if (type == 'like') {
-        //     this.mainData.raiting.hasLiked = mod;
-        //     this.mainData.raiting.hasDislike = false;
-        // } else {
-        //     this.mainData.raiting.hasDislike = mod;
-        //     this.mainData.raiting.hasLiked = false;
-        // }
+        if (type == 'like') {
+            if (mod) {
+                this.mainData.rating = 1;
+            } else {
+                this.mainData.rating = 0;
+            }
+        } else {
+            if (mod) {
+                this.mainData.rating = -1;
+            } else {
+                this.mainData.rating = 0;
+            }
+        }
     }
 
     setStopName(mod) {

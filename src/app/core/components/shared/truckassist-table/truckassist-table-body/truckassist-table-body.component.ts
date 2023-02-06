@@ -74,6 +74,7 @@ export class TruckassistTableBodyComponent
     progressData: any[] = [];
     viewDataEmpty: boolean;
     viewDataTimeOut: any;
+    tableWidthTimeout: any
     rowData: any;
     activeDescriptionDropdown: number = -1;
     descriptionTooltip: any;
@@ -322,7 +323,7 @@ export class TruckassistTableBodyComponent
         });
 
         this.tableWidth =
-            this.actionsWidth + notPinedWidth + this.pinedWidth + 12;
+            this.actionsWidth + notPinedWidth + this.pinedWidth + 22;
     }
 
     // Get Tab Table Data For Selected Tab
@@ -337,6 +338,8 @@ export class TruckassistTableBodyComponent
     // Get Not Pined Section Of Table Max Width
     getNotPinedMaxWidth() {
         if (this.viewData.length) {
+            clearTimeout(this.tableWidthTimeout);
+
             const tableContainer = document.querySelector('.table-container');
 
             this.notPinedMaxWidth =
@@ -345,6 +348,11 @@ export class TruckassistTableBodyComponent
                 12;
 
             this.changeDetectorRef.detectChanges();
+
+            this.tableWidthTimeout = setTimeout(() => {
+                const table = document.querySelector('.table-tr');
+                this.tableWidth = table.clientWidth;
+            }, 100);
         }
     }
 

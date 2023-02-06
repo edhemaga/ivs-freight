@@ -106,7 +106,6 @@ export class TaUploadFileComponent implements OnInit, OnDestroy {
             });
 
         if (!this.file.realFile) {
-            console.log(this.file, 'file');
             let setName = '';
             const name = this.file.fileName
                 ? this.file.fileName.split('')

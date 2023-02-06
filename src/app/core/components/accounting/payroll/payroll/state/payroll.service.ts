@@ -39,6 +39,10 @@ export class PayrollStoreService {
         return this.ps.apiPayrollDriverCommissionIdGet(id);
     }
 
+    getPayrollMileageDriverOpenReport(id: number){
+        return this.ps.apiPayrollDriverMileageIdGet(id);
+    }
+
     getPayrollList() {
         return this.ps.apiPayrollListGet();
     }
