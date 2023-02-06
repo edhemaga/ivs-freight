@@ -8,7 +8,7 @@
     "
     [editData]="editData"
     [editName]="editData?.company?.name"
-    [disableDelete]="editData.type.includes(edit-company')"
+    [disableDelete]="editData?.type?.includes('edit-company')"
     [isModalValid]="companyForm.valid && isFormDirty"
     [customClass]="'modal-container-M'"
     [dropZoneConfig]="dropZoneConfig"
@@ -51,12 +51,15 @@
                                             ? true
                                             : false,
                                     isDisabled:
-                                        editData.type.includes(edit-company'),
+                                        editData?.type?.includes(
+                                            'edit-company'
+                                        ),
                                     textTransform: 'uppercase',
-                                    autoFocus:
-                                        !editData.type.includes(edit-company')
-                                            ? true
-                                            : false
+                                    autoFocus: !editData?.type?.includes(
+                                        'edit-company'
+                                    )
+                                        ? true
+                                        : false
                                 }"
                             ></app-ta-input>
                         </div>
@@ -87,7 +90,9 @@
                                     type: 'text',
                                     label: 'EIN #',
                                     isDisabled:
-                                        editData.type.includes(edit-company'),
+                                        editData?.type?.includes(
+                                            'edit-company'
+                                        ),
                                     mask: '00-0000000',
                                     maxLength: 10
                                 }"
@@ -133,7 +138,9 @@
                                             ? true
                                             : false,
                                     isDisabled:
-                                        editData.type.includes(edit-company'),
+                                        editData?.type?.includes(
+                                            'edit-company'
+                                        ),
                                     placeholderIcon: 'email',
                                     minLength: 5,
                                     maxLength: 64,
@@ -301,7 +308,7 @@
                     </div>
                     <div
                         class="row last-row"
-                        *ngIf="editData.type.includes(edit-company')"
+                        *ngIf="editData?.type?.includes('edit-company')"
                     >
                         <div class="col-6">
                             <app-ta-input-dropdown
@@ -721,7 +728,7 @@
                     </app-ta-custom-card>
                     <div
                         *ngIf="
-                            editData.type.includes(edit-company') ||
+                            editData?.type?.includes('edit-company') ||
                             editData?.company?.divisions?.length === 1
                         "
                         class="company-part"

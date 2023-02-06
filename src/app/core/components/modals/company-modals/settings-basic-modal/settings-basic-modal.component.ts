@@ -308,6 +308,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
                 .subscribe({
                     next: (data: CompanyResponse) => {
                         this.editCompany(data);
+                        this.editData.data = data;
                     },
                     error: () => {},
                 });
@@ -485,7 +486,15 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
                     this.inputService.markInvalid(this.companyForm);
                     return;
                 }
-                if (!this.editData.company?.divisions.length) {
+
+                if (this.editData.type.includes('edit-company')) {
+                    this.updateCompany();
+                    this.modalService.setModalSpinner({
+                        action: null,
+                        status: true,
+                        close: false,
+                    });
+                } else {
                     if (this.editData.type === 'new-division') {
                         this.addCompanyDivision();
                         this.modalService.setModalSpinner({
@@ -501,13 +510,6 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
                             close: false,
                         });
                     }
-                } else {
-                    this.updateCompany();
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: true,
-                        close: false,
-                    });
                 }
 
                 break;
