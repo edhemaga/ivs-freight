@@ -1,4 +1,9 @@
-import { UntypedFormArray, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import {
+    UntypedFormArray,
+    UntypedFormBuilder,
+    UntypedFormGroup,
+    Validators,
+} from '@angular/forms';
 import { distinctUntilChanged, Subject, takeUntil } from 'rxjs';
 import { Options } from '@angular-slider/ngx-slider';
 import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
@@ -83,7 +88,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
         {
             id: 1,
             name: 'Basic',
-            checked: true
+            checked: true,
         },
         {
             id: 2,
@@ -153,11 +158,6 @@ export class DriverModalComponent implements OnInit, OnDestroy {
         this.getDriverDropdowns();
         this.onIncludePayroll();
         this.onTwicTypeSelected();
-
-        if (this.editData) {
-            this.disableCardAnimation = true;
-            this.getDriverById(this.editData.id);
-        }
 
         this.isCheckedOwner();
     }
@@ -1138,6 +1138,11 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                     };
 
                     this.handlingPayrollFleetType(this.fleetType, true);
+
+                    if (this.editData) {
+                        this.disableCardAnimation = true;
+                        this.getDriverById(this.editData.id);
+                    }
                 },
                 error: () => {},
             });

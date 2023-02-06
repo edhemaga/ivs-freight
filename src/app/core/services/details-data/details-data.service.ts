@@ -40,29 +40,29 @@ export class DetailsDataService {
         this.cardMainTitle = mod;
     }
 
-    setCdlId(mod){
+    setCdlId(mod) {
         this.cdlId = mod;
     }
 
     changeRateStatus(type, mod) {
-        if (type == 'like') {
-            this.mainData.raiting.hasLiked = mod;
-            this.mainData.raiting.hasDislike = false;
-        } else {
-            this.mainData.raiting.hasDislike = mod;
-            this.mainData.raiting.hasLiked = false;
-        }
+        // if (type == 'like') {
+        //     this.mainData.raiting.hasLiked = mod;
+        //     this.mainData.raiting.hasDislike = false;
+        // } else {
+        //     this.mainData.raiting.hasDislike = mod;
+        //     this.mainData.raiting.hasLiked = false;
+        // }
     }
 
     setStopName(mod) {
         this.stopName = mod;
     }
 
-    setDocumentName(mod){
+    setDocumentName(mod) {
         this.documentName = mod;
     }
 
-    setUnitValue(mod){
+    setUnitValue(mod) {
         this.unitValue = mod;
     }
 }

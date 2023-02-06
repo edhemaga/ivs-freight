@@ -55,10 +55,6 @@ export class PayrollBonusModalComponent implements OnInit, OnDestroy {
         this.createForm();
 
         this.getModalDropdowns();
-
-        if (this.editData?.type === 'edit') {
-            this.getByIdBonus(this.editData.data.id);
-        }
     }
 
     private createForm() {
@@ -296,6 +292,10 @@ export class PayrollBonusModalComponent implements OnInit, OnDestroy {
                         this.payrollBonusForm.patchValue({
                             driverId: this.labelsDriver[0].name,
                         });
+                    }
+
+                    if (this.editData?.type === 'edit') {
+                        this.getByIdBonus(this.editData.data.id);
                     }
                 },
                 error: () => {},

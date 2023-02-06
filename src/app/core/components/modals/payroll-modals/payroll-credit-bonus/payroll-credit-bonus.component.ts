@@ -81,10 +81,6 @@ export class PayrollCreditBonusComponent implements OnInit {
     ngOnInit() {
         this.createForm();
         this.getModalDropdowns();
-
-        if (this.editData?.type === 'edit') {
-            this.getByIdCredit(this.editData.data.id);
-        }
     }
 
     public tabChange(event: any): void {
@@ -406,6 +402,10 @@ export class PayrollCreditBonusComponent implements OnInit {
                             driverId: this.labelsDriver[0].name,
                         });
                         this.selectedTruck = null;
+                    }
+
+                    if (this.editData?.type === 'edit') {
+                        this.getByIdCredit(this.editData.data.id);
                     }
                 },
                 error: () => {},
