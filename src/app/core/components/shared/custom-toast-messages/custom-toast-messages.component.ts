@@ -163,11 +163,11 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
             value: 'CDL',
         },
         {
-            api: 'review',
+            api: 'ratingreview/review',
             value: 'REVIEW',
         },
         {
-            api: 'rating',
+            api: 'ratingreview/rating',
             value: 'RATE',
         },
         {
