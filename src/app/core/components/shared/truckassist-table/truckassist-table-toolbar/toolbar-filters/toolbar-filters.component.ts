@@ -7,6 +7,7 @@ import {
     Output,
     SimpleChanges,
 } from '@angular/core';
+import { MapsService } from 'src/app/core/services/shared/maps.service';
 
 @Component({
     selector: 'app-toolbar-filters',
@@ -18,7 +19,9 @@ export class ToolbarFiltersComponent implements OnInit, OnChanges {
     @Input() options: any;
     @Input() activeTableData: any;
 
-    constructor() {}
+    activeViewMode: any = {name: 'List', active: true};
+
+    constructor(private mapsService: MapsService) {}
 
     // --------------------------------NgOnInit---------------------------------
     ngOnInit(): void {}
@@ -42,11 +45,21 @@ export class ToolbarFiltersComponent implements OnInit, OnChanges {
             this.options.toolbarActions.viewModeOptions.map((viewMode: any) => {
                 viewMode.active = viewMode.name === modeView;
 
+                if ( viewMode.active ) this.activeViewMode = viewMode;
+
                 return viewMode;
             });
 
         this.toolbarFilter.emit({
             mode: modeView,
         });
+    }
+
+    setFilterEvent(event) {
+        if ( this.activeViewMode.name == 'Map' ) {
+            console.log('setFilterEvent', event);
+            console.log('setFilterEvent activeViewMode', this.activeViewMode);
+            this.mapsService.toggleFilter(event);
+        }
     }
 }

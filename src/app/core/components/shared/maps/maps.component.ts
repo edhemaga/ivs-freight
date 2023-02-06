@@ -147,6 +147,9 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
         pageSize: 25
     };
 
+    public locationFilter: any;
+    public stateFilter: any;
+
     constructor(
         private ref: ChangeDetectorRef,
         private formBuilder: UntypedFormBuilder,
@@ -200,6 +203,29 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
             .pipe(takeUntil(this.destroy$))
             .subscribe((data) => {
                 this.showMoreMapListData(data);
+            });
+
+        this.mapsService.mapFilterChange
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((data) => {
+                console.log('mmapFilterChange', data);
+                if ( data.filterType == 'locationFilter' ) {
+                    if ( data.action == 'Set' ) {
+                        this.locationFilter = data.queryParams;
+                    } else {
+                        this.locationFilter = null;
+                    }
+                    
+                    this.getClusters(true, true);
+                } else if ( data.filterType == 'stateFilter' ) {
+                    if ( data.action == 'Set' ) {
+                        this.stateFilter = data.queryParams;
+                    } else {
+                        this.stateFilter = null;
+                    }
+                    
+                    this.getClusters(true, true);
+                }
             });
     }
 
@@ -261,16 +287,16 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
 
                     this.mapsService.selectedMarker(data.id);
 
-                    if (
-                        this.mapLatitude == data.latitude &&
-                        this.mapLongitude == data.longitude
-                    ) {
-                        this.mapLatitude = data.latitude + 0.000001;
-                        this.mapLongitude = data.longitude + 0.000001;
-                    } else {
-                        this.mapLatitude = data.latitude;
-                        this.mapLongitude = data.longitude;
-                    }
+                    // if (
+                    //     this.mapLatitude == data.latitude &&
+                    //     this.mapLongitude == data.longitude
+                    // ) {
+                    //     this.mapLatitude = data.latitude + 0.000001;
+                    //     this.mapLongitude = data.longitude + 0.000001;
+                    // } else {
+                    //     this.mapLatitude = data.latitude;
+                    //     this.mapLongitude = data.longitude;
+                    // }
                 } else {
                     this.markerSelected = false;
                     data.isSelected = false;
@@ -497,6 +523,8 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
 
         var addedNewFlag = addedNew != null ? addedNew : false;
 
+        var locationFilterQuery = this.locationFilter;
+
         if (this.mapType == 'repairShop') {
             this.repairShopService
                 .getRepairShopClusters(
@@ -576,7 +604,12 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
                             markersToShow.includes(item.id) &&
                             !item.showMarker
                         ) {
-                            item.showMarker = true;
+                            var randomTime = Math.floor(Math.random() * 800);
+
+                            setTimeout(() => {
+                                item.showMarker = true;
+                                this.ref.detectChanges();
+                            }, randomTime);
                         } else if (
                             !markersToShow.includes(item.id) &&
                             item.showMarker
@@ -669,9 +702,9 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
                     clustersObj.southWestLongitude,
                     clustersObj.zoomLevel,
                     addedNewFlag, // addedNew
-                    null, // shipperLong
-                    null, // shipperLat
-                    null, // shipperDistance
+                    locationFilterQuery ? locationFilterQuery.longValue : null, // shipperLong
+                    locationFilterQuery ? locationFilterQuery.latValue : null, // shipperLat
+                    locationFilterQuery ? locationFilterQuery.rangeValue : null, // shipperDistance
                     null, // shipperStates
                     pageIndex,
                     pageSize,
@@ -741,7 +774,13 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
                             markersToShow.includes(item.id) &&
                             !item.showMarker
                         ) {
-                            item.showMarker = true;
+                            var randomTime = Math.floor(Math.random() * 800);
+
+                            setTimeout(() => {
+                                item.showMarker = true;
+                                this.ref.detectChanges();
+                            }, randomTime);
+                            
                         } else if (
                             !markersToShow.includes(item.id) &&
                             item.showMarker
@@ -794,9 +833,9 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
                     clustersObj.northEastLongitude,
                     clustersObj.southWestLatitude,
                     clustersObj.southWestLongitude,
-                    null, // shipperLong
-                    null, // shipperLat
-                    null, // shipperDistance
+                    locationFilterQuery ? locationFilterQuery.longValue : null, // shipperLong
+                    locationFilterQuery ? locationFilterQuery.latValue : null, // shipperLat
+                    locationFilterQuery ? locationFilterQuery.rangeValue : null, // shipperDistance
                     null, // shipperStates
                     this.mapListPagination.pageIndex, // pageIndex
                     this.mapListPagination.pageSize, // pageSize
@@ -838,9 +877,9 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
                     clustersObj.southWestLongitude,
                     clustersObj.zoomLevel,
                     addedNewFlag, // addedNew
-                    null, // shipperLong
-                    null, // shipperLat
-                    null, // shipperDistance
+                    locationFilterQuery ? locationFilterQuery.longValue : null, // shipperLong
+                    locationFilterQuery ? locationFilterQuery.latValue : null, // shipperLat
+                    locationFilterQuery ? locationFilterQuery.rangeValue : null, // shipperDistance
                     null, // shipperStates
                     pageIndex,
                     pageSize,
@@ -890,7 +929,12 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
                             markersToShow.includes(item.id) &&
                             !item.showMarker
                         ) {
-                            item.showMarker = true;
+                            var randomTime = Math.floor(Math.random() * 800);
+
+                            setTimeout(() => {
+                                item.showMarker = true;
+                                this.ref.detectChanges();
+                            }, randomTime);
                         } else if (
                             !markersToShow.includes(item.id) &&
                             item.showMarker
@@ -1045,16 +1089,16 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
                 if (data.isSelected && !data.detailedInfo) {
                     this.markerSelected = true;
 
-                    if (
-                        this.mapLatitude == data.latitude &&
-                        this.mapLongitude == data.longitude
-                    ) {
-                        this.mapLatitude = data.latitude + 0.000001;
-                        this.mapLongitude = data.longitude + 0.000001;
-                    } else {
-                        this.mapLatitude = data.latitude;
-                        this.mapLongitude = data.longitude;
-                    }
+                    // if (
+                    //     this.mapLatitude == data.latitude &&
+                    //     this.mapLongitude == data.longitude
+                    // ) {
+                    //     this.mapLatitude = data.latitude + 0.000001;
+                    //     this.mapLongitude = data.longitude + 0.000001;
+                    // } else {
+                    //     this.mapLatitude = data.latitude;
+                    //     this.mapLongitude = data.longitude;
+                    // }
                 } else if (data.detailedInfo) {
                     data.detailedInfo = false;
                     this.clusterDetailedInfo = false;

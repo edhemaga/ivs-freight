@@ -53,6 +53,8 @@
         [icon]="'address'"
         [filterTitle]="'Location Filter'"
         [locationDefType]="true"
+        [areaFilter]="activeViewMode.name == 'Map' ? true : false"
+        (setFilter)="setFilterEvent($event)"
     >
     </app-filter>
 
@@ -104,6 +106,7 @@
         [filterTitle]="'State / Province Filter'"
         [defFilterHolder]="true"
         [leftSideIcon]="true"
+        (setFilter)="setFilterEvent($event)"
     >
     </app-filter>
 

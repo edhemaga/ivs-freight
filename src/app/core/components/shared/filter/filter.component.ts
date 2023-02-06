@@ -2183,6 +2183,7 @@ export class FilterComponent implements OnInit, AfterViewInit {
         let data = {
             action: 'Clear',
             type: this.type,
+            filterType: this.type
         };
 
         if (this.setFilter) {
