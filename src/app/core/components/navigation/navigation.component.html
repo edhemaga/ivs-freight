@@ -1,13 +1,3 @@
-<!--   *ngIf="
-                            isNavigationHovered &&
-                            item.isRouteActive &&
-                            !isModalPanelOpen &&
-                            closeDropdownOnNavClose &&
-                            !isUserPanelOpen &&
-                            !isSettingsPanelOpen &&
-                            !isUserCompanyDetailsOpen &&
-                            subrouteClicked
-                        " -->
 <div class="navigation">
     <div
         class="nav-holder"
@@ -17,11 +7,14 @@
         <div class="navigation-top">
             <app-navigation-header
                 (click)="onHoveredNavigation(true)"
+                [isModalPanelOpen]="isModalPanelOpen"
                 [isNavigationHovered]="isNavigationHovered"
+                [ChangeCloseTextTitle]="ChangeCloseTextTitle"
             ></app-navigation-header>
 
             <app-navigation-modals
                 (click)="onHoveredNavigation(true)"
+                (ChangeCloseText)="ChangeCloseText($event)"
                 [isNavigationHoveredAndPanelOpen]="
                     isModalPanelOpen && isNavigationHovered
                 "
@@ -34,7 +27,6 @@
             (mouseenter)="onMidleNavHover(true); onFooterHover(false)"
             (mouseleave)="onMidleNavHover(false); onFooterHover(false)"
         >
-            <!-- <div class="navigation-routes-container"> -->
             <div
                 class="navigation-routes"
                 *ngFor="
@@ -178,7 +170,6 @@
                     'magic-line-width': !isNavigationHovered
                 }"
             ></div>
-            <!-- </div> -->
         </div>
         <!-- Open nav on click -->
         <div

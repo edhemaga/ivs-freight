@@ -22,6 +22,8 @@
             <p class="modal-nav-close-text">
                 <svg-icon
                     class="modal-nav-close-svg"
+                    (mouseenter)="changeText(true)"
+                    (mouseleave)="changeText(false)"
                     [ngClass]="{
                         'closed-modal': !OpenCloseModal,
                         'opened-modal': OpenCloseModal
@@ -29,12 +31,6 @@
                     src="assets/svg/common/ic_x.svg"
                 ></svg-icon>
             </p>
-            <!-- <svg-icon
-                (mouseenter)="Title = 'Close'"
-                (mouseleave)="Title = 'Add New'"
-                class="modal-nav-close-svg"
-                src="assets/svg/common/ic_x.svg"
-            ></svg-icon> -->
         </div>
 
         <div class="modal-nav-content">
