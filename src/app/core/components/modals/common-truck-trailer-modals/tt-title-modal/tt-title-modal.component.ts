@@ -1,4 +1,8 @@
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import {
+    UntypedFormBuilder,
+    UntypedFormGroup,
+    Validators,
+} from '@angular/forms';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
@@ -46,18 +50,6 @@ export class TtTitleModalComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.createForm();
         this.getModalDropdowns();
-
-        if (this.editData.type === 'edit-title') {
-            this.disableCardAnimation = true;
-            this.editTitleById(this.editData.file_id);
-        }
-
-        if (this.editData && this.editData?.data) {
-            this.editData = {
-                ...this.editData,
-                payload: this.editData.data,
-            };
-        }
     }
 
     private createForm() {
@@ -283,6 +275,18 @@ export class TtTitleModalComponent implements OnInit, OnDestroy {
                             stateName: item.stateName,
                         };
                     });
+
+                    if (this.editData.type === 'edit-title') {
+                        this.disableCardAnimation = true;
+                        this.editTitleById(this.editData.file_id);
+                    }
+
+                    if (this.editData && this.editData?.data) {
+                        this.editData = {
+                            ...this.editData,
+                            payload: this.editData.data,
+                        };
+                    }
                 },
                 error: () => {},
             });

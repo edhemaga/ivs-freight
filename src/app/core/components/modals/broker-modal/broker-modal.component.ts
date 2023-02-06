@@ -1,5 +1,10 @@
 import { AddressEntity } from '../../../../../../appcoretruckassist';
-import { UntypedFormArray, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import {
+    UntypedFormArray,
+    UntypedFormBuilder,
+    UntypedFormGroup,
+    Validators,
+} from '@angular/forms';
 import {
     Component,
     Input,
@@ -35,7 +40,7 @@ import {
     TaLikeDislikeService,
 } from '../../shared/ta-like-dislike/ta-like-dislike.service';
 import { BrokerTService } from '../../customer/state/broker-state/broker.service';
-import { debounceTime, Subject, takeUntil } from 'rxjs';
+import { debounceTime, Subject, takeUntil, switchMap } from 'rxjs';
 import { ReviewsRatingService } from '../../../services/reviews-rating/reviewsRating.service';
 import {
     convertNumberInThousandSep,
@@ -45,6 +50,7 @@ import { poBoxValidation } from '../../shared/ta-input/ta-input.regex-validation
 import { FormService } from '../../../services/form/form.service';
 import { LoadModalComponent } from '../load-modal/load-modal.component';
 import { BrokerAvailableCreditResponse } from '../../../../../../appcoretruckassist/model/brokerAvailableCreditResponse';
+import { BrokerResponse } from '../../../../../../appcoretruckassist/model/brokerResponse';
 import {
     name2_24Validation,
     creditLimitValidation,
@@ -69,7 +75,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
         {
             id: 1,
             name: 'Details',
-            checked: true
+            checked: true,
         },
         {
             id: 2,
@@ -176,49 +182,6 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
         this.getBrokerDropdown();
         this.isCredit({ id: 301, name: 'Custom', checked: true });
         this.followIsBillingAddressSame();
-
-        // From Another Modal Data
-        if (this.editData?.type === 'edit-contact') {
-            this.disableCardAnimation = true;
-            this.editBrokerById(this.editData.id);
-            setTimeout(() => {
-                this.tabs = this.tabs.map((item, index) => {
-                    return {
-                        ...item,
-                        disabled: index !== 1,
-                        checked: index === 1,
-                    };
-                });
-                this.selectedTab = 2;
-            }, 50);
-        }
-        // normal get by id broker
-        else {
-            if (this.editData?.id) {
-                this.disableCardAnimation = true;
-                this.editBrokerById(this.editData.id);
-                this.tabs.push({
-                    id: 3,
-                    name: 'Review',
-                });
-                this.ratingChanges();
-            }
-        }
-
-        // Open Tab Position
-        if (this.editData?.openedTab) {
-            setTimeout(() => {
-                this.tabChange({
-                    id:
-                        this.editData?.openedTab === 'Contact'
-                            ? 2
-                            : this.editData?.openedTab === 'Review'
-                            ? 3
-                            : 1,
-                });
-                this.disableCardAnimation = true;
-            });
-        }
 
         this.companyUser = JSON.parse(localStorage.getItem('user'));
     }
@@ -709,10 +672,44 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
 
                 this.reviewRatingService
                     .addRating(rating)
-                    .pipe(takeUntil(this.destroy$))
+                    .pipe(
+                        takeUntil(this.destroy$),
+                        switchMap(() => {
+                            return this.brokerModalService.getBrokerById(
+                                this.editData.id
+                            );
+                        })
+                    )
                     .subscribe({
-                        next: () => {
-                            this.editBrokerById(this.editData.id);
+                        next: (res: BrokerResponse) => {
+                            if (res.reviews.length) {
+                                this.reviews = res.reviews.map((item: any) => ({
+                                    ...item,
+                                    companyUser: {
+                                        ...item.companyUser,
+                                        avatar: item.companyUser.avatar,
+                                    },
+                                    commentContent: item.comment,
+                                    rating: item.ratingFromTheReviewer,
+                                }));
+
+                                const reviewIndex = this.reviews.findIndex(
+                                    (item) =>
+                                        item.companyUser.id ===
+                                        this.companyUser.companyUserId
+                                );
+
+                                if (reviewIndex !== -1) {
+                                    this.disableOneMoreReview = true;
+                                }
+                            }
+
+                            this.taLikeDislikeService.populateLikeDislikeEvent({
+                                downRatingCount: res.downCount,
+                                upRatingCount: res.upCount,
+                                currentCompanyUserRating:
+                                    res.currentCompanyUserRating,
+                            });
                         },
                         error: () => {},
                     });
@@ -796,6 +793,49 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                 next: (reasponse: BrokerModalResponse) => {
                     this.labelsDepartments = reasponse.departments;
                     this.labelsPayTerms = reasponse.payTerms;
+
+                    // From Another Modal Data
+                    if (this.editData?.type === 'edit-contact') {
+                        this.disableCardAnimation = true;
+                        this.editBrokerById(this.editData.id);
+                        setTimeout(() => {
+                            this.tabs = this.tabs.map((item, index) => {
+                                return {
+                                    ...item,
+                                    disabled: index !== 1,
+                                    checked: index === 1,
+                                };
+                            });
+                            this.selectedTab = 2;
+                        }, 50);
+                    }
+                    // normal get by id broker
+                    else {
+                        if (this.editData?.id) {
+                            this.disableCardAnimation = true;
+                            this.editBrokerById(this.editData.id);
+                            this.tabs.push({
+                                id: 3,
+                                name: 'Review',
+                            });
+                            this.ratingChanges();
+                        }
+                    }
+
+                    // Open Tab Position
+                    if (this.editData?.openedTab) {
+                        setTimeout(() => {
+                            this.tabChange({
+                                id:
+                                    this.editData?.openedTab === 'Contact'
+                                        ? 2
+                                        : this.editData?.openedTab === 'Review'
+                                        ? 3
+                                        : 1,
+                            });
+                            this.disableCardAnimation = true;
+                        });
+                    }
                 },
                 error: () => {},
             });
