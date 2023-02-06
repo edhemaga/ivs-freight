@@ -81,7 +81,6 @@ export class NavigationRouteComponent implements OnInit, OnChanges {
             this.isNavigationHovered != false
         ) {
             this.activeLinkHighlight = value;
-            console.log(value);
         }
     }
     routeWithSubRoutesClick(event) {
