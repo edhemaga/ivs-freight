@@ -35,9 +35,10 @@ export class NavigationUserProfileComponent implements OnInit, OnDestroy {
     @Input() isNavigationHovered: boolean = false;
     @Input() isUserPanelOpen: boolean = false;
     @Input() companiesExists: boolean;
+    @Input() isUserCompanyDetailsOpen: boolean;
     public userNavigationData: NavigationUserPanel[] = userNavigationData;
     public currentUserStatus: string = 'online';
-
+    isActiveMagicLine = true;
     public loggedUser: any = null;
     constructor(
         public router: Router,
@@ -82,10 +83,10 @@ export class NavigationUserProfileComponent implements OnInit, OnDestroy {
                 }
             });
     }
-    public onUserPanelClose() {
+    public onUserPanelClose(event) {
         this.navigationService.onDropdownActivation({
             name: 'User Panel',
-            type: false,
+            type: event,
         });
     }
 
