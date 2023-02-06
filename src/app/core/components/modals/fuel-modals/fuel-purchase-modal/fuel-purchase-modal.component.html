@@ -332,16 +332,6 @@
                                 (change)="onChange('qty', ind)"
                             ></app-ta-input>
                             <div class="fuel-item-price-container">
-                                <span
-                                    *ngIf="
-                                        fuelItem.get('price').value &&
-                                        bluringFuelItemsPrice[index]
-                                    "
-                                    class="fuel-item-price-dollar"
-                                >
-                                    $
-                                </span>
-
                                 <app-ta-input
                                     formControlName="price"
                                     [inputConfig]="{

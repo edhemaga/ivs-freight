@@ -493,6 +493,7 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 : '',
 
             tableAttachments: data?.files ? data.files : [],
+            fileCount: data?.fileCount,
         };
     }
 

@@ -384,6 +384,7 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
             textAddress: data?.address?.address ? data.address.address : '',
             textBankName: data?.bank?.name ? data.bank.name : '',
             tableAttachments: data?.files ? data.files : [],
+            fileCount: data?.fileCount,
         };
     }
 

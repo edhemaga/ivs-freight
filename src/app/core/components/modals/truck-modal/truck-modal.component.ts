@@ -74,7 +74,6 @@ export class TruckModalComponent implements OnInit, OnDestroy {
     public fuelTypes: any[] = [];
     public truckLengths: any[] = [];
     public tollTransponders: any[] = [];
-    public wheelBaseTypes: any[] = [];
 
     public selectedBrakes: any = null;
     public selectedShifter: any = null;
@@ -90,7 +89,6 @@ export class TruckModalComponent implements OnInit, OnDestroy {
     public selectedAPUnit: any = null;
     public selectedGearRatio: any = null;
     public selectedTollTransponders: any = null;
-    public selectedWheelBase: any = null;
 
     public selectedTruckLengthId: any = null;
 
@@ -104,7 +102,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
         {
             id: 1,
             name: 'Basic',
-            checked: true
+            checked: true,
         },
         {
             id: 2,
@@ -457,10 +455,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                 this.selectedTruckLengthId = event;
                 break;
             }
-            case 'wheel-base': {
-                this.selectedWheelBase = event;
-                break;
-            }
+
             default: {
                 break;
             }
@@ -558,7 +553,6 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                         };
                     });
                     this.rearWheels = this.frontWheels = res.wheelsTypes;
-                    // this.wheelBase = res.wheelBase;
                     this.fuelTypes = res.fuelTypes;
                     this.truckForm.get('fhwaExp').patchValue(res.fhwaExp);
                 },
@@ -612,7 +606,9 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                         frontWheels: res.frontWheels
                             ? res.frontWheels.name
                             : null,
-                        // wheelBase: res.wheelBase ? res.wheelBase.name : null,
+                        wheelBase: res.wheelBase
+                            ? convertNumberInThousandSep(res.wheelBase)
+                            : null,
                         rearWheels: res.rearWheels ? res.rearWheels.name : null,
                         transmissionModel: res.transmissionModel,
                         shifter: res.shifter ? res.shifter.name : null,
@@ -634,8 +630,8 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                         doubleBunk: res.doubleBunk,
                         refrigerator: res.refrigerator,
                         dcInverter: res.dcInverter,
-                        // headacheRack: res.headacheRack,
-                        // dashCam: res.dashCam,
+                        headacheRack: res.headacheRack,
+                        dashCam: res.dashCam,
                         blower: res.blower,
                         pto: res.pto,
                         fhwaExp: res.fhwaExp ? res.fhwaExp : 12,
@@ -650,7 +646,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                     this.selectedFrontWheels = res.frontWheels
                         ? res.frontWheels
                         : null;
-                    // this.selectedWheelBase = res.wheelBase ? res.wheelBase : null;
+
                     this.selectedGearRatio = res.gearRatio
                         ? res.gearRatio
                         : null;
@@ -813,8 +809,10 @@ export class TruckModalComponent implements OnInit, OnDestroy {
             frontWheels: this.selectedFrontWheels
                 ? this.selectedFrontWheels.name
                 : null,
-            wheelBase: this.selectedWheelBase
-                ? this.selectedWheelBase.name
+            wheelBase: this.truckForm.get('wheelBase').value
+                ? convertThousanSepInNumber(
+                      this.truckForm.get('wheelBase').value
+                  )
                 : null,
             rearWheels: this.selectedRearWheels
                 ? this.selectedRearWheels.name
@@ -958,8 +956,10 @@ export class TruckModalComponent implements OnInit, OnDestroy {
             frontWheels: this.selectedFrontWheels
                 ? this.selectedFrontWheels.name
                 : null,
-            wheelBase: this.selectedWheelBase
-                ? this.selectedWheelBase.name
+            wheelBase: this.truckForm.get('wheelBase').value
+                ? convertThousanSepInNumber(
+                      this.truckForm.get('wheelBase').value
+                  )
                 : null,
             rearWheels: this.selectedRearWheels
                 ? this.selectedRearWheels.name
