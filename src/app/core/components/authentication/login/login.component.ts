@@ -50,6 +50,7 @@ export class LoginComponent implements OnInit, OnDestroy {
         this.authStoreService.userHasMultipleCompaniesObservable.subscribe(
             (res) => {
                 this.userData = res;
+                console.log(res);
                 this.lastLoginInCompany = this.calculateDiff(
                     convertDateFromBackend(res.companies.lastLogin)
                 );

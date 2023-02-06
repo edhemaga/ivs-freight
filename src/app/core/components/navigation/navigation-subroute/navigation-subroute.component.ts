@@ -16,6 +16,7 @@ import { Router } from '@angular/router';
 import {
     DropDownAnimation,
     navigation_route_animation,
+    test,
 } from '../navigation.animation';
 
 @Component({
@@ -26,6 +27,7 @@ import {
     animations: [
         navigation_route_animation('showHideDetails'),
         DropDownAnimation,
+        test('test'),
     ],
 })
 export class NavigationSubrouteComponent implements OnChanges {
@@ -45,6 +47,8 @@ export class NavigationSubrouteComponent implements OnChanges {
         this.subRouteIndex.emit(index);
     }
     ngOnChanges(changes: SimpleChanges): void {
+        console.log(this.openCloseContainer);
+
         if (changes.otherContainerOpened != undefined) {
             let prev = changes?.otherContainerOpened;
             if (prev.currentValue == true && prev.previousValue == false) {

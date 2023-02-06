@@ -225,7 +225,6 @@ export class NavigationComponent implements OnInit, OnDestroy {
     }
     //On outside of navbar close navbar
     closeNavbar(event) {
-        console.log(event.target);
         if (
             //If this elements keep open navigation
             event.target.parentElement?.classList.contains(

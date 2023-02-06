@@ -33,12 +33,13 @@
                     class="slide"
                 >
                     <div class="slide-inner" [id]="item.id">
-                        <span class="company-name" *ngIf="item.logo == null">{{
+                        <span class="company-name" *ngIf="!item.logo">{{
                             item.companyName
                         }}</span>
+                        <!-- prettier-ignore -->
                         <img
                             class="logo"
-                            *ngIf="item.logo != null"
+                            *ngIf="item.logo"
                             src="{{ 'data:image/jpg;base64,' + item.logo }}"
                         />
                         <div *ngIf="item?.isActive" class="last-login">
