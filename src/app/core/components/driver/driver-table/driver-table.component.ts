@@ -253,7 +253,6 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 }
                 // On Update Driver
                 else if (res.animation === 'update') {
-                    console.log('Edit Driver');
                     const updatedDriver = this.mapDriverData(res.data);
 
                     this.viewData = this.viewData.map((driver: any) => {
@@ -559,8 +558,6 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
         } else {
             this.viewData = [];
         }
-
-        console.log(this.viewData);
     }
 
     mapDriverData(data: any) {

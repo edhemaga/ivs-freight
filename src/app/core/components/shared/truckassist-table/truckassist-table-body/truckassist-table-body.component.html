@@ -12,8 +12,8 @@
                     ? viewData.length * 32 +
                       (viewData.length - 1) * 2 +
                       22 +
-                      300
-                    : viewData.length * 32 + (viewData.length - 1) * 2 + 22
+                      300 + 7
+                    : viewData.length * 32 + (viewData.length - 1) * 2 + 22 + 7
             "
             (scrollEvent)="onHorizontalScroll($event)"
         >
