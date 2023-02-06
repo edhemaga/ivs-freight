@@ -411,6 +411,16 @@ export class TruckassistTableToolbarComponent
 
     // Show Toolbar Options Popup
     onShowOptions(optionsPopup: any) {
+        this.optionsPopupContent[0].active = false;
+
+        this.optionsPopupContent.map((option) => {
+            if (option.text !== 'Columns') {
+                option.hide = false;
+            }
+
+            return option;
+        });
+
         this.optionsPopup = optionsPopup;
 
         if (optionsPopup.isOpen()) {

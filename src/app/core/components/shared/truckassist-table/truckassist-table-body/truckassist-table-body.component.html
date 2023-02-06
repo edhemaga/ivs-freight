@@ -433,6 +433,10 @@
                                 </div>
                                 <span
                                     (click)="goToDetails(column, row)"
+                                    [ngClass]="{
+                                        'has-details-page':
+                                            !column.link?.doesNotHaveRout
+                                    }"
                                     class="table-avatar-name"
                                     >{{ row[column.field] }}</span
                                 >
@@ -482,6 +486,10 @@
                                 </div>
                                 <span
                                     class="table-avatar-name"
+                                    [ngClass]="{
+                                        'has-details-page':
+                                            !column.link?.doesNotHaveRout
+                                    }"
                                     *ngIf="row[column.field]?.name"
                                     >{{ row[column.field].name }}</span
                                 >
@@ -560,6 +568,10 @@
                                         width: column.width + 'px'
                                     }"
                                     class="table-name-link"
+                                    [ngClass]="{
+                                        'has-details-page':
+                                            !column.link?.doesNotHaveRout
+                                    }"
                                     (click)="goToDetails(column, row)"
                                     >{{ row[column.field] }}</span
                                 >
@@ -1004,6 +1016,7 @@
                                 <a
                                     class="table-url"
                                     href="{{ row[column.field] }}"
+                                    target="blank"
                                     [innerHtml]="
                                         row[column.field]
                                             ? row[column.field]
@@ -1043,6 +1056,9 @@
 
                                 <div
                                     class="password-text-crypted"
+                                    [ngStyle]="{
+                                        width: column.width - 22 + 'px'
+                                    }"
                                     *ngIf="
                                         row[column.field].hiden &&
                                         !row[column.field].apiCallStarted
@@ -1054,6 +1070,9 @@
 
                                 <div
                                     class="password-text-showing"
+                                    [ngStyle]="{
+                                        width: column.width - 22 + 'px'
+                                    }"
                                     *ngIf="
                                         !row[column.field].hiden &&
                                         !row[column.field].apiCallStarted
@@ -1600,12 +1619,14 @@
                     </div>
 
                     <!-- Border -->
-                    <div
-                        class="border-scroll-section"
-                        [ngClass]="{
-                            'border-left': showScrollSectionBorder
-                        }"
-                    ></div>
+                    <div class="border-scroll-section-container">
+                        <div
+                            class="border-scroll-section"
+                            [ngClass]="{
+                                'border-left': showScrollSectionBorder
+                            }"
+                        ></div>
+                    </div>
 
                     <!-- NOT PINED -->
                     <div
@@ -1615,7 +1636,13 @@
                     >
                         <td
                             class="not-pined-td"
-                            *ngFor="let column of notPinedColumns"
+                            *ngFor="
+                                let column of notPinedColumns;
+                                let c = index
+                            "
+                            [ngClass]="{
+                                'space-left': c === 0
+                            }"
                         >
                             <!-- NO TEMPLATE -->
                             <div
@@ -1924,6 +1951,10 @@
                                 </div>
                                 <span
                                     (click)="goToDetails(column, row)"
+                                    [ngClass]="{
+                                        'has-details-page':
+                                            !column.link?.doesNotHaveRout
+                                    }"
                                     class="table-avatar-name"
                                     >{{ row[column.field] }}</span
                                 >
@@ -1967,6 +1998,10 @@
                                         width: column.width + 'px'
                                     }"
                                     class="table-name-link"
+                                    [ngClass]="{
+                                        'has-details-page':
+                                            !column.link?.doesNotHaveRout
+                                    }"
                                     (click)="goToDetails(column, row)"
                                     >{{ row[column.field] }}</span
                                 >
@@ -2460,6 +2495,7 @@
                                 <a
                                     class="table-url"
                                     href="{{ row[column.field] }}"
+                                    target="blank"
                                     [innerHtml]="
                                         row[column.field]
                                             ? row[column.field]
@@ -2499,6 +2535,9 @@
 
                                 <div
                                     class="password-text-crypted"
+                                    [ngStyle]="{
+                                        width: column.width - 22 + 'px'
+                                    }"
                                     *ngIf="
                                         row[column.field].hiden &&
                                         !row[column.field].apiCallStarted
@@ -2510,6 +2549,9 @@
 
                                 <div
                                     class="password-text-showing"
+                                    [ngStyle]="{
+                                        width: column.width - 22 + 'px'
+                                    }"
                                     *ngIf="
                                         !row[column.field].hiden &&
                                         !row[column.field].apiCallStarted
@@ -3022,12 +3064,14 @@
                     </div>
 
                     <!-- Border -->
-                    <div
-                        class="border-scroll-section"
-                        [ngClass]="{
-                            'border-right': showScrollSectionBorder
-                        }"
-                    ></div>
+                    <div class="border-scroll-section-container border-scroll-section-container-right">
+                        <div
+                            class="border-scroll-section"
+                            [ngClass]="{
+                                'border-right': showScrollSectionBorder
+                            }"
+                        ></div>
+                    </div>
 
                     <!-- ACTIONS -->
                     <div class="actions-columns" *ngIf="actionsColumns.length">
@@ -3047,6 +3091,7 @@
                                 }"
                             >
                                 <div
+                                    *ngIf="row.fileCount"
                                     (click)="onShowAttachments(row)"
                                     [ngClass]="{
                                         'action-active':
@@ -3064,6 +3109,7 @@
                                             'height.px': '18'
                                         }"
                                     ></svg-icon>
+                                    <div class="file_count">{{row.fileCount}}</div>
                                 </div>
                             </div>
 
