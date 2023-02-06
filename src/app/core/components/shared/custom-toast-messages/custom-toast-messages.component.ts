@@ -102,6 +102,10 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
             value: 'LOGIN',
         },
         {
+            api: 'broker/availablecredit',
+            value: 'CREDIT'
+        },
+        {
             api: 'broker',
             value: 'BROKER',
         },
@@ -293,7 +297,7 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
                 item.api === apiEndPoint || apiEndPoint.indexOf(item.api) > -1
         );
         this.actionType = item ? item.value : '';
-
+        console.log('---this.actionType', this.actionType);
         let splitUrl = this.httpRequest.url.split('/');
         let splitLength = splitUrl.length;
         let lastPlace = splitLength - 1;
@@ -1030,6 +1034,9 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
                     }
                     this.message = this.DetailsDataService.documentName ? this.DetailsDataService.documentName : '';
                 break;
+            case 'CREDIT': 
+            this.message = this.httpRequest?.body?.creditLimit ? this.httpRequest?.body?.creditLimit : '';
+            break;
         }
 
         if (this.actionType == 'DRIVER' && !this.message) {
