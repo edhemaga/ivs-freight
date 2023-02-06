@@ -127,6 +127,7 @@ import { PayrollCreditBonusComponent } from '../modals/payroll-modals/payroll-cr
 import { TaNoticeOfAsignmentComponent } from './ta-notice-of-asignment/ta-notice-of-asignment.component';
 import { PayrollDeductionModalComponent } from '../modals/payroll-modals/payroll-deduction-modal/payroll-deduction-modal.component';
 import { TooltipSlideComponent } from './tooltip-slide/tooltip-slide.component';
+import { CarouselModule } from 'ngx-owl-carousel-o';
 
 export function playerFactory() {
     return import('lottie-web');
@@ -282,6 +283,7 @@ export function playerFactory() {
         AgmSnazzyInfoWindowModule,
         TaSpinnerModule,
         ObserversModule,
+        CarouselModule,
     ],
     exports: [
         // Modules
