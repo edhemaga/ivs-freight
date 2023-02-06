@@ -259,29 +259,31 @@ export class TruckassistTableBodyComponent
     }
 
     // Attachment Update
-    checkAttachmentUpdate(){
-       if(this.activeAttachment !== -1){
+    checkAttachmentUpdate() {
+        if (this.activeAttachment !== -1) {
             let entity = this.activeTableData?.gridNameTitle;
 
             if (entity == 'Repair' && this.selectedTab == 'repair-shop') {
                 entity = 'Repair-Shop';
             }
 
-            this.filesService.getFiles(entity, this.activeAttachment).subscribe((res) => {
-                if (res?.length) {
-                    const newViewData = [...this.viewData];
+            this.filesService
+                .getFiles(entity, this.activeAttachment)
+                .subscribe((res) => {
+                    if (res?.length) {
+                        const newViewData = [...this.viewData];
 
-                    newViewData.map((data: any) => {
-                        if(data.id === this.activeAttachment){
-                            data.tableAttachments = res;
-                            data.fileCount = res.length;
-                        }
-                    })
+                        newViewData.map((data: any) => {
+                            if (data.id === this.activeAttachment) {
+                                data.tableAttachments = res;
+                                data.fileCount = res.length;
+                            }
+                        });
 
-                    this.viewData = [...newViewData];
-                }
-            });
-       } 
+                        this.viewData = [...newViewData];
+                    }
+                });
+        }
     }
 
     // Horizontal Scroll
@@ -565,9 +567,9 @@ export class TruckassistTableBodyComponent
                 if (res?.length) {
                     this.activeAttachment = row.id;
                     row.tableAttachments = res;
-                }
 
-                this.changeDetectorRef.detectChanges();
+                    this.changeDetectorRef.detectChanges();
+                }
             });
         } else {
             this.activeAttachment = -1;
