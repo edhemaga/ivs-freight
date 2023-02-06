@@ -39,6 +39,7 @@ import { FilesService } from 'src/app/core/services/shared/files.service';
         },
     ],
 })
+
 export class TruckassistTableBodyComponent
     implements OnInit, OnChanges, AfterViewInit, OnDestroy
 {
@@ -442,7 +443,7 @@ export class TruckassistTableBodyComponent
 
     onDislike(row: any) {
         this.detailsDataService.setNewData(row);
-        
+
         this.bodyActions.emit({
             data: row,
             type: 'raiting',
