@@ -31,6 +31,10 @@ export class PayrollTablePipe implements PipeTransform {
                 returnValue = this.datePipe.transform(returnValue, 'MM/dd/YY');
             }
 
+            if (field.isTime) {
+                returnValue = this.datePipe.transform(returnValue, 'h:mm a');
+            }
+
             if (field.isCurrency) {
                 returnValue = this.currencyPipe.transform(returnValue, 'USD');
             }

@@ -13,7 +13,7 @@ import {
 } from '../state/table-settings/owner_open_load';
 import * as AppConst from 'src/app/const';
 import { UntypedFormControl } from '@angular/forms';
-import { miles_driver_open_loads } from '../state/table-settings/miles_driver_open_loads';
+import { miles_driver_open_loads, miles_driver_open_loads_resizable } from '../state/table-settings/miles_driver_open_loads';
 
 @Component({
     selector: 'app-payroll-report',
@@ -75,6 +75,7 @@ export class PayrollReportComponent implements OnInit {
                 break;
             case 'Driver (Miles)':
                 this.tableSettings = miles_driver_open_loads;
+                this.tableSettingsResizable = miles_driver_open_loads_resizable;
                 this.ps
                     .getPayrollMileageDriverOpenReport(data.id)
                     .subscribe((res) => {

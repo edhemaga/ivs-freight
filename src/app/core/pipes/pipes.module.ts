@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule, DatePipe } from '@angular/common';
+import { CommonModule, DatePipe, CurrencyPipe } from '@angular/common';
 import { SafeHtmlPipe } from './safe-html.pipe';
 import { formatDatePipe } from './formatDate.pipe';
 import { formatEinPipe } from './formatEin.pipe';
@@ -132,6 +132,7 @@ import { LoadDatetimeRangePipe } from '../components/modals/load-modal/pipes/loa
     ],
     providers: [
         DatePipe,
+        CurrencyPipe,
         SortPipe,
         NFormatterPipe,
         StatusPipePipe,

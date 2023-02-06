@@ -24,7 +24,7 @@
             <app-payroll-table
                 [tableSettings]="tableSettings"
                 [tableSettingsResizable]="tableSettingsResizable"
-                [tableData]="reportMainData.loads"
+                [tableData]="reportMainData.loads ? reportMainData.loads : reportMainData.stops"
                 [isResizableTable]="true"
                 [tableAddClas]="'resizable-table'"
             ></app-payroll-table>
