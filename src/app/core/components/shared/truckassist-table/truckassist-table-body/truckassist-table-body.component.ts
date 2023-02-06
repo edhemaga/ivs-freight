@@ -442,6 +442,7 @@ export class TruckassistTableBodyComponent
 
     onDislike(row: any) {
         this.detailsDataService.setNewData(row);
+        
         this.bodyActions.emit({
             data: row,
             type: 'raiting',
