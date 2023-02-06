@@ -68,10 +68,13 @@ export class NavigationRouteComponent implements OnInit, OnChanges {
     public showToolTip: boolean;
     public routeId: string;
     @Input() set activeLink(value) {
-        if (typeof this._activeLink == 'undefined' && value) {
-            this._activeLink = value;
-        } else if (typeof this._activeLink != 'undefined') {
-            this.activeLinkHighlight = value;
+        if (this.isNavigationHovered == false) {
+            this.activeLinkHighlight = false;
+            if (typeof this._activeLink == 'undefined' && value) {
+                this._activeLink = value;
+            } else if (typeof this._activeLink != 'undefined') {
+                this.activeLinkHighlight = value;
+            }
         }
     }
     constructor(
@@ -81,9 +84,12 @@ export class NavigationRouteComponent implements OnInit, OnChanges {
         private cdRef: ChangeDetectorRef
     ) {}
     routeWithSubRoutesClick(event) {
+        // console.log(event);
         if (event != undefined) {
+            // console.log(true);
             this.routeWithSubRouteClicked.emit(true);
         } else {
+            // console.log(false);
             this.routeWithSubRouteClicked.emit(false);
         }
     }

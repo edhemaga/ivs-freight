@@ -2,15 +2,14 @@
 .holder {
     position: relative;
     left: -8px;
+    overflow-y: hidden;
+    overflow-x: hidden;
     .parent {
         position: relative;
         left: -20px;
-        transition: all 0.3s ease-in-out;
+
         .subroute-container {
             padding-left: 8px;
-        }
-        .test {
-            background: red;
         }
         .subroute-card {
             border-radius: 2px;
@@ -21,7 +20,18 @@
             z-index: 99999999999999;
             left: 20px;
             z-index: -1;
-            transition: all 0.3s ease-in-out;
+            max-height: 500px;
+            transition: max-height 0.28s ease-in;
+        }
+        .slow-animatiton {
+            max-height: 0;
+            transition: max-height 0.3s ease-out;
+            background: rgba(170, 170, 170, 0.1);
+        }
+        .list-container {
+            max-height: 500px;
+            transition: max-height 0.3s ease-in;
+            background: rgba(170, 170, 170, 0.1);
         }
     }
 }
