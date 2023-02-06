@@ -6,7 +6,11 @@ import {
     phoneExtension,
     terminalNameValidation,
 } from '../../../shared/ta-input/ta-input.regex-validations';
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import {
+    UntypedFormBuilder,
+    UntypedFormGroup,
+    Validators,
+} from '@angular/forms';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import {
     AddressEntity,
@@ -50,7 +54,7 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
         {
             id: 1,
             name: 'Basic',
-            checked: true
+            checked: true,
         },
         {
             id: 2,
@@ -132,10 +136,6 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
         this.fullParkingSlot();
         this.openCloseCheckboxCard();
         this.getModalDropdowns();
-
-        if (this.editData?.type === 'edit') {
-            this.editTerminalById(this.editData.id);
-        }
     }
 
     private createForm() {
@@ -665,6 +665,10 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
                     this.monthlyDays = res.payPeriodMonthly;
                     this.payPeriods = res.payPeriod;
                     this.weeklyDays = res.dayOfWeek;
+
+                    if (this.editData?.type === 'edit') {
+                        this.editTerminalById(this.editData.id);
+                    }
                 },
                 error: () => {},
             });

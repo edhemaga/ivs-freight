@@ -103,16 +103,6 @@ export class PayrollDeductionModalComponent implements OnInit {
         this.createForm();
         this.getModalDropdowns();
         this.trackReccuringAndLimiting();
-        this.editData = {
-            ...this.editData,
-            type: 'edit',
-            data: {
-                id: 1,
-            },
-        };
-        if (this.editData?.type === 'edit') {
-            this.getByIdDeduction(this.editData.data.id);
-        }
     }
 
     public tabChange(event: any, action): void {
@@ -518,6 +508,10 @@ export class PayrollDeductionModalComponent implements OnInit {
                             driverId: this.labelsDriver[0].name,
                         });
                         this.selectedTruck = null;
+                    }
+
+                    if (this.editData?.type === 'edit') {
+                        this.getByIdDeduction(this.editData.data.id);
                     }
                 },
                 error: () => {},

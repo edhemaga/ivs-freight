@@ -90,11 +90,6 @@ export class SettingsInsurancePolicyModalComponent
         this.createForm();
         this.getInsurancePolicyDropdowns();
         this.trackCheckboxValues();
-
-        if (this.editData.type === 'edit') {
-            this.disableCardAnimation = true;
-            this.editInsurancePolicyById(this.editData.company);
-        }
     }
 
     private createForm() {
@@ -404,6 +399,11 @@ export class SettingsInsurancePolicyModalComponent
             .subscribe({
                 next: (res: InsurancePolicyModalResponse) => {
                     this.ratings = res.ratings;
+
+                    if (this.editData.type === 'edit') {
+                        this.disableCardAnimation = true;
+                        this.editInsurancePolicyById(this.editData.company);
+                    }
                 },
                 error: () => {},
             });

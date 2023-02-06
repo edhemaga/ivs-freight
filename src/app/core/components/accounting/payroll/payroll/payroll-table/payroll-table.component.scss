@@ -129,6 +129,13 @@
                             }
                         }
                     }
+
+                    .table-hold-box {
+                        &.highlighted {
+                            background-color: #eeeeee;
+                            border-radius: 0;
+                        }
+                    }
                 }
 
                 &:hover {
@@ -145,8 +152,15 @@
                 &:first-child {
                     .table-hold-box {
                         &.highlighted {
-                            background-color: #eeeeee;
                             border-radius: 3px 3px 0 0;
+                        }
+                    }
+
+                    &:hover{
+                        .table-hold-box {
+                            &.highlighted {
+                                border-radius: 0px 3px 0 0;
+                            }
                         }
                     }
                 }
