@@ -192,7 +192,7 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
             );
         }
 
-        console.log('--data---', data.loadStops.loads.data);
+        console.log('--data---', data.loadStops.loads.data.length)
 
         this.brokerConfig = [
             {
@@ -213,7 +213,6 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
                 hasArrow: true,
                 customText: 'Revenue',
                 total: totalCost,
-                brokerDrop: data?.loadStops?.loads?.data ? data?.loadStops?.loads?.data : [],
                 icons: [
                     {
                         id: Math.random() * 1000,

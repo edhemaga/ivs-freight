@@ -22,6 +22,7 @@ export interface CitationResponse {
     paid?: EnumValue;
     note?: string | null;
     files?: Array<FileResponse> | null;
+    fileCount?: number | null;
     createdAt?: string;
     updatedAt?: string;
 }

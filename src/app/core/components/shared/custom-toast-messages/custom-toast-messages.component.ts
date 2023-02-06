@@ -163,6 +163,10 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
             value: 'CDL',
         },
         {
+            api: 'review',
+            value: 'REVIEW',
+        },
+        {
             api: 'rating',
             value: 'RATE',
         },
@@ -198,10 +202,7 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
             api: 'title',
             value: 'TITLE',
         },
-        {
-            api: 'RatingReview',
-            value: 'REVIEW',
-        },
+        
         {
             api: 'todo',
             value: 'TASK',
@@ -409,20 +410,12 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
 
                 break;
             case 'RATE':
-                let likedStatus = this.DetailsDataService.mainData.raiting
-                    ? this.DetailsDataService.mainData.raiting?.hasLiked
-                    : this.DetailsDataService.mainData.shopRaiting?.hasLiked;
-                let dislikedStatus = this.DetailsDataService.mainData.raiting
-                    ? this.DetailsDataService.mainData.raiting?.hasDislike
-                    : this.DetailsDataService.mainData.shopRaiting?.hasDislike;
-
-                if (!likedStatus && !dislikedStatus) {
+                if (this.DetailsDataService.mainData.rating == 0) {
                     this.actionTitle =
                         this.toastrType == 'toast-error'
                             ? 'REMOVE RATE'
                             : 'REMOVED RATE';
-                }
-                if (likedStatus || dislikedStatus) {
+                } else {
                     this.actionTitle =
                         this.toastrType == 'toast-error' ? 'RATE' : 'RATED';
                 }

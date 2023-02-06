@@ -47,6 +47,7 @@ export interface ShipperResponse {
     avgPickupTime?: TimeOnly;
     avgDeliveryTime?: TimeOnly;
     files?: Array<FileResponse> | null;
+    fileCount?: number | null;
     createdAt?: string;
 }
 
