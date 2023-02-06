@@ -87,7 +87,7 @@
                     [showCloseButton]="false"
                     [panOnOpen]="false"
                     placement="bottom"
-                    *ngIf="!locationFilterOn || latlong.isShown != false"
+                    *ngIf="!locationFilterOn || latlong.showMarker != false"
                 >
                     <ng-template>
                         <div
@@ -248,7 +248,7 @@
                 <agm-snazzy-info-window
                     [closeOnMapClick]="false"
                     [closeWhenOthersOpen]="false"
-                    [isOpen]="cluster.showMarker ? true : false"
+                    [isOpen]="clusterAnimation[cluster.id] && cluster.showMarker"
                     [latitude]="cluster.latitude"
                     [longitude]="cluster.longitude"
                     [maxHeight]="32"
@@ -281,7 +281,6 @@
                 }"
                 *ngIf="cluster.status != 2"
               ></svg-icon> -->
-
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -575,7 +574,6 @@
                         *ngFor="
                             let e of [].constructor(route.stops.length);
                             let j = index;
-                            trackBy: identity
                         "
                     >
                         <agm-marker
@@ -777,7 +775,6 @@
                         *ngFor="
                             let e of [].constructor(route.stops.length - 1);
                             let j = index;
-                            trackBy: identity
                         "
                     >
                         <agm-direction

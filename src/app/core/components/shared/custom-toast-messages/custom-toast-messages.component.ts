@@ -110,6 +110,10 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
             value: 'TRAILER',
         },
         {
+            api: 'insurancepolicy',
+            value: 'INSURANCE POLICY',
+        },
+        {
             api: 'account/signupcompany',
             value: 'COMPANY',
         },
@@ -145,10 +149,7 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
             api: 'companyoffice',
             value: 'OFFICE',
         },
-        {
-            api: 'company',
-            value: 'COMPANY',
-        },
+        
         {
             api: 'truck',
             value: 'TRUCK',
@@ -162,7 +163,11 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
             value: 'CDL',
         },
         {
-            api: 'rating',
+            api: 'ratingreview/review',
+            value: 'REVIEW',
+        },
+        {
+            api: 'ratingreview/rating',
             value: 'RATE',
         },
         {
@@ -197,10 +202,7 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
             api: 'title',
             value: 'TITLE',
         },
-        {
-            api: 'RatingReview',
-            value: 'REVIEW',
-        },
+        
         {
             api: 'todo',
             value: 'TASK',
@@ -230,11 +232,6 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
             value: 'STOP',
         },
         {
-            api: 'insurancepolicy',
-            value: 'INSURANCE POLICY',
-        },
-
-        {
             api: 'parking',
             value: 'PARKING',
         },
@@ -245,6 +242,10 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
         {
             api: 'load',
             value: 'LOAD',
+        },
+        {
+            api: 'company',
+            value: 'COMPANY',
         },
         {
             api: 'tag',
@@ -409,20 +410,12 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
 
                 break;
             case 'RATE':
-                let likedStatus = this.DetailsDataService.mainData.raiting
-                    ? this.DetailsDataService.mainData.raiting?.hasLiked
-                    : this.DetailsDataService.mainData.shopRaiting?.hasLiked;
-                let dislikedStatus = this.DetailsDataService.mainData.raiting
-                    ? this.DetailsDataService.mainData.raiting?.hasDislike
-                    : this.DetailsDataService.mainData.shopRaiting?.hasDislike;
-
-                if (!likedStatus && !dislikedStatus) {
+                if (this.DetailsDataService.mainData.rating == 0) {
                     this.actionTitle =
                         this.toastrType == 'toast-error'
                             ? 'REMOVE RATE'
                             : 'REMOVED RATE';
-                }
-                if (likedStatus || dislikedStatus) {
+                } else {
                     this.actionTitle =
                         this.toastrType == 'toast-error' ? 'RATE' : 'RATED';
                 }

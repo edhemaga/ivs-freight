@@ -4,7 +4,12 @@ import {
     convertNumberInThousandSep,
 } from '../../../../utils/methods.calculations';
 import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { UntypedFormArray, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import {
+    UntypedFormArray,
+    UntypedFormBuilder,
+    UntypedFormGroup,
+    Validators,
+} from '@angular/forms';
 import { RepairTService } from '../../../repair/state/repair.service';
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { RepairModalResponse, RepairShopResponse } from 'appcoretruckassist';
@@ -832,9 +837,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                 invoice: invoice,
                 total:
                     this.repairOrderForm.get('repairType').value === 'Bill'
-                        ? convertNumberWithCurrencyFormatterToBackend(
-                              this.priceArrayPipe.transform(this.subtotal)
-                          )
+                        ? this.priceArrayPipe.transform(this.subtotal).slice(1)
                         : null,
                 serviceTypes: this.services.map((item) => {
                     return {
@@ -1005,7 +1008,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                       )
                     : null,
                 total: this.subtotal
-                    ? this.priceArrayPipe.transform(this.subtotal)
+                    ? this.priceArrayPipe.transform(this.subtotal).slice(1)
                     : null,
                 invoice: invoice,
                 serviceTypes: this.services.map((item) => {
@@ -1069,6 +1072,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
     }
 
     private populateForm(res: any) {
+        console.log('storage data: ', res);
         const timeout = setTimeout(() => {
             res.typeOfRepair.find((item) => item.checked).name === 'Truck'
                 ? this.getRepairDropdowns(
@@ -1083,6 +1087,10 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                       'Trailers',
                       false
                   );
+
+            this.onModalHeaderTabChange(
+                res.typeOfRepair.find((item) => item.checked)
+            );
 
             const timeout2 = setTimeout(() => {
                 this.repairOrderForm.patchValue({
@@ -1269,7 +1277,11 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                                     id: res.items[i].id,
                                     orderingId: ++this.itemsCounter,
                                     description: res.items[i].description,
-                                    price: res.items[i].price,
+                                    price: res.items[i].price
+                                        ? convertNumberWithCurrencyFormatterToBackend(
+                                              res.items[i].price
+                                          )
+                                        : null,
                                     quantity: res.items[i].price
                                         ? res.items[i].quantity
                                             ? res.items[i].quantity
@@ -1427,7 +1439,9 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
             }
         });
 
-        this.tagsService.updateTag({ tags: tags }).subscribe();
+        if(tags.length) {
+            this.tagsService.updateTag({ tags: tags }).subscribe();
+        }
     }
 
     ngOnDestroy(): void {

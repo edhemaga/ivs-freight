@@ -1,7 +1,8 @@
 .custom-scrollbar-holder {
     position: relative;
-    height: 100vh;
+    // height: 100vh;
     overflow: auto;
+    overflow-x: hidden;
 
     scrollbar-width: none !important; /* Firefox */
     -ms-overflow-style: none !important;

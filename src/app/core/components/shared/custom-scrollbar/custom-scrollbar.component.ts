@@ -8,11 +8,12 @@ import {
     OnDestroy,
     OnInit,
     Output,
+    SimpleChanges,
     ViewChild,
 } from '@angular/core';
 import { Subject } from 'rxjs';
 import { SharedService } from '../../../services/shared/shared.service';
-import { AfterViewInit } from '@angular/core';
+import { AfterViewInit, OnChanges } from '@angular/core';
 
 let hasTablePageHeight = false;
 @Component({
@@ -21,11 +22,12 @@ let hasTablePageHeight = false;
     styleUrls: ['./custom-scrollbar.component.scss'],
 })
 export class CustomScrollbarComponent
-    implements OnInit, AfterViewInit, OnDestroy
+    implements OnInit, OnChanges, AfterViewInit, OnDestroy
 {
     @ViewChild('bar', { static: false }) private bar: ElementRef;
     @Output() scrollEvent: EventEmitter<any> = new EventEmitter();
     @Input() scrollBarOptions: any;
+    @Input() horizontalScrollHeight: number;
 
     scrollTop: number = 5;
     showScrollbar: boolean = false;
@@ -69,8 +71,20 @@ export class CustomScrollbarComponent
 
             window.addEventListener('resize', this.onResizeHandler);
 
-            this.calculateBarSizeAndPosition(this.elRef.nativeElement.children[0]);
+            this.calculateBarSizeAndPosition(
+                this.elRef.nativeElement.children[0]
+            );
         });
+    }
+
+    ngOnChanges(changes: SimpleChanges): void {
+        if (
+            !changes?.horizontalScrollHeight?.firstChange &&
+            changes?.horizontalScrollHeight
+        ) {
+            this.horizontalScrollHeight =
+                changes.horizontalScrollHeight.currentValue;
+        }
     }
 
     ngAfterViewInit(): void {
@@ -210,7 +224,7 @@ export class CustomScrollbarComponent
                         this.tableNotPinedBoundingRect.width
                 ) {
                     this.bar.nativeElement.style.transform = `translateX(${offsetBar}px)`;
-                    
+
                     this.scrollEvent.emit({
                         eventAction: 'scrolling',
                         scrollPosition: offsetBar * this.tableScrollRatioFull,

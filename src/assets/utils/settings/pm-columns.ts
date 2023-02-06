@@ -46,7 +46,8 @@ export function getTruckPMColumnDefinition() {
             disabled: true,
             export: true,
             resizable: true,
-            linkField: { // OVO PROVERITI DA LI TREBA?
+            linkField: {
+                doesNotHaveRout: true,
                 routerLinkStart: '/trucks/edit/',
                 routerLinkEnd: '/detail',
             },
@@ -377,6 +378,7 @@ export function getTrailerPMColumnDefinition() {
             export: true,
             resizable: true,
             linkField: {
+                doesNotHaveRout: true,
                 routerLinkStart: '/trucks/edit/',
                 routerLinkEnd: '/detail',
             },

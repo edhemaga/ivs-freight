@@ -31,6 +31,7 @@ export class MapsService implements OnDestroy {
     selectedMarkerChange: Subject<any> = new Subject<any>();
     selectedMarkerId: any;
     searchLoadingChanged: Subject<any> = new Subject<any>();
+    mapListScrollChange: Subject<any> = new Subject<any>();
 
     private hubConnection: signalR.HubConnection;
     public statusChange = new Subject<any>();
@@ -125,5 +126,9 @@ export class MapsService implements OnDestroy {
     selectedMarker(id: number) {
         this.selectedMarkerId = id;
         this.selectedMarkerChange.next(id);
+    }
+
+    mapListScroll(data) {
+        this.mapListScrollChange.next(data);
     }
 }

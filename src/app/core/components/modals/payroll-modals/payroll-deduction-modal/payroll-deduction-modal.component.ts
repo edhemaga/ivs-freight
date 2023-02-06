@@ -1,5 +1,9 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import {
+    UntypedFormBuilder,
+    UntypedFormGroup,
+    Validators,
+} from '@angular/forms';
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
 import { Subject, takeUntil } from 'rxjs';
@@ -99,6 +103,13 @@ export class PayrollDeductionModalComponent implements OnInit {
         this.createForm();
         this.getModalDropdowns();
         this.trackReccuringAndLimiting();
+        this.editData = {
+            ...this.editData,
+            type: 'edit',
+            data: {
+                id: 1,
+            },
+        };
         if (this.editData?.type === 'edit') {
             this.getByIdDeduction(this.editData.data.id);
         }
@@ -108,6 +119,35 @@ export class PayrollDeductionModalComponent implements OnInit {
         switch (action) {
             case 'main-tabs': {
                 this.selectedTab = event.id;
+
+                this.tabs = this.tabs.map((item) => {
+                    return {
+                        ...item,
+                        checked: item.id === this.selectedTab,
+                    };
+                });
+
+                if (this.selectedTab === 1) {
+                    this.inputService.changeValidators(
+                        this.payrollDeductionForm.get('driverId')
+                    );
+                    this.inputService.changeValidators(
+                        this.payrollDeductionForm.get('truckId'),
+                        false,
+                        [],
+                        false
+                    );
+                } else {
+                    this.inputService.changeValidators(
+                        this.payrollDeductionForm.get('truckId')
+                    );
+                    this.inputService.changeValidators(
+                        this.payrollDeductionForm.get('driverId'),
+                        false,
+                        [],
+                        false
+                    );
+                }
                 break;
             }
             case 'week-mon-tabs': {
@@ -130,7 +170,7 @@ export class PayrollDeductionModalComponent implements OnInit {
             recurring: [false],
             recurringType: [null],
             limited: [false],
-            numberOfPayments: [null],
+            limitedAmount: [null],
             limitedNumber: [null],
         });
 
@@ -167,7 +207,7 @@ export class PayrollDeductionModalComponent implements OnInit {
                     return;
                 }
                 if (this.editData?.type === 'edit') {
-                    this.updateDeduction(this.editData?.id);
+                    this.updateDeduction(this.editData?.data?.id);
                     this.modalService.setModalSpinner({
                         action: null,
                         status: true,
@@ -183,6 +223,15 @@ export class PayrollDeductionModalComponent implements OnInit {
                 }
                 break;
             }
+            case 'delete': {
+                this.deletePayrollCreeditById(this.editData?.data.id);
+                this.modalService.setModalSpinner({
+                    action: 'delete',
+                    status: true,
+                    close: false,
+                });
+                break;
+            }
             default: {
                 break;
             }
@@ -190,26 +239,43 @@ export class PayrollDeductionModalComponent implements OnInit {
     }
 
     public updateDeduction(id: number) {
-        const recType = this.tabs2.find((item) => item.checked);
-
+        const reccType = this.tabs2.find((item) => item.checked);
         this.payrollDeductionService
             .updatePayrollDeduction({
+                ...this.payrollDeductionForm.value,
                 id: id,
-                ...this.payrollDeductionForm,
-                driverId: this.selectedDriver ? this.selectedDriver.id : null,
-                truckId: this.selectedTruck ? this.selectedTruck.id : null,
+                ...this.payrollDeductionForm.value,
+                type: this.tabs.find((item) => item.checked).id,
+                driverId:
+                    this.tabs.find((item) => item.checked).id === 1
+                        ? this.selectedDriver
+                            ? this.selectedDriver.id
+                            : null
+                        : null,
+                truckId:
+                    this.tabs.find((item) => item.checked).id === 2
+                        ? this.selectedTruck
+                            ? this.selectedTruck.id
+                            : null
+                        : null,
                 date: convertDateToBackend(
                     this.payrollDeductionForm.get('date').value
                 ),
                 amount: convertThousanSepInNumber(
                     this.payrollDeductionForm.get('amount').value
                 ),
+                recurringType: reccType ? (reccType.id === 3 ? 2 : 1) : null,
                 limitedNumber: this.payrollDeductionForm.get('recurring').value
-                    ? convertThousanSepInNumber(
+                    ? parseInt(
                           this.payrollDeductionForm.get('limitedNumber').value
                       )
                     : null,
-                recurringType: recType ? recType.name : null,
+                limitedAmount: this.payrollDeductionForm.get('limitedAmount')
+                    .value
+                    ? convertThousanSepInNumber(
+                          this.payrollDeductionForm.get('limitedAmount').value
+                      )
+                    : null,
             })
             .pipe(takeUntil(this.destroy$))
             .subscribe({
@@ -231,24 +297,41 @@ export class PayrollDeductionModalComponent implements OnInit {
     }
 
     public addDeduction() {
-        const recType = this.tabs2.find((item) => item.checked);
+        const reccType = this.tabs2.find((item) => item.checked);
         this.payrollDeductionService
             .addPayrollDeduction({
-                ...this.payrollDeductionForm,
-                driverId: this.selectedDriver ? this.selectedDriver.id : null,
-                truckId: this.selectedTruck ? this.selectedTruck.id : null,
+                ...this.payrollDeductionForm.value,
+                type: this.tabs.find((item) => item.checked).id,
+                driverId:
+                    this.tabs.find((item) => item.checked).id === 1
+                        ? this.selectedDriver
+                            ? this.selectedDriver.id
+                            : null
+                        : null,
+                truckId:
+                    this.tabs.find((item) => item.checked).id === 2
+                        ? this.selectedTruck
+                            ? this.selectedTruck.id
+                            : null
+                        : null,
                 date: convertDateToBackend(
                     this.payrollDeductionForm.get('date').value
                 ),
                 amount: convertThousanSepInNumber(
                     this.payrollDeductionForm.get('amount').value
                 ),
+                recurringType: reccType ? (reccType.id === 3 ? 2 : 1) : null,
                 limitedNumber: this.payrollDeductionForm.get('recurring').value
-                    ? convertThousanSepInNumber(
+                    ? parseInt(
                           this.payrollDeductionForm.get('limitedNumber').value
                       )
                     : null,
-                recurringType: recType ? recType.name : null,
+                limitedAmount: this.payrollDeductionForm.get('limitedAmount')
+                    .value
+                    ? convertThousanSepInNumber(
+                          this.payrollDeductionForm.get('limitedAmount').value
+                      )
+                    : null,
             })
             .pipe(takeUntil(this.destroy$))
             .subscribe({
@@ -257,13 +340,24 @@ export class PayrollDeductionModalComponent implements OnInit {
                         this.formService.resetForm(this.payrollDeductionForm);
                         this.selectedDriver = null;
                         this.selectedTruck = null;
-                        this.tabChange({ id: 1 }, 'main-tabs');
-                        this.tabChange({ id: 3 }, 'week-mon-tabs');
+
+                        this.payrollDeductionForm
+                            .get('recurring')
+                            .patchValue(false);
+                        this.payrollDeductionForm
+                            .get('limited')
+                            .patchValue(false);
+
                         this.modalService.setModalSpinner({
-                            action: null,
+                            action: 'save and add new',
                             status: false,
                             close: false,
                         });
+
+                        setTimeout(() => {
+                            this.tabChange({ id: 1 }, 'main-tabs');
+                            this.tabChange({ id: 3 }, 'week-mon-tabs');
+                        }, 150);
                     } else {
                         this.modalService.setModalSpinner({
                             action: null,
@@ -279,6 +373,22 @@ export class PayrollDeductionModalComponent implements OnInit {
                         close: false,
                     });
                 },
+            });
+    }
+
+    public deletePayrollCreeditById(id: number) {
+        this.payrollDeductionService
+            .deletePayrollDeductionById(id)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: () => {
+                    this.modalService.setModalSpinner({
+                        action: 'delete',
+                        status: true,
+                        close: true,
+                    });
+                },
+                error: () => {},
             });
     }
 
@@ -299,20 +409,71 @@ export class PayrollDeductionModalComponent implements OnInit {
                         date: convertDateFromBackend(res.date),
                         description: res.description,
                         amount: convertNumberInThousandSep(res.amount),
-                        recurringType: res.recurringType,
-                        recurring: false, // TODO: Backend
-                        limited: false, // TODO: Backend
-                        numberOfPayments: null, // TODO: Backend
-                        limitedNumber: res.limitedNumber
-                            ? convertNumberInThousandSep(res.limitedNumber)
+                        recurringType: res.recurringType
+                            ? res.recurringType.id
                             : null,
+                        recurring: !!res.recurringType?.name,
+                        limited: !!(res.limitedAmount && res.limitedNumber),
+                        limitedAmount: res.limitedAmount
+                            ? convertNumberInThousandSep(res.limitedAmount)
+                            : null,
+                        limitedNumber: res.limitedNumber,
                     });
 
-                    this.tabChange({ id: res.driver ? 1 : 2 }, 'main-tabs');
-                    this.tabChange(
-                        { id: res.recurringType.name === 'Monthly' ? 4 : 3 },
-                        'week-mon-tabs'
-                    );
+                    if (res.driver) {
+                        this.selectedDriver = {
+                            id: res.driver.id,
+                            name: res.driver.firstName.concat(
+                                ' ',
+                                res.driver.lastName
+                            ),
+                            logoName:
+                                res.driver.avatar === null ||
+                                res.driver.avatar === undefined ||
+                                res.driver.avatar === ''
+                                    ? null
+                                    : res.driver.avatar,
+                            isDriver: true,
+                        };
+                    }
+
+                    if (res.truck) {
+                        this.selectedTruck = {
+                            ...res.truck,
+                            name: res.truck.truckNumber,
+                            additionalText: res.truck.owner,
+                        };
+
+                        this.truckDropdownsConfig = {
+                            ...this.truckDropdownsConfig,
+                            multipleInputValues: {
+                                options: [
+                                    {
+                                        value: res?.truck?.truckNumber,
+                                    },
+                                    {
+                                        value: res.truck?.owner,
+                                    },
+                                ],
+                                customClass: 'double-text-dropdown',
+                            },
+                        };
+                    }
+
+                    setTimeout(() => {
+                        this.tabChange({ id: res.type.id }, 'main-tabs');
+                        if (res.recurringType) {
+                            this.tabChange(
+                                {
+                                    id:
+                                        res.recurringType.name === 'Monthly'
+                                            ? 4
+                                            : 3,
+                                },
+                                'week-mon-tabs'
+                            );
+                        }
+                    }, 150);
                 },
                 error: () => {},
             });
@@ -337,13 +498,12 @@ export class PayrollDeductionModalComponent implements OnInit {
                             isDriver: true,
                         };
                     });
-                    this.labelsTrucks = [
-                        {
-                            id: 1,
-                            name: '418952',
-                            additionalText: 'R2 LOGISTICS',
-                        },
-                    ];
+                    this.labelsTrucks = res.trucks.map((item) => {
+                        return {
+                            ...item,
+                            name: item.truckNumber,
+                        };
+                    });
 
                     // If Add New By Id
                     if (
@@ -357,6 +517,7 @@ export class PayrollDeductionModalComponent implements OnInit {
                         this.payrollDeductionForm.patchValue({
                             driverId: this.labelsDriver[0].name,
                         });
+                        this.selectedTruck = null;
                     }
                 },
                 error: () => {},
@@ -428,13 +589,13 @@ export class PayrollDeductionModalComponent implements OnInit {
             .get('limited')
             .valueChanges.pipe(takeUntil(this.destroy$))
             .subscribe((value) => {
-                if (value) {
+                if (!value) {
                     this.payrollDeductionForm
-                        .get('numberOfPayments')
-                        .patchValue(0);
-                } else {
+                        .get('limitedAmount')
+                        .patchValue(null);
+
                     this.payrollDeductionForm
-                        .get('numberOfPayments')
+                        .get('limitedNumber')
                         .patchValue(null);
                 }
             });

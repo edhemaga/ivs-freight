@@ -1,5 +1,4 @@
 import {
-    AfterContentInit,
     AfterViewInit,
     ChangeDetectionStrategy,
     ChangeDetectorRef,
@@ -41,7 +40,7 @@ import { FilesService } from 'src/app/core/services/shared/files.service';
     ],
 })
 export class TruckassistTableBodyComponent
-    implements OnInit, OnChanges, AfterViewInit, OnDestroy, AfterContentInit
+    implements OnInit, OnChanges, AfterViewInit, OnDestroy
 {
     private destroy$ = new Subject<void>();
     @ViewChild('tableScrollRef', { static: false })
@@ -75,6 +74,7 @@ export class TruckassistTableBodyComponent
     progressData: any[] = [];
     viewDataEmpty: boolean;
     viewDataTimeOut: any;
+    tableWidthTimeout: any
     rowData: any;
     activeDescriptionDropdown: number = -1;
     descriptionTooltip: any;
@@ -159,15 +159,15 @@ export class TruckassistTableBodyComponent
             });
 
         // Scrolling Virtual Container
-        this.sharedService.emitTableScrolling
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((offSet: any) => {
-                if (offSet < 84) {
-                    this.virtualScrollViewport.scrollToOffset(0);
-                } else if (offSet > 84) {
-                    this.virtualScrollViewport.scrollToOffset(offSet);
-                }
-            });
+        // this.sharedService.emitTableScrolling
+        //     .pipe(takeUntil(this.destroy$))
+        //     .subscribe((offSet: any) => {
+        //         if (offSet < 84) {
+        //             this.virtualScrollViewport.scrollToOffset(0);
+        //         } else if (offSet > 84) {
+        //             this.virtualScrollViewport.scrollToOffset(offSet);
+        //         }
+        //     });
     }
 
     // --------------------------------NgOnChanges---------------------------------
@@ -233,31 +233,31 @@ export class TruckassistTableBodyComponent
 
     // --------------------------------NgAfterViewInit---------------------------------
     ngAfterViewInit(): void {
-        setTimeout(() => {
-            if (this.viewData.length) {
-                const tableContainer =
-                    document.querySelector('.table-container');
+        // For Virtual Scroll
+        // setTimeout(() => {
+        //     if (this.viewData.length) {
+        //         const tableContainer =
+        //             document.querySelector('.table-container');
 
-                const cdkVirtualScrollSpacer = document.querySelector(
-                    '.cdk-virtual-scroll-spacer'
-                );
+        //         const cdkVirtualScrollSpacer = document.querySelector(
+        //             '.cdk-virtual-scroll-spacer'
+        //         );
 
-                const pageHeight =
-                    tableContainer.clientHeight -
-                    1018 +
-                    cdkVirtualScrollSpacer.clientHeight;
+        //         const pageHeight =
+        //             tableContainer.clientHeight -
+        //             1018 +
+        //             cdkVirtualScrollSpacer.clientHeight;
 
-                this.sharedService.emitUpdateScrollHeight.emit({
-                    tablePageHeight: pageHeight,
-                });
-            }
-        }, 10);
+        //         this.sharedService.emitUpdateScrollHeight.emit({
+        //             tablePageHeight: pageHeight,
+        //         });
+        //     }
+        // }, 10);
 
         this.getNotPinedMaxWidth();
     }
 
-    ngAfterContentInit(): void {}
-
+    // Horizontal Scroll
     onHorizontalScroll(scrollEvent: any) {
         if (scrollEvent.eventAction === 'scrolling') {
             document
@@ -323,7 +323,7 @@ export class TruckassistTableBodyComponent
         });
 
         this.tableWidth =
-            this.actionsWidth + notPinedWidth + this.pinedWidth + 12;
+            this.actionsWidth + notPinedWidth + this.pinedWidth + 22;
     }
 
     // Get Tab Table Data For Selected Tab
@@ -338,6 +338,8 @@ export class TruckassistTableBodyComponent
     // Get Not Pined Section Of Table Max Width
     getNotPinedMaxWidth() {
         if (this.viewData.length) {
+            clearTimeout(this.tableWidthTimeout);
+
             const tableContainer = document.querySelector('.table-container');
 
             this.notPinedMaxWidth =
@@ -346,16 +348,26 @@ export class TruckassistTableBodyComponent
                 12;
 
             this.changeDetectorRef.detectChanges();
+
+            this.tableWidthTimeout = setTimeout(() => {
+                const table = document.querySelector('.table-tr');
+                this.tableWidth = table.clientWidth;
+            }, 100);
         }
     }
 
     // Go To Details Page
     goToDetails(route: any, row: any) {
-        const link =
-            route.link.routerLinkStart + row['id'] + route.link.routerLinkEnd;
+        if (!route.link?.doesNotHaveRout) {
+            const link =
+                route.link.routerLinkStart +
+                row['id'] +
+                route.link.routerLinkEnd;
 
-        this.detailsDataService.setNewData(row);
-        this.router.navigate([link]);
+            this.detailsDataService.setNewData(row);
+
+            this.router.navigate([link]);
+        }
     }
 
     // Select Row
@@ -496,8 +508,6 @@ export class TruckassistTableBodyComponent
 
             const viewData = this.viewData;
 
-            console.log(this.viewData);
-
             viewData.map((v) => {
                 v.isSelected = false;
             });
@@ -529,7 +539,7 @@ export class TruckassistTableBodyComponent
                     this.activeAttachment = row.id;
                     row.tableAttachments = res;
                 }
-                
+
                 this.changeDetectorRef.detectChanges();
             });
         } else {
@@ -578,14 +588,5 @@ export class TruckassistTableBodyComponent
         this.destroy$.next();
         this.destroy$.complete();
         this.tableService.sendRowsSelected([]);
-    }
-
-    // --------------------------------TODO---------------------------------
-    onShowItemDrop(index: number) {
-        alert('Treba da se odradi');
-    }
-
-    saveNote(note: string, row: any) {
-        alert('Treba da se odradi');
     }
 }

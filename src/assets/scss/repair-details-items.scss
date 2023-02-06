@@ -34,6 +34,7 @@ $transition: all 0.3s ease-in-out;
     -moz-column-gap: 12px;
     column-gap: 12px;
     row-gap: 12px;
+    padding-bottom: 18px;
 }
 .repair-details-cmp {
     display: grid;
@@ -51,8 +52,8 @@ $transition: all 0.3s ease-in-out;
         margin: 0 !important;
     }
     .repair-information-wrapper {
-        padding: 0 16px;
-        padding-top: 12px;
+        padding: 0 7px;
+        padding-top: 8px;
         .repair-information-item {
             display: flex;
             align-items: center;
@@ -107,7 +108,7 @@ $transition: all 0.3s ease-in-out;
         overflow: hidden;
         width: 440px;
         background-color: $color-white;
-        padding: 9px 6px;
+        padding: 1px 7px 9px 7px;
     }
 }
 
@@ -400,7 +401,7 @@ $transition: all 0.3s ease-in-out;
     grid-row-gap: 12px;
     row-gap: 12px;
     margin-bottom: 12px;
-    padding-left: 6px;
+    padding-left: 2px;
     padding-right: 6px;
     .charts-template-item {
         display: flex;
@@ -530,7 +531,7 @@ $transition: all 0.3s ease-in-out;
     display: grid;
     grid-template-columns: 150px 146px;
     row-gap: 6px;
-    padding: 6px 8px;
+    padding: 6px 4px;
     margin-top: -6px;
     grid-column-gap: 30px;
     column-gap: 12px;

@@ -2,6 +2,7 @@ import { ImageBase64Service } from '../../../utils/base64.image';
 import { Component, Input } from '@angular/core';
 import { ConfirmationService } from './confirmation.service';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 export interface Confirmation {
     template: string; // examples: driver, broker, shipper, cdl.....
@@ -30,12 +31,21 @@ export interface Confirmation {
 })
 export class ConfirmationModalComponent {
     @Input() editData: Confirmation;
+    public cdlForm: FormGroup;
+    selectedCdl: any;
 
     constructor(
         public imageBase64Service: ImageBase64Service,
         private ngbActiveModal: NgbActiveModal,
-        private confirmationDataSubject: ConfirmationService
+        private confirmationDataSubject: ConfirmationService,
+        private formBuilder: FormBuilder,
     ) {}
+    
+    ngOnInit() {
+        this.cdlForm = this.formBuilder.group({
+            cdlId: [null],
+        });
+    }    
 
     public onModalAction(data: any) {
         // Multiple Delete
@@ -45,10 +55,21 @@ export class ConfirmationModalComponent {
                 array: data.array.map((item) => item.id),
             });
         } else {
-            this.confirmationDataSubject.sendConfirmationData(data);
+            if ( !this.selectedCdl ) {
+                this.confirmationDataSubject.sendConfirmationData(data);
+            } else {
+                data['data']['newCdlID'] = this.selectedCdl.id;
+                this.confirmationDataSubject.sendConfirmationData(data);
+            }
+            
         }
 
         this.ngbActiveModal.close();
+    }
+
+    public onSelectDropdown(event: any, action: string) {
+        this.selectedCdl = event;
+        console.log('--event---', event);
     }
 
     public identity = (index: number, _: any): number => index;

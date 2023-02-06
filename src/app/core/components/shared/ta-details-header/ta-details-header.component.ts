@@ -85,7 +85,7 @@ export class TaCommonHeaderComponent implements OnInit {
         let itemData = this.mainData?.data;
         let diasbleClosedArray;
 
-        if (this.mainData?.nameDefault == 'Repair Shop Details') {
+        if (this.mainData?.nameDefault == 'Repair Shop Detail') {
             if (itemData.status != 1) {
                 diasbleClosedArray = [0, 3, 4, 5];
             } else if (itemData.companyOwned) {
@@ -93,7 +93,7 @@ export class TaCommonHeaderComponent implements OnInit {
             }
         }
 
-        if (this.mainData?.nameDefault == 'Broker Details') {
+        if (this.mainData?.nameDefault == 'Broker Detail') {
             if (itemData.status != 1) {
                 diasbleClosedArray = [0, 2, 3, 4, 5, 6];
             } else if (itemData.dnu || itemData.ban) {
@@ -102,7 +102,7 @@ export class TaCommonHeaderComponent implements OnInit {
         }
 
         switch (this.mainData?.nameDefault) {
-            case 'Repair Shop Details':
+            case 'Repair Shop Detail':
                 this.options?.actions.map((action, index) => {
                     if (index == 3) {
                         if (itemData.pinned != false) {
@@ -140,7 +140,7 @@ export class TaCommonHeaderComponent implements OnInit {
                     }
                 });
                 break;
-            case 'Broker Details':
+            case 'Broker Detail':
                 this.options?.actions.map((action, index) => {
                     if (
                         diasbleClosedArray &&

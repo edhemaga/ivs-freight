@@ -386,6 +386,7 @@ export class ViolationTableComponent
                 percentage: 20,
             },
             tableAttachments: data?.files ? data.files : [],
+            fileCount: data?.fileCount,
         };
     }
 

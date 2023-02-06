@@ -43,6 +43,7 @@ export function getAccidentColumns() {
             export: true,
             resizable: true,
             link: {
+                doesNotHaveRout: true,
                 routerLinkStart: '/safety/accident/',
                 routerLinkEnd: '/details',
             },
@@ -271,15 +272,9 @@ export function getAccidentColumns() {
             field: 'tableAttachments',
             name: '',
             moveRight: true,
-            headIconStyle: {
-                width: 19,
-                height: 19,
-                imgPath:
-                    'assets/svg/truckassist-table/attachment/attachemnt-regular-svgIcon.svg',
-            },
             hidden: false,
-            width: 40,
-            minWidth: 40,
+            width: 44,
+            minWidth: 44,
             filter: '',
             isNumeric: false,
             index: 16,
@@ -389,6 +384,7 @@ export function getRoadsideInspectionColums() {
             export: true,
             resizable: true,
             link: {
+                doesNotHaveRout: true,
                 routerLinkStart: '/safety/violation/',
                 routerLinkEnd: '/details',
             },
@@ -610,15 +606,9 @@ export function getRoadsideInspectionColums() {
             field: 'tableAttachments',
             name: '',
             moveRight: true,
-            headIconStyle: {
-                width: 19,
-                height: 19,
-                imgPath:
-                    'assets/svg/truckassist-table/attachment/attachemnt-regular-svgIcon.svg',
-            },
             hidden: false,
-            width: 40,
-            minWidth: 40,
+            width: 44,
+            minWidth: 44,
             filter: '',
             isNumeric: false,
             index: 16,

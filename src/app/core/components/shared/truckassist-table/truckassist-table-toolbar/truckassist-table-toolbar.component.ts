@@ -13,6 +13,12 @@ import { Subject, takeUntil } from 'rxjs';
 import { TruckassistTableService } from '../../../../services/truckassist-table/truckassist-table.service';
 import { UntypedFormControl } from '@angular/forms';
 import { Titles } from 'src/app/core/utils/application.decorators';
+import {
+    Confirmation,
+    ConfirmationModalComponent,
+} from '../../../modals/confirmation-modal/confirmation-modal.component';
+import { ModalService } from '../../ta-modal/modal.service';
+import { ConfirmationService } from '../../../modals/confirmation-modal/confirmation.service';
 
 @Titles()
 @Component({
@@ -115,7 +121,11 @@ export class TruckassistTableToolbarComponent
     //     { configType: 'USER', id: 22 }, DONE
     // ];
 
-    constructor(private tableService: TruckassistTableService) {}
+    constructor(
+        private tableService: TruckassistTableService,
+        private modalService: ModalService,
+        private confirmationService: ConfirmationService
+    ) {}
 
     // --------------------------------NgOnInit---------------------------------
     ngOnInit(): void {
@@ -152,6 +162,24 @@ export class TruckassistTableToolbarComponent
             .pipe(takeUntil(this.destroy$))
             .subscribe((response: any[]) => {
                 this.tableRowsSelected = response;
+            });
+
+        // Confirmation For Reset Table Configuration
+        this.confirmationService.confirmationData$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: (res: Confirmation) => {
+                    switch (res.type) {
+                        case 'delete': {
+                            console.log('Poziva se ResetTable');
+                            this.onResetTable();
+                            break;
+                        }
+                        default: {
+                            break;
+                        }
+                    }
+                },
             });
     }
 
@@ -365,9 +393,6 @@ export class TruckassistTableToolbarComponent
         });
 
         this.isMapShowning = modeView.mode === 'Map';
-
-        console.log('isMapShowning');
-        console.log(this.isMapShowning);
     }
 
     // Delete Selected Rows
@@ -386,6 +411,16 @@ export class TruckassistTableToolbarComponent
 
     // Show Toolbar Options Popup
     onShowOptions(optionsPopup: any) {
+        this.optionsPopupContent[0].active = false;
+
+        this.optionsPopupContent.map((option) => {
+            if (option.text !== 'Columns') {
+                option.hide = false;
+            }
+
+            return option;
+        });
+
         this.optionsPopup = optionsPopup;
 
         if (optionsPopup.isOpen()) {
@@ -445,8 +480,20 @@ export class TruckassistTableToolbarComponent
 
                 return option;
             });
-        } else if (action.text === 'Reset Table') {
-            this.onResetTable();
+        } else if (
+            action.text === 'Reset Table' &&
+            !this.optionsPopupContent[2].isInactive
+        ) {
+            this.onShowOptions(this.optionsPopup);
+
+            this.modalService.openModal(
+                ConfirmationModalComponent,
+                { size: 'small' },
+                {
+                    template: '',
+                    type: 'delete',
+                }
+            );
         }
     }
 
@@ -476,22 +523,20 @@ export class TruckassistTableToolbarComponent
 
     // Reset Table
     onResetTable() {
-        if (!this.optionsPopupContent[2].isInactive) {
-            this.tableReseting = true;
+        this.tableReseting = true;
 
-            localStorage.removeItem(
-                `table-${this.tableConfigurationType}-Configuration`
-            );
+        localStorage.removeItem(
+            `table-${this.tableConfigurationType}-Configuration`
+        );
 
-            this.tableService
-                .sendTableConfig({
-                    tableType: this.tableConfigurationType,
-                    config: null,
-                })
-                .subscribe(() => {});
+        this.tableService
+            .sendTableConfig({
+                tableType: this.tableConfigurationType,
+                config: null,
+            })
+            .subscribe(() => {});
 
-            this.tableService.sendResetColumns(true);
-        }
+        this.tableService.sendResetColumns(true);
     }
 
     // Toaggle Column
@@ -529,22 +574,38 @@ export class TruckassistTableToolbarComponent
     }
 
     // Toaggle All In Group
-    onToaggleAllInGroup(columnGroup: any) {
-        columnGroup.areAllActive = !columnGroup.areAllActive;
+    onToaggleAllInGroup(i: number) {
+        const columnsOptionsWithGroups = [...this.columnsOptionsWithGroups];
+        const tableColumns = [...this.columns];
 
-        columnGroup.group.map((c) => {
+        columnsOptionsWithGroups[i] = {
+            ...columnsOptionsWithGroups[i],
+            areAllActive: columnsOptionsWithGroups[i].areSomeSelected
+                ? false
+                : !columnsOptionsWithGroups[i].areAllActive,
+            areSomeSelected: !columnsOptionsWithGroups[i].areSomeSelected,
+        };
+
+        columnsOptionsWithGroups[i].group.map((c) => {
             if (!c.isPined) {
-                c.hidden = columnGroup.areAllActive ? false : true;
+                c.hidden = columnsOptionsWithGroups[i].areAllActive
+                    ? false
+                    : true;
 
-                this.columns.filter((column, index) => {
+                tableColumns.filter((column, index) => {
                     if (column.title === c.title) {
-                        column.hidden = columnGroup.areAllActive ? false : true;
+                        column.hidden = columnsOptionsWithGroups[i].areAllActive
+                            ? false
+                            : true;
 
                         this.setTableConfig(column, index);
                     }
                 });
             }
         });
+
+        this.columnsOptionsWithGroups = [...columnsOptionsWithGroups];
+        this.columns = [...tableColumns];
     }
 
     // Toaggle Group Column

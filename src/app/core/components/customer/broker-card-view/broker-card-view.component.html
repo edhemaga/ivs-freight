@@ -2,8 +2,8 @@
     <app-ta-details-header-card
         [ngClass]="{ 'disabedPreviousArrow': brokerIndex == 0, 'disableNextArrow': brokerIndex == (brokerList.length -1 ) }"
         [cardDetailsDate]="broker?.createdAt | formatDateP"
-        [tooltipNext]=" brokerIndex == (brokerList.length -1 )  ?  'Disabled' : 'Next Broker' "
-        [tooltipPrevious]=" brokerIndex == 0 ? 'Disabled' : 'Previous Broker' "
+        [tooltipNext]=" brokerIndex == (brokerList.length -1 )  ?  '' : 'Next Broker' "
+        [tooltipPrevious]=" brokerIndex == 0 ? '' : 'Previous Broker' "
         [searchInputName]="'Search Broker'"
         [dateChecked]="'5 days ago'"
         [options]="brokerDropdowns"
@@ -69,6 +69,10 @@
                 [hasDivider]="false"
                 [cardName]="'Additional Info'"
                 [isCardOpen]="true"
+                [animationMarginParams]="{
+                    marginTop: '0px',
+                    marginBottom: '10px'
+                }"
             >
                 <div class="additional-template-broker-data">
                     <div class="addition-template-item">
@@ -89,6 +93,10 @@
                 [hasCounter]="20"
                 [cardName]="'Paid Invoice'"
                 [isCardOpen]="true"
+                [animationMarginParams]="{
+                    marginTop: '0px',
+                    marginBottom: '10px'
+                }"
             >
                 <div class="charts-template perfomance">
                     <app-ta-tab-switch
@@ -128,6 +136,10 @@
                 [isCardOpen]="false"
                 [tooltipName]="'View in Modal'"
                 [hasHeaderSvg]="'assets/svg/common/arrow_top_right.svg'"
+                [animationMarginParams]="{
+                    marginTop: '0px',
+                    marginBottom: '10px'
+                }"
             >
                 <div
                     class="charts-template perfomance"
@@ -159,6 +171,10 @@
                 "
                 [cardName]="'Invoice Ageing'"
                 [isCardOpen]="true"
+                [animationMarginParams]="{
+                    marginTop: '0px',
+                    marginBottom: '10px'
+                }"
             >
                 <div class="invoice-ageing-template">
                     <div class="invoice-ageing-template-item">
@@ -242,6 +258,10 @@
                 [hasDivider]="true"
                 [cardName]="'Terms and Credit'"
                 [isCardOpen]="true"
+                [animationMarginParams]="{
+                    marginTop: '0px',
+                    marginBottom: '10px'
+                }"
             >
                 <div
                     class="invoice-ageing-template"
@@ -292,6 +312,10 @@
                 [cardName]="'Payment History'"
                 [isCardOpen]="false"
                 [hasHeaderSvg]="'assets/svg/common/arrow_top_right.svg'"
+                [animationMarginParams]="{
+                    marginTop: '0px',
+                    marginBottom: '10px'
+                }"
             >
                 <div
                     class="charts-template perfomance"

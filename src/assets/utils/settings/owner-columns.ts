@@ -48,6 +48,7 @@ export function getOwnerColumnDefinition() {
             export: true,
             resizable: true,
             link: {
+                doesNotHaveRout: true,
                 routerLinkStart: '/list/owner/',
                 routerLinkEnd: '/details',
             },
@@ -312,15 +313,9 @@ export function getOwnerColumnDefinition() {
             field: 'tableAttachments',
             moveRight: true,
             name: '',
-            headIconStyle: {
-                width: 19,
-                height: 19,
-                imgPath:
-                    'assets/svg/truckassist-table/attachment/attachemnt-regular-svgIcon.svg',
-            },
             hidden: false,
-            minWidth: 20,
-            width: 20,
+            minWidth: 44,
+            width: 44,
             filter: '',
             isNumeric: false,
             index: 16,

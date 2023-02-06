@@ -14,6 +14,7 @@ export class DetailsDataService {
     public stopName: any;
     public documentName: any;
     public unitValue: any;
+    public cdlId: any;
 
     constructor() {}
 
@@ -39,14 +40,25 @@ export class DetailsDataService {
         this.cardMainTitle = mod;
     }
 
+    setCdlId(mod){
+        this.cdlId = mod;
+    }
+
     changeRateStatus(type, mod) {
         if (type == 'like') {
-            this.mainData.raiting.hasLiked = mod;
-            this.mainData.raiting.hasDislike = false;
+            if ( mod ) {
+                this.mainData.rating = 1;
+            } else {
+                this.mainData.rating = 0;
+            }
         } else {
-            this.mainData.raiting.hasDislike = mod;
-            this.mainData.raiting.hasLiked = false;
+            if ( mod ) {
+                this.mainData.rating = -1;
+            } else {
+                this.mainData.rating = 0;
+            }
         }
+        
     }
 
     setStopName(mod) {

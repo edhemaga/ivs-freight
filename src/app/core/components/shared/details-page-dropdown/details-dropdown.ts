@@ -18,7 +18,7 @@ import {
     state,
 } from '@angular/animations';
 import { Options } from '@popperjs/core/lib/popper';
-import { ChangeDetectorRef } from '@angular/core';
+import { ChangeDetectorRef, OnDestroy } from '@angular/core';
 
 @Component({
     selector: 'app-details-page-dropdown',
@@ -70,8 +70,7 @@ import { ChangeDetectorRef } from '@angular/core';
         ]),
     ],
 })
-export class DetailsDropdownComponent implements OnInit, OnChanges {
-    
+export class DetailsDropdownComponent implements OnInit, OnChanges, OnDestroy {
     @Input() options: any;
     @Input() id: number;
     @Input() customClassDropDown: string;
@@ -85,12 +84,13 @@ export class DetailsDropdownComponent implements OnInit, OnChanges {
     dropDownActive: number = -1;
     subtypeHovered: any = false;
 
-    constructor(private DetailsDataService: DetailsDataService, private chnd: ChangeDetectorRef) {}
+    constructor(
+        private DetailsDataService: DetailsDataService,
+        private chnd: ChangeDetectorRef
+    ) {}
 
     ngOnChanges(changes: SimpleChanges): void {
-        
         if (changes?.options?.currentValue) {
-            console.log("CHANGES OPTIONS", changes?.options);
             this.options = changes.options.currentValue;
         }
 
@@ -171,29 +171,29 @@ export class DetailsDropdownComponent implements OnInit, OnChanges {
     popperOptions = (options: Partial<Options>) => {
         // add your own modifier
         options.modifiers?.push({
-          name: 'custom',
-          enabled: true,
-          phase: 'main',
-          effect: ({ state, instance }) => {
-            console.log(state);
-            console.log(instance);
-
-            instance.forceUpdate();
-            setTimeout(() => {
+            name: 'custom',
+            enabled: true,
+            phase: 'main',
+            effect: ({ state, instance }) => {
                 instance.forceUpdate();
-                this.chnd.detectChanges();
-            }, 400);
-            
-            const observer = new ResizeObserver(() => instance.update());
-            observer.observe(state.elements!.reference as any);
-            return () => {
-              observer.disconnect();
-            };
-          },
-          fn: () => {
-          },
+                setTimeout(() => {
+                    instance.forceUpdate();
+                    this.chnd.detectChanges();
+                }, 400);
+
+                const observer = new ResizeObserver(() => instance.update());
+                observer.observe(state.elements!.reference as any);
+                return () => {
+                    observer.disconnect();
+                };
+            },
+            fn: () => {},
         });
-    
+
         return options;
-      };
+    };
+
+    ngOnDestroy(){
+        this.tooltip?.close();
+    }
 }

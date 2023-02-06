@@ -67,7 +67,7 @@ app-shop-repair-details-item {
         }
     }
     .working-hours-container {
-        padding: 0 10px;
+        padding: 0 4px;
         .open-now-wrapper {
             .open-now-icon-text {
                 display: flex;
@@ -267,8 +267,9 @@ app-shop-repair-details-item {
     }
 
     .service-container {
-        padding: 0 23px;
+        padding: 0 4px;
         display: grid;
+        justify-content: space-between;
         grid-template-columns: 32px 32px 32px 32px;
         column-gap: 78px;
         row-gap: 13px;

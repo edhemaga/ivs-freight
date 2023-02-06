@@ -927,7 +927,7 @@ export function getTruckColumnDefinition() {
             linkField: null,
         },
         {
-            ngTemplate: 'text',
+            ngTemplate: 'progress',
             title: 'Licence Plate Detail Expiration',
             field: 'tableLicencePlateDetailExpiration',
             name: 'Licence Plate Detail Expiration',
@@ -979,7 +979,7 @@ export function getTruckColumnDefinition() {
             linkField: null,
         },
         {
-            ngTemplate: 'text',
+            ngTemplate: 'progress',
             title: 'Fhwa Inspection Expiration',
             field: 'tableFhwaInspectionExpiration',
             name: 'Fhwa Inspection Expiration',
@@ -1242,14 +1242,8 @@ export function getTruckColumnDefinition() {
             moveRight: true,
             name: '',
             hidden: false,
-            width: 20,
-            minWidth: 20,
-            headIconStyle: {
-                width: 19,
-                height: 19,
-                imgPath:
-                    'assets/svg/truckassist-table/attachment/attachemnt-regular-svgIcon.svg',
-            },
+            width: 44,
+            minWidth: 44,
             filter: '',
             isNumeric: false,
             index: 16,

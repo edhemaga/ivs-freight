@@ -1,5 +1,9 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import {
+    UntypedFormBuilder,
+    UntypedFormGroup,
+    Validators,
+} from '@angular/forms';
 import { Subject, takeUntil } from 'rxjs';
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
@@ -166,7 +170,7 @@ export class PayrollCreditBonusComponent implements OnInit {
                     return;
                 }
                 if (this.editData?.type === 'edit') {
-                    this.updateCredit(this.editData?.id);
+                    this.updateCredit(this.editData?.data?.id);
                     this.modalService.setModalSpinner({
                         action: null,
                         status: true,
@@ -182,6 +186,15 @@ export class PayrollCreditBonusComponent implements OnInit {
                 }
                 break;
             }
+            case 'delete': {
+                this.deletePayrollCreeditById(this.editData?.data.id);
+                this.modalService.setModalSpinner({
+                    action: 'delete',
+                    status: true,
+                    close: false,
+                });
+                break;
+            }
             default: {
                 break;
             }
@@ -191,10 +204,21 @@ export class PayrollCreditBonusComponent implements OnInit {
     public updateCredit(id: number) {
         this.payrolCreditService
             .updatePayrollCredit({
-                id: id,
                 ...this.payrollCreditForm.value,
-                driverId: this.selectedDriver ? this.selectedDriver.id : null,
-                truckId: this.selectedTruck ? this.selectedTruck.id : null,
+                id: id,
+                type: this.tabs.find((item) => item.checked).id,
+                driverId:
+                    this.tabs.find((item) => item.checked).id === 1
+                        ? this.selectedDriver
+                            ? this.selectedDriver.id
+                            : null
+                        : null,
+                truckId:
+                    this.tabs.find((item) => item.checked).id === 2
+                        ? this.selectedTruck
+                            ? this.selectedTruck.id
+                            : null
+                        : null,
                 date: convertDateToBackend(
                     this.payrollCreditForm.get('date').value
                 ),
@@ -225,8 +249,19 @@ export class PayrollCreditBonusComponent implements OnInit {
         this.payrolCreditService
             .addPayrollCredit({
                 ...this.payrollCreditForm.value,
-                driverId: this.selectedDriver ? this.selectedDriver.id : null,
-                truckId: this.selectedTruck ? this.selectedTruck.id : null,
+                type: this.tabs.find((item) => item.checked).id,
+                driverId:
+                    this.tabs.find((item) => item.checked).id === 1
+                        ? this.selectedDriver
+                            ? this.selectedDriver.id
+                            : null
+                        : null,
+                truckId:
+                    this.tabs.find((item) => item.checked).id === 2
+                        ? this.selectedTruck
+                            ? this.selectedTruck.id
+                            : null
+                        : null,
                 date: convertDateToBackend(
                     this.payrollCreditForm.get('date').value
                 ),
@@ -243,7 +278,7 @@ export class PayrollCreditBonusComponent implements OnInit {
                         this.selectedTruck = null;
                         this.tabChange({ id: 1 });
                         this.modalService.setModalSpinner({
-                            action: null,
+                            action: 'save and add new',
                             status: false,
                             close: false,
                         });
@@ -278,30 +313,55 @@ export class PayrollCreditBonusComponent implements OnInit {
                                   res.driver.lastName
                               )
                             : null,
-                        truckId: null,
+                        // truckId: res.truck ? res.truck.truckNumber : null,
                         date: convertDateFromBackend(res.date),
                         description: res.description,
                         amount: convertNumberInThousandSep(res.amount),
                     });
 
-                    this.selectedDriver = {
-                        id: res.driver.id,
-                        name: res.driver.firstName.concat(
-                            ' ',
-                            res.driver.lastName
-                        ),
-                        logoName:
-                            res.driver.avatar === null ||
-                            res.driver.avatar === undefined ||
-                            res.driver.avatar === ''
-                                ? null
-                                : res.driver.avatar,
-                        isDriver: true,
-                    };
+                    if (res.driver) {
+                        this.selectedDriver = {
+                            id: res.driver.id,
+                            name: res.driver.firstName.concat(
+                                ' ',
+                                res.driver.lastName
+                            ),
+                            logoName:
+                                res.driver.avatar === null ||
+                                res.driver.avatar === undefined ||
+                                res.driver.avatar === ''
+                                    ? null
+                                    : res.driver.avatar,
+                            isDriver: true,
+                        };
+                    }
 
-                    this.selectedTruck = null;
+                    if (res.truck) {
+                        this.selectedTruck = {
+                            ...res.truck,
+                            name: res.truck.truckNumber,
+                            additionalText: res.truck.owner,
+                        };
 
-                    this.tabChange({ id: res.driver ? 1 : 2 });
+                        this.truckDropdownsConfig = {
+                            ...this.truckDropdownsConfig,
+                            multipleInputValues: {
+                                options: [
+                                    {
+                                        value: res.truck?.truckNumber,
+                                    },
+                                    {
+                                        value: res?.truck?.owner,
+                                    },
+                                ],
+                                customClass: 'double-text-dropdown',
+                            },
+                        };
+                    }
+
+                    setTimeout(() => {
+                        this.tabChange({ id: res.type.id });
+                    }, 150);
                 },
                 error: () => {},
             });
@@ -326,13 +386,12 @@ export class PayrollCreditBonusComponent implements OnInit {
                             isDriver: true,
                         };
                     });
-                    this.labelsTrucks = [
-                        {
-                            id: 1,
-                            name: '418952',
-                            additionalText: 'R2 LOGISTICS',
-                        },
-                    ];
+                    this.labelsTrucks = res.trucks.map((item) => {
+                        return {
+                            ...item,
+                            name: item.truckNumber,
+                        };
+                    });
 
                     // If Add New By Id
                     if (
@@ -346,7 +405,24 @@ export class PayrollCreditBonusComponent implements OnInit {
                         this.payrollCreditForm.patchValue({
                             driverId: this.labelsDriver[0].name,
                         });
+                        this.selectedTruck = null;
                     }
+                },
+                error: () => {},
+            });
+    }
+
+    public deletePayrollCreeditById(id: number) {
+        this.payrolCreditService
+            .deletePayrollCreditById(id)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: () => {
+                    this.modalService.setModalSpinner({
+                        action: 'delete',
+                        status: true,
+                        close: true,
+                    });
                 },
                 error: () => {},
             });

@@ -83,6 +83,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
         {
             id: 1,
             name: 'Basic',
+            checked: true
         },
         {
             id: 2,
@@ -2180,7 +2181,9 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             }
         });
 
-        this.tagsService.updateTag({ tags: tags }).subscribe();
+        if(tags.length) {
+            this.tagsService.updateTag({ tags: tags }).subscribe();
+        }
     }
 
     ngOnDestroy(): void {

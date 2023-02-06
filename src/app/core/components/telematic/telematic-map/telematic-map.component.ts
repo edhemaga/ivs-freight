@@ -948,6 +948,7 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
         this.gpsService.gpsStatusChange
             .pipe(takeUntil(this.destroy$))
             .subscribe((data) => {
+                console.log('gpsStatusChange data', data);
                 data.speed = Math.round(data.speed);
 
                 let driverIndex = this.driverLocations.findIndex(

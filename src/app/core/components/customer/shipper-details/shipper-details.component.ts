@@ -135,7 +135,7 @@ export class ShipperDetailsComponent implements OnInit, OnDestroy {
         this.shipperConfig = [
             {
                 id: 0,
-                nameDefault: 'Shipper Details',
+                nameDefault: 'Shipper Detail',
                 template: 'general',
                 data: data,
             },
@@ -144,7 +144,7 @@ export class ShipperDetailsComponent implements OnInit, OnDestroy {
                 nameDefault: 'Load',
                 template: 'load',
                 icon: true,
-                // length: data?.loadStops?.length ? data.loadStops.length : 0,
+                length: data?.loadStops?.length ? data.loadStops.length : 0,
                 hide: true,
                 hasArrow: true,
                 customText: 'Date',
@@ -200,6 +200,7 @@ export class ShipperDetailsComponent implements OnInit, OnDestroy {
             },
         ];
         this.shipperId = data?.id ? data.id : null;
+
     }
     public deleteShipperById(id: number) {
         let last = this.shipperList.at(-1);

@@ -840,11 +840,6 @@ export function getDriverColumnsDefinition() {
             sortable: true,
             isActionColumn: false,
             isSelectColumn: false,
-            avatar: null,
-            progress: {
-                start: '',
-                end: 'mvrData[0].startDate',
-            },
             hoverTemplate: null,
             filterable: false,
             disabled: false,
@@ -1010,14 +1005,8 @@ export function getDriverColumnsDefinition() {
             moveRight: true,
             name: '',
             hidden: false,
-            width: 20,
-            minWidth: 20,
-            headIconStyle: {
-                width: 19,
-                height: 19,
-                imgPath:
-                    'assets/svg/truckassist-table/attachment/attachemnt-regular-svgIcon.svg',
-            },
+            width: 44,
+            minWidth: 44,
             filter: '',
             isNumeric: false,
             index: 16,

@@ -52,6 +52,7 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
         {
             id: 1,
             name: 'Company',
+            checked: true
         },
         {
             id: 2,

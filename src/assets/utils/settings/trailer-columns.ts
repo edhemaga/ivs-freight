@@ -635,7 +635,7 @@ export function getTrailerColumnDefinition() {
             linkField: null,
         },
         {
-            ngTemplate: 'text',
+            ngTemplate: 'progress',
             title: 'Licence Plate Detail Expiration',
             field: 'tableLicencePlateDetailExpiration',
             name: 'Licence Plate Detail Expiration',
@@ -687,7 +687,7 @@ export function getTrailerColumnDefinition() {
             linkField: null,
         },
         {
-            ngTemplate: 'text',
+            ngTemplate: 'progress',
             title: 'FHWA Inspection Expiration',
             field: 'tableFHWAInspectionExpiration',
             name: 'FHWA Inspection Expiration',
@@ -949,15 +949,9 @@ export function getTrailerColumnDefinition() {
             field: 'tableAttachments',
             moveRight: true,
             name: '',
-            headIconStyle: {
-                width: 19,
-                height: 19,
-                imgPath:
-                    'assets/svg/truckassist-table/attachment/attachemnt-regular-svgIcon.svg',
-            },
             hidden: false,
-            minWidth: 20,
-            width: 20,
+            minWidth: 44,
+            width: 44,
             filter: '',
             isNumeric: false,
             index: 16,

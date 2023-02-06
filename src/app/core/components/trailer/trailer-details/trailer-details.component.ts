@@ -153,7 +153,7 @@ export class TrailerDetailsComponent implements OnInit, OnDestroy {
         this.trailerDetailsConfig = [
             {
                 id: 0,
-                name: 'Trailer Details',
+                name: 'Trailer Detail',
                 template: 'general',
                 data: data,
                 status: data?.status == 0 ? true : false,
@@ -225,13 +225,6 @@ export class TrailerDetailsComponent implements OnInit, OnDestroy {
                 },
                 {
                     title: 'border',
-                },
-                {
-                    title: 'View Details',
-                    name: 'view-details',
-                    svg: 'assets/svg/common/ic_hazardous-info.svg',
-                    show: true,
-                    iconName: 'view-details',
                 },
                 {
                     title: 'Add New',

@@ -1,6 +1,5 @@
 import { AbstractControl } from '@angular/forms';
 import moment from 'moment';
-import * as CurrencyFormatter from 'currency-formatter';
 
 //------------------------------- Calculating Parking Slots -------------------------------
 export const calculateParkingSlot = (
@@ -130,9 +129,19 @@ export const convertNumberInThousandSep = (value: number) => {
 };
 
 //------------------------------- SPECIFIC PRICE CONVERTORS -------------------------------
-export const convertNumberWithCurrencyFormatterToBackend = (value: number) => {
-    if (value) {
-        const options = { currency: 'USD' };
-        return CurrencyFormatter.format(value, options);
+export const convertNumberWithCurrencyFormatterToBackend = (
+    value: number,
+    hasDollar: boolean = false
+) => {
+    const formatedValue = value.toLocaleString('en-US', {
+        style: 'currency',
+        currency: 'USD',
+        minimumFractionDigits: 2,
+    });
+
+    if (formatedValue.includes('$') && !hasDollar) {
+        return formatedValue.slice(1);
     }
+
+    return formatedValue;
 };
