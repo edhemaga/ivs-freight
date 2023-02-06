@@ -90,6 +90,10 @@
                 width: 74px;
                 border-radius: 2px;
                 margin-right: 12px;
+
+                &.no-bc{
+                    background-color: transparent;
+                }
                 svg-icon {
                     svg {
                         width: 50px;

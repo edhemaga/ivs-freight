@@ -25,6 +25,7 @@
                 [isNavigationHoveredAndPanelOpen]="
                     isModalPanelOpen && isNavigationHovered
                 "
+                [isNavigationHovered]="isNavigationHovered"
             ></app-navigation-modals>
         </div>
 
@@ -85,7 +86,13 @@
                         !isSettingsPanelOpen &&
                         !isUserCompanyDetailsOpen
                     "
-                    [isNavigationHovered]="isNavigationHovered"
+                    [slowAnimation]="
+                        !isSettingsPanelOpen &&
+                        !isActiveSubroute &&
+                        !isUserPanelOpen &&
+                        !isModalPanelOpen &&
+                        !openedDropdown
+                    "
                     [contentHeight]="item.route.length"
                 >
                     <app-navigation-route
@@ -152,7 +159,8 @@
                         !isUserCompanyDetailsOpen &&
                         !isUserPanelOpen &&
                         !openedDropdown &&
-                        selectedRoute != 'Settings')
+                        selectedRoute != 'Settings' &&
+                        selectedRoute != 'Notifications')
                 "
                 [@showHideDetails]="
                     !subrouteContainerOpened &&
@@ -207,6 +215,7 @@
                 "
                 [isUserPanelOpen]="isUserPanelOpen"
                 [companiesExists]="companiesExists"
+                [isUserCompanyDetailsOpen]="isUserCompanyDetailsOpen"
             >
             </app-navigation-user-profile>
 

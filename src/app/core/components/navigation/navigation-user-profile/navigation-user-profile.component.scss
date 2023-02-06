@@ -4,10 +4,8 @@
     position: relative;
     z-index: 99;
     width: 238px;
-    padding: 4px 4px 44px 4px;
+    padding: 4px 4px 40px 4px;
     border-radius: 2px;
-    box-shadow: $nav-boxshadow;
-    background-color: $nav-transparent;
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
@@ -81,7 +79,20 @@
         &:nth-child(1) {
             margin-top: 0px !important;
         }
-
+        &:nth-child(2) {
+            svg {
+                path {
+                    fill: #ffa726;
+                }
+            }
+        }
+        &:nth-child(5) {
+            svg {
+                path {
+                    fill: #ef5350;
+                }
+            }
+        }
         &:hover {
             .user-content-hover {
                 display: inline;
@@ -119,7 +130,7 @@
         display: none;
         height: 0;
     }
-    .panel-user {
+    .user-holder {
         display: flex;
         align-items: center;
         height: 44px;
@@ -181,9 +192,47 @@
     bottom: 5px;
     left: 4px;
     position: relative;
-    margin-top: 15px;
+    margin-top: 16px;
+    user-select: none;
 }
 .wrapper {
+    .parent {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 100%;
+        .background-on-user-panel {
+            background-color: rgba(170, 170, 170, 0.1);
+            height: 192px;
+            transition: max-height 0.3s ease-out;
+            overflow: hidden;
+            width: 100%;
+            position: relative;
+            bottom: 0;
+            top: 0;
+            left: 0;
+            right: 0;
+            user-select: none;
+        }
+        .remove-background-on-user-panel {
+            overflow: hidden;
+            background-color: rgba(170, 170, 170, 0.1);
+            position: relative;
+            animation: list-separator 0.3s;
+            height: 193px;
+            visibility: hidden;
+            transition: visibility 0.2s;
+        }
+        @keyframes lineInserted {
+            from {
+                transform: translateY(0px);
+            }
+            to {
+                transform: translateY(90px);
+            }
+        }
+    }
     div {
         .new-magic-line {
             display: inline-block;
@@ -207,7 +256,16 @@
         }
     }
 }
-
+.hide-panel {
+    max-height: 0;
+    transition: max-height 0.3s ease-out;
+    overflow: hidden;
+}
+.show-panel {
+    max-height: 500px;
+    transition: max-height 0.3s ease-in;
+    overflow: hidden;
+}
 .user-content:nth-child(1):hover ~ .new-magic-line {
     transform: translateY(-121px) !important;
 }

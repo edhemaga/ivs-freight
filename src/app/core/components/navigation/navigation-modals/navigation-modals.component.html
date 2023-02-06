@@ -1,18 +1,40 @@
-<div class="modal-nav-panel" *ngIf="isNavigationHoveredAndPanelOpen">
+<div
+    class="modal-nav-panel"
+    [ngClass]="{
+        'show-modal': isNavigationHoveredAndPanelOpen,
+        'hide-modal': !isNavigationHoveredAndPanelOpen,
+        'opened-navigation': isNavigationHovered,
+        'closed-navigation': !isNavigationHovered,
+        'add-hover':
+            !OpenCloseModal &&
+            !isNavigationHoveredAndPanelOpen &&
+            isNavigationHovered
+    }"
+    [@showHideDetails]="isNavigationHoveredAndPanelOpen ? true : false"
+>
     <div class="modal-inner">
         <div
             (mouseenter)="changeTextHoverOnCloseModal = true"
             (mouseleave)="changeTextHoverOnCloseModal = false"
-            (click)="onAction('Close Panel')"
+            (click)="OpenMainModal(!OpenCloseModal)"
             class="modal-nav-close"
         >
-            <p class="modal-nav-close-text">{{ Title }}</p>
-            <svg-icon
+            <p class="modal-nav-close-text">
+                <svg-icon
+                    class="modal-nav-close-svg"
+                    [ngClass]="{
+                        'closed-modal': !OpenCloseModal,
+                        'opened-modal': OpenCloseModal
+                    }"
+                    src="assets/svg/common/ic_x.svg"
+                ></svg-icon>
+            </p>
+            <!-- <svg-icon
                 (mouseenter)="Title = 'Close'"
                 (mouseleave)="Title = 'Add New'"
                 class="modal-nav-close-svg"
                 src="assets/svg/common/ic_x.svg"
-            ></svg-icon>
+            ></svg-icon> -->
         </div>
 
         <div class="modal-nav-content">
@@ -23,11 +45,17 @@
                     *ngFor="
                         let item of generalNavigationData;
                         let ind = index;
+                        let odd = odd;
                         trackBy: identity
                     "
-                    (click)="onAction('Open Modal', item)"
+                    (click)="onAction(item)"
                 >
-                    {{ item.name }}
+                    <span *ngIf="!odd">
+                        {{ item.name }}
+                    </span>
+                    <span *ngIf="odd">
+                        {{ item.name }}
+                    </span>
                 </p>
             </div>
         </div>
@@ -40,6 +68,7 @@
                     *ngFor="
                         let item of toolsNavigationData;
                         let ind = index;
+                        let odd = odd;
                         trackBy: identity
                     "
                     (click)="onAction('Open Modal', item)"

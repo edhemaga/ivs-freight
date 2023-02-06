@@ -51,6 +51,26 @@
         width: 10px;
         height: 10px;
     }
+    .notification-light {
+        svg {
+            path {
+                &:nth-child(1) {
+                    transition: all 0.3s;
+                    fill: $nav-white;
+                }
+            }
+        }
+    }
+    .notification-dark {
+        svg {
+            path {
+                &:nth-child(1) {
+                    transition: all 0.3s;
+                    fill: $nav-dark;
+                }
+            }
+        }
+    }
     .message {
         position: relative;
         right: 8px;
@@ -74,6 +94,7 @@
         right: 9px;
         display: flex;
         gap: 4px;
+        top: 3px;
         opacity: 0;
         user-select: none;
         span {
@@ -138,7 +159,6 @@
             opacity: 0;
         }
         .nav-openend-svg {
-            transition: opacity 0.3s;
             opacity: 1;
         }
 
@@ -215,13 +235,13 @@
             svg {
                 path {
                     fill: $nav-white;
+                    transition: fill 0.4s ease;
                 }
             }
         }
     }
 }
 .nav-item-parent-active {
-    cursor: default;
     &:hover {
         .nav-item-img {
             svg {
@@ -245,6 +265,9 @@
             }
         }
     }
+}
+.disable-cursor {
+    cursor: default;
 }
 .hide-tooltip {
     display: none;
@@ -271,6 +294,7 @@
         transition: all 0.5s ease-in-out;
         .nav-item-name {
             margin-left: 1px;
+            transition: all 0.1s;
         }
         .hide-subrout {
             display: none;
