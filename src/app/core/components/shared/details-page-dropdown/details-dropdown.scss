@@ -92,7 +92,7 @@
 }
 
 .details-dropdown-body {
-    padding: 4px 4px 0.1px 4px;
+    //padding: 4px 4px 0.1px 4px;
 
     background-color: #2f2f2f;
     border-radius: 3px;
@@ -475,25 +475,25 @@
 }
 
 .bs-popover-right {
-    .dropdown-main-popover-body {
-        margin-left: 4px;
+    .dropdown-main-popover-body { 
+        //margin-left: 4px;
     }
 }
 
 .bs-popover-top {
     .dropdown-main-popover-body {
-        margin-bottom: 4px;
+        //margin-bottom: 4px;
     }
 }
 
 .bs-popover-bottom {
     .dropdown-main-popover-body {
-        margin-top: 4px;
+        //margin-top: 4px;
     }
 }
 
 .bs-popover-left {
     .dropdown-main-popover-body {
-        margin-right: 4px;
+        //margin-right: 4px;
     }
 }
