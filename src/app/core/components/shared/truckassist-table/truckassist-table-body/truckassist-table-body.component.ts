@@ -74,7 +74,7 @@ export class TruckassistTableBodyComponent
     progressData: any[] = [];
     viewDataEmpty: boolean;
     viewDataTimeOut: any;
-    tableWidthTimeout: any
+    tableWidthTimeout: any;
     rowData: any;
     activeDescriptionDropdown: number = -1;
     descriptionTooltip: any;
@@ -174,7 +174,6 @@ export class TruckassistTableBodyComponent
     ngOnChanges(changes: SimpleChanges): void {
         if (!changes?.viewData?.firstChange && changes?.viewData) {
             clearTimeout(this.viewDataTimeOut);
-
             this.viewData = [...changes.viewData.currentValue];
 
             this.viewDataEmpty = this.viewData.length ? false : true;
