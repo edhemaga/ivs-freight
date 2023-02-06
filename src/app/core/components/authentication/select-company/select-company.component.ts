@@ -1,15 +1,12 @@
 import { DOCUMENT } from '@angular/common';
 import {
-    AfterViewInit,
     Component,
     EventEmitter,
     Inject,
     Input,
-    OnChanges,
     OnDestroy,
     OnInit,
     Output,
-    SimpleChanges,
     ViewEncapsulation,
 } from '@angular/core';
 import { Subject, tap } from 'rxjs';
@@ -25,29 +22,21 @@ import { UntypedFormBuilder } from '@angular/forms';
     styleUrls: ['./select-company.component.scss'],
     encapsulation: ViewEncapsulation.None,
 })
-export class SelectCompanyComponent
-    implements OnInit, AfterViewInit, OnDestroy, OnChanges
-{
-    customOptions: any;
-    selectedCompanyID: any;
-    saveCompany;
-    dotsTrue: boolean;
-    @Input() userData: SignInResponse;
-    @Input() lastLoginInCompany;
-    // userData: SignInResponse;
-    setWidth: number;
-    @Output() goBackToLogin = new EventEmitter<boolean>();
+export class SelectCompanyComponent implements OnInit, OnDestroy {
+    public saveCompany;
+    public dotsTrue: boolean;
     private destroy$ = new Subject<void>();
-    slideConfig: any;
+    public slideConfig: any;
+    @Input() userData: SignInResponse;
+    @Input() lastLoginInCompany: number;
+    @Output() goBackToLogin = new EventEmitter<boolean>();
     constructor(
         @Inject(DOCUMENT) private document: HTMLDocument,
         private router: Router,
         private accountStoreService: AuthStoreService,
         private formBuilder: UntypedFormBuilder
     ) {}
-    ngOnChanges(changes: SimpleChanges): void {
-        console.log(this.lastLoginInCompany);
-    }
+
     ngOnInit(): void {
         this.userData = JSON.parse(localStorage.getItem('user'));
         this.createForm();
@@ -55,9 +44,6 @@ export class SelectCompanyComponent
             ? (this.dotsTrue = false)
             : (this.dotsTrue = true);
 
-        if (this.saveCompany == true) {
-            console.log(this.selectedCompanyID);
-        }
         this.slideConfig = {
             centerMode: true,
             infinite: false,
@@ -77,10 +63,7 @@ export class SelectCompanyComponent
         localStorage.removeItem('user');
         this.router.navigate(['/auth/login']);
     }
-    ngAfterViewInit() {
-        // const center: any = this.document.querySelectorAll('.slick-center');
-        // this.selectedCompanyID = center[0]?.firstChild?.id;
-    }
+
     onCompanySelect() {
         const center: any = this.document.querySelectorAll('.slick-center');
         let id = center[0]?.firstChild?.id;
@@ -107,54 +90,6 @@ export class SelectCompanyComponent
             )
             .subscribe();
     }
-    // slides = [
-    //     {
-    //         logo: null,
-    //         companyName: 'test',
-    //         id: 1,
-    //         lastLoginInCompany: 1,
-    //         isActive: true,
-    //     },
-    //     {
-    //         logo: null,
-    //         companyName: 'test123',
-    //         id: 1,
-    //         lastLoginInCompany: 1,
-    //         isActive: false,
-    //     },
-    //     {
-    //         logo: null,
-    //         companyName: 'test235',
-    //         id: 1,
-    //         lastLoginInCompany: 1,
-    //         isActive: false,
-    //     },
-    //     {
-    //         logo: null,
-    //         companyName: 'tessgdt',
-    //         id: 1,
-    //         lastLoginInCompany: 1,
-    //         isActive: false,
-    //     },
-    //     {
-    //         logo: null,
-    //         companyName: 'tesrbnst',
-    //         id: 1,
-    //         lastLoginInCompany: 1,
-    //         isActive: false,
-    //     },
-    //     {
-    //         logo: null,
-    //         companyName: 'tesnhrdnt',
-    //         id: 1,
-    //         lastLoginInCompany: 1,
-    //         isActive: false,
-    //     },
-    // ];
-
-    // slickInit(e) {
-    //     console.log('slick initialized');
-    // }
 
     ngOnDestroy() {
         this.destroy$.next();

@@ -54,8 +54,6 @@ export class LoginComponent implements OnInit, OnDestroy {
                     convertDateFromBackend(res.companies.lastLogin)
                 );
                 this.cdRef.detectChanges();
-
-                console.log(this.lastLoginInCompany);
                 this.showHideIfMoreThenOneCompany = true;
             }
         );

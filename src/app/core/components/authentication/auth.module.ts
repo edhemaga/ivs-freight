@@ -23,7 +23,6 @@ import { HelperForgotPasswordComponent } from './helper-forgot-password/helper-f
 import { RegisterUserComponent } from './register-user/register-user.component';
 import { HelperSignupUserComponent } from './helper-signup-user/helper-signup-user.component';
 import { SharedModule } from '../shared/shared.module';
-import { PickCompanyComponent } from './pick-company/pick-company.component';
 import { SlickCarouselModule } from 'ngx-slick-carousel';
 @NgModule({
     declarations: [
@@ -40,7 +39,6 @@ import { SlickCarouselModule } from 'ngx-slick-carousel';
         RegisterUserComponent,
         HelperSignupUserComponent,
         HelperForgotPasswordComponent,
-        PickCompanyComponent,
     ],
     imports: [
         CommonModule,
