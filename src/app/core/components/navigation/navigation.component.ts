@@ -89,7 +89,9 @@ export class NavigationComponent implements OnInit, OnDestroy {
                             this.isSettingsPanelOpen = false;
                             this.isUserCompanyDetailsOpen = false;
                             this.subrouteClicked = false;
+                            this.isNavigationHovered = true;
                         } else {
+                            this.isNavigationHovered = true;
                             this.isModalPanelOpen = data.type;
                         }
                         break;
@@ -223,6 +225,7 @@ export class NavigationComponent implements OnInit, OnDestroy {
     }
     //On outside of navbar close navbar
     closeNavbar(event) {
+        console.log(event.target);
         if (
             //If this elements keep open navigation
             event.target.parentElement?.classList.contains(
