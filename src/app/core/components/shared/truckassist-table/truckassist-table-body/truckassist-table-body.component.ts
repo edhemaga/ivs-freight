@@ -184,6 +184,8 @@ export class TruckassistTableBodyComponent
                     this.getSelectedTabTableData();
                 }, 10);
             }
+
+            this.checkAttachmentUpdate();
         }
 
         if (!changes?.tableData?.firstChange && changes?.tableData) {
@@ -254,6 +256,32 @@ export class TruckassistTableBodyComponent
         // }, 10);
 
         this.getNotPinedMaxWidth();
+    }
+
+    // Attachment Update
+    checkAttachmentUpdate(){
+       if(this.activeAttachment !== -1){
+            let entity = this.activeTableData?.gridNameTitle;
+
+            if (entity == 'Repair' && this.selectedTab == 'repair-shop') {
+                entity = 'Repair-Shop';
+            }
+
+            this.filesService.getFiles(entity, this.activeAttachment).subscribe((res) => {
+                if (res?.length) {
+                    const newViewData = [...this.viewData];
+
+                    newViewData.map((data: any) => {
+                        if(data.id === this.activeAttachment){
+                            data.tableAttachments = res;
+                            data.fileCount = res.length;
+                        }
+                    })
+
+                    this.viewData = [...newViewData];
+                }
+            });
+       } 
     }
 
     // Horizontal Scroll
