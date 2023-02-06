@@ -58,12 +58,12 @@ export class NavigationComponent implements OnInit, OnDestroy {
     companiesExists: boolean;
     routeIndexSelected: boolean;
     subrouteClicked: boolean = false;
+    dropdowns: boolean = false;
     constructor(
         private cdRef: ChangeDetectorRef,
         private router: Router,
         private navigationService: NavigationService,
-        private DetailsDataService: DetailsDataService,
-        private activatedRoute: ActivatedRoute
+        private DetailsDataService: DetailsDataService
     ) {}
     hideSubrouteFromChild($event) {
         this.hideSubrouteTitle = $event;
@@ -176,7 +176,6 @@ export class NavigationComponent implements OnInit, OnDestroy {
                                 ruteName[2].charAt(0).toUpperCase() +
                                 ruteName[2].substr(1).toLowerCase();
                             this.selectedSubRoute = t;
-                            console.log(this.selectedSubRoute);
                             this.cdRef.detectChanges();
                         }
                     }

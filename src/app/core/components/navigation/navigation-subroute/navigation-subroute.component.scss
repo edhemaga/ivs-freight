@@ -256,13 +256,9 @@
     max-height: 0;
     transition: max-height 0.3s ease-out;
 }
-.other-container-opened {
-    overflow: hidden;
-    max-height: 0;
-    transition: max-height 0s ease-out;
-}
+
 .show {
-    max-height: 500px;
+    max-height: 347px;
     transition: max-height 0.3s ease-in;
 }
 @keyframes append-animate {

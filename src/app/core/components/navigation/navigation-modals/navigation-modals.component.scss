@@ -77,6 +77,11 @@
             cursor: pointer;
             right: 5px;
         }
+        .tooltip-right {
+            position: fixed;
+            top: 68px;
+            left: 18px;
+        }
     }
 
     .modal-nav-content {

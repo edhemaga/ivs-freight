@@ -9,7 +9,6 @@ import {
     OnInit,
     SimpleChanges,
     OnChanges,
-    ChangeDetectorRef,
 } from '@angular/core';
 import {
     navigation_magic_line,
@@ -67,27 +66,28 @@ export class NavigationRouteComponent implements OnInit, OnChanges {
     public activeLinkHighlight: boolean = false;
     public showToolTip: boolean;
     public routeId: string;
+
+    constructor(
+        public router: Router,
+        public navigationService: NavigationService,
+        public activatedroute: ActivatedRoute
+    ) {}
     @Input() set activeLink(value) {
         this.activeLinkHighlight = false;
         if (typeof this._activeLink == 'undefined' && value) {
             this._activeLink = value;
-        } else if (typeof this._activeLink != 'undefined') {
+        } else if (
+            typeof this._activeLink != 'undefined' &&
+            this.isNavigationHovered != false
+        ) {
             this.activeLinkHighlight = value;
+            console.log(value);
         }
     }
-    constructor(
-        public router: Router,
-        public navigationService: NavigationService,
-        public activatedroute: ActivatedRoute,
-        private cdRef: ChangeDetectorRef
-    ) {}
     routeWithSubRoutesClick(event) {
-        // console.log(event);
         if (event != undefined) {
-            // console.log(true);
             this.routeWithSubRouteClicked.emit(true);
         } else {
-            // console.log(false);
             this.routeWithSubRouteClicked.emit(false);
         }
     }

@@ -65,7 +65,7 @@ export class NavigationModalsComponent {
     public safetyNavigationData: NavigationModal[] = safetyNavigationData;
     public accountingNavigationData: NavigationModal[] =
         accountingNavigationData;
-
+    public showToolTip: boolean = false;
     public changeTextHoverOnCloseModal: boolean = false;
     public Title: string = 'Add New';
     public OpenCloseModal: boolean = false;

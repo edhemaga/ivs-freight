@@ -278,11 +278,14 @@
     position: absolute;
     left: 0px;
     content: '';
-    background-color: $nav-hover-ligh;
     z-index: -1;
     border-radius: 3px;
     padding: 5px 9px;
     top: 0px;
+}
+.box-animation-closed-nav {
+    background-color: $nav-hover-ligh;
+    transition: background-color 0.1s;
 }
 .subroute-item {
     padding-left: 8px;
@@ -295,6 +298,9 @@
         .nav-item-name {
             margin-left: 1px;
             transition: all 0.1s;
+            .animation-text {
+                animation: dude 0.3s 1 forwards;
+            }
         }
         .hide-subrout {
             display: none;
@@ -304,7 +310,14 @@
         margin-left: 0px;
     }
 }
-
+@keyframes dude {
+    0% {
+        transform: translateX(-20px);
+    }
+    100% {
+        transform: translateX(0px);
+    }
+}
 .nav-item-active-box-active {
     width: 238px;
     background-color: $nav-hover-color;
