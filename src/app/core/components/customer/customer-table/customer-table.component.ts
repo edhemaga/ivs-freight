@@ -844,10 +844,12 @@ export class CustomerTableComponent
                 .addRating(raitingData)
                 .pipe(takeUntil(this.destroy$))
                 .subscribe((res: any) => {
-                    this.viewData = this.viewData.map((data: any) => {
+                    let newViewData = [...this.viewData];
+
+                    newViewData.map((data: any) => {
                         if (data.id === event.data.id) {
                             data.actionAnimation = 'update';
-                            data.raiting = {
+                            data.tableRaiting = {
                                 hasLiked: res.currentCompanyUserRating === 1,
                                 hasDislike: res.currentCompanyUserRating === -1,
                                 likeCount: res?.upCount ? res.upCount : '0',
@@ -856,11 +858,9 @@ export class CustomerTableComponent
                                     : '0',
                             };
                         }
-
-                        return data;
                     });
 
-                    this.ref.detectChanges();
+                    this.viewData = [...newViewData];
 
                     const inetval = setInterval(() => {
                         this.viewData = closeAnimationAction(
