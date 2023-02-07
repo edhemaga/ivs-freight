@@ -45,6 +45,7 @@ export class BlockedContentPipe implements PipeTransform {
                 'owner info',
                 'website',
                 'features',
+                'select company',
             ].includes(value?.toLowerCase())
         ) {
             return true;

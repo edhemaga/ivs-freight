@@ -1,5 +1,9 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import {
+    UntypedFormBuilder,
+    UntypedFormGroup,
+    Validators,
+} from '@angular/forms';
 import {
     DriverListResponse,
     GetTestModalResponse,
@@ -69,17 +73,6 @@ export class DriverDrugAlcoholModalComponent implements OnInit, OnDestroy {
     ngOnInit(): void {
         this.createForm();
         this.getDrugDropdowns();
-
-        if (this.editData) {
-            this.disableCardAnimation = true;
-            this.getDriverById(this.editData.id);
-            if (this.editData.type === 'edit-drug') {
-                this.getTestById(this.editData.file_id);
-            }
-        } else {
-            this.getListOfDrivers();
-            this.drugForm.get('driver').setValidators(Validators.required);
-        }
     }
 
     private createForm() {
@@ -160,6 +153,19 @@ export class DriverDrugAlcoholModalComponent implements OnInit, OnDestroy {
                     this.alcoholReasons = res.alcoholTestReasons;
                     this.drugReasons = res.drugTestReasons;
                     this.testResults = res.testResults;
+
+                    if (this.editData) {
+                        this.disableCardAnimation = true;
+                        this.getDriverById(this.editData.id);
+                        if (this.editData.type === 'edit-drug') {
+                            this.getTestById(this.editData.file_id);
+                        }
+                    } else {
+                        this.getListOfDrivers();
+                        this.drugForm
+                            .get('driver')
+                            .setValidators(Validators.required);
+                    }
                 },
                 error: () => {},
             });

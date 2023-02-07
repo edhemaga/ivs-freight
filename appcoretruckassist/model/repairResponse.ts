@@ -38,5 +38,6 @@ export interface RepairResponse {
     updatedAt?: string;
     items?: Array<RepairItemResponse> | null;
     files?: Array<FileResponse> | null;
+    fileCount?: number | null;
 }
 

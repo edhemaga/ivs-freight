@@ -171,7 +171,6 @@ export class TruckassistTableToolbarComponent
                 next: (res: Confirmation) => {
                     switch (res.type) {
                         case 'delete': {
-                            console.log('Poziva se ResetTable');
                             this.onResetTable();
                             break;
                         }
@@ -308,7 +307,7 @@ export class TruckassistTableToolbarComponent
         this.setColumnsOptionsGroups();
 
         this.toolbarWidth = hasMinWidth
-            ? columnsSumWidth + 12 + 'px'
+            ? columnsSumWidth + 22 + 'px'
             : 100 + '%';
     }
 
@@ -411,6 +410,16 @@ export class TruckassistTableToolbarComponent
 
     // Show Toolbar Options Popup
     onShowOptions(optionsPopup: any) {
+        this.optionsPopupContent[0].active = false;
+
+        this.optionsPopupContent.map((option) => {
+            if (option.text !== 'Columns') {
+                option.hide = false;
+            }
+
+            return option;
+        });
+
         this.optionsPopup = optionsPopup;
 
         if (optionsPopup.isOpen()) {

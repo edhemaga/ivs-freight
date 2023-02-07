@@ -70,12 +70,50 @@
                                     ></div>
                                 </div>
 
+                                <!-- PICKUP AND DELIVERY TEMPLATE -->
+                                <div
+                                    class="table-hold-box"
+                                    *ngSwitchCase="'pickup-delivery-template'"
+                                >
+                                    <div 
+                                        class="pick-load-box"
+                                        [class.delivery-box]="tr.type.name == 'Delivery'"
+                                        >
+                                        <svg-icon
+                                            *ngIf="tr.order < 9"
+                                            src="
+                                            assets/svg/svg_numbers/olddash/svg_num_box_{{
+                                                tr.order
+                                            }}.svg
+                                        "
+                                        ></svg-icon>
+                                        <svg-icon
+                                            *ngIf="tr.order > 9"
+                                            src="assets/svg/svg_numbers/svg_num_over.svg
+                                    "
+                                        ></svg-icon>
+                                        <div class="pick-load-info">
+                                            <div class="pick-load-info-address">
+                                                {{
+                                                    tr.location.city
+                                                }},
+                                                {{
+                                                    tr.location.stateShortName
+                                                }}
+                                            </div>
+                                            <div class="pick-load-info-time">
+                                                05/09/21
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- PICKUP AND DELIVERY TEMPLATE END -->
+
                                 <div
                                     class="table-hold-box"
                                     *ngSwitchCase="'pickup-template'"
                                 >
                                     <div class="pick-load-box">
-                                        {{ tr.pickup.pickupCount }}
                                         <svg-icon
                                             *ngIf="tr.pickupCount < 9"
                                             src="
@@ -178,57 +216,57 @@
                         </td>
                     </ng-container>
                 </tr>
-                <tr *ngIf="isResizableTable" class="reorder-row">
-                    <ng-container *ngFor="let h of tableSettingsResizable">
-                        <td [attr.colspan]="h.colspan">
-                            <div class="table-box" [ngSwitch]="h.template">
-                                <div
-                                    class="table-hold-box"
-                                    *ngSwitchCase="'bold-normal-template'"
-                                    [class.highlighted-last]="h.highlighted"
-                                >
-                                    <div class="bold-normal-template">
-                                        {{ h.value }}
-                                    </div>
-                                </div>
-
-                                <div
-                                    class="table-hold-box"
-                                    *ngSwitchCase="'medium-normal-template'"
-                                >
-                                    <div class="medium-normal-template">
-                                        {{ h.value }}
-                                    </div>
-                                </div>
-
-                                <div
-                                    class="table-hold-box"
-                                    *ngSwitchCase="'medium-normal-template'"
-                                >
-                                    <div class="medium-normal-template">
-                                        {{ h.value }}
-                                    </div>
-                                </div>
-
-                                <div
-                                    class="table-hold-box"
-                                    *ngSwitchCase="'semibold-normal-template'"
-                                >
-                                    <div class="semibold-normal-template">
-                                        {{ h.value }}
-                                    </div>
-                                </div>
-
-                                <div class="table-hold-box" *ngSwitchDefault>
-                                    <div class="normal-template">
-                                        {{ h.value }}
-                                    </div>
+            </ng-container>
+            <tr *ngIf="isResizableTable" class="reorder-row">
+                <ng-container *ngFor="let h of tableSettingsResizable">
+                    <td [attr.colspan]="h.colspan">
+                        <div class="table-box" [ngSwitch]="h.template">
+                            <div
+                                class="table-hold-box"
+                                *ngSwitchCase="'bold-normal-template'"
+                                [class.highlighted-last]="h.highlighted"
+                            >
+                                <div class="bold-normal-template">
+                                    {{ h.value }}
                                 </div>
                             </div>
-                        </td>
-                    </ng-container>
-                </tr>
-            </ng-container>
+
+                            <div
+                                class="table-hold-box"
+                                *ngSwitchCase="'medium-normal-template'"
+                            >
+                                <div class="medium-normal-template">
+                                    {{ h.value }}
+                                </div>
+                            </div>
+
+                            <div
+                                class="table-hold-box"
+                                *ngSwitchCase="'medium-normal-template'"
+                            >
+                                <div class="medium-normal-template">
+                                    {{ h.value }}
+                                </div>
+                            </div>
+
+                            <div
+                                class="table-hold-box"
+                                *ngSwitchCase="'semibold-normal-template'"
+                            >
+                                <div class="semibold-normal-template">
+                                    {{ h.value }}
+                                </div>
+                            </div>
+
+                            <div class="table-hold-box" *ngSwitchDefault>
+                                <div class="normal-template">
+                                    {{ h.value }}
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                </ng-container>
+            </tr>
         </tbody>
     </table>
 </div>

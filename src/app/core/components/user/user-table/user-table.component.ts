@@ -325,9 +325,6 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
             // for (let i = 0; i < 300; i++) {
             //   this.viewData.push(this.viewData[0]);
             // }
-
-            console.log('User Data');
-            console.log(this.viewData);
         } else {
             this.viewData = [];
         }

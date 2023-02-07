@@ -40,17 +40,23 @@ export class DetailsDataService {
         this.cardMainTitle = mod;
     }
 
-    setCdlId(mod){
+    setCdlId(mod) {
         this.cdlId = mod;
     }
 
     changeRateStatus(type, mod) {
         if (type == 'like') {
-            this.mainData.raiting.hasLiked = mod;
-            this.mainData.raiting.hasDislike = false;
+            if (mod) {
+                this.mainData.rating = 1;
+            } else {
+                this.mainData.rating = 0;
+            }
         } else {
-            this.mainData.raiting.hasDislike = mod;
-            this.mainData.raiting.hasLiked = false;
+            if (mod) {
+                this.mainData.rating = -1;
+            } else {
+                this.mainData.rating = 0;
+            }
         }
     }
 
@@ -58,11 +64,11 @@ export class DetailsDataService {
         this.stopName = mod;
     }
 
-    setDocumentName(mod){
+    setDocumentName(mod) {
         this.documentName = mod;
     }
 
-    setUnitValue(mod){
+    setUnitValue(mod) {
         this.unitValue = mod;
     }
 }

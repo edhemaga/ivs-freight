@@ -47,6 +47,7 @@ import { DispatcherResolverService } from './core/components/dispatch/state/disp
 import { UnderConstructionComponent } from './core/components/under-construction/under-construction.component';
 import { HideContentGuard } from './core/guards/hideContent.guard';
 import { ApplicantGuard } from './core/guards/applicant.guard';
+import { SelectCompanyComponent } from './core/components/authentication/select-company/select-company.component';
 
 const routes: Routes = [
     // Auth Routes
@@ -76,7 +77,12 @@ const routes: Routes = [
     },
 
     // Auth Routes
-
+    {
+        path: 'select-company',
+        component: SelectCompanyComponent,
+        data: { title: 'Select Company' },
+        canActivate: [AuthGuard],
+    },
     {
         path: 'dashboard',
         loadChildren: () =>

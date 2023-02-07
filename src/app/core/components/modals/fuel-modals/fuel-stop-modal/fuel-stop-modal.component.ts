@@ -6,7 +6,11 @@ import {
     phoneFaxRegex,
 } from '../../../shared/ta-input/ta-input.regex-validations';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import {
+    UntypedFormBuilder,
+    UntypedFormGroup,
+    Validators,
+} from '@angular/forms';
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { AddressEntity } from 'appcoretruckassist';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
@@ -53,11 +57,6 @@ export class FuelStopModalComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.createForm();
         this.getModalDropdowns();
-
-        if (this.editData?.type === 'edit') {
-            this.disableCardAnimation = true;
-            this.getFuelStopById(this.editData.id);
-        }
 
         this.trackFuelStopPhone();
         this.trackFuelStopFranchise();
@@ -462,6 +461,11 @@ export class FuelStopModalComponent implements OnInit, OnDestroy {
                     this.fuelStops = this.fuelStops.filter(
                         (v, i, a) => a.findIndex((v2) => v2.id === v.id) === i
                     );
+
+                    if (this.editData?.type === 'edit') {
+                        this.disableCardAnimation = true;
+                        this.getFuelStopById(this.editData.id);
+                    }
                 },
                 error: () => {},
             });

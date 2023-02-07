@@ -58,5 +58,6 @@ export interface RepairShopResponse {
     contacts?: Array<RepairShopContactResponse> | null;
     reviews?: Array<ReviewResponse> | null;
     files?: Array<FileResponse> | null;
+    fileCount?: number | null;
 }
 

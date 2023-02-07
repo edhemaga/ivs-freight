@@ -105,11 +105,6 @@ export class ContactModalComponent implements OnInit, OnDestroy {
         this.getCompanyContactModal();
         this.companyContactColorLabels();
         this.followSharedCheckbox();
-
-        if (this.editData) {
-            this.disableCardAnimation = true;
-            this.getCompanyContactById(this.editData.id);
-        }
     }
 
     private createForm() {
@@ -336,6 +331,11 @@ export class ContactModalComponent implements OnInit, OnDestroy {
                     this.sharedDepartments = res.departments;
                     this.labelsContactEmails = res.contactEmailType;
                     this.labelsContactPhones = res.contactPhoneType;
+
+                    if (this.editData) {
+                        this.disableCardAnimation = true;
+                        this.getCompanyContactById(this.editData.id);
+                    }
                 },
                 error: () => {},
             });

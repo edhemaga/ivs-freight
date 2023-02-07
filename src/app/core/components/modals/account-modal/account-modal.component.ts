@@ -1,4 +1,8 @@
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import {
+    UntypedFormBuilder,
+    UntypedFormGroup,
+    Validators,
+} from '@angular/forms';
 import {
     Component,
     Input,
@@ -62,10 +66,6 @@ export class AccountModalComponent implements OnInit, OnDestroy {
         this.createForm();
         this.companyAccountModal();
         this.companyAccountColorLabels();
-
-        if (this.editData) {
-            this.editCompanyAccount(this.editData.id);
-        }
 
         this.inputService.customInputValidator(
             this.accountForm.get('url'),
@@ -169,6 +169,10 @@ export class AccountModalComponent implements OnInit, OnDestroy {
                     this.accountLabels = res.labels.map((item) => {
                         return { ...item, dropLabel: true };
                     });
+
+                    if (this.editData) {
+                        this.editCompanyAccount(this.editData.id);
+                    }
                 },
             });
     }

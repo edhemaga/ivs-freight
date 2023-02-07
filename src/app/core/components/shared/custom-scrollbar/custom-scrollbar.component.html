@@ -3,6 +3,14 @@
     #contentHolder
     (cdkObserveContent)="projectContentChanged($event)"
     [class.activeToolbar]="showScrollbar"
+    [ngStyle]="{
+        height: scrollBarOptions.showHorizontalScrollBar
+            ? horizontalScrollHeight + 'px'
+            : 100 + 'vh',
+        'overflow-y': scrollBarOptions.showHorizontalScrollBar
+            ? 'hidden'
+            : 'auto'
+    }"
 >
     <ng-content></ng-content>
     <!-- Vertical Scroll Bar -->
@@ -53,7 +61,6 @@
             }"
             (mousedown)="setDraggingStart($event)"
             (mouseup)="isMouseDown = false"
-        >
-        </div>
+        ></div>
     </div>
 </div>
