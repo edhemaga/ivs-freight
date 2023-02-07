@@ -46,7 +46,7 @@ export class SettingsRepairshopModalComponent implements OnInit, OnDestroy {
         {
             id: 1,
             name: 'Basic',
-            checked: true
+            checked: true,
         },
         {
             id: 2,
@@ -91,11 +91,6 @@ export class SettingsRepairshopModalComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.createForm();
         this.getModalDropdowns();
-
-        if (this.editData?.type === 'edit') {
-            this.disableCardAnimation = true;
-            this.editRepairShopById(this.editData.id);
-        }
     }
 
     private createForm() {
@@ -424,6 +419,11 @@ export class SettingsRepairshopModalComponent implements OnInit, OnDestroy {
                     this.repairShopForm
                         .get('servicesHelper')
                         .patchValue(JSON.stringify(this.services));
+
+                    if (this.editData?.type === 'edit') {
+                        this.disableCardAnimation = true;
+                        this.editRepairShopById(this.editData.id);
+                    }
                 },
                 error: () => {},
             });

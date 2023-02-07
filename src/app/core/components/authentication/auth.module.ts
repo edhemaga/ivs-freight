@@ -23,7 +23,7 @@ import { HelperForgotPasswordComponent } from './helper-forgot-password/helper-f
 import { RegisterUserComponent } from './register-user/register-user.component';
 import { HelperSignupUserComponent } from './helper-signup-user/helper-signup-user.component';
 import { SharedModule } from '../shared/shared.module';
-
+import { SlickCarouselModule } from 'ngx-slick-carousel';
 @NgModule({
     declarations: [
         LoginComponent,
@@ -48,7 +48,9 @@ import { SharedModule } from '../shared/shared.module';
         GooglePlaceModule,
         AngularSvgIconModule,
         NgbTooltipModule,
+        SlickCarouselModule,
     ],
+    exports: [SelectCompanyComponent],
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class AuthModule {}

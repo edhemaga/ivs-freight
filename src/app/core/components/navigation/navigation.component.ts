@@ -175,6 +175,7 @@ export class NavigationComponent implements OnInit, OnDestroy {
                                 ruteName[2].charAt(0).toUpperCase() +
                                 ruteName[2].substr(1).toLowerCase();
                             this.selectedSubRoute = t;
+                            console.log(this.selectedSubRoute);
                             this.cdRef.detectChanges();
                         }
                     }
@@ -260,6 +261,7 @@ export class NavigationComponent implements OnInit, OnDestroy {
                 event.target.classList.contains('navigation-top') ||
                 event.target.classList.contains('magic-line-footer') ||
                 event.target.classList.contains('navigation-bottom') ||
+                event.target.classList.contains('subroutes-item') ||
                 event.target.parentElement?.classList.contains(
                     'item-settings'
                 ) ||

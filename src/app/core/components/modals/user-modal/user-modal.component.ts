@@ -11,7 +11,11 @@ import {
     routingBankValidation,
     salaryValidation,
 } from '../../shared/ta-input/ta-input.regex-validations';
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import {
+    UntypedFormBuilder,
+    UntypedFormGroup,
+    Validators,
+} from '@angular/forms';
 import {
     Component,
     Input,
@@ -69,7 +73,7 @@ export class UserModalComponent implements OnInit, OnDestroy {
         {
             id: 1,
             name: 'Basic',
-            checked: true
+            checked: true,
         },
         {
             id: 2,
@@ -160,11 +164,6 @@ export class UserModalComponent implements OnInit, OnDestroy {
         this.createForm();
         this.getModalDropdowns();
         this.onBankSelected();
-
-        if (this.editData) {
-            this.disableCardAnimation = true;
-            this.getUserById(this.editData.id);
-        }
 
         this.trackUserPayroll();
 
@@ -897,6 +896,11 @@ export class UserModalComponent implements OnInit, OnDestroy {
                     this.offices = res.officeShortResponses;
                     this.helperForManagers = res.managerResponses;
                     this.heleperForDispatchers = res.dispatcherResponses;
+
+                    if (this.editData) {
+                        this.disableCardAnimation = true;
+                        this.getUserById(this.editData.id);
+                    }
                 },
                 error: () => {},
             });

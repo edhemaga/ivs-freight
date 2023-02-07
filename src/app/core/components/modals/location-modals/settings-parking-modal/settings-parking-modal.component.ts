@@ -1,5 +1,9 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import {
+    UntypedFormBuilder,
+    UntypedFormGroup,
+    Validators,
+} from '@angular/forms';
 import {
     AddressEntity,
     CompanyOfficeModalResponse,
@@ -48,7 +52,7 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
         {
             id: 1,
             name: 'Basic',
-            checked: true
+            checked: true,
         },
         {
             id: 2,
@@ -131,11 +135,6 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
         this.parkingSlot();
         this.fullParkingSlot();
         this.getModalDropdowns();
-
-        if (this.editData?.type === 'edit') {
-            this.disableCardAnimation = true;
-            this.editCompanyParkingById(this.editData.id);
-        }
     }
 
     private createForm() {
@@ -554,6 +553,11 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
                     this.payPeriods = res.payPeriod;
                     this.monthlyDays = res.payPeriodMonthly;
                     this.weeklyDays = res.dayOfWeek;
+
+                    if (this.editData?.type === 'edit') {
+                        this.disableCardAnimation = true;
+                        this.editCompanyParkingById(this.editData.id);
+                    }
                 },
                 error: () => {},
             });

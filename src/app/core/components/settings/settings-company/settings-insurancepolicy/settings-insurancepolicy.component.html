@@ -395,8 +395,11 @@
                     [ngClass]="{ 'body-show': toggler[i] }"
                     [@showHideCardBody]="toggler[i] ? 'true' : 'false'"
                 >
-                    <div class="divider"></div>
-                    <div class="details-document-container">
+                    <div class="divider" *ngIf="insurance?.files?.length"></div>
+                    <div
+                        class="details-document-container"
+                        *ngIf="insurance?.files?.length"
+                    >
                         <div class="icon-counter-wrapper">
                             <div class="counter-text-wrapper">
                                 <app-ta-counter
@@ -420,6 +423,7 @@
                         </div>
                     </div>
                     <div
+                        *ngIf="insurance?.files?.length"
                         class="card-pdf"
                         [class.extended]="insurance?.files?.length > 1"
                         [class.disabled]="!insurance?.files?.length"

@@ -81,11 +81,6 @@ export class TaskModalComponent implements OnInit, OnDestroy {
 
         // -------------- DEVELOP MODE --------------------
         this.companyUser = JSON.parse(localStorage.getItem('user'));
-
-        if (this.editData?.type === 'edit') {
-            this.disableCardAnimation = true;
-            this.editTask(this.editData.id);
-        }
     }
 
     private createForm() {
@@ -509,6 +504,11 @@ export class TaskModalComponent implements OnInit, OnDestroy {
                         };
                     });
                     this.resCompanyUsers = [...this.showCompanyUsers];
+
+                    if (this.editData?.type === 'edit') {
+                        this.disableCardAnimation = true;
+                        this.editTask(this.editData.id);
+                    }
                 },
                 error: () => {},
             });

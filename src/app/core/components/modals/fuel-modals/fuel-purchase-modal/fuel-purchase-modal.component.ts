@@ -1,5 +1,10 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { UntypedFormArray, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import {
+    UntypedFormArray,
+    UntypedFormBuilder,
+    UntypedFormGroup,
+    Validators,
+} from '@angular/forms';
 import { Subject, takeUntil, switchMap, of } from 'rxjs';
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
@@ -82,11 +87,6 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
         this.getModalDropdowns();
         this.getFuelTransactionFranchises();
         this.getTruckList();
-
-        if (this.editData?.type === 'edit') {
-            this.disableCardAnimation = true;
-            this.getFuelById(this.editData.id);
-        }
 
         this.getDriverTrailerBySelectedTruck();
     }
@@ -543,6 +543,11 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
             .subscribe({
                 next: (res: GetFuelModalResponse) => {
                     this.fuelItemsDropdown = res.itemFuel;
+
+                    if (this.editData?.type === 'edit') {
+                        this.disableCardAnimation = true;
+                        this.getFuelById(this.editData.id);
+                    }
                 },
                 error: () => {},
             });

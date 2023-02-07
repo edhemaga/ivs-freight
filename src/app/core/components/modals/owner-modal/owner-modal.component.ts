@@ -16,7 +16,11 @@ import {
     OwnerModalResponse,
     OwnerResponse,
 } from '../../../../../../appcoretruckassist';
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import {
+    UntypedFormBuilder,
+    UntypedFormGroup,
+    Validators,
+} from '@angular/forms';
 import {
     Component,
     Input,
@@ -52,7 +56,7 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
         {
             id: 1,
             name: 'Company',
-            checked: true
+            checked: true,
         },
         {
             id: 2,
@@ -84,10 +88,6 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
         this.createForm();
         this.getOwnerDropdowns();
         this.onBankSelected();
-
-        if (this.editData?.id) {
-            this.editOwnerById(this.editData.id);
-        }
     }
 
     public tabChange(event: any): void {
@@ -614,6 +614,10 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
             .subscribe({
                 next: (res: OwnerModalResponse) => {
                     this.labelsBank = res.banks;
+
+                    if (this.editData?.id) {
+                        this.editOwnerById(this.editData.id);
+                    }
                 },
                 error: () => {},
             });

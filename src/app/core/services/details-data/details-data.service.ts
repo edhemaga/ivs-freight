@@ -40,36 +40,35 @@ export class DetailsDataService {
         this.cardMainTitle = mod;
     }
 
-    setCdlId(mod){
+    setCdlId(mod) {
         this.cdlId = mod;
     }
 
     changeRateStatus(type, mod) {
         if (type == 'like') {
-            if ( mod ) {
+            if (mod) {
                 this.mainData.rating = 1;
             } else {
                 this.mainData.rating = 0;
             }
         } else {
-            if ( mod ) {
+            if (mod) {
                 this.mainData.rating = -1;
             } else {
                 this.mainData.rating = 0;
             }
         }
-        
     }
 
     setStopName(mod) {
         this.stopName = mod;
     }
 
-    setDocumentName(mod){
+    setDocumentName(mod) {
         this.documentName = mod;
     }
 
-    setUnitValue(mod){
+    setUnitValue(mod) {
         this.unitValue = mod;
     }
 }

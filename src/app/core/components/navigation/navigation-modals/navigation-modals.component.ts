@@ -33,16 +33,24 @@ import { DriverDrugAlcoholModalComponent } from '../../modals/driver-modal/drive
 import { PayrollDeductionModalComponent } from '../../modals/payroll-modals/payroll-deduction-modal/payroll-deduction-modal.component';
 import { PayrollBonusModalComponent } from '../../modals/payroll-modals/payroll-bonus-modal/payroll-bonus-modal.component';
 import { PayrollCreditBonusComponent } from '../../modals/payroll-modals/payroll-credit-bonus/payroll-credit-bonus.component';
+import {
+    moveElementsTopDownModal,
+    smoothHeight,
+} from '../navigation.animation';
 
 @Component({
     selector: 'app-navigation-modals',
     templateUrl: './navigation-modals.component.html',
     styleUrls: ['./navigation-modals.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
+    animations: [
+        smoothHeight('showHideDetails'),
+        moveElementsTopDownModal('moveTopDown'),
+    ],
 })
 export class NavigationModalsComponent {
     @Input() isNavigationHoveredAndPanelOpen: boolean = false;
-
+    @Input() isNavigationHovered: boolean = false;
     public generalNavigationData: NavigationModal[] = generalNavigationData;
     public toolsNavigationData: NavigationModal[] = toolsNavigationData;
     public repairNavigationData: NavigationModal[] = repairNavigationData;
@@ -53,27 +61,40 @@ export class NavigationModalsComponent {
 
     public changeTextHoverOnCloseModal: boolean = false;
     public Title: string = 'Add New';
+    public OpenCloseModal: boolean = false;
     constructor(
         private modalService: ModalService,
         private navigationService: NavigationService
     ) {}
+    public OpenMainModal(openClose: boolean) {
+        this.OpenCloseModal = openClose;
+        this.navigationService.onDropdownActivation({
+            name: 'Modal Panel',
+            type: this.OpenCloseModal,
+        });
+        console.log(openClose);
+    }
+    public onAction(
+        // action: string,
 
-    public onAction(action: string, item?: NavigationModal) {
-        switch (action) {
-            case 'Close Panel': {
-                this.navigationService.onDropdownActivation({
-                    name: 'Modal Panel',
-                    type: false,
-                });
-                break;
-            }
-            case 'Open Modal': {
-                this.openModal(item);
-                break;
-            }
-            default:
-                return;
-        }
+        item: NavigationModal
+    ) {
+        this.openModal(item);
+        // switch (action) {
+        //     case 'Close Panel': {
+        //         this.navigationService.onDropdownActivation({
+        //             name: 'Modal Panel',
+        //             type: true,
+        //         });
+        //         break;
+        //     }
+        //     case 'Open Modal': {
+        //         this.openModal(item);
+        //         break;
+        //     }
+        //     default:
+        //         return;
+        // }
     }
 
     private openModal(navItem: NavigationModal) {
