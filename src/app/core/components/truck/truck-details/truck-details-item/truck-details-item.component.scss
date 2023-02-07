@@ -66,9 +66,7 @@ app-truck-details-item {
         flex-direction: column;
         margin-left: 4px;
         height: 40px;
-        .note-body {
-            padding-left: 4px !important;
-        }
+        
         .note-textarea {
             color: #6c6c6c !important;
             font-weight: 500 !important;
@@ -251,7 +249,7 @@ app-truck-details-item {
         padding-left: 5px;
         padding-right: 9px;
         .note-body {
-            padding-left: 4px !important;
+            padding: 0 !important;
             margin-top: 8px;
         }
         .note-textarea {
@@ -386,7 +384,7 @@ app-truck-details-item {
     .note-cards-lease {
         .note-body {
             height: 23px !important;
-            padding: 0 9px !important;
+            padding: 0px !important;
             .note-textarea {
                 color: #6c6c6c !important;
                 font-weight: 500 !important;
