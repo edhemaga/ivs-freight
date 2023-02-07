@@ -94,7 +94,7 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
     public markerSelected: boolean = false;
     public mapLatitude: number = 41.860119;
     public mapLongitude: number = -87.660156;
-    public sortBy: string = ''; //nameDesc
+    public sortBy: string = 'nameDesc'; //nameDesc
     public searchValue: string = '';
     public mapMarkers: any[] = [];
     public mapCircle: any = {
@@ -188,8 +188,9 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
         this.mapsService.searchTextChange
             .pipe(takeUntil(this.destroy$))
             .subscribe((text) => {
+                this.mapListPagination.pageIndex = 1;
                 this.searchText = text;
-                this.getClusters(true);
+                this.getClusters(true, true);
             });
 
         this.mapsService.sortChange
@@ -373,7 +374,7 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
         }, 1000);
     }
 
-    clusterDropAnimation(){
+    clusterDropAnimation() {
          setTimeout(() => {
             this.clusterMarkers.map((data: any) => {
                 console.log(data);
@@ -709,8 +710,8 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
                     pageIndex,
                     pageSize,
                     null, // companyId
-                    null, // sort
-                    null, // search
+                    this.sortBy, // sort
+                    this.searchText, // search
                     null, // search1
                     null // search2
                 )

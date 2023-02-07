@@ -854,7 +854,7 @@
                     *ngIf="type == 'repairShop' || type == 'fuelStop'"
                 >
                     <span class="marker-bold-text blue-text"
-                        >${{ item?.totalCost != null ? item?.totalCost : item?.cost != null ? item?.cost : '0' }} </span
+                        >${{ item?.totalCost != null && item.totalCost > 0 ? (item?.totalCost | taThousandSeparator) : item?.cost != null && item.cost > 0 ? (item?.cost | taThousandSeparator) : '0' }} </span
                     ><span class="load-text font-weight-normal">Cost</span>
                 </div>
             </div>
@@ -915,7 +915,7 @@
                     <div class="marker-like-text marker-bold-text mg-bottom-4">
                         {{ item?.status == 2 ? 'Perm. Closed' : 'Last Used' }}
                     </div>
-                    <div class="marker-info-text">{{ item?.lastUsed != null ? item?.lastUsed : '&nbsp;' }}</div>
+                    <div class="marker-info-text">{{ item?.lastUsed != null ? item?.lastUsed : item?.lastVisited != null ? item.lastVisited : item?.updatedAt != null ? (item.updatedAt | formatDateP) : '&nbsp;' }}</div>
                 </div>
             </div>
         </div>

@@ -565,6 +565,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
     mapList: any[] = [];
 
     routePolylines: any = {};
+    hoveredRouteId: number = null;
     
     editStopForm!: UntypedFormGroup;
 
@@ -3314,6 +3315,8 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
                     return item.id === routeId;
                 });
 
+                mainthis.hoveredRouteId = route.id;
+
                 mainthis.focusPolyline(route, true);
             }
         );
@@ -3328,7 +3331,15 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
                     return item.id === routeId;
                 });
 
-                mainthis.focusPolyline(route, false);
+                var hoveredStop = route.stops.find((stop) => {
+                    return stop.hovered;
+                });
+
+                mainthis.hoveredRouteId = null;
+
+                if ( !hoveredStop ) {
+                    mainthis.focusPolyline(route, false);
+                }
             }
         );
     }
@@ -3373,6 +3384,8 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
     hoverStop(route, stop, hover) {
         stop.hovered = hover;
 
+        if ( this.hoveredRouteId == route.id && !hover ) return;
+        
         this.focusPolyline(route, hover);
     }
 

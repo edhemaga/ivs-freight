@@ -192,7 +192,7 @@
                 <div class="marker-like-text">
                     Total Cost
                     <span class="marker-bold-text"
-                        >${{ item.totalCost != null ? item.totalCost : item.cost != null ? item.cost : '0' }}</span
+                        >${{ item.totalCost != null && item.totalCost > 0 ? (item.totalCost | taThousandSeparator) : item.cost != null && item.cost > 0 ? (item.cost | taThousandSeparator) : '0' }}</span
                     >
                 </div>
             </div>

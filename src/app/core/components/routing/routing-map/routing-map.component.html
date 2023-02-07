@@ -1448,19 +1448,6 @@
                                         "
                                         class="marker-container marker-icon"
                                         *ngIf="route.isFocused"
-                                        [ngStyle]="{
-                                            visibility:
-                                                focusedRouteIndex == i &&
-                                                (stopPickerLocation.editIndex ==
-                                                    j ||
-                                                    (stopPickerLocation.lat ==
-                                                        route.stops[j].lat &&
-                                                        stopPickerLocation.long ==
-                                                            route.stops[j]
-                                                                .long))
-                                                    ? 'hidden'
-                                                    : 'visible'
-                                        }"
                                         (click)="stopMarkerClick($event, i, j)"
                                         (mousewheel)="
                                             markerZoom($event, route.stops[j])
@@ -1583,12 +1570,6 @@
                                     </div>
                                     <div
                                         class="marker-container circle-marker"
-                                        [ngStyle]="{
-                                            visibility:
-                                                focusedRouteIndex == i
-                                                    ? 'hidden'
-                                                    : 'visible'
-                                        }"
                                         [ngClass]="
                                             route.isFocused || route.lineHover
                                                 ? 'route-zIndex-998'
@@ -1722,13 +1703,7 @@
                                                 ', ' +
                                                 route.color +
                                                 '33)' +
-                                                ', #FFFFFF',
-                                            visibility:
-                                                focusedRouteIndex == i &&
-                                                stopPickerLocation.editIndex ==
-                                                    j
-                                                    ? 'hidden'
-                                                    : 'visible'
+                                                ', #FFFFFF'
                                         }"
                                         *ngIf="
                                             route.stops[j].isSelected ||
@@ -1888,12 +1863,9 @@
                                             cx="2"
                                             cy="2"
                                             r="2"
-                                            transform="translate(1115 985)"
+                                            transform="translate(1115 985.5)"
                                             [ngStyle]="{
-                                                fill: tableData[
-                                                    selectedMapIndex
-                                                ].routes[focusedRouteIndex]
-                                                    .color
+                                                fill: '#fff'
                                             }"
                                         />
                                     </g>
@@ -2018,6 +1990,7 @@
                                         'width.px': 14,
                                         'height.px': 14
                                     }"
+                                    [ngClass]="['route-color-' + (focusedRouteIndex + 1)]"
                                     (click)="deleteStopPickerLocation($event)"
                                     (mouseover)="
                                         stopPickerLocation.deleteHover = true

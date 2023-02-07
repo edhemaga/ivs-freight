@@ -9,13 +9,15 @@ import {
 } from '@angular/core';
 import { card_component_animation } from '../../shared/animations/card-component.animations';
 import { DetailsDataService } from 'src/app/core/services/details-data/details-data.service';
+import { TaThousandSeparatorPipe } from '../../../pipes/taThousandSeparator.pipe';
 
 @Component({
     selector: 'app-map-marker-dropdown',
     templateUrl: './map-marker-dropdown.component.html',
     styleUrls: ['./map-marker-dropdown.component.scss'],
     animations: [card_component_animation('showHideCardBody')],
-    changeDetection: ChangeDetectionStrategy.OnPush
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    providers: [TaThousandSeparatorPipe],
 })
 export class MapMarkerDropdownComponent implements OnInit {
     @Input() title: string = '';
