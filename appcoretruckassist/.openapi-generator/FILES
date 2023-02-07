@@ -558,6 +558,8 @@ model/repairResponse.ts
 model/repairResponsePagination.ts
 model/repairServiceTypeResponse.ts
 model/repairShopContactResponse.ts
+model/repairShopExpensesChartResponse.ts
+model/repairShopExpensesResponse.ts
 model/repairShopListResponse.ts
 model/repairShopMinimalListResponse.ts
 model/repairShopMinimalResponse.ts

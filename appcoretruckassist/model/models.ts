@@ -490,6 +490,8 @@ export * from './repairResponse';
 export * from './repairResponsePagination';
 export * from './repairServiceTypeResponse';
 export * from './repairShopContactResponse';
+export * from './repairShopExpensesChartResponse';
+export * from './repairShopExpensesResponse';
 export * from './repairShopListResponse';
 export * from './repairShopMinimalListResponse';
 export * from './repairShopMinimalResponse';
