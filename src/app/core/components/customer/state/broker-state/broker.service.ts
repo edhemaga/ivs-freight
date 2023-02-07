@@ -384,11 +384,13 @@ export class BrokerTService implements OnDestroy {
                 this.brokerItemStore?.getValue()?.entities[currentId]
             )
         );
+
         brokerData?.reviews.push(data);
 
         this.brokerItemStore.update(brokerData.id, {
             reviews: brokerData.reviews,
         });
+        
         this.brokerStore.update(brokerData.id, { reviews: brokerData.reviews });
 
         this.tableService.sendActionAnimation({

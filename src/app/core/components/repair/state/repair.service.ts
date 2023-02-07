@@ -661,6 +661,10 @@ export class RepairTService implements OnDestroy {
         });
     }
 
+    public addShopFavorite(shopId: number){
+        return this.shopServices.apiRepairshopPinnedIdPut(shopId);
+    }
+
     ngOnDestroy(): void {
         this.destroy$.next();
         this.destroy$.complete();
