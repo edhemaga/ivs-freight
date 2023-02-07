@@ -284,8 +284,16 @@
     top: 0px;
 }
 .box-animation-closed-nav {
-    background-color: $nav-hover-ligh;
-    transition: background-color 0.1s;
+    // background-color: $nav-hover-ligh;
+    animation: example 0.5s forwards;
+}
+@keyframes example {
+    from {
+        background-color: #2f2f2f;
+    }
+    to {
+        background-color: $nav-hover-ligh;
+    }
 }
 .subroute-item {
     padding-left: 8px;

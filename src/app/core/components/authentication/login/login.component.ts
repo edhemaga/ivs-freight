@@ -47,17 +47,16 @@ export class LoginComponent implements OnInit, OnDestroy {
     ) {}
 
     ngOnInit() {
-        this.authStoreService.userHasMultipleCompaniesObservable.subscribe(
-            (res) => {
-                this.userData = res;
-                console.log(res);
-                this.lastLoginInCompany = this.calculateDiff(
-                    convertDateFromBackend(res.companies.lastLogin)
-                );
-                this.cdRef.detectChanges();
-                this.showHideIfMoreThenOneCompany = true;
-            }
-        );
+        // this.authStoreService.userHasMultipleCompaniesObservable.subscribe(
+        //     (res) => {
+        //         // this.userData = res;
+        //         // this.lastLoginInCompany = this.calculateDiff(
+        //         //     convertDateFromBackend(res.companies.lastLogin)
+        //         // );
+        //         // this.cdRef.detectChanges();
+        //         this.showHideIfMoreThenOneCompany = true;
+        //     }
+        // );
         this.createForm();
 
         this.copyrightYear = moment().year();
@@ -66,24 +65,24 @@ export class LoginComponent implements OnInit, OnDestroy {
     goBackToLogin(event) {
         this.showHideIfMoreThenOneCompany = event;
     }
-    public calculateDiff(dateSent) {
-        let currentDate = new Date();
-        dateSent = new Date(dateSent);
+    // public calculateDiff(dateSent) {
+    //     let currentDate = new Date();
+    //     dateSent = new Date(dateSent);
 
-        return Math.floor(
-            (Date.UTC(
-                currentDate.getFullYear(),
-                currentDate.getMonth(),
-                currentDate.getDate()
-            ) -
-                Date.UTC(
-                    dateSent.getFullYear(),
-                    dateSent.getMonth(),
-                    dateSent.getDate()
-                )) /
-                (1000 * 60 * 60 * 24)
-        );
-    }
+    //     return Math.floor(
+    //         (Date.UTC(
+    //             currentDate.getFullYear(),
+    //             currentDate.getMonth(),
+    //             currentDate.getDate()
+    //         ) -
+    //             Date.UTC(
+    //                 dateSent.getFullYear(),
+    //                 dateSent.getMonth(),
+    //                 dateSent.getDate()
+    //             )) /
+    //             (1000 * 60 * 60 * 24)
+    //     );
+    // }
     private createForm(): void {
         this.loginForm = this.formBuilder.group({
             email: [null, [Validators.required]],

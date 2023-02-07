@@ -3,19 +3,24 @@ import {
     Component,
     EventEmitter,
     Inject,
-    Input,
     OnDestroy,
     OnInit,
     Output,
+    ViewChild,
     ViewEncapsulation,
 } from '@angular/core';
-import { Subject, tap } from 'rxjs';
+import { map, Subject, tap } from 'rxjs';
 import { Router } from '@angular/router';
-
+import moment from 'moment';
 import { AuthStoreService } from '../state/auth.service';
 import { SelectCompanyResponse } from '../../../../../../appcoretruckassist/model/selectCompanyResponse';
 import { SignInResponse } from '../../../../../../appcoretruckassist/model/signInResponse';
 import { UntypedFormBuilder } from '@angular/forms';
+import { convertTimeFromBackend } from 'src/app/core/utils/methods.calculations';
+import {
+    SlickCarouselModule,
+    SlickCarouselComponent,
+} from 'ngx-slick-carousel';
 @Component({
     selector: 'app-select-company',
     templateUrl: './select-company.component.html',
@@ -27,9 +32,14 @@ export class SelectCompanyComponent implements OnInit, OnDestroy {
     public dotsTrue: boolean;
     private destroy$ = new Subject<void>();
     public slideConfig: any;
-    @Input() userData: SignInResponse;
-    @Input() lastLoginInCompany: number;
+    public userData: SignInResponse;
+    public lastLoginInCompany: any;
+    public dates: any = [];
+    public newUser: any;
     @Output() goBackToLogin = new EventEmitter<boolean>();
+    @ViewChild('slickModal', { static: false })
+    id;
+    slickModal: SlickCarouselComponent;
     constructor(
         @Inject(DOCUMENT) private document: HTMLDocument,
         private router: Router,
@@ -37,21 +47,89 @@ export class SelectCompanyComponent implements OnInit, OnDestroy {
         private formBuilder: UntypedFormBuilder
     ) {}
 
-    ngOnInit(): void {
-        this.userData = JSON.parse(localStorage.getItem('user'));
+    ngOnInit() {
+        this.user(JSON.parse(localStorage.getItem('user')));
         this.createForm();
         this.userData.companies.length < 5
             ? (this.dotsTrue = false)
             : (this.dotsTrue = true);
+        //Slick Carousel Config
+    }
+    public user(data) {
+        this.userData = data;
 
+        data.companies.forEach((res) => {
+            this.lastLoginInCompany = this.calculateDiff(
+                convertTimeFromBackend(res.lastLogin)
+            );
+            this.dates.push(
+                moment.utc(res.lastLogin).local().format('MM/DD/YY HH:mm:ss')
+            );
+        });
+        let createNewObject = {
+            ...this.userData,
+            companies: this.userData.companies.map((item) => {
+                return {
+                    ...item,
+                    lastLogin: moment
+                        .utc(item.lastLogin)
+                        .local()
+                        .format('MM/DD/YY HH:mm:ss'),
+                };
+            }),
+        };
+        this.newUser = {
+            ...createNewObject,
+            companies: createNewObject.companies.map((item) => {
+                return {
+                    ...item,
+                    LastActiveCompany:
+                        item.lastLogin == this.getNewerDate(this.dates) &&
+                        (this.id = item.id),
+                };
+            }),
+        };
         this.slideConfig = {
-            centerMode: true,
             infinite: false,
             slidesToScroll: 1,
             dots: this.dotsTrue,
             arrows: true,
             variableWidth: true,
+            focusOnSelect: true,
+            centerMode: true,
+            initialSlide: this?.id - 1,
         };
+    }
+
+    public getNewerDate(dates: string[]) {
+        let newestDate = moment.utc(dates[0], 'MM/DD/YY HH:mm:ss');
+        for (let i = 1; i < dates.length; i++) {
+            const currentDate = moment.utc(dates[i], 'MM/DD/YY HH:mm:ss');
+
+            if (currentDate.isAfter(newestDate)) {
+                newestDate = currentDate;
+            }
+        }
+        return newestDate.format('MM/DD/YY HH:mm:ss');
+    }
+    //Calculate last login in company to display
+    public calculateDiff(dateSent) {
+        let currentDate = new Date();
+        dateSent = new Date(dateSent);
+
+        return Math.floor(
+            (Date.UTC(
+                currentDate.getFullYear(),
+                currentDate.getMonth(),
+                currentDate.getDate()
+            ) -
+                Date.UTC(
+                    dateSent.getFullYear(),
+                    dateSent.getMonth(),
+                    dateSent.getDate()
+                )) /
+                (1000 * 60 * 60 * 24)
+        );
     }
     private createForm(): void {
         this.saveCompany = this.formBuilder.group({
@@ -84,7 +162,6 @@ export class SelectCompanyComponent implements OnInit, OnDestroy {
                     };
                     localStorage.removeItem('user');
                     localStorage.setItem('user', JSON.stringify(this.userData));
-
                     this.router.navigate(['/dashboard']);
                 })
             )

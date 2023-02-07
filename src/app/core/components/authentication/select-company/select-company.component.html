@@ -29,8 +29,9 @@
             >
                 <div
                     ngxSlickItem
-                    *ngFor="let item of userData?.companies"
+                    *ngFor="let item of newUser?.companies"
                     class="slide"
+                    [ngClass]="{ 'slick-center': item.LastActiveCompany }"
                 >
                     <div class="slide-inner" [id]="item.id">
                         <span class="company-name" *ngIf="!item.logo">{{
@@ -42,7 +43,7 @@
                             *ngIf="item.logo"
                             src="{{ 'data:image/jpg;base64,' + item.logo }}"
                         />
-                        <div *ngIf="item?.isActive" class="last-login">
+                        <div *ngIf="item?.LastActiveCompany" class="last-login">
                             <span class="text"> Last login </span>
                             <span class="time" *ngIf="lastLoginInCompany == 0">
                                 Today
