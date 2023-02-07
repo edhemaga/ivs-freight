@@ -661,6 +661,10 @@ export class RepairTService implements OnDestroy {
         });
     }
 
+    public getRepairShopChart(id: number, chartType: number) {
+        return this.shopServices.apiRepairshopExpensesGet(id, chartType);
+    }
+
     ngOnDestroy(): void {
         this.destroy$.next();
         this.destroy$.complete();

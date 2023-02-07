@@ -616,8 +616,6 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
                     this.payrollChartConfig.dataProperties[1].defaultConfig.barThickness = 18;
                 }
                 item.truckFuelConsumptionCharts.map((data, index) => {
-                    data.milesPerGallon =
-                        Math.floor(Math.random() * 1000) + 100;
                     milesPerGallon.push(data.milesPerGallon);
                     costPerGallon.push(data.costPerGallon);
                     if (data.milesPerGallon > maxValue) {
