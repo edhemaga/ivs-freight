@@ -171,7 +171,6 @@ export class TruckassistTableToolbarComponent
                 next: (res: Confirmation) => {
                     switch (res.type) {
                         case 'delete': {
-                            console.log('Poziva se ResetTable');
                             this.onResetTable();
                             break;
                         }
@@ -308,7 +307,7 @@ export class TruckassistTableToolbarComponent
         this.setColumnsOptionsGroups();
 
         this.toolbarWidth = hasMinWidth
-            ? columnsSumWidth + 12 + 'px'
+            ? columnsSumWidth + 22 + 'px'
             : 100 + '%';
     }
 

@@ -12,8 +12,9 @@
                     ? viewData.length * 32 +
                       (viewData.length - 1) * 2 +
                       22 +
-                      300
-                    : viewData.length * 32 + (viewData.length - 1) * 2 + 22
+                      300 +
+                      7
+                    : viewData.length * 32 + (viewData.length - 1) * 2 + 22 + 7
             "
             (scrollEvent)="onHorizontalScroll($event)"
         >
@@ -1091,6 +1092,7 @@
                                 }"
                             >
                                 <div class="raiting-container">
+                                    <!-- Like -->
                                     <div
                                         class="raiting-icon"
                                         (click)="onLike(row)"
@@ -1101,6 +1103,7 @@
                                                 !row[column.field]?.hasLiked
                                         }"
                                     ></div>
+                                    <!-- Raiting Count -->
                                     <div
                                         class="raiting-counter-container"
                                         (click)="onOpenReviews(row)"
@@ -1118,6 +1121,7 @@
                                             }}
                                         </div>
                                     </div>
+                                    <!-- Dislike -->
                                     <div
                                         class="raiting-icon"
                                         (click)="onDislike(row)"
@@ -2178,9 +2182,10 @@
                                 }"
                             >
                                 <div class="raiting-container">
+                                    <!-- Like -->
                                     <div
                                         class="raiting-icon"
-                                        (click)="onLike(row, column)"
+                                        (click)="onLike(row)"
                                         [ngClass]="{
                                             'did-like-icon':
                                                 row[column.field]?.hasLiked,
@@ -2188,6 +2193,7 @@
                                                 !row[column.field]?.hasLiked
                                         }"
                                     ></div>
+                                    <!-- Raiting Count -->
                                     <div
                                         class="raiting-counter-container"
                                         (click)="onOpenReviews(row)"
@@ -2205,9 +2211,10 @@
                                             }}
                                         </div>
                                     </div>
+                                    <!-- Dislike -->
                                     <div
                                         class="raiting-icon"
-                                        (click)="onDislike(row, column)"
+                                        (click)="onDislike(row)"
                                         [ngClass]="{
                                             'did-dislike-icon':
                                                 row[column.field]?.hasDislike,
@@ -3064,7 +3071,9 @@
                     </div>
 
                     <!-- Border -->
-                    <div class="border-scroll-section-container border-scroll-section-container-right">
+                    <div
+                        class="border-scroll-section-container border-scroll-section-container-right"
+                    >
                         <div
                             class="border-scroll-section"
                             [ngClass]="{
@@ -3109,7 +3118,9 @@
                                             'height.px': '18'
                                         }"
                                     ></svg-icon>
-                                    <div class="file_count">{{row.fileCount}}</div>
+                                    <div class="file_count">
+                                        {{ row.fileCount }}
+                                    </div>
                                 </div>
                             </div>
 

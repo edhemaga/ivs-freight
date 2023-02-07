@@ -203,6 +203,7 @@ $input-background-selection-normal-focus: $input-gray-color-2;
 
 // Invalid Color Focus
 $input-background-color-invalid-focus: $input-red-color-3;
+$input-background-selection-invalid-focus: $input-red-color-4;
 
 // Invalid Color Focus Out
 $input-background-color-invalid-focus-out: $input-red-color-8;
@@ -211,6 +212,7 @@ $input-text-color-invalid-focus-out: $input-black-color-1;
 // Valid Color Focus
 $input-background-color-valid-focus: $input-blue-color-1;
 $input-placeholder-color-valid-focus: $input-blue-color-3;
+$input-background-selection-valid-focus: $input-blue-color-2;
 
 // Valid Color Focus Out
 $input-background-color-valid-focus-out: $input-blue-color-7;
@@ -306,61 +308,159 @@ $input-placeholder-text-focus: $input-white-color-1;
 //----------------------- INPUT REQUIRED CHECK -----------------------
 $input-required-check-normal: $input-blue-color-6;
 
-// --------------------------------------------------------------------
+//-------------------------------------------------- NEW PALLETE OF COLORS  --------------------------------------------------
 
-// ---------------------------- INACTIVE ----------------------------------------
-// Inactive State Empty
+$input-transparent-color: transparent;
+$input-capslock-color: #ffb74d;
+
+//---------------------------- INACTIVE ----------------------------------------
+//Inactive State Empty
 $inactive-empty-input: #eeeeee;
 $inactive-empty-label: #919191;
 $inactive-empty-placeholderIcon: #cccccc;
 $inactive-empty-placeholderIcon-pipe: rgba(204, 204, 204, 0.4); // #CCCCCC
 
-// Inactive State Filled
+//Inactive State Filled
 $inactive-filled-input: #f7f7f7;
 $inactive-filled-label: #2f2f2f;
 $inactive-filled-content: #2f2f2f;
-$inactive-filled-placeholderIcon: #cccccc;
-$inactive-filled-placeholderIcon-pipe: rgba(204, 204, 204, 0.4); // #CCCCCC
+$inactive-filled-placeholderIcon: #aaaaaa;
+$inactive-filled-placeholderIcon-pipe: rgb(170, 170, 170, 0.4); //#AAAAAA
+$inactive-filled-placeholderText: #919191;
+$inactive-filled-arrow: rgba(145, 145, 145, 1);
 
-// ------------------------------ DEFAULT --------------------------------------
-// Default Empty
+$inactive-content-background-selection: rgb(47, 47, 47, 0.2); //#2f2f2f
+
+//------------------------------ DEFAULT --------------------------------------
+//Default Empty
 $default-input: #eeeeee;
 $default-label: #2f2f2f;
+$default-content: #2f2f2f;
+$default-password: #919191;
 $default-placeholderIcon: #919191;
-$default-placeholderIcon-pipe: rgb(145, 145, 145, 0.4); // #919191
+$default-counter: #424242;
+$default-counter-opacity: rgb(66, 66, 66, 0.2);
+$input-placeholderIcon-yellow: #ffa726;
+$input-placeholderIcon-green: #26a690;
+$input-placeholderIcon-light-green: #4db6a2;
+$input-placeholderIcon-purple: #ba68c8;
+$default-placeholderIcon-pipe: rgb(145, 145, 145, 0.4); //#919191
+$default-placeholderText: #919191;
+$default-arrow: #919191;
+$default-clear: #919191;
 
-// Default Hover
+$default-content-background-selection: rgb(47, 47, 47, 0.2); //#2f2f2f
+$default-label-background-selection: rgb(47, 47, 47, 0.2); //#2f2f2f
+
+//Default Hover
 $default-input-hover: #dadada;
+$default-arrow-hover: #424242;
 
-// Focus
+//Focus
 $default-focus-input: #1d1d1d;
 $default-focus-label: #2f2f2f;
+$default-focus-content: #ffffff;
 $default-focus-placeholderIcon: #cccccc;
-$default-focus-placehilderIcon-pipe: rgb(204, 204, 204, 0.4); // #CCCCCC
+$default-focus-placehilderIcon-pipe: rgb(204, 204, 204, 0.4); //#CCCCCC
+$default-focus-placeholderText: #919191;
+$default-focus-arrow: #cccccc;
+$default-cous-clear: #cccccc;
 
-// ------------------------------ VALID --------------------------------------
-// Valid
-$valid-input: rgba(111, 158, 224, 0.2); // #6F9EE0
+//Focus Hover
+$default-focus-arrow-hover: #ffffff;
+
+//------------------------------ VALID --------------------------------------
+//Valid
+$valid-input: rgba(111, 158, 224, 0.2);
 $valid-label: #2f2f2f;
+$valid-content: #2f2f2f;
+$valid-password: #6f9ee0;
 $valid-placeholderIcon: #6f9ee0;
-$valid-placehilderIcon-pipe: rgb(111, 158, 224, 0.4); // #6F9EE0
+$valid-placeholderIcon-pipe: rgb(111, 158, 224, 0.4); //#6F9EE0
+$valid-placholderText: #6f9ee0;
 $valid-checkmark: #6f9ee0;
 $valid-clear: #6f9ee0;
+$valid-pen-path: rgba(111, 158, 224, 0.4);
+$valid-pen-rect: #6f9ee0;
+$valid-arrow: #6f9ee0;
 
-// Valid Hover
-$valid-input-hover: rgb(111, 158, 224, 0.4); // #6F9EE0
+$valid-content-background-selection: rgb(47, 47, 47, 0.2); //#2f2f2f
+
+//Valid Hover
+$valid-input-hover: rgba(111, 158, 224, 0.4);
 $valid-clear-hover: #3074d3;
+$valid-pen-rect-hover: #3074d3;
+$valid-password-hover: #3074d3;
+$valid-placeholderText-hover: #6f9ee0;
+$valid-arrow-hover: #3074d3;
 
-// Valid Focus
+//Valid Focus
 $valid-focus-input: #255bb9;
+$valid-focus-content: #ffffff;
+$valid-focus-password: #98b9ea;
 $valid-focus-placeholderIcon: #98b9ea;
-$valid-focus-placeholderIcon-pipe: rgb(152, 185, 234, 0.4); // #98B9EA
-$valid-focus-clear: rgb(111, 158, 224, 0.4); // #6F9EE0
+$valid-focus-placeholderIcon-pipe: rgb(152, 185, 234, 0.4); //#98B9EA
+$valid-focus-placeholderText: rgb(111, 158, 224, 0.4); //#6F9EE0
+$valid-focus-clear: rgb(111, 158, 224, 0.4); //#6F9EE0
+$valid-focus-arrow: rgb(111, 158, 224, 0.4); //#6F9EE0
 
-// Valid Focus Hover
+//Valid Focus Hover
 $valid-focus-clear-hover: #ffffff;
+$valid-focus-password-hover: #ffffff;
+$valid-focus-arrow-hover: #ffffff;
 
-// ------------------------------- INVALID -------------------------------------
+//------------------------------- INVALID -------------------------------------
 
-// Requiered Star
-$required-input-star: #ef5350;
+//Invalid
+$invalid-input: rgba(229, 115, 115, 0.2);
+$invalid-label: #2f2f2f;
+$invalid-content: #2f2f2f;
+$invalid-password: #e57373;
+$invalid-placeholderIcon: #e57373;
+$invalid-placeholderIcon-pipe: rgb(229, 115, 115, 0.2); //#E57373
+$invalid-placeholderText: #919191;
+$invalid-danger-mark: #e57373;
+$invalid-message: #ef5350;
+$invalid-clear: #e57373;
+$invalid-pen-path: rgba(229, 115, 115, 0.4);
+$invalid-pen-rect: #e57373;
+$invalid-arrow: #e57373;
+
+$invalid-content-background-selection: rgb(47, 47, 47, 0.2); //#2f2f2f
+$invalid-message-background-selection: rgb(239, 83, 80, 0.2); //#ef5350
+
+//Invalid Hover
+$invalid-input-hover: rgba(229, 115, 115, 0.4);
+$invalid-clear-hover: #ef5350;
+$invalid-pen-rect-hover: #ef5350;
+$invalid-password-hover: #ef5350;
+$invalid-arrow-hover: #ef5350;
+
+//Invalid Focus
+$invalid-focus-input: #e22e22;
+$invalid-focus-content: #ffffff;
+$invalid-focus-password: #ffb0a8;
+$invalid-focus-placeholderIcon: #ffb0a8;
+$invalid-focus-placeholderIcon-pipe: rgb(255, 176, 168, 0.4);
+$invalid-focus-placeholderText: rgb(229, 115, 115, 0.4); //#E57373
+$invalid-focus-clear: rgb(229, 115, 115, 0.4); //#E57373
+$invalid-focus-arrow: rgb(229, 115, 115, 0.4); //#E57373
+
+//Invalid Focus Hover
+$invalid-focus-clear-hover: #ffffff;
+$invalid-focus-password-hover: #ffffff;
+$invalid-focus-arrow-hover: #ffffff;
+
+//------------------------------- Requiered Star -------------------------------
+$input-required-star: #ef5350;
+
+//------------------------------- Font Weight Label -------------------------------
+$input-label-font-weight-600: 600;
+
+//------------------------------- LABEL IN INPUT -------------------------------
+$default-label-in-input: #ffffff;
+
+//------------------------------- DOUBLE TEXT IN INPUT -------------------------------
+$double-input-content: #919191;
+
+//Treba videti ?

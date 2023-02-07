@@ -1,5 +1,10 @@
 import { Component, Input, OnInit, OnDestroy } from '@angular/core';
-import { UntypedFormArray, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import {
+    UntypedFormArray,
+    UntypedFormBuilder,
+    UntypedFormGroup,
+    Validators,
+} from '@angular/forms';
 import { tab_modal_animation } from '../../shared/animations/tabs-modal.animation';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
 import { AddressEntity } from 'appcoretruckassist';
@@ -45,7 +50,7 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
         {
             id: 1,
             name: 'Basic',
-            checked: true
+            checked: true,
         },
         {
             id: 2,
@@ -179,11 +184,6 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.createForm();
         this.getModalDropdowns();
-
-        if (this.editData) {
-            this.disableCardAnimation = true;
-            this.editViolationById(this.editData.id);
-        }
     }
 
     private createForm() {
@@ -667,6 +667,11 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
                             name: item.businessName,
                         };
                     });
+
+                    if (this.editData) {
+                        this.disableCardAnimation = true;
+                        this.editViolationById(this.editData.id);
+                    }
                 },
                 error: () => {},
             });

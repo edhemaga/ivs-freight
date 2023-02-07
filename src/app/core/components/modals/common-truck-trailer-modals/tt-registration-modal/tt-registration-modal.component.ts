@@ -53,31 +53,6 @@ export class TtRegistrationModalComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.createForm();
         this.getModalDropdowns();
-        if (this.editData.type === 'edit-registration') {
-            this.disableCardAnimation = true;
-            this.editRegistrationById();
-        }
-
-        if (this.editData && this.editData?.data) {
-            this.editData = {
-                ...this.editData,
-                payload: this.editData.data,
-            };
-        }
-
-        if (this.editData?.modal) {
-            if (this.editData.modal === 'truck') {
-                this.inputService.changeValidators(
-                    this.registrationForm.get('expDate')
-                );
-                this.registrationExpirationDate = true;
-            } else {
-                this.inputService.changeValidators(
-                    this.registrationForm.get('expDate'),
-                    false
-                );
-            }
-        }
     }
 
     private createForm() {
@@ -306,6 +281,32 @@ export class TtRegistrationModalComponent implements OnInit, OnDestroy {
                             stateName: item.stateName,
                         };
                     });
+
+                    if (this.editData.type === 'edit-registration') {
+                        this.disableCardAnimation = true;
+                        this.editRegistrationById();
+                    }
+
+                    if (this.editData && this.editData?.data) {
+                        this.editData = {
+                            ...this.editData,
+                            payload: this.editData.data,
+                        };
+                    }
+
+                    if (this.editData?.modal) {
+                        if (this.editData.modal === 'truck') {
+                            this.inputService.changeValidators(
+                                this.registrationForm.get('expDate')
+                            );
+                            this.registrationExpirationDate = true;
+                        } else {
+                            this.inputService.changeValidators(
+                                this.registrationForm.get('expDate'),
+                                false
+                            );
+                        }
+                    }
                 },
                 error: () => {},
             });

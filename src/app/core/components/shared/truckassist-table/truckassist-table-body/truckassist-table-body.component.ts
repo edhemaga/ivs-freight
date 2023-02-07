@@ -39,6 +39,7 @@ import { FilesService } from 'src/app/core/services/shared/files.service';
         },
     ],
 })
+
 export class TruckassistTableBodyComponent
     implements OnInit, OnChanges, AfterViewInit, OnDestroy
 {
@@ -74,7 +75,7 @@ export class TruckassistTableBodyComponent
     progressData: any[] = [];
     viewDataEmpty: boolean;
     viewDataTimeOut: any;
-    tableWidthTimeout: any
+    tableWidthTimeout: any;
     rowData: any;
     activeDescriptionDropdown: number = -1;
     descriptionTooltip: any;
@@ -174,7 +175,6 @@ export class TruckassistTableBodyComponent
     ngOnChanges(changes: SimpleChanges): void {
         if (!changes?.viewData?.firstChange && changes?.viewData) {
             clearTimeout(this.viewDataTimeOut);
-
             this.viewData = [...changes.viewData.currentValue];
 
             this.viewDataEmpty = this.viewData.length ? false : true;
@@ -185,6 +185,8 @@ export class TruckassistTableBodyComponent
                     this.getSelectedTabTableData();
                 }, 10);
             }
+
+            this.checkAttachmentUpdate();
         }
 
         if (!changes?.tableData?.firstChange && changes?.tableData) {
@@ -255,6 +257,34 @@ export class TruckassistTableBodyComponent
         // }, 10);
 
         this.getNotPinedMaxWidth();
+    }
+
+    // Attachment Update
+    checkAttachmentUpdate() {
+        if (this.activeAttachment !== -1) {
+            let entity = this.activeTableData?.gridNameTitle;
+
+            if (entity == 'Repair' && this.selectedTab == 'repair-shop') {
+                entity = 'Repair-Shop';
+            }
+
+            this.filesService
+                .getFiles(entity, this.activeAttachment)
+                .subscribe((res) => {
+                    if (res?.length) {
+                        const newViewData = [...this.viewData];
+
+                        newViewData.map((data: any) => {
+                            if (data.id === this.activeAttachment) {
+                                data.tableAttachments = res;
+                                data.fileCount = res.length;
+                            }
+                        });
+
+                        this.viewData = [...newViewData];
+                    }
+                });
+        }
     }
 
     // Horizontal Scroll
@@ -413,6 +443,7 @@ export class TruckassistTableBodyComponent
 
     onDislike(row: any) {
         this.detailsDataService.setNewData(row);
+
         this.bodyActions.emit({
             data: row,
             type: 'raiting',
@@ -538,9 +569,9 @@ export class TruckassistTableBodyComponent
                 if (res?.length) {
                     this.activeAttachment = row.id;
                     row.tableAttachments = res;
-                }
 
-                this.changeDetectorRef.detectChanges();
+                    this.changeDetectorRef.detectChanges();
+                }
             });
         } else {
             this.activeAttachment = -1;

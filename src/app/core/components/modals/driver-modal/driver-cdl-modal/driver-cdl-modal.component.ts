@@ -1,4 +1,8 @@
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import {
+    UntypedFormBuilder,
+    UntypedFormGroup,
+    Validators,
+} from '@angular/forms';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { CdlResponse, GetCdlModalResponse } from 'appcoretruckassist';
 import { CdlTService } from '../../../driver/state/cdl.service';
@@ -65,16 +69,6 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
         this.getCdlDropdowns();
         this.createForm();
         this.getDriverById(this.editData.id);
-
-        if (this.editData.type === 'edit-licence') {
-            this.disableCardAnimation = true;
-            this.getCdlById(this.editData.file_id);
-        }
-
-        if (this.editData.type === 'renew-licence') {
-            this.disableCardAnimation = true;
-            this.populateCdlFormOnRenew(this.editData.renewData.id);
-        }
     }
 
     private createForm() {
@@ -215,6 +209,16 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
                                 .concat(' ', item.description),
                         };
                     });
+
+                    if (this.editData.type === 'edit-licence') {
+                        this.disableCardAnimation = true;
+                        this.getCdlById(this.editData.file_id);
+                    }
+
+                    if (this.editData.type === 'renew-licence') {
+                        this.disableCardAnimation = true;
+                        this.populateCdlFormOnRenew(this.editData.renewData.id);
+                    }
                 },
                 error: () => {},
             });
