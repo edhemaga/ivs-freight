@@ -2115,9 +2115,11 @@ export class TaInputComponent
                         this.selectSpanByTabIndex(1, true);
                     }
                 } else {
-                    this.dateTimeInputDate = new Date(
-                        this.dateTimeInputDate.setMonth(parseInt(e.key) - 1)
-                    );
+                    if (parseInt(e.key)) {
+                        this.dateTimeInputDate = new Date(
+                            this.dateTimeInputDate.setMonth(parseInt(e.key) - 1)
+                        );
+                    }
 
                     const final_value = ('0' + parseInt(e.key)).slice(-2);
 
@@ -2146,7 +2148,7 @@ export class TaInputComponent
                     } else {
                         this.dateTimeInputDate = new Date(
                             this.dateTimeInputDate.setDate(
-                                parseInt(
+                                parseInt(            
                                     this.span2.nativeElement.innerHTML +
                                         parseInt(e.key)
                                 )
@@ -2166,9 +2168,12 @@ export class TaInputComponent
                         this.selectSpanByTabIndex(2, true);
                     }
                 } else {
-                    this.dateTimeInputDate = new Date(
-                        this.dateTimeInputDate.setDate(parseInt(e.key))
-                    );
+                    if (parseInt(e.key)) {
+                        this.dateTimeInputDate = new Date(
+                            this.dateTimeInputDate.setDate(parseInt(e.key))
+                        );
+                    }
+
                     this.span2.nativeElement.innerHTML = (
                         '0' + parseInt(e.key)
                     ).slice(-2);
@@ -2449,7 +2454,7 @@ export class TaInputComponent
                     this.span3.nativeElement.innerHTML = 'yy';
                     this.dateTimeInputDate = new Date();
                     this.showDateInput = false;
-                    //this.resetForms(); // PITANJE STO SE OVO SKLANJA I UOPSTE STO JE TREBALO
+                    this.resetForms(); // PITANJE STO SE OVO SKLANJA I UOPSTE STO JE TREBALO
                 }
             } else {
                 if (
