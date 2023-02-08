@@ -565,6 +565,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
     mapList: any[] = [];
 
     routePolylines: any = {};
+    routeHiddenPolylines: any = {};
     hoveredRouteId: number = null;
     
     editStopForm!: UntypedFormGroup;
@@ -842,6 +843,13 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
                             ? 999
                             : this.tableData[this.selectedMapIndex].routes
                                   .length - routeIndex,
+                    });
+
+                    this.routeHiddenPolylines[route.id].setOptions({
+                        zIndex: route.isFocused
+                            ? 1000
+                            : this.tableData[this.selectedMapIndex].routes
+                                  .length,
                     });
                 }
             }
@@ -3170,6 +3178,15 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
                                 : this.tableData[this.selectedMapIndex].routes
                                       .length - routeIndex,
                         });
+
+                        this.routeHiddenPolylines[route.id].setOptions({
+                            path: polyLineCoordinates,
+                            strokeWeight: 10,
+                            zIndex: route.isFocused
+                                ? 1000
+                                : this.tableData[this.selectedMapIndex].routes
+                                      .length,
+                        });
                     } else {
                         this.routePolylines[route.id] = new google.maps.Polyline({
                             path: polyLineCoordinates,
@@ -3188,10 +3205,23 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
                                       .length - routeIndex,
                         });
 
+                        this.routeHiddenPolylines[route.id] = new google.maps.Polyline({
+                            path: polyLineCoordinates,
+                            geodesic: true,
+                            strokeColor: route.color,
+                            strokeOpacity: 0,
+                            strokeWeight: 10,
+                            zIndex: route.isFocused
+                                ? 1000
+                                : this.tableData[this.selectedMapIndex].routes
+                                      .length,
+                        });
+
                         this.addPolylineListeners(route.id);
                     }
 
                     this.routePolylines[route.id].setMap(this.agmMap);
+                    this.routeHiddenPolylines[route.id].setMap(this.agmMap);
                 },
                 error: () => {
                     console.log('decodeRouteShape error');
@@ -3282,8 +3312,10 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
         if (this.routePolylines[route.id]) {
             if (hide) {
                 this.routePolylines[route.id].setMap(null);
+                this.routeHiddenPolylines[route.id].setMap(null);
             } else {
                 this.routePolylines[route.id].setMap(this.agmMap);
+                this.routeHiddenPolylines[route.id].setMap(this.agmMap);
             }
         }
     }
@@ -3292,7 +3324,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
         var mainthis = this;
 
         google.maps.event.addListener(
-            this.routePolylines[routeId],
+            this.routeHiddenPolylines[routeId],
             'click',
             () => {
                 const routeLineIndex = mainthis.tableData[
@@ -3306,7 +3338,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
         );
 
         google.maps.event.addListener(
-            this.routePolylines[routeId],
+            this.routeHiddenPolylines[routeId],
             'mouseover',
             () => {
                 var route = mainthis.tableData[
@@ -3322,7 +3354,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
         );
 
         google.maps.event.addListener(
-            this.routePolylines[routeId],
+            this.routeHiddenPolylines[routeId],
             'mouseout',
             () => {
                 var route = mainthis.tableData[
@@ -3376,6 +3408,12 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
                 ? 999
                 : this.tableData[this.selectedMapIndex].routes.length -
                   routeLineIndex
+        });
+
+        this.routeHiddenPolylines[route.id].setOptions({
+            zIndex: focus || route.isFocused
+                ? 1000
+                : this.tableData[this.selectedMapIndex].routes.length
         });
 
         route.lineHover = focus;
