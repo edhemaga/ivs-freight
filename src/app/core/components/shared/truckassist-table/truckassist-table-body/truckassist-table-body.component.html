@@ -3727,7 +3727,15 @@ highlightingWords) : '' " -->
                                             [mainData]="row"
                                             [entityId]="row.id"
                                             [entityType]="
-                                                activeTableData?.gridNameTitle
+                                                activeTableData?.gridNameTitle !=
+                                                'Repair'
+                                                    ? activeTableData?.gridNameTitle
+                                                    : activeTableData?.gridNameTitle ==
+                                                          'Repair' &&
+                                                      selectedTab ==
+                                                          'repair-shop'
+                                                    ? 'RepairShop'
+                                                    : 'Repair'
                                             "
                                             [openedAll]="false"
                                             [parking]="false"
