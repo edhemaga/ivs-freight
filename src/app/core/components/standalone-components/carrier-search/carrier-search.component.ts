@@ -9,11 +9,12 @@ import {
 import { CommonModule } from '@angular/common';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { AngularSvgIconModule } from 'angular-svg-icon';
+import { FormsModule } from '@angular/forms';
 
 @Component({
     selector: 'app-carrier-search',
     standalone: true,
-    imports: [CommonModule, AngularSvgIconModule],
+    imports: [CommonModule, AngularSvgIconModule, FormsModule],
     templateUrl: './carrier-search.component.html',
     styleUrls: ['./carrier-search.component.scss'],
 })

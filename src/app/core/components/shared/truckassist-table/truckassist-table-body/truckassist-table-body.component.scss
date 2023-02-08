@@ -7,9 +7,9 @@ table {
         // display: flex;
 
         tr {
+            min-height: 32px;
             width: fit-content;
             height: fit-content;
-            min-height: 32px;
             background: white;
             display: flex;
             flex-direction: column;
@@ -23,12 +23,12 @@ table {
                 height: 100%;
                 display: flex;
 
-                .not-pined-columns{
-                    .space-left{
+                .not-pined-columns {
+                    .space-left {
                         margin-left: 11px;
                     }
 
-                    td{
+                    td {
                         margin-right: 6px;
                     }
                 }
@@ -571,7 +571,7 @@ table {
                             }
                         }
 
-                        .has-details-page{
+                        .has-details-page {
                             cursor: pointer;
 
                             &:hover {
@@ -2282,13 +2282,16 @@ table {
 
                     // DOCUMENT
                     .document-container {
+                        display: flex;
+                        justify-content: flex-end;
+
                         width: 100%;
                         height: fit-content;
                         position: relative;
 
                         // TITLE
                         .document-title {
-                            width: 100%;
+                            width: auto;
                             height: 26px;
                             display: flex;
                             align-items: center;
@@ -2662,7 +2665,7 @@ table {
         }
 
         // Border Scroll Section
-        .border-scroll-section-container{
+        .border-scroll-section-container {
             position: relative;
 
             .border-scroll-section {
@@ -2673,14 +2676,14 @@ table {
             }
         }
 
-        .border-scroll-section-container-right{
+        .border-scroll-section-container-right {
             margin-right: 7px;
 
-            .border-scroll-section{
+            .border-scroll-section {
                 left: -8px;
             }
         }
-        
+
         .border-left {
             background-image: linear-gradient(to right, #eeeeee, #eeeeee00);
         }

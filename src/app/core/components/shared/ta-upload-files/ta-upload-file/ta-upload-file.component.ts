@@ -72,7 +72,7 @@ export class TaUploadFileComponent implements OnInit, OnDestroy {
 
     public editFile: boolean = false;
     public fileNewName: UntypedFormControl = new UntypedFormControl();
-    public numberOfFilePages: string = '0';
+    public numberOfFilePages: string;
 
     public isFileDelete: boolean = false;
 
@@ -145,6 +145,10 @@ export class TaUploadFileComponent implements OnInit, OnDestroy {
             pdf._pdfInfo.numPages === 1
                 ? pdf._pdfInfo.numPages.toString().concat(' ', 'PAGE')
                 : pdf._pdfInfo.numPages.toString().concat(' ', 'PAGES');
+
+        if (!this.file?.extension) {
+            this.fileExtension = this.urlExt.transform(this.file.url);
+        }
     }
 
     public pageRendered(pdf) {
