@@ -28,7 +28,6 @@ import { NavigationService } from '../services/navigation.service';
 })
 export class NavigationRouteComponent implements OnInit, OnChanges {
     @Input() route: Navigation;
-    @Input() isNavigationHovered: boolean = false;
     @Input() isActiveSubroute: boolean = false;
     @Input() message: number;
     @Input() files: number;
@@ -66,12 +65,14 @@ export class NavigationRouteComponent implements OnInit, OnChanges {
     public activeLinkHighlight: boolean = false;
     public showToolTip: boolean;
     public routeId: string;
-
+    public magicBoxAnime = true;
     constructor(
         public router: Router,
         public navigationService: NavigationService,
         public activatedroute: ActivatedRoute
     ) {}
+    @Input() isNavigationHovered: boolean = false;
+
     @Input() set activeLink(value) {
         this.activeLinkHighlight = false;
         if (typeof this._activeLink == 'undefined' && value) {
@@ -105,6 +106,13 @@ export class NavigationRouteComponent implements OnInit, OnChanges {
 
     //Get subroute name
     ngOnChanges(changes: SimpleChanges) {
+        if (changes.hasOwnProperty('isNavigationHovered')) {
+            const prev = changes.isNavigationHovered;
+
+            if (changes && prev.previousValue != undefined) {
+                this.magicBoxAnime = changes.isNavigationHovered.currentValue;
+            }
+        }
         this.textSubRoute = this.selectedSubRoute;
         this.activeRouteIdFromLocalStorage = parseInt(
             localStorage.getItem('subroute_active')

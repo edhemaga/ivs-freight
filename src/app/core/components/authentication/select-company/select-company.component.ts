@@ -37,9 +37,7 @@ export class SelectCompanyComponent implements OnInit, OnDestroy {
     public dates: any = [];
     public newUser: any;
     @Output() goBackToLogin = new EventEmitter<boolean>();
-    @ViewChild('slickModal', { static: false })
-    id;
-    slickModal: SlickCarouselComponent;
+    public id;
     constructor(
         @Inject(DOCUMENT) private document: HTMLDocument,
         private router: Router,
@@ -53,7 +51,6 @@ export class SelectCompanyComponent implements OnInit, OnDestroy {
         this.userData.companies.length < 5
             ? (this.dotsTrue = false)
             : (this.dotsTrue = true);
-        //Slick Carousel Config
     }
     public user(data) {
         this.userData = data;
@@ -89,6 +86,7 @@ export class SelectCompanyComponent implements OnInit, OnDestroy {
                 };
             }),
         };
+        //Slick Carousel Config
         this.slideConfig = {
             infinite: false,
             slidesToScroll: 1,

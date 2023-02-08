@@ -11,15 +11,11 @@
     color: $nav-text-color;
 
     transition: $nav-transition-5;
-    // -webkit-user-select: none;
-    // -moz-user-select: none;
-    // -ms-user-select: none;
-    // user-select: none;
+
     position: relative;
     width: 36px;
     left: -8px;
     padding-left: 8px;
-    // z-index: 1;
     .route-not-active-svg {
         svg {
             path {
@@ -282,14 +278,14 @@
     border-radius: 3px;
     padding: 5px 9px;
     top: 0px;
+    background-color: $nav-hover-ligh;
 }
 .box-animation-closed-nav {
-    // background-color: $nav-hover-ligh;
-    animation: example 0.5s forwards;
+    animation: animateBackground 0.5s forwards;
 }
-@keyframes example {
+@keyframes animateBackground {
     from {
-        background-color: #2f2f2f;
+        background-color: $nav-dark;
     }
     to {
         background-color: $nav-hover-ligh;
@@ -347,11 +343,7 @@
         }
     }
 }
-// .nav-item-text-active {
-//     span {
-//     }
-//     color: $nav-active-lighter !important;
-// }
+
 .route-clicked-svg {
     svg {
         path {
