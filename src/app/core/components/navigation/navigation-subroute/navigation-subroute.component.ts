@@ -16,6 +16,7 @@ import { Router } from '@angular/router';
 import {
     DropDownAnimation,
     navigation_route_animation,
+    test,
 } from '../navigation.animation';
 
 @Component({
@@ -26,6 +27,7 @@ import {
     animations: [
         navigation_route_animation('showHideDetails'),
         DropDownAnimation,
+        test('test'),
     ],
 })
 export class NavigationSubrouteComponent implements OnChanges {

@@ -1,4 +1,10 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import {
+    ChangeDetectionStrategy,
+    Component,
+    EventEmitter,
+    Input,
+    Output,
+} from '@angular/core';
 import {
     accountingNavigationData,
     fuelNavigationData,
@@ -51,6 +57,7 @@ import {
 export class NavigationModalsComponent {
     @Input() isNavigationHoveredAndPanelOpen: boolean = false;
     @Input() isNavigationHovered: boolean = false;
+    @Output() ChangeCloseText = new EventEmitter<Boolean>();
     public generalNavigationData: NavigationModal[] = generalNavigationData;
     public toolsNavigationData: NavigationModal[] = toolsNavigationData;
     public repairNavigationData: NavigationModal[] = repairNavigationData;
@@ -58,7 +65,7 @@ export class NavigationModalsComponent {
     public safetyNavigationData: NavigationModal[] = safetyNavigationData;
     public accountingNavigationData: NavigationModal[] =
         accountingNavigationData;
-
+    public showToolTip: boolean = false;
     public changeTextHoverOnCloseModal: boolean = false;
     public Title: string = 'Add New';
     public OpenCloseModal: boolean = false;
@@ -72,29 +79,12 @@ export class NavigationModalsComponent {
             name: 'Modal Panel',
             type: this.OpenCloseModal,
         });
-        console.log(openClose);
     }
-    public onAction(
-        // action: string,
-
-        item: NavigationModal
-    ) {
+    public changeText(text: boolean) {
+        this.ChangeCloseText.emit(text);
+    }
+    public onAction(item: NavigationModal) {
         this.openModal(item);
-        // switch (action) {
-        //     case 'Close Panel': {
-        //         this.navigationService.onDropdownActivation({
-        //             name: 'Modal Panel',
-        //             type: true,
-        //         });
-        //         break;
-        //     }
-        //     case 'Open Modal': {
-        //         this.openModal(item);
-        //         break;
-        //     }
-        //     default:
-        //         return;
-        // }
     }
 
     private openModal(navItem: NavigationModal) {
