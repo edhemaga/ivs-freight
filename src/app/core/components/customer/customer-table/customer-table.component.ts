@@ -255,20 +255,25 @@ export class CustomerTableComponent
             .pipe(takeUntil(this.destroy$))
             .subscribe((res: any) => {
                 if (res) {
-                    if (this.selectedTab === 'active') {
-                        this.backBrokerFilterQuery.pageIndex = 1;
+                    this.backBrokerFilterQuery.pageIndex = 1;
+                    this.backShipperFilterQuery.pageIndex = 1;
 
-                        const searchEvent = tableSearch(
-                            res,
-                            this.backBrokerFilterQuery
-                        );
-
-                        if (searchEvent) {
-                            if (searchEvent.action === 'api') {
-                                this.brokerBackFilter(searchEvent.query, true);
-                            } else if (searchEvent.action === 'store') {
-                                this.sendCustomerData();
-                            }
+                    const searchEvent = tableSearch(
+                        res,
+                        this.selectedTab === 'active'
+                            ? this.backBrokerFilterQuery
+                            : this.backShipperFilterQuery
+                    );
+                    if (searchEvent) {
+                        if (searchEvent.action === 'api') {
+                            this.selectedTab === 'active'
+                                ? this.brokerBackFilter(searchEvent.query, true)
+                                : this.shipperBackFilter(
+                                      searchEvent.query,
+                                      true
+                                  );
+                        } else if (searchEvent.action === 'store') {
+                            this.sendCustomerData();
                         }
                     }
                 }
@@ -345,14 +350,14 @@ export class CustomerTableComponent
     sendCustomerData() {
         this.initTableOptions();
 
-        this.checkActiveViewMode();
+        // this.checkActiveViewMode();
 
         const brokerShipperCount = JSON.parse(
             localStorage.getItem('brokerShipperTableCount')
         );
 
         if (this.selectedTab === 'active') {
-             this.brokers = this.brokerQuery.getAll().length
+            this.brokers = this.brokerQuery.getAll().length
                 ? this.brokerQuery.getAll()
                 : [];
         } else {
@@ -446,17 +451,10 @@ export class CustomerTableComponent
             this.mapListData = JSON.parse(JSON.stringify(this.viewData));
 
             this.viewData = this.viewData.map((data: any) => {
-                if (this.selectedTab === 'active') {
-                    return this.mapBrokerData(data);
-                } else {
-                    return this.mapShipperData(data);
-                }
+                return this.selectedTab === 'active'
+                    ? this.mapBrokerData(data)
+                    : this.mapShipperData(data);
             });
-
-            // For Testing
-            // for (let i = 0; i < 1000; i++) {
-            //   this.viewData.push(this.viewData[0]);
-            // }
         } else {
             this.viewData = [];
         }
@@ -1032,14 +1030,14 @@ export class CustomerTableComponent
         var listChanged = false;
         var addData = mapListResponse.addData ? true : false;
 
-        if ( !addData ) {
+        if (!addData) {
             for (var i = 0; i < this.mapListData.length; i++) {
                 let item = this.mapListData[i];
-    
+
                 let itemIndex = newMapList.findIndex(
                     (item2) => item2.id === item.id
                 );
-    
+
                 if (itemIndex == -1) {
                     this.mapListData.splice(i, 1);
                     listChanged = true;
@@ -1056,7 +1054,7 @@ export class CustomerTableComponent
             );
 
             if (itemIndex == -1) {
-                if ( addData ) {
+                if (addData) {
                     this.mapListData.push(item);
                 } else {
                     this.mapListData.splice(b, 0, item);
