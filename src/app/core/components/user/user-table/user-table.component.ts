@@ -9,6 +9,10 @@ import { UserState } from '../state/user-state/user.store';
 import { formatPhonePipe } from 'src/app/core/pipes/formatPhone.pipe';
 import { NameInitialsPipe } from 'src/app/core/pipes/nameinitials';
 import { ImageBase64Service } from 'src/app/core/utils/base64.image';
+import { tableSearch } from 'src/app/core/utils/methods.globals';
+import { UserTService } from '../state/user.service';
+import { GetCompanyUserListResponse } from 'appcoretruckassist';
+import { mapUserData } from '../../../utils/methods.globals';
 
 @Component({
     selector: 'app-user-table',
@@ -29,6 +33,16 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
     resizeObserver: ResizeObserver;
     mapingIndex: number = 0;
     users: UserState[] = [];
+    backFilterQuery = {
+        active: 1,
+        pageIndex: 1,
+        pageSize: 25,
+        companyId: undefined,
+        sort: undefined,
+        searchOne: undefined,
+        searchTwo: undefined,
+        searchThree: undefined,
+    };
 
     constructor(
         private modalService: ModalService,
@@ -37,6 +51,7 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
         private phoneFormater: formatPhonePipe,
         private nameInitialsPipe: NameInitialsPipe,
         private imageBase64Service: ImageBase64Service,
+        private userService: UserTService
     ) {}
 
     // ---------------------------  NgOnInit ----------------------------------
@@ -89,21 +104,21 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.tableService.currentSearchTableData
             .pipe(takeUntil(this.destroy$))
             .subscribe((res: any) => {
-                /*  if (res) {
-          this.mapingIndex = 0;
+                if (res) {
+                    this.mapingIndex = 0;
 
-          this.backFilterQuery.pageIndex = 1;
+                    this.backFilterQuery.pageIndex = 1;
 
-          const searchEvent = tableSearch(res, this.backFilterQuery);
+                    const searchEvent = tableSearch(res, this.backFilterQuery);
 
-          if (searchEvent) {
-            if (searchEvent.action === 'api') {
-              this.contactBackFilter(searchEvent.query, true);
-            } else if (searchEvent.action === 'store') {
-              this.sendContactData();
-            }
-          }
-        } */
+                    if (searchEvent) {
+                        if (searchEvent.action === 'api') {
+                            this.userBackFilter(searchEvent.query);
+                        } else if (searchEvent.action === 'store') {
+                            this.sendUserData();
+                        }
+                    }
+                }
             });
 
         // User Actions
@@ -373,6 +388,51 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
         };
     }
 
+    // User Back Filter Query
+    userBackFilter(
+        filter: {
+            active: number;
+            pageIndex: number;
+            pageSize: number;
+            companyId: number | undefined;
+            sort: string | undefined;
+            searchOne: string | undefined;
+            searchTwo: string | undefined;
+            searchThree: string | undefined;
+        },
+        isShowMore?: boolean
+    ) {
+        this.userService
+            .getUsers(
+                filter.active,
+                filter.pageIndex,
+                filter.pageSize,
+                filter.companyId,
+                filter.sort,
+                filter.searchOne,
+                filter.searchTwo,
+                filter.searchThree
+            )
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((users: GetCompanyUserListResponse) => {
+                if (!isShowMore) {
+                    this.viewData = users.pagination.data;
+
+                    this.viewData = this.viewData.map((data: any) => {
+                        return this.mapUserData(data);
+                    });
+                } else {
+                    let newData = [...this.viewData];
+
+                    users.pagination.data.map((data: any) => {
+                        newData.push(this.mapUserData(data));
+                    });
+
+                    this.viewData = [...newData];
+                }
+            });
+    }
+
     // Get Avatar Color
     getAvatarColors() {
         let textColors: string[] = [
@@ -428,13 +488,13 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
     onTableHeadActions(event: any) {
         if (event.action === 'sort') {
             if (event.direction) {
-                /*  this.mapingIndex = 0;
+                this.mapingIndex = 0;
 
-        this.backFilterQuery.sort = event.direction;
+                this.backFilterQuery.sort = event.direction;
 
-        this.backFilterQuery.pageIndex = 1;
+                this.backFilterQuery.pageIndex = 1;
 
-        this.contactBackFilter(this.backFilterQuery); */
+                this.userBackFilter(this.backFilterQuery);
             } else {
                 this.sendUserData();
             }
@@ -453,6 +513,12 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     disableButton: event.data?.userType?.name !== 'Owner',
                 }
             );
+        }
+        // Show More (Pagination)
+        else if (event.type === 'show-more') {
+            this.backFilterQuery.pageIndex++;
+
+            this.userBackFilter(this.backFilterQuery, true);
         }
     }
 
