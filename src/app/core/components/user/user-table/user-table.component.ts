@@ -12,7 +12,6 @@ import { ImageBase64Service } from 'src/app/core/utils/base64.image';
 import { tableSearch } from 'src/app/core/utils/methods.globals';
 import { UserTService } from '../state/user.service';
 import { GetCompanyUserListResponse } from 'appcoretruckassist';
-import { mapUserData } from '../../../utils/methods.globals';
 
 @Component({
     selector: 'app-user-table',
