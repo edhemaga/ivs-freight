@@ -43,95 +43,10 @@
             </div>
         </div>   
     </div>
-    <!-- 
-    <div class="settings-header" [class.divisionHeader]="companyDivision">
-        <div
-            *ngIf="!toggleSelect && optionsCompany"
-            class="current-active-item-company"
-            (click)="onPickItem($event)"
-        >
-            <div class="division-name-wrapper">
-                <div class="current-active-name">
-                    {{ (optionsCompany | detailActiveItem).name }}
-                </div>
-                <span *ngIf="companyDivision" class="division-company"
-                    >Division Co.</span
-                >
-            </div>
-
-            <svg-icon
-                *ngIf="hasArrow || companyDivision"
-                class="arrow-down"
-                src="assets/svg/common/calendar/arrow-right.svg"
-            ></svg-icon>
-        </div>
-       
-        <app-ta-input-dropdown
-            class="dropInputCompany"
-            *ngIf="toggleSelect"
-            [formControl]="inputFormControl"
-            [inputConfig]="{
-                name: 'Input Dropdown',
-                type: 'text',
-                isDropdown: true,
-                dropdownWidthClass: 'w-col-510',
-                textTransform: 'capitalize',
-                customClass: 'input-32 input-32-font-20 details-pages'
-            }"
-            [isDetailsPages]="toggleSelect"
-            (selectedItem)="onSelectItem($event)"
-            [options]="optionsCompany"
-            [template]="'details-template'"
-        >
-        </app-ta-input-dropdown>
-        <div class="settings-header-buttons">
-            <div class="settings-header-button">
-                <svg-icon
-                    src="ic_pen.svg"
-                    class="settings-edit-button"
-                    (click)="
-                        onAction({
-                            modalName: 'basic',
-                            type: companyData?.divisions?.length
-                                ? 'edit-company'
-                                : 'edit-division',
-                            company: companyData
-                        })
-                    "
-                ></svg-icon>
-            </div>
-            <div class="settings-header-button" *ngIf="companyDivision">
-                <svg-icon
-                    src="assets/svg/common/ic_trash.svg"
-                    class="settings-edit-button"
-                ></svg-icon>
-            </div>
-            <div class="settings-header-button">
-                <div class="border-left" *ngIf="!companyDivision"></div>
-                <svg-icon
-                    src="assets/svg/common/ic_plus.svg"
-                    class="settings-plus-button"
-                    (click)="
-                        onAction({
-                            modalName: 'basic',
-                            type: 'new-division',
-                            company: null
-                        })
-                    "
-                ></svg-icon>
-            </div>
-        </div>
-    </div>
-
-    -->
-
     <div class="settings-body">
         <div class="basic-details">
             <!-- Header -->
             <div class="company-select-holder">
-                
-                
-                
                 <div class="inactive-icon-input">
                     <div 
                         *ngIf="!selectedDropdown"
