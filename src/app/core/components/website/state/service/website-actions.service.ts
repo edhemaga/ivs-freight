@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 
 import { BehaviorSubject } from 'rxjs';
 
+import { UserInfoModel } from '../model/user-info.model';
+
 @Injectable({
     providedIn: 'root',
 })
@@ -21,15 +23,11 @@ export class WebsiteActionsService {
     private registerUserInfoSubject: BehaviorSubject<any> =
         new BehaviorSubject<any>(null);
 
-    private verifyUserInfoSubject: BehaviorSubject<{
-        firstName: string;
-        lastName: string;
-        email: string;
-    }> = new BehaviorSubject<{
-        firstName: string;
-        lastName: string;
-        email: string;
-    }>(null);
+    private verifyUserInfoSubject: BehaviorSubject<UserInfoModel> =
+        new BehaviorSubject<UserInfoModel>(null);
+
+    private createPasswordSubject: BehaviorSubject<UserInfoModel> =
+        new BehaviorSubject<UserInfoModel>(null);
 
     constructor() {}
 
@@ -57,6 +55,10 @@ export class WebsiteActionsService {
         return this.verifyUserInfoSubject.asObservable();
     }
 
+    get getCreatePasswordSubject$() {
+        return this.createPasswordSubject.asObservable();
+    }
+
     public setSidebarContentType(type: string | null) {
         this.sidebarContentTypeSubject.next(type);
     }
@@ -77,11 +79,11 @@ export class WebsiteActionsService {
         this.registerUserInfoSubject.next(registerUserInfo);
     }
 
-    public setVerifyUserInfoSubject(verifyUserInfo: {
-        firstName: string;
-        lastName: string;
-        email: string;
-    }) {
+    public setVerifyUserInfoSubject(verifyUserInfo: UserInfoModel) {
         this.verifyUserInfoSubject.next(verifyUserInfo);
+    }
+
+    public setCreatePasswordSubject(userInfo: UserInfoModel) {
+        this.createPasswordSubject.next(userInfo);
     }
 }

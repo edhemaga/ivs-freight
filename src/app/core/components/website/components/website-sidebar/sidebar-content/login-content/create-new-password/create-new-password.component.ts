@@ -11,6 +11,7 @@ import { passwordValidation } from 'src/app/core/components/shared/ta-input/ta-i
 
 import { ConstantString } from 'src/app/core/components/website/state/enum/const-string.enum';
 import { SetNewPasswordCommand } from 'appcoretruckassist';
+import { UserInfoModel } from 'src/app/core/components/website/state/model/user-info.model';
 
 @Component({
     selector: 'app-create-new-password',
@@ -24,11 +25,7 @@ export class CreateNewPasswordComponent implements OnInit, OnDestroy {
 
     public openHavingTroubleContent: boolean = false;
 
-    public userInfo: { name: string; email: string; imgSrc: string } = {
-        name: 'Aleksandar Djordjevic',
-        email: 'aleksandar@gmail.com',
-        imgSrc: null,
-    };
+    public userInfo:UserInfoModel = null;
 
     public displaySpinner: boolean = false;
 
@@ -42,6 +39,8 @@ export class CreateNewPasswordComponent implements OnInit, OnDestroy {
     ngOnInit(): void {
         this.createForm();
 
+        this.getUserInfo();
+
         this.passwordsNotSame();
     }
 
@@ -53,6 +52,19 @@ export class CreateNewPasswordComponent implements OnInit, OnDestroy {
                 [Validators.required, ...passwordValidation],
             ],
         });
+    }
+
+    private getUserInfo(): void {
+        this.websiteActionsService.getCreatePasswordSubject$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res: UserInfoModel) => {
+                this.userInfo = {
+                    firstName: res.firstName,
+                    lastName: res.lastName,
+                    email: res.email,
+                    avatar: res.avatar,
+                };
+            });
     }
 
     public passwordsNotSame(): void {

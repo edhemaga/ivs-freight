@@ -20,6 +20,8 @@ export enum ConstantString {
     CONFIRM_PASSWORD = 'confirmPassword',
     NEW_PASSWORD = 'newPassword',
     EIN = 'ein',
+    COMPANY_NAME_2 = 'companyName',
+    PHONE = 'phone',
 
     EMAIL_HASH = 'EmailHash',
     CODE = 'Code',
@@ -28,6 +30,7 @@ export enum ConstantString {
     EMAIL = 'Email',
     DEPARTMENT = 'Department',
     COMPANY_NAME = 'CompanyName',
+    AVATAR = 'Avatar',
 
     WEBSITE = '/website',
 
@@ -40,8 +43,12 @@ export enum ConstantString {
 
     SIDEBAR = '#sidebar',
 
+    COMPANY_ALREADY_EXIST = 'Company name already exists.',
+    PHONE_ALREADY_EXIST = 'Phone already exists.',
     EIN_ALREADY_EXIST = 'Ein already exists.',
     EMAIL_ALREADY_EXIST = 'Email already exists.',
+    THIS_USER_DOESENT_EXIST = "This user doesn't exist.",
+    WRONG_PASSWORD_TRY_AGAIN = 'Wrong password, try again.',
 
     COMPANY = 'company',
     USER = 'user',

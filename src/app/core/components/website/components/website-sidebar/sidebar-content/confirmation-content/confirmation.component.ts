@@ -52,6 +52,10 @@ export class ConfirmationComponent implements OnInit, OnDestroy {
                 if (this.registerUserConfirmation) {
                     this.resendRegisterConfirmation(ConstantString.USER);
                 }
+
+                if (this.passwordResetRequested) {
+                    this.resendResetPassword();
+                }
             }
         }
     }
@@ -78,6 +82,15 @@ export class ConfirmationComponent implements OnInit, OnDestroy {
                 .pipe(takeUntil(this.destroy$))
                 .subscribe();
         }
+    }
+
+    private resendResetPassword(): void {
+        const email = this.confirmationEmail;
+
+        this.websiteAuthService
+            .resetPassword({ email })
+            .pipe(takeUntil(this.destroy$))
+            .subscribe();
     }
 
     ngOnDestroy(): void {

@@ -7,6 +7,7 @@ import { WebsiteActionsService } from 'src/app/core/components/website/state/ser
 import { WebsiteAuthService } from 'src/app/core/components/website/state/service/website-auth.service';
 
 import { ConstantString } from 'src/app/core/components/website/state/enum/const-string.enum';
+import { UserInfoModel } from 'src/app/core/components/website/state/model/user-info.model';
 
 @Component({
     selector: 'app-verify-user-helper',
@@ -16,11 +17,7 @@ import { ConstantString } from 'src/app/core/components/website/state/enum/const
 export class VerifyUserHelperComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
 
-    private verifyUserInfo: {
-        firstName: string;
-        lastName: string;
-        email: string;
-    } = null;
+    private verifyUserInfo: UserInfoModel = null;
 
     private verifyData: { emailHash: string; code: string } = null;
 

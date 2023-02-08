@@ -205,6 +205,16 @@ export class RegisterUserComponent implements OnInit, OnDestroy {
                     },
                     error: (error: any) => {
                         this.displaySpinner = false;
+
+                        const errorMessage = error.error.error;
+
+                        if (
+                            errorMessage === ConstantString.PHONE_ALREADY_EXIST
+                        ) {
+                            this.registerUserForm
+                                .get(ConstantString.PHONE)
+                                .setErrors({ phoneAlreadyExist: true });
+                        }
                     },
                 })
             )

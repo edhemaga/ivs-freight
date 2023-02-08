@@ -5,6 +5,7 @@ import { Subject, takeUntil } from 'rxjs';
 import { WebsiteActionsService } from 'src/app/core/components/website/state/service/website-actions.service';
 
 import { ConstantString } from 'src/app/core/components/website/state/enum/const-string.enum';
+import { UserInfoModel } from '../../../../state/model/user-info.model';
 
 @Component({
     selector: 'app-welcome',
@@ -16,12 +17,7 @@ export class WelcomeComponent implements OnInit, OnDestroy {
 
     private destroy$ = new Subject<void>();
 
-    public userInfo: {
-        companyName: string;
-        firstName: string;
-        lastName: string;
-        email: string;
-    } = null;
+    public userInfo: UserInfoModel = null;
 
     constructor(private websiteActionsService: WebsiteActionsService) {}
 
@@ -29,10 +25,10 @@ export class WelcomeComponent implements OnInit, OnDestroy {
         this.getWelcomeInfo();
     }
 
-    public getWelcomeInfo(): void {
+    private getWelcomeInfo(): void {
         this.websiteActionsService.getVerifyUserInfoSubject$
             .pipe(takeUntil(this.destroy$))
-            .subscribe((res: any) => {
+            .subscribe((res: UserInfoModel) => {
                 this.userInfo = {
                     ...(!this.registerUserWelcome && {
                         companyName: res.companyName,

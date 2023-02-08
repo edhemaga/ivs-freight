@@ -1,11 +1,13 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { Subject, takeUntil } from 'rxjs';
+import { Subject, takeUntil, tap } from 'rxjs';
 
 import { WebsiteAuthService } from 'src/app/core/components/website/state/service/website-auth.service';
+import { WebsiteActionsService } from 'src/app/core/components/website/state/service/website-actions.service';
 
 import { ConstantString } from 'src/app/core/components/website/state/enum/const-string.enum';
+import { UserInfoModel } from 'src/app/core/components/website/state/model/user-info.model';
 
 @Component({
     selector: 'app-reset-password-helper',
@@ -15,12 +17,15 @@ import { ConstantString } from 'src/app/core/components/website/state/enum/const
 export class ResetPasswordHelperComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
 
+    private userInfo: UserInfoModel = null;
+
     private verifyData: { emailHash: string; code: string };
 
     constructor(
         private route: ActivatedRoute,
         private router: Router,
-        private websiteAuthService: WebsiteAuthService
+        private websiteAuthService: WebsiteAuthService,
+        private websiteActionsService: WebsiteActionsService
     ) {}
 
     ngOnInit(): void {
@@ -46,13 +51,27 @@ export class ResetPasswordHelperComponent implements OnInit, OnDestroy {
                 code: params[ConstantString.CODE].split(' ').join('+'),
             };
 
+            this.userInfo = {
+                firstName: params[ConstantString.FIRST_NAME],
+                lastName: params[ConstantString.LAST_NAME],
+                email: params[ConstantString.EMAIL],
+                avatar: params[ConstantString.AVATAR],
+            };
+
             isValid = true;
         });
 
         if (isValid) {
             this.websiteAuthService
                 .verifyResetPassword(this.verifyData)
-                .pipe(takeUntil(this.destroy$))
+                .pipe(
+                    takeUntil(this.destroy$),
+                    tap(() => {
+                        this.websiteActionsService.setCreatePasswordSubject(
+                            this.userInfo
+                        );
+                    })
+                )
                 .subscribe();
         }
     }

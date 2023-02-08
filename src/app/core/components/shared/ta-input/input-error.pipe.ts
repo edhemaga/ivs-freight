@@ -69,7 +69,16 @@ export class InputErrorPipe implements PipeTransform {
                 errorMessageValue = "This user doesn't exist";
             }
 
-            if (value['einAlreadyExist'] || value['emailAlreadyExist']) {
+            if (value['wrongPassword']) {
+                errorMessageValue = 'Wrong password, try again';
+            }
+
+            if (
+                value['companyAlreadyExist'] ||
+                value['einAlreadyExist'] ||
+                value['phoneAlreadyExist'] ||
+                value['emailAlreadyExist']
+            ) {
                 errorMessageValue = 'Already in use';
             }
         }

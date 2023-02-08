@@ -102,6 +102,26 @@ export class LoginComponent implements OnInit, OnDestroy {
                     },
                     error: (error: any) => {
                         this.displaySpinner = false;
+
+                        const errorMessage = error.error.error;
+
+                        if (
+                            errorMessage ===
+                            ConstantString.THIS_USER_DOESENT_EXIST
+                        ) {
+                            this.loginForm
+                                .get(ConstantString.EMAIL_ADDRESS)
+                                .setErrors({ userDoesntExist: true });
+                        }
+
+                        if (
+                            errorMessage ===
+                            ConstantString.WRONG_PASSWORD_TRY_AGAIN
+                        ) {
+                            this.loginForm
+                                .get(ConstantString.PASSWORD)
+                                .setErrors({ wrongPassword: true });
+                        }
                     },
                 })
             )
