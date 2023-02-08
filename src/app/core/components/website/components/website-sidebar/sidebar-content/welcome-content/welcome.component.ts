@@ -1,4 +1,6 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+
+import { Subject, takeUntil } from 'rxjs';
 
 import { WebsiteActionsService } from 'src/app/core/components/website/state/service/website-actions.service';
 
@@ -9,18 +11,38 @@ import { ConstantString } from 'src/app/core/components/website/state/enum/const
     templateUrl: './welcome.component.html',
     styleUrls: ['./welcome.component.scss'],
 })
-export class WelcomeComponent implements OnInit {
+export class WelcomeComponent implements OnInit, OnDestroy {
     @Input() registerUserWelcome: boolean = false;
 
-    public userInfo: { companyName: string; name: string; email: string } = {
-        companyName: 'ivs freight inc.',
-        name: 'Aleksandar Djordjevic',
-        email: 'aleksandar@gmail.com',
-    };
+    private destroy$ = new Subject<void>();
+
+    public userInfo: {
+        companyName: string;
+        firstName: string;
+        lastName: string;
+        email: string;
+    } = null;
 
     constructor(private websiteActionsService: WebsiteActionsService) {}
 
-    ngOnInit(): void {}
+    ngOnInit(): void {
+        this.getWelcomeInfo();
+    }
+
+    public getWelcomeInfo(): void {
+        this.websiteActionsService.getVerifyUserInfoSubject$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res: any) => {
+                this.userInfo = {
+                    ...(!this.registerUserWelcome && {
+                        companyName: res.companyName,
+                    }),
+                    firstName: res.firstName,
+                    lastName: res.lastName,
+                    email: res.email,
+                };
+            });
+    }
 
     public onGetBtnClickValue(event: { notDisabledClick: boolean }): void {
         if (event.notDisabledClick) {
@@ -28,5 +50,10 @@ export class WelcomeComponent implements OnInit {
                 ConstantString.LOGIN
             );
         }
+    }
+
+    ngOnDestroy(): void {
+        this.destroy$.next();
+        this.destroy$.complete();
     }
 }

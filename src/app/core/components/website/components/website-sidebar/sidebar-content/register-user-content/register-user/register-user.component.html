@@ -11,7 +11,8 @@
         </h4>
 
         <h5 class="m-0 ta-font-regular">
-            <span class="ta-font-bold">Dispatch Team</span> waits for you!
+            <span class="ta-font-bold">{{ userInfo.department }} Team</span>
+            waits for you!
         </h5>
 
         <h6 class="m-0 ta-font-bold">Please fill out form</h6>
@@ -63,6 +64,7 @@
         <div class="d-flex">
             <div class="group address-group">
                 <app-input-address-dropdown
+                    #inputAddress
                     formControlName="address"
                     [inputConfig]="{
                         name: 'Address',
@@ -75,6 +77,8 @@
                         maxLength: 256
                     }"
                     [placeholderType]="'longAddress'"
+                    [activeAddress]="selectedAddress"
+                    (selectedAddress)="handleAddressChange($event)"
                 ></app-input-address-dropdown>
             </div>
 
@@ -152,7 +156,7 @@
                 <app-ta-input
                     formControlName="confirmPassword"
                     [inputConfig]="{
-                        name: 'Password',
+                        name: 'Confirm Password',
                         type: 'password',
                         label: 'Confirm Password',
                         placeholderIcon: 'password',

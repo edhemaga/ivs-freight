@@ -21,6 +21,16 @@ export class WebsiteActionsService {
     private registerUserInfoSubject: BehaviorSubject<any> =
         new BehaviorSubject<any>(null);
 
+    private verifyUserInfoSubject: BehaviorSubject<{
+        firstName: string;
+        lastName: string;
+        email: string;
+    }> = new BehaviorSubject<{
+        firstName: string;
+        lastName: string;
+        email: string;
+    }>(null);
+
     constructor() {}
 
     get getSidebarContentType$() {
@@ -43,6 +53,10 @@ export class WebsiteActionsService {
         return this.registerUserInfoSubject.asObservable();
     }
 
+    get getVerifyUserInfoSubject$() {
+        return this.verifyUserInfoSubject.asObservable();
+    }
+
     public setSidebarContentType(type: string | null) {
         this.sidebarContentTypeSubject.next(type);
     }
@@ -61,5 +75,13 @@ export class WebsiteActionsService {
 
     public setRegisterUserInfoSubject(registerUserInfo: any) {
         this.registerUserInfoSubject.next(registerUserInfo);
+    }
+
+    public setVerifyUserInfoSubject(verifyUserInfo: {
+        firstName: string;
+        lastName: string;
+        email: string;
+    }) {
+        this.verifyUserInfoSubject.next(verifyUserInfo);
     }
 }

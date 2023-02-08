@@ -26,6 +26,8 @@ export enum ConstantString {
     FIRST_NAME = 'FirstName',
     LAST_NAME = 'LastName',
     EMAIL = 'Email',
+    DEPARTMENT = 'Department',
+    COMPANY_NAME = 'CompanyName',
 
     WEBSITE = '/website',
 

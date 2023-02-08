@@ -1,4 +1,6 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+/* eslint-disable no-unused-vars */
+
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { Subject, takeUntil, tap } from 'rxjs';
@@ -17,6 +19,7 @@ import {
 } from 'src/app/core/components/shared/ta-input/ta-input.regex-validations';
 
 import { ConstantString } from 'src/app/core/components/website/state/enum/const-string.enum';
+import { AddressEntity } from 'appcoretruckassist';
 
 @Component({
     selector: 'app-register-user',
@@ -24,23 +27,20 @@ import { ConstantString } from 'src/app/core/components/website/state/enum/const
     styleUrls: ['./register-user.component.scss'],
 })
 export class RegisterUserComponent implements OnInit, OnDestroy {
+    @ViewChild('inputAddress', { static: false }) public inputAddress: any;
+
     private destroy$ = new Subject<void>();
 
     public registerUserForm: FormGroup;
 
     private registerUserCode: string = null;
 
+    public selectedAddress: AddressEntity = null;
+
     public userInfo: {
         companyName: string;
-        firstName: string;
-        lastName: string;
-        email: string;
-    } = {
-        companyName: 'ivs freight inc.',
-        firstName: 'Aleksandar',
-        lastName: 'Djordjevic',
-        email: 'aleksandar@gmail.com',
-    };
+        department: string;
+    } = null;
 
     public displaySpinner: boolean = false;
 
@@ -91,8 +91,27 @@ export class RegisterUserComponent implements OnInit, OnDestroy {
                     email: res.email,
                 });
 
+                this.userInfo = {
+                    companyName: res.companyName,
+                    department: res.department,
+                };
+
                 this.registerUserCode = res.code;
             });
+    }
+
+    public handleAddressChange(event: {
+        address: any;
+        longLat: any;
+        valid: boolean;
+    }): void {
+        this.selectedAddress = event.address;
+
+        if (!event.valid) {
+            this.registerUserForm
+                .get(ConstantString.ADDRESS)
+                .setErrors({ invalid: true });
+        }
     }
 
     private passwordsNotSame(): void {
@@ -133,6 +152,13 @@ export class RegisterUserComponent implements OnInit, OnDestroy {
     }
 
     public registerUser(): void {
+        if (
+            this.inputAddress?.inputDropdown?.inputRef?.focusInput &&
+            this.inputAddress?.addresList?.length
+        ) {
+            return;
+        }
+
         if (this.registerUserForm.invalid) {
             this.inputService.markInvalid(this.registerUserForm);
 
@@ -141,11 +167,18 @@ export class RegisterUserComponent implements OnInit, OnDestroy {
 
         this.displaySpinner = true;
 
-        const { email, password } = this.registerUserForm.value;
+        const { address, addressUnit, confirmPassword, ...registerUserForm } =
+            this.registerUserForm.value;
+
+        if (this.selectedAddress) {
+            this.selectedAddress.addressUnit = this.registerUserForm.get(
+                ConstantString.ADDRESS_UNIT
+            ).value;
+        }
 
         const saveData: any = {
-            email,
-            password,
+            ...registerUserForm,
+            address: this.selectedAddress,
             code: this.registerUserCode,
         };
 

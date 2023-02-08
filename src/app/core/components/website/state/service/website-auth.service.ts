@@ -19,6 +19,7 @@ import {
     SignupUserCommand,
     VerifyForgotPasswordCommand,
     VerifyOwnerCommand,
+    VerifyUserCommand,
 } from 'appcoretruckassist';
 import { ConstantString } from '../enum/const-string.enum';
 
@@ -134,5 +135,21 @@ export class WebsiteAuthService {
 
     public resendRegisterUser(data: ResendSignUpUserCommand): Observable<any> {
         return this.accountService.apiAccountResendsignupuserPut(data);
+    }
+
+    public registerUserVerifyUser(data: VerifyUserCommand): Observable<any> {
+        return this.accountService
+            .apiAccountVerifyuserPut(data, 'response')
+            .pipe(
+                tap(() => {
+                    this.router.navigate([ConstantString.WEBSITE]);
+
+                    this.websiteActionsService.setOpenSidebarSubject(true);
+
+                    this.websiteActionsService.setSidebarContentType(
+                        ConstantString.REGISTER_USER_WELCOME
+                    );
+                })
+            );
     }
 }

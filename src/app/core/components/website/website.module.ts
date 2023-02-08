@@ -24,6 +24,7 @@ import { ResendConfirmationComponent } from './components/website-sidebar/sideba
 import { PasswordUpdatedComponent } from './components/website-sidebar/sidebar-content/login-content/password-updated/password-updated.component';
 import { RegisterUserComponent } from './components/website-sidebar/sidebar-content/register-user-content/register-user/register-user.component';
 import { RegisterUserHelperComponent } from './components/website-sidebar/sidebar-content/register-user-content/register-user-helper/register-user-helper.component';
+import { VerifyUserHelperComponent } from './components/website-sidebar/sidebar-content/register-user-content/verify-user-helper/verify-user-helper.component';
 
 import { WebsiteUnderConstructionComponent } from './components/website-under-construction/website-under-construction.component';
 
@@ -49,6 +50,7 @@ import { WebsiteUnderConstructionComponent } from './components/website-under-co
         PasswordUpdatedComponent,
         RegisterUserComponent,
         RegisterUserHelperComponent,
+        VerifyUserHelperComponent,
 
         /* SIDEBAR */
 

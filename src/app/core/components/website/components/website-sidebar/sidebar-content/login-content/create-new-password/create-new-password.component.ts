@@ -56,25 +56,26 @@ export class CreateNewPasswordComponent implements OnInit, OnDestroy {
     }
 
     public passwordsNotSame(): void {
-        this.createNewPasswordForm
-            .get(ConstantString.CONFIRM_PASSWORD)
-            .valueChanges.pipe(takeUntil(this.destroy$))
+        const confirmPasswordControl = this.createNewPasswordForm.get(
+            ConstantString.CONFIRM_PASSWORD
+        );
+
+        confirmPasswordControl.valueChanges
+            .pipe(takeUntil(this.destroy$))
             .subscribe((value) => {
                 if (
                     value?.toLowerCase() ===
-                    this.createNewPasswordForm
-                        .get(ConstantString.NEW_PASSWORD)
-                        .value?.toLowerCase()
+                        this.createNewPasswordForm
+                            .get(ConstantString.PASSWORD)
+                            .value?.toLowerCase() &&
+                    value &&
+                    confirmPasswordControl.value
                 ) {
-                    this.createNewPasswordForm
-                        .get(ConstantString.CONFIRM_PASSWORD)
-                        .setErrors(null);
+                    confirmPasswordControl.setErrors(null);
                 } else {
-                    this.createNewPasswordForm
-                        .get(ConstantString.CONFIRM_PASSWORD)
-                        .setErrors({
-                            invalid: true,
-                        });
+                    confirmPasswordControl.setErrors({
+                        invalid: true,
+                    });
                 }
             });
     }
@@ -124,7 +125,7 @@ export class CreateNewPasswordComponent implements OnInit, OnDestroy {
         this.websiteActionsService.getResetPasswordToken$
             .pipe(takeUntil(this.destroy$))
             .subscribe((token) => {
-                /* WEBSITE AUTH STORE SERVICE*/
+                /* WEBSITE AUTH SERVICE*/
 
                 localStorage.setItem('user', JSON.stringify({ token: token }));
 

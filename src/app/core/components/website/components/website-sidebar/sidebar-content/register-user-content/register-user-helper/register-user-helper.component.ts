@@ -39,6 +39,8 @@ export class RegisterUserHelperComponent implements OnInit {
                 firstName: params[ConstantString.FIRST_NAME],
                 lastName: params[ConstantString.LAST_NAME],
                 email: params[ConstantString.EMAIL],
+                department: params[ConstantString.DEPARTMENT],
+                companyName: params[ConstantString.COMPANY_NAME],
                 code: params[ConstantString.CODE].split(' ').join('+'),
             };
 

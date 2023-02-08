@@ -7,11 +7,15 @@
         <ng-container *ngIf="!registerUserWelcome">
             <h3 class="m-0 ta-font-bold">{{ userInfo.companyName }}</h3>
 
-            <h4 class="m-0 ta-font-regular">{{ userInfo.name }}</h4>
+            <h4 class="m-0 ta-font-regular">
+                {{ userInfo.firstName }} {{ userInfo.lastName }}
+            </h4>
         </ng-container>
 
         <ng-container *ngIf="registerUserWelcome">
-            <h4 class="m-0 ta-font-bold register-user">{{ userInfo.name }}</h4>
+            <h4 class="m-0 ta-font-bold register-user">
+                {{ userInfo.firstName }} {{ userInfo.lastName }}
+            </h4>
         </ng-container>
 
         <h5 class="m-0 ta-font-bold">

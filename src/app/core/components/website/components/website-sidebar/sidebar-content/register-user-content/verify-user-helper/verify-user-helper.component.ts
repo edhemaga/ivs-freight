@@ -1,26 +1,34 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { Subject, takeUntil } from 'rxjs';
+import { Subject, takeUntil, tap } from 'rxjs';
 
+import { WebsiteActionsService } from 'src/app/core/components/website/state/service/website-actions.service';
 import { WebsiteAuthService } from 'src/app/core/components/website/state/service/website-auth.service';
 
 import { ConstantString } from 'src/app/core/components/website/state/enum/const-string.enum';
 
 @Component({
-    selector: 'app-register-company-helper',
-    templateUrl: './register-company-helper.component.html',
-    styleUrls: ['./register-company-helper.component.scss'],
+    selector: 'app-verify-user-helper',
+    templateUrl: './verify-user-helper.component.html',
+    styleUrls: ['./verify-user-helper.component.scss'],
 })
-export class RegisterCompanyHelperComponent implements OnInit, OnDestroy {
+export class VerifyUserHelperComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
+
+    private verifyUserInfo: {
+        firstName: string;
+        lastName: string;
+        email: string;
+    } = null;
 
     private verifyData: { emailHash: string; code: string } = null;
 
     constructor(
-        private websiteAuthService: WebsiteAuthService,
         private route: ActivatedRoute,
-        private router: Router
+        private router: Router,
+        private websiteActionsService: WebsiteActionsService,
+        private websiteAuthService: WebsiteAuthService
     ) {}
 
     ngOnInit(): void {
@@ -46,13 +54,26 @@ export class RegisterCompanyHelperComponent implements OnInit, OnDestroy {
                 code: params[ConstantString.CODE].split(' ').join('+'),
             };
 
+            this.verifyUserInfo = {
+                firstName: params[ConstantString.FIRST_NAME],
+                lastName: params[ConstantString.LAST_NAME],
+                email: params[ConstantString.EMAIL],
+            };
+
             isValid = true;
         });
 
         if (isValid) {
             this.websiteAuthService
-                .registerCompanyVerifyOwner(this.verifyData)
-                .pipe(takeUntil(this.destroy$))
+                .registerUserVerifyUser(this.verifyData)
+                .pipe(
+                    takeUntil(this.destroy$),
+                    tap(() => {
+                        this.websiteActionsService.setVerifyUserInfoSubject(
+                            this.verifyUserInfo
+                        );
+                    })
+                )
                 .subscribe();
         }
     }

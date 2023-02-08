@@ -11,6 +11,7 @@ import {
     SignupUserCommand,
     VerifyForgotPasswordCommand,
     SelectCompanyResponse,
+    SignUpCompanyCommand,
 } from 'appcoretruckassist';
 import { Router } from '@angular/router';
 import { PersistState } from '@datorama/akita';
@@ -101,6 +102,13 @@ export class AuthStoreService {
 
     public createNewPassword(data: SetNewPasswordCommand): Observable<object> {
         return this.accountService.apiAccountSetnewpasswordPut(
+            data,
+            'response'
+        );
+    }
+
+    public signUpCompany(data: SignUpCompanyCommand): Observable<object> {
+        return this.accountService.apiAccountSignupcompanyPost(
             data,
             'response'
         );

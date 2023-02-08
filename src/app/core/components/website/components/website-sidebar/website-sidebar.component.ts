@@ -60,7 +60,9 @@ export class WebsiteSidebarComponent implements OnInit, OnDestroy {
                         this.selectedContentType ===
                             ConstantString.PASSWORD_UPDATED ||
                         this.selectedContentType ===
-                            ConstantString.REGISTER_USER_CONFIRMATION
+                            ConstantString.REGISTER_USER_CONFIRMATION ||
+                        this.selectedContentType ===
+                            ConstantString.REGISTER_USER_WELCOME
                     ) {
                         this.selectedContentWidth = 480;
                     }
