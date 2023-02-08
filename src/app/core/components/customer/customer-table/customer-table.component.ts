@@ -350,7 +350,7 @@ export class CustomerTableComponent
     sendCustomerData() {
         this.initTableOptions();
 
-        // this.checkActiveViewMode();
+        this.checkActiveViewMode();
 
         const brokerShipperCount = JSON.parse(
             localStorage.getItem('brokerShipperTableCount')
