@@ -661,7 +661,7 @@ export class RepairTService implements OnDestroy {
         });
     }
 
-    public addShopFavorite(shopId: number){
+    public addShopFavorite(shopId: number) {
         return this.shopServices.apiRepairshopPinnedIdPut(shopId);
     }
 
