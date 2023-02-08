@@ -279,7 +279,15 @@
                     [isVisibleDivider]="false"
                     [placeholder]="'Write something.'"
                     [customClass]="'note-small'"
-                    [note]="repairShopCardViewData.note"
+                    [noteType]="'details-card'"
+                    [note]="
+                        repairShopCardViewData.note &&
+                        repairShopCardViewData.note != 'null'
+                            ? repairShopCardViewData.note
+                            : ''
+                    "
+                    [entityId]="repairShopCardViewData.id"
+                    [entityType]="'RepairShop'"
                 ></app-ta-input-note>
             </div>
         </div>
