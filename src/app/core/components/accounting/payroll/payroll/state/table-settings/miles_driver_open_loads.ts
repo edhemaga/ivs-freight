@@ -2,7 +2,8 @@ export const miles_driver_open_loads = [
     {
         field: "#",
         isIndexIncrement: true,
-        template: "medium-normal-template"
+        template: "medium-normal-template",
+        justifyClass: "just-center"
     },
     {
         field: "STOP",
@@ -46,7 +47,8 @@ export const miles_driver_open_loads = [
         data_field: "subtotalAmount",
         template: "semibold-normal-template",
         highlighted: true,
-        isCurrency: true
+        isCurrency: true,
+        justifyClass: "just-end"
     }
 ];
 
@@ -107,6 +109,7 @@ export const miles_driver_open_loads_resizable = [
         template: "bold-normal-template",
         highlighted: true,
         value: "$3,316.57",
-        colspan: 1
+        colspan: 1,
+        justifyClass: "just-end"
     }
 ];

@@ -18,7 +18,10 @@ export class PayrollTablePipe implements PipeTransform {
             const deepObject = field.data_field.split('.');
             let returnValue = data;
 
-            if (deepObject.length == 1 && !returnValue[deepObject[0]]) {
+            if (
+                deepObject.length == 1 &&
+                typeof returnValue[deepObject[0]] == 'undefined'
+            ) {
                 return '';
             }
             deepObject.map((item) => {

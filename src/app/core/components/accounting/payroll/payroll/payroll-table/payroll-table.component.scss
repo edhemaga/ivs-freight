@@ -1,15 +1,21 @@
 .payroll-table-main {
+    margin-top: 3px;
     table {
         width: 100%;
 
         thead {
             th {
-                height: 50px;
                 padding-left: 4px;
 
                 font-size: 14px;
                 font-weight: 700;
                 color: #2f2f2f;
+
+                vertical-align: bottom;
+
+                &.text-above {
+                    height: 50px;
+                }
 
                 .thead-box {
                     position: relative;
@@ -17,10 +23,14 @@
                     flex-direction: column;
                     height: 100%;
                     justify-content: space-between;
-                    padding-bottom: 7px;
+                    padding-bottom: 2px;
 
                     .field-subtitle {
                         font-size: 11px;
+                    }
+
+                    .field-title {
+                        display: flex;
                     }
 
                     .thead-border {
@@ -32,7 +42,7 @@
                         border-radius: 1px;
                         background-color: #cccccc;
 
-                        transform: translateY(calc(-50% - 3px));
+                        transform: translateY(calc(-50% - 1px));
 
                         &.right {
                             left: auto;
@@ -60,7 +70,7 @@
                             display: flex;
                             align-items: center;
                             height: 26px;
-                            padding-left: 4px;
+                            padding: 4px;
 
                             .pick-load-box {
                                 flex: 1;
@@ -70,6 +80,7 @@
                                 .pick-load-info {
                                     margin-left: 6px;
                                     line-height: 1;
+
                                     .pick-load-info-address {
                                         font-size: 11px;
                                         font-weight: 700;
@@ -144,7 +155,6 @@
                             .table-hold-box:not(.highlighted-last) {
                                 background-color: #eeeeee;
                             }
-
                         }
                     }
                 }
@@ -156,7 +166,7 @@
                         }
                     }
 
-                    &:hover{
+                    &:hover {
                         .table-hold-box {
                             &.highlighted {
                                 border-radius: 0px 3px 0 0;
@@ -178,10 +188,10 @@
 
             tbody {
                 tr {
-                    &.reorder-row{
-                        border-top: 2px solid #EEEEEE;
+                    &.reorder-row {
+                        border-top: 2px solid #eeeeee;
                     }
-                    
+
                     td {
                         padding: 0;
                         .table-box {
@@ -209,16 +219,38 @@
                         td {
                             .table-box {
                                 .table-hold-box:not(.highlighted-last) {
-                                    background-color: #EEEEEE;
+                                    background-color: #eeeeee;
                                 }
 
-                                .highlighted-last{
+                                .highlighted-last {
                                     border-bottom-left-radius: 0px !important;
                                 }
                             }
                         }
                     }
                 }
+            }
+        }
+
+        .just-end,
+        .just-center {
+            padding: 0 12px !important;
+
+            &.just-end {
+                justify-content: flex-end;
+            }
+
+            &.just-center {
+                justify-content: center;
+            }
+        }
+
+        td,
+        th {
+            &.increment-field {
+                width: 34px;
+                max-width: 34px;
+                min-width: 34px;
             }
         }
     }
@@ -262,5 +294,18 @@
 
     .semibold-normal-template {
         font-weight: 600;
+    }
+
+    .bold-normal-template,
+    .medium-normal-template,
+    .semibold-normal-template,
+    .normal-template,
+    .field-title,
+    .field-subtitle
+    {
+        &::selection {
+            background-color: #2f2f2f33;
+            color: #2f2f2f;
+        }
     }
 }
