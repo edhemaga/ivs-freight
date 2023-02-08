@@ -3723,11 +3723,7 @@ highlightingWords) : '' " -->
                                         }"
                                     >
                                         <app-ta-note
-                                            [note]="
-                                                row[column.field]
-                                                    ? row[column.field]
-                                                    : ''
-                                            "
+                                            [note]="row.note"
                                             [mainData]="row"
                                             [entityId]="row.id"
                                             [entityType]="
