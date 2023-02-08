@@ -216,6 +216,10 @@ export class InputAddressDropdownComponent
                 valid: res.address && res.longLat ? true : false,
                 longLat: res.longLat,
             };
+            
+            if (this.currentAddressData.valid) {
+                this.getSuperControl.setErrors(null);
+            }
             this.selectedAddress.emit(this.currentAddressData);
         });
     }
