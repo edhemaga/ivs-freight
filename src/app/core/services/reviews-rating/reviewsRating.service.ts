@@ -77,7 +77,7 @@ export class ReviewsRatingService {
         return this.reviewRatingService.apiRatingreviewReviewIdDelete(id).pipe(
             tap(() => {
                 let splitUrl = this.router.url.split('/');
-                let customerId = parseInt(splitUrl[2]);
+                let customerId = parseInt(splitUrl[3]);
                 if (this.router.url.indexOf('broker') > -1) {
                     this.BrokerTService.deleteReview(id, customerId);
                 }
@@ -106,8 +106,8 @@ export class ReviewsRatingService {
                     .subscribe({
                         next: (resp: any) => {
                             let splitUrl = this.router.url.split('/');
-                            let customerId = parseInt(splitUrl[2]);
-
+                            let customerId = parseInt(splitUrl[3]);
+                            
                             if (this.router.url.indexOf('broker') > -1) {
                                 this.BrokerTService.addNewReview(
                                     resp,
@@ -134,7 +134,7 @@ export class ReviewsRatingService {
         return this.reviewRatingService.apiRatingreviewReviewPut(data).pipe(
             tap(() => {
                 let splitUrl = this.router.url.split('/');
-                let customerId = parseInt(splitUrl[2]);
+                let customerId = parseInt(splitUrl[3]);
                 if (this.router.url.indexOf('broker') > -1) {
                     this.BrokerTService.updatedReviewNew(data, customerId);
                 }

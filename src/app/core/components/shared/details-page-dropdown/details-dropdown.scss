@@ -85,6 +85,9 @@
 }
 
 .dropdown-main-popover-body {
+    position: relative;
+    top: -4px;
+    //left: -4px;
     background-color: transparent;
     transition: transform 0.1s ease;
     animation: scaleItem 0.3s;
@@ -92,7 +95,7 @@
 }
 
 .details-dropdown-body {
-    //padding: 4px 4px 0.1px 4px;
+    padding: 4px 4px 0.1px 4px;
 
     background-color: #2f2f2f;
     border-radius: 3px;
