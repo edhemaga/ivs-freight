@@ -30,6 +30,7 @@ export class TaNoticeOfAsignmentComponent
     @Input() range: any;
     @Input() settings: any;
     @Input() noticeValue: any;
+    shownValue: string = '';
     selectedFontFamily = 3;
     selectedFontSize = 14;
     activeFont: any = { id: 3, name: 'Default', showName: 'Default' };
@@ -114,6 +115,10 @@ export class TaNoticeOfAsignmentComponent
         this.activeFont = { id: 3, name: 'Default', showName: 'Default' };
         this.activeFontSize = { id: 4, name: 14, showName: 14 };
         this.createForm();
+    }
+
+    ngAfterViewInit(): void {
+        this.shownValue = this.noticeValue;
     }
 
     ngOnDestroy(): void {
