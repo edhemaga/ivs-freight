@@ -3298,15 +3298,18 @@
                                 }"
                             >
                                 <app-ta-note
-                                    [note]="
-                                        row[column.field]
-                                            ? row[column.field]
-                                            : ''
-                                    "
+                                    [note]="row.note"
                                     [mainData]="row"
                                     [entityId]="row.id"
                                     [entityType]="
-                                        activeTableData?.gridNameTitle
+                                        activeTableData?.gridNameTitle !=
+                                        'Repair'
+                                            ? activeTableData?.gridNameTitle
+                                            : activeTableData?.gridNameTitle ==
+                                                  'Repair' &&
+                                              selectedTab == 'repair-shop'
+                                            ? 'RepairShop'
+                                            : 'Repair'
                                     "
                                     [openedAll]="false"
                                     [parking]="false"
