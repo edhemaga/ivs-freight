@@ -38,6 +38,8 @@ export class SettingsGeneralComponent implements OnInit, OnDestroy, OnChanges {
     public companyDivision: boolean = false;
     public hasArrow: boolean;
     public changeFont: boolean;
+    public selectedDropdown: boolean = false;
+    public currentCompanyIndex;
     constructor(
         private settingsCompanyService: SettingsCompanyService,
         public imageBase64Service: ImageBase64Service
@@ -67,6 +69,7 @@ export class SettingsGeneralComponent implements OnInit, OnDestroy, OnChanges {
     }
     ngOnInit(): void {
         let divisionArray = [];
+        
         this.optionsCompany?.map((item) => {
             if (item.isDivision == true) {
                 this.companyDivision = true;
@@ -88,6 +91,12 @@ export class SettingsGeneralComponent implements OnInit, OnDestroy, OnChanges {
                 7
             );
         }
+
+
+        let currentIndex = this.optionsCompany.findIndex(
+            (comp) => comp.id === this.companyData.id
+        );
+        this.currentCompanyIndex = currentIndex;
     }
 
     public timeZoneFormat(mod){
@@ -112,6 +121,46 @@ export class SettingsGeneralComponent implements OnInit, OnDestroy, OnChanges {
         this.toggleSelect = !this.toggleSelect;
         this.selectDropDown.emit(event);
         this.selectValue.emit(event);
+        this.selectedDropdown = false;
+    }
+
+    public showDropdown(): void {
+        if (this.optionsCompany.length > 1) {
+            this.selectedDropdown = true;
+        }
+    }
+
+    public onActionChange(action: any){
+        let currentIndex = this.optionsCompany.findIndex(
+            (comp) => comp.id === this.companyData.id
+        );
+
+        switch (action) {
+            case 'previous': {
+                currentIndex = --currentIndex; 
+                if (currentIndex != -1) {
+                    let data = this.optionsCompany[currentIndex];
+                    this.currentCompanyIndex = currentIndex;
+                    this.onSelectItem(data);
+                }
+                break;
+            }
+            case 'next': {
+                currentIndex = ++currentIndex;
+                if (
+                    currentIndex !== -1 &&
+                    this.optionsCompany.length > currentIndex
+                ) {
+                   let data = this.optionsCompany[currentIndex];
+                   this.currentCompanyIndex = currentIndex;
+                   this.onSelectItem(data);
+                }
+                break;
+            }
+            default: {
+                break;
+            }
+        }   
     }
 
     ngOnDestroy(): void {}
