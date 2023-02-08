@@ -22,17 +22,17 @@ export const small_table_config = [
 export const small_table_config_resize = [
     {
         field: "Total",
-        data_field: "referenceNumber",
+        data_title: true,
         template: "bold-normal-template",
         value: "Total",
         colspan: 2
     },
     {
         field: "Subtotal",
-        data_field: "subtotal",
+        data_field: "amount",
         template: "bold-normal-template",
         highlighted: true,
-        value: "$342.57",
+        isCurrency: true,
         colspan: 1,
         justifyClass: "just-end"
     }
