@@ -488,9 +488,6 @@ export class DriverDetailsItemComponent
         let driverId = this.drivers[0].data.id;
         let dataCdls: any = [];
       
-       //console.log('---any', any);
-       //console.log('---this.activeCdl', this.activeCdl);
-
         if ( this.activeCdl.length && this.activeCdl[0].id == eventData.id && ( eventData.type == 'deactivate-item' || eventData.type == 'delete-item' ) ) {
             this.mvrService
             .getMvrModal(driverId)

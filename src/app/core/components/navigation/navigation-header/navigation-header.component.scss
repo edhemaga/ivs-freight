@@ -106,85 +106,30 @@
             align-items: center;
             justify-content: space-between;
             padding-right: 8px;
-            cursor: pointer;
-            width: 100%;
+            width: 80%;
             &-search {
                 border-radius: 50%;
                 padding: 8px 0 0 0px;
                 position: relative;
-                margin-left: 45px;
+                margin-left: 43px;
                 width: 100%;
-                height: 22px;
+                height: 39px;
                 z-index: 100;
+                overflow: hidden;
                 p {
                     transition: $nav-transition;
                     color: $nav-text-color-darker;
                     margin: 0;
                     display: flex;
-                    width: 70px;
+                    width: 105px;
+                    padding-left: 2px;
                     opacity: 0;
                 }
+                .whiten-text {
+                    transition: all 0.3s;
+                    color: $nav-white;
+                }
             }
-
-            // &-notes {
-            //     margin: 0 6px;
-            //     background: $nav-hover-darker;
-            //     border-radius: 50%;
-            //     padding: 7px;
-            //     position: relative;
-            //     width: 32px;
-            //     height: 32px;
-
-            //     svg-icon {
-            //         svg {
-            //             position: absolute;
-            //             top: 50%;
-            //             left: 50%;
-            //             transform: translate(-50%, -50%);
-            //         }
-            //     }
-
-            //     &:hover {
-            //         transition: $nav-transition;
-            //         background-color: $nav-hover-lightcolor;
-
-            //         svg-icon {
-            //             svg {
-            //                 #Path_35726 {
-            //                     fill: $nav-svg-hover !important;
-            //                 }
-
-            //                 #Path_35727 {
-            //                     fill: $nav-svg-hover !important;
-            //                 }
-            //             }
-            //         }
-            //     }
-            // }
-
-            // &-bell {
-            //     background: $nav-hover-darker;
-            //     border-radius: 50%;
-            //     padding: 7px;
-            //     position: relative;
-            //     width: 32px;
-            //     height: 32px;
-            //     svg {
-            //         position: absolute;
-            //         top: 50%;
-            //         left: 50%;
-            //         transform: translate(-50%, -50%);
-            //     }
-            //     &:hover {
-            //         transition: $nav-transition;
-            //         background-color: $nav-hover-lightcolor;
-            //         svg {
-            //             #Path_35724 {
-            //                 fill: $nav-svg-hover !important;
-            //             }
-            //         }
-            //     }
-            // }
         }
         .nav-header-bottom-rightSide-search {
             &:hover {

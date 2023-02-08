@@ -996,8 +996,7 @@
     background-color: transparent !important;
     .popover-body {
         position: relative;
-        top: 4px;
-        right: 4px;
+        right: -4px;
     }
 }
 
@@ -1005,8 +1004,7 @@
     background-color: transparent !important;
     .popover-body {
         position: relative;
-        top: 2px;
-        right: 2px;
+        top: -4px;
     }
 }
 
@@ -1995,11 +1993,10 @@
     }
 }
 
-
 // REMOVE POPOVER ARROW GLOBAL
 
-ngb-popover-window{
-    .popover-arrow{
+ngb-popover-window {
+    .popover-arrow {
         display: none !important;
     }
 }

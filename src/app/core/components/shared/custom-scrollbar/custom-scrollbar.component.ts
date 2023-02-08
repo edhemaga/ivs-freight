@@ -95,7 +95,7 @@ export class CustomScrollbarComponent
                     document.querySelector('.not-pined-columns');
 
                 this.tableNotPinedBoundingRect =
-                    this.tableNotPinedContainer.getBoundingClientRect();
+                    this.tableNotPinedContainer?.getBoundingClientRect() ? this.tableNotPinedContainer.getBoundingClientRect() : null;
             }, 100);
         }
     }
@@ -131,10 +131,14 @@ export class CustomScrollbarComponent
                 const scrollWrapper =
                     document.querySelector('.not-pined-columns');
 
-                const tableFullWidth = scrollWrapper.scrollWidth;
+                const tableFullWidth = scrollWrapper?.scrollWidth
+                    ? scrollWrapper.scrollWidth
+                    : 0;
 
-                const tableVisibleWidth =
-                    scrollWrapper.getBoundingClientRect().width;
+                const tableVisibleWidth = scrollWrapper?.getBoundingClientRect()
+                    .width
+                    ? scrollWrapper.getBoundingClientRect().width
+                    : 0;
 
                 this.tableScrollRatio = tableVisibleWidth / tableFullWidth;
 

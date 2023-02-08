@@ -284,7 +284,7 @@
                     [cardNameCommon]="formatDate(test?.testingDate)"
                     (resizePage)="toggleResizePage(i, 'test')"
                     [optionsId]="test.id"
-                    [testDate]="test?.testingDate | formatDateP"
+                    [testDate]="formatDate(test?.testingDate)"
                     (dataDropDopwn)="getTestById(test.id)"
                     (preloadData)="preloadData(test, 'test')"
                     (clickedCard)="getNameForDrop($event)"
