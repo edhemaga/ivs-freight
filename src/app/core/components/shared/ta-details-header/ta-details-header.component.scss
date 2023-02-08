@@ -20,11 +20,12 @@ p {
     align-items: center;
     max-width: 440px;
     width: 100%;
-
+    
     .icon-text-wrapper {
         display: flex;
         align-items: center;
         height: 32px;
+        max-width: none;
         p {
             color: #919191;
             font-size: 26px;
