@@ -2282,13 +2282,16 @@ table {
 
                     // DOCUMENT
                     .document-container {
+                        display: flex;
+                        justify-content: flex-end;
+
                         width: 100%;
                         height: fit-content;
                         position: relative;
 
                         // TITLE
                         .document-title {
-                            width: 100%;
+                            width: auto;
                             height: 26px;
                             display: flex;
                             align-items: center;
