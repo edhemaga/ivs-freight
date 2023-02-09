@@ -192,12 +192,9 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                                 this.backFilterQuery.unitType =
                                     this.selectedTab === 'active' ? 1 : 2;
 
-                                this.repairBackFilter(
-                                    this.backFilterQuery,
-                                    true
-                                );
+                                this.repairBackFilter(this.backFilterQuery);
                             } else {
-                                this.shopBackFilter(this.shopFilterQuery, true);
+                                this.shopBackFilter(this.shopFilterQuery);
                             }
                         } else if (searchEvent.action === 'store') {
                             this.sendRepairData();
@@ -649,7 +646,6 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
             searchTwo: string | undefined;
             searchThree: string | undefined;
         },
-        isSearch?: boolean,
         isShowMore?: boolean
     ) {
         this.repairService
@@ -680,12 +676,6 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                     this.viewData = this.viewData.map((data: any) => {
                         return this.mapTruckAndTrailerData(data);
                     });
-
-                    if (isSearch) {
-                        this.tableData[
-                            this.selectedTab === 'active' ? 0 : 1
-                        ].length = repair.pagination.count;
-                    }
                 } else {
                     let newData = [...this.viewData];
 
@@ -718,10 +708,9 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
             searchTwo: string | undefined;
             searchThree: string | undefined;
         },
-        isSearch?: boolean,
         isShowMore?: boolean
     ) {
-        console.log()
+        console.log();
         this.repairService
             .getRepairShopList(
                 filter.active,
@@ -749,10 +738,6 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                     this.viewData = this.viewData.map((data: any) => {
                         return this.mapShopData(data);
                     });
-
-                    if (isSearch) {
-                        this.tableData[2].length = shop.pagination.count;
-                    }
                 } else {
                     let newData = [...this.viewData];
 
@@ -855,8 +840,8 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                 : this.shopFilterQuery.pageIndex++;
 
             this.selectedTab !== 'repair-shop'
-                ? this.repairBackFilter(this.backFilterQuery, false, true)
-                : this.shopBackFilter(this.shopFilterQuery, false, true);
+                ? this.repairBackFilter(this.backFilterQuery, true)
+                : this.shopBackFilter(this.shopFilterQuery, true);
         }
         // Edit
         else if (event.type === 'edit') {

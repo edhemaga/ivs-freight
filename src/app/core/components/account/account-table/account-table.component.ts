@@ -104,7 +104,7 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
                     if (searchEvent) {
                         if (searchEvent.action === 'api') {
-                            this.accountBackFilter(searchEvent.query, true);
+                            this.accountBackFilter(searchEvent.query);
                         } else if (searchEvent.action === 'store') {
                             this.sendAccountData();
                         }
@@ -391,7 +391,6 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
             searchTwo: string | undefined;
             searchThree: string | undefined;
         },
-        isSearch?: boolean,
         isShowMore?: boolean
     ) {
         this.accountService
@@ -413,10 +412,6 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     this.viewData = this.viewData.map((data: any) => {
                         return this.mapAccountData(data);
                     });
-
-                    if (isSearch) {
-                        this.tableData[0].length = account.pagination.count;
-                    }
                 } else {
                     let newData = [...this.viewData];
 
@@ -463,7 +458,7 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
         if (event.type === 'show-more') {
             this.backFilterQuery.pageIndex++;
 
-            this.accountBackFilter(this.backFilterQuery, false, true);
+            this.accountBackFilter(this.backFilterQuery, true);
         } else if (event.type === 'edit-account') {
             this.modalService.openModal(
                 AccountModalComponent,
