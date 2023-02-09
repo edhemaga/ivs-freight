@@ -3,6 +3,7 @@ import {
     Component,
     ElementRef,
     EventEmitter,
+    HostListener,
     Input,
     OnChanges,
     OnDestroy,
@@ -124,6 +125,8 @@ export class TaInputComponent
     public originPriceSeparatorLimit: number;
     public decimalIndexTimeout = null;
     public isDotDeleted: boolean = false;
+
+    public wholeInputSelection: any;
 
     constructor(
         @Self() public superControl: NgControl,
@@ -350,21 +353,18 @@ export class TaInputComponent
             clearTimeout(this.dateTimeMainTimer);
             clearTimeout(this.focusBlur);
             this.showDateInput = true;
-            const elem =
-                this.selectionInput == -1
-                    ? this.holder1.nativeElement
-                    : this.span1.nativeElement;
-
             if (
                 (this.selectionInput == -1 &&
                     e?.target?.nodeName === 'INPUT') ||
-                e?.relatedTarget?.nodeName === 'INPUT'
+                e?.relatedTarget?.nodeName === 'INPUT' ||
+                e?.relatedTarget == null
             ) {
                 this.preventBlur = true;
-                elem.focus();
-                this.setSpanSelection(elem);
+                this.holder1.nativeElement.focus();
+                this.setSpanSelection(this.holder1.nativeElement);
                 this.selectionInput = -1;
             }
+
             this.t2.close();
         }
 
@@ -545,6 +545,7 @@ export class TaInputComponent
     }
 
     public toggleDropdownOptions() {
+        console.log("OPENED");
         if (this.inputConfig.isDisabled) {
             return;
         }
@@ -1996,6 +1997,8 @@ export class TaInputComponent
                     this.selectSpanByTabIndex(this.selectionInput, true);
                 }
             } else if (e.keyCode == 39 || e.keyCode == 9) {
+                console.log(e.keyCode);
+                console.log(e.shiftKey);
                 if (this.selectionInput != 2 && !e.shiftKey) {
                     this.selectionInput = this.selectionInput + 1;
                     this.selectSpanByTabIndex(this.selectionInput, true);
@@ -2148,7 +2151,7 @@ export class TaInputComponent
                     } else {
                         this.dateTimeInputDate = new Date(
                             this.dateTimeInputDate.setDate(
-                                parseInt(            
+                                parseInt(
                                     this.span2.nativeElement.innerHTML +
                                         parseInt(e.key)
                                 )
@@ -2487,6 +2490,7 @@ export class TaInputComponent
     }
 
     selectLastOneForSelection() {
+        clearTimeout(this.wholeInputSelection);
         let range, selection;
 
         this.showDateInput = true;
@@ -2515,8 +2519,10 @@ export class TaInputComponent
         this.setSpanSelection(this.span3.nativeElement);
         this.showDateInput = true;
         setTimeout(() => {
+            console.log('ON KEY UPPPPP _____________________');
             clearTimeout(this.dateTimeMainTimer);
             clearTimeout(this.focusBlur);
+            clearTimeout(this.wholeInputSelection);
         }, 90);
     }
 }
