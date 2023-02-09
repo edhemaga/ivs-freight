@@ -131,11 +131,13 @@ export class TaCommonHeaderComponent implements OnInit {
                             action.greenIcon = true;
                             action.redIcon = false;
                             action.name = 'open-business';
+                            action.iconName = 'mark-as-done';
                         } else {
                             action.title = 'Close Business';
                             action.greenIcon = false;
                             action.redIcon = true;
                             action.name = 'close-business';
+                            action.iconName = 'close-business';
                         }
                     }
                 });

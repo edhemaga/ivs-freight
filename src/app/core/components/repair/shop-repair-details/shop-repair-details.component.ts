@@ -89,13 +89,23 @@ export class ShopRepairDetailsComponent implements OnInit, OnDestroy {
         this.confirmationService.confirmationData$
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: (res: Confirmation) => {
+                next: (res: any) => {
                     switch (res.type) {
                         case 'delete': {
                             if (res.template === 'repair shop') {
-                                this.deleteRepairShopById(res.id);
+                                this.deleteRepairShopById(res?.id);
                             }
                             break;
+                        }
+                        case 'deactivate':{
+                            if (res.template === 'repair shop' || res.template === 'Repair Shop') {
+                                this.closeRepairShop(res?.id);
+                            }
+                        }
+                        case 'activate':{
+                            if (res.template === 'repair shop' || res.template === 'Repair Shop') {
+                                this.openRepairShop(res?.id);
+                            }
                         }
                         default: {
                             break;
@@ -245,12 +255,11 @@ export class ShopRepairDetailsComponent implements OnInit, OnDestroy {
         };
     }
     public dropActionRepair(event: any) {
-
+        console.log('---here----', event)
         if ( event.type == 'write-review' ){
             event.type = 'edit';
             event.openedTab = 'Review';
         }
-
         this.dropDownService.dropActionsHeaderRepair(
             event,
             this.repairObject,
@@ -259,7 +268,7 @@ export class ShopRepairDetailsComponent implements OnInit, OnDestroy {
     }
 
     public onModalAction(event: any){
-
+        console.log('---here---')
         let eventType = '';
        if ( event == 'Contact' || event == 'Review'){
             eventType = 'edit'
@@ -402,6 +411,14 @@ export class ShopRepairDetailsComponent implements OnInit, OnDestroy {
     /**Function return id */
     public identity(index: number, item: any): number {
         return item.id;
+    }
+
+    public closeRepairShop(shopId){
+        console.log('---closeRepairShop shop id---', shopId);
+    }
+
+    public openRepairShop(shopId){
+        console.log('---openRepairShop shop id---', shopId);
     }
 
     ngOnDestroy(): void {
