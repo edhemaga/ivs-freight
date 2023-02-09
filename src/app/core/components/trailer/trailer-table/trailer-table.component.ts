@@ -269,7 +269,7 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
                     if (searchEvent) {
                         if (searchEvent.action === 'api') {
-                            this.trailerBackFilter(searchEvent.query, true);
+                            this.trailerBackFilter(searchEvent.query);
                         } else if (searchEvent.action === 'store') {
                             this.sendTrailerData();
                         }
@@ -529,7 +529,6 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
             searchTwo: string | undefined;
             searchThree: string | undefined;
         },
-        isSearch?: boolean,
         isShowMore?: boolean
     ) {
         this.trailerService
@@ -551,12 +550,6 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     this.viewData = this.viewData.map((data: any) => {
                         return this.mapTrailerData(data);
                     });
-
-                    if (isSearch) {
-                        this.tableData[
-                            this.selectedTab === 'active' ? 0 : 1
-                        ].length = trailer.pagination.count;
-                    }
                 } else {
                     let newData = [...this.viewData];
 
@@ -615,7 +608,7 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
             case 'show-more': {
                 this.backFilterQuery.pageIndex++;
 
-                this.trailerBackFilter(this.backFilterQuery, false, true);
+                this.trailerBackFilter(this.backFilterQuery, true);
                 break;
             }
             case 'edit-trailer': {
