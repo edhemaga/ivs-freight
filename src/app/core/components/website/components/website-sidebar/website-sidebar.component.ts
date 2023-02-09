@@ -49,41 +49,36 @@ export class WebsiteSidebarComponent implements OnInit, OnDestroy {
                 if (res) {
                     this.selectedContentType = res;
 
-                    if (
-                        this.selectedContentType ===
-                            ConstantString.START_TRIAL_CONFIRMATION ||
-                        this.selectedContentType ===
-                            ConstantString.START_TRIAL_WELCOME ||
-                        this.selectedContentType === ConstantString.LOGIN ||
-                        this.selectedContentType ===
-                            ConstantString.RESET_PASSWORD_REQUESTED ||
-                        this.selectedContentType ===
-                            ConstantString.PASSWORD_UPDATED ||
-                        this.selectedContentType ===
-                            ConstantString.REGISTER_USER_CONFIRMATION ||
-                        this.selectedContentType ===
-                            ConstantString.REGISTER_USER_WELCOME
-                    ) {
+                    const WIDTH_ONE_ARR: string[] = [
+                        ConstantString.START_TRIAL_CONFIRMATION,
+                        ConstantString.START_TRIAL_WELCOME,
+                        ConstantString.LOGIN,
+                        ConstantString.RESET_PASSWORD_REQUESTED,
+                        ConstantString.PASSWORD_UPDATED,
+                        ConstantString.REGISTER_USER_CONFIRMATION,
+                        ConstantString.REGISTER_USER_WELCOME,
+                    ];
+
+                    const WIDTH_TWO_ARR: string[] = [
+                        ConstantString.RESET_PASSWORD,
+                        ConstantString.CREATE_NEW_PASSWORD,
+                        ConstantString.RESEND_CONFIRMATION,
+                    ];
+
+                    const WIDTH_THREE_ARR: string[] = [
+                        ConstantString.START_TRIAL,
+                        ConstantString.REGISTER_USER,
+                    ];
+
+                    if (WIDTH_ONE_ARR.includes(this.selectedContentType)) {
                         this.selectedContentWidth = 480;
                     }
 
-                    if (
-                        this.selectedContentType ===
-                            ConstantString.RESET_PASSWORD ||
-                        this.selectedContentType ===
-                            ConstantString.CREATE_NEW_PASSWORD ||
-                        this.selectedContentType ===
-                            ConstantString.RESEND_CONFIRMATION
-                    ) {
+                    if (WIDTH_TWO_ARR.includes(this.selectedContentType)) {
                         this.selectedContentWidth = 580;
                     }
 
-                    if (
-                        this.selectedContentType ===
-                            ConstantString.START_TRIAL ||
-                        this.selectedContentType ===
-                            ConstantString.REGISTER_USER
-                    ) {
+                    if (WIDTH_THREE_ARR.includes(this.selectedContentType)) {
                         this.selectedContentWidth = 680;
                     }
 

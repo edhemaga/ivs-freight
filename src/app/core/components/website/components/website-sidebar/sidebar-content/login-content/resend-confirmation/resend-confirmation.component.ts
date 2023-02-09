@@ -110,20 +110,13 @@ export class ResendConfirmationComponent implements OnInit, OnDestroy {
 
                         const errorMessage = error.error.error;
 
-                        if (errorMessage === ConstantString.USER_NOT_FOUND) {
-                            this.resendConfirmationForm
-                                .get(ConstantString.EMAIL_ADDRESS)
-                                .setErrors({ userDoesntExist: true });
-                        }
-
-                        if (
-                            errorMessage ===
-                            ConstantString.USER_ALREADY_VERIFIED
-                        ) {
-                            this.resendConfirmationForm
-                                .get(ConstantString.EMAIL_ADDRESS)
-                                .setErrors({ userAlreadyRegistered: true });
-                        }
+                        this.resendConfirmationForm
+                            .get(ConstantString.EMAIL_ADDRESS)
+                            .setErrors(
+                                errorMessage === ConstantString.USER_NOT_FOUND
+                                    ? { userDoesntExist: true }
+                                    : { userAlreadyRegistered: true }
+                            );
                     },
                 })
             )

@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { Observable, tap } from 'rxjs';
+import { Observable, Subject, tap } from 'rxjs';
 
 import { WebsiteActionsService } from './website-actions.service';
 
@@ -11,6 +11,8 @@ import {
     AccountService,
     ForgotPasswordCommand,
     ResendSignUpCompanyOrUserCommand,
+    SelectCompanyCommand,
+    SelectCompanyResponse,
     SetNewPasswordCommand,
     SignInCommand,
     SignInResponse,
@@ -26,6 +28,22 @@ import { ConstantString } from '../enum/const-string.enum';
     providedIn: 'root',
 })
 export class WebsiteAuthService {
+    private _multipleCompanies: any = null;
+
+    private multipleCompanies = new Subject<any>();
+
+    public userHasMultipleCompaniesObservable =
+        this.multipleCompanies.asObservable();
+
+    get moreThenOneCompany() {
+        return this._multipleCompanies;
+    }
+
+    set moreThenOneCompany(value) {
+        this._multipleCompanies = value;
+        this.multipleCompanies.next(value);
+    }
+
     constructor(
         @Inject('persistStorage')
         private persistStorage: PersistState,
@@ -88,13 +106,20 @@ export class WebsiteAuthService {
     public accountLogin(data: SignInCommand): Observable<SignInResponse> {
         return this.accountService.apiAccountLoginPost(data).pipe(
             tap((user: SignInResponse) => {
-                this.router.navigate(['/dashboard']);
-
                 // ---- PRODUCTION MODE ----
                 // this.authStore.set({ 1: user });
-
                 // ---- DEVELOP MODE ----
-                localStorage.setItem('user', JSON.stringify(user));
+                if (user.companies.length > 1) {
+                    this.moreThenOneCompany = user;
+
+                    localStorage.setItem('user', JSON.stringify(user));
+
+                    this.router.navigate(['/select-company']);
+                } else {
+                    localStorage.setItem('user', JSON.stringify(user));
+
+                    this.router.navigate(['/dashboard']);
+                }
             })
         );
     }
@@ -146,5 +171,11 @@ export class WebsiteAuthService {
                     );
                 })
             );
+    }
+
+    public selectCompanyAccount(
+        data: SelectCompanyCommand
+    ): Observable<SelectCompanyResponse> {
+        return this.accountService.apiAccountSelectcompanyPost(data);
     }
 }
