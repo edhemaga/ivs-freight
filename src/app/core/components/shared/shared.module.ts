@@ -19,7 +19,6 @@ import { ScrollingModule } from '@angular/cdk/scrolling';
 import { StatusSwitcherComponent } from '../switchers/status-switcher/status-switcher.component';
 import { NgxSliderModule } from '@angular-slider/ngx-slider';
 import { NgxMaskModule } from 'ngx-mask';
-import { DeleteDialogComponent } from './delete-dialog/delete-dialog.component';
 import { TaStatusSelectComponent } from './ta-status-select/ta-status-select.component';
 import { TaStatusSwitchComponent } from './ta-status-switch/ta-status-switch.component';
 import { Ng5SliderModule } from 'ng5-slider';
@@ -126,7 +125,7 @@ import { PayrollBonusModalComponent } from '../modals/payroll-modals/payroll-bon
 import { PayrollCreditBonusComponent } from '../modals/payroll-modals/payroll-credit-bonus/payroll-credit-bonus.component';
 import { TaNoticeOfAsignmentComponent } from './ta-notice-of-asignment/ta-notice-of-asignment.component';
 import { PayrollDeductionModalComponent } from '../modals/payroll-modals/payroll-deduction-modal/payroll-deduction-modal.component';
-import { TooltipSlideComponent } from './tooltip-slide/tooltip-slide.component';
+// import { TooltipSlideComponent } from './tooltip-slide/tooltip-slide.component';
 import { CarouselModule } from 'ngx-owl-carousel-o';
 
 export function playerFactory() {
@@ -142,7 +141,7 @@ export function playerFactory() {
         //TaNoteContainerComponent,
         TaStatusSwitchComponent,
         TaStatusSelectComponent,
-        DeleteDialogComponent,
+        // DeleteDialogComponent,
         EditProfileImageComponent,
         EditProfileImageComponent,
         EditProfileImageComponent,
@@ -243,7 +242,7 @@ export function playerFactory() {
         TableModalComponent,
         TaPickupDeliveryComponent,
         TaNoticeOfAsignmentComponent,
-        TooltipSlideComponent,
+        // TooltipSlideComponent,
     ],
     imports: [
         CommonModule,
@@ -314,7 +313,7 @@ export function playerFactory() {
         //TaNoteContainerComponent,
         TaStatusSwitchComponent,
         TaStatusSelectComponent,
-        DeleteDialogComponent,
+        // DeleteDialogComponent,
         SvgDefinitionsComponent,
         CustomDatetimePickersComponent,
         CalendarDatesMainComponent,
@@ -411,7 +410,7 @@ export function playerFactory() {
         TaPickupDeliveryComponent,
         TableModalComponent,
         TaNoticeOfAsignmentComponent,
-        TooltipSlideComponent,
+        // TooltipSlideComponent,
     ],
     providers: [],
     schemas: [CUSTOM_ELEMENTS_SCHEMA],

@@ -1,5 +1,4 @@
 import { ProfileImagesModule } from './../profile-images/profile-images.module';
-import { AppNoteModule } from './../app-note/app-note.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TruckassistTableBodyComponent } from './truckassist-table-body/truckassist-table-body.component';
@@ -19,6 +18,7 @@ import { PipesModule } from '../../../pipes/pipes.module';
 import { SharedModule } from '../shared.module';
 import { ToolbarFiltersComponent } from './truckassist-table-toolbar/toolbar-filters/toolbar-filters.component';
 import { CarrierSearchComponent } from '../../standalone-components/carrier-search/carrier-search.component';
+import { AppNoteComponent } from '../../standalone-components/app-note/app-note.component';
 
 @NgModule({
     declarations: [
@@ -38,7 +38,7 @@ import { CarrierSearchComponent } from '../../standalone-components/carrier-sear
         TaNoteModule,
         DragDropModule,
         DirectivesModule,
-        AppNoteModule,
+        AppNoteComponent,
         ProfileImagesModule,
         PipesModule,
         VirtualScrollerModule,

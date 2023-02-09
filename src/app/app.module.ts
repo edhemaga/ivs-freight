@@ -36,7 +36,7 @@ import { configFactory } from './app.config';
 import { StaticInjectorService } from './core/utils/application.decorators';
 import { NavigationSettingsComponent } from './core/components/navigation/navigation-settings/navigation-settings.component';
 import { UnderConstructionComponent } from './core/components/under-construction/under-construction.component';
-
+import { TooltipSlideComponent } from './core/components/standalone-components/tooltip-slide/tooltip-slide.component';
 @NgModule({
     declarations: [
         AppComponent,
@@ -61,6 +61,7 @@ import { UnderConstructionComponent } from './core/components/under-construction
         AppRoutingModule,
         HttpClientModule,
         SharedModule,
+        TooltipSlideComponent,
         ToastrModule.forRoot({
             preventDuplicates: true,
             enableHtml: true,
@@ -68,7 +69,7 @@ import { UnderConstructionComponent } from './core/components/under-construction
             toastComponent: CustomToastMessagesComponent, // added custom toast!
         }),
         NgIdleModule.forRoot(),
-        ApiModule
+        ApiModule,
     ],
     providers: [
         {

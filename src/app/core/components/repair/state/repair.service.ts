@@ -624,9 +624,6 @@ export class RepairTService implements OnDestroy {
     }
 
     public addNewReview(data, shopId) {
-        console.log('--data', data);
-        console.log('--currentId', shopId);
-
         let shopStored = JSON.parse(JSON.stringify(this.rDs?.getValue()));
         let shopData = shopStored?.repairShop;
         let currentShop;
@@ -663,6 +660,12 @@ export class RepairTService implements OnDestroy {
 
     public addShopFavorite(shopId: number) {
         return this.shopServices.apiRepairshopPinnedIdPut(shopId);
+    }
+
+
+
+    public changeShopStatus(shopId: any){
+        console.log('---here----', shopId)
     }
 
     ngOnDestroy(): void {
