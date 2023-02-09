@@ -95,7 +95,9 @@ export class CustomScrollbarComponent
                     document.querySelector('.not-pined-columns');
 
                 this.tableNotPinedBoundingRect =
-                    this.tableNotPinedContainer?.getBoundingClientRect() ? this.tableNotPinedContainer.getBoundingClientRect() : null;
+                    this.tableNotPinedContainer?.getBoundingClientRect()
+                        ? this.tableNotPinedContainer.getBoundingClientRect()
+                        : null;
             }, 100);
         }
     }
@@ -124,12 +126,15 @@ export class CustomScrollbarComponent
 
     calculateBarSizeAndPosition(elem: any, pageHeight?: number) {
         setTimeout(() => {
-            this.showScrollbar = true;
-
             // Table Scroll
             if (this.scrollBarOptions.showHorizontalScrollBar) {
                 const scrollWrapper =
                     document.querySelector('.not-pined-columns');
+
+                this.tableNotPinedBoundingRect =
+                    scrollWrapper?.getBoundingClientRect()
+                        ? scrollWrapper.getBoundingClientRect()
+                        : null;
 
                 const tableFullWidth = scrollWrapper?.scrollWidth
                     ? scrollWrapper.scrollWidth
@@ -137,7 +142,7 @@ export class CustomScrollbarComponent
 
                 const tableVisibleWidth = scrollWrapper?.getBoundingClientRect()
                     .width
-                    ? scrollWrapper.getBoundingClientRect().width
+                    ? Math.ceil(scrollWrapper.getBoundingClientRect().width)
                     : 0;
 
                 this.tableScrollRatio = tableVisibleWidth / tableFullWidth;
@@ -150,6 +155,9 @@ export class CustomScrollbarComponent
                 if (tableFullWidth <= tableVisibleWidth) {
                     this.showScrollbar = false;
 
+                    this.chng.detectChanges();
+                } else {
+                    this.showScrollbar = true;
                     this.chng.detectChanges();
                 }
 
@@ -168,6 +176,9 @@ export class CustomScrollbarComponent
                     this.showScrollbar = false;
                     this.chng.detectChanges();
                     return;
+                } else {
+                    this.showScrollbar = true;
+                    this.chng.detectChanges();
                 }
 
                 this.scrollRatio = visible_height / content_height;
@@ -189,11 +200,15 @@ export class CustomScrollbarComponent
         this.isMouseDown = false;
     };
 
+    resizeHandlerCount: any;
     onResizeHandler = () => {
         if (!this.isMouseDown && !hasTablePageHeight) {
-            this.calculateBarSizeAndPosition(
-                this.elRef.nativeElement.children[0]
-            );
+            clearTimeout(this.resizeHandlerCount);
+            this.resizeHandlerCount = setTimeout(() => {
+                this.calculateBarSizeAndPosition(
+                    this.elRef.nativeElement.children[0]
+                );
+            }, 150);
         }
     };
 
@@ -221,7 +236,7 @@ export class CustomScrollbarComponent
             // Table Scroll
             else {
                 const offsetBar = e.clientX - this.tableBarClickPosition;
-
+                console.log('---', offsetBar);
                 if (
                     offsetBar > -1 &&
                     e.clientX + this.tableBarClickRestWidth <
