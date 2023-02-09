@@ -120,11 +120,11 @@ export class WebsiteSidebarComponent implements OnInit, OnDestroy {
                 }); */
 
             /*             new Offcanvas(ConstantString.SIDEBAR).toggle(); */
-            /*   this.selectedContentType = null;
+            this.selectedContentType = null;
 
             this.websiteActionsService.setSidebarContentType(
                 this.selectedContentType
-            ); */
+            );
         });
     }
 
