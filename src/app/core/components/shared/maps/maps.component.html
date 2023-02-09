@@ -191,7 +191,7 @@
                             class="marker-dropdown"
                             [ngClass]="{
                                 'show-marker-dropdown marker-dropdown-animation':
-                                    latlong?.isSelected
+                                    latlong?.isSelected && latlong.showMarker
                             }"
                         >
                             <app-map-marker-dropdown
