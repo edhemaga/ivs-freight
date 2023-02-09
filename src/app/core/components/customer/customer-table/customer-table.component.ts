@@ -32,6 +32,7 @@ import {
 import { TaThousandSeparatorPipe } from '../../../pipes/taThousandSeparator.pipe';
 import { ReviewsRatingService } from '../../../services/reviews-rating/reviewsRating.service';
 import { DatePipe } from '@angular/common';
+import { MapsService } from 'src/app/core/services/shared/maps.service';
 
 @Component({
     selector: 'app-customer-table',
@@ -105,7 +106,8 @@ export class CustomerTableComponent
         private reviewRatingService: ReviewsRatingService,
         private DetailsDataService: DetailsDataService,
         private ref: ChangeDetectorRef,
-        public datePipe: DatePipe
+        public datePipe: DatePipe,
+        private mapsService: MapsService,
     ) {}
 
     ngOnInit(): void {
@@ -868,6 +870,8 @@ export class CustomerTableComponent
 
                         clearInterval(inetval);
                     }, 1000);
+
+                    this.mapsService.addRating(res);
                 });
         }
     }
@@ -977,6 +981,7 @@ export class CustomerTableComponent
 
     // MAP
     selectItem(data: any) {
+        console.log('selectItem data', data);
         this.mapsComponent.clickedMarker(data[0]);
 
         this.mapListData.map((item) => {
@@ -994,6 +999,9 @@ export class CustomerTableComponent
                 } else {
                     this.mapsComponent.clusterMarkers.map((cluster) => {
                         var clusterData = cluster.pagination.data;
+
+                        console.log('clusterData', clusterData);
+                        console.log('cluster', cluster);
 
                         let clusterItemIndex = clusterData.findIndex(
                             (item2) => item2.id === data[0]

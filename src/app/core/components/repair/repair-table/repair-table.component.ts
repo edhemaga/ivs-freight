@@ -24,6 +24,7 @@ import { Subject, takeUntil } from 'rxjs';
 import { TaThousandSeparatorPipe } from '../../../pipes/taThousandSeparator.pipe';
 import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
 import { ReviewsRatingService } from '../../../services/reviews-rating/reviewsRating.service';
+import { MapsService } from '../../../services/shared/maps.service';
 import {
     tableSearch,
     closeAnimationAction,
@@ -110,7 +111,8 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
         public datePipe: DatePipe,
         private thousandSeparator: TaThousandSeparatorPipe,
         private reviewRatingService: ReviewsRatingService,
-        private ref: ChangeDetectorRef
+        private ref: ChangeDetectorRef,
+        private mapsService: MapsService
     ) {}
 
     ngOnInit(): void {
@@ -964,6 +966,8 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
 
                         clearInterval(inetval);
                     }, 1000);
+                    
+                    this.mapsService.addRating(res);
                 });
         }
         // Favorite

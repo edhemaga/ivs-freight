@@ -37,7 +37,6 @@
         <!-- single markers -->
         <div *ngFor="let latlong of viewData; let i = index; trackBy: identity">
             <agm-marker
-                *ngIf="latlong.showMarker"
                 (markerClick)="clickedMarker(latlong.id, $event)"
                 [label]="
                     mapType == 'shipper'
@@ -57,6 +56,7 @@
                 [agmFitBounds]="true"
                 [animation]="'DROP'"
                 [visible]="
+                    !latlong.showMarker ? false :
                     !showMarkerWindow[latlong.id] && !latlong.actionAnimation
                 "
                 [iconUrl]="{
@@ -87,13 +87,13 @@
                     [showCloseButton]="false"
                     [panOnOpen]="false"
                     placement="bottom"
-                    *ngIf="!locationFilterOn || latlong.showMarker != false"
                 >
                     <ng-template>
                         <div
                             class="marker-container"
                             (click)="clickedMarker(latlong.id)"
                             (mousewheel)="markerZoom($event, latlong)"
+                            [ngClass]="{ 'd-none': !latlong.showMarker }"
                         >
                             <svg-icon
                                 class="marker-icon"

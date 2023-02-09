@@ -228,6 +228,54 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
                     this.getClusters(true, true);
                 }
             });
+
+        this.mapsService.mapRatingChange
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((data) => {
+                this.getClusters(true, true);
+            });
+
+        this.mapsService.selectedMapListCardChange
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((id) => {
+                console.log('selectedMarkerChange id', id);
+
+                if ( id > 0 ) {
+                    this.clusterMarkers.map((cluster) => {
+                        const clusterIndex = cluster.pagination.data.findIndex((item) => item.id == id);
+
+                        console.log('selectedMarkerChange 1');
+                        if ( clusterIndex > -1 && cluster.showMarker ) {
+                            console.log('selectedMarkerChange 2');
+                            this.clickedCluster(cluster, true);
+                            this.showClusterItemInfo([cluster, {id: id}]);
+                        } else {
+                            console.log('selectedMarkerChange 3');
+                            this.clickedMarker(id, true);
+                        }
+                    });
+                    
+                    this.mapsService.selectedMarker(id);
+                } else {
+                    this.viewData.map((data: any, index) => {
+                        if ( data.isSelected ) {
+                            data.isSelected = false;
+                        }
+                    });
+
+                    this.clusterMarkers.map((cluster) => {
+                        if ( cluster.isSelected ) {
+                            cluster.isSelected = false;
+                        }
+                    
+                        if ( cluster.detailedInfo ) {
+                            cluster.detailedInfo = false;
+                        }
+                    });
+                    
+                    this.mapsService.selectedMarker(0);
+                }
+            });
     }
 
     public getMapInstance(map) {
@@ -260,7 +308,11 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
         }
     }
 
-    clickedMarker(id) {
+    clickedMarker(id, callFromMapList?) {
+        var selectId = 0;
+
+        console.log('clickedMarker id', id);
+
         this.viewData.map((data: any, index) => {
             if (data.isExpanded) {
                 data.isExpanded = false;
@@ -269,10 +321,13 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
             if (data.isSelected && data.id != id) {
                 data.isSelected = false;
             } else if (data.id == id) {
+                console.log('clickedMarker data 1', data);
                 var selectShop = !data.isSelected;
+                console.log('clickedMarker selectShop', selectShop);
 
                 if (selectShop) {
                     this.markerSelected = true;
+                    console.log('clickedMarker selectShop 1');
 
                     if (!data.createdAt) {
                         if (this.mapType == 'repairShop') {
@@ -282,11 +337,18 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
                         } else if (this.mapType == 'fuelStop') {
                             this.getFuelStop(data.id, index);
                         }
+                    console.log('clickedMarker selectShop 2');
+
                     } else {
                         data.isSelected = true;
+                        console.log('clickedMarker data 2', data);
+                        console.log('clickedMarker selectShop 3');
                     }
 
-                    this.mapsService.selectedMarker(data.id);
+                    //this.mapsService.selectedMarker(data.id);
+                    selectId = data.id;
+                    console.log('clickedMarker selectShop 4');
+                    console.log('clickedMarker data 3', data);
 
                     // if (
                     //     this.mapLatitude == data.latitude &&
@@ -301,7 +363,9 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
                 } else {
                     this.markerSelected = false;
                     data.isSelected = false;
-                    this.mapsService.selectedMarker(0);
+                    //this.mapsService.selectedMarker(0);
+                    selectId = 0;
+                    console.log('clickedMarker data 4', data);
                 }
 
                 document
@@ -323,6 +387,10 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
         this.clusterMarkers.map((cluster) => {
             if (cluster.isSelected) cluster.isSelected = false;
         });
+
+        if ( !callFromMapList) this.mapsService.selectedMarker(selectId);
+
+        console.log('clickedMarker viewData', this.viewData);
 
         this.ref.detectChanges();
     }
@@ -1070,7 +1138,9 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
         //     });
     }
 
-    clickedCluster(cluster) {
+    clickedCluster(cluster, callFromMapList?) {
+        var selectId = 0;
+
         this.clusterMarkers.map((data: any) => {
             if (
                 data.isSelected &&
@@ -1078,7 +1148,8 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
                     data.longitude != cluster.longitude)
             ) {
                 data.isSelected = false;
-                this.mapsService.selectedMarker(0);
+                //this.mapsService.selectedMarker(0);
+                selectId = 0;
             } else if (
                 data.latitude == cluster.latitude &&
                 data.longitude == cluster.longitude
@@ -1100,10 +1171,11 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
                     //     this.mapLatitude = data.latitude;
                     //     this.mapLongitude = data.longitude;
                     // }
-                } else if (data.detailedInfo) {
+                } else if (data.detailedInfo && !callFromMapList) {
                     data.detailedInfo = false;
                     this.clusterDetailedInfo = false;
-                    this.mapsService.selectedMarker(0);
+                    //this.mapsService.selectedMarker(0);
+                    selectId = 0;
                 } else {
                     this.markerSelected = false;
                 }
@@ -1127,6 +1199,8 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
         this.viewData.map((marker) => {
             if (marker.isSelected) marker.isSelected = false;
         });
+
+        if ( !callFromMapList) this.mapsService.selectedMarker(selectId);
 
         this.ref.detectChanges();
     }
@@ -1294,6 +1368,7 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
                 .pipe(takeUntil(this.destroy$))
                 .subscribe({
                     next: (res) => {
+                        cluster.isSelected = true;
                         cluster.detailedInfo = res;
 
                         cluster.detailedInfo.shopRaiting = {
@@ -1318,6 +1393,7 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
                 .pipe(takeUntil(this.destroy$))
                 .subscribe({
                     next: (res) => {
+                        cluster.isSelected = true;
                         cluster.detailedInfo = res;
 
                         cluster.detailedInfo.raiting = {
@@ -1342,6 +1418,7 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
                 .pipe(takeUntil(this.destroy$))
                 .subscribe({
                     next: (res) => {
+                        cluster.isSelected = true;
                         cluster.detailedInfo = res;
 
                         this.clusterDetailedInfo = res;

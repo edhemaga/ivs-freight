@@ -14,6 +14,7 @@ import { DetailsDataService } from '../../../services/details-data/details-data.
 import { ConfirmationModalComponent } from '../../modals/confirmation-modal/confirmation-modal.component';
 import { ModalService } from './../../shared/ta-modal/modal.service';
 import { TaThousandSeparatorPipe } from '../../../pipes/taThousandSeparator.pipe';
+import { throws } from 'assert';
 
 @Component({
     selector: 'app-map-list-card',
@@ -69,7 +70,11 @@ export class MapListCardComponent implements OnInit, OnDestroy {
             return false;
         }
 
-        this.clickedMarker.emit([this.item.id, false]);
+        console.log('selectCard', this.item.id);
+
+        //this.clickedMarker.emit([this.item.id, false]);
+        const selectId = this.isSelected ? 0 : this.item.id;
+        this.mapsService.selectedMapListCard(selectId);
     }
 
     showMoreOptions(event) {
