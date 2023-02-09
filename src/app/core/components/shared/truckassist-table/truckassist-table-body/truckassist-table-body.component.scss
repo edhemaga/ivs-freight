@@ -512,6 +512,20 @@ table {
                                 transition: 0.2s;
                             }
 
+                            .user-avatar-archived-icon{
+                                width: 18px;
+                                height: 18px;
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+
+                                svg-icon{
+                                    display: flex;
+                                    align-items: center;
+                                    justify-content: center;
+                                }
+                            }
+
                             .avatar {
                                 user-select: none;
                                 width: 20px;
@@ -2476,6 +2490,22 @@ table {
                 width: 100% !important;
                 max-height: 1000px;
                 transition: max-height 0.25s ease-in-out;
+            }
+        }
+
+        // For User Table Only
+        .user-archived {
+            .table-text,
+            .user-status-container,
+            .table-avatar-name,
+            .semi-bold-table-text {
+                color: #919191 !important;
+            }
+
+            .table-avatar-name {
+                &:hover {
+                    color: #919191 !important;
+                }
             }
         }
 

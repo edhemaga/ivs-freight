@@ -279,7 +279,8 @@ export class TruckassistTableToolbarComponent
                     c.ngTemplate !== 'hire' &&
                     c.ngTemplate !== 'favorite' &&
                     c.ngTemplate !== 'note' &&
-                    c.ngTemplate !== 'actions'
+                    c.ngTemplate !== 'actions' &&
+                    c.ngTemplate !== 'user-checkbox'
                 ) {
                     columnsSumWidth += 6;
                 }
@@ -298,7 +299,8 @@ export class TruckassistTableToolbarComponent
                 c.ngTemplate !== 'hire' &&
                 c.ngTemplate !== 'favorite' &&
                 c.ngTemplate !== 'note' &&
-                c.ngTemplate !== 'actions'
+                c.ngTemplate !== 'actions' &&
+                c.ngTemplate !== 'user-checkbox'
             ) {
                 this.columnsOptions.push(c);
             }
