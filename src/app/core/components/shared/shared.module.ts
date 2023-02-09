@@ -126,7 +126,7 @@ import { PayrollBonusModalComponent } from '../modals/payroll-modals/payroll-bon
 import { PayrollCreditBonusComponent } from '../modals/payroll-modals/payroll-credit-bonus/payroll-credit-bonus.component';
 import { TaNoticeOfAsignmentComponent } from './ta-notice-of-asignment/ta-notice-of-asignment.component';
 import { PayrollDeductionModalComponent } from '../modals/payroll-modals/payroll-deduction-modal/payroll-deduction-modal.component';
-import { TooltipSlideComponent } from './tooltip-slide/tooltip-slide.component';
+// import { TooltipSlideComponent } from './tooltip-slide/tooltip-slide.component';
 import { CarouselModule } from 'ngx-owl-carousel-o';
 
 export function playerFactory() {
@@ -243,7 +243,7 @@ export function playerFactory() {
         TableModalComponent,
         TaPickupDeliveryComponent,
         TaNoticeOfAsignmentComponent,
-        TooltipSlideComponent,
+        // TooltipSlideComponent,
     ],
     imports: [
         CommonModule,
@@ -411,7 +411,7 @@ export function playerFactory() {
         TaPickupDeliveryComponent,
         TableModalComponent,
         TaNoticeOfAsignmentComponent,
-        TooltipSlideComponent,
+        // TooltipSlideComponent,
     ],
     providers: [],
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
