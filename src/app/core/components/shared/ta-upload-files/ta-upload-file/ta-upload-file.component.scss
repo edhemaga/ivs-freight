@@ -386,6 +386,7 @@
                 max-height: 160px !important;
                 margin: 0 !important;
                 border-radius: 1px !important;
+                overflow: hidden;
 
                 &:not(:first-child) {
                     opacity: 0;

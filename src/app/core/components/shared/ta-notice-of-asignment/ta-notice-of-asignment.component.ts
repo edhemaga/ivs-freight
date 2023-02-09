@@ -97,7 +97,7 @@ export class TaNoticeOfAsignmentComponent
     @ViewChild('noticeRef', { static: true }) noticeRef: ElementRef;
     selectedColorName: string = '#3C3C3C';
     defaultColorSet: any;
-    slowTimeout: NodeJS.Timeout;
+    slowTimeout: any;
 
     constructor(
         @Self() public superControl: NgControl,
