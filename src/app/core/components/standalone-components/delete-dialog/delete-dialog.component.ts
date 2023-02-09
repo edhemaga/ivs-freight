@@ -1,9 +1,12 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { AngularSvgIconModule } from 'angular-svg-icon';
 import { SharedService } from '../../../services/shared/shared.service';
 
 @Component({
     selector: 'app-delete-dialog',
+    standalone: true,
+    imports: [AngularSvgIconModule],
     templateUrl: './delete-dialog.component.html',
     styleUrls: ['./delete-dialog.component.scss'],
 })
