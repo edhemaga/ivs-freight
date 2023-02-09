@@ -565,7 +565,6 @@ export const settings: Settings[] = [
                 image: 'assets/svg/common/ic_integration.svg',
                 route: '/integration',
                 activeRouteFlegId: 34,
-                construction: true,
             },
         ],
     },
