@@ -229,7 +229,6 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
     selectedTab: string = 'map1';
     selectedMapIndex: number = 0;
 
-    //tableOptions: any = {};
     tableOptions: any = {
         disabledMutedStyle: null,
         toolbarActions: {
@@ -251,7 +250,6 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
         },
     };
 
-    //tableData: any[] = [];
     tableData: any[] = [
         {
             title: 'Map 1',
@@ -308,16 +306,6 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
         {
             title: 'border',
         },
-        /*{
-    title: 'Report',
-    name: 'open-report',
-    class: 'regular-text',
-    contentType: 'report',
-    show: true,
-    svg: 'assets/svg/common/routing/ic_route_report.svg',
-    showArrow: true,
-    openPopover: true,
-  },*/
         {
             title: 'Report',
             name: 'open-report',
@@ -583,8 +571,6 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
     ) {}
 
     ngOnInit(): void {
-        //this.initTableOptions();
-
         this.addressForm = this.formBuilder.group({
             address: [null, [...addressValidation]],
         });
@@ -593,15 +579,12 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
             address: [null, [...addressValidation]],
         });
 
-        //this.initAddressFields();
-
         var companyUserId = JSON.parse(
             localStorage.getItem('user')
         ).companyUserId;
         this.getMapList(companyUserId, 1, 4);
 
         this.tableData[this.selectedMapIndex].routes.map((item) => {
-            //this.calculateDistanceBetweenStops(index);
             this.calculateRouteWidth(item);
         });
 
@@ -686,12 +669,6 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
                             true
                         );
                     }
-
-                    // this.getRouteList(
-                    //     this.tableData[this.selectedMapIndex].id,
-                    //     1,
-                    //     8
-                    // );
                 } else if (res.type == 'delete-route') {
                     this.getRouteList(
                         this.tableData[this.selectedMapIndex].id,
@@ -849,7 +826,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
                         zIndex: route.isFocused
                             ? 1000
                             : this.tableData[this.selectedMapIndex].routes
-                                  .length,
+                                  .length - routeIndex + 1,
                     });
                 }
             }
@@ -988,11 +965,6 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
         });
 
         this.getRouteShape(route);
-
-        // this.calculateDistanceBetweenStops(index);
-        // this.calculateRouteWidth(
-        //     this.tableData[this.selectedMapIndex].routes[index]
-        // );
     }
 
     showHideRoute(event, route) {
@@ -1038,12 +1010,6 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
                 );
                 const rectElement = routeElement.getBoundingClientRect();
 
-                // const out =
-                //     route.y < 0 ||
-                //     route.x < 0 ||
-                //     route.y > rectZone.height - rectElement.height ||
-                //     route.x > rectZone.width - rectElement.width;
-
                 if (rectElement.right > rectZone.right - 20) {
                     route.x -= rectElement.right - rectZone.right + 20;
 
@@ -1071,7 +1037,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
         event.stopPropagation();
         event.preventDefault();
 
-        //this.DetailsDataService.setStopName(route.stops[index]['cityAddress']);
+        this.DetailsDataService.setStopName(route.stops[index]['cityAddress']);
         this.routingService
             .deleteStopById(route.stops[index].id, route.id)
             .pipe(takeUntil(this.destroy$))
@@ -1116,11 +1082,6 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
                 error: () => {},
             });
 
-        // const routeIndex = this.getRouteIndexById(route.id);
-
-        // route.stops.splice(index, 1);
-
-        // this.calculateDistanceBetweenStops(routeIndex);
         this.calculateRouteWidth(route);
 
         this.ref.detectChanges();
@@ -1599,8 +1560,6 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
     }
 
     callDropDownAction(event, action?: any) {
-        //event.stopPropagation();
-        //event.preventDefault();
         let currentId = 0;
         let actionName = '';
 
@@ -1678,10 +1637,6 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
 
             newRoute.color = this.findRouteColor();
 
-            if (this.tableData[this.selectedMapIndex].routes.length < 8) {
-                //this.tableData[this.selectedMapIndex].routes.push(newRoute);
-            }
-
             this.showHideDuplicate();
 
             const newData: any = {
@@ -1710,13 +1665,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
                     },
                     error: () => {},
                 });
-
-            // this.tableData[this.selectedMapIndex].length =
-            //   this.tableData[this.selectedMapIndex].routes.length;
-
-            // this.calculateDistanceBetweenStops(
-            //   this.tableData[this.selectedMapIndex].routes.length - 1
-            // );
+                
             this.calculateRouteWidth(
                 this.tableData[this.selectedMapIndex].routes[
                     this.tableData[this.selectedMapIndex].routes.length - 1
@@ -1761,10 +1710,6 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
 
                 route.stops = route.stops.reverse();
 
-                // route.stops.map((stop, stopIndex) => {
-                //   stop.orderNumber = stopsCopy[stopIndex].orderNumber;
-                // });
-
                 var stopArr = [];
                 route.stops.map((stop, stopIndex) => {
                     stop.orderNumber = stopsCopy[stopIndex].orderNumber;
@@ -1784,7 +1729,6 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
 
                 this.getRouteShape(route);
 
-                //this.calculateDistanceBetweenStops(routeIndex);
                 this.calculateRouteWidth(route);
                 this.ref.detectChanges();
             }, 200);
@@ -1812,8 +1756,6 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
                 .updateRoute(updateRouteObj)
                 .pipe(takeUntil(this.destroy$))
                 .subscribe();
-
-            //route.stops = [];
         }
     }
 
@@ -2092,7 +2034,6 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
 
             this.tableData[this.selectedMapIndex].routes.map(
                 (item, routeIndex) => {
-                    //this.calculateDistanceBetweenStops(index);
                     this.calculateRouteWidth(item);
                     if (item.stops?.length > 1) {
                         if (this.routePolylines[item.id]) {
@@ -2151,49 +2092,6 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
 
             return mapObj;
         });
-
-        // this.tableData = [
-        //   {
-        //     title: 'Map 1',
-        //     field: 'map1',
-        //     length: 0,
-        //     gridNameTitle: 'Routing',
-        //     distanceUnit: 'mi', // mi or km
-        //     borderType: 'open', // open or closed
-        //     addressType: 'city', // city or address,
-        //     routes: [],
-        //   },
-        //   {
-        //     title: 'Map 2',
-        //     field: 'map2',
-        //     length: 0,
-        //     gridNameTitle: 'Routing',
-        //     distanceUnit: 'mi', // mi or km
-        //     borderType: 'open', // open or closed
-        //     addressType: 'city', // city or address,
-        //     routes: [],
-        //   },
-        //   {
-        //     title: 'Map 3',
-        //     field: 'map3',
-        //     length: 0,
-        //     gridNameTitle: 'Routing',
-        //     distanceUnit: 'mi', // mi or km
-        //     borderType: 'open', // open or closed
-        //     addressType: 'city', // city or address,
-        //     routes: [],
-        //   },
-        //   {
-        //     title: 'Map 4',
-        //     field: 'map4',
-        //     length: 0,
-        //     gridNameTitle: 'Routing',
-        //     distanceUnit: 'mi', // mi or km
-        //     borderType: 'open', // open or closed
-        //     addressType: 'city', // city or address,
-        //     routes: [],
-        //   },
-        // ];
     }
 
     zoomMap(zoom) {
@@ -2299,7 +2197,6 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
                     .subscribe();
             }
 
-            //this.calculateDistanceBetweenStops(this.focusedRouteIndex);
             this.calculateRouteWidth(
                 this.tableData[this.selectedMapIndex].routes[
                     this.focusedRouteIndex
@@ -3094,7 +2991,6 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
 
                 if (this.selectedMapIndex == mapIndex) {
                     this.tableData[mapIndex].routes.map((item, routeIndex) => {
-                        //this.calculateDistanceBetweenStops(index);
                         this.calculateRouteWidth(item);
                         if (item.stops?.length > 1) {
                             this.decodeRouteShape(item, routeIndex);
@@ -3133,17 +3029,6 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
         );
 
         this.getRouteList(mapId, 1, 8);
-
-        // this.showHideDuplicate();
-
-        // this.calculateRouteWidth(
-        //     this.tableData[this.selectedMapIndex].routes[
-        //         this.tableData[this.selectedMapIndex].routes.length - 1
-        //     ]
-        // );
-
-        // this.tableData[this.selectedMapIndex].length =
-        //     this.tableData[this.selectedMapIndex].routes.length;
     }
 
     decodeRouteShape(route, routeIndex) {
@@ -3168,7 +3053,6 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
                         scale: 4
                     };
 
-                    //const polyLineCoordinates = res;
                     if ( this.routePolylines[route.id] ) {
                         this.routePolylines[route.id].setOptions({
                             path: polyLineCoordinates,
@@ -3185,7 +3069,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
                             zIndex: route.isFocused
                                 ? 1000
                                 : this.tableData[this.selectedMapIndex].routes
-                                      .length,
+                                      .length - routeIndex + 1,
                         });
                     } else {
                         this.routePolylines[route.id] = new google.maps.Polyline({
@@ -3214,7 +3098,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
                             zIndex: route.isFocused
                                 ? 1000
                                 : this.tableData[this.selectedMapIndex].routes
-                                      .length,
+                                      .length - routeIndex + 1,
                         });
 
                         this.addPolylineListeners(route.id);
@@ -3413,7 +3297,8 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
         this.routeHiddenPolylines[route.id].setOptions({
             zIndex: focus || route.isFocused
                 ? 1000
-                : this.tableData[this.selectedMapIndex].routes.length
+                : this.tableData[this.selectedMapIndex].routes.length -
+                routeLineIndex + 1
         });
 
         route.lineHover = focus;
@@ -3454,15 +3339,15 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
             this.focusRoute(routeIndex, true);
         }
 
-        this.tableData[this.selectedMapIndex].routes.map((route, routeIndex) => {
-            route.stops.map((stop, stopIndex) => {
+        this.tableData[this.selectedMapIndex].routes.map((route) => {
+            route.stops.map((stop) => {
                 stop.showEditInput = false;
             });
         });
 
         this.tableData[this.selectedMapIndex].routes[routeIndex].stops[stopIndex].showEditInput = true;
 
-        this.inputAddress.map((addressInput, inputIndex) => {
+        this.inputAddress.map((addressInput) => {
             addressInput.inputDropdown?.inputRef?.input.nativeElement.blur();
             addressInput.addressExpanded = false;
             setTimeout(() => {

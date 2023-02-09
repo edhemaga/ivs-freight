@@ -447,10 +447,6 @@
             }
         }
 
-        .loaded-stop-background {
-            //display: none;
-        }
-
         .address_holder .main_address_holder.not_expanded input {
             background-color: #f3f3f3 !important;
         }
@@ -490,46 +486,46 @@
         &.plus-button {
             margin-right: 9px;
 
-            &.route-color-1 {
-                path {
-                    fill: var(--route-color-1);
-                }
-            }
-            &.route-color-2 {
-                path {
-                    fill: var(--route-color-2);
-                }
-            }
-            &.route-color-3 {
-                path {
-                    fill: var(--route-color-3);
-                }
-            }
-            &.route-color-4 {
-                path {
-                    fill: var(--route-color-4);
-                }
-            }
-            &.route-color-5 {
-                path {
-                    fill: var(--route-color-5);
-                }
-            }
-            &.route-color-6 {
-                path {
-                    fill: var(--route-color-6);
-                }
-            }
-            &.route-color-7 {
-                path {
-                    fill: var(--route-color-7);
-                }
-            }
-            &.route-color-8 {
-                path {
-                    fill: var(--route-color-8);
-                }
-            }
+            // &.route-color-1 {
+            //     path {
+            //         fill: var(--route-color-1);
+            //     }
+            // }
+            // &.route-color-2 {
+            //     path {
+            //         fill: var(--route-color-2);
+            //     }
+            // }
+            // &.route-color-3 {
+            //     path {
+            //         fill: var(--route-color-3);
+            //     }
+            // }
+            // &.route-color-4 {
+            //     path {
+            //         fill: var(--route-color-4);
+            //     }
+            // }
+            // &.route-color-5 {
+            //     path {
+            //         fill: var(--route-color-5);
+            //     }
+            // }
+            // &.route-color-6 {
+            //     path {
+            //         fill: var(--route-color-6);
+            //     }
+            // }
+            // &.route-color-7 {
+            //     path {
+            //         fill: var(--route-color-7);
+            //     }
+            // }
+            // &.route-color-8 {
+            //     path {
+            //         fill: var(--route-color-8);
+            //     }
+            // }
         }
 
         svg {
@@ -1216,4 +1212,16 @@
 
     pointer-events: none;
     z-index: 999;
+}
+
+@for $i from 0 through 8 {
+    .delete-button.route-color-#{$i} {
+        background: var(--route-color-$i);
+    }
+
+    .delete-button.plus-button.route-color-#{$i} {
+        path {
+            fill: var(--route-color-#{$i});
+        }
+    }
 }
