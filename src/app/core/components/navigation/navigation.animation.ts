@@ -109,7 +109,22 @@ export const smoothHeight = (type: string) =>
         ),
         transition('false <=> true', [animate('0.15s ease-in-out')]),
     ]);
-
+export const test = (type: string) =>
+    trigger(type, [
+        state(
+            'true',
+            style({
+                height: '347px',
+            })
+        ),
+        state(
+            'false',
+            style({
+                height: '0px',
+            })
+        ),
+        transition('false <=> true', [animate('1s ease-in')]),
+    ]);
 export const moveElementsTopDownModal = (type: string) =>
     trigger(type, [
         state(

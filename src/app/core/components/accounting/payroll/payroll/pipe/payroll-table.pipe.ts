@@ -14,11 +14,18 @@ export class PayrollTablePipe implements PipeTransform {
         if (field.isIndexIncrement) {
             return index + 1;
         }
+        if (field.data_title) {
+            return field.field;
+        }
+
         if (field.data_field) {
             const deepObject = field.data_field.split('.');
             let returnValue = data;
 
-            if (deepObject.length == 1 && !returnValue[deepObject[0]]) {
+            if (
+                deepObject.length == 1 &&
+                typeof returnValue[deepObject[0]] == 'undefined'
+            ) {
                 return '';
             }
             deepObject.map((item) => {

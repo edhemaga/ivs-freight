@@ -57,6 +57,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
     repairShops: ShopState[] = [];
     tableContainerWidth: number = 0;
     resizeObserver: ResizeObserver;
+
     backFilterQuery = {
         repairShopId: undefined,
         unitType: 1,
@@ -182,6 +183,8 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                             ? this.backFilterQuery
                             : this.shopFilterQuery
                     );
+
+                    console.log(searchEvent);
 
                     if (searchEvent) {
                         if (searchEvent.action === 'api') {
@@ -711,13 +714,14 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
             pageSize?: number;
             companyId?: number | undefined;
             sort?: string | undefined;
-            search?: string | undefined;
-            search1?: string | undefined;
-            search2?: string | undefined;
+            searchOne: string | undefined;
+            searchTwo: string | undefined;
+            searchThree: string | undefined;
         },
         isSearch?: boolean,
         isShowMore?: boolean
     ) {
+        console.log()
         this.repairService
             .getRepairShopList(
                 filter.active,
@@ -733,9 +737,9 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                 filter.pageSize,
                 filter.companyId,
                 filter.sort,
-                filter.search,
-                filter.search1,
-                filter.search2
+                filter.searchOne,
+                filter.searchTwo,
+                filter.searchThree
             )
             .pipe(takeUntil(this.destroy$))
             .subscribe((shop: RepairShopListResponse) => {

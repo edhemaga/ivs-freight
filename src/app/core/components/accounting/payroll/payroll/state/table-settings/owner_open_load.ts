@@ -2,7 +2,8 @@ export const owner_open_loads = [
     {
         field: "#",
         isIndexIncrement: true,
-        template: "medium-normal-template"
+        template: "medium-normal-template",
+        justifyClass: "just-center"
     },
     {
         field: "INV #",
