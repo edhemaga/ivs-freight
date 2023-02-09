@@ -255,7 +255,6 @@ export class ShopRepairDetailsComponent implements OnInit, OnDestroy {
         };
     }
     public dropActionRepair(event: any) {
-        console.log('---here----', event)
         if ( event.type == 'write-review' ){
             event.type = 'edit';
             event.openedTab = 'Review';
@@ -268,7 +267,6 @@ export class ShopRepairDetailsComponent implements OnInit, OnDestroy {
     }
 
     public onModalAction(event: any){
-        console.log('---here---')
         let eventType = '';
        if ( event == 'Contact' || event == 'Review'){
             eventType = 'edit'
