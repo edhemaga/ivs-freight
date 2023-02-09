@@ -235,20 +235,18 @@ export class CustomScrollbarComponent
             }
             // Table Scroll
             else {
-                const offsetBar = e.clientX - this.tableBarClickPosition;
-                console.log('---', offsetBar);
-                if (
-                    offsetBar > -1 &&
-                    e.clientX + this.tableBarClickRestWidth <
-                        this.tableNotPinedBoundingRect.width
-                ) {
-                    this.bar.nativeElement.style.transform = `translateX(${offsetBar}px)`;
+                let offsetBar = e.clientX - this.tableBarClickPosition;
+                const maxWidth = this.tableNotPinedBoundingRect.width;
 
-                    this.scrollEvent.emit({
-                        eventAction: 'scrolling',
-                        scrollPosition: offsetBar * this.tableScrollRatioFull,
-                    });
-                }
+                offsetBar = offsetBar < 0 ? 0 : offsetBar;
+                offsetBar = (e.clientX + this.tableBarClickRestWidth) > maxWidth ? maxWidth - this.tableScrollWidth : offsetBar;
+
+                this.bar.nativeElement.style.transform = `translateX(${offsetBar}px)`;
+
+                this.scrollEvent.emit({
+                    eventAction: 'scrolling',
+                    scrollPosition: offsetBar * this.tableScrollRatioFull,
+                });
             }
         }
     };
