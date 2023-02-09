@@ -1,38 +1,66 @@
-import { Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation } from '@angular/core';
+import {
+    Component,
+    EventEmitter,
+    Input,
+    OnInit,
+    Output,
+    ViewEncapsulation,
+} from '@angular/core';
 
 @Component({
-  selector: 'app-payroll-table',
-  templateUrl: './payroll-table.component.html',
-  styleUrls: ['./payroll-table.component.scss'],
-  encapsulation: ViewEncapsulation.None
+    selector: 'app-payroll-table',
+    templateUrl: './payroll-table.component.html',
+    styleUrls: ['./payroll-table.component.scss'],
+    encapsulation: ViewEncapsulation.None,
 })
 export class PayrollTableComponent implements OnInit {
-  @Output() expandTable = new EventEmitter();
-  @Input() tableSettings: any[];
-  @Input() tableSettingsResizable: any[];
-  @Input() tableData: any[];
-  @Input() title: string;
-  @Input() isResizableTable: boolean = false;
-  @Input() tableAddClas: string = "";
+    @Output() expandTable = new EventEmitter();
+    @Input() tableSettings: any[];
+    @Input() tableSettingsResizable: any[];
 
-  @Input() expandedTable: boolean;
-  constructor() { }
+    @Input() title: string;
+    @Input() isResizableTable: boolean = false;
+    @Input() tableAddClas: string = '';
 
-  ngOnInit(): void {
-  }
+    @Input() expandedTable: boolean;
 
-  openReport(data){
-    //const id = this.getReportBasedOnTitle(this.title, data);
-    this.expandTable.emit({title: this.title, id: data.id});
-  }
+    _tableData: any[] = [];
+    @Input() set tableData(value) {
+        console.log('----------');
+        if (this.tableSettingsResizable) {
+            const tableSettingsValue = [...value].reduce((tbrez, item) => {
+                const newtbrez = this.tableSettingsResizable.map((data) => {
+                    if (data.data_field) {
+                     
+                      if( !tbrez[data.data_field] ) tbrez[data.data_field] = 0;
+                      tbrez[data.data_field] += item[data.data_field] ? item[data.data_field] : 0;
+                    }
+                    return data;
+                });
 
+                return tbrez;
+            }, { reorderItem: true });
 
-  getReportBasedOnTitle(title: string, data){
-    switch(title){
-      case "Owner": 
-      return data.id;
+           value.push(tableSettingsValue);
+        }
+       
+        this._tableData = value;
     }
-  }
-  
+    constructor() {}
 
+    ngOnInit(): void {}
+
+    openReport(data) {
+        //const id = this.getReportBasedOnTitle(this.title, data);
+        this.expandTable.emit({ title: this.title, id: data.id });
+    }
+
+    getReportBasedOnTitle(title: string, data) {
+        switch (title) {
+            case 'Owner':
+                return data.id;
+        }
+    }
+
+    dropList(event) {}
 }

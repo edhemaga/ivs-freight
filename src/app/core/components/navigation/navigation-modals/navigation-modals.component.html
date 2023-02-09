@@ -14,14 +14,20 @@
 >
     <div class="modal-inner">
         <div
-            (mouseenter)="changeTextHoverOnCloseModal = true"
-            (mouseleave)="changeTextHoverOnCloseModal = false"
+            (mouseenter)="
+                changeTextHoverOnCloseModal = true; showToolTip = true
+            "
+            (mouseleave)="
+                changeTextHoverOnCloseModal = false; showToolTip = false
+            "
             (click)="OpenMainModal(!OpenCloseModal)"
             class="modal-nav-close"
         >
             <p class="modal-nav-close-text">
                 <svg-icon
                     class="modal-nav-close-svg"
+                    (mouseenter)="changeText(true)"
+                    (mouseleave)="changeText(false)"
                     [ngClass]="{
                         'closed-modal': !OpenCloseModal,
                         'opened-modal': OpenCloseModal
@@ -29,12 +35,16 @@
                     src="assets/svg/common/ic_x.svg"
                 ></svg-icon>
             </p>
-            <!-- <svg-icon
-                (mouseenter)="Title = 'Close'"
-                (mouseleave)="Title = 'Add New'"
-                class="modal-nav-close-svg"
-                src="assets/svg/common/ic_x.svg"
-            ></svg-icon> -->
+            <div
+                class="tooltip-right"
+                [ngClass]="{ 'hide-tooltip': isNavigationHovered }"
+            >
+                <app-tooltip-slide
+                    *ngIf="!isNavigationHovered"
+                    [show]="showToolTip"
+                    [name]="'Add Anything'"
+                ></app-tooltip-slide>
+            </div>
         </div>
 
         <div class="modal-nav-content">
@@ -71,7 +81,7 @@
                         let odd = odd;
                         trackBy: identity
                     "
-                    (click)="onAction('Open Modal', item)"
+                    (click)="onAction(item)"
                 >
                     {{ item.name }}
                 </p>
@@ -88,7 +98,7 @@
                         let ind = index;
                         trackBy: identity
                     "
-                    (click)="onAction('Open Modal', item)"
+                    (click)="onAction(item)"
                 >
                     {{ item.name }}
                 </p>
@@ -105,7 +115,7 @@
                         let ind = index;
                         trackBy: identity
                     "
-                    (click)="onAction('Open Modal', item)"
+                    (click)="onAction(item)"
                 >
                     {{ item.name }}
                 </p>
@@ -122,7 +132,7 @@
                         let ind = index;
                         trackBy: identity
                     "
-                    (click)="onAction('Open Modal', item)"
+                    (click)="onAction(item)"
                 >
                     {{ item.name }}
                 </p>
@@ -139,7 +149,7 @@
                         let ind = index;
                         trackBy: identity
                     "
-                    (click)="onAction('Open Modal', item)"
+                    (click)="onAction(item)"
                 >
                     {{ item.name }}
                 </p>

@@ -39,7 +39,6 @@ import { FilesService } from 'src/app/core/services/shared/files.service';
         },
     ],
 })
-
 export class TruckassistTableBodyComponent
     implements OnInit, OnChanges, AfterViewInit, OnDestroy
 {
@@ -88,6 +87,8 @@ export class TruckassistTableBodyComponent
     statusDropdownData: any;
     showInspectinDescriptionEdit: boolean;
     editInspectinDescriptionText: string = '';
+    tableRowCounter: number = 0;
+    renderInterval: any;
 
     constructor(
         private router: Router,
@@ -110,6 +111,9 @@ export class TruckassistTableBodyComponent
 
         // Set Dropdown Content
         this.setDropContent();
+
+        // For Rendering One By One
+        this.renderOneByOne();
 
         // Select Or Deselect All
         this.tableService.currentSelectOrDeselect
@@ -184,6 +188,8 @@ export class TruckassistTableBodyComponent
                     this.getNotPinedMaxWidth();
                     this.getSelectedTabTableData();
                 }, 10);
+
+                this.renderOneByOne();
             }
 
             this.checkAttachmentUpdate();
@@ -259,6 +265,46 @@ export class TruckassistTableBodyComponent
         this.getNotPinedMaxWidth();
     }
 
+    // Render Row One By One
+    renderOneByOne() {
+        // clearInterval(this.renderInterval);
+
+        // if(this.viewData.length - 1 <= this.tableRowCounter){
+        //     this.tableRowCounter = 0;
+        // }
+        
+
+        // this.renderInterval = setInterval(() => {
+        //     this.tableRowCounter++;
+
+        //     this.changeDetectorRef.detectChanges();
+
+        //     if (this.tableRowCounter >= this.viewData.length - 1) {
+        //         clearInterval(this.renderInterval);
+        //     }
+        // }, 1);
+    }
+
+    // Track By For Table Row
+    trackTableRow(item: any) {
+        return item.id;
+    }
+
+    // Track By For Pined Columns
+    trackTablePinedColumns(item: any) {
+        return item.columnId;
+    }
+
+    // Track By For Not Pined Columns
+    trackTableNotPinedColumns(item: any) {
+        return item.columnId;
+    }
+
+    // Track By For Actions Columns
+    trackTableActionsColumns(item: any) {
+        return item.columnId;
+    }
+
     // Attachment Update
     checkAttachmentUpdate() {
         if (this.activeAttachment !== -1) {
@@ -319,10 +365,13 @@ export class TruckassistTableBodyComponent
 
         let notPinedWidth = 0;
 
-        this.columns.map((c: any) => {
+        this.columns.map((c: any, i: number) => {
             // Pined
             if (c.isPined && !c.isAction && !c.hidden) {
-                this.pinedColumns.push(c);
+                this.pinedColumns.push({
+                    ...c,
+                    columnId: c.name + i,
+                });
 
                 this.pinedWidth += c.minWidth > c.width ? c.minWidth : c.width;
 
@@ -337,7 +386,10 @@ export class TruckassistTableBodyComponent
 
             // Not Pined
             if (!c.isPined && !c.isAction && !c.hidden) {
-                this.notPinedColumns.push(c);
+                this.notPinedColumns.push({
+                    ...c,
+                    columnId: c.name + i,
+                });
 
                 notPinedWidth +=
                     c.minWidth > c.width ? c.minWidth + 6 : c.width + 6;
@@ -345,7 +397,10 @@ export class TruckassistTableBodyComponent
 
             // Actions
             if (c.isAction && !c.hidden) {
-                this.actionsColumns.push(c);
+                this.actionsColumns.push({
+                    ...c,
+                    columnId: c.name + i,
+                });
 
                 this.actionsWidth +=
                     c.minWidth > c.width ? c.minWidth : c.width;
@@ -370,7 +425,7 @@ export class TruckassistTableBodyComponent
         if (this.viewData.length) {
             clearTimeout(this.tableWidthTimeout);
 
-            const tableContainer = document.querySelector('.table-container');
+            const tableContainer = document.querySelector('.table-container'); 
 
             this.notPinedMaxWidth =
                 tableContainer.clientWidth -
@@ -381,7 +436,7 @@ export class TruckassistTableBodyComponent
 
             this.tableWidthTimeout = setTimeout(() => {
                 const table = document.querySelector('.table-tr');
-                this.tableWidth = table.clientWidth;
+                this.tableWidth = table?.clientWidth ? table.clientWidth : 0;
             }, 100);
         }
     }

@@ -50,6 +50,7 @@ export class NavigationComponent implements OnInit, OnDestroy {
     public index: number;
     public openedDropdown: boolean = false;
     public hideSubrouteTitle: number = -1;
+    public ChangeCloseTextTitle: boolean = false;
     closeDropdownOnNavClose: boolean;
     @ViewChild('navbar') navbar: ElementRef;
     selectedRoute: string = '';
@@ -57,12 +58,12 @@ export class NavigationComponent implements OnInit, OnDestroy {
     companiesExists: boolean;
     routeIndexSelected: boolean;
     subrouteClicked: boolean = false;
+    dropdowns: boolean = false;
     constructor(
         private cdRef: ChangeDetectorRef,
         private router: Router,
         private navigationService: NavigationService,
-        private DetailsDataService: DetailsDataService,
-        private activatedRoute: ActivatedRoute
+        private DetailsDataService: DetailsDataService
     ) {}
     hideSubrouteFromChild($event) {
         this.hideSubrouteTitle = $event;
@@ -88,7 +89,9 @@ export class NavigationComponent implements OnInit, OnDestroy {
                             this.isSettingsPanelOpen = false;
                             this.isUserCompanyDetailsOpen = false;
                             this.subrouteClicked = false;
+                            this.isNavigationHovered = true;
                         } else {
+                            this.isNavigationHovered = true;
                             this.isModalPanelOpen = data.type;
                         }
                         break;
@@ -143,8 +146,8 @@ export class NavigationComponent implements OnInit, OnDestroy {
                 if (url.url === '/dispatcher') {
                     this.selectedRoute = 'Dispatch';
                     this.cdRef.detectChanges();
-                } else if (url.url === '/file-menager') {
-                    this.selectedRoute = 'File Menager';
+                } else if (url.url === '/file-manager') {
+                    this.selectedRoute = 'File Manager';
                     this.cdRef.detectChanges();
                 } else {
                     let ruteName = url.url.split('/');
@@ -175,7 +178,6 @@ export class NavigationComponent implements OnInit, OnDestroy {
                                 ruteName[2].charAt(0).toUpperCase() +
                                 ruteName[2].substr(1).toLowerCase();
                             this.selectedSubRoute = t;
-                            console.log(this.selectedSubRoute);
                             this.cdRef.detectChanges();
                         }
                     }
@@ -186,6 +188,9 @@ export class NavigationComponent implements OnInit, OnDestroy {
                     this.cdRef.detectChanges();
                 }
             });
+    }
+    public ChangeCloseText(event) {
+        this.ChangeCloseTextTitle = event;
     }
     getIndex(ind) {
         this.index = ind;

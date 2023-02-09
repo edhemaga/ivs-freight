@@ -21,5 +21,6 @@ export interface SelectCompanyResponse {
     lastName?: string | null;
     avatar?: string | null;
     driverId?: number | null;
+    areSettingsUpdated?: boolean | null;
 }
 

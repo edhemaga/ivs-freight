@@ -175,12 +175,6 @@ export class DetailsDropdownComponent implements OnInit, OnChanges, OnDestroy {
             enabled: true,
             phase: 'main',
             effect: ({ state, instance }) => {
-                instance.forceUpdate();
-                setTimeout(() => {
-                    instance.forceUpdate();
-                    this.chnd.detectChanges();
-                }, 400);
-
                 const observer = new ResizeObserver(() => instance.update());
                 observer.observe(state.elements!.reference as any);
                 return () => {

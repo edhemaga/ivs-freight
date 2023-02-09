@@ -24,8 +24,8 @@ export class UnderConstructionComponent implements OnInit, OnDestroy {
                 if (ruteName[2]) {
                     this.title = ruteName[2];
                 } else {
-                    ruteName[1] == 'file-menager'
-                        ? (this.title = 'file menager')
+                    ruteName[1] == 'file-manager'
+                        ? (this.title = 'file manager')
                         : (this.title = ruteName[1]);
                 }
             });

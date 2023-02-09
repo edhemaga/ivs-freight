@@ -64,7 +64,13 @@ export class SettingsCompanyComponent implements OnInit, OnDestroy {
         this.detailsPageSer.pageDetailChangeId$
             .pipe(takeUntil(this.destroy$))
             .subscribe((id) => {
-                this.settingsCompanyService
+
+                let currentIndex = this.dataCompany.findIndex(
+                    (comp) => comp.id === id
+                );
+                
+                if ( this.dataCompany[currentIndex].isDivision ) {
+                    this.settingsCompanyService
                     .getCompanyDivisionById(id)
                     .pipe(takeUntil(this.destroy$))
                     .subscribe({
@@ -85,6 +91,17 @@ export class SettingsCompanyComponent implements OnInit, OnDestroy {
                             }
                         },
                     });
+                } else {
+                    if (this.CompanyStore.getValue()?.entities) {
+                        this.getData(
+                            this.CompanyStore.getValue()?.entities[id] 
+                        );
+                    } else {
+                        this.getData(
+                            this.activated.snapshot.data.company
+                        );
+                    }
+                }
             });
         this.DetailsDataService.setNewData(this.data);
     }
