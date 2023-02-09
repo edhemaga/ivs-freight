@@ -23,11 +23,11 @@ app-broker-details-single {
     height: fit-content;
     background-color: #ffffff;
     border-radius: 3px;
-    padding: 0 6px;
+    padding: 0px 11px 21px 11px;
     .t-headear-broker {
         display: grid;
         grid-template-columns: 92px 88px 149px 101px 169px 71.5px;
-        padding: 0 10px;
+        padding: 0 4px;
         padding-top: 8px;
         padding-bottom: 6px;
         .t-head-items {
@@ -86,13 +86,13 @@ app-broker-details-single {
     }
 
     .t-body-broker {
-        padding: 0 2px;
+        padding: 0px 0px;
         // height: calc(110vh - 68px);
         .t-body-broker-items {
             display: grid;
             grid-template-columns: 91px 89px 124px 126px 153px 87px;
             align-items: center;
-            padding: 0 8px;
+            padding: 0 4px;
             margin: 2px 0;
             grid-auto-flow: column;
             .t-body-items {
@@ -105,6 +105,7 @@ app-broker-details-single {
                     font-size: 14px;
                     font-weight: 700;
                     color: #6c6c6c;
+                    line-height: 17px;
                     &::-moz-selection {
                         color: #6c6c6c;
                         background: rgb(108, 108, 108, 0.2);
@@ -118,7 +119,7 @@ app-broker-details-single {
                     font-size: 14px;
                     font-weight: 400;
                     color: #6c6c6c;
-                    line-height: 25px;
+                    line-height: 17px;
                     &::-moz-selection {
                         color: #6c6c6c;
                         background: rgb(108, 108, 108, 0.2);
@@ -172,11 +173,14 @@ app-broker-details-single {
                 //cursor: pointer;
                 //background-color: #f3f3f3;
             }
+
+            &:hover{
+                cursor: pointer;
+                background-color: #f3f3f3;
+            }
+
         }
-        &:hover{
-            cursor: pointer;
-            background-color: #f3f3f3;
-        }
+        
     }
     .pickup-wrapper {
         display: flex;
@@ -269,7 +273,7 @@ app-broker-details-single {
     }
 }
 .space-text {
-    margin-bottom: 5px;
+    margin-bottom: 6px;
 }
 .t-body-wrapper {
     overflow-y: scroll;
