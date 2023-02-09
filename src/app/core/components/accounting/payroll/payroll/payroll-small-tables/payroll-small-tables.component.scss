@@ -18,12 +18,18 @@
                 background-color: #E5E5E5;
                 border-radius: 2px;
                 margin-right: 6px;
+                user-select: none;
             }
 
             .title, .count{
                 font-size: 17px;
                 font-weight: 700;
                 color: #424242;
+
+                &::selection{
+                    background-color: #42424233;
+                    color: #424242;
+                }
             }
         }
 
@@ -143,6 +149,6 @@
     }
 
     .small-table-inside-table{
-        margin-top: 12px;
+        margin-top: 4px;
     }
 }

@@ -876,47 +876,6 @@
                                         </div>
                                     </div>
 
-                                    <!-- CUSTOMER NAME COLUMN -->
-                                    <div
-                                        class="td-content"
-                                        *ngIf="
-                                            column.ngTemplate ===
-                                            'customer-name'
-                                        "
-                                        [ngStyle]="{
-                                            width: column.width + 'px',
-                                            'min-width.px': column?.minWidth
-                                                ? column.minWidth
-                                                : 'unset'
-                                        }"
-                                    >
-                                        <div class="customer-name-container">
-                                            <svg-icon
-                                                *ngIf="row.ban && !row.dnu"
-                                                [src]="
-                                                    'assets/svg/truckassist-table/customer/banner-icon.svg'
-                                                "
-                                                [svgStyle]="{
-                                                    'width.px': '18',
-                                                    'height.px': '18'
-                                                }"
-                                            ></svg-icon>
-                                            <svg-icon
-                                                *ngIf="!row.ban && row.dnu"
-                                                [src]="
-                                                    'assets/svg/truckassist-table/customer/do-not-use-icon.svg'
-                                                "
-                                                [svgStyle]="{
-                                                    'width.px': '18',
-                                                    'height.px': '18'
-                                                }"
-                                            ></svg-icon>
-                                            <span class="customer-name">{{
-                                                row[column.field]
-                                            }}</span>
-                                        </div>
-                                    </div>
-
                                     <!-- TOTAL  COLUMN-->
                                     <div
                                         class="td-content"
@@ -2641,47 +2600,6 @@
                                         </div>
                                     </div>
 
-                                    <!-- CUSTOMER NAME COLUMN -->
-                                    <div
-                                        class="td-content"
-                                        *ngIf="
-                                            column.ngTemplate ===
-                                            'customer-name'
-                                        "
-                                        [ngStyle]="{
-                                            width: column.width + 'px',
-                                            'min-width.px': column?.minWidth
-                                                ? column.minWidth
-                                                : 'unset'
-                                        }"
-                                    >
-                                        <div class="customer-name-container">
-                                            <svg-icon
-                                                *ngIf="row.ban && !row.dnu"
-                                                [src]="
-                                                    'assets/svg/truckassist-table/customer/banner-icon.svg'
-                                                "
-                                                [svgStyle]="{
-                                                    'width.px': '18',
-                                                    'height.px': '18'
-                                                }"
-                                            ></svg-icon>
-                                            <svg-icon
-                                                *ngIf="!row.ban && row.dnu"
-                                                [src]="
-                                                    'assets/svg/truckassist-table/customer/do-not-use-icon.svg'
-                                                "
-                                                [svgStyle]="{
-                                                    'width.px': '18',
-                                                    'height.px': '18'
-                                                }"
-                                            ></svg-icon>
-                                            <span class="customer-name">{{
-                                                row[column.field]
-                                            }}</span>
-                                        </div>
-                                    </div>
-
                                     <!-- TOTAL  COLUMN-->
                                     <div
                                         class="td-content"
@@ -3723,15 +3641,19 @@ highlightingWords) : '' " -->
                                         }"
                                     >
                                         <app-ta-note
-                                            [note]="
-                                                row[column.field]
-                                                    ? row[column.field]
-                                                    : ''
-                                            "
+                                            [note]="row.note"
                                             [mainData]="row"
                                             [entityId]="row.id"
                                             [entityType]="
-                                                activeTableData?.gridNameTitle
+                                                activeTableData?.gridNameTitle !=
+                                                'Repair'
+                                                    ? activeTableData?.gridNameTitle
+                                                    : activeTableData?.gridNameTitle ==
+                                                          'Repair' &&
+                                                      selectedTab ==
+                                                          'repair-shop'
+                                                    ? 'RepairShop'
+                                                    : 'Repair'
                                             "
                                             [openedAll]="false"
                                             [parking]="false"

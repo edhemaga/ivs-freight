@@ -1,5 +1,9 @@
-<div class="payroll-table-main">
-    <table class="{{tableAddClas}}">
+<div
+    cdkDropList
+    (cdkDropListDropped)="dropList($event)"
+    class="payroll-table-main"
+>
+    <table class="{{ tableAddClas }}">
         <thead>
             <tr>
                 <ng-container *ngFor="let h of tableSettings">
@@ -8,6 +12,10 @@
                             expandedTable ||
                             (!expandedTable && !h.hideNotExpanded)
                         "
+                        [class.text-above]="h.textAbove || h.hasBorder"
+                        [class.increment-field]="
+                            h.isIndexIncrement || h.isTitleIndex
+                        "
                     >
                         <div class="thead-box d-flex">
                             <div
@@ -15,25 +23,39 @@
                                 *ngIf="h.hasBorder"
                             ></div>
                             <div class="field-subtitle">{{ h.textAbove }}</div>
-                            <div class="field-title">{{ h.field }}</div>
+                            <div class="field-title {{ h.justifyClass }}">
+                                {{ h.field }}
+                            </div>
                         </div>
                     </th>
                 </ng-container>
             </tr>
         </thead>
         <tbody>
-            <ng-container *ngFor="let tr of tableData; let rowIndex = index">
-                <tr (click)="openReport(tr)">
+            <ng-container *ngFor="let tr of _tableData; let rowIndex = index">
+                <tr
+                    *ngIf="!tr.reorderItem"
+                    (click)="openReport(tr)"
+                    class="reorder-row"
+                    cdkDrag
+                    cdkDragLockAxis="y"
+                    [cdkDragDisabled]="true"
+                    cdkDragPreviewContainer="parent"
+                    cdkDragBoundary=".payroll-table-main"
+                >
                     <ng-container *ngFor="let h of tableSettings">
                         <td
                             *ngIf="
                                 expandedTable ||
                                 (!expandedTable && !h.hideNotExpanded)
                             "
+                            [class.increment-field]="
+                                h.isIndexIncrement || h.isTitleIndex
+                            "
                         >
                             <div class="table-box" [ngSwitch]="h.template">
                                 <div
-                                    class="table-hold-box"
+                                    class="table-hold-box {{ h.justifyClass }}"
                                     *ngSwitchCase="'bold-normal-template'"
                                 >
                                     <div
@@ -43,7 +65,7 @@
                                 </div>
 
                                 <div
-                                    class="table-hold-box"
+                                    class="table-hold-box {{ h.justifyClass }}"
                                     *ngSwitchCase="'status-template'"
                                 >
                                     <div class="status-template d-flex">
@@ -55,7 +77,9 @@
                                 </div>
 
                                 <div
-                                    class="table-hold-box d-flex"
+                                    class="table-hold-box d-flex {{
+                                        h.justifyClass
+                                    }}"
                                     *ngSwitchCase="'bold-image-template'"
                                 >
                                     <app-profile-images
@@ -72,13 +96,15 @@
 
                                 <!-- PICKUP AND DELIVERY TEMPLATE -->
                                 <div
-                                    class="table-hold-box"
+                                    class="table-hold-box {{ h.justifyClass }}"
                                     *ngSwitchCase="'pickup-delivery-template'"
                                 >
-                                    <div 
+                                    <div
                                         class="pick-load-box"
-                                        [class.delivery-box]="tr.type.name == 'Delivery'"
-                                        >
+                                        [class.delivery-box]="
+                                            tr.type.name == 'Delivery'
+                                        "
+                                    >
                                         <svg-icon
                                             *ngIf="tr.order < 9"
                                             src="
@@ -94,12 +120,8 @@
                                         ></svg-icon>
                                         <div class="pick-load-info">
                                             <div class="pick-load-info-address">
-                                                {{
-                                                    tr.location.city
-                                                }},
-                                                {{
-                                                    tr.location.stateShortName
-                                                }}
+                                                {{ tr.location.city }},
+                                                {{ tr.location.stateShortName }}
                                             </div>
                                             <div class="pick-load-info-time">
                                                 05/09/21
@@ -110,7 +132,7 @@
                                 <!-- PICKUP AND DELIVERY TEMPLATE END -->
 
                                 <div
-                                    class="table-hold-box"
+                                    class="table-hold-box {{ h.justifyClass }}"
                                     *ngSwitchCase="'pickup-template'"
                                 >
                                     <div class="pick-load-box">
@@ -145,8 +167,28 @@
                                     </div>
                                 </div>
 
+                                <!-- Small Details Template -->
                                 <div
-                                    class="table-hold-box"
+                                    class="table-hold-box {{ h.justifyClass }}"
+                                    *ngSwitchCase="'small-details-template'"
+                                >
+                                    <div class="pick-load-box delivery-box">
+                                        <div class="pick-load-info m-0">
+                                            <div class="pick-load-info-address">
+                                                {{ tr.description }}
+                                            </div>
+                                            <div class="pick-load-info-time">
+                                                {{
+                                                    tr.date | date : 'MM/dd/YY'
+                                                }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Small Details Template End -->
+
+                                <div
+                                    class="table-hold-box {{ h.justifyClass }}"
                                     *ngSwitchCase="'delivery-template'"
                                 >
                                     <div class="pick-load-box delivery-box">
@@ -182,7 +224,7 @@
                                 </div>
 
                                 <div
-                                    class="table-hold-box"
+                                    class="table-hold-box {{ h.justifyClass }}"
                                     *ngSwitchCase="'medium-normal-template'"
                                 >
                                     <div
@@ -194,7 +236,7 @@
                                 </div>
 
                                 <div
-                                    class="table-hold-box"
+                                    class="table-hold-box {{ h.justifyClass }}"
                                     *ngSwitchCase="'semibold-normal-template'"
                                     [class.highlighted]="h.highlighted"
                                 >
@@ -206,7 +248,11 @@
                                     ></div>
                                 </div>
 
-                                <div class="table-hold-box" *ngSwitchDefault>
+                                <div
+                                    class="table-hold-box {{ h.justifyClass }}"
+                                    *ngSwitchDefault
+                                    [ngStyle]=""
+                                >
                                     <div
                                         class="normal-template"
                                         [innerHTML]="tr | payrolltablepipe : h"
@@ -216,57 +262,86 @@
                         </td>
                     </ng-container>
                 </tr>
+                <tr
+                    *ngIf="tr.reorderItem && isResizableTable"
+                    cdkDrag
+                    cdkDragLockAxis="y"
+                    cdkDragPreviewContainer="parent"
+                    cdkDragBoundary=".payroll-table-main"
+                    class="reorder-row"
+                >
+                    <ng-container *ngFor="let h of tableSettingsResizable">
+                        <td [attr.colspan]="h.colspan">
+                            <div class="table-box" [ngSwitch]="h.template">
+                                <div
+                                    class="table-hold-box {{ h.justifyClass }}"
+                                    *ngSwitchCase="'bold-normal-template'"
+                                    [class.highlighted-last]="h.highlighted"
+                                >
+                                    <div
+                                        class="bold-normal-template"
+                                        [innerHTML]="
+                                            tr | payrolltablepipe : h : rowIndex
+                                        "
+                                    ></div>
+                                    <div
+                                        *cdkDragPlaceholder
+                                        class="custom-payroll-placeholder"
+                                    ></div>
+                                </div>
+
+                                <div
+                                    class="table-hold-box {{ h.justifyClass }}"
+                                    *ngSwitchCase="'medium-normal-template'"
+                                >
+                                    <div
+                                        class="medium-normal-template"
+                                        [innerHTML]="
+                                            tr | payrolltablepipe : h : rowIndex
+                                        "
+                                    ></div>
+                                </div>
+
+                                <div
+                                    class="table-hold-box {{ h.justifyClass }}"
+                                    *ngSwitchCase="'medium-normal-template'"
+                                >
+                                    <div
+                                        class="medium-normal-template"
+                                        [innerHTML]="
+                                            tr | payrolltablepipe : h : rowIndex
+                                        "
+                                    ></div>
+                                </div>
+
+                                <div
+                                    class="table-hold-box {{ h.justifyClass }}"
+                                    *ngSwitchCase="'semibold-normal-template'"
+                                >
+                                    <div
+                                        class="semibold-normal-template"
+                                        [innerHTML]="
+                                            tr | payrolltablepipe : h : rowIndex
+                                        "
+                                    ></div>
+                                </div>
+
+                                <div
+                                    class="table-hold-box {{ h.justifyClass }}"
+                                    *ngSwitchDefault
+                                >
+                                    <div
+                                        class="normal-template"
+                                        [innerHTML]="
+                                            tr | payrolltablepipe : h : rowIndex
+                                        "
+                                    ></div>
+                                </div>
+                            </div>
+                        </td>
+                    </ng-container>
+                </tr>
             </ng-container>
-            <tr *ngIf="isResizableTable" class="reorder-row">
-                <ng-container *ngFor="let h of tableSettingsResizable">
-                    <td [attr.colspan]="h.colspan">
-                        <div class="table-box" [ngSwitch]="h.template">
-                            <div
-                                class="table-hold-box"
-                                *ngSwitchCase="'bold-normal-template'"
-                                [class.highlighted-last]="h.highlighted"
-                            >
-                                <div class="bold-normal-template">
-                                    {{ h.value }}
-                                </div>
-                            </div>
-
-                            <div
-                                class="table-hold-box"
-                                *ngSwitchCase="'medium-normal-template'"
-                            >
-                                <div class="medium-normal-template">
-                                    {{ h.value }}
-                                </div>
-                            </div>
-
-                            <div
-                                class="table-hold-box"
-                                *ngSwitchCase="'medium-normal-template'"
-                            >
-                                <div class="medium-normal-template">
-                                    {{ h.value }}
-                                </div>
-                            </div>
-
-                            <div
-                                class="table-hold-box"
-                                *ngSwitchCase="'semibold-normal-template'"
-                            >
-                                <div class="semibold-normal-template">
-                                    {{ h.value }}
-                                </div>
-                            </div>
-
-                            <div class="table-hold-box" *ngSwitchDefault>
-                                <div class="normal-template">
-                                    {{ h.value }}
-                                </div>
-                            </div>
-                        </div>
-                    </td>
-                </ng-container>
-            </tr>
         </tbody>
     </table>
 </div>

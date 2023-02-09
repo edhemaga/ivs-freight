@@ -116,7 +116,8 @@
                         <div
                             *ngIf="
                                 repairShopCardViewData?.openHoursToday ===
-                                'Closed'
+                                'Closed' &&
+                                ( repairShopCardViewData?.openHours[1]?.dayOfWeek || repairShopCardViewData?.openHours[1]?.startTime )
                             "
                             class="open-time-next"
                         >
@@ -286,6 +287,7 @@
                             ? repairShopCardViewData.note
                             : ''
                     "
+                    [blankNote]=" repairShopCardViewData.note ? true : false"
                     [entityId]="repairShopCardViewData.id"
                     [entityType]="'RepairShop'"
                 ></app-ta-input-note>

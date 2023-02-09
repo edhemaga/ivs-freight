@@ -131,19 +131,26 @@
         >
             <div
                 class="color_picker_color"
+                (click)="executeEditor('foreColor', item)"
                 [ngStyle]="{
                     'background-color': item
                 }"
-            ></div>
+            >
+                <svg-icon
+                    *ngIf="selectedColorName == item"
+                    src="/assets/svg/applicant/check.svg"
+                ></svg-icon>
+            </div>
         </div>
     </div>
 </div>
 <div class="w-100">
     <div
         #noticeRef
-        (focus)="focusElement($event)"
+        (focus)="focusElement()"
+        (blur)="blurElement()"
         (keyup)="updateNoteMain($event)"
-        [innerHTML]="noticeValue | safeHtml"
+        [innerHTML]="shownValue | safeHtml"
         class="notice_editor"
         contenteditable
     ></div>

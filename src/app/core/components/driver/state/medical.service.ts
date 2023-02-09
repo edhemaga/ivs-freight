@@ -66,10 +66,9 @@ export class MedicalTService implements OnDestroy {
                 const driverData = JSON.parse(JSON.stringify(dr.entities));
                 let newData = driverData[driverId];
 
-                let medicalApi = this.medicalService.apiMedicalIdGet(res.id).subscribe({
+                let medicalApi = this.medicalService.apiMedicalListGet(driverId).subscribe({
                     next: (resp: any) => {
-
-                        newData.medicals.push(resp);
+                        newData.medicals = resp;
                        
                         this.tableService.sendActionAnimation({
                             animation: 'update',
@@ -83,6 +82,7 @@ export class MedicalTService implements OnDestroy {
                         medicalApi.unsubscribe();
                     },
                 }); 
+                
             })
         );
     }
