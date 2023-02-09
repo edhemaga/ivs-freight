@@ -90,27 +90,17 @@ export class ShopRepairDetailsComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (res: any) => {
-                    console.log('---res----', res);
-                    switch (res.type) {
-                        case 'delete': {
-                            if (res.template === 'repair shop') {
-                                this.deleteRepairShopById(res?.id);
-                            }
-                            break;
+                    if ( res.type === 'delete' ) {
+                        if (res.template === 'repair shop') {
+                            this.deleteRepairShopById(res?.id);
                         }
-                        case 'activate':{
-                            if (res.template === 'repair shop' || res.template === 'Repair Shop') {
-                                this.openRepairShop(res?.id);
-                            }
+                    } else if ( res.type === 'activate' ) {
+                        if (res.template === 'repair shop' || res.template === 'Repair Shop') {
+                            this.openRepairShop(res?.id);
                         }
-                        case 'deactivate':{
-                            if (res.template === 'repair shop' || res.template === 'Repair Shop') {
-                                this.closeRepairShop(res?.id);
-                            }
-                        }
-                        
-                        default: {
-                            break;
+                    } else if ( res.type === 'deactivate' ) {
+                        if (res.template === 'repair shop' || res.template === 'Repair Shop') {
+                            this.closeRepairShop(res?.id);
                         }
                     }
                 },
@@ -414,12 +404,11 @@ export class ShopRepairDetailsComponent implements OnInit, OnDestroy {
     }
 
     public closeRepairShop(shopId){
-        console.log('---closeRepairShop shop id---', );
         this.shopService.changeShopStatus(shopId);
     }
 
     public openRepairShop(shopId){
-        console.log('---openRepairShop shop id---', shopId);
+        this.shopService.changeShopStatus(shopId);
     }
 
     ngOnDestroy(): void {
