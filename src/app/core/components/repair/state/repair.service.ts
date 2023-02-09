@@ -665,7 +665,49 @@ export class RepairTService implements OnDestroy {
 
 
     public changeShopStatus(shopId: any){
-        console.log('---here----', shopId)
+        const closeShop = this.shopServices.apiRepairshopStatusIdPut(shopId)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: (res: any) => {
+                    const subShop = this.getRepairShopById(shopId)
+                    .pipe(takeUntil(this.destroy$))
+                    .subscribe({
+                        next: (shop: RepairShopResponse | any) => {
+                            this.shopStore.remove(({ id }) => id === shopId);
+                            this.shopStore.add(shop);
+                            this.rDs.update((store) => {
+                                let ind;
+                                let shopStored = JSON.parse(
+                                    JSON.stringify(store)
+                                );
+                                shopStored.repairShop.map(
+                                    (data: any, index: any) => {
+                                        if (data.id == shop.id) {
+                                            ind = index;
+                                        }
+                                    }
+                                );
+
+                                shopStored.repairShop[ind] = shop;
+
+                                return {
+                                    ...store,
+                                    repairShop: [...shopStored.repairShop],
+                                };
+                            });
+
+                            this.tableService.sendActionAnimation({
+                                animation: 'update',
+                                tab: 'repair-shop',
+                                data: shop,
+                                id: shop.id,
+                            });
+
+                            subShop.unsubscribe();
+                        },
+                    });
+                }
+            }) 
     }
 
     ngOnDestroy(): void {
