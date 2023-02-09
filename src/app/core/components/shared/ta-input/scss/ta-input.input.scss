@@ -2,37 +2,27 @@
 // -------------------- Input Control --------------------
 .input-control {
     width: 100%;
+    height: 26px;
     border: none;
     outline: none;
     border-radius: 2px !important;
-    height: 26px;
     padding: 4px 6px;
     font-size: 14px;
     font-weight: 400;
-    background-color: $input-background-color-normal;
-    color: $input-text-color-normal;
+    background-color: $default-input;
+    color: $default-content;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
 
-    &.connectedDropdown {
-        border-radius: 2px 2px 0 0 !important;
-    }
-
-    &.datetimeclass:not(.disabled-filled) {
-        letter-spacing: 1px;
-        pointer-events: none;
-        opacity: 0;
-    }
-
     &::-moz-selection {
-        background-color: $input-background-selection-normal !important;
-        color: $input-text-selection-normal !important;
+        background-color: $default-content-background-selection !important;
+        color: $default-content !important;
     }
 
     &::selection {
-        background-color: $input-background-selection-normal !important;
-        color: $input-text-selection-normal !important;
+        background-color: $default-content-background-selection !important;
+        color: $default-content !important;
     }
 
     &.center {
@@ -48,53 +38,211 @@
     }
 
     &:hover {
-        background-color: $input-background-color-normal-hover;
-        color: $input-text-color-normal-hover;
-    }
-
-    // Hover "label placehoder color change"
-    &:hover ~ .input-label {
-        transition: all 0.3s ease-in-out;
-        color: $input-label-color-hover;
+        background-color: $default-on-input-hover;
     }
 
     &:focus,
     &.focused {
         transition: all 0.3s ease-in-out;
-        background-color: $input-background-color-normal-focus;
-        color: $input-text-color-normal-focus;
+        background-color: $default-focus-input;
+        color: $default-focus-content;
 
         &::-webkit-input-placeholder {
-            color: $input-placeholder-color-normal-focus;
+            color: $default-focus-content;
         }
         &::-moz-placeholder {
-            color: $input-placeholder-color-normal-focus;
+            color: $default-focus-content;
         }
 
         &:-ms-input-placeholder {
-            color: $input-placeholder-color-normal-focus;
+            color: $default-focus-content;
         }
 
         &::-ms-input-placeholder {
-            color: $input-placeholder-color-normal-focus;
+            color: $default-focus-content;
         }
 
         &::placeholder {
-            color: $input-placeholder-color-normal-focus;
+            color: $default-focus-content;
+        }
+
+        &::-moz-selection {
+            background-color: $default-focus-content-selection !important;
+            color: $default-focus-content !important;
+        }
+
+        &::selection {
+            background-color: $default-focus-content-selection !important;
+            color: $default-focus-content !important;
         }
     }
 
-    &.password-eye,
-    &.address-flag,
-    &.input-commands,
-    &.dropdown-label-active {
-        background-color: $input-background-color-normal-focus !important;
-        color: $input-text-color-normal-focus;
+    &.valid-focus-in,
+    &.dropdown-placeholder-active,
+    &.multiSelect-dropdown-active {
+        background-color: $valid-focus-input !important;
+        color: $valid-focus-content !important;
+
+        &::-webkit-input-placeholder {
+            color: $valid-focus-placeholder-native;
+        }
+        &::-moz-placeholder {
+            color: $valid-focus-placeholder-native;
+        }
+
+        &:-ms-input-placeholder {
+            color: $valid-focus-placeholder-native;
+        }
+
+        &::-ms-input-placeholder {
+            color: $valid-focus-placeholder-native;
+        }
+
+        &::placeholder {
+            color: $valid-focus-placeholder-native;
+        }
+
+        &::-moz-selection {
+            background-color: $valid-focus-content-background-selection !important;
+            color: $valid-focus-content !important;
+        }
+
+        &::selection {
+            background-color: $valid-focus-content-background-selection !important;
+            color: $valid-focus-content !important;
+        }
     }
 
-    &.password-eye-invalid {
-        background-color: $input-background-color-invalid-focus !important;
-        color: $input-text-color-normal-focus;
+    &.valid-focus-out-filled {
+        background-color: $valid-input !important;
+        color: $valid-content !important;
+
+        &::-moz-selection {
+            background-color: $valid-content-background-selection !important;
+            color: $valid-content !important;
+        }
+
+        &::selection {
+            background-color: $valid-content-background-selection !important;
+            color: $valid-content !important;
+        }
+
+        &:hover {
+            background-color: $valid-input-hover !important;
+        }
+    }
+
+    &.valid-focus-out-filled-datepicker {
+        background-color: $valid-input !important;
+        span,
+        span .border-picker {
+            color: $valid-content !important;
+            user-select: none;
+        }
+    }
+
+    &.invalid-focus-in,
+    &.invalid-search-in-dropdown-focus-in {
+        background-color: $invalid-focus-input !important;
+        color: $invalid-focus-content !important;
+
+        &::-moz-selection {
+            background-color: $invalid-focus-content-background-selection !important;
+            color: $invalid-focus-content !important;
+        }
+
+        &::selection {
+            background-color: $invalid-focus-content-background-selection !important;
+            color: $invalid-focus-content !important;
+        }
+    }
+
+    &.invalid-focus-out-filled,
+    &.invalid-focus-out-empty {
+        background-color: $invalid-input !important;
+        color: $invalid-content !important;
+
+        &::-moz-selection {
+            background-color: $invalid-content-background-selection !important;
+            color: $invalid-content !important;
+        }
+
+        &::selection {
+            background-color: $invalid-content-background-selection !important;
+            color: $invalid-content !important;
+        }
+
+        &:hover {
+            background-color: $invalid-input-hover !important;
+        }
+    }
+
+    &.inactive-empty {
+        background-color: $inactive-empty-input !important;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        pointer-events: none;
+    }
+
+    &.inactive-filled {
+        background-color: $inactive-filled-input !important;
+        color: $inactive-filled-content !important;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        pointer-events: none;
+
+        &::-moz-selection {
+            background-color: $inactive-filled-content-background-selection !important;
+            color: $inactive-filled-content !important;
+        }
+
+        &::selection {
+            background-color: $inactive-filled-content-background-selection !important;
+            color: $inactive-filled-content !important;
+        }
+    }
+
+    // &.password-eye,
+    // &.address-flag,
+    // &.input-commands,
+    // &.dropdown-label-active {
+    //     background-color: $input-background-color-normal-focus !important;
+    //     color: $input-text-color-normal-focus;
+    // }
+
+    // &.password-eye-invalid {
+    //     background-color: $input-background-color-invalid-focus !important;
+    //     color: $input-text-color-normal-focus;
+    // }
+
+    // Date Time
+    &.valid-focus-in-datepicker {
+        background-color: $valid-focus-input !important;
+
+        span,
+        span .border-picker {
+            color: $valid-focus-content !important;
+        }
+    }
+
+    &.datetimeclass:not(.disabled-filled) {
+        letter-spacing: 1px;
+        pointer-events: none;
+        opacity: 0;
+    }
+
+    // -------------------
+
+    &.input-blue-content {
+        color: $default-content-blue !important;
+    }
+
+    &.connectedDropdown {
+        border-radius: 2px 2px 0 0 !important;
     }
 
     &.has-input-icon {
@@ -161,130 +309,97 @@
         padding-left: 30px;
     }
 
-    &.valid-focus-in-datepicker {
-        background-color: $input-background-color-valid-focus !important;
-
-        span,
-        span .border-picker {
-            color: $input-text-color-normal-focus !important;
-        }
-    }
-
-    &.valid-focus-in,
-    &.dropdown-placeholder-active,
-    &.multiSelect-dropdown-active {
-        background-color: $input-background-color-valid-focus !important;
-        color: $input-text-color-normal-focus !important;
-
-        &::-webkit-input-placeholder {
-            color: $input-placeholder-color-valid-focus;
-        }
-        &::-moz-placeholder {
-            color: $input-placeholder-color-valid-focus;
-        }
-
-        &:-ms-input-placeholder {
-            color: $input-placeholder-color-valid-focus;
-        }
-
-        &::-ms-input-placeholder {
-            color: $input-placeholder-color-valid-focus;
-        }
-
-        &::placeholder {
-            color: $input-placeholder-color-valid-focus;
-        }
-    }
-
-    &.valid-focus-out-filled {
-        background-color: $input-background-color-valid-focus-out !important;
-        color: $input-text-color-valid-focus-out !important;
-
-        &::-moz-selection {
-            background-color: rgb(47, 47, 47, 0.2) !important;
-            color: #2f2f2f !important;
-        }
-
-        &::selection {
-            background-color: rgb(47, 47, 47, 0.2) !important;
-            color: #2f2f2f !important;
-        }
-    }
-
-    &.valid-focus-out-filled-datepicker {
-        background-color: $input-background-color-valid-focus-out !important;
-        span,
-        span .border-picker {
-            color: $input-text-color-valid-focus-out !important;
-            user-select: none;
-        }
-    }
-
-    &.invalid-focus-in {
-        background-color: $input-background-color-invalid-focus !important;
-    }
-
-    &.invalid-focus-out-filled,
-    &.invalid-focus-out-empty {
-        background-color: $input-background-color-invalid-focus-out !important;
-        color: $input-text-color-invalid-focus-out !important;
-
-        &::-moz-selection {
-            background-color: rgb(47, 47, 47, 0.2) !important;
-            color: #2f2f2f !important;
-        }
-
-        &::selection {
-            background-color: rgb(47, 47, 47, 0.2) !important;
-            color: #2f2f2f !important;
-        }
-    }
-
-    &.disabled {
-        background-color: $input-background-color-disabled !important;
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        -ms-user-select: none;
-        user-select: none;
-        pointer-events: none;
-    }
-
-    &.disabled-filled {
-        background-color: $input-background-color-disabled !important;
-        color: $input-text-color-filled-disabled !important;
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        -ms-user-select: none;
-        user-select: none;
-        pointer-events: none;
-
-        &::-moz-selection {
-            background-color: $input-background-color-disabled !important;
-            color: $input-text-color-filled-disabled !important;
-        }
-
-        &::selection {
-            background-color: $input-background-color-disabled !important;
-            color: $input-text-color-filled-disabled !important;
-        }
-    }
-
-    &.blue-input-color {
-        color: $input-text-color-blue !important;
-    }
-
     &.dropdown-input-image-without-text-transparent,
     &.multiple-input-values {
         color: $input-transparent-color !important;
     }
 
+    &.input-32-font-20 {
+        font-weight: 700;
+        font-size: 20px;
+    }
+
+    &.details-pages {
+        background-color: $default-focus-input !important;
+
+        &::-webkit-input-placeholder {
+            color: $default-focus-content !important;
+        }
+        &::-moz-placeholder {
+            color: $default-focus-content !important;
+        }
+
+        &:-ms-input-placeholder {
+            color: $default-focus-content !important;
+        }
+
+        &::-ms-input-placeholder {
+            color: $default-focus-content !important;
+        }
+
+        &::placeholder {
+            color: $default-focus-content !important;
+        }
+    }
+
+    // &.load-stop-details {
+    //     background-color: $input-background-color-load-stop-details-focus-out !important;
+
+    //     &:hover {
+    //         background-color: $input-background-color-normal-hover !important;
+    //         color: $input-text-color-normal-hover !important;
+    //     }
+    // }
+
+    &.disable-select-on-focus-out {
+        &::-moz-selection {
+            background-color: transparent !important;
+        }
+        &::selection {
+            background-color: transparent !important;
+        }
+    }
+
+    &.hide-placeholder-in-multiple-placeholder-input {
+        &::-webkit-input-placeholder {
+            opacity: 0 !important;
+            color: $input-transparent-color !important;
+        }
+        &::-moz-placeholder {
+            opacity: 0 !important;
+            color: $input-transparent-color !important;
+        }
+        &:-ms-input-placeholder {
+            opacity: 0 !important;
+            color: $input-transparent-color !important;
+        }
+        &::-ms-input-placeholder {
+            opacity: 0 !important;
+            color: $input-transparent-color !important;
+        }
+        &::placeholder {
+            opacity: 0 !important;
+            color: $input-transparent-color !important;
+        }
+    }
+
+    // Multiple Input Placeholders
+    &.multiple-input-placeholder {
+        pointer-events: none;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+    }
+
+    // Multiple Items
     &.load-dispatches-ttd,
     &.load-broker,
     &.load-shipper,
     &.load-shipper-contact {
         position: absolute;
         bottom: 1.5px;
-        background-color: transparent !important;
+        background-color: $input-transparent-color !important;
         display: grid;
         align-items: center;
 
@@ -582,89 +697,7 @@
             color: rgb(255, 255, 255, 0.4) !important;
         }
     }
-
-    //------------------------- Custom class -------------------------
-    &.input-32 {
-        height: 32px;
-    }
-
-    &.input-32-font-20 {
-        font-weight: 700;
-        font-size: 20px;
-    }
-
-    &.details-pages {
-        background-color: $input-background-color-normal-focus !important;
-
-        &::-webkit-input-placeholder {
-            color: $input-placeholder-color-normal-focus !important;
-        }
-        &::-moz-placeholder {
-            color: $input-placeholder-color-normal-focus !important;
-        }
-
-        &:-ms-input-placeholder {
-            color: $input-placeholder-color-normal-focus !important;
-        }
-
-        &::-ms-input-placeholder {
-            color: $input-placeholder-color-normal-focus !important;
-        }
-
-        &::placeholder {
-            color: $input-placeholder-color-normal-focus !important;
-        }
-    }
-
-    &.load-stop-details {
-        background-color: $input-background-color-load-stop-details-focus-out !important;
-
-        &:hover {
-            background-color: $input-background-color-normal-hover !important;
-            color: $input-text-color-normal-hover !important;
-        }
-    }
-
-    &.disable-select-on-focus-out {
-        &::-moz-selection {
-            background-color: transparent !important;
-        }
-        &::selection {
-            background-color: transparent !important;
-        }
-    }
-
-    &.hide-placeholder-in-multiple-placeholder-input {
-        &::-webkit-input-placeholder {
-            opacity: 0 !important;
-            color: transparent !important;
-        }
-        &::-moz-placeholder {
-            opacity: 0 !important;
-            color: transparent !important;
-        }
-        &:-ms-input-placeholder {
-            opacity: 0 !important;
-            color: transparent !important;
-        }
-        &::-ms-input-placeholder {
-            opacity: 0 !important;
-            color: transparent !important;
-        }
-        &::placeholder {
-            opacity: 0 !important;
-            color: transparent !important;
-        }
-    }
-
-    // Multiple Input Placeholders
-    &.multiple-input-placeholder {
-        pointer-events: none;
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        -ms-user-select: none;
-        user-select: none;
-    }
+    // -------------------
 }
 
 //------------------------- Input Number Hide Arrows -------------------------

@@ -31,7 +31,7 @@ import { ImageBase64Service } from '../../../utils/base64.image';
     animations: [input_dropdown_animation('showHideDropdownOptions')],
 })
 export class TaInputDropdownComponent
-    implements 
+    implements
         OnInit,
         AfterViewInit,
         OnDestroy,
@@ -1080,6 +1080,14 @@ export class TaInputDropdownComponent
                         : searchText.toLowerCase()
                 );
 
+                if (!this.options.length) {
+                    this.getSuperControl.setErrors({ invalid: true });
+                    this.inputConfig.isInvalidSearchInDropdown = true;
+                } else {
+                    this.getSuperControl.setErrors(null);
+                    this.inputConfig.isInvalidSearchInDropdown = false;
+                }
+
                 if (
                     ['truck', 'trailer'].includes(
                         this.inputConfig?.dropdownImageInput?.template
@@ -1110,7 +1118,6 @@ export class TaInputDropdownComponent
                 }
             } else {
                 this.options = this.originalOptions;
-
                 if (
                     ['truck', 'trailer'].includes(
                         this.inputConfig?.dropdownImageInput?.template

@@ -6,16 +6,16 @@
 
     &.datetimeclass {
         &:not(.invalid-focus-out-filled):not(.valid) {
-            background-color: $input-background-color-normal;
+            background-color: $default-input;
         }
         border-radius: 2px !important;
 
         &.invalid-focus-out-filled {
-            background-color: $input-background-color-invalid-focus-out !important;
+            background-color: $invalid-input !important;
         }
 
         &.datetimepickerdisabled {
-            background-color: $input-background-color-disabled !important;
+            background-color: $inactive-empty-input !important;
         }
     }
 
@@ -28,255 +28,236 @@
     }
 
     //--------------- Classes on all INPUT ELEMENTS ---------------
-    &.hover-focus-out {
+    &.custom-hover {
         &:hover {
             transition: all 0.3s ease-in-out;
 
+            .input-dropdown-arrow,
             .input-icon {
-                svg {
-                    path {
-                        fill: $input-placeholder-icon-focus-out-hover;
-                    }
-                }
-
-                &:hover ~ .input-label {
-                    color: $input-label-color-hover;
-                }
-
                 &:hover ~ .input-control {
-                    background-color: $input-background-color-normal-hover;
-                    color: $input-text-color-normal-hover;
-                }
-            }
-
-            .input-dropdown-arrow {
-                svg {
-                    path {
-                        fill: $input-dropdown-path-fill-focus-out-hover;
-                    }
+                    background-color: $default-on-input-hover;
                 }
             }
         }
     }
 
-    &.dropdown-image-input {
-        &:hover {
-            .input-clear {
-                display: inline-block !important;
-            }
-        }
-    }
+    // &.dropdown-image-input {
+    //     &:hover {
+    //         .input-clear {
+    //             display: inline-block !important;
+    //         }
+    //     }
+    // }
 
-    &.dropdown-label-active {
-        &:hover {
-            .input-edit-pen {
-                display: inline-block;
-            }
-        }
-    }
+    // &.dropdown-label-active {
+    //     &:hover {
+    //         .input-pen-container {
+    //             display: inline-block;
+    //         }
+    //     }
+    // }
 
-    &.remove-input-svg {
-        &:hover {
-            .input-clear {
-                display: inline-block;
-            }
-            .placeholder-icon-right-side {
-                opacity: 0;
-            }
-        }
-    }
+    // &.remove-input-svg {
+    //     &:hover {
+    //         .input-clear {
+    //             display: inline-block;
+    //         }
+    //         .placeholder-icon-right-side {
+    //             opacity: 0;
+    //         }
+    //     }
+    // }
 
     &.invalid {
         &:hover {
             transition: all 0.3s ease-in-out;
+            // .input-icon {
+            //     &.invalid-required-empty-focus,
+            //     &.invalid-required-filled-out {
+            //         svg {
+            //             path {
+            //                 fill: $input-placeholder-icon-path-invalid-component-hover !important;
+            //             }
+            //         }
+            //     }
+            // }
+
+            .input-clear,
+            .input-pen-container,
+            .input-invalid-danger-mark,
+            .input-dropdown-arrow,
             .input-icon {
-                &.invalid-required-empty-focus,
-                &.invalid-required-filled-out {
-                    svg {
-                        path {
-                            fill: $input-placeholder-icon-path-invalid-component-hover !important;
-                        }
-                    }
-                }
-            }
+                display: inline-block !important;
+                // transition: all 0.3s ease-in-out;
+                // .input-clear-x {
+                //     svg {
+                //         path {
+                //             fill: $invalid-path-clear;
+                //         }
+                //         rect {
+                //             fill: $invalid-rect-clear;
+                //         }
+                //     }
+                // }
 
-            .input-clear {
-                display: inline-block;
-                cursor: pointer !important;
-                pointer-events: auto !important;
-                .input-clear-x {
-                    svg {
-                        path {
-                            fill: $input-clear-path-fill-invalid-component-hover;
-                        }
-                        rect {
-                            fill: $input-clear-rect-fill-invalid-component-hover;
-                        }
-                    }
-                }
+                // &:hover {
+                //     .input-clear-x {
+                //         svg {
+                //             path {
+                //                 fill: $input-clear-path-fill-invalid-component-hover-on-hover;
+                //             }
+                //             rect {
+                //                 fill: $input-clear-rect-fill-invalid-component-hover-on-hover;
+                //             }
+                //         }
+                //     }
+                // }
 
-                &:hover {
-                    transition: all 0.3s ease-in-out;
-                    .input-clear-x {
-                        svg {
-                            path {
-                                fill: $input-clear-path-fill-invalid-component-hover-on-hover;
-                            }
-                            rect {
-                                fill: $input-clear-rect-fill-invalid-component-hover-on-hover;
-                            }
-                        }
-                    }
-                }
-
-                &:hover ~ .input-label {
-                    color: $input-label-color-hover;
-                }
+                // &:hover ~ .input-label {
+                //     color: $input-label-color-hover;
+                // }
 
                 &:hover ~ .input-control {
-                    background-color: $input-background-color-normal-hover;
-                    color: $input-text-color-normal-hover;
+                    background-color: $invalid-input-hover !important;
+                    // color: $input-text-color-normal-hover;
                 }
             }
 
-            .input-error {
-                color: $input-error-color-component-hover !important;
-            }
+            // .input-error {
+            //     color: $input-error-color-component-hover !important;
+            // }
         }
     }
 
-    &.invalid-empty-dropdown {
-        &:hover {
-            .input-dropdown-arrow {
-                transition: all 0.3s ease-in-out;
-                svg {
-                    path {
-                        fill: $input-dropdown-path-fill-invalid;
-                    }
-                }
-                &:hover {
-                    transition: all 0.3s ease-in-out;
-                    svg {
-                        path {
-                            fill: $input-dropdown-path-fill-normal-hover;
-                        }
-                    }
-                }
-            }
-        }
-    }
+    // &.invalid-empty-dropdown {
+    //     &:hover {
+    //         .input-dropdown-arrow {
+    //             transition: all 0.3s ease-in-out;
+    //             svg {
+    //                 path {
+    //                     fill: $input-dropdown-path-fill-invalid;
+    //                 }
+    //             }
+    //             &:hover {
+    //                 transition: all 0.3s ease-in-out;
+    //                 svg {
+    //                     path {
+    //                         fill: $input-dropdown-path-fill-normal-hover;
+    //                     }
+    //                 }
+    //             }
+    //         }
+    //     }
+    // }
 
-    &.invalid-empty-required {
-        &:hover {
-            transition: all 0.3s ease-in-out;
+    // &.invalid-empty-required {
+    //     &:hover {
+    //         transition: all 0.3s ease-in-out;
 
-            .input-icon {
-                &.invalid-required-empty {
-                    svg {
-                        path {
-                            fill: $input-placeholder-icon-path-invalid-empty-required-component-hover;
-                        }
-                    }
-                }
-            }
+    //         .input-icon {
+    //             &.invalid-required-empty {
+    //                 svg {
+    //                     path {
+    //                         fill: $input-placeholder-icon-path-invalid-empty-required-component-hover;
+    //                     }
+    //                 }
+    //             }
+    //         }
 
-            .input-clear {
-                .input-clear-x {
-                    svg {
-                        path {
-                            fill: $input-clear-path-fill-invalid-focus;
-                        }
-                    }
-                }
+    //         .input-clear {
+    //             .input-clear-x {
+    //                 svg {
+    //                     path {
+    //                         fill: $input-clear-path-fill-invalid-focus;
+    //                     }
+    //                 }
+    //             }
 
-                &:hover ~ .input-label {
-                    color: $input-label-color-hover;
-                }
+    //             &:hover ~ .input-label {
+    //                 color: $input-label-color-hover;
+    //             }
 
-                &:hover ~ .input-control {
-                    background-color: $input-background-color-normal-hover;
-                    color: $input-text-color-normal-hover;
-                }
-            }
+    //             &:hover ~ .input-control {
+    //                 background-color: $input-background-color-normal-hover;
+    //                 color: $input-text-color-normal-hover;
+    //             }
+    //         }
 
-            .input-invalid-danger-mark {
-                svg {
-                    path {
-                        fill: $input-danger-mark-path-fill !important;
-                    }
-                }
-            }
+    //         .input-invalid-danger-mark {
+    //             svg {
+    //                 path {
+    //                     fill: $input-danger-mark-path-fill !important;
+    //                 }
+    //             }
+    //         }
 
-            .input-error {
-                color: $input-error-color-component-hover !important;
-            }
-        }
-    }
+    //         .input-error {
+    //             color: $input-error-color-component-hover !important;
+    //         }
+    //     }
+    // }
 
-    &.invalid-empty-focus-required {
-        .input-icon {
-            &.invalid-required-empty-focus {
-                transition: all 0.3s ease-in-out;
-                svg {
-                    path {
-                        fill: $input-placeholder-icon-normal !important;
-                    }
-                }
-            }
-        }
+    // &.invalid-empty-focus-required {
+    //     .input-icon {
+    //         &.invalid-required-empty-focus {
+    //             transition: all 0.3s ease-in-out;
+    //             svg {
+    //                 path {
+    //                     fill: $input-placeholder-icon-normal !important;
+    //                 }
+    //             }
+    //         }
+    //     }
 
-        .input-clear {
-            .input-clear-x {
-                svg {
-                    path {
-                        transition: all 0.3s ease-in-out;
-                        fill: $input-clear-path-fill-invalid-empty-focus-required !important;
-                    }
-                }
-            }
-        }
+    //     .input-clear {
+    //         .input-clear-x {
+    //             svg {
+    //                 path {
+    //                     transition: all 0.3s ease-in-out;
+    //                     fill: $input-clear-path-fill-invalid-empty-focus-required !important;
+    //                 }
+    //             }
+    //         }
+    //     }
 
-        .input-error {
-            color: $input-error-color-component-hover !important;
-            transition: all 0.3s ease-in-out;
-        }
-    }
+    //     .input-error {
+    //         color: $input-error-color-component-hover !important;
+    //         transition: all 0.3s ease-in-out;
+    //     }
+    // }
 
     &.valid {
         &:hover {
             transition: all 0.3s ease-in-out;
 
+            // .input-icon {
+            //     &.valid-required-out {
+            //         svg {
+            //             path {
+            //                 fill: $input-placeholder-icon-path-valid-required-out-component-hover;
+            //             }
+            //         }
+            //     }
+            // }
+
+            .input-clear,
+            .input-pen-container,
+            .input-dropdown-arrow,
             .input-icon {
-                &.valid-required-out {
-                    svg {
-                        path {
-                            fill: $input-placeholder-icon-path-valid-required-out-component-hover;
-                        }
-                    }
-                }
-            }
-
-            .input-clear {
                 display: inline-block;
-                &:hover {
-                    transition: all 0.3s ease-in-out;
-                    cursor: pointer;
-                    .input-clear-x {
-                        svg {
-                            rect {
-                                fill: $input-clear-path-fill-normal-focus;
-                            }
-                        }
-                    }
-                }
-
-                &:hover ~ .input-label {
-                    color: $input-label-color-hover;
-                }
+                transition: all 0.3s ease-in-out;
+                // &:hover {
+                //     .input-clear-x {
+                //         svg {
+                //             rect {
+                //                 fill: $valid-on-rect-clear-hover;
+                //             }
+                //         }
+                //     }
+                // }
 
                 &:hover ~ .input-control {
-                    background-color: $input-background-color-normal-hover;
-                    color: $input-text-color-normal-hover;
+                    background-color: $valid-input-hover !important;
                 }
             }
 
@@ -284,61 +265,61 @@
                 display: none;
             }
 
-            .input-password-eye {
-                &.valid {
-                    transition: all 0.3s ease-in-out;
-                    display: inline-block;
-                    svg {
-                        path {
-                            fill: $input-password-path-fill-valid-component-hover;
-                        }
-                    }
-                }
-            }
+            // .input-password-eye {
+            //     &.valid {
+            //         transition: all 0.3s ease-in-out;
+            //         display: inline-block;
+            //         svg {
+            //             path {
+            //                 fill: $input-password-path-fill-valid-component-hover;
+            //             }
+            //         }
+            //     }
+            // }
 
-            .input-dropdown-arrow {
-                transition: all 0.3s ease-in-out;
-                svg {
-                    path {
-                        fill: $input-dropdown-path-fill-component-hover;
-                    }
-                }
-                &:hover {
-                    transition: all 0.3s ease-in-out;
-                    svg {
-                        path {
-                            fill: $input-dropdown-path-fill-normal-hover;
-                        }
-                    }
-                }
-            }
+            // .input-dropdown-arrow {
+            //     transition: all 0.3s ease-in-out;
+            //     svg {
+            //         path {
+            //             fill: $input-dropdown-path-fill-component-hover;
+            //         }
+            //     }
+            //     &:hover {
+            //         transition: all 0.3s ease-in-out;
+            //         svg {
+            //             path {
+            //                 fill: $input-dropdown-path-fill-normal-hover;
+            //             }
+            //         }
+            //     }
+            // }
         }
     }
 
-    &.valid-dropdown-image-selection {
-        &:hover {
-            .input-clear {
-                display: inline-block;
-            }
+    // &.valid-dropdown-image-selection {
+    //     &:hover {
+    //         .input-clear {
+    //             display: inline-block;
+    //         }
 
-            .input-dropdown-arrow {
-                transition: all 0.3s ease-in-out;
-                svg {
-                    path {
-                        fill: $input-dropdown-path-fill-component-hover;
-                    }
-                }
-                &:hover {
-                    transition: all 0.3s ease-in-out;
-                    svg {
-                        path {
-                            fill: $input-dropdown-path-fill-normal-hover;
-                        }
-                    }
-                }
-            }
-        }
-    }
+    //         .input-dropdown-arrow {
+    //             transition: all 0.3s ease-in-out;
+    //             svg {
+    //                 path {
+    //                     fill: $input-dropdown-path-fill-component-hover;
+    //                 }
+    //             }
+    //             &:hover {
+    //                 transition: all 0.3s ease-in-out;
+    //                 svg {
+    //                     path {
+    //                         fill: $input-dropdown-path-fill-normal-hover;
+    //                     }
+    //                 }
+    //             }
+    //         }
+    //     }
+    // }
 
     //--------------- end ---------------
     @import './scss/ta-input.label.scss';

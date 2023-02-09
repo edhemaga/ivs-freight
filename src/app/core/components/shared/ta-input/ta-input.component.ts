@@ -139,7 +139,7 @@ export class TaInputComponent
         this.superControl.valueAccessor = this;
     }
     ngOnChanges(changes: SimpleChanges): void {
-        if (changes.inputConfig.currentValue?.multipleInputValues?.options) {
+        if (changes.inputConfig?.currentValue?.multipleInputValues?.options) {
             this.inputConfig.multipleInputValues.options =
                 changes.inputConfig.currentValue?.multipleInputValues?.options;
         }
@@ -868,6 +868,7 @@ export class TaInputComponent
         }
 
         if (['months'].includes(this.inputConfig.name.toLowerCase())) {
+            console.log('months transformText: ', value);
             if (parseInt(value) < 1 || parseInt(value) > 12) {
                 this.getSuperControl.setErrors({ invalid: true });
             } else {
@@ -1023,6 +1024,10 @@ export class TaInputComponent
                 break;
             }
             case 'months': {
+                console.log(
+                    'months transformText: ',
+                    this.getSuperControl.value
+                );
                 switch (action) {
                     case 'minus': {
                         if (
@@ -1053,6 +1058,14 @@ export class TaInputComponent
                     default: {
                         break;
                     }
+                }
+                if (
+                    parseInt(this.getSuperControl.value) < 1 ||
+                    parseInt(this.getSuperControl.value) > 12
+                ) {
+                    this.getSuperControl.setErrors({ invalid: true });
+                } else {
+                    this.getSuperControl.setErrors(null);
                 }
                 this.setInputCursorAtTheEnd(this.input.nativeElement);
                 break;

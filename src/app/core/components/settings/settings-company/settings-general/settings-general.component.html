@@ -31,7 +31,7 @@
                 isDropdown: true,
                 dropdownWidthClass: 'w-col-510',
                 textTransform: 'capitalize',
-                customClass: 'input-32 input-32-font-20 details-pages'
+                customClass: 'input-32-font-20 details-pages'
             }"
             [isDetailsPages]="toggleSelect"
             (selectedItem)="onSelectItem($event)"
@@ -116,7 +116,9 @@
                         src="assets/svg/common/ic_address.svg"
                     ></svg-icon>
                     <p class="basic-data-value">
-                        <app-ta-copy [copyValue]="companyData?.address?.address">
+                        <app-ta-copy
+                            [copyValue]="companyData?.address?.address"
+                        >
                         </app-ta-copy>
                     </p>
                 </div>
@@ -175,59 +177,84 @@
             <app-ta-custom-card
                 [cardName]="'Additional Details'"
                 [bodyTemplate]="'card'"
-                [isCardOpen]="companyData?.ifta || 
-                            companyData?.irp || 
-                            companyData?.toll || 
-                            companyData?.scac || 
-                            companyData?.timeZone?.name || 
-                            companyData?.currency?.name ? true : false"
-                [disabledCard]=" companyData?.ifta || 
-                                companyData?.irp || 
-                                companyData?.toll || 
-                                companyData?.scac || 
-                                companyData?.timeZone?.name || 
-                                companyData?.currency?.name ? false : true"
+                [isCardOpen]="
+                    companyData?.ifta ||
+                    companyData?.irp ||
+                    companyData?.toll ||
+                    companyData?.scac ||
+                    companyData?.timeZone?.name ||
+                    companyData?.currency?.name
+                        ? true
+                        : false
+                "
+                [disabledCard]="
+                    companyData?.ifta ||
+                    companyData?.irp ||
+                    companyData?.toll ||
+                    companyData?.scac ||
+                    companyData?.timeZone?.name ||
+                    companyData?.currency?.name
+                        ? false
+                        : true
+                "
                 [animationMarginParams]="{
                     marginTop: '0px',
                     marginBottom: '10px'
-                }"                
+                }"
             >
                 <div class="additional-template-data">
-                    <div class="additional-template-item" *ngIf="companyData?.ifta">
+                    <div
+                        class="additional-template-item"
+                        *ngIf="companyData?.ifta"
+                    >
                         <p class="additional-template-value-name">IFTA</p>
                         <p class="additional-template-value">
                             {{ companyData?.ifta }}
                         </p>
                     </div>
-                    <div class="additional-template-item" *ngIf="companyData?.irp">
+                    <div
+                        class="additional-template-item"
+                        *ngIf="companyData?.irp"
+                    >
                         <p class="additional-template-value-name">IRP</p>
                         <p class="additional-template-value">
                             {{ companyData?.irp }}
                         </p>
                     </div>
-                    <div class="additional-template-item" *ngIf="companyData?.toll">
+                    <div
+                        class="additional-template-item"
+                        *ngIf="companyData?.toll"
+                    >
                         <p class="additional-template-value-name">Toll</p>
                         <p class="additional-template-value">
                             {{ companyData?.toll }}
                         </p>
                     </div>
-                    <div class="additional-template-item" *ngIf="companyData?.scac">
+                    <div
+                        class="additional-template-item"
+                        *ngIf="companyData?.scac"
+                    >
                         <p class="additional-template-value-name">SCAC</p>
                         <p class="additional-template-value">
                             {{ companyData?.scac }}
                         </p>
                     </div>
-                    <div class="additional-template-item" *ngIf="companyData?.timeZone?.name">
+                    <div
+                        class="additional-template-item"
+                        *ngIf="companyData?.timeZone?.name"
+                    >
                         <p class="additional-template-value-name">Time Zone</p>
                         <p
                             *ngIf="companyData?.timeZone?.name"
                             class="additional-template-value"
                         >
                             {{ timeZoneFormat(companyData?.timeZone?.name) }}
-                            
                         </p>
                     </div>
-                    <div class="additional-template-item" *ngIf="companyData?.currency?.name">
+                    <div
+                        class="additional-template-item"
+                        *ngIf="companyData?.currency?.name"
+                    >
                         <p class="additional-template-value-name">Currency</p>
                         <p
                             *ngIf="companyData?.currency?.name"
@@ -370,16 +397,16 @@
                             ></svg-icon>
 
                             <p class="item-body-cvc">
-                                {{ bankC?.card | hidePassword: 'card' }}
+                                {{ bankC?.card | hidePassword : 'card' }}
                             </p>
                         </div>
 
                         <p class="item-body-cvc">
-                            {{ bankC?.cvc | hidePassword: 'cvc' }}
+                            {{ bankC?.cvc | hidePassword : 'cvc' }}
                         </p>
                         <p class="item-body-nick-name">
                             {{
-                                bankC?.expireDate | formatDateP: 'short-format'
+                                bankC?.expireDate | formatDateP : 'short-format'
                             }}
                         </p>
                     </div>

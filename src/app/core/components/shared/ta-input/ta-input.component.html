@@ -1,7 +1,7 @@
 <div
     class="input-custom-group {{ inputConfig.customClass }}"
     [ngClass]="{
-        'hover-focus-out':
+        'custom-hover':
             !focusInput &&
             !inputConfig.dropdownLabel &&
             !selectedDropdownLabelColor,
@@ -74,7 +74,8 @@
                 !inputConfig.customClass?.includes('repair-shop-open-hour') &&
                 !inputConfig.blackInput &&
                 !inputConfig?.dropdownImageInput?.url &&
-                inputConfig.type !== 'password',
+                inputConfig.type !== 'password' &&
+                !inputConfig.isInvalidSearchInDropdown,
             'valid-focus-out':
                 getSuperControl.value &&
                 getSuperControl.valid &&
@@ -84,15 +85,11 @@
                 !inputConfig?.dropdownImageInput?.url &&
                 inputConfig.type !== 'password',
             'invalid-focus-in':
-                getSuperControl.value &&
-                getSuperControl.invalid &&
-                focusInput &&
-                !inputConfig.isDropdown &&
-                !inputConfig.blackInput &&
-                !(
-                    !inputConfig.dropdownImageInput?.withText &&
-                    inputConfig.dropdownImageInput?.url
-                ),
+                (getSuperControl.value &&
+                    getSuperControl.invalid &&
+                    focusInput) ||
+                (inputConfig.isInvalidSearchInDropdown &&
+                    inputConfig.isDropdown),
             'invalid-focus-out':
                 getSuperControl.value &&
                 getSuperControl.invalid &&
@@ -103,16 +100,29 @@
                     !inputConfig.dropdownImageInput?.withText &&
                     inputConfig.dropdownImageInput?.url
                 ),
-            'dropdown-position':
+            'incorrect-input':
+                inputConfig.incorrectInput && getSuperControl.value,
+            'incorrect-input-on':
+                inputConfig.incorrectInput &&
                 getSuperControl.value &&
-                (inputConfig.isDropdown || inputConfig.type === 'password') &&
-                !inputConfig.isDisabled &&
-                !inputConfig.multiSelectDropdownActive,
-            'dropdown-position-image':
-                inputConfig.dropdownImageInput?.url &&
-                !inputConfig.isDisabled &&
-                !inputConfig.multiSelectDropdownActive,
-            focus: focusInput,
+                incorrectValue,
+            hidden:
+                getSuperControl.value &&
+                focusInput &&
+                inputConfig.dropdownLabel,
+            'dropdown-on':
+                (getSuperControl.value &&
+                    (inputConfig.isDropdown ||
+                        inputConfig.type === 'password') &&
+                    !inputConfig.isDisabled &&
+                    !inputConfig.multiSelectDropdownActive) ||
+                (inputConfig.dropdownImageInput?.url &&
+                    !inputConfig.isDisabled &&
+                    !inputConfig.multiSelectDropdownActive) ||
+                selectedDropdownLabelColor ||
+                (inputConfig?.dropdownImageInput?.url && !focusInput),
+            'trash-can-svg': inputConfig.removeInput,
+            'merged-dropdown': inputConfig.mergedDropdown && focusInput,
             'visible-focus-password':
                 getSuperControl.value &&
                 inputConfig.type === 'password' &&
@@ -121,22 +131,7 @@
                 getSuperControl.invalid &&
                 getSuperControl.value &&
                 inputConfig.type === 'password' &&
-                isVisiblePasswordEye,
-            'incorrect-input':
-                inputConfig.incorrectInput && getSuperControl.value,
-            'incorrect-input-enabled':
-                inputConfig.incorrectInput &&
-                getSuperControl.value &&
-                incorrectValue,
-            'dropdown-label-position': selectedDropdownLabelColor,
-            'dropdown-label-hide':
-                getSuperControl.value &&
-                focusInput &&
-                inputConfig.dropdownLabel,
-            'dropdown-image-input':
-                inputConfig?.dropdownImageInput?.url && !focusInput,
-            'remove-input-svg': inputConfig.removeInput,
-            'merged-dropdown': inputConfig.mergedDropdown && focusInput
+                isVisiblePasswordEye
         }"
         ngbTooltip
         [mainTooltip]="
@@ -146,7 +141,7 @@
                 ? 'Remove'
                 : 'Clear'
         "
-        [tooltipBackground]="inputConfig.incorrectInput ? '#ef5350' : '#6c6c6c'"
+        [tooltipBackground]="inputConfig.incorrectInput ? '#ef5350' : '#2F2F2F'"
         position="top"
         (click)="clearInput($event)"
     >
@@ -160,7 +155,7 @@
         ></svg-icon>
     </div>
 
-    <!-- Input Edit -->
+    <!-- Input Pen -->
     <div
         *ngIf="
             selectedDropdownLabelColor &&
@@ -168,10 +163,10 @@
             !focusInput &&
             getSuperControl.value
         "
-        class="input-edit-pen"
+        class="input-pen-container"
         ngbTooltip
         [mainTooltip]="'Edit'"
-        [tooltipBackground]="'#6c6c6c'"
+        [tooltipBackground]="'#2F2F2F'"
         position="top"
         (click)="onEditInput($event)"
     >
@@ -200,7 +195,7 @@
     >
     </svg-icon>
 
-    <!-- Input Required Check -->
+    <!-- Input Valid Check -->
     <svg-icon
         class="input-required-check {{ inputConfig.customClass }}"
         *ngIf="
@@ -287,33 +282,37 @@
                 !inputConfig.isDisabled)
         "
         [ngClass]="{
-            active:
-                (!inputConfig.isDisabled && focusInput) ||
-                (inputConfig.multiSelectDropdownActive && focusInput),
-            valid:
+            focus: focusInput,
+            'valid-focus-in':
                 (!inputConfig.dropdownLabel &&
                     getSuperControl.value &&
                     getSuperControl.valid &&
                     focusInput) ||
-                (inputConfig.multiSelectDropdownActive && focusInput) ||
-                (!inputConfig.dropdownImageInput?.withText &&
-                    inputConfig.dropdownImageInput?.url &&
+                ((inputConfig.dropdownImageInput?.url ||
+                    inputConfig.dropdownImageInput?.nameInitialsInsteadUrl) &&
                     focusInput),
-            'valid-focus-out-required':
+            'valid-focus-out':
                 (getSuperControl.value &&
                     getSuperControl.valid &&
                     !focusInput) ||
                 (!inputConfig.dropdownImageInput?.withText &&
                     inputConfig.dropdownImageInput?.url &&
                     !focusInput),
-            'focus-out-hover': !focusInput,
-            'invalid-focus-out-required':
-                inputConfig.isRequired &&
+            'invalid-focus-in':
+                (!getSuperControl.value &&
+                    getSuperControl.invalid &&
+                    focusInput) ||
+                (inputConfig.isInvalidSearchInDropdown &&
+                    inputConfig.isDropdown),
+            'invalid-search-in-dropdown-focus-in':
+                inputConfig.isInvalidSearchInDropdown &&
+                getSuperControl.value &&
+                getSuperControl.invalid,
+            'invalid-focus-out':
                 !getSuperControl.value &&
                 getSuperControl.invalid &&
                 (touchedInput || getSuperControl.touched) &&
-                !focusInput,
-            'disabled-filled': getSuperControl.value && inputConfig.isDisabled
+                !focusInput
         }"
         src="assets/svg/common/ic_arrow_input.svg"
         (click)="toggleDropdownOptions()"
@@ -398,15 +397,14 @@
         [popoverClass]="'datetimepopovermain'"
         autoClose="outside"
         [container]="'body'"
-        (shown)="onPopoverShown()"
-        (hidden)="onPopoverHidden()"
         class="input-icon {{ inputConfig.customClass }}"
         [ngClass]="{
-            'disabled-empty': !getSuperControl.value && inputConfig.isDisabled,
-            'disabled-filled': getSuperControl.value && inputConfig.isDisabled,
+            'inactive-empty': !getSuperControl.value && inputConfig.isDisabled,
+            'inactive-filled': getSuperControl.value && inputConfig.isDisabled,
             'default-svg-color':
                 !selectedDropdownLabelColor && !inputConfig.dropdownLabel,
-            'valid-required-in':
+            focus: focusInput,
+            'valid-focus-in':
                 getSuperControl.value &&
                 getSuperControl.valid &&
                 focusInput &&
@@ -414,33 +412,17 @@
                 !inputConfig.dropdownLabel &&
                 !inputConfig.blackInput &&
                 !inputConfig.commands?.active,
-            'valid-required-out':
-                getSuperControl.value &&
-                getSuperControl.valid &&
-                !focusInput &&
-                !selectedDropdownLabelColor &&
-                !inputConfig.dropdownLabel,
-            'valid-required-out-dropdown-label':
-                getSuperControl.value &&
-                getSuperControl.valid &&
-                !focusInput &&
-                selectedDropdownLabelColor &&
-                inputConfig.dropdownLabel,
-            'invalid-required-in':
+            'valid-focus-out':
+                getSuperControl.value && getSuperControl.valid && !focusInput,
+            'invalid-focus-in':
                 getSuperControl.value &&
                 getSuperControl.invalid &&
                 focusInput &&
                 !inputConfig.blackInput,
-            'invalid-required-empty':
-                !getSuperControl.value &&
+            'invalid-focus-out':
                 getSuperControl.invalid &&
                 !focusInput &&
                 (touchedInput || getSuperControl.touched),
-            'invalid-required-filled-out':
-                getSuperControl.value &&
-                getSuperControl.invalid &&
-                !focusInput &&
-                !isVisiblePasswordEye,
             'password-eye':
                 inputConfig.type === 'password' &&
                 isVisiblePasswordEye &&
@@ -451,16 +433,15 @@
                 isVisiblePasswordEye &&
                 getSuperControl.invalid &&
                 getSuperControl.value,
-            'cursor-pointer': editInputMode,
-            'hazardous-svg': inputConfig.placeholderIcon
-                ?.toLowerCase()
-                ?.includes('hazardous')
+            'cursor-pointer': editInputMode
         }"
         ngbTooltip
         [mainTooltip]="'Change Color'"
-        [tooltipBackground]="'#6c6c6c'"
+        [tooltipBackground]="'#424242'"
         [disableTooltip]="!editInputMode"
         position="bottom"
+        (shown)="onPopoverShown()"
+        (hidden)="onPopoverHidden()"
         (click)="onPlaceholderIconEvent($event)"
     >
         <svg-icon
@@ -490,11 +471,39 @@
     <svg-icon
         *ngIf="inputConfig.placeholderText && getSuperControl.value"
         class="placeholder-text {{ inputConfig.customClass }}"
-        [class.focused]="focusInput"
+        [ngClass]="{
+            focus: focusInput,
+            'inactive-filled': getSuperControl.value && inputConfig.isDisabled,
+            'valid-focus-in':
+                getSuperControl.value &&
+                getSuperControl.valid &&
+                focusInput &&
+                !inputConfig.blackInput &&
+                !inputConfig.commands,
+            'valid-focus-out':
+                getSuperControl.value && getSuperControl.valid && !focusInput,
+            'invalid-focus-in':
+                getSuperControl.value &&
+                getSuperControl.invalid &&
+                focusInput &&
+                !inputConfig.blackInput,
+            'invalid-focus-out':
+                getSuperControl.value &&
+                getSuperControl.invalid &&
+                (touchedInput || getSuperControl.touched) &&
+                !focusInput
+        }"
         [style.left]="
-            (inputConfig.placeholderIcon ? 42 : 11) +
-            getSuperControl.value.toString().length * 7 +
-            'px'
+            focusInput &&
+            inputConfig.placeholderText?.toLowerCase() !== 'months'
+                ? 'auto'
+                : (getSuperControl.value?.toString()?.length + 1) * 8 + 'px'
+        "
+        [style.right]="
+            focusInput &&
+            inputConfig.placeholderText?.toLowerCase() !== 'months'
+                ? '28px'
+                : 'auto'
         "
         [src]="inputConfig.placeholderText?.toLowerCase() | taSvg : 'common'"
     >
@@ -841,6 +850,7 @@
         </span>
     </div>
 
+    <!--  || getSuperControl.errors) -->
     <!-- Single Input Value -->
     <input
         #input
@@ -876,8 +886,8 @@
     {{ inputConfig.customClass }}
     "
         [ngClass]="{
-            disabled: !getSuperControl.value && inputConfig.isDisabled,
-            'disabled-filled': getSuperControl.value && inputConfig.isDisabled,
+            'inactive-empty': !getSuperControl.value && inputConfig.isDisabled,
+            'inactive-filled': getSuperControl.value && inputConfig.isDisabled,
             'valid-focus-in':
                 (getSuperControl.value &&
                     getSuperControl.valid &&
@@ -886,7 +896,9 @@
                     !isVisibleCommands &&
                     !inputConfig?.dropdownImageInput?.url &&
                     !inputConfig.blackInput) ||
-                (inputConfig.multipleInputValues?.options.length && focusInput),
+                (inputConfig.multipleInputValues?.options.length &&
+                    focusInput &&
+                    !inputConfig.isInvalidSearchInDropdown),
             'valid-focus-out-filled':
                 (((getSuperControl.value &&
                     getSuperControl.valid &&
@@ -905,17 +917,20 @@
                 (inputConfig.multipleInputValues?.options.length &&
                     !focusInput),
             'invalid-focus-in':
-                getSuperControl.value &&
                 getSuperControl.invalid &&
+                getSuperControl.value &&
                 focusInput &&
-                !inputConfig.blackInput,
+                !inputConfig.blackInput &&
+                !(
+                    inputConfig.dropdownImageInput?.url ||
+                    inputConfig.dropdownImageInput?.nameInitialsInsteadUrl
+                ),
             'invalid-focus-out-filled':
                 ((getSuperControl.value &&
                     getSuperControl.invalid &&
                     !focusInput &&
                     !inputConfig.isDisabled &&
                     !isVisiblePasswordEye &&
-                    !isVisibleCommands &&
                     !inputConfig.blackInput) ||
                     (!inputConfig.dropdownImageInput?.url &&
                         (touchedInput || getSuperControl.touched) &&
@@ -923,11 +938,16 @@
                         !focusInput)) &&
                 !inputConfig.blackInput,
             'invalid-focus-out-empty':
+                !focusInput &&
                 !getSuperControl.value &&
                 getSuperControl.invalid &&
                 (touchedInput || getSuperControl.touched) &&
                 inputConfig.multipleLabel?.labels.length &&
                 !inputConfig.multipleInputValues?.options.length,
+            'invalid-search-in-dropdown-focus-in':
+                inputConfig.isInvalidSearchInDropdown &&
+                getSuperControl.value &&
+                getSuperControl.invalid,
             'password-eye':
                 inputConfig.type === 'password' &&
                 isVisiblePasswordEye &&
@@ -946,8 +966,8 @@
                 !inputConfig.blackInput,
             'multiSelect-dropdown-active':
                 inputConfig.multiSelectDropdownActive && focusInput,
-            'blue-input-color':
-                inputConfig.blueInputColor &&
+            'input-blue-content':
+                inputConfig.textBlueColor &&
                 !focusInput &&
                 getSuperControl.value,
             'dropdown-label-active':
@@ -1027,25 +1047,20 @@
         }}"
         [ngClass]="{
             required: inputConfig.isRequired && !inputConfig.isDisabled,
-            'disabled-empty': !getSuperControl.value && inputConfig.isDisabled,
-            'disabled-filled': getSuperControl.value && inputConfig.isDisabled,
+            'inactive-empty': !getSuperControl.value && inputConfig.isDisabled,
             'up-label':
                 getSuperControl.value ||
                 focusInput ||
                 showDateInput ||
                 (!inputConfig.dropdownImageInput?.withText &&
                     inputConfig.dropdownImageInput?.url),
-            'has-input-icon': inputConfig.placeholderIcon,
-            'valid-focus-out':
-                getSuperControl.value && getSuperControl.valid && !focusInput,
-            'invalid-focus-out':
-                getSuperControl.value && getSuperControl.invalid && !focusInput,
-            'hidden-label':
+            'input-placeholderIcon-on': inputConfig.placeholderIcon,
+            hidden:
                 inputConfig.placeholderInsteadOfLabel &&
                 (focusInput || getSuperControl.value),
-            'filled-multiple-label':
+            'multiple-labels':
                 inputConfig?.multipleInputValues?.options?.length,
-            focus: focusInput,
+            'in-label-focus': focusInput && inputConfig.labelInInput,
             'in-label': inputConfig.labelInInput
         }"
     >
@@ -1054,7 +1069,7 @@
             *ngIf="inputConfig.multipleLabel?.labels?.length"
             [class]="inputConfig.multipleLabel?.customClass"
             [ngClass]="{
-                'focus-multiple-label':
+                'focus-multiple-labels':
                     focusInput ||
                     inputConfig?.multipleInputValues?.options?.length,
                 required: inputConfig.isRequired && !inputConfig.isDisabled
@@ -1073,46 +1088,29 @@
 
     <!-- Placeholder Icon on Right Side -->
     <svg-icon
-        *ngIf="
-            inputConfig.placeholderIconRightSide ||
-            inputConfig.placeholderIconFolllowTextOnRightSide
-        "
+        *ngIf="inputConfig.placeholderIconRightSide"
         class="placeholder-icon-right-side {{
             inputConfig.placeholderIconColor
         }}"
         [ngClass]="{
-            'placeholder-icon-follow-text':
-                inputConfig.placeholderIconFolllowTextOnRightSide,
             hide: focusInput && getSuperControl.value,
             focus: focusInput,
-            'valid-required-out':
-                getSuperControl.value &&
-                getSuperControl.valid &&
-                !focusInput &&
-                !selectedDropdownLabelColor &&
-                !inputConfig.dropdownLabel,
-            invalid:
+            'valid-focus-out':
+                getSuperControl.value && getSuperControl.valid && !focusInput,
+            'valid-focus-in':
+                getSuperControl.value && getSuperControl.valid && focusInput,
+            'invalid-focus-out':
                 getSuperControl.invalid &&
                 (touchedInput || getSuperControl.touched) &&
-                !focusInput
+                !focusInput,
+            'invalid-focus-in':
+                getSuperControl.invalid &&
+                (touchedInput || getSuperControl.touched) &&
+                focusInput
         }"
-        [style.left]="
-            inputConfig.placeholderIconFolllowTextOnRightSide
-                ? (focusInput ? 86 : 23) +
-                  getSuperControl?.value?.toString().length * 7 +
-                  'px'
-                : 'auto'
-        "
-        [fill]="
-            inputConfig?.placeholderIconColor
-                ? inputConfig?.placeholderIconColor
-                : auto
-        "
         [src]="
-            (inputConfig?.placeholderIconFolllowTextOnRightSide
-                ? inputConfig?.placeholderIconFolllowTextOnRightSide.toLowerCase()
-                : inputConfig.placeholderIconRightSide?.toLowerCase()
-            ) | taSvg : 'common'
+            inputConfig.placeholderIconRightSide?.toLowerCase()
+                | taSvg : 'common'
         "
     ></svg-icon>
 

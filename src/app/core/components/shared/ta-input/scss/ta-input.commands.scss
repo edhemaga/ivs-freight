@@ -10,23 +10,24 @@
     .ta-input-command-first {
         border-radius: 1px;
         display: block;
-        transition: all 0.3s ease-in-out;
         z-index: 20;
         cursor: pointer;
+        transition: all 0.3s ease-in-out;
 
         .ta-input-command-svg-first {
             svg {
                 width: 18px !important;
                 height: 18px !important;
                 overflow: visible;
+                transition: transform 0.3s;
+
                 path {
-                    fill: $input-commands-path-fill-normal;
+                    fill: $default-commands-path;
                 }
                 rect {
-                    transition: transform 0.3s;
                     transform: scale(1);
                     transform-origin: center;
-                    fill: $input-commands-rect-fill-normal;
+                    fill: $default-commands-rect;
                 }
             }
 
@@ -37,22 +38,22 @@
                         transform: scale(1.2);
                         transform-origin: center;
                         transition: transform 0.3s;
-                        fill: $input-commands-rect-fill-normal-hover;
+                        fill: $default-commands-rect-hover;
                     }
                 }
             }
 
             &.invalid-focus-in {
                 path {
-                    fill: $input-commands-path-fill-invalid-focus !important;
+                    fill: $invalid-focus-commands-path !important;
                 }
                 rect {
-                    fill: $input-commands-rect-fill-invalid-focus !important;
+                    fill: $invalid-focus-commands-rect !important;
                 }
                 &:hover {
                     svg {
                         rect {
-                            fill: $input-commands-rect-fill-invalid-focus-hover !important;
+                            fill: $invalid-focus-on-commands-rect-hover !important;
                         }
                     }
                 }
@@ -63,23 +64,24 @@
     .ta-input-command-second {
         border-radius: 1px;
         display: block;
-        transition: all 0.3s ease-in-out;
         z-index: 20;
         cursor: pointer;
+        transition: all 0.3s ease-in-out;
 
         .ta-input-command-svg-second {
             svg {
                 width: 18px !important;
                 height: 18px !important;
                 overflow: visible;
+                transition: transform 0.3s;
+
                 path {
-                    fill: $input-commands-path-fill-normal;
+                    fill: $default-commands-path;
                 }
                 rect {
-                    transition: transform 0.3s;
                     transform: scale(1);
                     transform-origin: center;
-                    fill: $input-commands-rect-fill-normal;
+                    fill: $default-commands-rect;
                 }
             }
 
@@ -90,22 +92,22 @@
                         transform: scale(1.2);
                         transform-origin: center;
                         transition: transform 0.3s;
-                        fill: $input-commands-rect-fill-normal-hover;
+                        fill: $default-commands-rect-hover;
                     }
                 }
             }
 
             &.invalid-focus-in {
                 path {
-                    fill: $input-commands-path-fill-invalid-focus !important;
+                    fill: $invalid-focus-commands-path !important;
                 }
                 rect {
-                    fill: $input-commands-rect-fill-invalid-focus !important;
+                    fill: $invalid-focus-commands-rect !important;
                 }
                 &:hover {
                     svg {
                         rect {
-                            fill: $input-commands-rect-fill-invalid-focus-hover !important;
+                            fill: $invalid-focus-on-commands-rect-hover !important;
                         }
                     }
                 }
@@ -130,14 +132,15 @@
                     width: 18px !important;
                     height: 18px !important;
                     overflow: visible;
+
                     path {
-                        fill: $input-commands-path-fill-address-flag;
+                        fill: $default-commands-path;
                     }
                     rect {
                         transition: transform 0.3s;
                         transform: scale(1);
                         transform-origin: center;
-                        fill: $input-commands-rect-fill-address-flag;
+                        fill: $default-commands-rect;
                     }
                 }
 
@@ -148,7 +151,7 @@
                             transform: scale(1.2);
                             transform-origin: center;
                             transition: transform 0.3s;
-                            fill: $input-commands-rect-fill-address-flag-hover;
+                            fill: $default-commands-rect-hover;
                         }
                     }
                 }
@@ -168,13 +171,13 @@
                     height: 18px !important;
                     overflow: visible;
                     path {
-                        fill: $input-commands-path-fill-address-flag;
+                        fill: $default-commands-path;
                     }
                     rect {
                         transition: transform 0.3s;
                         transform: scale(1);
                         transform-origin: center;
-                        fill: $input-commands-rect-fill-address-flag;
+                        fill: $default-commands-rect;
                     }
                 }
 
@@ -185,7 +188,7 @@
                             transform: scale(1.2);
                             transform-origin: center;
                             transition: transform 0.3s;
-                            fill: $input-commands-rect-fill-address-flag-hover;
+                            fill: $default-commands-rect-hover;
                         }
                     }
                 }
