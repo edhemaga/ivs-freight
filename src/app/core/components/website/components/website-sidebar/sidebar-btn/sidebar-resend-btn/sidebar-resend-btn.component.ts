@@ -8,13 +8,13 @@ import {
     SimpleChanges,
 } from '@angular/core';
 
-import { scrollButtonAnimation } from '../../../../state/utils/animation';
+import { fadeInAnimation } from '../../../../state/utils/animation';
 
 @Component({
     selector: 'app-sidebar-resend-btn',
     templateUrl: './sidebar-resend-btn.component.html',
     styleUrls: ['./sidebar-resend-btn.component.scss'],
-    animations: [scrollButtonAnimation()],
+    animations: [fadeInAnimation()],
 })
 export class SidebarResendBtnComponent implements OnInit, OnChanges {
     @Input() btnText: string = null;
@@ -53,7 +53,7 @@ export class SidebarResendBtnComponent implements OnInit, OnChanges {
         const sentAgoInterval = setInterval(() => {
             counter++;
 
-            if (counter === 5) {
+            if (counter === 60) {
                 this.sentAgoCounter++;
 
                 counter = 0;

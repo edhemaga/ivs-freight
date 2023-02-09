@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
-import { Subject } from 'rxjs';
+import { Subject, takeUntil, tap } from 'rxjs';
 
 import { TaInputService } from 'src/app/core/components/shared/ta-input/ta-input.service';
 import { ConstantString } from 'src/app/core/components/website/state/enum/const-string.enum';
@@ -74,11 +74,60 @@ export class ResendConfirmationComponent implements OnInit, OnDestroy {
     }
 
     private resendConfirmation(): void {
+        if (this.resendConfirmationForm.invalid) {
+            this.inputService.markInvalid(this.resendConfirmationForm);
+
+            return;
+        }
+
         this.displaySpinner = true;
 
-        this.websiteActionsService.setSidebarContentType(
-            ConstantString.RESEND_CONFIRMATION_REQUESTED
-        );
+        const email: string = this.resendConfirmationForm.get(
+            ConstantString.EMAIL_ADDRESS
+        ).value;
+
+        this.websiteAuthService
+            .resendRegisterCompanyOrUser({ email })
+            .pipe(
+                takeUntil(this.destroy$),
+                tap({
+                    next: () => {
+                        this.websiteActionsService.setSidebarContentType(
+                            ConstantString.RESEND_CONFIRMATION_REQUESTED
+                        );
+
+                        localStorage.setItem(
+                            ConstantString.CONFIRMATION_EMAIL,
+                            JSON.stringify(
+                                this.resendConfirmationForm.get(
+                                    ConstantString.EMAIL_ADDRESS
+                                ).value
+                            )
+                        );
+                    },
+                    error: (error: any) => {
+                        this.displaySpinner = false;
+
+                        const errorMessage = error.error.error;
+
+                        if (errorMessage === ConstantString.USER_NOT_FOUND) {
+                            this.resendConfirmationForm
+                                .get(ConstantString.EMAIL_ADDRESS)
+                                .setErrors({ userDoesntExist: true });
+                        }
+
+                        if (
+                            errorMessage ===
+                            ConstantString.USER_ALREADY_VERIFIED
+                        ) {
+                            this.resendConfirmationForm
+                                .get(ConstantString.EMAIL_ADDRESS)
+                                .setErrors({ userAlreadyRegistered: true });
+                        }
+                    },
+                })
+            )
+            .subscribe();
     }
 
     ngOnDestroy(): void {

@@ -19,7 +19,7 @@ import {
 } from 'src/app/core/components/shared/ta-input/ta-input.regex-validations';
 
 import { ConstantString } from 'src/app/core/components/website/state/enum/const-string.enum';
-import { AddressEntity } from 'appcoretruckassist';
+import { AddressEntity, SignupUserCommand } from 'appcoretruckassist';
 
 @Component({
     selector: 'app-register-user',
@@ -176,7 +176,7 @@ export class RegisterUserComponent implements OnInit, OnDestroy {
             ).value;
         }
 
-        const saveData: any = {
+        const saveData: SignupUserCommand = {
             ...registerUserForm,
             address: this.selectedAddress,
             code: this.registerUserCode,

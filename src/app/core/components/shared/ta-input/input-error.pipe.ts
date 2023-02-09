@@ -69,6 +69,10 @@ export class InputErrorPipe implements PipeTransform {
                 errorMessageValue = "This user doesn't exist";
             }
 
+            if (value['userAlreadyRegistered']) {
+                errorMessageValue = 'This user is already registered';
+            }
+
             if (value['wrongPassword']) {
                 errorMessageValue = 'Wrong password, try again';
             }

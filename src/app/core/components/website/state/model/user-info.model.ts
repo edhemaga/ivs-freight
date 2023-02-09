@@ -3,5 +3,7 @@ export interface UserInfoModel {
     lastName: string;
     email: string;
     avatar?: string;
-    companyName?: string
+    companyName?: string;
+    department?: string;
+    code?: string;
 }

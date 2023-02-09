@@ -19,7 +19,7 @@ export class ResetPasswordHelperComponent implements OnInit, OnDestroy {
 
     private userInfo: UserInfoModel = null;
 
-    private verifyData: { emailHash: string; code: string };
+    private verifyData: { emailHash: string; code: string } = null;
 
     constructor(
         private route: ActivatedRoute,

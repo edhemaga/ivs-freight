@@ -43,13 +43,18 @@ export class WebsiteNavbarComponent implements OnInit, OnDestroy {
             this.isSidebarOpen = true;
 
             this.websiteActionsService.setSidebarContentType(selectedType);
+
+            this.websiteActionsService.setIsClickedSubject({
+                type: selectedType,
+                isClicked: true,
+            });
         }
     }
 
     private checkIsSidebarOpen(): void {
         this.websiteActionsService.getSidebarContentType$
             .pipe(takeUntil(this.destroy$))
-            .subscribe((res) => {
+            .subscribe((res: string) => {
                 if (!res) {
                     this.isSidebarOpen = false;
                 }
@@ -59,7 +64,7 @@ export class WebsiteNavbarComponent implements OnInit, OnDestroy {
     private getSidebarContentWidth(): void {
         this.websiteActionsService.getSidebarContentWidth$
             .pipe(takeUntil(this.destroy$))
-            .subscribe((res) => {
+            .subscribe((res: number) => {
                 this.sidebarContentWidth = res;
             });
     }

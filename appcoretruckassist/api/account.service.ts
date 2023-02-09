@@ -33,7 +33,7 @@ import { ProblemDetails } from '../model/problemDetails';
 // @ts-ignore
 import { RefreshTokenCommand } from '../model/refreshTokenCommand';
 // @ts-ignore
-import { ResendSignUpCompanyCommand } from '../model/resendSignUpCompanyCommand';
+import { ResendSignUpCompanyOrUserCommand } from '../model/resendSignUpCompanyOrUserCommand';
 // @ts-ignore
 import { ResendSignUpUserCommand } from '../model/resendSignUpUserCommand';
 // @ts-ignore
@@ -961,14 +961,14 @@ export class AccountService {
     }
 
     /**
-     * @param resendSignUpCompanyCommand 
+     * @param resendSignUpCompanyOrUserCommand 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiAccountResendsignupcompanyPut(resendSignUpCompanyCommand?: ResendSignUpCompanyCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any>;
-    public apiAccountResendsignupcompanyPut(resendSignUpCompanyCommand?: ResendSignUpCompanyCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<any>>;
-    public apiAccountResendsignupcompanyPut(resendSignUpCompanyCommand?: ResendSignUpCompanyCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<any>>;
-    public apiAccountResendsignupcompanyPut(resendSignUpCompanyCommand?: ResendSignUpCompanyCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+    public apiAccountResendsignupcompanyoruserPut(resendSignUpCompanyOrUserCommand?: ResendSignUpCompanyOrUserCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any>;
+    public apiAccountResendsignupcompanyoruserPut(resendSignUpCompanyOrUserCommand?: ResendSignUpCompanyOrUserCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<any>>;
+    public apiAccountResendsignupcompanyoruserPut(resendSignUpCompanyOrUserCommand?: ResendSignUpCompanyOrUserCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<any>>;
+    public apiAccountResendsignupcompanyoruserPut(resendSignUpCompanyOrUserCommand?: ResendSignUpCompanyOrUserCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -1021,11 +1021,11 @@ export class AccountService {
             }
         }
 
-        let localVarPath = `/api/account/resendsignupcompany`;
+        let localVarPath = `/api/account/resendsignupcompanyoruser`;
         return this.httpClient.request<any>('put', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
-                body: resendSignUpCompanyCommand,
+                body: resendSignUpCompanyOrUserCommand,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,

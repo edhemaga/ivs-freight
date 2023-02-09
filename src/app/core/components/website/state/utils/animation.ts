@@ -1,6 +1,6 @@
 import { animate, style, transition, trigger } from '@angular/animations';
 
-export const scrollButtonAnimation = () =>
+export const fadeInAnimation = () =>
     trigger('fadeInAnimation', [
         transition(':enter', [
             style({ opacity: 0, visibility: 'hidden' }),

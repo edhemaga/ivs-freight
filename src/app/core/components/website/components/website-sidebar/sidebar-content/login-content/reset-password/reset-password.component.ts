@@ -77,6 +77,7 @@ export class ResetPasswordComponent implements OnInit, OnDestroy {
     public resetPassword(): void {
         if (this.resetPasswordForm.invalid) {
             this.inputService.markInvalid(this.resetPasswordForm);
+
             return;
         }
 

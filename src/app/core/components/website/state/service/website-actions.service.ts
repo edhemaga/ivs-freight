@@ -20,14 +20,18 @@ export class WebsiteActionsService {
     private resetPasswordTokenSubject: BehaviorSubject<string> =
         new BehaviorSubject<string>(null);
 
-    private registerUserInfoSubject: BehaviorSubject<any> =
-        new BehaviorSubject<any>(null);
+    private registerUserInfoSubject: BehaviorSubject<UserInfoModel> =
+        new BehaviorSubject<UserInfoModel>(null);
 
     private verifyUserInfoSubject: BehaviorSubject<UserInfoModel> =
         new BehaviorSubject<UserInfoModel>(null);
 
     private createPasswordSubject: BehaviorSubject<UserInfoModel> =
         new BehaviorSubject<UserInfoModel>(null);
+
+    private isClickedSubject: BehaviorSubject<any> = new BehaviorSubject<any>(
+        null
+    );
 
     constructor() {}
 
@@ -59,6 +63,10 @@ export class WebsiteActionsService {
         return this.createPasswordSubject.asObservable();
     }
 
+    get getIsClickedSubject$() {
+        return this.isClickedSubject.asObservable();
+    }
+
     public setSidebarContentType(type: string | null) {
         this.sidebarContentTypeSubject.next(type);
     }
@@ -75,7 +83,7 @@ export class WebsiteActionsService {
         this.resetPasswordTokenSubject.next(token);
     }
 
-    public setRegisterUserInfoSubject(registerUserInfo: any) {
+    public setRegisterUserInfoSubject(registerUserInfo: UserInfoModel) {
         this.registerUserInfoSubject.next(registerUserInfo);
     }
 
@@ -85,5 +93,9 @@ export class WebsiteActionsService {
 
     public setCreatePasswordSubject(userInfo: UserInfoModel) {
         this.createPasswordSubject.next(userInfo);
+    }
+
+    public setIsClickedSubject(value: any) {
+        this.isClickedSubject.next(value);
     }
 }

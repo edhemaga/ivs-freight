@@ -573,7 +573,7 @@ model/repairedVehicleListResponse.ts
 model/repairedVehicleResponse.ts
 model/repairedVehicleResponsePagination.ts
 model/resendInviteCommand.ts
-model/resendSignUpCompanyCommand.ts
+model/resendSignUpCompanyOrUserCommand.ts
 model/resendSignUpUserCommand.ts
 model/resendVerifyDriverCommand.ts
 model/reviewByEntityTypeListResponse.ts

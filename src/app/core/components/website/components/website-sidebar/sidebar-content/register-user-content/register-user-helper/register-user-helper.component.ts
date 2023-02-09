@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { ConstantString } from 'src/app/core/components/website/state/enum/const-string.enum';
-
 import { WebsiteActionsService } from 'src/app/core/components/website/state/service/website-actions.service';
+
+import { ConstantString } from 'src/app/core/components/website/state/enum/const-string.enum';
+import { UserInfoModel } from 'src/app/core/components/website/state/model/user-info.model';
 
 @Component({
     selector: 'app-register-user-helper',
@@ -11,7 +12,7 @@ import { WebsiteActionsService } from 'src/app/core/components/website/state/ser
     styleUrls: ['./register-user-helper.component.scss'],
 })
 export class RegisterUserHelperComponent implements OnInit {
-    private registerUserInfo /* : SignUpUserInfo */ = null;
+    private registerUserInfo: UserInfoModel = null;
 
     constructor(
         private route: ActivatedRoute,

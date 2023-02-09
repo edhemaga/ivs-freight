@@ -49,6 +49,8 @@ export enum ConstantString {
     EMAIL_ALREADY_EXIST = 'Email already exists.',
     THIS_USER_DOESENT_EXIST = "This user doesn't exist.",
     WRONG_PASSWORD_TRY_AGAIN = 'Wrong password, try again.',
+    USER_NOT_FOUND = 'User not found.',
+    USER_ALREADY_VERIFIED = 'User already verified.',
 
     COMPANY = 'company',
     USER = 'user',

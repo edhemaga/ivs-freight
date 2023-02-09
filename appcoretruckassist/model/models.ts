@@ -505,7 +505,7 @@ export * from './repairedVehicleListResponse';
 export * from './repairedVehicleResponse';
 export * from './repairedVehicleResponsePagination';
 export * from './resendInviteCommand';
-export * from './resendSignUpCompanyCommand';
+export * from './resendSignUpCompanyOrUserCommand';
 export * from './resendSignUpUserCommand';
 export * from './resendVerifyDriverCommand';
 export * from './reviewByEntityTypeListResponse';

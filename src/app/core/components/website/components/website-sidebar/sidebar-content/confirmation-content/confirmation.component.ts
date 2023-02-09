@@ -45,12 +45,12 @@ export class ConfirmationComponent implements OnInit, OnDestroy {
             } else {
                 this.requestedResendEmail = true;
 
-                if (this.registerCompanyConfirmation) {
-                    this.resendRegisterConfirmation(ConstantString.COMPANY);
-                }
-
-                if (this.registerUserConfirmation) {
-                    this.resendRegisterConfirmation(ConstantString.USER);
+                if (
+                    this.registerCompanyConfirmation ||
+                    this.registerUserConfirmation ||
+                    this.resendConfirmationRequested
+                ) {
+                    this.resendRegisterConfirmation();
                 }
 
                 if (this.passwordResetRequested) {
@@ -66,22 +66,13 @@ export class ConfirmationComponent implements OnInit, OnDestroy {
         );
     }
 
-    private resendRegisterConfirmation(type): void {
+    private resendRegisterConfirmation(): void {
         const email = this.confirmationEmail;
 
-        if (type === ConstantString.COMPANY) {
-            this.websiteAuthService
-                .resendRegisterCompany({ email })
-                .pipe(takeUntil(this.destroy$))
-                .subscribe();
-        }
-
-        if (type === ConstantString.USER) {
-            this.websiteAuthService
-                .resendRegisterUser({ email })
-                .pipe(takeUntil(this.destroy$))
-                .subscribe();
-        }
+        this.websiteAuthService
+            .resendRegisterCompanyOrUser({ email })
+            .pipe(takeUntil(this.destroy$))
+            .subscribe();
     }
 
     private resendResetPassword(): void {

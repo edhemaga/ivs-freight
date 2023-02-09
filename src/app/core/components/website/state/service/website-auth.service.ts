@@ -10,8 +10,7 @@ import { PersistState } from '@datorama/akita';
 import {
     AccountService,
     ForgotPasswordCommand,
-    ResendSignUpCompanyCommand,
-    ResendSignUpUserCommand,
+    ResendSignUpCompanyOrUserCommand,
     SetNewPasswordCommand,
     SignInCommand,
     SignInResponse,
@@ -42,10 +41,10 @@ export class WebsiteAuthService {
         );
     }
 
-    public resendRegisterCompany(
-        data: ResendSignUpCompanyCommand
+    public resendRegisterCompanyOrUser(
+        data: ResendSignUpCompanyOrUserCommand
     ): Observable<any> {
-        return this.accountService.apiAccountResendsignupcompanyPut(data);
+        return this.accountService.apiAccountResendsignupcompanyoruserPut(data);
     }
 
     public registerCompanyVerifyOwner(
@@ -61,6 +60,26 @@ export class WebsiteAuthService {
 
                     this.websiteActionsService.setSidebarContentType(
                         ConstantString.START_TRIAL_WELCOME
+                    );
+                })
+            );
+    }
+
+    public registerUser(data: SignupUserCommand): Observable<any> {
+        return this.accountService.apiAccountSignupuserPut(data, 'response');
+    }
+
+    public registerUserVerifyUser(data: VerifyUserCommand): Observable<any> {
+        return this.accountService
+            .apiAccountVerifyuserPut(data, 'response')
+            .pipe(
+                tap(() => {
+                    this.router.navigate([ConstantString.WEBSITE]);
+
+                    this.websiteActionsService.setOpenSidebarSubject(true);
+
+                    this.websiteActionsService.setSidebarContentType(
+                        ConstantString.REGISTER_USER_WELCOME
                     );
                 })
             );
@@ -124,30 +143,6 @@ export class WebsiteAuthService {
 
                     this.websiteActionsService.setSidebarContentType(
                         ConstantString.PASSWORD_UPDATED
-                    );
-                })
-            );
-    }
-
-    public registerUser(data: SignupUserCommand): Observable<any> {
-        return this.accountService.apiAccountSignupuserPut(data, 'response');
-    }
-
-    public resendRegisterUser(data: ResendSignUpUserCommand): Observable<any> {
-        return this.accountService.apiAccountResendsignupuserPut(data);
-    }
-
-    public registerUserVerifyUser(data: VerifyUserCommand): Observable<any> {
-        return this.accountService
-            .apiAccountVerifyuserPut(data, 'response')
-            .pipe(
-                tap(() => {
-                    this.router.navigate([ConstantString.WEBSITE]);
-
-                    this.websiteActionsService.setOpenSidebarSubject(true);
-
-                    this.websiteActionsService.setSidebarContentType(
-                        ConstantString.REGISTER_USER_WELCOME
                     );
                 })
             );
