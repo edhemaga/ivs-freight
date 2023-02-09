@@ -90,6 +90,7 @@ export class ShopRepairDetailsComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (res: any) => {
+                    console.log('---res----', res);
                     switch (res.type) {
                         case 'delete': {
                             if (res.template === 'repair shop') {
@@ -97,16 +98,17 @@ export class ShopRepairDetailsComponent implements OnInit, OnDestroy {
                             }
                             break;
                         }
-                        case 'deactivate':{
-                            if (res.template === 'repair shop' || res.template === 'Repair Shop') {
-                                this.closeRepairShop(res?.id);
-                            }
-                        }
                         case 'activate':{
                             if (res.template === 'repair shop' || res.template === 'Repair Shop') {
                                 this.openRepairShop(res?.id);
                             }
                         }
+                        case 'deactivate':{
+                            if (res.template === 'repair shop' || res.template === 'Repair Shop') {
+                                this.closeRepairShop(res?.id);
+                            }
+                        }
+                        
                         default: {
                             break;
                         }
@@ -412,7 +414,8 @@ export class ShopRepairDetailsComponent implements OnInit, OnDestroy {
     }
 
     public closeRepairShop(shopId){
-        console.log('---closeRepairShop shop id---', shopId);
+        console.log('---closeRepairShop shop id---', );
+        this.shopService.changeShopStatus(shopId);
     }
 
     public openRepairShop(shopId){
