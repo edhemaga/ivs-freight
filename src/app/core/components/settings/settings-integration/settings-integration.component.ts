@@ -16,7 +16,7 @@ export class SettingsIntegrationComponent implements OnInit {
     truckActiveQuery;
     trucksInactive;
     truckInactiveQuery;
-    activeViewMode = 'List';
+    public activeViewMode = 'List';
     constructor(
         private http: HttpClient,
         private integrationService: SettingsIntegrationService
