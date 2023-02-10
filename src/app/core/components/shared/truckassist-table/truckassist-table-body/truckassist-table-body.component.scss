@@ -720,7 +720,7 @@ table {
                         }
 
                         .attachments-icon-container {
-                            width: 44px;
+                            width: max-content;
                             height: 26px;
                             border-radius: 2px;
                             padding: 4px;
@@ -2286,6 +2286,8 @@ table {
                         justify-content: flex-end;
 
                         width: 100%;
+                        padding: 10px 7px;
+
                         height: fit-content;
                         position: relative;
 
@@ -2466,6 +2468,10 @@ table {
                             }
                         }
                     }
+                }
+
+                .attachemnt-dropdown-content {
+                    padding: 0;
                 }
             }
 
