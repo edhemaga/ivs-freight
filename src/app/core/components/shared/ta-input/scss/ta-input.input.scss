@@ -131,15 +131,6 @@
         }
     }
 
-    &.valid-focus-out-filled-datepicker {
-        background-color: $valid-input !important;
-        span,
-        span .border-picker {
-            color: $valid-content !important;
-            user-select: none;
-        }
-    }
-
     &.invalid-focus-in,
     &.invalid-search-in-dropdown-focus-in {
         background-color: $invalid-focus-input !important;
@@ -205,30 +196,7 @@
         }
     }
 
-    // &.password-eye-valid,
-    // &.address-flag,
-    // &.input-commands,
-    // &.dropdown-label-active {
-    //     background-color: $input-background-color-normal-focus !important;
-    //     color: $input-text-color-normal-focus;
-    // }
-
-    // &.password-eye-invalid {
-    //     background-color: $input-background-color-invalid-focus !important;
-    //     color: $input-text-color-normal-focus;
-    // }
-
-    // Date Time
-    &.valid-focus-in-datepicker {
-        background-color: $valid-focus-input !important;
-
-        span,
-        span .border-picker {
-            color: $valid-focus-content !important;
-        }
-    }
-
-    &.datetimeclass:not(.disabled-filled) {
+    &.datetimeclass:not(.inactive-filled) {
         letter-spacing: 1px;
         pointer-events: none;
         opacity: 0;

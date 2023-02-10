@@ -77,7 +77,6 @@ export class TaInputComponent
     public touchedInput: boolean = false;
 
     public togglePassword: boolean = false;
-    public isVisiblePasswordEye: boolean = false;
 
     public showDateInput: boolean = false;
 
@@ -110,10 +109,6 @@ export class TaInputComponent
 
     // Input Selection
     public inputSelection: boolean = false;
-
-    // Password Timeout
-    public timeoutPassword = null;
-    public savedFocusEl: any = null;
 
     public focusBlur: any;
 
@@ -327,10 +322,6 @@ export class TaInputComponent
 
     public onFocus(e?): void {
         this.focusInputEvent.emit(true);
-        // Password
-        if (this.inputConfig.type === 'password') {
-            this.isVisiblePasswordEye = true;
-        }
 
         // Input Commands
         if (this.inputConfig.commands?.active) {
@@ -380,7 +371,7 @@ export class TaInputComponent
         if (this.inputConfig.dropdownLabel && !this.editInputMode) {
             this.inputConfig.placeholderIcon = 'ic_dynamic_label.svg';
         }
-        this.savedFocusEl = e?.target;
+
         // Edit Input
         if (this.editInputMode) {
             this.getSuperControl.setErrors({ invalid: true });
@@ -450,11 +441,6 @@ export class TaInputComponent
             let selection = window.getSelection();
             selection.removeAllRanges();
 
-            // Password
-            if (this.inputConfig.type === 'password') {
-                this.blurOnPassword();
-            }
-
             // Input Commands
             if (this.inputConfig.commands?.active) {
                 this.blurOnCommands();
@@ -467,15 +453,6 @@ export class TaInputComponent
 
         this.inputService.onFocusOutInput$.next(true);
         this.touchedInput = true;
-    }
-
-    private blurOnPassword() {
-        this.timeoutPassword = setTimeout(() => {
-            this.isVisiblePasswordEye = false;
-            this.focusInput = false;
-            this.savedFocusEl = null;
-            this.refChange.detectChanges();
-        }, 150);
     }
 
     private blurOnCommands() {
@@ -584,11 +561,8 @@ export class TaInputComponent
     public onTogglePassword(event: any): void {
         event.preventDefault();
         event.stopPropagation();
-        clearTimeout(this.timeoutPassword);
+
         this.togglePassword = !this.togglePassword;
-        if (this.savedFocusEl) {
-            this.setInputCursorAtTheEnd(this.input.nativeElement);
-        }
     }
 
     public setInputCursorAtTheEnd(input: any, time: number = 120): void {

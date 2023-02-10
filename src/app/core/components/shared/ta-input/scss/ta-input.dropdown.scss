@@ -36,20 +36,7 @@
     }
 
     &.datetimeclass {
-        display: flex;
-        align-items: center;
-        width: 26px;
-        height: 26px;
-        right: 0px;
-        justify-content: flex-end;
-        padding-right: 6px;
-
-        z-index: 21 !important;
-
-        svg {
-            z-index: 1;
-            width: auto;
-        }
+        z-index: 22 !important;
     }
 
     &.focus {

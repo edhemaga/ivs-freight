@@ -18,7 +18,11 @@ $inactive-filled-placeholderIcon: #aaaaaa;
 $inactive-filled-placeholderIcon-pipe: rgb(170, 170, 170, 0.4);
 $inactive-filled-placeholderText: #aaaaaa;
 
+// Selection
 $inactive-filled-content-background-selection: rgb(47, 47, 47, 0.2);
+
+// Password
+$inactive-password: #cccccc;
 
 //------------------------------ DEFAULT --------------------------------------
 //Default Empty
@@ -50,8 +54,10 @@ $default-label-background-selection: rgb(47, 47, 47, 0.2);
 $default-on-input-hover: #dadada;
 $default-on-arrow-hover: #424242;
 $default-on-rect-clear-hover: #424242;
-
 $default-commands-rect-hover: #424242;
+
+// Password
+$default-password: #919191;
 
 //Focus
 $default-focus-input: #1d1d1d;
@@ -87,11 +93,15 @@ $valid-pen-rect: #6f9ee0;
 // Selection
 $valid-content-background-selection: rgb(47, 47, 47, 0.2);
 
+// Password
+$valid-password: #6f9ee0;
+
 //Valid Hover
 $valid-input-hover: #c5d8f3;
 $valid-on-rect-clear-hover: #3074d3;
 $valid-on-pen-rect-hover: #3074d3;
 $valid-on-arrow-hover: #3074d3;
+$valid-on-password-hover: #3074d3;
 
 //Valid Focus
 $valid-focus-input: #255bb9;
@@ -108,9 +118,13 @@ $valid-focus-arrow: #c5d8f3;
 // Selection
 $valid-focus-content-background-selection: rgb(255, 255, 255, 0.2);
 
+// Password
+$valid-focus-password: #98b9ea;
+
 //Valid Focus Hover
 $valid-focus-on-rect-clear-hover: #ffffff;
 $valid-focus-on-arrow-hover: #ffffff;
+$valid-focus-on-password-hover: #ffffff;
 
 //------------------------------- INVALID -------------------------------------
 
@@ -134,11 +148,15 @@ $invalid-pen-rect: #e57373;
 $invalid-content-background-selection: rgb(47, 47, 47, 0.2);
 $invalid-message-background-selection: rgb(239, 83, 80, 0.2);
 
+// Password
+$invalid-password: #e57373;
+
 //Invalid Hover
 $invalid-input-hover: #f5c7c7;
 $invalid-on-rect-clear-hover: #ef5350;
 $invalid-on-pen-rect-hover: #ef5350;
 $invalid-on-arrow-hover: #ef5350;
+$invalid-on-password-hover: #ef5350;
 
 //Invalid Focus
 $invalid-focus-input: #e22e22;
@@ -153,6 +171,9 @@ $invalid-focus-arrow: #f5c7c7;
 // Selection
 $invalid-focus-content-background-selection: rgb(255, 255, 255, 0.2);
 
+// Password
+$invalid-focus-password: #ffb0a8;
+
 // Commands
 $invalid-focus-commands-path: #e22e22;
 $invalid-focus-commands-rect: #f5c7c7;
@@ -161,6 +182,7 @@ $invalid-focus-commands-rect: #f5c7c7;
 $invalid-focus-on-rect-clear-hover: #ffffff;
 $invalid-focus-on-arrow-hover: #ffffff;
 $invalid-focus-on-commands-rect-hover: #ffffff;
+$invalid-focus-on-password-hover: #ffffff;
 
 //------------------------------- Requiered Star -------------------------------
 $input-required-star: #ef5350;

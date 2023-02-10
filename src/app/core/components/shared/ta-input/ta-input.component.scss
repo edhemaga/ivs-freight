@@ -4,6 +4,48 @@
     display: block;
     position: relative;
 
+    // DateTime
+    &.datetimeclass {
+        border-radius: 2px !important;
+
+        &:not(.invalid-focus-out-filled),
+        &:not(.valid-focus-in),
+        &:not(.valid-focus-out),
+        &:not(.valid-focus-out-filled),
+        &:not(.invalid-focus-in),
+        &:not(.invalid-focus-out-empty) {
+            background-color: $default-input;
+
+            &:hover {
+                background-color: $default-on-input-hover;
+            }
+        }
+
+        &.invalid-empty-focus-out {
+            background-color: $invalid-input !important;
+
+            &:hover {
+                background-color: $invalid-input-hover !important;
+            }
+        }
+
+        &.valid-focus-out {
+            background-color: $valid-input !important;
+
+            &:hover {
+                background-color: $valid-input-hover !important;
+            }
+        }
+
+        &.inactive-empty {
+            background-color: $inactive-empty-input !important;
+        }
+
+        &.inactive-filled {
+            background-color: $inactive-filled-input !important;
+        }
+    }
+
     //--------------- Classes on all INPUT ELEMENTS ---------------
     &.custom-hover {
         &:hover {
@@ -47,7 +89,8 @@
             .input-pen-container,
             .input-invalid-danger-mark,
             .input-dropdown-arrow,
-            .input-icon {
+            .input-icon,
+            .input-password-eye {
                 display: inline-block !important;
 
                 &:hover ~ .input-control {
@@ -88,6 +131,23 @@
         }
     }
 
+    &.invalid-focus-in {
+        &:hover {
+            transition: all 0.3s ease-in-out;
+
+            .input-password-eye {
+                &:hover ~ .input-control {
+                    background-color: $invalid-focus-input !important;
+                }
+
+                &:before:hover,
+                &:after:hover ~ .input-control {
+                    background-color: $invalid-focus-input !important;
+                }
+            }
+        }
+    }
+
     &.valid-focus-out {
         &:hover {
             transition: all 0.3s ease-in-out;
@@ -95,7 +155,8 @@
             .input-clear,
             .input-pen-container,
             .input-dropdown-arrow,
-            .input-icon {
+            .input-icon,
+            .input-password-eye {
                 display: inline-block;
                 transition: all 0.3s ease-in-out;
 
@@ -119,7 +180,8 @@
         &:hover {
             transition: all 0.3s ease-in-out;
 
-            .trash-can-svg {
+            .trash-can-svg,
+            .input-password-eye {
                 &:hover ~ .input-control {
                     background-color: $valid-focus-input !important;
                 }
@@ -148,7 +210,6 @@
     @import './scss/ta-input.commands.scss';
     @import './scss/ta-input.labelcounter.scss';
     @import './scss/ta-input.spinner.scss';
-    @import './scss/ta-input.addressflag.scss';
     @import './scss/ta-input.editlabel.scss';
     @import './scss/ta-dropdown-input-image.scss';
     @import './scss/ta-input.placeholdericon-rightside.scss';

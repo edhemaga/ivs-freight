@@ -3,6 +3,8 @@
 .input-clear {
     position: absolute;
     right: 4px;
+    top: 45%;
+    transform: translateY(-50%);
     border-radius: 1px;
     display: none;
     z-index: 10;
@@ -41,7 +43,7 @@
     }
 
     &.datetimeclass {
-        z-index: 22;
+        z-index: 22 !important;
     }
 
     &.valid-focus-in {
@@ -313,45 +315,4 @@
             }
         }
     }
-
-    // &.visible-focus-password-invalid {
-    //     display: inline-block;
-    //     .input-clear-x {
-    //         svg {
-    //             path {
-    //                 fill: $input-clear-path-fill-invalid-focus !important;
-    //             }
-    //             rect {
-    //                 fill: $input-clear-rect-fill-invalid-focus !important;
-    //             }
-    //         }
-    //         &:hover {
-    //             svg {
-    //                 rect {
-    //                     fill: $input-clear-rect-fill-invalid-focus-hover !important;
-    //                 }
-    //             }
-    //         }
-    //     }
-    // }
-
-    // &.visible-focus-password {
-    //     display: inline-block !important;
-    //     svg {
-    //         path {
-    //             fill: $input-clear-path-fill-normal-focus !important;
-    //         }
-    //         rect {
-    //             fill: $input-clear-rect-fill-normal-focus !important;
-    //         }
-    //     }
-
-    //     &:hover {
-    //         svg {
-    //             rect {
-    //                 fill: $input-clear-rect-fill-normal-focus-hover !important;
-    //             }
-    //         }
-    //     }
-    // }
 }

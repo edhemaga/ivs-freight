@@ -3,7 +3,7 @@
 .input-icon {
     position: absolute;
     left: 6px;
-    top: 46%;
+    top: 45%;
     transform: translateY(-50%);
     z-index: 10;
     -webkit-user-select: none;
@@ -33,6 +33,10 @@
 
     &.cursor-pointer {
         cursor: pointer;
+    }
+
+    &.hidden {
+        display: none;
     }
 
     &::after {
@@ -127,22 +131,6 @@
             background: $invalid-placeholderIcon-pipe !important;
         }
     }
-
-    // &.password-eye {
-    //     svg {
-    //         path {
-    //             fill: $input-placeholder-icon-normal;
-    //         }
-    //     }
-    // }
-
-    // &.password-eye-invalid {
-    //     svg {
-    //         path {
-    //             fill: $input-placeholder-icon-path-invalid-focus;
-    //         }
-    //     }
-    // }
 
     &.inactive-empty {
         svg {
