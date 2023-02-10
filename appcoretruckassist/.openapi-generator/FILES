@@ -1,4 +1,5 @@
 .gitignore
+.openapi-generator-ignore
 README.md
 api.module.ts
 api/accident.service.ts
@@ -573,8 +574,7 @@ model/repairedVehicleListResponse.ts
 model/repairedVehicleResponse.ts
 model/repairedVehicleResponsePagination.ts
 model/resendInviteCommand.ts
-model/resendSignUpCompanyCommand.ts
-model/resendSignUpUserCommand.ts
+model/resendSignUpCompanyOrUserCommand.ts
 model/resendVerifyDriverCommand.ts
 model/reviewByEntityTypeListResponse.ts
 model/reviewResponse.ts
