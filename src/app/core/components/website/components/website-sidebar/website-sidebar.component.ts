@@ -92,34 +92,7 @@ export class WebsiteSidebarComponent implements OnInit, OnDestroy {
     }
 
     private listenForSidebarHideEvent(): void {
-        this.renderer2.listen('document', 'hidden.bs.offcanvas', (event) => {
-            console.log('event', event);
-            /*   if (this.selectedContentType === ConstantString.LOGIN) {
-                this.websiteActionsService.setSidebarContentType(
-                    ConstantString.START_TRIAL
-                );
-            }
-
-            if (this.selectedContentType === ConstantString.START_TRIAL) {
-                this.websiteActionsService.setSidebarContentType(
-                    ConstantString.LOGIN
-                );
-            } */
-
-            /*    this.websiteActionsService.getIsClickedSubject$
-                .pipe(takeUntil(this.destroy$))
-                .subscribe((res) => {
-                    console.log('REEES', res);
-                    if (res) {
-                       if (res.isClicked) {
-                        if (res.type === 'login')
-                       }
-
-                        new Offcanvas(ConstantString.SIDEBAR).toggle();
-                    }
-                }); */
-
-            /*             new Offcanvas(ConstantString.SIDEBAR).toggle(); */
+        this.renderer2.listen('document', 'hidden.bs.offcanvas', (_) => {
             this.selectedContentType = null;
 
             this.websiteActionsService.setSidebarContentType(

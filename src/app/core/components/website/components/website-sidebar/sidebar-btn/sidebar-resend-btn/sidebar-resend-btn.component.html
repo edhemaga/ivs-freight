@@ -4,7 +4,7 @@
     type="submit"
     (click)="onGetClickValue()"
 >
-    {{ btnText }}
+    {{ requestedResend ? 'EMAIL SENT' : btnText }}
 </button>
 
 <ng-container *ngIf="requestedResend">

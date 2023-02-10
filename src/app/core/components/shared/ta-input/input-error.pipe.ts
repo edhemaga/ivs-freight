@@ -78,7 +78,6 @@ export class InputErrorPipe implements PipeTransform {
             }
 
             if (
-                value['companyAlreadyExist'] ||
                 value['einAlreadyExist'] ||
                 value['phoneAlreadyExist'] ||
                 value['emailAlreadyExist']

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { WebsiteActionsService } from 'src/app/core/components/website/state/service/website-actions.service';
+import { WebsiteAuthService } from 'src/app/core/components/website/state/service/website-auth.service';
 
 import { ConstantString } from 'src/app/core/components/website/state/enum/const-string.enum';
 import { UserInfoModel } from 'src/app/core/components/website/state/model/user-info.model';
@@ -17,7 +18,8 @@ export class RegisterUserHelperComponent implements OnInit {
     constructor(
         private route: ActivatedRoute,
         private router: Router,
-        private websiteActionsService: WebsiteActionsService
+        private websiteActionsService: WebsiteActionsService,
+        private websiteAuthService: WebsiteAuthService
     ) {}
 
     ngOnInit(): void {
@@ -49,6 +51,10 @@ export class RegisterUserHelperComponent implements OnInit {
         });
 
         if (isValid) {
+            localStorage.clear();
+
+            this.websiteAuthService.accountLogout();
+
             this.router.navigate([ConstantString.WEBSITE]);
 
             this.websiteActionsService.setRegisterUserInfoSubject(
@@ -60,6 +66,8 @@ export class RegisterUserHelperComponent implements OnInit {
             this.websiteActionsService.setSidebarContentType(
                 ConstantString.REGISTER_USER
             );
+
+            this.websiteActionsService.setIsEmailRouteSubject(true);
         }
     }
 }

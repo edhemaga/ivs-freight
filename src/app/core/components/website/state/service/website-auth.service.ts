@@ -79,6 +79,8 @@ export class WebsiteAuthService {
                     this.websiteActionsService.setSidebarContentType(
                         ConstantString.START_TRIAL_WELCOME
                     );
+
+                    this.websiteActionsService.setIsEmailRouteSubject(true);
                 })
             );
     }
@@ -99,6 +101,8 @@ export class WebsiteAuthService {
                     this.websiteActionsService.setSidebarContentType(
                         ConstantString.REGISTER_USER_WELCOME
                     );
+
+                    this.websiteActionsService.setIsEmailRouteSubject(true);
                 })
             );
     }
@@ -132,6 +136,8 @@ export class WebsiteAuthService {
 
         // ---- DEVELOP MODE ----
         localStorage.removeItem('user');
+
+        this.websiteActionsService.setIsEmailRouteSubject(false);
     }
 
     public resetPassword(data: ForgotPasswordCommand): Observable<object> {
@@ -155,6 +161,8 @@ export class WebsiteAuthService {
                 );
 
                 this.websiteActionsService.setResetPasswordToken(res.token);
+
+                this.websiteActionsService.setIsEmailRouteSubject(true);
             })
         );
     }
@@ -178,4 +186,12 @@ export class WebsiteAuthService {
     ): Observable<SelectCompanyResponse> {
         return this.accountService.apiAccountSelectcompanyPost(data);
     }
+
+    /*    public getAccountAvatarImage(data: string): Observable<AvatarResponse> {
+        return this.accountService.apiAccountAvatarCodeGet(data).pipe(
+            tap((res: AvatarResponse) => {
+                this.websiteActionsService.setAvatarImageSubject(res.avatar);
+            })
+        );
+    } */
 }

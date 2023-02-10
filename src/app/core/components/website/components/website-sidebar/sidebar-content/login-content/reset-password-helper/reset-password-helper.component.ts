@@ -62,6 +62,11 @@ export class ResetPasswordHelperComponent implements OnInit, OnDestroy {
         });
 
         if (isValid) {
+            /*  this.websiteAuthService
+                .getAccountAvatarImage(this.verifyData.code)
+                .pipe(takeUntil(this.destroy$))
+                .subscribe();
+ */
             this.websiteAuthService
                 .verifyResetPassword(this.verifyData)
                 .pipe(

@@ -104,6 +104,7 @@ model/assignGpsDevicesToTrailerCommand.ts
 model/assignGpsDevicesToTruckCommand.ts
 model/authorizationFeedbackResponse.ts
 model/autocompleteSearchLayer.ts
+model/avatarResponse.ts
 model/bankAccountResponse.ts
 model/bankAccountStatus.ts
 model/bankCardResponse.ts
@@ -574,7 +575,6 @@ model/repairedVehicleResponse.ts
 model/repairedVehicleResponsePagination.ts
 model/resendInviteCommand.ts
 model/resendSignUpCompanyOrUserCommand.ts
-model/resendSignUpUserCommand.ts
 model/resendVerifyDriverCommand.ts
 model/reviewByEntityTypeListResponse.ts
 model/reviewResponse.ts

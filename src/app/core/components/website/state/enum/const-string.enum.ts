@@ -43,7 +43,6 @@ export enum ConstantString {
 
     SIDEBAR = '#sidebar',
 
-    COMPANY_ALREADY_EXIST = 'Company name already exists.',
     PHONE_ALREADY_EXIST = 'Phone already exists.',
     EIN_ALREADY_EXIST = 'Ein already exists.',
     EMAIL_ALREADY_EXIST = 'Email already exists.',

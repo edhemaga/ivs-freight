@@ -29,9 +29,11 @@ export class WebsiteActionsService {
     private createPasswordSubject: BehaviorSubject<UserInfoModel> =
         new BehaviorSubject<UserInfoModel>(null);
 
-    private isClickedSubject: BehaviorSubject<any> = new BehaviorSubject<any>(
-        null
-    );
+    private isEmailRouteSubject: BehaviorSubject<boolean> =
+        new BehaviorSubject<boolean>(false);
+
+    private avatarImageSubject: BehaviorSubject<string> =
+        new BehaviorSubject<string>(null);
 
     constructor() {}
 
@@ -63,8 +65,12 @@ export class WebsiteActionsService {
         return this.createPasswordSubject.asObservable();
     }
 
-    get getIsClickedSubject$() {
-        return this.isClickedSubject.asObservable();
+    get getIsEmailRouteSubject$() {
+        return this.isEmailRouteSubject.asObservable();
+    }
+
+    get getAvatarImageSubject$() {
+        return this.avatarImageSubject.asObservable();
     }
 
     public setSidebarContentType(type: string | null) {
@@ -95,7 +101,11 @@ export class WebsiteActionsService {
         this.createPasswordSubject.next(userInfo);
     }
 
-    public setIsClickedSubject(value: any) {
-        this.isClickedSubject.next(value);
+    public setIsEmailRouteSubject(isEmailRoute: boolean) {
+        this.isEmailRouteSubject.next(isEmailRoute);
+    }
+
+    public setAvatarImageSubject(avatar: string) {
+        this.avatarImageSubject.next(avatar);
     }
 }

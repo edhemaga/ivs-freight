@@ -184,15 +184,6 @@ export class RegisterCompanyComponent implements OnInit, OnDestroy {
 
                         const errorMessage = error.error.error;
 
-                        if (
-                            errorMessage ===
-                            ConstantString.COMPANY_ALREADY_EXIST
-                        ) {
-                            this.registerCompanyForm
-                                .get(ConstantString.COMPANY_NAME_2)
-                                .setErrors({ companyAlreadyExist: true });
-                        }
-
                         if (errorMessage === ConstantString.EIN_ALREADY_EXIST) {
                             this.registerCompanyForm
                                 .get(ConstantString.EIN)

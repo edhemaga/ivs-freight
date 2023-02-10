@@ -22,6 +22,7 @@ export class SidebarResendBtnComponent implements OnInit, OnChanges {
     @Input() requestedResend?: boolean = false;
 
     @Output() clickValueEmitter = new EventEmitter<any>();
+    @Output() resetRequestedResendEmitter = new EventEmitter<any>();
 
     public sentAgoCounter: number = 0;
 
@@ -60,6 +61,12 @@ export class SidebarResendBtnComponent implements OnInit, OnChanges {
 
                 if (this.sentAgoCounter % 5 === 0) {
                     this.sentAgoBtnDisabled = false;
+
+                    this.resetRequestedResendEmitter.emit(true);
+
+                    this.sentAgoCounter = 0;
+
+                    clearInterval(sentAgoInterval);
                 }
             }
 

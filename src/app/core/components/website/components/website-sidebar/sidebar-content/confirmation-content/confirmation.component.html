@@ -15,7 +15,7 @@
 
             <h5 class="m-0 ta-font-bold">
                 {{
-                    resendConfirmation
+                    resendConfirmationRequested
                         ? 'RESEND CONFIRMATION'
                         : 'PASSWORD RESET'
                 }}
@@ -47,6 +47,7 @@
             [btnText]="'RESEND EMAIL'"
             [requestedResend]="requestedResendEmail"
             (clickValueEmitter)="onGetBtnClickValue($event, 'resend-btn')"
+            (resetRequestedResendEmitter)="onResetRequestedResend($event)"
         ></app-sidebar-resend-btn>
     </div>
 </div>

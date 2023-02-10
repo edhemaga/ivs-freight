@@ -6,6 +6,7 @@ import { Subject, takeUntil, tap } from 'rxjs';
 import { TaInputService } from 'src/app/core/components/shared/ta-input/ta-input.service';
 import { WebsiteAuthService } from 'src/app/core/components/website/state/service/website-auth.service';
 import { WebsiteActionsService } from 'src/app/core/components/website/state/service/website-actions.service';
+import { ImageBase64Service } from 'src/app/core/utils/base64.image';
 
 import { passwordValidation } from 'src/app/core/components/shared/ta-input/ta-input.regex-validations';
 
@@ -25,7 +26,8 @@ export class CreateNewPasswordComponent implements OnInit, OnDestroy {
 
     public openHavingTroubleContent: boolean = false;
 
-    public userInfo:UserInfoModel = null;
+    public userInfo: UserInfoModel = null;
+    public userAvatar: any = null;
 
     public displaySpinner: boolean = false;
 
@@ -33,7 +35,8 @@ export class CreateNewPasswordComponent implements OnInit, OnDestroy {
         private formBuilder: FormBuilder,
         private inputService: TaInputService,
         private websiteAuthService: WebsiteAuthService,
-        private websiteActionsService: WebsiteActionsService
+        private websiteActionsService: WebsiteActionsService,
+        public imageBase64Service: ImageBase64Service
     ) {}
 
     ngOnInit(): void {
@@ -65,6 +68,14 @@ export class CreateNewPasswordComponent implements OnInit, OnDestroy {
                     avatar: res.avatar,
                 };
             });
+
+        /*  this.websiteActionsService.getAvatarImageSubject$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res: string) => {
+                if (res) {
+                    this.userAvatar = this.imageBase64Service.sanitizer(res);
+                }
+            }); */
     }
 
     public passwordsNotSame(): void {

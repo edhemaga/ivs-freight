@@ -60,6 +60,12 @@ export class ConfirmationComponent implements OnInit, OnDestroy {
         }
     }
 
+    public onResetRequestedResend(event: boolean): void {
+        if (event) {
+            this.requestedResendEmail = false;
+        }
+    }
+
     private getConfirmationEmail(): void {
         this.confirmationEmail = JSON.parse(
             localStorage.getItem(ConstantString.CONFIRMATION_EMAIL)
@@ -70,7 +76,10 @@ export class ConfirmationComponent implements OnInit, OnDestroy {
         const email = this.confirmationEmail;
 
         this.websiteAuthService
-            .resendRegisterCompanyOrUser({ email })
+            .resendRegisterCompanyOrUser({
+                email,
+                isResendConfirmation: false,
+            })
             .pipe(takeUntil(this.destroy$))
             .subscribe();
     }

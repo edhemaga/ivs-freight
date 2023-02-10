@@ -22,6 +22,8 @@ export class WebsiteNavbarComponent implements OnInit, OnDestroy {
 
     public sidebarContentWidth: number = null;
 
+    public isEmailRoute: boolean = false;
+
     constructor(private websiteActionsService: WebsiteActionsService) {}
 
     ngOnInit(): void {
@@ -30,9 +32,25 @@ export class WebsiteNavbarComponent implements OnInit, OnDestroy {
         this.checkIsSidebarOpen();
 
         this.getSidebarContentWidth();
+
+        this.checkIsEmailRoute();
     }
 
     public trackByIdentity = (index: number, _: any): number => index;
+
+    private checkIsEmailRoute(): void {
+        this.websiteActionsService.getIsEmailRouteSubject$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res: boolean) => {
+                this.isEmailRoute = res;
+
+                if (res) {
+                    this.isSidebarOpen = true;
+                } else {
+                    this.isSidebarOpen = false;
+                }
+            });
+    }
 
     public handleNavbarBtnClick(type: string): void {
         if (this.isSidebarOpen) {
@@ -43,11 +61,6 @@ export class WebsiteNavbarComponent implements OnInit, OnDestroy {
             this.isSidebarOpen = true;
 
             this.websiteActionsService.setSidebarContentType(selectedType);
-
-            this.websiteActionsService.setIsClickedSubject({
-                type: selectedType,
-                isClicked: true,
-            });
         }
     }
 

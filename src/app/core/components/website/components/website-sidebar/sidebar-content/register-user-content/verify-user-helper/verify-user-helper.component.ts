@@ -61,6 +61,10 @@ export class VerifyUserHelperComponent implements OnInit, OnDestroy {
         });
 
         if (isValid) {
+            localStorage.clear();
+
+            this.websiteAuthService.accountLogout();
+
             this.websiteAuthService
                 .registerUserVerifyUser(this.verifyData)
                 .pipe(

@@ -1,5 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ResendSignUpCompanyOrUserCommand } from 'appcoretruckassist';
 
 import { Subject, takeUntil, tap } from 'rxjs';
 
@@ -82,12 +83,14 @@ export class ResendConfirmationComponent implements OnInit, OnDestroy {
 
         this.displaySpinner = true;
 
-        const email: string = this.resendConfirmationForm.get(
-            ConstantString.EMAIL_ADDRESS
-        ).value;
+        const saveData: ResendSignUpCompanyOrUserCommand = {
+            email: this.resendConfirmationForm.get(ConstantString.EMAIL_ADDRESS)
+                .value,
+            isResendConfirmation: true,
+        };
 
         this.websiteAuthService
-            .resendRegisterCompanyOrUser({ email })
+            .resendRegisterCompanyOrUser(saveData)
             .pipe(
                 takeUntil(this.destroy$),
                 tap({

@@ -11,8 +11,7 @@
  */
 
 
-export interface ResendSignUpCompanyOrUserCommand { 
-    email?: string | null;
-    isResendConfirmation?: boolean;
+export interface GetUserAvatarQuery { 
+    code?: string | null;
 }
 
