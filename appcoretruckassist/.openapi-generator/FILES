@@ -1,4 +1,5 @@
 .gitignore
+.openapi-generator-ignore
 README.md
 api.module.ts
 api/accident.service.ts
@@ -242,7 +243,9 @@ model/createPayrollBonusCommand.ts
 model/createPayrollCreditCommand.ts
 model/createPayrollDeductionCommand.ts
 model/createPayrollPaymentCommand.ts
+model/createPersonalInfoCommand.ts
 model/createPersonalInfoReviewCommand.ts
+model/createPreviousAddressCommand.ts
 model/createPreviousAddressReviewCommand.ts
 model/createPreviousEmployerAccidentHistoryCommand.ts
 model/createPreviousEmployerDrugAndAlcoholCommand.ts
@@ -254,6 +257,7 @@ model/createRouteCommand.ts
 model/createSevenDaysHosCommand.ts
 model/createSevenDaysHosReviewCommand.ts
 model/createSphReviewCommand.ts
+model/createSsnReviewCommand.ts
 model/createTerminalCommand.ts
 model/createTrafficViolationCommand.ts
 model/createTrafficViolationItemCommand.ts
@@ -570,8 +574,7 @@ model/repairedVehicleListResponse.ts
 model/repairedVehicleResponse.ts
 model/repairedVehicleResponsePagination.ts
 model/resendInviteCommand.ts
-model/resendSignUpCompanyCommand.ts
-model/resendSignUpUserCommand.ts
+model/resendSignUpCompanyOrUserCommand.ts
 model/resendVerifyDriverCommand.ts
 model/reviewByEntityTypeListResponse.ts
 model/reviewResponse.ts
@@ -618,6 +621,7 @@ model/sphDrugAndAlcoholResponse.ts
 model/sphFeedbackResponse.ts
 model/sphPreviousEmployerProspectResponse.ts
 model/splitLoadResponse.ts
+model/ssnFeedbackResponse.ts
 model/stateResponse.ts
 model/statusSetMultipleBrokerCommand.ts
 model/statusSetMultipleCompanyUserCommand.ts
@@ -747,7 +751,9 @@ model/updatePayrollDeductionCommand.ts
 model/updatePayrollDriverCommissionLastLoadCommand.ts
 model/updatePayrollDriverMileageLastStopCommand.ts
 model/updatePayrollOwnerLastLoadCommand.ts
+model/updatePersonalInfoCommand.ts
 model/updatePersonalInfoReviewCommand.ts
+model/updatePreviousAddressCommand.ts
 model/updatePreviousAddressReviewCommand.ts
 model/updatePreviousEmployerAccidentHistoryCommand.ts
 model/updatePreviousEmployerDrugAndAlcoholCommand.ts
@@ -757,6 +763,7 @@ model/updateRouteCommand.ts
 model/updateSevenDaysHosCommand.ts
 model/updateSevenDaysHosReviewCommand.ts
 model/updateSphCommand.ts
+model/updateSsnReviewCommand.ts
 model/updateStopCommand.ts
 model/updateTableConfigCommand.ts
 model/updateTerminalCommand.ts

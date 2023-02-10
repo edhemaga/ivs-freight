@@ -12,8 +12,6 @@
 
 
 export interface CreateClassOfEquipmentCommand { 
-    cfrPart?: boolean | null;
-    fmcsa?: boolean | null;
     vehicleTypeId?: number;
     trailerTypeId?: number | null;
     trailerLengthId?: number | null;
