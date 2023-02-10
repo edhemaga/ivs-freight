@@ -42,6 +42,7 @@ import {
     CompanyModalResponse,
     CreateDivisionCompanyCommand,
     CreateResponse,
+    SignInResponse,
     UpdateCompanyCommand,
     UpdateDivisionCompanyCommand,
 } from 'appcoretruckassist';
@@ -309,6 +310,11 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
                     next: (data: CompanyResponse) => {
                         this.editCompany(data);
                         this.editData.data = data;
+                        const loggedUser: SignInResponse = JSON.parse(
+                            localStorage.getItem('user')
+                        );
+                        loggedUser.areSettingsUpdated = true;
+                        localStorage.setItem("user", JSON.stringify(loggedUser));
                     },
                     error: () => {},
                 });
