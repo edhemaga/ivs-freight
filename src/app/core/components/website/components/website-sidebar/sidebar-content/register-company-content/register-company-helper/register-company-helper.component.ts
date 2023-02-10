@@ -62,10 +62,10 @@ export class RegisterCompanyHelperComponent implements OnInit, OnDestroy {
         });
 
         if (isValid) {
-            localStorage.clear();
+            /*  localStorage.clear();
 
             this.websiteAuthService.accountLogout();
-
+ */
             this.websiteAuthService
                 .registerCompanyVerifyOwner(this.verifyData)
                 .pipe(

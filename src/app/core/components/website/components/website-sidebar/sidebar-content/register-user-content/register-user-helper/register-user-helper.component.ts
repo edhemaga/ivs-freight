@@ -51,9 +51,9 @@ export class RegisterUserHelperComponent implements OnInit {
         });
 
         if (isValid) {
-            localStorage.clear();
+            /*   localStorage.clear();
 
-            this.websiteAuthService.accountLogout();
+            this.websiteAuthService.accountLogout(); */
 
             this.router.navigate([ConstantString.WEBSITE]);
 
