@@ -37,5 +37,6 @@ export interface ApplicantPersonalInfoReviewResponse {
     misdemeanorMessage?: string | null;
     isDrunkDrivingValid?: boolean;
     drunkDrivingMessage?: string | null;
+    filesReviewMessage?: string | null;
 }
 

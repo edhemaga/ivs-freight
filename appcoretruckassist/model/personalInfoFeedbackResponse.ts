@@ -10,6 +10,7 @@
  * Do not edit the class manually.
  */
 import { BankResponse } from './bankResponse';
+import { ApplicantFileResponse } from './applicantFileResponse';
 import { ApplicantPreviousAddressResponse } from './applicantPreviousAddressResponse';
 import { AddressEntity } from './addressEntity';
 import { ApplicantPersonalInfoReviewResponse } from './applicantPersonalInfoReviewResponse';
@@ -45,6 +46,7 @@ export interface PersonalInfoFeedbackResponse {
     drunkDrivingDescription?: string | null;
     reviewed?: boolean | null;
     approved?: boolean | null;
+    files?: Array<ApplicantFileResponse> | null;
     previousAddresses?: Array<ApplicantPreviousAddressResponse> | null;
     personalInfoReview?: ApplicantPersonalInfoReviewResponse;
 }
