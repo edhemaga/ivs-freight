@@ -11,9 +11,7 @@
  */
 
 
-export interface SignupUserCommand { 
+export interface ResendSignUpUserCommand { 
     email?: string | null;
-    password?: string | null;
-    code?: string | null;
 }
 

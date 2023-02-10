@@ -10,7 +10,6 @@
  * Do not edit the class manually.
  */
 import { TransponderGroup } from './transponderGroup';
-import { TagResponse } from './tagResponse';
 import { TruckMakeResponse } from './truckMakeResponse';
 import { EnumValue } from './enumValue';
 import { TruckGrossWeightResponse } from './truckGrossWeightResponse';
@@ -39,6 +38,5 @@ export interface GetTruckModalResponse {
     brakes?: Array<EnumValue> | null;
     fhwaExp?: number;
     fuelTypes?: Array<EnumValue> | null;
-    tags?: Array<TagResponse> | null;
 }
 
