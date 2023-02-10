@@ -192,6 +192,8 @@ export class TaNoteComponent implements OnInit, OnDestroy {
         this.selectionTaken = window.getSelection();
         if (this.selectionTaken.rangeCount && this.selectionTaken.getRangeAt) {
             this.range = this.selectionTaken.getRangeAt(0);
+            this.selectionTaken.removeAllRanges();
+            this.selectionTaken.addRange(this.range);
         }
     }
 
