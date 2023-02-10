@@ -171,7 +171,6 @@ export class TruckassistTableToolbarComponent
                 next: (res: Confirmation) => {
                     switch (res.type) {
                         case 'delete': {
-                            console.log('Poziva se ResetTable');
                             this.onResetTable();
                             break;
                         }
@@ -280,7 +279,8 @@ export class TruckassistTableToolbarComponent
                     c.ngTemplate !== 'hire' &&
                     c.ngTemplate !== 'favorite' &&
                     c.ngTemplate !== 'note' &&
-                    c.ngTemplate !== 'actions'
+                    c.ngTemplate !== 'actions' &&
+                    c.ngTemplate !== 'user-checkbox'
                 ) {
                     columnsSumWidth += 6;
                 }
@@ -299,7 +299,8 @@ export class TruckassistTableToolbarComponent
                 c.ngTemplate !== 'hire' &&
                 c.ngTemplate !== 'favorite' &&
                 c.ngTemplate !== 'note' &&
-                c.ngTemplate !== 'actions'
+                c.ngTemplate !== 'actions' &&
+                c.ngTemplate !== 'user-checkbox'
             ) {
                 this.columnsOptions.push(c);
             }
@@ -308,7 +309,7 @@ export class TruckassistTableToolbarComponent
         this.setColumnsOptionsGroups();
 
         this.toolbarWidth = hasMinWidth
-            ? columnsSumWidth + 12 + 'px'
+            ? columnsSumWidth + 22 + 'px'
             : 100 + '%';
     }
 

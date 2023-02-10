@@ -22,6 +22,7 @@ import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
 import { TaInputComponent } from '../ta-input/ta-input.component';
 import { TaInputResetService } from '../ta-input/ta-input-reset.service';
 import { ImageBase64Service } from '../../../utils/base64.image';
+import { Options } from '@popperjs/core';
 
 @Component({
     selector: 'app-ta-input-dropdown',
@@ -1253,5 +1254,14 @@ export class TaInputDropdownComponent
             .removeClass(cssClass)
             .eq(this.dropdownPosition)
             .addClass(cssClass);
+    }
+
+    customPopoverOption = (options: Partial<Options>) => {
+        for (const modifier of options.modifiers || []) {
+            if (modifier.name === 'offset' && modifier.options) {
+                modifier.options.offset = () => [0, 4];
+            }
+        }
+        return options;
     }
 }

@@ -116,22 +116,10 @@ item.notification &&
 
                                 'route-not-active-svg':
                                     item.construction == true &&
-                                    isNavigationHovered,
-                                'notification-light': !isNavigationHovered,
-                                'notification-dark': isNavigationHovered
+                                    isNavigationHovered
                             }"
                         >
                         </svg-icon>
-                        <!-- <img
-                            class="nav-footer-image"
-                            [ngClass]="{
-                                'nav-footer-image-user': ind === 2
-                            }"
-                            *ngIf="!item.notification"
-                            [src]="item.image"
-                            [alt]="item.text.userName"
-                        /> -->
-
                         <div
                             class="nav-footer-rightSide"
                             [@showHideDetails]="
@@ -164,45 +152,7 @@ item.notification &&
                                     {{ item.notification }}
                                 </span>
                             </div>
-                            <!-- <div
-                                class="nav-footer-user"
-                                *ngIf="
-                                    (item.text | userData) &&
-                                    isNavigationHovered
-                                "
-                            >
-                                <p class="nav-footer-user-company">
-                                    {{ item.text.companyName }}
-                                </p>
-                                <p class="nav-footer-user-name">
-                                    {{ item.text.userName }}
-                                </p>
-                            </div> -->
                         </div>
-                        <!-- <div
-                            *ngIf="currentUserStatus && (item.text | userData)"
-                            class="status-marker-container"
-                            (mouseenter)="showToolTip = false"
-                        >
-                            <div
-                                [ngClass]="{
-                                    'status-active':
-                                        currentUserStatus === 'active',
-                                    'status-online':
-                                        currentUserStatus === 'online',
-                                    'status-away': currentUserStatus === 'away',
-                                    'status-busy': currentUserStatus === 'busy',
-                                    'status-offline':
-                                        currentUserStatus === 'offline'
-                                }"
-                                class="status-marker"
-                            >
-                                <svg-icon
-                                    src="../../../../../assets/svg/applicant/user-active.svg"
-                                >
-                                </svg-icon>
-                            </div>
-                        </div> -->
                     </div>
                 </div>
             </div>

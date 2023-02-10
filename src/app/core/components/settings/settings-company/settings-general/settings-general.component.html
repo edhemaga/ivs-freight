@@ -1,46 +1,15 @@
 <div class="settings-general">
-    <div class="settings-header" [class.divisionHeader]="companyDivision">
-        <div
-            *ngIf="!toggleSelect && optionsCompany"
-            class="current-active-item-company"
-            (click)="onPickItem($event)"
-        >
-            <div class="division-name-wrapper">
-                <div class="current-active-name">
-                    {{ (optionsCompany | detailActiveItem).name }}
-                </div>
-                <span *ngIf="companyDivision" class="division-company"
-                    >Division Co.</span
+    <div class="toolbar-general-cmp">
+        <div class="icon-text-wrapper">
+            <p class="disable-selection">
+                Company
+                <span *ngIf="optionsCompany.length > 1"
+                    >({{ optionsCompany.length }})</span
                 >
-            </div>
-
-            <svg-icon
-                *ngIf="hasArrow || companyDivision"
-                class="arrow-down"
-                src="assets/svg/common/calendar/arrow-right.svg"
-            ></svg-icon>
+            </p>
         </div>
-        <!-- Input dropdown -->
-        <app-ta-input-dropdown
-            class="dropInputCompany"
-            *ngIf="toggleSelect"
-            [formControl]="inputFormControl"
-            [inputConfig]="{
-                name: 'Input Dropdown',
-                type: 'text',
-                isDropdown: true,
-                dropdownWidthClass: 'w-col-510',
-                textTransform: 'capitalize',
-                customClass: 'input-32-font-20 details-pages'
-            }"
-            [isDetailsPages]="toggleSelect"
-            (selectedItem)="onSelectItem($event)"
-            [options]="optionsCompany"
-            [template]="'details-template'"
-        >
-        </app-ta-input-dropdown>
-        <div class="settings-header-buttons">
-            <div class="settings-header-button">
+        <div class="icon-right-holder">
+            <div class="settings-header-button less-width-button">
                 <svg-icon
                     src="ic_pen.svg"
                     class="settings-edit-button"
@@ -55,14 +24,17 @@
                     "
                 ></svg-icon>
             </div>
-            <div class="settings-header-button" *ngIf="companyDivision">
+            <div
+                class="settings-header-button less-width-button"
+                *ngIf="companyDivision"
+            >
                 <svg-icon
                     src="assets/svg/common/ic_trash.svg"
                     class="settings-edit-button"
                 ></svg-icon>
             </div>
             <div class="settings-header-button">
-                <div class="border-left" *ngIf="!companyDivision"></div>
+                <div class="border-left"></div>
                 <svg-icon
                     src="assets/svg/common/ic_plus.svg"
                     class="settings-plus-button"
@@ -77,20 +49,123 @@
             </div>
         </div>
     </div>
-
     <div class="settings-body">
         <div class="basic-details">
             <!-- Header -->
-            <div class="basic-header">
-                <div class="basic-header-logo-top">
-                    <div class="basic-logo-text">
-                        This logo will be used on invoices
+            <div class="company-select-holder">
+                <div class="inactive-icon-input">
+                    <div
+                        *ngIf="!selectedDropdown"
+                        class="current-active-item"
+                        [ngClass]="{
+                            'single-data': optionsCompany.length == 1
+                        }"
+                        (click)="showDropdown()"
+                    >
+                        <p class="current-active-name">
+                            {{ (optionsCompany | detailActiveItem).name }}
+                        </p>
+                        <div class="select-right-side-holders">
+                            <div
+                                class="division-card-holder"
+                                *ngIf="!selectedDropdown && companyDivision"
+                            >
+                                <span> DIVISION CO </span>
+                            </div>
+                            <div
+                                class="arrow-company-icon-holder"
+                                *ngIf="optionsCompany.length > 1"
+                            >
+                                <svg-icon
+                                    class="arrow-down"
+                                    src="assets/svg/common/arrow-left.svg"
+                                >
+                                </svg-icon>
+                            </div>
+                        </div>
                     </div>
-                    <svg-icon
-                        class="basic-logo-edit"
-                        src="ic_pen.svg"
-                    ></svg-icon>
+
+                    <app-ta-input-dropdown
+                        *ngIf="selectedDropdown && optionsCompany.length > 1"
+                        class="dropInput"
+                        [formControl]="inputFormControl"
+                        [inputConfig]="{
+                            name: 'Input Dropdown',
+                            type: 'text',
+                            isDropdown: true,
+                            dropdownWidthClass:
+                                statusInactive === 0
+                                    ? 'w-col-366'
+                                    : 'w-col-366',
+                            textTransform: 'capitalize',
+                            customClass:
+                                'input-32 input-32-font-20 details-pages'
+                        }"
+                        [options]="optionsCompany"
+                        [template]="'details-template'"
+                        [isDetailsPages]="selectedDropdown"
+                        (selectedItem)="onSelectItem($event)"
+                    >
+                    </app-ta-input-dropdown>
                 </div>
+                <div
+                    *ngIf="optionsCompany.length > 1"
+                    class="arrows"
+                    [class.disabedPreviousArrow]="
+                        currentCompanyIndex == 0 || currentCompanyIndex == -1
+                    "
+                    [class.disableNextArrow]="
+                        currentCompanyIndex == optionsCompany.length - 1
+                    "
+                >
+                    <span
+                        ngbTooltip
+                        [mainTooltip]="
+                            currentCompanyIndex == 0 ||
+                            currentCompanyIndex == -1
+                                ? ' '
+                                : 'Previous'
+                        "
+                        position="top"
+                        [tooltipBackground]="
+                            currentCompanyIndex == 0 ||
+                            currentCompanyIndex == -1
+                                ? 'rgba(0,0,0,0)'
+                                : '#6C6C6C'
+                        "
+                        class="previousArrow"
+                        (click)="onActionChange('previous')"
+                    >
+                        <svg-icon
+                            class="arrow-left"
+                            src="assets/svg/common/arrow-left.svg"
+                        >
+                        </svg-icon>
+                    </span>
+                    <span
+                        ngbTooltip
+                        [mainTooltip]="
+                            currentCompanyIndex == optionsCompany.length - 1
+                                ? ''
+                                : 'Next'
+                        "
+                        [tooltipBackground]="
+                            currentCompanyIndex == optionsCompany.length - 1
+                                ? 'rgba(0,0,0,0)'
+                                : '#6C6C6C'
+                        "
+                        position="top"
+                        class="nextArrow"
+                        (click)="onActionChange('next')"
+                    >
+                        <svg-icon
+                            class="arrow-right"
+                            src="assets/svg/common/arrow-left.svg"
+                        ></svg-icon>
+                    </span>
+                </div>
+            </div>
+            <div class="basic-header">
                 <img
                     *ngIf="companyData.logo"
                     [src]="imageBase64Service.sanitizer(companyData.logo)"
@@ -101,11 +176,20 @@
                     *ngIf="!companyData.logo"
                     [ngStyle]="{
                         'font-size': changeFont ? '22px' : '48px',
-                        'margin-top': changeFont ? '60px' : '30px'
+                        'margin-top': changeFont ? '60px' : '0px'
                     }"
                     class="no-company-logo"
                 >
                     {{ companyData?.name }}
+                </div>
+                <div class="basic-header-logo-top">
+                    <div class="basic-logo-text">
+                        This logo will be used on invoices
+                    </div>
+                    <svg-icon
+                        class="basic-logo-edit"
+                        src="ic_pen.svg"
+                    ></svg-icon>
                 </div>
             </div>
             <!-- Middle -->
@@ -155,21 +239,44 @@
                     <p class="basic-data-value">{{ companyData?.webUrl }}</p>
                 </div>
             </div>
+            <div
+                class="basic-mid-holder"
+                *ngIf="
+                    companyData?.usDot || companyData?.ein || companyData?.mc
+                "
+            >
+                <div class="divider"></div>
+            </div>
+
             <!-- Bottom -->
-            <div class="basic-bottom">
-                <div class="basic-bottom-card">
-                    <p class="bottom-card-left">USDOT</p>
-                    <p class="bottom-card-right">{{ companyData?.usDot }}</p>
+            <div
+                class="basic-bottom"
+                *ngIf="
+                    companyData?.usDot || companyData?.ein || companyData?.mc
+                "
+            >
+                <div
+                    class="basic-bottom-cards-redesign"
+                    *ngIf="companyData?.usDot"
+                >
+                    <div class="bottom-title-value">USDOT</div>
+                    <div class="bottom-value">{{ companyData?.usDot }}</div>
                 </div>
-                <div class="basic-bottom-card">
-                    <p class="bottom-card-left">EIN</p>
-                    <p class="bottom-card-right">
+                <div
+                    class="basic-bottom-cards-redesign"
+                    *ngIf="companyData?.ein"
+                >
+                    <div class="bottom-title-value">EIN</div>
+                    <div class="bottom-value">
                         {{ companyData?.ein | formatEinP }}
-                    </p>
+                    </div>
                 </div>
-                <div class="basic-bottom-card">
-                    <p class="bottom-card-left">MC</p>
-                    <p class="bottom-card-right">{{ companyData?.mc }}</p>
+                <div
+                    class="basic-bottom-cards-redesign"
+                    *ngIf="companyData?.mc"
+                >
+                    <div class="bottom-title-value">MC</div>
+                    <div class="bottom-value">{{ companyData?.mc }}</div>
                 </div>
             </div>
         </div>

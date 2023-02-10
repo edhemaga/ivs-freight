@@ -39,9 +39,9 @@ export class TestTService implements OnDestroy {
                 const driverData = JSON.parse(JSON.stringify(dr.entities));
                 let newData = driverData[driverId];
 
-                let testApi = this.drugService.apiTestIdGet(res.id).subscribe({
+                let testApi = this.drugService.apiTestListGet(driverId).subscribe({
                     next: (resp: any) => {
-                        newData.tests.push(resp);
+                        newData.tests = resp;
 
                         this.tableService.sendActionAnimation({
                             animation: 'update',

@@ -24,29 +24,50 @@
             <app-payroll-table
                 [tableSettings]="tableSettings"
                 [tableSettingsResizable]="tableSettingsResizable"
-                [tableData]="reportMainData.loads ? reportMainData.loads : reportMainData.stops"
+                [tableData]="
+                    reportMainData.loads
+                        ? reportMainData.loads
+                        : reportMainData.stops
+                "
                 [isResizableTable]="true"
                 [tableAddClas]="'resizable-table'"
             ></app-payroll-table>
             <div class="small-table-holder-main">
-                <div class="small-tables">
+                <div class="small-tables" *ngIf="reportMainData.credits">
                     <app-payroll-small-tables
                         [title]="'Credit'"
                         [type]="'credit'"
+                        [data]="reportMainData.credits"
                         [reportMainData]="reportMainData"
                     ></app-payroll-small-tables>
                 </div>
-                <div class="small-tables">
+
+                <div class="small-tables" *ngIf="reportMainData.bonuses">
                     <app-payroll-small-tables
                         [title]="'Bonus'"
                         [type]="'bonus'"
+                        [data]="reportMainData.bonuses"
                         [reportMainData]="reportMainData"
                     ></app-payroll-small-tables>
                 </div>
-                <div class="small-tables">
+
+                <div
+                    class="small-tables"
+                    *ngIf="reportMainData.fuelTransactions"
+                >
+                    <app-payroll-small-tables
+                        [title]="'Fuel'"
+                        [type]="'fuel'"
+                        [data]="reportMainData.fuelTransactions"
+                        [reportMainData]="reportMainData"
+                    ></app-payroll-small-tables>
+                </div>
+
+                <div class="small-tables" *ngIf="reportMainData.deductions">
                     <app-payroll-small-tables
                         [title]="'Deduction'"
                         [type]="'deduction'"
+                        [data]="reportMainData.deductions"
                         [reportMainData]="reportMainData"
                     ></app-payroll-small-tables>
                 </div>
@@ -100,7 +121,9 @@
 
             <div
                 class="report-info-card"
-                *ngIf="title == 'Driver (Commission)' || title == 'Driver (Miles)'"
+                *ngIf="
+                    title == 'Driver (Commission)' || title == 'Driver (Miles)'
+                "
             >
                 <div class="report-card-title">
                     {{ reportMainData.driver.fullName }}

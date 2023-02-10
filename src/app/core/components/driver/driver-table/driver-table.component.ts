@@ -36,6 +36,7 @@ import { ApplicantModalComponent } from '../../modals/applicant-modal/applicant-
 import { ApplicantTableQuery } from '../state/applicant-state/applicant-table.query';
 import { getLoadModalColumnDefinition } from 'src/assets/utils/settings/modal-columns-configuration/table-load-modal-columns';
 import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
+import { ApplicantTService } from '../state/applicant.service';
 
 @Component({
     selector: 'app-driver-table',
@@ -56,7 +57,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
     driversInactive: DriversInactiveState[] = [];
     applicantData: ApplicantShortResponse[] = [];
     loadingPage: boolean = true;
-    backFilterQuery = {
+    driverBackFilterQuery = {
         active: 1,
         long: undefined,
         lat: undefined,
@@ -69,11 +70,24 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
         searchTwo: undefined,
         searchThree: undefined,
     };
+    applicantBackFilterQuery = {
+        applicantSpecParamsArchived: undefined,
+        applicantSpecParamsHired: undefined,
+        applicantSpecParamsFavourite: undefined,
+        applicantSpecParamsPageIndex: 1,
+        applicantSpecParamsPageSize: 25,
+        applicantSpecParamsCompanyId: undefined,
+        applicantSpecParamsSort: undefined,
+        searchOne: undefined,
+        searchTwo: undefined,
+        searchThree: undefined,
+    };
     tableContainerWidth: number = 0;
     resizeObserver: ResizeObserver;
     mapingIndex: number = 0;
 
     constructor(
+        private applicantService: ApplicantTService,
         private modalService: ModalService,
         private driversActiveQuery: DriversActiveQuery,
         private driversInactiveQuery: DriversInactiveQuery,
@@ -173,15 +187,24 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 if (res) {
                     this.mapingIndex = 0;
 
-                    this.backFilterQuery.active =
+                    this.driverBackFilterQuery.active =
                         this.selectedTab === 'active' ? 1 : 0;
-                    this.backFilterQuery.pageIndex = 1;
+                    this.driverBackFilterQuery.pageIndex = 1;
 
-                    const searchEvent = tableSearch(res, this.backFilterQuery);
+                    this.applicantBackFilterQuery.applicantSpecParamsPageIndex = 1;
+
+                    const searchEvent = tableSearch(
+                        res,
+                        this.selectedTab === 'applicants'
+                            ? this.applicantBackFilterQuery
+                            : this.driverBackFilterQuery
+                    );
 
                     if (searchEvent) {
                         if (searchEvent.action === 'api') {
-                            this.driverBackFilter(searchEvent.query, true);
+                            this.selectedTab === 'applicants'
+                                ? this.applicantBackFilter(searchEvent.query)
+                                : this.driverBackFilter(searchEvent.query);
                         } else if (searchEvent.action === 'store') {
                             this.sendDriverData();
                         }
@@ -558,8 +581,6 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
         } else {
             this.viewData = [];
         }
-
-        console.log(this.viewData);
     }
 
     mapDriverData(data: any) {
@@ -757,53 +778,6 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
         };
     }
 
-    // Applicant Interface
-    // return {
-    //     // Complete, Done, Wrong, In Progres, Not Started
-    //     medical: {
-    //         class:
-    //             index === 0
-    //                 ? 'complete-icon'
-    //                 : index === 1
-    //                 ? 'done-icon'
-    //                 : index === 2
-    //                 ? 'wrong-icon'
-    //                 : '',
-    //         hideProgres: index !== 3,
-    //         isApplicant: true,
-    //         expirationDays: this.thousandSeparator.transform('3233'),
-    //         percentage: 34,
-    //     },
-    //     cdl: {
-    //         class:
-    //             index === 0
-    //                 ? 'complete-icon'
-    //                 : index === 1
-    //                 ? 'done-icon'
-    //                 : index === 2
-    //                 ? 'wrong-icon'
-    //                 : '',
-    //         hideProgres: index !== 3,
-    //         isApplicant: true,
-    //         expirationDays: this.thousandSeparator.transform('12'),
-    //         percentage: 10,
-    //     },
-    //     rev: {
-    //         title:
-    //             index === 0
-    //                 ? 'Reviewed'
-    //                 : index === 1
-    //                 ? 'Finished'
-    //                 : index === 2
-    //                 ? 'Incomplete'
-    //                 : 'Ready',
-    //         iconLink:
-    //             index === 0 || index === 2
-    //                 ? '../../../../../assets/svg/truckassist-table/applicant-wrong-icon.svg'
-    //                 : '../../../../../assets/svg/truckassist-table/applicant-done-icon.svg',
-    //     },
-    // };
-
     // Get Avatar Color
     getAvatarColors() {
         let textColors: string[] = [
@@ -853,12 +827,13 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.tableData[2].length = driverCount.inactive;
     }
 
+    // Get Driver Back Filter
     driverBackFilter(
         filter: {
             active: number;
-            long?: number;
-            lat?: number;
-            distance?: number;
+            long: number;
+            lat: number;
+            distance: number;
             pageIndex: number;
             pageSize: number;
             companyId: number | undefined;
@@ -867,7 +842,6 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
             searchTwo: string | undefined;
             searchThree: string | undefined;
         },
-        isSearch?: boolean,
         isShowMore?: boolean
     ) {
         this.driverTService
@@ -892,21 +866,59 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     this.viewData = this.viewData.map((data: any) => {
                         return this.mapDriverData(data);
                     });
-
-                    if (isSearch) {
-                        this.tableData[
-                            this.selectedTab === 'active'
-                                ? 1
-                                : this.selectedTab === 'inactive'
-                                ? 2
-                                : 0
-                        ].length = drivers.pagination.count;
-                    }
                 } else {
                     let newData = [...this.viewData];
 
                     drivers.pagination.data.map((data: any) => {
                         newData.push(this.mapDriverData(data));
+                    });
+
+                    this.viewData = [...newData];
+                }
+            });
+    }
+
+    applicantBackFilter(
+        filter: {
+            applicantSpecParamsArchived: boolean | undefined;
+            applicantSpecParamsHired: boolean | undefined;
+            applicantSpecParamsFavourite: boolean | undefined;
+            applicantSpecParamsPageIndex: number;
+            applicantSpecParamsPageSize: number;
+            applicantSpecParamsCompanyId: number | undefined;
+            applicantSpecParamsSort: string | undefined;
+            searchOne: string | undefined;
+            searchTwo: string | undefined;
+            searchThree: string | undefined;
+        },
+        isShowMore?: boolean
+    ) {
+        this.applicantService
+            .getApplicantAdminList(
+                filter.applicantSpecParamsArchived,
+                filter.applicantSpecParamsHired,
+                filter.applicantSpecParamsFavourite,
+                filter.applicantSpecParamsPageIndex,
+                filter.applicantSpecParamsPageSize,
+                filter.applicantSpecParamsCompanyId,
+                filter.applicantSpecParamsSort,
+                filter.searchOne,
+                filter.searchTwo,
+                filter.searchThree
+            )
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((applicant: any) => {
+                if (!isShowMore) {
+                    this.viewData = applicant.pagination.data;
+
+                    this.viewData = this.viewData.map((data: any) => {
+                        return this.mapApplicantsData(data);
+                    });
+                } else {
+                    let newData = [...this.viewData];
+
+                    applicant.pagination.data.map((data: any) => {
+                        newData.push(this.mapApplicantsData(data));
                     });
 
                     this.viewData = [...newData];
@@ -929,8 +941,11 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
             this.selectedTab = event.tabData.field;
             this.mapingIndex = 0;
 
-            this.backFilterQuery.active = this.selectedTab === 'active' ? 1 : 0;
-            this.backFilterQuery.pageIndex = 1;
+            this.driverBackFilterQuery.active =
+                this.selectedTab === 'active' ? 1 : 0;
+            this.driverBackFilterQuery.pageIndex = 1;
+
+            this.applicantBackFilterQuery.applicantSpecParamsPageIndex = 1;
 
             this.sendDriverData();
         } else if (event.action === 'view-mode') {
@@ -945,12 +960,19 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
             this.mapingIndex = 0;
 
             if (event.direction) {
-                this.backFilterQuery.active =
-                    this.selectedTab === 'active' ? 1 : 0;
-                this.backFilterQuery.pageIndex = 1;
-                this.backFilterQuery.sort = event.direction;
+                if (this.selectedTab === 'applicants') {
+                    this.applicantBackFilterQuery.applicantSpecParamsPageIndex = 1;
+                    this.applicantBackFilterQuery.applicantSpecParamsSort =
+                        event.direction;
 
-                this.driverBackFilter(this.backFilterQuery);
+                    this.applicantBackFilter(this.applicantBackFilterQuery);
+                } else {
+                    this.driverBackFilterQuery.active =
+                        this.selectedTab === 'active' ? 1 : 0;
+                    this.driverBackFilterQuery.pageIndex = 1;
+                    this.driverBackFilterQuery.sort = event.direction;
+                    this.driverBackFilter(this.driverBackFilterQuery);
+                }
             } else {
                 this.sendDriverData();
             }
@@ -966,9 +988,15 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
             },
         };
         if (event.type === 'show-more') {
-            this.backFilterQuery.pageIndex++;
+            if (this.selectedTab === 'applicants') {
+                this.applicantBackFilterQuery.applicantSpecParamsPageIndex++;
 
-            this.driverBackFilter(this.backFilterQuery, false, true);
+                this.applicantBackFilter(this.applicantBackFilterQuery, true);
+            } else {
+                this.driverBackFilterQuery.pageIndex++;
+
+                this.driverBackFilter(this.driverBackFilterQuery, true);
+            }
         } else if (event.type === 'edit') {
             if (this.selectedTab === 'applicants') {
                 this.modalService.openModal(

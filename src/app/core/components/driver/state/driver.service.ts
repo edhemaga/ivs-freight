@@ -11,7 +11,7 @@ import {
     CdlService,
     MedicalService,
     MvrService,
-    TestService
+    TestService,
 } from 'appcoretruckassist';
 import { DriversActiveStore } from './driver-active-state/driver-active.store';
 import { DriversActiveQuery } from './driver-active-state/driver-active.query';
@@ -49,7 +49,7 @@ export class DriverTService {
         private formDataService: FormDataService,
         private MedicalService: MedicalService,
         private MvrService: MvrService,
-        private TestService: TestService,
+        private TestService: TestService
     ) {}
 
     // Get Driver Minimal List
@@ -274,11 +274,10 @@ export class DriverTService {
         this.formDataService.extractFormDataFromFunction(data);
         return this.driverService.apiDriverPut().pipe(
             tap((res: any) => {
-
                 const dr = this.driverItemStore.getValue();
                 const driverData = JSON.parse(JSON.stringify(dr.entities));
                 let newData = driverData[data.id];
-     
+
                 const subDriver = this.getDriverById(data.id)
                     .pipe(takeUntil(this.destroy$))
                     .subscribe({
@@ -289,20 +288,27 @@ export class DriverTService {
                             this.driverMinimimalListStore.remove(
                                 ({ id }) => id === data.id
                             );
+                            this.driverItemStore.remove(
+                                ({ id }) => id === data.id
+                            );
+                            
                             driver = {
                                 ...driver,
                                 fullName:
                                     driver.firstName + ' ' + driver.lastName,
+                                cdls: newData?.cdls ? newData.cdls : null,
+                                medicals: newData?.medicals
+                                    ? newData.medicals
+                                    : null,
+                                mvrs: newData?.mvrs ? newData.mvrs : null,
+                                tests: newData?.tests ? newData.tests : null,
                             };
 
-                            driver.cdls = newData.cdls;
-                            driver.medicals = newData.medicals;
-                            driver.mvrs = newData.mvrs;
-                            driver.tests = newData.tests;
-
                             this.driverActiveStore.add(driver);
+                            this.driverItemStore.add(driver);
                             this.driverMinimimalListStore.add(driver);
-                            this.dlStore.replace(driver.id, driver);
+                            this.dlStore.update(driver.id, driver);
+
                             this.tableService.sendActionAnimation({
                                 animation: 'update',
                                 data: driver,
@@ -312,7 +318,6 @@ export class DriverTService {
                             subDriver.unsubscribe();
                         },
                     });
-                 
             })
         );
     }
@@ -451,28 +456,19 @@ export class DriverTService {
             );
     }
 
-
-    public getDriverCdlsById(
-        driverId: number,
-    ){
+    public getDriverCdlsById(driverId: number) {
         return this.cdlService.apiCdlListGet(driverId);
     }
 
-    public getDriverTestById(
-        driverId: number,
-        ){
+    public getDriverTestById(driverId: number) {
         return this.TestService.apiTestListGet(driverId);
     }
 
-    public getDriverMedicalsById(
-        driverId: number,
-    ){
+    public getDriverMedicalsById(driverId: number) {
         return this.MedicalService.apiMedicalListGet(driverId);
     }
 
-    public getDriverMvrsByDriverId(
-        driverId: number
-    ){
+    public getDriverMvrsByDriverId(driverId: number) {
         return this.MvrService.apiMvrListGet(driverId);
     }
 }

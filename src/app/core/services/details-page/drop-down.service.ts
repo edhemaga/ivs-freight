@@ -306,7 +306,7 @@ export class DropDownService {
                                 state: dataCdl[0].state.stateShortName,
                                 data,
                             },
-                            template: 'cdl',
+                            template: 'CDL',
                             type: 'info',
                             subType: 'cdl void',
                             cdlStatus: 'New',
@@ -323,7 +323,7 @@ export class DropDownService {
                                 state: dataCdl.state.stateShortName,
                                 data,
                             },
-                            template: 'cdl',
+                            template: 'CDL',
                             type: 'activate',
                             //subType: 'cdl void',
                             cdlStatus: 'Activate',
@@ -715,41 +715,73 @@ export class DropDownService {
                 ...dataObject,
             },
         };
-        if (event.type === 'edit') {
-            this.modalService.openModal(
-                RepairShopModalComponent,
-                { size: 'small' },
-                {
-                    ...event,
-                    disableButton: true,
-                    id: event.id,
-                }
-            );
-        } else if (
-            event.type === 'add-favourites' ||
-            event.type === 'remove-favourites'
-        ) {
-            this.modalService.openModal(
-                ConfirmationModalComponent,
-                { size: 'small' },
-                {
-                    ...mappedEvent,
-                    template: 'repair shop',
-                    type: 'activate',
-                    image: false,
-                }
-            );
-        } else if (event.type === 'delete-item') {
-            this.modalService.openModal(
-                ConfirmationModalComponent,
-                { size: 'small' },
-                {
-                    ...mappedEvent,
-                    template: 'repair shop',
-                    type: 'delete',
-                    image: false,
-                }
-            );
+
+        switch (event.type) {
+            case 'edit': {
+                this.modalService.openModal(
+                    RepairShopModalComponent,
+                    { size: 'small' },
+                    {
+                        ...event,
+                        disableButton: true,
+                        id: event.id,
+                    }
+                );
+                break;
+            }
+            case 'add-favourites':
+            case 'remove-favourites':{
+                this.modalService.openModal(
+                    ConfirmationModalComponent,
+                    { size: 'small' },
+                    {
+                        ...mappedEvent,
+                        template: 'repair shop',
+                        type: 'activate',
+                        image: false,
+                    }
+                );
+                break;
+            }
+            case 'delete-item':{
+                this.modalService.openModal(
+                    ConfirmationModalComponent,
+                    { size: 'small' },
+                    {
+                        ...mappedEvent,
+                        template: 'repair shop',
+                        type: 'delete',
+                        image: false,
+                    }
+                );
+                break;
+            }
+            case 'close-business':{
+                this.modalService.openModal(
+                    ConfirmationModalComponent,
+                    { size: 'small' },
+                    {
+                        ...mappedEvent,
+                        template: 'Repair Shop',
+                        type: 'deactivate',
+                        image: false,
+                    }
+                );
+                break;
+            }
+            case 'open-business':{
+                this.modalService.openModal(
+                    ConfirmationModalComponent,
+                    { size: 'small' },
+                    {
+                        ...mappedEvent,
+                        template: 'Repair Shop',
+                        type: 'activate',
+                        image: false,
+                    }
+                );
+                break;
+            }
         }
     }
 }

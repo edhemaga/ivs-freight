@@ -1,7 +1,11 @@
+import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
 @Component({
     selector: 'app-app-note',
+    standalone: true,
+    imports: [CommonModule, FormsModule],
     templateUrl: './app-note.component.html',
     styleUrls: ['./app-note.component.scss'],
 })

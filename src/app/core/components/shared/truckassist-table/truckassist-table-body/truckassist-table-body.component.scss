@@ -7,9 +7,9 @@ table {
         // display: flex;
 
         tr {
+            min-height: 32px;
             width: fit-content;
             height: fit-content;
-            min-height: 32px;
             background: white;
             display: flex;
             flex-direction: column;
@@ -22,13 +22,14 @@ table {
                 width: 100%;
                 height: 100%;
                 display: flex;
+                border-radius: 2px;
 
-                .not-pined-columns{
-                    .space-left{
+                .not-pined-columns {
+                    .space-left {
                         margin-left: 11px;
                     }
 
-                    td{
+                    td {
                         margin-right: 6px;
                     }
                 }
@@ -511,6 +512,20 @@ table {
                                 transition: 0.2s;
                             }
 
+                            .user-avatar-archived-icon{
+                                width: 18px;
+                                height: 18px;
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+
+                                svg-icon{
+                                    display: flex;
+                                    align-items: center;
+                                    justify-content: center;
+                                }
+                            }
+
                             .avatar {
                                 user-select: none;
                                 width: 20px;
@@ -571,7 +586,7 @@ table {
                             }
                         }
 
-                        .has-details-page{
+                        .has-details-page {
                             cursor: pointer;
 
                             &:hover {
@@ -1812,7 +1827,7 @@ table {
                             align-items: center;
 
                             .table-progress-bar-container {
-                                border-radius: 3px;
+                                border-radius: 2px;
                                 -webkit-user-select: none;
                                 -moz-user-select: none;
                                 user-select: none;
@@ -2282,13 +2297,16 @@ table {
 
                     // DOCUMENT
                     .document-container {
+                        display: flex;
+                        justify-content: flex-end;
+
                         width: 100%;
                         height: fit-content;
                         position: relative;
 
                         // TITLE
                         .document-title {
-                            width: 100%;
+                            width: auto;
                             height: 26px;
                             display: flex;
                             align-items: center;
@@ -2471,7 +2489,23 @@ table {
             .insurance-dropdown-active {
                 width: 100% !important;
                 max-height: 1000px;
-                transition: max-height 0.2s ease-in-out;
+                transition: max-height 0.25s ease-in-out;
+            }
+        }
+
+        // For User Table Only
+        .user-archived {
+            .table-text,
+            .user-status-container,
+            .table-avatar-name,
+            .semi-bold-table-text {
+                color: #919191 !important;
+            }
+
+            .table-avatar-name {
+                &:hover {
+                    color: #919191 !important;
+                }
             }
         }
 
@@ -2662,7 +2696,7 @@ table {
         }
 
         // Border Scroll Section
-        .border-scroll-section-container{
+        .border-scroll-section-container {
             position: relative;
 
             .border-scroll-section {
@@ -2673,14 +2707,14 @@ table {
             }
         }
 
-        .border-scroll-section-container-right{
+        .border-scroll-section-container-right {
             margin-right: 7px;
 
-            .border-scroll-section{
+            .border-scroll-section {
                 left: -8px;
             }
         }
-        
+
         .border-left {
             background-image: linear-gradient(to right, #eeeeee, #eeeeee00);
         }
@@ -2693,7 +2727,6 @@ table {
 
 // SHOW MORE
 .show-more-container {
-    margin-bottom: 12px;
     height: 18px;
     width: fit-content;
     margin-top: 3px;

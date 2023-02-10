@@ -118,7 +118,7 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
                     if (searchEvent) {
                         if (searchEvent.action === 'api') {
-                            this.ownerBackFilter(searchEvent.query, true);
+                            this.ownerBackFilter(searchEvent.query);
                         } else if (searchEvent.action === 'store') {
                             this.sendOwnerData();
                         }
@@ -418,7 +418,6 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
             searchTwo: string | undefined;
             searchThree: string | undefined;
         },
-        isSearch?: boolean,
         isShowMore?: boolean
     ) {
         this.ownerService
@@ -446,12 +445,6 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     this.viewData = this.viewData.map((data: any) => {
                         return this.mapOwnerData(data);
                     });
-
-                    if (isSearch) {
-                        this.tableData[
-                            this.selectedTab === 'active' ? 0 : 1
-                        ].length = owners.pagination.count;
-                    }
                 } else {
                     let newData = [...this.viewData];
 
@@ -483,8 +476,6 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
     onTableHeadActions(event: any) {
         if (event.action === 'sort') {
             if (event.direction) {
-                this.backFilterQuery.active =
-                    this.selectedTab === 'active' ? 1 : 0;
                 this.backFilterQuery.pageIndex = 1;
                 this.backFilterQuery.sort = event.direction;
 
@@ -499,7 +490,7 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
         if (event.type === 'show-more') {
             this.backFilterQuery.pageIndex++;
 
-            this.ownerBackFilter(this.backFilterQuery, false, true);
+            this.ownerBackFilter(this.backFilterQuery, true);
         } else if (event.type === 'edit-owner') {
             this.modalService.openModal(
                 OwnerModalComponent,

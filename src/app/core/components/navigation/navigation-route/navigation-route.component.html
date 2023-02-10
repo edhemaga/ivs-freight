@@ -42,7 +42,8 @@
                 !isUserPanelOpen &&
                 selectedRoute == route.name &&
                 !middleIsHovered &&
-                !footerHovered
+                !footerHovered,
+            'box-animation-closed-nav': !magicBoxAnime
         }"
     ></div>
 
@@ -108,8 +109,10 @@
             
                 class="subroute"
                 *ngIf="
-                     route.id == activeRouteIdFromLocalStorage && !activeLinkHighlight && activeRouteName != 'notifications'
+                     route.id == activeRouteIdFromLocalStorage && !activeLinkHighlight 
+                     && activeRouteName != 'notifications' 
                 "
+                [ngClass]="{'animation-text': isNavigationHovered}"
             >   
                 &nbsp;[{{ activeRouteName | titlecase }}]
             </span>

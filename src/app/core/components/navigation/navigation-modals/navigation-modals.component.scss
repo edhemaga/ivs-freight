@@ -34,18 +34,16 @@
         position: relative;
         justify-content: space-between;
         padding-right: 4px;
+        height: 20px;
         .modal-nav-close-svg {
             transition: all 0.3s ease-in-out;
-            display: flex;
-            align-items: flex-start;
-            border-radius: 50%;
             cursor: pointer;
-            top: -5px;
-            position: relative;
             width: 20px;
+            top: 3px;
             height: 20px;
-            right: 1.3px;
             transform: rotate(45deg);
+            position: relative;
+            top: -3px;
             svg {
                 position: relative;
                 top: 50%;
@@ -68,7 +66,22 @@
             font-size: $nav-font-size;
             font-weight: $nav-font-bold;
             color: $nav-white;
-            padding-left: 4px;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            border-radius: 50%;
+            align-items: center;
+            position: relative;
+            justify-content: center;
+            bottom: 13px;
+            cursor: pointer;
+            right: 5px;
+        }
+        .tooltip-right {
+            position: fixed;
+            top: 68px;
+            left: 18px;
+            z-index: -1;
         }
     }
 
@@ -189,8 +202,8 @@
                     svg {
                         transform: rotate(-45deg);
                         transition: all 0.3s;
-                        top: 2px;
-                        left: 4px;
+                        top: 4.1px;
+                        left: 6px;
                         position: absolute;
                         path {
                             transition: all 0.3s;
@@ -219,8 +232,8 @@
                     svg {
                         transform: rotate(0deg);
                         transition: all 0.3s;
-                        top: 2px;
-                        left: 4px;
+                        top: 4.1px;
+                        left: 6px;
                         position: absolute;
                     }
                 }

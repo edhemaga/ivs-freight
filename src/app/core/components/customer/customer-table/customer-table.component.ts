@@ -255,20 +255,24 @@ export class CustomerTableComponent
             .pipe(takeUntil(this.destroy$))
             .subscribe((res: any) => {
                 if (res) {
-                    if (this.selectedTab === 'active') {
-                        this.backBrokerFilterQuery.pageIndex = 1;
+                    this.backBrokerFilterQuery.pageIndex = 1;
+                    this.backShipperFilterQuery.pageIndex = 1;
 
-                        const searchEvent = tableSearch(
-                            res,
-                            this.backBrokerFilterQuery
-                        );
-
-                        if (searchEvent) {
-                            if (searchEvent.action === 'api') {
-                                this.brokerBackFilter(searchEvent.query, true);
-                            } else if (searchEvent.action === 'store') {
-                                this.sendCustomerData();
-                            }
+                    const searchEvent = tableSearch(
+                        res,
+                        this.selectedTab === 'active'
+                            ? this.backBrokerFilterQuery
+                            : this.backShipperFilterQuery
+                    );
+                    if (searchEvent) {
+                        if (searchEvent.action === 'api') {
+                            this.selectedTab === 'active'
+                                ? this.brokerBackFilter(searchEvent.query)
+                                : this.shipperBackFilter(
+                                      searchEvent.query
+                                  );
+                        } else if (searchEvent.action === 'store') {
+                            this.sendCustomerData();
                         }
                     }
                 }
@@ -352,7 +356,7 @@ export class CustomerTableComponent
         );
 
         if (this.selectedTab === 'active') {
-             this.brokers = this.brokerQuery.getAll().length
+            this.brokers = this.brokerQuery.getAll().length
                 ? this.brokerQuery.getAll()
                 : [];
         } else {
@@ -446,17 +450,10 @@ export class CustomerTableComponent
             this.mapListData = JSON.parse(JSON.stringify(this.viewData));
 
             this.viewData = this.viewData.map((data: any) => {
-                if (this.selectedTab === 'active') {
-                    return this.mapBrokerData(data);
-                } else {
-                    return this.mapShipperData(data);
-                }
+                return this.selectedTab === 'active'
+                    ? this.mapBrokerData(data)
+                    : this.mapShipperData(data);
             });
-
-            // For Testing
-            // for (let i = 0; i < 1000; i++) {
-            //   this.viewData.push(this.viewData[0]);
-            // }
         } else {
             this.viewData = [];
         }
@@ -601,7 +598,6 @@ export class CustomerTableComponent
             searchTwo: string | undefined;
             searchThree: string | undefined;
         },
-        isSearch?: boolean,
         isShowMore?: boolean
     ) {
         this.brokerService
@@ -630,10 +626,6 @@ export class CustomerTableComponent
                     this.viewData = this.viewData.map((data: any) => {
                         return this.mapBrokerData(data);
                     });
-
-                    if (isSearch) {
-                        this.tableData[0].length = brokers.pagination.count;
-                    }
                 } else {
                     let newData = [...this.viewData];
 
@@ -661,7 +653,6 @@ export class CustomerTableComponent
             searchTwo: string | undefined;
             searchThree: string | undefined;
         },
-        isSearch?: boolean,
         isShowMore?: boolean
     ) {
         this.shipperService
@@ -686,10 +677,6 @@ export class CustomerTableComponent
                     this.viewData = this.viewData.map((data: any) => {
                         return this.mapShipperData(data);
                     });
-
-                    if (isSearch) {
-                        this.tableData[1].length = shippers.pagination.count;
-                    }
                 } else {
                     let newData = [...this.viewData];
 
@@ -764,13 +751,12 @@ export class CustomerTableComponent
             if (this.selectedTab === 'active') {
                 this.backBrokerFilterQuery.pageIndex++;
 
-                this.brokerBackFilter(this.backBrokerFilterQuery, false, true);
+                this.brokerBackFilter(this.backBrokerFilterQuery, true);
             } else {
                 this.backShipperFilterQuery.pageIndex++;
 
                 this.shipperBackFilter(
                     this.backShipperFilterQuery,
-                    false,
                     true
                 );
             }
@@ -844,10 +830,12 @@ export class CustomerTableComponent
                 .addRating(raitingData)
                 .pipe(takeUntil(this.destroy$))
                 .subscribe((res: any) => {
-                    this.viewData = this.viewData.map((data: any) => {
+                    let newViewData = [...this.viewData];
+
+                    newViewData.map((data: any) => {
                         if (data.id === event.data.id) {
                             data.actionAnimation = 'update';
-                            data.raiting = {
+                            data.tableRaiting = {
                                 hasLiked: res.currentCompanyUserRating === 1,
                                 hasDislike: res.currentCompanyUserRating === -1,
                                 likeCount: res?.upCount ? res.upCount : '0',
@@ -856,11 +844,9 @@ export class CustomerTableComponent
                                     : '0',
                             };
                         }
-
-                        return data;
                     });
 
-                    this.ref.detectChanges();
+                    this.viewData = [...newViewData];
 
                     const inetval = setInterval(() => {
                         this.viewData = closeAnimationAction(
@@ -1032,14 +1018,14 @@ export class CustomerTableComponent
         var listChanged = false;
         var addData = mapListResponse.addData ? true : false;
 
-        if ( !addData ) {
+        if (!addData) {
             for (var i = 0; i < this.mapListData.length; i++) {
                 let item = this.mapListData[i];
-    
+
                 let itemIndex = newMapList.findIndex(
                     (item2) => item2.id === item.id
                 );
-    
+
                 if (itemIndex == -1) {
                     this.mapListData.splice(i, 1);
                     listChanged = true;
@@ -1056,7 +1042,7 @@ export class CustomerTableComponent
             );
 
             if (itemIndex == -1) {
-                if ( addData ) {
+                if (addData) {
                     this.mapListData.push(item);
                 } else {
                     this.mapListData.splice(b, 0, item);
