@@ -1,10 +1,4 @@
-import {
-    ChangeDetectionStrategy,
-    Component,
-    EventEmitter,
-    Input,
-    Output,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import {
     accountingNavigationData,
     fuelNavigationData,
@@ -12,6 +6,7 @@ import {
     repairNavigationData,
     safetyNavigationData,
     toolsNavigationData,
+    requestNavigationData,
 } from '../model/navigation-data';
 import { NavigationModal } from '../model/navigation.model';
 import { NavigationService } from '../services/navigation.service';
@@ -57,17 +52,17 @@ import {
 export class NavigationModalsComponent {
     @Input() isNavigationHoveredAndPanelOpen: boolean = false;
     @Input() isNavigationHovered: boolean = false;
-    @Output() ChangeCloseText = new EventEmitter<Boolean>();
     public generalNavigationData: NavigationModal[] = generalNavigationData;
     public toolsNavigationData: NavigationModal[] = toolsNavigationData;
     public repairNavigationData: NavigationModal[] = repairNavigationData;
     public fuelNavigationData: NavigationModal[] = fuelNavigationData;
     public safetyNavigationData: NavigationModal[] = safetyNavigationData;
+    public requestNavigationData: NavigationModal[] = requestNavigationData;
     public accountingNavigationData: NavigationModal[] =
         accountingNavigationData;
     public showToolTip: boolean = false;
     public changeTextHoverOnCloseModal: boolean = false;
-    public Title: string = 'Add New';
+    public Title: string = 'Add Anything';
     public OpenCloseModal: boolean = false;
     constructor(
         private modalService: ModalService,
@@ -81,7 +76,9 @@ export class NavigationModalsComponent {
         });
     }
     public changeText(text: boolean) {
-        this.ChangeCloseText.emit(text);
+        text == true && text
+            ? (this.Title = 'Close')
+            : (this.Title = 'Add Anything');
     }
     public onAction(item: NavigationModal) {
         this.openModal(item);

@@ -173,7 +173,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     );
                     if (searchEvent) {
                         if (searchEvent.action === 'api') {
-                            this.loadBackFilter(searchEvent.query, true);
+                            this.loadBackFilter(searchEvent.query);
                         } else if (searchEvent.action === 'store') {
                             this.sendLoadData();
                         }
@@ -588,7 +588,6 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
             searchTwo: string | undefined;
             searchThree: string | undefined;
         },
-        isSearch?: boolean,
         isShowMore?: boolean
     ) {
         this.loadServices
@@ -621,13 +620,6 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     this.viewData = this.viewData.map((data: any) => {
                         return this.mapLoadData(data);
                     });
-
-                    if (isSearch) {
-                        const index = this.tableData.findIndex((t) => t.field === this.selectedTab);
-
-
-                        this.tableData[index].length = loads.pagination.count;
-                    }
                 } else {
                     let newData = [...this.viewData];
 
@@ -680,7 +672,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
     onTableBodyActions(event: any) {
         if (event.type === 'show-more') {
             this.backLoadFilterQuery.pageIndex++;
-            this.loadBackFilter(this.backLoadFilterQuery, false, true);
+            this.loadBackFilter(this.backLoadFilterQuery, true);
         } else if (event.type === 'edit') {
             /* this.modalService.openModal(
         DriverModalComponent,

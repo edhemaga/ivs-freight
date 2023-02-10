@@ -268,17 +268,12 @@ export class TruckassistTableBodyComponent
     // Render Row One By One
     renderOneByOne() {
         // clearInterval(this.renderInterval);
-
         // if(this.viewData.length - 1 <= this.tableRowCounter){
         //     this.tableRowCounter = 0;
         // }
-        
-
         // this.renderInterval = setInterval(() => {
         //     this.tableRowCounter++;
-
         //     this.changeDetectorRef.detectChanges();
-
         //     if (this.tableRowCounter >= this.viewData.length - 1) {
         //         clearInterval(this.renderInterval);
         //     }
@@ -425,7 +420,7 @@ export class TruckassistTableBodyComponent
         if (this.viewData.length) {
             clearTimeout(this.tableWidthTimeout);
 
-            const tableContainer = document.querySelector('.table-container'); 
+            const tableContainer = document.querySelector('.table-container');
 
             this.notPinedMaxWidth =
                 tableContainer.clientWidth -
@@ -609,6 +604,15 @@ export class TruckassistTableBodyComponent
         });
 
         this.tooltip.close();
+    }
+
+    // Only For User Table To Activate User
+    onActivateUser(row: any) {
+        this.bodyActions.emit({
+            id: row.id,
+            data: row,
+            type: 'activate',
+        });
     }
 
     // Show Attachments

@@ -37,9 +37,6 @@ export function getUsersColumnDefinition() {
             sortable: true,
             isActionColumn: false,
             isSelectColumn: false,
-            avatar: {
-                src: 'doc.avatar.src',
-            },
             progress: null,
             hoverTemplate: null,
             filterable: true,

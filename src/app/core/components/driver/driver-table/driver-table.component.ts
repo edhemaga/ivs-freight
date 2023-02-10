@@ -203,14 +203,8 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     if (searchEvent) {
                         if (searchEvent.action === 'api') {
                             this.selectedTab === 'applicants'
-                                ? this.applicantBackFilter(
-                                      searchEvent.query,
-                                      true
-                                  )
-                                : this.driverBackFilter(
-                                      searchEvent.query,
-                                      true
-                                  );
+                                ? this.applicantBackFilter(searchEvent.query)
+                                : this.driverBackFilter(searchEvent.query);
                         } else if (searchEvent.action === 'store') {
                             this.sendDriverData();
                         }
@@ -848,7 +842,6 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
             searchTwo: string | undefined;
             searchThree: string | undefined;
         },
-        isSearch?: boolean,
         isShowMore?: boolean
     ) {
         this.driverTService
@@ -873,16 +866,6 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     this.viewData = this.viewData.map((data: any) => {
                         return this.mapDriverData(data);
                     });
-
-                    if (isSearch) {
-                        this.tableData[
-                            this.selectedTab === 'active'
-                                ? 1
-                                : this.selectedTab === 'inactive'
-                                ? 2
-                                : 0
-                        ].length = drivers.pagination.count;
-                    }
                 } else {
                     let newData = [...this.viewData];
 
@@ -908,7 +891,6 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
             searchTwo: string | undefined;
             searchThree: string | undefined;
         },
-        isSearch?: boolean,
         isShowMore?: boolean
     ) {
         this.applicantService
@@ -932,10 +914,6 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     this.viewData = this.viewData.map((data: any) => {
                         return this.mapApplicantsData(data);
                     });
-
-                    if (isSearch) {
-                        this.tableData[0].length = applicant.pagination.count;
-                    }
                 } else {
                     let newData = [...this.viewData];
 
@@ -1010,14 +988,14 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
             },
         };
         if (event.type === 'show-more') {
-            if (this.selectedTab === 'applicants'){
+            if (this.selectedTab === 'applicants') {
                 this.applicantBackFilterQuery.applicantSpecParamsPageIndex++;
 
-                this.applicantBackFilter(this.applicantBackFilterQuery, false, true)
-            }else{
+                this.applicantBackFilter(this.applicantBackFilterQuery, true);
+            } else {
                 this.driverBackFilterQuery.pageIndex++;
 
-                this.driverBackFilter(this.driverBackFilterQuery, false, true);
+                this.driverBackFilter(this.driverBackFilterQuery, true);
             }
         } else if (event.type === 'edit') {
             if (this.selectedTab === 'applicants') {
