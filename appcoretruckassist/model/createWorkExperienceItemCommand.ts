@@ -23,8 +23,6 @@ export interface CreateWorkExperienceItemCommand {
     fax?: string | null;
     address?: AddressEntity;
     isDrivingPosition?: boolean;
-    cfrPart?: boolean | null;
-    fmcsa?: boolean | null;
     reasonForLeaving?: number;
     accountForPeriodBetween?: string | null;
     classesOfEquipment?: Array<CreateClassOfEquipmentCommand> | null;
