@@ -50,7 +50,6 @@ export class NavigationComponent implements OnInit, OnDestroy {
     public index: number;
     public openedDropdown: boolean = false;
     public hideSubrouteTitle: number = -1;
-    public ChangeCloseTextTitle: boolean = false;
     closeDropdownOnNavClose: boolean;
     @ViewChild('navbar') navbar: ElementRef;
     selectedRoute: string = '';
@@ -188,9 +187,6 @@ export class NavigationComponent implements OnInit, OnDestroy {
                     this.cdRef.detectChanges();
                 }
             });
-    }
-    public ChangeCloseText(event) {
-        this.ChangeCloseTextTitle = event;
     }
     getIndex(ind) {
         this.index = ind;
