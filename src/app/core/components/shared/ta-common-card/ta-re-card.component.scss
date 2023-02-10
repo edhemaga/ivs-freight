@@ -83,6 +83,9 @@
     background-color: #ffffff;
     margin-bottom: 8px;
     width: 100%;
+    padding: 0px 8px;
+
+
     .card-body-cmp {
         flex-direction: column;
         background-color: #ffffff;
@@ -116,8 +119,8 @@
         align-items: flex-start;
         justify-content: space-between;
         background-color: #ffffff;
-        margin-left: 16px;
-        margin-right: 10px;
+        margin-left: 4px !important;
+        margin-right: 4px !important;
         padding-bottom: 8px !important;
         padding-top: 11px;
         svg {
@@ -162,7 +165,8 @@
         }
        
         &.insuranceCard{
-            margin-left: 6px !important;
+            margin-left: 4px !important;
+            margin-right: 4px !important;
         }
 
     }
@@ -254,7 +258,9 @@ p {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    // padding: 11px 8px 0 12px;
+    padding-left: 4px !important;
+    padding-right: 4px !important;
+
 }
 .drop-common {
     height: 21px;

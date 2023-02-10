@@ -474,6 +474,9 @@
 
         .content-holder {
             //user-select: none;
+            padding: 0px 4px !important;
+            margin-bottom: 0px !important;
+            margin-top: 0px !important;
             &.innactive {
                 height: 0px !important;
                 overflow: hidden !important;

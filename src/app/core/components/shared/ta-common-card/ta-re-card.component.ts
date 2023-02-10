@@ -106,7 +106,7 @@ export class TaReCardComponent implements OnInit {
     @Input() noteIcons: string = '';
     @Input() cardNameCurrent: string;
     @Input() statusActive: number;
-    @Input() paddingDots: string = '11px 8px 0 12px';
+    @Input() paddingDots: string = '11px 8px 0px 0px';
     @Output() clickedCard = new EventEmitter<any>();
     @Output() dataDropDopwn = new EventEmitter<any>();
     @Output() preloadData = new EventEmitter<any>();

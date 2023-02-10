@@ -59,7 +59,7 @@ p {
 
 // Progress bar settings
 .settings-progress-container {
-    padding: 0 6px;
+    padding: 0px 4px;
     padding-bottom: 16px;
     padding-top: 7px;
     .table-progress-cotnainer {
@@ -364,12 +364,7 @@ p {
 .settings-body {
     // background-color: $settings-background;
     border-radius: 3px;
-    .card-container-cmp {
-        padding: 0 6px;
-    }
-    .name-dots {
-        padding-left: 6px !important;
-    }
+
     .card-name-cmp {
         font-weight: 600 !important;
         text-transform: uppercase;
@@ -384,14 +379,14 @@ p {
         top: 5px;
     }
     .ta-card-header {
-        padding-right: 4px !important;
+        //padding-right: 4px !important;
     }
     .settings-body-items {
         display: flex;
         flex-direction: column;
-        padding-top: 0px;
-        padding-bottom: 4px;
-        padding-left: 6px;
+        //padding-top: 0px;
+        //padding-bottom: 4px;
+        //padding-left: 6px;
         .single-item {
             display: flex;
             align-items: center;
@@ -712,7 +707,7 @@ p {
     display: grid;
     column-gap: 20px;
     row-gap: 12px;
-    padding: 0 3px;
+    //padding: 0 3px;
     .payroll-template-item {
         display: flex;
         align-items: center;
