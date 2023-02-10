@@ -192,9 +192,10 @@
                     transition: background 0.3s ease-in-out,
                         color 0.3s ease-in-out;
 
-                    -webkit-user-select: none;
-                    -ms-user-select: none;
-                    user-select: none;
+                    -webkit-user-select: none !important;
+                    -moz-user-select: none !important;
+                    -ms-user-select: none !important;
+                    user-select: none !important;
 
                     .nav-icon {
                         margin-right: 8px;

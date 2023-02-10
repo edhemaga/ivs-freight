@@ -5,13 +5,13 @@ import {
     AccountService,
     SignInCommand,
     SignInResponse,
-    SignUpCompanyCommand,
     ForgotPasswordCommand,
     SetNewPasswordCommand,
     VerifyOwnerCommand,
     SignupUserCommand,
     VerifyForgotPasswordCommand,
     SelectCompanyResponse,
+    SignUpCompanyCommand,
 } from 'appcoretruckassist';
 import { Router } from '@angular/router';
 import { PersistState } from '@datorama/akita';
@@ -30,6 +30,7 @@ export class AuthStoreService {
 
     private multipleCompanies = new Subject<any>();
     userHasMultipleCompaniesObservable = this.multipleCompanies.asObservable();
+
     constructor(
         private accountService: AccountService,
         private router: Router,

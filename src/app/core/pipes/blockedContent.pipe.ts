@@ -43,6 +43,8 @@ export class BlockedContentPipe implements PipeTransform {
                 'end screen',
                 'pdf',
                 'owner info',
+                'website',
+                'features',
                 'select company',
             ].includes(value?.toLowerCase())
         ) {

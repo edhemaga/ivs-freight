@@ -37,6 +37,7 @@ export * from './assignGpsDevicesToTrailerCommand';
 export * from './assignGpsDevicesToTruckCommand';
 export * from './authorizationFeedbackResponse';
 export * from './autocompleteSearchLayer';
+export * from './avatarResponse';
 export * from './bankAccountResponse';
 export * from './bankAccountStatus';
 export * from './bankCardResponse';
