@@ -5,51 +5,29 @@
             !focusInput &&
             !inputConfig.dropdownLabel &&
             !selectedDropdownLabelColor,
-        invalid:
-            getSuperControl.value && getSuperControl.invalid && !focusInput,
-        'invalid-empty-required':
-            inputConfig.isRequired &&
+        'invalid-filled-focus-out':
+            getSuperControl.value &&
+            getSuperControl.invalid &&
+            (touchedInput || getSuperControl.touched) &&
+            !focusInput &&
+            !inputConfig.hideClear,
+        'invalid-empty-focus-out':
             !getSuperControl.value &&
             getSuperControl.invalid &&
-            !focusInput,
-        'invalid-empty-focus-required':
-            inputConfig.isRequired &&
-            !getSuperControl.value &&
-            getSuperControl.invalid &&
+            (touchedInput || getSuperControl.touched) &&
+            !focusInput &&
+            !inputConfig.hideClear,
+        'valid-focus-in':
+            getSuperControl.value &&
+            getSuperControl.valid &&
             focusInput &&
-            !selectedDropdownLabelColor &&
-            !inputConfig.dropdownLabel,
-        valid:
+            !inputConfig.hideClear,
+        'valid-focus-out':
             getSuperControl.value &&
             getSuperControl.valid &&
             !focusInput &&
             !inputConfig.hideClear,
-        'valid-dropdown-image-selection':
-            !inputConfig.dropdownImageInput?.withText &&
-            inputConfig.dropdownImageInput?.url &&
-            !focusInput,
-        'invalid-empty-dropdown':
-            inputConfig.isRequired &&
-            !getSuperControl.value &&
-            getSuperControl.invalid &&
-            inputConfig.isDropdown &&
-            (touchedInput || getSuperControl.touched) &&
-            !focusInput,
-        'invalid-focus-out-filled':
-            (getSuperControl.value &&
-                getSuperControl.invalid &&
-                !focusInput &&
-                !inputConfig.isDisabled &&
-                !inputConfig.blackInput) ||
-            ((touchedInput || getSuperControl.touched) &&
-                getSuperControl.invalid &&
-                !focusInput),
-        'dropdown-label-active': selectedDropdownLabelColor && !editInputMode,
-        'remove-input-svg': inputConfig.removeInput,
-        datetimepickerdisabled:
-            inputConfig.isDisabled &&
-            (inputConfig.name === 'datepicker' ||
-                inputConfig.name === 'timepicker')
+        'input-remove-trash-can': inputConfig.removeInput
     }"
 >
     <!-- Input Clear -->
@@ -512,77 +490,6 @@
     >
     </svg-icon>
 
-    <!-- Input Label Counter -->
-    <p
-        *ngIf="
-            selectedDropdownLabelColor && getSuperControl.value && !focusInput
-        "
-        [style.top]="'4px'"
-        [style.left]="50 + getSuperControl?.value.toString().length * 8 + 'px'"
-        class="input-label-counter"
-    >
-        {{ selectedDropdownLabelColor.count }}
-    </p>
-
-    <!-- Special Dropdown Selected SVG with or Without Text -->
-    <svg-icon
-        *ngIf="
-            inputConfig?.dropdownImageInput?.svg &&
-            !(!inputConfig.dropdownImageInput?.withText && focusInput) &&
-            !(
-                ['truck', 'trailer'].includes(
-                    inputConfig.dropdownImageInput?.template
-                ) &&
-                focusInput &&
-                inputConfig.dropdownImageInput?.remove
-            ) &&
-            !inputConfig?.dropdownImageInput?.nameInitialsInsteadUrl
-        "
-        [src]="inputConfig.dropdownImageInput?.url"
-        class="dropdown-selected-image {{
-            inputConfig.dropdownImageInput?.class
-        }}"
-        [ngClass]="{
-            'unset-color': focusInput && inputConfig.dropdownImageInput?.class
-        }"
-        [svgStyle]="{
-            fill:
-                inputConfig.dropdownImageInput?.color && !focusInput
-                    ? inputConfig.dropdownImageInput?.color
-                    : '#ffffff'
-        }"
-    >
-    </svg-icon>
-
-    <!-- Special Dropdown Selected Image With Text With Initials name -->
-    <img
-        *ngIf="
-            inputConfig?.dropdownImageInput?.image &&
-            inputConfig?.dropdownImageInput?.url &&
-            !inputConfig?.dropdownImageInput?.nameInitialsInsteadUrl
-        "
-        class="dropdown-selected-image name-initials-instead-url"
-        [src]="
-            imageBase64Service.sanitizer(inputConfig?.dropdownImageInput?.url)
-        "
-        [alt]="'Input Image'"
-    />
-    <div
-        *ngIf="
-            inputConfig?.dropdownImageInput?.nameInitialsInsteadUrl &&
-            !(!inputConfig.dropdownImageInput?.withText && focusInput)
-        "
-        class="no-profile-image dropdown-selected-image name-initials-instead-url"
-    >
-        <app-profile-images
-            [indx]="0"
-            [size]="'small'"
-            [type]="'user'"
-            [name]="inputConfig?.dropdownImageInput?.nameInitialsInsteadUrl"
-        >
-        </app-profile-images>
-    </div>
-
     <!-- DateTime Picker -->
     <div
         #holder1
@@ -670,6 +577,78 @@
             [innerHTML]="inputConfig.name === 'datepicker' ? 'yy' : 'AM'"
         ></span>
     </div>
+
+    <!-- Input Label Counter -->
+    <p
+        *ngIf="
+            selectedDropdownLabelColor && getSuperControl.value && !focusInput
+        "
+        [style.top]="'4px'"
+        [style.left]="50 + getSuperControl?.value.toString().length * 8 + 'px'"
+        class="input-label-counter"
+    >
+        {{ selectedDropdownLabelColor.count }}
+    </p>
+
+    <!-- Special Dropdown Selected SVG with or Without Text -->
+    <svg-icon
+        *ngIf="
+            inputConfig?.dropdownImageInput?.svg &&
+            !(!inputConfig.dropdownImageInput?.withText && focusInput) &&
+            !(
+                ['truck', 'trailer'].includes(
+                    inputConfig.dropdownImageInput?.template
+                ) &&
+                focusInput &&
+                inputConfig.dropdownImageInput?.remove
+            ) &&
+            !inputConfig?.dropdownImageInput?.nameInitialsInsteadUrl
+        "
+        [src]="inputConfig.dropdownImageInput?.url"
+        class="dropdown-selected-image {{
+            inputConfig.dropdownImageInput?.class
+        }}"
+        [ngClass]="{
+            'unset-color': focusInput && inputConfig.dropdownImageInput?.class
+        }"
+        [svgStyle]="{
+            fill:
+                inputConfig.dropdownImageInput?.color && !focusInput
+                    ? inputConfig.dropdownImageInput?.color
+                    : '#ffffff'
+        }"
+    >
+    </svg-icon>
+
+    <!-- Special Dropdown Selected Image With Text With Initials name -->
+    <img
+        *ngIf="
+            inputConfig?.dropdownImageInput?.image &&
+            inputConfig?.dropdownImageInput?.url &&
+            !inputConfig?.dropdownImageInput?.nameInitialsInsteadUrl
+        "
+        class="dropdown-selected-image name-initials-instead-url"
+        [src]="
+            imageBase64Service.sanitizer(inputConfig?.dropdownImageInput?.url)
+        "
+        [alt]="'Input Image'"
+    />
+    <div
+        *ngIf="
+            inputConfig?.dropdownImageInput?.nameInitialsInsteadUrl &&
+            !(!inputConfig.dropdownImageInput?.withText && focusInput)
+        "
+        class="no-profile-image dropdown-selected-image name-initials-instead-url"
+    >
+        <app-profile-images
+            [indx]="0"
+            [size]="'small'"
+            [type]="'user'"
+            [name]="inputConfig?.dropdownImageInput?.nameInitialsInsteadUrl"
+        >
+        </app-profile-images>
+    </div>
+    <!-- ------------------------- -->
 
     <!-- Input Control -->
 
@@ -952,16 +931,16 @@
                 inputConfig.isInvalidSearchInDropdown &&
                 getSuperControl.value &&
                 getSuperControl.invalid,
-            'password-eye':
+            'has-placeholderIcon': inputConfig.placeholderIcon,
+            'password-eye-valid':
                 inputConfig.type === 'password' &&
                 isVisiblePasswordEye &&
-                !getSuperControl.invalid,
+                getSuperControl.valid,
             'password-eye-invalid':
                 inputConfig.type === 'password' &&
                 isVisiblePasswordEye &&
                 getSuperControl.invalid &&
                 getSuperControl.value,
-            'has-input-icon': inputConfig.placeholderIcon,
             'dropdown-placeholder-active':
                 inputConfig.isDropdown &&
                 inputConfig.placeholder &&
@@ -1053,11 +1032,12 @@
             required: inputConfig.isRequired && !inputConfig.isDisabled,
             'inactive-empty': !getSuperControl.value && inputConfig.isDisabled,
             'up-label':
-                getSuperControl.value ||
-                focusInput ||
-                showDateInput ||
-                (!inputConfig.dropdownImageInput?.withText &&
-                    inputConfig.dropdownImageInput?.url),
+                (getSuperControl.value ||
+                    focusInput ||
+                    showDateInput ||
+                    (!inputConfig.dropdownImageInput?.withText &&
+                        inputConfig.dropdownImageInput?.url)) &&
+                !inputConfig.labelInInput,
             'input-placeholderIcon-on': inputConfig.placeholderIcon,
             hidden:
                 inputConfig.placeholderInsteadOfLabel &&
@@ -1073,7 +1053,7 @@
             *ngIf="inputConfig.multipleLabel?.labels?.length"
             [class]="inputConfig.multipleLabel?.customClass"
             [ngClass]="{
-                'focus-multiple-labels':
+                'multiple-labels-position-on-focus':
                     focusInput ||
                     inputConfig?.multipleInputValues?.options?.length,
                 required: inputConfig.isRequired && !inputConfig.isDisabled
@@ -1108,9 +1088,7 @@
                 (touchedInput || getSuperControl.touched) &&
                 !focusInput,
             'invalid-focus-in':
-                getSuperControl.invalid &&
-                (touchedInput || getSuperControl.touched) &&
-                focusInput
+                getSuperControl.value && getSuperControl.invalid && focusInput
         }"
         [src]="
             inputConfig.placeholderIconRightSide?.toLowerCase()

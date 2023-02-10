@@ -40,6 +40,12 @@
         background-color: $default-placeholderIcon-pipe;
     }
 
+    &.focus {
+        &::before {
+            background-color: $default-focus-placehilderIcon-pipe !important;
+        }
+    }
+
     &.valid-focus-out {
         &::before {
             background-color: $valid-placeholderIcon-pipe !important;
@@ -61,12 +67,6 @@
     &.invalid-focus-in {
         &::before {
             background-color: $invalid-focus-placeholderIcon-pipe !important;
-        }
-    }
-
-    &.focus {
-        &::before {
-            background-color: $default-focus-placehilderIcon-pipe !important;
         }
     }
 }

@@ -121,7 +121,7 @@
                 template === 'groups' || template === 'load-broker-contact',
             'dropdown-options-fuel-franchise': template === 'fuel-franchise',
             'merged-dropdown': inputConfig?.mergedDropdown,
-            'no-result-container': options[0].name === 'No Results'
+            'no-result-container': options[0]?.name === 'No Results'
         }"
         class="dropdown-options  {{ inputConfig.dropdownWidthClass }}"
     >

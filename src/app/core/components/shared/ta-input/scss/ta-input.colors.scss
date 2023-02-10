@@ -181,12 +181,14 @@ $default-content-blue: #255bb9;
 $default-trash-can: #aaaaaa;
 $default-trash-can-hover: #919191;
 // Valid
-$valid-focus-trash-can: rgb(111, 158, 224, 0.4);
+$valid-trash-can: #6f9ee0;
+$valid-trash-can-hover: #3074d3;
+$valid-focus-trash-can: #c5d8f3;
 $valid-focus-trash-can-hover: #ffffff;
 // Invalid
 $invalid-trash-can: #e57373;
 $invalid-trash-can-hover: #ef5350;
-$invalid-focus-trash-can: rgb(229, 115, 115, 0.4);
+$invalid-focus-trash-can: #f5c7c7;
 $invalid-focus-trash-can-hover: #ffffff;
 
 //-------------------------------------- Input Counter (Clear) --------------------------------------

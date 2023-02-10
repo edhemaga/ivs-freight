@@ -3,7 +3,6 @@ import {
     Component,
     ElementRef,
     EventEmitter,
-    HostListener,
     Input,
     OnChanges,
     OnDestroy,
@@ -106,7 +105,6 @@ export class TaInputComponent
 
     // Input Commands
     public isVisibleCommands: boolean = false;
-
     // Edit Input
     public editInputMode: boolean = false;
 
@@ -515,7 +513,7 @@ export class TaInputComponent
             this.oneSpaceOnlyCounter = 0;
             this.inputConfig.dropdownImageInput = null;
             this.touchedInput = true;
-
+            this.focusInput = false;
             if (['datepicker', 'timepicker'].includes(this.inputConfig.name)) {
                 this.resetDateTimeInputs();
             }
@@ -545,7 +543,7 @@ export class TaInputComponent
     }
 
     public toggleDropdownOptions() {
-        console.log("OPENED");
+        console.log('OPENED');
         if (this.inputConfig.isDisabled) {
             return;
         }

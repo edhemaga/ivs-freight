@@ -1263,5 +1263,5 @@ export class TaInputDropdownComponent
             }
         }
         return options;
-    }
+    };
 }

@@ -231,7 +231,7 @@
             background-color: $default-placeholderIcon-pipe;
             position: absolute;
             right: 22px;
-            top: 53%;
+            top: 56%;
             transform: translateY(-50%);
         }
 
@@ -256,60 +256,36 @@
                     }
                 }
             }
+
+            &::before {
+                background-color: $valid-focus-placeholderIcon-pipe;
+            }
         }
 
         &.valid-focus-out {
+            .input-clear-x {
+                svg {
+                    path {
+                        fill: $valid-trash-can;
+                    }
+                    rect {
+                        fill: $valid-trash-can;
+                    }
+                }
+                &:hover {
+                    svg {
+                        path {
+                            fill: $valid-trash-can-hover;
+                        }
+                        rect {
+                            fill: $valid-trash-can-hover;
+                        }
+                    }
+                }
+            }
+
             &::before {
                 background-color: $valid-placeholderIcon-pipe;
-            }
-        }
-
-        &.invalid-focus-in {
-            .input-clear-x {
-                svg {
-                    path {
-                        fill: $invalid-focus-trash-can;
-                    }
-                    rect {
-                        fill: $invalid-focus-trash-can;
-                    }
-                }
-                &:hover {
-                    svg {
-                        path {
-                            fill: $invalid-focus-trash-can-hover;
-                        }
-                        rect {
-                            fill: $invalid-focus-trash-can-hover;
-                        }
-                    }
-                }
-            }
-        }
-
-        &.invalid-focus-out {
-            .input-clear-x {
-                svg {
-                    path {
-                        fill: $invalid-trash-can;
-                    }
-                    rect {
-                        fill: $invalid-trash-can;
-                    }
-                }
-                &:hover {
-                    svg {
-                        path {
-                            fill: $invalid-trash-can-hover;
-                        }
-                        rect {
-                            fill: $invalid-trash-can-hover;
-                        }
-                    }
-                }
-            }
-            &::before {
-                background-color: $invalid-placeholderIcon-pipe;
             }
         }
     }
