@@ -230,7 +230,7 @@
                 [src]="file?.url"
                 [alt]="file?.fileName"
             />
-            <div class="spinner">
+            <div class="spinner" *ngIf="documentLoading">
                 <app-ta-spinner [size]="'small'" [color]="'blueDark'"></app-ta-spinner>
             </div>
         </div>
