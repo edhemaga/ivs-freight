@@ -25,6 +25,7 @@
                     fill: $default-commands-path;
                 }
                 rect {
+                    transition: transform 0.3s;
                     transform: scale(1);
                     transform-origin: center;
                     fill: $default-commands-rect;
@@ -79,6 +80,7 @@
                     fill: $default-commands-path;
                 }
                 rect {
+                    transition: transform 0.3s;
                     transform: scale(1);
                     transform-origin: center;
                     fill: $default-commands-rect;

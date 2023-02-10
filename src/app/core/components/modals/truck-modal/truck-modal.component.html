@@ -135,11 +135,13 @@
                                     label: 'Make',
                                     isRequired: true,
                                     isDropdown: true,
+
                                     dropdownImageInput: {
                                         withText: false,
                                         svg: true,
                                         image: false,
-                                        url: selectedTruckMake?.logoName
+                                        url: selectedTruckMake?.logoName,
+                                        class: 'truck-make'
                                     },
                                     dropdownWidthClass: 'w-col-228'
                                 }"

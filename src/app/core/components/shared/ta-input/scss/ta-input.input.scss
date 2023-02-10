@@ -41,8 +41,7 @@
         background-color: $default-on-input-hover;
     }
 
-    &:focus,
-    &.focused {
+    &:focus {
         transition: all 0.3s ease-in-out;
         background-color: $default-focus-input;
         color: $default-focus-content;

@@ -89,7 +89,9 @@
                     getSuperControl.invalid &&
                     focusInput) ||
                 (inputConfig.isInvalidSearchInDropdown &&
-                    inputConfig.isDropdown),
+                    inputConfig.isDropdown &&
+                    focusInput &&
+                    getSuperControl.value),
             'invalid-focus-out':
                 getSuperControl.value &&
                 getSuperControl.invalid &&
@@ -268,7 +270,7 @@
         ></svg-icon>
     </div>
 
-    <!-- Input Drodown Arrow -->
+    <!-- Input Dropdown Arrow -->
     <svg-icon
         class="input-dropdown-arrow {{ inputConfig.customClass }}"
         *ngIf="
@@ -290,7 +292,8 @@
                     focusInput) ||
                 ((inputConfig.dropdownImageInput?.url ||
                     inputConfig.dropdownImageInput?.nameInitialsInsteadUrl) &&
-                    focusInput),
+                    focusInput &&
+                    !inputConfig.isInvalidSearchInDropdown),
             'valid-focus-out':
                 (getSuperControl.value &&
                     getSuperControl.valid &&
@@ -299,7 +302,7 @@
                     inputConfig.dropdownImageInput?.url &&
                     !focusInput),
             'invalid-focus-in':
-                (!getSuperControl.value &&
+                (getSuperControl.value &&
                     getSuperControl.invalid &&
                     focusInput) ||
                 (inputConfig.isInvalidSearchInDropdown &&
@@ -597,7 +600,7 @@
         (blur)="onBlur()"
         (keydown)="changeSelection($event, true)"
         [ngClass]="{
-            focused: focusInput,
+            focus: focusInput,
             'valid-focus-out-filled-datepicker':
                 getSuperControl.value &&
                 getSuperControl.valid &&
@@ -886,6 +889,7 @@
     {{ inputConfig.customClass }}
     "
         [ngClass]="{
+            focus: focusInput,
             'inactive-empty': !getSuperControl.value && inputConfig.isDisabled,
             'inactive-filled': getSuperControl.value && inputConfig.isDisabled,
             'valid-focus-in':
@@ -1122,7 +1126,8 @@
             (touchedInput ||
                 getSuperControl.touched ||
                 getSuperControl.value) &&
-            getSuperControl.invalid
+            getSuperControl.invalid &&
+            !inputConfig.isInvalidSearchInDropdown
         "
         class="input-error {{ inputConfig.customClass }}"
     >
