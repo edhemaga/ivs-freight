@@ -7,13 +7,54 @@ p {
 .counter-text {
     display: flex;
     align-items: center;
-    padding: 4px;
+    
 }
 .has-counter-header {
     .header-name {
         padding-left: 0px !important;
     }
 }
+
+.counter-holder-all{
+    display: flex;
+    padding: 4px 0px 4px 4px;
+    margin-right: 4px;
+
+    &.brokerLoadDrop{
+        cursor: pointer;
+    }
+}
+
+.dropOpenedHeader{
+
+    .counter-holder-all{
+        background-color: #919191;
+        border-radius: 2px;
+        position: relative;
+    }
+    
+
+    .header-name{
+        color:  #ffffff !important;
+    }
+
+    .arrow-down-header {
+        transform: rotate(180deg) !important;
+        svg {
+            
+                path {
+                    fill: #DADADA !important;
+                }
+
+                &:hover {
+                    path {
+                        fill: #DADADA !important;
+                    }
+                }
+            }
+    }
+}
+
 .toolbar-general-cmp {
     display: flex;
     justify-content: space-between;
@@ -307,6 +348,8 @@ svg {
     align-items: center;
     .arrow-down-header {
         margin-right: 10px;
+        transform: rotate(0deg);
+        transition: all 0.2s ease-in-out;
         svg {
             display: flex;
             &:hover {
@@ -326,4 +369,127 @@ svg {
 .second-counter {
     position: relative;
     left: 400px;
+}
+
+.load-dropdown-body{
+    padding: 2px;
+    background-color: #fff;
+    border-radius: 5px;
+    filter: drop-shadow(0 0 4px rgb(0, 0, 0, 0.15));
+
+    .load-template-holder{
+
+        position: relative;
+        display: flex;
+        width: 100%;
+        padding: 2px;
+        margin-bottom: 2px;
+
+        .number-value-holder{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            width: 32px;
+            height: 24px;
+            margin-right: 4px;
+
+            font-size: 14px;
+            font-weight: 700;
+            line-height: 17px;
+            color: #919191;
+
+            background-color: #F3F3F3;
+            border-radius: 2px;
+        }
+
+        .number-text-holder{
+            
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding-right: 29px;
+            //margin-right: 21px;
+
+            font-size: 14px;
+            font-weight: 700;
+            line-height: 17px;
+            color: #919191;
+
+        }
+
+        .selected-load-type{
+            position: absolute;
+            right: 0px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 14px;
+            width: 14px;
+            margin-right: 7px;
+
+            svg-icon{
+                width: 12.74px;
+                height: 9.85px;
+
+                svg{
+                    path{
+                        fill: #97A8DC;
+                    }
+                }
+            }
+        }
+
+        &:hover{
+            background-color: #F3F3F3;
+            cursor: pointer;
+
+            .number-value-holder{
+                background-color: #FFFFFF;
+                color: #6C6C6C;
+            }
+
+            .number-text-holder{
+                color: #6C6C6C
+            }
+        }
+    }
+
+    .disabled-template{
+        
+        .number-value-holder{
+            background-color: #F3F3F3;
+        }
+
+        .number-text-holder{
+            color: #919191;
+        }
+
+        &:hover{
+            background-color: transparent;
+            cursor: auto;
+
+            .number-value-holder{
+                background-color: #F3F3F3;
+                color: #919191;
+            }
+
+            .number-text-holder{
+                color: #919191;
+            }
+        }
+    }
+
+    .active-template{
+
+        .number-value-holder{
+            background-color: #E0EAF8;
+            color: #536BC2;
+        }
+
+        .number-text-holder{
+            color: #536BC2;
+        }
+
+    }
 }

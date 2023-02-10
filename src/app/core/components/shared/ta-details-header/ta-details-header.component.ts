@@ -44,10 +44,14 @@ export class TaCommonHeaderComponent implements OnInit {
     @Input() pmFilter: boolean = false;
     @Input() categoryFilter: boolean = false;
     @Input() moneyFilter: boolean = false;
+    @Input() brokerLoadDrop: boolean = false;
 
 
     public up: boolean = false;
     public down: boolean = false;
+    public dropOpened: boolean = false;
+    public tooltip: any;
+    public activeTemplate: any = 'All Load';
     constructor(private routes: ActivatedRoute) {}
 
     ngOnInit(): void {}
@@ -176,5 +180,26 @@ export class TaCommonHeaderComponent implements OnInit {
 
                 break;
         }
+    }
+
+    showDropdown(tooltip: any){
+        if ( this.brokerLoadDrop ) {
+
+            this.tooltip = tooltip;
+            if (tooltip.isOpen()) {
+                //tooltip.close();
+            } else {
+                tooltip.open();
+            }
+            this.dropOpened = !this.dropOpened;
+        }
+    }
+
+    dropdownClosed(){
+        this.dropOpened = false;
+    }
+
+    setLoadType(mod){
+        console.log('mooood---', mod);
     }
 }

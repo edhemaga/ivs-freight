@@ -76,56 +76,71 @@
         >
             <div
                 class="counter-text"
-                [ngClass]="{ 'has-counter-header': counterData }"
+                [ngClass]="{ 'has-counter-header': counterData, 'dropOpenedHeader' : dropOpened }"
             >
-                <app-ta-counter
-                    *ngIf="
-                        (!danger && counterData) ||
-                        (counterData == 0 && !hideCounter)
-                    "
-                    [countBackgroud]="'#F3F3F3'"
-                    [countColor]="'#919191'"
-                    [countHeight]="'24px'"
-                    [countWidth]="'24px'"
-                    [count]="counterData"
+                <div 
+                    class="counter-holder-all" 
+                    [class.openDropdownClass]="brokerLoadDrop"
+                    #t2="ngbPopover"
+                    (click)="showDropdown(t2)"
+                    (hidden)="dropdownClosed()"
+                    [ngbPopover]="dropdownPopover"
+                    [placement]="'bottom-left'"
+                    [container]="'body'"
+                    triggers="manual"
+                    [autoClose]="'outside'"
                 >
-                </app-ta-counter>
-                <svg-icon
-                    *ngIf="danger && counterData > 0"
-                    class="danger-svg"
-                    src="assets/svg/common/ic_danger.svg"
-                ></svg-icon>
-                <div class="header-text-arrow-down">
-                    <p
-                        [ngClass]="{ 'pl-6-header': loadNames }"
-                        class="header-name disable-selection"
+                    <app-ta-counter
+                        *ngIf="
+                            (!danger && counterData) ||
+                            (counterData == 0 && !hideCounter)
+                        "
+                        [countBackground]=" dropOpened ?  '#AAAAAA' : '#F3F3F3'"
+                        [countColor]="dropOpened ?  '#FFFFFF' : '#919191'"
+                        [countHeight]="'24px'"
+                        [countWidth]="'24px'"
+                        [count]="counterData"
                     >
-                        {{ headerText }}
-                    </p>
+                    </app-ta-counter>
                     <svg-icon
-                        *ngIf="hasArrowDown"
-                        class="arrow-down-header"
-                        src="assets/svg/common/calendar/arrow-right.svg"
+                        *ngIf="danger && counterData > 0"
+                        class="danger-svg"
+                        src="assets/svg/common/ic_danger.svg"
                     ></svg-icon>
-                </div>
-                <div *ngIf="secondNameHeader" class="header-text-arrow-down">
-                    <div class="second-counter">
-                        <app-ta-counter
-                            [countBackgroud]="'#F3F3F3'"
-                            [countColor]="'#919191'"
-                            [countHeight]="'24px'"
-                            [countWidth]="'24px'"
-                            [count]="countViolation"
+                    <div class="header-text-arrow-down">
+                        <p
+                            [ngClass]="{ 'pl-6-header': loadNames }"
+                            class="header-name disable-selection"
+                            #t2="ngbPopover"
+                            [ngbPopover]="eventsDatePopover"
                         >
-                        </app-ta-counter>
+                            {{ headerText }}
+                        </p>
+                        <svg-icon
+                            *ngIf="hasArrowDown"
+                            class="arrow-down-header"
+                            src="assets/svg/common/calendar/arrow-right.svg"
+                        ></svg-icon>
                     </div>
-                    <p
-                        [ngClass]="{ 'pl-6-header': loadNames }"
-                        class="header-name disable-selection second-name-header-l"
-                    >
-                        {{ secondNameHeader }}
-                    </p>
-                </div>
+                    <div *ngIf="secondNameHeader" class="header-text-arrow-down">
+                        <div class="second-counter">
+                            <app-ta-counter
+                                [countBackgroud]="'#F3F3F3'"
+                                [countColor]="'#919191'"
+                                [countHeight]="'24px'"
+                                [countWidth]="'24px'"
+                                [count]="countViolation"
+                            >
+                            </app-ta-counter>
+                        </div>
+                        <p
+                            [ngClass]="{ 'pl-6-header': loadNames }"
+                            class="header-name disable-selection second-name-header-l"
+                        >
+                            {{ secondNameHeader }}
+                        </p>
+                    </div>
+                </div>   
                 <div *ngIf="hasIcon" class="repair-header-icons">
                     <div class="border-line-left"></div>
                     <!-- <span
@@ -239,4 +254,69 @@
             </div>
         </div>
     </div>
+
+    <ng-template #dropdownPopover let-data="data">
+        <div class="load-dropdown-body">
+            <div class="load-template-holder" 
+                [class.active-template]="activeTemplate == 'All Load'" 
+                (click)="setLoadType('All Load')"
+            >
+                <div class="number-value-holder">{{counterData}}</div>
+                <div class="number-text-holder">All Load</div>
+                <div class="selected-load-type" *ngIf="activeTemplate == 'All Load'">
+                    <svg-icon
+                        src="assets/svg/common/ic_confirm.svg"
+                    ></svg-icon>
+                </div>
+            </div>
+            <div class="load-template-holder disabled-template" 
+                [class.active-template]="activeTemplate == 'Template'"
+                (click)="setLoadType('Template')"    
+            >
+                <div class="number-value-holder">0</div>
+                <div class="number-text-holder">Template</div>
+                <div class="selected-load-type" *ngIf="activeTemplate == 'Template'">
+                    <svg-icon
+                        src="assets/svg/common/ic_confirm.svg"
+                    ></svg-icon>
+                </div>
+            </div>
+            <div class="load-template-holder" 
+                [class.active-template]="activeTemplate == 'Pending'"
+                (click)="setLoadType('Pending')"    
+            >
+                <div class="number-value-holder">2</div>
+                <div class="number-text-holder">Pending</div>
+                <div class="selected-load-type" *ngIf="activeTemplate == 'Pending'">
+                    <svg-icon
+                        src="assets/svg/common/ic_confirm.svg"
+                    ></svg-icon>
+                </div>
+            </div>
+            <div class="load-template-holder" 
+                [class.active-template]="activeTemplate == 'Active'"
+                (click)="setLoadType('Active')"    
+            >
+                <div class="number-value-holder">8</div>
+                <div class="number-text-holder">Active</div>
+                <div class="selected-load-type" *ngIf="activeTemplate == 'Active'">
+                    <svg-icon
+                        src="assets/svg/common/ic_confirm.svg"
+                    ></svg-icon>
+                </div>
+            </div>
+            <div class="load-template-holder" 
+                [class.active-template]="activeTemplate == 'Closed'"
+                (click)="setLoadType('Closed')"    
+            >
+                <div class="number-value-holder">93</div>
+                <div class="number-text-holder">Closed</div>
+                <div class="selected-load-type" *ngIf="activeTemplate == 'Closed'">
+                    <svg-icon
+                        src="assets/svg/common/ic_confirm.svg"
+                    ></svg-icon>
+                </div>
+            </div>
+        </div>
+    </ng-template>
 </div>
