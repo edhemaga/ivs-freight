@@ -74,8 +74,12 @@
                 height: 18px;
                 font-size: 14px;
                 color: $bw6-2;
-                user-select: none;
                 transition: color 0.2s ease-in-out;
+
+                -webkit-user-select: none !important;
+                -moz-user-select: none !important;
+                -ms-user-select: none !important;
+                user-select: none !important;
 
                 &:hover {
                     color: $ta-light-grey-3;
@@ -307,7 +311,11 @@
                         line-height: 18px;
                         font-size: 14px;
                         color: $bw6-2;
-                        user-select: none;
+
+                        -webkit-user-select: none !important;
+                        -moz-user-select: none !important;
+                        -ms-user-select: none !important;
+                        user-select: none !important;
 
                         &::-moz-selection {
                             color: $bw6-2;
@@ -423,7 +431,11 @@
             color: $ta-blue-5;
             font-weight: 400;
             font-size: 14px;
-            user-select: none;
+
+            -webkit-user-select: none !important;
+            -moz-user-select: none !important;
+            -ms-user-select: none !important;
+            user-select: none !important;
         }
     }
 }

@@ -88,7 +88,11 @@
         border: none;
         outline: none;
         transition: background 0.3s ease-in-out;
-        user-select: none;
+
+        -webkit-user-select: none !important;
+        -moz-user-select: none !important;
+        -ms-user-select: none !important;
+        user-select: none !important;
 
         &:hover {
             background: $ta-blue;

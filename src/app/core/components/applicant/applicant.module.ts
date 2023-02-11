@@ -5,7 +5,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { ApplicantRoutingModule } from './applicant-routing.module';
 
-import { AngularSvgIconModule } from 'angular-svg-icon';
 import { AngularSignaturePadModule } from '@almothafar/angular-signature-pad';
 
 import { ApplicantComponent } from './applicant/applicant.component';
@@ -74,7 +73,6 @@ import { SharedModule } from '../shared/shared.module';
         ApplicantRoutingModule,
         FormsModule,
         ReactiveFormsModule,
-        AngularSvgIconModule,
         SharedModule,
         AngularSignaturePadModule,
     ],
