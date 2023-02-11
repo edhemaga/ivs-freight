@@ -426,7 +426,7 @@ p {
     }
 
     .basic-mid-holder{
-        padding: 0px 8px 10px 8px;
+        padding-bottom: 10px;
     }
     
     //settings new select
@@ -434,7 +434,7 @@ p {
     .company-select-holder{
         display: grid;
         grid-template-columns: 510px 53px;
-        padding: 8px 7px 0px 7px;
+        padding: 8px 4px 0px 4px;
 
         .inactive-icon-input {
             display: flex;
@@ -497,7 +497,7 @@ p {
             justify-content: space-between;
             gap: 8px;
             border-radius: 2px;
-            padding: 4px 5px;
+            padding: 4px 0px;
             cursor: pointer;
         
             .current-active-name {

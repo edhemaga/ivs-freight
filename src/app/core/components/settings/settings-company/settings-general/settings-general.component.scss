@@ -25,7 +25,7 @@
     grid-template-columns: repeat(3, 130px);
     column-gap: 64px;
     row-gap: 12px;
-    padding-left: 4px;
+    //padding-left: 4px;
     .additional-template-item {
         display: flex;
         flex-direction: column;
@@ -146,6 +146,7 @@
         border-radius: 3px;
         .basic-details {
             width: 100%;
+            //padding: 0px 8px;
             //height: 262px;
             //margin-bottom: 15px;
             border-radius: 3px;
@@ -156,7 +157,7 @@
                 flex-direction: column;
                 user-select: none;
                 background-color: $settings-background;
-                padding: 0px 12px;
+                //padding: 0px 12px;
                 border-radius: 3px;
                 .basic-header-logo-top {
                     display: flex;
@@ -230,7 +231,7 @@
                 display: grid;
                 grid-template-columns: 162px 292px;
                 row-gap: 12px;
-                padding: 0px 12px 10px 12px;
+                padding-bottom: 10px;
                 background-color: $settings-background;
                 .basic-data {
                     display: flex;
@@ -262,8 +263,7 @@
                 grid-template-columns: repeat(3, 180px);
                 -moz-column-gap: 12px;
                 column-gap: 12px;
-                padding-left: 12px;
-                padding-bottom: 12px;
+                padding:0px 12px 12px 12px;
                 background-color: $settings-background;
 
                 .basic-bottom-cards-redesign{

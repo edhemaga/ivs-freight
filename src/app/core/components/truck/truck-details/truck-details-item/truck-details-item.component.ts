@@ -91,20 +91,29 @@ export class TruckDetailsItemComponent implements OnInit, OnDestroy, OnChanges {
         private dropDownService: DropDownService
     ) {}
 
+    ngOnChanges(changes: SimpleChanges): void {
+        if (changes.truck?.currentValue != changes.truck?.previousValue) {
+            //this.truck = changes.truck?.currentValue;
+            //his.initTableOptions();
+        }
+    }    
+
+
     ngOnInit(): void {
         // Confirmation Subscribe
         this.confirmationService.confirmationData$
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: (res: Confirmation) => {
+                next: (res: any) => {
+                    console.log('--here----', res);
                     switch (res.type) {
                         case 'delete': {
                             if (res.template === 'registration') {
-                                this.deleteRegistrationByIdFunction(res.id);
+                                this.deleteRegistrationByIdFunction(res?.id);
                             } else if (res.template === 'inspection') {
-                                this.deleteInspectionByIdFunction(res.id);
+                                this.deleteInspectionByIdFunction(res?.id);
                             } else if (res.template === 'title') {
-                                this.deleteTitleByIdFunction(res.id);
+                                this.deleteTitleByIdFunction(res?.id);
                             }
                             break;
                         }
@@ -115,6 +124,7 @@ export class TruckDetailsItemComponent implements OnInit, OnDestroy, OnChanges {
                 },
             });
         this.initTableOptions();
+        console.log('----truck', this.truck)
     }
 
     public onShowDetails(componentData: any) {
@@ -390,6 +400,4 @@ export class TruckDetailsItemComponent implements OnInit, OnDestroy, OnChanges {
         this.destroy$.complete();
         this.tableService.sendActionAnimation({});
     }
-
-    ngOnChanges(changes: SimpleChanges): void {}
 }
