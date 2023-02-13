@@ -334,6 +334,17 @@
             left: -8px;
             background-color: $nav-hover-color;
         }
+        .animation-backward {
+            animation: animateBackground 0.25s forwards;
+        }
+        @keyframes animateBackground {
+            from {
+                background-color: $nav-dark;
+            }
+            to {
+                background-color: $nav-hover-ligh;
+            }
+        }
         @keyframes magiclinetransition {
             from {
                 background-color: transparent;
