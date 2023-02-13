@@ -65,12 +65,12 @@ export class TaNoticeOfAsignmentComponent
 
     showDropdown: boolean;
     customSelectColor: any[] = [
-        '#3C3C3C',
-        '#3074D3',
-        '#26A690',
-        '#EF5350',
-        '#FFA726',
-        '#AB47BC',
+        'rgb(60, 60, 60)',
+        'rgb(48, 116, 211)',
+        'rgb(38, 166, 144)',
+        'rgb(239, 83, 80)',
+        'rgb(255, 167, 38)',
+        'rgb(171, 71, 188)',
     ];
     activeOptions: any = {
         bold: false,
@@ -93,9 +93,9 @@ export class TaNoticeOfAsignmentComponent
     private destroy$ = new Subject<void>();
     public noticeForm: UntypedFormGroup;
 
-    selectedPaternColor = '#3C3C3C';
+    selectedPaternColor = 'rgb(60, 60, 60)';
     @ViewChild('noticeRef', { static: true }) noticeRef: ElementRef;
-    selectedColorName: string = '#3C3C3C';
+    selectedColorName: string = 'rgb(60, 60, 60)';
     defaultColorSet: any;
     slowTimeout: any;
 
@@ -198,6 +198,10 @@ export class TaNoticeOfAsignmentComponent
                 });
             });
         }
+
+        setTimeout(()=>{
+            this.getSuperControl.patchValue(this.noticeRef.nativeElement.innerHTML);
+        }, 500)
     }
 
     focusElement(): void {
