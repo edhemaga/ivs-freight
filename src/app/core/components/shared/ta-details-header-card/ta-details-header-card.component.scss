@@ -26,9 +26,10 @@ $border-radius: 3px;
         margin: 0px;
     }
     .details-header-wrapper-switcher {
-        padding-left: 6px;
-        padding-top: 6px;
-        padding-right: 13px;
+        padding: 6px 8px 0px 8px;
+        //padding-left: 8px;
+        //padding-top: 6px;
+        //padding-right: 8px;
         display: grid;
         grid-template-columns: 366px 53px;
         .arrows {
@@ -83,7 +84,8 @@ $border-radius: 3px;
         display: flex;
         justify-content: flex-start;
         align-items: flex-start;
-        margin-left: 16px;
+        padding: 0px 12px;
+        //margin-left: 16px;
         // .date-terminated {
         //     margin-left: 130px;
         // }
