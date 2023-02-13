@@ -5,14 +5,15 @@ import { CommonModule } from '@angular/common';
 import { ShipperDetailsSingleComponent } from './shipper-details-single/shipper-details-single.component';
 import { ShipperDetailsRoutes } from './shipper-details.routing';
 import { SharedModule } from '../../shared/shared.module';
+import { TaChartComponent } from '../../standalone-components/ta-chart/ta-chart.component';
 
 @NgModule({
     declarations: [
         ShipperDetailsComponent,
         ShipperDetailsSingleComponent,
-        ShipperCardViewComponent,
+        ShipperCardViewComponent
     ],
     exports: [ShipperCardViewComponent, SharedModule],
-    imports: [CommonModule, ShipperDetailsRoutes, SharedModule],
+    imports: [CommonModule, ShipperDetailsRoutes, SharedModule, TaChartComponent],
 })
 export class ShipperDetailsModule {}

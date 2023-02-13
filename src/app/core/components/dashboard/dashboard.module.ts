@@ -15,7 +15,9 @@ import { CarrierSearchComponent } from '../standalone-components/carrier-search/
 import { SlickCarouselModule } from 'ngx-slick-carousel';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AngularSvgIconModule } from 'angular-svg-icon';
-
+import { ChartsModule } from 'ng2-charts';
+import { TaChartComponent } from '../standalone-components/ta-chart/ta-chart.component';
+import { AgmCoreModule } from '@agm/core';
 @NgModule({
     declarations: [
         DashboardComponent,
@@ -34,7 +36,10 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
         CarrierSearchComponent,
         SlickCarouselModule,
         AngularSvgIconModule,
-        NgbModule
+        NgbModule,
+        ChartsModule,
+        TaChartComponent,
+        AgmCoreModule
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })

@@ -22,7 +22,7 @@ import { BrokerDetailsModule } from './broker-details/broker-details.module';
         AngularSvgIconModule,
         SharedModule,
         AgmCoreModule,
-        AgmSnazzyInfoWindowModule,
+        AgmSnazzyInfoWindowModule
     ],
 })
 export class CustomerModule {}

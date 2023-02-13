@@ -10,15 +10,22 @@ import {
     EventEmitter,
 } from '@angular/core';
 import { Chart, ChartDataSets, ChartOptions } from 'chart.js';
+import { ChartsModule } from 'ng2-charts';
 import { BaseChartDirective, Color, Label } from 'ng2-charts';
 import * as annotation from 'chartjs-plugin-annotation';
 import moment from 'moment';
 import { hexToRgbA } from '../../../../../assets/utils/methods-global';
+import { CommonModule } from '@angular/common';
+import { AngularSvgIconModule } from 'angular-svg-icon';
+import { FormsModule } from '@angular/forms';
+import { NFormatterPipe } from '../../../pipes/n-formatter.pipe';
 
 @Component({
     selector: 'app-ta-chart',
     templateUrl: './ta-chart.component.html',
     styleUrls: ['./ta-chart.component.scss'],
+    standalone: true,
+    imports: [CommonModule, AngularSvgIconModule, FormsModule, ChartsModule, NFormatterPipe]
 })
 export class TaChartComponent implements OnInit {
     @Input() chartConfig: any;
