@@ -7,6 +7,7 @@ import { ShopRepairDetailsComponent } from './shop-repair-details.component';
 import { ShopRepairDetailsItemComponent } from './shop-repair-details-item/shop-repair-details-item.component';
 import { ShopRepairCardViewComponent } from '../shop-repair-card-view/shop-repair-card-view.component';
 import { SharedModule } from '../../shared/shared.module';
+import { TaChartComponent } from '../../standalone-components/ta-chart/ta-chart.component';
 
 @NgModule({
     declarations: [
@@ -21,6 +22,7 @@ import { SharedModule } from '../../shared/shared.module';
         TruckassistProgressExpirationModule,
         SharedModule,
         TruckassistTableModule,
+        TaChartComponent
     ],
 })
 export class ShopRepairDetailsModule {}

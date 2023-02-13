@@ -3,6 +3,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 @Pipe({
     name: 'nFormatter',
     pure: true,
+    standalone: true
 })
 export class NFormatterPipe implements PipeTransform {
     transform(value: unknown, ...args: unknown[]): string {

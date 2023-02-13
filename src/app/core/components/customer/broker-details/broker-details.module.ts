@@ -7,6 +7,7 @@ import { CommonModule } from '@angular/common';
 
 import { SharedModule } from '../../shared/shared.module';
 import { BrokerDetailsRoutes } from './broker-details.routing';
+import { TaChartComponent } from '../../standalone-components/ta-chart/ta-chart.component';
 
 @NgModule({
     declarations: [
@@ -15,6 +16,6 @@ import { BrokerDetailsRoutes } from './broker-details.routing';
         BrokerDetailsSingleComponent,
     ],
     exports: [BrokerCardViewComponent, SharedModule],
-    imports: [CommonModule, BrokerDetailsRoutes, SharedModule],
+    imports: [CommonModule, BrokerDetailsRoutes, SharedModule, TaChartComponent],
 })
 export class BrokerDetailsModule {}

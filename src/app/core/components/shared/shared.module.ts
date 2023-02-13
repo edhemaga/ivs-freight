@@ -73,7 +73,6 @@ import { TtRegistrationModalComponent } from '../modals/common-truck-trailer-mod
 import { TtFhwaInspectionModalComponent } from '../modals/common-truck-trailer-modals/tt-fhwa-inspection-modal/tt-fhwa-inspection-modal.component';
 import { PipesModule } from '../../pipes/pipes.module';
 import { RepairShopModalComponent } from '../modals/repair-modals/repair-shop-modal/repair-shop-modal.component';
-import { TaChartComponent } from './ta-chart/ta-chart.component';
 import { ChartsModule } from 'ng2-charts';
 import { RepairPmModalComponent } from '../modals/repair-modals/repair-pm-modal/repair-pm-modal.component';
 import { ProfileImagesModule } from './profile-images/profile-images.module';
@@ -165,7 +164,6 @@ export function playerFactory() {
         TaCurrencyProgressBarComponent,
         TaUploadFilesCarouselComponent,
         TaUploadDropzoneComponent,
-        TaChartComponent,
         TaInputArrowsComponent,
         TaTimePeriodComponent,
         TaUploadFileComponent,
@@ -336,7 +334,6 @@ export function playerFactory() {
         TaLogoChangeComponent,
         TaLikeDislikeComponent,
         TaCurrencyProgressBarComponent,
-        TaChartComponent,
         TaTabSwitchComponent,
         MapListComponent,
         MapListCardComponent,

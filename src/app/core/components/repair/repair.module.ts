@@ -18,7 +18,7 @@ import { SharedModule } from '../shared/shared.module';
         AngularSvgIconModule,
         SharedModule,
         AgmCoreModule,
-        AgmSnazzyInfoWindowModule,
+        AgmSnazzyInfoWindowModule
     ],
 })
 export class RepairModule {}

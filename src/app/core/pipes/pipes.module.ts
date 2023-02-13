@@ -15,7 +15,6 @@ import { FormatRestrictionEndorsmentPipe } from './formatRestrictionEndorsment.p
 import { HidePasswordPipe } from './hide-password.pipe';
 import { HighlightSearchPipe } from './highlight-search.pipe';
 import { HosTimePipe } from './hostime';
-import { NFormatterPipe } from './n-formatter.pipe';
 import { SortPipe } from './sort.pipe';
 import { StatusPipePipe } from './status-pipe.pipe';
 import { SumArraysPipe } from './sum-arrays.pipe';
@@ -55,7 +54,6 @@ import { LoadDatetimeRangePipe } from '../components/modals/load-modal/pipes/loa
         HosTimePipe,
         CdkConnectPipe,
         CalendarMonthsPipe,
-        NFormatterPipe,
         DropdownCountPipe,
         ReviewsSortPipe,
         SumArraysPipe,
@@ -97,7 +95,6 @@ import { LoadDatetimeRangePipe } from '../components/modals/load-modal/pipes/loa
         HosTimePipe,
         CdkConnectPipe,
         CalendarMonthsPipe,
-        NFormatterPipe,
         DropdownCountPipe,
         ReviewsSortPipe,
         SumArraysPipe,
@@ -128,7 +125,6 @@ import { LoadDatetimeRangePipe } from '../components/modals/load-modal/pipes/loa
         DatePipe,
         CurrencyPipe,
         SortPipe,
-        NFormatterPipe,
         StatusPipePipe,
         CdkConnectPipe,
         CalendarMonthsPipe,
