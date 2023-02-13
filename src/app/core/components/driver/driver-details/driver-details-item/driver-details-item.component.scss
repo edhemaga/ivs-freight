@@ -26,7 +26,7 @@
     grid-template-columns: repeat(2, 193px);
     grid-template-rows: repeat(1, auto);
     grid-column-gap: 22px;
-    padding: 0px 2px 2px 2px;
+    padding: 0px 0px 2px 0px;
     //margin-top: -7px;
     .purchase-template-item {
         .purchase-icon-copy {
@@ -285,7 +285,7 @@
 .employment-history-container {
     display: flex;
     flex-direction: column;
-    padding: 0px 2px;
+    //padding: 0px 2px;
     position: relative;
     .transform-arrow {
         bottom: 0 !important;
@@ -486,7 +486,7 @@
     background-color: $color-white-light;
 }
 .has-counter {
-    padding-left: 2px !important;
+    //padding-left: 2px !important;
 }
 .card-restriction-class {
     // margin-top: -9px;
