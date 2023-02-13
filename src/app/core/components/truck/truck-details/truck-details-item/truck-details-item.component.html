@@ -152,6 +152,7 @@
                         trackBy: identity
                     "
                     [options]="dataFHWA"
+                    [isCardOpen]="i == 0  && fhwa.expDate > currentDate ? true : false"
                     [cardDocumentCounter]="
                         fhwa?.files?.length ? fhwa.files.length : 0
                     "
@@ -160,10 +161,12 @@
                             ? 'assets/svg/truckassist-table/note/Note.svg'
                             : 'assets/svg/truckassist-table/note/Note - Empty.svg'
                     "
-                    [cardNameCommon]="formatDate(fhwa.issueDate)"
+                    [cardNameCommon]="formatDate(fhwa.expDate)"
                     (resizePage)="toggleResizePage(i, 'fhwa')"
                     [expDateClose]="formatDate(fhwa.expDate)"
                     [optionsId]="fhwa.id"
+                    [notExpired]="currentDate > fhwa.expDate ? false : true"
+                    [openCloseStatus]="i == 0 ? false : true" 
                     (dropActions)="
                         optionsEvent($event, trucks.data, 'inspection')
                     "

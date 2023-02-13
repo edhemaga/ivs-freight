@@ -31,6 +31,7 @@ import {
 import { Titles } from 'src/app/core/utils/application.decorators';
 import { OnChanges } from '@angular/core';
 import { convertDateFromBackend } from '../../../../utils/methods.calculations';
+import moment from 'moment';
 
 @Titles()
 @Component({
@@ -68,7 +69,7 @@ export class TruckDetailsItemComponent implements OnInit, OnDestroy, OnChanges {
     @ViewChildren('fhwaUpload') fhwaUpload: any;
     @ViewChildren('registrationUpload') registrationUpload: any;
     @ViewChildren('titleUpload') titleUpload: any;
-    @Input() truck: any | any = null;
+    @Input() truck: any = null;
     public note: UntypedFormControl = new UntypedFormControl();
     public fhwaNote: UntypedFormControl = new UntypedFormControl();
     public purchaseNote: UntypedFormControl = new UntypedFormControl();
@@ -83,6 +84,7 @@ export class TruckDetailsItemComponent implements OnInit, OnDestroy, OnChanges {
     public truckData: any;
     public dataEdit: any;
     public dataFHWA: any;
+    public currentDate: any;
     constructor(
         private tableService: TruckassistTableService,
         private confirmationService: ConfirmationService,
@@ -124,7 +126,7 @@ export class TruckDetailsItemComponent implements OnInit, OnDestroy, OnChanges {
                 },
             });
         this.initTableOptions();
-        console.log('----truck', this.truck)
+        this.currentDate = moment(new Date()).format();
     }
 
     public onShowDetails(componentData: any) {

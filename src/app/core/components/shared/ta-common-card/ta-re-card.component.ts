@@ -114,6 +114,8 @@ export class TaReCardComponent implements OnInit {
     @Input() public testDate: any;
     @Input() public mainData: any;
     @Input() public insuranceCard: boolean = false;
+    @Input() public notExpired: boolean = true;
+    @Input() public openCloseStatus: boolean = true;
     public data: any;
     public resPage: boolean = false;
     public copiedCommon: boolean = false;
@@ -125,6 +127,8 @@ export class TaReCardComponent implements OnInit {
 
     ngOnInit(): void {
         this.CloseCard();
+        console.log('---notExpired---', this.notExpired)
+        console.log('---optionsId---', this.optionsId)
     }
 
     public CloseCard() {
@@ -165,11 +169,13 @@ export class TaReCardComponent implements OnInit {
         if ( this.mainData?.id ){
             this.DetailsDataService.setCdlId(this.mainData.id);
         }
+        
         if (
             moment(this.expDateClose).isBefore(currentDate) ||
             this.isDeactivated ||
             this.statusActive == 0 ||
-            this.hasToggler
+            this.hasToggler ||
+            ( this.notExpired && this.openCloseStatus )
         ) {
             
             if ( this.isCardOpen ) {
