@@ -9,13 +9,10 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { TrailerFilterResponse } from './trailerFilterResponse';
 
 
-export interface TrailerFilterResponsePagination { 
-    pageIndex?: number;
-    pageSize?: number;
-    count?: number;
-    data?: Array<TrailerFilterResponse> | null;
+export interface ResendSignUpCompanyOrUserCommand { 
+    email?: string | null;
+    isResendConfirmation?: boolean;
 }
 

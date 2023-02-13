@@ -9,10 +9,9 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { TrailerFilterResponsePagination } from './trailerFilterResponsePagination';
 
 
-export interface TrailerFilterListResponse { 
-    pagination?: TrailerFilterResponsePagination;
+export interface AvatarResponse { 
+    avatar?: string | null;
 }
 

@@ -39,11 +39,11 @@
             transition: all 0.3s ease-in-out;
             cursor: pointer;
             width: 20px;
-            top: 3px;
             height: 20px;
             transform: rotate(45deg);
             position: relative;
-            top: -3px;
+            top: -2px;
+            left: 8px;
             svg {
                 position: relative;
                 top: 50%;
@@ -53,6 +53,7 @@
                     fill: $nav-white;
                 }
             }
+
             &:hover {
                 svg {
                     path {
@@ -61,18 +62,22 @@
                 }
             }
         }
-
+        .title {
+            position: absolute;
+            left: 46px;
+            top: 9px;
+        }
         .modal-nav-close-text {
             font-size: $nav-font-size;
             font-weight: $nav-font-bold;
             color: $nav-white;
-            width: 36px;
+            width: 100%;
             height: 36px;
             display: flex;
             border-radius: 50%;
             align-items: center;
             position: relative;
-            justify-content: center;
+            justify-content: space-between;
             bottom: 13px;
             cursor: pointer;
             right: 5px;
@@ -242,8 +247,8 @@
     }
 }
 @media only screen and (max-height: 800px) {
-    .modal-nav-panel {
-        height: 500px;
+    .modal-media-query-height {
+        height: 500px !important;
         overflow-y: scroll;
     }
 }

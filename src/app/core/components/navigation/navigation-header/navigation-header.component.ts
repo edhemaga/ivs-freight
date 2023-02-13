@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { navigation_route_animation } from '../navigation.animation';
 import { NavigationService } from '../services/navigation.service';
@@ -8,9 +8,8 @@ import { NavigationService } from '../services/navigation.service';
     styleUrls: ['./navigation-header.component.scss'],
     animations: [navigation_route_animation('showHideDetails')],
 })
-export class NavigationHeaderComponent implements OnChanges {
+export class NavigationHeaderComponent {
     @Input() isNavigationHovered: boolean = false;
-    @Input() isModalPanelOpen: boolean;
     @Input() ChangeCloseTextTitle: boolean;
     public Title: string = 'Add Anything';
     public showToolTip: boolean = false;
@@ -19,11 +18,6 @@ export class NavigationHeaderComponent implements OnChanges {
         private navigationService: NavigationService,
         private router: Router
     ) {}
-    ngOnChanges(changes: SimpleChanges): void {
-        this.isModalPanelOpen == true && this.ChangeCloseTextTitle
-            ? (this.Title = 'Close')
-            : (this.Title = 'Add Anything');
-    }
     redirectToDashboard() {
         this.router.navigate(['/dashboard']);
     }
