@@ -167,13 +167,13 @@
                 isNavigationHovered) ||
             (selectedRoute == 'Company' &&
                 !mouseOverMiddleNav &&
+                !isSettingsPanelOpen &&
                 !isActiveSubroute &&
                 !isUserPanelOpen &&
-                !isSettingsPanelOpen &&
                 !isUserCompanyDetailsOpen &&
                 !showHideLineIfSettingsActive &&
                 isNavigationHovered) ||
-            mouseOverFooter
+            (mouseOverFooter && !isNavigationHovered)
         "
         [@showHideDetailsMagicLine]="
             showMagicLine &&

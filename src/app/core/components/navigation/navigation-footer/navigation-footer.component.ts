@@ -161,6 +161,7 @@ export class NavigationFooterComponent implements OnInit, OnDestroy, OnChanges {
             });
     }
     ngOnChanges(changes: SimpleChanges): void {
+        console.log(this.isSettingsPanelOpen);
         if (changes.hasOwnProperty('isNavigationHovered')) {
             const prev = changes.isNavigationHovered;
 
