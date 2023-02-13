@@ -213,8 +213,18 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
                 if ( data.filterType == 'locationFilter' ) {
                     if ( data.action == 'Set' ) {
                         this.locationFilter = data.queryParams;
+                        this.mapCircle = {
+                            lat: data.queryParams.latValue,
+                            lng: data.queryParams.longValue,
+                            radius: this.mapsService.getMeters(data.queryParams.rangeValue)
+                        };
+                        this.locationFilterOn = true;
+
+                        this.mapLatitude = this.mapCircle.lat;
+                        this.mapLongitude = this.mapCircle.lng;
                     } else {
                         this.locationFilter = null;
+                        this.locationFilterOn = false;
                     }
                     
                     this.getClusters(true, true);
@@ -238,19 +248,14 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
         this.mapsService.selectedMapListCardChange
             .pipe(takeUntil(this.destroy$))
             .subscribe((id) => {
-                console.log('selectedMarkerChange id', id);
-
                 if ( id > 0 ) {
                     this.clusterMarkers.map((cluster) => {
                         const clusterIndex = cluster.pagination.data.findIndex((item) => item.id == id);
 
-                        console.log('selectedMarkerChange 1');
                         if ( clusterIndex > -1 && cluster.showMarker ) {
-                            console.log('selectedMarkerChange 2');
                             this.clickedCluster(cluster, true);
                             this.showClusterItemInfo([cluster, {id: id}]);
                         } else {
-                            console.log('selectedMarkerChange 3');
                             this.clickedMarker(id, true);
                         }
                     });
@@ -258,19 +263,12 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
                     this.mapsService.selectedMarker(id);
                 } else {
                     this.viewData.map((data: any, index) => {
-                        if ( data.isSelected ) {
-                            data.isSelected = false;
-                        }
+                        data.isSelected = false;
                     });
 
                     this.clusterMarkers.map((cluster) => {
-                        if ( cluster.isSelected ) {
-                            cluster.isSelected = false;
-                        }
-                    
-                        if ( cluster.detailedInfo ) {
-                            cluster.detailedInfo = false;
-                        }
+                        cluster.isSelected = false;
+                        cluster.detailedInfo = false;
                     });
                     
                     this.mapsService.selectedMarker(0);
@@ -297,8 +295,10 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
                 clearTimeout(this.clustersTimeout);
 
                 this.clustersTimeout = setTimeout(() => {
+                    var moveMap = this.firstClusterCall ? true : false;
+
                     this.mapListPagination.pageIndex = 1;
-                    this.getClusters(this.firstClusterCall);
+                    this.getClusters(this.firstClusterCall, moveMap);
 
                     if (this.firstClusterCall) {
                         this.firstClusterCall = false;
@@ -311,8 +311,6 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
     clickedMarker(id, callFromMapList?) {
         var selectId = 0;
 
-        console.log('clickedMarker id', id);
-
         this.viewData.map((data: any, index) => {
             if (data.isExpanded) {
                 data.isExpanded = false;
@@ -321,13 +319,10 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
             if (data.isSelected && data.id != id) {
                 data.isSelected = false;
             } else if (data.id == id) {
-                console.log('clickedMarker data 1', data);
-                var selectShop = !data.isSelected;
-                console.log('clickedMarker selectShop', selectShop);
+                var selectShop = callFromMapList ? true : !data.isSelected;
 
                 if (selectShop) {
                     this.markerSelected = true;
-                    console.log('clickedMarker selectShop 1');
 
                     if (!data.createdAt) {
                         if (this.mapType == 'repairShop') {
@@ -337,18 +332,11 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
                         } else if (this.mapType == 'fuelStop') {
                             this.getFuelStop(data.id, index);
                         }
-                    console.log('clickedMarker selectShop 2');
-
                     } else {
                         data.isSelected = true;
-                        console.log('clickedMarker data 2', data);
-                        console.log('clickedMarker selectShop 3');
                     }
 
-                    //this.mapsService.selectedMarker(data.id);
                     selectId = data.id;
-                    console.log('clickedMarker selectShop 4');
-                    console.log('clickedMarker data 3', data);
 
                     // if (
                     //     this.mapLatitude == data.latitude &&
@@ -363,9 +351,7 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
                 } else {
                     this.markerSelected = false;
                     data.isSelected = false;
-                    //this.mapsService.selectedMarker(0);
                     selectId = 0;
-                    console.log('clickedMarker data 4', data);
                 }
 
                 document
@@ -389,8 +375,6 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
         });
 
         if ( !callFromMapList) this.mapsService.selectedMarker(selectId);
-
-        console.log('clickedMarker viewData', this.viewData);
 
         this.ref.detectChanges();
     }
@@ -445,7 +429,6 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
     clusterDropAnimation() {
          setTimeout(() => {
             this.clusterMarkers.map((data: any) => {
-                console.log(data);
                 if (!this.clusterAnimation[data.id]) {
                     this.clusterAnimation[data.id] = true;
                 }
@@ -1096,46 +1079,45 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
                 });
         }
 
-        // this.companyOfficeService
-        //     .getOfficeClusters(
-        //         clustersObj.northEastLatitude,
-        //         clustersObj.northEastLongitude,
-        //         clustersObj.southWestLatitude,
-        //         clustersObj.southWestLongitude
-        //     )
-        //     .pipe(takeUntil(this.destroy$))
-        //     .subscribe((companyOffices: any) => {
-        //         console.log('companyOffices', companyOffices);
-        //         var markersToShow = [];
+        this.companyOfficeService
+            .getOfficeClusters(
+                clustersObj.northEastLatitude,
+                clustersObj.northEastLongitude,
+                clustersObj.southWestLatitude,
+                clustersObj.southWestLongitude
+            )
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((companyOffices: any) => {
+                var markersToShow = [];
 
-        //         companyOffices.map((clusterItem) => {
-        //             let markerIndex = this.companyOffices.findIndex(
-        //                 (item) => item.id === clusterItem.id
-        //             );
+                companyOffices.map((clusterItem) => {
+                    let markerIndex = this.companyOffices.findIndex(
+                        (item) => item.id === clusterItem.id
+                    );
 
-        //             if (markerIndex == -1) {
-        //                 this.companyOffices.push(clusterItem);
-        //             }
+                    if (markerIndex == -1) {
+                        this.companyOffices.push(clusterItem);
+                    }
 
-        //             markersToShow.push(clusterItem.id);
-        //         });
+                    markersToShow.push(clusterItem.id);
+                });
 
-        //         this.companyOffices.map((item) => {
-        //             if (
-        //                 markersToShow.includes(item.id) &&
-        //                 !item.showMarker
-        //             ) {
-        //                 item.showMarker = true;
-        //             } else if (
-        //                 !markersToShow.includes(item.id) &&
-        //                 item.showMarker
-        //             ) {
-        //                 item.showMarker = false;
-        //             }
-        //         });
+                this.companyOffices.map((item) => {
+                    if (
+                        markersToShow.includes(item.id) &&
+                        !item.showMarker
+                    ) {
+                        item.showMarker = true;
+                    } else if (
+                        !markersToShow.includes(item.id) &&
+                        item.showMarker
+                    ) {
+                        item.showMarker = false;
+                    }
+                });
 
-        //         this.ref.detectChanges();
-        //     });
+                this.ref.detectChanges();
+            });
     }
 
     clickedCluster(cluster, callFromMapList?) {
@@ -1538,6 +1520,15 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
                     }
                 },
             });
+    }
+
+    zoomToObject(obj){
+        var bounds = new google.maps.LatLngBounds();
+        var points = obj.getPath().getArray();
+        for (var n = 0; n < points.length ; n++){
+            bounds.extend(points[n]);
+        }
+        this.agmMap.fitBounds(bounds);
     }
 
     public identity(index: number, item: any): number {

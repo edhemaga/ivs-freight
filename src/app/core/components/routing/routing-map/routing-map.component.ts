@@ -659,7 +659,8 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
                             this.tableData[this.selectedMapIndex].routes[
                                 routeIndex
                             ],
-                            routeIndex
+                            routeIndex,
+                            true
                         );
                     } else {
                         this.showHideRouteLine(
@@ -776,10 +777,10 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
 
             var overlap = this.checkOverlap(
                 event.item.data,
-                event.item.data.x,
-                event.item.data.y,
-                event.item.data.x + rectElement.width,
-                event.item.data.y + rectElement.height
+                event.item.data.x - 20,
+                event.item.data.y - 10,
+                event.item.data.x + rectElement.width + 20,
+                event.item.data.y + rectElement.height + 10
             );
 
             if (event.container.id == 'cdk-drop-list-1' && (overlap || out)) {
@@ -788,7 +789,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
                     event.item.data.x > rectZone.width - rectElement.width
                 ) {
                     var routePosition = this.calculateRouteGridPosition(
-                        rectZone.width - rectElement.width,
+                        rectZone.width - (rectElement.width + 20),
                         event.item.data.y
                     );
 
@@ -885,10 +886,10 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
 
         var overlap = this.checkOverlap(
             field,
-            x,
-            y,
-            x + rectElement.width,
-            y + rectElement.height
+            x - 20,
+            y - 10,
+            x + rectElement.width + 20,
+            y + rectElement.height + 10
         );
 
         if (!out && !overlap) {
@@ -910,7 +911,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
             if (event.previousContainer === event.container) {
                 if (x > rectZone.width - rectElement.width) {
                     var routePosition = this.calculateRouteGridPosition(
-                        rectZone.width - rectElement.width,
+                        rectZone.width - (rectElement.width + 20),
                         y
                     );
 
@@ -1131,6 +1132,10 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
 
             if (mainthis.stopPickerLocation.lat) {
                 mainthis.addNewStop(e.domEvent, true);
+            }
+
+            if ( mainthis.focusedRouteIndex != null && mainthis.focusedStopIndex == null && !mainthis.stopPickerActive ) {
+                mainthis.focusRoute(mainthis.focusedRouteIndex);
             }
 
             if (
@@ -1807,6 +1812,8 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
 
                     if (route.isFocused) {
                         this.focusedRouteIndex = i;
+                        
+                        if ( this.routeHiddenPolylines[route.id] ) this.zoomToObject(this.routeHiddenPolylines[route.id]);
                     } else {
                         this.focusedRouteIndex = null;
 
@@ -3031,7 +3038,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
         this.getRouteList(mapId, 1, 8);
     }
 
-    decodeRouteShape(route, routeIndex) {
+    decodeRouteShape(route, routeIndex, zoomToRoute?) {
         this.routingService
             .decodeRouteShape(route.id)
             .pipe(takeUntil(this.destroy$))
@@ -3106,6 +3113,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
 
                     this.routePolylines[route.id].setMap(this.agmMap);
                     this.routeHiddenPolylines[route.id].setMap(this.agmMap);
+                    if ( zoomToRoute ) this.zoomToObject(this.routeHiddenPolylines[route.id]);
                 },
                 error: () => {
                     console.log('decodeRouteShape error');
@@ -3307,7 +3315,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
     hoverStop(route, stop, hover) {
         stop.hovered = hover;
 
-        if ( this.hoveredRouteId == route.id && !hover ) return;
+        if ( (this.hoveredRouteId == route.id && !hover) || !this.routePolylines[route.id] ) return;
         
         this.focusPolyline(route, hover);
     }
@@ -3415,5 +3423,14 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
         } else {
             route.stops[index].showEditInput = false;
         }
+    }
+
+    zoomToObject(obj){
+        var bounds = new google.maps.LatLngBounds();
+        var points = obj.getPath().getArray();
+        for (var n = 0; n < points.length ; n++){
+            bounds.extend(points[n]);
+        }
+        this.agmMap.fitBounds(bounds);
     }
 }
