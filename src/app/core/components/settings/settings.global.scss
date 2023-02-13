@@ -237,6 +237,11 @@ p {
             line-height: 32px;
             margin-left: 0px !important;
             margin: 0;
+
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
         }
     }
 
@@ -434,7 +439,7 @@ p {
     .company-select-holder{
         display: grid;
         grid-template-columns: 510px 53px;
-        padding: 8px 4px 0px 4px;
+        padding: 8px 12px 0px 12px;
 
         .inactive-icon-input {
             display: flex;
