@@ -6,7 +6,7 @@
         </div>
         <div
             class="note_tools_container"
-            (click)="isVisibleArrow ? openNote() : ''"
+            (click)="isVisibleArrow && !_isVisibleNote ? openNote() : ''"
         >
             <app-ta-note-container
                 #noteContainer
