@@ -25,6 +25,8 @@ export interface UpdateWorkExperienceItemCommand {
     fax?: string | null;
     address?: AddressEntity;
     isDrivingPosition?: boolean;
+    cfrPart?: boolean | null;
+    fmcsa?: boolean | null;
     reasonForLeaving?: number;
     accountForPeriodBetween?: string | null;
     classesOfEquipment?: Array<UpdateClassOfEquipmentCommand> | null;

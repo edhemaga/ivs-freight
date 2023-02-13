@@ -15,7 +15,6 @@ export interface CdlCardReviewResponse {
     isIssueDateValid?: boolean;
     isExpireDateValid?: boolean;
     dateMessage?: string | null;
-    filesReviewMessage?: string | null;
     cdlCardId?: number;
 }
 

@@ -10,7 +10,6 @@
  * Do not edit the class manually.
  */
 import { CreatePreviousAddressReviewCommand } from './createPreviousAddressReviewCommand';
-import { FileReviewCommand } from './fileReviewCommand';
 
 
 export interface CreatePersonalInfoReviewCommand { 
@@ -37,8 +36,6 @@ export interface CreatePersonalInfoReviewCommand {
     misdemeanorMessage?: string | null;
     isDrunkDrivingValid?: boolean;
     drunkDrivingMessage?: string | null;
-    filesReviewMessage?: string | null;
-    filesReview?: Array<FileReviewCommand> | null;
     previousAddressReviews?: Array<CreatePreviousAddressReviewCommand> | null;
     applicantId?: number;
 }
