@@ -7,6 +7,8 @@ import {
     OnDestroy,
     ChangeDetectionStrategy,
     ChangeDetectorRef,
+    OnChanges,
+    SimpleChanges,
 } from '@angular/core';
 import { FooterData } from '../model/navigation.model';
 import { footerData } from '../model/navigation-data';
@@ -30,7 +32,7 @@ import { TaUserService } from '../../../services/user/user.service';
         navigation_magic_line('showHideDetailsMagicLine'),
     ],
 })
-export class NavigationFooterComponent implements OnInit, OnDestroy {
+export class NavigationFooterComponent implements OnInit, OnDestroy, OnChanges {
     private destroy$ = new Subject<void>();
     @Input() isNavigationHovered: boolean = false;
     @Input() isUserCompanyDetailsOpen: boolean = false;
@@ -56,6 +58,7 @@ export class NavigationFooterComponent implements OnInit, OnDestroy {
     public showMagicLine: boolean;
     public midleRouteActive: boolean = false;
     public showToolTip: boolean;
+    public magicBoxAnime: boolean = true;
     constructor(
         private router: Router,
         private navigationService: NavigationService,
@@ -156,6 +159,15 @@ export class NavigationFooterComponent implements OnInit, OnDestroy {
                     this.cdRef.detectChanges();
                 }
             });
+    }
+    ngOnChanges(changes: SimpleChanges): void {
+        if (changes.hasOwnProperty('isNavigationHovered')) {
+            const prev = changes.isNavigationHovered;
+
+            if (changes && prev.previousValue != undefined) {
+                this.magicBoxAnime = changes.isNavigationHovered.currentValue;
+            }
+        }
     }
     //If route is clicked get true
     public settingsRouteClicked($event) {

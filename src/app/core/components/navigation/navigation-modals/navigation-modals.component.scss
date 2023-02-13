@@ -38,12 +38,9 @@
         .modal-nav-close-svg {
             transition: all 0.3s ease-in-out;
             cursor: pointer;
-            width: 20px;
-            height: 20px;
-            transform: rotate(45deg);
             position: relative;
-            top: -2px;
-            left: 8px;
+            top: -12.9px;
+            left: 4px;
             svg {
                 position: relative;
                 top: 50%;
@@ -238,7 +235,7 @@
                         transform: rotate(0deg);
                         transition: all 0.3s;
                         top: 4.1px;
-                        left: 6px;
+                        left: 6.6px;
                         position: absolute;
                     }
                 }

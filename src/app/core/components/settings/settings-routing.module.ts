@@ -16,7 +16,7 @@ const routes: Routes = [
         children: [
             { path: '', redirectTo: 'company', pathMatch: 'full' },
             {
-                path: 'company',
+                path: 'settings',
                 loadChildren: () =>
                     import('./settings-company/settings-company.module').then(
                         (m) => m.SettingsCompanyModule

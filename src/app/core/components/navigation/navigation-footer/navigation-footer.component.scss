@@ -251,7 +251,6 @@
         .nav-footer-hover-user {
             height: 40px;
             left: -11px;
-            // width: 186px;
             border-radius: 3px;
         }
 
@@ -317,23 +316,6 @@
                 transition: $nav-transition;
             }
         }
-
-        .nav-item-active-box {
-            width: 38px;
-            height: 28px;
-            position: absolute;
-            left: -9px;
-            content: '';
-            background-color: $nav-hover-ligh;
-            z-index: -1;
-            border-radius: 3px;
-        }
-        .nav-item-active-box-active {
-            width: 238px;
-            animation: magiclinetransition 0.5s forwards;
-            left: -8px;
-            background-color: $nav-hover-color;
-        }
         .animation-backward {
             animation: animateBackground 0.25s forwards;
         }
@@ -345,13 +327,15 @@
                 background-color: $nav-hover-ligh;
             }
         }
-        @keyframes magiclinetransition {
-            from {
-                background-color: transparent;
-            }
-            to {
-                background-color: $nav-hover-color;
-            }
+        .nav-item-active-box {
+            width: 38px;
+            height: 28px;
+            position: absolute;
+            left: -9px;
+            content: '';
+            background-color: $nav-hover-ligh;
+            z-index: -1;
+            border-radius: 3px;
         }
     }
 }
@@ -374,9 +358,18 @@
     left: -9px;
 }
 .animate-magic-line {
-    max-width: 238px;
+    width: 238px;
+    background: $nav-hover-color;
+    animation: magiclinecolortransition 1s ease;
 }
-
+@keyframes magiclinecolortransition {
+    from {
+        background-color: transparent;
+    }
+    to {
+        background-color: $nav-hover-color;
+    }
+}
 .nav-footer-width {
     width: 238px;
     .magic-line-footer {

@@ -2,7 +2,7 @@
     <div
         class="settings-footer"
         [ngClass]="{
-            'activated-footer-route': settingsRouteActivated
+            'activated-footer-route': selectedRoute == 'Company'
         }"
     >
         <app-navigation-settings
@@ -24,7 +24,8 @@
         [ngClass]="{
             'nav-footer-item-scaleWidth': !isNavigationHovered,
             show: isNavigationHovered,
-            'activated-footer-route': notificationsActive && item.notification,
+            'activated-footer-route':
+                selectedRoute == 'Notifications' && item.notification,
             'notification-item': item.notification
         }"
         [routerLink]="item.route"
@@ -43,19 +44,14 @@
             ></app-tooltip-slide>
         </div>
         <div
-            *ngIf="
-                !mouseOverMiddleNav &&
-                !mouseOverFooter &&
-                selectedRoute == 'Notifications' &&
-                item.notification &&
-                !subrouteContainerOpened &&
-                !isSettingsPanelOpen
-            "
-            class="nav-item-active-box"
             [ngClass]="{
-                'nav-item-active-box-active': isNavigationHovered,
-                'animate-magic-line': isNavigationHovered,
-                'animation-backward': !isNavigationHovered
+                'nav-item-active-box':
+                    !mouseOverMiddleNav &&
+                    !mouseOverFooter &&
+                    !isNavigationHovered &&
+                    selectedRoute == 'Notifications' &&
+                    item.notification,
+                'animation-backward': !magicBoxAnime
             }"
         ></div>
         <div
@@ -153,12 +149,30 @@
     </div>
     <div
         *ngIf="
-            !mouseOverMiddleNav &&
-            !isActiveSubroute &&
-            !isUserPanelOpen &&
-            !isSettingsPanelOpen &&
-            !isUserCompanyDetailsOpen &&
-            !showHideLineIfSettingsActive &&
+            (!mouseOverMiddleNav &&
+                !isActiveSubroute &&
+                !isUserPanelOpen &&
+                !isSettingsPanelOpen &&
+                !isUserCompanyDetailsOpen &&
+                !showHideLineIfSettingsActive &&
+                mouseOverFooter &&
+                isNavigationHovered) ||
+            (selectedRoute == 'Notifications' &&
+                !mouseOverMiddleNav &&
+                !isActiveSubroute &&
+                !isUserPanelOpen &&
+                !isSettingsPanelOpen &&
+                !isUserCompanyDetailsOpen &&
+                !showHideLineIfSettingsActive &&
+                isNavigationHovered) ||
+            (selectedRoute == 'Company' &&
+                !mouseOverMiddleNav &&
+                !isActiveSubroute &&
+                !isUserPanelOpen &&
+                !isSettingsPanelOpen &&
+                !isUserCompanyDetailsOpen &&
+                !showHideLineIfSettingsActive &&
+                isNavigationHovered) ||
             mouseOverFooter
         "
         [@showHideDetailsMagicLine]="

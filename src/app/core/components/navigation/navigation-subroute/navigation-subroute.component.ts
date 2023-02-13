@@ -48,6 +48,7 @@ export class NavigationSubrouteComponent implements OnChanges {
     }
     ngOnChanges(changes: SimpleChanges): void {
         if (changes.otherContainerOpened != undefined) {
+            // console.log(this.openCloseContainer);
             let prev = changes?.otherContainerOpened;
             if (prev.currentValue == true && prev.previousValue == false) {
                 this.doAnimation = true;

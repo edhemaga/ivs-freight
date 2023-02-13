@@ -81,8 +81,9 @@ export class SelectCompanyComponent implements OnInit, OnDestroy {
                 return {
                     ...item,
                     LastActiveCompany:
-                        item.lastLogin == this.getNewerDate(this.dates) &&
-                        (this.id = item.id),
+                        item.lastLogin == this.getNewerDate(this.dates)
+                            ? (this.id = item.id)
+                            : null,
                 };
             }),
         };
@@ -95,7 +96,9 @@ export class SelectCompanyComponent implements OnInit, OnDestroy {
             variableWidth: true,
             focusOnSelect: true,
             centerMode: true,
-            initialSlide: this?.id - 1,
+            initialSlide: this.newUser.companies.findIndex(
+                (x) => x.id === this.id
+            ),
         };
     }
 

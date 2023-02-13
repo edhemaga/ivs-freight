@@ -121,7 +121,11 @@ export class NavigationRouteComponent implements OnInit, OnChanges {
         let router = StaticInjectorService.Injector.get(Router);
         let n = router.url.split('/');
         if (n[2]) {
-            this.activeRouteName = n[2];
+            if (n[2] == 'todo') {
+                this.activeRouteName = 'To-Do';
+            } else {
+                this.activeRouteName = n[2];
+            }
         } else {
             this.activeRouteName = n[1];
         }

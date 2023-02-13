@@ -193,6 +193,19 @@ export class NavigationComponent implements OnInit, OnDestroy {
     }
     routeWithSubRouteClicked(event) {
         this.subrouteClicked = event;
+        if (this.isNavigationHovered == false) {
+            console.log(true);
+        }
+        // console.log(
+        //     this.navigation,
+        //     this.isNavigationHovered,
+        //     !this.isModalPanelOpen,
+        //     this.closeDropdownOnNavClose,
+        //     !this.isUserPanelOpen,
+        //     !this.isSettingsPanelOpen,
+        //     !this.isUserCompanyDetailsOpen,
+        //     this.subrouteClicked
+        // );
     }
     oneUserCompany($event) {
         this.companiesExists = $event;
@@ -311,6 +324,9 @@ export class NavigationComponent implements OnInit, OnDestroy {
             this.isModalPanelOpen = false;
             this.isActiveSubroute = false;
             this.isNavigationHovered = false;
+            this.navigation.map((res) => {
+                res.isRouteActive = false;
+            });
             this.openedDropdown = false;
             this.navigationService.onDropdownActivation({
                 name: 'Settings',
