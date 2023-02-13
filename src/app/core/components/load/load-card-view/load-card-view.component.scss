@@ -94,6 +94,10 @@
     margin-right: 7px;
     .note-body {
         //margin-left: 4px;
+
+        .note-textarea{
+            padding-bottom: 12px !important;
+        }
     }
 }
 .load-broker-container {

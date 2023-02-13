@@ -130,7 +130,7 @@ p {
         padding: 1px 8px 0px 8px;
 
         &.trailer-details-card{
-            padding: 0px 8px 4px 8px;
+            padding: 0px 8px 0px 8px;
         }
     }
 }
@@ -935,6 +935,7 @@ p {
         .note-textarea {
             color: #6c6c6c !important;
             font-weight: 400 !important;
+            padding-bottom: 12px !important;
             &::-moz-selection {
                 color: $color-gray-dark;
                 background: rgb(108, 108, 108, 0.2);
