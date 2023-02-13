@@ -118,11 +118,8 @@ export class TaNoticeOfAsignmentComponent
     ngOnInit(): void {
         this.activeFont = { id: 3, name: 'Default', showName: 'Default' };
         this.activeFontSize = { id: 4, name: 14, showName: 14 };
-        this.createForm();
-    }
-
-    ngAfterViewInit(): void {
         this.shownValue = this.noticeValue;
+        this.createForm();
     }
 
     ngOnDestroy(): void {
@@ -246,7 +243,6 @@ export class TaNoticeOfAsignmentComponent
                         item == document.queryCommandValue('ForeColor')
                 );
                 this.selectedColorName = findedColor;
-                console.log(this.selectedColorName, 'selcolorname')
             }, 200);
             this.selectedPaternColor = document.queryCommandValue('ForeColor');
         }
@@ -286,20 +282,5 @@ export class TaNoticeOfAsignmentComponent
         setTimeout(() => {
             this.checkActiveItems();
         }, 100);
-    }
-
-    @HostListener('document:click', ['$event.target'])
-    public onClick(target) {
-        // const clickedInside = this.elementRef.nativeElement.contains(target);
-        // if (clickedInside) {
-        //     const selectionTaken = window.getSelection();
-        //     if (selectionTaken.rangeCount && selectionTaken.getRangeAt) {
-        //         const range = selectionTaken.getRangeAt(0);
-        //         if (this.range) {
-        //             selectionTaken.removeAllRanges();
-        //             selectionTaken.addRange(this.range);
-        //         }
-        //     }
-        //}
     }
 }

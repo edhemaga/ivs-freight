@@ -442,17 +442,16 @@
     overflow: auto;
 
     &::-moz-selection {
-        color: #3C3C3C;
+        color: $bw6-2;
         background: rgb(108, 108, 108, 0.2);
     }
 
     &::selection {
-        color: #3C3C3C;
+        color: $bw6-2;
         background: rgb(108, 108, 108, 0.2);
     }
 
     span {
-        display: none;
         &::-moz-selection {
             color: $bw6-2;
             background: rgb(108, 108, 108, 0.2);
@@ -466,7 +465,6 @@
 
     span[style*='color: rgb(38, 166, 144)'],
     span[style*='color: rgb(38, 166, 144)'] span {
-        display: none;
         &::-moz-selection {
             color: $bw6-2 !important;
             background: rgb(38, 166, 144, 0.2) !important;
