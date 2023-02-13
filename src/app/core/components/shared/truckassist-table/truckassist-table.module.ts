@@ -15,10 +15,10 @@ import { GetExpireDataPipe } from '../../../pipes/get-expire-data.pipe';
 import { ResizeColumnDirective } from '../../../directives/resize-column.directive';
 import { DirectivesModule } from '../../../directives/directives.module';
 import { PipesModule } from '../../../pipes/pipes.module';
-import { SharedModule } from '../shared.module';
 import { ToolbarFiltersComponent } from './truckassist-table-toolbar/toolbar-filters/toolbar-filters.component';
 import { CarrierSearchComponent } from '../../standalone-components/carrier-search/carrier-search.component';
 import { AppNoteComponent } from '../../standalone-components/app-note/app-note.component';
+import { FilterComponent } from '../../standalone-components/filter/filter.component';
 
 @NgModule({
     declarations: [
@@ -45,7 +45,7 @@ import { AppNoteComponent } from '../../standalone-components/app-note/app-note.
         ScrollingModule,
 
         // Veliki problem, ima dosta stvari u njemu, ubacen je zbog filter componente.
-        SharedModule,
+        FilterComponent,
     ],
     exports: [
         TruckassistTableBodyComponent,

@@ -13,6 +13,8 @@ import { DashboardStateUsaComponent } from './dashboard-state-tracking/dashboard
 import { TaNoteModule } from '../shared/ta-note/ta-note.module';
 import { CarrierSearchComponent } from '../standalone-components/carrier-search/carrier-search.component';
 import { SlickCarouselModule } from 'ngx-slick-carousel';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { AngularSvgIconModule } from 'angular-svg-icon';
 
 @NgModule({
     declarations: [
@@ -28,10 +30,11 @@ import { SlickCarouselModule } from 'ngx-slick-carousel';
         CommonModule,
         DashboardRoutingModule,
         ReactiveFormsModule,
-        SharedModule,
         TaNoteModule,
         CarrierSearchComponent,
-        SlickCarouselModule
+        SlickCarouselModule,
+        AngularSvgIconModule,
+        NgbModule
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })

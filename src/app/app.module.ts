@@ -15,7 +15,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SharedModule } from './core/components/shared/shared.module';
 import { ToastrModule } from 'ngx-toastr';
 import { NgIdleModule } from '@ng-idle/core';
-import { GoogleMapsAPIWrapper } from '@agm/core';
+import { AgmCoreModule, GoogleMapsAPIWrapper } from '@agm/core';
 // ---- NAVIGATION
 import { NavigationComponent } from './core/components/navigation/navigation.component';
 import { NavigationRouteComponent } from './core/components/navigation/navigation-route/navigation-route.component';
@@ -62,6 +62,10 @@ import { TooltipSlideComponent } from './core/components/standalone-components/t
         HttpClientModule,
         SharedModule,
         TooltipSlideComponent,
+        AgmCoreModule.forRoot({
+            apiKey: 'AIzaSyCw4WQw1T4N6TjFWdS731mM09x88SGW81I',
+            libraries: ['geometry', 'places'],
+        }),
         ToastrModule.forRoot({
             preventDuplicates: true,
             enableHtml: true,
@@ -95,7 +99,6 @@ import { TooltipSlideComponent } from './core/components/standalone-components/t
         GoogleMapsAPIWrapper,
         StaticInjectorService,
     ],
-    exports: [],
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
     bootstrap: [AppComponent],
 })

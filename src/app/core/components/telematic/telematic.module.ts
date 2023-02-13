@@ -6,6 +6,8 @@ import { TelematicMapComponent } from './telematic-map/telematic-map.component';
 
 import { SharedModule } from '../shared/shared.module';
 import { TruckassistTableModule } from '../shared/truckassist-table/truckassist-table.module';
+import { AgmCoreModule } from '@agm/core';
+import { MapToolbarComponent } from '../standalone-components/map-toolbar/map-toolbar.component';
 
 
 @NgModule({
@@ -15,8 +17,9 @@ import { TruckassistTableModule } from '../shared/truckassist-table/truckassist-
   imports: [
     CommonModule,
     TelematicRoutingModule,
-    SharedModule,
-    TruckassistTableModule
+    TruckassistTableModule,
+    AgmCoreModule,
+    MapToolbarComponent
   ]
 })
 export class TelematicModule { }
