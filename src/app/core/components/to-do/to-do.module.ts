@@ -11,6 +11,7 @@ import { AppTooltipeModule } from '../shared/app-tooltip/app-tooltip.module';
 import { NgxSmoothDnDModule } from 'ngx-smooth-dnd';
 import { TruckassistProgressExpirationModule } from './../shared/truckassist-progress-expiration/truckassist-progress-expiration.module';
 import { CarrierSearchComponent } from '../standalone-components/carrier-search/carrier-search.component';
+import { FilterComponent } from '../standalone-components/filter/filter.component';
 
 @NgModule({
     declarations: [ToDoListCardComponent],
@@ -24,6 +25,7 @@ import { CarrierSearchComponent } from '../standalone-components/carrier-search/
         NgxSmoothDnDModule,
         TruckassistProgressExpirationModule,
         CarrierSearchComponent,
+        FilterComponent
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })

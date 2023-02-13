@@ -12,6 +12,7 @@ import { ColorFinderPipe } from './pipes/color-finder.pipe';
 import { HosFilterPipe } from './pipes/hos-filter.pipe';
 import { TooltipWidthPipe } from './pipes/tooltip-width.pipe';
 import { TaNoteModule } from '../shared/ta-note/ta-note.module';
+import { CdkIdPipe } from '../../pipes/cdkid.pipe';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { TaNoteModule } from '../shared/ta-note/ta-note.module';
     FormsModule,
     ReactiveFormsModule,
     SharedModule,
-    TaNoteModule
+    TaNoteModule,
+    CdkIdPipe
   ]
 })
 export class DispatchModule { }

@@ -11,7 +11,6 @@ import { InputTypePipe } from '../components/shared/ta-input/input-type.pipe';
 import { ReviewsSortPipe } from '../components/shared/ta-user-review/reviews-sort.pipe';
 import { CalendarMonthsPipe } from './calendarMonths.pipe';
 import { CdkConnectPipe } from './cdkconnect.pipe';
-import { CdkIdPipe } from './cdkid.pipe';
 import { FormatRestrictionEndorsmentPipe } from './formatRestrictionEndorsment.pipe';
 import { HidePasswordPipe } from './hide-password.pipe';
 import { HighlightSearchPipe } from './highlight-search.pipe';
@@ -20,7 +19,6 @@ import { NFormatterPipe } from './n-formatter.pipe';
 import { SortPipe } from './sort.pipe';
 import { StatusPipePipe } from './status-pipe.pipe';
 import { SumArraysPipe } from './sum-arrays.pipe';
-import { TaSvgPipe } from './ta-svg.pipe';
 import { BlockedContentPipe } from './blockedContent.pipe';
 import { DetailsActiveItemPipe } from './detailsActiveItem.pipe';
 import { TaThousandSeparatorPipe } from './taThousandSeparator.pipe';
@@ -55,11 +53,9 @@ import { LoadDatetimeRangePipe } from '../components/modals/load-modal/pipes/loa
         StatusPipePipe,
         HighlightSearchPipe,
         HosTimePipe,
-        CdkIdPipe,
         CdkConnectPipe,
         CalendarMonthsPipe,
         NFormatterPipe,
-        TaSvgPipe,
         DropdownCountPipe,
         ReviewsSortPipe,
         SumArraysPipe,
@@ -99,11 +95,9 @@ import { LoadDatetimeRangePipe } from '../components/modals/load-modal/pipes/loa
         StatusPipePipe,
         HighlightSearchPipe,
         HosTimePipe,
-        CdkIdPipe,
         CdkConnectPipe,
         CalendarMonthsPipe,
         NFormatterPipe,
-        TaSvgPipe,
         DropdownCountPipe,
         ReviewsSortPipe,
         SumArraysPipe,
@@ -138,7 +132,6 @@ import { LoadDatetimeRangePipe } from '../components/modals/load-modal/pipes/loa
         StatusPipePipe,
         CdkConnectPipe,
         CalendarMonthsPipe,
-        CdkIdPipe,
         HighlightSearchPipe,
         HosTimePipe,
         SumArraysPipe,

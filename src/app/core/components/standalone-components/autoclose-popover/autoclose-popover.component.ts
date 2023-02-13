@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import {
     Component,
     ElementRef,
@@ -7,13 +8,16 @@ import {
     OnInit,
     Output,
 } from '@angular/core';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
     selector: '[app-autoclose-popover]',
     templateUrl: './autoclose-popover.component.html',
     styleUrls: ['./autoclose-popover.component.scss'],
+    standalone: true,
+    imports: [CommonModule, NgbModule],
 })
-export class AutoclosePopoverComponent implements OnInit { 
+export class AutoclosePopoverComponent implements OnInit {
     @Input() isDisabled: boolean;
     @Input() customClass: string;
     @Input() placement: string = 'bottom-right';

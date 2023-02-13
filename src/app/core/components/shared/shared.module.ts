@@ -8,7 +8,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { AngularSvgIconPreloaderModule } from 'angular-svg-icon-preloader';
-import { AgmCoreModule } from '@agm/core';
 import { AgmDirectionModule } from 'agm-direction';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { HistoryDataComponent } from './history-data/history-data.component';
@@ -67,7 +66,6 @@ import { TaUploadDropzoneComponent } from './ta-upload-files/ta-upload-dropzone/
 
 import { AppTooltipeModule } from './app-tooltip/app-tooltip.module';
 
-import { FilterComponent } from './filter/filter.component';
 import { FuelPurchaseModalComponent } from '../modals/fuel-modals/fuel-purchase-modal/fuel-purchase-modal.component';
 import { FuelStopModalComponent } from '../modals/fuel-modals/fuel-stop-modal/fuel-stop-modal.component';
 import { ViolationModalComponent } from '../modals/violation-modal/violation-modal.component';
@@ -98,7 +96,6 @@ import { TaCopyComponent } from './ta-copy/ta-copy.component';
 import { LottieModule } from 'ngx-lottie';
 import { TaTimePeriodComponent } from './ta-time-period/ta-time-period.component';
 import { ProfileUpdateModalComponent } from '../modals/profile-update-modal/profile-update-modal.component';
-import { MapToolbarComponent } from './map-toolbar/map-toolbar.component';
 import { AutoclosePopoverComponent } from './autoclose-popover/autoclose-popover.component';
 import { ApplicantModalComponent } from '../modals/applicant-modal/applicant-modal.component';
 import { TtTitleModalComponent } from '../modals/common-truck-trailer-modals/tt-title-modal/tt-title-modal.component';
@@ -168,7 +165,6 @@ export function playerFactory() {
         TaCurrencyProgressBarComponent,
         TaUploadFilesCarouselComponent,
         TaUploadDropzoneComponent,
-        FilterComponent,
         TaChartComponent,
         TaInputArrowsComponent,
         TaTimePeriodComponent,
@@ -232,7 +228,6 @@ export function playerFactory() {
         TaCopyComponent,
         AutoclosePopoverComponent,
         CustomToastMessagesComponent,
-        MapToolbarComponent,
         AutoclosePopoverComponent,
         InputAddressDropdownComponent,
         TaCustomCardV2Component,
@@ -258,10 +253,6 @@ export function playerFactory() {
         AngularSvgIconModule.forRoot(),
         AngularSvgIconPreloaderModule.forRoot({
             configUrl: '../../assets/preload-svg/preload-svg.json',
-        }),
-        AgmCoreModule.forRoot({
-            apiKey: 'AIzaSyCw4WQw1T4N6TjFWdS731mM09x88SGW81I',
-            libraries: ['geometry', 'places'],
         }),
         AgmDirectionModule,
         LottieModule.forRoot({ player: playerFactory }),
@@ -291,7 +282,6 @@ export function playerFactory() {
         ReactiveFormsModule,
         NgSelectModule,
         AngularSvgIconModule,
-        AgmCoreModule,
         NgbModule,
         GooglePlaceModule,
         PipesModule,
@@ -347,13 +337,11 @@ export function playerFactory() {
         TaLikeDislikeComponent,
         TaCurrencyProgressBarComponent,
         TaChartComponent,
-        FilterComponent,
         TaTabSwitchComponent,
         MapListComponent,
         MapListCardComponent,
         MapMarkerDropdownComponent,
         MapsComponent,
-        MapToolbarComponent,
 
         ProgressInvoicesComponent,
 

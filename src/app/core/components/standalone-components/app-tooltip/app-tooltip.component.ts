@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import {
     Component,
     Host,
@@ -9,8 +10,11 @@ import {
 import { NgbTooltip } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
-    selector: 'mainTooltip, [mainTooltip]', 
+    selector: 'mainTooltip, [mainTooltip]',
     templateUrl: './app-tooltip.component.html',
+    standalone: true,
+    imports: [CommonModule],
+
 })
 export class AppTooltipComponent implements AfterViewInit {
     @Input() mainTooltip: string = '';
