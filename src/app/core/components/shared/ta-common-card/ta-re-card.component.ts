@@ -127,8 +127,6 @@ export class TaReCardComponent implements OnInit {
 
     ngOnInit(): void {
         this.CloseCard();
-        console.log('---notExpired---', this.notExpired)
-        console.log('---optionsId---', this.optionsId)
     }
 
     public CloseCard() {

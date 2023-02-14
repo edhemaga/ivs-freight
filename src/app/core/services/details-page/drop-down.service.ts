@@ -715,7 +715,7 @@ export class DropDownService {
                 ...dataObject,
             },
         };
-
+        
         switch (event.type) {
             case 'edit': {
                 this.modalService.openModal(
@@ -780,6 +780,22 @@ export class DropDownService {
                         image: false,
                     }
                 );
+                break;
+            }
+            case 'Repair':{
+                this.modalService.openModal(
+                    RepairOrderModalComponent,
+                    { size: 'large' },
+                    {
+                        ...mappedEvent,
+                        template: 'Repair Shop',
+                        type: 'activate',
+                        image: false,
+                        shopId: event.id ? event.id : null,
+                    }
+                )
+                
+                
                 break;
             }
         }

@@ -114,7 +114,7 @@ export class TaCommonHeaderComponent implements OnInit {
                             action.name = 'remove-from-favourite';
                             action.blueIcon = true;
                         } else {
-                            action.title = 'Move to Favourite';
+                            action.title = 'Mark as favorite';
                             action.name = 'move-to-favourite';
                             action.blueIcon = false;
                         }

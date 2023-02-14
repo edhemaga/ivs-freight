@@ -189,8 +189,8 @@ export class ShopRepairDetailsComponent implements OnInit, OnDestroy {
                     iconName: 'ic_plus'
                 },
                 {
-                    title: 'Move to Favourite',
-                    name: 'add-to-favourites',
+                    title: 'Mark as favorite',
+                    name: 'move-to-favourite',
                     svg: 'assets/svg/common/ic_star.svg',
                     activate: true,
                     show: true,
@@ -270,6 +270,7 @@ export class ShopRepairDetailsComponent implements OnInit, OnDestroy {
             type: eventType,
             openedTab: event,
         }
+
         this.dropDownService.dropActionsHeaderRepair(
             eventObject
         );
