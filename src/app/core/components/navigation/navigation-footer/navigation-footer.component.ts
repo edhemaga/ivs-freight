@@ -11,7 +11,7 @@ import {
 import { FooterData } from '../model/navigation.model';
 import { footerData } from '../model/navigation-data';
 import { debounceTime, Subject, takeUntil } from 'rxjs';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { NavigationService } from '../services/navigation.service';
 import {
     navigation_magic_line,
@@ -30,12 +30,18 @@ import { UserDataPipe } from '../pipe/user-data.pipe';
     styleUrls: ['./navigation-footer.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
     standalone: true,
-    imports: [CommonModule, FormsModule, NavigationSettingsComponent, UserDataPipe],
+    imports: [
+        CommonModule,
+        FormsModule,
+        NavigationSettingsComponent,
+        UserDataPipe,
+        RouterModule
+    ],
     animations: [
         navigation_route_animation('showHideDetails'),
         navigation_magic_line('showHideDetailsMagicLine'),
     ],
-    providers: [UserDataPipe]
+    providers: [UserDataPipe],
 })
 export class NavigationFooterComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
