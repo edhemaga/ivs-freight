@@ -15,6 +15,8 @@ import { TaCustomCardComponent } from '../shared/ta-custom-card/ta-custom-card.c
 import { TruckassistTableToolbarComponent } from '../shared/truckassist-table/truckassist-table-toolbar/truckassist-table-toolbar.component';
 import { formatEinPipe } from '../../pipes/formatEin.pipe';
 import { formatDatePipe } from '../../pipes/formatDate.pipe';
+import { TruckassistTableBodyComponent } from '../shared/truckassist-table/truckassist-table-body/truckassist-table-body.component';
+import { TruckassistTableHeadComponent } from '../shared/truckassist-table/truckassist-table-head/truckassist-table-head.component';
 
 @NgModule({
     declarations: [CustomerTableComponent, BrokerCardComponent],
@@ -32,7 +34,9 @@ import { formatDatePipe } from '../../pipes/formatDate.pipe';
         TaCustomCardComponent,
         TruckassistTableToolbarComponent,
         formatEinPipe,
-        formatDatePipe
+        formatDatePipe,
+        TruckassistTableBodyComponent, 
+        TruckassistTableHeadComponent,
     ],
 })
 export class CustomerModule {}

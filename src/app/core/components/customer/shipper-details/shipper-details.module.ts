@@ -12,15 +12,30 @@ import { formatDatePipe } from 'src/app/core/pipes/formatDate.pipe';
 import { TaCopyComponent } from '../../shared/ta-copy/ta-copy.component';
 import { TaCustomCardComponent } from '../../shared/ta-custom-card/ta-custom-card.component';
 import { TaInputNoteComponent } from '../../shared/ta-input-note/ta-input-note.component';
+import { formatTimePipe } from '../../../pipes/formatTime.pipe';
+import { AngularSvgIconModule } from 'angular-svg-icon';
 
 @NgModule({
     declarations: [
         ShipperDetailsComponent,
         ShipperDetailsSingleComponent,
-        ShipperCardViewComponent
+        ShipperCardViewComponent,
     ],
     exports: [ShipperCardViewComponent, SharedModule],
-    imports: [CommonModule, ShipperDetailsRoutes, SharedModule, TaChartComponent, AppTooltipComponent, TaDetailsHeaderCardComponent, formatDatePipe, TaCopyComponent, TaCustomCardComponent, TaInputNoteComponent],
-    providers: [formatDatePipe]
+    imports: [
+        CommonModule,
+        ShipperDetailsRoutes,
+        SharedModule,
+        TaChartComponent,
+        AppTooltipComponent,
+        TaDetailsHeaderCardComponent,
+        formatDatePipe,
+        TaCopyComponent,
+        TaCustomCardComponent,
+        TaInputNoteComponent,
+        formatTimePipe,
+        AngularSvgIconModule
+    ],
+    providers: [formatDatePipe],
 })
 export class ShipperDetailsModule {}

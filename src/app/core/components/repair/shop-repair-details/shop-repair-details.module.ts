@@ -12,6 +12,13 @@ import { TaInputNoteComponent } from '../../shared/ta-input-note/ta-input-note.c
 import { formatDatePipe } from 'src/app/core/pipes/formatDate.pipe';
 import { TruckassistTableBodyComponent } from '../../shared/truckassist-table/truckassist-table-body/truckassist-table-body.component';
 import { TruckassistTableHeadComponent } from '../../shared/truckassist-table/truckassist-table-head/truckassist-table-head.component';
+import { ProfileImagesComponent } from '../../shared/profile-images/profile-images.component';
+import { TaCopyComponent } from '../../shared/ta-copy/ta-copy.component';
+import { TaUploadFilesComponent } from '../../shared/ta-upload-files/ta-upload-files.component';
+import { TaReCardComponent } from '../../shared/ta-common-card/ta-re-card.component';
+import { TruckassistProgressExpirationComponent } from '../../shared/truckassist-progress-expiration/truckassist-progress-expiration.component';
+import { TaCounterComponent } from '../../shared/ta-counter/ta-counter.component';
+import { TaCommonHeaderComponent } from '../../shared/ta-details-header/ta-details-header.component';
 
 @NgModule({
     declarations: [
@@ -30,7 +37,14 @@ import { TruckassistTableHeadComponent } from '../../shared/truckassist-table/tr
         TaInputNoteComponent,
         formatDatePipe,
         TruckassistTableBodyComponent, 
-        TruckassistTableHeadComponent
+        TruckassistTableHeadComponent,
+        ProfileImagesComponent,
+        TaCopyComponent,
+        TaUploadFilesComponent,
+        TaReCardComponent,
+        TruckassistProgressExpirationComponent,
+        TaCounterComponent,
+        TaCommonHeaderComponent,
     ],
 })
 export class ShopRepairDetailsModule {}
