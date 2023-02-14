@@ -1,11 +1,16 @@
+import { CommonModule } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { NavigationEnd, Router } from '@angular/router';
 import { filter, startWith, Subscription } from 'rxjs';
+import { AngularSvgIconModule } from 'angular-svg-icon';
 
 @Component({
     selector: 'app-under-construction',
     templateUrl: './under-construction.component.html',
     styleUrls: ['./under-construction.component.scss'],
+    standalone: true,
+    imports: [CommonModule, FormsModule, AngularSvgIconModule]
 })
 export class UnderConstructionComponent implements OnInit, OnDestroy {
     public title: string = '';

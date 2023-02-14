@@ -11,7 +11,7 @@ import {
 import { TableType } from 'appcoretruckassist';
 import { Subject, takeUntil } from 'rxjs';
 import { TruckassistTableService } from '../../../../services/truckassist-table/truckassist-table.service';
-import { UntypedFormControl } from '@angular/forms';
+import { UntypedFormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Titles } from 'src/app/core/utils/application.decorators';
 import {
     Confirmation,
@@ -19,12 +19,27 @@ import {
 } from '../../../modals/confirmation-modal/confirmation-modal.component';
 import { ModalService } from '../../ta-modal/modal.service';
 import { ConfirmationService } from '../../../modals/confirmation-modal/confirmation.service';
+import { CommonModule } from '@angular/common';
+import { ToolbarFiltersComponent } from './toolbar-filters/toolbar-filters.component';
+import { AngularSvgIconModule } from 'angular-svg-icon';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { TaInputDropdownComponent } from '../../ta-input-dropdown/ta-input-dropdown.component';
 
 @Titles()
 @Component({
     selector: 'app-truckassist-table-toolbar',
     templateUrl: './truckassist-table-toolbar.component.html',
     styleUrls: ['./truckassist-table-toolbar.component.scss'],
+    standalone: true,
+    imports: [
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+        ToolbarFiltersComponent,
+        AngularSvgIconModule,
+        NgbModule,
+        TaInputDropdownComponent
+    ],
 })
 export class TruckassistTableToolbarComponent
     implements OnInit, OnChanges, OnDestroy

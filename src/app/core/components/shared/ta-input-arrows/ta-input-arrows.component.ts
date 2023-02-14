@@ -1,11 +1,16 @@
+import { CommonModule } from '@angular/common';
 import { AfterViewInit, Component, Input, Self } from '@angular/core';
-import { ControlValueAccessor, NgControl } from '@angular/forms';
+import { ControlValueAccessor, FormsModule, NgControl, ReactiveFormsModule } from '@angular/forms';
 import { ITaInput } from '../ta-input/ta-input.config';
+import { AngularSvgIconModule } from 'angular-svg-icon';
+import { TaInputComponent } from '../ta-input/ta-input.component';
 
 @Component({
     selector: 'app-ta-input-arrows',
     templateUrl: './ta-input-arrows.component.html',
     styleUrls: ['./ta-input-arrows.component.scss'],
+    standalone: true,
+    imports: [CommonModule, FormsModule, AngularSvgIconModule, TaInputComponent, ReactiveFormsModule],
 })
 export class TaInputArrowsComponent
     implements AfterViewInit, ControlValueAccessor

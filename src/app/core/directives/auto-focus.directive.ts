@@ -8,6 +8,7 @@ import {
 
 @Directive({
     selector: '[appAutoFocus]',
+    standalone: true
 })
 export class AutoFocusDirective implements AfterViewInit {
     @Input() autoFocusDelay = 1000;

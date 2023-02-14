@@ -19,12 +19,16 @@ import {
     DropDownAnimation,
     navigation_route_animation,
 } from '../navigation.animation';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 @Component({
     selector: 'app-navigation-user-profile',
     templateUrl: './navigation-user-profile.component.html',
     styleUrls: ['./navigation-user-profile.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
+    imports: [CommonModule, FormsModule],
     animations: [
         navigation_route_animation('showHideDetails'),
         DropDownAnimation,

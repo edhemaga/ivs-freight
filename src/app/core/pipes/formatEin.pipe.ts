@@ -2,6 +2,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
     name: 'formatEinP',
+    standalone: true
 })
 export class formatEinPipe implements PipeTransform {
     transform(ein: string) {

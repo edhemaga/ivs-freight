@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import {
     Component,
     EventEmitter,
@@ -6,14 +7,18 @@ import {
     Self,
     ViewChild,
 } from '@angular/core';
-import { ControlValueAccessor, NgControl } from '@angular/forms';
+import { ControlValueAccessor, FormsModule, NgControl, ReactiveFormsModule } from '@angular/forms';
 import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
+import { TaInputDropdownComponent } from '../ta-input-dropdown/ta-input-dropdown.component';
 import { ITaInput } from '../ta-input/ta-input.config';
+import { FormControlPipe } from '../ta-input/form-control.pipe';
 
 @Component({
     selector: 'app-ta-input-dropdown-label',
     templateUrl: './ta-input-dropdown-label.component.html',
     styleUrls: ['./ta-input-dropdown-label.component.scss'],
+    standalone: true,
+    imports: [CommonModule, FormsModule, TaInputDropdownComponent, ReactiveFormsModule, FormControlPipe],
 })
 export class TaInputDropdownLabelComponent implements ControlValueAccessor {
     @ViewChild('t2') t2Ref: NgbPopover;

@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import {
     ChangeDetectionStrategy,
     Component,
@@ -8,6 +9,7 @@ import {
     Output,
     SimpleChanges,
 } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { settings } from '../model/navigation-data';
 import { FooterData, Settings } from '../model/navigation.model';
@@ -16,11 +18,15 @@ import {
     navigation_route_animation,
 } from '../navigation.animation';
 import { NavigationService } from '../services/navigation.service';
+import { AngularSvgIconModule } from 'angular-svg-icon';
+import { TooltipSlideComponent } from '../../standalone-components/tooltip-slide/tooltip-slide.component';
 @Component({
     selector: 'app-navigation-settings',
     templateUrl: './navigation-settings.component.html',
     styleUrls: ['./navigation-settings.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
+    imports: [CommonModule, FormsModule, AngularSvgIconModule, TooltipSlideComponent],
     animations: [
         navigation_route_animation('showHideDetails'),
         DropDownAnimation,

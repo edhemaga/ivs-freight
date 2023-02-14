@@ -1,10 +1,28 @@
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterModule } from '@angular/router';
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { AppTooltipComponent } from '../../standalone-components/app-tooltip/app-tooltip.component';
+import { DetailsDropdownComponent } from '../details-page-dropdown/details-dropdown';
+import { TaCounterComponent } from '../ta-counter/ta-counter.component';
+import { AngularSvgIconModule } from 'angular-svg-icon';
+import { FilterComponent } from '../../standalone-components/filter/filter.component';
 
 @Component({
     selector: 'app-ta-details-header',
     templateUrl: './ta-details-header.component.html',
     styleUrls: ['./ta-details-header.component.scss'],
+    standalone: true,
+    imports: [
+        CommonModule,
+        FormsModule,
+        AppTooltipComponent,
+        DetailsDropdownComponent,
+        TaCounterComponent,
+        AngularSvgIconModule,
+        FilterComponent,
+        RouterModule
+    ],
 })
 export class TaCommonHeaderComponent implements OnInit {
     @Input() headerText: string = null;
@@ -44,7 +62,6 @@ export class TaCommonHeaderComponent implements OnInit {
     @Input() pmFilter: boolean = false;
     @Input() categoryFilter: boolean = false;
     @Input() moneyFilter: boolean = false;
-
 
     public up: boolean = false;
     public down: boolean = false;
