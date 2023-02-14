@@ -207,7 +207,8 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
                             name: item.code
                                 .concat(' ', '-')
                                 .concat(' ', item.description),
-                            activeCounter: 8,
+                            // activeCounter: 8,
+                            // totalCounter: 50,
                         };
                     });
 
