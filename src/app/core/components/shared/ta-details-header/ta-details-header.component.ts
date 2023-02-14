@@ -1,4 +1,4 @@
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterModule } from '@angular/router';
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -20,7 +20,8 @@ import { FilterComponent } from '../../standalone-components/filter/filter.compo
         DetailsDropdownComponent,
         TaCounterComponent,
         AngularSvgIconModule,
-        FilterComponent
+        FilterComponent,
+        RouterModule
     ],
 })
 export class TaCommonHeaderComponent implements OnInit {

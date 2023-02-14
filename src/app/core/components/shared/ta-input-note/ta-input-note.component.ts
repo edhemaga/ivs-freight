@@ -7,7 +7,7 @@ import {
     Self,
     ViewChild,
 } from '@angular/core';
-import { ControlValueAccessor, FormsModule, NgControl } from '@angular/forms';
+import { ControlValueAccessor, FormsModule, NgControl, ReactiveFormsModule } from '@angular/forms';
 import { SharedService } from '../../../services/shared/shared.service';
 import moment from 'moment';
 import { card_modal_animation } from '../animations/card-modal.animation';
@@ -29,7 +29,8 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
             FormsModule, 
             SafeHtmlPipe, 
             TaNoteContainerComponent,
-            AngularSvgIconModule
+            AngularSvgIconModule,
+            ReactiveFormsModule
     ],
 })
 export class TaInputNoteComponent implements OnInit, ControlValueAccessor {
