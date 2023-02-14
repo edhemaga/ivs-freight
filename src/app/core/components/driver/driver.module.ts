@@ -10,6 +10,15 @@ import { TruckassistTableToolbarComponent } from '../shared/truckassist-table/tr
 import { TruckassistTableBodyComponent } from '../shared/truckassist-table/truckassist-table-body/truckassist-table-body.component';
 import { TruckassistTableHeadComponent } from '../shared/truckassist-table/truckassist-table-head/truckassist-table-head.component';
 import { formatDatePipe } from '../../pipes/formatDate.pipe';
+import { TaDetailsHeaderCardComponent } from '../shared/ta-details-header-card/ta-details-header-card.component';
+import { ProfileImagesComponent } from '../shared/profile-images/profile-images.component';
+import { TaCopyComponent } from '../shared/ta-copy/ta-copy.component';
+import { TaCustomCardComponent } from '../shared/ta-custom-card/ta-custom-card.component';
+import { TaUploadFilesComponent } from '../shared/ta-upload-files/ta-upload-files.component';
+import { TaInputNoteComponent } from '../shared/ta-input-note/ta-input-note.component';
+import { TaReCardComponent } from '../shared/ta-common-card/ta-re-card.component';
+import { TruckassistProgressExpirationComponent } from '../shared/truckassist-progress-expiration/truckassist-progress-expiration.component';
+import { TaCounterComponent } from '../shared/ta-counter/ta-counter.component';
 @NgModule({
     declarations: [DriverTableComponent, DriverCardComponent],
 
@@ -22,7 +31,17 @@ import { formatDatePipe } from '../../pipes/formatDate.pipe';
         TruckassistTableToolbarComponent,
         TruckassistTableBodyComponent, 
         TruckassistTableHeadComponent,
-        formatDatePipe
+        formatDatePipe,
+        TaDetailsHeaderCardComponent,
+        ProfileImagesComponent,
+        TaCopyComponent,
+        TaCustomCardComponent,
+        TaUploadFilesComponent,
+        TaInputNoteComponent,
+        TaReCardComponent,
+        TruckassistProgressExpirationComponent,
+        TaCounterComponent,
+
     ],
 })
 export class DriverModule {}

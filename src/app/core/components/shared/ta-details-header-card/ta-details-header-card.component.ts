@@ -15,6 +15,8 @@ import { DriversItemStore } from '../../driver/state/driver-details-state/driver
 import { AppTooltipComponent } from '../../standalone-components/app-tooltip/app-tooltip.component';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { DetailsActiveItemPipe } from 'src/app/core/pipes/detailsActiveItem.pipe';
+import { TaInputDropdownComponent } from '../ta-input-dropdown/ta-input-dropdown.component';
+import { DetailsDropdownComponent } from '../details-page-dropdown/details-dropdown';
 
 @Component({
     selector: 'app-ta-details-header-card',
@@ -22,7 +24,15 @@ import { DetailsActiveItemPipe } from 'src/app/core/pipes/detailsActiveItem.pipe
     styleUrls: ['./ta-details-header-card.component.scss'],
     encapsulation: ViewEncapsulation.None,
     standalone: true,
-    imports: [CommonModule, FormsModule, AppTooltipComponent, AngularSvgIconModule, DetailsActiveItemPipe],
+    imports: [
+        CommonModule,
+        FormsModule,
+        AppTooltipComponent,
+        AngularSvgIconModule,
+        DetailsActiveItemPipe,
+        TaInputDropdownComponent,
+        DetailsDropdownComponent
+    ],
 })
 export class TaDetailsHeaderCardComponent implements OnInit, OnChanges {
     @Input() public cardDetailsName: string = '';
