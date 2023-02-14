@@ -1,8 +1,10 @@
 import {
     Component,
+    ElementRef,
     OnDestroy,
     OnInit,
     Renderer2,
+    ViewChild,
     ViewEncapsulation,
 } from '@angular/core';
 
@@ -24,6 +26,8 @@ import { fadeInAnimation } from '../../state/utils/animation';
     animations: [fadeInAnimation()],
 })
 export class WebsiteSidebarComponent implements OnInit, OnDestroy {
+    @ViewChild('hideSidebarBtn') hideSidebarBtn: ElementRef<HTMLElement>;
+
     private destroy$ = new Subject<void>();
 
     public selectedContentType: string = null;
@@ -109,6 +113,11 @@ export class WebsiteSidebarComponent implements OnInit, OnDestroy {
                     new Offcanvas(ConstantString.SIDEBAR).toggle();
 
                     this.websiteActionsService.setOpenSidebarSubject(false);
+                } else {
+                    const hideSidebarBtn: HTMLElement =
+                        this.hideSidebarBtn.nativeElement;
+
+                    hideSidebarBtn.click();
                 }
             });
     }

@@ -55,18 +55,17 @@ export class ResetPasswordHelperComponent implements OnInit, OnDestroy {
                 firstName: params[ConstantString.FIRST_NAME],
                 lastName: params[ConstantString.LAST_NAME],
                 email: params[ConstantString.EMAIL],
-                avatar: params[ConstantString.AVATAR],
             };
 
             isValid = true;
         });
 
         if (isValid) {
-            /*  this.websiteAuthService
+            this.websiteAuthService
                 .getAccountAvatarImage(this.verifyData.code)
                 .pipe(takeUntil(this.destroy$))
                 .subscribe();
- */
+
             this.websiteAuthService
                 .verifyResetPassword(this.verifyData)
                 .pipe(

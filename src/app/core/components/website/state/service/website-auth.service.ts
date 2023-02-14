@@ -9,6 +9,7 @@ import { PersistState } from '@datorama/akita';
 
 import {
     AccountService,
+    AvatarResponse,
     ForgotPasswordCommand,
     ResendSignUpCompanyOrUserCommand,
     SelectCompanyCommand,
@@ -72,8 +73,6 @@ export class WebsiteAuthService {
             .apiAccountVerifyownerPut(data, 'response')
             .pipe(
                 tap(() => {
-                    this.router.navigate([ConstantString.WEBSITE]);
-
                     this.websiteActionsService.setOpenSidebarSubject(true);
 
                     this.websiteActionsService.setSidebarContentType(
@@ -81,6 +80,8 @@ export class WebsiteAuthService {
                     );
 
                     this.websiteActionsService.setIsEmailRouteSubject(true);
+
+                    this.accountLogout(true);
                 })
             );
     }
@@ -94,8 +95,6 @@ export class WebsiteAuthService {
             .apiAccountVerifyuserPut(data, 'response')
             .pipe(
                 tap(() => {
-                    this.router.navigate([ConstantString.WEBSITE]);
-
                     this.websiteActionsService.setOpenSidebarSubject(true);
 
                     this.websiteActionsService.setSidebarContentType(
@@ -103,6 +102,8 @@ export class WebsiteAuthService {
                     );
 
                     this.websiteActionsService.setIsEmailRouteSubject(true);
+
+                    this.accountLogout(true);
                 })
             );
     }
@@ -118,26 +119,30 @@ export class WebsiteAuthService {
 
                     localStorage.setItem('user', JSON.stringify(user));
 
-                    this.router.navigate(['/select-company']);
+                    this.router.navigate(['/website/select-company']);
                 } else {
                     localStorage.setItem('user', JSON.stringify(user));
 
                     this.router.navigate(['/dashboard']);
                 }
+
+                this.websiteActionsService.setOpenSidebarSubject(false);
             })
         );
     }
 
-    public accountLogout(): void {
+    public accountLogout(isEmailRoute: boolean = false): void {
         // ---- PRODUCTION MODE ----
         this.persistStorage.clearStore();
         this.persistStorage.destroy();
-        this.router.navigate(['/website']);
+        this.router.navigate([ConstantString.WEBSITE]);
 
         // ---- DEVELOP MODE ----
         localStorage.removeItem('user');
 
-        this.websiteActionsService.setIsEmailRouteSubject(false);
+        if (!isEmailRoute) {
+            this.websiteActionsService.setIsEmailRouteSubject(false);
+        }
     }
 
     public resetPassword(data: ForgotPasswordCommand): Observable<object> {
@@ -152,8 +157,6 @@ export class WebsiteAuthService {
     ): Observable<object> {
         return this.accountService.apiAccountVerifyforgotpasswordPut(data).pipe(
             tap((res: { token: string }) => {
-                this.router.navigate([ConstantString.WEBSITE]);
-
                 this.websiteActionsService.setOpenSidebarSubject(true);
 
                 this.websiteActionsService.setSidebarContentType(
@@ -163,6 +166,8 @@ export class WebsiteAuthService {
                 this.websiteActionsService.setResetPasswordToken(res.token);
 
                 this.websiteActionsService.setIsEmailRouteSubject(true);
+
+                this.accountLogout(true);
             })
         );
     }
@@ -187,11 +192,11 @@ export class WebsiteAuthService {
         return this.accountService.apiAccountSelectcompanyPost(data);
     }
 
-    /*    public getAccountAvatarImage(data: string): Observable<AvatarResponse> {
+    public getAccountAvatarImage(data: string): Observable<AvatarResponse> {
         return this.accountService.apiAccountAvatarCodeGet(data).pipe(
             tap((res: AvatarResponse) => {
                 this.websiteActionsService.setAvatarImageSubject(res.avatar);
             })
         );
-    } */
+    }
 }

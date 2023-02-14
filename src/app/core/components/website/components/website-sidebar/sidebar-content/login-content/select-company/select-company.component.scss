@@ -135,11 +135,11 @@
         left: -22px;
         top: 48%;
         &::before {
-            content: url('../../../../../assets/svg/common/arrow-left-grey.svg');
+            content: url('/assets/svg/common/arrow-left-grey.svg');
         }
         &:hover {
             &:before {
-                content: url('../../../../../assets/svg/common/arrow-filled.svg');
+                content: url('/assets/svg/common/arrow-filled.svg');
                 top: -1px;
                 left: 0px;
                 position: absolute;
@@ -161,11 +161,11 @@
         right: -22px;
         top: 49%;
         &::before {
-            content: url('../../../../../assets/svg/common/arrow-right-grey.svg');
+            content: url('/assets/svg/common/arrow-right-grey.svg');
         }
         &:hover {
             &:before {
-                content: url('../../../../../assets/svg/common/arrow-filled.svg');
+                content: url('/assets/svg/common/arrow-filled.svg');
                 position: absolute;
                 top: 0px;
                 left: 0px;
