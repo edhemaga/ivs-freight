@@ -6,6 +6,7 @@ import {
 
 @Pipe({
     name: 'taThousandSeparator',
+    standalone: true
 })
 export class TaThousandSeparatorPipe implements PipeTransform {
     transform(value: any): any {

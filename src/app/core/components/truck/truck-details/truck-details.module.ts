@@ -2,10 +2,10 @@ import { TruckDetailsItemComponent } from './truck-details-item/truck-details-it
 import { TruckDetailsComponent } from './truck-details.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { TruckassistProgressExpirationModule } from '../../shared/truckassist-progress-expiration/truckassist-progress-expiration.module';
 import { TruckDetailsRoutes } from './truck-details.routing';
 import { TruckDetailsCardComponent } from '../truck-details-card/truck-details-card.component';
 import { SharedModule } from '../../shared/shared.module';
+import { formatDatePipe } from 'src/app/core/pipes/formatDate.pipe';
 
 @NgModule({
     declarations: [
@@ -17,8 +17,8 @@ import { SharedModule } from '../../shared/shared.module';
     imports: [
         CommonModule,
         TruckDetailsRoutes,
-        TruckassistProgressExpirationModule,
         SharedModule,
+        formatDatePipe
     ],
 })
 export class TruckDetailsModule {}

@@ -3,18 +3,24 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LoadRoutingModule } from './load-routing.module';
 import { LoadTableComponent } from './load-table/load-table.component';
-import { TruckassistTableModule } from '../shared/truckassist-table/truckassist-table.module';
 import { LoadCardComponent } from './load-card/load-card.component';
 import { LoadDetailsModule } from './load-details/load-details.module';
+import { TruckassistTableToolbarComponent } from '../shared/truckassist-table/truckassist-table-toolbar/truckassist-table-toolbar.component';
+import { TruckassistTableBodyComponent } from '../shared/truckassist-table/truckassist-table-body/truckassist-table-body.component';
+import { TruckassistTableHeadComponent } from '../shared/truckassist-table/truckassist-table-head/truckassist-table-head.component';
+import { formatDatePipe } from '../../pipes/formatDate.pipe';
 
 @NgModule({
     declarations: [LoadTableComponent, LoadCardComponent],
     imports: [
         CommonModule,
         LoadRoutingModule,
-        TruckassistTableModule,
         AngularSvgIconModule,
         LoadDetailsModule,
+        TruckassistTableToolbarComponent,
+        TruckassistTableBodyComponent, 
+        TruckassistTableHeadComponent,
+        formatDatePipe
     ],
 })
 export class LoadModule {}

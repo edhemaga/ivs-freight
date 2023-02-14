@@ -7,6 +7,8 @@ import {
 } from '../../../shared/ta-input/ta-input.regex-validations';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import {
+    FormsModule,
+    ReactiveFormsModule,
     UntypedFormBuilder,
     UntypedFormGroup,
     Validators,
@@ -21,12 +23,35 @@ import {
     FuelStopResponse,
     GetFuelStopModalResponse,
 } from '../../../../../../../appcoretruckassist';
+import { CommonModule } from '@angular/common';
+import { TaModalComponent } from '../../../shared/ta-modal/ta-modal.component';
+import { TaInputComponent } from '../../../shared/ta-input/ta-input.component';
+import { AngularSvgIconModule } from 'angular-svg-icon';
+import { InputAddressDropdownComponent } from '../../../shared/input-address-dropdown/input-address-dropdown.component';
+import { TaCustomCardComponent } from '../../../shared/ta-custom-card/ta-custom-card.component';
+import { TaInputNoteComponent } from '../../../shared/ta-input-note/ta-input-note.component';
+import { TaUploadFilesComponent } from '../../../shared/ta-upload-files/ta-upload-files.component';
+import { TaInputDropdownComponent } from '../../../shared/ta-input-dropdown/ta-input-dropdown.component';
 
 @Component({
     selector: 'app-fuel-stop-modal',
     templateUrl: './fuel-stop-modal.component.html',
     styleUrls: ['./fuel-stop-modal.component.scss'],
     providers: [ModalService],
+    standalone: true,
+    imports: [
+                CommonModule, 
+                FormsModule, 
+                TaModalComponent, 
+                ReactiveFormsModule, 
+                TaInputComponent, 
+                AngularSvgIconModule, 
+                InputAddressDropdownComponent, 
+                TaCustomCardComponent, 
+                TaInputNoteComponent, 
+                TaUploadFilesComponent,
+                TaInputDropdownComponent
+    ] 
 })
 export class FuelStopModalComponent implements OnInit, OnDestroy {
     @Input() editData: any;

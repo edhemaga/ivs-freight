@@ -26,8 +26,13 @@ import {
     UntypedFormGroup,
     NgControl,
     ControlValueAccessor,
+    FormsModule,
 } from '@angular/forms';
 import { ITaInput } from '../ta-input/ta-input.config';
+import { CommonModule } from '@angular/common';
+import { AppTooltipComponent } from '../../standalone-components/app-tooltip/app-tooltip.component';
+import { TaInputDropdownComponent } from '../ta-input-dropdown/ta-input-dropdown.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @Component({
     selector: 'app-input-address-dropdown',
@@ -37,6 +42,8 @@ import { ITaInput } from '../ta-input/ta-input.config';
         '../ta-input/ta-input.component.scss',
     ],
     encapsulation: ViewEncapsulation.None,
+    standalone: true,
+    imports: [CommonModule, FormsModule, AppTooltipComponent, TaInputDropdownComponent, ReactiveFormsModule],
 })
 export class InputAddressDropdownComponent
     implements OnInit, ControlValueAccessor, OnDestroy

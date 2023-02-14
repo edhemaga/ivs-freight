@@ -22,6 +22,7 @@ import { ModalService } from '../../shared/ta-modal/modal.service';
 import { FilterComponent } from '../filter/filter.component';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { CommonModule } from '@angular/common';
+import { AppTooltipComponent } from '../app-tooltip/app-tooltip.component';
 
 @Component({
     selector: 'app-map-toolbar',
@@ -29,7 +30,7 @@ import { CommonModule } from '@angular/common';
     styleUrls: ['./map-toolbar.component.scss'],
     animations: [card_component_animation('showHideCardBody')],
     standalone: true,
-    imports: [FilterComponent, AngularSvgIconModule, CommonModule, FormsModule]
+    imports: [FilterComponent, AngularSvgIconModule, CommonModule, FormsModule, AppTooltipComponent]
 
 })
 export class MapToolbarComponent implements OnInit, OnChanges, OnDestroy {

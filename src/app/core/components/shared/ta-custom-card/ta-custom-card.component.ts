@@ -1,4 +1,4 @@
-import { UntypedFormControl } from '@angular/forms';
+import { UntypedFormControl, FormsModule } from '@angular/forms';
 import {
     Component,
     EventEmitter,
@@ -8,6 +8,9 @@ import {
 } from '@angular/core';
 import { card_modal_animation } from '../animations/card-modal.animation';
 import { TaUploadFileService } from '../ta-upload-files/ta-upload-file.service';
+import { CommonModule } from '@angular/common';
+import { AngularSvgIconModule } from 'angular-svg-icon';
+import { AppTooltipComponent } from '../../standalone-components/app-tooltip/app-tooltip.component';
 
 @Component({
     selector: 'app-ta-custom-card',
@@ -15,6 +18,8 @@ import { TaUploadFileService } from '../ta-upload-files/ta-upload-file.service';
     styleUrls: ['./ta-custom-card.component.scss'],
     animations: [card_modal_animation('showHideCardBody')],
     encapsulation: ViewEncapsulation.None,
+    standalone: true,
+    imports: [CommonModule, FormsModule, AngularSvgIconModule, AppTooltipComponent]
 })
 export class TaCustomCardComponent {
     @Input() animationsDisabled = true;

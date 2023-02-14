@@ -3,6 +3,7 @@ import { ILoadStatus } from './load-modal-statuses.component';
 
 @Pipe({
     name: 'activeLoadStatus',
+    standalone: true
 })
 export class ActiveLoadStatusPipe implements PipeTransform {
     transform(statuses: ILoadStatus[]): any {

@@ -1,5 +1,5 @@
 import { Subject, takeUntil } from 'rxjs';
-import { NgbDropdownConfig, NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbDropdownConfig, NgbModule, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 import {
     Component,
     Input,
@@ -34,14 +34,33 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 import { AutoclosePopoverComponent } from '../autoclose-popover/autoclose-popover.component';
 import { AppTooltipComponent } from '../app-tooltip/app-tooltip.component';
 import { TaSvgPipe } from 'src/app/core/pipes/ta-svg.pipe';
+import { ProfileImagesComponent } from '../../shared/profile-images/profile-images.component';
+import { TaInputComponent } from '../../shared/ta-input/ta-input.component';
+import { InputAddressDropdownComponent } from '../../shared/input-address-dropdown/input-address-dropdown.component';
+import { TaNgxSliderComponent } from '../../shared/ta-ngx-slider/ta-ngx-slider.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @Component({
     selector: 'app-filter',
     standalone: true,
-    imports: [CommonModule, AngularSvgIconModule, FormsModule, AutoclosePopoverComponent, AppTooltipComponent, TaSvgPipe],
+    imports: [
+            CommonModule, 
+            AngularSvgIconModule, 
+            FormsModule,
+            ReactiveFormsModule,
+            AutoclosePopoverComponent, 
+            AppTooltipComponent, 
+            TaSvgPipe, 
+            ProfileImagesComponent,
+            TaInputComponent,
+            InputAddressDropdownComponent,
+            TaNgxSliderComponent,
+            NgbModule,
+            AutoclosePopoverComponent
+    ],
     templateUrl: './filter.component.html',
     styleUrls: ['./filter.component.scss'],
-    providers: [NgbDropdownConfig, TaThousandSeparatorPipe],
+    providers: [NgbDropdownConfig, TaThousandSeparatorPipe, TaSvgPipe],
     encapsulation: ViewEncapsulation.None,
     animations: [
         trigger('closeForm', [

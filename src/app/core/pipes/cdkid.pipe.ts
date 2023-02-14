@@ -2,7 +2,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
     standalone: true,
-    name: 'cdkid',
+    name: 'cdkid'
 })
 export class CdkIdPipe implements PipeTransform {
     constructor() {}

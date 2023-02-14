@@ -38,12 +38,17 @@ import {
     moveElementsTopDownModal,
     smoothHeight,
 } from '../navigation.animation';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { AngularSvgIconModule } from 'angular-svg-icon';
 
 @Component({
     selector: 'app-navigation-modals',
     templateUrl: './navigation-modals.component.html',
     styleUrls: ['./navigation-modals.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
+    imports: [CommonModule, FormsModule, AngularSvgIconModule],
     animations: [
         smoothHeight('showHideDetails'),
         moveElementsTopDownModal('moveTopDown'),

@@ -1,5 +1,5 @@
 import { HttpResponseBase } from '@angular/common/http';
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import {
     Component,
     Input,
@@ -40,6 +40,16 @@ import {
     convertThousanSepInNumber,
     convertNumberInThousandSep,
 } from '../../../utils/methods.calculations';
+import { CommonModule } from '@angular/common';
+import { TaModalComponent } from '../../shared/ta-modal/ta-modal.component';
+import { TaTabSwitchComponent } from '../../standalone-components/ta-tab-switch/ta-tab-switch.component';
+import { TaInputComponent } from '../../shared/ta-input/ta-input.component';
+import { TaInputDropdownComponent } from '../../shared/ta-input-dropdown/ta-input-dropdown.component';
+import { TaCheckboxCardComponent } from '../../shared/ta-checkbox-card/ta-checkbox-card.component';
+import { TaCustomCardComponent } from '../../shared/ta-custom-card/ta-custom-card.component';
+import { TaUploadFilesComponent } from '../../shared/ta-upload-files/ta-upload-files.component';
+import { TaInputNoteComponent } from '../../shared/ta-input-note/ta-input-note.component';
+import { TaCheckboxComponent } from '../../shared/ta-checkbox/ta-checkbox.component';
 
 @Component({
     selector: 'app-trailer-modal',
@@ -48,6 +58,21 @@ import {
     animations: [tab_modal_animation('animationTabsModal')],
     encapsulation: ViewEncapsulation.None,
     providers: [ModalService, FormService],
+    standalone: true,
+    imports: [
+        CommonModule, 
+            FormsModule, 
+            TaModalComponent, 
+            TaTabSwitchComponent, 
+            ReactiveFormsModule,
+            TaInputComponent,
+            TaInputDropdownComponent,
+            TaCheckboxCardComponent,
+            TaCustomCardComponent,
+            TaUploadFilesComponent,
+            TaInputNoteComponent,
+            TaCheckboxComponent
+    ]
 })
 export class TrailerModalComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();

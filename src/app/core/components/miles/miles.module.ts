@@ -3,7 +3,9 @@ import { CommonModule } from '@angular/common';
 
 import { MilesRoutingModule } from './miles-routing.module';
 import { MilesComponent } from './miles/miles.component';
-import { TruckassistTableModule } from '../shared/truckassist-table/truckassist-table.module';
+import { TruckassistTableToolbarComponent } from '../shared/truckassist-table/truckassist-table-toolbar/truckassist-table-toolbar.component';
+import { TruckassistTableBodyComponent } from '../shared/truckassist-table/truckassist-table-body/truckassist-table-body.component';
+import { TruckassistTableHeadComponent } from '../shared/truckassist-table/truckassist-table-head/truckassist-table-head.component';
 
 
 @NgModule({
@@ -13,7 +15,9 @@ import { TruckassistTableModule } from '../shared/truckassist-table/truckassist-
   imports: [
     CommonModule,
     MilesRoutingModule,
-    TruckassistTableModule
+    TruckassistTableToolbarComponent,
+    TruckassistTableBodyComponent, 
+    TruckassistTableHeadComponent
   ]
 })
 export class MilesModule { }

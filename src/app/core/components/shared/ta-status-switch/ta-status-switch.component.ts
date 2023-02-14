@@ -12,6 +12,8 @@ import moment from 'moment-timezone';
 import { StatusPipePipe } from '../../../pipes/status-pipe.pipe';
 import { ChangeDetectorRef } from '@angular/core';
 import { DispatcherStoreService } from '../../dispatch/state/dispatcher.service';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 export interface IDispatchModel {
     id: number;
@@ -24,6 +26,8 @@ export interface IDispatchModel {
     styleUrls: ['./ta-status-switch.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
     providers: [StatusPipePipe],
+    standalone: true,
+    imports: [CommonModule, FormsModule],
     animations: [
         trigger('shadowAnimation', [
             transition(':enter', [

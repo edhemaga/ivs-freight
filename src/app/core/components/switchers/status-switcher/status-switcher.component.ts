@@ -1,9 +1,13 @@
+import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
 @Component({
     selector: 'app-status-switcher',
     templateUrl: './status-switcher.component.html',
     styleUrls: ['./status-switcher.component.scss'],
+    standalone: true,
+    imports: [CommonModule, FormsModule]
 })
 export class StatusSwitcherComponent implements OnInit {
     @Input() data: any;

@@ -1,8 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { TruckassistProgressExpirationModule } from '../../shared/truckassist-progress-expiration/truckassist-progress-expiration.module';
-
 import { SharedModule } from '../../shared/shared.module';
 import { LoadDetailsRoutes } from './load-details.routing';
 import { LoadDetailsComponent } from './load-details.component';
@@ -20,8 +18,7 @@ import { LoadCardViewComponent } from '../load-card-view/load-card-view.componen
     imports: [
         CommonModule,
         LoadDetailsRoutes,
-        SharedModule,
-        TruckassistProgressExpirationModule,
+        SharedModule
     ],
 })
 export class LoadDetailsModule {}

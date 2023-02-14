@@ -2,6 +2,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
     name: 'loadTimeType',
+    standalone: true
 })
 export class LoadTimeTypePipe implements PipeTransform {
     transform(value: string): any {

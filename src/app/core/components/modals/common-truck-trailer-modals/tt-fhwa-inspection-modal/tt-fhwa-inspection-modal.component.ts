@@ -1,4 +1,4 @@
-import { UntypedFormGroup, Validators } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule, UntypedFormGroup, Validators } from '@angular/forms';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { UntypedFormBuilder } from '@angular/forms';
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
@@ -12,12 +12,20 @@ import {
     convertDateFromBackend,
     convertDateToBackend,
 } from '../../../../utils/methods.calculations';
+import { CommonModule } from '@angular/common';
+import { TaModalComponent } from '../../../shared/ta-modal/ta-modal.component';
+import { TaInputComponent } from '../../../shared/ta-input/ta-input.component';
+import { TaCustomCardComponent } from '../../../shared/ta-custom-card/ta-custom-card.component';
+import { TaInputNoteComponent } from '../../../shared/ta-input-note/ta-input-note.component';
+import { TaUploadFilesComponent } from '../../../shared/ta-upload-files/ta-upload-files.component';
 
 @Component({
     selector: 'app-tt-fhwa-inspection-modal',
     templateUrl: './tt-fhwa-inspection-modal.component.html',
     styleUrls: ['./tt-fhwa-inspection-modal.component.scss'],
     providers: [ModalService, FormService],
+    standalone: true,
+    imports: [CommonModule, FormsModule, TaModalComponent, ReactiveFormsModule,TaInputComponent, TaCustomCardComponent, TaInputNoteComponent, TaUploadFilesComponent]
 })
 export class TtFhwaInspectionModalComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
