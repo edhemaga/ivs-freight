@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import {
     Component,
     EventEmitter,
@@ -5,12 +6,15 @@ import {
     Output,
     ViewChild,
 } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import moment from 'moment';
 
 @Component({
     selector: 'app-ta-time-period',
     templateUrl: './ta-time-period.component.html',
     styleUrls: ['./ta-time-period.component.scss'],
+    standalone: true,
+    imports: [CommonModule, FormsModule],
 })
 export class TaTimePeriodComponent implements OnInit {
     @ViewChild('t2') t2: any;

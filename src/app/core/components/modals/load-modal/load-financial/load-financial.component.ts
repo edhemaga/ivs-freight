@@ -9,6 +9,10 @@ import {
 } from '@angular/core';
 import { card_modal_animation } from '../../../shared/animations/card-modal.animation';
 import { convertThousanSepInNumber } from '../../../../utils/methods.calculations';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { AppTooltipComponent } from '../../../standalone-components/app-tooltip/app-tooltip.component';
+import { AngularSvgIconModule } from 'angular-svg-icon';
 
 export interface IBilling {
     baseRate: number;
@@ -31,6 +35,8 @@ export interface IPayment {
     styleUrls: ['./load-financial.component.scss'],
     animations: [card_modal_animation('showHideCardBody')],
     encapsulation: ViewEncapsulation.None,
+    standalone: true,
+    imports: [CommonModule, FormsModule, AppTooltipComponent, AngularSvgIconModule]
 })
 export class LoadFinancialComponent implements OnChanges {
     @Input() firstHeaderTitle: string;

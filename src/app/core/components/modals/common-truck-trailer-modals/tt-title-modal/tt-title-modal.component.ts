@@ -1,4 +1,6 @@
 import {
+    FormsModule,
+    ReactiveFormsModule,
     UntypedFormBuilder,
     UntypedFormGroup,
     Validators,
@@ -15,12 +17,21 @@ import {
     convertDateToBackend,
     convertDateFromBackend,
 } from '../../../../utils/methods.calculations';
+import { CommonModule } from '@angular/common';
+import { TaModalComponent } from '../../../shared/ta-modal/ta-modal.component';
+import { TaInputComponent } from '../../../shared/ta-input/ta-input.component';
+import { TaInputDropdownComponent } from '../../../shared/ta-input-dropdown/ta-input-dropdown.component';
+import { TaCustomCardComponent } from '../../../shared/ta-custom-card/ta-custom-card.component';
+import { TaInputNoteComponent } from '../../../shared/ta-input-note/ta-input-note.component';
+import { TaUploadFilesComponent } from '../../../shared/ta-upload-files/ta-upload-files.component';
 
 @Component({
     selector: 'app-tt-title-modal',
     templateUrl: './tt-title-modal.component.html',
     styleUrls: ['./tt-title-modal.component.scss'],
     providers: [FormService],
+    standalone: true,
+    imports: [CommonModule, FormsModule, TaModalComponent, ReactiveFormsModule,TaInputComponent, TaInputDropdownComponent, TaCustomCardComponent, TaInputNoteComponent, TaUploadFilesComponent]
 })
 export class TtTitleModalComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();

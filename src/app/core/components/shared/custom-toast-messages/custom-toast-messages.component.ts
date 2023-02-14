@@ -13,6 +13,8 @@ import { NotificationService } from 'src/app/core/services/notification/notifica
 import { DetailsDataService } from '../../../services/details-data/details-data.service';
 import moment from 'moment';
 import { Subject } from 'rxjs';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 const routeSpecify = {
     '/api/account/login': 'Driver',
@@ -22,6 +24,8 @@ const routeSpecify = {
     selector: 'app-custom-toast-messages',
     templateUrl: './custom-toast-messages.component.html',
     styleUrls: ['./custom-toast-messages.component.scss'],
+    standalone: true,
+    imports: [CommonModule, FormsModule],
     animations: [
         trigger('flyInOut', [
             state(

@@ -1,9 +1,15 @@
+import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { AppTooltipComponent } from '../../standalone-components/app-tooltip/app-tooltip.component';
+import { TaTabSwitchComponent } from '../../standalone-components/ta-tab-switch/ta-tab-switch.component';
 
 @Component({
   selector: 'app-ta-pickup-delivery',
   templateUrl: './ta-pickup-delivery.component.html',
-  styleUrls: ['./ta-pickup-delivery.component.scss']
+  styleUrls: ['./ta-pickup-delivery.component.scss'],
+  standalone: true,
+  imports: [CommonModule, FormsModule, AppTooltipComponent, TaTabSwitchComponent],
 })
 export class TaPickupDeliveryComponent implements OnInit {
 

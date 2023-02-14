@@ -3,6 +3,7 @@ import { Injectable, Pipe, PipeTransform } from '@angular/core';
 @Injectable({ providedIn: 'root' })
 @Pipe({
     name: 'reviewSort',
+    standalone: true
 })
 export class ReviewsSortPipe implements PipeTransform {
     transform(value: any): any {

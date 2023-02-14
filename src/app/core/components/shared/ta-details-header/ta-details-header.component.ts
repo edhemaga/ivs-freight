@@ -1,10 +1,15 @@
 import { ActivatedRoute } from '@angular/router';
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { AppTooltipComponent } from '../../standalone-components/app-tooltip/app-tooltip.component';
 
 @Component({
     selector: 'app-ta-details-header',
     templateUrl: './ta-details-header.component.html',
     styleUrls: ['./ta-details-header.component.scss'],
+    standalone: true,
+    imports: [CommonModule, FormsModule, AppTooltipComponent],
 })
 export class TaCommonHeaderComponent implements OnInit {
     @Input() headerText: string = null;

@@ -9,13 +9,30 @@ import {
 } from '@angular/core';
 import { card_component_animation } from '../../shared/animations/card-component.animations';
 import { DetailsDataService } from 'src/app/core/services/details-data/details-data.service';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { formatDatePipe } from 'src/app/core/pipes/formatDate.pipe';
+import { ProfileImagesComponent } from '../profile-images/profile-images.component';
+import { AngularSvgIconModule } from 'angular-svg-icon';
+import { DetailsDropdownComponent } from '../details-page-dropdown/details-dropdown';
+import { TaCounterComponent } from '../ta-counter/ta-counter.component';
 
 @Component({
     selector: 'app-map-marker-dropdown',
     templateUrl: './map-marker-dropdown.component.html',
     styleUrls: ['./map-marker-dropdown.component.scss'],
     animations: [card_component_animation('showHideCardBody')],
-    changeDetection: ChangeDetectionStrategy.OnPush
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
+    imports: [
+        CommonModule,
+        FormsModule,
+        formatDatePipe,
+        ProfileImagesComponent,
+        AngularSvgIconModule,
+        DetailsDropdownComponent,
+        TaCounterComponent
+    ],
 })
 export class MapMarkerDropdownComponent implements OnInit {
     @Input() title: string = '';
@@ -98,7 +115,7 @@ export class MapMarkerDropdownComponent implements OnInit {
         selBox.select();
         document.execCommand('copy');
         document.body.removeChild(selBox);
-        
+
         this.ref.detectChanges();
     }
 
@@ -154,7 +171,6 @@ export class MapMarkerDropdownComponent implements OnInit {
     }
 
     openClusterItemInfo(item2) {
-        
         this.showClusterItemInfo.emit([this.item, item2]);
     }
 
@@ -168,16 +184,16 @@ export class MapMarkerDropdownComponent implements OnInit {
             this.loadMoreData.emit(this.item);
         }
     }
-    
+
     copyHover(type, hover) {
-        if ( type == 'address' ) {
+        if (type == 'address') {
             this.copyAddressHover = hover;
-        } else if ( type == 'phone' ) {
+        } else if (type == 'phone') {
             this.copyPhoneHover = hover;
         } else {
             this.copyEmailHover = hover;
         }
-        
+
         this.ref.detectChanges();
     }
 }

@@ -2,6 +2,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
     name: 'sumArrays',
+    standalone: true
 })
 export class SumArraysPipe implements PipeTransform {
     transform(

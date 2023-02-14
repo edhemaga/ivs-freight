@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import {
     ChangeDetectionStrategy,
     Component,
@@ -7,12 +8,16 @@ import {
     Output,
     ViewChild,
 } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { AngularSvgIconModule } from 'angular-svg-icon';
 
 @Component({
     selector: 'app-ta-upload-files-carousel',
     templateUrl: './ta-upload-files-carousel.component.html',
     styleUrls: ['./ta-upload-files-carousel.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
+    imports: [CommonModule, FormsModule, AngularSvgIconModule]
 })
 export class TaUploadFilesCarouselComponent {
     @Input() files: any[];

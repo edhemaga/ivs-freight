@@ -19,16 +19,23 @@ import {
 } from '../navigation.animation';
 import { ImageBase64Service } from '../../../utils/base64.image';
 import { TaUserService } from '../../../services/user/user.service';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { NavigationSettingsComponent } from '../navigation-settings/navigation-settings.component';
+import { UserDataPipe } from '../pipe/user-data.pipe';
 
 @Component({
     selector: 'app-navigation-footer',
     templateUrl: './navigation-footer.component.html',
     styleUrls: ['./navigation-footer.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
+    imports: [CommonModule, FormsModule, NavigationSettingsComponent, UserDataPipe],
     animations: [
         navigation_route_animation('showHideDetails'),
         navigation_magic_line('showHideDetailsMagicLine'),
     ],
+    providers: [UserDataPipe]
 })
 export class NavigationFooterComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();

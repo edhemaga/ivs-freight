@@ -1,5 +1,7 @@
 import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import {
+    FormsModule,
+    ReactiveFormsModule,
     UntypedFormArray,
     UntypedFormBuilder,
     UntypedFormGroup,
@@ -28,6 +30,13 @@ import { AccidentTService } from '../../safety/accident/state/accident.service';
 import { AccidentModalResponse } from '../../../../../../appcoretruckassist/model/accidentModalResponse';
 import { RoadsideInspectionResponse } from '../../../../../../appcoretruckassist/model/roadsideInspectionResponse';
 import { ITaInput } from '../../shared/ta-input/ta-input.config';
+import { CommonModule } from '@angular/common';
+import { TaModalComponent } from '../../shared/ta-modal/ta-modal.component';
+import { TaTabSwitchComponent } from '../../standalone-components/ta-tab-switch/ta-tab-switch.component';
+import { TaInputComponent } from '../../shared/ta-input/ta-input.component';
+import { TaInputDropdownComponent } from '../../shared/ta-input-dropdown/ta-input-dropdown.component';
+import { TaCustomCardComponent } from '../../shared/ta-custom-card/ta-custom-card.component';
+import { InputAddressDropdownComponent } from '../../shared/input-address-dropdown/input-address-dropdown.component';
 
 @Component({
     selector: 'app-violation-modal',
@@ -35,6 +44,18 @@ import { ITaInput } from '../../shared/ta-input/ta-input.config';
     styleUrls: ['./violation-modal.component.scss'],
     animations: [tab_modal_animation('animationTabsModal')],
     providers: [ModalService, FormService],
+    standalone: true,
+    imports: [
+         CommonModule, 
+         FormsModule, 
+         TaModalComponent, 
+         TaTabSwitchComponent, 
+         ReactiveFormsModule,
+         TaInputComponent,
+         TaInputDropdownComponent,
+         TaCustomCardComponent,
+         InputAddressDropdownComponent
+    ]
 })
 export class ViolationModalComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();

@@ -6,13 +6,16 @@ import {
     OnChanges,
     SimpleChanges,
 } from '@angular/core';
-import { UntypedFormGroup } from '@angular/forms';
+import { FormsModule, UntypedFormGroup } from '@angular/forms';
 import { OnDestroy } from '@angular/core';
+import { CommonModule } from '@angular/common';
 
 @Component({
     selector: 'app-table-modal',
     templateUrl: './table-modal.component.html',
     styleUrls: ['./table-modal.component.scss'],
+    standalone: true,
+    imports: [CommonModule, FormsModule],
 })
 export class TableModalComponent implements OnInit, OnChanges, OnDestroy {
     @Input() columns: any[];
