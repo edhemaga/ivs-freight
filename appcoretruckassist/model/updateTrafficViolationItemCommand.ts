@@ -10,14 +10,13 @@
  * Do not edit the class manually.
  */
 import { UpdateTrafficViolationItemReviewCommand } from './updateTrafficViolationItemReviewCommand';
-import { AddressEntity } from './addressEntity';
 
 
 export interface UpdateTrafficViolationItemCommand { 
     id?: number | null;
     date?: string;
     vehicleTypeId?: number;
-    location?: AddressEntity;
+    location?: string | null;
     description?: string | null;
     trafficViolationItemReview?: UpdateTrafficViolationItemReviewCommand;
 }
