@@ -87,6 +87,7 @@ export class TaInputComponent
     // Number of spaces
     public numberOfConsecutivelySpaces: number = 0;
     public oneSpaceOnlyCounter: number = 0;
+    public lastCursorSpacePosition: number = 0;
 
     // Number of points
     public numberOfConsecutivelyPoints: number = 0;
@@ -846,7 +847,6 @@ export class TaInputComponent
         }
 
         if (['months'].includes(this.inputConfig.name.toLowerCase())) {
-            console.log('months transformText: ', value);
             if (parseInt(value) < 1 || parseInt(value) > 12) {
                 this.getSuperControl.setErrors({ invalid: true });
             } else {
@@ -863,6 +863,54 @@ export class TaInputComponent
                 }
             } else {
                 this.getSuperControl.setErrors(null);
+            }
+        }
+
+        if (['full name'].includes(this.inputConfig.name.toLowerCase())) {
+            if (this.getSuperControl.value) {
+                const capitalizeWords = this.getSuperControl.value
+                    .split(' ')
+                    .map((word: string) => {
+                        const firstLetter = word.charAt(0).toUpperCase();
+                        const restOfWord = word.slice(1).toLowerCase();
+                        return `${firstLetter}${restOfWord}`;
+                    });
+
+                this.input.nativeElement.value = capitalizeWords.join(' ');
+            }
+        }
+
+        // Disable consectevily spaces
+        if (
+            [
+                'business name',
+                'shop name',
+                'fuel stop',
+                'producer name',
+                'terminal name',
+                'address',
+                'license plate',
+                'description',
+                'emergency name',
+                'cdl-number',
+                'full name',
+                'file name',
+                'input dropdown label',
+            ].includes(this.inputConfig.name.toLowerCase())
+        ) {
+            const sanitizedInput = this.input.nativeElement.value.replace(
+                /\s{2,}/g,
+                ' '
+            ); // replace multiple spaces with a single space
+
+            if (sanitizedInput !== this.input.nativeElement.value) {
+                this.input.nativeElement.value = sanitizedInput;
+                setTimeout(() => {
+                    this.input.nativeElement.setSelectionRange(
+                        this.lastCursorSpacePosition - 1,
+                        this.lastCursorSpacePosition - 1
+                    );
+                });
             }
         }
 
@@ -1002,10 +1050,6 @@ export class TaInputComponent
                 break;
             }
             case 'months': {
-                console.log(
-                    'months transformText: ',
-                    this.getSuperControl.value
-                );
                 switch (action) {
                     case 'minus': {
                         if (
@@ -1737,15 +1781,30 @@ export class TaInputComponent
     }
 
     private disableConsecutivelySpaces(event: any) {
-        if (/^\s*$/.test(String.fromCharCode(event.charCode))) {
-            this.numberOfConsecutivelySpaces++;
-            if (this.numberOfConsecutivelySpaces > 1) {
-                event.preventDefault();
-                return false;
-            }
-        } else {
-            this.numberOfConsecutivelySpaces = 0;
+        const inputElement = this.input.nativeElement as HTMLInputElement;
+
+        // Get cursor position
+        const cursorPosition = inputElement.selectionStart;
+
+        // If the cursor is in the middle of a word, allow spaces
+        if (
+            cursorPosition > 0 &&
+            !/\s/.test(inputElement.value[cursorPosition - 1]) &&
+            !/\s/.test(inputElement.value[cursorPosition])
+        ) {
+            return;
         }
+
+        // If the user is typing a space and the previous character is a space, prevent the default behavior
+        if (
+            event.key === ' ' &&
+            /\s/.test(inputElement.value[cursorPosition - 1])
+        ) {
+            event.preventDefault();
+        }
+
+        // Save the cursor position for the next input event
+        this.lastCursorSpacePosition = cursorPosition;
     }
 
     private disableConsecutivelyPoints(event: any) {
@@ -1988,8 +2047,6 @@ export class TaInputComponent
                     this.selectSpanByTabIndex(this.selectionInput, true);
                 }
             } else if (e.keyCode == 39 || e.keyCode == 9) {
-                console.log(e.keyCode);
-                console.log(e.shiftKey);
                 if (this.selectionInput != 2 && !e.shiftKey) {
                     this.selectionInput = this.selectionInput + 1;
                     this.selectSpanByTabIndex(this.selectionInput, true);
@@ -2510,7 +2567,6 @@ export class TaInputComponent
         this.setSpanSelection(this.span3.nativeElement);
         this.showDateInput = true;
         setTimeout(() => {
-            console.log('ON KEY UPPPPP _____________________');
             clearTimeout(this.dateTimeMainTimer);
             clearTimeout(this.focusBlur);
             clearTimeout(this.wholeInputSelection);
