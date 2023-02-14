@@ -13,6 +13,7 @@ import { TaCustomCardComponent } from '../shared/ta-custom-card/ta-custom-card.c
 import { TaUploadFilesComponent } from '../shared/ta-upload-files/ta-upload-files.component';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { formatEinPipe } from '../../pipes/formatEin.pipe';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
     imports: [
@@ -23,7 +24,8 @@ import { formatEinPipe } from '../../pipes/formatEin.pipe';
         TaCustomCardComponent,
         TaUploadFilesComponent,
         AngularSvgIconModule,
-        formatEinPipe
+        formatEinPipe,
+        RouterModule
     ],
     declarations: [
         SettingsComponent,

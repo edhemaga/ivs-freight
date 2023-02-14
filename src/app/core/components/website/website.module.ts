@@ -31,6 +31,7 @@ import { WebsiteUnderConstructionComponent } from './components/website-under-co
 import { TaInputComponent } from '../shared/ta-input/ta-input.component';
 import { InputAddressDropdownComponent } from '../shared/input-address-dropdown/input-address-dropdown.component';
 import { TaCheckboxComponent } from '../shared/ta-checkbox/ta-checkbox.component';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
     declarations: [
@@ -68,7 +69,8 @@ import { TaCheckboxComponent } from '../shared/ta-checkbox/ta-checkbox.component
         SlickCarouselModule,
         TaInputComponent,
         InputAddressDropdownComponent,
-        TaCheckboxComponent
+        TaCheckboxComponent,
+        RouterModule
     ],
 })
 export class WebsiteModule {}
