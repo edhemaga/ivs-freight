@@ -2,6 +2,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
     name: 'blockedContent',
+    standalone: true
 })
 export class BlockedContentPipe implements PipeTransform {
     transform(value: string): boolean {

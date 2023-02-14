@@ -3,6 +3,7 @@ import { convertNumberWithCurrencyFormatterToBackend } from '../utils/methods.ca
 
 @Pipe({
     name: 'priceCalculationArray',
+    standalone: true
 })
 export class PriceCalculationArraysPipe implements PipeTransform {
     transform(

@@ -1,5 +1,7 @@
 import { AddressEntity } from '../../../../../../appcoretruckassist';
 import {
+    FormsModule,
+    ReactiveFormsModule,
     UntypedFormArray,
     UntypedFormBuilder,
     UntypedFormGroup,
@@ -34,7 +36,7 @@ import {
 } from '../../shared/ta-input/ta-input.regex-validations';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { HttpResponseBase } from '@angular/common/http';
-import { ReviewCommentModal } from '../../shared/ta-user-review/ta-user-review.component';
+import { ReviewCommentModal, TaUserReviewComponent } from '../../shared/ta-user-review/ta-user-review.component';
 import {
     LikeDislikeModel,
     TaLikeDislikeService,
@@ -55,6 +57,18 @@ import {
     name2_24Validation,
     creditLimitValidation,
 } from '../../shared/ta-input/ta-input.regex-validations';
+import { CommonModule } from '@angular/common';
+import { AppTooltipComponent } from '../../standalone-components/app-tooltip/app-tooltip.component';
+import { TaModalComponent } from '../../shared/ta-modal/ta-modal.component';
+import { TaTabSwitchComponent } from '../../standalone-components/ta-tab-switch/ta-tab-switch.component';
+import { TaInputComponent } from '../../shared/ta-input/ta-input.component';
+import { InputAddressDropdownComponent } from '../../shared/input-address-dropdown/input-address-dropdown.component';
+import { TaCheckboxComponent } from '../../shared/ta-checkbox/ta-checkbox.component';
+import { TaCurrencyProgressBarComponent } from '../../shared/ta-currency-progress-bar/ta-currency-progress-bar.component';
+import { TaUploadFilesComponent } from '../../shared/ta-upload-files/ta-upload-files.component';
+import { TaInputDropdownComponent } from '../../shared/ta-input-dropdown/ta-input-dropdown.component';
+import { TaCustomCardComponent } from '../../shared/ta-custom-card/ta-custom-card.component';
+import { TaInputNoteComponent } from '../../shared/ta-input-note/ta-input-note.component';
 
 @Component({
     selector: 'app-broker-modal',
@@ -63,6 +77,24 @@ import {
     animations: [tab_modal_animation('animationTabsModal')],
     encapsulation: ViewEncapsulation.None,
     providers: [ModalService, TaLikeDislikeService, FormService],
+    standalone: true,
+    imports: [
+            CommonModule, 
+            FormsModule, 
+            AppTooltipComponent, 
+            TaModalComponent, 
+            TaTabSwitchComponent, 
+            ReactiveFormsModule,
+            TaInputComponent,
+            InputAddressDropdownComponent,
+            TaCheckboxComponent,
+            TaCurrencyProgressBarComponent,
+            TaUploadFilesComponent,
+            TaInputDropdownComponent,
+            TaCustomCardComponent,
+            TaUserReviewComponent,
+            TaInputNoteComponent
+    ]
 })
 export class BrokerModalComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();

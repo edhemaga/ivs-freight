@@ -1,4 +1,4 @@
-import { UntypedFormControl } from '@angular/forms';
+import { FormsModule, UntypedFormControl, ReactiveFormsModule } from '@angular/forms';
 import {
     Component,
     Input,
@@ -15,11 +15,25 @@ import {
     QueryList,
 } from '@angular/core';
 import { AutoclosePopoverComponent } from '../autoclose-popover/autoclose-popover.component';
+import { CommonModule } from '@angular/common';
+import { AngularSvgIconModule } from 'angular-svg-icon';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { TaInputComponent } from '../../shared/ta-input/ta-input.component';
 
 @Component({
     selector: 'app-ta-tab-switch',
     templateUrl: './ta-tab-switch.component.html',
     styleUrls: ['./ta-tab-switch.component.scss'],
+    standalone: true,
+    imports: [
+            CommonModule, 
+            FormsModule, 
+            AngularSvgIconModule, 
+            AutoclosePopoverComponent, 
+            ReactiveFormsModule,
+            NgbModule,
+            TaInputComponent
+        ],
 })
 export class TaTabSwitchComponent implements OnInit, AfterViewInit, OnChanges {
     @ViewChildren('popoverHolder')

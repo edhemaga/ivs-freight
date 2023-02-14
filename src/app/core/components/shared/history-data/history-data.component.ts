@@ -1,4 +1,4 @@
-import { DatePipe } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import {
     ChangeDetectorRef,
     Component,
@@ -7,6 +7,7 @@ import {
     OnInit,
     Output,
 } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 export interface HistoryData {
     id: string;
     startDate: Date | string;
@@ -34,6 +35,8 @@ export interface GroupItem {
     templateUrl: './history-data.component.html',
     styleUrls: ['./history-data.component.scss'],
     providers: [DatePipe],
+    standalone: true,
+    imports: [CommonModule, FormsModule],
 })
 export class HistoryDataComponent implements OnInit {
     @Input() data: HistoryData[];

@@ -2,6 +2,7 @@ import { Directive, ElementRef, HostListener, Input } from '@angular/core';
 
 @Directive({
     selector: '[appInputrestriction]',
+    standalone: true
 })
 export class InputRestrictionDirective {
     @Input('appInputrestriction') InputRestriction: string;

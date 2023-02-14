@@ -4,6 +4,7 @@ import { HighlightText } from '../model/searchFilter';
 
 @Pipe({
     name: 'taHighlight',
+    standalone: true
 })
 export class HighlightSearchPipe implements PipeTransform {
     constructor(private sanitizer: DomSanitizer) {}

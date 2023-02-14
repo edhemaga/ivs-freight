@@ -2,6 +2,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
     name: 'getExpireData',
+    standalone: true
 })
 export class GetExpireDataPipe implements PipeTransform {
     transform(expireData: Date): Date {

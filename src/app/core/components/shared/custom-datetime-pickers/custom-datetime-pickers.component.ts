@@ -12,11 +12,19 @@ import {
 } from '@angular/core';
 
 import moment from 'moment';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 @Component({
     selector: 'app-custom-datetime-pickers',
     templateUrl: './custom-datetime-pickers.component.html',
     styleUrls: ['./custom-datetime-pickers.component.scss'],
+    standalone: true,
+    imports: [
+                CommonModule, 
+                FormsModule,
+                DateCalendarsComponent
+    ]
 })
 export class CustomDatetimePickersComponent implements OnInit {
     @Input() dateTime: Date;

@@ -1,9 +1,13 @@
+import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
 @Component({
     selector: 'app-calendar-days',
     templateUrl: './calendar-days.component.html',
     styleUrls: ['./calendar-days.component.scss'],
+    standalone: true,
+    imports: [CommonModule, FormsModule]
 })
 export class CalendarDaysComponent implements OnInit {
     currentYear: any = new Date().getFullYear();

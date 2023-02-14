@@ -17,12 +17,18 @@ import moment from 'moment';
 import { NoteUpdateService } from 'src/app/core/services/shared/note.service';
 import { EntityTypeNote } from 'appcoretruckassist/model/entityTypeNote';
 import { DetailsDataService } from '../../../services/details-data/details-data.service';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { AppTooltipComponent } from '../../standalone-components/app-tooltip/app-tooltip.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
     selector: 'app-ta-note',
     templateUrl: './ta-note.component.html',
     styleUrls: ['./ta-note.component.scss'],
     encapsulation: ViewEncapsulation.None,
+    standalone: true,
+    imports: [CommonModule, FormsModule, AppTooltipComponent, NgbModule],
     animations: [
         trigger('pickupAnimation', [
             transition(':enter', [

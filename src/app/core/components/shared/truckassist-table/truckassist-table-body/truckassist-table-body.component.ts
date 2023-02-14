@@ -25,6 +25,13 @@ import { SharedService } from '../../../../services/shared/shared.service';
 import { DetailsDataService } from '../../../../services/details-data/details-data.service';
 import { Titles } from 'src/app/core/utils/application.decorators';
 import { FilesService } from 'src/app/core/services/shared/files.service';
+import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { CustomScrollbarComponent } from '../../custom-scrollbar/custom-scrollbar.component';
+import { AngularSvgIconModule } from 'angular-svg-icon';
+import { TaNoteComponent } from '../../ta-note/ta-note.component';
+import { TaUploadFilesComponent } from '../../ta-upload-files/ta-upload-files.component';
+import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 
 @Titles()
 @Component({
@@ -32,6 +39,18 @@ import { FilesService } from 'src/app/core/services/shared/files.service';
     templateUrl: './truckassist-table-body.component.html',
     styleUrls: ['./truckassist-table-body.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
+    imports: [
+                CommonModule, 
+                FormsModule, 
+                ReactiveFormsModule,
+                CustomScrollbarComponent,
+                AngularSvgIconModule,
+                TaNoteComponent,
+                TaUploadFilesComponent,
+                NgbPopoverModule
+
+    ],
     providers: [
         {
             provide: VIRTUAL_SCROLL_STRATEGY,

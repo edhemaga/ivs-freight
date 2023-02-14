@@ -10,6 +10,7 @@ import {
 
 @Directive({
     selector: '[appHoverSvg]',
+    standalone: true
 })
 export class HoverSvgDirective implements OnChanges {
     @Input() fill: string;

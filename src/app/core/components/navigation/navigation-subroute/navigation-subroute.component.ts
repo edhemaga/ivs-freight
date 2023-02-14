@@ -13,6 +13,8 @@ import {
     SimpleChanges,
 } from '@angular/core';
 import { Router } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import {
     DropDownAnimation,
     navigation_route_animation,
@@ -29,6 +31,8 @@ import {
         DropDownAnimation,
         test('test'),
     ],
+    standalone: true,
+    imports: [CommonModule, FormsModule]
 })
 export class NavigationSubrouteComponent implements OnChanges {
     @Input() subroute: Navigation;

@@ -3,6 +3,7 @@ import { convertThousanSepInNumber } from '../../../../utils/methods.calculation
 
 @Pipe({
     name: 'financialCalculation',
+    standalone: true
 })
 export class FinancialCalculationPipe implements PipeTransform {
     transform(item: any, type: string): number {
