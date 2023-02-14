@@ -1,85 +1,128 @@
-import { Component, OnInit } from '@angular/core';
-import { ModalService } from '../../shared/ta-modal/modal.service';
-import { getIntegrationColumnDefinition } from './integration-columns';
-import { HttpClient } from '@angular/common/http';
-import { SettingsIntegrationService } from './state/company-integration.service';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { getIntegrationsColumnDefinition } from 'src/assets/utils/settings/integration-columns';
+import { IntegrationActiveQuery } from './state/integration-active.query';
+import {
+    convertDateFromBackend,
+    convertTimeFromBackend,
+} from 'src/app/core/utils/methods.calculations';
+import moment from 'moment';
 @Component({
     selector: 'app-settings-integration',
     templateUrl: './settings-integration.component.html',
     styleUrls: ['./settings-integration.component.scss'],
 })
-export class SettingsIntegrationComponent implements OnInit {
+export class SettingsIntegrationComponent implements OnInit, AfterViewInit {
     tableOptions: any = {};
-    selectedTab;
+    columns: any[] = [];
+    viewData: any[] = [];
+    selectedTab = 'active';
     tableData;
     trucksActive;
-    truckActiveQuery;
     trucksInactive;
     truckInactiveQuery;
     public activeViewMode = 'List';
-    constructor(
-        private http: HttpClient,
-        private integrationService: SettingsIntegrationService
-    ) {}
+    resizeObserver: ResizeObserver;
+    tableContainerWidth: number = 0;
+    constructor(private integrationActiveQuery: IntegrationActiveQuery) {}
     ngOnInit(): void {
         this.sendTruckData();
-        const obs = this.http.get(
-            'https://localhost:7226/api/integration/list?PageIndex=32&PageSize=32&CompanyId=1'
-        );
-        obs.subscribe((res) => {
-            console.log(res);
-        });
     }
     sendTruckData() {
         this.initTableOptions();
-
-        // const truckCount = JSON.parse(localStorage.getItem('truckTableCount'));
-
+        const truckCount = JSON.parse(
+            localStorage.getItem('integrationTableCount')
+        );
         const truckActiveData =
-            this.selectedTab === 'active' ? this.getTabData('active') : [];
-
-        // // const truckInactiveData =
-        // //     this.selectedTab === 'inactive' ? this.getTabData('inactive') : [];
+            this.selectedTab === 'active' ? this.getTabData() : [];
 
         this.tableData = [
             {
                 title: 'Active',
                 field: 'active',
-                // length: truckCount.active,
+                length: truckCount.active,
                 data: truckActiveData,
-                gridNameTitle: 'Truck',
-                stateName: 'trucks',
-                tableConfiguration: 'TRUCK',
-                isActive: this.selectedTab === 'active',
-                // gridColumns: this.getGridColumns('TRUCK'),
+                gridNameTitle: 'Integration',
+                stateName: 'integration',
+                tableConfiguration: 'Integration',
+                isActive: true,
+                gridColumns: this.getGridColumns('INTEGRATION'),
             },
-            // {
-            //     title: 'Inactive',
-            //     field: 'inactive',
-            //     length: truckCount.inactive,
-            //     data: truckInactiveData,
-            //     gridNameTitle: 'Truck',
-            //     stateName: 'trucks',
-            //     tableConfiguration: 'TRUCK',
-            //     isActive: this.selectedTab === 'inactive',
-            //     gridColumns: this.getGridColumns('TRUCK'),
-            // },
         ];
-
-        // const td = this.tableData.find((t) => t.field === this.selectedTab);
-
-        // this.setTruckData(td);
+        const td = this.tableData.find((t) => t.field === this.selectedTab);
+        this.setTruckData(td);
     }
-    getTabData(dataType: string) {
-        if (dataType === 'active') {
-            this.trucksActive = this.truckActiveQuery.getAll();
+    getGridColumns(configType: string): any[] {
+        return getIntegrationsColumnDefinition();
+    }
+    onToolBarAction(event) {}
+    ngAfterViewInit(): void {
+        setTimeout(() => {
+            this.observTableContainer();
+        }, 10);
+    }
+    observTableContainer() {
+        this.resizeObserver = new ResizeObserver((entries) => {
+            entries.forEach((entry) => {
+                this.tableContainerWidth = entry.contentRect.width;
+            });
+        });
 
-            return this.trucksActive?.length ? this.trucksActive : [];
-        } else if (dataType === 'inactive') {
-            this.trucksInactive = this.truckInactiveQuery.getAll();
+        this.resizeObserver.observe(document.querySelector('.table-container'));
+    }
+    getTabData() {
+        this.trucksActive = this.integrationActiveQuery.getAll();
 
-            return this.trucksInactive?.length ? this.trucksInactive : [];
+        return this.trucksActive?.length ? this.trucksActive : [];
+    }
+    setTruckData(td: any) {
+        this.columns = td.gridColumns;
+
+        if (td.data.length) {
+            this.viewData = td.data;
+
+            this.viewData = this.viewData.map((data) => {
+                console.log(data);
+                return this.mapTruckData(data);
+            });
+        } else {
+            this.viewData = [];
         }
+    }
+    convertDate = (date: string) => {
+        return moment.utc(date).local().format('MM/DD/YY hh:mm A');
+    };
+    mapTruckData(data: any) {
+        return {
+            ...data,
+            tableCardProvider: 'table card provider',
+            tableType: 'aasfasfwa',
+            tableUrl: data?.integrationProvider.url
+                ? data?.integrationProvider.url
+                : '',
+            tableUserId: data.userId,
+            tableCarrierId: data.carrierId,
+            tableIntegrationPassword: {
+                hiden: true,
+                apiCallStarted: false,
+                password: data?.password ? data.password : '',
+                hidemCharacters: this.getHidenCharacters(data),
+            },
+            tableIntegrationConnectedStatus:
+                data.integrationConnectedStatus.name,
+            tableLastConnected: data?.lastConnected
+                ? this.convertDate(data.lastConnected)
+                : '',
+            tabledisconnectedDate: data?.disconnectedDate
+                ? this.convertDate(data.disconnectedDate)
+                : '',
+        };
+    }
+    getHidenCharacters(data: any) {
+        let caracters: any = '';
+        for (let i = 0; i < data.password.length; i++) {
+            caracters += '<div class="password-characters-container"></div>';
+        }
+        return caracters;
     }
     initTableOptions(): void {
         this.tableOptions = {
