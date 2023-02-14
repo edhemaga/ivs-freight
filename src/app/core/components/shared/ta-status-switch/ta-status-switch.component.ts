@@ -14,6 +14,7 @@ import { ChangeDetectorRef } from '@angular/core';
 import { DispatcherStoreService } from '../../dispatch/state/dispatcher.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 
 export interface IDispatchModel {
     id: number;
@@ -27,7 +28,7 @@ export interface IDispatchModel {
     changeDetection: ChangeDetectionStrategy.OnPush,
     providers: [StatusPipePipe],
     standalone: true,
-    imports: [CommonModule, FormsModule],
+    imports: [CommonModule, FormsModule, StatusPipePipe, NgbPopoverModule],
     animations: [
         trigger('shadowAnimation', [
             transition(':enter', [

@@ -21,6 +21,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AppTooltipComponent } from '../../standalone-components/app-tooltip/app-tooltip.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { SafeHtmlPipe } from '../../../pipes/safe-html.pipe';
 
 @Component({
     selector: 'app-ta-note',
@@ -28,7 +29,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     styleUrls: ['./ta-note.component.scss'],
     encapsulation: ViewEncapsulation.None,
     standalone: true,
-    imports: [CommonModule, FormsModule, AppTooltipComponent, NgbModule],
+    imports: [CommonModule, FormsModule, AppTooltipComponent, NgbModule, SafeHtmlPipe],
     animations: [
         trigger('pickupAnimation', [
             transition(':enter', [
