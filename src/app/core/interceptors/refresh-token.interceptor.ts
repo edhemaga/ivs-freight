@@ -1,5 +1,5 @@
 import { configFactory } from './../../app.config';
-import { Injectable } from '@angular/core';
+import { Injectable, Inject, InjectionToken } from '@angular/core';
 import {
     HttpInterceptor,
     HttpEvent,
@@ -13,11 +13,15 @@ import { Router } from '@angular/router';
 import { UserLoggedService } from '../components/authentication/state/user-logged.service';
 import { WebsiteAuthService } from '../components/website/state/service/website-auth.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { JwtHelperService } from '@auth0/angular-jwt';
+
+export const JWT_HELPER_TOKEN = new InjectionToken('jwt.helper.service');
 
 @Injectable()
 export class RefreshTokenInterceptor implements HttpInterceptor {
     constructor(
         private accountService: AccountService,
+        @Inject(JWT_HELPER_TOKEN) private jwtHelper: JwtHelperService,
         private router: Router,
         private websiteAuthService: WebsiteAuthService,
         private userLoggedService: UserLoggedService,
@@ -34,7 +38,10 @@ export class RefreshTokenInterceptor implements HttpInterceptor {
                     localStorage.getItem('user')
                 );
 
-                if (err.status === 401 && user) {
+                if (
+                    err.status === 401 &&
+                    this.jwtHelper.isTokenExpired(user.token)
+                ) {
                     return this.accountService
                         .apiAccountRefreshPost({
                             refreshToken: user.refreshToken,

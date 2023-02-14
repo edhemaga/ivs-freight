@@ -226,7 +226,7 @@ export class TaInputComponent
                 }
 
                 this.input.nativeElement.focus();
-            }, 250);
+            }, 0);
         }
 
         // Reset Inputs
@@ -428,7 +428,6 @@ export class TaInputComponent
                     this.inputConfig.name === 'timepicker'
                 ) {
                     this.focusBlur = setTimeout(() => {
-                        // this.focusInput = false;
                         this.blurOnDateTime();
                     }, 100);
                 } else {
@@ -520,7 +519,6 @@ export class TaInputComponent
     }
 
     public toggleDropdownOptions() {
-        console.log('OPENED');
         if (this.inputConfig.isDisabled) {
             return;
         }
@@ -581,6 +579,13 @@ export class TaInputComponent
 
         if (this.inputConfig.priceSeparator) {
             this.isDotDeleted = this.getSuperControl?.value?.includes('.');
+        }
+
+        // Disable for phone field first character to be 0
+        if (this.inputConfig.name.toLowerCase() === 'phone') {
+            if (event.target.selectionStart === 0 && event.key === '0') {
+                event.preventDefault();
+            }
         }
 
         if (event.keyCode === 9) {
@@ -1231,6 +1236,7 @@ export class TaInputComponent
             ) {
                 return true;
             }
+
             event.preventDefault();
             return false;
         }

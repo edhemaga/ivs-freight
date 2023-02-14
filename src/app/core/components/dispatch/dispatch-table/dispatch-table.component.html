@@ -115,36 +115,34 @@
                                 </div>
                             </div>
                         </div>
-                        <div
-                            class="drop-item"
+
+                        <app-ta-input-dropdown
                             *ngIf="openedTruckDropdown == rowIndex"
-                        >
-                            <app-ta-input-dropdown
-                                [formControl]="truckFormControll"
-                                [template]="'svgtext-template'"
-                                [inputConfig]="{
-                                    name: 'Input Dropdown',
-                                    type: 'text',
-                                    label: 'Unit No',
-                                    isDropdown: true,
-                                    dropdownWidthClass: 'w-col-98',
-                                    placeholderInsteadOfLabel: true,
-                                    hideDropdownArrow: true,
-                                    autoFocus: true,
-                                    blackInput: true,
-                                    hideDropdownArrow: true,
-                                    hideRequiredCheck: true,
-                                    hideDangerMark: true,
-                                    hideErrorMessage: true,
-                                    mergedDropdown: true
-                                }"
-                                [options]="truckList"
-                                [canAddNew]="true"
-                                [canOpenModal]="true"
-                                [activeItem]="null"
-                                (selectedItem)="addTruck($event)"
-                            ></app-ta-input-dropdown>
-                        </div>
+                            [formControl]="truckFormControll"
+                            [template]="'svgtext-template'"
+                            [inputConfig]="{
+                                name: 'Input Dropdown',
+                                type: 'text',
+                                label: 'Unit No.',
+                                placeholder: 'Unit No.',
+                                isDropdown: true,
+                                dropdownWidthClass: 'w-col-118',
+                                placeholderInsteadOfLabel: true,
+                                hideDropdownArrow: true,
+                                autoFocus: true,
+                                blackInput: true,
+                                hideDropdownArrow: true,
+                                hideRequiredCheck: true,
+                                hideDangerMark: true,
+                                hideErrorMessage: true,
+                                mergeDropdownBodyWithInput: true
+                            }"
+                            [options]="truckList"
+                            [canAddNew]="true"
+                            [canOpenModal]="true"
+                            [activeItem]="null"
+                            (selectedItem)="addTruck($event)"
+                        ></app-ta-input-dropdown>
                     </div>
                 </td>
                 <td class="trailer-field">
@@ -257,36 +255,34 @@
                                     </div>
                                 </div>
                             </div>
-                            <div
-                                class="drop-item"
+
+                            <app-ta-input-dropdown
                                 *ngIf="openedTrailerDropdown == rowIndex"
-                            >
-                                <app-ta-input-dropdown
-                                    [formControl]="truckFormControll"
-                                    [template]="'svgtext-template'"
-                                    [inputConfig]="{
-                                        name: 'Input Dropdown',
-                                        type: 'text',
-                                        label: 'Unit No',
-                                        isDropdown: true,
-                                        dropdownWidthClass: 'w-col-98',
-                                        placeholderInsteadOfLabel: true,
-                                        hideDropdownArrow: true,
-                                        autoFocus: true,
-                                        blackInput: true,
-                                        hideDropdownArrow: true,
-                                        hideRequiredCheck: true,
-                                        hideDangerMark: true,
-                                        hideErrorMessage: true,
-                                        mergedDropdown: true
-                                    }"
-                                    [options]="trailerList"
-                                    [canAddNew]="true"
-                                    [canOpenModal]="true"
-                                    [activeItem]="null"
-                                    (selectedItem)="addTrailer($event)"
-                                ></app-ta-input-dropdown>
-                            </div>
+                                [formControl]="truckFormControll"
+                                [template]="'svgtext-template'"
+                                [inputConfig]="{
+                                    name: 'Input Dropdown',
+                                    type: 'text',
+                                    label: 'Unit No',
+                                    placeholder: 'Unit No.',
+                                    isDropdown: true,
+                                    dropdownWidthClass: 'w-col-118',
+                                    placeholderInsteadOfLabel: true,
+                                    hideDropdownArrow: true,
+                                    autoFocus: true,
+                                    blackInput: true,
+                                    hideDropdownArrow: true,
+                                    hideRequiredCheck: true,
+                                    hideDangerMark: true,
+                                    hideErrorMessage: true,
+                                    mergeDropdownBodyWithInput: true
+                                }"
+                                [options]="trailerList"
+                                [canAddNew]="true"
+                                [canOpenModal]="true"
+                                [activeItem]="null"
+                                (selectedItem)="addTrailer($event)"
+                            ></app-ta-input-dropdown>
                         </div>
                     </div>
                 </td>
@@ -481,36 +477,34 @@
                                     </div>
                                 </div>
                             </div>
-                            <div
-                                class="drop-item"
+
+                            <app-ta-input-dropdown
                                 *ngIf="openedDriverDropdown == rowIndex"
-                            >
-                                <app-ta-input-dropdown
-                                    [formControl]="truckFormControll"
-                                    [template]="'details-template'"
-                                    [inputConfig]="{
-                                        name: 'Input Dropdown',
-                                        type: 'text',
-                                        label: 'Unit No',
-                                        isDropdown: true,
-                                        dropdownWidthClass: 'w-col-200',
-                                        placeholderInsteadOfLabel: true,
-                                        hideDropdownArrow: true,
-                                        autoFocus: true,
-                                        blackInput: true,
-                                        hideDropdownArrow: true,
-                                        hideRequiredCheck: true,
-                                        hideDangerMark: true,
-                                        hideErrorMessage: true,
-                                        mergedDropdown: true
-                                    }"
-                                    [options]="driverList"
-                                    [canAddNew]="true"
-                                    [canOpenModal]="true"
-                                    [activeItem]="null"
-                                    (selectedItem)="addDriver($event)"
-                                ></app-ta-input-dropdown>
-                            </div>
+                                [formControl]="truckFormControll"
+                                [template]="'details-template'"
+                                [inputConfig]="{
+                                    name: 'Input Dropdown',
+                                    type: 'text',
+                                    label: 'Unit No',
+                                    placeholder: 'Unit No.',
+                                    isDropdown: true,
+                                    dropdownWidthClass: 'w-col-198',
+                                    placeholderInsteadOfLabel: true,
+                                    hideDropdownArrow: true,
+                                    autoFocus: true,
+                                    blackInput: true,
+                                    hideDropdownArrow: true,
+                                    hideRequiredCheck: true,
+                                    hideDangerMark: true,
+                                    hideErrorMessage: true,
+                                    mergeDropdownBodyWithInput: true
+                                }"
+                                [options]="driverList"
+                                [canAddNew]="true"
+                                [canOpenModal]="true"
+                                [activeItem]="null"
+                                (selectedItem)="addDriver($event)"
+                            ></app-ta-input-dropdown>
                         </div>
                     </div>
                 </td>
@@ -610,9 +604,7 @@
                                     label: 'Location',
                                     placeholder: 'Location',
                                     textTransform: 'capitalize',
-                                    incorrectInput:
-                                        selectedMode === 'REVIEW_MODE',
-                                    dropdownWidthClass: 'w-col-154',
+                                    dropdownWidthClass: 'w-col-151',
                                     minLength: 12,
                                     maxLength: 256,
                                     autoFocus: true,
@@ -833,35 +825,34 @@
                                 <div class="text">Assign</div>
                             </div>
                         </div>
-                        <div
-                            class="drop-item"
+
+                        <app-ta-input-dropdown
                             *ngIf="openParkingDropdown == rowIndex"
-                        >
-                            <app-ta-input-dropdown
-                                [formControl]="truckFormControll"
-                                [template]="'double-text-template'"
-                                [inputConfig]="{
-                                    name: 'Input Dropdown',
-                                    type: 'text',
-                                    isDropdown: true,
-                                    placeholder: 'Unit No.',
-                                    autoFocus: true,
-                                    blackInput: true,
-                                    hideDropdownArrow: true,
-                                    hideRequiredCheck: true,
-                                    hideDangerMark: true,
-                                    hideErrorMessage: true,
-                                    mergedDropdown: true,
-                                    textTransform: 'capitalize',
-                                    dropdownWidthClass: 'w-col-98'
-                                }"
-                                [canAddNew]="true"
-                                [canOpenModal]="true"
-                                [options]="parking"
-                                [activeItem]="selectedLabel"
-                                (selectedItem)="addParking($event)"
-                            ></app-ta-input-dropdown>
-                        </div>
+                            [formControl]="truckFormControll"
+                            [template]="'double-text-template'"
+                            [inputConfig]="{
+                                name: 'Input Dropdown',
+                                type: 'text',
+                                isDropdown: true,
+                                label: 'Unit No.',
+                                placeholder: 'Unit No.',
+                                placeholderInsteadOfLabel: true,
+                                autoFocus: true,
+                                blackInput: true,
+                                hideDropdownArrow: true,
+                                hideRequiredCheck: true,
+                                hideDangerMark: true,
+                                hideErrorMessage: true,
+                                mergeDropdownBodyWithInput: true,
+                                textTransform: 'capitalize',
+                                dropdownWidthClass: 'w-col-118'
+                            }"
+                            [canAddNew]="true"
+                            [canOpenModal]="true"
+                            [options]="parking"
+                            [activeItem]="selectedLabel"
+                            (selectedItem)="addParking($event)"
+                        ></app-ta-input-dropdown>
                     </div>
                 </td>
                 <td class="box-item">
@@ -956,36 +947,34 @@
                                 ></svg-icon>
                             </div>
                         </div>
-                        <div
-                            class="drop-item"
+
+                        <app-ta-input-dropdown
                             *ngIf="openedTruckDropdown == -2"
-                        >
-                            <app-ta-input-dropdown
-                                [formControl]="truckFormControll"
-                                [template]="'svgtext-template'"
-                                [inputConfig]="{
-                                    name: 'Input Dropdown',
-                                    type: 'text',
-                                    label: 'Unit No',
-                                    isDropdown: true,
-                                    dropdownWidthClass: 'w-col-98',
-                                    placeholderInsteadOfLabel: true,
-                                    hideDropdownArrow: true,
-                                    autoFocus: true,
-                                    blackInput: true,
-                                    hideDropdownArrow: true,
-                                    hideRequiredCheck: true,
-                                    hideDangerMark: true,
-                                    hideErrorMessage: true,
-                                    mergedDropdown: true
-                                }"
-                                [options]="truckList"
-                                [activeItem]="null"
-                                [canAddNew]="true"
-                                [canOpenModal]="true"
-                                (selectedItem)="addTruck($event)"
-                            ></app-ta-input-dropdown>
-                        </div>
+                            [formControl]="truckFormControll"
+                            [template]="'svgtext-template'"
+                            [inputConfig]="{
+                                name: 'Input Dropdown',
+                                type: 'text',
+                                label: 'Unit No',
+                                placeholder: 'Unit No.',
+                                isDropdown: true,
+                                dropdownWidthClass: 'w-col-118',
+                                placeholderInsteadOfLabel: true,
+                                hideDropdownArrow: true,
+                                autoFocus: true,
+                                blackInput: true,
+                                hideDropdownArrow: true,
+                                hideRequiredCheck: true,
+                                hideDangerMark: true,
+                                hideErrorMessage: true,
+                                mergeDropdownBodyWithInput: true
+                            }"
+                            [options]="truckList"
+                            [activeItem]="null"
+                            [canAddNew]="true"
+                            [canOpenModal]="true"
+                            (selectedItem)="addTruck($event)"
+                        ></app-ta-input-dropdown>
                     </div>
                 </td>
                 <td class="trailer-field">
@@ -1034,35 +1023,33 @@
                                     ></svg-icon>
                                 </div>
                             </div>
-                            <div
-                                class="drop-item"
+
+                            <app-ta-input-dropdown
                                 *ngIf="openedTrailerDropdown == -2"
-                            >
-                                <app-ta-input-dropdown
-                                    [formControl]="truckFormControll"
-                                    [template]="'svgtext-template'"
-                                    [inputConfig]="{
-                                        name: 'Input Dropdown',
-                                        type: 'text',
-                                        label: 'Unit No',
-                                        isDropdown: true,
-                                        dropdownWidthClass: 'w-col-98',
-                                        placeholderInsteadOfLabel: true,
-                                        autoFocus: true,
-                                        blackInput: true,
-                                        hideDropdownArrow: true,
-                                        hideRequiredCheck: true,
-                                        hideDangerMark: true,
-                                        hideErrorMessage: true,
-                                        mergedDropdown: true
-                                    }"
-                                    [options]="trailerList"
-                                    [activeItem]="null"
-                                    [canAddNew]="true"
-                                    [canOpenModal]="true"
-                                    (selectedItem)="addTrailer($event)"
-                                ></app-ta-input-dropdown>
-                            </div>
+                                [formControl]="truckFormControll"
+                                [template]="'svgtext-template'"
+                                [inputConfig]="{
+                                    name: 'Input Dropdown',
+                                    type: 'text',
+                                    label: 'Unit No',
+                                    placeholder: 'Unit No.',
+                                    isDropdown: true,
+                                    dropdownWidthClass: 'w-col-118',
+                                    placeholderInsteadOfLabel: true,
+                                    autoFocus: true,
+                                    blackInput: true,
+                                    hideDropdownArrow: true,
+                                    hideRequiredCheck: true,
+                                    hideDangerMark: true,
+                                    hideErrorMessage: true,
+                                    mergeDropdownBodyWithInput: true
+                                }"
+                                [options]="trailerList"
+                                [activeItem]="null"
+                                [canAddNew]="true"
+                                [canOpenModal]="true"
+                                (selectedItem)="addTrailer($event)"
+                            ></app-ta-input-dropdown>
                         </div>
                     </div>
                 </td>
@@ -1110,36 +1097,34 @@
                                     ></svg-icon>
                                 </div>
                             </div>
-                            <div
-                                class="drop-item"
+
+                            <app-ta-input-dropdown
                                 *ngIf="openedDriverDropdown == -2"
-                            >
-                                <app-ta-input-dropdown
-                                    [formControl]="truckFormControll"
-                                    [template]="'details-template'"
-                                    [inputConfig]="{
-                                        name: 'Input Dropdown',
-                                        type: 'text',
-                                        label: 'Unit No',
-                                        isDropdown: true,
-                                        dropdownWidthClass: 'w-col-200',
-                                        placeholderInsteadOfLabel: true,
-                                        hideDropdownArrow: true,
-                                        autoFocus: true,
-                                        blackInput: true,
-                                        hideDropdownArrow: true,
-                                        hideRequiredCheck: true,
-                                        hideDangerMark: true,
-                                        hideErrorMessage: true,
-                                        mergedDropdown: true
-                                    }"
-                                    [options]="driverList"
-                                    [activeItem]="null"
-                                    [canAddNew]="true"
-                                    [canOpenModal]="true"
-                                    (selectedItem)="addDriver($event)"
-                                ></app-ta-input-dropdown>
-                            </div>
+                                [formControl]="truckFormControll"
+                                [template]="'details-template'"
+                                [inputConfig]="{
+                                    name: 'Input Dropdown',
+                                    type: 'text',
+                                    label: 'Unit No',
+                                    placeholder: 'Unit No.',
+                                    isDropdown: true,
+                                    dropdownWidthClass: 'w-col-198',
+                                    placeholderInsteadOfLabel: true,
+                                    hideDropdownArrow: true,
+                                    autoFocus: true,
+                                    blackInput: true,
+                                    hideDropdownArrow: true,
+                                    hideRequiredCheck: true,
+                                    hideDangerMark: true,
+                                    hideErrorMessage: true,
+                                    mergeDropdownBodyWithInput: true
+                                }"
+                                [options]="driverList"
+                                [activeItem]="null"
+                                [canAddNew]="true"
+                                [canOpenModal]="true"
+                                (selectedItem)="addDriver($event)"
+                            ></app-ta-input-dropdown>
                         </div>
                     </div>
                 </td>
@@ -1168,9 +1153,7 @@
                                     label: 'Location',
                                     placeholder: 'Location',
                                     textTransform: 'capitalize',
-                                    incorrectInput:
-                                        selectedMode === 'REVIEW_MODE',
-                                    dropdownWidthClass: 'w-col-154',
+                                    dropdownWidthClass: 'w-col-151',
                                     minLength: 12,
                                     maxLength: 256,
                                     autoFocus: true,

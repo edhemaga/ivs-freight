@@ -71,64 +71,64 @@
     &.valid-focus-in {
         svg {
             path {
-                fill: $valid-focus-placeholderIcon !important;
+                fill: $valid-focus-placeholderIcon;
             }
         }
 
         text {
-            fill: $valid-focus-placeholderIcon !important;
+            fill: $valid-focus-placeholderIcon;
         }
 
         &::after {
-            background: $valid-focus-placeholderIcon-pipe !important;
+            background: $valid-focus-placeholderIcon-pipe;
         }
     }
 
     &.valid-focus-out {
         svg {
             path {
-                fill: $valid-placeholderIcon !important;
+                fill: $valid-placeholderIcon;
             }
         }
 
         text {
-            fill: $valid-placeholderIcon !important;
+            fill: $valid-placeholderIcon;
         }
 
         &::after {
-            background-color: $valid-placeholderIcon-pipe !important;
+            background-color: $valid-placeholderIcon-pipe;
         }
     }
 
     &.invalid-focus-in {
         svg {
             path {
-                fill: $invalid-focus-placeholderIcon !important;
+                fill: $invalid-focus-placeholderIcon;
             }
         }
 
         text {
-            fill: $invalid-focus-placeholderIcon !important;
+            fill: $invalid-focus-placeholderIcon;
         }
 
         &::after {
-            background-color: $invalid-focus-placeholderIcon-pipe !important;
+            background-color: $invalid-focus-placeholderIcon-pipe;
         }
     }
 
     &.invalid-focus-out {
         svg {
             path {
-                fill: $invalid-placeholderIcon !important;
+                fill: $invalid-placeholderIcon;
             }
         }
 
         text {
-            fill: $invalid-placeholderIcon !important;
+            fill: $invalid-placeholderIcon;
         }
 
         &::after {
-            background: $invalid-placeholderIcon-pipe !important;
+            background: $invalid-placeholderIcon-pipe;
         }
     }
 
@@ -149,18 +149,6 @@
 
         &::after {
             background-color: $inactive-filled-placeholderIcon-pipe;
-        }
-    }
-
-    &.focus {
-        svg {
-            path {
-                fill: $default-focus-placeholderIcon;
-            }
-        }
-
-        &::after {
-            background-color: $default-focus-placehilderIcon-pipe;
         }
     }
 

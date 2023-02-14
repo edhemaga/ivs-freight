@@ -1,11 +1,15 @@
 <div
+    class="application-dropdown"
     [ngClass]="{
         'multiselect-dropdown':
             inputConfig.multiselectDropdown && multiselectItems.length > 0,
-        focus: isMultiSelectInputFocus,
-        disabled: inputConfig.isDisabled
+        'multiselect-focus-out':
+            !isMultiSelectInputFocus && !inputConfig.isDisabled,
+        'multiselect-focus-in':
+            isMultiSelectInputFocus && !inputConfig.isDisabled,
+        'multiselect-disabled': inputConfig.isDisabled,
+        'merge-dropdown-body-with-input': inputConfig.mergeDropdownBodyWithInput
     }"
-    class="application-dropdown"
 >
     <p *ngIf="multiselectItems.length > 0" class="multiselect-label">
         {{ multiSelectLabel }}
@@ -15,10 +19,6 @@
     <svg-icon
         (click)="toggleMultiselectDropdown()"
         *ngIf="inputConfig.multiSelectDropdownActive"
-        [ngClass]="{
-            valid: !isMultiSelectInputFocus && multiselectItems.length > 0,
-            disabled: inputConfig.isDisabled
-        }"
         class="multiselect-arrow"
         src="assets/svg/common/ic_arrow_input.svg"
     ></svg-icon>
@@ -27,14 +27,11 @@
     <div
         (click)="deleteAllMultiSelectItems()"
         *ngIf="multiselectItems.length > 0 && !inputConfig.isDisabled"
-        [ngClass]="{
-            'valid-focus-in': !getSuperControl.value && isMultiSelectInputFocus
-        }"
-        class="input-clear input-clear-multiselect"
+        class="input-clear multiselect-clear"
         mainTooltip="Clear All"
         ngbTooltip
-        position="bottom"
-        tooltipBackground="#6c6c6c"
+        position="top"
+        tooltipBackground="#2f2f2f"
     >
         <svg-icon class="input-clear-x" src="assets/svg/ic_x.svg"></svg-icon>
     </div>
@@ -57,6 +54,25 @@
             class="multiselect-item"
         >
             {{ multiSelect.name }}
+            <!-- Active - Total Counter -->
+            <span
+                *ngIf="
+                    inputConfig.multiSelectItemRange &&
+                    multiSelect?.totalCounter
+                "
+            >
+                {{ multiSelect?.activeCounter }} of
+                {{ multiSelect?.totalCounter }}
+            </span>
+            <!-- Active Counter -->
+            <span
+                *ngIf="
+                    inputConfig.multiSelectItemRange &&
+                    !multiSelect?.totalCounter
+                "
+            >
+                {{ multiSelect?.activeCounter }}
+            </span>
             <div
                 (click)="removeMultiSelectItem(ind)"
                 *ngIf="!inputConfig.isDisabled"
@@ -64,7 +80,7 @@
                 mainTooltip="Clear"
                 ngbTooltip
                 position="top"
-                tooltipBackground="#6c6c6c"
+                tooltipBackground="#2f2f2f"
             >
                 <svg-icon src="assets/svg/ic_x.svg"></svg-icon>
             </div>
@@ -101,7 +117,7 @@
 <ng-template #taInputDropdownPopover>
     <!--------------------------- Dropdown options --------------------------->
     <div
-        *ngIf="inputConfig?.mergedDropdown"
+        *ngIf="inputConfig?.mergeDropdownBodyWithInput"
         class="dropdown-options-divider {{ inputConfig.dropdownWidthClass }}"
     ></div>
     <div
@@ -120,7 +136,8 @@
             'dropdown-options-groups':
                 template === 'groups' || template === 'load-broker-contact',
             'dropdown-options-fuel-franchise': template === 'fuel-franchise',
-            'merged-dropdown': inputConfig?.mergedDropdown,
+            'merge-dropdown-body-with-input':
+                inputConfig?.mergeDropdownBodyWithInput,
             'no-result-container': options[0]?.name === 'No Results'
         }"
         class="dropdown-options  {{ inputConfig.dropdownWidthClass }}"

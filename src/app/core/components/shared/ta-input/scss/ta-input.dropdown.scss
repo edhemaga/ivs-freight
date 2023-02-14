@@ -44,14 +44,14 @@
             transform: rotate(180deg);
             transition: all 0.3s ease-in-out;
             path {
-                fill: $default-focus-arrow !important;
+                fill: $default-focus-arrow;
             }
         }
 
         &:hover {
             svg {
                 path {
-                    fill: $default-focus-on-arrow-hover !important;
+                    fill: $default-focus-on-arrow-hover;
                 }
             }
         }
@@ -60,14 +60,14 @@
     &.invalid-focus-out {
         svg {
             path {
-                fill: $invalid-arrow !important;
+                fill: $invalid-arrow;
             }
         }
 
         &:hover {
             svg {
                 path {
-                    fill: $invalid-on-arrow-hover !important;
+                    fill: $invalid-on-arrow-hover;
                 }
             }
         }
@@ -77,14 +77,14 @@
     &.invalid-search-in-dropdown-focus-in {
         svg {
             path {
-                fill: $invalid-focus-arrow !important;
+                fill: $invalid-focus-arrow;
             }
         }
 
         &:hover {
             svg {
                 path {
-                    fill: $invalid-focus-on-arrow-hover !important;
+                    fill: $invalid-focus-on-arrow-hover;
                 }
             }
         }
@@ -93,14 +93,14 @@
     &.valid-focus-in {
         svg {
             path {
-                fill: $valid-focus-arrow !important;
+                fill: $valid-focus-arrow;
             }
         }
 
         &:hover {
             svg {
                 path {
-                    fill: $valid-focus-on-arrow-hover !important;
+                    fill: $valid-focus-on-arrow-hover;
                 }
             }
         }
@@ -109,14 +109,14 @@
     &.valid-focus-out {
         svg {
             path {
-                fill: $valid-arrow !important;
+                fill: $valid-arrow;
             }
         }
 
         &:hover {
             svg {
                 path {
-                    fill: $valid-on-arrow-hover !important;
+                    fill: $valid-on-arrow-hover;
                 }
             }
         }

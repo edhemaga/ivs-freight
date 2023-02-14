@@ -272,6 +272,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
 
     public onModalHeaderTabChange(event: any) {
         this.selectedHeaderTab = event.id;
+        console.log(event);
         if (event.id === 1) {
             setTimeout(() => {
                 this.DetailsDataService.setUnitValue(
@@ -307,15 +308,21 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                 for (let i = 0; i < this.items.length; i++) {
                     this.inputService.changeValidators(
                         this.items.controls[i].get('description'),
-                        false
+                        false,
+                        [],
+                        true
                     );
                     this.inputService.changeValidators(
                         this.items.controls[i].get('quantity'),
-                        false
+                        false,
+                        [],
+                        true
                     );
                     this.inputService.changeValidators(
                         this.items.controls[i].get('price'),
-                        false
+                        false,
+                        [],
+                        true
                     );
                 }
             }
@@ -1089,7 +1096,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                   );
 
             this.onModalHeaderTabChange(
-                res.typeOfRepair.find((item) => item.checked)
+                this.headerTabs.find((item) => item.name === res.repairType)
             );
 
             const timeout2 = setTimeout(() => {
@@ -1100,7 +1107,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                     odometer: res.odometer,
                     date: res.date,
                     invoice: res.invoice,
-                    repairShopId: res.repairShopId,
+                    repairShopId: res?.editRepairShop ? null : res.repairShopId,
                     note: res.note,
                 });
 
@@ -1111,7 +1118,9 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                 this.services = res.services;
 
                 // Repair Shop
-                this.selectedRepairShop = res.selectedRepairShop;
+                this.selectedRepairShop = res?.editRepairShop
+                    ? null
+                    : res.selectedRepairShop;
 
                 // Header Tabs
                 this.headerTabs = res.headerTabs;
@@ -1399,7 +1408,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
         }
     }
 
-    public openRepairShop(repairShop: any) {
+    public openRepairShop() {
         this.ngbActiveModal.close();
         this.modalService.setProjectionModal({
             action: 'open',
@@ -1417,6 +1426,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                     subtotal: this.subtotal,
                     selectedPM: this.selectedPM,
                     selectedPMIndex: this.selectedPMIndex,
+                    editRepairShop: true,
                 },
                 id: this.selectedRepairShop.id,
             },
@@ -1439,7 +1449,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
             }
         });
 
-        if(tags.length) {
+        if (tags.length) {
             this.tagsService.updateTag({ tags: tags }).subscribe();
         }
     }

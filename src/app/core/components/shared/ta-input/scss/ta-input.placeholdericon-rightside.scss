@@ -42,31 +42,31 @@
 
     &.focus {
         &::before {
-            background-color: $default-focus-placehilderIcon-pipe !important;
+            background-color: $default-focus-placehilderIcon-pipe;
         }
     }
 
     &.valid-focus-out {
         &::before {
-            background-color: $valid-placeholderIcon-pipe !important;
+            background-color: $valid-placeholderIcon-pipe;
         }
     }
 
     &.valid-focus-in {
         &::before {
-            background-color: $valid-focus-placeholderIcon-pipe !important;
+            background-color: $valid-focus-placeholderIcon-pipe;
         }
     }
 
     &.invalid-focus-out {
         &::before {
-            background-color: $invalid-placeholderIcon-pipe !important;
+            background-color: $invalid-placeholderIcon-pipe;
         }
     }
 
     &.invalid-focus-in {
         &::before {
-            background-color: $invalid-focus-placeholderIcon-pipe !important;
+            background-color: $invalid-focus-placeholderIcon-pipe;
         }
     }
 }

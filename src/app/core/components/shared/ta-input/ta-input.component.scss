@@ -22,32 +22,32 @@
         }
 
         &.invalid-empty-focus-out {
-            background-color: $invalid-input !important;
+            background-color: $invalid-input;
 
             &:hover {
-                background-color: $invalid-input-hover !important;
+                background-color: $invalid-input-hover;
             }
         }
 
         &.valid-focus-out {
-            background-color: $valid-input !important;
+            background-color: $valid-input;
 
             &:hover {
-                background-color: $valid-input-hover !important;
+                background-color: $valid-input-hover;
             }
         }
 
         &.inactive-empty {
-            background-color: $inactive-empty-input !important;
+            background-color: $inactive-empty-input;
         }
 
         &.inactive-filled {
-            background-color: $inactive-filled-input !important;
+            background-color: $inactive-filled-input;
         }
     }
 
     //--------------- Classes on all INPUT ELEMENTS ---------------
-    &.custom-hover {
+    &.custom-empty-hover {
         &:hover {
             transition: all 0.3s ease-in-out;
 
@@ -59,20 +59,42 @@
 
                 &:before:hover,
                 &:after:hover ~ .input-control {
-                    background-color: $default-on-input-hover !important;
+                    background-color: $default-on-input-hover;
                 }
             }
         }
     }
 
-    // Reflect on Load Billing Part
+    &.custom-filled-hover {
+        &:hover {
+            .input-clear {
+                display: inline-block;
+            }
+
+            transition: all 0.3s ease-in-out;
+
+            .input-dropdown-arrow,
+            .input-icon,
+            .input-clear {
+                &:hover ~ .input-control {
+                    background-color: $default-on-input-hover;
+                }
+
+                &:before:hover,
+                &:after:hover ~ .input-control {
+                    background-color: $default-on-input-hover;
+                }
+            }
+        }
+    }
+
     &.input-remove-trash-can {
         &:hover {
             .input-clear {
                 display: inline-block;
 
                 &:hover ~ .input-control {
-                    background-color: $default-on-input-hover !important;
+                    background-color: $default-on-input-hover;
                 }
             }
             .placeholder-icon-right-side {
@@ -94,12 +116,12 @@
                 display: inline-block !important;
 
                 &:hover ~ .input-control {
-                    background-color: $invalid-input-hover !important;
+                    background-color: $invalid-input-hover;
                 }
 
                 &:before:hover,
                 &:after:hover ~ .input-control {
-                    background-color: $invalid-input-hover !important;
+                    background-color: $invalid-input-hover;
                 }
             }
         }
@@ -120,12 +142,12 @@
                 display: inline-block !important;
 
                 &:hover ~ .input-control {
-                    background-color: $invalid-input-hover !important;
+                    background-color: $invalid-input-hover;
                 }
 
                 &:before:hover,
                 &:after:hover ~ .input-control {
-                    background-color: $invalid-input-hover !important;
+                    background-color: $invalid-input-hover;
                 }
             }
         }
@@ -137,12 +159,12 @@
 
             .input-password-eye {
                 &:hover ~ .input-control {
-                    background-color: $invalid-focus-input !important;
+                    background-color: $invalid-focus-input;
                 }
 
                 &:before:hover,
                 &:after:hover ~ .input-control {
-                    background-color: $invalid-focus-input !important;
+                    background-color: $invalid-focus-input;
                 }
             }
         }
@@ -161,12 +183,12 @@
                 transition: all 0.3s ease-in-out;
 
                 &:hover ~ .input-control {
-                    background-color: $valid-input-hover !important;
+                    background-color: $valid-input-hover;
                 }
 
                 &:before:hover,
                 &:after:hover ~ .input-control {
-                    background-color: $valid-input-hover !important;
+                    background-color: $valid-input-hover;
                 }
             }
 
@@ -183,12 +205,57 @@
             .trash-can-svg,
             .input-password-eye {
                 &:hover ~ .input-control {
-                    background-color: $valid-focus-input !important;
+                    background-color: $valid-focus-input;
                 }
 
                 &:before:hover,
                 &:after:hover ~ .input-control {
-                    background-color: $valid-focus-input !important;
+                    background-color: $valid-focus-input;
+                }
+            }
+        }
+    }
+
+    &.inactive-filled {
+        &:hover {
+            .input-clear,
+            .trash-can-svg,
+            .input-pen-container,
+            .input-dropdown-arrow,
+            .input-icon,
+            .input-password-eye {
+                display: inline-block;
+                transition: all 0.3s ease-in-out;
+
+                &:hover ~ .input-control {
+                    background-color: $inactive-filled-input;
+                }
+
+                &:before:hover,
+                &:after:hover ~ .input-control {
+                    background-color: $inactive-filled-input;
+                }
+            }
+        }
+    }
+
+    &.inactive-empty {
+        &:hover {
+            .input-clear,
+            .input-pen-container,
+            .input-dropdown-arrow,
+            .input-icon,
+            .input-password-eye {
+                display: inline-block;
+                transition: all 0.3s ease-in-out;
+
+                &:hover ~ .input-control {
+                    background-color: $inactive-empty-input;
+                }
+
+                &:before:hover,
+                &:after:hover ~ .input-control {
+                    background-color: $inactive-empty-input;
                 }
             }
         }

@@ -36,7 +36,7 @@ $default-placeholderIcon-purple: #ba68c8;
 $default-placeholderIcon-pipe: rgb(145, 145, 145, 0.4);
 $default-arrow: #919191;
 $default-path-clear: #eeeeee;
-$default-retc-clear: #919191;
+$default-rect-clear: #919191;
 
 // Commands
 $default-commands-path: #eeeeee;
@@ -63,16 +63,20 @@ $default-password: #919191;
 $default-focus-input: #1d1d1d;
 $default-focus-label: #2f2f2f;
 $default-focus-content: #ffffff;
+$default-focus-placeholder: rgb(255, 255, 255, 0.4);
 $default-focus-placeholderIcon: #cccccc;
 $default-focus-placehilderIcon-pipe: rgb(204, 204, 204, 0.4);
 $default-focus-placeholderText: #919191;
 $default-focus-arrow: #cccccc;
+$default-focus-path-clear: #1d1d1d;
+$default-focus-rect-clear: #aaaaaa;
 
 // Selection
 $default-focus-content-selection: rgb(255, 255, 255, 0.2);
 
 //Focus Hover
 $default-focus-on-arrow-hover: #ffffff;
+$default-focus-on-rect-clear: #ffffff;
 
 //------------------------------ VALID --------------------------------------
 //Valid
@@ -90,6 +94,10 @@ $valid-arrow: #6f9ee0;
 $valid-pen-path: #c5d8f3;
 $valid-pen-rect: #6f9ee0;
 
+// MultiSelect
+$valid-multiselect-item-path-clear: #ffffff;
+$valid-multiselect-item-rect-clear: #6f9ee0;
+
 // Selection
 $valid-content-background-selection: rgb(47, 47, 47, 0.2);
 
@@ -102,6 +110,10 @@ $valid-on-rect-clear-hover: #3074d3;
 $valid-on-pen-rect-hover: #3074d3;
 $valid-on-arrow-hover: #3074d3;
 $valid-on-password-hover: #3074d3;
+$valid-on-multiselect-item-hover: #ffffff;
+
+// Multiselect
+$valid-multiselect-item-on-rect-clear-hover: #3074d3;
 
 //Valid Focus
 $valid-focus-input: #255bb9;
@@ -115,6 +127,11 @@ $valid-focus-path-clear: #255bb9;
 $valid-focus-rect-clear: #c5d8f3;
 $valid-focus-arrow: #c5d8f3;
 
+// Multiselect
+$valid-focus-multiselect-item: #3074d3;
+$valid-focus-multiselect-item-path-clear: #6f9ee0;
+$valid-focus-multiselect-item-rect-clear: #e2ecf9;
+
 // Selection
 $valid-focus-content-background-selection: rgb(255, 255, 255, 0.2);
 
@@ -125,6 +142,10 @@ $valid-focus-password: #98b9ea;
 $valid-focus-on-rect-clear-hover: #ffffff;
 $valid-focus-on-arrow-hover: #ffffff;
 $valid-focus-on-password-hover: #ffffff;
+$valid-focus-multiselect-item-rect-clear-hover: #ffffff;
+
+// Multiselect
+$valid-focus-on-multiselect-item: #6f9ee0;
 
 //------------------------------- INVALID -------------------------------------
 

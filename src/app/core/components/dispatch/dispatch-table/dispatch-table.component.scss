@@ -325,7 +325,7 @@
                                         font-weight: 700;
                                         color: #2f2f2f;
 
-                                        &::selection{
+                                        &::selection {
                                             background-color: #2f2f2f33;
                                             color: #2f2f2f;
                                         }
@@ -334,7 +334,7 @@
                                         font-size: 11px;
                                         color: #919191;
 
-                                        &::selection{
+                                        &::selection {
                                             background-color: #91919133;
                                             color: #919191;
                                         }
@@ -557,12 +557,18 @@
 
                 &.addNew {
                     background-color: #f7f7f7;
+                    border-bottom-left-radius: 0px !important;
+                    border-bottom-right-radius: 0px !important;
+
                     .text {
                         color: #2f2f2f !important;
                     }
+
                     &:hover {
                         cursor: pointer;
                         background-color: #3074d3;
+                        border-bottom-left-radius: 0px !important;
+                        border-bottom-right-radius: 0px !important;
 
                         .text {
                             color: #fff !important;
@@ -616,7 +622,6 @@
                     z-index: 10;
                 }
 
-
                 &.parking-field-new {
                     .add_new {
                         justify-content: flex-start;
@@ -626,25 +631,25 @@
                         }
                     }
 
-                    &.unassigned{
+                    &.unassigned {
                         background-color: #fff;
 
-                        svg-icon{
-                            path{
-                                fill: #CCCCCC !important;
+                        svg-icon {
+                            path {
+                                fill: #cccccc !important;
                             }
                         }
 
-                        .text{
+                        .text {
                             font-size: 11px;
                             color: #919191;
                         }
 
-                        &:hover{
-                            background-color: #42A4F4;
+                        &:hover {
+                            background-color: #42a4f4;
 
-                            svg-icon{
-                                path{
+                            svg-icon {
+                                path {
                                     fill: #fff;
                                 }
                             }
@@ -716,14 +721,6 @@
                 // min-width: 190px;
                 // max-width: 190px;
                 // width: 190px; // Bez sirine za sad zbog ostatka tabele da se moze prilagoditi
-            }
-
-            .drop-item {
-                app-ta-input-dropdown {
-                    input {
-                        height: 34px !important;
-                    }
-                }
             }
         }
     }

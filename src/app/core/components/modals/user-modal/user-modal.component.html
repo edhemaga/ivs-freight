@@ -253,8 +253,10 @@
                                         isDisabled:
                                             selectedUserType?.name ===
                                                 'Owner' || isUserReturned,
-                                        textTransform: 'lowercase'
+                                        textTransform: 'lowercase',
+                                        removeInput: isUserReturned
                                     }"
+                                    (clear)="resetDataByEmail($event)"
                                 ></app-ta-input>
                             </div>
                         </div>

@@ -1,267 +1,142 @@
 @import '../../app/core/components/shared/ta-input/scss/ta-input.clear.scss';
 @import '../../app/core/components/shared/ta-input/scss/ta-input.colors.scss';
-.multiselect-dropdown {
-    display: flex;
-    flex-direction: column;
-    justify-items: center;
-    border-radius: 2px;
-    background-color: $default-input;
-    position: relative;
-
-    .multiselect-label {
-        position: absolute;
-        top: -17px;
-        left: 6px;
-        font-size: 11px;
-        font-weight: 600;
-        color: $default-label;
-        -webkit-user-select: auto !important;
-        -moz-user-select: auto !important;
-        -ms-user-select: auto !important;
-        user-select: auto !important;
-        pointer-events: all !important;
-        transition: all 0.3s ease-in-out;
-
-        &::-moz-selection {
-            background-color: $default-content-background-selection;
-            color: $default-content;
-        }
-
-        &::selection {
-            background-color: $default-content-background-selection;
-            color: $default-content;
-        }
-
-        .required-label-multiselect {
-            color: $input-required-star;
-        }
-    }
-
-    .multiselect-arrow {
-        position: absolute;
-        top: 2px;
-        right: 4px;
-        transition: all 0.3s ease-in-out;
-
-        svg {
-            transform: rotate(0deg);
-            transition: all 0.3s ease-in-out;
-        }
-
-        &:hover {
-            svg {
-                path {
-                    fill: $default-arrow !important;
-                }
-            }
-        }
-
-        &.valid {
-            svg {
-                path {
-                    fill: $valid-arrow;
-                }
-            }
-        }
-
-        &.disabled {
-            display: none;
-        }
-    }
-
-    .multiselect-items {
-        display: grid;
-        width: 95%;
-        grid-template-columns: repeat(2, 1fr);
-        grid-template-rows: 22px;
-        gap: 4px;
+.application-dropdown {
+    // Merged Dropdown Body with Input
+    &.merge-dropdown-body-with-input {
         padding: 4px;
-
-        &.multiselect-3-columns {
-            grid-template-columns: repeat(3, 1fr);
-        }
-
-        .multiselect-item {
-            width: 100%;
-            height: 22px;
-            border-radius: 1px;
-            background-color: $default-input;
-            color: $default-content;
-            padding: 2px 4px;
-            font-size: 14px;
-            font-weight: 400;
-            line-height: 18px;
-            position: relative;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
-
-            &-clear {
-                position: absolute;
-                right: 4px;
-                top: 1px;
-                border-radius: 1px;
-                display: none;
-                transition: all 0.3s ease-in-out;
-                z-index: 10;
-                cursor: pointer;
-
-                svg {
-                    width: 14px !important;
-                    height: 14px !important;
-                    overflow: visible;
-                    path {
-                        fill: $default-path-clear;
-                    }
-                    rect {
-                        transition: transform 0.3s;
-                        transform: scale(1);
-                        transform-origin: center;
-                        fill: $default-retc-clear;
-                    }
-                }
-
-                &:hover {
-                    svg {
-                        overflow: visible;
-                        rect {
-                            transform: scale(1.2);
-                            transform-origin: center;
-                            transition: transform 0.3s;
-                            fill: $default-on-rect-clear-hover !important;
-                        }
-                    }
-                }
-            }
-
-            &:hover {
-                .multiselect-item-clear {
-                    display: inline-block;
-                }
-            }
-        }
+        border-top-right-radius: 2px;
+        border-top-left-radius: 2px;
+        background: #2f2f2f;
     }
 
-    // multiselect dropdown hover
-    &:hover {
-        background-color: $default-on-input-hover;
+    // Multiselect dropdown
+    &.multiselect-dropdown {
+        display: flex;
+        flex-direction: column;
+        justify-items: center;
+        border-radius: 2px;
+        position: relative;
+        transition: all 0.3s ease-in-out;
+
+        .multiselect-label {
+            position: absolute;
+            top: -17px;
+            left: 6px;
+            font-size: 11px;
+            font-weight: 600;
+            color: $valid-label;
+            -webkit-user-select: auto !important;
+            -moz-user-select: auto !important;
+            -ms-user-select: auto !important;
+            user-select: auto !important;
+            pointer-events: all !important;
+            transition: all 0.3s ease-in-out;
+
+            &::-moz-selection {
+                background-color: $default-content-background-selection;
+                color: $default-content;
+            }
+
+            &::selection {
+                background-color: $default-content-background-selection;
+                color: $default-content;
+            }
+
+            .required-label-multiselect {
+                color: $input-required-star;
+            }
+        }
 
         .multiselect-arrow {
+            position: absolute;
+            top: 1px;
+            right: 6px;
             cursor: pointer;
-            &.valid {
-                svg {
-                    path {
-                        fill: $default-on-arrow-hover;
-                    }
-                }
-            }
-        }
-
-        // Ovveride input clear class
-        .input-clear-multiselect {
-            top: auto !important;
-            bottom: 2px !important;
-            display: inline-block !important;
-
-            &:hover {
-                .input-clear-x {
-                    svg {
-                        path {
-                            fill: $default-path-clear !important;
-                        }
-                    }
-                    &:hover {
-                        svg {
-                            rect {
-                                fill: $default-on-rect-clear-hover !important;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        // .multiselect-items {
-        //     .multiselect-item {
-        //         color: $input-black-color-1;
-        //     }
-        // }
-        // // Ovveride input class
-        // .input-custom-group .input-control {
-        //     background-color: $input-white-color-2 !important;
-        // }
-    }
-
-    // Focused Multiple Dropdowns
-    &.focus {
-        background-color: $valid-focus-input;
-
-        .multiselect-arrow {
             svg {
-                transform: rotate(180deg);
+                transform: rotate(0deg);
                 transition: all 0.3s ease-in-out;
-                path {
-                    fill: $valid-focus-arrow !important;
-                }
-            }
-        }
-
-        // Ovveride input clear class
-        .input-clear-multiselect {
-            top: auto !important;
-            bottom: 2px !important;
-            display: inline-block !important;
-
-            &:hover {
-                .input-clear-x {
-                    svg {
-                        path {
-                            fill: $valid-focus-path-clear !important;
-                        }
-                    }
-                    &:hover {
-                        svg {
-                            rect {
-                                fill: $valid-focus-on-rect-clear-hover !important;
-                            }
-                        }
-                    }
-                }
             }
         }
 
         .multiselect-items {
-            .multiselect-item {
-                background-color: $valid-focus-input;
-                color: $valid-focus-content;
+            display: grid;
+            width: 95%;
+            grid-template-columns: repeat(2, 1fr);
+            grid-template-rows: 22px;
+            gap: 4px;
+            padding: 4px;
 
-                &-clear {
+            &.multiselect-3-columns {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .multiselect-item {
+                width: 100%;
+                height: 22px;
+                border-radius: 1px;
+                padding: 2px 4px;
+                font-size: 14px;
+                font-weight: 400;
+                line-height: 18px;
+                position: relative;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                -webkit-user-select: none;
+                -moz-user-select: none;
+                -ms-user-select: none;
+                user-select: none;
+                display: flex;
+                align-items: center;
+                gap: 6px;
+
+                span {
+                    background: $valid-input;
+                    color: #3074d3;
+                    font-size: 11px;
+                    font-weight: 500;
+                    display: inline-block;
+                    width: max-content;
+                    line-height: 14px;
+                    padding: 0px 4px;
+                    border-radius: 50px;
+                }
+
+                .multiselect-item-clear {
+                    position: absolute;
+                    right: 4px;
+                    top: 1px;
+                    border-radius: 1px;
+                    display: none;
+                    transition: all 0.3s ease-in-out;
+                    z-index: 10;
+                    cursor: pointer;
+
                     svg {
-                        path {
-                            fill: $valid-focus-path-clear;
-                        }
+                        width: 14px !important;
+                        height: 14px !important;
+                        overflow: visible;
+
                         rect {
-                            fill: $valid-focus-rect-clear;
+                            transition: transform 0.3s;
+                            transform: scale(1);
+                            transform-origin: center;
                         }
                     }
 
                     &:hover {
                         svg {
+                            overflow: visible;
                             rect {
-                                fill: $valid-focus-on-rect-clear-hover !important;
+                                transform: scale(1.2);
+                                transform-origin: center;
+                                transition: transform 0.3s;
                             }
                         }
                     }
                 }
 
                 &:hover {
-                    background-color: $valid-input-hover;
-                    transition: all 0.3s ease-in-out;
-
                     .multiselect-item-clear {
                         display: inline-block;
                     }
@@ -269,29 +144,228 @@
             }
         }
 
-        &:hover {
-            background-color: $valid-input-hover !important;
+        .multiselect-clear {
+            top: 75%;
+        }
 
-            .multiselect-items {
-                .multiselect-item {
-                    color: $valid-focus-content !important;
+        // multiselect dropdown focus out
+        &.multiselect-focus-out {
+            background-color: $valid-input;
+
+            app-ta-input {
+                .input-control {
+                    background-color: $valid-input !important;
                 }
             }
 
-            // Ovveride input class
-            .input-custom-group .input-control {
-                background-color: $valid-focus-content !important;
+            .multiselect-arrow {
+                svg {
+                    path {
+                        fill: $valid-arrow;
+                    }
+                }
+
+                &:hover {
+                    svg {
+                        path {
+                            fill: $valid-on-arrow-hover;
+                        }
+                    }
+                }
+            }
+
+            .multiselect-items {
+                .multiselect-item {
+                    background-color: $valid-input-hover;
+                    color: $default-content;
+                }
+            }
+
+            &:hover {
+                background-color: $valid-input-hover;
+
+                app-ta-input {
+                    .input-control {
+                        background-color: $valid-input-hover !important;
+                    }
+                }
+
+                .multiselect-clear {
+                    display: inline-block !important;
+
+                    .input-clear-x {
+                        svg {
+                            path {
+                                fill: $valid-path-clear;
+                            }
+                            rect {
+                                fill: $valid-rect-clear !important;
+                            }
+                        }
+                    }
+
+                    &:hover {
+                        .input-clear-x {
+                            &:hover {
+                                svg {
+                                    rect {
+                                        fill: $valid-on-rect-clear-hover !important;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                .multiselect-items {
+                    .multiselect-item {
+                        background-color: $valid-input;
+
+                        span {
+                            background: $valid-input-hover;
+                        }
+
+                        &:hover {
+                            background-color: $valid-on-multiselect-item-hover;
+
+                            .multiselect-item-clear {
+                                svg {
+                                    path {
+                                        fill: $valid-multiselect-item-path-clear;
+                                    }
+                                    rect {
+                                        fill: $valid-multiselect-item-rect-clear;
+                                    }
+                                }
+
+                                &:hover {
+                                    rect {
+                                        fill: $valid-multiselect-item-on-rect-clear-hover !important;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
-    }
 
-    &.disabled {
-        background-color: $inactive-filled-input !important;
-        color: $inactive-filled-content !important;
+        // multiselect dropdown focus in
+        &.multiselect-focus-in {
+            background-color: $valid-focus-input;
 
-        .multiselect-items {
-            .multiselect-item {
-                background-color: $inactive-filled-input !important;
+            app-ta-input {
+                .input-control {
+                    background-color: $valid-focus-input !important;
+                }
+            }
+
+            .multiselect-arrow {
+                svg {
+                    transform: rotate(180deg);
+                    path {
+                        fill: $valid-focus-arrow;
+                    }
+                }
+
+                &:hover {
+                    svg {
+                        path {
+                            fill: $valid-focus-on-arrow-hover;
+                        }
+                    }
+                }
+            }
+
+            .multiselect-items {
+                .multiselect-item {
+                    background-color: $valid-focus-multiselect-item;
+                    color: $valid-focus-content;
+
+                    span {
+                        background: $valid-input;
+                    }
+                }
+            }
+
+            &:hover {
+                .multiselect-clear {
+                    display: inline-block !important;
+
+                    .input-clear-x {
+                        svg {
+                            path {
+                                fill: $valid-focus-path-clear;
+                            }
+                            rect {
+                                fill: $valid-focus-rect-clear !important;
+                            }
+                        }
+                    }
+
+                    &:hover {
+                        .input-clear-x {
+                            &:hover {
+                                svg {
+                                    rect {
+                                        fill: $valid-focus-on-rect-clear-hover !important;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                .multiselect-items {
+                    .multiselect-item {
+                        &:hover {
+                            background-color: $valid-focus-on-multiselect-item;
+
+                            .multiselect-item-clear {
+                                svg {
+                                    path {
+                                        fill: $valid-focus-multiselect-item-path-clear;
+                                    }
+                                    rect {
+                                        fill: $valid-focus-multiselect-item-rect-clear;
+                                    }
+                                }
+
+                                &:hover {
+                                    rect {
+                                        fill: $valid-focus-multiselect-item-rect-clear-hover !important;
+                                    }
+                                }
+                            }
+
+                            span {
+                                background: #fff;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        // multiselect dropdown disabled
+        &.multiselect-disabled {
+            background-color: $inactive-filled-input !important;
+
+            app-ta-input {
+                .input-control {
+                    background-color: $inactive-filled-input !important;
+                }
+            }
+
+            .multiselect-arrow {
+                display: none !important;
+            }
+
+            .multiselect-items {
+                .multiselect-item {
+                    background-color: $inactive-filled-input !important;
+                    color: $inactive-filled-content !important;
+                }
             }
         }
     }

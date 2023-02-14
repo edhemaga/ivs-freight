@@ -33,6 +33,7 @@ import {
     switchMap,
     of,
     debounceTime,
+    takeWhile,
 } from 'rxjs';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { BankVerificationService } from '../../../services/BANK-VERIFICATION/bankVerification.service';
@@ -235,7 +236,9 @@ export class UserModalComponent implements OnInit, OnDestroy {
         address: AddressEntity;
         valid: boolean;
     }): void {
-        if (event.valid) this.selectedAddress = event.address;
+        if (event.valid) {
+            this.selectedAddress = event.address;
+        }
     }
 
     public onSaveNewBank(bank: { data: any; action: string }) {
@@ -394,11 +397,6 @@ export class UserModalComponent implements OnInit, OnDestroy {
         }
     }
 
-    ngOnDestroy(): void {
-        this.destroy$.next();
-        this.destroy$.complete();
-    }
-
     private createForm() {
         this.userForm = this.formBuilder.group({
             firstName: [null, [Validators.required, ...firstNameValidation]],
@@ -457,6 +455,7 @@ export class UserModalComponent implements OnInit, OnDestroy {
             .get('email')
             .valueChanges.pipe(
                 takeUntil(this.destroy$),
+                takeWhile(() => !this.isUserReturned),
                 debounceTime(500),
                 switchMap((value) => {
                     if (this.userForm.get('email').valid) {
@@ -480,10 +479,25 @@ export class UserModalComponent implements OnInit, OnDestroy {
                         this.selectedAddress = res.address;
                     }
                 },
-                error: (error) => {
+                error: () => {
                     this.isUserReturned = false;
                 },
             });
+    }
+
+    public resetDataByEmail(event: boolean) {
+        if (event) {
+            this.isUserReturned = false;
+            this.userForm.patchValue({
+                firstName: null,
+                lastName: null,
+                email: null,
+                phone: null,
+                address: null,
+            });
+            this.selectedAddress = null;
+            this.checkUserEmail();
+        }
     }
 
     private trackUserPayroll() {
@@ -904,5 +918,10 @@ export class UserModalComponent implements OnInit, OnDestroy {
                 },
                 error: () => {},
             });
+    }
+
+    ngOnDestroy(): void {
+        this.destroy$.next();
+        this.destroy$.complete();
     }
 }

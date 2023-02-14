@@ -27,7 +27,6 @@ export interface ITaInput {
     placeholderText?: string;
     placeholderInsteadOfLabel?: boolean;
     inputCursorOnRightSide?: boolean;
-    connectDropdown?: boolean;
     isRequired?: boolean;
     isDisabled?: boolean;
     pattern?: string;
@@ -114,7 +113,7 @@ export interface ITaInput {
     };
     isInvalidSearchInDropdown?: boolean;
     selectedDropdown?: boolean;
-    mergedDropdown?: boolean;
+    mergeDropdownBodyWithInput?: boolean;
 
     // Label dropdown
     dropdownLabel?: boolean;
@@ -123,5 +122,8 @@ export interface ITaInput {
     // MultiSelect Dropdown
     multiselectDropdown?: boolean;
     multiSelectDropdownActive?: boolean;
+    multiSelectItemRange?: boolean;
+
+    // DateTime Picker
     isFromDate?: boolean;
 }
