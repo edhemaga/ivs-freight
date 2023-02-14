@@ -31,6 +31,7 @@ import { HighlightSearchPipe } from 'src/app/core/pipes/highlight-search.pipe';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { ProfileImagesComponent } from '../profile-images/profile-images.component';
 import { LoadModalProgressBarComponent } from '../../modals/load-modal/load-modal-progress-bar/load-modal-progress-bar.component';
+import { TaSvgPipe } from '../../../pipes/ta-svg.pipe';
 
 @Component({
     selector: 'app-ta-input-dropdown',
@@ -51,7 +52,8 @@ import { LoadModalProgressBarComponent } from '../../modals/load-modal/load-moda
             HighlightSearchPipe,
             AngularSvgIconModule,
             ProfileImagesComponent,
-            LoadModalProgressBarComponent
+            LoadModalProgressBarComponent,
+            TaSvgPipe
     ]
 })
 export class TaInputDropdownComponent
