@@ -433,6 +433,8 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
                     this.clusterAnimation[data.id] = true;
                 }
             });
+
+            this.ref.detectChanges();
         }, 1000);
     }
 
