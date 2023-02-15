@@ -13,15 +13,13 @@ export class SettingsIntegrationComponent implements OnInit, AfterViewInit {
     viewData: any[] = [];
     selectedTab = 'active';
     tableData;
-    trucksActive;
-    trucksInactive;
-    truckInactiveQuery;
+    integrationsActive;
     public activeViewMode = 'List';
     resizeObserver: ResizeObserver;
     tableContainerWidth: number = 0;
     constructor(private integrationActiveQuery: IntegrationActiveQuery) {}
     ngOnInit(): void {
-        this.sendTruckData();
+        this.sendIntegrationsData();
     }
     ngAfterViewInit(): void {
         setTimeout(() => {
@@ -76,28 +74,28 @@ export class SettingsIntegrationComponent implements OnInit, AfterViewInit {
                 {
                     title: 'Delete',
                     name: 'delete-item',
-                    type: 'truck',
-                    text: 'Are you sure you want to delete truck(s)?',
+                    type: 'integrations',
+                    text: 'Are you sure you want to delete integration(s)?',
                     class: 'delete-text',
                     contentType: 'delete',
                 },
             ],
         };
     }
-    sendTruckData() {
+    sendIntegrationsData() {
         this.initTableOptions();
-        const truckCount = JSON.parse(
+        const integrationsCount = JSON.parse(
             localStorage.getItem('integrationTableCount')
         );
-        const truckActiveData =
+        const IntegrationsActiveData =
             this.selectedTab === 'active' ? this.getTabData() : [];
 
         this.tableData = [
             {
                 title: 'Active',
                 field: 'active',
-                length: truckCount.active,
-                data: truckActiveData,
+                length: integrationsCount.active,
+                data: IntegrationsActiveData,
                 gridNameTitle: 'Integration',
                 stateName: 'integration',
                 tableConfiguration: 'Integration',
@@ -106,25 +104,25 @@ export class SettingsIntegrationComponent implements OnInit, AfterViewInit {
             },
         ];
         const td = this.tableData.find((t) => t.field === this.selectedTab);
-        this.setTruckData(td);
+        this.setIntegrationsData(td);
     }
     getGridColumns(): any[] {
         return getIntegrationsColumnDefinition();
     }
-    setTruckData(td: any) {
+    setIntegrationsData(td: any) {
         this.columns = td.gridColumns;
 
         if (td.data.length) {
             this.viewData = td.data;
 
             this.viewData = this.viewData.map((data) => {
-                return this.mapTruckData(data);
+                return this.mapIntegrationsData(data);
             });
         } else {
             this.viewData = [];
         }
     }
-    mapTruckData(data: any) {
+    mapIntegrationsData(data: any) {
         return {
             ...data,
             tableCardProvider: 'table card provider',
@@ -156,10 +154,13 @@ export class SettingsIntegrationComponent implements OnInit, AfterViewInit {
     onTableBodyActions(event) {
         console.log(event);
     }
+    onTableHeadActions(event) {
+        console.log(event);
+    }
     getTabData() {
-        this.trucksActive = this.integrationActiveQuery.getAll();
+        this.integrationsActive = this.integrationActiveQuery.getAll();
 
-        return this.trucksActive?.length ? this.trucksActive : [];
+        return this.integrationsActive?.length ? this.integrationsActive : [];
     }
 
     convertDate = (date: string) => {

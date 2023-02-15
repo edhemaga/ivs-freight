@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import { QueryEntity } from '@datorama/akita';
 import {
-    IntegrationActiveStore,
+    IntegrationStore,
     IntegrationActiveState,
 } from './integrationActiveStore';
 
 @Injectable({ providedIn: 'root' })
 export class IntegrationActiveQuery extends QueryEntity<IntegrationActiveState> {
-    constructor(protected truckStore: IntegrationActiveStore) {
-        super(truckStore);
+    constructor(protected integrationStore: IntegrationStore) {
+        super(integrationStore);
     }
 }

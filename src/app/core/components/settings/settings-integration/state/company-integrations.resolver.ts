@@ -2,14 +2,14 @@ import { Injectable } from '@angular/core';
 import { Resolve } from '@angular/router';
 import { IntegrationService } from 'appcoretruckassist';
 import { Observable, tap } from 'rxjs';
-import { IntegrationActiveStore } from './integrationActiveStore';
+import { IntegrationStore } from './integrationActiveStore';
 @Injectable({
     providedIn: 'root',
 })
 export class integrationResolver implements Resolve<any> {
     constructor(
         private integrationService: IntegrationService,
-        private integrationStore: IntegrationActiveStore
+        private integrationStore: IntegrationStore
     ) {}
 
     resolve(): Observable<any> {
