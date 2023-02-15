@@ -470,6 +470,69 @@
                 </agm-snazzy-info-window>
             </agm-marker>
 
+            <div
+                *ngFor="
+                    let latlong of companyOffices;
+                    let i = index;
+                "
+            >
+                <agm-marker
+                    *ngIf="latlong.showMarker"
+                    [label]="latlong.name"
+                    [latitude]="latlong.latitude"
+                    [longitude]="latlong.longitude"
+                    [agmFitBounds]="true"
+                    [visible]="false"
+                >
+                    <agm-snazzy-info-window
+                        [closeOnMapClick]="false"
+                        [closeWhenOthersOpen]="false"
+                        [isOpen]="true"
+                        [latitude]="latlong.latitude"
+                        [longitude]="latlong.longitude"
+                        [maxHeight]="32"
+                        [maxWidth]="26"
+                        [openOnMarkerClick]="false"
+                        [pointer]="false"
+                        [showCloseButton]="false"
+                        [panOnOpen]="false"
+                        placement="bottom"
+                    >
+                        <ng-template>
+                            <div
+                                class="marker-container"
+                                (mousewheel)="markerZoom($event, latlong)"
+                            >
+                                <svg-icon
+                                    class="marker-icon"
+                                    src="assets/svg/common/ic_marker_office.svg"
+                                ></svg-icon>
+
+                                <div
+                                    [ngClass]="{
+                                        'hide-marker':
+                                            !latlong.isSelected && markerSelected,
+                                        'hide-marker-tooltip': latlong.isSelected
+                                    }"
+                                >
+                                    <div
+                                        class="marker-tooltip"
+                                        [ngClass]="{
+                                            'hide-marker-tooltip':
+                                                latlong.isSelected
+                                        }"
+                                    >
+                                        <div>
+                                            {{ latlong.name }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-template>
+                    </agm-snazzy-info-window>
+                </agm-marker>
+            </div>
+
             <!-- <div *ngFor="let route of driverDestinations; let i = index">
                 <agm-direction
                     [renderOptions]="{
@@ -515,7 +578,7 @@
                     <div class="svg-divider"></div>
                     <div
                         *ngIf="showManageDevice"
-                        class="marker-info-text marker-bold-text"
+                        class="marker-info-text marker-bold-text disable-select"
                     >
                         Manage Device
                     </div>
@@ -1339,7 +1402,7 @@
                 </ng-container>
             </div>
             <!-- Trailer list -->
-            <div class="marker-divider" [ngStyle]="{ margin: '6px 0px' }"></div>
+            <!-- <div class="marker-divider" [ngStyle]="{ margin: '6px 0px' }"></div>
             <div class="gps-list-scroll trailer-list">
                 <ng-container
                     *ngFor="
@@ -1466,13 +1529,13 @@
                         </div>
                     </div>
                 </ng-container>
-            </div>
+            </div> -->
         </div>
     </div>
 </div>
 
 <ng-template #columnsMenu>
-    <div class="columns-menu-container">
+    <div class="columns-menu-container disable-select">
         <div class="columns-menu-row" (click)="manageDeviceToggle()">
             <div class="columns-align">
                 <svg-icon

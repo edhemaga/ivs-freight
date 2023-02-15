@@ -357,6 +357,7 @@
     .header-text-container {
         display: flex;
         height: 14px;
+        user-select: none;
     }
 
     svg-icon {
@@ -775,4 +776,8 @@
 
 .hidden-row {
     opacity: 0.4;
+}
+
+.disable-select {
+    user-select: none;
 }
