@@ -1,13 +1,3 @@
-<!--   *ngIf="
-                            isNavigationHovered &&
-                            item.isRouteActive &&
-                            !isModalPanelOpen &&
-                            closeDropdownOnNavClose &&
-                            !isUserPanelOpen &&
-                            !isSettingsPanelOpen &&
-                            !isUserCompanyDetailsOpen &&
-                            subrouteClicked
-                        " -->
 <div class="navigation">
     <div
         class="nav-holder"
@@ -25,6 +15,7 @@
                 [isNavigationHoveredAndPanelOpen]="
                     isModalPanelOpen && isNavigationHovered
                 "
+                [isNavigationHovered]="isNavigationHovered"
             ></app-navigation-modals>
         </div>
 
@@ -33,7 +24,6 @@
             (mouseenter)="onMidleNavHover(true); onFooterHover(false)"
             (mouseleave)="onMidleNavHover(false); onFooterHover(false)"
         >
-            <!-- <div class="navigation-routes-container"> -->
             <div
                 class="navigation-routes"
                 *ngFor="
@@ -85,7 +75,13 @@
                         !isSettingsPanelOpen &&
                         !isUserCompanyDetailsOpen
                     "
-                    [isNavigationHovered]="isNavigationHovered"
+                    [slowAnimation]="
+                        !isSettingsPanelOpen &&
+                        !isActiveSubroute &&
+                        !isUserPanelOpen &&
+                        !isModalPanelOpen &&
+                        !openedDropdown
+                    "
                     [contentHeight]="item.route.length"
                 >
                     <app-navigation-route
@@ -96,7 +92,7 @@
                         [openedDropdown]="openedDropdown"
                         [subrouteContainerOpened]="subrouteContainerOpened"
                         [selectedRoute]="selectedRoute"
-                        [activeLink]="item.isRouteActive"
+                        [activeLink]="item.isRouteActive && isNavigationHovered"
                         [isSettingsPanelOpen]="isSettingsPanelOpen"
                         [isUserPanelOpen]="isUserPanelOpen"
                         [isNavigationHovered]="isNavigationHovered"
@@ -152,7 +148,8 @@
                         !isUserCompanyDetailsOpen &&
                         !isUserPanelOpen &&
                         !openedDropdown &&
-                        selectedRoute != 'Settings')
+                        selectedRoute != 'Settings' &&
+                        selectedRoute != 'Notifications')
                 "
                 [@showHideDetails]="
                     !subrouteContainerOpened &&
@@ -170,7 +167,6 @@
                     'magic-line-width': !isNavigationHovered
                 }"
             ></div>
-            <!-- </div> -->
         </div>
         <!-- Open nav on click -->
         <div
@@ -207,6 +203,7 @@
                 "
                 [isUserPanelOpen]="isUserPanelOpen"
                 [companiesExists]="companiesExists"
+                [isUserCompanyDetailsOpen]="isUserCompanyDetailsOpen"
             >
             </app-navigation-user-profile>
 

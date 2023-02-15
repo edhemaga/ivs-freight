@@ -11,6 +11,8 @@ import {
     Validators,
     AbstractControl,
     UntypedFormControl,
+    FormsModule,
+    ReactiveFormsModule,
 } from '@angular/forms';
 import {
     ChangeDetectorRef,
@@ -39,7 +41,7 @@ import {
 } from '../../../utils/methods.calculations';
 import moment from 'moment';
 import { CreateLoadTemplateCommand } from '../../../../../../appcoretruckassist/model/createLoadTemplateCommand';
-import { IBilling, IPayment } from './load-financial/load-financial.component';
+import { IBilling, IPayment, LoadFinancialComponent } from './load-financial/load-financial.component';
 import { MapRouteModel } from '../../shared/model/map-route';
 import { BrokerModalComponent } from '../broker-modal/broker-modal.component';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
@@ -51,6 +53,20 @@ import { ViewChild } from '@angular/core';
 import { trigger, transition, style, animate } from '@angular/animations';
 import { EditTagsService } from 'src/app/core/services/shared/editTags.service';
 import { getLoadModalColumnDefinition } from 'src/assets/utils/settings/modal-columns-configuration/table-load-modal-columns';
+import { CommonModule } from '@angular/common';
+import { AppTooltipComponent } from '../../standalone-components/app-tooltip/app-tooltip.component';
+import { TaModalComponent } from '../../shared/ta-modal/ta-modal.component';
+import { TaTabSwitchComponent } from '../../standalone-components/ta-tab-switch/ta-tab-switch.component';
+import { AngularSvgIconModule } from 'angular-svg-icon';
+import { TaInputDropdownComponent } from '../../shared/ta-input-dropdown/ta-input-dropdown.component';
+import { TaInputComponent } from '../../shared/ta-input/ta-input.component';
+import { TaCustomCardComponent } from '../../shared/ta-custom-card/ta-custom-card.component';
+import { TaCheckboxComponent } from '../../shared/ta-checkbox/ta-checkbox.component';
+import { LoadStopComponent } from './load-stop/load-stop.component';
+import { TaUploadFilesComponent } from '../../shared/ta-upload-files/ta-upload-files.component';
+import { TaInputNoteComponent } from '../../shared/ta-input-note/ta-input-note.component';
+import { LoadDatetimeRangePipe } from './pipes/load-datetime-range.pipe';
+import { LoadTimeTypePipe } from './pipes/load-time-type.pipe';
 
 interface IStopRoutes {
     longitude: number;
@@ -63,6 +79,27 @@ interface IStopRoutes {
     selector: 'app-load-modal',
     templateUrl: './load-modal.component.html',
     styleUrls: ['./load-modal.component.scss'],
+    standalone: true,
+    imports: [
+            CommonModule, 
+            FormsModule, 
+            AppTooltipComponent, 
+            TaModalComponent, 
+            TaTabSwitchComponent, 
+            ReactiveFormsModule,
+            AngularSvgIconModule,
+            TaInputDropdownComponent,
+            TaInputComponent,
+            TaCustomCardComponent,
+            TaCheckboxComponent,
+            LoadStopComponent,
+            LoadFinancialComponent,
+            TaUploadFilesComponent,
+            TaInputNoteComponent,
+            FinancialCalculationPipe,
+            LoadDatetimeRangePipe,
+            LoadTimeTypePipe
+        ],
     animations: [
         trigger('fadeIn', [
             transition(':enter', [
@@ -3687,7 +3724,9 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             }
         });
 
-        this.tagsService.updateTag({ tags: tags }).subscribe();
+        if(tags.length) {
+            this.tagsService.updateTag({ tags: tags }).subscribe();
+        }
     }
 
     // MODAL TABLE

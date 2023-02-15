@@ -8,8 +8,29 @@ app-truck-details-card {
         svg {
             path {
                 fill: $color-truck !important;
-                stroke: #c3c3c3;
             }
+        }
+
+        &.whiteTruck{
+            svg {
+                path {
+                    stroke: #AAAAAA;
+                    stroke-width:1.5;
+                }
+            }
+        }
+
+        &.inactiveTruckLogo{
+            
+            svg {
+                position: relative;
+                left: -30px;
+                transform: scaleX(-1);
+                path {
+                        fill: #AAAAAA !important;
+                        stroke: transparent;
+                   }
+                }
         }
     }
     .custom-card-single {
@@ -50,7 +71,6 @@ app-truck-details-card {
             padding: 0px 0px !important;
         }
         .note-body {
-            padding: 0 6px !important;
             .note-textarea {
                 color: #6c6c6c !important;
                 font-weight: 500 !important;
@@ -276,6 +296,15 @@ app-truck-details-card {
             .card-icon {
                 display: flex;
                 cursor: pointer;
+            }
+        }
+    }
+
+    .whiteColorCode{
+        svg {
+            path {
+                stroke: #AAAAAA;
+                stroke-width:1.5;
             }
         }
     }

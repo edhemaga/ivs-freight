@@ -13,6 +13,8 @@ import { NotificationService } from 'src/app/core/services/notification/notifica
 import { DetailsDataService } from '../../../services/details-data/details-data.service';
 import moment from 'moment';
 import { Subject } from 'rxjs';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 const routeSpecify = {
     '/api/account/login': 'Driver',
@@ -22,6 +24,8 @@ const routeSpecify = {
     selector: 'app-custom-toast-messages',
     templateUrl: './custom-toast-messages.component.html',
     styleUrls: ['./custom-toast-messages.component.scss'],
+    standalone: true,
+    imports: [CommonModule, FormsModule],
     animations: [
         trigger('flyInOut', [
             state(
@@ -102,6 +106,10 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
             value: 'LOGIN',
         },
         {
+            api: 'broker/availablecredit',
+            value: 'CREDIT'
+        },
+        {
             api: 'broker',
             value: 'BROKER',
         },
@@ -163,7 +171,11 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
             value: 'CDL',
         },
         {
-            api: 'rating',
+            api: 'ratingreview/review',
+            value: 'REVIEW',
+        },
+        {
+            api: 'ratingreview/rating',
             value: 'RATE',
         },
         {
@@ -198,10 +210,7 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
             api: 'title',
             value: 'TITLE',
         },
-        {
-            api: 'RatingReview',
-            value: 'REVIEW',
-        },
+        
         {
             api: 'todo',
             value: 'TASK',
@@ -292,7 +301,7 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
                 item.api === apiEndPoint || apiEndPoint.indexOf(item.api) > -1
         );
         this.actionType = item ? item.value : '';
-
+      
         let splitUrl = this.httpRequest.url.split('/');
         let splitLength = splitUrl.length;
         let lastPlace = splitLength - 1;
@@ -409,20 +418,12 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
 
                 break;
             case 'RATE':
-                let likedStatus = this.DetailsDataService.mainData.raiting
-                    ? this.DetailsDataService.mainData.raiting?.hasLiked
-                    : this.DetailsDataService.mainData.shopRaiting?.hasLiked;
-                let dislikedStatus = this.DetailsDataService.mainData.raiting
-                    ? this.DetailsDataService.mainData.raiting?.hasDislike
-                    : this.DetailsDataService.mainData.shopRaiting?.hasDislike;
-
-                if (!likedStatus && !dislikedStatus) {
+                if (this.DetailsDataService.mainData.rating == 0) {
                     this.actionTitle =
                         this.toastrType == 'toast-error'
                             ? 'REMOVE RATE'
                             : 'REMOVED RATE';
-                }
-                if (likedStatus || dislikedStatus) {
+                } else {
                     this.actionTitle =
                         this.toastrType == 'toast-error' ? 'RATE' : 'RATED';
                 }
@@ -1037,6 +1038,9 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
                     }
                     this.message = this.DetailsDataService.documentName ? this.DetailsDataService.documentName : '';
                 break;
+            case 'CREDIT': 
+            this.message = this.httpRequest?.body?.creditLimit ? this.httpRequest?.body?.creditLimit : '';
+            break;
         }
 
         if (this.actionType == 'DRIVER' && !this.message) {

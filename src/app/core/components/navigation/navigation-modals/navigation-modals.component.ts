@@ -6,6 +6,7 @@ import {
     repairNavigationData,
     safetyNavigationData,
     toolsNavigationData,
+    requestNavigationData,
 } from '../model/navigation-data';
 import { NavigationModal } from '../model/navigation.model';
 import { NavigationService } from '../services/navigation.service';
@@ -33,47 +34,59 @@ import { DriverDrugAlcoholModalComponent } from '../../modals/driver-modal/drive
 import { PayrollDeductionModalComponent } from '../../modals/payroll-modals/payroll-deduction-modal/payroll-deduction-modal.component';
 import { PayrollBonusModalComponent } from '../../modals/payroll-modals/payroll-bonus-modal/payroll-bonus-modal.component';
 import { PayrollCreditBonusComponent } from '../../modals/payroll-modals/payroll-credit-bonus/payroll-credit-bonus.component';
+import {
+    moveElementsTopDownModal,
+    smoothHeight,
+} from '../navigation.animation';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { AngularSvgIconModule } from 'angular-svg-icon';
 
 @Component({
     selector: 'app-navigation-modals',
     templateUrl: './navigation-modals.component.html',
     styleUrls: ['./navigation-modals.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
+    imports: [CommonModule, FormsModule, AngularSvgIconModule],
+    animations: [
+        smoothHeight('showHideDetails'),
+        moveElementsTopDownModal('moveTopDown'),
+    ],
 })
 export class NavigationModalsComponent {
     @Input() isNavigationHoveredAndPanelOpen: boolean = false;
-
+    @Input() isNavigationHovered: boolean = false;
     public generalNavigationData: NavigationModal[] = generalNavigationData;
     public toolsNavigationData: NavigationModal[] = toolsNavigationData;
     public repairNavigationData: NavigationModal[] = repairNavigationData;
     public fuelNavigationData: NavigationModal[] = fuelNavigationData;
     public safetyNavigationData: NavigationModal[] = safetyNavigationData;
+    public requestNavigationData: NavigationModal[] = requestNavigationData;
     public accountingNavigationData: NavigationModal[] =
         accountingNavigationData;
-
+    public showToolTip: boolean = false;
     public changeTextHoverOnCloseModal: boolean = false;
-    public Title: string = 'Add New';
+    public Title: string = 'Add Anything';
+    public OpenCloseModal: boolean = false;
     constructor(
         private modalService: ModalService,
         private navigationService: NavigationService
     ) {}
-
-    public onAction(action: string, item?: NavigationModal) {
-        switch (action) {
-            case 'Close Panel': {
-                this.navigationService.onDropdownActivation({
-                    name: 'Modal Panel',
-                    type: false,
-                });
-                break;
-            }
-            case 'Open Modal': {
-                this.openModal(item);
-                break;
-            }
-            default:
-                return;
-        }
+    public OpenMainModal(openClose: boolean) {
+        this.OpenCloseModal = openClose;
+        this.navigationService.onDropdownActivation({
+            name: 'Modal Panel',
+            type: this.OpenCloseModal,
+        });
+    }
+    public changeText(text: boolean) {
+        text == true && text
+            ? (this.Title = 'Close')
+            : (this.Title = 'Add Anything');
+    }
+    public onAction(item: NavigationModal) {
+        this.openModal(item);
     }
 
     private openModal(navItem: NavigationModal) {

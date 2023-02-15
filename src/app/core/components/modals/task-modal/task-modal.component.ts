@@ -1,4 +1,4 @@
-import { Validators } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
@@ -14,7 +14,7 @@ import {
 import { ModalService } from '../../shared/ta-modal/modal.service';
 
 import { TodoTService } from '../../to-do/state/todo.service';
-import { ReviewCommentModal } from '../../shared/ta-user-review/ta-user-review.component';
+import { ReviewCommentModal, TaUserReviewComponent } from '../../shared/ta-user-review/ta-user-review.component';
 import {
     departmentValidation,
     descriptionValidation,
@@ -28,12 +28,32 @@ import {
     convertDateToBackend,
     convertDateFromBackend,
 } from '../../../utils/methods.calculations';
+import { CommonModule } from '@angular/common';
+import { TaModalComponent } from '../../shared/ta-modal/ta-modal.component';
+import { TaTabSwitchComponent } from '../../standalone-components/ta-tab-switch/ta-tab-switch.component';
+import { TaInputComponent } from '../../shared/ta-input/ta-input.component';
+import { TaInputDropdownComponent } from '../../shared/ta-input-dropdown/ta-input-dropdown.component';
+import { TaCustomCardComponent } from '../../shared/ta-custom-card/ta-custom-card.component';
+import { TaUploadFilesComponent } from '../../shared/ta-upload-files/ta-upload-files.component';
 
 @Component({
     selector: 'app-task-modal',
     templateUrl: './task-modal.component.html',
     styleUrls: ['./task-modal.component.scss'],
     providers: [ModalService, FormService],
+    standalone: true,
+    imports: [
+            CommonModule, 
+            FormsModule, 
+            TaModalComponent, 
+            TaTabSwitchComponent, 
+            ReactiveFormsModule, 
+            TaInputComponent, 
+            TaInputDropdownComponent, 
+            TaCustomCardComponent, 
+            TaUploadFilesComponent,
+            TaUserReviewComponent
+    ]
 })
 export class TaskModalComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
@@ -81,11 +101,6 @@ export class TaskModalComponent implements OnInit, OnDestroy {
 
         // -------------- DEVELOP MODE --------------------
         this.companyUser = JSON.parse(localStorage.getItem('user'));
-
-        if (this.editData?.type === 'edit') {
-            this.disableCardAnimation = true;
-            this.editTask(this.editData.id);
-        }
     }
 
     private createForm() {
@@ -509,6 +524,11 @@ export class TaskModalComponent implements OnInit, OnDestroy {
                         };
                     });
                     this.resCompanyUsers = [...this.showCompanyUsers];
+
+                    if (this.editData?.type === 'edit') {
+                        this.disableCardAnimation = true;
+                        this.editTask(this.editData.id);
+                    }
                 },
                 error: () => {},
             });

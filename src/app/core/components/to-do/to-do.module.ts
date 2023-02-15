@@ -7,10 +7,11 @@ import { ToDoRoutingModule } from './to-do-routing.module';
 import { ToDoListCardComponent } from './to-do-list-card/to-do-list-card.component';
 
 import { GridsterModule } from 'angular-gridster2';
-import { AppTooltipeModule } from '../shared/app-tooltip/app-tooltip.module';
 import { NgxSmoothDnDModule } from 'ngx-smooth-dnd';
-import { TruckassistProgressExpirationModule } from './../shared/truckassist-progress-expiration/truckassist-progress-expiration.module';
 import { CarrierSearchComponent } from '../standalone-components/carrier-search/carrier-search.component';
+import { FilterComponent } from '../standalone-components/filter/filter.component';
+import { AppTooltipComponent } from '../standalone-components/app-tooltip/app-tooltip.component';
+import { formatDatePipe } from '../../pipes/formatDate.pipe';
 
 @NgModule({
     declarations: [ToDoListCardComponent],
@@ -19,11 +20,12 @@ import { CarrierSearchComponent } from '../standalone-components/carrier-search/
         ToDoRoutingModule,
         AngularSvgIconModule,
         GridsterModule,
-        AppTooltipeModule,
         SharedModule,
         NgxSmoothDnDModule,
-        TruckassistProgressExpirationModule,
         CarrierSearchComponent,
+        FilterComponent,
+        AppTooltipComponent,
+        formatDatePipe
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })

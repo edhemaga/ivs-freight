@@ -1,5 +1,12 @@
 import { Component, Input, OnInit, OnDestroy } from '@angular/core';
-import { UntypedFormArray, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import {
+    FormsModule,
+    ReactiveFormsModule,
+    UntypedFormArray,
+    UntypedFormBuilder,
+    UntypedFormGroup,
+    Validators,
+} from '@angular/forms';
 import { tab_modal_animation } from '../../shared/animations/tabs-modal.animation';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
 import { AddressEntity } from 'appcoretruckassist';
@@ -23,6 +30,13 @@ import { AccidentTService } from '../../safety/accident/state/accident.service';
 import { AccidentModalResponse } from '../../../../../../appcoretruckassist/model/accidentModalResponse';
 import { RoadsideInspectionResponse } from '../../../../../../appcoretruckassist/model/roadsideInspectionResponse';
 import { ITaInput } from '../../shared/ta-input/ta-input.config';
+import { CommonModule } from '@angular/common';
+import { TaModalComponent } from '../../shared/ta-modal/ta-modal.component';
+import { TaTabSwitchComponent } from '../../standalone-components/ta-tab-switch/ta-tab-switch.component';
+import { TaInputComponent } from '../../shared/ta-input/ta-input.component';
+import { TaInputDropdownComponent } from '../../shared/ta-input-dropdown/ta-input-dropdown.component';
+import { TaCustomCardComponent } from '../../shared/ta-custom-card/ta-custom-card.component';
+import { InputAddressDropdownComponent } from '../../shared/input-address-dropdown/input-address-dropdown.component';
 
 @Component({
     selector: 'app-violation-modal',
@@ -30,6 +44,18 @@ import { ITaInput } from '../../shared/ta-input/ta-input.config';
     styleUrls: ['./violation-modal.component.scss'],
     animations: [tab_modal_animation('animationTabsModal')],
     providers: [ModalService, FormService],
+    standalone: true,
+    imports: [
+         CommonModule, 
+         FormsModule, 
+         TaModalComponent, 
+         TaTabSwitchComponent, 
+         ReactiveFormsModule,
+         TaInputComponent,
+         TaInputDropdownComponent,
+         TaCustomCardComponent,
+         InputAddressDropdownComponent
+    ]
 })
 export class ViolationModalComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
@@ -45,7 +71,7 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
         {
             id: 1,
             name: 'Basic',
-            checked: true
+            checked: true,
         },
         {
             id: 2,
@@ -179,11 +205,6 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.createForm();
         this.getModalDropdowns();
-
-        if (this.editData) {
-            this.disableCardAnimation = true;
-            this.editViolationById(this.editData.id);
-        }
     }
 
     private createForm() {
@@ -667,6 +688,11 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
                             name: item.businessName,
                         };
                     });
+
+                    if (this.editData) {
+                        this.disableCardAnimation = true;
+                        this.editViolationById(this.editData.id);
+                    }
                 },
                 error: () => {},
             });

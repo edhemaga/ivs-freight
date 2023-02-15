@@ -1,9 +1,13 @@
+import { CommonModule } from '@angular/common';
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
 @Component({
     selector: 'app-load-modal-progress-bar',
     templateUrl: './load-modal-progress-bar.component.html',
     styleUrls: ['./load-modal-progress-bar.component.scss'],
+    standalone: true,
+    imports: [CommonModule, FormsModule]
 })
 export class LoadModalProgressBarComponent implements OnChanges {
     @Input() totalAmount: number;

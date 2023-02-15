@@ -280,6 +280,8 @@
                                 (onFileEvent)="onFilesEvent($event)"
                                 [showDropzone]="true"
                                 [customClassName]="'modals'"
+                                [hasTagsDropdown]="true"
+                                [tags]="tags"
                             ></app-ta-upload-files>
                         </app-ta-custom-card>
                     </div>
@@ -447,21 +449,17 @@
 
                     <!-- Fifth Row -->
                     <div class="truck-additional-three-columns">
-                        <app-ta-input-dropdown
+                        <app-ta-input
                             formControlName="wheelBase"
                             [inputConfig]="{
-                                name: 'Input Dropdown',
+                                name: 'Wheel Basee',
                                 type: 'text',
                                 label: 'Wheel Base',
-                                isDropdown: true,
-                                dropdownWidthClass: 'w-col-164'
+                                minLength: 1,
+                                maxLength: 10,
+                                thousandSeparator: true
                             }"
-                            [options]="wheelBaseTypes"
-                            [activeItem]="selectedWheelBase"
-                            (selectedItem)="
-                                onSelectDropdown($event, 'wheel-base')
-                            "
-                        ></app-ta-input-dropdown>
+                        ></app-ta-input>
                         <app-ta-input-dropdown
                             formControlName="frontWheels"
                             [inputConfig]="{
@@ -511,34 +509,34 @@
                         ></app-ta-input-dropdown>
 
                         <app-ta-input-dropdown
-                            formControlName="gearRatio"
-                            [inputConfig]="{
-                                name: 'Input Dropdown',
-                                type: 'text',
-                                label: 'Gear Ratio',
-                                isDropdown: true,
-                                dropdownWidthClass: 'w-col-134'
-                            }"
-                            [options]="gearRatios"
-                            [activeItem]="selectedGearRatio"
-                            (selectedItem)="
-                                onSelectDropdown($event, 'gear-ratio')
-                            "
-                        ></app-ta-input-dropdown>
-
-                        <app-ta-input-dropdown
                             formControlName="tireSizeId"
                             [inputConfig]="{
                                 name: 'Input Dropdown',
                                 type: 'text',
                                 label: 'Tire Size',
                                 isDropdown: true,
-                                dropdownWidthClass: 'w-col-135'
+                                dropdownWidthClass: 'w-col-134'
                             }"
                             [options]="tireSize"
                             [activeItem]="selectedTireSize"
                             (selectedItem)="
                                 onSelectDropdown($event, 'tire-size')
+                            "
+                        ></app-ta-input-dropdown>
+
+                        <app-ta-input-dropdown
+                            formControlName="gearRatio"
+                            [inputConfig]="{
+                                name: 'Input Dropdown',
+                                type: 'text',
+                                label: 'Gear Ratio',
+                                isDropdown: true,
+                                dropdownWidthClass: 'w-col-135'
+                            }"
+                            [options]="gearRatios"
+                            [activeItem]="selectedGearRatio"
+                            (selectedItem)="
+                                onSelectDropdown($event, 'gear-ratio')
                             "
                         ></app-ta-input-dropdown>
                     </div>

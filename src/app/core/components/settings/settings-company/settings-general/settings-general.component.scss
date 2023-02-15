@@ -25,7 +25,7 @@
     grid-template-columns: repeat(3, 130px);
     column-gap: 64px;
     row-gap: 12px;
-    padding-left: 6px;
+    padding-left: 4px;
     .additional-template-item {
         display: flex;
         flex-direction: column;
@@ -72,7 +72,7 @@
     grid-template-columns: 72px 160px 65px 50px;
     row-gap: 12px;
     column-gap: 65px;
-    padding-left: 10px;
+    padding-left: 4px;
     .bank-card-name-header {
         font-size: 12px;
         font-weight: $settings-font-semibold;
@@ -96,7 +96,7 @@
     grid-template-columns: 72px 160px 65px 50px;
     row-gap: 12px;
     column-gap: 65px;
-    padding-left: 10px;
+    padding-left: 4px;
     .bank-card-template-item-body {
         display: grid;
         grid-template-columns: 106px 194px 98px 50px;
@@ -146,25 +146,25 @@
         border-radius: 3px;
         .basic-details {
             width: 100%;
-            height: 256px;
+            //height: 262px;
             //margin-bottom: 15px;
             border-radius: 3px;
             .basic-header {
                 width: 100%;
-                height: 111px;
+                height: 90px;
                 display: flex;
                 flex-direction: column;
                 user-select: none;
                 background-color: $settings-background;
-                padding: 12px;
+                padding: 0px 12px;
                 border-radius: 3px;
                 .basic-header-logo-top {
                     display: flex;
                     align-items: center;
-                    justify-content: flex-end;
+                    //justify-content: flex-end;
                     height: 22px;
                     width: 100%;
-                    margin-bottom: 8px;
+                    //margin-bottom: 8px;
 
                     .basic-logo-text {
                         font-size: 10px;
@@ -230,8 +230,7 @@
                 display: grid;
                 grid-template-columns: 162px 292px;
                 row-gap: 12px;
-                padding: 12px 0px;
-                padding-left: 16px;
+                padding: 0px 12px 10px 12px;
                 background-color: $settings-background;
                 .basic-data {
                     display: flex;
@@ -266,6 +265,30 @@
                 padding-left: 12px;
                 padding-bottom: 12px;
                 background-color: $settings-background;
+
+                .basic-bottom-cards-redesign{
+                    //display: flex;
+                    //justify-content: space-between;
+                    //align-items: center;
+
+                    .bottom-title-value{
+                        line-height: 14px;
+                        font-size: 11px;
+                        font-weight: 700;
+                        padding-bottom: 4px;
+                        color: #2F2F2F;
+                    }
+
+                    .bottom-value{
+                        line-height: 22px;
+                        font-size: 18px;
+                        font-weight: 500;
+                        color: #2F2F2F;
+                    }
+
+                }
+
+
                 .basic-bottom-card {
                     background-color: #f9f9f9;
                     color: $settings-gray-dark;
@@ -299,7 +322,7 @@
     }
 }
 .cards-custom {
-    padding: 0 6px;
+    padding: 0 8px;
     .ta-card-header {
         padding: 0 4px !important;
     }
@@ -496,7 +519,7 @@
 }
 .no-company-logo {
     // font-size: 48px;
-    position: absolute;
+    //position: absolute;
     // margin-top: 30px;
     font-weight: 900;
     color: #b7b7b7;

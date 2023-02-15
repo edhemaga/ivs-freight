@@ -11,7 +11,7 @@ import {
 import { TableType } from 'appcoretruckassist';
 import { Subject, takeUntil } from 'rxjs';
 import { TruckassistTableService } from '../../../../services/truckassist-table/truckassist-table.service';
-import { UntypedFormControl } from '@angular/forms';
+import { UntypedFormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Titles } from 'src/app/core/utils/application.decorators';
 import {
     Confirmation,
@@ -19,12 +19,27 @@ import {
 } from '../../../modals/confirmation-modal/confirmation-modal.component';
 import { ModalService } from '../../ta-modal/modal.service';
 import { ConfirmationService } from '../../../modals/confirmation-modal/confirmation.service';
+import { CommonModule } from '@angular/common';
+import { ToolbarFiltersComponent } from './toolbar-filters/toolbar-filters.component';
+import { AngularSvgIconModule } from 'angular-svg-icon';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { TaInputDropdownComponent } from '../../ta-input-dropdown/ta-input-dropdown.component';
 
 @Titles()
 @Component({
     selector: 'app-truckassist-table-toolbar',
     templateUrl: './truckassist-table-toolbar.component.html',
     styleUrls: ['./truckassist-table-toolbar.component.scss'],
+    standalone: true,
+    imports: [
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+        ToolbarFiltersComponent,
+        AngularSvgIconModule,
+        NgbModule,
+        TaInputDropdownComponent
+    ],
 })
 export class TruckassistTableToolbarComponent
     implements OnInit, OnChanges, OnDestroy
@@ -171,7 +186,6 @@ export class TruckassistTableToolbarComponent
                 next: (res: Confirmation) => {
                     switch (res.type) {
                         case 'delete': {
-                            console.log('Poziva se ResetTable');
                             this.onResetTable();
                             break;
                         }
@@ -280,7 +294,8 @@ export class TruckassistTableToolbarComponent
                     c.ngTemplate !== 'hire' &&
                     c.ngTemplate !== 'favorite' &&
                     c.ngTemplate !== 'note' &&
-                    c.ngTemplate !== 'actions'
+                    c.ngTemplate !== 'actions' &&
+                    c.ngTemplate !== 'user-checkbox'
                 ) {
                     columnsSumWidth += 6;
                 }
@@ -299,7 +314,8 @@ export class TruckassistTableToolbarComponent
                 c.ngTemplate !== 'hire' &&
                 c.ngTemplate !== 'favorite' &&
                 c.ngTemplate !== 'note' &&
-                c.ngTemplate !== 'actions'
+                c.ngTemplate !== 'actions' &&
+                c.ngTemplate !== 'user-checkbox'
             ) {
                 this.columnsOptions.push(c);
             }
@@ -308,7 +324,7 @@ export class TruckassistTableToolbarComponent
         this.setColumnsOptionsGroups();
 
         this.toolbarWidth = hasMinWidth
-            ? columnsSumWidth + 12 + 'px'
+            ? columnsSumWidth + 22 + 'px'
             : 100 + '%';
     }
 
@@ -411,6 +427,16 @@ export class TruckassistTableToolbarComponent
 
     // Show Toolbar Options Popup
     onShowOptions(optionsPopup: any) {
+        this.optionsPopupContent[0].active = false;
+
+        this.optionsPopupContent.map((option) => {
+            if (option.text !== 'Columns') {
+                option.hide = false;
+            }
+
+            return option;
+        });
+
         this.optionsPopup = optionsPopup;
 
         if (optionsPopup.isOpen()) {

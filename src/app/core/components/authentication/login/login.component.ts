@@ -5,7 +5,11 @@ import {
     OnInit,
 } from '@angular/core';
 
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import {
+    UntypedFormBuilder,
+    UntypedFormGroup,
+    Validators,
+} from '@angular/forms';
 
 import { AuthStoreService } from './../state/auth.service';
 import { NotificationService } from '../../../services/notification/notification.service';
@@ -28,7 +32,9 @@ export class LoginComponent implements OnInit, OnDestroy {
     public loginForm: UntypedFormGroup;
 
     public copyrightYear!: number;
-
+    public showHideIfMoreThenOneCompany: boolean = false;
+    public userData: any;
+    public lastLoginInCompany: number;
     constructor(
         private formBuilder: UntypedFormBuilder,
         private authStoreService: AuthStoreService,
@@ -41,8 +47,10 @@ export class LoginComponent implements OnInit, OnDestroy {
         this.createForm();
 
         this.copyrightYear = moment().year();
-
         this.resetSubject();
+    }
+    goBackToLogin(event) {
+        this.showHideIfMoreThenOneCompany = event;
     }
 
     private createForm(): void {
@@ -64,7 +72,6 @@ export class LoginComponent implements OnInit, OnDestroy {
             this.inputService.markInvalid(this.loginForm);
             return false;
         }
-
         this.authStoreService
             .accountLogin(this.loginForm.value)
             .pipe(takeUntil(this.destroy$))

@@ -24,29 +24,50 @@
             <app-payroll-table
                 [tableSettings]="tableSettings"
                 [tableSettingsResizable]="tableSettingsResizable"
-                [tableData]="reportMainData.loads"
+                [tableData]="
+                    reportMainData.loads
+                        ? reportMainData.loads
+                        : reportMainData.stops
+                "
                 [isResizableTable]="true"
                 [tableAddClas]="'resizable-table'"
             ></app-payroll-table>
             <div class="small-table-holder-main">
-                <div class="small-tables">
+                <div class="small-tables" *ngIf="reportMainData.credits">
                     <app-payroll-small-tables
                         [title]="'Credit'"
                         [type]="'credit'"
+                        [data]="reportMainData.credits"
                         [reportMainData]="reportMainData"
                     ></app-payroll-small-tables>
                 </div>
-                <div class="small-tables">
+
+                <div class="small-tables" *ngIf="reportMainData.bonuses">
                     <app-payroll-small-tables
                         [title]="'Bonus'"
                         [type]="'bonus'"
+                        [data]="reportMainData.bonuses"
                         [reportMainData]="reportMainData"
                     ></app-payroll-small-tables>
                 </div>
-                <div class="small-tables">
+
+                <div
+                    class="small-tables"
+                    *ngIf="reportMainData.fuelTransactions"
+                >
+                    <app-payroll-small-tables
+                        [title]="'Fuel'"
+                        [type]="'fuel'"
+                        [data]="reportMainData.fuelTransactions"
+                        [reportMainData]="reportMainData"
+                    ></app-payroll-small-tables>
+                </div>
+
+                <div class="small-tables" *ngIf="reportMainData.deductions">
                     <app-payroll-small-tables
                         [title]="'Deduction'"
                         [type]="'deduction'"
+                        [data]="reportMainData.deductions"
                         [reportMainData]="reportMainData"
                     ></app-payroll-small-tables>
                 </div>
@@ -67,29 +88,64 @@
     </div>
     <div class="right-report-info">
         <div class="report-card">
-            <div class="report-card-title">Kska Freight</div>
-            <div class="border-item"></div>
-            <div class="payroll-item-info d-flex">
-                <div class="payroll-item-info-img">
-                    <svg-icon
-                        [src]="
-                            'assets/svg/truckassist-table/trailer/ic_trailer-tanker-dryBulk.svg'
-                        "
-                    ></svg-icon>
-                    <div class="report-unit-title">Unit</div>
-                    <div class="report-unit">5240C</div>
+            <div class="report-info-card" *ngIf="title == 'Owner'">
+                <div class="report-card-title">
+                    {{ reportMainData.owner.name }}
                 </div>
-                <div class="payroll-item-info-details">
-                    <div class="payroll-item-details-numb">LA59OSK1389</div>
-                    <div class="payroll-item-details-numb-detail">
-                        <span>Period</span>
-                        04/24/24
+                <div class="border-item"></div>
+                <div class="payroll-item-info d-flex">
+                    <div class="payroll-item-info-img">
+                        <svg-icon
+                            [src]="
+                                'assets/svg/truckassist-table/trailer/ic_trailer-tanker-dryBulk.svg'
+                            "
+                        ></svg-icon>
+                        <div class="report-unit-title">Unit</div>
+                        <div class="report-unit">
+                            {{ reportMainData.truck.truckNumber }}
+                        </div>
+                    </div>
+                    <div class="payroll-item-info-details">
+                        <div class="payroll-item-details-numb">LA59OSK1389</div>
+                        <div class="payroll-item-details-numb-detail">
+                            <span>Period</span>
+                            {{ reportMainData.period | date : 'MM/dd/YY' }}
+                        </div>
                     </div>
                 </div>
+                <div class="payroll-item-details-numb-detail">
+                    <span>Driver</span>
+                    Aleksandar Djordjevic
+                </div>
             </div>
-            <div class="payroll-item-details-numb-detail">
-                <span>Driver</span>
-                Aleksandar Djordjevic
+
+            <div
+                class="report-info-card"
+                *ngIf="
+                    title == 'Driver (Commission)' || title == 'Driver (Miles)'
+                "
+            >
+                <div class="report-card-title">
+                    {{ reportMainData.driver.fullName }}
+                </div>
+                <div class="border-item"></div>
+                <div class="payroll-item-info d-flex">
+                    <div class="payroll-item-info-img no-bc">
+                        <app-profile-images
+                            [indx]="0"
+                            [name]="reportMainData.driver.fullName"
+                            [size]="'large'"
+                            [withTooltip]="true"
+                        ></app-profile-images>
+                    </div>
+                    <div class="payroll-item-info-details">
+                        <div class="payroll-item-details-numb">LA59OSK1389</div>
+                        <div class="payroll-item-details-numb-detail">
+                            <span>Period</span>
+                            {{ reportMainData.period | date : 'MM/dd/YY' }}
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <div class="payroll-report-status">
@@ -100,26 +156,39 @@
             </div>
 
             <div class="payroll-report-money-value">
-                <div class="payroll-report-money-item d-flex">
+                <div
+                    class="payroll-report-money-item d-flex"
+                    *ngIf="reportMainData.loadPayAmmount !== undefined"
+                >
                     <div class="payroll-report-money-item-left d-flex">
                         <svg-icon
                             [src]="'assets/svg/payroll/equal.svg'"
                         ></svg-icon>
                         <div class="sal-info">Load Pay</div>
                     </div>
-                    <div class="payroll-report-money-item-right">$2,342.21</div>
+                    <div class="payroll-report-money-item-right">
+                        {{ reportMainData.loadPayAmmount | currency : 'USD' }}
+                    </div>
                 </div>
-                <div class="payroll-report-money-item d-flex">
+                <div
+                    class="payroll-report-money-item d-flex"
+                    *ngIf="reportMainData.bonusAmount !== undefined"
+                >
                     <div class="payroll-report-money-item-left d-flex">
                         <svg-icon
                             [src]="'assets/svg/payroll/addition.svg'"
                         ></svg-icon>
                         <div class="sal-info">Bonus</div>
                     </div>
-                    <div class="payroll-report-money-item-right">$280.00</div>
+                    <div class="payroll-report-money-item-right">
+                        {{ reportMainData.bonusAmount | currency : 'USD' }}
+                    </div>
                 </div>
 
-                <div class="payroll-report-money-item d-flex">
+                <div
+                    class="payroll-report-money-item d-flex"
+                    *ngIf="reportMainData.salaryAmount !== undefined"
+                >
                     <div class="payroll-report-money-item-left d-flex">
                         <svg-icon
                             [src]="'assets/svg/payroll/equal.svg'"
@@ -127,11 +196,14 @@
                         <div class="sal-info">Salary</div>
                     </div>
                     <div class="payroll-report-money-item-right salary">
-                        $2,622.21
+                        {{ reportMainData.salaryAmount | currency : 'USD' }}
                     </div>
                 </div>
 
-                <div class="payroll-report-money-item d-flex">
+                <div
+                    class="payroll-report-money-item d-flex"
+                    *ngIf="reportMainData.creditAmount !== undefined"
+                >
                     <div class="payroll-report-money-item-left d-flex">
                         <svg-icon
                             [src]="'assets/svg/payroll/addition.svg'"
@@ -139,10 +211,13 @@
                         <div class="sal-info">Credit</div>
                     </div>
                     <div class="payroll-report-money-item-right credit">
-                        $2,622.21
+                        {{ reportMainData.creditAmount | currency : 'USD' }}
                     </div>
                 </div>
-                <div class="payroll-report-money-item d-flex">
+                <div
+                    class="payroll-report-money-item d-flex"
+                    *ngIf="reportMainData.deductionAmount !== undefined"
+                >
                     <div class="payroll-report-money-item-left d-flex">
                         <svg-icon
                             [src]="'assets/svg/payroll/deduction.svg'"
@@ -150,7 +225,7 @@
                         <div class="sal-info">Deduction</div>
                     </div>
                     <div class="payroll-report-money-item-right deduction">
-                        $2,622.21
+                        {{ reportMainData.deductionAmount | currency : 'USD' }}
                     </div>
                 </div>
 
@@ -162,7 +237,7 @@
                         <div class="sal-info">Total</div>
                     </div>
                     <div class="payroll-report-money-item-right total">
-                        $2,622.21
+                        {{ reportMainData.totalAmount | currency : 'USD' }}
                     </div>
                 </div>
             </div>

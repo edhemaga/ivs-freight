@@ -1,70 +1,169 @@
 import { DOCUMENT } from '@angular/common';
 import {
-    AfterViewInit,
     Component,
+    EventEmitter,
     Inject,
     OnDestroy,
     OnInit,
+    Output,
+    ViewChild,
+    ViewEncapsulation,
 } from '@angular/core';
-import { Subject } from 'rxjs';
-
-//import {SelectCompany} from '../../model/select-company';
-
+import { map, Subject, tap } from 'rxjs';
+import { Router } from '@angular/router';
+import moment from 'moment';
+import { AuthStoreService } from '../state/auth.service';
+import { SelectCompanyResponse } from '../../../../../../appcoretruckassist/model/selectCompanyResponse';
+import { SignInResponse } from '../../../../../../appcoretruckassist/model/signInResponse';
+import { UntypedFormBuilder } from '@angular/forms';
+import { convertTimeFromBackend } from 'src/app/core/utils/methods.calculations';
+import {
+    SlickCarouselModule,
+    SlickCarouselComponent,
+} from 'ngx-slick-carousel';
 @Component({
     selector: 'app-select-company',
     templateUrl: './select-company.component.html',
     styleUrls: ['./select-company.component.scss'],
+    encapsulation: ViewEncapsulation.None,
 })
-export class SelectCompanyComponent
-    implements OnInit, AfterViewInit, OnDestroy
-{
-    //apiData: SelectCompany[];
-    customOptions: any;
-    selectedCompanyID: any;
-    apiData: any;
-
+export class SelectCompanyComponent implements OnInit, OnDestroy {
+    public saveCompany;
+    public dotsTrue: boolean;
     private destroy$ = new Subject<void>();
+    public slideConfig: any;
+    public userData: SignInResponse;
+    public lastLoginInCompany: any;
+    public dates: any = [];
+    public newUser: any;
+    @Output() goBackToLogin = new EventEmitter<boolean>();
+    public id;
+    constructor(
+        @Inject(DOCUMENT) private document: HTMLDocument,
+        private router: Router,
+        private accountStoreService: AuthStoreService,
+        private formBuilder: UntypedFormBuilder
+    ) {}
 
-    constructor(@Inject(DOCUMENT) private document: HTMLDocument) {}
+    ngOnInit() {
+        this.user(JSON.parse(localStorage.getItem('user')));
+        this.createForm();
+        this.userData.companies.length < 5
+            ? (this.dotsTrue = false)
+            : (this.dotsTrue = true);
+    }
+    public user(data) {
+        this.userData = data;
 
-    ngOnInit(): void {
-        // @ts-ignore
-        this.apiData = JSON.parse(localStorage.getItem('multiple_companies'));
-        this.customOptions = {
-            loop: false,
-            autoplay: false,
-            center: true,
-            dots: false,
-            startPosition: 2,
-            responsive: {
-                0: {
-                    items: this.apiData.length < 5 ? this.apiData.length : 5,
-                },
-            },
+        data.companies.forEach((res) => {
+            this.lastLoginInCompany = this.calculateDiff(
+                convertTimeFromBackend(res.lastLogin)
+            );
+            this.dates.push(
+                moment.utc(res.lastLogin).local().format('MM/DD/YY HH:mm:ss')
+            );
+        });
+        let createNewObject = {
+            ...this.userData,
+            companies: this.userData.companies.map((item) => {
+                return {
+                    ...item,
+                    lastLogin: moment
+                        .utc(item.lastLogin)
+                        .local()
+                        .format('MM/DD/YY HH:mm:ss'),
+                };
+            }),
         };
-        setInterval(() => {
-            const center: any = this.document.querySelectorAll('.center');
-            this.selectedCompanyID = center[0]?.firstChild?.id;
-        }, 400);
+        this.newUser = {
+            ...createNewObject,
+            companies: createNewObject.companies.map((item) => {
+                return {
+                    ...item,
+                    LastActiveCompany:
+                        item.lastLogin == this.getNewerDate(this.dates) &&
+                        (this.id = item.id),
+                };
+            }),
+        };
+        //Slick Carousel Config
+        this.slideConfig = {
+            infinite: false,
+            slidesToScroll: 1,
+            dots: this.dotsTrue,
+            arrows: true,
+            variableWidth: true,
+            focusOnSelect: true,
+            centerMode: true,
+            initialSlide: this?.id - 1,
+        };
     }
 
-    ngAfterViewInit() {
-        const center: any = this.document.querySelectorAll('.center');
-        this.selectedCompanyID = center[0]?.firstChild?.id;
+    public getNewerDate(dates: string[]) {
+        let newestDate = moment.utc(dates[0], 'MM/DD/YY HH:mm:ss');
+        for (let i = 1; i < dates.length; i++) {
+            const currentDate = moment.utc(dates[i], 'MM/DD/YY HH:mm:ss');
+
+            if (currentDate.isAfter(newestDate)) {
+                newestDate = currentDate;
+            }
+        }
+        return newestDate.format('MM/DD/YY HH:mm:ss');
+    }
+    //Calculate last login in company to display
+    public calculateDiff(dateSent) {
+        let currentDate = new Date();
+        dateSent = new Date(dateSent);
+
+        return Math.floor(
+            (Date.UTC(
+                currentDate.getFullYear(),
+                currentDate.getMonth(),
+                currentDate.getDate()
+            ) -
+                Date.UTC(
+                    dateSent.getFullYear(),
+                    dateSent.getMonth(),
+                    dateSent.getDate()
+                )) /
+                (1000 * 60 * 60 * 24)
+        );
+    }
+    private createForm(): void {
+        this.saveCompany = this.formBuilder.group({
+            savedCompany: true,
+        });
+    }
+    goToLogin() {
+        this.goBackToLogin.emit(false);
+        localStorage.removeItem('user');
+        this.router.navigate(['/auth/login']);
     }
 
     onCompanySelect() {
-        // const selected = this.apiData.find(
-        //   (x: any) => x.companyId.toString() === this.selectedCompanyID
-        // );
-        // this.auth
-        //   .onCompanySelect(selected.companyId)
-        //   .pipe(takeUntil(this.destroy$))
-        //   .subscribe(() => {
-        //     setTimeout(() => {
-        //       this.router.navigate(['/dashboard']);
-        //     }, 1000);
-        //   });
+        const center: any = this.document.querySelectorAll('.slick-center');
+        let id = center[0]?.firstChild?.id;
+        this.accountStoreService
+            .selectCompanyAccount({
+                companyId: parseInt(id),
+            })
+            .pipe(
+                tap((res: SelectCompanyResponse) => {
+                    this.userData = {
+                        ...res,
+                        companies: this.userData.companies.map((item) => {
+                            return {
+                                ...item,
+                                isActive: item.companyName === res.companyName,
+                            };
+                        }),
+                    };
+                    localStorage.removeItem('user');
+                    localStorage.setItem('user', JSON.stringify(this.userData));
+                    this.router.navigate(['/dashboard']);
+                })
+            )
+            .subscribe();
     }
 
     ngOnDestroy() {

@@ -273,9 +273,9 @@ export const navigationData: Navigation[] = [
     },
     {
         id: 13,
-        name: 'File Menager',
+        name: 'File Manager',
         image: 'ic_file_manager-new.svg',
-        route: 'file-menager',
+        route: 'file-manager',
         isRouteActive: false,
         files: 83,
         construction: true,
@@ -451,7 +451,29 @@ export const accountingNavigationData: NavigationModal[] = [
         path: 'fuel',
     },
 ];
-
+// Request Navigation Data
+export const requestNavigationData: NavigationModal[] = [
+    {
+        id: 27,
+        name: 'MVR',
+        path: 'mvr-request',
+    },
+    {
+        id: 28,
+        name: 'Test',
+        path: 'test-request',
+    },
+    {
+        id: 29,
+        name: 'Medical',
+        path: 'medical-request',
+    },
+    {
+        id: 30,
+        name: 'BG Check',
+        path: 'bg-check',
+    },
+];
 // User Navigation Data
 export const userNavigationData: NavigationUserPanel[] = [
     {

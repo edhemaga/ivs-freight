@@ -4,9 +4,13 @@ import { ViolationDetailsRoutes } from './violation-details.routing';
 import { ViolationDetailsPageComponent } from './violation-details-page.component';
 import { ViolationDetailsSingleComponent } from './violation-details-single/violation-details-single.component';
 import { ViolationCardViewComponent } from '../violation-card-view/violation-card-view.component';
-import { TruckassistProgressExpirationModule } from '../../../shared/truckassist-progress-expiration/truckassist-progress-expiration.module';
-import { TruckassistTableModule } from '../../../shared/truckassist-table/truckassist-table.module';
 import { SharedModule } from '../../../shared/shared.module';
+import { AppTooltipComponent } from '../../../standalone-components/app-tooltip/app-tooltip.component';
+import { TaDetailsHeaderCardComponent } from '../../../shared/ta-details-header-card/ta-details-header-card.component';
+import { TaCustomCardComponent } from '../../../shared/ta-custom-card/ta-custom-card.component';
+import { TaCopyComponent } from '../../../shared/ta-copy/ta-copy.component';
+import { TaInputNoteComponent } from '../../../shared/ta-input-note/ta-input-note.component';
+import { formatDatePipe } from 'src/app/core/pipes/formatDate.pipe';
 
 @NgModule({
     declarations: [
@@ -18,9 +22,13 @@ import { SharedModule } from '../../../shared/shared.module';
     imports: [
         CommonModule,
         ViolationDetailsRoutes,
-        TruckassistProgressExpirationModule,
         SharedModule,
-        TruckassistTableModule,
+        AppTooltipComponent,
+        TaDetailsHeaderCardComponent,
+        TaCustomCardComponent,
+        TaCopyComponent,
+        TaInputNoteComponent,
+        formatDatePipe
     ],
 })
 export class ViolationDetailsModule {}

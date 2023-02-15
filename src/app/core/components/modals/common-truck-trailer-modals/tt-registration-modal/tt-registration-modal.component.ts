@@ -1,4 +1,4 @@
-import { Validators } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 
@@ -16,12 +16,21 @@ import {
     convertDateToBackend,
     convertDateFromBackend,
 } from '../../../../utils/methods.calculations';
+import { CommonModule } from '@angular/common';
+import { TaModalComponent } from '../../../shared/ta-modal/ta-modal.component';
+import { TaInputComponent } from '../../../shared/ta-input/ta-input.component';
+import { TaInputDropdownComponent } from '../../../shared/ta-input-dropdown/ta-input-dropdown.component';
+import { TaCustomCardComponent } from '../../../shared/ta-custom-card/ta-custom-card.component';
+import { TaInputNoteComponent } from '../../../shared/ta-input-note/ta-input-note.component';
+import { TaUploadFilesComponent } from '../../../shared/ta-upload-files/ta-upload-files.component';
 
 @Component({
     selector: 'app-tt-registration-modal',
     templateUrl: './tt-registration-modal.component.html',
     styleUrls: ['./tt-registration-modal.component.scss'],
     providers: [ModalService, FormService],
+    standalone: true,
+    imports: [CommonModule, FormsModule, TaModalComponent, ReactiveFormsModule,TaInputComponent, TaInputDropdownComponent, TaCustomCardComponent, TaInputNoteComponent, TaUploadFilesComponent]
 })
 export class TtRegistrationModalComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
@@ -53,31 +62,6 @@ export class TtRegistrationModalComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.createForm();
         this.getModalDropdowns();
-        if (this.editData.type === 'edit-registration') {
-            this.disableCardAnimation = true;
-            this.editRegistrationById();
-        }
-
-        if (this.editData && this.editData?.data) {
-            this.editData = {
-                ...this.editData,
-                payload: this.editData.data,
-            };
-        }
-
-        if (this.editData?.modal) {
-            if (this.editData.modal === 'truck') {
-                this.inputService.changeValidators(
-                    this.registrationForm.get('expDate')
-                );
-                this.registrationExpirationDate = true;
-            } else {
-                this.inputService.changeValidators(
-                    this.registrationForm.get('expDate'),
-                    false
-                );
-            }
-        }
     }
 
     private createForm() {
@@ -306,6 +290,32 @@ export class TtRegistrationModalComponent implements OnInit, OnDestroy {
                             stateName: item.stateName,
                         };
                     });
+
+                    if (this.editData.type === 'edit-registration') {
+                        this.disableCardAnimation = true;
+                        this.editRegistrationById();
+                    }
+
+                    if (this.editData && this.editData?.data) {
+                        this.editData = {
+                            ...this.editData,
+                            payload: this.editData.data,
+                        };
+                    }
+
+                    if (this.editData?.modal) {
+                        if (this.editData.modal === 'truck') {
+                            this.inputService.changeValidators(
+                                this.registrationForm.get('expDate')
+                            );
+                            this.registrationExpirationDate = true;
+                        } else {
+                            this.inputService.changeValidators(
+                                this.registrationForm.get('expDate'),
+                                false
+                            );
+                        }
+                    }
                 },
                 error: () => {},
             });

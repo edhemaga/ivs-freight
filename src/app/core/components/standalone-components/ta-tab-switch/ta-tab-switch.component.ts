@@ -1,0 +1,164 @@
+import { FormsModule, UntypedFormControl, ReactiveFormsModule } from '@angular/forms';
+import {
+    Component,
+    Input,
+    OnInit,
+    EventEmitter,
+    Output,
+    ElementRef,
+    AfterViewInit,
+    ViewChild,
+    OnChanges,
+    SimpleChanges,
+    ChangeDetectorRef,
+    ViewChildren,
+    QueryList,
+} from '@angular/core';
+import { AutoclosePopoverComponent } from '../autoclose-popover/autoclose-popover.component';
+import { CommonModule } from '@angular/common';
+import { AngularSvgIconModule } from 'angular-svg-icon';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { TaInputComponent } from '../../shared/ta-input/ta-input.component';
+
+@Component({
+    selector: 'app-ta-tab-switch',
+    templateUrl: './ta-tab-switch.component.html',
+    styleUrls: ['./ta-tab-switch.component.scss'],
+    standalone: true,
+    imports: [
+            CommonModule, 
+            FormsModule, 
+            AngularSvgIconModule, 
+            AutoclosePopoverComponent, 
+            ReactiveFormsModule,
+            NgbModule,
+            TaInputComponent
+        ],
+})
+export class TaTabSwitchComponent implements OnInit, AfterViewInit, OnChanges {
+    @ViewChildren('popoverHolder')
+    autoCloseComponent: QueryList<AutoclosePopoverComponent>;
+    @Input() tabs: any[];
+    @Input() type: string = '';
+    @Output() switchClicked = new EventEmitter<any>();
+    @Output() saveCustomRange = new EventEmitter<any>();
+    @ViewChild('t2') t2: any;
+
+    public date1: UntypedFormControl = new UntypedFormControl();
+    public date2: UntypedFormControl = new UntypedFormControl();
+    tooltip: any;
+
+    switchItems: any[] = [
+        {
+            name: 'Day',
+        },
+        {
+            name: 'Week',
+        },
+        {
+            name: 'Month',
+        },
+        {
+            name: 'Year',
+        },
+        {
+            name: 'Schedule',
+        },
+    ];
+
+    hoverStyle: any = {
+        width: '0px',
+        x: '0px',
+    };
+
+    indexSwitch: number = -1;
+    data1Valid: boolean;
+    data2Valid: boolean;
+
+    constructor(public elem: ElementRef, public det: ChangeDetectorRef) {}
+
+    ngOnInit(): void {
+        this.date1.valueChanges.subscribe((data) => {
+            this.data1Valid = data!!;
+        });
+
+        this.date2.valueChanges.subscribe((data) => {
+            this.data2Valid = data!!;
+        });
+    }
+
+    clearFields() {
+        this.date1.reset();
+        this.date1.updateValueAndValidity();
+        this.date2.reset();
+        this.date2.updateValueAndValidity();
+    }
+
+    setCustomRange(e) {
+        if (this.data1Valid && this.data2Valid) {
+            let rangeData = [];
+            rangeData.push(this.data1Valid, this.data2Valid);
+            this.saveCustomRange.emit(rangeData);
+            this.closeCustomPopover(e);
+        }
+    }
+
+    ngOnChanges(changes: SimpleChanges): void {
+        if (changes.tabs) {
+            setTimeout(() => {
+                this.setSwitchActive(changes.tabs.currentValue);
+            }, 550);
+        }
+    }
+
+    ngAfterViewInit() {}
+
+    public setSwitchActive(tabs) {
+        const selectedIndex = tabs?.findIndex((item) => item.checked && !item.disabled);
+        this.indexSwitch = selectedIndex;
+        if( selectedIndex == -1 ) return;
+
+        this.hoverStyle = this.getElementOffset(
+            this.elem.nativeElement.children[0].children[this.indexSwitch]
+        );
+
+        this.det.detectChanges();
+    }
+
+    switchTab(e, indx, item) {
+        e.stopPropagation();
+        this.indexSwitch = indx;
+
+        this.tabs.map((item) => (item.checked = false));
+        item.checked = true;
+        this.hoverStyle = this.getElementOffset(e.target);
+        const closeComponentArray = this.autoCloseComponent.toArray().reverse();
+
+        if (
+            item.name != 'Custom' &&
+            closeComponentArray[0]?.tooltip?.isOpen()
+        ) {
+            closeComponentArray[0].tooltip.close();
+        }
+        this.switchClicked.emit(item);
+    }
+
+    getElementOffset(item) {
+        const parentElement = item.closest('.tab-switch-holder');
+        const selectedElement = item.closest('.tab-switch-items-holder');
+
+        const parentItem = parentElement.getBoundingClientRect();
+        const elementItem = selectedElement.getBoundingClientRect();
+
+        return {
+            x: elementItem.x - parentItem.x,
+            width: elementItem.width,
+        };
+    }
+
+    closeCustomPopover = (e) => {
+        e.stopPropagation();
+        const closeComponentArray = this.autoCloseComponent.toArray().reverse();
+        closeComponentArray[0].tooltip.close();
+    };
+}

@@ -90,9 +90,6 @@
             }
         }
     }
-    .subroutes:last-of-type {
-        top: 20px;
-    }
     .subroute-active {
         color: $nav-active-lighter;
         cursor: default;
@@ -186,11 +183,11 @@
     }
 
     .subroutes:nth-child(6):hover ~ .new-magic-line {
-        transform: translateY(143px) !important;
+        transform: translateY(142px) !important;
     }
 
     .new-magic-line-selected:nth-child(6) ~ .new-magic-line {
-        transform: translateY(143px);
+        transform: translateY(142px);
     }
 
     .subroutes:nth-child(7):hover ~ .new-magic-line {
@@ -252,15 +249,16 @@
 .hide {
     overflow: hidden;
     max-height: 0;
-    transition: max-height 0.3s ease-out;
+    background: rgba(170, 170, 170, 0.1);
 }
-.other-container-opened {
+.hide-with-animation {
     overflow: hidden;
     max-height: 0;
-    transition: max-height 0s ease-out;
+    transition: max-height 0.3s ease-out;
 }
+
 .show {
-    max-height: 500px;
+    max-height: 347px;
     transition: max-height 0.3s ease-in;
 }
 @keyframes append-animate {

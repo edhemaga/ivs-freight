@@ -1,5 +1,5 @@
 <div class="container-fluid">
-    <div class="row">
+    <div class="row" *ngIf="!showHideIfMoreThenOneCompany">
         <div
             class="login-container container-fluid d-flex flex-column justify-content-between"
         >
@@ -121,5 +121,10 @@
                 </div>
             </div>
         </div>
+    </div>
+    <div class="select-companies" *ngIf="showHideIfMoreThenOneCompany">
+        <app-select-company
+            (goBackToLogin)="goBackToLogin($event)"
+        ></app-select-company>
     </div>
 </div>

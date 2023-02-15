@@ -3,6 +3,8 @@
 .holder {
     padding: 4px 0;
     position: relative;
+    left: -8px;
+    padding-left: 8px;
     .tooltip-right {
         left: 18px;
         position: fixed;
@@ -16,13 +18,13 @@
         width: 38px;
         height: 28px;
         position: absolute;
-        left: -9px;
+        left: -1px;
         border-radius: 3px;
         bottom: 3px;
     }
     .nav-item-active-box-active {
         width: 238px;
-        left: -8px;
+        left: 0px;
         animation: magiclinetransition 0.5s forwards;
     }
     @keyframes magiclinetransition {
@@ -36,7 +38,7 @@
     .parent {
         z-index: -1;
         position: absolute;
-        left: -9px;
+        left: 0px;
         top: 0;
         bottom: 0;
         right: 0;
@@ -45,6 +47,7 @@
         transition: $nav-transition;
         background: rgba(170, 170, 170, 10%);
     }
+
     .tooltip {
         position: absolute;
         width: 36px;
@@ -99,6 +102,7 @@
             &:hover {
                 .svg-settings {
                     path {
+                        transition: all 0.3s;
                         fill: $nav-white;
                     }
                 }
@@ -172,10 +176,11 @@
             width: 0;
             .nav-item-arrow {
                 position: absolute;
-                right: 10px;
+                right: 16px;
                 transform: rotate(180deg);
                 transition: all 0.3s ease-in-out;
                 z-index: 1;
+                top: 5px;
                 line-height: 9px;
             }
         }
@@ -192,31 +197,12 @@
                 }
             }
         }
-        .activated-text {
-            color: $nav-white !important;
+        .item-name {
+            transition: all 0.3s;
         }
-
-        &:hover {
-            .image-footer {
-                svg {
-                    path {
-                        fill: $nav-white;
-                    }
-                }
-            }
-
-            p {
-                span {
-                    color: $nav-white;
-                }
-                .nav-item-arrow {
-                    svg {
-                        path {
-                            fill: $nav-white;
-                        }
-                    }
-                }
-            }
+        .activated-text {
+            transition: all 0.3s;
+            color: $nav-white !important;
         }
     }
 }
@@ -258,16 +244,39 @@
     }
 }
 .nav-width {
-    width: 230px;
+    width: 240px;
+    overflow: hidden;
+    &:hover {
+        .image-footer {
+            svg {
+                path {
+                    fill: $nav-white;
+                }
+            }
+        }
+
+        p {
+            span {
+                color: $nav-white;
+            }
+            .nav-item-arrow {
+                svg {
+                    path {
+                        fill: $nav-white;
+                    }
+                }
+            }
+        }
+    }
 }
 .new-magic-line {
     display: inline-block;
     position: absolute;
-    left: -5px;
+    left: 3px;
     bottom: 0px;
     content: '';
     height: 28px;
-    width: 232px;
+    width: 233px;
     background: $nav-hover-color;
     border-radius: 3px;
     transition: $magic-line-transition;
@@ -308,6 +317,10 @@
 }
 .wrapper {
     position: relative;
+    left: -8px;
+    width: 239px;
+    overflow: hidden;
+    padding-left: 8px;
     .items:nth-child(1):hover ~ .new-magic-line {
         transform: translateY(-195px) !important;
     }
@@ -370,16 +383,17 @@
     .magic-line-selected:nth-child(8) ~ .new-magic-line {
         transform: translateY(-0px) !important;
     }
-
-    // .items:nth-child(9):hover ~ .new-magic-line {
-    //     transform: translateY(-27px) !important;
-    // }
-
-    // .new-magic-line-selected:nth-child(9) ~ .new-magic-line {
-    //     transform: translateY(-27px);
-    // }
 }
-
+.closed-settings {
+    max-height: 0;
+    transition: max-height 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    overflow: hidden;
+}
+.opened-settings {
+    max-height: 500px;
+    transition: all 0.3s ease-in;
+    position: relative;
+}
 @keyframes append-animate {
     from {
         transform: translateY(32px);

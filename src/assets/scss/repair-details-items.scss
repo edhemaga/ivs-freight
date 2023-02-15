@@ -34,7 +34,7 @@ $transition: all 0.3s ease-in-out;
     -moz-column-gap: 12px;
     column-gap: 12px;
     row-gap: 12px;
-    padding-bottom: 18px;
+    padding-bottom: 12px;
 }
 .repair-details-cmp {
     display: grid;
@@ -52,8 +52,8 @@ $transition: all 0.3s ease-in-out;
         margin: 0 !important;
     }
     .repair-information-wrapper {
-        padding: 0 16px;
-        padding-top: 12px;
+        padding: 0 7px;
+        padding-top: 8px;
         .repair-information-item {
             display: flex;
             align-items: center;
@@ -108,7 +108,7 @@ $transition: all 0.3s ease-in-out;
         overflow: hidden;
         width: 440px;
         background-color: $color-white;
-        padding: 1px 7px 9px 7px;
+        padding: 1px 7px 0px 7px;
     }
 }
 

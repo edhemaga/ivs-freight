@@ -17,6 +17,9 @@ import { LoadClosedState } from '../state/load-closed-state/load-closed.store';
 import { LoadPandingState } from '../state/load-pending-state/load-panding.store';
 import { LoadTemplateState } from '../state/load-template-state/load-template.store';
 import { TaThousandSeparatorPipe } from '../../../pipes/taThousandSeparator.pipe';
+import { tableSearch } from 'src/app/core/utils/methods.globals';
+import { LoadTService } from '../state/load.service';
+import { LoadListResponse } from 'appcoretruckassist';
 
 @Component({
     selector: 'app-load-table',
@@ -39,6 +42,27 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
     loadClosed: LoadClosedState[] = [];
     loadPanding: LoadPandingState[] = [];
     loadTemplate: LoadTemplateState[] = [];
+    backLoadFilterQuery = {
+        loadType: undefined,
+        statusType: 1,
+        status: undefined,
+        dispatcherId: undefined,
+        dispatchId: undefined,
+        brokerId: undefined,
+        shipperId: undefined,
+        dateFrom: undefined,
+        dateTo: undefined,
+        revenueFrom: undefined,
+        revenueTo: undefined,
+        truckId: undefined,
+        pageIndex: 1,
+        pageSize: 25,
+        companyId: undefined,
+        sort: undefined,
+        searchOne: undefined,
+        searchTwo: undefined,
+        searchThree: undefined,
+    };
 
     constructor(
         private tableService: TruckassistTableService,
@@ -47,7 +71,8 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
         private loadClosedQuery: LoadClosedQuery,
         private loadPandinQuery: LoadPandinQuery,
         private loadTemplateQuery: LoadTemplateQuery,
-        private thousandSeparator: TaThousandSeparatorPipe
+        private thousandSeparator: TaThousandSeparatorPipe,
+        private loadServices: LoadTService
     ) {}
 
     // ---------------------------- ngOnInit ------------------------------
@@ -132,18 +157,27 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe((res: any) => {
                 if (res) {
-                    /* this.mapingIndex = 0;
+                    this.backLoadFilterQuery.statusType =
+                        this.selectedTab === 'template'
+                            ? undefined
+                            : this.selectedTab === 'active'
+                            ? 2
+                            : this.selectedTab === 'closed'
+                            ? 3
+                            : 1;
+                    this.backLoadFilterQuery.pageIndex = 1;
 
-          this.backFilterQuery.active = this.selectedTab === 'active' ? 1 : 0;
-          this.backFilterQuery.pageIndex = 1; */
-                    /*  const searchEvent = tableSearch(res, this.backFilterQuery); */
-                    /* if (searchEvent) {
-            if (searchEvent.action === 'api') {
-              this.driverBackFilter(searchEvent.query, true);
-            } else if (searchEvent.action === 'store') {
-              this.sendLoadData();
-            }
-          } */
+                    const searchEvent = tableSearch(
+                        res,
+                        this.backLoadFilterQuery
+                    );
+                    if (searchEvent) {
+                        if (searchEvent.action === 'api') {
+                            this.loadBackFilter(searchEvent.query);
+                        } else if (searchEvent.action === 'store') {
+                            this.sendLoadData();
+                        }
+                    }
                 }
             });
 
@@ -508,6 +542,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 comments: data.comments,
             },
             tableAttachments: data?.files ? data.files : [],
+            fileCount: data?.fileCount,
         };
     }
 
@@ -530,6 +565,72 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
             return this.loadTemplate?.length ? this.loadTemplate : [];
         }
     }
+    // Load Back Filter Query
+    loadBackFilter(
+        filter: {
+            loadType: number | undefined;
+            statusType: number | undefined;
+            status: number | undefined;
+            dispatcherId: number | undefined;
+            dispatchId: number | undefined;
+            brokerId: number | undefined;
+            shipperId: number | undefined;
+            dateFrom: string | undefined;
+            dateTo: string | undefined;
+            revenueFrom: number | undefined;
+            revenueTo: number | undefined;
+            truckId: number | undefined;
+            pageIndex: number;
+            pageSize: number;
+            companyId: number | undefined;
+            sort: string | undefined;
+            searchOne: string | undefined;
+            searchTwo: string | undefined;
+            searchThree: string | undefined;
+        },
+        isShowMore?: boolean
+    ) {
+        this.loadServices
+            .getLoadList(
+                filter.loadType,
+                filter.statusType,
+                filter.status,
+                filter.dispatcherId,
+                filter.dispatchId,
+                filter.brokerId,
+                filter.shipperId,
+                filter.dateFrom,
+                filter.dateTo,
+                filter.revenueFrom,
+                filter.revenueTo,
+                filter.truckId,
+                filter.pageIndex,
+                filter.pageSize,
+                filter.companyId,
+                filter.sort,
+                filter.searchOne,
+                filter.searchTwo,
+                filter.searchThree
+            )
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((loads: LoadListResponse) => {
+                if (!isShowMore) {
+                    this.viewData = loads.pagination.data;
+
+                    this.viewData = this.viewData.map((data: any) => {
+                        return this.mapLoadData(data);
+                    });
+                } else {
+                    let newData = [...this.viewData];
+
+                    loads.pagination.data.map((data: any) => {
+                        newData.push(this.mapLoadData(data));
+                    });
+
+                    this.viewData = [...newData];
+                }
+            });
+    }
 
     // ---------------------------- Table Actions ------------------------------
     onToolBarAction(event: any) {
@@ -537,6 +638,17 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
             this.modalService.openModal(LoadModalComponent, { size: 'load' });
         } else if (event.action === 'tab-selected') {
             this.selectedTab = event.tabData.field;
+
+            this.backLoadFilterQuery.statusType =
+                this.selectedTab === 'template'
+                    ? undefined
+                    : this.selectedTab === 'active'
+                    ? 2
+                    : this.selectedTab === 'closed'
+                    ? 3
+                    : 1;
+
+            this.backLoadFilterQuery.pageIndex = 1;
 
             this.sendLoadData();
         } else if (event.action === 'view-mode') {
@@ -546,14 +658,11 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     onTableHeadActions(event: any) {
         if (event.action === 'sort') {
-            /* this.mapingIndex = 0; */
-
             if (event.direction) {
-                /*  this.backFilterQuery.active = this.selectedTab === 'active' ? 1 : 0;
-        this.backFilterQuery.pageIndex = 1;
-        this.backFilterQuery.sort = event.direction;
+                this.backLoadFilterQuery.pageIndex = 1;
+                this.backLoadFilterQuery.sort = event.direction;
 
-        this.driverBackFilter(this.backFilterQuery); */
+                this.loadBackFilter(this.backLoadFilterQuery);
             } else {
                 this.sendLoadData();
             }
@@ -562,8 +671,8 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     onTableBodyActions(event: any) {
         if (event.type === 'show-more') {
-            /*  this.backFilterQuery.pageIndex++;
-      this.driverBackFilter(this.backFilterQuery, false, true); */
+            this.backLoadFilterQuery.pageIndex++;
+            this.loadBackFilter(this.backLoadFilterQuery, true);
         } else if (event.type === 'edit') {
             /* this.modalService.openModal(
         DriverModalComponent,

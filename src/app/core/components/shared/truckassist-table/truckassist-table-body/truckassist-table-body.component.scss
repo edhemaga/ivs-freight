@@ -7,9 +7,9 @@ table {
         // display: flex;
 
         tr {
+            min-height: 32px;
             width: fit-content;
             height: fit-content;
-            min-height: 32px;
             background: white;
             display: flex;
             flex-direction: column;
@@ -22,9 +22,14 @@ table {
                 width: 100%;
                 height: 100%;
                 display: flex;
+                border-radius: 2px;
 
-                .not-pined-columns{
-                    td{
+                .not-pined-columns {
+                    .space-left {
+                        margin-left: 11px;
+                    }
+
+                    td {
                         margin-right: 6px;
                     }
                 }
@@ -485,12 +490,6 @@ table {
                             font-size: 14px;
                             font-weight: bold;
                             align-items: center;
-                            cursor: pointer;
-
-                            &:hover {
-                                color: #5673aa;
-                                transition: 0.25s;
-                            }
 
                             &::selection {
                                 color: #6c6c6c;
@@ -511,6 +510,20 @@ table {
                             &:hover {
                                 transform: scale(1.8);
                                 transition: 0.2s;
+                            }
+
+                            .user-avatar-archived-icon{
+                                width: 18px;
+                                height: 18px;
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+
+                                svg-icon{
+                                    display: flex;
+                                    align-items: center;
+                                    justify-content: center;
+                                }
                             }
 
                             .avatar {
@@ -566,16 +579,19 @@ table {
                             white-space: nowrap;
                             text-overflow: ellipsis;
                             align-items: center;
+
+                            &::selection {
+                                color: #6c6c6c;
+                                background: #6c6c6c20;
+                            }
+                        }
+
+                        .has-details-page {
                             cursor: pointer;
 
                             &:hover {
                                 color: #5673aa !important;
                                 transition: 0.25s;
-                            }
-
-                            &::selection {
-                                color: #6c6c6c;
-                                background: #6c6c6c20;
                             }
                         }
 
@@ -719,7 +735,71 @@ table {
                         }
 
                         .attachments-icon-container {
-                            padding: 3px;
+                            width: max-content;
+                            height: 26px;
+                            border-radius: 2px;
+                            padding: 4px;
+                            gap: 4px;
+
+                            .file_count {
+                                min-width: 14px;
+                                height: 14px;
+
+                                font-weight: 700;
+                                font-size: 11px;
+                                line-height: 14px;
+                                color: #919191;
+                                text-align: center;
+
+                                user-select: none;
+                            }
+
+                            &:hover {
+                                background-color: #eeeeee;
+                                svg-icon {
+                                    svg {
+                                        path {
+                                            fill: #424242;
+                                        }
+                                    }
+                                }
+
+                                .file_count {
+                                    color: #424242;
+                                }
+                            }
+
+                            &.action-active {
+                                background-color: #424242 !important;
+
+                                svg-icon {
+                                    svg {
+                                        path {
+                                            fill: #dadada !important;
+                                        }
+                                    }
+                                }
+
+                                .file_count {
+                                    color: #dadada !important;
+                                }
+
+                                &:hover {
+                                    background-color: #1d1d1d !important;
+
+                                    svg-icon {
+                                        svg {
+                                            path {
+                                                fill: #ffffff !important;
+                                            }
+                                        }
+                                    }
+
+                                    .file_count {
+                                        color: #ffffff !important;
+                                    }
+                                }
+                            }
                         }
 
                         .action-active {
@@ -972,7 +1052,7 @@ table {
                                 .ic_carhauler_stinger {
                                     svg {
                                         path {
-                                            fill: #F276EF;
+                                            fill: #f276ef;
                                         }
                                     }
                                 }
@@ -1477,6 +1557,7 @@ table {
                         }
 
                         .password-text-showing {
+                            overflow: hidden;
                             font-size: 14px;
                             font-weight: 400;
                             color: #6c6c6c;
@@ -1746,7 +1827,7 @@ table {
                             align-items: center;
 
                             .table-progress-bar-container {
-                                border-radius: 3px;
+                                border-radius: 2px;
                                 -webkit-user-select: none;
                                 -moz-user-select: none;
                                 user-select: none;
@@ -2216,13 +2297,18 @@ table {
 
                     // DOCUMENT
                     .document-container {
+                        display: flex;
+                        justify-content: flex-end;
+
                         width: 100%;
+                        padding: 10px 7px;
+
                         height: fit-content;
                         position: relative;
 
                         // TITLE
                         .document-title {
-                            width: 100%;
+                            width: auto;
                             height: 26px;
                             display: flex;
                             align-items: center;
@@ -2398,6 +2484,10 @@ table {
                         }
                     }
                 }
+
+                .attachemnt-dropdown-content {
+                    padding: 0;
+                }
             }
 
             .attachemnt-dropdown-active,
@@ -2405,7 +2495,23 @@ table {
             .insurance-dropdown-active {
                 width: 100% !important;
                 max-height: 1000px;
-                transition: max-height 0.2s ease-in-out;
+                transition: max-height 0.25s ease-in-out;
+            }
+        }
+
+        // For User Table Only
+        .user-archived {
+            .table-text,
+            .user-status-container,
+            .table-avatar-name,
+            .semi-bold-table-text {
+                color: #919191 !important;
+            }
+
+            .table-avatar-name {
+                &:hover {
+                    color: #919191 !important;
+                }
             }
         }
 
@@ -2596,23 +2702,37 @@ table {
         }
 
         // Border Scroll Section
-        .border-scroll-section {
-            width: 4px;
+        .border-scroll-section-container {
+            position: relative;
+
+            .border-scroll-section {
+                position: absolute;
+                width: 8px;
+                height: 32px;
+                margin-top: -2px;
+            }
+        }
+
+        .border-scroll-section-container-right {
+            margin-right: 7px;
+
+            .border-scroll-section {
+                left: -8px;
+            }
         }
 
         .border-left {
-            background-image: linear-gradient(to right, #eeeeee, #f7f7f700);
+            background-image: linear-gradient(to right, #eeeeee, #eeeeee00);
         }
 
         .border-right {
-            background-image: linear-gradient(to right, #f7f7f700, #eeeeee);
+            background-image: linear-gradient(to right, #eeeeee00, #eeeeee);
         }
     }
 }
 
 // SHOW MORE
 .show-more-container {
-    margin-bottom: 12px;
     height: 18px;
     width: fit-content;
     margin-top: 3px;
@@ -2648,7 +2768,7 @@ table {
         font-weight: bold;
         color: #6c6c6c;
 
-        &:hover{
+        &:hover {
             color: #5673aa;
             transform: 0.25s;
         }
@@ -2997,7 +3117,7 @@ table {
 }
 
 // NG CLASS
-.pined-columns-margin{
+.pined-columns-margin {
     margin-right: 6px;
 }
 

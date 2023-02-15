@@ -11,7 +11,7 @@ import { NavigationUserPanel } from '../model/navigation.model';
 import { Router } from '@angular/router';
 import { debounceTime, Subject, takeUntil } from 'rxjs';
 import { NavigationService } from '../services/navigation.service';
-import { AuthStoreService } from '../../authentication/state/auth.service';
+import { WebsiteAuthService } from '../../website/state/service/website-auth.service';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { ProfileUpdateModalComponent } from '../../modals/profile-update-modal/profile-update-modal.component';
 import { TaUserService } from '../../../services/user/user.service';
@@ -19,12 +19,16 @@ import {
     DropDownAnimation,
     navigation_route_animation,
 } from '../navigation.animation';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 @Component({
     selector: 'app-navigation-user-profile',
     templateUrl: './navigation-user-profile.component.html',
     styleUrls: ['./navigation-user-profile.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
+    imports: [CommonModule, FormsModule],
     animations: [
         navigation_route_animation('showHideDetails'),
         DropDownAnimation,
@@ -35,13 +39,14 @@ export class NavigationUserProfileComponent implements OnInit, OnDestroy {
     @Input() isNavigationHovered: boolean = false;
     @Input() isUserPanelOpen: boolean = false;
     @Input() companiesExists: boolean;
+    @Input() isUserCompanyDetailsOpen: boolean;
     public userNavigationData: NavigationUserPanel[] = userNavigationData;
     public currentUserStatus: string = 'online';
-
+    isActiveMagicLine = true;
     public loggedUser: any = null;
     constructor(
         public router: Router,
-        private authService: AuthStoreService,
+        private websiteAuthService: WebsiteAuthService,
         private navigationService: NavigationService,
         private modalService: ModalService,
         private userService: TaUserService,
@@ -82,10 +87,10 @@ export class NavigationUserProfileComponent implements OnInit, OnDestroy {
                 }
             });
     }
-    public onUserPanelClose() {
+    public onUserPanelClose(event) {
         this.navigationService.onDropdownActivation({
             name: 'User Panel',
-            type: false,
+            type: event,
         });
     }
 
@@ -113,7 +118,7 @@ export class NavigationUserProfileComponent implements OnInit, OnDestroy {
             }
             case 'logout': {
                 localStorage.clear();
-                this.authService.accountLogut();
+                this.websiteAuthService.accountLogout();
                 break;
             }
             default:

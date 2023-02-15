@@ -7,9 +7,10 @@ import { SvgDefinitionsComponent } from './svg-definitions/svg-definitions.compo
 import { ApplicantWelcomeScreenComponent } from './core/components/applicant/applicant-welcome-screen/applicant-welcome-screen.component';
 import { ApplicantEndScreenComponent } from './core/components/applicant/applicant-end-screen/applicant-end-screen.component';
 import { DriverActiveResolver } from './core/components/driver/state/driver-active-state/driver-active.resolver';
-import { HelperSignupUserComponent } from './core/components/authentication/helper-signup-user/helper-signup-user.component';
-import { HelperComponent } from './core/components/authentication/helper/helper.component';
-import { HelperForgotPasswordComponent } from './core/components/authentication/helper-forgot-password/helper-forgot-password.component';
+import { RegisterUserHelperComponent } from './core/components/website/components/website-sidebar/sidebar-content/register-user-content/register-user-helper/register-user-helper.component';
+import { VerifyUserHelperComponent } from './core/components/website/components/website-sidebar/sidebar-content/register-user-content/verify-user-helper/verify-user-helper.component';
+import { RegisterCompanyHelperComponent } from './core/components/website/components/website-sidebar/sidebar-content/register-company-content/register-company-helper/register-company-helper.component';
+import { ResetPasswordHelperComponent } from './core/components/website/components/website-sidebar/sidebar-content/login-content/reset-password-helper/reset-password-helper.component';
 import { BrokerResolver } from './core/components/customer/state/broker-state/broker.resolver';
 import { ShipperResolver } from './core/components/customer/state/shipper-state/shipper.resolver';
 import { ShopResolver } from './core/components/repair/state/shop-state/shop.resolver';
@@ -33,7 +34,6 @@ import { LoadPandingResolver } from './core/components/load/state/load-pending-s
 import { LoadClosedResolver } from './core/components/load/state/load-closed-state/load-closed.resolver';
 import { LoadActiveResolver } from './core/components/load/state/load-active-state/load-active.resolver';
 import { LoadTemplateResolver } from './core/components/load/state/load-template-state/load-template.resolver';
-import { UserResolver } from './core/components/user/state/user-state/user.resolver';
 import { RoadsideActiveResolver } from './core/components/safety/violation/state/roadside-state/roadside-active/roadside-active.resolver';
 import { RoadsideInactiveResolver } from './core/components/safety/violation/state/roadside-state/roadside-inactive/roadside-inactive.resolver';
 import { AccidentActiveResolver } from './core/components/safety/accident/state/accident-state/accident-active/accident-active.resolver';
@@ -48,6 +48,7 @@ import { DispatcherResolverService } from './core/components/dispatch/state/disp
 import { UnderConstructionComponent } from './core/components/under-construction/under-construction.component';
 import { HideContentGuard } from './core/guards/hideContent.guard';
 import { ApplicantGuard } from './core/guards/applicant.guard';
+import { SelectCompanyComponent } from './core/components/authentication/select-company/select-company.component';
 
 const routes: Routes = [
     // Auth Routes
@@ -62,25 +63,32 @@ const routes: Routes = [
     },
     {
         path: 'api/account/signupuser',
-        component: HelperSignupUserComponent,
+        component: RegisterUserHelperComponent,
         data: { title: 'Helper Component Route' },
-        canActivate: [HideContentGuard],
+    },
+    {
+        path: 'api/account/verifyuser',
+        component: VerifyUserHelperComponent,
+        data: { title: 'Helper Component Route' },
     },
     {
         path: 'api/account/verifyowner',
-        component: HelperComponent,
+        component: RegisterCompanyHelperComponent,
         data: { title: 'Helper Component Route' },
-        canActivate: [HideContentGuard],
     },
     {
         path: 'api/account/verifyforgotpassword',
-        component: HelperForgotPasswordComponent,
+        component: ResetPasswordHelperComponent,
         data: { title: 'Helper Component Route' },
-        canActivate: [HideContentGuard],
     },
 
     // Auth Routes
-
+    {
+        path: 'select-company',
+        component: SelectCompanyComponent,
+        data: { title: 'Select Company' },
+        canActivate: [AuthGuard],
+    },
     {
         path: 'dashboard',
         loadChildren: () =>
@@ -276,9 +284,9 @@ const routes: Routes = [
         data: { title: 'Places' },
     },
     {
-        path: 'file-menager',
+        path: 'file-manager',
         component: UnderConstructionComponent,
-        data: { title: 'File Menager' },
+        data: { title: 'File Manager' },
     },
     {
         path: 'telematic',
@@ -518,6 +526,14 @@ const routes: Routes = [
         path: 'notifications',
         component: UnderConstructionComponent,
         data: { title: 'Notifications' },
+    },
+    /* WEBSITE */
+    {
+        path: 'website',
+        loadChildren: () =>
+            import('./core/components/website/website.module').then(
+                (m) => m.WebsiteModule
+            ),
     },
 
     { path: '**', redirectTo: 'dashboard' },

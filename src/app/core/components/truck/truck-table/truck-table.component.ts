@@ -288,7 +288,7 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
                     if (searchEvent) {
                         if (searchEvent.action === 'api') {
-                            this.truckBackFilter(searchEvent.query, true);
+                            this.truckBackFilter(searchEvent.query);
                         } else if (searchEvent.action === 'store') {
                             this.sendTruckData();
                         }
@@ -428,10 +428,6 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
             this.viewData = this.viewData.map((data) => {
                 return this.mapTruckData(data);
             });
-
-            // for(let i = 0; i < 22; i++){
-            //     this.viewData.push(this.viewData[0]);
-            // }
         } else {
             this.viewData = [];
         }
@@ -556,6 +552,7 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 ? this.datePipe.transform(data.updatedAt, 'MM/dd/yy')
                 : '',
             tableAttachments: data?.files ? data.files : [],
+            fileCount: data?.fileCount,
         };
     }
 
@@ -589,7 +586,6 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
             searchTwo: string | undefined;
             searchThree: string | undefined;
         },
-        isSearch?: boolean,
         isShowMore?: boolean
     ) {
         this.truckService
@@ -611,12 +607,6 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     this.viewData = this.viewData.map((data: any) => {
                         return this.mapTruckData(data);
                     });
-
-                    if (isSearch) {
-                        this.tableData[
-                            this.selectedTab === 'active' ? 0 : 1
-                        ].length = trucks.pagination.count;
-                    }
                 } else {
                     let newData = [...this.viewData];
 
@@ -672,7 +662,7 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
         switch (event.type) {
             case 'show-more': {
                 this.backFilterQuery.pageIndex++;
-                this.truckBackFilter(this.backFilterQuery, false, true);
+                this.truckBackFilter(this.backFilterQuery, true);
                 break;
             }
             case 'edit-truck': {
@@ -681,7 +671,7 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     { size: 'small' },
                     {
                         ...event,
-                        type: 'edit',
+                        type: 'edit', 
                         disableButton: true,
                         tabSelected: this.selectedTab,
                     }

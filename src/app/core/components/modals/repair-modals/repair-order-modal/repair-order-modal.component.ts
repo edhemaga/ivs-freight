@@ -4,11 +4,17 @@ import {
     convertNumberInThousandSep,
 } from '../../../../utils/methods.calculations';
 import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { UntypedFormArray, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import {
+    FormsModule,
+    UntypedFormArray,
+    UntypedFormBuilder,
+    UntypedFormGroup,
+    Validators,
+} from '@angular/forms';
 import { RepairTService } from '../../../repair/state/repair.service';
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { RepairModalResponse, RepairShopResponse } from 'appcoretruckassist';
-import { NgbActiveModal, NgbPopover } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal, NgbPopover, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
 import { RepairPmModalComponent } from '../repair-pm-modal/repair-pm-modal.component';
 import { TruckModalComponent } from '../../truck-modal/truck-modal.component';
@@ -32,12 +38,42 @@ import {
     convertNumberWithCurrencyFormatterToBackend,
 } from '../../../../utils/methods.calculations';
 import { EditTagsService } from 'src/app/core/services/shared/editTags.service';
+import { CommonModule } from '@angular/common';
+import { AppTooltipComponent } from '../../../standalone-components/app-tooltip/app-tooltip.component';
+import { TaModalComponent } from '../../../shared/ta-modal/ta-modal.component';
+import { TaTabSwitchComponent } from '../../../standalone-components/ta-tab-switch/ta-tab-switch.component';
+import { TaInputDropdownComponent } from '../../../shared/ta-input-dropdown/ta-input-dropdown.component';
+import { TaInputComponent } from '../../../shared/ta-input/ta-input.component';
+import { ReactiveFormsModule } from '@angular/forms';
+import { TaCustomCardComponent } from '../../../shared/ta-custom-card/ta-custom-card.component';
+import { TaUploadFilesComponent } from '../../../shared/ta-upload-files/ta-upload-files.component';
+import { TaInputNoteComponent } from '../../../shared/ta-input-note/ta-input-note.component';
+import { ActiveItemsPipe } from 'src/app/core/pipes/activeItems.pipe';
+import { AngularSvgIconModule } from 'angular-svg-icon';
 
 @Component({
     selector: 'app-repair-order-modal',
     templateUrl: './repair-order-modal.component.html',
     styleUrls: ['./repair-order-modal.component.scss'],
     providers: [PriceCalculationArraysPipe, ModalService, FormService],
+    standalone: true,
+    imports: [
+            CommonModule, 
+            FormsModule, 
+            AppTooltipComponent, 
+            AppTooltipComponent, 
+            TaModalComponent, 
+            TaTabSwitchComponent, 
+            TaInputDropdownComponent, 
+            TaInputComponent, 
+            ReactiveFormsModule, 
+            TaCustomCardComponent, 
+            TaUploadFilesComponent, 
+            TaInputNoteComponent, 
+            ActiveItemsPipe,
+            NgbModule,
+            AngularSvgIconModule
+    ]
 })
 export class RepairOrderModalComponent implements OnInit, OnDestroy {
     @ViewChild('t2') public popoverRef: NgbPopover;
@@ -832,9 +868,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                 invoice: invoice,
                 total:
                     this.repairOrderForm.get('repairType').value === 'Bill'
-                        ? convertNumberWithCurrencyFormatterToBackend(
-                              this.priceArrayPipe.transform(this.subtotal)
-                          )
+                        ? this.priceArrayPipe.transform(this.subtotal).slice(1)
                         : null,
                 serviceTypes: this.services.map((item) => {
                     return {
@@ -1005,7 +1039,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                       )
                     : null,
                 total: this.subtotal
-                    ? this.priceArrayPipe.transform(this.subtotal)
+                    ? this.priceArrayPipe.transform(this.subtotal).slice(1)
                     : null,
                 invoice: invoice,
                 serviceTypes: this.services.map((item) => {
@@ -1069,6 +1103,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
     }
 
     private populateForm(res: any) {
+        console.log('storage data: ', res);
         const timeout = setTimeout(() => {
             res.typeOfRepair.find((item) => item.checked).name === 'Truck'
                 ? this.getRepairDropdowns(
@@ -1083,6 +1118,10 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                       'Trailers',
                       false
                   );
+
+            this.onModalHeaderTabChange(
+                res.typeOfRepair.find((item) => item.checked)
+            );
 
             const timeout2 = setTimeout(() => {
                 this.repairOrderForm.patchValue({
@@ -1269,7 +1308,11 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                                     id: res.items[i].id,
                                     orderingId: ++this.itemsCounter,
                                     description: res.items[i].description,
-                                    price: res.items[i].price,
+                                    price: res.items[i].price
+                                        ? convertNumberWithCurrencyFormatterToBackend(
+                                              res.items[i].price
+                                          )
+                                        : null,
                                     quantity: res.items[i].price
                                         ? res.items[i].quantity
                                             ? res.items[i].quantity
@@ -1427,7 +1470,9 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
             }
         });
 
-        this.tagsService.updateTag({ tags: tags }).subscribe();
+        if(tags.length) {
+            this.tagsService.updateTag({ tags: tags }).subscribe();
+        }
     }
 
     ngOnDestroy(): void {

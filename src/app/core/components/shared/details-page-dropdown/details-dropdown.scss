@@ -85,6 +85,9 @@
 }
 
 .dropdown-main-popover-body {
+    position: relative;
+    top: -4px;
+    //left: -4px;
     background-color: transparent;
     transition: transform 0.1s ease;
     animation: scaleItem 0.3s;
@@ -475,25 +478,25 @@
 }
 
 .bs-popover-right {
-    .dropdown-main-popover-body {
-        margin-left: 4px;
+    .dropdown-main-popover-body { 
+        //margin-left: 4px;
     }
 }
 
 .bs-popover-top {
     .dropdown-main-popover-body {
-        margin-bottom: 4px;
+        //margin-bottom: 4px;
     }
 }
 
 .bs-popover-bottom {
     .dropdown-main-popover-body {
-        margin-top: 4px;
+        //margin-top: 4px;
     }
 }
 
 .bs-popover-left {
     .dropdown-main-popover-body {
-        margin-right: 4px;
+        //margin-right: 4px;
     }
 }

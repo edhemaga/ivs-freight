@@ -1,4 +1,9 @@
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import {
+    FormsModule,
+    UntypedFormBuilder,
+    UntypedFormGroup,
+    Validators,
+} from '@angular/forms';
 import {
     Component,
     Input,
@@ -26,6 +31,12 @@ import {
 } from '../../shared/ta-input/ta-input.regex-validations';
 import { FormService } from '../../../services/form/form.service';
 import { passwordAccountValidation } from '../../shared/ta-input/ta-input.regex-validations';
+import { CommonModule } from '@angular/common';
+import { TaModalComponent } from '../../shared/ta-modal/ta-modal.component';
+import { TaInputComponent } from '../../shared/ta-input/ta-input.component';
+import { TaInputDropdownLabelComponent } from '../../shared/ta-input-dropdown-label/ta-input-dropdown-label.component';
+import { ReactiveFormsModule } from '@angular/forms';
+import { TaInputNoteComponent } from '../../shared/ta-input-note/ta-input-note.component';
 
 @Component({
     selector: 'app-account-modal',
@@ -33,6 +44,8 @@ import { passwordAccountValidation } from '../../shared/ta-input/ta-input.regex-
     styleUrls: ['./account-modal.component.scss'],
     encapsulation: ViewEncapsulation.None,
     providers: [ModalService, FormService],
+    standalone: true,
+    imports: [CommonModule, FormsModule, ReactiveFormsModule,TaModalComponent,TaInputComponent, TaInputDropdownLabelComponent, TaInputNoteComponent]
 })
 export class AccountModalComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
@@ -62,10 +75,6 @@ export class AccountModalComponent implements OnInit, OnDestroy {
         this.createForm();
         this.companyAccountModal();
         this.companyAccountColorLabels();
-
-        if (this.editData) {
-            this.editCompanyAccount(this.editData.id);
-        }
 
         this.inputService.customInputValidator(
             this.accountForm.get('url'),
@@ -169,6 +178,10 @@ export class AccountModalComponent implements OnInit, OnDestroy {
                     this.accountLabels = res.labels.map((item) => {
                         return { ...item, dropLabel: true };
                     });
+
+                    if (this.editData) {
+                        this.editCompanyAccount(this.editData.id);
+                    }
                 },
             });
     }

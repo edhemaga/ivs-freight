@@ -200,10 +200,6 @@
     <div class="ta-upload-file-content  {{ customClassName }}">
         <!-- Pdf Content -->
         <pdf-viewer
-            *ngIf="
-                file?.extension?.toLowerCase() === 'pdf' ||
-                fileExtension === 'pdf'
-            "
             [src]="file?.url"
             [(page)]="activePage"
             style="display: block"
@@ -234,6 +230,9 @@
                 [src]="file?.url"
                 [alt]="file?.fileName"
             />
+            <div class="spinner" *ngIf="documentLoading">
+                <app-ta-spinner [size]="'small'" [color]="'blueDark'"></app-ta-spinner>
+            </div>
         </div>
 
         <!-- Tag Content -->
@@ -255,7 +254,7 @@
     </div>
 
     <!-- File Delete Template -->
-    <div *ngIf="isFileDelete" class="ta-upload-file-delete-template">
+    <div *ngIf="isFileDelete" class="ta-upload-file-delete-template  {{ customClassName }}">
         <div class="ta-upload-file-delete-text">
             Are you sure you want to delete file?
         </div>
@@ -297,34 +296,19 @@
                 </div>
             </div>
             <div class="document_info_hold">
-                <div
-                    class="pdf_page_size"
-                    *ngIf="
-                        numberOfFilePages &&
-                        (file?.extension?.toLowerCase() == 'pdf' ||
-                            fileExtension === 'pdf')
-                    "
-                >
+                <div class="pdf_page_size" *ngIf="numberOfFilePages">
                     {{ numberOfFilePages }}
                 </div>
                 <div
                     class="file_size"
-                    [class.has_pages]="
-                        numberOfFilePages &&
-                        (file?.extension?.toLowerCase() == 'pdf' ||
-                            fileExtension === 'pdf')
-                    "
+                    [class.has_pages]="numberOfFilePages"
                     *ngIf="!file.realFile"
                 >
                     {{ file?.fileSize | byteConvert }}
                 </div>
                 <div
                     class="file_size"
-                    [class.has_pages]="
-                        numberOfFilePages &&
-                        (file?.extension?.toLowerCase() == 'pdf' ||
-                            fileExtension === 'pdf')
-                    "
+                    [class.has_pages]="numberOfFilePages"
                     *ngIf="file.realFile"
                 >
                     {{ file?.size | byteConvert }}

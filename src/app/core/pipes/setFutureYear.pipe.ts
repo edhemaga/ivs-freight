@@ -3,6 +3,7 @@ import moment from 'moment';
 
 @Pipe({
     name: 'setFutureYear',
+    standalone: true
 })
 export class setFutureYear implements PipeTransform {
     transform(date: string) {

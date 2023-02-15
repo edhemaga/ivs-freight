@@ -143,13 +143,6 @@ export class LoadDetailsComponent implements OnInit, OnChanges, OnDestroy {
                     title: 'border'
                 },
                 {
-                    title: 'View Details',
-                    name: 'view-details',
-                    svg: 'assets/svg/common/ic_hazardous-info.svg',
-                    iconName: 'view-details',
-                    show: true,
-                },
-                {
                     title: 'Create Load',
                     name: 'create-load',
                     svg: 'assets/svg/common/ic_plus.svg',

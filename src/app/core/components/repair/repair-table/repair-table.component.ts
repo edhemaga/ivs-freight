@@ -57,6 +57,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
     repairShops: ShopState[] = [];
     tableContainerWidth: number = 0;
     resizeObserver: ResizeObserver;
+
     backFilterQuery = {
         repairShopId: undefined,
         unitType: 1,
@@ -183,18 +184,17 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                             : this.shopFilterQuery
                     );
 
+                    console.log(searchEvent);
+
                     if (searchEvent) {
                         if (searchEvent.action === 'api') {
                             if (this.selectedTab !== 'repair-shop') {
                                 this.backFilterQuery.unitType =
                                     this.selectedTab === 'active' ? 1 : 2;
 
-                                this.repairBackFilter(
-                                    this.backFilterQuery,
-                                    true
-                                );
+                                this.repairBackFilter(this.backFilterQuery);
                             } else {
-                                this.shopBackFilter(this.shopFilterQuery, true);
+                                this.shopBackFilter(this.shopFilterQuery);
                             }
                         } else if (searchEvent.action === 'store') {
                             this.sendRepairData();
@@ -467,7 +467,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
             return this.repairTrucks?.length ? this.repairTrucks : [];
         } else if (dataType === 'inactive') {
             this.repairTrailers = this.repairTrailerQuery.getAll();
-            
+
             return this.repairTrailers?.length ? this.repairTrailers : [];
         } else if (dataType === 'repair-shop') {
             this.repairShops = this.shopQuery.getAll();
@@ -581,6 +581,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                 ? this.datePipe.transform(data.updatedAt, 'MM/dd/yy')
                 : '',
             tableAttachments: data?.files ? data.files : [],
+            fileCount: data?.fileCount,
         };
     }
 
@@ -618,8 +619,9 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
             tableEdited: data.updatedAt
                 ? this.datePipe.transform(data.updatedAt, 'MM/dd/yy')
                 : '',
-            isFavorite: false,
+            isFavorite: data.pinned,
             tableAttachments: data?.files ? data.files : [],
+            fileCount: data?.fileCount,
         };
     }
 
@@ -644,7 +646,6 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
             searchTwo: string | undefined;
             searchThree: string | undefined;
         },
-        isSearch?: boolean,
         isShowMore?: boolean
     ) {
         this.repairService
@@ -675,12 +676,6 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                     this.viewData = this.viewData.map((data: any) => {
                         return this.mapTruckAndTrailerData(data);
                     });
-
-                    if (isSearch) {
-                        this.tableData[
-                            this.selectedTab === 'active' ? 0 : 1
-                        ].length = repair.pagination.count;
-                    }
                 } else {
                     let newData = [...this.viewData];
 
@@ -709,13 +704,13 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
             pageSize?: number;
             companyId?: number | undefined;
             sort?: string | undefined;
-            search?: string | undefined;
-            search1?: string | undefined;
-            search2?: string | undefined;
+            searchOne: string | undefined;
+            searchTwo: string | undefined;
+            searchThree: string | undefined;
         },
-        isSearch?: boolean,
         isShowMore?: boolean
     ) {
+        console.log();
         this.repairService
             .getRepairShopList(
                 filter.active,
@@ -731,9 +726,9 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                 filter.pageSize,
                 filter.companyId,
                 filter.sort,
-                filter.search,
-                filter.search1,
-                filter.search2
+                filter.searchOne,
+                filter.searchTwo,
+                filter.searchThree
             )
             .pipe(takeUntil(this.destroy$))
             .subscribe((shop: RepairShopListResponse) => {
@@ -743,10 +738,6 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                     this.viewData = this.viewData.map((data: any) => {
                         return this.mapShopData(data);
                     });
-
-                    if (isSearch) {
-                        this.tableData[2].length = shop.pagination.count;
-                    }
                 } else {
                     let newData = [...this.viewData];
 
@@ -755,6 +746,8 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                     });
 
                     this.viewData = [...newData];
+
+                    console.log(this.viewData);
                 }
             });
     }
@@ -778,7 +771,8 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
         if (event.action === 'tab-selected') {
             this.selectedTab = event.tabData.field;
 
-            this.backFilterQuery.unitType = this.selectedTab === 'active' ? 1 : 2;
+            this.backFilterQuery.unitType =
+                this.selectedTab === 'active' ? 1 : 2;
 
             this.backFilterQuery.pageIndex = 1;
             this.shopFilterQuery.pageIndex = 1;
@@ -846,8 +840,8 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                 : this.shopFilterQuery.pageIndex++;
 
             this.selectedTab !== 'repair-shop'
-                ? this.repairBackFilter(this.backFilterQuery, false, true)
-                : this.shopBackFilter(this.shopFilterQuery, false, true);
+                ? this.repairBackFilter(this.backFilterQuery, true)
+                : this.shopBackFilter(this.shopFilterQuery, true);
         }
         // Edit
         else if (event.type === 'edit') {
@@ -929,10 +923,12 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                 .addRating(raitingData)
                 .pipe(takeUntil(this.destroy$))
                 .subscribe((res: any) => {
-                    this.viewData = this.viewData.map((data: any) => {
+                    let newViewData = [...this.viewData];
+
+                    newViewData.map((data: any) => {
                         if (data.id === event.data.id) {
                             data.actionAnimation = 'update';
-                            data.shopRaiting = {
+                            data.tableShopRaiting = {
                                 hasLiked: res.currentCompanyUserRating === 1,
                                 hasDislike: res.currentCompanyUserRating === -1,
                                 likeCount: res?.upCount ? res.upCount : '0',
@@ -941,11 +937,40 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                                     : '0',
                             };
                         }
-
-                        return data;
                     });
 
-                    this.ref.detectChanges();
+                    this.viewData = [...newViewData];
+
+                    const inetval = setInterval(() => {
+                        this.viewData = closeAnimationAction(
+                            false,
+                            this.viewData
+                        );
+
+                        clearInterval(inetval);
+                    }, 1000);
+                });
+        }
+        // Favorite
+        else if (event.type === 'favorite') {
+            this.repairService
+                .addShopFavorite(event.data.id)
+                .pipe(takeUntil(this.destroy$))
+                .subscribe(() => {
+                    const newViewData = [...this.viewData];
+
+                    newViewData.map((data: any) => {
+                        if (data.id === event.data.id) {
+                            data.actionAnimation = 'update';
+                            data.isFavorite = !data.isFavorite;
+                        }
+                    });
+
+                    const sortedByFavorite = newViewData.sort(
+                        (a, b) => b.isFavorite - a.isFavorite
+                    );
+
+                    this.viewData = [...sortedByFavorite];
 
                     const inetval = setInterval(() => {
                         this.viewData = closeAnimationAction(
@@ -1025,7 +1050,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
         var listChanged = false;
         var addData = mapListResponse.addData ? true : false;
 
-        if ( !addData ) {
+        if (!addData) {
             for (var i = 0; i < this.mapListData.length; i++) {
                 let item = this.mapListData[i];
 
@@ -1049,7 +1074,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
             );
 
             if (itemIndex == -1) {
-                if ( addData ) {
+                if (addData) {
                     this.mapListData.push(item);
                 } else {
                     this.mapListData.splice(b, 0, item);

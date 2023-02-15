@@ -1,4 +1,11 @@
-import { UntypedFormArray, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import {
+    FormsModule,
+    ReactiveFormsModule,
+    UntypedFormArray,
+    UntypedFormBuilder,
+    UntypedFormGroup,
+    Validators,
+} from '@angular/forms';
 import { distinctUntilChanged, Subject, takeUntil } from 'rxjs';
 import { Options } from '@angular-slider/ngx-slider';
 import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
@@ -31,7 +38,6 @@ import { TaUploadFileService } from '../../shared/ta-upload-files/ta-upload-file
 import { DriverTService } from '../../driver/state/driver.service';
 import { HttpResponseBase } from '@angular/common/http';
 
-import { TaTabSwitchComponent } from '../../shared/ta-tab-switch/ta-tab-switch.component';
 import { DropZoneConfig } from '../../shared/ta-upload-files/ta-upload-dropzone/ta-upload-dropzone.component';
 import { BankVerificationService } from '../../../services/BANK-VERIFICATION/bankVerification.service';
 import { FormService } from '../../../services/form/form.service';
@@ -42,6 +48,19 @@ import {
     convertThousanSepInNumber,
 } from '../../../utils/methods.calculations';
 import { EditTagsService } from 'src/app/core/services/shared/editTags.service';
+import { CommonModule } from '@angular/common';
+import { TaModalComponent } from '../../shared/ta-modal/ta-modal.component';
+import { AppTooltipComponent } from '../../standalone-components/app-tooltip/app-tooltip.component';
+import { TaTabSwitchComponent } from '../../standalone-components/ta-tab-switch/ta-tab-switch.component';
+import { TaInputComponent } from '../../shared/ta-input/ta-input.component';
+import { InputAddressDropdownComponent } from '../../shared/input-address-dropdown/input-address-dropdown.component';
+import { TaCustomCardComponent } from '../../shared/ta-custom-card/ta-custom-card.component';
+import { TaCheckboxComponent } from '../../shared/ta-checkbox/ta-checkbox.component';
+import { TaNgxSliderComponent } from '../../shared/ta-ngx-slider/ta-ngx-slider.component';
+import { TaUploadFilesComponent } from '../../shared/ta-upload-files/ta-upload-files.component';
+import { TaInputNoteComponent } from '../../shared/ta-input-note/ta-input-note.component';
+import { TaCheckboxCardComponent } from '../../shared/ta-checkbox-card/ta-checkbox-card.component';
+import { TaInputDropdownComponent } from '../../shared/ta-input-dropdown/ta-input-dropdown.component';
 
 @Component({
     selector: 'app-driver-modal',
@@ -49,6 +68,25 @@ import { EditTagsService } from 'src/app/core/services/shared/editTags.service';
     styleUrls: ['./driver-modal.component.scss'],
     animations: [tab_modal_animation('animationTabsModal')],
     providers: [ModalService, FormService, BankVerificationService],
+    standalone: true,
+    imports: [
+            CommonModule, 
+            FormsModule, 
+            AppTooltipComponent, 
+            TaModalComponent, 
+            TaTabSwitchComponent, 
+            ReactiveFormsModule,
+            TaInputComponent,
+            InputAddressDropdownComponent,
+            TaCustomCardComponent,
+            TaCheckboxComponent,
+            TaNgxSliderComponent,
+            TaUploadFilesComponent,
+            TaInputNoteComponent,
+            TaCheckboxCardComponent,
+            TaInputDropdownComponent
+    ]
+
 })
 export class DriverModalComponent implements OnInit, OnDestroy {
     @ViewChild(TaTabSwitchComponent) tabSwitch: TaTabSwitchComponent;
@@ -83,7 +121,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
         {
             id: 1,
             name: 'Basic',
-            checked: true
+            checked: true,
         },
         {
             id: 2,
@@ -153,11 +191,6 @@ export class DriverModalComponent implements OnInit, OnDestroy {
         this.getDriverDropdowns();
         this.onIncludePayroll();
         this.onTwicTypeSelected();
-
-        if (this.editData) {
-            this.disableCardAnimation = true;
-            this.getDriverById(this.editData.id);
-        }
 
         this.isCheckedOwner();
     }
@@ -1138,6 +1171,11 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                     };
 
                     this.handlingPayrollFleetType(this.fleetType, true);
+
+                    if (this.editData) {
+                        this.disableCardAnimation = true;
+                        this.getDriverById(this.editData.id);
+                    }
                 },
                 error: () => {},
             });
@@ -2181,7 +2219,9 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             }
         });
 
-        this.tagsService.updateTag({ tags: tags }).subscribe();
+        if(tags.length) {
+            this.tagsService.updateTag({ tags: tags }).subscribe();
+        }
     }
 
     ngOnDestroy(): void {

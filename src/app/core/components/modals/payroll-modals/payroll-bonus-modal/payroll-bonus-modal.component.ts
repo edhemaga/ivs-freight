@@ -1,5 +1,7 @@
 import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import {
+    FormsModule,
+    ReactiveFormsModule,
     UntypedFormBuilder,
     UntypedFormGroup,
     Validators,
@@ -23,11 +25,26 @@ import {
     convertDateToBackend,
     convertThousanSepInNumber,
 } from '../../../../utils/methods.calculations';
+import { CommonModule } from '@angular/common';
+import { TaModalComponent } from '../../../shared/ta-modal/ta-modal.component';
+import { TaTabSwitchComponent } from '../../../standalone-components/ta-tab-switch/ta-tab-switch.component';
+import { TaInputComponent } from '../../../shared/ta-input/ta-input.component';
+import { TaInputDropdownComponent } from '../../../shared/ta-input-dropdown/ta-input-dropdown.component';
 
 @Component({
     selector: 'app-payroll-bonus-modal',
     templateUrl: './payroll-bonus-modal.component.html',
     styleUrls: ['./payroll-bonus-modal.component.scss'],
+    standalone: true,
+    imports: [
+            CommonModule, 
+            FormsModule, 
+            TaModalComponent, 
+            TaTabSwitchComponent, 
+            ReactiveFormsModule, 
+            TaInputComponent, 
+            TaInputDropdownComponent
+    ]
 })
 export class PayrollBonusModalComponent implements OnInit, OnDestroy {
     @Input() editData: any;
@@ -55,10 +72,6 @@ export class PayrollBonusModalComponent implements OnInit, OnDestroy {
         this.createForm();
 
         this.getModalDropdowns();
-
-        if (this.editData?.type === 'edit') {
-            this.getByIdBonus(this.editData.data.id);
-        }
     }
 
     private createForm() {
@@ -296,6 +309,10 @@ export class PayrollBonusModalComponent implements OnInit, OnDestroy {
                         this.payrollBonusForm.patchValue({
                             driverId: this.labelsDriver[0].name,
                         });
+                    }
+
+                    if (this.editData?.type === 'edit') {
+                        this.getByIdBonus(this.editData.data.id);
                     }
                 },
                 error: () => {},
