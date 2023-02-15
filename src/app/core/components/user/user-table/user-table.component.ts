@@ -137,8 +137,31 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.tableService.currentActionAnimation
             .pipe(takeUntil(this.destroy$))
             .subscribe((res: any) => {
+                // On Add Driver Active
+                if (res.animation === 'add') {
+                    this.viewData.push(this.mapUserData(res.data));
+
+                    this.viewData = this.viewData.map((user: any) => {
+                        if (user.id === res.id) {
+                            user.actionAnimation = 'add';
+                        }
+
+                        return user;
+                    });
+
+                    this.updateDataCount();
+
+                    const inetval = setInterval(() => {
+                        this.viewData = closeAnimationAction(
+                            false,
+                            this.viewData
+                        );
+
+                        clearInterval(inetval);
+                    }, 2300);
+                }
                 // On Update User Status
-                if (res.animation === 'update-status') {
+                else if (res.animation === 'update-status') {
                     this.mapingIndex = 0;
 
                     const updatedUser = this.mapUserData(res.data);
@@ -173,33 +196,32 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.tableService.currentDeleteSelectedRows
             .pipe(takeUntil(this.destroy$))
             .subscribe((response: any[]) => {
-                /* if (response.length) {
-          this.contactService
-            .deleteAccountList(response)
-            .pipe(takeUntil(this.destroy$))
-            .subscribe(() => {
-              this.viewData = this.viewData.map((contact: any) => {
-                response.map((r: any) => {
-                  if (contact.id === r.id) {
-                    contact.actionAnimation = 'delete-multiple';
-                  }
-                });
+                if (response.length) {
+                    let mappedRes = response.map((item) => {
+                        return {
+                            id: item.id,
+                            data: {
+                                ...item.tableData,
+                                name:
+                                    item.tableData.firstName +
+                                    ' ' +
+                                    item.tableData.lastName,
+                            },
+                        };
+                    });
 
-                return contact;
-              });
-
-              this.updateDataCount();
-
-              const inetval = setInterval(() => {
-                this.viewData = closeAnimationAction(true, this.viewData);
-
-                clearInterval(inetval);
-              }, 900);
-
-              this.tableService.sendRowsSelected([]);
-              this.tableService.sendResetSelectedColumns(true);
-            });
-        } */
+                    this.modalService.openModal(
+                        ConfirmationModalComponent,
+                        { size: 'small' },
+                        {
+                            data: null,
+                            array: mappedRes,
+                            template: 'user',
+                            type: 'multiple delete',
+                            image: true,
+                        }
+                    );
+                }
             });
 
         // Confirmation Subscribe
@@ -222,10 +244,10 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
                             this.changeUserStatus(res.id);
                             break;
                         }
-                        // case 'multiple delete': {
-                        //     this.multipleDeleteDrivers(res.array);
-                        //     break;
-                        // }
+                        case 'multiple delete': {
+                            this.multipleDeleteUsers(res.array);
+                            break;
+                        }
                         default: {
                             break;
                         }
@@ -327,7 +349,6 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
         const td = this.tableData.find((t) => t.field === this.selectedTab);
 
-        console.log('User Data');
         console.log(td.data);
 
         this.setUserData(td);
@@ -470,18 +491,18 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
             });
     }
 
-    deleteUserById(id: number){
+    deleteUserById(id: number) {
         this.userService
             .deleteUserById(id)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.viewData = this.viewData.map((driver: any) => {
-                        if (driver.id === id) {
-                            driver.actionAnimation = 'delete';
+                    this.viewData = this.viewData.map((user: any) => {
+                        if (user.id === id) {
+                            user.actionAnimation = 'delete';
                         }
 
-                        return driver;
+                        return user;
                     });
 
                     this.updateDataCount();
@@ -500,9 +521,7 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     updateDataCount() {
-        const userCount = JSON.parse(
-            localStorage.getItem('userTableCount')
-        );
+        const userCount = JSON.parse(localStorage.getItem('userTableCount'));
 
         this.tableData[0].length = userCount.users;
     }
@@ -602,7 +621,7 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
             this.backFilterQuery.pageIndex++;
 
             this.userBackFilter(this.backFilterQuery, true);
-        } 
+        }
         // Activate Or Deactivate User
         else if (event.type === 'deactivate' || event.type === 'activate') {
             this.modalService.openModal(
@@ -617,7 +636,7 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
             );
         }
         // User Delete
-        else if(event.type === 'delete'){
+        else if (event.type === 'delete') {
             this.modalService.openModal(
                 ConfirmationModalComponent,
                 { size: 'small' },
@@ -629,6 +648,35 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 }
             );
         }
+    }
+
+    // Delete Multiple Users
+    multipleDeleteUsers(users: any) {
+        this.userService
+            .deleteUserList(users)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe(() => {
+                this.viewData = this.viewData.map((tableData: any) => {
+                    users.map((userId: any) => {
+                        if (tableData.id === userId) {
+                            tableData.actionAnimation = 'delete-multiple';
+                        }
+                    });
+
+                    return tableData;
+                });
+
+                this.updateDataCount();
+
+                const inetval = setInterval(() => {
+                    this.viewData = closeAnimationAction(true, this.viewData);
+
+                    clearInterval(inetval);
+                }, 900);
+
+                this.tableService.sendRowsSelected([]);
+                this.tableService.sendResetSelectedColumns(true);
+            });
     }
 
     // ---------------------------  NgOnDestroy ----------------------------------
