@@ -133,7 +133,7 @@ export class PayrollCreditBonusComponent implements OnInit {
             amount: [null, Validators.required],
         });
 
-        this.formService.checkFormChange(this.payrollCreditForm, 400);
+        this.formService.checkFormChange(this.payrollCreditForm);
         this.formService.formValueChange$
             .pipe(takeUntil(this.destroy$))
             .subscribe((isFormChange: boolean) => {

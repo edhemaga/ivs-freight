@@ -45,6 +45,7 @@ export class TaInputComponent
     implements OnInit, OnChanges, OnDestroy, ControlValueAccessor
 {
     private destroy$ = new Subject<void>();
+
     @ViewChild('input', { static: true }) public input: ElementRef;
     @ViewChild('span1', { static: false }) span1: ElementRef;
     @ViewChild('span2', { static: false }) span2: ElementRef;
@@ -117,10 +118,12 @@ export class TaInputComponent
     public cursorInputPosition: number;
     public hasDecimalIndex: number = -1;
     public originPriceSeparatorLimit: number;
-    public decimalIndexTimeout = null;
     public isDotDeleted: boolean = false;
 
     public wholeInputSelection: any;
+
+    // Timeout
+    public timeoutCleaner: any = null;
 
     constructor(
         @Self() public superControl: NgControl,
@@ -135,6 +138,7 @@ export class TaInputComponent
     ) {
         this.superControl.valueAccessor = this;
     }
+
     ngOnChanges(changes: SimpleChanges): void {
         if (changes.inputConfig?.currentValue?.multipleInputValues?.options) {
             this.inputConfig.multipleInputValues.options =
@@ -154,7 +158,7 @@ export class TaInputComponent
         // Toggle label transition animation
         $('.input-label').addClass('no-transition');
 
-        setTimeout(() => {
+        this.timeoutCleaner = setTimeout(() => {
             $('.input-label').removeClass('no-transition');
         }, 1000);
 
@@ -191,7 +195,7 @@ export class TaInputComponent
                         if (data.action) {
                             this.dropdownToggler = false;
 
-                            setTimeout(() => {
+                            this.timeoutCleaner = setTimeout(() => {
                                 this.inputConfig = data.inputConfig;
                                 this.setInputCursorAtTheEnd(
                                     this.input.nativeElement
@@ -218,7 +222,7 @@ export class TaInputComponent
 
         // Auto Focus First Input
         if (this.inputConfig.autoFocus && !this.getSuperControl.value) {
-            setTimeout(() => {
+            this.timeoutCleaner = setTimeout(() => {
                 if (
                     this.inputConfig.name !== 'datepicker' &&
                     this.inputConfig.name !== 'timepicker'
@@ -297,7 +301,7 @@ export class TaInputComponent
             this.inputConfig.name === 'timepicker'
         ) {
             if (obj) {
-                setTimeout(() => {
+                this.timeoutCleaner = setTimeout(() => {
                     this.setTimeDateInput(obj);
                 }, 300);
             } else {
@@ -456,13 +460,13 @@ export class TaInputComponent
     }
 
     private blurOnCommands() {
-        setTimeout(() => {
+        this.timeoutCleaner = setTimeout(() => {
             this.isVisibleCommands = false;
         }, 150);
     }
 
     private blurOnDropDownArrow() {
-        setTimeout(() => {
+        this.timeoutCleaner = setTimeout(() => {
             this.dropdownToggler = false;
             this.focusInput = false;
             this.inputService.dropDownShowHide$.next(false);
@@ -569,14 +573,16 @@ export class TaInputComponent
         if (input.setSelectionRange) {
             input.setSelectionRange(selectionEnd, selectionEnd);
         }
-        setTimeout(() => {
+        this.timeoutCleaner = setTimeout(() => {
             input.focus();
         }, time);
     }
 
     public onKeydown(event) {
-        this.capsLockOn =
-            event?.getModifierState('CapsLock') || event?.shiftKey;
+        if (event) {
+            this.capsLockOn =
+                event?.getModifierState('CapsLock') || event?.shiftKey;
+        }
 
         if (this.inputConfig.priceSeparator) {
             this.isDotDeleted = this.getSuperControl?.value?.includes('.');
@@ -779,7 +785,6 @@ export class TaInputComponent
                 decimalPart = decimalPart.slice(0, 2);
 
                 if (decimalPart) {
-                    clearTimeout(this.decimalIndexTimeout);
                     // 4.5. Set formatted number
                     this.getSuperControl.patchValue(
                         integerPart + '.' + decimalPart
@@ -821,7 +826,7 @@ export class TaInputComponent
                 }
             }
 
-            setTimeout(() => {
+            this.timeoutCleaner = setTimeout(() => {
                 this.input.nativeElement.setSelectionRange(
                     this.cursorInputPosition +
                         (this.getSuperControl.value.indexOf('.') === -1
@@ -905,7 +910,7 @@ export class TaInputComponent
 
             if (sanitizedInput !== this.input.nativeElement.value) {
                 this.input.nativeElement.value = sanitizedInput;
-                setTimeout(() => {
+                this.timeoutCleaner = setTimeout(() => {
                     this.input.nativeElement.setSelectionRange(
                         this.lastCursorSpacePosition - 1,
                         this.lastCursorSpacePosition - 1
@@ -1177,7 +1182,7 @@ export class TaInputComponent
                         integerPart + '.' + decimalPart
                     );
 
-                    setTimeout(() => {
+                    this.timeoutCleaner = setTimeout(() => {
                         if (event.keyCode === 51) {
                             this.cursorInputPosition =
                                 this.input.nativeElement.selectionStart;
@@ -1532,7 +1537,7 @@ export class TaInputComponent
                     .getInputRegexPattern('per stop')
                     .test(String.fromCharCode(event.charCode))
             ) {
-                setTimeout(() => {
+                this.timeoutCleaner = setTimeout(() => {
                     if (this.getSuperControl.value) {
                         let perStopValue = this.getSuperControl.value.replace(
                             /,/g,
@@ -1905,7 +1910,7 @@ export class TaInputComponent
             )
         ) {
             if ('phone' === this.inputConfig.name.toLowerCase()) {
-                setTimeout(() => {
+                this.timeoutCleaner = setTimeout(() => {
                     this.getSuperControl.setErrors(null);
 
                     this.input.nativeElement.value = newText.substring(0, 10);
@@ -1921,7 +1926,7 @@ export class TaInputComponent
             }
 
             if ('ein' === this.inputConfig.name.toLowerCase()) {
-                setTimeout(() => {
+                this.timeoutCleaner = setTimeout(() => {
                     this.getSuperControl.setErrors(null);
                     this.input.nativeElement.value = newText.substring(0, 9);
                     this.getSuperControl.patchValue(
@@ -1933,7 +1938,7 @@ export class TaInputComponent
             }
 
             if ('ssn' === this.inputConfig.name.toLowerCase()) {
-                setTimeout(() => {
+                this.timeoutCleaner = setTimeout(() => {
                     this.getSuperControl.setErrors(null);
                     this.input.nativeElement.value = newText.substring(0, 9);
                     this.getSuperControl.patchValue(
@@ -2532,11 +2537,6 @@ export class TaInputComponent
         }, 100);
     }
 
-    ngOnDestroy(): void {
-        this.destroy$.next();
-        this.destroy$.complete();
-    }
-
     selectLastOneForSelection() {
         clearTimeout(this.wholeInputSelection);
         let range, selection;
@@ -2555,7 +2555,7 @@ export class TaInputComponent
             selection.addRange(range);
         }
 
-        setTimeout(() => {
+        this.timeoutCleaner = setTimeout(() => {
             clearTimeout(this.dateTimeMainTimer);
             clearTimeout(this.focusBlur);
         }, 90);
@@ -2566,10 +2566,18 @@ export class TaInputComponent
         this.span3.nativeElement.focus();
         this.setSpanSelection(this.span3.nativeElement);
         this.showDateInput = true;
-        setTimeout(() => {
+        this.timeoutCleaner = setTimeout(() => {
             clearTimeout(this.dateTimeMainTimer);
             clearTimeout(this.focusBlur);
             clearTimeout(this.wholeInputSelection);
         }, 90);
+    }
+
+    ngOnDestroy(): void {
+        this.destroy$.next();
+        this.destroy$.complete();
+        clearTimeout(this.timeoutCleaner);
+        clearTimeout(this.wholeInputSelection);
+        clearTimeout(this.dateTimeMainTimer);
     }
 }

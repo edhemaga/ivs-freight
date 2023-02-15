@@ -164,7 +164,7 @@ export class PayrollDeductionModalComponent implements OnInit {
             limitedNumber: [null],
         });
 
-        this.formService.checkFormChange(this.payrollDeductionForm, 400);
+        this.formService.checkFormChange(this.payrollDeductionForm);
         this.formService.formValueChange$
             .pipe(takeUntil(this.destroy$))
             .subscribe((isFormChange: boolean) => {

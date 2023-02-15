@@ -87,6 +87,9 @@ export class TaInputDropdownComponent
     // Dropdown navigation with keyboard
     private dropdownPosition: number = -1;
 
+    // Dropdown Cleartimeout
+    public clearTimeoutDropdown: any = null;
+
     constructor(
         @Self() public superControl: NgControl,
         private inputService: TaInputService,
@@ -135,7 +138,7 @@ export class TaInputDropdownComponent
             changes.activeItem?.previousValue
         ) {
             if (!this.inputConfig?.name?.toLowerCase()?.includes('address')) {
-                setTimeout(() => {
+                this.clearTimeoutDropdown = setTimeout(() => {
                     this.getSuperControl.patchValue(
                         changes.activeItem.currentValue?.number
                             ? changes.activeItem.currentValue?.number
@@ -176,7 +179,7 @@ export class TaInputDropdownComponent
 
         // Details Pages
         if (this.template === 'details-template' && this.isDetailsPages) {
-            const timeout = setTimeout(() => {
+            this.clearTimeoutDropdown = setTimeout(() => {
                 this.inputRef.setInputCursorAtTheEnd(
                     this.inputRef.input.nativeElement
                 );
@@ -188,16 +191,14 @@ export class TaInputDropdownComponent
                     this.popoverRef.open();
                     clearTimeout(timeout2);
                 }, 150);
-                clearTimeout(timeout);
             });
         }
     }
 
     ngAfterViewInit() {
         if (this.inputConfig.autoFocus) {
-            const timeout = setTimeout(() => {
+            this.clearTimeoutDropdown = setTimeout(() => {
                 this.popoverRef.open();
-                clearTimeout(timeout);
             }, 450);
         }
     }
@@ -354,21 +355,19 @@ export class TaInputDropdownComponent
                 }
 
                 if (this.inputConfig.name !== 'RoutingAddress') {
-                    const timeout = setTimeout(() => {
+                    this.clearTimeoutDropdown = setTimeout(() => {
                         this.inputConfig = {
                             ...this.inputConfig,
                             blackInput: false,
                         };
-                        clearTimeout(timeout);
                     }, 300);
                 }
             }
         }
 
         if (this.template === 'fuel-franchise') {
-            const timeout = setTimeout(() => {
+            this.clearTimeoutDropdown = setTimeout(() => {
                 this.popoverRef.close();
-                clearTimeout(timeout);
             }, 100);
         }
     }
@@ -495,9 +494,8 @@ export class TaInputDropdownComponent
         this.popoverRef.close();
 
         this.isInAddMode = true;
-        const timeout = setTimeout(() => {
+        this.clearTimeoutDropdown = setTimeout(() => {
             this.isInAddMode = false;
-            clearTimeout(timeout);
         }, 500);
     }
 
@@ -640,9 +638,8 @@ export class TaInputDropdownComponent
                 this.inputRef.input.nativeElement
             );
 
-            const timeout = setTimeout(() => {
+            this.clearTimeoutDropdown = setTimeout(() => {
                 this.popoverRef.open();
-                clearTimeout(timeout);
             }, 150);
         } else {
             this.inputRef.focusInput = false;
@@ -656,11 +653,6 @@ export class TaInputDropdownComponent
 
     onClearInputEvent(e) {
         this.clearInputEvent.emit(e);
-    }
-
-    ngOnDestroy(): void {
-        this.destroy$.next();
-        this.destroy$.complete();
     }
 
     private dropDownShowHideEvent() {
@@ -850,7 +842,7 @@ export class TaInputDropdownComponent
                 action: 'confirm',
                 mode: data.dropdownLabelNew ? 'new' : 'edit',
             });
-            setTimeout(() => {
+            this.clearTimeoutDropdown = setTimeout(() => {
                 this.getSuperControl.setErrors(null);
                 this.inputConfig.dropdownLabelNew = false;
                 this.inputConfig.commands.active = false;
@@ -1040,12 +1032,11 @@ export class TaInputDropdownComponent
                 }
 
                 if (this.inputConfig.name !== 'RoutingAddress') {
-                    const timeout = setTimeout(() => {
+                    this.clearTimeoutDropdown = setTimeout(() => {
                         this.inputConfig = {
                             ...this.inputConfig,
                             blackInput: false,
                         };
-                        clearTimeout(timeout);
                     }, 300);
                 }
             }
@@ -1264,4 +1255,10 @@ export class TaInputDropdownComponent
         }
         return options;
     };
+
+    ngOnDestroy(): void {
+        this.destroy$.next();
+        this.destroy$.complete();
+        clearTimeout(this.clearTimeoutDropdown);
+    }
 }

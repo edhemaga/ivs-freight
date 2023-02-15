@@ -124,7 +124,7 @@ export class ContactModalComponent implements OnInit, OnDestroy {
             note: [null],
         });
 
-        this.formService.checkFormChange(this.contactForm, 250);
+        this.formService.checkFormChange(this.contactForm);
         this.formService.formValueChange$
             .pipe(takeUntil(this.destroy$))
             .subscribe((isFormChange: boolean) => {

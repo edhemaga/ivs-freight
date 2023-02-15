@@ -228,7 +228,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
             'email',
             this.destroy$
         );
-        this.formService.checkFormChange(this.brokerForm, 400);
+        this.formService.checkFormChange(this.brokerForm);
         this.formService.formValueChange$
             .pipe(takeUntil(this.destroy$))
             .subscribe((isFormChange: boolean) => {

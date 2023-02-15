@@ -19,6 +19,14 @@
         }
     }
 
+    &.trailer-make {
+        svg {
+            path {
+                fill: #6c6c6c;
+            }
+        }
+    }
+
     // Render Name Initials
     &.name-initials-instead-url {
         width: 18px;

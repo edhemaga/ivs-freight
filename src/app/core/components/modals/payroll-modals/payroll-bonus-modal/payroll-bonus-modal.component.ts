@@ -68,7 +68,7 @@ export class PayrollBonusModalComponent implements OnInit, OnDestroy {
             amount: [null, [Validators.required, ...creditLimitValidation]],
         });
 
-        this.formService.checkFormChange(this.payrollBonusForm, 400);
+        this.formService.checkFormChange(this.payrollBonusForm);
         this.formService.formValueChange$
             .pipe(takeUntil(this.destroy$))
             .subscribe((isFormChange: boolean) => {
