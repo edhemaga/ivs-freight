@@ -94,7 +94,10 @@
         <app-ta-custom-card
             [cardName]="'Notice of Assignment'"
             [disableAnimation]="disableCardAnimation"
-            [isCardOpen]="false"
+            [isCardOpen]="factoringForm.get('noticeOfAssigment').value &&
+            factoringForm.get('noticeOfAssigment').value != 'null'
+                ? true
+                : false"
         >
             <div class="wisywygholder">
                 <app-ta-notice-of-asignment
