@@ -21,6 +21,7 @@ import { CommonModule } from '@angular/common';
 import { AppTooltipComponent } from '../../../standalone-components/app-tooltip/app-tooltip.component';
 import { ByteConvertPipe } from 'src/app/core/pipes/byte-convert.pipe';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { AngularSvgIconModule } from 'angular-svg-icon';
 
 export interface UploadFile {
     name?: any;
@@ -52,7 +53,8 @@ export interface UploadFile {
         PdfViewerModule,
         ByteConvertPipe,
         NgbModule,
-        UrlExtensionPipe
+        UrlExtensionPipe,
+        AngularSvgIconModule,
     ],
 })
 export class TaUploadFileComponent implements OnInit, OnDestroy {
