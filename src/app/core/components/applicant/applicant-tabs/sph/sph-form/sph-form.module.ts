@@ -17,6 +17,7 @@ import { TaInputDropdownComponent } from '../../../../shared/ta-input-dropdown/t
 import { TaInputArrowsComponent } from '../../../../shared/ta-input-arrows/ta-input-arrows.component';
 import { TaInputComponent } from '../../../../shared/ta-input/ta-input.component';
 import { InputAddressDropdownComponent } from '../../../../shared/input-address-dropdown/input-address-dropdown.component';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
     declarations: [
@@ -37,7 +38,8 @@ import { InputAddressDropdownComponent } from '../../../../shared/input-address-
         TaInputDropdownComponent,
         TaInputArrowsComponent,
         TaInputComponent,
-        InputAddressDropdownComponent
+        InputAddressDropdownComponent,
+        RouterModule
     ],
 })
 export class SphFormModule {}

@@ -15,6 +15,11 @@ import { AppTooltipComponent } from '../standalone-components/app-tooltip/app-to
 import { TruckassistTableToolbarComponent } from '../shared/truckassist-table/truckassist-table-toolbar/truckassist-table-toolbar.component';
 import { CdkConnectPipe } from '../../pipes/cdkconnect.pipe';
 import { HosTimePipe } from '../../pipes/hostime';
+import { TaInputDropdownComponent } from '../shared/ta-input-dropdown/ta-input-dropdown.component';
+import { InputAddressDropdownComponent } from '../shared/input-address-dropdown/input-address-dropdown.component';
+import { TaStatusSwitchComponent } from '../shared/ta-status-switch/ta-status-switch.component';
+import { GpsProgressbarComponent } from '../shared/gps-progressbar/gps-progressbar.component';
+import { TaNoteComponent } from '../shared/ta-note/ta-note.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +40,12 @@ import { HosTimePipe } from '../../pipes/hostime';
     AppTooltipComponent,
     TruckassistTableToolbarComponent,
     CdkConnectPipe,
-    HosTimePipe
+    HosTimePipe,
+    TaInputDropdownComponent,
+    InputAddressDropdownComponent,
+    TaStatusSwitchComponent,
+    GpsProgressbarComponent,
+    TaNoteComponent
   ]
 })
 export class DispatchModule { }

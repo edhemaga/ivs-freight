@@ -44,6 +44,7 @@ import { TaInputComponent } from '../shared/ta-input/ta-input.component';
 import { SumArraysPipe } from '../../pipes/sum-arrays.pipe';
 import { TaInputDropdownComponent } from '../shared/ta-input-dropdown/ta-input-dropdown.component';
 import { TaInputArrowsComponent } from '../shared/ta-input-arrows/ta-input-arrows.component';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
     declarations: [
@@ -90,7 +91,8 @@ import { TaInputArrowsComponent } from '../shared/ta-input-arrows/ta-input-arrow
         TaInputComponent,
         SumArraysPipe,
         TaInputDropdownComponent,
-        TaInputArrowsComponent
+        TaInputArrowsComponent,
+        RouterModule
     ],
     exports: [
         ApplicantNextBackBtnComponent,
