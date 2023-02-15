@@ -6,10 +6,9 @@ import {
     OnDestroy,
     OnInit,
     Output,
-    ViewChild,
     ViewEncapsulation,
 } from '@angular/core';
-import { map, Subject, tap } from 'rxjs';
+import { Subject, takeUntil, tap } from 'rxjs';
 import { Router } from '@angular/router';
 import moment from 'moment';
 import { AuthStoreService } from '../state/auth.service';
@@ -17,10 +16,7 @@ import { SelectCompanyResponse } from '../../../../../../appcoretruckassist/mode
 import { SignInResponse } from '../../../../../../appcoretruckassist/model/signInResponse';
 import { UntypedFormBuilder } from '@angular/forms';
 import { convertTimeFromBackend } from 'src/app/core/utils/methods.calculations';
-import {
-    SlickCarouselModule,
-    SlickCarouselComponent,
-} from 'ngx-slick-carousel';
+
 @Component({
     selector: 'app-select-company',
     templateUrl: './select-company.component.html',
@@ -151,6 +147,7 @@ export class SelectCompanyComponent implements OnInit, OnDestroy {
                 companyId: parseInt(id),
             })
             .pipe(
+                takeUntil(this.destroy$),
                 tap((res: SelectCompanyResponse) => {
                     this.userData = {
                         ...res,

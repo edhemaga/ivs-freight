@@ -25,6 +25,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NavigationSettingsComponent } from '../navigation-settings/navigation-settings.component';
 import { UserDataPipe } from '../pipe/user-data.pipe';
+import { AngularSvgIconModule } from 'angular-svg-icon';
 
 @Component({
     selector: 'app-navigation-footer',
@@ -37,7 +38,8 @@ import { UserDataPipe } from '../pipe/user-data.pipe';
         FormsModule,
         NavigationSettingsComponent,
         UserDataPipe,
-        RouterModule
+        RouterModule,
+        AngularSvgIconModule,
     ],
     animations: [
         navigation_route_animation('showHideDetails'),
