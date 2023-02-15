@@ -13,10 +13,8 @@ export class integrationResolver implements Resolve<any> {
     ) {}
 
     resolve(): Observable<any> {
-        console.log('hi');
         return this.integrationService.apiIntegrationListGet(1, 1, 25).pipe(
             tap((integrationPagination) => {
-                console.log(integrationPagination.pagination);
                 localStorage.setItem(
                     'integrationTableCount',
                     JSON.stringify({
