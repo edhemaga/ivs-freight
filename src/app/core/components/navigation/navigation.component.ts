@@ -14,6 +14,16 @@ import { filter, map, mergeMap, startWith, Subject, takeUntil } from 'rxjs';
 import { NavigationService } from './services/navigation.service';
 import { navigation_magic_line } from './navigation.animation';
 import { DetailsDataService } from '../../services/details-data/details-data.service';
+import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NavigationHeaderComponent } from './navigation-header/navigation-header.component';
+import { NavigationModalsComponent } from './navigation-modals/navigation-modals.component';
+import { NavigationFooterComponent } from './navigation-footer/navigation-footer.component';
+import { NavigationUserProfileComponent } from './navigation-user-profile/navigation-user-profile.component';
+import { NavigationUserCompanyComponent } from './navigation-user-company/navigation-user-company.component';
+import { NavigationSubrouteCardComponent } from './navigation-subroute-card/navigation-subroute-card.component';
+import { NavigationRouteComponent } from './navigation-route/navigation-route.component';
+import { NavigationSubrouteComponent } from './navigation-subroute/navigation-subroute.component';
 
 @Component({
     selector: 'app-navigation',
@@ -21,6 +31,20 @@ import { DetailsDataService } from '../../services/details-data/details-data.ser
     styleUrls: ['./navigation.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
     animations: [navigation_magic_line('showHideDetails')],
+    standalone: true,
+    imports: [
+            CommonModule, 
+            FormsModule,
+            ReactiveFormsModule, 
+            NavigationHeaderComponent, 
+            NavigationModalsComponent, 
+            NavigationFooterComponent, 
+            NavigationUserProfileComponent, 
+            NavigationUserCompanyComponent,
+            NavigationSubrouteCardComponent,
+            NavigationRouteComponent,
+            NavigationSubrouteComponent
+    ],
     host: {
         '(document:click)': 'closeNavbar($event)',
     },
@@ -57,12 +81,12 @@ export class NavigationComponent implements OnInit, OnDestroy {
     companiesExists: boolean;
     routeIndexSelected: boolean;
     subrouteClicked: boolean = false;
+    dropdowns: boolean = false;
     constructor(
         private cdRef: ChangeDetectorRef,
         private router: Router,
         private navigationService: NavigationService,
-        private DetailsDataService: DetailsDataService,
-        private activatedRoute: ActivatedRoute
+        private DetailsDataService: DetailsDataService
     ) {}
     hideSubrouteFromChild($event) {
         this.hideSubrouteTitle = $event;
@@ -88,7 +112,9 @@ export class NavigationComponent implements OnInit, OnDestroy {
                             this.isSettingsPanelOpen = false;
                             this.isUserCompanyDetailsOpen = false;
                             this.subrouteClicked = false;
+                            this.isNavigationHovered = true;
                         } else {
+                            this.isNavigationHovered = true;
                             this.isModalPanelOpen = data.type;
                         }
                         break;
@@ -143,8 +169,8 @@ export class NavigationComponent implements OnInit, OnDestroy {
                 if (url.url === '/dispatcher') {
                     this.selectedRoute = 'Dispatch';
                     this.cdRef.detectChanges();
-                } else if (url.url === '/file-menager') {
-                    this.selectedRoute = 'File Menager';
+                } else if (url.url === '/file-manager') {
+                    this.selectedRoute = 'File Manager';
                     this.cdRef.detectChanges();
                 } else {
                     let ruteName = url.url.split('/');
@@ -260,6 +286,7 @@ export class NavigationComponent implements OnInit, OnDestroy {
                 event.target.classList.contains('navigation-top') ||
                 event.target.classList.contains('magic-line-footer') ||
                 event.target.classList.contains('navigation-bottom') ||
+                event.target.classList.contains('subroutes-item') ||
                 event.target.parentElement?.classList.contains(
                     'item-settings'
                 ) ||

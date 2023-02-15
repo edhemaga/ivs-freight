@@ -42,13 +42,14 @@
     }
     .navigation-top {
         padding: 0px 6px;
-        min-height: 93px;
+        height: 86px;
+        margin-bottom: 6px;
     }
     .navigation-middle {
         overflow-y: scroll;
         overflow-x: hidden;
         position: relative;
-
+        max-height: 700px;
         height: auto;
         padding: 0px 6px;
     }
@@ -63,7 +64,7 @@
     .navigation-bottom {
         padding: 0px 6px;
         position: relative;
-        overflow-x: hidden;
+        overflow: hidden;
     }
     .wrapper-line {
         @media only screen and (min-width: 300px) {
@@ -85,7 +86,6 @@
         padding-left: 8px;
         padding-bottom: 1px;
         padding-top: 1px;
-        // z-index: 1;
         position: relative;
         cursor: pointer;
     }
@@ -115,7 +115,7 @@
     .animate-magic-line {
         width: 238px;
         background: $nav-hover-color;
-        animation: magiclinecolortransition 0.5s ease;
+        animation: magiclinecolortransition 1s ease;
     }
     @keyframes magiclinecolortransition {
         from {
@@ -137,11 +137,11 @@
     }
 
     .navigation-routes:nth-child(1):hover ~ .new-magic-line {
-        transform: translateY(1px) !important;
+        transform: translateY(2px) !important;
     }
 
     .new-magic-line-selected:nth-child(1) ~ .new-magic-line {
-        transform: translateY(1px);
+        transform: translateY(2px);
     }
 
     .navigation-routes:nth-child(2):hover ~ .new-magic-line {

@@ -130,12 +130,13 @@ p {
         background: $settings-background;
         border-radius: 0 3px 3px 0;
         position: relative;
-
+        padding-right: 1px;
         .settings-edit-button {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 26px;
+            height: 26px;
             &:hover {
                 transform: $settings-transition;
                 cursor: pointer;
@@ -148,10 +149,12 @@ p {
         }
 
         .settings-plus-button {
-            position: absolute;
-            top: 48%;
-            left: 50%;
-            transform: translate(-50%, -50%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 26px;
+            height: 26px;
+            margin-left: 2px;
             svg {
                 path {
                     fill: $settings-blue-dark;
@@ -176,10 +179,11 @@ p {
         }
 
         .settings-trash-button {
-            position: absolute;
-            top: 48%;
-            left: 50%;
-            transform: translate(-50%, -50%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 26px;
+            height: 26px;
             &:hover {
                 transform: $settings-transition;
                 cursor: pointer;
@@ -210,6 +214,151 @@ p {
         }
     }
 }
+
+// Settings header new design
+
+.toolbar-general-cmp{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    //max-width: 440px;
+    width: 100%;
+
+    .icon-text-wrapper {
+        display: flex;
+        align-items: center;
+        height: 34px;
+        max-width: 200px;
+        margin-right: 13px;
+        p {
+            color: #424242;
+            font-size: 26px;
+            font-weight: 700;
+            line-height: 32px;
+            margin-left: 0px !important;
+            margin: 0;
+        }
+    }
+
+    .icon-right-holder {
+        display: flex;
+        flex-grow: 1;
+        height: 34px;
+        padding-right: 4px;
+        align-items: center;
+        justify-content: flex-end;
+        background-color: #fff;
+
+        .settings-header-button {
+            width: 32px;
+            height: 26px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: $settings-background;
+            border-radius: 0 3px 3px 0;
+            position: relative;
+
+            &.less-width-button{
+                width: 28px; 
+            }
+
+
+            .settings-edit-button {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                width: 26px;
+                height: 26px;
+                &:hover {
+                    transform: $settings-transition;
+                    cursor: pointer;
+                    svg {
+                        path {
+                            fill: $settings-gray-dark;
+                        }
+                    }
+                }
+            }
+    
+            .settings-plus-button {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                width: 26px;
+                height: 26px;
+                margin-left: 2px;
+
+                svg {
+                    path {
+                        fill: $settings-blue-dark;
+                    }
+                }
+                &:hover {
+                    transform: $settings-transition;
+                    background-color: #6d82c7;
+                    
+                    border-radius: 2px;
+                    cursor: pointer;
+                    svg {
+                        path {
+                            fill: $settings-background;
+                        }
+                    }
+                }
+            }
+    
+            .settings-trash-button {
+                //position: absolute;
+                //top: 48%;
+                //left: 50%;
+                //transform: translate(-50%, -50%);
+
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                width: 26px;
+                height: 26px;
+
+                &:hover {
+                    transform: $settings-transition;
+                    cursor: pointer;
+                    svg {
+                        path {
+                            fill: $settings-red-dark;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+
+.container {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .div1 {
+    width: 30%;
+    height: 100px;
+    background-color: lightblue;
+  }
+  
+  .div2 {
+    width: 30%;
+    height: 100px;
+    background-color: lightgreen;
+  }
+  
+  .div3 {
+    width: 30%;
+    height: 100px;
+    background-color: lightcoral;
+  }
+
+
 // Settings Body
 
 .settings-body {
@@ -280,6 +429,187 @@ p {
         border-radius: 1px;
         background-color: $settings-white-light-2;
     }
+
+    .basic-mid-holder{
+        padding: 0px 8px 10px 8px;
+    }
+    
+    //settings new select
+
+    .company-select-holder{
+        display: grid;
+        grid-template-columns: 510px 53px;
+        padding: 8px 7px 0px 7px;
+
+        .inactive-icon-input {
+            display: flex;
+            align-items: center;
+        }
+        
+        .dropInput {
+            width: 100%;
+        }
+
+
+        .select-right-side-holders{
+            display: flex;
+        }
+
+        .division-card-holder{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 110px;
+            height: 26px;
+            margin-left: 4px;
+            background-color: #42424210;
+            span {
+                font-size: 12px;
+                font-weight: 700;
+                color: #424242;
+            }
+            
+        }
+
+        .arrow-company-icon-holder{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: 7.5px;
+
+            .arrow-down{
+                display: flex;
+                align-items: center;
+                width: 100%;
+                justify-content: flex-end;
+                rotate: 270deg;
+
+                svg{
+                    width: 14px;
+                    height: 14px;
+                    line-height: 18px;
+                }
+            }
+
+        }
+
+        .current-active-item {
+            width: 100%;
+            max-width: 100%;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            border-radius: 2px;
+            padding: 4px 5px;
+            cursor: pointer;
+        
+            .current-active-name {
+                font-size: 20px;
+                font-weight: 700;
+                // font-style: italic;
+                white-space: nowrap;
+                line-height: 24px;
+                color: #6c6c6c;
+                cursor: pointer;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                &::-moz-selection {
+                    color: #6c6c6c;
+                    background: rgb(183, 183, 183, 0.2);
+                }
+                &::selection {
+                    color: #6c6c6c;
+                    background: rgb(183, 183, 183, 0.2);
+                }
+            }
+        
+            &:hover {
+                background-color: #f3f3f3;
+                transition: all 0.3s ease-in-out;
+        
+                .current-active-name {
+                    color: #3c3c3c;
+                }
+            }
+        }
+
+        .arrows {
+            display: flex;
+            align-items: center;
+            width: 100%;
+            justify-content: flex-end;
+            margin-left: 9px;
+            margin-top: 2px;
+            span {
+                height: 100%;
+                width: 100%;
+                &:hover {
+                    background: #f3f3f3;
+                    border-radius: 2px;
+                    cursor: pointer;
+                }
+            }
+            .arrow-left {
+                cursor: pointer;
+                padding: 0 5px;
+                svg {
+                    position: relative;
+                    top: 2px;
+                }
+            }
+            .arrow-right {
+                cursor: pointer;
+                padding: 0 5px;
+                svg {
+                    position: relative;
+                    top: 2px;
+                    transform: rotate(-180deg);
+                }
+            }
+        }
+
+        .disabedPreviousArrow{
+            &.arrows {
+                .previousArrow {
+                        opacity: 0.5;
+                        cursor: default !important ;
+        
+                        svg-icon{
+                            cursor: default !important;
+                        }
+        
+                    &:hover{
+                        background-color: transparent !important;
+                    }  
+                }
+        
+                
+            }
+        }
+        
+        .disableNextArrow{
+            &.arrows {
+                .nextArrow {
+                        opacity: 0.5;
+                        cursor: default !important ;
+        
+                        svg-icon{
+                            cursor: default !important;
+                        }  
+                    
+                    &:hover{
+                        background-color: transparent !important;
+                    }
+                }
+        
+                
+                
+            }
+        }
+    }
+
 }
 .border-left {
     border: none;

@@ -9,7 +9,6 @@ import {
     OnInit,
     SimpleChanges,
     OnChanges,
-    ChangeDetectorRef,
 } from '@angular/core';
 import {
     navigation_magic_line,
@@ -17,11 +16,17 @@ import {
 } from '../navigation.animation';
 import { StaticInjectorService } from 'src/app/core/utils/application.decorators';
 import { NavigationService } from '../services/navigation.service';
+import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { AngularSvgIconModule } from 'angular-svg-icon';
+import { TooltipSlideComponent } from '../../standalone-components/tooltip-slide/tooltip-slide.component';
 
 @Component({
     selector: 'app-navigation-route',
     templateUrl: './navigation-route.component.html',
     styleUrls: ['./navigation-route.component.scss'],
+    standalone: true,
+    imports: [CommonModule, FormsModule, AngularSvgIconModule, TooltipSlideComponent, ReactiveFormsModule],
     animations: [
         navigation_route_animation('showHideDetails'),
         navigation_magic_line('magicLine'),
@@ -29,7 +34,6 @@ import { NavigationService } from '../services/navigation.service';
 })
 export class NavigationRouteComponent implements OnInit, OnChanges {
     @Input() route: Navigation;
-    @Input() isNavigationHovered: boolean = false;
     @Input() isActiveSubroute: boolean = false;
     @Input() message: number;
     @Input() files: number;
@@ -67,19 +71,25 @@ export class NavigationRouteComponent implements OnInit, OnChanges {
     public activeLinkHighlight: boolean = false;
     public showToolTip: boolean;
     public routeId: string;
-    @Input() set activeLink(value) {
-        if (typeof this._activeLink == 'undefined' && value) {
-            this._activeLink = value;
-        } else if (typeof this._activeLink != 'undefined') {
-            this.activeLinkHighlight = value;
-        }
-    }
+    public magicBoxAnime = true;
     constructor(
         public router: Router,
         public navigationService: NavigationService,
-        public activatedroute: ActivatedRoute,
-        private cdRef: ChangeDetectorRef
+        public activatedroute: ActivatedRoute
     ) {}
+    @Input() isNavigationHovered: boolean = false;
+
+    @Input() set activeLink(value) {
+        this.activeLinkHighlight = false;
+        if (typeof this._activeLink == 'undefined' && value) {
+            this._activeLink = value;
+        } else if (
+            typeof this._activeLink != 'undefined' &&
+            this.isNavigationHovered != false
+        ) {
+            this.activeLinkHighlight = value;
+        }
+    }
     routeWithSubRoutesClick(event) {
         if (event != undefined) {
             this.routeWithSubRouteClicked.emit(true);
@@ -102,6 +112,13 @@ export class NavigationRouteComponent implements OnInit, OnChanges {
 
     //Get subroute name
     ngOnChanges(changes: SimpleChanges) {
+        if (changes.hasOwnProperty('isNavigationHovered')) {
+            const prev = changes.isNavigationHovered;
+
+            if (changes && prev.previousValue != undefined) {
+                this.magicBoxAnime = changes.isNavigationHovered.currentValue;
+            }
+        }
         this.textSubRoute = this.selectedSubRoute;
         this.activeRouteIdFromLocalStorage = parseInt(
             localStorage.getItem('subroute_active')

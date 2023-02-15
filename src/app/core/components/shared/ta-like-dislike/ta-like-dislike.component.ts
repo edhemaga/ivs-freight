@@ -11,12 +11,16 @@ import {
 } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
 import { DetailsDataService } from '../../../services/details-data/details-data.service';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 @Component({
     selector: 'app-ta-like-dislike',
     templateUrl: './ta-like-dislike.component.html',
     styleUrls: ['./ta-like-dislike.component.scss'],
     encapsulation: ViewEncapsulation.None,
+    standalone: true,
+    imports: [CommonModule, FormsModule],
 })
 export class TaLikeDislikeComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();

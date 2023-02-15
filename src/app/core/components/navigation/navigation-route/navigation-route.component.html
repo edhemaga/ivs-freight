@@ -11,7 +11,11 @@
     [ngClass]="{
         'nav-width': isNavigationHovered,
         'nav-item-parent-active':
-            selectedRoute == route.name && !subrouteContainerOpened
+            selectedRoute == route.name && !subrouteContainerOpened,
+        'disable-cursor':
+            selectedRoute == route.name &&
+            !subrouteContainerOpened &&
+            !route.arrow
     }"
     (mouseenter)="onNavItemHover(true); showToolTip = true"
     (mouseleave)="onNavItemHover(false); showToolTip = false"
@@ -38,7 +42,8 @@
                 !isUserPanelOpen &&
                 selectedRoute == route.name &&
                 !middleIsHovered &&
-                !footerHovered
+                !footerHovered,
+            'box-animation-closed-nav': !magicBoxAnime
         }"
     ></div>
 
@@ -65,15 +70,12 @@
     <div *ngIf="message > 0" class="message-container">
         <svg-icon
             class="{{ class }}"
-            *ngIf="!isNavigationHovered"
+            [ngClass]="{
+                'notification-light': !isNavigationHovered,
+                'notification-dark': isNavigationHovered
+            }"
             class="notification-img"
             src="../../../../../assets/svg/applicant/notification-light.svg"
-        ></svg-icon>
-        <svg-icon
-            class="{{ class }}"
-            *ngIf="isNavigationHovered"
-            class="notification-img"
-            src="../../../../../assets/svg/applicant/notification.svg"
         ></svg-icon>
     </div>
 
@@ -107,10 +109,11 @@
             
                 class="subroute"
                 *ngIf="
-                     route.id == activeRouteIdFromLocalStorage && !activeLinkHighlight
+                     route.id == activeRouteIdFromLocalStorage && !activeLinkHighlight 
+                     && activeRouteName != 'notifications' 
                 "
-            >
-          
+                [ngClass]="{'animation-text': isNavigationHovered}"
+            >   
                 &nbsp;[{{ activeRouteName | titlecase }}]
             </span>
         </p>

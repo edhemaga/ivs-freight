@@ -70,6 +70,9 @@
                     </div>
                     <!-- Header close -->
                     <svg-icon
+                        *ngIf="
+                            this.editData?.type !== 'edit-company-first-login'
+                        "
                         class="modal-close"
                         src="assets/svg/ic_x.svg"
                         (click)="onAction('close')"
@@ -479,7 +482,6 @@
                     [dropZoneConfig]="dropZoneConfig"
                     [disableUnsupportedPreview]="true"
                     (onFileEvent)="onFilesEvent($event)"
-                    [customClassName]="'modals'"
                     (onDropBackground)="onDropBackground($event)"
                 ></app-ta-upload-dropzone>
             </div>

@@ -20,6 +20,11 @@
             font-size: 17px;
             font-weight: 700;
             color: #2f2f2f;
+
+            &::selection {
+                background-color: #2f2f2f33;
+                color: #2f2f2f;
+            }
         }
 
         .input-field-report {
@@ -30,6 +35,11 @@
                 font-size: 14px;
                 font-weight: 700;
                 color: #424242;
+
+                &::selection {
+                    background-color: #42424233;
+                    color: #424242;
+                }
             }
 
             app-ta-input {
@@ -45,6 +55,11 @@
                 font-size: 11px;
                 color: #919191;
                 margin-bottom: 18px;
+
+                &::selection {
+                    background-color: #91919133;
+                    color: #919191;
+                }
             }
         }
 
@@ -62,6 +77,7 @@
                 color: #919191;
                 text-transform: uppercase;
                 border-radius: 3px;
+                user-select: none;
 
                 &.active {
                     background-color: #3074d3;
@@ -90,6 +106,10 @@
                 width: 74px;
                 border-radius: 2px;
                 margin-right: 12px;
+
+                &.no-bc{
+                    background-color: transparent;
+                }
                 svg-icon {
                     svg {
                         width: 50px;
@@ -113,6 +133,11 @@
                 .payroll-item-details-numb {
                     font-size: 18px;
                     color: #2f2f2f;
+
+                    &::selection {
+                        background-color: #2f2f2f33;
+                        color: #2f2f2f;
+                    }
                 }
             }
         }
@@ -122,9 +147,19 @@
 
             font-size: 14px;
             color: #2f2f2f;
+
+            &::selection {
+                background-color: #2f2f2f33;
+                color: #2f2f2f;
+            }
             span {
                 margin-right: 6px;
                 font-weight: 700;
+
+                &::selection {
+                    background-color: #2f2f2f33;
+                    color: #2f2f2f;
+                }
             }
         }
 
@@ -151,6 +186,11 @@
                 font-size: 14px;
                 font-weight: 700;
                 color: #424242;
+
+                &::selection {
+                    background-color: #42424233;
+                    color: #424242;
+                }
             }
         }
 
@@ -173,6 +213,11 @@
                         font-size: 17px;
                         font-weight: 700;
                         color: #424242;
+
+                        &::selection {
+                            background-color: #42424233;
+                            color: #424242;
+                        }
                     }
                 }
 
@@ -180,23 +225,48 @@
                     font-size: 17px;
                     color: #424242;
 
+                    &::selection {
+                        background-color: #42424233;
+                        color: #424242;
+                    }
+
                     &.total {
                         font-weight: 700;
                         color: #3074d3;
+
+                        &::selection {
+                            background-color: #3074d333;
+                            color: #3074d3;
+                        }
                     }
 
                     &.deduction {
                         color: #ef5350;
+
+                        &::selection {
+                            background-color: #ef535033;
+                            color: #ef5350;
+                        }
                     }
 
                     &.credit {
                         color: #26a690;
+
+                        &::selection {
+                            background-color: #26a69033;
+                            color: #26a690;
+                        }
                     }
 
                     &.total,
                     &.salary {
                         font-weight: 700;
                         color: #3074d3;
+
+                        &::selection {
+                            background-color: #3074d333;
+                            color: #3074d3;
+                        }
                     }
                 }
 
@@ -231,12 +301,18 @@
 
                     background-color: #6f9ee033;
                     color: #3074d3;
+                    user-select: none;
                 }
 
                 .title {
                     font-size: 16px;
                     color: #3074d3;
                     font-weight: 700;
+
+                    &::selection {
+                        background-color: #3074d333;
+                        color: #3074d3;
+                    }
                 }
             }
 
@@ -251,6 +327,7 @@
                     color: #424242;
                     margin: 0 4px;
                     border-radius: 2px;
+                    user-select: none;
 
                     span {
                         font-weight: 800;

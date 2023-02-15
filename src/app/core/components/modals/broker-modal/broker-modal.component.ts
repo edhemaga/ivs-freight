@@ -1,5 +1,12 @@
 import { AddressEntity } from '../../../../../../appcoretruckassist';
-import { UntypedFormArray, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import {
+    FormsModule,
+    ReactiveFormsModule,
+    UntypedFormArray,
+    UntypedFormBuilder,
+    UntypedFormGroup,
+    Validators,
+} from '@angular/forms';
 import {
     Component,
     Input,
@@ -29,13 +36,13 @@ import {
 } from '../../shared/ta-input/ta-input.regex-validations';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { HttpResponseBase } from '@angular/common/http';
-import { ReviewCommentModal } from '../../shared/ta-user-review/ta-user-review.component';
+import { ReviewCommentModal, TaUserReviewComponent } from '../../shared/ta-user-review/ta-user-review.component';
 import {
     LikeDislikeModel,
     TaLikeDislikeService,
 } from '../../shared/ta-like-dislike/ta-like-dislike.service';
 import { BrokerTService } from '../../customer/state/broker-state/broker.service';
-import { debounceTime, Subject, takeUntil } from 'rxjs';
+import { debounceTime, Subject, takeUntil, switchMap } from 'rxjs';
 import { ReviewsRatingService } from '../../../services/reviews-rating/reviewsRating.service';
 import {
     convertNumberInThousandSep,
@@ -45,10 +52,23 @@ import { poBoxValidation } from '../../shared/ta-input/ta-input.regex-validation
 import { FormService } from '../../../services/form/form.service';
 import { LoadModalComponent } from '../load-modal/load-modal.component';
 import { BrokerAvailableCreditResponse } from '../../../../../../appcoretruckassist/model/brokerAvailableCreditResponse';
+import { BrokerResponse } from '../../../../../../appcoretruckassist/model/brokerResponse';
 import {
     name2_24Validation,
     creditLimitValidation,
 } from '../../shared/ta-input/ta-input.regex-validations';
+import { CommonModule } from '@angular/common';
+import { AppTooltipComponent } from '../../standalone-components/app-tooltip/app-tooltip.component';
+import { TaModalComponent } from '../../shared/ta-modal/ta-modal.component';
+import { TaTabSwitchComponent } from '../../standalone-components/ta-tab-switch/ta-tab-switch.component';
+import { TaInputComponent } from '../../shared/ta-input/ta-input.component';
+import { InputAddressDropdownComponent } from '../../shared/input-address-dropdown/input-address-dropdown.component';
+import { TaCheckboxComponent } from '../../shared/ta-checkbox/ta-checkbox.component';
+import { TaCurrencyProgressBarComponent } from '../../shared/ta-currency-progress-bar/ta-currency-progress-bar.component';
+import { TaUploadFilesComponent } from '../../shared/ta-upload-files/ta-upload-files.component';
+import { TaInputDropdownComponent } from '../../shared/ta-input-dropdown/ta-input-dropdown.component';
+import { TaCustomCardComponent } from '../../shared/ta-custom-card/ta-custom-card.component';
+import { TaInputNoteComponent } from '../../shared/ta-input-note/ta-input-note.component';
 
 @Component({
     selector: 'app-broker-modal',
@@ -57,6 +77,24 @@ import {
     animations: [tab_modal_animation('animationTabsModal')],
     encapsulation: ViewEncapsulation.None,
     providers: [ModalService, TaLikeDislikeService, FormService],
+    standalone: true,
+    imports: [
+            CommonModule, 
+            FormsModule, 
+            AppTooltipComponent, 
+            TaModalComponent, 
+            TaTabSwitchComponent, 
+            ReactiveFormsModule,
+            TaInputComponent,
+            InputAddressDropdownComponent,
+            TaCheckboxComponent,
+            TaCurrencyProgressBarComponent,
+            TaUploadFilesComponent,
+            TaInputDropdownComponent,
+            TaCustomCardComponent,
+            TaUserReviewComponent,
+            TaInputNoteComponent
+    ]
 })
 export class BrokerModalComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
@@ -69,7 +107,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
         {
             id: 1,
             name: 'Details',
-            checked: true
+            checked: true,
         },
         {
             id: 2,
@@ -176,49 +214,6 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
         this.getBrokerDropdown();
         this.isCredit({ id: 301, name: 'Custom', checked: true });
         this.followIsBillingAddressSame();
-
-        // From Another Modal Data
-        if (this.editData?.type === 'edit-contact') {
-            this.disableCardAnimation = true;
-            this.editBrokerById(this.editData.id);
-            setTimeout(() => {
-                this.tabs = this.tabs.map((item, index) => {
-                    return {
-                        ...item,
-                        disabled: index !== 1,
-                        checked: index === 1,
-                    };
-                });
-                this.selectedTab = 2;
-            }, 50);
-        }
-        // normal get by id broker
-        else {
-            if (this.editData?.id) {
-                this.disableCardAnimation = true;
-                this.editBrokerById(this.editData.id);
-                this.tabs.push({
-                    id: 3,
-                    name: 'Review',
-                });
-                this.ratingChanges();
-            }
-        }
-
-        // Open Tab Position
-        if (this.editData?.openedTab) {
-            setTimeout(() => {
-                this.tabChange({
-                    id:
-                        this.editData?.openedTab === 'Contact'
-                            ? 2
-                            : this.editData?.openedTab === 'Review'
-                            ? 3
-                            : 1,
-                });
-                this.disableCardAnimation = true;
-            });
-        }
 
         this.companyUser = JSON.parse(localStorage.getItem('user'));
     }
@@ -709,10 +704,44 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
 
                 this.reviewRatingService
                     .addRating(rating)
-                    .pipe(takeUntil(this.destroy$))
+                    .pipe(
+                        takeUntil(this.destroy$),
+                        switchMap(() => {
+                            return this.brokerModalService.getBrokerById(
+                                this.editData.id
+                            );
+                        })
+                    )
                     .subscribe({
-                        next: () => {
-                            this.editBrokerById(this.editData.id);
+                        next: (res: BrokerResponse) => {
+                            if (res.reviews.length) {
+                                this.reviews = res.reviews.map((item: any) => ({
+                                    ...item,
+                                    companyUser: {
+                                        ...item.companyUser,
+                                        avatar: item.companyUser.avatar,
+                                    },
+                                    commentContent: item.comment,
+                                    rating: item.ratingFromTheReviewer,
+                                }));
+
+                                const reviewIndex = this.reviews.findIndex(
+                                    (item) =>
+                                        item.companyUser.id ===
+                                        this.companyUser.companyUserId
+                                );
+
+                                if (reviewIndex !== -1) {
+                                    this.disableOneMoreReview = true;
+                                }
+                            }
+
+                            this.taLikeDislikeService.populateLikeDislikeEvent({
+                                downRatingCount: res.downCount,
+                                upRatingCount: res.upCount,
+                                currentCompanyUserRating:
+                                    res.currentCompanyUserRating,
+                            });
                         },
                         error: () => {},
                     });
@@ -796,6 +825,49 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                 next: (reasponse: BrokerModalResponse) => {
                     this.labelsDepartments = reasponse.departments;
                     this.labelsPayTerms = reasponse.payTerms;
+
+                    // From Another Modal Data
+                    if (this.editData?.type === 'edit-contact') {
+                        this.disableCardAnimation = true;
+                        this.editBrokerById(this.editData.id);
+                        setTimeout(() => {
+                            this.tabs = this.tabs.map((item, index) => {
+                                return {
+                                    ...item,
+                                    disabled: index !== 1,
+                                    checked: index === 1,
+                                };
+                            });
+                            this.selectedTab = 2;
+                        }, 50);
+                    }
+                    // normal get by id broker
+                    else {
+                        if (this.editData?.id) {
+                            this.disableCardAnimation = true;
+                            this.editBrokerById(this.editData.id);
+                            this.tabs.push({
+                                id: 3,
+                                name: 'Review',
+                            });
+                            this.ratingChanges();
+                        }
+                    }
+
+                    // Open Tab Position
+                    if (this.editData?.openedTab) {
+                        setTimeout(() => {
+                            this.tabChange({
+                                id:
+                                    this.editData?.openedTab === 'Contact'
+                                        ? 2
+                                        : this.editData?.openedTab === 'Review'
+                                        ? 3
+                                        : 1,
+                            });
+                            this.disableCardAnimation = true;
+                        });
+                    }
                 },
                 error: () => {},
             });

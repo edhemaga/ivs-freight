@@ -2,52 +2,106 @@ export const miles_driver_open_loads = [
     {
         field: "#",
         isIndexIncrement: true,
-        template: "medium-normal-template"
+        template: "medium-normal-template",
+        justifyClass: "just-center"
     },
     {
-        field: "INV #",
-        data_field: "referenceNumber",
-        template: "bold-normal-template"
+        field: "STOP",
+        data_field: "pickup",
+        template: "pickup-delivery-template"
     },
     {
-        field: "BROKER",
-        data_field: "broker.businessName",
+        field: "DATE",
+        data_field: "dateTimeFrom",
+        template: "normal-template",
+        isDate: true
+    },
+    {
+        field: "TIME",
+        data_field: "dateTimeFrom",
+        template: "normal-template",
+        isTime: true
+    },
+    {
+        field: "LEG",
+        data_field: "legMiles",
         template: "normal-template"
     },
     {
-        field: "PICKUP",
-        data_field: "pickup",
-        template: "pickup-template"
-    },
-    {
-        field: "DELIVERY",
-        data_field: "delivery",
-        template: "delivery-template"
-    },
-    {
         field: "LOADED",
-        data_field: "loaded",
+        data_field: "loadedMiles",
         template: "normal-template"
     },
     {
         field: "EMPTY",
-        data_field: "empty",
+        data_field: "emptyMiles",
         template: "normal-template"
     },
     {
         field: "MILES",
-        data_field: "miles",
-        template: "normal-template"
-    },
-    {
-        field: "REVENUE",
-        data_field: "revenue",
+        data_field: "totalMiles",
         template: "normal-template"
     },
     {
         field: "SUBTOTAL",
-        data_field: "subtotal",
+        data_field: "subtotalAmount",
         template: "semibold-normal-template",
-        highlighted: true
+        highlighted: true,
+        isCurrency: true,
+        justifyClass: "just-end"
+    }
+];
+
+
+export const miles_driver_open_loads_resizable = [
+    {
+        field: "Total",
+        data_title: true,
+        isTitleIndex: true,
+        template: "bold-normal-template",
+        value: "Total",
+        colspan: 2
+    },
+    {
+        field: "",
+        template: "semibold-normal-template",
+        colspan: 1
+    },
+    {
+        field: "",
+        template: "semibold-normal-template",
+        colspan: 1
+    },
+    {
+        field: "",
+        template: "semibold-normal-template",
+        colspan: 1
+    },
+    {
+        field: "Loaded",
+        data_field: "loadedMiles",
+        template: "semibold-normal-template",
+        colspan: 1
+    },
+    {
+        field: "Empty",
+        data_field: "emptyMiles",
+        template: "semibold-normal-template",
+        colspan: 1
+    },
+    {
+        field: "Miles",
+        data_field: "totalMiles",
+        template: "semibold-normal-template",
+        colspan: 1
+    },
+    {
+        field: "Subtotal",
+        data_field: "subtotalAmount",
+        template: "bold-normal-template",
+        highlighted: true,
+        colspan: 1,
+        isCurrency: true,
+        justifyClass: "just-end"
     }
 ];

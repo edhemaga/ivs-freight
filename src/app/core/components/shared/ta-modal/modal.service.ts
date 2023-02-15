@@ -113,16 +113,18 @@ export class ModalService {
         }
     }
 
-    public async openModal(
+    public openModal(
         component: any,
         options: ModalOptions,
         editData?: any,
-        backdropClass?: string
+        backdropClass?: string,
+        keyboardEsc: boolean = true
     ) {
+        console.log(keyboardEsc);
         options = {
             ...options,
-            backdrop: 'static',
-            keyboard: false,
+            backdrop: 'static' as any,
+            keyboard: keyboardEsc,
             backdropClass: backdropClass ? backdropClass : 'myDropback',
         };
 

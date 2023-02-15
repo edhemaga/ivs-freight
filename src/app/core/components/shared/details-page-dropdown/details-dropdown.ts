@@ -19,6 +19,10 @@ import {
 } from '@angular/animations';
 import { Options } from '@popperjs/core/lib/popper';
 import { ChangeDetectorRef, OnDestroy } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { AngularSvgIconModule } from 'angular-svg-icon';
+import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
     selector: 'app-details-page-dropdown',
@@ -26,6 +30,8 @@ import { ChangeDetectorRef, OnDestroy } from '@angular/core';
     styleUrls: ['./details-dropdown.scss'],
     encapsulation: ViewEncapsulation.None,
     changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
+    imports: [CommonModule, FormsModule, AngularSvgIconModule, NgbPopoverModule],
     animations: [
         trigger('SubtypeAnimation', [
             state(
@@ -175,12 +181,6 @@ export class DetailsDropdownComponent implements OnInit, OnChanges, OnDestroy {
             enabled: true,
             phase: 'main',
             effect: ({ state, instance }) => {
-                instance.forceUpdate();
-                setTimeout(() => {
-                    instance.forceUpdate();
-                    this.chnd.detectChanges();
-                }, 400);
-
                 const observer = new ResizeObserver(() => instance.update());
                 observer.observe(state.elements!.reference as any);
                 return () => {

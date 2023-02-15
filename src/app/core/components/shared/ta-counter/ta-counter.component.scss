@@ -22,4 +22,10 @@
         font-size: 14px;
         padding: 0 4px;
     }
+
+    &.morePaddingNum{
+        p {
+            padding: 0px 6px;
+        }
+    }
 }

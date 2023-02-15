@@ -79,7 +79,7 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
         {
             id: 1,
             name: 'Basic',
-            checked: true
+            checked: true,
         },
         {
             id: 2,
@@ -103,11 +103,6 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.createForm();
         this.getCompanyOfficeDropdowns();
-
-        if (this.editData?.type === 'edit') {
-            this.disableCardAnimation = true;
-            this.editCompanyOfficeById(this.editData.id);
-        }
     }
 
     private createForm() {
@@ -527,6 +522,11 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
                     this.payPeriods = res.payPeriod;
                     this.departments = res.departments;
                     this.weeklyDays = res.dayOfWeek;
+
+                    if (this.editData?.type === 'edit') {
+                        this.disableCardAnimation = true;
+                        this.editCompanyOfficeById(this.editData.id);
+                    }
                 },
                 error: () => {},
             });

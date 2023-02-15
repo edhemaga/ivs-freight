@@ -2,6 +2,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
     name: 'hideAccount',
+    standalone: true
 })
 export class HideAccountPipe implements PipeTransform {
     transform(value: any, template: string, toogleVisibility: boolean): any {

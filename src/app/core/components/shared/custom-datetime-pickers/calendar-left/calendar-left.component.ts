@@ -1,11 +1,15 @@
 import { CalendarScrollService } from './../calendar-scroll.service';
 import { Component, forwardRef, Input, OnChanges, OnInit } from '@angular/core';
-import { VIRTUAL_SCROLL_STRATEGY } from '@angular/cdk/scrolling';
+import { CdkScrollableModule, VIRTUAL_SCROLL_STRATEGY } from '@angular/cdk/scrolling';
 import { Subject, takeUntil } from 'rxjs';
 import {
     CalendarStrategy,
     STARTING_YEAR,
 } from '../date-calendars/calendar_strategy';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { ScrollingModule } from '@angular/cdk/scrolling';
+import { CalendarMonthsPipe } from '../../../../pipes/calendarMonths.pipe';
 
 export const FULL_SIZE = 24;
 
@@ -21,6 +25,13 @@ function factory(dir: CalendarLeftComponent) {
     selector: 'app-calendar-left',
     templateUrl: './calendar-left.component.html',
     styleUrls: ['./calendar-left.component.scss'],
+    standalone: true,
+    imports: [
+                CommonModule, 
+                FormsModule, 
+                ScrollingModule,
+                CalendarMonthsPipe
+    ],
     providers: [
         {
             provide: VIRTUAL_SCROLL_STRATEGY,

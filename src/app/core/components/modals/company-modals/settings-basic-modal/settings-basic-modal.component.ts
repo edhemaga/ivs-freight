@@ -31,12 +31,18 @@ import {
     usdotValidation,
 } from '../../../shared/ta-input/ta-input.regex-validations';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { UntypedFormArray, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import {
+    UntypedFormArray,
+    UntypedFormBuilder,
+    UntypedFormGroup,
+    Validators,
+} from '@angular/forms';
 import {
     AddressEntity,
     CompanyModalResponse,
     CreateDivisionCompanyCommand,
     CreateResponse,
+    SignInResponse,
     UpdateCompanyCommand,
     UpdateDivisionCompanyCommand,
 } from 'appcoretruckassist';
@@ -54,6 +60,7 @@ import {
 } from '../../../shared/ta-input/ta-input.regex-validations';
 import { convertNumberInThousandSep } from '../../../../utils/methods.calculations';
 import { FormService } from '../../../../services/form/form.service';
+import { CompanyResponse } from '../../../../../../../appcoretruckassist/model/companyResponse';
 import {
     startingValidation,
     cvcValidation,
@@ -284,14 +291,33 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
         }
 
         if (this.editData.type === 'edit-company') {
-            this.editCompany();
+            this.editCompany(this.editData.company);
             this.disableCardAnimation = true;
         }
 
         if (this.editData?.type === 'payroll-tab') {
             this.tabChange({ id: 3 });
             this.disableCardAnimation = true;
-            this.editCompany();
+            this.editCompany(this.editData.company);
+        }
+
+        if (this.editData?.type === 'edit-company-first-login') {
+            this.disableCardAnimation = true;
+            this.settingsCompanyService
+                .getCompany()
+                .pipe(takeUntil(this.destroy$))
+                .subscribe({
+                    next: (data: CompanyResponse) => {
+                        this.editCompany(data);
+                        this.editData.data = data;
+                        const loggedUser: SignInResponse = JSON.parse(
+                            localStorage.getItem('user')
+                        );
+                        loggedUser.areSettingsUpdated = true;
+                        localStorage.setItem("user", JSON.stringify(loggedUser));
+                    },
+                    error: () => {},
+                });
         }
     }
 
@@ -466,7 +492,15 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
                     this.inputService.markInvalid(this.companyForm);
                     return;
                 }
-                if (!this.editData.company?.divisions.length) {
+
+                if (this.editData.type.includes('edit-company')) {
+                    this.updateCompany();
+                    this.modalService.setModalSpinner({
+                        action: null,
+                        status: true,
+                        close: false,
+                    });
+                } else {
                     if (this.editData.type === 'new-division') {
                         this.addCompanyDivision();
                         this.modalService.setModalSpinner({
@@ -482,13 +516,6 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
                             close: false,
                         });
                     }
-                } else {
-                    this.updateCompany();
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: true,
-                        close: false,
-                    });
                 }
 
                 break;
@@ -1696,93 +1723,66 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
             });
     }
 
-    private editCompany() {
+    private editCompany(data: any) {
         this.companyForm.patchValue({
             // -------------------- Basic Tab
-            name: this.editData.company.name,
-            usDot: this.editData.company.usDot,
-            ein: this.editData.company.ein,
-            mc: this.editData.company.mc,
-            phone: this.editData.company.phone,
-            email: this.editData.company.email,
-            fax: this.editData.company.fax,
-            webUrl: this.editData.company.webUrl,
-            address: this.editData.company.address.address,
-            addressUnit: this.editData.company.address.addressUnit,
-            irp: this.editData.company.irp,
-            ifta: this.editData.company.ifta,
-            toll: this.editData.company.toll,
-            scac: this.editData.company.scac,
-            timeZone:
-                this.editData.company.timeZone?.id !== 0
-                    ? this.editData.company.timeZone.name
-                    : null,
-            currency:
-                this.editData.company.currency?.id !== 0
-                    ? this.editData.company.currency.name
-                    : null,
+            name: data.name,
+            usDot: data.usDot,
+            ein: data.ein,
+            mc: data.mc,
+            phone: data.phone,
+            email: data.email,
+            fax: data.fax,
+            webUrl: data.webUrl,
+            address: data.address.address,
+            addressUnit: data.address.addressUnit,
+            irp: data.irp,
+            ifta: data.ifta,
+            toll: data.toll,
+            scac: data.scac,
+            timeZone: data.timeZone?.id !== 0 ? data.timeZone.name : null,
+            currency: data.currency?.id !== 0 ? data.currency.name : null,
             companyType:
-                this.editData.company.companyType?.id !== 0
-                    ? this.editData.company.companyType.name
-                    : null,
-            dateOfIncorporation: this.editData.company.dateOfIncorporation
-                ? convertDateFromBackend(
-                      this.editData.company.dateOfIncorporation
-                  )
+                data.companyType?.id !== 0 ? data.companyType.name : null,
+            dateOfIncorporation: data.dateOfIncorporation
+                ? convertDateFromBackend(data.dateOfIncorporation)
                 : null,
-            logo: this.editData.company.logo
-                ? this.editData.company.logo
-                : null,
+            logo: data.logo ? data.logo : null,
             //-------------------- Additional Tab
             departmentContacts: [],
             bankAccounts: [],
             bankCards: [],
-            prefix: this.editData.company.additionalInfo.prefix,
-            starting: this.editData.company.additionalInfo.starting,
-            suffix: this.editData.company.additionalInfo.sufix,
-            autoInvoicing: this.editData.company.additionalInfo.autoInvoicing,
-            preferredLoadType:
-                this.editData.company.additionalInfo.preferredLoadType,
-            factorByDefault:
-                this.editData.company.additionalInfo.factorByDefault,
-            customerPayTerm:
-                this.editData.company.additionalInfo.customerPayTerm,
-            customerCredit: this.editData.company.additionalInfo.customerCredit,
-            mvrMonths: this.editData.company.additionalInfo.mvrMonths,
-            truckInspectionMonths:
-                this.editData.company.additionalInfo.truckInspectionMonths,
+            prefix: data.additionalInfo.prefix,
+            starting: data.additionalInfo.starting,
+            suffix: data.additionalInfo.sufix,
+            autoInvoicing: data.additionalInfo.autoInvoicing,
+            preferredLoadType: data.additionalInfo.preferredLoadType,
+            factorByDefault: data.additionalInfo.factorByDefault,
+            customerPayTerm: data.additionalInfo.customerPayTerm,
+            customerCredit: data.additionalInfo.customerCredit,
+            mvrMonths: data.additionalInfo.mvrMonths,
+            truckInspectionMonths: data.additionalInfo.truckInspectionMonths,
             trailerInspectionMonths:
-                this.editData.company.additionalInfo.trailerInspectionMonths,
+                data.additionalInfo.trailerInspectionMonths,
             //-------------------- Payroll Tab
-            useACHPayout: this.editData.company.useACHPayout ? true : false,
+            useACHPayout: data.useACHPayout ? true : false,
         });
 
-        this.selectedAddress = this.editData.company.address;
+        this.selectedAddress = data.address;
 
-        this.selectedTimeZone =
-            this.editData.company.timeZone.id !== 0
-                ? this.editData.company.timeZone
-                : null;
+        this.selectedTimeZone = data.timeZone.id !== 0 ? data.timeZone : null;
 
         this.selectedCompanyData =
-            this.editData.company.companyType.id !== 0
-                ? this.editData.company.companyType
-                : null;
+            data.companyType.id !== 0 ? data.companyType : null;
 
-        this.selectedCurrency =
-            this.editData.company.currency.id !== 0
-                ? this.editData.company.currency
-                : null;
+        this.selectedCurrency = data.currency.id !== 0 ? data.currency : null;
 
         this.onPrefferedLoadCheck({
-            id:
-                this.editData.company.additionalInfo.preferredLoadType === 'FTL'
-                    ? 1
-                    : 2,
-            name: this.editData.company.additionalInfo.preferredLoadType,
+            id: data.additionalInfo.preferredLoadType === 'FTL' ? 1 : 2,
+            name: data.additionalInfo.preferredLoadType,
         });
 
-        this.selectedFleetType = this.editData.company.additionalInfo.fleetType;
+        this.selectedFleetType = data.additionalInfo.fleetType;
 
         this.onFleetTypeCheck(
             this.fleetTypeBtns.find(
@@ -1790,8 +1790,8 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
             )
         );
 
-        if (this.editData.company.departmentContacts.length) {
-            for (const department of this.editData.company.departmentContacts) {
+        if (data.departmentContacts.length) {
+            for (const department of data.departmentContacts) {
                 this.departmentContacts.push(
                     this.createDepartmentContacts({
                         id: department.id,
@@ -1805,35 +1805,28 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
             }
         }
 
-        if (this.editData.company.bankAccounts.length) {
-            for (
-                let index = 0;
-                index < this.editData.company.bankAccounts.length;
-                index++
-            ) {
+        if (data.bankAccounts.length) {
+            for (let index = 0; index < data.bankAccounts.length; index++) {
                 this.bankAccounts.push(
                     this.createBankAccount({
-                        id: this.editData.company.bankAccounts[index].id,
-                        bankId: this.editData.company.bankAccounts[index].bank
-                            .name,
-                        routing:
-                            this.editData.company.bankAccounts[index].routing,
-                        account:
-                            this.editData.company.bankAccounts[index].account,
+                        id: data.bankAccounts[index].id,
+                        bankId: data.bankAccounts[index].bank.name,
+                        routing: data.bankAccounts[index].routing,
+                        account: data.bankAccounts[index].account,
                     })
                 );
                 this.selectedBankAccountFormArray.push(
-                    this.editData.company.bankAccounts[index]
+                    data.bankAccounts[index]
                 );
                 this.isBankSelectedFormArray.push(
-                    this.editData.company.bankAccounts[index].id ? true : false
+                    data.bankAccounts[index].id ? true : false
                 );
                 this.onBankSelected(index);
             }
         }
 
-        if (this.editData.company.bankCards.length) {
-            for (const card of this.editData.company.bankCards) {
+        if (data.bankCards.length) {
+            for (const card of data.bankCards) {
                 this.bankCards.push(
                     this.createBankCard({
                         id: card.id,
@@ -1848,8 +1841,8 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
             }
         }
 
-        if (this.editData.company.companyPayrolls.length) {
-            for (const payroll of this.editData.company.companyPayrolls) {
+        if (data.companyPayrolls.length) {
+            for (const payroll of data.companyPayrolls) {
                 switch (payroll.department.id) {
                     case 1: {
                         // Accounting

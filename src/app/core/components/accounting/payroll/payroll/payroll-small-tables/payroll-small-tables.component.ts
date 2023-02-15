@@ -3,6 +3,7 @@ import { PayrollCreditBonusComponent } from '../../../../modals/payroll-modals/p
 import { PayrollBonusModalComponent } from '../../../../modals/payroll-modals/payroll-bonus-modal/payroll-bonus-modal.component';
 import { PayrollDeductionModalComponent } from '../../../../modals/payroll-modals/payroll-deduction-modal/payroll-deduction-modal.component';
 import { ModalService } from '../../../../shared/ta-modal/modal.service';
+import { small_table_config, small_table_config_resize } from '../state/table-settings/small-tables-config';
 
 @Component({
     selector: 'app-payroll-small-tables',
@@ -13,17 +14,21 @@ export class PayrollSmallTablesComponent implements OnInit {
     @Input() title: string;
     @Input() type: string;
     @Input() reportMainData: any;
+    @Input() data: any[] = [];
+
+    tableConfig: any = small_table_config;
+    tableConfigResizable: any = small_table_config_resize;
+    
     constructor(private modalService: ModalService) {}
 
     ngOnInit(): void {}
 
     public openAddNew() {
         console.log('type: ', this.type);
+        const driverId = this.reportMainData.driver.id;
+
         switch (this.type) {
             case 'credit': {
-                console.log(this.reportMainData);
-
-                // console.log(this.reportMainData.owner.id);
                 this.modalService.openModal(
                     PayrollCreditBonusComponent,
                     {
@@ -33,7 +38,7 @@ export class PayrollSmallTablesComponent implements OnInit {
                         type: 'new', // 'edit' stavljas ako treba kad se azurira postojeci
                         data: {
                             id: null, // id for edit,
-                            driverId: 5, // TODO: a moze iz store-a da izvuces i da mi prosledis sve podatke o vozacu
+                            driverId: driverId, // TODO: a moze iz store-a da izvuces i da mi prosledis sve podatke o vozacu
                         }, // da ne bi morao da pozivam kod sebe get by id, samo javi kad zavrsis
                     }
                 );
@@ -49,7 +54,7 @@ export class PayrollSmallTablesComponent implements OnInit {
                         type: 'new', // 'edit' stavljas ako treba kad se azurira postojeci
                         data: {
                             id: null, // id for edit,
-                            driverId: 5, // TODO: a moze iz store-a da izvuces i da mi prosledis sve podatke o vozacu
+                            driverId: driverId, // TODO: a moze iz store-a da izvuces i da mi prosledis sve podatke o vozacu
                         }, // da ne bi morao da pozivam kod sebe get by id, samo javi kad zavrsis
                     }
                 );
@@ -65,7 +70,7 @@ export class PayrollSmallTablesComponent implements OnInit {
                         type: 'new', // 'edit' stavljas ako treba kad se azurira postojeci
                         data: {
                             id: null, // id for edit,
-                            driverId: 5, // TODO: a moze iz store-a da izvuces i da mi prosledis sve podatke o vozacu
+                            driverId: driverId, // TODO: a moze iz store-a da izvuces i da mi prosledis sve podatke o vozacu
                         }, // da ne bi morao da pozivam kod sebe get by id, samo javi kad zavrsis
                     }
                 );
@@ -81,7 +86,7 @@ export class PayrollSmallTablesComponent implements OnInit {
                         type: 'new', // 'edit' stavljas ako treba kad se azurira postojeci
                         data: {
                             id: null, // id for edit,
-                            driverId: 4, // TODO: a moze iz store-a da izvuces i da mi prosledis sve podatke o vozacu
+                            driverId: driverId, // TODO: a moze iz store-a da izvuces i da mi prosledis sve podatke o vozacu
                         }, // da ne bi morao da pozivam kod sebe get by id, samo javi kad zavrsis
                     }
                 );

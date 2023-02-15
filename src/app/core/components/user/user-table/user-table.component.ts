@@ -9,12 +9,25 @@ import { UserState } from '../state/user-state/user.store';
 import { formatPhonePipe } from 'src/app/core/pipes/formatPhone.pipe';
 import { NameInitialsPipe } from 'src/app/core/pipes/nameinitials';
 import { ImageBase64Service } from 'src/app/core/utils/base64.image';
+import {
+    closeAnimationAction,
+    tableSearch,
+} from 'src/app/core/utils/methods.globals';
+import { UserTService } from '../state/user.service';
+import { GetCompanyUserListResponse } from 'appcoretruckassist';
+import { DatePipe } from '@angular/common';
+import { TaThousandSeparatorPipe } from 'src/app/core/pipes/taThousandSeparator.pipe';
+import {
+    Confirmation,
+    ConfirmationModalComponent,
+} from '../../modals/confirmation-modal/confirmation-modal.component';
+import { ConfirmationService } from '../../modals/confirmation-modal/confirmation.service';
 
 @Component({
     selector: 'app-user-table',
     templateUrl: './user-table.component.html',
     styleUrls: ['./user-table.component.scss'],
-    providers: [formatPhonePipe, NameInitialsPipe],
+    providers: [formatPhonePipe, NameInitialsPipe, TaThousandSeparatorPipe],
 })
 export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
     private destroy$ = new Subject<void>();
@@ -29,6 +42,16 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
     resizeObserver: ResizeObserver;
     mapingIndex: number = 0;
     users: UserState[] = [];
+    backFilterQuery = {
+        active: 1,
+        pageIndex: 1,
+        pageSize: 25,
+        companyId: undefined,
+        sort: undefined,
+        searchOne: undefined,
+        searchTwo: undefined,
+        searchThree: undefined,
+    };
 
     constructor(
         private modalService: ModalService,
@@ -37,6 +60,10 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
         private phoneFormater: formatPhonePipe,
         private nameInitialsPipe: NameInitialsPipe,
         private imageBase64Service: ImageBase64Service,
+        private userService: UserTService,
+        public datePipe: DatePipe,
+        private thousandSeparator: TaThousandSeparatorPipe,
+        private confirmationService: ConfirmationService
     ) {}
 
     // ---------------------------  NgOnInit ----------------------------------
@@ -89,87 +116,56 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.tableService.currentSearchTableData
             .pipe(takeUntil(this.destroy$))
             .subscribe((res: any) => {
-                /*  if (res) {
-          this.mapingIndex = 0;
+                if (res) {
+                    this.mapingIndex = 0;
 
-          this.backFilterQuery.pageIndex = 1;
+                    this.backFilterQuery.pageIndex = 1;
 
-          const searchEvent = tableSearch(res, this.backFilterQuery);
+                    const searchEvent = tableSearch(res, this.backFilterQuery);
 
-          if (searchEvent) {
-            if (searchEvent.action === 'api') {
-              this.contactBackFilter(searchEvent.query, true);
-            } else if (searchEvent.action === 'store') {
-              this.sendContactData();
-            }
-          }
-        } */
+                    if (searchEvent) {
+                        if (searchEvent.action === 'api') {
+                            this.userBackFilter(searchEvent.query);
+                        } else if (searchEvent.action === 'store') {
+                            this.sendUserData();
+                        }
+                    }
+                }
             });
 
         // User Actions
         this.tableService.currentActionAnimation
             .pipe(takeUntil(this.destroy$))
             .subscribe((res: any) => {
-                // Add User
-                if (res.animation === 'add') {
-                    /*  this.viewData.push(this.mapContactData(res.data));
+                // On Update User Status
+                if (res.animation === 'update-status') {
+                    this.mapingIndex = 0;
 
-          this.viewData = this.viewData.map((contact: any) => {
-            if (contact.id === res.id) {
-              contact.actionAnimation = 'add';
-            }
+                    const updatedUser = this.mapUserData(res.data);
 
-            return contact;
-          });
+                    this.viewData = this.viewData.map((user: any) => {
+                        if (user.id === res.id) {
+                            user = updatedUser;
+                            user.actionAnimation = 'update';
+                        }
 
-          const inetval = setInterval(() => {
-            this.viewData = closeAnimationAction(false, this.viewData);
+                        return user;
+                    });
 
-            clearInterval(inetval);
-          }, 2300);
+                    const sortedUserData = this.viewData.sort(
+                        (a, b) => b.userStatus - a.userStatus
+                    );
 
-          this.updateDataCount(); */
-                }
-                // Update USer
-                else if (res.animation === 'update') {
-                    /* const updatedContact = this.mapContactData(res.data, true);
+                    this.viewData = [...sortedUserData];
 
-          this.viewData = this.viewData.map((contact: any) => {
-            if (contact.id === res.id) {
-              contact = updatedContact;
-              contact.actionAnimation = 'update';
-            }
+                    const inetval = setInterval(() => {
+                        this.viewData = closeAnimationAction(
+                            false,
+                            this.viewData
+                        );
 
-            return contact;
-          });
-
-          const inetval = setInterval(() => {
-            this.viewData = closeAnimationAction(false, this.viewData);
-
-            clearInterval(inetval);
-          }, 1000); */
-                }
-                // Delete User
-                else if (res.animation === 'delete') {
-                    /* let contactIndex: number;
-
-          this.viewData = this.viewData.map((contact: any, index: number) => {
-            if (contact.id === res.id) {
-              contact.actionAnimation = 'delete';
-              contact = index;
-            }
-
-            return contact;
-          });
-
-          const inetval = setInterval(() => {
-            this.viewData = closeAnimationAction(false, this.viewData);
-
-            this.viewData.splice(contactIndex, 1);
-            clearInterval(inetval);
-          }, 900);
-
-          this.updateDataCount(); */
+                        clearInterval(inetval);
+                    }, 900);
                 }
             });
 
@@ -204,6 +200,37 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
               this.tableService.sendResetSelectedColumns(true);
             });
         } */
+            });
+
+        // Confirmation Subscribe
+        this.confirmationService.confirmationData$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: (res: Confirmation) => {
+                    switch (res.type) {
+                        case 'delete': {
+                            if (res.template === 'user') {
+                                this.deleteUserById(res.id);
+                            }
+                            break;
+                        }
+                        case 'activate': {
+                            this.changeUserStatus(res.id);
+                            break;
+                        }
+                        case 'deactivate': {
+                            this.changeUserStatus(res.id);
+                            break;
+                        }
+                        // case 'multiple delete': {
+                        //     this.multipleDeleteDrivers(res.array);
+                        //     break;
+                        // }
+                        default: {
+                            break;
+                        }
+                    }
+                },
             });
     }
 
@@ -300,6 +327,9 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
         const td = this.tableData.find((t) => t.field === this.selectedTab);
 
+        console.log('User Data');
+        console.log(td.data);
+
         this.setUserData(td);
     }
 
@@ -321,13 +351,11 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 return this.mapUserData(data);
             });
 
-            // For Testing
-            // for (let i = 0; i < 300; i++) {
-            //   this.viewData.push(this.viewData[0]);
-            // }
+            const sortedUserData = this.viewData.sort(
+                (a, b) => b.userStatus - a.userStatus
+            );
 
-            console.log('User Data');
-            console.log(this.viewData);
+            this.viewData = [...sortedUserData];
         } else {
             this.viewData = [];
         }
@@ -358,22 +386,125 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 ),
             },
             userTableDept: data?.department?.name ? data.department.name : '',
-            userTableOffice: 'Nije spojeno',
+            userTableOffice: data?.companyOffice?.name
+                ? data.companyOffice.name
+                : '',
             userTablePhone: data?.phone
                 ? this.phoneFormater.transform(data.phone)
                 : '',
-            uesrTableExt: 'Nije povezano',
-            userTableHired: 'Nije povezano',
+            uesrTableExt: data?.extensionPhone ? data.extensionPhone : '',
+            userTableHired: data?.startDate
+                ? this.datePipe.transform(data?.startDate, 'MM/dd/yy')
+                : '',
             userTablePersonalPH: data?.personalPhone
                 ? this.phoneFormater.transform(data.personalPhone)
                 : '',
             userTableStatus: {
-                status: data?.userType?.name ? data.userType.name : '',
+                status:
+                    data?.userType?.name && data?.userType?.name !== '0'
+                        ? data.userType.name
+                        : 'No',
                 isInvited: false,
             },
-            userTableCommission: data?.commission ? data.commission : '',
-            userTableSalary: data?.salary ? data.salary : '',
+            userTableCommission: data?.commission ? data.commission + '%' : '',
+            userTableSalary: data?.salary
+                ? '$' + this.thousandSeparator.transform(data.salary)
+                : '',
+            userStatus: data.status,
         };
+    }
+
+    // User Back Filter Query
+    userBackFilter(
+        filter: {
+            active: number;
+            pageIndex: number;
+            pageSize: number;
+            companyId: number | undefined;
+            sort: string | undefined;
+            searchOne: string | undefined;
+            searchTwo: string | undefined;
+            searchThree: string | undefined;
+        },
+        isShowMore?: boolean
+    ) {
+        this.userService
+            .getUsers(
+                filter.active,
+                filter.pageIndex,
+                filter.pageSize,
+                filter.companyId,
+                filter.sort,
+                filter.searchOne,
+                filter.searchTwo,
+                filter.searchThree
+            )
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((users: GetCompanyUserListResponse) => {
+                if (!isShowMore) {
+                    this.viewData = users.pagination.data;
+
+                    this.viewData = this.viewData.map((data: any) => {
+                        return this.mapUserData(data);
+                    });
+                } else {
+                    let newData = [...this.viewData];
+
+                    users.pagination.data.map((data: any) => {
+                        newData.push(this.mapUserData(data));
+                    });
+
+                    this.viewData = [...newData];
+                }
+            });
+    }
+
+    // Change User Status
+    changeUserStatus(id: number) {
+        this.userService
+            .updateUserStatus(id)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: () => {},
+                error: () => {},
+            });
+    }
+
+    deleteUserById(id: number){
+        this.userService
+            .deleteUserById(id)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: () => {
+                    this.viewData = this.viewData.map((driver: any) => {
+                        if (driver.id === id) {
+                            driver.actionAnimation = 'delete';
+                        }
+
+                        return driver;
+                    });
+
+                    this.updateDataCount();
+
+                    const inetval = setInterval(() => {
+                        this.viewData = closeAnimationAction(
+                            true,
+                            this.viewData
+                        );
+
+                        clearInterval(inetval);
+                    }, 900);
+                },
+                error: () => {},
+            });
+    }
+
+    updateDataCount() {
+        const userCount = JSON.parse(
+            localStorage.getItem('userTableCount')
+        );
+
+        this.tableData[0].length = userCount.users;
     }
 
     // Get Avatar Color
@@ -431,13 +562,13 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
     onTableHeadActions(event: any) {
         if (event.action === 'sort') {
             if (event.direction) {
-                /*  this.mapingIndex = 0;
+                this.mapingIndex = 0;
 
-        this.backFilterQuery.sort = event.direction;
+                this.backFilterQuery.sort = event.direction;
 
-        this.backFilterQuery.pageIndex = 1;
+                this.backFilterQuery.pageIndex = 1;
 
-        this.contactBackFilter(this.backFilterQuery); */
+                this.userBackFilter(this.backFilterQuery);
             } else {
                 this.sendUserData();
             }
@@ -446,6 +577,15 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     // On Body Actions
     onTableBodyActions(event: any) {
+        const confirmationModalData = {
+            ...event,
+            data: {
+                ...event.data,
+                name: event.data.userAvatar.name,
+            },
+        };
+
+        // Edit
         if (event.type === 'edit') {
             this.modalService.openModal(
                 UserModalComponent,
@@ -454,6 +594,38 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     ...event,
                     type: 'edit',
                     disableButton: event.data?.userType?.name !== 'Owner',
+                }
+            );
+        }
+        // Show More (Pagination)
+        else if (event.type === 'show-more') {
+            this.backFilterQuery.pageIndex++;
+
+            this.userBackFilter(this.backFilterQuery, true);
+        } 
+        // Activate Or Deactivate User
+        else if (event.type === 'deactivate' || event.type === 'activate') {
+            this.modalService.openModal(
+                ConfirmationModalComponent,
+                { size: 'small' },
+                {
+                    ...confirmationModalData,
+                    template: 'user',
+                    type: event.data.status === 1 ? 'deactivate' : 'activate',
+                    image: true,
+                }
+            );
+        }
+        // User Delete
+        else if(event.type === 'delete'){
+            this.modalService.openModal(
+                ConfirmationModalComponent,
+                { size: 'small' },
+                {
+                    ...confirmationModalData,
+                    template: 'user',
+                    type: 'delete',
+                    image: true,
                 }
             );
         }

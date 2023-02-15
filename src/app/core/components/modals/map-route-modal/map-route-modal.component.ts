@@ -1,5 +1,11 @@
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import {
+    FormsModule,
+    ReactiveFormsModule,
+    UntypedFormBuilder,
+    UntypedFormGroup,
+    Validators,
+} from '@angular/forms';
 import { FormService } from 'src/app/core/services/form/form.service';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
@@ -7,12 +13,28 @@ import { Subject, takeUntil } from 'rxjs';
 import { TruckTService } from '../../truck/state/truck.service';
 import { TruckListResponse, CreateRouteCommand } from 'appcoretruckassist';
 import { RoutingStateService } from '../../routing/state/routing-state/routing-state.service';
-import { NotificationService } from '../../../services/notification/notification.service';
+import { CommonModule } from '@angular/common';
+import { TaModalComponent } from '../../shared/ta-modal/ta-modal.component';
+import { TaInputComponent } from '../../shared/ta-input/ta-input.component';
+import { TaInputDropdownComponent } from '../../shared/ta-input-dropdown/ta-input-dropdown.component';
+import { TaCheckboxCardComponent } from '../../shared/ta-checkbox-card/ta-checkbox-card.component';
+import { TaTabSwitchComponent } from '../../standalone-components/ta-tab-switch/ta-tab-switch.component';
 
 @Component({
     selector: 'app-map-route-modal',
     templateUrl: './map-route-modal.component.html',
     styleUrls: ['./map-route-modal.component.scss'],
+    standalone: true,
+    imports: [
+            CommonModule, 
+            FormsModule, 
+            TaModalComponent, 
+            ReactiveFormsModule, 
+            TaInputComponent,
+            TaInputDropdownComponent, 
+            TaCheckboxCardComponent, 
+            TaTabSwitchComponent
+    ]
 })
 export class MapRouteModalComponent implements OnInit, OnDestroy {
     @Input() editData: any;
@@ -53,8 +75,7 @@ export class MapRouteModalComponent implements OnInit, OnDestroy {
         private modalService: ModalService,
         private inputService: TaInputService,
         private truckService: TruckTService,
-        private routingService: RoutingStateService,
-        private notificationService: NotificationService
+        private routingService: RoutingStateService
     ) {}
 
     ngOnInit() {
@@ -187,7 +208,7 @@ export class MapRouteModalComponent implements OnInit, OnDestroy {
                         truckType: truck.truckType,
                         folder: 'common',
                         subFolder: 'trucks',
-                        logoName: truck.truckType.logoName
+                        logoName: truck.truckType.logoName,
                     };
                 });
             });

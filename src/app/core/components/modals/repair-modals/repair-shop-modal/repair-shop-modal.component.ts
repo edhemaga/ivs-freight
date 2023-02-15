@@ -6,14 +6,21 @@ import {
     OnInit,
     ViewEncapsulation,
 } from '@angular/core';
-import { UntypedFormArray, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import {
+    FormsModule,
+    ReactiveFormsModule,
+    UntypedFormArray,
+    UntypedFormBuilder,
+    UntypedFormGroup,
+    Validators,
+} from '@angular/forms';
 import {
     AddressEntity,
     CreateResponse,
     RepairShopModalResponse,
     RepairShopResponse,
 } from 'appcoretruckassist';
-import { distinctUntilChanged, Subject, takeUntil } from 'rxjs';
+import { distinctUntilChanged, Subject, takeUntil, switchMap } from 'rxjs';
 import { RepairTService } from '../../../repair/state/repair.service';
 import {
     accountBankValidation,
@@ -46,6 +53,18 @@ import {
 } from '../../../../../../../appcoretruckassist';
 import moment from 'moment';
 import { debounceTime } from 'rxjs/operators';
+import { CommonModule } from '@angular/common';
+import { AppTooltipComponent } from '../../../standalone-components/app-tooltip/app-tooltip.component';
+import { TaModalComponent } from '../../../shared/ta-modal/ta-modal.component';
+import { TaTabSwitchComponent } from '../../../standalone-components/ta-tab-switch/ta-tab-switch.component';
+import { ActiveItemsPipe } from '../../../../pipes/activeItems.pipe';
+import { TaInputComponent } from '../../../shared/ta-input/ta-input.component';
+import { TaInputDropdownComponent } from '../../../shared/ta-input-dropdown/ta-input-dropdown.component';
+import { TaCustomCardComponent } from '../../../shared/ta-custom-card/ta-custom-card.component';
+import { InputAddressDropdownComponent } from '../../../shared/input-address-dropdown/input-address-dropdown.component';
+import { TaInputNoteComponent } from '../../../shared/ta-input-note/ta-input-note.component';
+import { AngularSvgIconModule } from 'angular-svg-icon';
+import { TaCheckboxComponent } from '../../../shared/ta-checkbox/ta-checkbox.component';
 
 @Component({
     selector: 'app-repair-shop-modal',
@@ -54,6 +73,23 @@ import { debounceTime } from 'rxjs/operators';
     animations: [tab_modal_animation('animationTabsModal')],
     encapsulation: ViewEncapsulation.None,
     providers: [ModalService, BankVerificationService, FormService],
+    standalone: true,
+    imports: [
+            CommonModule, 
+            FormsModule, 
+            AppTooltipComponent, 
+            TaModalComponent, 
+            TaTabSwitchComponent, 
+            ReactiveFormsModule,
+            ActiveItemsPipe,
+            TaInputComponent,
+            TaCustomCardComponent,
+            TaInputDropdownComponent,
+            InputAddressDropdownComponent,
+            TaInputNoteComponent,
+            AngularSvgIconModule,
+            TaCheckboxComponent
+    ]
 })
 export class RepairShopModalComponent implements OnInit, OnDestroy {
     @Input() editData: any;
@@ -63,7 +99,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
         {
             id: 1,
             name: 'Details',
-            checked: true
+            checked: true,
         },
         {
             id: 2,
@@ -136,54 +172,6 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
         this.getRepairShopModalDropdowns();
         this.onBankSelected();
         this.trackOpenHours();
-
-        if (this.editData?.id) {
-            this.disableCardAnimation = true;
-            this.tabs = this.tabs.map((item) => {
-                return {
-                    ...item,
-                    disabled: false,
-                };
-            });
-            this.editRepairShopById(this.editData.id);
-            this.ratingChanges();
-        }
-        console.log('repair shop on init: ', this.editData);
-        if (
-            !this.editData ||
-            (this.editData?.canOpenModal && !this.editData?.id)
-        ) {
-            for (let i = 0; i < this.openHoursDays.length; i++) {
-                this.addOpenHours(
-                    this.openHoursDays[i],
-                    i !== this.openHoursDays.length - 1,
-                    i - 1,
-                    i == this.openHoursDays.length - 1
-                        ? null
-                        : convertTimeFromBackend('8:00:00 AM'),
-                    i == this.openHoursDays.length - 1
-                        ? null
-                        : convertTimeFromBackend('5:00:00 AM')
-                );
-            }
-            this.openHours.removeAt(1);
-            this.addOpenHours('Sunday', false, 0, null, null);
-        }
-
-        // Open Tab Position
-        if (this.editData?.openedTab) {
-            setTimeout(() => {
-                this.tabChange({
-                    id:
-                        this.editData?.openedTab === 'Contact'
-                            ? 2
-                            : this.editData?.openedTab === 'Review'
-                            ? 3
-                            : 1,
-                });
-                this.disableCardAnimation = true;
-            });
-        }
     }
 
     public tabChange(event: any): void {
@@ -717,8 +705,6 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
                     this.longitude = res.longitude;
                     this.latitude = res.latitude;
 
-                    console.log(this.repairShopName);
-
                     // Services
                     this.services = res.serviceTypes.map((item) => {
                         return {
@@ -1224,6 +1210,54 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
                     this.repairShopForm
                         .get('servicesHelper')
                         .patchValue(JSON.stringify(this.services));
+
+                    if (this.editData?.id) {
+                        this.disableCardAnimation = true;
+                        this.tabs = this.tabs.map((item) => {
+                            return {
+                                ...item,
+                                disabled: false,
+                            };
+                        });
+                        this.editRepairShopById(this.editData.id);
+                        this.ratingChanges();
+                    }
+
+                    if (
+                        !this.editData ||
+                        (this.editData?.canOpenModal && !this.editData?.id)
+                    ) {
+                        for (let i = 0; i < this.openHoursDays.length; i++) {
+                            this.addOpenHours(
+                                this.openHoursDays[i],
+                                i !== this.openHoursDays.length - 1,
+                                i - 1,
+                                i == this.openHoursDays.length - 1
+                                    ? null
+                                    : convertTimeFromBackend('8:00:00 AM'),
+                                i == this.openHoursDays.length - 1
+                                    ? null
+                                    : convertTimeFromBackend('5:00:00 AM')
+                            );
+                        }
+                        this.openHours.removeAt(1);
+                        this.addOpenHours('Sunday', false, 0, null, null);
+                    }
+
+                    // Open Tab Position
+                    if (this.editData?.openedTab) {
+                        setTimeout(() => {
+                            this.tabChange({
+                                id:
+                                    this.editData?.openedTab === 'Contact'
+                                        ? 2
+                                        : this.editData?.openedTab === 'Review'
+                                        ? 3
+                                        : 1,
+                            });
+                            this.disableCardAnimation = true;
+                        });
+                    }
                 },
                 error: () => {},
             });
@@ -1251,10 +1285,44 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
 
                 this.reviewRatingService
                     .addRating(rating)
-                    .pipe(takeUntil(this.destroy$))
+                    .pipe(
+                        takeUntil(this.destroy$),
+                        switchMap(() => {
+                            return this.shopService.getRepairShopById(
+                                this.editData.id
+                            );
+                        })
+                    )
                     .subscribe({
-                        next: () => {
-                            this.editRepairShopById(this.editData.id);
+                        next: (res: RepairShopResponse) => {
+                            if (res.reviews?.length) {
+                                this.reviews = res.reviews.map((item: any) => ({
+                                    ...item,
+                                    companyUser: {
+                                        ...item.companyUser,
+                                        avatar: item.companyUser.avatar,
+                                    },
+                                    commentContent: item.comment,
+                                    rating: item.ratingFromTheReviewer,
+                                }));
+
+                                const reviewIndex = this.reviews.findIndex(
+                                    (item) =>
+                                        item.companyUser.id ===
+                                        this.companyUser.companyUserId
+                                );
+
+                                if (reviewIndex !== -1) {
+                                    this.disableOneMoreReview = true;
+                                }
+                            }
+
+                            this.taLikeDislikeService.populateLikeDislikeEvent({
+                                downRatingCount: res.downCount,
+                                upRatingCount: res.upCount,
+                                currentCompanyUserRating:
+                                    res.currentCompanyUserRating,
+                            });
                         },
                         error: () => {},
                     });

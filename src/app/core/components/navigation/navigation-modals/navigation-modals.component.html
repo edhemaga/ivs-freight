@@ -1,18 +1,53 @@
-<div class="modal-nav-panel" *ngIf="isNavigationHoveredAndPanelOpen">
+<div
+    class="modal-nav-panel"
+    [ngClass]="{
+        'show-modal': isNavigationHoveredAndPanelOpen,
+        'hide-modal': !isNavigationHoveredAndPanelOpen,
+        'opened-navigation': isNavigationHovered,
+        'closed-navigation': !isNavigationHovered,
+        'add-hover':
+            !OpenCloseModal &&
+            !isNavigationHoveredAndPanelOpen &&
+            isNavigationHovered,
+        'modal-media-query-height':
+            isNavigationHoveredAndPanelOpen && isNavigationHovered
+    }"
+    [@showHideDetails]="isNavigationHoveredAndPanelOpen ? true : false"
+>
     <div class="modal-inner">
         <div
-            (mouseenter)="changeTextHoverOnCloseModal = true"
-            (mouseleave)="changeTextHoverOnCloseModal = false"
-            (click)="onAction('Close Panel')"
+            (mouseenter)="
+                changeTextHoverOnCloseModal = true; showToolTip = true
+            "
+            (mouseleave)="
+                changeTextHoverOnCloseModal = false; showToolTip = false
+            "
+            (click)="OpenMainModal(!OpenCloseModal)"
             class="modal-nav-close"
         >
-            <p class="modal-nav-close-text">{{ Title }}</p>
-            <svg-icon
-                (mouseenter)="Title = 'Close'"
-                (mouseleave)="Title = 'Add New'"
-                class="modal-nav-close-svg"
-                src="assets/svg/common/ic_x.svg"
-            ></svg-icon>
+            <p class="modal-nav-close-text">
+                <svg-icon
+                    class="modal-nav-close-svg"
+                    (mouseenter)="changeText(true)"
+                    (mouseleave)="changeText(false)"
+                    [ngClass]="{
+                        'closed-modal': !OpenCloseModal,
+                        'opened-modal': OpenCloseModal
+                    }"
+                    src="assets/svg/common/ic_x.svg"
+                ></svg-icon>
+                <span class="title">{{ Title }}</span>
+            </p>
+            <div
+                class="tooltip-right"
+                [ngClass]="{ 'hide-tooltip': isNavigationHovered }"
+            >
+                <app-tooltip-slide
+                    *ngIf="!isNavigationHovered"
+                    [show]="showToolTip"
+                    [name]="'Add Anything'"
+                ></app-tooltip-slide>
+            </div>
         </div>
 
         <div class="modal-nav-content">
@@ -23,11 +58,17 @@
                     *ngFor="
                         let item of generalNavigationData;
                         let ind = index;
+                        let odd = odd;
                         trackBy: identity
                     "
-                    (click)="onAction('Open Modal', item)"
+                    (click)="onAction(item)"
                 >
-                    {{ item.name }}
+                    <span *ngIf="!odd">
+                        {{ item.name }}
+                    </span>
+                    <span *ngIf="odd">
+                        {{ item.name }}
+                    </span>
                 </p>
             </div>
         </div>
@@ -40,9 +81,10 @@
                     *ngFor="
                         let item of toolsNavigationData;
                         let ind = index;
+                        let odd = odd;
                         trackBy: identity
                     "
-                    (click)="onAction('Open Modal', item)"
+                    (click)="onAction(item)"
                 >
                     {{ item.name }}
                 </p>
@@ -59,7 +101,7 @@
                         let ind = index;
                         trackBy: identity
                     "
-                    (click)="onAction('Open Modal', item)"
+                    (click)="onAction(item)"
                 >
                     {{ item.name }}
                 </p>
@@ -76,7 +118,7 @@
                         let ind = index;
                         trackBy: identity
                     "
-                    (click)="onAction('Open Modal', item)"
+                    (click)="onAction(item)"
                 >
                     {{ item.name }}
                 </p>
@@ -93,7 +135,7 @@
                         let ind = index;
                         trackBy: identity
                     "
-                    (click)="onAction('Open Modal', item)"
+                    (click)="onAction(item)"
                 >
                     {{ item.name }}
                 </p>
@@ -110,7 +152,24 @@
                         let ind = index;
                         trackBy: identity
                     "
-                    (click)="onAction('Open Modal', item)"
+                    (click)="onAction(item)"
+                >
+                    {{ item.name }}
+                </p>
+            </div>
+        </div>
+
+        <div class="modal-nav-content">
+            <p class="modal-nav-header">REQUEST <span></span></p>
+            <div class="modal-nav-routes">
+                <p
+                    class="ta-font-regular"
+                    *ngFor="
+                        let item of requestNavigationData;
+                        let ind = index;
+                        trackBy: identity
+                    "
+                    (click)="onAction(item)"
                 >
                     {{ item.name }}
                 </p>

@@ -115,7 +115,7 @@ export class ContactsTableComponent
 
                     if (searchEvent) {
                         if (searchEvent.action === 'api') {
-                            this.contactBackFilter(searchEvent.query, true);
+                            this.contactBackFilter(searchEvent.query);
                         } else if (searchEvent.action === 'store') {
                             this.sendContactData();
                         }
@@ -448,7 +448,6 @@ export class ContactsTableComponent
             searchTwo: string | undefined;
             searchThree: string | undefined;
         },
-        isSearch?: boolean,
         isShowMore?: boolean
     ) {
         this.contactService
@@ -470,10 +469,6 @@ export class ContactsTableComponent
                     this.viewData = this.viewData.map((data: any) => {
                         return this.mapContactData(data);
                     });
-
-                    if (isSearch) {
-                        this.tableData[0].length = contact.pagination.count;
-                    }
                 } else {
                     let newData = [...this.viewData];
 
@@ -529,7 +524,7 @@ export class ContactsTableComponent
         if (event.type === 'show-more') {
             this.backFilterQuery.pageIndex++;
 
-            this.contactBackFilter(this.backFilterQuery, false, true);
+            this.contactBackFilter(this.backFilterQuery, true);
         } else if (event.type === 'edit-contact') {
             this.modalService.openModal(
                 ContactModalComponent,

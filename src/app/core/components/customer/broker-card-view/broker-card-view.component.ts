@@ -12,12 +12,14 @@ import {
 import { UntypedFormControl } from '@angular/forms';
 import { BrokerQuery } from '../state/broker-state/broker.query';
 import { DetailsPageService } from '../../../services/details-page/details-page-ser.service';
+import { formatDatePipe } from 'src/app/core/pipes/formatDate.pipe';
 
 @Component({
     selector: 'app-broker-card-view',
     templateUrl: './broker-card-view.component.html',
     encapsulation: ViewEncapsulation.None,
     styleUrls: ['./broker-card-view.component.scss'],
+    providers: [formatDatePipe]
 })
 export class BrokerCardViewComponent implements OnInit, OnChanges {
     @ViewChild('mileageChart', { static: false }) public mileageChart: any;

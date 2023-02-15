@@ -3,6 +3,7 @@ import {
     Component,
     ElementRef,
     EventEmitter,
+    HostListener,
     Input,
     OnChanges,
     OnDestroy,
@@ -13,10 +14,10 @@ import {
     ViewChild,
     ViewEncapsulation,
 } from '@angular/core';
-import { ControlValueAccessor, NgControl } from '@angular/forms';
+import { ControlValueAccessor, NgControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ITaInput } from './ta-input.config';
 import { TaInputService } from './ta-input.service';
-import { NgbDropdownConfig, NgbPopover } from '@ng-bootstrap/ng-bootstrap';
+import { NgbDropdownConfig, NgbPopover, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { CalendarScrollService } from '../custom-datetime-pickers/calendar-scroll.service';
 import moment from 'moment';
 
@@ -30,6 +31,14 @@ import {
 import { FormService } from 'src/app/core/services/form/form.service';
 import { ImageBase64Service } from '../../../utils/base64.image';
 import { NotificationService } from '../../../services/notification/notification.service';
+import { CommonModule } from '@angular/common';
+import { AngularSvgIconModule } from 'angular-svg-icon';
+import { NgxMaskModule } from 'ngx-mask';
+import { InputTypePipe } from './input-type.pipe';
+import { AppTooltipComponent } from '../../standalone-components/app-tooltip/app-tooltip.component';
+import { TaSvgPipe } from '../../../pipes/ta-svg.pipe';
+import { InputErrorPipe } from './input-error.pipe';
+import { CustomDatetimePickersComponent } from '../custom-datetime-pickers/custom-datetime-pickers.component';
 @Component({
     selector: 'app-ta-input',
     templateUrl: './ta-input.component.html',
@@ -38,8 +47,23 @@ import { NotificationService } from '../../../services/notification/notification
         NgbDropdownConfig,
         CalendarScrollService,
         TaThousandSeparatorPipe,
+        InputTypePipe
     ],
     encapsulation: ViewEncapsulation.None,
+    standalone: true,
+    imports: [
+            CommonModule, 
+            AngularSvgIconModule, 
+            FormsModule, 
+            NgxMaskModule, 
+            InputTypePipe, 
+            AppTooltipComponent,
+            NgbModule,
+            TaSvgPipe,
+            ReactiveFormsModule,
+            InputErrorPipe,
+            CustomDatetimePickersComponent
+    ]
 })
 export class TaInputComponent
     implements OnInit, OnChanges, OnDestroy, ControlValueAccessor
@@ -124,6 +148,8 @@ export class TaInputComponent
     public originPriceSeparatorLimit: number;
     public decimalIndexTimeout = null;
     public isDotDeleted: boolean = false;
+
+    public wholeInputSelection: any;
 
     constructor(
         @Self() public superControl: NgControl,
@@ -350,21 +376,18 @@ export class TaInputComponent
             clearTimeout(this.dateTimeMainTimer);
             clearTimeout(this.focusBlur);
             this.showDateInput = true;
-            const elem =
-                this.selectionInput == -1
-                    ? this.holder1.nativeElement
-                    : this.span1.nativeElement;
-
             if (
                 (this.selectionInput == -1 &&
                     e?.target?.nodeName === 'INPUT') ||
-                e?.relatedTarget?.nodeName === 'INPUT'
+                e?.relatedTarget?.nodeName === 'INPUT' ||
+                e?.relatedTarget == null
             ) {
                 this.preventBlur = true;
-                elem.focus();
-                this.setSpanSelection(elem);
+                this.holder1.nativeElement.focus();
+                this.setSpanSelection(this.holder1.nativeElement);
                 this.selectionInput = -1;
             }
+
             this.t2.close();
         }
 
@@ -545,6 +568,7 @@ export class TaInputComponent
     }
 
     public toggleDropdownOptions() {
+        console.log("OPENED");
         if (this.inputConfig.isDisabled) {
             return;
         }
@@ -603,7 +627,8 @@ export class TaInputComponent
     }
 
     public onKeydown(event) {
-        this.capsLockOn = event.getModifierState('CapsLock') || event.shiftKey;
+        this.capsLockOn =
+            event?.getModifierState('CapsLock') || event?.shiftKey;
 
         if (this.inputConfig.priceSeparator) {
             this.isDotDeleted = this.getSuperControl?.value?.includes('.');
@@ -1995,6 +2020,8 @@ export class TaInputComponent
                     this.selectSpanByTabIndex(this.selectionInput, true);
                 }
             } else if (e.keyCode == 39 || e.keyCode == 9) {
+                console.log(e.keyCode);
+                console.log(e.shiftKey);
                 if (this.selectionInput != 2 && !e.shiftKey) {
                     this.selectionInput = this.selectionInput + 1;
                     this.selectSpanByTabIndex(this.selectionInput, true);
@@ -2114,9 +2141,11 @@ export class TaInputComponent
                         this.selectSpanByTabIndex(1, true);
                     }
                 } else {
-                    this.dateTimeInputDate = new Date(
-                        this.dateTimeInputDate.setMonth(parseInt(e.key) - 1)
-                    );
+                    if (parseInt(e.key)) {
+                        this.dateTimeInputDate = new Date(
+                            this.dateTimeInputDate.setMonth(parseInt(e.key) - 1)
+                        );
+                    }
 
                     const final_value = ('0' + parseInt(e.key)).slice(-2);
 
@@ -2165,9 +2194,12 @@ export class TaInputComponent
                         this.selectSpanByTabIndex(2, true);
                     }
                 } else {
-                    this.dateTimeInputDate = new Date(
-                        this.dateTimeInputDate.setDate(parseInt(e.key))
-                    );
+                    if (parseInt(e.key)) {
+                        this.dateTimeInputDate = new Date(
+                            this.dateTimeInputDate.setDate(parseInt(e.key))
+                        );
+                    }
+
                     this.span2.nativeElement.innerHTML = (
                         '0' + parseInt(e.key)
                     ).slice(-2);
@@ -2448,7 +2480,7 @@ export class TaInputComponent
                     this.span3.nativeElement.innerHTML = 'yy';
                     this.dateTimeInputDate = new Date();
                     this.showDateInput = false;
-                    //this.resetForms(); // PITANJE STO SE OVO SKLANJA I UOPSTE STO JE TREBALO
+                    this.resetForms(); // PITANJE STO SE OVO SKLANJA I UOPSTE STO JE TREBALO
                 }
             } else {
                 if (
@@ -2481,6 +2513,7 @@ export class TaInputComponent
     }
 
     selectLastOneForSelection() {
+        clearTimeout(this.wholeInputSelection);
         let range, selection;
 
         this.showDateInput = true;
@@ -2509,8 +2542,10 @@ export class TaInputComponent
         this.setSpanSelection(this.span3.nativeElement);
         this.showDateInput = true;
         setTimeout(() => {
+            console.log('ON KEY UPPPPP _____________________');
             clearTimeout(this.dateTimeMainTimer);
             clearTimeout(this.focusBlur);
+            clearTimeout(this.wholeInputSelection);
         }, 90);
     }
 }

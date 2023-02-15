@@ -7,18 +7,31 @@ import {
     Self,
     ViewChild,
 } from '@angular/core';
-import { ControlValueAccessor, NgControl } from '@angular/forms';
+import { ControlValueAccessor, FormsModule, NgControl, ReactiveFormsModule } from '@angular/forms';
 import { SharedService } from '../../../services/shared/shared.service';
 import moment from 'moment';
 import { card_modal_animation } from '../animations/card-modal.animation';
 import { NoteUpdateService } from 'src/app/core/services/shared/note.service';
 import { EntityTypeNote } from 'appcoretruckassist/model/entityTypeNote';
+import { CommonModule } from '@angular/common';
+import { SafeHtmlPipe } from 'src/app/core/pipes/safe-html.pipe';
+import { TaNoteContainerComponent } from '../ta-note/ta-note-container/ta-note-container.component';
+import { AngularSvgIconModule } from 'angular-svg-icon';
 
 @Component({
     selector: 'app-ta-input-note',
     templateUrl: './ta-input-note.component.html',
     styleUrls: ['./ta-input-note.component.scss'],
     animations: [card_modal_animation('showHideCardBody')],
+    standalone: true,
+    imports: [
+            CommonModule, 
+            FormsModule, 
+            SafeHtmlPipe, 
+            TaNoteContainerComponent,
+            AngularSvgIconModule,
+            ReactiveFormsModule
+    ],
 })
 export class TaInputNoteComponent implements OnInit, ControlValueAccessor {
     _isVisibleNote: any = 'null';
@@ -172,6 +185,8 @@ export class TaInputNoteComponent implements OnInit, ControlValueAccessor {
         this.selectionTaken = window.getSelection();
         if (this.selectionTaken.rangeCount && this.selectionTaken.getRangeAt) {
             this.range = this.selectionTaken.getRangeAt(0);
+            this.selectionTaken.removeAllRanges();
+            this.selectionTaken.addRange(this.range);
         }
         this.saveIntervalStarted = false;
         clearInterval(this.saveInterval);

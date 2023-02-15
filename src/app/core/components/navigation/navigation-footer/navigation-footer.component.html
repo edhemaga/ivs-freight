@@ -1,3 +1,11 @@
+<!-- (click)="
+onAction(ind, 'Open User Panel');
+item.notification &&
+    settingsRouteClicked({
+        value: true,
+        id: item.id
+    })
+" -->
 <div class="nav-footer" [ngClass]="{ 'nav-footer-width': isNavigationHovered }">
     <div
         class="settings-footer"
@@ -27,14 +35,6 @@
             'activated-footer-route': notificationsActive && item.notification,
             'notification-item': item.notification
         }"
-        (click)="
-            onAction(ind, 'Open User Panel');
-            item.notification &&
-                settingsRouteClicked({
-                    value: true,
-                    id: item.id
-                })
-        "
         [routerLink]="item.route"
         routerLinkActive="{{ ind !== 2 ? 'nav-footer-item-active' : '' }}"
         (mouseenter)="showToolTip = true"
@@ -93,17 +93,13 @@
                             class="status-marker-container-notification-1 close"
                         >
                             <svg-icon
-                                *ngIf="
-                                    item.notification && !isNavigationHovered
-                                "
+                                *ngIf="item.notification"
+                                [ngClass]="{
+                                    'notification-light': !isNavigationHovered,
+                                    'notification-dark': isNavigationHovered
+                                }"
                                 class="notification-svg"
                                 src="../../../../../assets/svg/applicant/notification-light.svg"
-                            >
-                            </svg-icon>
-                            <svg-icon
-                                *ngIf="item.notification && isNavigationHovered"
-                                class="notification-svg"
-                                src="../../../../../assets/svg/applicant/notification.svg"
                             >
                             </svg-icon>
                         </div>
@@ -124,16 +120,6 @@
                             }"
                         >
                         </svg-icon>
-                        <img
-                            class="nav-footer-image"
-                            [ngClass]="{
-                                'nav-footer-image-user': ind === 2
-                            }"
-                            *ngIf="!item.notification"
-                            [src]="item.image"
-                            [alt]="item.text.userName"
-                        />
-
                         <div
                             class="nav-footer-rightSide"
                             [@showHideDetails]="
@@ -165,44 +151,6 @@
                                 <span>
                                     {{ item.notification }}
                                 </span>
-                            </div>
-                            <div
-                                class="nav-footer-user"
-                                *ngIf="
-                                    (item.text | userData) &&
-                                    isNavigationHovered
-                                "
-                            >
-                                <p class="nav-footer-user-company">
-                                    {{ item.text.companyName }}
-                                </p>
-                                <p class="nav-footer-user-name">
-                                    {{ item.text.userName }}
-                                </p>
-                            </div>
-                        </div>
-                        <div
-                            *ngIf="currentUserStatus && (item.text | userData)"
-                            class="status-marker-container"
-                            (mouseenter)="showToolTip = false"
-                        >
-                            <div
-                                [ngClass]="{
-                                    'status-active':
-                                        currentUserStatus === 'active',
-                                    'status-online':
-                                        currentUserStatus === 'online',
-                                    'status-away': currentUserStatus === 'away',
-                                    'status-busy': currentUserStatus === 'busy',
-                                    'status-offline':
-                                        currentUserStatus === 'offline'
-                                }"
-                                class="status-marker"
-                            >
-                                <svg-icon
-                                    src="../../../../../assets/svg/applicant/user-active.svg"
-                                >
-                                </svg-icon>
                             </div>
                         </div>
                     </div>

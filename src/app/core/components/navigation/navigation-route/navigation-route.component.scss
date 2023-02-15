@@ -11,15 +11,11 @@
     color: $nav-text-color;
 
     transition: $nav-transition-5;
-    // -webkit-user-select: none;
-    // -moz-user-select: none;
-    // -ms-user-select: none;
-    // user-select: none;
+
     position: relative;
     width: 36px;
     left: -8px;
     padding-left: 8px;
-    // z-index: 1;
     .route-not-active-svg {
         svg {
             path {
@@ -51,6 +47,26 @@
         width: 10px;
         height: 10px;
     }
+    .notification-light {
+        svg {
+            path {
+                &:nth-child(1) {
+                    transition: all 0.3s;
+                    fill: $nav-white;
+                }
+            }
+        }
+    }
+    .notification-dark {
+        svg {
+            path {
+                &:nth-child(1) {
+                    transition: all 0.3s;
+                    fill: $nav-dark;
+                }
+            }
+        }
+    }
     .message {
         position: relative;
         right: 8px;
@@ -74,6 +90,7 @@
         right: 9px;
         display: flex;
         gap: 4px;
+        top: 3px;
         opacity: 0;
         user-select: none;
         span {
@@ -138,7 +155,6 @@
             opacity: 0;
         }
         .nav-openend-svg {
-            transition: opacity 0.3s;
             opacity: 1;
         }
 
@@ -215,13 +231,13 @@
             svg {
                 path {
                     fill: $nav-white;
+                    transition: fill 0.4s ease;
                 }
             }
         }
     }
 }
 .nav-item-parent-active {
-    cursor: default;
     &:hover {
         .nav-item-img {
             svg {
@@ -246,6 +262,9 @@
         }
     }
 }
+.disable-cursor {
+    cursor: default;
+}
 .hide-tooltip {
     display: none;
 }
@@ -255,11 +274,22 @@
     position: absolute;
     left: 0px;
     content: '';
-    background-color: $nav-hover-ligh;
     z-index: -1;
     border-radius: 3px;
     padding: 5px 9px;
     top: 0px;
+    background-color: $nav-hover-ligh;
+}
+.box-animation-closed-nav {
+    animation: animateBackground 0.25s forwards;
+}
+@keyframes animateBackground {
+    from {
+        background-color: $nav-dark;
+    }
+    to {
+        background-color: $nav-hover-ligh;
+    }
 }
 .subroute-item {
     padding-left: 8px;
@@ -271,6 +301,10 @@
         transition: all 0.5s ease-in-out;
         .nav-item-name {
             margin-left: 1px;
+            transition: all 0.1s;
+            .animation-text {
+                animation: dude 0.3s 1 forwards;
+            }
         }
         .hide-subrout {
             display: none;
@@ -280,7 +314,14 @@
         margin-left: 0px;
     }
 }
-
+@keyframes dude {
+    0% {
+        transform: translateX(-20px);
+    }
+    100% {
+        transform: translateX(0px);
+    }
+}
 .nav-item-active-box-active {
     width: 238px;
     background-color: $nav-hover-color;
@@ -302,11 +343,7 @@
         }
     }
 }
-// .nav-item-text-active {
-//     span {
-//     }
-//     color: $nav-active-lighter !important;
-// }
+
 .route-clicked-svg {
     svg {
         path {

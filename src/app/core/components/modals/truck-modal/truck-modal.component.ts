@@ -13,6 +13,8 @@ import {
     ViewEncapsulation,
 } from '@angular/core';
 import {
+    FormsModule,
+    ReactiveFormsModule,
     UntypedFormBuilder,
     UntypedFormGroup,
     Validators,
@@ -42,6 +44,17 @@ import { VinDecoderService } from '../../../services/VIN-DECODER/vindecoder.serv
 import { convertThousanSepInNumber } from '../../../utils/methods.calculations';
 import { FormService } from '../../../services/form/form.service';
 import { TruckAutocompleteModelResponse } from '../../../../../../appcoretruckassist/model/truckAutocompleteModelResponse';
+import { EditTagsService } from 'src/app/core/services/shared/editTags.service';
+import { CommonModule } from '@angular/common';
+import { TaModalComponent } from '../../shared/ta-modal/ta-modal.component';
+import { TaTabSwitchComponent } from '../../standalone-components/ta-tab-switch/ta-tab-switch.component';
+import { TaInputComponent } from '../../shared/ta-input/ta-input.component';
+import { TaInputDropdownComponent } from '../../shared/ta-input-dropdown/ta-input-dropdown.component';
+import { TaCheckboxCardComponent } from '../../shared/ta-checkbox-card/ta-checkbox-card.component';
+import { TaCustomCardComponent } from '../../shared/ta-custom-card/ta-custom-card.component';
+import { TaUploadFilesComponent } from '../../shared/ta-upload-files/ta-upload-files.component';
+import { TaInputNoteComponent } from '../../shared/ta-input-note/ta-input-note.component';
+import { TaCheckboxComponent } from '../../shared/ta-checkbox/ta-checkbox.component';
 
 @Component({
     selector: 'app-truck-modal',
@@ -50,6 +63,21 @@ import { TruckAutocompleteModelResponse } from '../../../../../../appcoretruckas
     animations: [tab_modal_animation('animationTabsModal')],
     encapsulation: ViewEncapsulation.None,
     providers: [ModalService, TaInputService, FormService],
+    standalone: true,
+    imports: [
+            CommonModule, 
+            FormsModule, 
+            TaModalComponent, 
+            TaTabSwitchComponent, 
+            ReactiveFormsModule,
+            TaInputComponent,
+            TaInputDropdownComponent,
+            TaCheckboxCardComponent,
+            TaCustomCardComponent,
+            TaUploadFilesComponent,
+            TaInputNoteComponent,
+            TaCheckboxComponent
+    ]
 })
 export class TruckModalComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
@@ -131,6 +159,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
     public documents: any[] = [];
     public filesForDelete: any[] = [];
     public fileModified: boolean = false;
+    public tags: any[] = [];
 
     constructor(
         private formBuilder: UntypedFormBuilder,
@@ -139,7 +168,8 @@ export class TruckModalComponent implements OnInit, OnDestroy {
         private modalService: ModalService,
         private ngbActiveModal: NgbActiveModal,
         private vinDecoderService: VinDecoderService,
-        private formService: FormService
+        private formService: FormService,
+        private tagsService: EditTagsService
     ) {}
 
     ngOnInit() {
@@ -217,6 +247,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
             headacheRack: [false],
             dashCam: [false],
             files: [null],
+            tags: [null],
         });
 
         this.formService.checkFormChange(this.truckForm);
@@ -522,6 +553,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                 next: (res: GetTruckModalResponse) => {
                     this.apUnits = res.apUnits;
                     this.brakes = res.brakes;
+                    this.tags = res.tags;
                     this.colorType = res.colors.map((item) => {
                         return {
                             ...item,
@@ -767,11 +799,22 @@ export class TruckModalComponent implements OnInit, OnDestroy {
 
     public addTruck() {
         let documents = [];
+        let tagsArray = [];
         this.documents.map((item) => {
+            if (item.tagId?.length)
+                tagsArray.push({
+                    fileName: item.realFile.name,
+                    tagIds: item.tagId,
+                });
+
             if (item.realFile) {
                 documents.push(item.realFile);
             }
         });
+
+        if (!tagsArray.length) {
+            tagsArray = null;
+        }
 
         const newData: any = {
             ...this.truckForm.value,
@@ -858,6 +901,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                     : null
                 : null,
             files: documents,
+            tags: tagsArray,
         };
 
         this.truckModalService
@@ -910,11 +954,22 @@ export class TruckModalComponent implements OnInit, OnDestroy {
 
     public updateTruck(id: number) {
         let documents = [];
+        let tagsArray = [];
         this.documents.map((item) => {
+            if (item.tagId?.length && item?.realFile?.name)
+                tagsArray.push({
+                    fileName: item.realFile.name,
+                    tagIds: item.tagId,
+                });
+
             if (item.realFile) {
                 documents.push(item.realFile);
             }
         });
+
+        if (!tagsArray.length) {
+            tagsArray = null;
+        }
 
         const newData: any = {
             id: id,
@@ -1006,6 +1061,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                 : null,
             files: documents ? documents : this.truckForm.value.files,
             filesForDeleteIds: this.filesForDelete,
+            tags: tagsArray,
         };
 
         this.truckModalService
@@ -1018,6 +1074,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                         status: true,
                         close: true,
                     });
+                    this.updateTags();
                 },
                 error: () => {
                     this.modalService.setModalSpinner({
@@ -1073,6 +1130,19 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                 this.fileModified = true;
                 break;
             }
+            case 'tag': {
+                let changedTag = false;
+                event.files.map((item) => {
+                    if (item.tagChanged) {
+                        changedTag = true;
+                    }
+                });
+
+                this.truckForm
+                    .get('tags')
+                    .patchValue(changedTag ? true : null);
+                break;
+            }
             default: {
                 break;
             }
@@ -1093,6 +1163,24 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                         console.log(error);
                     },
                 });
+        }
+    }
+
+    updateTags() {
+        let tags = [];
+
+        this.documents.map((item) => {
+            if (item?.tagChanged && item?.fileId) {
+                var tagsData = {
+                    storageId: item.fileId,
+                    tagId: item.tagId?.length ? item.tagId[0] : null,
+                };
+                tags.push(tagsData);
+            }
+        });
+
+        if(tags.length) {
+            this.tagsService.updateTag({ tags: tags }).subscribe();
         }
     }
 

@@ -29,34 +29,36 @@ export class LoadActiveResolver implements Resolve<LoadActiveState> {
                 undefined,
                 undefined,
                 undefined,
+                undefined,
+                undefined,
                 1,
                 25
             ),
             this.tableService.getTableConfig(3),
-        ])
-            .pipe(
-                tap(([loadPagination, tableConfig]) => {
+        ]).pipe(
+            tap(([loadPagination, tableConfig]) => {
+                console.log(loadPagination);
+                localStorage.setItem(
+                    'loadTableCount',
+                    JSON.stringify({
+                        pendingCount: loadPagination.pendingCount,
+                        activeCount: loadPagination.activeCount,
+                        closedCount: loadPagination.closedCount,
+                        templateCount: loadPagination.templateCount,
+                    })
+                );
+
+                if (tableConfig) {
+                    const config = JSON.parse(tableConfig.config);
+
                     localStorage.setItem(
-                        'loadTableCount',
-                        JSON.stringify({
-                            pendingCount: loadPagination.pendingCount,
-                            activeCount: loadPagination.activeCount,
-                            closedCount: loadPagination.closedCount,
-                            templateCount: loadPagination.templateCount,
-                        })
+                        `table-${tableConfig.tableType}-Configuration`,
+                        JSON.stringify(config)
                     );
+                }
 
-                    if (tableConfig) {
-                        const config = JSON.parse(tableConfig.config);
-
-                        localStorage.setItem(
-                            `table-${tableConfig.tableType}-Configuration`,
-                            JSON.stringify(config)
-                        );
-                    }
-
-                    this.loadActiveStore.set(loadPagination.pagination.data);
-                })
-            )
+                this.loadActiveStore.set(loadPagination.pagination.data);
+            })
+        );
     }
 }

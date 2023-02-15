@@ -1,17 +1,17 @@
 import { Inject, Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, tap } from 'rxjs';
+import { BehaviorSubject, Observable, Subject, tap } from 'rxjs';
 
 import {
     AccountService,
     SignInCommand,
     SignInResponse,
-    SignUpCompanyCommand,
     ForgotPasswordCommand,
     SetNewPasswordCommand,
     VerifyOwnerCommand,
     SignupUserCommand,
     VerifyForgotPasswordCommand,
     SelectCompanyResponse,
+    SignUpCompanyCommand,
 } from 'appcoretruckassist';
 import { Router } from '@angular/router';
 import { PersistState } from '@datorama/akita';
@@ -25,6 +25,11 @@ export class AuthStoreService {
 
     private forgotPasswordTokenSubject: BehaviorSubject<string> =
         new BehaviorSubject<string>(null);
+
+    private _multipleCompanies: any;
+
+    private multipleCompanies = new Subject<any>();
+    userHasMultipleCompaniesObservable = this.multipleCompanies.asObservable();
 
     constructor(
         private accountService: AccountService,
@@ -48,18 +53,31 @@ export class AuthStoreService {
         return this.signUpUserInfoSubject.asObservable();
     }
 
-    public accountLogin(data: SignInCommand): Observable<SignInResponse> {
+    public accountLogin(data?: SignInCommand): Observable<SignInResponse> {
         return this.accountService.apiAccountLoginPost(data).pipe(
             tap((user: SignInResponse) => {
                 // Production
                 // this.authStore.set({ 1: user });
                 // Develop
-                localStorage.setItem('user', JSON.stringify(user));
-                this.router.navigate(['/dashboard']);
+                if (user.companies.length > 1) {
+                    this.moreThenOneCompany = user;
+                    localStorage.setItem('user', JSON.stringify(user));
+                    this.router.navigate(['/select-company']);
+                } else {
+                    localStorage.setItem('user', JSON.stringify(user));
+                    this.router.navigate(['/dashboard']);
+                }
             })
         );
     }
 
+    get moreThenOneCompany() {
+        return this._multipleCompanies;
+    }
+    set moreThenOneCompany(value) {
+        this._multipleCompanies = value;
+        this.multipleCompanies.next(value);
+    }
     public accountLogut(): void {
         // ---- PRODUCTION MODE ----
         this.persistStorage.clearStore();
@@ -107,6 +125,7 @@ export class AuthStoreService {
     public selectCompanyAccount(
         data: SelectCompanyCommand
     ): Observable<SelectCompanyResponse> {
+        console.log(this.accountService.apiAccountSelectcompanyPost(data));
         return this.accountService.apiAccountSelectcompanyPost(data);
     }
 }

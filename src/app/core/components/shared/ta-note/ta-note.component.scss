@@ -286,7 +286,7 @@
         display: block;
         line-height: 1.5;
         height: auto;
-        min-width: 182px;
+        min-width: 159px;
         background-color: #ffffff;
 
         &.expanded {
@@ -299,7 +299,7 @@
 
         .editor {
             min-height: 32px;
-            max-height: 80px;
+            max-height: 64px;
             width: 250px;
             border-radius: 3px;
             background-color: rgba(255, 255, 255, 1);
@@ -309,7 +309,7 @@
             color: #6c6c6c;
             font-size: 11px;
             margin: 0 0 0 auto;
-            line-height: 15px;
+            line-height: 12px;
             padding: 3px 6px;
             font-weight: 500;
 
@@ -484,6 +484,6 @@
 
     &.closed_note_hold {
         position: relative;
-        top: -6px;
+        top: -7px;
     }
 }

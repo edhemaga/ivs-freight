@@ -9,11 +9,17 @@ import {
     EventEmitter,
     Output,
     ChangeDetectionStrategy,
+    OnChanges,
+    SimpleChanges,
 } from '@angular/core';
 import { Router } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
 import {
     DropDownAnimation,
     navigation_route_animation,
+    test,
 } from '../navigation.animation';
 
 @Component({
@@ -24,9 +30,12 @@ import {
     animations: [
         navigation_route_animation('showHideDetails'),
         DropDownAnimation,
+        test('test'),
     ],
+    standalone: true,
+    imports: [CommonModule, FormsModule, RouterModule]
 })
-export class NavigationSubrouteComponent {
+export class NavigationSubrouteComponent implements OnChanges {
     @Input() subroute: Navigation;
     @Input() isNavigationHovered: boolean = false;
     @Input() index: number;
@@ -36,10 +45,19 @@ export class NavigationSubrouteComponent {
     @Output() onSubrouteActiveEvent = new EventEmitter<NavigationSubRoutes>();
     @Output() subRouteIndex = new EventEmitter<Number>();
     public isMagicLineActive: boolean = false;
+    public doAnimation: boolean = false;
     constructor(private router: Router) {}
 
     subrouteIndex(index) {
         this.subRouteIndex.emit(index);
+    }
+    ngOnChanges(changes: SimpleChanges): void {
+        if (changes.otherContainerOpened != undefined) {
+            let prev = changes?.otherContainerOpened;
+            if (prev.currentValue == true && prev.previousValue == false) {
+                this.doAnimation = true;
+            }
+        }
     }
     public onSubrouteAction(subroute: NavigationSubRoutes) {
         if (this.subroute.id === subroute.activeRouteFlegId) {

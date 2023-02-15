@@ -25,6 +25,13 @@ import { SharedService } from '../../../../services/shared/shared.service';
 import { DetailsDataService } from '../../../../services/details-data/details-data.service';
 import { Titles } from 'src/app/core/utils/application.decorators';
 import { FilesService } from 'src/app/core/services/shared/files.service';
+import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { CustomScrollbarComponent } from '../../custom-scrollbar/custom-scrollbar.component';
+import { AngularSvgIconModule } from 'angular-svg-icon';
+import { TaNoteComponent } from '../../ta-note/ta-note.component';
+import { TaUploadFilesComponent } from '../../ta-upload-files/ta-upload-files.component';
+import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 
 @Titles()
 @Component({
@@ -32,6 +39,18 @@ import { FilesService } from 'src/app/core/services/shared/files.service';
     templateUrl: './truckassist-table-body.component.html',
     styleUrls: ['./truckassist-table-body.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
+    imports: [
+                CommonModule, 
+                FormsModule, 
+                ReactiveFormsModule,
+                CustomScrollbarComponent,
+                AngularSvgIconModule,
+                TaNoteComponent,
+                TaUploadFilesComponent,
+                NgbPopoverModule
+
+    ],
     providers: [
         {
             provide: VIRTUAL_SCROLL_STRATEGY,
@@ -74,7 +93,7 @@ export class TruckassistTableBodyComponent
     progressData: any[] = [];
     viewDataEmpty: boolean;
     viewDataTimeOut: any;
-    tableWidthTimeout: any
+    tableWidthTimeout: any;
     rowData: any;
     activeDescriptionDropdown: number = -1;
     descriptionTooltip: any;
@@ -87,6 +106,8 @@ export class TruckassistTableBodyComponent
     statusDropdownData: any;
     showInspectinDescriptionEdit: boolean;
     editInspectinDescriptionText: string = '';
+    tableRowCounter: number = 0;
+    renderInterval: any;
 
     constructor(
         private router: Router,
@@ -109,6 +130,9 @@ export class TruckassistTableBodyComponent
 
         // Set Dropdown Content
         this.setDropContent();
+
+        // For Rendering One By One
+        this.renderOneByOne();
 
         // Select Or Deselect All
         this.tableService.currentSelectOrDeselect
@@ -174,7 +198,6 @@ export class TruckassistTableBodyComponent
     ngOnChanges(changes: SimpleChanges): void {
         if (!changes?.viewData?.firstChange && changes?.viewData) {
             clearTimeout(this.viewDataTimeOut);
-
             this.viewData = [...changes.viewData.currentValue];
 
             this.viewDataEmpty = this.viewData.length ? false : true;
@@ -184,7 +207,11 @@ export class TruckassistTableBodyComponent
                     this.getNotPinedMaxWidth();
                     this.getSelectedTabTableData();
                 }, 10);
+
+                this.renderOneByOne();
             }
+
+            this.checkAttachmentUpdate();
         }
 
         if (!changes?.tableData?.firstChange && changes?.tableData) {
@@ -257,6 +284,69 @@ export class TruckassistTableBodyComponent
         this.getNotPinedMaxWidth();
     }
 
+    // Render Row One By One
+    renderOneByOne() {
+        // clearInterval(this.renderInterval);
+        // if(this.viewData.length - 1 <= this.tableRowCounter){
+        //     this.tableRowCounter = 0;
+        // }
+        // this.renderInterval = setInterval(() => {
+        //     this.tableRowCounter++;
+        //     this.changeDetectorRef.detectChanges();
+        //     if (this.tableRowCounter >= this.viewData.length - 1) {
+        //         clearInterval(this.renderInterval);
+        //     }
+        // }, 1);
+    }
+
+    // Track By For Table Row
+    trackTableRow(item: any) {
+        return item.id;
+    }
+
+    // Track By For Pined Columns
+    trackTablePinedColumns(item: any) {
+        return item.columnId;
+    }
+
+    // Track By For Not Pined Columns
+    trackTableNotPinedColumns(item: any) {
+        return item.columnId;
+    }
+
+    // Track By For Actions Columns
+    trackTableActionsColumns(item: any) {
+        return item.columnId;
+    }
+
+    // Attachment Update
+    checkAttachmentUpdate() {
+        if (this.activeAttachment !== -1) {
+            let entity = this.activeTableData?.gridNameTitle;
+
+            if (entity == 'Repair' && this.selectedTab == 'repair-shop') {
+                entity = 'Repair-Shop';
+            }
+
+            this.filesService
+                .getFiles(entity, this.activeAttachment)
+                .subscribe((res) => {
+                    if (res?.length) {
+                        const newViewData = [...this.viewData];
+
+                        newViewData.map((data: any) => {
+                            if (data.id === this.activeAttachment) {
+                                data.tableAttachments = res;
+                                data.fileCount = res.length;
+                            }
+                        });
+
+                        this.viewData = [...newViewData];
+                    }
+                });
+        }
+    }
+
     // Horizontal Scroll
     onHorizontalScroll(scrollEvent: any) {
         if (scrollEvent.eventAction === 'scrolling') {
@@ -289,10 +379,13 @@ export class TruckassistTableBodyComponent
 
         let notPinedWidth = 0;
 
-        this.columns.map((c: any) => {
+        this.columns.map((c: any, i: number) => {
             // Pined
             if (c.isPined && !c.isAction && !c.hidden) {
-                this.pinedColumns.push(c);
+                this.pinedColumns.push({
+                    ...c,
+                    columnId: c.name + i,
+                });
 
                 this.pinedWidth += c.minWidth > c.width ? c.minWidth : c.width;
 
@@ -307,7 +400,10 @@ export class TruckassistTableBodyComponent
 
             // Not Pined
             if (!c.isPined && !c.isAction && !c.hidden) {
-                this.notPinedColumns.push(c);
+                this.notPinedColumns.push({
+                    ...c,
+                    columnId: c.name + i,
+                });
 
                 notPinedWidth +=
                     c.minWidth > c.width ? c.minWidth + 6 : c.width + 6;
@@ -315,7 +411,10 @@ export class TruckassistTableBodyComponent
 
             // Actions
             if (c.isAction && !c.hidden) {
-                this.actionsColumns.push(c);
+                this.actionsColumns.push({
+                    ...c,
+                    columnId: c.name + i,
+                });
 
                 this.actionsWidth +=
                     c.minWidth > c.width ? c.minWidth : c.width;
@@ -351,7 +450,7 @@ export class TruckassistTableBodyComponent
 
             this.tableWidthTimeout = setTimeout(() => {
                 const table = document.querySelector('.table-tr');
-                this.tableWidth = table.clientWidth;
+                this.tableWidth = table?.clientWidth ? table.clientWidth : 0;
             }, 100);
         }
     }
@@ -413,6 +512,7 @@ export class TruckassistTableBodyComponent
 
     onDislike(row: any) {
         this.detailsDataService.setNewData(row);
+
         this.bodyActions.emit({
             data: row,
             type: 'raiting',
@@ -525,6 +625,15 @@ export class TruckassistTableBodyComponent
         this.tooltip.close();
     }
 
+    // Only For User Table To Activate User
+    onActivateUser(row: any) {
+        this.bodyActions.emit({
+            id: row.id,
+            data: row,
+            type: 'activate',
+        });
+    }
+
     // Show Attachments
     onShowAttachments(row: any) {
         if (this.activeAttachment !== row.id) {
@@ -538,9 +647,9 @@ export class TruckassistTableBodyComponent
                 if (res?.length) {
                     this.activeAttachment = row.id;
                     row.tableAttachments = res;
-                }
 
-                this.changeDetectorRef.detectChanges();
+                    this.changeDetectorRef.detectChanges();
+                }
             });
         } else {
             this.activeAttachment = -1;
