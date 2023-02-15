@@ -207,31 +207,6 @@ export class TaNoticeOfAsignmentComponent
         }
     }
 
-    changeFontSize5(event) {
-        const fontSize = event.additionalText;
-        document.execCommand('fontSize', false, '7');
-        const fontElements =
-            this.noticeRef.nativeElement.getElementsByTagName('font');
-        for (let i = 0, len = fontElements.length; i < len; ++i) {
-            if (
-                fontElements[i].fontSize == '7' ||
-                fontElements[i].fontSize == 'xxx-large'
-            ) {
-                fontElements[i].removeAttribute('size');
-                fontElements[i].style.fontSize = `${fontSize}px`;
-            }
-        }
-        const spanElements =
-            this.noticeRef.nativeElement.getElementsByTagName('span');
-        for (let i = 0; i < spanElements.length; ++i) {
-            if (spanElements[i].style.fontSize == 'xxx-large') {
-                spanElements[i].style.fontSize = `${fontSize}px`;
-            }
-        }
-
-        this.noticeService.updateField.next();
-    }
-
     checkActiveItems() {
         for (const act in this.activeOptions) {
             this.activeOptions[act] = document.queryCommandState(act);

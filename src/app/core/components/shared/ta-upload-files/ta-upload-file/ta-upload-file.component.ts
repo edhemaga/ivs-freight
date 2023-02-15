@@ -31,6 +31,7 @@ export interface UploadFile {
     incorrect?: boolean;
     tagChanged?: boolean;
     savedTag?: any;
+    tagGeneratedByUser?: boolean;
 }
 @Component({
     selector: 'app-ta-upload-file',
@@ -281,6 +282,7 @@ export class TaUploadFileComponent implements OnInit, OnDestroy {
 
                 setTimeout(() => {
                     this.file.tags = item.tagName;
+                    this.file.tagGeneratedByUser = true;
                     this.file.tagId = [item.tagId];
                     this.file.tagChanged =
                         this.file.savedTag != item.tagName ? true : false;

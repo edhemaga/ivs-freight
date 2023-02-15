@@ -246,6 +246,7 @@
                 file?.tags != 'No Tag'
             "
             class="ta-upload-file-tag"
+            [class.default]="!file?.tagGeneratedByUser"
         >
             <span>{{
                 file?.tags ? file?.tags : categoryTag ? categoryTag : ''
