@@ -102,6 +102,12 @@ export class ShopRepairDetailsComponent implements OnInit, OnDestroy {
                         if (res.template === 'repair shop' || res.template === 'Repair Shop') {
                             this.closeRepairShop(res?.id);
                         }
+                    } else if ( res.type === 'info' ) {
+                        if ( res.subType === 'favorite' ) {
+                            if ( res.subTypeStatus === 'move' || res.subTypeStatus === 'remove' ) {
+                                this.changePinnedStatus(res?.id)
+                            }
+                        }
                     }
                 },
             });
@@ -251,6 +257,8 @@ export class ShopRepairDetailsComponent implements OnInit, OnDestroy {
             event.type = 'edit';
             event.openedTab = 'Review';
         }
+
+        console.log('---here---', event)
         this.dropDownService.dropActionsHeaderRepair(
             event,
             this.repairObject,
@@ -410,6 +418,10 @@ export class ShopRepairDetailsComponent implements OnInit, OnDestroy {
 
     public openRepairShop(shopId){
         this.shopService.changeShopStatus(shopId);
+    }
+
+    public changePinnedStatus(shopId){
+        this.shopService.changePinnedStatus(shopId);
     }
 
     ngOnDestroy(): void {

@@ -743,6 +743,36 @@ export class DropDownService {
                 );
                 break;
             }
+            case 'move-to-favourite':{
+                this.modalService.openModal(
+                    ConfirmationModalComponent,
+                    { size: 'small' },
+                    {
+                        ...mappedEvent,
+                        template: 'repair shop',
+                        type: 'info',
+                        subType: 'favorite',
+                        subTypeStatus: 'move',
+                        image: false,
+                    }
+                );
+                break;
+            }
+            case 'remove-from-favourite':{
+                this.modalService.openModal(
+                    ConfirmationModalComponent,
+                    { size: 'small' },
+                    {
+                        ...mappedEvent,
+                        template: 'repair shop',
+                        type: 'info',
+                        subType: 'favorite',
+                        subTypeStatus: 'remove',
+                        image: false,
+                    }
+                );
+                break;
+            }
             case 'delete-item':{
                 this.modalService.openModal(
                     ConfirmationModalComponent,
