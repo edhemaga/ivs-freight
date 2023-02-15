@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit, Input } from '@angular/core';
-import { UntypedFormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
+import { UntypedFormGroup, UntypedFormBuilder, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Subject, takeUntil } from 'rxjs';
 import { FormService } from '../../../services/form/form.service';
 import { ModalService } from '../../shared/ta-modal/modal.service';
@@ -7,11 +7,24 @@ import { TaInputService } from '../../shared/ta-input/ta-input.service';
 import { NotificationService } from '../../../services/notification/notification.service';
 import { RoutingStateService } from '../../routing/state/routing-state/routing-state.service';
 import { UpdateMapCommand } from 'appcoretruckassist';
+import { CommonModule } from '@angular/common';
+import { TaModalComponent } from '../../shared/ta-modal/ta-modal.component';
+import { TaTabSwitchComponent } from '../../standalone-components/ta-tab-switch/ta-tab-switch.component';
+import { TaInputComponent } from '../../shared/ta-input/ta-input.component';
 
 @Component({
     selector: 'app-map-settings-modal',
     templateUrl: './map-settings-modal.component.html',
     styleUrls: ['./map-settings-modal.component.scss'],
+    standalone: true,
+    imports: [ 
+                CommonModule, 
+                FormsModule, 
+                TaModalComponent, 
+                TaTabSwitchComponent, 
+                ReactiveFormsModule, 
+                TaInputComponent
+    ]
 })
 export class MapSettingsModalComponent implements OnInit, OnDestroy {
     public mapSettingsForm: UntypedFormGroup;

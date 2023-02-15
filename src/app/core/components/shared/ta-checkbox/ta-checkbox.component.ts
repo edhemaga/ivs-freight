@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import {
     Component,
     EventEmitter,
@@ -6,13 +7,15 @@ import {
     Self,
     ViewEncapsulation,
 } from '@angular/core';
-import { ControlValueAccessor, NgControl } from '@angular/forms';
+import { ControlValueAccessor, FormsModule, NgControl } from '@angular/forms';
 
 @Component({
     selector: 'app-ta-checkbox',
     templateUrl: './ta-checkbox.component.html',
     styleUrls: ['./ta-checkbox.component.scss'],
     encapsulation: ViewEncapsulation.None,
+    standalone: true,
+    imports: [CommonModule, FormsModule],
 })
 export class TaCheckboxComponent implements ControlValueAccessor {
     @Input() label: string;

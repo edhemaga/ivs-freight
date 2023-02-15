@@ -2,6 +2,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
     name: 'detailActiveItem',
+    standalone: true
 })
 export class DetailsActiveItemPipe implements PipeTransform {
     transform(options: any[], template?: string): any {

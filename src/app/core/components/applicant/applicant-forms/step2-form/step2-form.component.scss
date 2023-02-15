@@ -128,7 +128,11 @@
                     p {
                         color: $ta-black-2;
                         font-size: 11px;
-                        user-select: none;
+
+                        -webkit-user-select: none !important;
+                        -moz-user-select: none !important;
+                        -ms-user-select: none !important;
+                        user-select: none !important;
 
                         span {
                             color: $ta-red-3;

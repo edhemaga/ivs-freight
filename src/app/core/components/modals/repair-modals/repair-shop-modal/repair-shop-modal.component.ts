@@ -7,6 +7,8 @@ import {
     ViewEncapsulation,
 } from '@angular/core';
 import {
+    FormsModule,
+    ReactiveFormsModule,
     UntypedFormArray,
     UntypedFormBuilder,
     UntypedFormGroup,
@@ -51,6 +53,18 @@ import {
 } from '../../../../../../../appcoretruckassist';
 import moment from 'moment';
 import { debounceTime } from 'rxjs/operators';
+import { CommonModule } from '@angular/common';
+import { AppTooltipComponent } from '../../../standalone-components/app-tooltip/app-tooltip.component';
+import { TaModalComponent } from '../../../shared/ta-modal/ta-modal.component';
+import { TaTabSwitchComponent } from '../../../standalone-components/ta-tab-switch/ta-tab-switch.component';
+import { ActiveItemsPipe } from '../../../../pipes/activeItems.pipe';
+import { TaInputComponent } from '../../../shared/ta-input/ta-input.component';
+import { TaInputDropdownComponent } from '../../../shared/ta-input-dropdown/ta-input-dropdown.component';
+import { TaCustomCardComponent } from '../../../shared/ta-custom-card/ta-custom-card.component';
+import { InputAddressDropdownComponent } from '../../../shared/input-address-dropdown/input-address-dropdown.component';
+import { TaInputNoteComponent } from '../../../shared/ta-input-note/ta-input-note.component';
+import { AngularSvgIconModule } from 'angular-svg-icon';
+import { TaCheckboxComponent } from '../../../shared/ta-checkbox/ta-checkbox.component';
 
 @Component({
     selector: 'app-repair-shop-modal',
@@ -59,6 +73,23 @@ import { debounceTime } from 'rxjs/operators';
     animations: [tab_modal_animation('animationTabsModal')],
     encapsulation: ViewEncapsulation.None,
     providers: [ModalService, BankVerificationService, FormService],
+    standalone: true,
+    imports: [
+            CommonModule, 
+            FormsModule, 
+            AppTooltipComponent, 
+            TaModalComponent, 
+            TaTabSwitchComponent, 
+            ReactiveFormsModule,
+            ActiveItemsPipe,
+            TaInputComponent,
+            TaCustomCardComponent,
+            TaInputDropdownComponent,
+            InputAddressDropdownComponent,
+            TaInputNoteComponent,
+            AngularSvgIconModule,
+            TaCheckboxComponent
+    ]
 })
 export class RepairShopModalComponent implements OnInit, OnDestroy {
     @Input() editData: any;

@@ -7,6 +7,8 @@ import {
 } from '../../shared/ta-input/ta-input.regex-validations';
 import { ShipperModalResponse } from '../../../../../../appcoretruckassist';
 import {
+    FormsModule,
+    ReactiveFormsModule,
     UntypedFormArray,
     UntypedFormBuilder,
     UntypedFormGroup,
@@ -33,7 +35,7 @@ import {
     fullNameValidation,
 } from '../../shared/ta-input/ta-input.regex-validations';
 import { ModalService } from '../../shared/ta-modal/modal.service';
-import { ReviewCommentModal } from '../../shared/ta-user-review/ta-user-review.component';
+import { ReviewCommentModal, TaUserReviewComponent } from '../../shared/ta-user-review/ta-user-review.component';
 import {
     LikeDislikeModel,
     TaLikeDislikeService,
@@ -45,6 +47,18 @@ import { FormService } from '../../../services/form/form.service';
 import { convertTimeFromBackend } from '../../../utils/methods.calculations';
 import { LoadModalComponent } from '../load-modal/load-modal.component';
 import { ShipperResponse } from '../../../../../../appcoretruckassist/model/shipperResponse';
+import { CommonModule } from '@angular/common';
+import { AppTooltipComponent } from '../../standalone-components/app-tooltip/app-tooltip.component';
+import { TaModalComponent } from '../../shared/ta-modal/ta-modal.component';
+import { TaTabSwitchComponent } from '../../standalone-components/ta-tab-switch/ta-tab-switch.component';
+import { TaInputComponent } from '../../shared/ta-input/ta-input.component';
+import { AngularSvgIconModule } from 'angular-svg-icon';
+import { InputAddressDropdownComponent } from '../../shared/input-address-dropdown/input-address-dropdown.component';
+import { TaCustomCardComponent } from '../../shared/ta-custom-card/ta-custom-card.component';
+import { TaCheckboxComponent } from '../../shared/ta-checkbox/ta-checkbox.component';
+import { TaUploadFilesComponent } from '../../shared/ta-upload-files/ta-upload-files.component';
+import { TaInputNoteComponent } from '../../shared/ta-input-note/ta-input-note.component';
+import { TaInputDropdownComponent } from '../../shared/ta-input-dropdown/ta-input-dropdown.component';
 
 @Component({
     selector: 'app-shipper-modal',
@@ -53,6 +67,24 @@ import { ShipperResponse } from '../../../../../../appcoretruckassist/model/ship
     animations: [tab_modal_animation('animationTabsModal')],
     encapsulation: ViewEncapsulation.None,
     providers: [ModalService, TaLikeDislikeService, FormService],
+    standalone: true,
+    imports: [
+            CommonModule, 
+            FormsModule,
+            AppTooltipComponent, 
+            TaModalComponent, 
+            TaTabSwitchComponent, 
+            ReactiveFormsModule,
+            TaInputComponent,
+            AngularSvgIconModule,
+            InputAddressDropdownComponent,
+            TaCustomCardComponent,
+            TaCheckboxComponent,
+            TaUploadFilesComponent,
+            TaInputNoteComponent,
+            TaUserReviewComponent,
+            TaInputDropdownComponent
+    ] 
 })
 export class ShipperModalComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();

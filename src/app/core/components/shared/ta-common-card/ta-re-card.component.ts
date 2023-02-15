@@ -10,10 +10,15 @@ import {
     trigger,
     state,
 } from '@angular/animations';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { AppTooltipComponent } from '../../standalone-components/app-tooltip/app-tooltip.component';
 @Component({
     selector: 'app-ta-re-card',
     templateUrl: './ta-re-card.component.html',
     styleUrls: ['./ta-re-card.component.scss'],
+    standalone: true,
+    imports: [CommonModule, FormsModule, AppTooltipComponent],
     animations: [card_component_animation('showHideCardBody'),
     trigger('cardOpenAnimation', [
         state(

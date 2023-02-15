@@ -2,7 +2,10 @@ import { ImageBase64Service } from '../../../utils/base64.image';
 import { Component, Input } from '@angular/core';
 import { ConfirmationService } from './confirmation.service';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, Validators } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { TaModalComponent } from '../../shared/ta-modal/ta-modal.component';
+import { formatDatePipe } from 'src/app/core/pipes/formatDate.pipe';
 
 export interface Confirmation {
     template: string; // examples: driver, broker, shipper, cdl.....
@@ -28,6 +31,8 @@ export interface Confirmation {
     selector: 'app-confirmation-modal',
     templateUrl: './confirmation-modal.component.html',
     styleUrls: ['./confirmation-modal.component.scss'],
+    standalone: true,
+    imports: [CommonModule, FormsModule, TaModalComponent, formatDatePipe]
 })
 export class ConfirmationModalComponent {
     @Input() editData: Confirmation;

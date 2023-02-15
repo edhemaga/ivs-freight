@@ -1,9 +1,13 @@
+import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit, OnChanges } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
 @Component({
     selector: 'app-ta-currency-progress-bar',
     templateUrl: './ta-currency-progress-bar.component.html',
     styleUrls: ['./ta-currency-progress-bar.component.scss'],
+    standalone: true,
+    imports: [CommonModule, FormsModule],
 })
 export class TaCurrencyProgressBarComponent implements OnInit, OnChanges {
     @Input() totalAmount: number;

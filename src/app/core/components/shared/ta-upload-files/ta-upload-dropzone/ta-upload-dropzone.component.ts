@@ -9,6 +9,9 @@ import {
     ViewEncapsulation,
 } from '@angular/core';
 import { UploadFile } from '../ta-upload-file/ta-upload-file.component';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { AngularSvgIconModule } from 'angular-svg-icon';
 
 export interface DropZoneConfig {
     dropZoneType: string;
@@ -26,6 +29,8 @@ export interface DropZoneConfig {
     selector: 'app-ta-upload-dropzone',
     templateUrl: './ta-upload-dropzone.component.html',
     styleUrls: ['./ta-upload-dropzone.component.scss'],
+    standalone: true,
+    imports: [CommonModule, FormsModule, AngularSvgIconModule],
     encapsulation: ViewEncapsulation.None,
     host: {
         '(window:paste)': 'handlePaste( $event )',

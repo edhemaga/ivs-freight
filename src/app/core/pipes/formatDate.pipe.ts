@@ -3,6 +3,7 @@ import moment from 'moment';
 
 @Pipe({
     name: 'formatDateP',
+    standalone: true
 })
 export class formatDatePipe implements PipeTransform {
     transform(date: string, template?: string): any {
