@@ -31,16 +31,13 @@ import { AppInterceptor } from './app.inteceptor';
 
 import { EncryptionDecryptionService } from './core/services/encryption-decryption/EncryptionDecryption.service';
 
-import {
-    JWT_HELPER_TOKEN,
-    RefreshTokenInterceptor,
-} from './core/interceptors/refresh-token.interceptor';
+import { RefreshTokenInterceptor } from './core/interceptors/refresh-token.interceptor';
 import { configFactory } from './app.config';
 import { StaticInjectorService } from './core/utils/application.decorators';
 import { NavigationSettingsComponent } from './core/components/navigation/navigation-settings/navigation-settings.component';
 import { UnderConstructionComponent } from './core/components/under-construction/under-construction.component';
 import { TooltipSlideComponent } from './core/components/standalone-components/tooltip-slide/tooltip-slide.component';
-import { JwtHelperService } from '@auth0/angular-jwt';
+
 @NgModule({
     declarations: [
         AppComponent,
@@ -83,10 +80,7 @@ import { JwtHelperService } from '@auth0/angular-jwt';
             deps: [UserLoggedService],
             multi: false,
         },
-        {
-            provide: JWT_HELPER_TOKEN,
-            useValue: new JwtHelperService(),
-        },
+
         [
             {
                 provide: HTTP_INTERCEPTORS,
