@@ -463,8 +463,6 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
                     ...gpsData.data,
                 ];
 
-                console.log('getGpsData driverLocations', this.driverLocations);
-
                 var devicesArr = this.gpsUnassignedData.map((device) => {
                     return { id: device.deviceId, name: device.deviceId };
                 });
@@ -493,8 +491,6 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
                     ...this.driverLocations,
                     ...gpsData.data,
                 ];
-
-                console.log('getUnassignedGpsData driverLocations', this.driverLocations);
 
                 var devicesArr = this.gpsUnassignedData.map((device) => {
                     return { id: device.deviceId, name: device.deviceId };
@@ -748,8 +744,6 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
             this.searchForm.get('truckUnit').patchValue(null);
         } else {
             this.assignDeviceToTruck(item.deviceId, event.data.id);
-
-            console.log('searchForm', this.searchForm);
             this.selectedTruckUnit = {};
             this.searchForm.get('truckUnit').patchValue(null);
         }
@@ -781,8 +775,6 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
                         (gpsData) => truck.truckNumber === gpsData.truckNumber
                     );
 
-                    console.log('assignedTruck', assignedTruck);
-
                     if ( !assignedTruck ) {
                         unassignedTrucks.push({
                             id: truck.id,
@@ -795,17 +787,6 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
                 });
 
                 this.truckUnits = unassignedTrucks;
-
-                console.log('truckUnits', this.truckUnits);
-                // this.truckUnits = trucks.pagination.data.map((truck) => {
-                //     return {
-                //         id: truck.id,
-                //         name: truck.truckNumber,
-                //         logoName: truck.truckType.logoName,
-                //         folder: 'common',
-                //         subFolder: 'trucks',
-                //     };
-                // });
             });
     }
 
@@ -822,8 +803,6 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
                         (gpsData) => trailer.trailerNumber === gpsData.trailerNumber
                     );
 
-                    console.log('assignedTruck', assignedTruck);
-
                     if ( !assignedTruck ) {
                         unassignedTrailers.push({
                             id: trailer.id,
@@ -836,16 +815,6 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
                 });
 
                 this.trailerUnits = unassignedTrailers;
-                
-                // this.trailerUnits = trailers.pagination.data.map((trailer) => {
-                //     return {
-                //         id: trailer.id,
-                //         name: trailer.trailerNumber,
-                //         logoName: trailer.trailerType.logoName,
-                //         folder: 'common',
-                //         subFolder: 'trailers',
-                //     };
-                // });
             });
     }
 
@@ -1305,24 +1274,24 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
             zoomLevel: this.mapZoom,
         };
 
-        this.telematicService.getUnassignedClusters(
-            clustersObject.northEastLatitude,
-            clustersObject.northEastLongitude,
-            clustersObject.southWestLatitude,
-            clustersObject.southWestLongitude,
-            clustersObject.zoomLevel,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null
-        )
-        .pipe(takeUntil(this.destroy$))
-        .subscribe((clustersResponse: any) => {
-            console.log('clustersResponse', clustersResponse);
-        });
+        // this.telematicService.getUnassignedClusters(
+        //     clustersObject.northEastLatitude,
+        //     clustersObject.northEastLongitude,
+        //     clustersObject.southWestLatitude,
+        //     clustersObject.southWestLongitude,
+        //     clustersObject.zoomLevel,
+        //     null,
+        //     null,
+        //     null,
+        //     null,
+        //     null,
+        //     null,
+        //     null
+        // )
+        // .pipe(takeUntil(this.destroy$))
+        // .subscribe((clustersResponse: any) => {
+        //     console.log('clustersResponse', clustersResponse);
+        // });
 
         this.companyOfficeService
             .getOfficeClusters(
@@ -1333,8 +1302,6 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
             )
             .pipe(takeUntil(this.destroy$))
             .subscribe((companyOffices: any) => {
-                console.log('companyOffices', companyOffices);
-                
                 var markersToShow = [];
 
                 companyOffices.map((clusterItem) => {
