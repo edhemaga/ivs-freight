@@ -1,14 +1,16 @@
 <div
     class="charts-item-wrapper revenue"
     *ngIf="legendAttributes?.length"
-    [class.row]="legendAttributes?.length > 2"
     [class.hover]="hoveringStatus && hoverTimeDisplay"
 >
     <div class="hover_data_time" *ngIf="hoveringStatus && hoverTimeDisplay">
         <div class="hover_time_title">DECEMBER, 2021</div>
         <div class="hover_time_border"></div>
     </div>
-    <div class="chart_all_inner_hold">
+    <div
+        class="chart_all_inner_hold"
+        [class.hold_hover_out]="!hoveringStatus && hoverTimeDisplay"
+    >
         <div
             class="charts-template-item"
             [class.col-4]="legendAttributes?.length > 2"

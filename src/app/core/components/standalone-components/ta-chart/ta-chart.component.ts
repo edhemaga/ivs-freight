@@ -25,7 +25,13 @@ import { NFormatterPipe } from '../../../pipes/n-formatter.pipe';
     templateUrl: './ta-chart.component.html',
     styleUrls: ['./ta-chart.component.scss'],
     standalone: true,
-    imports: [CommonModule, AngularSvgIconModule, FormsModule, ChartsModule, NFormatterPipe]
+    imports: [
+        CommonModule,
+        AngularSvgIconModule,
+        FormsModule,
+        ChartsModule,
+        NFormatterPipe,
+    ],
 })
 export class TaChartComponent implements OnInit {
     @Input() chartConfig: any;
@@ -115,7 +121,7 @@ export class TaChartComponent implements OnInit {
             responsive: this.chartConfig['dontUseResponsive'] ? false : true,
             maintainAspectRatio: false,
             cutoutPercentage: 90,
-            
+
             animation: {
                 duration: this.chartConfig['allowAnimation']
                     ? this.animationDuration
@@ -125,23 +131,18 @@ export class TaChartComponent implements OnInit {
                 if (elements?.length) {
                     this.hoveringStatus = true;
                     this.animationDuration = 0;
+                    this.lastHoveredIndex = elements[0]['_index'];
+                    if (this.legendAttributes?.length) {
+                        this.setChartLegendData(elements);
+                    }
+                    if (this.chartConfig['onHoverAnnotation']) {
+                        this.setHoverAnnotation(elements[0]['_index']);
+                    }
                     if (
-                        elements[0]['_index'] != this.lastHoveredIndex ||
-                        this.lineChartType == 'doughnut'
+                        this.lineChartType == 'doughnut' &&
+                        this.driversList?.length
                     ) {
-                        this.lastHoveredIndex = elements[0]['_index'];
-                        if (this.legendAttributes?.length) {
-                            this.setChartLegendData(elements);
-                        }
-                        if (this.chartConfig['onHoverAnnotation']) {
-                            this.setHoverAnnotation(elements[0]['_index']);
-                        }
-                        if (
-                            this.lineChartType == 'doughnut' &&
-                            this.driversList?.length
-                        ) {
-                            this.hoverDoughnut(elements, 'object');
-                        }
+                        this.hoverDoughnut(elements, 'object');
                     }
                 } else {
                     this.ref.detectChanges();
@@ -1141,9 +1142,10 @@ export class TaChartComponent implements OnInit {
         this.showHoverData = false;
         this.hoveringStatus = false;
 
-        const xAxis = this.chart.chart['scales']['x-axis-0'];
+        const xAxis = this.chart?.chart['scales']['x-axis-0'];
 
         if (
+            xAxis &&
             xAxis['_gridLineItems'] &&
             this.axesProperties?.horizontalAxes?.showGridLines
         ) {

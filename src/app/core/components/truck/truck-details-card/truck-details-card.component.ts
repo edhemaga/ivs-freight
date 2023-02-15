@@ -396,6 +396,8 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
         }
         this.getExpensesChartData(changes.truck.currentValue.id, 1, false);
         this.getFuelConsumtionChartData(changes.truck.currentValue.id, 1, false);
+        this.getRevenueChartData(changes.truck.currentValue.id, 1, false);
+
         this.changeColor();
         this.truckMinimalListQuery
             .selectAll()
@@ -406,6 +408,7 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
         this.getTruckById(this.truck.id);
         this.getExpensesChartData(this.truck.id, 1, false);
         this.getFuelConsumtionChartData(this.truck.id, 1, false);
+        this.getRevenueChartData(this.truck.id, 1, false);
         this.noteControl.patchValue(this.truck.note);
         this.getTruckDropdown();
         this.buttonSwitcher();
@@ -441,6 +444,7 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
             {
                 id: 5,
                 name: '1M',
+                checked: true,
             },
             {
                 id: 10,
@@ -467,6 +471,7 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
             {
                 id: 36,
                 name: '1M',
+                checked: true,
             },
             {
                 id: 66,
@@ -493,7 +498,7 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
             {
                 id: 222,
                 name: '1M',
-                checked: false,
+                checked: true,
             },
             {
                 id: 333,
@@ -651,6 +656,68 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
             });
     }
 
+    public getRevenueChartData(
+        id: number,
+        chartType: number,
+        hideAnimation?: boolean
+    ) {
+        this.truckService
+            .getRevenue(id, chartType)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((item) => {
+                this.revenueChartConfig.dataLabels = [];
+                this.revenueChartConfig.chartValues = [
+                    item.miles,
+                    item.revenue,
+                ];
+                this.barChartLegend2[0].value = item.miles;
+                this.barChartLegend2[1].value = item.revenue;
+                let milesPerGallon = [],
+                    costPerGallon = [],
+                    labels = [],
+                    maxValue = 0,
+                    maxValue2 = 0;
+                if (item?.truckRevenueCharts?.length > 17) {
+                    this.revenueChartConfig.dataProperties[1].defaultConfig.barThickness = 10;
+                } else {
+                    this.revenueChartConfig.dataProperties[1].defaultConfig.barThickness = 18;
+                }
+                item.truckRevenueCharts.map((data, index) => {
+                    milesPerGallon.push(data.miles);
+                    costPerGallon.push(data.revenue);
+                    if (data.miles > maxValue) {
+                        maxValue =
+                            data.miles +
+                            (data.miles * 7) / 100;
+                    }
+                    if (data.revenue > maxValue2) {
+                        maxValue2 =
+                            data.revenue + (data.revenue * 7) / 100;
+                    }
+                    if (data.day) {
+                        labels.push([data.day, this.monthList[data.month - 1]]);
+                    } else {
+                        labels.push([this.monthList[data.month - 1]]);
+                    }
+                });
+
+                this.barAxes2['verticalLeftAxes']['maxValue'] = maxValue;
+                this.barAxes2['verticalRightAxes']['maxValue'] = maxValue2;
+                this.revenueChartConfig.dataLabels = labels;
+                this.revenueChartConfig.dataProperties[0].defaultConfig.data =
+                    costPerGallon;
+                this.revenueChartConfig.dataProperties[1].defaultConfig.data =
+                    milesPerGallon;
+                this.revenueChart.chartDataCheck(
+                    this.revenueChartConfig.chartValues
+                );
+                this.revenueChart.updateChartData(hideAnimation);
+                this.revenueChart.saveValues = JSON.parse(
+                    JSON.stringify(this.barChartLegend2)
+                );
+            });
+    }
+
     /**Function for dots in cards */
     public initTableOptions(): void {
         this.dataEdit = {
@@ -686,7 +753,6 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
         };
     }
     public changeTabPerfomance(ev: any) {
-        console.log(ev, 'event');
         let chartType =
             ev.name == '1M'
                 ? 1
@@ -722,7 +788,24 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
 
         this.getFuelConsumtionChartData(this.truck.id, chartType);
     }
-    public changeTabRevenue(ev: any) {}
+    public changeTabRevenue(ev: any) {
+        let chartType =
+            ev.name == '1M'
+                ? 1
+                : ev.name == '3M'
+                ? 2
+                : ev.name == '6M'
+                ? 3
+                : ev.name == '1Y'
+                ? 4
+                : ev.name == 'YTD'
+                ? 5
+                : ev.name == 'ALL'
+                ? 6
+                : 1;
+
+        this.getRevenueChartData(this.truck.id, chartType);
+    }
 
     /**Function for toggle page in cards */
     public toggleResizePage(value: number, indexName: string) {

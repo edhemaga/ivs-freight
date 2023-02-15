@@ -104,6 +104,7 @@ model/assignGpsDevicesToTrailerCommand.ts
 model/assignGpsDevicesToTruckCommand.ts
 model/authorizationFeedbackResponse.ts
 model/autocompleteSearchLayer.ts
+model/avatarResponse.ts
 model/bankAccountResponse.ts
 model/bankAccountStatus.ts
 model/bankCardResponse.ts
@@ -242,7 +243,9 @@ model/createPayrollBonusCommand.ts
 model/createPayrollCreditCommand.ts
 model/createPayrollDeductionCommand.ts
 model/createPayrollPaymentCommand.ts
+model/createPersonalInfoCommand.ts
 model/createPersonalInfoReviewCommand.ts
+model/createPreviousAddressCommand.ts
 model/createPreviousAddressReviewCommand.ts
 model/createPreviousEmployerAccidentHistoryCommand.ts
 model/createPreviousEmployerDrugAndAlcoholCommand.ts
@@ -254,6 +257,7 @@ model/createRouteCommand.ts
 model/createSevenDaysHosCommand.ts
 model/createSevenDaysHosReviewCommand.ts
 model/createSphReviewCommand.ts
+model/createSsnReviewCommand.ts
 model/createTerminalCommand.ts
 model/createTrafficViolationCommand.ts
 model/createTrafficViolationItemCommand.ts
@@ -506,11 +510,14 @@ model/parkingSlotType.ts
 model/passwordResponse.ts
 model/patchNoteCommand.ts
 model/payPeriod.ts
+model/payrollBonusDescriptionAutocompleteResponse.ts
 model/payrollBonusModalResponse.ts
 model/payrollBonusResponse.ts
+model/payrollCreditDescriptionAutocompleteResponse.ts
 model/payrollCreditModalResponse.ts
 model/payrollCreditResponse.ts
 model/payrollCreditType.ts
+model/payrollDeductionDescriptionAutocompleteResponse.ts
 model/payrollDeductionModalResponse.ts
 model/payrollDeductionRecurringType.ts
 model/payrollDeductionResponse.ts
@@ -619,6 +626,7 @@ model/sphDrugAndAlcoholResponse.ts
 model/sphFeedbackResponse.ts
 model/sphPreviousEmployerProspectResponse.ts
 model/splitLoadResponse.ts
+model/ssnFeedbackResponse.ts
 model/stateResponse.ts
 model/statusSetMultipleBrokerCommand.ts
 model/statusSetMultipleCompanyUserCommand.ts
@@ -754,7 +762,9 @@ model/updatePayrollDeductionCommand.ts
 model/updatePayrollDriverCommissionLastLoadCommand.ts
 model/updatePayrollDriverMileageLastStopCommand.ts
 model/updatePayrollOwnerLastLoadCommand.ts
+model/updatePersonalInfoCommand.ts
 model/updatePersonalInfoReviewCommand.ts
+model/updatePreviousAddressCommand.ts
 model/updatePreviousAddressReviewCommand.ts
 model/updatePreviousEmployerAccidentHistoryCommand.ts
 model/updatePreviousEmployerDrugAndAlcoholCommand.ts
@@ -764,6 +774,7 @@ model/updateRouteCommand.ts
 model/updateSevenDaysHosCommand.ts
 model/updateSevenDaysHosReviewCommand.ts
 model/updateSphCommand.ts
+model/updateSsnReviewCommand.ts
 model/updateStopCommand.ts
 model/updateTableConfigCommand.ts
 model/updateTerminalCommand.ts

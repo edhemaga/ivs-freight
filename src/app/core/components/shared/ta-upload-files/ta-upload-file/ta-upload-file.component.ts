@@ -50,7 +50,8 @@ export interface UploadFile {
         AppTooltipComponent,
         PdfViewerModule,
         ByteConvertPipe,
-        NgbModule
+        NgbModule,
+        UrlExtensionPipe
     ],
 })
 export class TaUploadFileComponent implements OnInit, OnDestroy {

@@ -11,9 +11,7 @@
  */
 
 
-export interface CreateClassOfEquipmentCommand { 
-    vehicleTypeId?: number;
-    trailerTypeId?: number | null;
-    trailerLengthId?: number | null;
+export interface PayrollCreditDescriptionAutocompleteResponse { 
+    descriptions?: Array<string> | null;
 }
 

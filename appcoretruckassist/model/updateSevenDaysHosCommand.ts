@@ -19,9 +19,7 @@ export interface UpdateSevenDaysHosCommand {
     releasedDate?: string;
     location?: AddressEntity;
     workingForAnotherEmployer?: boolean;
-    workingForAnotherEmployerDescription?: string | null;
     intendToWorkForAnotherEmployer?: boolean;
-    intendToWorkForAnotherEmployerDescription?: string | null;
     certifyInformation?: boolean;
     applicantId?: number;
 }

@@ -399,6 +399,10 @@ export class TruckTService implements OnDestroy {
         return this.truckService.apiTruckExpensesGet(id, chartType);
     }
 
+    public getRevenue(id: number, chartType: number) {
+        return this.truckService.apiTruckRevenueGet(id, chartType);
+    }
+
     ngOnDestroy(): void {
         this.destroy$.next();
         this.destroy$.complete();
