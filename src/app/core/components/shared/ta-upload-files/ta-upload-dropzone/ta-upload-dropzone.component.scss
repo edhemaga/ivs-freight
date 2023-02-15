@@ -51,6 +51,12 @@
             path {
                 fill: #919191;
             }
+
+            &:hover {
+                path {
+                    fill: #ffffff; 
+                }
+            }
         }
     }
 

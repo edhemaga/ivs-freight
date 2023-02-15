@@ -30,11 +30,15 @@
                     font-size: 27px;
                     color: $white;
                     display: inline-flex;
-                    user-select: none;
                     visibility: visible;
                     opacity: 1;
                     transition: visibility 0.3s ease-in-out,
                         opacity 0.3s ease-in-out;
+
+                    -webkit-user-select: none !important;
+                    -moz-user-select: none !important;
+                    -ms-user-select: none !important;
+                    user-select: none !important;
                 }
 
                 &:hover {
@@ -100,7 +104,6 @@
                 content: '';
                 display: none;
                 visibility: hidden;
-                user-select: none;
                 opacity: 1;
                 vertical-align: middle;
                 width: 20px;
@@ -109,6 +112,11 @@
                 background-size: cover;
                 transition: visibility 0.3s ease-in-out,
                     opacity 0.3s ease-in-out;
+
+                -webkit-user-select: none !important;
+                -moz-user-select: none !important;
+                -ms-user-select: none !important;
+                user-select: none !important;
             }
 
             &.step-active {

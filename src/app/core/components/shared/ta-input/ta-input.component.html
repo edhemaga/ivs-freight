@@ -635,7 +635,7 @@
             #span2
             class="main"
             tabindex="1"
-            (focus)="onFocus()"
+            (focus)="onFocus($event)"
             (mouseup)="setSelection($event)"
             (keydown)="changeSelection($event)"
             (blur)="onBlur()"
@@ -651,7 +651,7 @@
             #span3
             class="main"
             tabindex="2"
-            (focus)="onFocus()"
+            (focus)="onFocus($event)"
             (mouseup)="setSelection($event)"
             (keydown)="changeSelection($event)"
             (blur)="onBlur()"

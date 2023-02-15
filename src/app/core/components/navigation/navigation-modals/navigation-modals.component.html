@@ -8,7 +8,9 @@
         'add-hover':
             !OpenCloseModal &&
             !isNavigationHoveredAndPanelOpen &&
-            isNavigationHovered
+            isNavigationHovered,
+        'modal-media-query-height':
+            isNavigationHoveredAndPanelOpen && isNavigationHovered
     }"
     [@showHideDetails]="isNavigationHoveredAndPanelOpen ? true : false"
 >
@@ -34,6 +36,7 @@
                     }"
                     src="assets/svg/common/ic_x.svg"
                 ></svg-icon>
+                <span class="title">{{ Title }}</span>
             </p>
             <div
                 class="tooltip-right"
@@ -146,6 +149,23 @@
                     class="ta-font-regular"
                     *ngFor="
                         let item of accountingNavigationData;
+                        let ind = index;
+                        trackBy: identity
+                    "
+                    (click)="onAction(item)"
+                >
+                    {{ item.name }}
+                </p>
+            </div>
+        </div>
+
+        <div class="modal-nav-content">
+            <p class="modal-nav-header">REQUEST <span></span></p>
+            <div class="modal-nav-routes">
+                <p
+                    class="ta-font-regular"
+                    *ngFor="
+                        let item of requestNavigationData;
                         let ind = index;
                         trackBy: identity
                     "

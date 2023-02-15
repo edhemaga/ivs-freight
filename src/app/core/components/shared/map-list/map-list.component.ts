@@ -15,17 +15,39 @@ import {
     ViewEncapsulation,
     AfterContentInit,
 } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
+import {
+    FormsModule,
+    UntypedFormBuilder,
+    UntypedFormGroup,
+} from '@angular/forms';
 import { MapsService } from '../../../services/shared/maps.service';
 import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
 import { Subject, takeUntil } from 'rxjs';
 import { DomSanitizer } from '@angular/platform-browser';
+import { CommonModule } from '@angular/common';
+import { AgmCoreModule } from '@agm/core';
+import { TaInputComponent } from '../ta-input/ta-input.component';
+import { AngularSvgIconModule } from 'angular-svg-icon';
+import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
+import { ReactiveFormsModule } from '@angular/forms';
+import { AgmSnazzyInfoWindowModule } from '@agm/snazzy-info-window';
 
 @Component({
     selector: 'app-map-list',
     templateUrl: './map-list.component.html',
     styleUrls: ['./map-list.component.scss'],
     encapsulation: ViewEncapsulation.None,
+    standalone: true,
+    imports: [
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+        AgmCoreModule,
+        TaInputComponent,
+        AngularSvgIconModule,
+        NgbPopoverModule,
+        AgmSnazzyInfoWindowModule
+    ],
 })
 export class MapListComponent
     implements OnInit, OnChanges, OnDestroy, AfterContentInit
@@ -97,11 +119,11 @@ export class MapListComponent
             .pipe(takeUntil(this.destroy$))
             .subscribe((id) => {
                 this.listCards.map((card) => {
-                    if ( card.isSelected && card.item.id != id ) {
+                    if (card.isSelected && card.item.id != id) {
                         card.addRemoveSelection(false);
                     }
 
-                    if ( card.item.id == id ) {
+                    if (card.item.id == id) {
                         card.addRemoveSelection(true);
                     }
                 });

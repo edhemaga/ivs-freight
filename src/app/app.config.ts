@@ -3,8 +3,9 @@ import {
     ConfigurationParameters,
 } from './../../appcoretruckassist/configuration';
 
-import { UserLoggedService } from './core/components/authentication/state/user-logged.service';
 import { environment } from '../environments/environment';
+
+import { UserLoggedService } from './core/components/website/state/service/user-logged.service';
 
 export const configFactory = (
     userLoggedService?: UserLoggedService

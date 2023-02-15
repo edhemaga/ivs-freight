@@ -4,7 +4,7 @@ import {
     vinNumberValidation,
 } from '../../shared/ta-input/ta-input.regex-validations';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { UntypedFormArray, UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
+import { FormsModule, UntypedFormArray, UntypedFormBuilder, UntypedFormGroup, ReactiveFormsModule } from '@angular/forms';
 import { tab_modal_animation } from '../../shared/animations/tabs-modal.animation';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
 import { AddressEntity } from 'appcoretruckassist';
@@ -15,6 +15,16 @@ import { AccidentTService } from '../../safety/accident/state/accident.service';
 import { AccidentResponse } from '../../../../../../appcoretruckassist/model/accidentResponse';
 import { convertDateFromBackend } from '../../../utils/methods.calculations';
 import { AccidentModalResponse } from '../../../../../../appcoretruckassist/model/accidentModalResponse';
+import { CommonModule } from '@angular/common';
+import { AppTooltipComponent } from '../../standalone-components/app-tooltip/app-tooltip.component';
+import { TaModalComponent } from '../../shared/ta-modal/ta-modal.component';
+import { TaTabSwitchComponent } from '../../standalone-components/ta-tab-switch/ta-tab-switch.component';
+import { TaInputComponent } from '../../shared/ta-input/ta-input.component';
+import { InputAddressDropdownComponent } from '../../shared/input-address-dropdown/input-address-dropdown.component';
+import { TaCustomCardComponent } from '../../shared/ta-custom-card/ta-custom-card.component';
+import { TaInputDropdownComponent } from '../../shared/ta-input-dropdown/ta-input-dropdown.component';
+import { TaUploadFilesComponent } from '../../shared/ta-upload-files/ta-upload-files.component';
+import { TaInputNoteComponent } from '../../shared/ta-input-note/ta-input-note.component';
 
 @Component({
     selector: 'app-accident-modal',
@@ -22,6 +32,21 @@ import { AccidentModalResponse } from '../../../../../../appcoretruckassist/mode
     styleUrls: ['./accident-modal.component.scss'],
     animations: [tab_modal_animation('animationTabsModal')],
     providers: [ModalService, FormService],
+    standalone: true,
+    imports: [
+                CommonModule, 
+                FormsModule, 
+                AppTooltipComponent, 
+                TaModalComponent, 
+                TaTabSwitchComponent, 
+                ReactiveFormsModule,
+                TaInputComponent,
+                InputAddressDropdownComponent,
+                TaCustomCardComponent,
+                TaInputDropdownComponent,
+                TaUploadFilesComponent,
+                TaInputNoteComponent
+    ]
 })
 export class AccidentModalComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();

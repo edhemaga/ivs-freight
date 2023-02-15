@@ -17,7 +17,7 @@ export class UserResolver implements Resolve<UserState> {
     ) {}
     resolve(): Observable<any> {
         return forkJoin([
-            this.userService.getUsers(1, 1, 25),
+            this.userService.getUsers(undefined, 1, 25),
             this.tableService.getTableConfig(22),
         ]).pipe(
             tap(([userPagination, tableConfig]) => {

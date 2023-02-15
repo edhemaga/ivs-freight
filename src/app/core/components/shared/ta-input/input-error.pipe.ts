@@ -2,6 +2,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
     name: 'inputError',
+    standalone: true
 })
 export class InputErrorPipe implements PipeTransform {
     transform(value: any, inputName?: string): string {
@@ -63,6 +64,26 @@ export class InputErrorPipe implements PipeTransform {
                         break;
                     }
                 }
+            }
+
+            if (value['userDoesntExist']) {
+                errorMessageValue = "This user doesn't exist";
+            }
+
+            if (value['userAlreadyRegistered']) {
+                errorMessageValue = 'This user is already registered';
+            }
+
+            if (value['wrongPassword']) {
+                errorMessageValue = 'Wrong password, try again';
+            }
+
+            if (
+                value['einAlreadyExist'] ||
+                value['phoneAlreadyExist'] ||
+                value['emailAlreadyExist']
+            ) {
+                errorMessageValue = 'Already in use';
             }
         }
         return errorMessageValue;

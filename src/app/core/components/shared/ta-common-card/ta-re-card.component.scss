@@ -118,12 +118,14 @@
         background-color: #ffffff;
         margin-left: 16px;
         margin-right: 10px;
-        padding-bottom: 12px !important;
+        padding-bottom: 8px !important;
         padding-top: 11px;
         svg {
             //cursor: pointer;
         }
         .icon-counter {
+            position: relative;
+            top: -2px;
             display: flex;
             align-items: baseline;
             .note-icon {
@@ -182,6 +184,11 @@ p {
 
 .rotate-common {
     transition: all 0.4s ease-in-out;
+    position: relative;
+    top: -2px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     svg {
         transform: rotate(180deg);
         transition: all 0.3s ease-in-out;

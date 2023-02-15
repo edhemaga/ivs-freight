@@ -36,6 +36,10 @@
             p {
                 font-size: 14px;
                 color: $bw6-2;
+
+                -webkit-user-select: none !important;
+                -moz-user-select: none !important;
+                -ms-user-select: none !important;
                 user-select: none !important;
 
                 .required-star {

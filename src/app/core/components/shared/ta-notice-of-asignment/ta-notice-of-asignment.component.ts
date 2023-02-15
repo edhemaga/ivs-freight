@@ -14,14 +14,29 @@ import {
     UntypedFormBuilder,
     UntypedFormGroup,
     NgControl,
+    FormsModule,
 } from '@angular/forms';
 import { Subject, takeUntil } from 'rxjs';
 import { FormService } from 'src/app/core/services/form/form.service';
+import { CommonModule } from '@angular/common';
+import { SafeHtmlPipe } from '../../../pipes/safe-html.pipe';
+import { AngularSvgIconModule } from 'angular-svg-icon';
+import { ReactiveFormsModule } from '@angular/forms';
+import { TaInputDropdownComponent } from '../ta-input-dropdown/ta-input-dropdown.component';
 
 @Component({
     selector: 'app-ta-notice-of-asignment',
     templateUrl: './ta-notice-of-asignment.component.html',
     styleUrls: ['./ta-notice-of-asignment.component.scss'],
+    standalone: true,
+    imports: [
+        CommonModule,
+        FormsModule,
+        SafeHtmlPipe,
+        AngularSvgIconModule,
+        ReactiveFormsModule,
+        TaInputDropdownComponent
+    ],
 })
 export class TaNoticeOfAsignmentComponent
     implements OnInit, ControlValueAccessor, OnDestroy
@@ -238,11 +253,10 @@ export class TaNoticeOfAsignmentComponent
             clearTimeout(this.slowTimeout);
             this.slowTimeout = setTimeout(() => {
                 const findedColor = this.customSelectColor.find(
-                    (item) =>
-                        item == document.queryCommandValue('ForeColor')
+                    (item) => item == document.queryCommandValue('ForeColor')
                 );
                 this.selectedColorName = findedColor;
-                console.log(this.selectedColorName, 'selcolorname')
+                console.log(this.selectedColorName, 'selcolorname');
             }, 200);
             this.selectedPaternColor = document.queryCommandValue('ForeColor');
         }
@@ -268,6 +282,8 @@ export class TaNoticeOfAsignmentComponent
         this.selectionTaken = window.getSelection();
         if (this.selectionTaken.rangeCount && this.selectionTaken.getRangeAt) {
             this.range = this.selectionTaken.getRangeAt(0);
+            this.selectionTaken.removeAllRanges();
+            this.selectionTaken.addRange(this.range);
         }
     }
 

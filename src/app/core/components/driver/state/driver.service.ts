@@ -288,6 +288,9 @@ export class DriverTService {
                             this.driverMinimimalListStore.remove(
                                 ({ id }) => id === data.id
                             );
+                            this.driverItemStore.remove(
+                                ({ id }) => id === data.id
+                            );
                             
                             driver = {
                                 ...driver,
@@ -302,8 +305,9 @@ export class DriverTService {
                             };
 
                             this.driverActiveStore.add(driver);
+                            this.driverItemStore.add(driver);
                             this.driverMinimimalListStore.add(driver);
-                            this.dlStore.replace(driver.id, driver);
+                            this.dlStore.update(driver.id, driver);
 
                             this.tableService.sendActionAnimation({
                                 animation: 'update',

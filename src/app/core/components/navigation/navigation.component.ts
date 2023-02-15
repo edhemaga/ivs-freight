@@ -14,6 +14,16 @@ import { filter, map, mergeMap, startWith, Subject, takeUntil } from 'rxjs';
 import { NavigationService } from './services/navigation.service';
 import { navigation_magic_line } from './navigation.animation';
 import { DetailsDataService } from '../../services/details-data/details-data.service';
+import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NavigationHeaderComponent } from './navigation-header/navigation-header.component';
+import { NavigationModalsComponent } from './navigation-modals/navigation-modals.component';
+import { NavigationFooterComponent } from './navigation-footer/navigation-footer.component';
+import { NavigationUserProfileComponent } from './navigation-user-profile/navigation-user-profile.component';
+import { NavigationUserCompanyComponent } from './navigation-user-company/navigation-user-company.component';
+import { NavigationSubrouteCardComponent } from './navigation-subroute-card/navigation-subroute-card.component';
+import { NavigationRouteComponent } from './navigation-route/navigation-route.component';
+import { NavigationSubrouteComponent } from './navigation-subroute/navigation-subroute.component';
 
 @Component({
     selector: 'app-navigation',
@@ -21,6 +31,20 @@ import { DetailsDataService } from '../../services/details-data/details-data.ser
     styleUrls: ['./navigation.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
     animations: [navigation_magic_line('showHideDetails')],
+    standalone: true,
+    imports: [
+            CommonModule, 
+            FormsModule,
+            ReactiveFormsModule, 
+            NavigationHeaderComponent, 
+            NavigationModalsComponent, 
+            NavigationFooterComponent, 
+            NavigationUserProfileComponent, 
+            NavigationUserCompanyComponent,
+            NavigationSubrouteCardComponent,
+            NavigationRouteComponent,
+            NavigationSubrouteComponent
+    ],
     host: {
         '(document:click)': 'closeNavbar($event)',
     },
@@ -50,7 +74,6 @@ export class NavigationComponent implements OnInit, OnDestroy {
     public index: number;
     public openedDropdown: boolean = false;
     public hideSubrouteTitle: number = -1;
-    public ChangeCloseTextTitle: boolean = false;
     closeDropdownOnNavClose: boolean;
     @ViewChild('navbar') navbar: ElementRef;
     selectedRoute: string = '';
@@ -188,9 +211,6 @@ export class NavigationComponent implements OnInit, OnDestroy {
                     this.cdRef.detectChanges();
                 }
             });
-    }
-    public ChangeCloseText(event) {
-        this.ChangeCloseTextTitle = event;
     }
     getIndex(ind) {
         this.index = ind;

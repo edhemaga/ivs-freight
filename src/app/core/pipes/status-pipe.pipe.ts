@@ -21,6 +21,7 @@ const STATUS_COLORS = {
 
 @Pipe({
     name: 'statusPipe',
+    standalone: true
 })
 export class StatusPipePipe implements PipeTransform {
     transform(status_id: number, nextPossibleStatus: IDispatchModel): unknown {

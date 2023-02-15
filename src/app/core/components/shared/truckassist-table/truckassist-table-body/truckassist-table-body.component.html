@@ -37,6 +37,7 @@
                         'selected-row': row.isSelected,
                         'row-repair-order':
                             row.isRepairOrder && !row.actionAnimation,
+                        'user-archived': row.userStatus === 0,
                         'add-animation': row.actionAnimation === 'add',
                         'update-animation': row.actionAnimation === 'update',
                         'deactivate-animation':
@@ -524,17 +525,42 @@
                                             class="user-avatar-container"
                                             *ngIf="row[column.field]?.name"
                                         >
+                                            <!-- User Archived Icon -->
+                                            <div
+                                                class="user-avatar-archived-icon"
+                                                *ngIf="row.userStatus === 0"
+                                            >
+                                                <svg-icon
+                                                    (click)="
+                                                        onActivateUser(row)
+                                                    "
+                                                    [src]="
+                                                        '../../../../../../assets/svg/truckassist-table/user-archived.svg'
+                                                    "
+                                                    [svgStyle]="{
+                                                        'width.px': '17',
+                                                        'height.px': '17'
+                                                    }"
+                                                ></svg-icon>
+                                            </div>
+
+                                            <!-- User Avatar Img -->
                                             <img
                                                 alt="avatar"
-                                                *ngIf="row[column.field].avatar"
+                                                *ngIf="
+                                                    row[column.field].avatar &&
+                                                    row.userStatus !== 0
+                                                "
                                                 [src]="row[column.field].avatar"
                                                 class="avatar"
                                             />
 
+                                            <!-- User Avatar Text -->
                                             <div
                                                 class="user-avatar-no-img"
                                                 *ngIf="
-                                                    !row[column.field].avatar
+                                                    !row[column.field].avatar &&
+                                                    row.userStatus !== 0
                                                 "
                                                 [ngStyle]="{
                                                     'background-color': row[

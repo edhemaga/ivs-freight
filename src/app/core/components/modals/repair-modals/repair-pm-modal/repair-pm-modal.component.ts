@@ -1,6 +1,6 @@
 import { PmTService } from '../../../pm-truck-trailer/state/pm.service';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { UntypedFormArray, UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule, UntypedFormArray, UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 
 import {
     PMTrailerListResponse,
@@ -20,12 +20,31 @@ import {
     convertNumberInThousandSep,
     convertThousanSepInNumber,
 } from '../../../../utils/methods.calculations';
+import { CommonModule } from '@angular/common';
+import { AppTooltipComponent } from '../../../standalone-components/app-tooltip/app-tooltip.component';
+import { TaModalComponent } from '../../../shared/ta-modal/ta-modal.component';
+import { TaTabSwitchComponent } from '../../../standalone-components/ta-tab-switch/ta-tab-switch.component';
+import { TaCustomCardComponent } from '../../../shared/ta-custom-card/ta-custom-card.component';
+import { TaCheckboxComponent } from '../../../shared/ta-checkbox/ta-checkbox.component';
+import { TaInputComponent } from '../../../shared/ta-input/ta-input.component';
 
 @Component({
     selector: 'app-repair-pm-modal',
     templateUrl: './repair-pm-modal.component.html',
     styleUrls: ['./repair-pm-modal.component.scss'],
     providers: [ModalService, FormService],
+    standalone: true,
+    imports: [
+            CommonModule, 
+            FormsModule, 
+            AppTooltipComponent, 
+            TaModalComponent, 
+            TaTabSwitchComponent, 
+            ReactiveFormsModule, 
+            TaCustomCardComponent,
+            TaCheckboxComponent,
+            TaInputComponent
+    ]
 })
 export class RepairPmModalComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();

@@ -1,9 +1,14 @@
+import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { AngularSvgIconModule } from 'angular-svg-icon';
 
 @Component({
     selector: 'app-load-modal-hazardous',
     templateUrl: './load-modal-hazardous.component.html',
     styleUrls: ['./load-modal-hazardous.component.scss'],
+    standalone: true,
+    imports: [CommonModule, FormsModule, AngularSvgIconModule]
 })
 export class LoadModalHazardousComponent {
     public hazardous_materials_section = [

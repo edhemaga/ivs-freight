@@ -14,12 +14,16 @@ import {
 import { Subject } from 'rxjs';
 import { SharedService } from '../../../services/shared/shared.service';
 import { AfterViewInit, OnChanges } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 
 let hasTablePageHeight = false;
 @Component({
     selector: 'app-custom-scrollbar',
     templateUrl: './custom-scrollbar.component.html',
     styleUrls: ['./custom-scrollbar.component.scss'],
+    standalone: true,
+    imports: [FormsModule, CommonModule]
 })
 export class CustomScrollbarComponent
     implements OnInit, OnChanges, AfterViewInit, OnDestroy
@@ -95,7 +99,9 @@ export class CustomScrollbarComponent
                     document.querySelector('.not-pined-columns');
 
                 this.tableNotPinedBoundingRect =
-                    this.tableNotPinedContainer?.getBoundingClientRect() ? this.tableNotPinedContainer.getBoundingClientRect() : null;
+                    this.tableNotPinedContainer?.getBoundingClientRect()
+                        ? this.tableNotPinedContainer.getBoundingClientRect()
+                        : null;
             }, 100);
         }
     }
@@ -124,12 +130,15 @@ export class CustomScrollbarComponent
 
     calculateBarSizeAndPosition(elem: any, pageHeight?: number) {
         setTimeout(() => {
-            this.showScrollbar = true;
-
             // Table Scroll
             if (this.scrollBarOptions.showHorizontalScrollBar) {
                 const scrollWrapper =
                     document.querySelector('.not-pined-columns');
+
+                this.tableNotPinedBoundingRect =
+                    scrollWrapper?.getBoundingClientRect()
+                        ? scrollWrapper.getBoundingClientRect()
+                        : null;
 
                 const tableFullWidth = scrollWrapper?.scrollWidth
                     ? scrollWrapper.scrollWidth
@@ -137,7 +146,7 @@ export class CustomScrollbarComponent
 
                 const tableVisibleWidth = scrollWrapper?.getBoundingClientRect()
                     .width
-                    ? scrollWrapper.getBoundingClientRect().width
+                    ? Math.ceil(scrollWrapper.getBoundingClientRect().width)
                     : 0;
 
                 this.tableScrollRatio = tableVisibleWidth / tableFullWidth;
@@ -150,6 +159,9 @@ export class CustomScrollbarComponent
                 if (tableFullWidth <= tableVisibleWidth) {
                     this.showScrollbar = false;
 
+                    this.chng.detectChanges();
+                } else {
+                    this.showScrollbar = true;
                     this.chng.detectChanges();
                 }
 
@@ -168,6 +180,9 @@ export class CustomScrollbarComponent
                     this.showScrollbar = false;
                     this.chng.detectChanges();
                     return;
+                } else {
+                    this.showScrollbar = true;
+                    this.chng.detectChanges();
                 }
 
                 this.scrollRatio = visible_height / content_height;
@@ -189,11 +204,15 @@ export class CustomScrollbarComponent
         this.isMouseDown = false;
     };
 
+    resizeHandlerCount: any;
     onResizeHandler = () => {
         if (!this.isMouseDown && !hasTablePageHeight) {
-            this.calculateBarSizeAndPosition(
-                this.elRef.nativeElement.children[0]
-            );
+            clearTimeout(this.resizeHandlerCount);
+            this.resizeHandlerCount = setTimeout(() => {
+                this.calculateBarSizeAndPosition(
+                    this.elRef.nativeElement.children[0]
+                );
+            }, 150);
         }
     };
 
@@ -220,20 +239,18 @@ export class CustomScrollbarComponent
             }
             // Table Scroll
             else {
-                const offsetBar = e.clientX - this.tableBarClickPosition;
+                let offsetBar = e.clientX - this.tableBarClickPosition;
+                const maxWidth = this.tableNotPinedBoundingRect.width;
 
-                if (
-                    offsetBar > -1 &&
-                    e.clientX + this.tableBarClickRestWidth <
-                        this.tableNotPinedBoundingRect.width
-                ) {
-                    this.bar.nativeElement.style.transform = `translateX(${offsetBar}px)`;
+                offsetBar = offsetBar < 0 ? 0 : offsetBar;
+                offsetBar = (e.clientX + this.tableBarClickRestWidth) > maxWidth ? maxWidth - this.tableScrollWidth : offsetBar;
 
-                    this.scrollEvent.emit({
-                        eventAction: 'scrolling',
-                        scrollPosition: offsetBar * this.tableScrollRatioFull,
-                    });
-                }
+                this.bar.nativeElement.style.transform = `translateX(${offsetBar}px)`;
+
+                this.scrollEvent.emit({
+                    eventAction: 'scrolling',
+                    scrollPosition: offsetBar * this.tableScrollRatioFull,
+                });
             }
         }
     };
