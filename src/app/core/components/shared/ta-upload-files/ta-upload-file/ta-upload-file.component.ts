@@ -10,13 +10,17 @@ import {
     ViewChild,
     ViewEncapsulation,
 } from '@angular/core';
-import { UntypedFormControl } from '@angular/forms';
-import { PDFDocumentProxy } from 'ng2-pdf-viewer';
+import { FormsModule, UntypedFormControl } from '@angular/forms';
+import { PDFDocumentProxy, PdfViewerModule } from 'ng2-pdf-viewer';
 import { Subject, takeUntil, debounceTime, distinctUntilChanged } from 'rxjs';
 import { TaInputComponent } from '../../ta-input/ta-input.component';
 import { TaInputService } from '../../ta-input/ta-input.service';
 import { UrlExtensionPipe } from 'src/app/core/pipes/url-extension.pipe';
 import { DetailsDataService } from '../../../../services/details-data/details-data.service';
+import { CommonModule } from '@angular/common';
+import { AppTooltipComponent } from '../../../standalone-components/app-tooltip/app-tooltip.component';
+import { ByteConvertPipe } from 'src/app/core/pipes/byte-convert.pipe';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 export interface UploadFile {
     name?: any;
@@ -39,6 +43,15 @@ export interface UploadFile {
     encapsulation: ViewEncapsulation.None,
     changeDetection: ChangeDetectionStrategy.OnPush,
     providers: [UrlExtensionPipe],
+    standalone: true,
+    imports: [
+        CommonModule,
+        FormsModule,
+        AppTooltipComponent,
+        PdfViewerModule,
+        ByteConvertPipe,
+        NgbModule
+    ],
 })
 export class TaUploadFileComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();

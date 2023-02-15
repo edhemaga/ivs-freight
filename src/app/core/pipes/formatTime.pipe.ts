@@ -3,6 +3,7 @@ import moment from 'moment';
 
 @Pipe({
     name: 'formatTime',
+    standalone: true
 })
 export class formatTimePipe implements PipeTransform {
     transform(time: string, template?: string): any {

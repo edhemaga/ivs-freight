@@ -36,6 +36,15 @@ import { Step3FormComponent } from './applicant-forms/step3-form/step3-form.comp
 import { Step2FormComponent } from './applicant-forms/step2-form/step2-form.component';
 
 import { SharedModule } from '../shared/shared.module';
+import { AppTooltipComponent } from '../standalone-components/app-tooltip/app-tooltip.component';
+import { TaCheckboxComponent } from '../shared/ta-checkbox/ta-checkbox.component';
+import { TaInputRadiobuttonsComponent } from '../shared/ta-input-radiobuttons/ta-input-radiobuttons.component';
+import { InputAddressDropdownComponent } from '../shared/input-address-dropdown/input-address-dropdown.component';
+import { TaInputComponent } from '../shared/ta-input/ta-input.component';
+import { SumArraysPipe } from '../../pipes/sum-arrays.pipe';
+import { TaInputDropdownComponent } from '../shared/ta-input-dropdown/ta-input-dropdown.component';
+import { TaInputArrowsComponent } from '../shared/ta-input-arrows/ta-input-arrows.component';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
     declarations: [
@@ -75,6 +84,15 @@ import { SharedModule } from '../shared/shared.module';
         ReactiveFormsModule,
         SharedModule,
         AngularSignaturePadModule,
+        AppTooltipComponent,
+        TaCheckboxComponent,
+        TaInputRadiobuttonsComponent,
+        InputAddressDropdownComponent,
+        TaInputComponent,
+        SumArraysPipe,
+        TaInputDropdownComponent,
+        TaInputArrowsComponent,
+        RouterModule
     ],
     exports: [
         ApplicantNextBackBtnComponent,

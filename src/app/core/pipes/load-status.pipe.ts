@@ -3,6 +3,7 @@ import { LOAD_STATUS } from '../../const';
 
 @Pipe({
     name: 'loadStatus',
+    standalone: true
 })
 export class LoadStatusPipe implements PipeTransform {
     transform(input: string, statusId: number): any {

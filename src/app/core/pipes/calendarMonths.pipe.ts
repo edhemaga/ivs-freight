@@ -17,6 +17,7 @@ const MONTHS = [
 
 @Pipe({
     name: 'calendarmonths',
+    standalone: true
 })
 export class CalendarMonthsPipe implements PipeTransform {
     constructor() {}

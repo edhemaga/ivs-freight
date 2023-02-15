@@ -7,6 +7,8 @@ import {
 } from '@angular/core';
 import { TaUploadFileService } from '../ta-upload-files/ta-upload-file.service';
 import { card_component_animation } from '../animations/card-component.animations';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 @Component({
     selector: 'app-ta-custom-card-v2',
@@ -14,6 +16,8 @@ import { card_component_animation } from '../animations/card-component.animation
     styleUrls: ['./ta-custom-card-v2.component.scss'],
     animations: [card_component_animation('showHideCardBody')],
     encapsulation: ViewEncapsulation.None,
+    standalone: true,
+    imports: [CommonModule, FormsModule],
 })
 export class TaCustomCardV2Component {
     @Input() animationsDisabled = true;

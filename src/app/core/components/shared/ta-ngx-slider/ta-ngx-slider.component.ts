@@ -1,10 +1,14 @@
 import { ChangeContext, Options } from '@angular-slider/ngx-slider';
+import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
 @Component({
     selector: 'app-ta-ngx-slider',
     templateUrl: './ta-ngx-slider.component.html',
     styleUrls: ['./ta-ngx-slider.component.scss'],
+    standalone: true,
+    imports: [CommonModule, FormsModule],
 })
 export class TaNgxSliderComponent {
     @Input() sliderTemplate: string = 'commission';

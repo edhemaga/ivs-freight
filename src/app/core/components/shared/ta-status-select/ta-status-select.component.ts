@@ -2,12 +2,16 @@ import * as AppConst from 'src/app/const';
 import { StatusPipePipe } from '../../../pipes/status-pipe.pipe';
 import { LoadStatusPipe } from '../../../pipes/load-status.pipe';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 @Component({
     selector: 'app-ta-status-select',
     templateUrl: './ta-status-select.component.html',
     styleUrls: ['./ta-status-select.component.scss'],
     providers: [StatusPipePipe, LoadStatusPipe],
+    standalone: true,
+    imports: [CommonModule, FormsModule]
 })
 export class TaStatusSelectComponent implements OnInit {
     @Input() placeholder: string;

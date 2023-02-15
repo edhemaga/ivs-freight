@@ -1,11 +1,17 @@
+import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { navigation_route_animation } from '../navigation.animation';
 import { NavigationService } from '../services/navigation.service';
+import { TooltipSlideComponent } from '../../standalone-components/tooltip-slide/tooltip-slide.component';
+import { AngularSvgIconModule } from 'angular-svg-icon';
 @Component({
     selector: 'app-navigation-header',
     templateUrl: './navigation-header.component.html',
     styleUrls: ['./navigation-header.component.scss'],
+    standalone: true,
+    imports: [CommonModule, FormsModule,ReactiveFormsModule, TooltipSlideComponent, AngularSvgIconModule],
     animations: [navigation_route_animation('showHideDetails')],
 })
 export class NavigationHeaderComponent {
