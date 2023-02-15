@@ -314,7 +314,10 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
                             localStorage.getItem('user')
                         );
                         loggedUser.areSettingsUpdated = true;
-                        localStorage.setItem("user", JSON.stringify(loggedUser));
+                        localStorage.setItem(
+                            'user',
+                            JSON.stringify(loggedUser)
+                        );
                     },
                     error: () => {},
                 });
