@@ -8,17 +8,12 @@ import {
     Output,
     ViewEncapsulation,
 } from '@angular/core';
+import { Subject, takeUntil, tap } from 'rxjs';
 import { Router } from '@angular/router';
-import { UntypedFormBuilder } from '@angular/forms';
-
-import { Subject, tap } from 'rxjs';
-
 import moment from 'moment';
-
+import { UntypedFormBuilder } from '@angular/forms';
 import { convertTimeFromBackend } from 'src/app/core/utils/methods.calculations';
-
-import { WebsiteAuthService } from 'src/app/core/components/website/state/service/website-auth.service';
-
+import { AuthStoreService } from 'src/app/core/components/authentication/state/auth.service';
 import { SelectCompanyResponse, SignInResponse } from 'appcoretruckassist';
 
 @Component({
@@ -28,55 +23,41 @@ import { SelectCompanyResponse, SignInResponse } from 'appcoretruckassist';
     encapsulation: ViewEncapsulation.None,
 })
 export class SelectCompanyComponent implements OnInit, OnDestroy {
-    @Output() goBackToLogin = new EventEmitter<boolean>();
-
-    private destroy$ = new Subject<void>();
-
-    public saveCompany: any;
+    public saveCompany;
     public dotsTrue: boolean;
+    private destroy$ = new Subject<void>();
     public slideConfig: any;
     public userData: SignInResponse;
     public lastLoginInCompany: any;
     public dates: any = [];
     public newUser: any;
-    public id: any;
-
+    @Output() goBackToLogin = new EventEmitter<boolean>();
+    public id;
     constructor(
-        @Inject(DOCUMENT) private document: Document,
+        @Inject(DOCUMENT) private document: HTMLDocument,
         private router: Router,
-        private formBuilder: UntypedFormBuilder,
-        private websiteAuthService: WebsiteAuthService
+        private accountStoreService: AuthStoreService,
+        private formBuilder: UntypedFormBuilder
     ) {}
 
     ngOnInit() {
-        this.createForm();
-
         this.user(JSON.parse(localStorage.getItem('user')));
-
+        this.createForm();
         this.userData.companies.length < 5
             ? (this.dotsTrue = false)
             : (this.dotsTrue = true);
     }
-
-    private createForm(): void {
-        this.saveCompany = this.formBuilder.group({
-            savedCompany: true,
-        });
-    }
-
-    public user(data): void {
+    public user(data) {
         this.userData = data;
 
         data.companies.forEach((res) => {
             this.lastLoginInCompany = this.calculateDiff(
                 convertTimeFromBackend(res.lastLogin)
             );
-
             this.dates.push(
                 moment.utc(res.lastLogin).local().format('MM/DD/YY HH:mm:ss')
             );
         });
-
         let createNewObject = {
             ...this.userData,
             companies: this.userData.companies.map((item) => {
@@ -89,19 +70,18 @@ export class SelectCompanyComponent implements OnInit, OnDestroy {
                 };
             }),
         };
-
         this.newUser = {
             ...createNewObject,
             companies: createNewObject.companies.map((item) => {
                 return {
                     ...item,
                     LastActiveCompany:
-                        item.lastLogin == this.getNewerDate(this.dates) &&
-                        (this.id = item.id),
+                        item.lastLogin == this.getNewerDate(this.dates)
+                            ? (this.id = item.id)
+                            : null,
                 };
             }),
         };
-
         //Slick Carousel Config
         this.slideConfig = {
             infinite: false,
@@ -111,13 +91,14 @@ export class SelectCompanyComponent implements OnInit, OnDestroy {
             variableWidth: true,
             focusOnSelect: true,
             centerMode: true,
-            initialSlide: this?.id - 1,
+            initialSlide: this.newUser.companies.findIndex(
+                (x) => x.id === this.id
+            ),
         };
     }
 
     public getNewerDate(dates: string[]) {
         let newestDate = moment.utc(dates[0], 'MM/DD/YY HH:mm:ss');
-
         for (let i = 1; i < dates.length; i++) {
             const currentDate = moment.utc(dates[i], 'MM/DD/YY HH:mm:ss');
 
@@ -125,14 +106,11 @@ export class SelectCompanyComponent implements OnInit, OnDestroy {
                 newestDate = currentDate;
             }
         }
-
         return newestDate.format('MM/DD/YY HH:mm:ss');
     }
-
     //Calculate last login in company to display
     public calculateDiff(dateSent) {
         let currentDate = new Date();
-
         dateSent = new Date(dateSent);
 
         return Math.floor(
@@ -149,25 +127,26 @@ export class SelectCompanyComponent implements OnInit, OnDestroy {
                 (1000 * 60 * 60 * 24)
         );
     }
-
-    public goToLogin(): void {
+    private createForm(): void {
+        this.saveCompany = this.formBuilder.group({
+            savedCompany: true,
+        });
+    }
+    goToLogin() {
         this.goBackToLogin.emit(false);
-
         localStorage.removeItem('user');
-
-        this.router.navigate(['/auth/login']);
+        this.router.navigate(['/website']);
     }
 
-    public onCompanySelect(): void {
+    onCompanySelect() {
         const center: any = this.document.querySelectorAll('.slick-center');
-
         let id = center[0]?.firstChild?.id;
-
-        this.websiteAuthService
+        this.accountStoreService
             .selectCompanyAccount({
                 companyId: parseInt(id),
             })
             .pipe(
+                takeUntil(this.destroy$),
                 tap((res: SelectCompanyResponse) => {
                     this.userData = {
                         ...res,
@@ -178,10 +157,8 @@ export class SelectCompanyComponent implements OnInit, OnDestroy {
                             };
                         }),
                     };
-
                     localStorage.removeItem('user');
                     localStorage.setItem('user', JSON.stringify(this.userData));
-
                     this.router.navigate(['/dashboard']);
                 })
             )
