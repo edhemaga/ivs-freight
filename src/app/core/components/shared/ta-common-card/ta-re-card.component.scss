@@ -276,6 +276,12 @@ p {
             }
         }
     }
+
+    .footer-icon-holder-new{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
 }
 .resize-icon-svg {
     svg {

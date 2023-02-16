@@ -629,7 +629,7 @@ p {
         .item-wrapper {
             display: grid;
             grid-template-columns: 119px 137px 78px;
-            grid-column-gap: 40px;
+            grid-column-gap: 45px;
             align-content: center;
             justify-content: center;
 
@@ -960,7 +960,7 @@ p {
 .no-data-driver-details {
     font-size: 14px;
     font-weight: 400;
-    padding: 0 10px;
+    //padding: 0 10px;
     color: #b7b7b7;
     &::-moz-selection {
         color: #b7b7b7;
