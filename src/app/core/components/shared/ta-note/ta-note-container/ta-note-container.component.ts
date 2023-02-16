@@ -2,11 +2,22 @@ import { Subject } from 'rxjs';
 import { Component, Input, OnInit } from '@angular/core';
 import { animate, style, transition, trigger } from '@angular/animations';
 import { noteColors } from '../../../../../const';
+import { AppTooltipComponent } from '../../../standalone-components/app-tooltip/app-tooltip.component';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { AngularSvgIconModule } from 'angular-svg-icon';
 
 @Component({
     selector: 'app-ta-note-container',
     templateUrl: './ta-note-container.component.html',
     styleUrls: ['./ta-note-container.component.scss'],
+    standalone: true,
+    imports: [
+                CommonModule, 
+                FormsModule, 
+                AppTooltipComponent,
+                AngularSvgIconModule
+    ],
     animations: [
         trigger('pickupAnimation', [
             transition(':enter', [
@@ -60,6 +71,7 @@ export class TaNoteContainerComponent implements OnInit {
     }
 
     executeEditor(action: string, color?: string, indx?: number) {
+  
         if (indx || indx === 0) {
             this.selectedColorName = this.containerColors[indx];
         }

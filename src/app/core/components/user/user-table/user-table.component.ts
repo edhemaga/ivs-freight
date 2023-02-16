@@ -9,15 +9,25 @@ import { UserState } from '../state/user-state/user.store';
 import { formatPhonePipe } from 'src/app/core/pipes/formatPhone.pipe';
 import { NameInitialsPipe } from 'src/app/core/pipes/nameinitials';
 import { ImageBase64Service } from 'src/app/core/utils/base64.image';
-import { tableSearch } from 'src/app/core/utils/methods.globals';
+import {
+    closeAnimationAction,
+    tableSearch,
+} from 'src/app/core/utils/methods.globals';
 import { UserTService } from '../state/user.service';
 import { GetCompanyUserListResponse } from 'appcoretruckassist';
+import { DatePipe } from '@angular/common';
+import { TaThousandSeparatorPipe } from 'src/app/core/pipes/taThousandSeparator.pipe';
+import {
+    Confirmation,
+    ConfirmationModalComponent,
+} from '../../modals/confirmation-modal/confirmation-modal.component';
+import { ConfirmationService } from '../../modals/confirmation-modal/confirmation.service';
 
 @Component({
     selector: 'app-user-table',
     templateUrl: './user-table.component.html',
     styleUrls: ['./user-table.component.scss'],
-    providers: [formatPhonePipe, NameInitialsPipe],
+    providers: [formatPhonePipe, NameInitialsPipe, TaThousandSeparatorPipe],
 })
 export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
     private destroy$ = new Subject<void>();
@@ -50,7 +60,10 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
         private phoneFormater: formatPhonePipe,
         private nameInitialsPipe: NameInitialsPipe,
         private imageBase64Service: ImageBase64Service,
-        private userService: UserTService
+        private userService: UserTService,
+        public datePipe: DatePipe,
+        private thousandSeparator: TaThousandSeparatorPipe,
+        private confirmationService: ConfirmationService
     ) {}
 
     // ---------------------------  NgOnInit ----------------------------------
@@ -124,66 +137,58 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.tableService.currentActionAnimation
             .pipe(takeUntil(this.destroy$))
             .subscribe((res: any) => {
-                // Add User
+                // On Add Driver Active
                 if (res.animation === 'add') {
-                    /*  this.viewData.push(this.mapContactData(res.data));
+                    this.viewData.push(this.mapUserData(res.data));
 
-          this.viewData = this.viewData.map((contact: any) => {
-            if (contact.id === res.id) {
-              contact.actionAnimation = 'add';
-            }
+                    this.viewData = this.viewData.map((user: any) => {
+                        if (user.id === res.id) {
+                            user.actionAnimation = 'add';
+                        }
 
-            return contact;
-          });
+                        return user;
+                    });
 
-          const inetval = setInterval(() => {
-            this.viewData = closeAnimationAction(false, this.viewData);
+                    this.updateDataCount();
 
-            clearInterval(inetval);
-          }, 2300);
+                    const inetval = setInterval(() => {
+                        this.viewData = closeAnimationAction(
+                            false,
+                            this.viewData
+                        );
 
-          this.updateDataCount(); */
+                        clearInterval(inetval);
+                    }, 2300);
                 }
-                // Update USer
-                else if (res.animation === 'update') {
-                    /* const updatedContact = this.mapContactData(res.data, true);
+                // On Update User Status
+                else if (res.animation === 'update-status') {
+                    this.mapingIndex = 0;
 
-          this.viewData = this.viewData.map((contact: any) => {
-            if (contact.id === res.id) {
-              contact = updatedContact;
-              contact.actionAnimation = 'update';
-            }
+                    const updatedUser = this.mapUserData(res.data);
 
-            return contact;
-          });
+                    this.viewData = this.viewData.map((user: any) => {
+                        if (user.id === res.id) {
+                            user = updatedUser;
+                            user.actionAnimation = 'update';
+                        }
 
-          const inetval = setInterval(() => {
-            this.viewData = closeAnimationAction(false, this.viewData);
+                        return user;
+                    });
 
-            clearInterval(inetval);
-          }, 1000); */
-                }
-                // Delete User
-                else if (res.animation === 'delete') {
-                    /* let contactIndex: number;
+                    const sortedUserData = this.viewData.sort(
+                        (a, b) => b.userStatus - a.userStatus
+                    );
 
-          this.viewData = this.viewData.map((contact: any, index: number) => {
-            if (contact.id === res.id) {
-              contact.actionAnimation = 'delete';
-              contact = index;
-            }
+                    this.viewData = [...sortedUserData];
 
-            return contact;
-          });
+                    const inetval = setInterval(() => {
+                        this.viewData = closeAnimationAction(
+                            false,
+                            this.viewData
+                        );
 
-          const inetval = setInterval(() => {
-            this.viewData = closeAnimationAction(false, this.viewData);
-
-            this.viewData.splice(contactIndex, 1);
-            clearInterval(inetval);
-          }, 900);
-
-          this.updateDataCount(); */
+                        clearInterval(inetval);
+                    }, 900);
                 }
             });
 
@@ -191,33 +196,63 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.tableService.currentDeleteSelectedRows
             .pipe(takeUntil(this.destroy$))
             .subscribe((response: any[]) => {
-                /* if (response.length) {
-          this.contactService
-            .deleteAccountList(response)
-            .pipe(takeUntil(this.destroy$))
-            .subscribe(() => {
-              this.viewData = this.viewData.map((contact: any) => {
-                response.map((r: any) => {
-                  if (contact.id === r.id) {
-                    contact.actionAnimation = 'delete-multiple';
-                  }
-                });
+                if (response.length) {
+                    let mappedRes = response.map((item) => {
+                        return {
+                            id: item.id,
+                            data: {
+                                ...item.tableData,
+                                name:
+                                    item.tableData.firstName +
+                                    ' ' +
+                                    item.tableData.lastName,
+                            },
+                        };
+                    });
 
-                return contact;
-              });
-
-              this.updateDataCount();
-
-              const inetval = setInterval(() => {
-                this.viewData = closeAnimationAction(true, this.viewData);
-
-                clearInterval(inetval);
-              }, 900);
-
-              this.tableService.sendRowsSelected([]);
-              this.tableService.sendResetSelectedColumns(true);
+                    this.modalService.openModal(
+                        ConfirmationModalComponent,
+                        { size: 'small' },
+                        {
+                            data: null,
+                            array: mappedRes,
+                            template: 'user',
+                            type: 'multiple delete',
+                            image: true,
+                        }
+                    );
+                }
             });
-        } */
+
+        // Confirmation Subscribe
+        this.confirmationService.confirmationData$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: (res: Confirmation) => {
+                    switch (res.type) {
+                        case 'delete': {
+                            if (res.template === 'user') {
+                                this.deleteUserById(res.id);
+                            }
+                            break;
+                        }
+                        case 'activate': {
+                            this.changeUserStatus(res.id);
+                            break;
+                        }
+                        case 'deactivate': {
+                            this.changeUserStatus(res.id);
+                            break;
+                        }
+                        case 'multiple delete': {
+                            this.multipleDeleteUsers(res.array);
+                            break;
+                        }
+                        default: {
+                            break;
+                        }
+                    }
+                },
             });
     }
 
@@ -314,6 +349,8 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
         const td = this.tableData.find((t) => t.field === this.selectedTab);
 
+        console.log(td.data);
+
         this.setUserData(td);
     }
 
@@ -335,10 +372,11 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 return this.mapUserData(data);
             });
 
-            // For Testing
-            // for (let i = 0; i < 300; i++) {
-            //   this.viewData.push(this.viewData[0]);
-            // }
+            const sortedUserData = this.viewData.sort(
+                (a, b) => b.userStatus - a.userStatus
+            );
+
+            this.viewData = [...sortedUserData];
         } else {
             this.viewData = [];
         }
@@ -369,21 +407,31 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 ),
             },
             userTableDept: data?.department?.name ? data.department.name : '',
-            userTableOffice: 'Nije spojeno',
+            userTableOffice: data?.companyOffice?.name
+                ? data.companyOffice.name
+                : '',
             userTablePhone: data?.phone
                 ? this.phoneFormater.transform(data.phone)
                 : '',
-            uesrTableExt: 'Nije povezano',
-            userTableHired: 'Nije povezano',
+            uesrTableExt: data?.extensionPhone ? data.extensionPhone : '',
+            userTableHired: data?.startDate
+                ? this.datePipe.transform(data?.startDate, 'MM/dd/yy')
+                : '',
             userTablePersonalPH: data?.personalPhone
                 ? this.phoneFormater.transform(data.personalPhone)
                 : '',
             userTableStatus: {
-                status: data?.userType?.name ? data.userType.name : '',
+                status:
+                    data?.userType?.name && data?.userType?.name !== '0'
+                        ? data.userType.name
+                        : 'No',
                 isInvited: false,
             },
-            userTableCommission: data?.commission ? data.commission : '',
-            userTableSalary: data?.salary ? data.salary : '',
+            userTableCommission: data?.commission ? data.commission + '%' : '',
+            userTableSalary: data?.salary
+                ? '$' + this.thousandSeparator.transform(data.salary)
+                : '',
+            userStatus: data.status,
         };
     }
 
@@ -430,6 +478,52 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     this.viewData = [...newData];
                 }
             });
+    }
+
+    // Change User Status
+    changeUserStatus(id: number) {
+        this.userService
+            .updateUserStatus(id)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: () => {},
+                error: () => {},
+            });
+    }
+
+    deleteUserById(id: number) {
+        this.userService
+            .deleteUserById(id)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: () => {
+                    this.viewData = this.viewData.map((user: any) => {
+                        if (user.id === id) {
+                            user.actionAnimation = 'delete';
+                        }
+
+                        return user;
+                    });
+
+                    this.updateDataCount();
+
+                    const inetval = setInterval(() => {
+                        this.viewData = closeAnimationAction(
+                            true,
+                            this.viewData
+                        );
+
+                        clearInterval(inetval);
+                    }, 900);
+                },
+                error: () => {},
+            });
+    }
+
+    updateDataCount() {
+        const userCount = JSON.parse(localStorage.getItem('userTableCount'));
+
+        this.tableData[0].length = userCount.users;
     }
 
     // Get Avatar Color
@@ -502,6 +596,15 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     // On Body Actions
     onTableBodyActions(event: any) {
+        const confirmationModalData = {
+            ...event,
+            data: {
+                ...event.data,
+                name: event.data.userAvatar.name,
+            },
+        };
+
+        // Edit
         if (event.type === 'edit') {
             this.modalService.openModal(
                 UserModalComponent,
@@ -519,6 +622,61 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
             this.userBackFilter(this.backFilterQuery, true);
         }
+        // Activate Or Deactivate User
+        else if (event.type === 'deactivate' || event.type === 'activate') {
+            this.modalService.openModal(
+                ConfirmationModalComponent,
+                { size: 'small' },
+                {
+                    ...confirmationModalData,
+                    template: 'user',
+                    type: event.data.status === 1 ? 'deactivate' : 'activate',
+                    image: true,
+                }
+            );
+        }
+        // User Delete
+        else if (event.type === 'delete') {
+            this.modalService.openModal(
+                ConfirmationModalComponent,
+                { size: 'small' },
+                {
+                    ...confirmationModalData,
+                    template: 'user',
+                    type: 'delete',
+                    image: true,
+                }
+            );
+        }
+    }
+
+    // Delete Multiple Users
+    multipleDeleteUsers(users: any) {
+        this.userService
+            .deleteUserList(users)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe(() => {
+                this.viewData = this.viewData.map((tableData: any) => {
+                    users.map((userId: any) => {
+                        if (tableData.id === userId) {
+                            tableData.actionAnimation = 'delete-multiple';
+                        }
+                    });
+
+                    return tableData;
+                });
+
+                this.updateDataCount();
+
+                const inetval = setInterval(() => {
+                    this.viewData = closeAnimationAction(true, this.viewData);
+
+                    clearInterval(inetval);
+                }, 900);
+
+                this.tableService.sendRowsSelected([]);
+                this.tableService.sendResetSelectedColumns(true);
+            });
     }
 
     // ---------------------------  NgOnDestroy ----------------------------------

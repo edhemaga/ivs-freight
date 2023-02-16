@@ -1,9 +1,13 @@
+import { CommonModule } from '@angular/common';
 import { Component, Input, Output, OnInit, EventEmitter } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
 @Component({
     selector: 'app-ta-input-switch-on-off',
     templateUrl: './ta-input-switch-on-off.component.html',
     styleUrls: ['./ta-input-switch-on-off.component.scss'],
+    standalone: true,
+    imports: [CommonModule, FormsModule],
 })
 export class TaInputSwitchOnOffComponent implements OnInit {
     @Input() titleText: string;

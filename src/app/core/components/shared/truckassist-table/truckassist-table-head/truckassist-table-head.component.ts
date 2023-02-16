@@ -1,4 +1,5 @@
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
+import { CommonModule } from '@angular/common';
 import {
     Component,
     Input,
@@ -11,8 +12,11 @@ import {
     ChangeDetectorRef,
     ChangeDetectionStrategy,
 } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Subject, takeUntil } from 'rxjs';
 import { TruckassistTableService } from '../../../../services/truckassist-table/truckassist-table.service';
+import { AngularSvgIconModule } from 'angular-svg-icon';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 const rotate: { [key: string]: any } = {
     asc: '',
@@ -24,6 +28,15 @@ const rotate: { [key: string]: any } = {
     selector: 'app-truckassist-table-head',
     templateUrl: './truckassist-table-head.component.html',
     styleUrls: ['./truckassist-table-head.component.scss'],
+    standalone: true,
+    imports: [
+                CommonModule, 
+                FormsModule, 
+                ReactiveFormsModule,
+                AngularSvgIconModule,
+                NgbModule
+
+    ],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TruckassistTableHeadComponent
@@ -277,7 +290,7 @@ export class TruckassistTableHeadComponent
         let previousIndex: number = null,
             currentIndex: number = null;
 
-        this.columns.map((c, i) => { 
+        this.columns.map((c, i) => {
             if (this.notPinedColumns[event.previousIndex].field === c.field) {
                 previousIndex = i;
             }

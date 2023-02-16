@@ -14,14 +14,29 @@ import {
     UntypedFormBuilder,
     UntypedFormGroup,
     NgControl,
+    FormsModule,
 } from '@angular/forms';
 import { Subject, takeUntil } from 'rxjs';
 import { FormService } from 'src/app/core/services/form/form.service';
+import { CommonModule } from '@angular/common';
+import { SafeHtmlPipe } from '../../../pipes/safe-html.pipe';
+import { AngularSvgIconModule } from 'angular-svg-icon';
+import { ReactiveFormsModule } from '@angular/forms';
+import { TaInputDropdownComponent } from '../ta-input-dropdown/ta-input-dropdown.component';
 
 @Component({
     selector: 'app-ta-notice-of-asignment',
     templateUrl: './ta-notice-of-asignment.component.html',
     styleUrls: ['./ta-notice-of-asignment.component.scss'],
+    standalone: true,
+    imports: [
+        CommonModule,
+        FormsModule,
+        SafeHtmlPipe,
+        AngularSvgIconModule,
+        ReactiveFormsModule,
+        TaInputDropdownComponent
+    ],
 })
 export class TaNoticeOfAsignmentComponent
     implements OnInit, ControlValueAccessor, OnDestroy
@@ -65,12 +80,12 @@ export class TaNoticeOfAsignmentComponent
 
     showDropdown: boolean;
     customSelectColor: any[] = [
-        '#3C3C3C',
-        '#3074D3',
-        '#26A690',
-        '#EF5350',
-        '#FFA726',
-        '#AB47BC',
+        'rgb(60, 60, 60)',
+        'rgb(48, 116, 211)',
+        'rgb(38, 166, 144)',
+        'rgb(239, 83, 80)',
+        'rgb(255, 167, 38)',
+        'rgb(171, 71, 188)',
     ];
     activeOptions: any = {
         bold: false,
@@ -93,9 +108,9 @@ export class TaNoticeOfAsignmentComponent
     private destroy$ = new Subject<void>();
     public noticeForm: UntypedFormGroup;
 
-    selectedPaternColor = '#3C3C3C';
+    selectedPaternColor = 'rgb(60, 60, 60)';
     @ViewChild('noticeRef', { static: true }) noticeRef: ElementRef;
-    selectedColorName: string = '#3C3C3C';
+    selectedColorName: string = 'rgb(60, 60, 60)';
     defaultColorSet: any;
     slowTimeout: any;
 
@@ -118,11 +133,8 @@ export class TaNoticeOfAsignmentComponent
     ngOnInit(): void {
         this.activeFont = { id: 3, name: 'Default', showName: 'Default' };
         this.activeFontSize = { id: 4, name: 14, showName: 14 };
-        this.createForm();
-    }
-
-    ngAfterViewInit(): void {
         this.shownValue = this.noticeValue;
+        this.createForm();
     }
 
     ngOnDestroy(): void {
@@ -198,37 +210,16 @@ export class TaNoticeOfAsignmentComponent
                 });
             });
         }
+
+        setTimeout(()=>{
+            this.getSuperControl.patchValue(this.noticeRef.nativeElement.innerHTML);
+        }, 500)
     }
 
     focusElement(): void {
         if (this.noticeRef) {
             this.noticeRef.nativeElement.focus();
         }
-    }
-
-    changeFontSize5(event) {
-        const fontSize = event.additionalText;
-        document.execCommand('fontSize', false, '7');
-        const fontElements =
-            this.noticeRef.nativeElement.getElementsByTagName('font');
-        for (let i = 0, len = fontElements.length; i < len; ++i) {
-            if (
-                fontElements[i].fontSize == '7' ||
-                fontElements[i].fontSize == 'xxx-large'
-            ) {
-                fontElements[i].removeAttribute('size');
-                fontElements[i].style.fontSize = `${fontSize}px`;
-            }
-        }
-        const spanElements =
-            this.noticeRef.nativeElement.getElementsByTagName('span');
-        for (let i = 0; i < spanElements.length; ++i) {
-            if (spanElements[i].style.fontSize == 'xxx-large') {
-                spanElements[i].style.fontSize = `${fontSize}px`;
-            }
-        }
-
-        this.noticeService.updateField.next();
     }
 
     checkActiveItems() {
@@ -238,11 +229,9 @@ export class TaNoticeOfAsignmentComponent
             clearTimeout(this.slowTimeout);
             this.slowTimeout = setTimeout(() => {
                 const findedColor = this.customSelectColor.find(
-                    (item) =>
-                        item == document.queryCommandValue('ForeColor')
+                    (item) => item == document.queryCommandValue('ForeColor')
                 );
                 this.selectedColorName = findedColor;
-                console.log(this.selectedColorName, 'selcolorname')
             }, 200);
             this.selectedPaternColor = document.queryCommandValue('ForeColor');
         }
@@ -268,6 +257,8 @@ export class TaNoticeOfAsignmentComponent
         this.selectionTaken = window.getSelection();
         if (this.selectionTaken.rangeCount && this.selectionTaken.getRangeAt) {
             this.range = this.selectionTaken.getRangeAt(0);
+            this.selectionTaken.removeAllRanges();
+            this.selectionTaken.addRange(this.range);
         }
     }
 
@@ -280,20 +271,5 @@ export class TaNoticeOfAsignmentComponent
         setTimeout(() => {
             this.checkActiveItems();
         }, 100);
-    }
-
-    @HostListener('document:click', ['$event.target'])
-    public onClick(target) {
-        // const clickedInside = this.elementRef.nativeElement.contains(target);
-        // if (clickedInside) {
-        //     const selectionTaken = window.getSelection();
-        //     if (selectionTaken.rangeCount && selectionTaken.getRangeAt) {
-        //         const range = selectionTaken.getRangeAt(0);
-        //         if (this.range) {
-        //             selectionTaken.removeAllRanges();
-        //             selectionTaken.addRange(this.range);
-        //         }
-        //     }
-        //}
     }
 }

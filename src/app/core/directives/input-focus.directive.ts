@@ -2,6 +2,7 @@ import { Directive, ElementRef, HostListener } from '@angular/core';
 
 @Directive({
     selector: '[appInputFocus]',
+    standalone: true
 })
 export class InputFocusDirective {
     constructor(private el: ElementRef) {}

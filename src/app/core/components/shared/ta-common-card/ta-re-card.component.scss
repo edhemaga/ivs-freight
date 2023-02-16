@@ -83,6 +83,9 @@
     background-color: #ffffff;
     margin-bottom: 8px;
     width: 100%;
+    padding: 0px 8px;
+
+
     .card-body-cmp {
         flex-direction: column;
         background-color: #ffffff;
@@ -116,14 +119,16 @@
         align-items: flex-start;
         justify-content: space-between;
         background-color: #ffffff;
-        margin-left: 16px;
-        margin-right: 10px;
+        margin-left: 4px !important;
+        margin-right: 4px !important;
         padding-bottom: 12px !important;
         padding-top: 11px;
         svg {
             //cursor: pointer;
         }
         .icon-counter {
+            position: relative;
+            top: -2px;
             display: flex;
             align-items: baseline;
             .note-icon {
@@ -160,7 +165,8 @@
         }
        
         &.insuranceCard{
-            margin-left: 6px !important;
+            margin-left: 4px !important;
+            margin-right: 4px !important;
         }
 
     }
@@ -182,6 +188,11 @@ p {
 
 .rotate-common {
     transition: all 0.4s ease-in-out;
+    position: relative;
+    top: -2px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     svg {
         transform: rotate(180deg);
         transition: all 0.3s ease-in-out;
@@ -247,7 +258,9 @@ p {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    // padding: 11px 8px 0 12px;
+    padding-left: 4px !important;
+    padding-right: 4px !important;
+
 }
 .drop-common {
     height: 21px;

@@ -59,7 +59,7 @@ p {
 
 // Progress bar settings
 .settings-progress-container {
-    padding: 0 6px;
+    padding: 0px 4px;
     padding-bottom: 16px;
     padding-top: 7px;
     .table-progress-cotnainer {
@@ -130,12 +130,13 @@ p {
         background: $settings-background;
         border-radius: 0 3px 3px 0;
         position: relative;
-
+        padding-right: 1px;
         .settings-edit-button {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 26px;
+            height: 26px;
             &:hover {
                 transform: $settings-transition;
                 cursor: pointer;
@@ -148,10 +149,12 @@ p {
         }
 
         .settings-plus-button {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 26px;
+            height: 26px;
+            margin-left: 2px;
             svg {
                 path {
                     fill: $settings-blue-dark;
@@ -176,10 +179,11 @@ p {
         }
 
         .settings-trash-button {
-            position: absolute;
-            top: 48%;
-            left: 50%;
-            transform: translate(-50%, -50%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 26px;
+            height: 26px;
             &:hover {
                 transform: $settings-transition;
                 cursor: pointer;
@@ -229,10 +233,15 @@ p {
         p {
             color: #424242;
             font-size: 26px;
-            font-weight: 700;
+            font-weight: 900;
             line-height: 32px;
             margin-left: 0px !important;
             margin: 0;
+
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
         }
     }
 
@@ -247,18 +256,25 @@ p {
 
         .settings-header-button {
             width: 32px;
-            height: 32px;
+            height: 26px;
             display: flex;
             align-items: center;
+            justify-content: center;
             background: $settings-background;
             border-radius: 0 3px 3px 0;
             position: relative;
-    
+
+            &.less-width-button{
+                width: 28px; 
+            }
+
+
             .settings-edit-button {
-                position: absolute;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                width: 26px;
+                height: 26px;
                 &:hover {
                     transform: $settings-transition;
                     cursor: pointer;
@@ -271,10 +287,13 @@ p {
             }
     
             .settings-plus-button {
-                position: absolute;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                width: 26px;
+                height: 26px;
+                margin-left: 2px;
+
                 svg {
                     path {
                         fill: $settings-blue-dark;
@@ -283,11 +302,7 @@ p {
                 &:hover {
                     transform: $settings-transition;
                     background-color: #6d82c7;
-                    width: 28px;
-                    height: 28px;
-                    justify-content: center;
-                    display: flex;
-                    align-items: center;
+                    
                     border-radius: 2px;
                     cursor: pointer;
                     svg {
@@ -299,10 +314,17 @@ p {
             }
     
             .settings-trash-button {
-                position: absolute;
-                top: 48%;
-                left: 50%;
-                transform: translate(-50%, -50%);
+                //position: absolute;
+                //top: 48%;
+                //left: 50%;
+                //transform: translate(-50%, -50%);
+
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                width: 26px;
+                height: 26px;
+
                 &:hover {
                     transform: $settings-transition;
                     cursor: pointer;
@@ -347,12 +369,7 @@ p {
 .settings-body {
     // background-color: $settings-background;
     border-radius: 3px;
-    .card-container-cmp {
-        padding: 0 6px;
-    }
-    .name-dots {
-        padding-left: 6px !important;
-    }
+
     .card-name-cmp {
         font-weight: 600 !important;
         text-transform: uppercase;
@@ -367,14 +384,14 @@ p {
         top: 5px;
     }
     .ta-card-header {
-        padding-right: 4px !important;
+        //padding-right: 4px !important;
     }
     .settings-body-items {
         display: flex;
         flex-direction: column;
-        padding-top: 0px;
-        padding-bottom: 4px;
-        padding-left: 6px;
+        //padding-top: 0px;
+        //padding-bottom: 4px;
+        //padding-left: 6px;
         .single-item {
             display: flex;
             align-items: center;
@@ -414,6 +431,7 @@ p {
     }
 
     .basic-mid-holder{
+        padding-bottom: 10px;
         padding: 0px 8px 10px 8px;
     }
     
@@ -422,7 +440,7 @@ p {
     .company-select-holder{
         display: grid;
         grid-template-columns: 510px 53px;
-        padding: 8px 7px 0px 7px;
+        padding: 8px 12px 0px 12px;
 
         .inactive-icon-input {
             display: flex;
@@ -485,7 +503,7 @@ p {
             justify-content: space-between;
             gap: 8px;
             border-radius: 2px;
-            padding: 4px 5px;
+            padding: 4px 0px;
             cursor: pointer;
         
             .current-active-name {
@@ -695,7 +713,7 @@ p {
     display: grid;
     column-gap: 20px;
     row-gap: 12px;
-    padding: 0 3px;
+    //padding: 0 3px;
     .payroll-template-item {
         display: flex;
         align-items: center;

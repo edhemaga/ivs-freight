@@ -269,10 +269,9 @@ export class CustomerTableComponent
                     if (searchEvent) {
                         if (searchEvent.action === 'api') {
                             this.selectedTab === 'active'
-                                ? this.brokerBackFilter(searchEvent.query, true)
+                                ? this.brokerBackFilter(searchEvent.query)
                                 : this.shipperBackFilter(
-                                      searchEvent.query,
-                                      true
+                                      searchEvent.query
                                   );
                         } else if (searchEvent.action === 'store') {
                             this.sendCustomerData();
@@ -601,7 +600,6 @@ export class CustomerTableComponent
             searchTwo: string | undefined;
             searchThree: string | undefined;
         },
-        isSearch?: boolean,
         isShowMore?: boolean
     ) {
         this.brokerService
@@ -630,10 +628,6 @@ export class CustomerTableComponent
                     this.viewData = this.viewData.map((data: any) => {
                         return this.mapBrokerData(data);
                     });
-
-                    if (isSearch) {
-                        this.tableData[0].length = brokers.pagination.count;
-                    }
                 } else {
                     let newData = [...this.viewData];
 
@@ -661,7 +655,6 @@ export class CustomerTableComponent
             searchTwo: string | undefined;
             searchThree: string | undefined;
         },
-        isSearch?: boolean,
         isShowMore?: boolean
     ) {
         this.shipperService
@@ -686,10 +679,6 @@ export class CustomerTableComponent
                     this.viewData = this.viewData.map((data: any) => {
                         return this.mapShipperData(data);
                     });
-
-                    if (isSearch) {
-                        this.tableData[1].length = shippers.pagination.count;
-                    }
                 } else {
                     let newData = [...this.viewData];
 
@@ -764,13 +753,12 @@ export class CustomerTableComponent
             if (this.selectedTab === 'active') {
                 this.backBrokerFilterQuery.pageIndex++;
 
-                this.brokerBackFilter(this.backBrokerFilterQuery, false, true);
+                this.brokerBackFilter(this.backBrokerFilterQuery, true);
             } else {
                 this.backShipperFilterQuery.pageIndex++;
 
                 this.shipperBackFilter(
                     this.backShipperFilterQuery,
-                    false,
                     true
                 );
             }

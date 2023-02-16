@@ -10,8 +10,12 @@ import {
     OnChanges,
     SimpleChanges,
 } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
-import { MapsAPILoader } from '@agm/core';
+import {
+    FormsModule,
+    UntypedFormBuilder,
+    UntypedFormGroup,
+} from '@angular/forms';
+import { MapsAPILoader, AgmCoreModule } from '@agm/core';
 import * as AppConst from 'src/app/const';
 import { MapsService } from '../../../services/shared/maps.service';
 import { RepairTService } from '../../repair/state/repair.service';
@@ -28,6 +32,13 @@ import {
 import { ConfirmationService } from '../../modals/confirmation-modal/confirmation.service';
 import { ModalService } from './../../shared/ta-modal/modal.service';
 import { CompanyTOfficeService } from '../../settings/settings-location/settings-office/state/company-office.service';
+import { CommonModule } from '@angular/common';
+import { AppTooltipComponent } from '../../standalone-components/app-tooltip/app-tooltip.component';
+import { AgmSnazzyInfoWindowModule } from '@agm/snazzy-info-window';
+import { MapMarkerDropdownComponent } from '../map-marker-dropdown/map-marker-dropdown.component';
+import { AgmDirectionModule } from 'agm-direction';
+import { GooglePlaceModule } from 'ngx-google-places-autocomplete';
+import { AngularSvgIconModule } from 'angular-svg-icon';
 
 @Component({
     selector: 'app-maps',
@@ -37,6 +48,18 @@ import { CompanyTOfficeService } from '../../settings/settings-location/settings
         '../../../../../assets/scss/maps.scss',
     ],
     encapsulation: ViewEncapsulation.None,
+    standalone: true,
+    imports: [
+        CommonModule,
+        FormsModule,
+        AppTooltipComponent,
+        AgmCoreModule,
+        AgmSnazzyInfoWindowModule,
+        MapMarkerDropdownComponent,
+        AgmDirectionModule,
+        GooglePlaceModule,
+        AngularSvgIconModule
+    ],
 })
 export class MapsComponent implements OnInit, OnDestroy, OnChanges {
     private destroy$ = new Subject<void>();
@@ -144,7 +167,7 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
         count: 0,
         data: [],
         pageIndex: 1,
-        pageSize: 25
+        pageSize: 25,
     };
 
     public locationFilter: any;
@@ -427,7 +450,7 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
     }
 
     clusterDropAnimation() {
-         setTimeout(() => {
+        setTimeout(() => {
             this.clusterMarkers.map((data: any) => {
                 if (!this.clusterAnimation[data.id]) {
                     this.clusterAnimation[data.id] = true;
@@ -633,7 +656,10 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
                                     );
 
                                 if (clusterIndex == -1) {
-                                    this.clusterMarkers = [...this.clusterMarkers, clusterItem];
+                                    this.clusterMarkers = [
+                                        ...this.clusterMarkers,
+                                        clusterItem,
+                                    ];
                                     newClusterAdded = true;
                                 }
 
@@ -707,7 +733,7 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
                     this.showAllmarkers = true;
 
                     if (newMarkersAdded) this.markersDropAnimation();
-                    if ( newClusterAdded ) this.clusterDropAnimation();
+                    if (newClusterAdded) this.clusterDropAnimation();
 
                     this.ref.detectChanges();
                 });
@@ -742,7 +768,8 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
                     });
 
                     mapListData.changedSort = changedSearchOrSort;
-                    mapListData.addData = this.mapListPagination.pageIndex > 1 ? true : false;
+                    mapListData.addData =
+                        this.mapListPagination.pageIndex > 1 ? true : false;
 
                     this.updateMapList.emit(mapListData);
                     this.mapsService.searchLoadingChanged.next(false);
@@ -876,7 +903,7 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
                     });
 
                     if (newMarkersAdded) this.markersDropAnimation();
-                    if ( newClusterAdded ) this.clusterDropAnimation();
+                    if (newClusterAdded) this.clusterDropAnimation();
 
                     this.ref.detectChanges();
                 });
@@ -917,7 +944,8 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
                     });
 
                     mapListData.changedSort = changedSearchOrSort;
-                    mapListData.addData = this.mapListPagination.pageIndex > 1 ? true : false;
+                    mapListData.addData =
+                        this.mapListPagination.pageIndex > 1 ? true : false;
 
                     this.updateMapList.emit(mapListData);
                     this.mapsService.searchLoadingChanged.next(false);
@@ -1030,7 +1058,7 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
                     });
 
                     if (newMarkersAdded) this.markersDropAnimation();
-                    if ( newClusterAdded ) this.clusterDropAnimation();
+                    if (newClusterAdded) this.clusterDropAnimation();
 
                     this.ref.detectChanges();
                 });
@@ -1074,7 +1102,8 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
                     });
 
                     mapListData.changedSort = changedSearchOrSort;
-                    mapListData.addData = this.mapListPagination.pageIndex > 1 ? true : false;
+                    mapListData.addData =
+                        this.mapListPagination.pageIndex > 1 ? true : false;
 
                     this.updateMapList.emit(mapListData);
                     this.mapsService.searchLoadingChanged.next(false);

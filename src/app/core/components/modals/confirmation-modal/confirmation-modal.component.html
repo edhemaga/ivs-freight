@@ -54,7 +54,7 @@
                     ? 'archive'
                     : editData?.subType === 'dnu'
                     ? 'do not use list'
-                    : 'ban list'
+                    : editData?.subType === 'favorite' ? 'favorite list' : 'ban list'
             }}?
         </p>
 

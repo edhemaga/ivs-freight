@@ -17,6 +17,8 @@ import {
     OwnerResponse,
 } from '../../../../../../appcoretruckassist';
 import {
+    FormsModule,
+    ReactiveFormsModule,
     UntypedFormBuilder,
     UntypedFormGroup,
     Validators,
@@ -38,6 +40,15 @@ import { TrailerModalComponent } from '../trailer-modal/trailer-modal.component'
 import { merge, Subject, takeUntil } from 'rxjs';
 import { BankVerificationService } from '../../../services/BANK-VERIFICATION/bankVerification.service';
 import { FormService } from '../../../services/form/form.service';
+import { CommonModule } from '@angular/common';
+import { TaModalComponent } from '../../shared/ta-modal/ta-modal.component';
+import { TaTabSwitchComponent } from '../../standalone-components/ta-tab-switch/ta-tab-switch.component';
+import { TaInputComponent } from '../../shared/ta-input/ta-input.component';
+import { TaInputDropdownComponent } from '../../shared/ta-input-dropdown/ta-input-dropdown.component';
+import { InputAddressDropdownComponent } from '../../shared/input-address-dropdown/input-address-dropdown.component';
+import { TaCustomCardComponent } from '../../shared/ta-custom-card/ta-custom-card.component';
+import { TaInputNoteComponent } from '../../shared/ta-input-note/ta-input-note.component';
+import { TaUploadFilesComponent } from '../../shared/ta-upload-files/ta-upload-files.component';
 
 @Component({
     selector: 'app-owner-modal',
@@ -45,6 +56,20 @@ import { FormService } from '../../../services/form/form.service';
     styleUrls: ['./owner-modal.component.scss'],
     encapsulation: ViewEncapsulation.None,
     providers: [ModalService, BankVerificationService, FormService],
+    standalone: true,
+    imports: [
+                CommonModule, 
+                FormsModule, 
+                TaModalComponent, 
+                TaTabSwitchComponent, 
+                ReactiveFormsModule, 
+                TaInputComponent, 
+                TaInputDropdownComponent, 
+                InputAddressDropdownComponent, 
+                TaCustomCardComponent, 
+                TaInputNoteComponent, 
+                TaUploadFilesComponent
+    ]
 })
 export class OwnerModalComponent implements OnInit, OnDestroy {
     @ViewChild(TabSwitcherComponent) tabSwitcher: any;

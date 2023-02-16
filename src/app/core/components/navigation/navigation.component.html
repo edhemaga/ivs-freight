@@ -7,14 +7,11 @@
         <div class="navigation-top">
             <app-navigation-header
                 (click)="onHoveredNavigation(true)"
-                [isModalPanelOpen]="isModalPanelOpen"
                 [isNavigationHovered]="isNavigationHovered"
-                [ChangeCloseTextTitle]="ChangeCloseTextTitle"
             ></app-navigation-header>
 
             <app-navigation-modals
                 (click)="onHoveredNavigation(true)"
-                (ChangeCloseText)="ChangeCloseText($event)"
                 [isNavigationHoveredAndPanelOpen]="
                     isModalPanelOpen && isNavigationHovered
                 "

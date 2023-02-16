@@ -89,20 +89,20 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
         this.confirmationService.confirmationData$
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: (res: Confirmation) => {
+                next: (res: any) => {
                     switch (res.type) {
                         case 'delete': {
                             if (res.template === 'truck') {
-                                this.deleteTruckById(res.id);
+                                this.deleteTruckById(res?.id);
                             }
                             break;
                         }
                         case 'activate': {
-                            this.changeTruckStatus(res.id);
+                            this.changeTruckStatus(res?.id);
                             break;
                         }
                         case 'deactivate': {
-                            this.changeTruckStatus(res.id);
+                            this.changeTruckStatus(res?.id);
                             break;
                         }
                         default: {

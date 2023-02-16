@@ -28,6 +28,7 @@ import {
 import { Titles } from 'src/app/core/utils/application.decorators';
 import { OnChanges } from '@angular/core';
 import { convertDateFromBackend } from '../../../../utils/methods.calculations';
+import moment from 'moment';
 
 @Titles()
 @Component({
@@ -79,6 +80,7 @@ export class TrailerDetailsItemComponent
     public dataFHWA: any;
     public toggler: boolean[] = [];
     public registrationArray: any = [];
+    public currentDate: any;
     constructor(
         private tableService: TruckassistTableService,
         private confirmationService: ConfirmationService,
@@ -93,15 +95,15 @@ export class TrailerDetailsItemComponent
         this.confirmationService.confirmationData$
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: (res: Confirmation) => {
+                next: (res: any) => {
                     switch (res.type) {
                         case 'delete': {
                             if (res.template === 'registration') {
-                                this.deleteRegistrationByIdFunction(res.id);
+                                this.deleteRegistrationByIdFunction(res?.id);
                             } else if (res.template === 'inspection') {
-                                this.deleteInspectionByIdFunction(res.id);
+                                this.deleteInspectionByIdFunction(res?.id);
                             } else if (res.template === 'title') {
-                                this.deleteTitleByIdFunction(res.id);
+                                this.deleteTitleByIdFunction(res?.id);
                             }
                             break;
                         }
@@ -112,6 +114,7 @@ export class TrailerDetailsItemComponent
                 },
             });
         this.initTableOptions();
+        this.currentDate = moment(new Date()).format();
     }
 
     /**Function for toggle page in cards */

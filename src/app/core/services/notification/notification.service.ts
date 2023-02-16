@@ -50,7 +50,16 @@ export class NotificationService {
             httpRequest.url.indexOf('application') > -1 ||
             httpRequest.url.indexOf('dispatch') > -1 ||
             httpRequest.url.indexOf('division') > -1 ||
-            httpRequest.url.indexOf('tableconfig') > -1
+            httpRequest.url.indexOf('tableconfig') > -1 ||
+            httpRequest.url.indexOf('verifyowner') > -1 ||
+            httpRequest.url.indexOf('signupcompany') > -1 ||
+            httpRequest.url.indexOf('signupuser') > -1 ||
+            httpRequest.url.indexOf('verifyuser') > -1 ||
+            httpRequest.url.indexOf('forgotpassword') > -1 ||
+            httpRequest.url.indexOf('setnewpassword') > -1 ||
+            httpRequest.url.indexOf('verifyforgotpassword') > -1 ||
+            httpRequest.url.indexOf('resendsignupuser') > -1 ||
+            httpRequest.url.indexOf('selectcompany') > -1 
         ) {
             return false;
         }
@@ -70,7 +79,16 @@ export class NotificationService {
             httpRequest.url.indexOf('application') > -1 ||
             httpRequest.url.indexOf('dispatch') > -1 ||
             httpRequest.url.indexOf('division') > -1 ||
-            httpRequest.url.indexOf('tableconfig') > -1
+            httpRequest.url.indexOf('tableconfig') > -1 ||
+            httpRequest.url.indexOf('verifyowner') > -1 ||
+            httpRequest.url.indexOf('signupcompany') > -1 ||
+            httpRequest.url.indexOf('signupuser') > -1 ||
+            httpRequest.url.indexOf('verifyuser') > -1 ||
+            httpRequest.url.indexOf('forgotpassword') > -1 ||
+            httpRequest.url.indexOf('setnewpassword') > -1 ||
+            httpRequest.url.indexOf('verifyforgotpassword') > -1 ||
+            httpRequest.url.indexOf('resendsignupuser') > -1 ||
+            httpRequest.url.indexOf('selectcompany') > -1 
         ) {
             return false;
         }

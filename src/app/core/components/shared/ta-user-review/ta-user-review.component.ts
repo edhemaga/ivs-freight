@@ -10,9 +10,11 @@ import {
     SimpleChanges,
     ViewChildren,
 } from '@angular/core';
-import { TitleCasePipe } from '@angular/common';
+import { CommonModule, TitleCasePipe } from '@angular/common';
 import { SignInResponse } from 'appcoretruckassist';
 import { ImageBase64Service } from '../../../utils/base64.image';
+import { FormsModule } from '@angular/forms';
+import { AppTooltipComponent } from '../../standalone-components/app-tooltip/app-tooltip.component';
 
 export interface ReviewCommentModal {
     sortData: any[];
@@ -25,6 +27,8 @@ export interface ReviewCommentModal {
     templateUrl: './ta-user-review.component.html',
     styleUrls: ['./ta-user-review.component.scss'],
     providers: [TitleCasePipe],
+    standalone: true,
+    imports: [CommonModule, FormsModule, AppTooltipComponent],
 })
 export class TaUserReviewComponent implements OnChanges {
     @ViewChildren('reviewMessage') reviewMessageRef: QueryList<ElementRef>;

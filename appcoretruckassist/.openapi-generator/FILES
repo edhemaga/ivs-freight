@@ -509,11 +509,14 @@ model/parkingSlotType.ts
 model/passwordResponse.ts
 model/patchNoteCommand.ts
 model/payPeriod.ts
+model/payrollBonusDescriptionAutocompleteResponse.ts
 model/payrollBonusModalResponse.ts
 model/payrollBonusResponse.ts
+model/payrollCreditDescriptionAutocompleteResponse.ts
 model/payrollCreditModalResponse.ts
 model/payrollCreditResponse.ts
 model/payrollCreditType.ts
+model/payrollDeductionDescriptionAutocompleteResponse.ts
 model/payrollDeductionModalResponse.ts
 model/payrollDeductionRecurringType.ts
 model/payrollDeductionResponse.ts
@@ -573,8 +576,7 @@ model/repairedVehicleListResponse.ts
 model/repairedVehicleResponse.ts
 model/repairedVehicleResponsePagination.ts
 model/resendInviteCommand.ts
-model/resendSignUpCompanyCommand.ts
-model/resendSignUpUserCommand.ts
+model/resendSignUpCompanyOrUserCommand.ts
 model/resendVerifyDriverCommand.ts
 model/reviewByEntityTypeListResponse.ts
 model/reviewResponse.ts

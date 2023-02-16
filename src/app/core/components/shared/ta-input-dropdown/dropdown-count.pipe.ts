@@ -2,6 +2,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
     name: 'taDropdownCount',
+    standalone: true
 })
 export class DropdownCountPipe implements PipeTransform {
     transform(options: any, template: string): any {

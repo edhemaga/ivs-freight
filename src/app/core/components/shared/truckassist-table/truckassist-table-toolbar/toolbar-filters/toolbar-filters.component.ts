@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import {
     Component,
     EventEmitter,
@@ -7,12 +8,17 @@ import {
     Output,
     SimpleChanges,
 } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { CarrierSearchComponent } from 'src/app/core/components/standalone-components/carrier-search/carrier-search.component';
+import { FilterComponent } from '../../../../standalone-components/filter/filter.component';
 import { MapsService } from 'src/app/core/services/shared/maps.service';
 
 @Component({
     selector: 'app-toolbar-filters',
     templateUrl: './toolbar-filters.component.html',
     styleUrls: ['./toolbar-filters.component.scss'],
+    standalone: true,
+    imports: [CommonModule, FormsModule, CarrierSearchComponent, FilterComponent]
 })
 export class ToolbarFiltersComponent implements OnInit, OnChanges {
     @Output() toolbarFilter: EventEmitter<any> = new EventEmitter();

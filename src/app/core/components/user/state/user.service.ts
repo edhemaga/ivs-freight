@@ -3,18 +3,26 @@ import {
     CompanyUserService,
     GetCompanyUserListResponse,
 } from 'appcoretruckassist';
-import { Observable } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 import { CompanyUserModalResponse } from '../../../../../../appcoretruckassist/model/companyUserModalResponse';
 import { CreateCompanyUserCommand } from '../../../../../../appcoretruckassist/model/createCompanyUserCommand';
 import { CreateResponse } from '../../../../../../appcoretruckassist/model/createResponse';
 import { UpdateCompanyUserCommand } from '../../../../../../appcoretruckassist/model/updateCompanyUserCommand';
 import { CompanyUserResponse } from '../../../../../../appcoretruckassist/model/companyUserResponse';
+import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
+import { UserStore } from './user-state/user.store';
+import { UserQuery } from './user-state/user.query';
 
 @Injectable({
     providedIn: 'root',
 })
 export class UserTService {
-    constructor(private userService: CompanyUserService) {}
+    constructor(
+        private userService: CompanyUserService,
+        private tableService: TruckassistTableService,
+        private userStore: UserStore,
+        private userQuery: UserQuery
+    ) {}
 
     // Get User List
     public getUsers(
@@ -40,15 +48,89 @@ export class UserTService {
     }
 
     public addUser(data: CreateCompanyUserCommand): Observable<CreateResponse> {
-        return this.userService.apiCompanyuserPost(data);
+        return this.userService.apiCompanyuserPost(data).pipe(
+            tap((res: any) => {
+                const subUser = this.getUserByid(res.id).subscribe({
+                    next: (user: any) => {
+                        user = {
+                            ...user,
+                            userAvatar: {
+                                name: user.firstName + ' ' + user.lastName,
+                            },
+                        };
+
+                        const userCount = JSON.parse(
+                            localStorage.getItem('userTableCount')
+                        );
+
+                        userCount.users++;
+
+                        localStorage.setItem(
+                            'userTableCount',
+                            JSON.stringify({
+                                users: userCount.users,
+                            })
+                        );
+
+                        this.tableService.sendActionAnimation({
+                            animation: 'add',
+                            data: user,
+                            id: user.id,
+                        });
+
+                        subUser.unsubscribe();
+                    },
+                });
+            })
+        );
     }
 
     public updateUser(data: UpdateCompanyUserCommand): Observable<any> {
         return this.userService.apiCompanyuserPut(data);
     }
 
-    public deleteUserById(id: number): Observable<any> {
-        return this.userService.apiCompanyuserIdDelete(id);
+    public deleteUserById(userId: number): Observable<any> {
+        return this.userService.apiCompanyuserIdDelete(userId).pipe(
+            tap(() => {
+                const userCount = JSON.parse(
+                    localStorage.getItem('userTableCount')
+                );
+
+                this.userStore.remove(({ id }) => id === userId);
+
+                userCount.users--;
+
+                localStorage.setItem(
+                    'userTableCount',
+                    JSON.stringify({
+                        users: userCount.users,
+                    })
+                );
+            })
+        );
+    }
+
+    public deleteUserList(usersToDelete: any[]): Observable<any> {
+        return this.userService.apiCompanyuserListDelete(usersToDelete).pipe(
+            tap(() => {
+                let storeUsers = this.userQuery.getAll();
+
+                storeUsers.map((user: any) => {
+                    usersToDelete.map((d) => {
+                        if (d === user.id) {
+                            this.userStore.remove(({ id }) => id === user.id);
+                        }
+                    });
+                });
+
+                localStorage.setItem(
+                    'userTableCount',
+                    JSON.stringify({
+                        users: storeUsers.length,
+                    })
+                );
+            })
+        );
     }
 
     public getUserByid(id: number): Observable<CompanyUserResponse> {
@@ -56,7 +138,21 @@ export class UserTService {
     }
 
     public updateUserStatus(id: number): Observable<any> {
-        return this.userService.apiCompanyuserStatusIdPut(id);
+        return this.userService.apiCompanyuserStatusIdPut(id).pipe(
+            tap(() => {
+                const subUser = this.getUserByid(id).subscribe({
+                    next: (user: any) => {
+                        this.tableService.sendActionAnimation({
+                            animation: 'update-status',
+                            data: user,
+                            id: user.id,
+                        });
+
+                        subUser.unsubscribe();
+                    },
+                });
+            })
+        );
     }
 
     public getModalDropdowns(): Observable<CompanyUserModalResponse> {

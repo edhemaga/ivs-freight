@@ -10,13 +10,18 @@ import {
     ViewChild,
     ViewEncapsulation,
 } from '@angular/core';
-import { UntypedFormControl } from '@angular/forms';
-import { PDFDocumentProxy } from 'ng2-pdf-viewer';
+import { FormsModule, UntypedFormControl } from '@angular/forms';
+import { PDFDocumentProxy, PdfViewerModule } from 'ng2-pdf-viewer';
 import { Subject, takeUntil, debounceTime, distinctUntilChanged } from 'rxjs';
 import { TaInputComponent } from '../../ta-input/ta-input.component';
 import { TaInputService } from '../../ta-input/ta-input.service';
 import { UrlExtensionPipe } from 'src/app/core/pipes/url-extension.pipe';
 import { DetailsDataService } from '../../../../services/details-data/details-data.service';
+import { CommonModule } from '@angular/common';
+import { AppTooltipComponent } from '../../../standalone-components/app-tooltip/app-tooltip.component';
+import { ByteConvertPipe } from 'src/app/core/pipes/byte-convert.pipe';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { AngularSvgIconModule } from 'angular-svg-icon';
 
 export interface UploadFile {
     name?: any;
@@ -31,6 +36,7 @@ export interface UploadFile {
     incorrect?: boolean;
     tagChanged?: boolean;
     savedTag?: any;
+    tagGeneratedByUser?: boolean;
 }
 @Component({
     selector: 'app-ta-upload-file',
@@ -39,6 +45,17 @@ export interface UploadFile {
     encapsulation: ViewEncapsulation.None,
     changeDetection: ChangeDetectionStrategy.OnPush,
     providers: [UrlExtensionPipe],
+    standalone: true,
+    imports: [
+        CommonModule,
+        FormsModule,
+        AppTooltipComponent,
+        PdfViewerModule,
+        ByteConvertPipe,
+        NgbModule,
+        UrlExtensionPipe,
+        AngularSvgIconModule,
+    ],
 })
 export class TaUploadFileComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
@@ -79,6 +96,7 @@ export class TaUploadFileComponent implements OnInit, OnDestroy {
     public isIncorrectMarkHover: boolean = false;
     public fileExtension: string;
     public annotationHover: boolean = false;
+    public documentLoading: boolean = true;
     @ViewChild('t2') t2: any;
 
     @Output() landscapeCheck = new EventEmitter();
@@ -126,6 +144,11 @@ export class TaUploadFileComponent implements OnInit, OnDestroy {
 
         if (!this.file?.extension) {
             this.fileExtension = this.urlExt.transform(this.file.url);
+            if (this.fileExtension != 'pdf') {
+                this.documentLoading = false;
+            }
+        } else if (this.file?.extension && this.file?.extension != 'pdf') {
+            this.documentLoading = false;
         }
 
         if (this.file?.tags?.length && this.hasTagsDropdown) {
@@ -141,6 +164,7 @@ export class TaUploadFileComponent implements OnInit, OnDestroy {
     }
 
     public afterLoadComplete(pdf: PDFDocumentProxy) {
+        this.documentLoading = false;
         this.numberOfFilePages =
             pdf._pdfInfo.numPages === 1
                 ? pdf._pdfInfo.numPages.toString().concat(' ', 'PAGE')
@@ -274,6 +298,7 @@ export class TaUploadFileComponent implements OnInit, OnDestroy {
 
                 setTimeout(() => {
                     this.file.tags = item.tagName;
+                    this.file.tagGeneratedByUser = true;
                     this.file.tagId = [item.tagId];
                     this.file.tagChanged =
                         this.file.savedTag != item.tagName ? true : false;

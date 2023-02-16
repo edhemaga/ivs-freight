@@ -25,7 +25,7 @@
     grid-template-columns: repeat(3, 130px);
     column-gap: 64px;
     row-gap: 12px;
-    padding-left: 4px;
+    //padding-left: 4px;
     .additional-template-item {
         display: flex;
         flex-direction: column;
@@ -146,6 +146,7 @@
         border-radius: 3px;
         .basic-details {
             width: 100%;
+            //padding: 0px 8px;
             //height: 262px;
             //margin-bottom: 15px;
             border-radius: 3px;
@@ -156,11 +157,12 @@
                 flex-direction: column;
                 user-select: none;
                 background-color: $settings-background;
-                padding: 0px 12px;
+                //padding: 0px 12px;
                 border-radius: 3px;
                 .basic-header-logo-top {
                     display: flex;
                     align-items: center;
+                    padding: 0px 12px;
                     //justify-content: flex-end;
                     height: 22px;
                     width: 100%;
@@ -262,9 +264,17 @@
                 grid-template-columns: repeat(3, 180px);
                 -moz-column-gap: 12px;
                 column-gap: 12px;
-                padding-left: 12px;
-                padding-bottom: 12px;
+                padding:0px 12px 12px 12px;
                 background-color: $settings-background;
+
+                &::-moz-selection {
+                    color: $settings-gray-dark;
+                    background: rgb(108, 108, 108, 0.2);
+                }
+                &::selection {
+                    color: $settings-gray-dark;
+                    background: rgb(108, 108, 108, 0.2);
+                }
 
                 .basic-bottom-cards-redesign{
                     //display: flex;
@@ -277,6 +287,15 @@
                         font-weight: 700;
                         padding-bottom: 4px;
                         color: #2F2F2F;
+
+                        &::-moz-selection {
+                            color: $settings-gray-dark;
+                            background: rgb(108, 108, 108, 0.2);
+                        }
+                        &::selection {
+                            color: $settings-gray-dark;
+                            background: rgb(108, 108, 108, 0.2);
+                        }
                     }
 
                     .bottom-value{
@@ -284,6 +303,15 @@
                         font-size: 18px;
                         font-weight: 500;
                         color: #2F2F2F;
+
+                        &::-moz-selection {
+                            color: $settings-gray-dark;
+                            background: rgb(108, 108, 108, 0.2);
+                        }
+                        &::selection {
+                            color: $settings-gray-dark;
+                            background: rgb(108, 108, 108, 0.2);
+                        }
                     }
 
                 }
@@ -324,7 +352,7 @@
 .cards-custom {
     padding: 0 8px;
     .ta-card-header {
-        padding: 0 4px !important;
+        //padding: 0 4px !important;
     }
 }
 .show-hide {
@@ -521,6 +549,7 @@
     // font-size: 48px;
     //position: absolute;
     // margin-top: 30px;
+    padding: 0px 12px;
     font-weight: 900;
     color: #b7b7b7;
     white-space: nowrap;

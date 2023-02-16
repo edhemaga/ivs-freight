@@ -1,9 +1,13 @@
+import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
 @Component({
     selector: 'app-tab-switcher',
     templateUrl: './tab-switcher.component.html',
     styleUrls: ['./tab-switcher.component.scss'],
+    standalone: true,
+    imports: [CommonModule, FormsModule]
 })
 export class TabSwitcherComponent implements OnInit {
     @Input() tabs: any[];

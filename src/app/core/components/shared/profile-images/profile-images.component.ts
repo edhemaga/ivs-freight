@@ -1,11 +1,16 @@
 import { NameInitialsPipe } from './../../../pipes/nameinitials';
 import { Component, Input, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { AppTooltipComponent } from '../../standalone-components/app-tooltip/app-tooltip.component';
 
 @Component({
     selector: 'app-profile-images',
     templateUrl: './profile-images.component.html',
     styleUrls: ['./profile-images.component.scss'],
     providers: [NameInitialsPipe],
+    standalone: true,
+    imports: [CommonModule, FormsModule, AppTooltipComponent, NameInitialsPipe],
 })
 export class ProfileImagesComponent implements OnInit {
     textColors: string[] = [

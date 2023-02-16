@@ -361,6 +361,7 @@
             -moz-user-select: none !important;
             -ms-user-select: none !important;
             user-select: none !important;
+            z-index: 2;
 
             .canvasWrapper {
                 box-shadow: 0 0 4px rgb(0, 0, 0, 0.15);
@@ -393,6 +394,10 @@
                     height: 0 !important;
                 }
             }
+
+            .pdfViewer {
+                box-shadow: 0px 0px 4px rgb(0 0 0 / 15%);
+            }
         }
 
         .image_main_holder {
@@ -401,6 +406,10 @@
             justify-content: center;
             align-items: center;
             width: 160px;
+
+            .spinner {
+                position: absolute;
+            }
 
             .ta-upload-file-image {
                 max-width: 160px;
@@ -414,6 +423,7 @@
                 -ms-user-select: none !important;
                 user-select: none !important;
                 box-shadow: 0 0 4px rgb(0, 0, 0, 0.15);
+                z-index: 2;
 
                 &.details_image {
                     left: 49%;
@@ -516,6 +526,8 @@
             -moz-user-select: none !important;
             -ms-user-select: none !important;
             user-select: none !important;
+
+            z-index: 3;
 
             text-overflow: ellipsis;
             overflow: hidden;
@@ -769,7 +781,7 @@
                 margin-bottom: 4px;
 
                 &:hover {
-                    background-color: #ef5350;
+                    background-color: #ef5350 !important;
                     color: #ffffff;
                     transition: all 0.3s ease-in-out;
                 }
@@ -777,10 +789,18 @@
 
             &-cancel {
                 &:hover {
-                    background-color: #6c6c6c;
+                    background-color: #6c6c6c !important;
                     color: #ffffff;
                     transition: all 0.3s ease-in-out;
                 }
+            }
+        }
+
+        &.company-documents {
+            background-color: rgba(255, 255, 255, 0.9);
+
+            .ta-upload-file-btn {
+                background-color: rgb(243, 243, 243);
             }
         }
     }
@@ -789,6 +809,7 @@
     .ta-upload-file-footer {
         position: relative;
         height: 26px;
+        z-index: 3;
 
         p {
             margin: 0;
@@ -796,6 +817,10 @@
 
         &.edit-mode {
             padding: 0px !important;
+        }
+
+        input {
+            padding: 4px !important;
         }
 
         .footer_info {
@@ -985,6 +1010,15 @@
             &:hover {
                 transition: 0.1s all ease-in-out;
                 background-color: #3074d3e6;
+            }
+
+            &.default {
+                background-color: #42424280;
+
+                &:hover {
+                    transition: 0.1s all ease-in-out;
+                    background-color: #424242e6;
+                }
             }
         }
 
@@ -1260,7 +1294,6 @@
 }
 
 .tags_main_holder {
-    min-width: 172px;
     padding: 4px;
 
     background-color: #2f2f2f;

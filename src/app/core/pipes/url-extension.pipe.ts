@@ -2,6 +2,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
     name: 'urlExtension',
+    standalone: true
 })
 export class UrlExtensionPipe implements PipeTransform {
     transform(url: string): any {

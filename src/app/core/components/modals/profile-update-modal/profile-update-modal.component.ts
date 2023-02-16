@@ -8,7 +8,7 @@ import {
 import { phoneFaxRegex } from '../../shared/ta-input/ta-input.regex-validations';
 
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import { FormsModule, UntypedFormBuilder, UntypedFormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { tab_modal_animation } from '../../shared/animations/tabs-modal.animation';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
 import {
@@ -22,6 +22,13 @@ import { ModalService } from '../../shared/ta-modal/modal.service';
 import { TaUserService } from '../../../services/user/user.service';
 import Croppie from 'croppie';
 import { FormService } from '../../../services/form/form.service';
+import { CommonModule } from '@angular/common';
+import { TaModalComponent } from '../../shared/ta-modal/ta-modal.component';
+import { TaTabSwitchComponent } from '../../standalone-components/ta-tab-switch/ta-tab-switch.component';
+import { TaInputComponent } from '../../shared/ta-input/ta-input.component';
+import { InputAddressDropdownComponent } from '../../shared/input-address-dropdown/input-address-dropdown.component';
+import { TaCheckboxComponent } from '../../shared/ta-checkbox/ta-checkbox.component';
+import { TaLogoChangeComponent } from '../../shared/ta-logo-change/ta-logo-change.component';
 
 @Component({
     selector: 'app-profile-update-modal',
@@ -29,6 +36,18 @@ import { FormService } from '../../../services/form/form.service';
     styleUrls: ['./profile-update-modal.component.scss'],
     animations: [tab_modal_animation('animationTabsModal')],
     providers: [FormService, ModalService],
+    standalone: true,
+    imports: [
+            CommonModule, 
+            FormsModule, 
+            TaModalComponent, 
+            TaTabSwitchComponent, 
+            ReactiveFormsModule,
+            TaInputComponent,
+            InputAddressDropdownComponent,
+            TaCheckboxComponent,
+            TaLogoChangeComponent
+    ]
 })
 export class ProfileUpdateModalComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
