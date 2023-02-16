@@ -56,7 +56,7 @@ export class SelectCompanyComponent implements OnInit, OnDestroy {
             : (this.dotsTrue = true);
     }
 
-    public user(data) {
+    public user(data): void {
         this.userData = data;
 
         data.companies.forEach((res) => {
@@ -150,13 +150,14 @@ export class SelectCompanyComponent implements OnInit, OnDestroy {
         });
     }
 
-    goToLogin() {
+    public goToLogin(): void {
         this.websiteAuthService.accountLogout();
     }
 
-    onCompanySelect() {
+    public onCompanySelect(): void {
         const center: any = this.document.querySelectorAll('.slick-center');
         let id = center[0]?.firstChild?.id;
+
         this.accountStoreService
             .selectCompanyAccount({
                 companyId: parseInt(id),
