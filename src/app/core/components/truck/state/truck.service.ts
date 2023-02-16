@@ -138,6 +138,13 @@ export class TruckTService implements OnDestroy {
                             truck.titles = storedTruckData.titles;
                             truck.inspections = storedTruckData.inspections;
 
+                            truck = {
+                                ...truck,
+                                fileCount: truck?.filesCountForList
+                                    ? truck.filesCountForList
+                                    : 0,
+                            };
+
                             this.truckMinimalStore.add(truck);
                             this.tdlStore.add(truck);
                             this.truckItem.set([truck]);
