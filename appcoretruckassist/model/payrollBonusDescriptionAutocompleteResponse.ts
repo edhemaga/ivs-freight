@@ -11,12 +11,7 @@
  */
 
 
-export interface FileResponse { 
-    fileId?: number;
-    fileName?: string | null;
-    url?: string | null;
-    fileSize?: number | null;
-    tags?: Array<string> | null;
-    tagGeneratedByUser?: boolean;
+export interface PayrollBonusDescriptionAutocompleteResponse { 
+    descriptions?: Array<string> | null;
 }
 

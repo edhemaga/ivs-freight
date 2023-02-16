@@ -102,6 +102,12 @@ export class ShopRepairDetailsComponent implements OnInit, OnDestroy {
                         if (res.template === 'repair shop' || res.template === 'Repair Shop') {
                             this.closeRepairShop(res?.id);
                         }
+                    } else if ( res.type === 'info' ) {
+                        if ( res.subType === 'favorite' ) {
+                            if ( res.subTypeStatus === 'move' || res.subTypeStatus === 'remove' ) {
+                                this.changePinnedStatus(res?.id)
+                            }
+                        }
                     }
                 },
             });
@@ -189,8 +195,8 @@ export class ShopRepairDetailsComponent implements OnInit, OnDestroy {
                     iconName: 'ic_plus'
                 },
                 {
-                    title: 'Move to Favourite',
-                    name: 'add-to-favourites',
+                    title: 'Mark as favorite',
+                    name: 'move-to-favourite',
                     svg: 'assets/svg/common/ic_star.svg',
                     activate: true,
                     show: true,
@@ -251,6 +257,8 @@ export class ShopRepairDetailsComponent implements OnInit, OnDestroy {
             event.type = 'edit';
             event.openedTab = 'Review';
         }
+
+        console.log('---here---', event)
         this.dropDownService.dropActionsHeaderRepair(
             event,
             this.repairObject,
@@ -270,6 +278,7 @@ export class ShopRepairDetailsComponent implements OnInit, OnDestroy {
             type: eventType,
             openedTab: event,
         }
+
         this.dropDownService.dropActionsHeaderRepair(
             eventObject
         );
@@ -409,6 +418,10 @@ export class ShopRepairDetailsComponent implements OnInit, OnDestroy {
 
     public openRepairShop(shopId){
         this.shopService.changeShopStatus(shopId);
+    }
+
+    public changePinnedStatus(shopId){
+        this.shopService.changePinnedStatus(shopId);
     }
 
     ngOnDestroy(): void {

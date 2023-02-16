@@ -35,6 +35,8 @@ import { TaThousandSeparatorPipe } from 'src/app/core/pipes/taThousandSeparator.
 import { formatDatePipe } from 'src/app/core/pipes/formatDate.pipe';
 import { TaLogoChangeComponent } from '../../shared/ta-logo-change/ta-logo-change.component';
 
+import { TaReCardComponent } from '../../shared/ta-common-card/ta-re-card.component';
+
 @NgModule({
     imports: [
         CommonModule,
@@ -59,9 +61,7 @@ import { TaLogoChangeComponent } from '../../shared/ta-logo-change/ta-logo-chang
         formatEinPipe,
         TaThousandSeparatorPipe,
         formatDatePipe,
-        TaCustomCardComponent,
-        TaLogoChangeComponent,
-        FormsModule,
+        TaReCardComponent,
     ],
     exports: [SharedModule],
     declarations: [

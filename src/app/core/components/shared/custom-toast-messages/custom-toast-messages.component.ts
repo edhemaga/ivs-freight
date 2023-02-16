@@ -114,6 +114,10 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
             value: 'BROKER',
         },
         {
+            api: 'assign',
+            value: 'ASSIGN'
+        },
+        {
             api: 'trailer',
             value: 'TRAILER',
         },
@@ -355,6 +359,19 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
                 this.message = accName;
                 this.wideMessage = true;
                 break;
+            case 'ASSIGN':
+                    this.actionType = 'DEVICE';
+                    this.actionTitle = this.toastrType == 'toast-error' ? 'ASSIGN' : 'ASSIGNED';
+
+                    let deviceMessage = '';
+                    if ( this.httpRequest.body?.truckId ) {
+                        deviceMessage = 'Truck - ' + this.DetailsDataService.unitValue;
+                    } else if ( this.httpRequest.body?.trailerId ) {
+                        deviceMessage = 'Trailer - ' + this.DetailsDataService.unitValue;
+                    }
+
+                    this.message = deviceMessage;
+                break;    
             case 'LOAD':
 
                 let loadNum = '';

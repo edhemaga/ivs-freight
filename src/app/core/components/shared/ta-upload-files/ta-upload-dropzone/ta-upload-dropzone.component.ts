@@ -41,6 +41,9 @@ export class TaUploadDropzoneComponent {
     @ViewChild('dropzoneFocusElem')
     dropzoneFocusElem: ElementRef;
 
+    @ViewChild('dropZone')
+    dropZone: ElementRef;
+
     @Input() dropZoneConfig: DropZoneConfig = {
         dropZoneType: 'files', // files | image | media
         dropZoneSvg: 'assets/svg/common/ic_files_dropzone.svg',
@@ -124,6 +127,8 @@ export class TaUploadDropzoneComponent {
     public async onFileUpload(files: FileList) {
         await this.addFiles(files);
         this.files = [];
+
+        this.dropZone.nativeElement.value = '';
     }
 
     /**

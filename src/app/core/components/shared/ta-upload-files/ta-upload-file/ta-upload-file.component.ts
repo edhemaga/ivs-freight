@@ -21,6 +21,7 @@ import { CommonModule } from '@angular/common';
 import { AppTooltipComponent } from '../../../standalone-components/app-tooltip/app-tooltip.component';
 import { ByteConvertPipe } from 'src/app/core/pipes/byte-convert.pipe';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { AngularSvgIconModule } from 'angular-svg-icon';
 
 export interface UploadFile {
     name?: any;
@@ -35,6 +36,7 @@ export interface UploadFile {
     incorrect?: boolean;
     tagChanged?: boolean;
     savedTag?: any;
+    tagGeneratedByUser?: boolean;
 }
 @Component({
     selector: 'app-ta-upload-file',
@@ -50,7 +52,9 @@ export interface UploadFile {
         AppTooltipComponent,
         PdfViewerModule,
         ByteConvertPipe,
-        NgbModule
+        NgbModule,
+        UrlExtensionPipe,
+        AngularSvgIconModule,
     ],
 })
 export class TaUploadFileComponent implements OnInit, OnDestroy {
@@ -294,6 +298,7 @@ export class TaUploadFileComponent implements OnInit, OnDestroy {
 
                 setTimeout(() => {
                     this.file.tags = item.tagName;
+                    this.file.tagGeneratedByUser = true;
                     this.file.tagId = [item.tagId];
                     this.file.tagChanged =
                         this.file.savedTag != item.tagName ? true : false;
