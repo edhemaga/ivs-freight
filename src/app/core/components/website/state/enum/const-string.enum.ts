@@ -33,6 +33,7 @@ export enum ConstantString {
     AVATAR = 'Avatar',
 
     WEBSITE = '/website',
+    WEBSITE_SELECT_COMPANY = '/website/select-company',
 
     LOGIN_BTN = 'login-btn',
     RESET_PASSWORD_BTN = 'reset-password-btn',

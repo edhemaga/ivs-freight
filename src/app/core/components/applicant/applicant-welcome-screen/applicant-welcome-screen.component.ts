@@ -60,7 +60,7 @@ export class ApplicantWelcomeScreenComponent implements OnInit, OnDestroy {
             )
             .subscribe((res) => {
                 if (!res) {
-                    this.router.navigate(['/auth']);
+                    this.router.navigate(['/website']);
                 } else {
                     this.dateOfApplication = convertDateFromBackend(
                         res.inviteDate
