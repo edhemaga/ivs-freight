@@ -611,6 +611,9 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
                 this.stackedBarChart.saveValues = JSON.parse(
                     JSON.stringify(this.stackedBarChartLegend)
                 );
+                this.stackedBarChart.legendAttributes = JSON.parse(
+                    JSON.stringify(this.stackedBarChartLegend)
+                );
             });
     }
 
@@ -619,10 +622,7 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
         chartType: number,
         hideAnimation?: boolean
     ) {
-        if (
-            id != this.fuelCall.id ||
-            chartType != this.fuelCall.chartType
-        ) {
+        if (id != this.fuelCall.id || chartType != this.fuelCall.chartType) {
             this.fuelCall.id = id;
             this.fuelCall.chartType = chartType;
         } else {
@@ -682,6 +682,9 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
                 );
                 this.payrollChart.updateChartData(hideAnimation);
                 this.payrollChart.saveValues = JSON.parse(
+                    JSON.stringify(this.barChartLegend)
+                );
+                this.payrollChart.legendAttributes = JSON.parse(
                     JSON.stringify(this.barChartLegend)
                 );
             });
@@ -752,6 +755,9 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
                 );
                 this.revenueChart.updateChartData(hideAnimation);
                 this.revenueChart.saveValues = JSON.parse(
+                    JSON.stringify(this.barChartLegend2)
+                );
+                this.revenueChart.legendAttributes = JSON.parse(
                     JSON.stringify(this.barChartLegend2)
                 );
             });

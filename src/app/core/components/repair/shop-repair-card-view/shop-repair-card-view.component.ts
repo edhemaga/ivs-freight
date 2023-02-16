@@ -403,6 +403,9 @@ export class ShopRepairCardViewComponent
                 this.repairExpensesChart.saveValues = JSON.parse(
                     JSON.stringify(this.barChartLegend)
                 );
+                this.repairExpensesChart.legendAttributes = JSON.parse(
+                    JSON.stringify(this.barChartLegend)
+                );
             });
 
         this.cdRef.detectChanges();
