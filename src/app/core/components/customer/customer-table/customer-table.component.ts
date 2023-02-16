@@ -57,7 +57,6 @@ export class CustomerTableComponent
     shipper: ShipperState[] = [];
     selectedTab = 'active';
     activeViewMode: string = 'List';
-    tableContainerWidth: number = 0;
     resizeObserver: ResizeObserver;
     backBrokerFilterQuery = {
         ban: null,
@@ -288,7 +287,7 @@ export class CustomerTableComponent
     observTableContainer() {
         this.resizeObserver = new ResizeObserver((entries) => {
             entries.forEach((entry) => {
-                this.tableContainerWidth = entry.contentRect.width;
+                this.tableService.sendCurrentSetTableWidth(entry.contentRect.width);
             });
         });
 
@@ -957,9 +956,9 @@ export class CustomerTableComponent
         this.tableService.sendActionAnimation({});
         this.tableService.sendDeleteSelectedRows([]);
 
-        this.resizeObserver.unobserve(
-            document.querySelector('.table-container')
-        );
+        // this.resizeObserver.unobserve(
+        //     document.querySelector('.table-container')
+        // );
         this.resizeObserver.disconnect();
     }
 

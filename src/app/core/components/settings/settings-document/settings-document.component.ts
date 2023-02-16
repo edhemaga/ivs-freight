@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
 import { EditTagsService } from 'src/app/core/services/shared/editTags.service';
+import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { SettingsCompanyService } from '../state/company-state/settings-company.service';
 
 @Component({
@@ -13,7 +14,8 @@ export class SettingsDocumentComponent implements OnInit {
     private destroy$ = new Subject<void>();
     constructor(
         private settingsCompanyService: SettingsCompanyService,
-        private tagsService: EditTagsService
+        private tagsService: EditTagsService,
+        private tableService: TruckassistTableService,
     ) {}
 
     public documents: any = [];
@@ -42,7 +44,6 @@ export class SettingsDocumentComponent implements OnInit {
     viewData: any[] = [];
     columns: any[] = [];
     resizeObserver: any;
-    tableContainerWidth: number = 1832;
 
     ngOnInit() {
         this.companyDocumentsGet();
@@ -57,7 +58,9 @@ export class SettingsDocumentComponent implements OnInit {
     observTableContainer() {
         this.resizeObserver = new ResizeObserver((entries) => {
             entries.forEach((entry) => {
-                this.tableContainerWidth = entry.contentRect.width;
+                this.tableService.sendCurrentSetTableWidth(
+                    entry.contentRect.width
+                );
             });
         });
 

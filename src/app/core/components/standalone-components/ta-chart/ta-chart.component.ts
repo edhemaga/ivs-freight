@@ -25,7 +25,13 @@ import { NFormatterPipe } from '../../../pipes/n-formatter.pipe';
     templateUrl: './ta-chart.component.html',
     styleUrls: ['./ta-chart.component.scss'],
     standalone: true,
-    imports: [CommonModule, AngularSvgIconModule, FormsModule, ChartsModule, NFormatterPipe]
+    imports: [
+        CommonModule,
+        AngularSvgIconModule,
+        FormsModule,
+        ChartsModule,
+        NFormatterPipe,
+    ],
 })
 export class TaChartComponent implements OnInit {
     @Input() chartConfig: any;
@@ -35,6 +41,7 @@ export class TaChartComponent implements OnInit {
     lineChartData: ChartDataSets[] = [];
     @ViewChild('hoverDataHolder') hoverDataHolder: ElementRef;
     @Output() hoverOtherChart: EventEmitter<any> = new EventEmitter();
+    @Output() chartHovered: EventEmitter<any> = new EventEmitter();
 
     @HostListener('window:resize', ['$event'])
     onResize(event) {
@@ -79,6 +86,22 @@ export class TaChartComponent implements OnInit {
     hoverChartLeft: number = 0;
     hoverColumnWidth: number = 0;
     hoverColumnHeight: number = 0;
+    toolTipData: any = [];
+    monthList: any = [
+        'JANUARY',
+        'FEBRUARY',
+        'MARCH',
+        'APRIL',
+        'MAY',
+        'JUNE',
+        'JULY',
+        'AUGUST',
+        'SEPTEMBER',
+        'OCTOBER',
+        'NOVEMBER',
+        'DECEMBER',
+    ];
+    hoverDateTitle: string = '';
 
     constructor(private ref: ChangeDetectorRef) {}
 
@@ -115,6 +138,7 @@ export class TaChartComponent implements OnInit {
             responsive: this.chartConfig['dontUseResponsive'] ? false : true,
             maintainAspectRatio: false,
             cutoutPercentage: 90,
+
             animation: {
                 duration: this.chartConfig['allowAnimation']
                     ? this.animationDuration
@@ -124,26 +148,23 @@ export class TaChartComponent implements OnInit {
                 if (elements?.length) {
                     this.hoveringStatus = true;
                     this.animationDuration = 0;
+                    this.lastHoveredIndex = elements[0]['_index'];
+                    if (this.toolTipData?.length) {
+                        this.setToolTipTitle(this.lastHoveredIndex);
+                    }
+                    if (this.legendAttributes?.length) {
+                        this.setChartLegendData(elements);
+                    }
+                    if (this.chartConfig['onHoverAnnotation']) {
+                        this.setHoverAnnotation(elements[0]['_index']);
+                    }
                     if (
-                        elements[0]['_index'] != this.lastHoveredIndex ||
-                        this.lineChartType == 'doughnut'
+                        this.lineChartType == 'doughnut' &&
+                        this.driversList?.length
                     ) {
-                        this.lastHoveredIndex = elements[0]['_index'];
-                        if (this.legendAttributes?.length) {
-                            this.setChartLegendData(elements);
-                        }
-                        if (this.chartConfig['onHoverAnnotation']) {
-                            this.setHoverAnnotation(elements[0]['_index']);
-                        }
-                        if (
-                            this.lineChartType == 'doughnut' &&
-                            this.driversList?.length
-                        ) {
-                            this.hoverDoughnut(elements, 'object');
-                        }
+                        this.hoverDoughnut(elements, 'object');
                     }
                 } else {
-                    this.ref.detectChanges();
                     if (!this.chartConfig['animationOnlyOnLoad']) {
                         this.animationDuration = 1000;
                     }
@@ -156,9 +177,15 @@ export class TaChartComponent implements OnInit {
                     ) {
                         this.hoverDoughnut(null);
                     }
-                    this.legendAttributes = JSON.parse(
-                        JSON.stringify(this.saveValues)
-                    );
+
+                    setTimeout(() => {
+                        if (!this.hoveringStatus) {
+                            this.legendAttributes = JSON.parse(
+                                JSON.stringify(this.saveValues)
+                            );
+                        }
+                        this.ref.detectChanges();
+                    }, 500);
                 }
             },
             annotation: {
@@ -201,10 +228,7 @@ export class TaChartComponent implements OnInit {
                 position: 'average',
                 intersect: false,
                 custom: (tooltipModel) => {
-                    if (
-                        this.gridHoverBackground &&
-                        tooltipModel?.dataPoints?.[0]
-                    ) {
+                    if (tooltipModel?.dataPoints?.[0]) {
                         this.showChartTooltip(tooltipModel.dataPoints[0].index);
                     }
                 },
@@ -443,7 +467,8 @@ export class TaChartComponent implements OnInit {
                             fontSize: 11,
                             fontFamily: 'Montserrat',
                             fontStyle: 'bold',
-                            autoSkip: false,
+                            autoSkip: true,
+                            autoSkipPadding: 12,
                             maxRotation: 0,
                             minRotation: 0,
                         },
@@ -487,6 +512,17 @@ export class TaChartComponent implements OnInit {
             }
             this.chartDataCheck(this.chartConfig['chartValues']);
         });
+    }
+
+    updateChartData(hideAnimation) {
+        this.chartConfig['dataProperties'].map((item, indx) => {
+            this.lineChartType = this.chartConfig['defaultType'];
+            this.lineChartLabels = this.chartConfig['dataLabels'];
+        });
+
+        this.animationDuration = !hideAnimation ? 1000 : 0;
+        this.setChartOptions();
+        this.ref.detectChanges();
     }
 
     setGradientBackground() {
@@ -592,9 +628,8 @@ export class TaChartComponent implements OnInit {
                 hasData = true;
             }
         });
-        if (hasData) {
-            this.noChartData = false;
-        }
+
+        this.noChartData = hasData ? false : true;
     }
 
     setChartLegendData(elements: any) {
@@ -1036,12 +1071,17 @@ export class TaChartComponent implements OnInit {
     }
 
     showChartTooltip(value) {
+        if (this.toolTipData?.length) {
+            this.setToolTipTitle(value);
+            this.setChartLegendData(this.chart.chart['tooltip']._active);
+        }
         if (this.chartConfig['hoverOtherChart']) {
             this.hoverOtherChart.emit(value);
             return false;
         }
         this.animationDuration = 0;
         this.hoveringStatus = true;
+        this.chartHovered.emit(true);
         const canvas = this.chart.chart.canvas;
         const ctx = this.chart.chart.ctx;
 
@@ -1130,9 +1170,10 @@ export class TaChartComponent implements OnInit {
         this.showHoverData = false;
         this.hoveringStatus = false;
 
-        const xAxis = this.chart.chart['scales']['x-axis-0'];
+        const xAxis = this.chart?.chart['scales']['x-axis-0'];
 
         if (
+            xAxis &&
             xAxis['_gridLineItems'] &&
             this.axesProperties?.horizontalAxes?.showGridLines
         ) {
@@ -1145,5 +1186,35 @@ export class TaChartComponent implements OnInit {
                 }
             });
         }
+    }
+
+    setToolTipTitle(index) {
+        if (this.toolTipData[index].day && this.toolTipData[index].month) {
+            this.hoverDateTitle =
+                this.toolTipData[index].day +
+                ' ' +
+                this.monthList[this.toolTipData[index].month - 1];
+        } else {
+            this.hoverDateTitle =
+                this.monthList[this.toolTipData[index].month - 1] +
+                ' ' +
+                this.toolTipData[index].year;
+        }
+    }
+
+    detailsTimePeriod(name) {
+        return name == '1M'
+            ? 1
+            : name == '3M'
+            ? 2
+            : name == '6M'
+            ? 3
+            : name == '1Y'
+            ? 4
+            : name == 'YTD'
+            ? 5
+            : name == 'ALL'
+            ? 6
+            : 1;
     }
 }

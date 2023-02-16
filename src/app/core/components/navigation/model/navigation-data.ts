@@ -539,7 +539,7 @@ export const settings: Settings[] = [
             {
                 name: 'Settings',
                 image: 'assets/svg/common/ic_settings.svg',
-                route: '/company',
+                route: '/settings',
                 activeRouteFlegId: 34,
             },
             {

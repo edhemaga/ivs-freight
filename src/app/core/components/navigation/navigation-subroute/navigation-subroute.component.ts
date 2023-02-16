@@ -33,7 +33,7 @@ import {
         test('test'),
     ],
     standalone: true,
-    imports: [CommonModule, FormsModule, RouterModule]
+    imports: [CommonModule, FormsModule, RouterModule],
 })
 export class NavigationSubrouteComponent implements OnChanges {
     @Input() subroute: Navigation;

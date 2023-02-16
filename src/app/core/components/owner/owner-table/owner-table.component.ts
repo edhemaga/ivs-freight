@@ -6,7 +6,10 @@ import { ModalService } from '../../shared/ta-modal/modal.service';
 import { OwnerActiveQuery } from '../state/owner-active-state/owner-active.query';
 import { OwnerActiveState } from '../state/owner-active-state/owner-active.store';
 import { OwnerInactiveQuery } from '../state/owner-inactive-state/owner-inactive.query';
-import { OwnerInactiveState } from '../state/owner-inactive-state/owner-inactive.store';
+import {
+    OwnerInactiveState,
+    OwnerInactiveStore,
+} from '../state/owner-inactive-state/owner-inactive.store';
 import { OwnerTService } from '../state/owner.service';
 import { formatPhonePipe } from '../../../pipes/formatPhone.pipe';
 import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
@@ -31,10 +34,10 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
     columns: any[] = [];
     selectedTab = 'active';
     activeViewMode: string = 'List';
-    tableContainerWidth: number = 0;
     resizeObserver: ResizeObserver;
     ownerActive: OwnerActiveState[] = [];
     ownerInactive: OwnerInactiveState[] = [];
+    inactiveTabClicked: boolean = false;
     backFilterQuery = {
         active: 1,
         companyOwnerId: undefined,
@@ -58,7 +61,8 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
         private ownerActiveQuery: OwnerActiveQuery,
         private ownerInactiveQuery: OwnerInactiveQuery,
         private ownerService: OwnerTService,
-        private phonePipe: formatPhonePipe
+        private phonePipe: formatPhonePipe,
+        private ownerInactiveStore: OwnerInactiveStore,
     ) {}
     ngOnInit(): void {
         this.sendOwnerData();
@@ -123,6 +127,31 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
                             this.sendOwnerData();
                         }
                     }
+                }
+            });
+
+        // On Set Tollbar Filter
+        this.tableService.currentSetTableFilter
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res: any) => {
+                this.backFilterQuery.active =
+                    this.selectedTab === 'active' ? 1 : 0;
+                this.backFilterQuery.pageIndex = 1;
+
+                // TruckTypeFilter
+                if (
+                    res?.filterType === 'truckTypeFilter' ||
+                    res?.type === 'truckTypeFilter'
+                ) {
+                    this.backFilterQuery.truckTypeIds =
+                        res?.action === 'Set' ? res.queryParams : undefined;
+                }
+
+                // Set Filter
+                if (this.backFilterQuery.truckTypeIds) {
+                    this.ownerBackFilter(this.backFilterQuery);
+                } else {
+                    this.sendOwnerData();
                 }
             });
 
@@ -258,7 +287,7 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
     observTableContainer() {
         this.resizeObserver = new ResizeObserver((entries) => {
             entries.forEach((entry) => {
-                this.tableContainerWidth = entry.contentRect.width;
+                this.tableService.sendCurrentSetTableWidth(entry.contentRect.width);
             });
         });
 
@@ -365,11 +394,6 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
             this.viewData = this.viewData.map((data: any) => {
                 return this.mapOwnerData(data);
             });
-
-            // For Testing
-            // for (let i = 0; i < 300; i++) {
-            //   this.viewData.push(this.viewData[0]);
-            // }
         } else {
             this.viewData = [];
         }
@@ -394,6 +418,8 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
             return this.ownerActive?.length ? this.ownerActive : [];
         } else if (dataType === 'inactive') {
+            this.inactiveTabClicked = true;
+
             this.ownerInactive = this.ownerInactiveQuery.getAll();
 
             return this.ownerInactive?.length ? this.ownerInactive : [];
@@ -464,10 +490,32 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
             this.selectedTab = event.tabData.field;
 
             this.backFilterQuery.pageIndex = 1;
-            this.backFilterQuery.active =
-                    this.selectedTab === 'active' ? 1 : 0;
+            this.backFilterQuery.active = this.selectedTab === 'active' ? 1 : 0;
 
-            this.sendOwnerData();
+            if (this.selectedTab === 'inactive' && !this.inactiveTabClicked) {
+                this.ownerService
+                    .getOwner(
+                        0,
+                        undefined,
+                        undefined,
+                        undefined,
+                        undefined,
+                        undefined,
+                        undefined,
+                        1,
+                        25
+                    )
+                    .pipe(takeUntil(this.destroy$))
+                    .subscribe((ownerPagination: GetOwnerListResponse) => {
+                        this.ownerInactiveStore.set(
+                            ownerPagination.pagination.data
+                        );
+
+                        this.sendOwnerData();
+                    });
+            } else {
+                this.sendOwnerData();
+            }
         } else if (event.action === 'view-mode') {
             this.activeViewMode = event.mode;
         }
@@ -513,9 +561,9 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.destroy$.next();
         this.destroy$.complete();
         this.tableService.sendActionAnimation({});
-        this.resizeObserver.unobserve(
-            document.querySelector('.table-container')
-        );
+        // this.resizeObserver.unobserve(
+        //     document.querySelector('.table-container')
+        // );
         this.resizeObserver.disconnect();
     }
 }

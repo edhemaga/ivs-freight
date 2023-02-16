@@ -3,7 +3,7 @@ import { ID } from '@datorama/akita';
 import { HttpClient } from '@angular/common/http';
 import { TelematicStateStore } from './telematic-state.store';
 import { TelematicState } from './telematic-state.model';
-import { takeUntil, Subject, Observable, tap, BehaviorSubject } from 'rxjs';
+import { takeUntil, Subject, Observable, tap, BehaviorSubject, of } from 'rxjs';
 import { GpsServiceService } from '../../../../global/services/gps-service.service';
 import {
     TelematicsService,
@@ -53,9 +53,49 @@ export class TelematicStateService implements OnDestroy {
         return this.telematicsService.apiTelematicsDataAllGet();
     }
 
-    getUnassignedGpsData(request) {
+    getAllUnassignedGpsData(request) {
         // devices not assigned to any company, truck or a trailer
         return this.telematicsService.apiTelematicsUnassignAllGet(request);
+    }
+
+    getCompanyUnassignedGpsData(request) {
+        // devices assigned to company, but not to a truck or a trailer
+        return this.telematicsService.apiTelematicsUnassignCompanyGet(request);
+    }
+
+    getUnassignedClusters(
+        northEastLatitude?: number,
+        northEastLongitude?: number,
+        southWestLatitude?: number,
+        southWestLongitude?: number,
+        zoomLevel?: number,
+        addedNew?: boolean,
+        pageIndex?: number,
+        pageSize?: number,
+        sort?: string,
+        search?: string,
+        search1?: string,
+        search2?: string
+    ) {
+        // return this.telematicsService.apiTelematicsClustersGet(
+        //     null,
+        //     null,
+        //     null,
+        //     northEastLatitude,
+        //     northEastLongitude,
+        //     southWestLatitude,
+        //     southWestLongitude,
+        //     zoomLevel,
+        //     addedNew,
+        //     pageIndex,
+        //     pageSize,
+        //     null,
+        //     sort,
+        //     search,
+        //     search1,
+        //     search2
+        // );
+        return of(null);
     }
 
     getDeviceData(deviceId) {

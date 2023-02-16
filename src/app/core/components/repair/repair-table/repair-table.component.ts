@@ -55,7 +55,6 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
     repairTrucks: RepairTruckState[] = [];
     repairTrailers: RepairTrailerState[] = [];
     repairShops: ShopState[] = [];
-    tableContainerWidth: number = 0;
     resizeObserver: ResizeObserver;
 
     backFilterQuery = {
@@ -305,7 +304,9 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
     observTableContainer() {
         this.resizeObserver = new ResizeObserver((entries) => {
             entries.forEach((entry) => {
-                this.tableContainerWidth = entry.contentRect.width;
+                this.tableService.sendCurrentSetTableWidth(
+                    entry.contentRect.width
+                );
             });
         });
 
@@ -989,9 +990,9 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
         this.destroy$.complete();
         this.tableService.sendActionAnimation({});
         this.tableService.sendCurrentSwitchOptionSelected(null);
-        this.resizeObserver.unobserve(
-            document.querySelector('.table-container')
-        );
+        // this.resizeObserver.unobserve(
+        //     document.querySelector('.table-container')
+        // );
         this.resizeObserver.disconnect();
     }
 
