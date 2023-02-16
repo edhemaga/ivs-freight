@@ -16,8 +16,8 @@
     display: grid;
     grid-template-columns: 150px 150px;
     column-gap: 60px;
-    padding: 0 4px;
-    margin-top: -6px;
+    //padding: 0 4px;
+    //margin-top: -6px;
     .addition-template-item {
         display: flex;
         flex-direction: column;
@@ -81,8 +81,8 @@
     grid-template-columns: 150px 150px;
     grid-column-gap: 60px;
     column-gap: 60px;
-    padding: 0 4px;
-    margin-top: -6px;
+    //padding: 0 4px;
+    //margin-top: -6px;
     .invoice-ageing-template-item {
         display: flex;
         flex-direction: column;

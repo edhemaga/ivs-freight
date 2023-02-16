@@ -74,7 +74,7 @@
                         <span
                             [ngClass]="{ 'card-close-title': !isCardOpen && !forcedOpen}"
                             class="open-name"
-                            *ngIf="(!isCardOpen && expDateClose && !forcedOpen) || testDate"
+                            *ngIf="( (!isCardOpen && expDateClose && !forcedOpen) || testDate ) && !notExpired"
                             ><span *ngIf="!isDeactivated && !testDate"
                                 >Expired on {{ expDateClose }}</span
                             >
@@ -84,6 +84,9 @@
                             <span *ngIf="testDate && !isCardOpen">{{
                                 testDate
                             }}</span>
+                        </span>
+                        <span *ngIf="!isCardOpen && !forcedOpen && notExpired" >
+                            {{expDateClose}}
                         </span>
                         <span *ngIf="cardSecondResult" 
                             class="second-name resultHolder"
