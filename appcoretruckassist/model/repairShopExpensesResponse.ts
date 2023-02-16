@@ -9,14 +9,12 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { RepairShopExpensesChartResponse } from './repairShopExpensesChartResponse';
 
 
-export interface FileResponse { 
-    fileId?: number;
-    fileName?: string | null;
-    url?: string | null;
-    fileSize?: number | null;
-    tags?: Array<string> | null;
-    tagGeneratedByUser?: boolean;
+export interface RepairShopExpensesResponse { 
+    cost?: number | null;
+    repair?: number | null;
+    repairShopExpensesChartResponse?: Array<RepairShopExpensesChartResponse> | null;
 }
 

@@ -562,6 +562,8 @@ model/repairResponse.ts
 model/repairResponsePagination.ts
 model/repairServiceTypeResponse.ts
 model/repairShopContactResponse.ts
+model/repairShopExpensesChartResponse.ts
+model/repairShopExpensesResponse.ts
 model/repairShopListResponse.ts
 model/repairShopMinimalListResponse.ts
 model/repairShopMinimalResponse.ts
@@ -675,9 +677,13 @@ model/truckAccidentResponse.ts
 model/truckAutocompleteModelResponse.ts
 model/truckDispatchModalResponse.ts
 model/truckEngineModelResponse.ts
+model/truckExpensesChartResponse.ts
+model/truckExpensesResponse.ts
 model/truckFilterListResponse.ts
 model/truckFilterResponse.ts
 model/truckFilterResponsePagination.ts
+model/truckFuelConsumptionChartResponse.ts
+model/truckFuelConsumptionResponse.ts
 model/truckGrossWeightResponse.ts
 model/truckListResponse.ts
 model/truckMakeResponse.ts
@@ -685,6 +691,8 @@ model/truckMinimalListResponse.ts
 model/truckMinimalResponse.ts
 model/truckMinimalResponsePagination.ts
 model/truckResponse.ts
+model/truckRevenueChartResponse.ts
+model/truckRevenueResponse.ts
 model/truckShortResponse.ts
 model/truckShortResponsePagination.ts
 model/truckTypeFilterResponse.ts

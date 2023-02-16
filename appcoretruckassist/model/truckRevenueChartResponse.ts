@@ -11,12 +11,11 @@
  */
 
 
-export interface FileResponse { 
-    fileId?: number;
-    fileName?: string | null;
-    url?: string | null;
-    fileSize?: number | null;
-    tags?: Array<string> | null;
-    tagGeneratedByUser?: boolean;
+export interface TruckRevenueChartResponse { 
+    miles?: number | null;
+    revenue?: number | null;
+    day?: number | null;
+    month?: number | null;
+    year?: number | null;
 }
 
