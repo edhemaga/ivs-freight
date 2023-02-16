@@ -118,8 +118,9 @@
         transform: translate(-50%, 0%) scale(0.5) !important;
     }
 
-    .hide-marker {
+    .hide-marker, &.hide-marker {
         opacity: 0;
+        pointer-events: none;
     }
 
     @for $i from 0 through 999 {
@@ -356,6 +357,7 @@
     .header-text-container {
         display: flex;
         height: 14px;
+        user-select: none;
     }
 
     svg-icon {
@@ -799,4 +801,13 @@
 
 .hidden-row {
     opacity: 0.4;
+}
+
+.disable-select {
+    user-select: none;
+}
+
+.motion-tooltip {
+    position: relative;
+    top: 5px;
 }
