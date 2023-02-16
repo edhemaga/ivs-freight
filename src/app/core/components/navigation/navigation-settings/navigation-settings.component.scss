@@ -22,10 +22,22 @@
         border-radius: 3px;
         bottom: 3px;
     }
+
     .nav-item-active-box-active {
         width: 238px;
         left: 0px;
         animation: magiclinetransition 0.5s forwards;
+    }
+    .animation-backwards {
+        animation: animateBackground 0.25s forwards;
+    }
+    @keyframes animateBackground {
+        from {
+            background-color: $nav-dark;
+        }
+        to {
+            background-color: $nav-hover-ligh;
+        }
     }
     @keyframes magiclinetransition {
         from {
@@ -206,7 +218,36 @@
         }
     }
 }
+
+.nav-width {
+    width: 240px;
+    overflow: hidden;
+    &:hover {
+        .image-footer {
+            svg {
+                path {
+                    fill: $nav-white;
+                }
+            }
+        }
+
+        p {
+            span {
+                color: $nav-white;
+            }
+            .nav-item-arrow {
+                svg {
+                    path {
+                        fill: $nav-white;
+                    }
+                }
+            }
+        }
+    }
+}
 .active-link {
+    width: 240px;
+    overflow: hidden;
     .item-name {
         color: $nav-active-lighter;
         font-weight: 700;
@@ -237,32 +278,6 @@
                         path {
                             fill: $nav-white;
                         }
-                    }
-                }
-            }
-        }
-    }
-}
-.nav-width {
-    width: 240px;
-    overflow: hidden;
-    &:hover {
-        .image-footer {
-            svg {
-                path {
-                    fill: $nav-white;
-                }
-            }
-        }
-
-        p {
-            span {
-                color: $nav-white;
-            }
-            .nav-item-arrow {
-                svg {
-                    path {
-                        fill: $nav-white;
                     }
                 }
             }

@@ -4,8 +4,10 @@ import {
     Component,
     EventEmitter,
     Input,
+    OnChanges,
     OnInit,
     Output,
+    SimpleChanges,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -30,7 +32,7 @@ import { TooltipSlideComponent } from '../../standalone-components/tooltip-slide
         DropDownAnimation,
     ],
 })
-export class NavigationSettingsComponent implements OnInit {
+export class NavigationSettingsComponent implements OnInit, OnChanges {
     @Input() isNavigationHovered: boolean = false;
     @Input() isUserPanelOpen: boolean = false;
     @Input() isSettingsPanelOpen = false;
@@ -44,6 +46,7 @@ export class NavigationSettingsComponent implements OnInit {
     @Output() activatedSettingsRoute = new EventEmitter<any>();
     public footer: FooterData[] = settings;
     public showToolTip: boolean;
+    public magicBoxAnime: boolean = true;
     constructor(
         private router: Router,
         private navigationService: NavigationService
@@ -51,11 +54,20 @@ export class NavigationSettingsComponent implements OnInit {
     ngOnInit(): void {
         this.navigationService.navigationDropdownActivation$.subscribe(
             (res) => {
-                if (res.name === 'Settings') {
+                if (res.name === 'Company') {
                     this.isSettingsPanelOpen = res.type;
                 }
             }
         );
+    }
+    ngOnChanges(changes: SimpleChanges): void {
+        if (changes.hasOwnProperty('isNavigationHovered')) {
+            const prev = changes.isNavigationHovered;
+
+            if (changes && prev.previousValue != undefined) {
+                this.magicBoxAnime = changes.isNavigationHovered.currentValue;
+            }
+        }
     }
     routeAction(route) {
         this.navigationService.setValueWhichNavIsOpen(false);
@@ -79,6 +91,6 @@ export class NavigationSettingsComponent implements OnInit {
         });
     }
     public changeRouteSettings(subroute: Settings): void {
-        this.router.navigate([`/settings${subroute.route}`]);
+        this.router.navigate([`/company${subroute.route}`]);
     }
 }
