@@ -4,12 +4,10 @@ import {
     ElementRef,
     EventEmitter,
     Input,
-    OnChanges,
     OnDestroy,
     OnInit,
     Output,
     Self,
-    SimpleChanges,
     ViewChild,
     ViewEncapsulation,
 } from '@angular/core';
@@ -29,7 +27,6 @@ import {
 } from '../../../utils/methods.calculations';
 import { FormService } from 'src/app/core/services/form/form.service';
 import { ImageBase64Service } from '../../../utils/base64.image';
-import { NotificationService } from '../../../services/notification/notification.service';
 @Component({
     selector: 'app-ta-input',
     templateUrl: './ta-input.component.html',
@@ -42,10 +39,8 @@ import { NotificationService } from '../../../services/notification/notification
     encapsulation: ViewEncapsulation.None,
 })
 export class TaInputComponent
-    implements OnInit, OnChanges, OnDestroy, ControlValueAccessor
+    implements OnInit, OnDestroy, ControlValueAccessor
 {
-    private destroy$ = new Subject<void>();
-
     @ViewChild('input', { static: true }) public input: ElementRef;
     @ViewChild('span1', { static: false }) span1: ElementRef;
     @ViewChild('span2', { static: false }) span2: ElementRef;
@@ -54,7 +49,6 @@ export class TaInputComponent
     @ViewChild('t2') t2: any;
     @ViewChild(NgbPopover) ngbMainPopover: NgbPopover;
 
-    @Input() inputConfig: ITaInput;
     @Input() incorrectValue: boolean;
     @Input() selectedDropdownLabelColor: any;
 
@@ -74,9 +68,11 @@ export class TaInputComponent
     @Output('clear') clearInputEvent: EventEmitter<boolean> =
         new EventEmitter<any>();
 
+    public _inputConfig: ITaInput = null;
     public focusInput: boolean = false;
     public touchedInput: boolean = false;
 
+    // Password
     public togglePassword: boolean = false;
 
     public showDateInput: boolean = false;
@@ -106,12 +102,14 @@ export class TaInputComponent
 
     // Input Commands
     public isVisibleCommands: boolean = false;
+
     // Edit Input
     public editInputMode: boolean = false;
 
     // Input Selection
     public inputSelection: boolean = false;
 
+    // Bluring
     public focusBlur: any;
 
     // Price Separator
@@ -120,10 +118,16 @@ export class TaInputComponent
     public originPriceSeparatorLimit: number;
     public isDotDeleted: boolean = false;
 
+    // DatePicker
     public wholeInputSelection: any;
 
     // Timeout
     public timeoutCleaner: any = null;
+    public inputCommandsTimeout = null;
+    public passwordTimeout = null;
+
+    // Destroy
+    private destroy$ = new Subject<void>();
 
     constructor(
         @Self() public superControl: NgControl,
@@ -133,24 +137,65 @@ export class TaInputComponent
         private thousandSeparatorPipe: TaThousandSeparatorPipe,
         private refChange: ChangeDetectorRef,
         private formService: FormService,
-        public imageBase64Service: ImageBase64Service,
-        private notificationService: NotificationService
+        public imageBase64Service: ImageBase64Service
     ) {
         this.superControl.valueAccessor = this;
     }
 
-    ngOnChanges(changes: SimpleChanges): void {
-        if (changes.inputConfig?.currentValue?.multipleInputValues?.options) {
-            this.inputConfig.multipleInputValues.options =
-                changes.inputConfig.currentValue?.multipleInputValues?.options;
+    @Input() set inputConfig(config: ITaInput) {
+        this._inputConfig = config;
+
+        // Price Separator
+        if (this._inputConfig.priceSeparator) {
+            this.originPriceSeparatorLimit =
+                this._inputConfig.priceSeparatorLimitation;
+        }
+
+        // DatePicker
+        if (
+            this._inputConfig.name === 'datepicker' ||
+            this._inputConfig.name === 'timepicker'
+        ) {
+            this.setTimePickerTime();
+            this.calendarService.dateChanged
+                .pipe(takeUntil(this.destroy$))
+                .subscribe((date) => {
+                    if (!this._inputConfig.isDisabled) {
+                        this.setTimeDateInput(date);
+                        this.t2.close();
+                    }
+                });
+        }
+
+        // When add mode in dropdown
+        if (
+            this._inputConfig.commands?.active &&
+            !this._inputConfig.isDisabled
+        ) {
+            if (this._inputConfig.commands.type === 'confirm-cancel') {
+                this._inputConfig.blackInput = true;
+                this.isVisibleCommands = true;
+                this.focusInput = true;
+                this.input.nativeElement.focus();
+            }
+        }
+
+        // Auto Focus First Input
+        if (this._inputConfig.autoFocus && !this.getSuperControl?.value) {
+            // this.timeoutCleaner = setTimeout(() => {
+            // this.onFocus();
+            this.input.nativeElement.focus();
+            this.focusInput = true;
+            this._inputConfig.autoFocus = false;
+            // }, 0);
         }
     }
 
     setTimePickerTime() {
-        if (this.inputConfig.name === 'timepicker')
+        if (this._inputConfig.name === 'timepicker')
             this.dateTimeInputDate = new Date(
                 moment().format('MM/DD/YYYY') +
-                    (this.inputConfig?.isFromDate ? ' 12:15' : ' 12:00')
+                    (this._inputConfig?.isFromDate ? ' 12:15' : ' 12:00')
             );
     }
 
@@ -161,78 +206,6 @@ export class TaInputComponent
         this.timeoutCleaner = setTimeout(() => {
             $('.input-label').removeClass('no-transition');
         }, 1000);
-
-        if (this.inputConfig.priceSeparator) {
-            this.originPriceSeparatorLimit =
-                this.inputConfig.priceSeparatorLimitation;
-        }
-
-        // DatePicker
-        if (
-            this.inputConfig.name === 'datepicker' ||
-            this.inputConfig.name === 'timepicker'
-        ) {
-            this.setTimePickerTime();
-            this.calendarService.dateChanged
-                .pipe(takeUntil(this.destroy$))
-                .subscribe((date) => {
-                    if (!this.inputConfig.isDisabled) {
-                        this.setTimeDateInput(date);
-                        this.t2.close();
-                    }
-                });
-        }
-
-        // Dropdown add mode
-        if (
-            (this.inputConfig.isDropdown || this.inputConfig.dropdownLabel) &&
-            !this.inputConfig.isDisabled
-        ) {
-            this.inputService.dropDownAddMode$
-                .pipe(takeUntil(this.destroy$))
-                .subscribe(
-                    (data: { action: boolean; inputConfig: ITaInput }) => {
-                        if (data.action) {
-                            this.dropdownToggler = false;
-
-                            this.timeoutCleaner = setTimeout(() => {
-                                this.inputConfig = data.inputConfig;
-                                this.setInputCursorAtTheEnd(
-                                    this.input.nativeElement
-                                );
-                                this.isVisibleCommands = true;
-                            }, 300);
-                        }
-                    }
-                );
-
-            // Dropdown select item with enter
-            this.inputService.dropDownItemSelectedOnEnter$
-                .pipe(takeUntil(this.destroy$))
-                .subscribe(
-                    (data: { action: boolean; inputConfig: ITaInput }) => {
-                        if (data.action) {
-                            this.dropdownToggler = false;
-                            this.focusInput = false;
-                            this.input.nativeElement.blur();
-                        }
-                    }
-                );
-        }
-
-        // Auto Focus First Input
-        if (this.inputConfig.autoFocus && !this.getSuperControl.value) {
-            this.timeoutCleaner = setTimeout(() => {
-                if (
-                    this.inputConfig.name !== 'datepicker' &&
-                    this.inputConfig.name !== 'timepicker'
-                ) {
-                    this.onFocus();
-                }
-
-                this.input.nativeElement.focus();
-            }, 0);
-        }
 
         // Reset Inputs
         this.inputResetService.resetInputSubject
@@ -255,6 +228,249 @@ export class TaInputComponent
             });
     }
 
+    get getSuperControl() {
+        return this.superControl.control;
+    }
+
+    public writeValue(obj: any): void {
+        this.changeInput.emit(obj);
+        if (
+            this._inputConfig.name === 'datepicker' ||
+            this._inputConfig.name === 'timepicker'
+        ) {
+            if (obj) {
+                this.timeoutCleaner = setTimeout(() => {
+                    this.setTimeDateInput(obj);
+                }, 300);
+            } else {
+                this.input.nativeElement.value = obj;
+                this.resetDateTimeInputs();
+            }
+        } else {
+            this.input.nativeElement.value = obj;
+        }
+    }
+
+    public registerOnChange(fn: any): void {
+        this.onChange = fn;
+    }
+
+    public onChange(_: any): void {}
+
+    public registerOnTouched(_: any): void {}
+
+    public setDisabledState?(_: boolean): void {}
+
+    public onFocus(e?): void {
+        this.focusInputEvent.emit(true);
+
+        // DropDown Label
+        if (this._inputConfig.dropdownLabel) {
+            this._inputConfig.placeholderIcon = 'ic_dynamic_focus_label.svg';
+        }
+
+        // Datepicker
+        if (
+            (this._inputConfig.name === 'datepicker' ||
+                this._inputConfig.name === 'timepicker') &&
+            !this._inputConfig.isDisabled
+        ) {
+            clearTimeout(this.dateTimeMainTimer);
+            clearTimeout(this.focusBlur);
+            this.showDateInput = true;
+            if (
+                (this.selectionInput == -1 &&
+                    e?.target?.nodeName === 'INPUT') ||
+                e?.relatedTarget?.nodeName === 'INPUT' ||
+                e?.relatedTarget == null
+            ) {
+                this.preventBlur = true;
+                this.holder1.nativeElement.focus();
+                this.setSpanSelection(this.holder1.nativeElement);
+                this.selectionInput = -1;
+            }
+
+            this.t2.close();
+        }
+
+        // Dropdown
+        if (this._inputConfig.isDropdown) {
+            this.dropdownToggler = true;
+            this.inputService.dropDownShowHide$.next(true);
+        }
+
+        // Commands
+        if (this._inputConfig.commands && !this._inputConfig.isDisabled) {
+            if (this._inputConfig.commands.type === 'months') {
+                this._inputConfig.blackInput = true;
+                this._inputConfig.commands.active = true;
+                this.isVisibleCommands = true;
+            }
+        }
+
+        this.focusInput = true;
+    }
+
+    public onBlur(e?): void {
+        // DropDown Label
+        if (this._inputConfig.dropdownLabel && !this.editInputMode) {
+            this._inputConfig.placeholderIcon = 'ic_dynamic_label.svg';
+        }
+
+        // Edit Input
+        if (this.editInputMode) {
+            this.getSuperControl.setErrors({ invalid: true });
+            return;
+        }
+
+        // Datepicker;
+        if (this.preventBlur) {
+            this.preventBlur = false;
+            return;
+        }
+
+        // Bank
+        if (this._inputConfig.name === 'Input Dropdown Bank Name') {
+            this._inputConfig.blackInput = false;
+        }
+
+        // Price Separator - remove dot on focus out
+        if (
+            this._inputConfig.priceSeparator &&
+            this.getSuperControl?.value?.indexOf('.') >= 0
+        ) {
+            // 4.1. Check for Dot position
+            this.hasDecimalIndex = this.getSuperControl.value.indexOf('.');
+
+            let integerPart = this.thousandSeparatorPipe.transform(
+                this.getSuperControl.value
+                    .slice(0, this.hasDecimalIndex)
+                    .slice(0, this._inputConfig.priceSeparatorLimitation)
+            );
+
+            let decimalPart = this.getSuperControl.value.slice(
+                this.hasDecimalIndex + 1
+            );
+
+            // 4.4. Get only two numbers of decimal part
+            decimalPart = decimalPart.slice(0, 2);
+
+            if (!decimalPart) {
+                this.hasDecimalIndex = -1;
+                this.getSuperControl.patchValue(integerPart);
+                this.numberOfPoints = 0;
+            }
+        }
+
+        // Dropdown
+        if (this._inputConfig.isDropdown || this._inputConfig.dropdownLabel) {
+            if (
+                (this._inputConfig.name === 'datepicker' ||
+                    this._inputConfig.name === 'timepicker') &&
+                !this._inputConfig.isDisabled
+            ) {
+                if (e?.target?.nodeName === 'INPUT') {
+                    return;
+                }
+                // Datepicker
+                if (
+                    this._inputConfig.name === 'datepicker' ||
+                    this._inputConfig.name === 'timepicker'
+                ) {
+                    this.focusBlur = setTimeout(() => {
+                        this.blurOnDateTime();
+                    }, 100);
+                } else {
+                    this.focusInput = false;
+                }
+            } else {
+                this.blurOnDropDownArrow();
+            }
+        }
+        // Normal, without dropdown
+        else {
+            let selection = window.getSelection();
+            selection.removeAllRanges();
+
+            // Input Commands
+            if (this._inputConfig.commands) {
+                this.blurOnCommands();
+            }
+
+            // Password
+            if (this._inputConfig.type === 'password') {
+                console.log('izvrsava li se ?');
+                this.blurOnPassword();
+            }
+            // Normal focus out
+            else {
+                this.focusInput = false;
+            }
+        }
+
+        this.blurInput.emit(true);
+        this.inputService.onFocusOutInput$.next(true);
+        this.touchedInput = true;
+    }
+
+    private blurOnCommands() {
+        this.inputCommandsTimeout = setTimeout(() => {
+            this._inputConfig.commands.active = false;
+            this.isVisibleCommands = false;
+            this._inputConfig.blackInput = false;
+            this.refChange.detectChanges();
+        }, 200);
+    }
+
+    public blurOnPassword() {
+        this.passwordTimeout = setTimeout(() => {
+            this.focusInput = false;
+            this.input.nativeElement.blur();
+
+            console.log('focusinput: ', this.focusInput);
+            this.refChange.detectChanges();
+        }, 200);
+    }
+
+    private blurOnDropDownArrow() {
+        this.timeoutCleaner = setTimeout(() => {
+            this.dropdownToggler = false;
+            this.focusInput = false;
+            this.inputService.dropDownShowHide$.next(false);
+        }, 150);
+    }
+
+    public clearInput(event: Event): void {
+        event.preventDefault();
+        event.stopPropagation();
+        // Clear whole input
+        if (this._inputConfig.removeInput) {
+            this.clearInputEvent.emit(true);
+            return;
+        }
+        // Clear value
+        if (this._inputConfig.incorrectInput) {
+            this.incorrectValue = !this.incorrectValue;
+            this.incorrectInput.emit(this.incorrectValue);
+        } else {
+            this.input.nativeElement.value = null;
+            this.getSuperControl.setValue(null);
+            this.numberOfConsecutivelySpaces = 0;
+            this.numberOfConsecutivelyPoints = 0;
+            this.numberOfPoints = 0;
+            this.oneSpaceOnlyCounter = 0;
+            this._inputConfig.dropdownImageInput = null;
+            this.touchedInput = true;
+            this.focusInput = false;
+            if (['datepicker', 'timepicker'].includes(this._inputConfig.name)) {
+                this.resetDateTimeInputs();
+            }
+
+            this.inputService.onClearInput$.next(true);
+            this.clearInputEvent.emit(true);
+        }
+    }
+
     resetForms() {
         this.touchedInput = false;
         this.getSuperControl.patchValue(null);
@@ -265,7 +481,7 @@ export class TaInputComponent
 
     public setTimeDateInput(date) {
         let text, dateFormat, timeFormat;
-        if (this.inputConfig.name === 'datepicker') {
+        if (this._inputConfig.name === 'datepicker') {
             text = moment(new Date(date)).format('MM/DD/YY');
             dateFormat = text.split('/');
         } else {
@@ -290,227 +506,13 @@ export class TaInputComponent
         this.showDateInput = true;
     }
 
-    get getSuperControl() {
-        return this.superControl.control;
-    }
-
-    public writeValue(obj: any): void {
-        this.changeInput.emit(obj);
-        if (
-            this.inputConfig.name === 'datepicker' ||
-            this.inputConfig.name === 'timepicker'
-        ) {
-            if (obj) {
-                this.timeoutCleaner = setTimeout(() => {
-                    this.setTimeDateInput(obj);
-                }, 300);
-            } else {
-                this.input.nativeElement.value = obj;
-                this.resetDateTimeInputs();
-            }
-        } else {
-            this.input.nativeElement.value = obj;
-        }
-    }
-
-    public registerOnChange(fn: any): void {
-        this.onChange = fn;
-    }
-
-    public onChange(_: any): void {}
-
-    public registerOnTouched(_: any): void {}
-
-    public setDisabledState?(isDisabled: boolean): void {
-        this.inputConfig.isDisabled = isDisabled;
-    }
-
-    public onFocus(e?): void {
-        this.focusInputEvent.emit(true);
-
-        // Input Commands
-        if (this.inputConfig.commands?.active) {
-            this.isVisibleCommands = true;
-        }
-
-        // DropDown Label
-        if (this.inputConfig.dropdownLabel) {
-            this.inputConfig.placeholderIcon = 'ic_dynamic_focus_label.svg';
-        }
-
-        // Datepicker
-        if (
-            (this.inputConfig.name === 'datepicker' ||
-                this.inputConfig.name === 'timepicker') &&
-            !this.inputConfig.isDisabled
-        ) {
-            clearTimeout(this.dateTimeMainTimer);
-            clearTimeout(this.focusBlur);
-            this.showDateInput = true;
-            if (
-                (this.selectionInput == -1 &&
-                    e?.target?.nodeName === 'INPUT') ||
-                e?.relatedTarget?.nodeName === 'INPUT' ||
-                e?.relatedTarget == null
-            ) {
-                this.preventBlur = true;
-                this.holder1.nativeElement.focus();
-                this.setSpanSelection(this.holder1.nativeElement);
-                this.selectionInput = -1;
-            }
-
-            this.t2.close();
-        }
-
-        // Dropdown
-        if (this.inputConfig.isDropdown) {
-            this.dropdownToggler = true;
-            this.inputService.dropDownShowHide$.next(true);
-        }
-
-        this.focusInput = true;
-    }
-
-    public onBlur(e?): void {
-        // DropDown Label
-        if (this.inputConfig.dropdownLabel && !this.editInputMode) {
-            this.inputConfig.placeholderIcon = 'ic_dynamic_label.svg';
-        }
-
-        // Edit Input
-        if (this.editInputMode) {
-            this.getSuperControl.setErrors({ invalid: true });
-            return;
-        }
-
-        // // Datepicker
-        if (this.preventBlur) {
-            this.preventBlur = false;
-            return;
-        }
-
-        // Price Separator - remove dot on focus out
-        if (
-            this.inputConfig.priceSeparator &&
-            this.getSuperControl?.value?.indexOf('.') >= 0
-        ) {
-            // 4.1. Check for Dot position
-            this.hasDecimalIndex = this.getSuperControl.value.indexOf('.');
-
-            let integerPart = this.thousandSeparatorPipe.transform(
-                this.getSuperControl.value
-                    .slice(0, this.hasDecimalIndex)
-                    .slice(0, this.inputConfig.priceSeparatorLimitation)
-            );
-
-            let decimalPart = this.getSuperControl.value.slice(
-                this.hasDecimalIndex + 1
-            );
-
-            // 4.4. Get only two numbers of decimal part
-            decimalPart = decimalPart.slice(0, 2);
-
-            if (!decimalPart) {
-                this.hasDecimalIndex = -1;
-                this.getSuperControl.patchValue(integerPart);
-                this.numberOfPoints = 0;
-            }
-        }
-
-        // Dropdown
-        if (this.inputConfig.isDropdown || this.inputConfig.dropdownLabel) {
-            if (
-                (this.inputConfig.name === 'datepicker' ||
-                    this.inputConfig.name === 'timepicker') &&
-                !this.inputConfig.isDisabled
-            ) {
-                if (e?.target?.nodeName === 'INPUT') {
-                    return;
-                }
-                // Datepicker
-                if (
-                    this.inputConfig.name === 'datepicker' ||
-                    this.inputConfig.name === 'timepicker'
-                ) {
-                    this.focusBlur = setTimeout(() => {
-                        this.blurOnDateTime();
-                    }, 100);
-                } else {
-                    this.focusInput = false;
-                }
-            } else {
-                this.blurOnDropDownArrow();
-            }
-        } else {
-            let selection = window.getSelection();
-            selection.removeAllRanges();
-
-            // Input Commands
-            if (this.inputConfig.commands?.active) {
-                this.blurOnCommands();
-            }
-
-            this.focusInput = false;
-        }
-
-        this.blurInput.emit(true);
-
-        this.inputService.onFocusOutInput$.next(true);
-        this.touchedInput = true;
-    }
-
-    private blurOnCommands() {
-        this.timeoutCleaner = setTimeout(() => {
-            this.isVisibleCommands = false;
-        }, 150);
-    }
-
-    private blurOnDropDownArrow() {
-        this.timeoutCleaner = setTimeout(() => {
-            this.dropdownToggler = false;
-            this.focusInput = false;
-            this.inputService.dropDownShowHide$.next(false);
-        }, 150);
-    }
-
-    public clearInput(event: Event): void {
-        event.preventDefault();
-        event.stopPropagation();
-        // Clear whole input
-        if (this.inputConfig.removeInput) {
-            this.clearInputEvent.emit(true);
-            return;
-        }
-        // Clear value
-        if (this.inputConfig.incorrectInput) {
-            this.incorrectValue = !this.incorrectValue;
-            this.incorrectInput.emit(this.incorrectValue);
-        } else {
-            this.input.nativeElement.value = null;
-            this.getSuperControl.setValue(null);
-            this.numberOfConsecutivelySpaces = 0;
-            this.numberOfConsecutivelyPoints = 0;
-            this.numberOfPoints = 0;
-            this.oneSpaceOnlyCounter = 0;
-            this.inputConfig.dropdownImageInput = null;
-            this.touchedInput = true;
-            this.focusInput = false;
-            if (['datepicker', 'timepicker'].includes(this.inputConfig.name)) {
-                this.resetDateTimeInputs();
-            }
-
-            this.inputService.onClearInput$.next(true);
-            this.clearInputEvent.emit(true);
-        }
-    }
-
     public resetDateTimeInputs() {
         if (this.span1) {
-            if (this.inputConfig.name === 'datepicker') {
+            if (this._inputConfig.name === 'datepicker') {
                 this.span1.nativeElement.innerHTML = 'mm';
                 this.span2.nativeElement.innerHTML = 'dd';
                 this.span3.nativeElement.innerHTML = 'yy';
-            } else if (this.inputConfig.name === 'timepicker') {
+            } else if (this._inputConfig.name === 'timepicker') {
                 this.span1.nativeElement.innerHTML = 'HH';
                 this.span2.nativeElement.innerHTML = 'MM';
                 this.span3.nativeElement.innerHTML = 'AM';
@@ -524,14 +526,13 @@ export class TaInputComponent
     }
 
     public toggleDropdownOptions() {
-        if (this.inputConfig.isDisabled) {
+        if (this._inputConfig.isDisabled) {
             return;
         }
 
         if (
-            (this.inputConfig.name === 'datepicker' ||
-                this.inputConfig.name === 'timepicker') &&
-            !this.inputConfig.isDisabled
+            this._inputConfig.name === 'datepicker' ||
+            this._inputConfig.name === 'timepicker'
         ) {
             if (this.t2) {
                 if (!this.t2.isOpen()) {
@@ -563,9 +564,13 @@ export class TaInputComponent
 
     public onTogglePassword(event: any): void {
         event.preventDefault();
-        event.stopPropagation();
+        clearTimeout(this.passwordTimeout);
 
         this.togglePassword = !this.togglePassword;
+
+        if (this.focusInput) {
+            this.setInputCursorAtTheEnd(this.input.nativeElement);
+        }
     }
 
     public setInputCursorAtTheEnd(input: any, time: number = 120): void {
@@ -584,12 +589,12 @@ export class TaInputComponent
                 event?.getModifierState('CapsLock') || event?.shiftKey;
         }
 
-        if (this.inputConfig.priceSeparator) {
+        if (this._inputConfig.priceSeparator) {
             this.isDotDeleted = this.getSuperControl?.value?.includes('.');
         }
 
         // Disable for phone field first character to be 0
-        if (this.inputConfig.name.toLowerCase() === 'phone') {
+        if (this._inputConfig.name.toLowerCase() === 'phone') {
             if (event.target.selectionStart === 0 && event.key === '0') {
                 event.preventDefault();
             }
@@ -610,7 +615,7 @@ export class TaInputComponent
         }
         if (
             event.keyCode == 8 &&
-            !(this.inputConfig.isDropdown || this.inputConfig.dropdownLabel)
+            !(this._inputConfig.isDropdown || this._inputConfig.dropdownLabel)
         ) {
             // Reset Multiple Consecutively Spaces
             this.numberOfConsecutivelySpaces = 0;
@@ -626,9 +631,9 @@ export class TaInputComponent
         }
 
         if (
-            this.inputConfig.isDropdown ||
-            this.inputConfig.dropdownLabel ||
-            this.inputConfig.name == 'Address'
+            this._inputConfig.isDropdown ||
+            this._inputConfig.dropdownLabel ||
+            this._inputConfig.name == 'Address'
         ) {
             if (event.keyCode === 40 || event.keyCode === 38) {
                 this.inputService.dropDownKeyNavigation$.next({
@@ -639,10 +644,10 @@ export class TaInputComponent
             if (event.keyCode === 13) {
                 this.inputService.dropDownKeyNavigation$.next({
                     keyCode: event.keyCode,
-                    data: this.inputConfig,
+                    data: this._inputConfig,
                 });
 
-                if (this.inputConfig.name == 'Address') {
+                if (this._inputConfig.name == 'Address') {
                     this.input.nativeElement.blur();
                 }
             }
@@ -676,12 +681,12 @@ export class TaInputComponent
 
                 if (
                     this.input.nativeElement.value.length >
-                    this.inputConfig.maxLength
+                    this._inputConfig.maxLength
                 ) {
                     this.input.nativeElement.value =
                         this.input.nativeElement.value.substring(
                             0,
-                            this.inputConfig.maxLength
+                            this._inputConfig.maxLength
                         );
                 }
             } else {
@@ -701,7 +706,7 @@ export class TaInputComponent
             }
         }
 
-        switch (this.inputConfig.textTransform) {
+        switch (this._inputConfig.textTransform) {
             case 'capitalize': {
                 this.input.nativeElement.value =
                     this.input.nativeElement.value.charAt(0)?.toUpperCase() +
@@ -721,7 +726,7 @@ export class TaInputComponent
             }
         }
 
-        if (this.inputConfig.thousandSeparator && this.getSuperControl.value) {
+        if (this._inputConfig.thousandSeparator && this.getSuperControl.value) {
             if (
                 this.getSuperControl.value
                     .toString()
@@ -743,7 +748,7 @@ export class TaInputComponent
                 );
         }
 
-        if (this.inputConfig.priceSeparator && this.getSuperControl.value) {
+        if (this._inputConfig.priceSeparator && this.getSuperControl.value) {
             // 0. Don't allow 0 as first character
             if (
                 this.getSuperControl.value
@@ -764,13 +769,13 @@ export class TaInputComponent
                 this.hasDecimalIndex = this.getSuperControl.value.indexOf('.');
 
                 this.originPriceSeparatorLimit =
-                    this.inputConfig.priceSeparatorLimitation + 3;
+                    this._inputConfig.priceSeparatorLimitation + 3;
 
                 // 4.2. Divide number on decimal and integer part
                 let integerPart = this.thousandSeparatorPipe.transform(
                     this.getSuperControl.value
                         .slice(0, this.hasDecimalIndex)
-                        .slice(0, this.inputConfig.priceSeparatorLimitation)
+                        .slice(0, this._inputConfig.priceSeparatorLimitation)
                 );
 
                 let decimalPart = this.getSuperControl.value.slice(
@@ -807,13 +812,13 @@ export class TaInputComponent
 
                     // Limit validation
                     this.originPriceSeparatorLimit =
-                        this.inputConfig.priceSeparatorLimitation;
+                        this._inputConfig.priceSeparatorLimitation;
 
                     // Cut value
                     this.getSuperControl.patchValue(
                         this.getSuperControl.value.slice(
                             0,
-                            this.inputConfig.priceSeparatorLimitation
+                            this._inputConfig.priceSeparatorLimitation
                         )
                     );
 
@@ -842,7 +847,7 @@ export class TaInputComponent
          *  Custom Validation For This Type of Input Below, DONT TOUCH !
          */
 
-        if (['year'].includes(this.inputConfig.name.toLowerCase())) {
+        if (['year'].includes(this._inputConfig.name.toLowerCase())) {
             if (
                 parseInt(value) >
                 parseInt(moment().add(1, 'year').format('YYYY'))
@@ -851,7 +856,7 @@ export class TaInputComponent
             }
         }
 
-        if (['months'].includes(this.inputConfig.name.toLowerCase())) {
+        if (['months'].includes(this._inputConfig.name.toLowerCase())) {
             if (parseInt(value) < 1 || parseInt(value) > 12) {
                 this.getSuperControl.setErrors({ invalid: true });
             } else {
@@ -859,7 +864,7 @@ export class TaInputComponent
             }
         }
 
-        if (['axles'].includes(this.inputConfig.name.toLowerCase())) {
+        if (['axles'].includes(this._inputConfig.name.toLowerCase())) {
             if (parseInt(value) < 1 || parseInt(value) > 17) {
                 if (parseInt(value) < 1) {
                     this.getSuperControl.setErrors({ min: 1 });
@@ -871,7 +876,7 @@ export class TaInputComponent
             }
         }
 
-        if (['full name'].includes(this.inputConfig.name.toLowerCase())) {
+        if (['full name'].includes(this._inputConfig.name.toLowerCase())) {
             if (this.getSuperControl.value) {
                 const capitalizeWords = this.getSuperControl.value
                     .split(' ')
@@ -901,7 +906,7 @@ export class TaInputComponent
                 'full name',
                 'file name',
                 'input dropdown label',
-            ].includes(this.inputConfig.name.toLowerCase())
+            ].includes(this._inputConfig.name.toLowerCase())
         ) {
             const sanitizedInput = this.input.nativeElement.value.replace(
                 /\s{2,}/g,
@@ -919,7 +924,7 @@ export class TaInputComponent
             }
         }
 
-        if (['hos'].includes(this.inputConfig.name.toLowerCase())) {
+        if (['hos'].includes(this._inputConfig.name.toLowerCase())) {
             if (
                 this.getSuperControl.value
                     .toString()
@@ -946,9 +951,9 @@ export class TaInputComponent
         event.stopPropagation();
 
         this.editInputMode = true;
-        this.inputConfig.dropdownLabelNew = false;
-        this.inputConfig.blackInput = true;
-        this.inputConfig.commands.active = true;
+        this._inputConfig.dropdownLabelNew = false;
+        this._inputConfig.blackInput = true;
+        this._inputConfig.commands.active = true;
         this.focusInput = true;
         this.setInputCursorAtTheEnd(this.input.nativeElement);
         this.getSuperControl.setErrors({ required: true });
@@ -1030,8 +1035,8 @@ export class TaInputComponent
                             data: this.getSuperControl.value,
                             action: 'confirm',
                             mode:
-                                !this.inputConfig.dropdownLabelNew &&
-                                this.inputConfig.name !==
+                                !this._inputConfig.dropdownLabelNew &&
+                                this._inputConfig.name !==
                                     'Input Dropdown Bank Name'
                                     ? 'edit'
                                     : 'new',
@@ -1048,19 +1053,21 @@ export class TaInputComponent
                 }
                 this.getSuperControl.setErrors(null);
                 this.editInputMode = false;
-                this.inputConfig.dropdownLabelNew = false;
-                this.inputConfig.commands.active = false;
-                this.inputConfig.blackInput = false;
+                this._inputConfig.dropdownLabelNew = false;
+                this._inputConfig.commands.active = false;
+                this._inputConfig.blackInput = false;
                 this.onBlur();
                 break;
             }
             case 'months': {
+                clearTimeout(this.inputCommandsTimeout);
                 switch (action) {
                     case 'minus': {
                         if (
                             parseInt(this.getSuperControl.value) === 1 ||
                             !this.getSuperControl.value
                         ) {
+                            this.blurOnCommands();
                             return;
                         }
 
@@ -1073,6 +1080,7 @@ export class TaInputComponent
                     }
                     case 'plus': {
                         if (parseInt(this.getSuperControl.value) === 12) {
+                            this.blurOnCommands();
                             return;
                         }
                         this.getSuperControl.patchValue(
@@ -1129,7 +1137,7 @@ export class TaInputComponent
             return false;
         }
 
-        if (this.inputConfig.priceSeparator) {
+        if (this._inputConfig.priceSeparator) {
             if (
                 this.inputService
                     .getInputRegexPattern('price-separator')
@@ -1212,7 +1220,7 @@ export class TaInputComponent
                 'fuel stop',
                 'producer name',
                 'terminal name',
-            ].includes(this.inputConfig.name.toLowerCase())
+            ].includes(this._inputConfig.name.toLowerCase())
         ) {
             if (
                 this.inputService
@@ -1275,7 +1283,7 @@ export class TaInputComponent
                 'fuel per miles',
                 'fuel price map',
                 'amount',
-            ].includes(this.inputConfig.name.toLowerCase())
+            ].includes(this._inputConfig.name.toLowerCase())
         ) {
             // Only numbers
             if (
@@ -1290,7 +1298,7 @@ export class TaInputComponent
             return false;
         }
 
-        if (['email'].includes(this.inputConfig.name.toLowerCase())) {
+        if (['email'].includes(this._inputConfig.name.toLowerCase())) {
             if (
                 this.inputService
                     .getInputRegexPattern('email')
@@ -1303,7 +1311,7 @@ export class TaInputComponent
             return false;
         }
 
-        if (['invoice'].includes(this.inputConfig.name.toLowerCase())) {
+        if (['invoice'].includes(this._inputConfig.name.toLowerCase())) {
             if (
                 this.inputService
                     .getInputRegexPattern('invoice')
@@ -1315,7 +1323,7 @@ export class TaInputComponent
             return false;
         }
 
-        if (['address'].includes(this.inputConfig.name.toLowerCase())) {
+        if (['address'].includes(this._inputConfig.name.toLowerCase())) {
             if (
                 /^[A-Za-z0-9\s.&/,_-]*$/.test(
                     String.fromCharCode(event.charCode)
@@ -1331,7 +1339,7 @@ export class TaInputComponent
 
         if (
             ['address-unit', 'department', 'vehicle-unit'].includes(
-                this.inputConfig.name.toLowerCase()
+                this._inputConfig.name.toLowerCase()
             )
         ) {
             if (
@@ -1345,7 +1353,7 @@ export class TaInputComponent
             return false;
         }
 
-        if (['first name'].includes(this.inputConfig.name.toLowerCase())) {
+        if (['first name'].includes(this._inputConfig.name.toLowerCase())) {
             if (
                 this.inputService
                     .getInputRegexPattern('first name')
@@ -1359,7 +1367,7 @@ export class TaInputComponent
             return false;
         }
 
-        if (['last name'].includes(this.inputConfig.name.toLowerCase())) {
+        if (['last name'].includes(this._inputConfig.name.toLowerCase())) {
             if (
                 this.inputService
                     .getInputRegexPattern('last name')
@@ -1372,7 +1380,7 @@ export class TaInputComponent
             return false;
         }
 
-        if (['bank name'].includes(this.inputConfig.name.toLowerCase())) {
+        if (['bank name'].includes(this._inputConfig.name.toLowerCase())) {
             if (
                 this.inputService
                     .getInputRegexPattern('bank name')
@@ -1388,7 +1396,7 @@ export class TaInputComponent
 
         if (
             ['vin-number', 'insurance-policy', 'ifta'].includes(
-                this.inputConfig.name.toLowerCase()
+                this._inputConfig.name.toLowerCase()
             )
         ) {
             if (
@@ -1404,7 +1412,7 @@ export class TaInputComponent
 
         if (
             ['truck-trailer-model'].includes(
-                this.inputConfig.name.toLowerCase()
+                this._inputConfig.name.toLowerCase()
             )
         ) {
             if (
@@ -1419,7 +1427,7 @@ export class TaInputComponent
             return false;
         }
 
-        if (['year'].includes(this.inputConfig.name.toLowerCase())) {
+        if (['year'].includes(this._inputConfig.name.toLowerCase())) {
             if (
                 /^0*$/.test(String.fromCharCode(event.charCode)) &&
                 !this.input.nativeElement.value
@@ -1440,7 +1448,7 @@ export class TaInputComponent
             return false;
         }
 
-        if (['axles'].includes(this.inputConfig.name.toLowerCase())) {
+        if (['axles'].includes(this._inputConfig.name.toLowerCase())) {
             if (
                 this.inputService
                     .getInputRegexPattern('axles')
@@ -1452,7 +1460,7 @@ export class TaInputComponent
             return false;
         }
 
-        if (['license plate'].includes(this.inputConfig.name.toLowerCase())) {
+        if (['license plate'].includes(this._inputConfig.name.toLowerCase())) {
             if (
                 this.inputService
                     .getInputRegexPattern('license plate')
@@ -1465,7 +1473,7 @@ export class TaInputComponent
             return false;
         }
 
-        if (['description'].includes(this.inputConfig.name.toLowerCase())) {
+        if (['description'].includes(this._inputConfig.name.toLowerCase())) {
             if (
                 this.inputService
                     .getInputRegexPattern('description')
@@ -1478,7 +1486,7 @@ export class TaInputComponent
             return false;
         }
 
-        if (['allow all'].includes(this.inputConfig.name.toLowerCase())) {
+        if (['allow all'].includes(this._inputConfig.name.toLowerCase())) {
             if (/.*/.test(String.fromCharCode(event.charCode))) {
                 return true;
             }
@@ -1486,7 +1494,7 @@ export class TaInputComponent
             return false;
         }
 
-        if (['dba name'].includes(this.inputConfig.name.toLowerCase())) {
+        if (['dba name'].includes(this._inputConfig.name.toLowerCase())) {
             if (
                 this.inputService
                     .getInputRegexPattern('dba name')
@@ -1498,7 +1506,7 @@ export class TaInputComponent
             return false;
         }
 
-        if (['per mile'].includes(this.inputConfig.name.toLowerCase())) {
+        if (['per mile'].includes(this._inputConfig.name.toLowerCase())) {
             if (
                 this.inputService
                     .getInputRegexPattern('per mile')
@@ -1508,15 +1516,15 @@ export class TaInputComponent
 
                 // Check for max length
                 if (this.getSuperControl.value?.toString().includes('.')) {
-                    this.inputConfig.maxLength = 4;
+                    this._inputConfig.maxLength = 4;
                 } else {
-                    this.inputConfig.maxLength = 2;
+                    this._inputConfig.maxLength = 2;
                 }
 
                 // Check for range
                 if (
-                    this.getSuperControl.value > this.inputConfig.max ||
-                    this.getSuperControl.value < this.inputConfig.min
+                    this.getSuperControl.value > this._inputConfig.max ||
+                    this.getSuperControl.value < this._inputConfig.min
                 ) {
                     this.getSuperControl.setErrors({ invalid: true });
                 }
@@ -1529,7 +1537,7 @@ export class TaInputComponent
 
         if (
             ['per stop', 'flat rate', 'per load'].includes(
-                this.inputConfig.name.toLowerCase()
+                this._inputConfig.name.toLowerCase()
             )
         ) {
             if (
@@ -1544,8 +1552,8 @@ export class TaInputComponent
                             ''
                         );
                         if (
-                            perStopValue > this.inputConfig.max ||
-                            perStopValue < this.inputConfig.min
+                            perStopValue > this._inputConfig.max ||
+                            perStopValue < this._inputConfig.min
                         ) {
                             this.getSuperControl.setErrors({ invalid: true });
                             return false;
@@ -1561,7 +1569,7 @@ export class TaInputComponent
 
         if (
             ['relationship', 'scac'].includes(
-                this.inputConfig.name.toLowerCase()
+                this._inputConfig.name.toLowerCase()
             )
         ) {
             if (
@@ -1575,7 +1583,7 @@ export class TaInputComponent
             return false;
         }
 
-        if (['emergency name'].includes(this.inputConfig.name.toLowerCase())) {
+        if (['emergency name'].includes(this._inputConfig.name.toLowerCase())) {
             if (
                 this.inputService
                     .getInputRegexPattern('emergency name')
@@ -1589,7 +1597,7 @@ export class TaInputComponent
             return false;
         }
 
-        if (['fuel-store'].includes(this.inputConfig.name.toLowerCase())) {
+        if (['fuel-store'].includes(this._inputConfig.name.toLowerCase())) {
             if (
                 this.inputService
                     .getInputRegexPattern('fuel store')
@@ -1601,7 +1609,7 @@ export class TaInputComponent
             return false;
         }
 
-        if (['hos'].includes(this.inputConfig.name.toLowerCase())) {
+        if (['hos'].includes(this._inputConfig.name.toLowerCase())) {
             if (
                 !this.inputSelection &&
                 this.inputService
@@ -1610,7 +1618,7 @@ export class TaInputComponent
             ) {
                 return (
                     this.getSuperControl.value * 10 + event.charCode - 48 <=
-                    this.inputConfig.max
+                    this._inputConfig.max
                 );
             } else {
                 if (this.inputSelection) {
@@ -1627,7 +1635,7 @@ export class TaInputComponent
 
         if (
             ['full parking slot', 'parking slot'].includes(
-                this.inputConfig.name.toLowerCase()
+                this._inputConfig.name.toLowerCase()
             )
         ) {
             if (
@@ -1642,7 +1650,7 @@ export class TaInputComponent
             }
         }
 
-        if (['cdl-number'].includes(this.inputConfig.name.toLowerCase())) {
+        if (['cdl-number'].includes(this._inputConfig.name.toLowerCase())) {
             if (
                 this.inputService
                     .getInputRegexPattern('cdl-number')
@@ -1660,7 +1668,7 @@ export class TaInputComponent
         // All Simbols
         if (
             ['username', 'nickname', 'password'].includes(
-                this.inputConfig.name.toLowerCase()
+                this._inputConfig.name.toLowerCase()
             )
         ) {
             if (
@@ -1675,7 +1683,7 @@ export class TaInputComponent
             }
         }
 
-        if (['full name'].includes(this.inputConfig.name.toLowerCase())) {
+        if (['full name'].includes(this._inputConfig.name.toLowerCase())) {
             if (
                 this.inputService
                     .getInputRegexPattern('full name')
@@ -1691,7 +1699,7 @@ export class TaInputComponent
             }
         }
 
-        if (['tollvalidation'].includes(this.inputConfig.name.toLowerCase())) {
+        if (['tollvalidation'].includes(this._inputConfig.name.toLowerCase())) {
             if (
                 this.inputService
                     .getInputRegexPattern('tollvalidation')
@@ -1707,7 +1715,7 @@ export class TaInputComponent
         // Just characters and numbers
         if (
             ['prefix', 'suffix', 'parking name'].includes(
-                this.inputConfig.name.toLowerCase()
+                this._inputConfig.name.toLowerCase()
             )
         ) {
             if (
@@ -1722,7 +1730,7 @@ export class TaInputComponent
             }
         }
 
-        if (['file name'].includes(this.inputConfig.name.toLowerCase())) {
+        if (['file name'].includes(this._inputConfig.name.toLowerCase())) {
             if (
                 this.inputService
                     .getInputRegexPattern('file name')
@@ -1738,7 +1746,7 @@ export class TaInputComponent
 
         if (
             ['insurer name', 'office name'].includes(
-                this.inputConfig.name.toLowerCase()
+                this._inputConfig.name.toLowerCase()
             )
         ) {
             if (
@@ -1756,7 +1764,7 @@ export class TaInputComponent
 
         if (
             ['input dropdown label'].includes(
-                this.inputConfig.name.toLowerCase()
+                this._inputConfig.name.toLowerCase()
             )
         ) {
             this.disableConsecutivelySpaces(event);
@@ -1852,7 +1860,7 @@ export class TaInputComponent
         this.pasteCheck(
             event.clipboardData.getData('text'),
             this.inputService.getInputRegexPattern(
-                this.inputConfig.name.toLowerCase()
+                this._inputConfig.name.toLowerCase()
             )
         );
     }
@@ -1863,11 +1871,11 @@ export class TaInputComponent
         let countOfCaracters = 0;
 
         // Max Length For Paste
-        if (this.inputConfig.maxLength) {
+        if (this._inputConfig.maxLength) {
             if (
                 pastedText.startsWith('+1') ||
                 (pastedText.startsWith('1') &&
-                    this.inputConfig.name === 'Phone')
+                    this._inputConfig.name === 'Phone')
             ) {
                 if (pastedText.startsWith('+1')) {
                     pastedText = pastedText.split('+1')[1];
@@ -1881,7 +1889,7 @@ export class TaInputComponent
                     countOfCaracters++;
                 }
 
-                if (countOfCaracters === this.inputConfig.maxLength) {
+                if (countOfCaracters === this._inputConfig.maxLength) {
                     break;
                 }
             }
@@ -1906,10 +1914,10 @@ export class TaInputComponent
 
         if (
             ['phone', 'ein', 'ssn'].includes(
-                this.inputConfig.name.toLowerCase()
+                this._inputConfig.name.toLowerCase()
             )
         ) {
-            if ('phone' === this.inputConfig.name.toLowerCase()) {
+            if ('phone' === this._inputConfig.name.toLowerCase()) {
                 this.timeoutCleaner = setTimeout(() => {
                     this.getSuperControl.setErrors(null);
 
@@ -1925,7 +1933,7 @@ export class TaInputComponent
                 }, 0);
             }
 
-            if ('ein' === this.inputConfig.name.toLowerCase()) {
+            if ('ein' === this._inputConfig.name.toLowerCase()) {
                 this.timeoutCleaner = setTimeout(() => {
                     this.getSuperControl.setErrors(null);
                     this.input.nativeElement.value = newText.substring(0, 9);
@@ -1937,7 +1945,7 @@ export class TaInputComponent
                 }, 0);
             }
 
-            if ('ssn' === this.inputConfig.name.toLowerCase()) {
+            if ('ssn' === this._inputConfig.name.toLowerCase()) {
                 this.timeoutCleaner = setTimeout(() => {
                     this.getSuperControl.setErrors(null);
                     this.input.nativeElement.value = newText.substring(0, 9);
@@ -2043,7 +2051,8 @@ export class TaInputComponent
             e.keyCode == 8 ||
             e.keyCode == 9 ||
             e.keyCode == 46 ||
-            (this.selectionInput == 3 && this.inputConfig.name === 'timepicker')
+            (this.selectionInput == 3 &&
+                this._inputConfig.name === 'timepicker')
         ) {
             !e.noPrevent && e.preventDefault();
             if (e.keyCode == 37) {
@@ -2134,7 +2143,7 @@ export class TaInputComponent
                 : parseInt(this.span3.nativeElement.innerHTML);
 
         this.newInputChanged = false;
-        if (this.inputConfig.name === 'datepicker') {
+        if (this._inputConfig.name === 'datepicker') {
             if (this.selectionInput == 0) {
                 if (isRestart) {
                     this.span1.nativeElement.innerHTML = 'mm';
@@ -2299,7 +2308,7 @@ export class TaInputComponent
 
     setDateTimeModel(direction: string) {
         if (this.selectionInput == -1) this.selectionInput = 0;
-        if (this.inputConfig.name === 'datepicker') {
+        if (this._inputConfig.name === 'datepicker') {
             if (direction == 'up') {
                 if (this.selectionInput == 0) {
                     this.dateTimeInputDate = new Date(
@@ -2473,14 +2482,14 @@ export class TaInputComponent
     }
 
     onPopoverShown() {
-        if (!this.inputConfig.dropdownLabel) {
+        if (!this._inputConfig.dropdownLabel) {
             this.focusInput = true;
             this.showDateInput = true;
         }
     }
 
     onPopoverHidden() {
-        if (!this.inputConfig.dropdownLabel) {
+        if (!this._inputConfig.dropdownLabel) {
             this.focusInput = false;
             this.blurOnDateTime();
         }
@@ -2495,7 +2504,7 @@ export class TaInputComponent
     private blurOnDateTime() {
         clearTimeout(this.dateTimeMainTimer);
         this.dateTimeMainTimer = setTimeout(() => {
-            if (this.inputConfig.name === 'datepicker') {
+            if (this._inputConfig.name === 'datepicker') {
                 if (
                     !isNaN(this.span1.nativeElement.innerHTML) &&
                     !isNaN(this.span2.nativeElement.innerHTML) &&
@@ -2579,5 +2588,7 @@ export class TaInputComponent
         clearTimeout(this.timeoutCleaner);
         clearTimeout(this.wholeInputSelection);
         clearTimeout(this.dateTimeMainTimer);
+        clearTimeout(this.inputCommandsTimeout);
+        clearTimeout(this.passwordTimeout);
     }
 }

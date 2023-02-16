@@ -1,5 +1,9 @@
 import { HttpResponseBase } from '@angular/common/http';
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import {
+    UntypedFormBuilder,
+    UntypedFormGroup,
+    Validators,
+} from '@angular/forms';
 import {
     Component,
     Input,
@@ -80,7 +84,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
         {
             id: 1,
             name: 'Basic',
-            checked: true
+            checked: true,
         },
         {
             id: 2,
@@ -114,20 +118,9 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.createForm();
+
+        this.getTrailerDropdowns();
         this.isCompanyOwned();
-
-        if (this.editData?.storageData) {
-            this.skipVinDecocerEdit = true;
-            this.populateStorageData(this.editData.storageData);
-        } else {
-            this.getTrailerDropdowns();
-        }
-
-        if (this.editData?.id) {
-            this.skipVinDecocerEdit = true;
-            this.editTrailerById(this.editData.id);
-        }
-
         this.vinDecoder();
     }
 
@@ -186,6 +179,8 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
                 } else {
                     this.inputService.changeValidators(
                         this.trailerForm.get('ownerId'),
+                        false,
+                        [],
                         false
                     );
                 }
@@ -313,6 +308,17 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
                     this.reeferUnitType = res.reeferUnits;
 
                     this.trailerForm.get('fhwaExp').patchValue(res.fhwaExp);
+
+                    // ------- EDIT -------
+                    if (this.editData?.storageData) {
+                        this.skipVinDecocerEdit = true;
+                        this.populateStorageData(this.editData.storageData);
+                    }
+
+                    if (this.editData?.id) {
+                        this.skipVinDecocerEdit = true;
+                        this.editTrailerById(this.editData.id);
+                    }
                 },
                 error: () => {},
             });
@@ -817,7 +823,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
 
     public onBlurTrailerModel() {
         const model = this.trailerForm.get('model').value;
-        if (model.length >= 1) {
+        if (model?.length >= 1) {
             this.trailerModalService
                 .autocompleteByTrailerModel(model)
                 .pipe(takeUntil(this.destroy$))

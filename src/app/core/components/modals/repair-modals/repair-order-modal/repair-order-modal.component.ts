@@ -129,18 +129,6 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
             this.onTypeOfRepair(this.typeOfRepair[0]);
             this.getRepairDropdowns(null, null, 'Trucks', false);
         }
-
-        // storage data
-        if (this.editData?.storageData) {
-            this.disableCardAnimation = true;
-            this.populateForm(this.editData?.storageData);
-        }
-
-        // Edit mode
-        if (this.editData?.type?.includes('edit')) {
-            this.disableCardAnimation = true;
-            this.editRepairById(this.editData.id);
-        }
     }
 
     public onModalAction(data: { action: string; bool: boolean }) {
@@ -772,6 +760,19 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                     this.labelsRepairShop = [...res.repairShops];
 
                     this.tags = res.tags;
+
+                    // ------------- EDIT --------------
+                    // storage data
+                    if (this.editData?.storageData) {
+                        this.disableCardAnimation = true;
+                        this.populateForm(this.editData?.storageData);
+                    }
+
+                    // Edit mode
+                    if (this.editData?.type?.includes('edit')) {
+                        this.disableCardAnimation = true;
+                        this.editRepairById(this.editData.id);
+                    }
                 },
                 error: () => {},
             });

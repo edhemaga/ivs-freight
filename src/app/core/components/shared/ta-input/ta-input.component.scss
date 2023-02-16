@@ -113,7 +113,7 @@
             .input-dropdown-arrow,
             .input-icon,
             .input-password-eye {
-                display: inline-block !important;
+                display: inline-block;
 
                 &:hover ~ .input-control {
                     background-color: $invalid-input-hover;
@@ -139,7 +139,7 @@
             .input-invalid-danger-mark,
             .input-dropdown-arrow,
             .input-icon {
-                display: inline-block !important;
+                display: inline-block;
 
                 &:hover ~ .input-control {
                     background-color: $invalid-input-hover;

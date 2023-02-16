@@ -25,16 +25,6 @@ export class TaInputService {
         data: ITaInput | any;
     }> = new Subject<{ keyCode: number; data: ITaInput | any }>();
 
-    public dropDownItemSelectedOnEnter$: Subject<{
-        action: boolean;
-        inputConfig: ITaInput;
-    }> = new Subject<{ action: boolean; inputConfig: ITaInput }>();
-
-    public dropDownAddMode$: Subject<{
-        action: boolean;
-        inputConfig: ITaInput;
-    }> = new Subject<{ action: boolean; inputConfig: ITaInput }>();
-
     constructor(public notificationService: NotificationService) {}
 
     /**

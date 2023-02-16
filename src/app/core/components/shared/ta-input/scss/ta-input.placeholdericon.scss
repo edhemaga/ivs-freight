@@ -35,10 +35,6 @@
         cursor: pointer;
     }
 
-    &.hidden {
-        display: none;
-    }
-
     &::after {
         content: '';
         display: block;
@@ -184,5 +180,9 @@
                 fill: $default-placeholderIcon-green;
             }
         }
+    }
+
+    &.hidden {
+        display: none !important;
     }
 }

@@ -12,7 +12,6 @@
         display: block;
         z-index: 20;
         cursor: pointer;
-        transition: all 0.3s ease-in-out;
 
         .ta-input-command-svg-first {
             svg {
@@ -22,13 +21,14 @@
                 transition: transform 0.3s;
 
                 path {
-                    fill: $default-commands-path;
+                    fill: $focus-commands-path;
                 }
+
                 rect {
                     transition: transform 0.3s;
                     transform: scale(1);
                     transform-origin: center;
-                    fill: $default-commands-rect;
+                    fill: $focus-commands-rect;
                 }
             }
 
@@ -39,23 +39,7 @@
                         transform: scale(1.2);
                         transform-origin: center;
                         transition: transform 0.3s;
-                        fill: $default-commands-rect-hover;
-                    }
-                }
-            }
-
-            &.invalid-focus-in {
-                path {
-                    fill: $invalid-focus-commands-path !important;
-                }
-                rect {
-                    fill: $invalid-focus-commands-rect !important;
-                }
-                &:hover {
-                    svg {
-                        rect {
-                            fill: $invalid-focus-on-commands-rect-hover !important;
-                        }
+                        fill: $default-focus-commands-rect-hover;
                     }
                 }
             }
@@ -67,7 +51,6 @@
         display: block;
         z-index: 20;
         cursor: pointer;
-        transition: all 0.3s ease-in-out;
 
         .ta-input-command-svg-second {
             svg {
@@ -77,13 +60,13 @@
                 transition: transform 0.3s;
 
                 path {
-                    fill: $default-commands-path;
+                    fill: $focus-commands-path;
                 }
                 rect {
                     transition: transform 0.3s;
                     transform: scale(1);
                     transform-origin: center;
-                    fill: $default-commands-rect;
+                    fill: $focus-commands-rect;
                 }
             }
 
@@ -94,104 +77,7 @@
                         transform: scale(1.2);
                         transform-origin: center;
                         transition: transform 0.3s;
-                        fill: $default-commands-rect-hover;
-                    }
-                }
-            }
-
-            &.invalid-focus-in {
-                path {
-                    fill: $invalid-focus-commands-path !important;
-                }
-                rect {
-                    fill: $invalid-focus-commands-rect !important;
-                }
-                &:hover {
-                    svg {
-                        rect {
-                            fill: $invalid-focus-on-commands-rect-hover !important;
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    &.address-flag {
-        position: relative;
-        right: 0;
-        line-height: 17px;
-
-        .ta-input-command-first {
-            border-radius: 1px;
-            display: block;
-            transition: all 0.3s ease-in-out;
-            z-index: 20;
-            cursor: pointer;
-
-            .ta-input-command-svg-first {
-                svg {
-                    width: 18px !important;
-                    height: 18px !important;
-                    overflow: visible;
-
-                    path {
-                        fill: $default-commands-path;
-                    }
-                    rect {
-                        transition: transform 0.3s;
-                        transform: scale(1);
-                        transform-origin: center;
-                        fill: $default-commands-rect;
-                    }
-                }
-
-                &:hover {
-                    svg {
-                        overflow: visible;
-                        rect {
-                            transform: scale(1.2);
-                            transform-origin: center;
-                            transition: transform 0.3s;
-                            fill: $default-commands-rect-hover;
-                        }
-                    }
-                }
-            }
-        }
-
-        .ta-input-command-second {
-            border-radius: 1px;
-            display: block;
-            transition: all 0.3s ease-in-out;
-            z-index: 20;
-            cursor: pointer;
-
-            .ta-input-command-svg-second {
-                svg {
-                    width: 18px !important;
-                    height: 18px !important;
-                    overflow: visible;
-                    path {
-                        fill: $default-commands-path;
-                    }
-                    rect {
-                        transition: transform 0.3s;
-                        transform: scale(1);
-                        transform-origin: center;
-                        fill: $default-commands-rect;
-                    }
-                }
-
-                &:hover {
-                    svg {
-                        overflow: visible;
-                        rect {
-                            transform: scale(1.2);
-                            transform-origin: center;
-                            transition: transform 0.3s;
-                            fill: $default-commands-rect-hover;
-                        }
+                        fill: $default-focus-commands-rect-hover;
                     }
                 }
             }

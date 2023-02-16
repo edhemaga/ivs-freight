@@ -44,7 +44,7 @@
     &:focus {
         background-color: $default-focus-input;
         color: $default-focus-content;
-        transition: all 0.3s ease-in-out;
+        transition: all 0.2s ease-in-out;
 
         &::-webkit-input-placeholder {
             color: $default-focus-placeholder;
@@ -649,6 +649,10 @@
         }
     }
     // -------------------
+    &.input-commands {
+        background-color: $default-focus-input !important;
+        color: $default-focus-content !important;
+    }
 }
 
 //------------------------- Input Number Hide Arrows -------------------------

@@ -38,10 +38,6 @@ $default-arrow: #919191;
 $default-path-clear: #eeeeee;
 $default-rect-clear: #919191;
 
-// Commands
-$default-commands-path: #eeeeee;
-$default-commands-rect: #919191;
-
 // Counter
 $default-counter-content: #424242;
 $default-counter-background: rgb(66, 66, 66, 0.2);
@@ -54,7 +50,6 @@ $default-label-background-selection: rgb(47, 47, 47, 0.2);
 $default-on-input-hover: #dadada;
 $default-on-arrow-hover: #424242;
 $default-on-rect-clear-hover: #424242;
-$default-commands-rect-hover: #424242;
 
 // Password
 $default-password: #919191;
@@ -71,12 +66,17 @@ $default-focus-arrow: #cccccc;
 $default-focus-path-clear: #1d1d1d;
 $default-focus-rect-clear: #aaaaaa;
 
+// Commands
+$focus-commands-path: #1d1d1d;
+$focus-commands-rect: #cccccc;
+
 // Selection
 $default-focus-content-selection: rgb(255, 255, 255, 0.2);
 
 //Focus Hover
 $default-focus-on-arrow-hover: #ffffff;
 $default-focus-on-rect-clear: #ffffff;
+$default-focus-commands-rect-hover: #ffffff;
 
 //------------------------------ VALID --------------------------------------
 //Valid
@@ -85,7 +85,7 @@ $valid-label: #2f2f2f;
 $valid-content: #2f2f2f;
 $valid-placeholderIcon: #6f9ee0;
 $valid-placeholderIcon-pipe: rgb(111, 158, 224, 0.4);
-$valid-placholderText: #6f9ee0;
+$valid-placholderText: #919191;
 $valid-checkmark: #6f9ee0;
 $valid-path-clear: #c5d8f3;
 $valid-rect-clear: #6f9ee0;
