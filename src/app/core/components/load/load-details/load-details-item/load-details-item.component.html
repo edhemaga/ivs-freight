@@ -390,7 +390,7 @@
                                 <span *ngIf="formatLoadPickupDay(loadItem?.data?.firstPickupTime?.days) != '0 days' ">
                                     {{formatLoadPickupDay(loadItem?.data?.firstPickupTime?.days)}}
                                 </span>
-                                <span>
+                                <span *ngIf="formatLoadPickupTime(loadItem?.data?.firstPickupTime?.hours) != '0 hours' ">
                                     {{formatLoadPickupTime(loadItem?.data?.firstPickupTime?.hours)}}
                                 </span>
                             </span>

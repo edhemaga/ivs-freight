@@ -17,6 +17,9 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 import { TaModalComponent } from '../../shared/ta-modal/ta-modal.component';
 import { ActiveItemsPipe } from 'src/app/core/pipes/activeItems.pipe';
 import { TaTabSwitchComponent } from '../../standalone-components/ta-tab-switch/ta-tab-switch.component';
+import { TaReCardComponent } from '../../shared/ta-common-card/ta-re-card.component';
+import { TaCopyComponent } from '../../shared/ta-copy/ta-copy.component';
+import { formatDatePipe } from 'src/app/core/pipes/formatDate.pipe';
 
 @NgModule({
     imports: [
@@ -28,7 +31,10 @@ import { TaTabSwitchComponent } from '../../standalone-components/ta-tab-switch/
         AngularSvgIconModule,
         TaModalComponent,
         TaTabSwitchComponent,
-        ActiveItemsPipe
+        ActiveItemsPipe,
+        TaReCardComponent,
+        TaCopyComponent,
+        formatDatePipe
     ],
     declarations: [
         SettingsLocationComponent,

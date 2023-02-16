@@ -94,10 +94,14 @@
     margin-right: 7px;
     .note-body {
         //margin-left: 4px;
+
+        .note-textarea{
+            padding-bottom: 12px !important;
+        }
     }
 }
 .load-broker-container {
-    padding: 0 4px;
+    //padding: 0 4px;
     display: flex;
     flex-direction: column;
     .company-name {
@@ -156,7 +160,9 @@
     margin-left: 5px;
 }
 .load-assigned-container {
-    padding: 0 2px;
+    //padding: 0 2px;
+    position: relative;
+    left: -2px;
     .truck {
         width: 202px !important;
         margin-right: 12px;
@@ -179,6 +185,7 @@
             display: flex;
             align-items: center;
             .driver-name {
+               
                 font-size: 18px;
                 font-weight: 500;
                 color: #6c6c6c;
