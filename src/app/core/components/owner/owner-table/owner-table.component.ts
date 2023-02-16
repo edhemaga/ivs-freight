@@ -1,6 +1,6 @@
 import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
 import { GetOwnerListResponse } from 'appcoretruckassist';
-import { catchError, of, Subject, takeUntil, tap } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
 import { OwnerModalComponent } from '../../modals/owner-modal/owner-modal.component';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { OwnerActiveQuery } from '../state/owner-active-state/owner-active.query';
@@ -34,7 +34,6 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
     columns: any[] = [];
     selectedTab = 'active';
     activeViewMode: string = 'List';
-    tableContainerWidth: number = 0;
     resizeObserver: ResizeObserver;
     ownerActive: OwnerActiveState[] = [];
     ownerInactive: OwnerInactiveState[] = [];
@@ -63,7 +62,7 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
         private ownerInactiveQuery: OwnerInactiveQuery,
         private ownerService: OwnerTService,
         private phonePipe: formatPhonePipe,
-        private ownerInactiveStore: OwnerInactiveStore
+        private ownerInactiveStore: OwnerInactiveStore,
     ) {}
     ngOnInit(): void {
         this.sendOwnerData();
@@ -288,7 +287,7 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
     observTableContainer() {
         this.resizeObserver = new ResizeObserver((entries) => {
             entries.forEach((entry) => {
-                this.tableContainerWidth = entry.contentRect.width;
+                this.tableService.sendCurrentSetTableWidth(entry.contentRect.width);
             });
         });
 
@@ -562,9 +561,9 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.destroy$.next();
         this.destroy$.complete();
         this.tableService.sendActionAnimation({});
-        this.resizeObserver.unobserve(
-            document.querySelector('.table-container')
-        );
+        // this.resizeObserver.unobserve(
+        //     document.querySelector('.table-container')
+        // );
         this.resizeObserver.disconnect();
     }
 }

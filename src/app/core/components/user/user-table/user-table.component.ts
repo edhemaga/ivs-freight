@@ -38,7 +38,6 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
     columns: any[] = [];
     selectedTab = 'active';
     activeViewMode: string = 'List';
-    tableContainerWidth: number = 0;
     resizeObserver: ResizeObserver;
     mapingIndex: number = 0;
     users: UserState[] = [];
@@ -267,7 +266,9 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
     observTableContainer() {
         this.resizeObserver = new ResizeObserver((entries) => {
             entries.forEach((entry) => {
-                this.tableContainerWidth = entry.contentRect.width;
+                this.tableService.sendCurrentSetTableWidth(
+                    entry.contentRect.width
+                );
             });
         });
 
@@ -682,9 +683,9 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
     // ---------------------------  NgOnDestroy ----------------------------------
     ngOnDestroy(): void {
         this.tableService.sendActionAnimation({});
-        this.resizeObserver.unobserve(
-            document.querySelector('.table-container')
-        );
+        // this.resizeObserver.unobserve(
+        //     document.querySelector('.table-container')
+        // );
         this.resizeObserver.disconnect();
         this.destroy$.next();
         this.destroy$.complete();

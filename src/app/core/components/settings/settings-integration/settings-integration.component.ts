@@ -2,6 +2,7 @@ import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { getIntegrationsColumnDefinition } from 'src/assets/utils/settings/integration-columns';
 import { IntegrationActiveQuery } from './state/integration-active.query';
 import moment from 'moment';
+import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 @Component({
     selector: 'app-settings-integration',
     templateUrl: './settings-integration.component.html',
@@ -16,8 +17,10 @@ export class SettingsIntegrationComponent implements OnInit, AfterViewInit {
     integrationsActive;
     public activeViewMode = 'List';
     resizeObserver: ResizeObserver;
-    tableContainerWidth: number = 0;
-    constructor(private integrationActiveQuery: IntegrationActiveQuery) {}
+    constructor(
+        private integrationActiveQuery: IntegrationActiveQuery,
+        private tableService: TruckassistTableService
+    ) {}
     ngOnInit(): void {
         this.sendIntegrationsData();
     }
@@ -29,7 +32,9 @@ export class SettingsIntegrationComponent implements OnInit, AfterViewInit {
     observTableContainer() {
         this.resizeObserver = new ResizeObserver((entries) => {
             entries.forEach((entry) => {
-                this.tableContainerWidth = entry.contentRect.width;
+                this.tableService.sendCurrentSetTableWidth(
+                    entry.contentRect.width
+                );
             });
         });
 
