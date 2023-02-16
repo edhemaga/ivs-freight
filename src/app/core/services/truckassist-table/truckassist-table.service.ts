@@ -69,6 +69,10 @@ export class TruckassistTableService {
     private searchTableData = new BehaviorSubject<any>(null);
     public currentSearchTableData = this.searchTableData.asObservable();
 
+    /* Set Filter  */
+    private setTableFilter = new BehaviorSubject<any>(null);
+    public currentSetTableFilter = this.setTableFilter.asObservable();
+
     constructor(private tableColumnsConfigService: TableConfigService) {}
 
     // ------------------------------ Table Back Service Methods --------------------------------
@@ -83,6 +87,11 @@ export class TruckassistTableService {
     }
 
     // ------------------------------ Table Custom Service Methods --------------------------------
+    
+    /* Set Filter  */
+    public sendCurrentSetTableFilter(search: any) {
+        this.setTableFilter.next(search);
+    }
 
     /*  Search  */
     public sendCurrentSearchTableData(search: any) {

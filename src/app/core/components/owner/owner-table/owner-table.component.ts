@@ -131,6 +131,31 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 }
             });
 
+        // On Set Tollbar Filter
+        this.tableService.currentSetTableFilter
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res: any) => {
+                this.backFilterQuery.active =
+                    this.selectedTab === 'active' ? 1 : 0;
+                this.backFilterQuery.pageIndex = 1;
+
+                // TruckTypeFilter
+                if (
+                    res?.filterType === 'truckTypeFilter' ||
+                    res?.type === 'truckTypeFilter'
+                ) {
+                    this.backFilterQuery.truckTypeIds =
+                        res?.action === 'Set' ? res.queryParams : undefined;
+                }
+
+                // Set Filter
+                if (this.backFilterQuery.truckTypeIds) {
+                    this.ownerBackFilter(this.backFilterQuery);
+                } else {
+                    this.sendOwnerData();
+                }
+            });
+
         // Delete Selected Rows
         this.tableService.currentDeleteSelectedRows
             .pipe(takeUntil(this.destroy$))
