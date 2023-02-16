@@ -15,6 +15,7 @@ import moment from 'moment';
 import { Subject } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { AngularSvgIconModule } from 'angular-svg-icon';
 
 const routeSpecify = {
     '/api/account/login': 'Driver',
@@ -25,7 +26,7 @@ const routeSpecify = {
     templateUrl: './custom-toast-messages.component.html',
     styleUrls: ['./custom-toast-messages.component.scss'],
     standalone: true,
-    imports: [CommonModule, FormsModule],
+    imports: [CommonModule, FormsModule, AngularSvgIconModule],
     animations: [
         trigger('flyInOut', [
             state(
@@ -262,6 +263,10 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
         {
             api: 'tag',
             value: 'TAG'
+        },
+        {
+            api: 'bank',
+            value: 'BANK'
         }
     ];
     constructor(
@@ -1056,8 +1061,11 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
                     this.message = this.DetailsDataService.documentName ? this.DetailsDataService.documentName : '';
                 break;
             case 'CREDIT': 
-            this.message = this.httpRequest?.body?.creditLimit ? this.httpRequest?.body?.creditLimit : '';
-            break;
+                this.message = this.httpRequest?.body?.creditLimit ? this.httpRequest?.body?.creditLimit : '';
+                break;
+            case 'BANK':
+                    this.message = this.httpRequest?.body?.name ? this.httpRequest?.body?.name : '';
+                break;
         }
 
         if (this.actionType == 'DRIVER' && !this.message) {
