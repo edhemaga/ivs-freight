@@ -293,6 +293,7 @@ export class ShopRepairCardViewComponent
             {
                 id: 223,
                 name: '1M',
+                checked: true,
             },
             {
                 name: '3M',
@@ -369,7 +370,9 @@ export class ShopRepairCardViewComponent
                 } else {
                     this.barChartConfig.dataProperties[1].defaultConfig.barThickness = 18;
                 }
+                this.repairExpensesChart.toolTipData = [];
                 item.repairShopExpensesChartResponse.map((data, index) => {
+                    this.repairExpensesChart.toolTipData.push(data);
                     milesPerGallon.push(data.repair);
                     costPerGallon.push(data.repairCost);
                     if (data.repair > maxValue) {
@@ -403,6 +406,10 @@ export class ShopRepairCardViewComponent
             });
 
         this.cdRef.detectChanges();
+    }
+
+    public chartHovered(event) {
+        this.repairExpensesChart.hoveringStatus = event;
     }
 
     ngOnDestroy(): void {

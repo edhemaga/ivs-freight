@@ -19,6 +19,8 @@ import { TaReCardComponent } from '../../shared/ta-common-card/ta-re-card.compon
 import { TruckassistProgressExpirationComponent } from '../../shared/truckassist-progress-expiration/truckassist-progress-expiration.component';
 import { TaCounterComponent } from '../../shared/ta-counter/ta-counter.component';
 import { TaCommonHeaderComponent } from '../../shared/ta-details-header/ta-details-header.component';
+import { TaTabSwitchComponent } from '../../standalone-components/ta-tab-switch/ta-tab-switch.component';
+import { formatCurrency } from 'src/app/core/pipes/formatCurrency.pipe';
 
 @NgModule({
     declarations: [
@@ -45,6 +47,8 @@ import { TaCommonHeaderComponent } from '../../shared/ta-details-header/ta-detai
         TruckassistProgressExpirationComponent,
         TaCounterComponent,
         TaCommonHeaderComponent,
+        TaTabSwitchComponent,
+        formatCurrency
     ],
 })
 export class ShopRepairDetailsModule {}

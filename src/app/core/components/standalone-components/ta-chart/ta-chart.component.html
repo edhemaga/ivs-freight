@@ -4,7 +4,7 @@
     [class.hover]="hoveringStatus && hoverTimeDisplay"
 >
     <div class="hover_data_time" *ngIf="hoveringStatus && hoverTimeDisplay">
-        <div class="hover_time_title">DECEMBER, 2021</div>
+        <div class="hover_time_title">{{hoverDateTitle}}</div>
         <div class="hover_time_border"></div>
     </div>
     <div
@@ -20,7 +20,7 @@
                 <svg-icon src="{{ item.image }}"></svg-icon>
                 <div
                     class="charts-template-item-name"
-                    [ngStyle]="{ 'margin-left': item.image ? '6px' : '0px' }"
+                    [ngStyle]="{ 'margin-left': item.image ? '4px' : '0px' }"
                 >
                     {{ item.title }}
                 </div>

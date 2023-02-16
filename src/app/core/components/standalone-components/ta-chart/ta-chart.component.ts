@@ -41,6 +41,7 @@ export class TaChartComponent implements OnInit {
     lineChartData: ChartDataSets[] = [];
     @ViewChild('hoverDataHolder') hoverDataHolder: ElementRef;
     @Output() hoverOtherChart: EventEmitter<any> = new EventEmitter();
+    @Output() chartHovered: EventEmitter<any> = new EventEmitter();
 
     @HostListener('window:resize', ['$event'])
     onResize(event) {
@@ -85,6 +86,22 @@ export class TaChartComponent implements OnInit {
     hoverChartLeft: number = 0;
     hoverColumnWidth: number = 0;
     hoverColumnHeight: number = 0;
+    toolTipData: any = [];
+    monthList: any = [
+        'JANUARY',
+        'FEBRUARY',
+        'MARCH',
+        'APRIL',
+        'MAY',
+        'JUNE',
+        'JULY',
+        'AUGUST',
+        'SEPTEMBER',
+        'OCTOBER',
+        'NOVEMBER',
+        'DECEMBER',
+    ];
+    hoverDateTitle: string = '';
 
     constructor(private ref: ChangeDetectorRef) {}
 
@@ -132,7 +149,15 @@ export class TaChartComponent implements OnInit {
                     this.hoveringStatus = true;
                     this.animationDuration = 0;
                     this.lastHoveredIndex = elements[0]['_index'];
+                    if (this.toolTipData?.length) {
+                        this.setToolTipTitle(this.lastHoveredIndex);
+                    }
                     if (this.legendAttributes?.length) {
+                        console.log(elements, 'what are thee elements');
+                        console.log(
+                            this.chart.chart,
+                            'what are thee elements22222'
+                        );
                         this.setChartLegendData(elements);
                     }
                     if (this.chartConfig['onHoverAnnotation']) {
@@ -145,7 +170,6 @@ export class TaChartComponent implements OnInit {
                         this.hoverDoughnut(elements, 'object');
                     }
                 } else {
-                    this.ref.detectChanges();
                     if (!this.chartConfig['animationOnlyOnLoad']) {
                         this.animationDuration = 1000;
                     }
@@ -158,9 +182,16 @@ export class TaChartComponent implements OnInit {
                     ) {
                         this.hoverDoughnut(null);
                     }
-                    this.legendAttributes = JSON.parse(
-                        JSON.stringify(this.saveValues)
-                    );
+
+                    setTimeout(() => {
+                        console.log(this.hoveringStatus, 'hovringsaus');
+                        if (!this.hoveringStatus) {
+                            this.legendAttributes = JSON.parse(
+                                JSON.stringify(this.saveValues)
+                            );
+                        }
+                        this.ref.detectChanges();
+                    }, 500); 
                 }
             },
             annotation: {
@@ -203,10 +234,7 @@ export class TaChartComponent implements OnInit {
                 position: 'average',
                 intersect: false,
                 custom: (tooltipModel) => {
-                    if (
-                        this.gridHoverBackground &&
-                        tooltipModel?.dataPoints?.[0]
-                    ) {
+                    if (tooltipModel?.dataPoints?.[0]) {
                         this.showChartTooltip(tooltipModel.dataPoints[0].index);
                     }
                 },
@@ -500,6 +528,7 @@ export class TaChartComponent implements OnInit {
 
         this.animationDuration = !hideAnimation ? 1000 : 0;
         this.setChartOptions();
+        this.ref.detectChanges();
     }
 
     setGradientBackground() {
@@ -1048,12 +1077,18 @@ export class TaChartComponent implements OnInit {
     }
 
     showChartTooltip(value) {
+        console.log(value, 'showcharttooltip');
+        if (this.toolTipData?.length) {
+            this.setToolTipTitle(value);
+            this.setChartLegendData(this.chart.chart['tooltip']._active);
+        }
         if (this.chartConfig['hoverOtherChart']) {
             this.hoverOtherChart.emit(value);
             return false;
         }
         this.animationDuration = 0;
         this.hoveringStatus = true;
+        this.chartHovered.emit(true);
         const canvas = this.chart.chart.canvas;
         const ctx = this.chart.chart.ctx;
 
@@ -1128,6 +1163,8 @@ export class TaChartComponent implements OnInit {
                     } else {
                         this.hoverDataPosition = xPos + 4;
                     }
+
+                    console.log(this.hoverDataPosition, 'hoverDataPosition')
                 }
             }
         });
@@ -1157,6 +1194,20 @@ export class TaChartComponent implements OnInit {
                     xAxis['_gridLineItems'][i].color = 'transparent';
                 }
             });
+        }
+    }
+
+    setToolTipTitle(index) {
+        if (this.toolTipData[index].day && this.toolTipData[index].month) {
+            this.hoverDateTitle =
+                this.toolTipData[index].day +
+                ', ' +
+                this.monthList[this.toolTipData[index].month - 1];
+        } else {
+            this.hoverDateTitle =
+                this.monthList[this.toolTipData[index].month - 1] +
+                ', ' +
+                this.toolTipData[index].year;
         }
     }
 }

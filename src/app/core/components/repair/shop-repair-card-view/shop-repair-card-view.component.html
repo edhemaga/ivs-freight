@@ -252,7 +252,7 @@
                     class="charts-template perfomance"
                     [class.p-0]="repairExpensesChart.hoveringStatus"
                 >
-                    <div *ngIf="!repairExpensesChart.hoveringStatus">
+                    <div [class.d-none]="repairExpensesChart.hoveringStatus">
                         <app-ta-tab-switch
                             [type]="'type2-modal-popup'"
                             (switchClicked)="changeRepairTabs($event)"
@@ -265,6 +265,7 @@
                         [chartConfig]="barChartConfig"
                         [axesProperties]="barAxes"
                         [legendAttributes]="barChartLegend"
+                        (chartHovered)="chartHovered($event)"
                     >
                     </app-ta-chart>
                 </div>
