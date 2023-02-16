@@ -1,5 +1,4 @@
 .gitignore
-.openapi-generator-ignore
 README.md
 api.module.ts
 api/accident.service.ts
@@ -105,7 +104,6 @@ model/assignGpsDevicesToTrailerCommand.ts
 model/assignGpsDevicesToTruckCommand.ts
 model/authorizationFeedbackResponse.ts
 model/autocompleteSearchLayer.ts
-model/avatarResponse.ts
 model/bankAccountResponse.ts
 model/bankAccountStatus.ts
 model/bankCardResponse.ts
@@ -511,11 +509,14 @@ model/parkingSlotType.ts
 model/passwordResponse.ts
 model/patchNoteCommand.ts
 model/payPeriod.ts
+model/payrollBonusDescriptionAutocompleteResponse.ts
 model/payrollBonusModalResponse.ts
 model/payrollBonusResponse.ts
+model/payrollCreditDescriptionAutocompleteResponse.ts
 model/payrollCreditModalResponse.ts
 model/payrollCreditResponse.ts
 model/payrollCreditType.ts
+model/payrollDeductionDescriptionAutocompleteResponse.ts
 model/payrollDeductionModalResponse.ts
 model/payrollDeductionRecurringType.ts
 model/payrollDeductionResponse.ts

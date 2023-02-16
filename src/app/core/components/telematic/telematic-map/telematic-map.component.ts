@@ -18,6 +18,7 @@ import { TruckTService } from '../../truck/state/truck.service';
 import { TrailerTService } from '../../trailer/state/trailer.service';
 import { TruckListResponse, TrailerListResponse } from 'appcoretruckassist';
 import { DomSanitizer } from '@angular/platform-browser';
+import { DetailsDataService } from '../../../services/details-data/details-data.service';
 
 @Component({
     selector: 'app-telematic-map',
@@ -308,7 +309,8 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
         private truckService: TruckTService,
         private trailerService: TrailerTService,
         private sanitizer: DomSanitizer,
-        private ref: ChangeDetectorRef
+        private ref: ChangeDetectorRef,
+        private detailsDataService: DetailsDataService
     ) {}
 
     ngOnInit(): void {
@@ -535,8 +537,10 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
                     this.onSearchUnassigned();
                 } else if (changes.truckUnit) {
                     console.log('truckUnit changes', changes.truckUnit);
+                    this.detailsDataService.setUnitValue(changes.truckUnit);
                 } else if (changes.trailerUnit) {
                     console.log('trailerUnit changes', changes.trailerUnit);
+                    this.detailsDataService.setUnitValue(changes.trailerUnit);
                 } else if (changes.truckDeviceId) {
                     console.log('truckDeviceId changes', changes.truckDeviceId);
                 } else if (changes.trailerDeviceId) {

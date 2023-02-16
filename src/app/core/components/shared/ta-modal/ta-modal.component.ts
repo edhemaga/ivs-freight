@@ -11,7 +11,7 @@ import {
 } from '@angular/core';
 import { ModalService } from './modal.service';
 import { UploadFile } from '../ta-upload-files/ta-upload-file/ta-upload-file.component';
-import { DropZoneConfig } from '../ta-upload-files/ta-upload-dropzone/ta-upload-dropzone.component';
+import { DropZoneConfig, TaUploadDropzoneComponent } from '../ta-upload-files/ta-upload-dropzone/ta-upload-dropzone.component';
 import { TaUploadFileService } from '../ta-upload-files/ta-upload-file.service';
 import { AuthGuard } from '../../../guards/authentication.guard';
 import {
@@ -21,12 +21,28 @@ import {
     transition,
     trigger,
 } from '@angular/animations';
+import { CustomScrollbarComponent } from '../custom-scrollbar/custom-scrollbar.component';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { DragDropModule } from '@angular/cdk/drag-drop';
+import { AppTooltipComponent } from '../../standalone-components/app-tooltip/app-tooltip.component';
+import { AngularSvgIconModule } from 'angular-svg-icon';
 
 @Component({
     selector: 'app-ta-modal',
     templateUrl: './ta-modal.component.html',
     styleUrls: ['./ta-modal.component.scss'],
     encapsulation: ViewEncapsulation.None,
+    standalone: true,
+    imports: [
+            CommonModule,
+            CustomScrollbarComponent, 
+            TaUploadDropzoneComponent, 
+            FormsModule, 
+            DragDropModule, 
+            AppTooltipComponent,
+            AngularSvgIconModule
+    ],
     animations: [
         trigger('widthGrow', [
             state(
@@ -273,6 +289,10 @@ export class TaModalComponent implements OnInit, OnDestroy {
             }
             case 'create-map-route': {
                 this.action.emit({ action: action, bool: false });
+                break;
+            }
+            case 'favorite':{
+                this.confirmationAction.emit(this.confirmationData);
                 break;
             }
             default: {

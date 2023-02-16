@@ -84,20 +84,20 @@ export class TrailerDetailsComponent implements OnInit, OnDestroy {
         this.confirmationService.confirmationData$
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: (res: Confirmation) => {
+                next: (res: any) => {
                     switch (res.type) {
                         case 'delete': {
                             if (res.template === 'trailer') {
-                                this.deleteTrailerById(res.id);
+                                this.deleteTrailerById(res?.id);
                             }
                             break;
                         }
                         case 'activate': {
-                            this.changeTrailerStatus(res.id);
+                            this.changeTrailerStatus(res?.id);
                             break;
                         }
                         case 'deactivate': {
-                            this.changeTrailerStatus(res.id);
+                            this.changeTrailerStatus(res?.id);
                             break;
                         }
                         default: {

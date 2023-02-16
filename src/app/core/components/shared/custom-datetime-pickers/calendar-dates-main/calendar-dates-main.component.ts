@@ -8,13 +8,16 @@ import {
     OnChanges,
     forwardRef,
 } from '@angular/core';
-import { VIRTUAL_SCROLL_STRATEGY } from '@angular/cdk/scrolling';
+import { ScrollingModule, VIRTUAL_SCROLL_STRATEGY } from '@angular/cdk/scrolling';
 import {
     CalendarStrategy,
     STARTING_YEAR,
 } from './../date-calendars/calendar_strategy';
 import moment from 'moment';
 import { Subject, takeUntil } from 'rxjs';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { CalendarDaysComponent } from '../calendar-days/calendar-days.component';
 
 export const FULL_SIZE = 182;
 // UKUPNA VISINA SCROLA 100 GODINA x ( 12 MESECI x PUNA VISINA JEDNO ITEMA U SCROLU )
@@ -45,6 +48,13 @@ const MONTHS = [
     selector: 'app-calendar-dates-main',
     templateUrl: './calendar-dates-main.component.html',
     styleUrls: ['./calendar-dates-main.component.scss'],
+    standalone: true,
+    imports: [
+                CommonModule, 
+                FormsModule, 
+                ScrollingModule,
+                CalendarDaysComponent
+    ],
     providers: [
         {
             provide: VIRTUAL_SCROLL_STRATEGY,

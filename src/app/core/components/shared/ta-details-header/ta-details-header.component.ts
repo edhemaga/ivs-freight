@@ -1,10 +1,30 @@
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterModule } from '@angular/router';
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { AppTooltipComponent } from '../../standalone-components/app-tooltip/app-tooltip.component';
+import { DetailsDropdownComponent } from '../details-page-dropdown/details-dropdown';
+import { TaCounterComponent } from '../ta-counter/ta-counter.component';
+import { AngularSvgIconModule } from 'angular-svg-icon';
+import { FilterComponent } from '../../standalone-components/filter/filter.component';
+import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
     selector: 'app-ta-details-header',
     templateUrl: './ta-details-header.component.html',
     styleUrls: ['./ta-details-header.component.scss'],
+    standalone: true,
+    imports: [
+        CommonModule,
+        FormsModule,
+        AppTooltipComponent,
+        DetailsDropdownComponent,
+        TaCounterComponent,
+        AngularSvgIconModule,
+        FilterComponent,
+        RouterModule,
+        NgbPopoverModule
+    ],
 })
 export class TaCommonHeaderComponent implements OnInit {
     @Input() headerText: string = null;
@@ -44,10 +64,13 @@ export class TaCommonHeaderComponent implements OnInit {
     @Input() pmFilter: boolean = false;
     @Input() categoryFilter: boolean = false;
     @Input() moneyFilter: boolean = false;
-
+    @Input() brokerLoadDrop: boolean = false;
 
     public up: boolean = false;
     public down: boolean = false;
+    public dropOpened: boolean = false;
+    public tooltip: any;
+    public activeTemplate: any = 'All Load';
     constructor(private routes: ActivatedRoute) {}
 
     ngOnInit(): void {}
@@ -110,7 +133,7 @@ export class TaCommonHeaderComponent implements OnInit {
                             action.name = 'remove-from-favourite';
                             action.blueIcon = true;
                         } else {
-                            action.title = 'Move to Favourite';
+                            action.title = 'Mark as favorite';
                             action.name = 'move-to-favourite';
                             action.blueIcon = false;
                         }
@@ -176,5 +199,26 @@ export class TaCommonHeaderComponent implements OnInit {
 
                 break;
         }
+    }
+
+    showDropdown(tooltip: any){
+        if ( this.brokerLoadDrop ) {
+
+            this.tooltip = tooltip;
+            if (tooltip.isOpen()) {
+                //tooltip.close();
+            } else {
+                tooltip.open();
+            }
+            this.dropOpened = !this.dropOpened;
+        }
+    }
+
+    dropdownClosed(){
+        this.dropOpened = false;
+    }
+
+    setLoadType(mod){
+        console.log('mooood---', mod);
     }
 }

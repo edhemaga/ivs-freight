@@ -7,22 +7,34 @@ import { SettingsParkingComponent } from './settings-parking/settings-parking.co
 import { SettingsOfficeComponent } from './settings-office/settings-office.component';
 import { SettingsTerminalComponent } from './settings-terminal/settings-terminal.component';
 import { ReactiveFormsModule } from '@angular/forms';
-import { TruckassistProgressExpirationModule } from '../../shared/truckassist-progress-expiration/truckassist-progress-expiration.module';
 import { SettingsParkingModalComponent } from '../../modals/location-modals/settings-parking-modal/settings-parking-modal.component';
 import { SettingsOfficeModalComponent } from '../../modals/location-modals/settings-office-modal/settings-office-modal.component';
 import { SettingsRepairshopModalComponent } from '../../modals/location-modals/settings-repairshop-modal/settings-repairshop-modal.component';
 import { SettingsTerminalModalComponent } from '../../modals/location-modals/settings-terminal-modal/settings-terminal-modal.component';
-import { SettingsSharedModule } from '../settings-shared/settings-shared.module';
-import { SharedModule } from '../../shared/shared.module';
+import { AppTooltipComponent } from '../../standalone-components/app-tooltip/app-tooltip.component';
+import { TaCounterComponent } from '../../shared/ta-counter/ta-counter.component';
+import { AngularSvgIconModule } from 'angular-svg-icon';
+import { TaModalComponent } from '../../shared/ta-modal/ta-modal.component';
+import { ActiveItemsPipe } from 'src/app/core/pipes/activeItems.pipe';
+import { TaTabSwitchComponent } from '../../standalone-components/ta-tab-switch/ta-tab-switch.component';
+import { TaReCardComponent } from '../../shared/ta-common-card/ta-re-card.component';
+import { TaCopyComponent } from '../../shared/ta-copy/ta-copy.component';
+import { formatDatePipe } from 'src/app/core/pipes/formatDate.pipe';
 
 @NgModule({
     imports: [
         CommonModule,
         ReactiveFormsModule,
         SettingsLocationRoutes,
-        SharedModule,
-        SettingsSharedModule,
-        TruckassistProgressExpirationModule,
+        AppTooltipComponent,
+        TaCounterComponent,
+        AngularSvgIconModule,
+        TaModalComponent,
+        TaTabSwitchComponent,
+        ActiveItemsPipe,
+        TaReCardComponent,
+        TaCopyComponent,
+        formatDatePipe
     ],
     declarations: [
         SettingsLocationComponent,

@@ -10,10 +10,17 @@ import {
     trigger,
     state,
 } from '@angular/animations';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { AppTooltipComponent } from '../../standalone-components/app-tooltip/app-tooltip.component';
+import { DetailsDropdownComponent } from '../details-page-dropdown/details-dropdown';
+import { AngularSvgIconModule } from 'angular-svg-icon';
 @Component({
     selector: 'app-ta-re-card',
     templateUrl: './ta-re-card.component.html',
     styleUrls: ['./ta-re-card.component.scss'],
+    standalone: true,
+    imports: [CommonModule, FormsModule, AppTooltipComponent, DetailsDropdownComponent, AngularSvgIconModule],
     animations: [card_component_animation('showHideCardBody'),
     trigger('cardOpenAnimation', [
         state(
@@ -106,7 +113,7 @@ export class TaReCardComponent implements OnInit {
     @Input() noteIcons: string = '';
     @Input() cardNameCurrent: string;
     @Input() statusActive: number;
-    @Input() paddingDots: string = '11px 8px 0 12px';
+    @Input() paddingDots: string = '11px 8px 0px 0px';
     @Output() clickedCard = new EventEmitter<any>();
     @Output() dataDropDopwn = new EventEmitter<any>();
     @Output() preloadData = new EventEmitter<any>();
@@ -114,6 +121,8 @@ export class TaReCardComponent implements OnInit {
     @Input() public testDate: any;
     @Input() public mainData: any;
     @Input() public insuranceCard: boolean = false;
+    @Input() public notExpired: boolean = true;
+    @Input() public openCloseStatus: boolean = true;
     public data: any;
     public resPage: boolean = false;
     public copiedCommon: boolean = false;
@@ -165,11 +174,13 @@ export class TaReCardComponent implements OnInit {
         if ( this.mainData?.id ){
             this.DetailsDataService.setCdlId(this.mainData.id);
         }
+        
         if (
             moment(this.expDateClose).isBefore(currentDate) ||
             this.isDeactivated ||
             this.statusActive == 0 ||
-            this.hasToggler
+            this.hasToggler ||
+            ( this.notExpired && this.openCloseStatus )
         ) {
             
             if ( this.isCardOpen ) {

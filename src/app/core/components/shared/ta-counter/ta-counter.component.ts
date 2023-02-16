@@ -1,10 +1,15 @@
+import { CommonModule } from '@angular/common';
 import { Component, Input, ViewEncapsulation } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { TaThousandSeparatorPipe } from 'src/app/core/pipes/taThousandSeparator.pipe';
 
 @Component({
     selector: 'app-ta-counter',
     templateUrl: './ta-counter.component.html',
     styleUrls: ['./ta-counter.component.scss'],
     encapsulation: ViewEncapsulation.None,
+    standalone: true,
+    imports: [CommonModule, FormsModule, TaThousandSeparatorPipe],
 })
 export class TaCounterComponent {
     @Input() count: number = 0;

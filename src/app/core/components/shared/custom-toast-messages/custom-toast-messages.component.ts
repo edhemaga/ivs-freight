@@ -13,6 +13,8 @@ import { NotificationService } from 'src/app/core/services/notification/notifica
 import { DetailsDataService } from '../../../services/details-data/details-data.service';
 import moment from 'moment';
 import { Subject } from 'rxjs';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 const routeSpecify = {
     '/api/account/login': 'Driver',
@@ -22,6 +24,8 @@ const routeSpecify = {
     selector: 'app-custom-toast-messages',
     templateUrl: './custom-toast-messages.component.html',
     styleUrls: ['./custom-toast-messages.component.scss'],
+    standalone: true,
+    imports: [CommonModule, FormsModule],
     animations: [
         trigger('flyInOut', [
             state(
@@ -108,6 +112,10 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
         {
             api: 'broker',
             value: 'BROKER',
+        },
+        {
+            api: 'assign',
+            value: 'ASSIGN'
         },
         {
             api: 'trailer',
@@ -351,6 +359,19 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
                 this.message = accName;
                 this.wideMessage = true;
                 break;
+            case 'ASSIGN':
+                    this.actionType = 'DEVICE';
+                    this.actionTitle = this.toastrType == 'toast-error' ? 'ASSIGN' : 'ASSIGNED';
+
+                    let deviceMessage = '';
+                    if ( this.httpRequest.body?.truckId ) {
+                        deviceMessage = 'Truck - ' + this.DetailsDataService.unitValue;
+                    } else if ( this.httpRequest.body?.trailerId ) {
+                        deviceMessage = 'Trailer - ' + this.DetailsDataService.unitValue;
+                    }
+
+                    this.message = deviceMessage;
+                break;    
             case 'LOAD':
 
                 let loadNum = '';

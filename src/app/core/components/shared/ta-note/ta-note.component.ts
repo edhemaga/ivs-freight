@@ -17,12 +17,19 @@ import moment from 'moment';
 import { NoteUpdateService } from 'src/app/core/services/shared/note.service';
 import { EntityTypeNote } from 'appcoretruckassist/model/entityTypeNote';
 import { DetailsDataService } from '../../../services/details-data/details-data.service';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { AppTooltipComponent } from '../../standalone-components/app-tooltip/app-tooltip.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { SafeHtmlPipe } from '../../../pipes/safe-html.pipe';
 
 @Component({
     selector: 'app-ta-note',
     templateUrl: './ta-note.component.html',
     styleUrls: ['./ta-note.component.scss'],
     encapsulation: ViewEncapsulation.None,
+    standalone: true,
+    imports: [CommonModule, FormsModule, AppTooltipComponent, NgbModule, SafeHtmlPipe],
     animations: [
         trigger('pickupAnimation', [
             transition(':enter', [
@@ -113,11 +120,10 @@ export class TaNoteComponent implements OnInit, OnDestroy {
         if (this.parentWidth) {
             setTimeout(() => {
                 const parentWidth = this.elRef.nativeElement
-                .closest(this.parentWidth)
-                .getBoundingClientRect();
+                    .closest(this.parentWidth)
+                    .getBoundingClientRect();
                 this._parentWidth = parentWidth.width;
                 this.ref.detectChanges();
-
             }, 1000);
         }
     }
@@ -309,6 +315,14 @@ export class TaNoteComponent implements OnInit, OnDestroy {
     }
 
     updateNote() {
+        if (this.entityType == 'Account') {
+            this.entityType = 'CompanyAccount';
+        }
+
+        if (this.entityType == 'Contact') {
+            this.entityType = 'CompanyContact';
+        }
+
         const updateValue = {
             entityTypeNote: EntityTypeNote[this.entityType],
             entityId: this.entityId,

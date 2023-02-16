@@ -211,6 +211,7 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
                 hasCost: true,
                 hide: false,
                 hasArrow: true,
+                brokerLoadDrop: true,
                 customText: 'Revenue',
                 total: totalCost,
                 icons: [

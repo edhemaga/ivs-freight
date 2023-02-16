@@ -2,6 +2,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
     name: 'inputError',
+    standalone: true
 })
 export class InputErrorPipe implements PipeTransform {
     transform(value: any, inputName?: string): string {

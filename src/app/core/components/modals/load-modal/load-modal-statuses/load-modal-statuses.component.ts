@@ -1,4 +1,7 @@
+import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 
 export interface ILoadStatus {
     id: number;
@@ -11,6 +14,8 @@ export interface ILoadStatus {
     selector: 'app-load-modal-statuses',
     templateUrl: './load-modal-statuses.component.html',
     styleUrls: ['./load-modal-statuses.component.scss'],
+    standalone: true,
+    imports: [CommonModule, FormsModule, NgbPopoverModule]
 })
 export class LoadModalStatusesComponent implements OnInit {
     @Input() mode: 'Create' | 'Edit';

@@ -715,7 +715,7 @@ export class DropDownService {
                 ...dataObject,
             },
         };
-
+        
         switch (event.type) {
             case 'edit': {
                 this.modalService.openModal(
@@ -738,6 +738,36 @@ export class DropDownService {
                         ...mappedEvent,
                         template: 'repair shop',
                         type: 'activate',
+                        image: false,
+                    }
+                );
+                break;
+            }
+            case 'move-to-favourite':{
+                this.modalService.openModal(
+                    ConfirmationModalComponent,
+                    { size: 'small' },
+                    {
+                        ...mappedEvent,
+                        template: 'repair shop',
+                        type: 'info',
+                        subType: 'favorite',
+                        subTypeStatus: 'move',
+                        image: false,
+                    }
+                );
+                break;
+            }
+            case 'remove-from-favourite':{
+                this.modalService.openModal(
+                    ConfirmationModalComponent,
+                    { size: 'small' },
+                    {
+                        ...mappedEvent,
+                        template: 'repair shop',
+                        type: 'info',
+                        subType: 'favorite',
+                        subTypeStatus: 'remove',
                         image: false,
                     }
                 );
@@ -780,6 +810,22 @@ export class DropDownService {
                         image: false,
                     }
                 );
+                break;
+            }
+            case 'Repair':{
+                this.modalService.openModal(
+                    RepairOrderModalComponent,
+                    { size: 'large' },
+                    {
+                        ...mappedEvent,
+                        template: 'Repair Shop',
+                        type: 'activate',
+                        image: false,
+                        shopId: event.id ? event.id : null,
+                    }
+                )
+                
+                
                 break;
             }
         }
