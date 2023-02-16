@@ -1,29 +1,23 @@
-<!-- item.name == selectedRoute -->
-<!-- *ngIf="isSettingsPanelOpen && isNavigationHovered" -->
-
 <div
     class="holder"
     (click)="onUserPanelClose()"
     [ngClass]="{
-        'active-link': selectedRoute == 'Settings',
-        'nav-width': isNavigationHovered
+        'active-link': selectedRoute == 'Company',
+        'nav-width': isNavigationHovered && selectedRoute != 'Company'
     }"
     (mouseenter)="showToolTip = true"
     (mouseleave)="showToolTip = false"
 >
     <div
-        *ngIf="
-            selectedRoute == 'Settings' &&
-            !mouseOverMiddleNav &&
-            !mouseOverFooter &&
-            !isSettingsPanelOpen &&
-            !isUserPanelOpen &&
-            !subrouteContainerOpened
-        "
-        class="nav-item-active-box-settings"
         [ngClass]="{
+            'nav-item-active-box-settings':
+                !mouseOverMiddleNav &&
+                !mouseOverFooter &&
+                !isNavigationHovered &&
+                selectedRoute == 'Company',
             'nav-item-active-box-active': isNavigationHovered,
-            'animate-magic-line': isNavigationHovered
+            'animate-magic-line': isNavigationHovered,
+            'animation-backwards': !isNavigationHovered
         }"
     ></div>
     <div
@@ -120,7 +114,7 @@
                 <span
                     [@showHideDetails]="isNavigationHovered ? 'true' : 'false'"
                     class="item-name"
-                    *ngIf="!isSettingsPanelOpen && selectedRoute == 'Settings'"
+                    *ngIf="!isSettingsPanelOpen && selectedRoute == 'Company'"
                     >[{{ selectedSubRoute }}]</span
                 ></span
             >

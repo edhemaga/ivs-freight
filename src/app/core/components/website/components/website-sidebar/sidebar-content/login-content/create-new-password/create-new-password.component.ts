@@ -36,7 +36,7 @@ export class CreateNewPasswordComponent implements OnInit, OnDestroy {
         private inputService: TaInputService,
         private websiteAuthService: WebsiteAuthService,
         private websiteActionsService: WebsiteActionsService,
-        public imageBase64Service: ImageBase64Service
+        private imageBase64Service: ImageBase64Service
     ) {}
 
     ngOnInit(): void {
@@ -65,17 +65,16 @@ export class CreateNewPasswordComponent implements OnInit, OnDestroy {
                     firstName: res.firstName,
                     lastName: res.lastName,
                     email: res.email,
-                    avatar: res.avatar,
                 };
             });
 
-        /*  this.websiteActionsService.getAvatarImageSubject$
+        this.websiteActionsService.getAvatarImageSubject$
             .pipe(takeUntil(this.destroy$))
             .subscribe((res: string) => {
                 if (res) {
                     this.userAvatar = this.imageBase64Service.sanitizer(res);
                 }
-            }); */
+            });
     }
 
     public passwordsNotSame(): void {

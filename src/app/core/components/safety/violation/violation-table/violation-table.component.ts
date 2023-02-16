@@ -27,7 +27,6 @@ export class ViolationTableComponent
     columns: any[] = [];
     selectedTab = 'active';
     activeViewMode: string = 'List';
-    tableContainerWidth: number = 0;
     resizeObserver: ResizeObserver;
     roadsideActive: RoadsideActiveState[] = [];
     roadsideInactive: RoadsideInactiveState[] = [];
@@ -219,7 +218,9 @@ export class ViolationTableComponent
     observTableContainer() {
         this.resizeObserver = new ResizeObserver((entries) => {
             entries.forEach((entry) => {
-                this.tableContainerWidth = entry.contentRect.width;
+                this.tableService.sendCurrentSetTableWidth(
+                    entry.contentRect.width
+                );
             });
         });
 
@@ -451,9 +452,9 @@ export class ViolationTableComponent
     ngOnDestroy(): void {
         this.tableService.sendActionAnimation({});
 
-        this.resizeObserver.unobserve(
-            document.querySelector('.table-container')
-        );
+        // this.resizeObserver.unobserve(
+        //     document.querySelector('.table-container')
+        // );
         this.resizeObserver.disconnect();
 
         this.destroy$.next();

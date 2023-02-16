@@ -1,22 +1,21 @@
 import { DOCUMENT } from '@angular/common';
 import {
     Component,
-    EventEmitter,
     Inject,
     OnDestroy,
     OnInit,
-    Output,
     ViewEncapsulation,
 } from '@angular/core';
 import { Router } from '@angular/router';
 import { UntypedFormBuilder } from '@angular/forms';
 
-import { Subject, tap } from 'rxjs';
+import { Subject, takeUntil, tap } from 'rxjs';
 
 import moment from 'moment';
 
 import { convertTimeFromBackend } from 'src/app/core/utils/methods.calculations';
 
+import { AuthStoreService } from 'src/app/core/components/authentication/state/auth.service';
 import { WebsiteAuthService } from 'src/app/core/components/website/state/service/website-auth.service';
 
 import { SelectCompanyResponse, SignInResponse } from 'appcoretruckassist';
@@ -28,8 +27,6 @@ import { SelectCompanyResponse, SignInResponse } from 'appcoretruckassist';
     encapsulation: ViewEncapsulation.None,
 })
 export class SelectCompanyComponent implements OnInit, OnDestroy {
-    @Output() goBackToLogin = new EventEmitter<boolean>();
-
     private destroy$ = new Subject<void>();
 
     public saveCompany: any;
@@ -42,26 +39,21 @@ export class SelectCompanyComponent implements OnInit, OnDestroy {
     public id: any;
 
     constructor(
-        @Inject(DOCUMENT) private document: Document,
+        @Inject(DOCUMENT) private document: HTMLDocument,
         private router: Router,
-        private formBuilder: UntypedFormBuilder,
-        private websiteAuthService: WebsiteAuthService
+        private accountStoreService: AuthStoreService,
+        private websiteAuthService: WebsiteAuthService,
+        private formBuilder: UntypedFormBuilder
     ) {}
 
     ngOnInit() {
-        this.createForm();
-
         this.user(JSON.parse(localStorage.getItem('user')));
+
+        this.createForm();
 
         this.userData.companies.length < 5
             ? (this.dotsTrue = false)
             : (this.dotsTrue = true);
-    }
-
-    private createForm(): void {
-        this.saveCompany = this.formBuilder.group({
-            savedCompany: true,
-        });
     }
 
     public user(data): void {
@@ -71,7 +63,6 @@ export class SelectCompanyComponent implements OnInit, OnDestroy {
             this.lastLoginInCompany = this.calculateDiff(
                 convertTimeFromBackend(res.lastLogin)
             );
-
             this.dates.push(
                 moment.utc(res.lastLogin).local().format('MM/DD/YY HH:mm:ss')
             );
@@ -96,8 +87,9 @@ export class SelectCompanyComponent implements OnInit, OnDestroy {
                 return {
                     ...item,
                     LastActiveCompany:
-                        item.lastLogin == this.getNewerDate(this.dates) &&
-                        (this.id = item.id),
+                        item.lastLogin == this.getNewerDate(this.dates)
+                            ? (this.id = item.id)
+                            : null,
                 };
             }),
         };
@@ -111,7 +103,9 @@ export class SelectCompanyComponent implements OnInit, OnDestroy {
             variableWidth: true,
             focusOnSelect: true,
             centerMode: true,
-            initialSlide: this?.id - 1,
+            initialSlide: this.newUser.companies.findIndex(
+                (x) => x.id === this.id
+            ),
         };
     }
 
@@ -150,24 +144,26 @@ export class SelectCompanyComponent implements OnInit, OnDestroy {
         );
     }
 
+    private createForm(): void {
+        this.saveCompany = this.formBuilder.group({
+            savedCompany: true,
+        });
+    }
+
     public goToLogin(): void {
-        this.goBackToLogin.emit(false);
-
-        localStorage.removeItem('user');
-
-        this.router.navigate(['/auth/login']);
+        this.websiteAuthService.accountLogout();
     }
 
     public onCompanySelect(): void {
         const center: any = this.document.querySelectorAll('.slick-center');
-
         let id = center[0]?.firstChild?.id;
 
-        this.websiteAuthService
+        this.accountStoreService
             .selectCompanyAccount({
                 companyId: parseInt(id),
             })
             .pipe(
+                takeUntil(this.destroy$),
                 tap((res: SelectCompanyResponse) => {
                     this.userData = {
                         ...res,

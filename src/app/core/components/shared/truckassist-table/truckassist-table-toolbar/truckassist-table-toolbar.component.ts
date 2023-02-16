@@ -7,6 +7,7 @@ import {
     Output,
     EventEmitter,
     OnDestroy,
+    ChangeDetectorRef,
 } from '@angular/core';
 import { TableType } from 'appcoretruckassist';
 import { Subject, takeUntil } from 'rxjs';
@@ -51,7 +52,6 @@ export class TruckassistTableToolbarComponent
     @Input() options: any;
     @Input() selectedTab: string;
     @Input() columns: any[];
-    @Input() tableContainerWidth: number;
     @Input() selectedDispatcher: any;
     @Input() dispathcboardTableLocked: boolean;
     listName: string = '';
@@ -139,7 +139,8 @@ export class TruckassistTableToolbarComponent
     constructor(
         private tableService: TruckassistTableService,
         private modalService: ModalService,
-        private confirmationService: ConfirmationService
+        private confirmationService: ConfirmationService,
+        private changeDetectorRef: ChangeDetectorRef
     ) {}
 
     // --------------------------------NgOnInit---------------------------------
@@ -151,6 +152,13 @@ export class TruckassistTableToolbarComponent
         this.getToolbarWidth();
 
         this.getActiveTableData();
+
+        // Get Table Width
+        this.tableService.currentSetTableWidth
+            .pipe(takeUntil(this.destroy$))
+            .subscribe(() => {
+                this.getToolbarWidth();
+            });
 
         // Columns Reorder
         this.tableService.currentColumnsOrder
@@ -203,13 +211,6 @@ export class TruckassistTableToolbarComponent
             this.options = changes.options.currentValue;
 
             this.getSelectedViewMode();
-        }
-
-        if (
-            !changes?.tableContainerWidth?.firstChange &&
-            changes?.tableContainerWidth
-        ) {
-            this.getToolbarWidth();
         }
 
         if (!changes?.tableData?.firstChange && changes?.tableData) {
@@ -270,6 +271,8 @@ export class TruckassistTableToolbarComponent
         const tableContainer = document.querySelector('.table-container');
 
         this.maxToolbarWidth = tableContainer.clientWidth;
+
+        this.changeDetectorRef.detectChanges();
 
         this.setToolbarWidth();
     }

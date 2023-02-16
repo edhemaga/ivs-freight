@@ -138,6 +138,13 @@ export class TruckTService implements OnDestroy {
                             truck.titles = storedTruckData.titles;
                             truck.inspections = storedTruckData.inspections;
 
+                            truck = {
+                                ...truck,
+                                fileCount: truck?.filesCountForList
+                                    ? truck.filesCountForList
+                                    : 0,
+                            };
+
                             this.truckMinimalStore.add(truck);
                             this.tdlStore.add(truck);
                             this.truckItem.set([truck]);
@@ -389,6 +396,18 @@ export class TruckTService implements OnDestroy {
         model: string
     ): Observable<TruckAutocompleteModelResponse> {
         return this.truckService.apiTruckAutocompleteModelModelGet(model);
+    }
+
+    public getFuelConsumption(id: number, chartType: number) {
+        return this.truckService.apiTruckFuelconsumptionGet(id, chartType);
+    }
+
+    public getExpenses(id: number, chartType: number) {
+        return this.truckService.apiTruckExpensesGet(id, chartType);
+    }
+
+    public getRevenue(id: number, chartType: number) {
+        return this.truckService.apiTruckRevenueGet(id, chartType);
     }
 
     ngOnDestroy(): void {

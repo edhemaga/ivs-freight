@@ -39,6 +39,7 @@ import { MapMarkerDropdownComponent } from '../map-marker-dropdown/map-marker-dr
 import { AgmDirectionModule } from 'agm-direction';
 import { GooglePlaceModule } from 'ngx-google-places-autocomplete';
 import { AngularSvgIconModule } from 'angular-svg-icon';
+import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 
 @Component({
     selector: 'app-maps',
@@ -185,7 +186,8 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
         private routingService: RoutingStateService,
         private modalService: ModalService,
         private confirmationService: ConfirmationService,
-        private companyOfficeService: CompanyTOfficeService
+        private companyOfficeService: CompanyTOfficeService,
+        private tableService: TruckassistTableService
     ) {}
 
     ngOnInit(): void {
@@ -229,10 +231,11 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
                 this.showMoreMapListData(data);
             });
 
-        this.mapsService.mapFilterChange
+            
+        this.tableService.currentSetTableFilter
             .pipe(takeUntil(this.destroy$))
             .subscribe((data) => {
-                if ( data.filterType == 'locationFilter' ) {
+                if ( data?.filterType == 'locationFilter' ) {
                     if ( data.action == 'Set' ) {
                         this.locationFilter = data.queryParams;
                         this.mapCircle = {
@@ -250,7 +253,7 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
                     }
                     
                     this.getClusters(true, true);
-                } else if ( data.filterType == 'stateFilter' ) {
+                } else if ( data?.filterType == 'stateFilter' ) {
                     if ( data.action == 'Set' ) {
                         this.stateFilter = data.queryParams;
                     } else {

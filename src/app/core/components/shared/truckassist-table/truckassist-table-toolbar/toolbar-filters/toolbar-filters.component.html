@@ -53,8 +53,7 @@
         [icon]="'address'"
         [filterTitle]="'Location Filter'"
         [locationDefType]="true"
-        [areaFilter]="activeViewMode.name == 'Map' ? true : false"
-        (setFilter)="setFilterEvent($event)"
+        (setFilter)="onFilter($event)"
     >
     </app-filter>
 
@@ -74,6 +73,7 @@
         [filterTitle]="'Fuel Stop Filter'"
         [noLeftIcon]="true"
         [defFilterHolder]="true"
+        (setFilter)="onFilter($event)"
     >
     </app-filter>
 
@@ -106,7 +106,7 @@
         [filterTitle]="'State / Province Filter'"
         [defFilterHolder]="true"
         [leftSideIcon]="true"
-        (setFilter)="setFilterEvent($event)"
+        (setFilter)="onFilter($event)"
     >
     </app-filter>
 
@@ -134,6 +134,7 @@
         [type]="'timeFilter'"
         [icon]="'ic_time'"
         [filterTitle]="'Time Filter'"
+        (setFilter)="onFilter($event)"
     >
     </app-filter>
 
@@ -153,6 +154,7 @@
         [filterTitle]="'Truck Filter'"
         [defFilterHolder]="true"
         [noLeftIcon]="true"
+        (setFilter)="onFilter($event)"
     >
     </app-filter>
 
@@ -172,6 +174,7 @@
         [filterTitle]="'Trailer Filter'"
         [defFilterHolder]="true"
         [noLeftIcon]="true"
+        (setFilter)="onFilter($event)"
     >
     </app-filter>
 
@@ -190,6 +193,7 @@
         [icon]="'ic_injury'"
         [filterTitle]="'Injury Filter'"
         [swipeFilter]="true"
+        (setFilter)="onFilter($event)"
     >
     </app-filter>
 
@@ -246,6 +250,7 @@
         [defFilterHolder]="true"
         [noLeftIcon]="false"
         [leftSideIcon]="true"
+        (setFilter)="onFilter($event)"
     >
     </app-filter>
 
@@ -266,6 +271,7 @@
         [defFilterHolder]="true"
         [noLeftIcon]="false"
         [leftSideIcon]="true"
+        (setFilter)="onFilter($event)"
     >
     </app-filter>
 
@@ -286,6 +292,7 @@
         [filterTitle]="'Category Filter'"
         [defFilterHolder]="true"
         [noLeftIcon]="true"
+        (setFilter)="onFilter($event)"
     >
     </app-filter>
 
@@ -304,6 +311,7 @@
         [searchState]="true"
         [filterTitle]="'Dispatcher Filter'"
         [defFilterHolder]="true"
+        (setFilter)="onFilter($event)"
     >
     </app-filter>
 
@@ -323,6 +331,7 @@
         [filterTitle]="'Status Filter'"
         [defFilterHolder]="true"
         [noLeftIcon]="false"
+        (setFilter)="onFilter($event)"
     >
     </app-filter>
 
@@ -354,6 +363,7 @@
         [noLeftIcon]="false"
         [leftSideIcon]="true"
         [largeLeftIcon]="true"
+        (setFilter)="onFilter($event)"
     >
     </app-filter>
     <!-- BORDER -->
@@ -374,6 +384,7 @@
         [noLeftIcon]="false"
         [leftSideIcon]="true"
         [largeLeftIcon]="true"
+        (setFilter)="onFilter($event)"
     >
     </app-filter>
 
@@ -407,6 +418,7 @@
         [subType]="'all'"
         [moneyFilter]="true"
         [fuelType]="options.toolbarActions.fuelMoneyFilter ? true : false"
+        (setFilter)="onFilter($event)"
     >
     </app-filter>
 </div>
