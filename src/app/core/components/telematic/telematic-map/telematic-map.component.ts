@@ -480,7 +480,7 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
 
     getUnassignedGpsData() {
         this.telematicService
-            .getCompanyUnassignedGpsData({})
+            .getAllUnassignedGpsData({})
             .pipe(takeUntil(this.destroy$))
             .subscribe((gpsData: any) => {
                 console.log('getUnassignedGpsData', gpsData);
@@ -1098,6 +1098,7 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
             .subscribe((data) => {
                 console.log('gpsStatusChange data', data);
                 data.speed = Math.round(data.speed);
+                data.motionStatus = data.motionStatus === 1 ? 'MOTION' : data.motionStatus;
 
                 let driverIndex = this.driverLocations.findIndex(
                     (device) => device.deviceId === data.deviceId
