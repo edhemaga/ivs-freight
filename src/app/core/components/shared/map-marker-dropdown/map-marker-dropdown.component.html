@@ -344,11 +344,13 @@
 
                     <div class="marker-like-text mg-top-6">
                         {{
-                            item?.trailerNumber ? 'Device ID' : 'No GPS Device'
+                            item?.trailerNumber && !item?.truckNumber
+                                ? 'Device ID'
+                                : 'No GPS Device'
                         }}
                         <span
                             class="marker-bold-text"
-                            *ngIf="item?.trailerNumber"
+                            *ngIf="item?.trailerNumber && !item?.truckNumber"
                             >{{ item?.deviceId }}</span
                         >
                     </div>
@@ -379,8 +381,8 @@
                             >- {{ item?.headingString }}</span
                         >
                     </div>
-                    <div class="marker-info-text mg-top-2">
-                        3 hours 27 minutes
+                    <div class="marker-info-text mg-top-2" *ngIf="item.motionStatusPeriod">
+                        {{ item.motionStatusPeriod }}
                     </div>
                 </div>
 
@@ -392,10 +394,11 @@
                         Dispatch Status
                     </div>
                     <div class="unit-status-text pink-text mg-top-4">
-                        Loaded 3
+                        {{ item?.dispatchStatus }}
                     </div>
-                    <div class="marker-info-text mg-top-2">
+                    <div class="marker-info-text mg-top-2" *ngIf="item?.dispatchStatusPeriod">
                         3 hours 59 minutes
+                        {{ item?.dispatchStatusPeriod }}
                     </div>
                 </div>
             </div>
@@ -463,13 +466,10 @@
                     {{ item?.coordinates }}
                 </div>
             </div>
-            <div class="marker-divider"></div>
-            <div>
-                <div
-                    class="marker-title"
-                    [ngStyle]="{ 'margin-bottom': '15px' }"
-                >
-                    Load <span class="blue-text">5698</span>
+            <div *ngIf="item?.loadNumber" class="marker-divider"></div>
+            <div *ngIf="item?.loadNumber">
+                <div class="marker-title" [ngStyle]="{ 'margin-bottom': '15px' }">
+                    Load <span class="blue-text">{{ item.loadNumber }}</span>
                 </div>
                 <app-gps-progressbar></app-gps-progressbar>
             </div>

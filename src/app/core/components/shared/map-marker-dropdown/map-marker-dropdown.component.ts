@@ -19,6 +19,7 @@ import { ProfileImagesComponent } from '../profile-images/profile-images.compone
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { DetailsDropdownComponent } from '../details-page-dropdown/details-dropdown';
 import { TaCounterComponent } from '../ta-counter/ta-counter.component';
+import { GpsProgressbarComponent } from '../gps-progressbar/gps-progressbar.component';
 
 @Component({
     selector: 'app-map-marker-dropdown',
@@ -36,7 +37,8 @@ import { TaCounterComponent } from '../ta-counter/ta-counter.component';
         AngularSvgIconModule,
         DetailsDropdownComponent,
         TaCounterComponent,
-        TaThousandSeparatorPipe
+        TaThousandSeparatorPipe,
+        GpsProgressbarComponent
     ],
 })
 export class MapMarkerDropdownComponent implements OnInit {
