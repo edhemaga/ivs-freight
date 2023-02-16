@@ -42,6 +42,10 @@ export class ShipperDetailsSingleComponent implements OnInit, OnChanges {
         }
     }
     ngOnInit(): void {
+
+
+        console.log('----shipperData?.data?.loadStops?', this.shipper[0].data.loadStops)
+
     }
 
     /**Function return id */

@@ -1,16 +1,8 @@
-<!-- (click)="
-onAction(ind, 'Open User Panel');
-item.notification &&
-    settingsRouteClicked({
-        value: true,
-        id: item.id
-    })
-" -->
 <div class="nav-footer" [ngClass]="{ 'nav-footer-width': isNavigationHovered }">
     <div
         class="settings-footer"
         [ngClass]="{
-            'activated-footer-route': settingsRouteActivated
+            'activated-footer-route': selectedRoute == 'Company'
         }"
     >
         <app-navigation-settings
@@ -32,7 +24,8 @@ item.notification &&
         [ngClass]="{
             'nav-footer-item-scaleWidth': !isNavigationHovered,
             show: isNavigationHovered,
-            'activated-footer-route': notificationsActive && item.notification,
+            'activated-footer-route':
+                selectedRoute == 'Notifications' && item.notification,
             'notification-item': item.notification
         }"
         [routerLink]="item.route"
@@ -51,18 +44,14 @@ item.notification &&
             ></app-tooltip-slide>
         </div>
         <div
-            *ngIf="
-                !mouseOverMiddleNav &&
-                !mouseOverFooter &&
-                selectedRoute == 'Notifications' &&
-                item.notification &&
-                !subrouteContainerOpened &&
-                !isSettingsPanelOpen
-            "
-            class="nav-item-active-box"
             [ngClass]="{
-                'nav-item-active-box-active': isNavigationHovered,
-                'animate-magic-line': isNavigationHovered
+                'nav-item-active-box':
+                    !mouseOverMiddleNav &&
+                    !mouseOverFooter &&
+                    !isNavigationHovered &&
+                    selectedRoute == 'Notifications' &&
+                    item.notification,
+                'animation-backward': !magicBoxAnime
             }"
         ></div>
         <div
@@ -99,7 +88,7 @@ item.notification &&
                                     'notification-dark': isNavigationHovered
                                 }"
                                 class="notification-svg"
-                                src="../../../../../assets/svg/applicant/notification-light.svg"
+                                src="assets/svg/applicant/notification-light.svg"
                             >
                             </svg-icon>
                         </div>
@@ -160,13 +149,31 @@ item.notification &&
     </div>
     <div
         *ngIf="
-            !mouseOverMiddleNav &&
-            !isActiveSubroute &&
-            !isUserPanelOpen &&
-            !isSettingsPanelOpen &&
-            !isUserCompanyDetailsOpen &&
-            !showHideLineIfSettingsActive &&
-            mouseOverFooter
+            (!mouseOverMiddleNav &&
+                !isActiveSubroute &&
+                !isUserPanelOpen &&
+                !isSettingsPanelOpen &&
+                !isUserCompanyDetailsOpen &&
+                !showHideLineIfSettingsActive &&
+                mouseOverFooter &&
+                isNavigationHovered) ||
+            (selectedRoute == 'Notifications' &&
+                !mouseOverMiddleNav &&
+                !isActiveSubroute &&
+                !isUserPanelOpen &&
+                !isSettingsPanelOpen &&
+                !isUserCompanyDetailsOpen &&
+                !showHideLineIfSettingsActive &&
+                isNavigationHovered) ||
+            (selectedRoute == 'Company' &&
+                !mouseOverMiddleNav &&
+                !isSettingsPanelOpen &&
+                !isActiveSubroute &&
+                !isUserPanelOpen &&
+                !isUserCompanyDetailsOpen &&
+                !showHideLineIfSettingsActive &&
+                isNavigationHovered) ||
+            (mouseOverFooter && !isNavigationHovered)
         "
         [@showHideDetailsMagicLine]="
             showMagicLine &&

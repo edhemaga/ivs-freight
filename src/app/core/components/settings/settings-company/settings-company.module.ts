@@ -14,7 +14,7 @@ import { SettingsBasicModalComponent } from '../../modals/company-modals/setting
 import { SettingsInsurancePolicyModalComponent } from '../../modals/company-modals/settings-insurance-policy-modal/settings-insurance-policy-modal.component';
 import { SettingsFactoringModalComponent } from '../../modals/company-modals/settings-factoring-modal/settings-factoring-modal.component';
 import { SettingsNodataComponent } from './settings-nodata/settings-nodata.component';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '../../shared/shared.module';
 import { AppTooltipComponent } from '../../standalone-components/app-tooltip/app-tooltip.component';
 import { TaCustomCardComponent } from '../../shared/ta-custom-card/ta-custom-card.component';
@@ -33,6 +33,9 @@ import { DetailsActiveItemPipe } from 'src/app/core/pipes/detailsActiveItem.pipe
 import { formatEinPipe } from 'src/app/core/pipes/formatEin.pipe';
 import { TaThousandSeparatorPipe } from 'src/app/core/pipes/taThousandSeparator.pipe';
 import { formatDatePipe } from 'src/app/core/pipes/formatDate.pipe';
+import { TaLogoChangeComponent } from '../../shared/ta-logo-change/ta-logo-change.component';
+
+import { TaReCardComponent } from '../../shared/ta-common-card/ta-re-card.component';
 
 @NgModule({
     imports: [
@@ -44,7 +47,7 @@ import { formatDatePipe } from 'src/app/core/pipes/formatDate.pipe';
         AppTooltipComponent,
         TaCustomCardComponent,
         TaCopyComponent,
-        TaModalComponent, 
+        TaModalComponent,
         TaTabSwitchComponent,
         TaInputComponent,
         InputAddressDropdownComponent,
@@ -57,7 +60,8 @@ import { formatDatePipe } from 'src/app/core/pipes/formatDate.pipe';
         DetailsActiveItemPipe,
         formatEinPipe,
         TaThousandSeparatorPipe,
-        formatDatePipe
+        formatDatePipe,
+        TaReCardComponent,
     ],
     exports: [SharedModule],
     declarations: [

@@ -31,6 +31,7 @@ import {
 import { Titles } from 'src/app/core/utils/application.decorators';
 import { OnChanges } from '@angular/core';
 import { convertDateFromBackend } from '../../../../utils/methods.calculations';
+import moment from 'moment';
 
 @Titles()
 @Component({
@@ -68,7 +69,7 @@ export class TruckDetailsItemComponent implements OnInit, OnDestroy, OnChanges {
     @ViewChildren('fhwaUpload') fhwaUpload: any;
     @ViewChildren('registrationUpload') registrationUpload: any;
     @ViewChildren('titleUpload') titleUpload: any;
-    @Input() truck: any | any = null;
+    @Input() truck: any = null;
     public note: UntypedFormControl = new UntypedFormControl();
     public fhwaNote: UntypedFormControl = new UntypedFormControl();
     public purchaseNote: UntypedFormControl = new UntypedFormControl();
@@ -83,6 +84,7 @@ export class TruckDetailsItemComponent implements OnInit, OnDestroy, OnChanges {
     public truckData: any;
     public dataEdit: any;
     public dataFHWA: any;
+    public currentDate: any;
     constructor(
         private tableService: TruckassistTableService,
         private confirmationService: ConfirmationService,
@@ -91,20 +93,29 @@ export class TruckDetailsItemComponent implements OnInit, OnDestroy, OnChanges {
         private dropDownService: DropDownService
     ) {}
 
+    ngOnChanges(changes: SimpleChanges): void {
+        if (changes.truck?.currentValue != changes.truck?.previousValue) {
+            //this.truck = changes.truck?.currentValue;
+            //his.initTableOptions();
+        }
+    }    
+
+
     ngOnInit(): void {
         // Confirmation Subscribe
         this.confirmationService.confirmationData$
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: (res: Confirmation) => {
+                next: (res: any) => {
+                    console.log('--here----', res);
                     switch (res.type) {
                         case 'delete': {
                             if (res.template === 'registration') {
-                                this.deleteRegistrationByIdFunction(res.id);
+                                this.deleteRegistrationByIdFunction(res?.id);
                             } else if (res.template === 'inspection') {
-                                this.deleteInspectionByIdFunction(res.id);
+                                this.deleteInspectionByIdFunction(res?.id);
                             } else if (res.template === 'title') {
-                                this.deleteTitleByIdFunction(res.id);
+                                this.deleteTitleByIdFunction(res?.id);
                             }
                             break;
                         }
@@ -115,6 +126,7 @@ export class TruckDetailsItemComponent implements OnInit, OnDestroy, OnChanges {
                 },
             });
         this.initTableOptions();
+        this.currentDate = moment(new Date()).format();
     }
 
     public onShowDetails(componentData: any) {
@@ -390,6 +402,4 @@ export class TruckDetailsItemComponent implements OnInit, OnDestroy, OnChanges {
         this.destroy$.complete();
         this.tableService.sendActionAnimation({});
     }
-
-    ngOnChanges(changes: SimpleChanges): void {}
 }

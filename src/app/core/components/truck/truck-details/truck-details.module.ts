@@ -18,7 +18,7 @@ import { TaCommonHeaderComponent } from '../../shared/ta-details-header/ta-detai
 import { TaDetailsHeaderCardComponent } from '../../shared/ta-details-header-card/ta-details-header-card.component';
 import { TaChartComponent } from '../../standalone-components/ta-chart/ta-chart.component';
 import { TaTabSwitchComponent } from '../../standalone-components/ta-tab-switch/ta-tab-switch.component';
-
+import { AngularSvgIconModule } from 'angular-svg-icon';
 @NgModule({
     declarations: [
         TruckDetailsComponent,
@@ -43,7 +43,8 @@ import { TaTabSwitchComponent } from '../../standalone-components/ta-tab-switch/
         TaCommonHeaderComponent,
         TaDetailsHeaderCardComponent,
         TaChartComponent,
-        TaTabSwitchComponent
+        TaTabSwitchComponent,
+        AngularSvgIconModule
     ],
 })
 export class TruckDetailsModule {}

@@ -112,7 +112,7 @@ const routes: Routes = [
         resolve: { dispatcher: DispatcherResolverService },
     },
     {
-        path: 'settings',
+        path: 'company',
         loadChildren: () =>
             import('./core/components/settings/settings.module').then(
                 (m) => m.SettingsModule

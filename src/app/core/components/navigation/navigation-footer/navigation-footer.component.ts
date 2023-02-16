@@ -7,6 +7,8 @@ import {
     OnDestroy,
     ChangeDetectionStrategy,
     ChangeDetectorRef,
+    OnChanges,
+    SimpleChanges,
 } from '@angular/core';
 import { FooterData } from '../model/navigation.model';
 import { footerData } from '../model/navigation-data';
@@ -23,6 +25,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NavigationSettingsComponent } from '../navigation-settings/navigation-settings.component';
 import { UserDataPipe } from '../pipe/user-data.pipe';
+import { AngularSvgIconModule } from 'angular-svg-icon';
 
 @Component({
     selector: 'app-navigation-footer',
@@ -35,7 +38,8 @@ import { UserDataPipe } from '../pipe/user-data.pipe';
         FormsModule,
         NavigationSettingsComponent,
         UserDataPipe,
-        RouterModule
+        RouterModule,
+        AngularSvgIconModule,
     ],
     animations: [
         navigation_route_animation('showHideDetails'),
@@ -43,7 +47,7 @@ import { UserDataPipe } from '../pipe/user-data.pipe';
     ],
     providers: [UserDataPipe],
 })
-export class NavigationFooterComponent implements OnInit, OnDestroy {
+export class NavigationFooterComponent implements OnInit, OnDestroy, OnChanges {
     private destroy$ = new Subject<void>();
     @Input() isNavigationHovered: boolean = false;
     @Input() isUserCompanyDetailsOpen: boolean = false;
@@ -69,6 +73,7 @@ export class NavigationFooterComponent implements OnInit, OnDestroy {
     public showMagicLine: boolean;
     public midleRouteActive: boolean = false;
     public showToolTip: boolean;
+    public magicBoxAnime: boolean = true;
     constructor(
         private router: Router,
         private navigationService: NavigationService,
@@ -169,6 +174,15 @@ export class NavigationFooterComponent implements OnInit, OnDestroy {
                     this.cdRef.detectChanges();
                 }
             });
+    }
+    ngOnChanges(changes: SimpleChanges): void {
+        if (changes.hasOwnProperty('isNavigationHovered')) {
+            const prev = changes.isNavigationHovered;
+
+            if (changes && prev.previousValue != undefined) {
+                this.magicBoxAnime = changes.isNavigationHovered.currentValue;
+            }
+        }
     }
     //If route is clicked get true
     public settingsRouteClicked($event) {

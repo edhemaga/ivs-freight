@@ -17,6 +17,7 @@ import { Subject, takeUntil } from 'rxjs';
 import { TruckassistTableService } from '../../../../services/truckassist-table/truckassist-table.service';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { ResizeColumnDirective } from 'src/app/core/directives/resize-column.directive';
 
 const rotate: { [key: string]: any } = {
     asc: '',
@@ -30,12 +31,12 @@ const rotate: { [key: string]: any } = {
     styleUrls: ['./truckassist-table-head.component.scss'],
     standalone: true,
     imports: [
-                CommonModule, 
-                FormsModule, 
-                ReactiveFormsModule,
-                AngularSvgIconModule,
-                NgbModule
-
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+        AngularSvgIconModule,
+        NgbModule,
+        ResizeColumnDirective,
     ],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })

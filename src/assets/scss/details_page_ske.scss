@@ -130,11 +130,13 @@ p {
         padding: 1px 8px 0px 8px;
 
         &.trailer-details-card{
-            padding: 0px 6px 4px 6px;
+            padding: 0px 8px 0px 8px;
         }
     }
 }
 .assignTo {
+    position: relative;
+    left: -3px;
     display: grid;
     grid-template-columns: 202px 202px;
     column-gap: 12px;
@@ -247,6 +249,7 @@ p {
             font-weight: $font-medium;
             color: $color-gray-dark;
             line-height: 16px;
+            padding-left: 12px;
             &::-moz-selection {
                 color: $color-gray-dark;
                 background: rgb(183, 183, 183, 0.2);
@@ -270,16 +273,16 @@ p {
 }
 .item-cards {
     .ta-card-header {
-        padding-top: 6px !important;
-        padding-bottom: 6px !important;
-        padding-right: 4px !important;
+        //padding-top: 6px !important;
+        //padding-bottom: 6px !important;
+        //padding-right: 4px !important;
     }
 }
 .cards-container {
-    padding: 0 6px;
+    //padding: 0 6px;
     .card-body-cdl {
         display: grid;
-        padding: 0 6px;
+        padding: 0px 4px;
         .card-restriction-endorsment {
             display: grid;
             grid-template-columns: 110px 131px;
@@ -743,7 +746,8 @@ p {
 }
 
 .truck-details-wrapper {
-    margin-left: 16px;
+    padding: 0px 12px;
+    //margin-left: 12px;
     .truck {
         svg {
             width: 132px;
@@ -833,7 +837,7 @@ p {
     display: grid;
     grid-template-columns: 215px 1fr;
     row-gap: 12px;
-    padding: 0 4px;
+    //padding: 0 4px;
     // margin-top: -7px;
     .common-item-wrapper {
         display: flex;
@@ -932,6 +936,7 @@ p {
         .note-textarea {
             color: #6c6c6c !important;
             font-weight: 400 !important;
+            padding-bottom: 12px !important;
             &::-moz-selection {
                 color: $color-gray-dark;
                 background: rgb(108, 108, 108, 0.2);
@@ -973,7 +978,7 @@ p {
     grid-template-columns: 130px 130px 130px;
     row-gap: 10px;
     column-gap: 10px;
-    padding: 0 2px;
+    //padding: 0 2px;
     .mileage-template-item {
         display: flex;
         flex-direction: column;

@@ -467,6 +467,15 @@
                     }}
                     Ban List
                 </button>
+                <!-- FAVORITE -->
+                <button
+                    *ngIf="confirmationData?.subType === 'favorite'"
+                    (click)="onAction('favorite')"
+                    class="modal-deactivate-btn modal-gray-btn modal-confirmation-btn"
+                    type="button"
+                >
+                    {{ confirmationData?.subTypeStatus === 'move' ?  'Mark as Favorite' : 'Remove from Favorite'}}
+                </button>
             </div>
             <!-- End Confirmation Modal -->
 

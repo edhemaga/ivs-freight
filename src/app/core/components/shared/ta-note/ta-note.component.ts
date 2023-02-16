@@ -120,11 +120,10 @@ export class TaNoteComponent implements OnInit, OnDestroy {
         if (this.parentWidth) {
             setTimeout(() => {
                 const parentWidth = this.elRef.nativeElement
-                .closest(this.parentWidth)
-                .getBoundingClientRect();
+                    .closest(this.parentWidth)
+                    .getBoundingClientRect();
                 this._parentWidth = parentWidth.width;
                 this.ref.detectChanges();
-
             }, 1000);
         }
     }
@@ -316,6 +315,14 @@ export class TaNoteComponent implements OnInit, OnDestroy {
     }
 
     updateNote() {
+        if (this.entityType == 'Account') {
+            this.entityType = 'CompanyAccount';
+        }
+
+        if (this.entityType == 'Contact') {
+            this.entityType = 'CompanyContact';
+        }
+
         const updateValue = {
             entityTypeNote: EntityTypeNote[this.entityType],
             entityId: this.entityId,

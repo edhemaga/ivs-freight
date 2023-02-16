@@ -394,6 +394,10 @@
                     height: 0 !important;
                 }
             }
+
+            .pdfViewer {
+                box-shadow: 0px 0px 4px rgb(0 0 0 / 15%);
+            }
         }
 
         .image_main_holder {
@@ -1007,6 +1011,15 @@
                 transition: 0.1s all ease-in-out;
                 background-color: #3074d3e6;
             }
+
+            &.default {
+                background-color: #42424280;
+
+                &:hover {
+                    transition: 0.1s all ease-in-out;
+                    background-color: #424242e6;
+                }
+            }
         }
 
         &:hover {
@@ -1281,7 +1294,6 @@
 }
 
 .tags_main_holder {
-    min-width: 172px;
     padding: 4px;
 
     background-color: #2f2f2f;

@@ -181,6 +181,7 @@ export class ShopRepairCardViewComponent
         );
         this.getActiveServices(changes.repairShopCardViewData.currentValue);
         this.getShopsDropdown(changes.repairShopCardViewData.currentValue);
+
         this.cdRef.detectChanges();
     }
 
@@ -222,7 +223,7 @@ export class ShopRepairCardViewComponent
                             id: item.id,
                             name: item.name,
                             status: item.status,
-                            svg: item.pinned ? 'ic_star.svg' : null,
+                            svg: 'ic_star.svg',
                             folder: 'common',
                             active:
                                 item.id ===
