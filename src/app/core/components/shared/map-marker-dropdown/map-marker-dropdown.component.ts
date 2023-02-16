@@ -35,7 +35,8 @@ import { TaCounterComponent } from '../ta-counter/ta-counter.component';
         ProfileImagesComponent,
         AngularSvgIconModule,
         DetailsDropdownComponent,
-        TaCounterComponent
+        TaCounterComponent,
+        TaThousandSeparatorPipe
     ],
 })
 export class MapMarkerDropdownComponent implements OnInit {
