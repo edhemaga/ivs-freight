@@ -56,7 +56,7 @@
                         class="company-icons"
                         src="assets/svg/truckassist-table/location-icon.svg"
                     ></svg-icon>
-                    <span>{{ item.address.address }}</span>
+                    <app-ta-copy [copyValue]="item?.address?.address"> </app-ta-copy>
                 </div>
             </div>
             <app-ta-custom-card

@@ -292,9 +292,11 @@ export class RepairTService implements OnDestroy {
 
                             this.rDs.update((store) => {
                                 let ind;
+                                let minimalListIndex;
                                 let shopStored = JSON.parse(
                                     JSON.stringify(store)
                                 );
+                                
                                 shopStored.repairShop.map(
                                     (data: any, index: any) => {
                                         if (data.id == shop.id) {
@@ -302,9 +304,20 @@ export class RepairTService implements OnDestroy {
                                         }
                                     }
                                 );
-
+                                
+                                shopStored.repairShopMinimal.pagination.data.map(
+                                    (data: any, index: any) => {
+                                        if (data.id == shop.id) {
+                                            minimalListIndex = index;
+                                            store.repairShopMinimal.pagination.data[index]['name'] = shop.name;
+                                            store.repairShopMinimal.pagination.data[index]['pinned'] = shop.pinned;
+                                            store.repairShopMinimal.pagination.data[index]['status'] = shop.status;
+                                        }
+                                    }
+                                );    
+                                
                                 shopStored.repairShop[ind] = shop;
-
+                              
                                 return {
                                     ...store,
                                     repairShop: [...shopStored.repairShop],

@@ -13,12 +13,14 @@ import {
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AppTooltipComponent } from '../../standalone-components/app-tooltip/app-tooltip.component';
+import { DetailsDropdownComponent } from '../details-page-dropdown/details-dropdown';
+import { AngularSvgIconModule } from 'angular-svg-icon';
 @Component({
     selector: 'app-ta-re-card',
     templateUrl: './ta-re-card.component.html',
     styleUrls: ['./ta-re-card.component.scss'],
     standalone: true,
-    imports: [CommonModule, FormsModule, AppTooltipComponent],
+    imports: [CommonModule, FormsModule, AppTooltipComponent, DetailsDropdownComponent, AngularSvgIconModule],
     animations: [card_component_animation('showHideCardBody'),
     trigger('cardOpenAnimation', [
         state(

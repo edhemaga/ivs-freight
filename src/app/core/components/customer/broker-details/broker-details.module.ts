@@ -17,6 +17,8 @@ import { TaInputNoteComponent } from '../../shared/ta-input-note/ta-input-note.c
 import { formatCurrency } from 'src/app/core/pipes/formatCurrency.pipe';
 import { formatEinPipe } from 'src/app/core/pipes/formatEin.pipe';
 import { formatDatePipe } from 'src/app/core/pipes/formatDate.pipe';
+import { TaCommonHeaderComponent } from '../../shared/ta-details-header/ta-details-header.component';
+
 
 @NgModule({
     declarations: [
@@ -39,6 +41,7 @@ import { formatDatePipe } from 'src/app/core/pipes/formatDate.pipe';
         formatCurrency,
         formatEinPipe,
         formatDatePipe,
+        TaCommonHeaderComponent
     ],
 })
 export class BrokerDetailsModule {}
