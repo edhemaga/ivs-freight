@@ -13,7 +13,7 @@
     </filter>
   </defs>
   <path id="Path_41058" data-name="Path 41058" d="M0,0H18L14,28H4Z" transform="translate(7.999)" fill="url(#linear-gradient)"/>
-  <g transform="matrix(1, 0, 0, 1, 0, 0)" filter="url(#Path_41047)">
+  <g transform="matrix(1, 0, 0, 1, 0, 0)" filter="drop-shadow(0px 0px 2px #0000004D)">
     <path id="Path_41047-2" data-name="Path 41047" d="M44.015.921l7.857,7.857a3.142,3.142,0,0,1,0,4.444l-7.857,7.857a3.142,3.142,0,0,1-4.444,0l-7.857-7.857a3.139,3.139,0,0,1,0-4.444L39.571.921a3.142,3.142,0,0,1,4.444,0" transform="translate(28 -13.79) rotate(90)" fill="#fff"/>
   </g>
   <path id="Path_41050" data-name="Path 41050" d="M43.206,3.586l6,6a2,2,0,0,1,0,2.828l-6,6a2,2,0,0,1-2.828,0l-6-6a2,2,0,0,1,0-2.828l6-6a2,2,0,0,1,2.828,0" transform="translate(27.999 -13.793) rotate(90)" fill="#536bc2"/>

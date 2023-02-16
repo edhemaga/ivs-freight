@@ -53,19 +53,19 @@
                     <ng-template>
                         <div
                             class="gps-marker-container"
+                            [class.hide-marker]="location.hidden"
                             (click)="markerClick(location)"
                             (mousewheel)="markerZoom($event, location)"
                         >
                             <svg-icon
                                 *ngIf="location.motionStatus == 'MOTION'"
                                 [src]="
-                                    location.trailerNumber ? 
+                                    location.trailerNumber && !location.truckNumber ? 
                                     'assets/svg/common/telematics/ic_marker-trailer-motion.svg' : 
                                     'assets/svg/common/telematics/ic_marker-truck-motion.svg'
                                 "
                                 class="motion-status-marker marker-icon motion-icon"
                                 [class.selected-marker]="focusedDeviceId == location.deviceId"
-                                [class.hide-marker]="location.hidden"
                                 [class.motion-color-unassigned]="!location.trailerNumber && !location.truckNumber"
                                 [ngClass]="
                                     !location.heading ? 'rotate-0' : 'rotate-'+location.heading
@@ -75,14 +75,15 @@
                             <svg-icon
                                 *ngIf="location.motionStatus != 'MOTION'"
                                 [src]="
-                                    !location.trailerNumber
-                                        ? location.ignition
-                                            ? 'assets/svg/common/telematics/ic_marker-truck-ignition-on.svg'
-                                            : 'assets/svg/common/telematics/ic_marker-truck-ignition-off.svg'
-                                        : location.trailerNumber &&
+                                    location.trailerNumber && !location.truckNumber ?
                                         location.ignition
                                         ? 'assets/svg/common/telematics/ic_marker-trailer-ignition-on.svg'
                                         : 'assets/svg/common/telematics/ic_marker-trailer-ignition-off.svg'
+                                        : location.ignition
+                                        ? 'assets/svg/common/telematics/ic_marker-truck-ignition-on.svg'
+                                        : 'assets/svg/common/telematics/ic_marker-truck-ignition-off.svg'
+
+                                    
                                 "
                                 class="motion-status-marker marker-icon"
                                 [ngClass]="{
@@ -102,7 +103,7 @@
                                         location.motionStatus == 'PARKING' && !(location.trailerNumber || location.truckNumber),
                                         'selected-marker':
                                     focusedDeviceId == location.deviceId,
-                                'trailer-marker': location.trailerNumber,
+                                'trailer-marker': location.trailerNumber && !location.truckNumber,
                                 'hide-marker': location.hidden
                                 }"
                                 [svgStyle]="{ 'width.px': 34, 'height.px': 34 }"
@@ -112,7 +113,8 @@
                                 [ngClass]="{
                                     'hide-marker':
                                         focusedDeviceId == location.deviceId,
-                                    'hide-marker-tooltip': focusedDeviceId == location.deviceId
+                                    'hide-marker-tooltip': (focusedDeviceId == location.deviceId) || location.hidden,
+                                    'motion-tooltip': location.motionStatus == 'MOTION'
                                 }"
                             >
                                 <div
@@ -124,7 +126,7 @@
                                 >
                                     <div>
                                         {{
-                                            location.trailerNumber ? location.trailerNumber 
+                                            location.trailerNumber && !location.truckNumber ? location.trailerNumber 
                                             : location.truckNumber ? location.truckNumber
                                             : location.deviceId
                                         }}
@@ -582,7 +584,7 @@
                                         >
                                         </svg-icon>
                                         <app-gps-progressbar
-                                            *ngIf="column.progressComponent"
+                                            *ngIf="column.progressComponent && location?.destination"
                                         ></app-gps-progressbar>
                                         <span
                                             *ngIf="
@@ -1374,7 +1376,7 @@
         </div>
     </div>
     <div
-        class="columns-menu-container side-menu"
+        class="columns-menu-container side-menu hide-menu"
         [ngClass]="{ 'hide-menu': !columnsDropdownShown }"
     >
         <ng-container *ngFor="let column of columns; let i = index">

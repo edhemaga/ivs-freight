@@ -1211,6 +1211,8 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
 
         var showHide = !device.hidden;
 
+        if ( showHide && device.deviceId == this.focusedDeviceId ) this.focusedDeviceId = 0;
+
         this.driverLocations.map((item) => {
             if (item.deviceId == device.deviceId) {
                 item.hidden = showHide;
