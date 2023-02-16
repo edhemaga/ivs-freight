@@ -33,7 +33,6 @@ export class RefreshTokenInterceptor implements HttpInterceptor {
                 );
 
                 if (err.status === 401 && user) {
-                    console.log('token expired', user);
                     return this.accountService
                         .apiAccountRefreshPost({
                             refreshToken: user.refreshToken,
@@ -48,8 +47,6 @@ export class RefreshTokenInterceptor implements HttpInterceptor {
                                     JSON.stringify(user)
                                 );
 
-                                console.log('refresh token', user);
-
                                 configFactory(this.userLoggedService);
 
                                 return next.handle(
@@ -62,8 +59,6 @@ export class RefreshTokenInterceptor implements HttpInterceptor {
                             }),
                             catchError((err: HttpErrorResponse) => {
                                 if (err.status === 404 || err.status === 500) {
-                                    console.log('refresh token expired');
-
                                     this.ngbModal.dismissAll();
 
                                     localStorage.clear();

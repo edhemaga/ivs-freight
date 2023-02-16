@@ -35,10 +35,7 @@ import { BlockedContentPipe } from './core/pipes/blockedContent.pipe';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CustomScrollbarComponent } from './core/components/shared/custom-scrollbar/custom-scrollbar.component';
 @NgModule({
-    declarations: [
-        AppComponent,
-        ChangeLogoPipe
-    ],
+    declarations: [AppComponent, ChangeLogoPipe],
     imports: [
         BrowserModule,
         CommonModule,
@@ -91,7 +88,7 @@ import { CustomScrollbarComponent } from './core/components/shared/custom-scroll
         GoogleMapsAPIWrapper,
         StaticInjectorService,
         DatePipe,
-        CurrencyPipe
+        CurrencyPipe,
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
     bootstrap: [AppComponent],

@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 
 import { WebsiteRoutingModule } from './website-routing.module';
 
@@ -29,10 +30,10 @@ import { VerifyUserHelperComponent } from './components/website-sidebar/sidebar-
 import { SelectCompanyComponent } from './components/website-sidebar/sidebar-content/login-content/select-company/select-company.component';
 
 import { WebsiteUnderConstructionComponent } from './components/website-under-construction/website-under-construction.component';
+
 import { TaInputComponent } from '../shared/ta-input/ta-input.component';
 import { InputAddressDropdownComponent } from '../shared/input-address-dropdown/input-address-dropdown.component';
 import { TaCheckboxComponent } from '../shared/ta-checkbox/ta-checkbox.component';
-import { RouterModule } from '@angular/router';
 
 @NgModule({
     declarations: [
@@ -65,14 +66,19 @@ import { RouterModule } from '@angular/router';
         WebsiteUnderConstructionComponent,
     ],
     imports: [
+        /* MODULES */
+
         CommonModule,
         WebsiteRoutingModule,
         SharedModule,
         SlickCarouselModule,
+        RouterModule,
+
+        /* COMPONENTS */
+
         TaInputComponent,
         InputAddressDropdownComponent,
         TaCheckboxComponent,
-        RouterModule
     ],
 })
 export class WebsiteModule {}
@@ -82,9 +88,7 @@ export class WebsiteModule {}
 DEPENDENCIES
 
 AngularSvgIconModule
-app-ta-input
-app-ta-checkbox
-TaSpinnerModule
-SlickCarouselModule
+
+spinner
 
 */
