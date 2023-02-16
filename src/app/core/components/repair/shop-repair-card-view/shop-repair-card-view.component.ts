@@ -147,6 +147,11 @@ export class ShopRepairCardViewComponent
         },
     };
 
+    public repairCall: any = {
+        id: -1,
+        chartType: -1,
+    };
+
     constructor(
         private detailsPageDriverSer: DetailsPageService,
         private tableService: TruckassistTableService,
@@ -328,21 +333,7 @@ export class ShopRepairCardViewComponent
     }
 
     public changeRepairTabs(ev: any) {
-        let chartType =
-            ev.name == '1M'
-                ? 1
-                : ev.name == '3M'
-                ? 2
-                : ev.name == '6M'
-                ? 3
-                : ev.name == '1Y'
-                ? 4
-                : ev.name == 'YTD'
-                ? 5
-                : ev.name == 'ALL'
-                ? 6
-                : 1;
-
+        const chartType = this.repairExpensesChart?.detailsTimePeriod(ev.name);
         this.getRepairShopChartData(this.currentShopId, chartType);
     }
 
@@ -351,6 +342,15 @@ export class ShopRepairCardViewComponent
         chartType: number,
         hideAnimation?: boolean
     ) {
+        if (
+            id != this.repairCall.id ||
+            chartType != this.repairCall.chartType
+        ) {
+            this.repairCall.id = id;
+            this.repairCall.chartType = chartType;
+        } else {
+            return false;
+        }
         this.repairService
             .getRepairShopChart(id, chartType)
             .pipe(takeUntil(this.destroy$))

@@ -153,11 +153,6 @@ export class TaChartComponent implements OnInit {
                         this.setToolTipTitle(this.lastHoveredIndex);
                     }
                     if (this.legendAttributes?.length) {
-                        console.log(elements, 'what are thee elements');
-                        console.log(
-                            this.chart.chart,
-                            'what are thee elements22222'
-                        );
                         this.setChartLegendData(elements);
                     }
                     if (this.chartConfig['onHoverAnnotation']) {
@@ -184,14 +179,13 @@ export class TaChartComponent implements OnInit {
                     }
 
                     setTimeout(() => {
-                        console.log(this.hoveringStatus, 'hovringsaus');
                         if (!this.hoveringStatus) {
                             this.legendAttributes = JSON.parse(
                                 JSON.stringify(this.saveValues)
                             );
                         }
                         this.ref.detectChanges();
-                    }, 500); 
+                    }, 500);
                 }
             },
             annotation: {
@@ -1077,7 +1071,6 @@ export class TaChartComponent implements OnInit {
     }
 
     showChartTooltip(value) {
-        console.log(value, 'showcharttooltip');
         if (this.toolTipData?.length) {
             this.setToolTipTitle(value);
             this.setChartLegendData(this.chart.chart['tooltip']._active);
@@ -1163,8 +1156,6 @@ export class TaChartComponent implements OnInit {
                     } else {
                         this.hoverDataPosition = xPos + 4;
                     }
-
-                    console.log(this.hoverDataPosition, 'hoverDataPosition')
                 }
             }
         });
@@ -1201,13 +1192,29 @@ export class TaChartComponent implements OnInit {
         if (this.toolTipData[index].day && this.toolTipData[index].month) {
             this.hoverDateTitle =
                 this.toolTipData[index].day +
-                ', ' +
+                ' ' +
                 this.monthList[this.toolTipData[index].month - 1];
         } else {
             this.hoverDateTitle =
                 this.monthList[this.toolTipData[index].month - 1] +
-                ', ' +
+                ' ' +
                 this.toolTipData[index].year;
         }
+    }
+
+    detailsTimePeriod(name) {
+        return name == '1M'
+            ? 1
+            : name == '3M'
+            ? 2
+            : name == '6M'
+            ? 3
+            : name == '1Y'
+            ? 4
+            : name == 'YTD'
+            ? 5
+            : name == 'ALL'
+            ? 6
+            : 1;
     }
 }

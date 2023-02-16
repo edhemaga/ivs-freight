@@ -342,7 +342,7 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
             minValue: 0,
             maxValue: 60,
             stepSize: 15,
-            showGridLines: true,
+            showGridLines: false,
         },
         verticalRightAxes: {
             visible: true,
@@ -380,6 +380,18 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
         },
     };
     public truckIndex: any;
+    public revenueCall: any = {
+        id: -1,
+        chartType: -1,
+    };
+    public expensesCall: any = {
+        id: -1,
+        chartType: -1,
+    };
+    public fuelCall: any = {
+        id: -1,
+        chartType: -1,
+    };
     constructor(
         private detailsPageDriverSer: DetailsPageService,
         private truckMinimalListQuery: TrucksMinimalListQuery,
@@ -407,9 +419,6 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
     }
     ngOnInit(): void {
         this.getTruckById(this.truck.id);
-        this.getExpensesChartData(this.truck.id, 1, true);
-        this.getFuelConsumtionChartData(this.truck.id, 1, true);
-        this.getRevenueChartData(this.truck.id, 1, true);
         this.noteControl.patchValue(this.truck.note);
         this.getTruckDropdown();
         this.buttonSwitcher();
@@ -538,6 +547,15 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
         chartType: number,
         hideAnimation?: boolean
     ) {
+        if (
+            id != this.expensesCall.id ||
+            chartType != this.expensesCall.chartType
+        ) {
+            this.expensesCall.id = id;
+            this.expensesCall.chartType = chartType;
+        } else {
+            return false;
+        }
         this.truckService
             .getExpenses(id, chartType)
             .pipe(takeUntil(this.destroy$))
@@ -601,6 +619,15 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
         chartType: number,
         hideAnimation?: boolean
     ) {
+        if (
+            id != this.fuelCall.id ||
+            chartType != this.fuelCall.chartType
+        ) {
+            this.fuelCall.id = id;
+            this.fuelCall.chartType = chartType;
+        } else {
+            return false;
+        }
         this.truckService
             .getFuelConsumption(id, chartType)
             .pipe(takeUntil(this.destroy$))
@@ -665,6 +692,15 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
         chartType: number,
         hideAnimation?: boolean
     ) {
+        if (
+            id != this.revenueCall.id ||
+            chartType != this.revenueCall.chartType
+        ) {
+            this.revenueCall.id = id;
+            this.revenueCall.chartType = chartType;
+        } else {
+            return false;
+        }
         this.truckService
             .getRevenue(id, chartType)
             .pipe(takeUntil(this.destroy$))
@@ -756,57 +792,15 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
         };
     }
     public changeTabPerfomance(ev: any) {
-        let chartType =
-            ev.name == '1M'
-                ? 1
-                : ev.name == '3M'
-                ? 2
-                : ev.name == '6M'
-                ? 3
-                : ev.name == '1Y'
-                ? 4
-                : ev.name == 'YTD'
-                ? 5
-                : ev.name == 'ALL'
-                ? 6
-                : 1;
-
+        const chartType = this.stackedBarChart?.detailsTimePeriod(ev.name);
         this.getExpensesChartData(this.truck.id, chartType);
     }
     public changeTabFuel(ev: any) {
-        let chartType =
-            ev.name == '1M'
-                ? 1
-                : ev.name == '3M'
-                ? 2
-                : ev.name == '6M'
-                ? 3
-                : ev.name == '1Y'
-                ? 4
-                : ev.name == 'YTD'
-                ? 5
-                : ev.name == 'ALL'
-                ? 6
-                : 1;
-
+        const chartType = this.payrollChart?.detailsTimePeriod(ev.name);
         this.getFuelConsumtionChartData(this.truck.id, chartType);
     }
     public changeTabRevenue(ev: any) {
-        let chartType =
-            ev.name == '1M'
-                ? 1
-                : ev.name == '3M'
-                ? 2
-                : ev.name == '6M'
-                ? 3
-                : ev.name == '1Y'
-                ? 4
-                : ev.name == 'YTD'
-                ? 5
-                : ev.name == 'ALL'
-                ? 6
-                : 1;
-
+        const chartType = this.revenueChart?.detailsTimePeriod(ev.name);
         this.getRevenueChartData(this.truck.id, chartType);
     }
 
