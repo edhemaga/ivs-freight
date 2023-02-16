@@ -560,59 +560,15 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
             .getExpenses(id, chartType)
             .pipe(takeUntil(this.destroy$))
             .subscribe((item) => {
-                this.stackedBarChartConfig.dataLabels = [];
-                this.stackedBarChartConfig.chartValues = [
-                    item.fuelCost,
-                    item.repairCost,
-                    item.totalCost,
-                ];
-                this.stackedBarChartLegend[0].value = item.fuelCost;
-                this.stackedBarChartLegend[1].value = item.repairCost;
-                this.stackedBarChartLegend[2].value = item.totalCost;
-                let fuelCost = [],
-                    repairCost = [],
-                    labels = [],
-                    maxValue = 0;
-                if (item?.truckExpensesCharts?.length > 17) {
-                    this.stackedBarChartConfig.dataProperties[0].defaultConfig.barThickness = 10;
-                    this.stackedBarChartConfig.dataProperties[1].defaultConfig.barThickness = 10;
-                } else {
-                    this.stackedBarChartConfig.dataProperties[0].defaultConfig.barThickness = 18;
-                    this.stackedBarChartConfig.dataProperties[1].defaultConfig.barThickness = 18;
-                }
-                this.stackedBarChart.toolTipData = [];
-                item.truckExpensesCharts.map((data, index) => {
-                    this.stackedBarChart.toolTipData.push(data);
-                    fuelCost.push(data.fuelCost);
-                    repairCost.push(data.repairCost);
-                    if (data.fuelCost + data.repairCost > maxValue) {
-                        maxValue =
-                            data.fuelCost +
-                            data.repairCost +
-                            ((data.fuelCost + data.repairCost) * 7) / 100;
-                    }
-                    if (data.day) {
-                        labels.push([data.day, this.monthList[data.month - 1]]);
-                    } else {
-                        labels.push([this.monthList[data.month - 1]]);
-                    }
-                });
-
-                this.stackedBarAxes['verticalLeftAxes']['maxValue'] = maxValue;
-                this.stackedBarChartConfig.dataLabels = labels;
-                this.stackedBarChartConfig.dataProperties[0].defaultConfig.data =
-                    fuelCost;
-                this.stackedBarChartConfig.dataProperties[1].defaultConfig.data =
-                    repairCost;
-                this.stackedBarChart.chartDataCheck(
-                    this.stackedBarChartConfig.chartValues
-                );
-                this.stackedBarChart.updateChartData(hideAnimation);
-                this.stackedBarChart.saveValues = JSON.parse(
-                    JSON.stringify(this.stackedBarChartLegend)
-                );
-                this.stackedBarChart.legendAttributes = JSON.parse(
-                    JSON.stringify(this.stackedBarChartLegend)
+                this.chartDataSet(
+                    this.stackedBarChart,
+                    this.stackedBarChartConfig,
+                    this.stackedBarChartLegend,
+                    this.stackedBarAxes,
+                    item,
+                    hideAnimation,
+                    false,
+                    true
                 );
             });
     }
@@ -632,60 +588,14 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
             .getFuelConsumption(id, chartType)
             .pipe(takeUntil(this.destroy$))
             .subscribe((item) => {
-                this.payrollChartConfig.dataLabels = [];
-                this.payrollChartConfig.chartValues = [
-                    item.milesPerGallon,
-                    item.costPerGallon,
-                ];
-                this.barChartLegend[0].value = item.milesPerGallon;
-                this.barChartLegend[1].value = item.costPerGallon;
-                let milesPerGallon = [],
-                    costPerGallon = [],
-                    labels = [],
-                    maxValue = 0,
-                    maxValue2 = 0;
-                if (item?.truckFuelConsumptionCharts?.length > 17) {
-                    this.payrollChartConfig.dataProperties[1].defaultConfig.barThickness = 10;
-                } else {
-                    this.payrollChartConfig.dataProperties[1].defaultConfig.barThickness = 18;
-                }
-                this.payrollChart.toolTipData = [];
-                item.truckFuelConsumptionCharts.map((data, index) => {
-                    this.payrollChart.toolTipData.push(data);
-                    milesPerGallon.push(data.milesPerGallon);
-                    costPerGallon.push(data.costPerGallon);
-                    if (data.milesPerGallon > maxValue) {
-                        maxValue =
-                            data.milesPerGallon +
-                            (data.milesPerGallon * 7) / 100;
-                    }
-                    if (data.costPerGallon > maxValue2) {
-                        maxValue2 =
-                            data.costPerGallon + (data.costPerGallon * 7) / 100;
-                    }
-                    if (data.day) {
-                        labels.push([data.day, this.monthList[data.month - 1]]);
-                    } else {
-                        labels.push([this.monthList[data.month - 1]]);
-                    }
-                });
-
-                this.barAxes['verticalLeftAxes']['maxValue'] = maxValue;
-                this.barAxes['verticalRightAxes']['maxValue'] = maxValue2;
-                this.payrollChartConfig.dataLabels = labels;
-                this.payrollChartConfig.dataProperties[0].defaultConfig.data =
-                    costPerGallon;
-                this.payrollChartConfig.dataProperties[1].defaultConfig.data =
-                    milesPerGallon;
-                this.payrollChart.chartDataCheck(
-                    this.payrollChartConfig.chartValues
-                );
-                this.payrollChart.updateChartData(hideAnimation);
-                this.payrollChart.saveValues = JSON.parse(
-                    JSON.stringify(this.barChartLegend)
-                );
-                this.payrollChart.legendAttributes = JSON.parse(
-                    JSON.stringify(this.barChartLegend)
+                this.chartDataSet(
+                    this.payrollChart,
+                    this.payrollChartConfig,
+                    this.barChartLegend,
+                    this.barAxes,
+                    item,
+                    hideAnimation,
+                    true
                 );
             });
     }
@@ -708,57 +618,14 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
             .getRevenue(id, chartType)
             .pipe(takeUntil(this.destroy$))
             .subscribe((item) => {
-                this.revenueChartConfig.dataLabels = [];
-                this.revenueChartConfig.chartValues = [
-                    item.miles,
-                    item.revenue,
-                ];
-                this.barChartLegend2[0].value = item.miles;
-                this.barChartLegend2[1].value = item.revenue;
-                let milesPerGallon = [],
-                    costPerGallon = [],
-                    labels = [],
-                    maxValue = 0,
-                    maxValue2 = 0;
-                if (item?.truckRevenueCharts?.length > 17) {
-                    this.revenueChartConfig.dataProperties[1].defaultConfig.barThickness = 10;
-                } else {
-                    this.revenueChartConfig.dataProperties[1].defaultConfig.barThickness = 18;
-                }
-                this.revenueChart.toolTipData = [];
-                item.truckRevenueCharts.map((data, index) => {
-                    this.revenueChart.toolTipData.push(data);
-                    milesPerGallon.push(data.miles);
-                    costPerGallon.push(data.revenue);
-                    if (data.miles > maxValue) {
-                        maxValue = data.miles + (data.miles * 7) / 100;
-                    }
-                    if (data.revenue > maxValue2) {
-                        maxValue2 = data.revenue + (data.revenue * 7) / 100;
-                    }
-                    if (data.day) {
-                        labels.push([data.day, this.monthList[data.month - 1]]);
-                    } else {
-                        labels.push([this.monthList[data.month - 1]]);
-                    }
-                });
-
-                this.barAxes2['verticalLeftAxes']['maxValue'] = maxValue;
-                this.barAxes2['verticalRightAxes']['maxValue'] = maxValue2;
-                this.revenueChartConfig.dataLabels = labels;
-                this.revenueChartConfig.dataProperties[0].defaultConfig.data =
-                    costPerGallon;
-                this.revenueChartConfig.dataProperties[1].defaultConfig.data =
-                    milesPerGallon;
-                this.revenueChart.chartDataCheck(
-                    this.revenueChartConfig.chartValues
-                );
-                this.revenueChart.updateChartData(hideAnimation);
-                this.revenueChart.saveValues = JSON.parse(
-                    JSON.stringify(this.barChartLegend2)
-                );
-                this.revenueChart.legendAttributes = JSON.parse(
-                    JSON.stringify(this.barChartLegend2)
+                this.chartDataSet(
+                    this.revenueChart,
+                    this.revenueChartConfig,
+                    this.barChartLegend2,
+                    this.barAxes2,
+                    item,
+                    hideAnimation,
+                    true
                 );
             });
     }
@@ -899,5 +766,133 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
     ngOnDestroy(): void {
         this.destroy$.next();
         this.destroy$.complete();
+    }
+
+    chartDataSet(
+        chart: any,
+        config: any,
+        legend: any,
+        axes: any,
+        item: any,
+        hideAnimation?: boolean,
+        reverse?: boolean,
+        stacked?: boolean
+    ) {
+        config.dataLabels = [];
+        config.chartValues = [
+            item?.fuelCost
+                ? item.fuelCost
+                : item?.milesPerGallon
+                ? item.milesPerGallon
+                : item?.miles
+                ? item.miles
+                : null,
+            item?.repairCost
+                ? item.repairCost
+                : item?.costPerGallon
+                ? item.costPerGallon
+                : item?.revenue
+                ? item.revenue
+                : null,
+            item?.totalCost ? item.totalCost : null,
+        ];
+
+        if (legend.length > 2) {
+            legend[0].value = item?.fuelCost
+                ? item.fuelCost
+                : item?.milesPerGallon
+                ? item.milesPerGallon
+                : null;
+            legend[1].value = item?.repairCost
+                ? item.repairCost
+                : item?.costPerGallon
+                ? item.costPerGallon
+                : null;
+            legend[2].value = item?.totalCost ? item.totalCost : null;
+        } else {
+            legend[0].value = item?.fuelCost
+                ? item.fuelCost
+                : item?.milesPerGallon
+                ? item.milesPerGallon
+                : item?.miles
+                ? item.miles
+                : null;
+            legend[1].value = item?.repairCost
+                ? item.repairCost
+                : item?.costPerGallon
+                ? item.costPerGallon
+                : item?.revenue
+                ? item.revenue
+                : null;
+        }
+
+        let fuelCost = [],
+            repairCost = [],
+            labels = [],
+            maxValue = 0,
+            maxValue2 = 0;
+        const mapData = item?.truckExpensesCharts
+            ? item.truckExpensesCharts
+            : item?.truckFuelConsumptionCharts
+            ? item.truckFuelConsumptionCharts
+            : item?.truckRevenueCharts
+            ? item.truckRevenueCharts
+            : null;
+        if (mapData?.length > 17) {
+            config.dataProperties[0].defaultConfig.barThickness = 10;
+            config.dataProperties[1].defaultConfig.barThickness = 10;
+        } else {
+            config.dataProperties[0].defaultConfig.barThickness = 18;
+            config.dataProperties[1].defaultConfig.barThickness = 18;
+        }
+        chart.toolTipData = [];
+        mapData.map((data, index) => {
+            chart.toolTipData.push(data);
+            let dataVal1 = data?.fuelCost
+                ? data.fuelCost
+                : data?.milesPerGallon
+                ? data.milesPerGallon
+                : data?.miles
+                ? data.miles
+                : 0;
+            let dataVal2 = data?.repairCost
+                ? data.repairCost
+                : data?.costPerGallon
+                ? data.costPerGallon
+                : data?.revenue
+                ? data.revenue
+                : 0;
+            fuelCost.push(dataVal1);
+            repairCost.push(dataVal2);
+            if (stacked && dataVal1 + dataVal2 > maxValue) {
+                maxValue =
+                    dataVal1 + dataVal2 + ((dataVal1 + dataVal2) * 7) / 100;
+            } else if (!stacked && dataVal1 > maxValue) {
+                maxValue = dataVal1 + (dataVal1 * 7) / 100;
+            }
+            if (dataVal2 > maxValue2) {
+                maxValue2 = dataVal2 + (dataVal2 * 7) / 100;
+            }
+            if (data.day) {
+                labels.push([data.day, this.monthList[data.month - 1]]);
+            } else {
+                labels.push([this.monthList[data.month - 1]]);
+            }
+        });
+
+        axes['verticalLeftAxes']['maxValue'] = maxValue;
+        axes['verticalRightAxes']['maxValue'] = maxValue2;
+
+        config.dataLabels = labels;
+        config.dataProperties[0].defaultConfig.data = reverse
+            ? repairCost
+            : fuelCost;
+        config.dataProperties[1].defaultConfig.data = reverse
+            ? fuelCost
+            : repairCost;
+        chart.chartDataCheck(config.chartValues);
+        chart.updateChartData(hideAnimation);
+        chart.saveValues = JSON.parse(JSON.stringify(legend));
+        chart.legendAttributes = JSON.parse(JSON.stringify(legend));
     }
 }
