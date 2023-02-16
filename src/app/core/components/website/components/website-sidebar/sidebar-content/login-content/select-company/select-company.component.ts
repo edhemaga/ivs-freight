@@ -1,11 +1,9 @@
 import { DOCUMENT } from '@angular/common';
 import {
     Component,
-    EventEmitter,
     Inject,
     OnDestroy,
     OnInit,
-    Output,
     ViewEncapsulation,
 } from '@angular/core';
 import { Router } from '@angular/router';
@@ -28,8 +26,6 @@ import { SelectCompanyResponse, SignInResponse } from 'appcoretruckassist';
     encapsulation: ViewEncapsulation.None,
 })
 export class SelectCompanyComponent implements OnInit, OnDestroy {
-    @Output() goBackToLogin = new EventEmitter<boolean>();
-
     private destroy$ = new Subject<void>();
 
     public saveCompany: any;
@@ -151,11 +147,7 @@ export class SelectCompanyComponent implements OnInit, OnDestroy {
     }
 
     public goToLogin(): void {
-        this.goBackToLogin.emit(false);
-
-        localStorage.removeItem('user');
-
-        this.router.navigate(['/auth/login']);
+        this.websiteAuthService.accountLogout();
     }
 
     public onCompanySelect(): void {

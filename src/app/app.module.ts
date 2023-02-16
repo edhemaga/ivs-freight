@@ -25,7 +25,8 @@ import { NavigationSubrouteCardComponent } from './core/components/navigation/na
 import { NavigationUserCompanyComponent } from './core/components/navigation/navigation-user-company/navigation-user-company.component';
 import { NavigationHeaderComponent } from './core/components/navigation/navigation-header/navigation-header.component';
 import { ApiModule, Configuration } from 'appcoretruckassist';
-import { UserLoggedService } from './core/components/authentication/state/user-logged.service';
+import { UserLoggedService } from './core/components/website/state/service/user-logged.service';
+
 import { CustomToastMessagesComponent } from './core/components/shared/custom-toast-messages/custom-toast-messages.component';
 import { AppInterceptor } from './app.inteceptor';
 

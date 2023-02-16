@@ -132,10 +132,11 @@ export class WebsiteAuthService {
     }
 
     public accountLogout(isEmailRoute: boolean = false): void {
+        this.router.navigate([ConstantString.WEBSITE]);
+
         // ---- PRODUCTION MODE ----
         this.persistStorage.clearStore();
         this.persistStorage.destroy();
-        this.router.navigate([ConstantString.WEBSITE]);
 
         // ---- DEVELOP MODE ----
         localStorage.removeItem('user');

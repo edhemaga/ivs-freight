@@ -14,9 +14,9 @@ import { Subject, takeUntil } from 'rxjs';
 
 import { WebsiteActionsService } from '../../state/service/website-actions.service';
 
-import { ConstantString } from '../../state/enum/const-string.enum';
-
 import { fadeInAnimation } from '../../state/utils/animation';
+
+import { ConstantString } from '../../state/enum/const-string.enum';
 
 @Component({
     selector: 'app-website-sidebar',
@@ -43,7 +43,7 @@ export class WebsiteSidebarComponent implements OnInit, OnDestroy {
 
         this.listenForSidebarHideEvent();
 
-        this.showSidebar();
+        this.showOrHideSidebar();
     }
 
     private getSidebarContentType(): void {
@@ -105,7 +105,7 @@ export class WebsiteSidebarComponent implements OnInit, OnDestroy {
         });
     }
 
-    private showSidebar(): void {
+    private showOrHideSidebar(): void {
         this.websiteActionsService.getOpenSidebarSubject$
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
@@ -114,10 +114,12 @@ export class WebsiteSidebarComponent implements OnInit, OnDestroy {
 
                     this.websiteActionsService.setOpenSidebarSubject(false);
                 } else {
-                    const hideSidebarBtn: HTMLElement =
-                        this.hideSidebarBtn.nativeElement;
+                    if (this.hideSidebarBtn) {
+                        const hideSidebarBtn: HTMLElement =
+                            this.hideSidebarBtn.nativeElement;
 
-                    hideSidebarBtn.click();
+                        hideSidebarBtn.click();
+                    }
                 }
             });
     }

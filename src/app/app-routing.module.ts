@@ -6,17 +6,19 @@ import { SvgDefinitionsComponent } from './svg-definitions/svg-definitions.compo
 
 import { ApplicantWelcomeScreenComponent } from './core/components/applicant/applicant-welcome-screen/applicant-welcome-screen.component';
 import { ApplicantEndScreenComponent } from './core/components/applicant/applicant-end-screen/applicant-end-screen.component';
-import { DriverActiveResolver } from './core/components/driver/state/driver-active-state/driver-active.resolver';
+import { SphFormThankYouComponent } from './core/components/applicant/applicant-tabs/sph/sph-form/sph-form-thank-you/sph-form-thank-you.component';
+
 import { RegisterUserHelperComponent } from './core/components/website/components/website-sidebar/sidebar-content/register-user-content/register-user-helper/register-user-helper.component';
+import { RegisterUserHaveAccountHelperComponent } from './core/components/website/components/website-sidebar/sidebar-content/register-user-content/register-user-have-account-helper/register-user-have-account-helper.component';
 import { VerifyUserHelperComponent } from './core/components/website/components/website-sidebar/sidebar-content/register-user-content/verify-user-helper/verify-user-helper.component';
 import { RegisterCompanyHelperComponent } from './core/components/website/components/website-sidebar/sidebar-content/register-company-content/register-company-helper/register-company-helper.component';
 import { ResetPasswordHelperComponent } from './core/components/website/components/website-sidebar/sidebar-content/login-content/reset-password-helper/reset-password-helper.component';
+
 import { BrokerResolver } from './core/components/customer/state/broker-state/broker.resolver';
 import { ShipperResolver } from './core/components/customer/state/shipper-state/shipper.resolver';
 import { ShopResolver } from './core/components/repair/state/shop-state/shop.resolver';
 import { DriverInactiveResolver } from './core/components/driver/state/driver-inactive-state/driver-inactive.resolver';
-import { SphFormThankYouComponent } from './core/components/applicant/applicant-tabs/sph/sph-form/sph-form-thank-you/sph-form-thank-you.component';
-
+import { DriverActiveResolver } from './core/components/driver/state/driver-active-state/driver-active.resolver';
 import { TruckActiveResolver } from './core/components/truck/state/truck-active-state/truck-active.resolver';
 import { TruckInactiveResolver } from './core/components/truck/state/truck-inactive-state/truck-inactive.resolver';
 import { TrailerActiveResolver } from './core/components/trailer/state/trailer-active-state/trailer-active.resolver';
@@ -73,6 +75,11 @@ const routes: Routes = [
     {
         path: 'api/account/signupuser',
         component: RegisterUserHelperComponent,
+        data: { title: 'Helper Component Route' },
+    },
+    {
+        path: 'api/account/signupuserhaveaccount',
+        component: RegisterUserHaveAccountHelperComponent,
         data: { title: 'Helper Component Route' },
     },
     {

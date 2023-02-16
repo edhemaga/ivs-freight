@@ -15,6 +15,12 @@ const routes: Routes = [
         data: { title: 'Website' },
         children: [
             {
+                path: 'select-company',
+                component: SelectCompanyComponent,
+                data: { title: 'Select Company' },
+                canActivate: [AuthGuard],
+            },
+            {
                 path: 'features',
                 component: WebsiteUnderConstructionComponent,
                 data: { title: 'Features' },
@@ -29,12 +35,7 @@ const routes: Routes = [
                 component: WebsiteUnderConstructionComponent,
                 data: { title: 'Support' },
             },
-            {
-                path: 'select-company',
-                component: SelectCompanyComponent,
-                data: { title: 'Select Company' },
-                canActivate: [AuthGuard],
-            },
+
             { path: '**', redirectTo: '/website', pathMatch: 'full' },
         ],
     },

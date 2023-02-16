@@ -66,17 +66,19 @@ export class ResetPasswordHelperComponent implements OnInit, OnDestroy {
                 .pipe(takeUntil(this.destroy$))
                 .subscribe();
 
-            this.websiteAuthService
-                .verifyResetPassword(this.verifyData)
-                .pipe(
-                    takeUntil(this.destroy$),
-                    tap(() => {
-                        this.websiteActionsService.setCreatePasswordSubject(
-                            this.userInfo
-                        );
-                    })
-                )
-                .subscribe();
+            setTimeout(() => {
+                this.websiteAuthService
+                    .verifyResetPassword(this.verifyData)
+                    .pipe(
+                        takeUntil(this.destroy$),
+                        tap(() => {
+                            this.websiteActionsService.setCreatePasswordSubject(
+                                this.userInfo
+                            );
+                        })
+                    )
+                    .subscribe();
+            }, 100);
         }
     }
 
