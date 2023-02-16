@@ -33,17 +33,17 @@ import { NavigationSubrouteComponent } from './navigation-subroute/navigation-su
     animations: [navigation_magic_line('showHideDetails')],
     standalone: true,
     imports: [
-            CommonModule, 
-            FormsModule,
-            ReactiveFormsModule, 
-            NavigationHeaderComponent, 
-            NavigationModalsComponent, 
-            NavigationFooterComponent, 
-            NavigationUserProfileComponent, 
-            NavigationUserCompanyComponent,
-            NavigationSubrouteCardComponent,
-            NavigationRouteComponent,
-            NavigationSubrouteComponent
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+        NavigationHeaderComponent,
+        NavigationModalsComponent,
+        NavigationFooterComponent,
+        NavigationUserProfileComponent,
+        NavigationUserCompanyComponent,
+        NavigationSubrouteCardComponent,
+        NavigationRouteComponent,
+        NavigationSubrouteComponent,
     ],
     host: {
         '(document:click)': 'closeNavbar($event)',
@@ -218,18 +218,7 @@ export class NavigationComponent implements OnInit, OnDestroy {
     routeWithSubRouteClicked(event) {
         this.subrouteClicked = event;
         if (this.isNavigationHovered == false) {
-            console.log(true);
         }
-        // console.log(
-        //     this.navigation,
-        //     this.isNavigationHovered,
-        //     !this.isModalPanelOpen,
-        //     this.closeDropdownOnNavClose,
-        //     !this.isUserPanelOpen,
-        //     !this.isSettingsPanelOpen,
-        //     !this.isUserCompanyDetailsOpen,
-        //     this.subrouteClicked
-        // );
     }
     oneUserCompany($event) {
         this.companiesExists = $event;
@@ -472,7 +461,6 @@ export class NavigationComponent implements OnInit, OnDestroy {
     }
 
     public isActiveRouteOnReload(route: string): boolean {
-        // console.log(route);
         if (route == '/dispatcher') {
             let t = 'Dispatch';
             return route === t;

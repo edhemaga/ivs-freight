@@ -65,7 +65,6 @@ export class NavigationUserProfileComponent implements OnInit, OnDestroy {
         // }
         // ----------------------- DEVELOP MODE ----------------------------
         this.loggedUser = JSON.parse(localStorage.getItem('user'));
-        console.log(this.userNavigationData);
 
         this.loggedUser = {
             ...this.loggedUser,
