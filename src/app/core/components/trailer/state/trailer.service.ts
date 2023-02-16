@@ -137,12 +137,17 @@ export class TrailerTService implements OnDestroy {
                                 ({ id }) => id === data.id
                             );
 
-                            
-
                             trailer.registrations =
                                 storedTrailerData.registrations;
                             trailer.titles = storedTrailerData.titles;
                             trailer.inspections = storedTrailerData.inspections;
+
+                            trailer = {
+                                ...trailer,
+                                fileCount: trailer?.filesCountForList
+                                    ? trailer.filesCountForList
+                                    : 0,
+                            };
 
                             this.trailerActiveStore.add(trailer);
                             this.trailerMinimalStore.add(trailer);
