@@ -128,7 +128,6 @@ export class MapsService implements OnDestroy {
 
     selectedMarker(id: number) {
         this.selectedMarkerId = id;
-        console.log('selectedMarker id', id);
         this.selectedMarkerChange.next(id);
     }
 

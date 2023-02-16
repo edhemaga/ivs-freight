@@ -232,7 +232,6 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
         this.mapsService.mapFilterChange
             .pipe(takeUntil(this.destroy$))
             .subscribe((data) => {
-                console.log('mmapFilterChange', data);
                 if ( data.filterType == 'locationFilter' ) {
                     if ( data.action == 'Set' ) {
                         this.locationFilter = data.queryParams;
@@ -310,11 +309,6 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
             map.addListener('idle', () => {
                 // update the coordinates here
 
-                // var mapCenter = map.getCenter();
-
-                // this.mapLatitude = mapCenter.lat();
-                // this.mapLongitude = mapCenter.lng();
-
                 clearTimeout(this.clustersTimeout);
 
                 this.clustersTimeout = setTimeout(() => {
@@ -360,17 +354,6 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
                     }
 
                     selectId = data.id;
-
-                    // if (
-                    //     this.mapLatitude == data.latitude &&
-                    //     this.mapLongitude == data.longitude
-                    // ) {
-                    //     this.mapLatitude = data.latitude + 0.000001;
-                    //     this.mapLongitude = data.longitude + 0.000001;
-                    // } else {
-                    //     this.mapLatitude = data.latitude;
-                    //     this.mapLongitude = data.longitude;
-                    // }
                 } else {
                     this.markerSelected = false;
                     data.isSelected = false;
@@ -1173,21 +1156,9 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
 
                 if (data.isSelected && !data.detailedInfo) {
                     this.markerSelected = true;
-
-                    // if (
-                    //     this.mapLatitude == data.latitude &&
-                    //     this.mapLongitude == data.longitude
-                    // ) {
-                    //     this.mapLatitude = data.latitude + 0.000001;
-                    //     this.mapLongitude = data.longitude + 0.000001;
-                    // } else {
-                    //     this.mapLatitude = data.latitude;
-                    //     this.mapLongitude = data.longitude;
-                    // }
                 } else if (data.detailedInfo && !callFromMapList) {
                     data.detailedInfo = false;
                     this.clusterDetailedInfo = false;
-                    //this.mapsService.selectedMarker(0);
                     selectId = 0;
                 } else {
                     this.markerSelected = false;
@@ -1458,11 +1429,6 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
             southWestLongitude: sw.lng(),
             zoomLevel: this.mapZoom,
         };
-
-        // if (moveMap) {
-        //     this.mapLatitude = this.mapLatitude + 0.000001;
-        //     this.mapLongitude = this.mapLongitude + 0.000001;
-        // }
 
         this.lastClusterCoordinates = clustersObject;
 

@@ -76,8 +76,6 @@ export class MapListCardComponent implements OnInit, OnDestroy {
             return false;
         }
 
-        console.log('selectCard', this.item.id);
-
         //this.clickedMarker.emit([this.item.id, false]);
         const selectId = this.isSelected ? 0 : this.item.id;
         this.mapsService.selectedMapListCard(selectId);

@@ -969,7 +969,6 @@ export class CustomerTableComponent
 
     // MAP
     selectItem(data: any) {
-        console.log('selectItem data', data);
         this.mapsComponent.clickedMarker(data[0]);
 
         this.mapListData.map((item) => {
@@ -987,9 +986,6 @@ export class CustomerTableComponent
                 } else {
                     this.mapsComponent.clusterMarkers.map((cluster) => {
                         var clusterData = cluster.pagination.data;
-
-                        console.log('clusterData', clusterData);
-                        console.log('cluster', cluster);
 
                         let clusterItemIndex = clusterData.findIndex(
                             (item2) => item2.id === data[0]
