@@ -14,7 +14,11 @@ import {
 import { RepairTService } from '../../../repair/state/repair.service';
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { RepairModalResponse, RepairShopResponse } from 'appcoretruckassist';
-import { NgbActiveModal, NgbPopover, NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import {
+    NgbActiveModal,
+    NgbPopover,
+    NgbModule,
+} from '@ng-bootstrap/ng-bootstrap';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
 import { RepairPmModalComponent } from '../repair-pm-modal/repair-pm-modal.component';
 import { TruckModalComponent } from '../../truck-modal/truck-modal.component';
@@ -50,6 +54,8 @@ import { TaUploadFilesComponent } from '../../../shared/ta-upload-files/ta-uploa
 import { TaInputNoteComponent } from '../../../shared/ta-input-note/ta-input-note.component';
 import { ActiveItemsPipe } from 'src/app/core/pipes/activeItems.pipe';
 import { AngularSvgIconModule } from 'angular-svg-icon';
+import { TaCopyComponent } from '../../../shared/ta-copy/ta-copy.component';
+import { formatPhonePipe } from '../../../../pipes/formatPhone.pipe';
 
 @Component({
     selector: 'app-repair-order-modal',
@@ -58,22 +64,23 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
     providers: [PriceCalculationArraysPipe, ModalService, FormService],
     standalone: true,
     imports: [
-            CommonModule, 
-            FormsModule, 
-            AppTooltipComponent, 
-            AppTooltipComponent, 
-            TaModalComponent, 
-            TaTabSwitchComponent, 
-            TaInputDropdownComponent, 
-            TaInputComponent, 
-            ReactiveFormsModule, 
-            TaCustomCardComponent, 
-            TaUploadFilesComponent, 
-            TaInputNoteComponent, 
-            ActiveItemsPipe,
-            NgbModule,
-            AngularSvgIconModule
-    ]
+        CommonModule,
+        FormsModule,
+        AppTooltipComponent,
+        TaModalComponent,
+        TaTabSwitchComponent,
+        TaInputDropdownComponent,
+        TaInputComponent,
+        ReactiveFormsModule,
+        TaCustomCardComponent,
+        TaUploadFilesComponent,
+        TaInputNoteComponent,
+        TaCopyComponent,
+        formatPhonePipe,
+        ActiveItemsPipe,
+        NgbModule,
+        AngularSvgIconModule,
+    ],
 })
 export class RepairOrderModalComponent implements OnInit, OnDestroy {
     @ViewChild('t2') public popoverRef: NgbPopover;
@@ -300,7 +307,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
 
     public onModalHeaderTabChange(event: any) {
         this.selectedHeaderTab = event.id;
-        console.log('event: ', event);
+
         if (event.id === 1) {
             setTimeout(() => {
                 this.DetailsDataService.setUnitValue(
@@ -808,11 +815,10 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                     this.labelsRepairShop = [...res.repairShops];
 
                     this.tags = res.tags;
-                    console.log('kolko se puta izvrsava getDropdowns');
+
                     // ------------- EDIT --------------
                     // storage data
                     if (this.editData?.storageData) {
-                        console.log('editdata: ', this.editData);
                         this.disableCardAnimation = true;
                         this.populateForm(this.editData?.storageData);
                     }
@@ -821,6 +827,17 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                     if (this.editData?.type?.includes('edit')) {
                         this.disableCardAnimation = true;
                         this.editRepairById(this.editData.id);
+                    }
+
+                    // Repair Modal opened from repair shop details
+                    if (this.editData?.type === 'specific-repair-shop') {
+                        this.selectedRepairShop = this.labelsRepairShop.find(
+                            (item) => item.id === this.editData.shopId
+                        );
+                        this.selectedRepairShop = {
+                            ...this.selectedRepairShop,
+                            address: this.selectedRepairShop?.address?.address,
+                        };
                     }
                 },
                 error: () => {},
