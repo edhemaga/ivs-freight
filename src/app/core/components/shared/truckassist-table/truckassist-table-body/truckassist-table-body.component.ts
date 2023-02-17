@@ -215,7 +215,7 @@ export class TruckassistTableBodyComponent
 
                 this.renderOneByOne();
             }
-
+            
             this.checkAttachmentUpdate();
         }
 

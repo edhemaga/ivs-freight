@@ -37,7 +37,7 @@ const rotate: { [key: string]: any } = {
         AngularSvgIconModule,
         NgbModule,
         ResizeColumnDirective,
-        DragDropModule
+        DragDropModule 
     ],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
