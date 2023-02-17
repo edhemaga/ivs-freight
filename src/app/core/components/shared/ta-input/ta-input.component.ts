@@ -11,10 +11,19 @@ import {
     ViewChild,
     ViewEncapsulation,
 } from '@angular/core';
-import { ControlValueAccessor, NgControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {
+    ControlValueAccessor,
+    NgControl,
+    FormsModule,
+    ReactiveFormsModule,
+} from '@angular/forms';
 import { ITaInput } from './ta-input.config';
 import { TaInputService } from './ta-input.service';
-import { NgbDropdownConfig, NgbPopover, NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import {
+    NgbDropdownConfig,
+    NgbPopover,
+    NgbModule,
+} from '@ng-bootstrap/ng-bootstrap';
 import { CalendarScrollService } from '../custom-datetime-pickers/calendar-scroll.service';
 import moment from 'moment';
 
@@ -27,9 +36,6 @@ import {
 } from '../../../utils/methods.calculations';
 import { FormService } from 'src/app/core/services/form/form.service';
 import { ImageBase64Service } from '../../../utils/base64.image';
-<<<<<<< HEAD
-=======
-import { NotificationService } from '../../../services/notification/notification.service';
 import { CommonModule } from '@angular/common';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { NgxMaskModule } from 'ngx-mask';
@@ -39,7 +45,6 @@ import { TaSvgPipe } from '../../../pipes/ta-svg.pipe';
 import { InputErrorPipe } from './input-error.pipe';
 import { CustomDatetimePickersComponent } from '../custom-datetime-pickers/custom-datetime-pickers.component';
 import { TaSpinnerComponent } from '../ta-spinner/ta-spinner.component';
->>>>>>> dev-14
 @Component({
     selector: 'app-ta-input',
     templateUrl: './ta-input.component.html',
@@ -48,24 +53,24 @@ import { TaSpinnerComponent } from '../ta-spinner/ta-spinner.component';
         NgbDropdownConfig,
         CalendarScrollService,
         TaThousandSeparatorPipe,
-        InputTypePipe
+        InputTypePipe,
     ],
     encapsulation: ViewEncapsulation.None,
     standalone: true,
     imports: [
-            CommonModule, 
-            AngularSvgIconModule, 
-            FormsModule, 
-            NgxMaskModule, 
-            InputTypePipe, 
-            AppTooltipComponent,
-            NgbModule,
-            TaSvgPipe,
-            ReactiveFormsModule,
-            InputErrorPipe,
-            CustomDatetimePickersComponent,
-            TaSpinnerComponent
-    ]
+        CommonModule,
+        AngularSvgIconModule,
+        FormsModule,
+        NgxMaskModule,
+        InputTypePipe,
+        AppTooltipComponent,
+        NgbModule,
+        TaSvgPipe,
+        ReactiveFormsModule,
+        InputErrorPipe,
+        CustomDatetimePickersComponent,
+        TaSpinnerComponent,
+    ],
 })
 export class TaInputComponent
     implements OnInit, OnDestroy, ControlValueAccessor
