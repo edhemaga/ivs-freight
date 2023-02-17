@@ -446,7 +446,7 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
             tableMileage: data?.mileage
                 ? this.thousandSeparator.transform(data.mileage)
                 : '',
-            tableLicencePlateDetailNumber: 'NA',
+            tableLicencePlateDetailNumber: data?.licensePlate ? data.licensePlate : '',
             tableLicencePlateDetailST: 'NA',
             tableLicencePlateDetailExpiration: {
                 expirationDays: data?.registrationExpirationDays
