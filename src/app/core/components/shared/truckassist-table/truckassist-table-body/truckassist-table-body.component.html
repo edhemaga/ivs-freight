@@ -665,7 +665,7 @@
                                                 : 'unset'
                                         }"
                                     >
-                                        <span
+                                        <div
                                             [ngStyle]="{
                                                 width: column.width + 'px'
                                             }"
@@ -676,7 +676,7 @@
                                                         ?.doesNotHaveRout
                                             }"
                                             (click)="goToDetails(column, row)"
-                                            >{{ row[column.field] }}</span
+                                            >{{ row[column.field] }}</div
                                         >
                                     </div>
 
@@ -2240,7 +2240,7 @@
                                                 : 'unset'
                                         }"
                                     >
-                                        <span
+                                        <div
                                             [ngStyle]="{
                                                 width: column.width + 'px'
                                             }"
@@ -2251,7 +2251,7 @@
                                                         ?.doesNotHaveRout
                                             }"
                                             (click)="goToDetails(column, row)"
-                                            >{{ row[column.field] }}</span
+                                            >{{ row[column.field] }}</div
                                         >
                                     </div>
 
@@ -4195,7 +4195,7 @@ highlightingWords) : '' " -->
             >
                 <div class="showing">
                     {{ viewData.length }} OF
-                    {{ activeTableData.length }} SHOWING
+                    {{ activeTableData.length }}
                 </div>
                 <div
                     class="show-more"
