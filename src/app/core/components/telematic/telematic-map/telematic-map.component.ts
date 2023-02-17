@@ -457,6 +457,12 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
                 console.log('getGpsData', gpsData);
                 gpsData.data.map((data) => {
                     data.speed = Math.round(data.speed);
+                    data.motionStatus = 
+                        data.motionStatus === 1 ? 'MOTION' 
+                        : data.motionStatus === 2 ? 'SHORT_STOP'
+                        : data.motionStatus === 3 ? 'EXTENDED_STOP'
+                        : data.motionStatus === 4 ? 'PARKING'
+                        : data.motionStatus;
                 });
 
                 this.gpsAssignedData = gpsData.data;
@@ -486,6 +492,12 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
                 console.log('getUnassignedGpsData', gpsData);
                 gpsData.data.map((data) => {
                     data.speed = Math.round(data.speed);
+                    data.motionStatus = 
+                        data.motionStatus === 1 ? 'MOTION' 
+                        : data.motionStatus === 2 ? 'SHORT_STOP'
+                        : data.motionStatus === 3 ? 'EXTENDED_STOP'
+                        : data.motionStatus === 4 ? 'PARKING'
+                        : data.motionStatus;
                 });
 
                 this.gpsUnassignedData = gpsData.data;
@@ -514,6 +526,12 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
                     'translate(-3309.177px, 10942px) rotate(' +
                     deviceData.heading +
                     'deg)';
+                deviceData.motionStatus = 
+                    deviceData.motionStatus === 1 ? 'MOTION' 
+                    : deviceData.motionStatus === 2 ? 'SHORT_STOP'
+                    : deviceData.motionStatus === 3 ? 'EXTENDED_STOP'
+                    : deviceData.motionStatus === 4 ? 'PARKING'
+                    : deviceData.motionStatus;
 
                 let driverIndex = this.driverLocations.findIndex(
                     (device) => device.deviceId === deviceId
@@ -1098,7 +1116,12 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
             .subscribe((data) => {
                 console.log('gpsStatusChange data', data);
                 data.speed = Math.round(data.speed);
-                data.motionStatus = data.motionStatus === 1 ? 'MOTION' : data.motionStatus;
+                data.motionStatus = 
+                    data.motionStatus === 1 ? 'MOTION' 
+                    : data.motionStatus === 2 ? 'SHORT_STOP'
+                    : data.motionStatus === 3 ? 'EXTENDED_STOP'
+                    : data.motionStatus === 4 ? 'PARKING'
+                    : data.motionStatus;
 
                 let driverIndex = this.driverLocations.findIndex(
                     (device) => device.deviceId === data.deviceId
