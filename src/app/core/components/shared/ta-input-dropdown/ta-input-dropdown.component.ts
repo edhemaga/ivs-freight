@@ -77,6 +77,7 @@ export class TaInputDropdownComponent
     public _activeItem: any;
     @Input() set activeItem(value: any) {
         if (value) {
+            console.log('activeItem - label: ', value);
             this._activeItem = value;
             if (!this.inputConfig?.name?.toLowerCase()?.includes('address')) {
                 this.clearTimeoutDropdown = setTimeout(() => {
@@ -719,7 +720,10 @@ export class TaInputDropdownComponent
                         };
 
                         this.getSuperControl.setValue(null);
-                        this.popoverRef.close();
+
+                        if (this.popoverRef) {
+                            this.popoverRef.close();
+                        }
 
                         if (this.isInAddMode) {
                             this.inputConfig = {

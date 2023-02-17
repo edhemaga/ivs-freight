@@ -22,12 +22,10 @@ export class TaInputDropdownLabelComponent implements ControlValueAccessor {
     @Input() selectedLabel: any;
     @Input() colors: any[] = [];
     @Input() selectedLabelColor: any;
-
     @Input() inputConfig: ITaInput;
 
     @Output() pickExistLabel: EventEmitter<any> = new EventEmitter<any>();
     @Output() pickColorLabel: EventEmitter<any> = new EventEmitter<any>();
-
     @Output() saveLabel: EventEmitter<{ data: any; action: string }> =
         new EventEmitter<{ data: string; action: string }>();
 

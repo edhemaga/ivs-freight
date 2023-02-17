@@ -182,12 +182,9 @@ export class TaInputComponent
 
         // Auto Focus First Input
         if (this._inputConfig.autoFocus && !this.getSuperControl?.value) {
-            // this.timeoutCleaner = setTimeout(() => {
-            // this.onFocus();
             this.input.nativeElement.focus();
             this.focusInput = true;
             this._inputConfig.autoFocus = false;
-            // }, 0);
         }
     }
 
@@ -427,7 +424,7 @@ export class TaInputComponent
             this.input.nativeElement.blur();
 
             this.refChange.detectChanges();
-        }, 200);
+        }, 150);
     }
 
     private blurOnDropDownArrow() {
@@ -952,7 +949,9 @@ export class TaInputComponent
         this._inputConfig.dropdownLabelNew = false;
         this._inputConfig.blackInput = true;
         this._inputConfig.commands.active = true;
+        this.isVisibleCommands = true;
         this.focusInput = true;
+
         this.setInputCursorAtTheEnd(this.input.nativeElement);
         this.getSuperControl.setErrors({ required: true });
         this.commandEvent.emit({
@@ -1050,11 +1049,31 @@ export class TaInputComponent
                     }
                 }
                 this.getSuperControl.setErrors(null);
-                this.editInputMode = false;
                 this._inputConfig.dropdownLabelNew = false;
                 this._inputConfig.commands.active = false;
                 this._inputConfig.blackInput = false;
-                this.onBlur();
+                this.editInputMode = false;
+                this.isVisibleCommands = false;
+                this.focusInput = false;
+
+                console.log(
+                    ' getSuperControl.value : ',
+                    this.getSuperControl.value
+                );
+                console.log(
+                    ' getSuperControl.valid : ',
+                    this.getSuperControl.valid
+                );
+                console.log(' focusInput : ', !this.focusInput);
+                console.log(
+                    ' _inputConfig.isDisabled : ',
+                    !this._inputConfig.isDisabled
+                );
+                console.log(
+                    ' _inputConfig.isDisabled : ',
+                    !this._inputConfig.isDisabled
+                );
+
                 break;
             }
             case 'months': {

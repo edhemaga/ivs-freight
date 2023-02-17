@@ -22,7 +22,9 @@
             !focusInput &&
             !_inputConfig.hideClear &&
             !_inputConfig.blackInput &&
-            !_inputConfig.isDisabled,
+            !_inputConfig.isDisabled &&
+            !selectedDropdownLabelColor &&
+            !_inputConfig.dropdownLabel,
         'invalid-focus-in':
             getSuperControl.value &&
             getSuperControl.invalid &&
@@ -401,7 +403,7 @@
         </div>
     </div>
 
-    <!-- Input Icon Placeholder -->
+    <!-- Input Placeholder Icon -->
     <div
         *ngIf="_inputConfig.placeholderIcon"
         #t2="ngbPopover"
@@ -420,8 +422,9 @@
             'inactive-empty': !getSuperControl.value && _inputConfig.isDisabled,
             'inactive-filled': getSuperControl.value && _inputConfig.isDisabled,
             'default-svg-color':
-                !selectedDropdownLabelColor && !_inputConfig.dropdownLabel,
-            focus: focusInput,
+                !(_inputConfig.dropdownLabel && focusInput) &&
+                !(_inputConfig.dropdownLabel && selectedDropdownLabelColor),
+            focus: focusInput && !_inputConfig.dropdownLabel,
             'valid-focus-in':
                 getSuperControl.value &&
                 getSuperControl.valid &&
@@ -435,16 +438,29 @@
                 getSuperControl.value &&
                 getSuperControl.valid &&
                 !focusInput &&
+                !selectedDropdownLabelColor &&
+                !_inputConfig.dropdownLabel &&
+                !_inputConfig.isDisabled,
+            'valid-focus-out-dropdown-label':
+                getSuperControl.value &&
+                getSuperControl.valid &&
+                !focusInput &&
+                selectedDropdownLabelColor &&
+                _inputConfig.dropdownLabel &&
                 !_inputConfig.isDisabled,
             'invalid-focus-in':
                 getSuperControl.value &&
                 getSuperControl.invalid &&
                 focusInput &&
+                !selectedDropdownLabelColor &&
+                !_inputConfig.dropdownLabel &&
                 !_inputConfig.blackInput &&
                 !_inputConfig.isDisabled,
             'invalid-focus-out':
                 getSuperControl.invalid &&
                 !focusInput &&
+                !selectedDropdownLabelColor &&
+                !_inputConfig.dropdownLabel &&
                 (touchedInput || getSuperControl.touched) &&
                 !_inputConfig.isDisabled,
             hidden: _inputConfig.type === 'password' && getSuperControl.value,
@@ -461,10 +477,11 @@
     >
         <svg-icon
             appHoverSvg
+            [stretch]="true"
             [fill]="
                 _inputConfig.dropdownLabel || selectedDropdownLabelColor
                     ? selectedDropdownLabelColor?.code
-                        ? selectedDropdownLabelColor.code.toString()
+                        ? selectedDropdownLabelColor.code
                         : '#b7b7b7'
                     : null
             "
@@ -668,7 +685,9 @@
             !_inputConfig.isDisabled
         "
         [style.top]="'4px'"
-        [style.left]="50 + getSuperControl?.value.toString().length * 8 + 'px'"
+        [style.left]="
+            (getSuperControl.value?.toString()?.length + 6.5) * 8 + 'px'
+        "
         class="input-label-counter"
     >
         {{ selectedDropdownLabelColor.count }}
@@ -965,13 +984,15 @@
                     !_inputConfig.blackInput &&
                     !_inputConfig.isInvalidSearchInDropdown &&
                     !_inputConfig.mergeDropdownBodyWithInput &&
-                    !_inputConfig.isDisabled) ||
+                    !_inputConfig.isDisabled &&
+                    !_inputConfig.dropdownLabel) ||
                 (_inputConfig.multipleInputValues?.options.length &&
                     focusInput &&
                     !_inputConfig.isInvalidSearchInDropdown &&
                     !_inputConfig.blackInput &&
                     !_inputConfig.mergeDropdownBodyWithInput &&
-                    !_inputConfig.isDisabled),
+                    !_inputConfig.isDisabled &&
+                    !_inputConfig.dropdownLabel),
             'valid-focus-out-filled':
                 (((getSuperControl.value &&
                     getSuperControl.valid &&
@@ -981,11 +1002,6 @@
                     !_inputConfig.blackInput) ||
                     (!focusInput && _inputConfig.dropdownImageInput?.url)) &&
                     !_inputConfig.blackInput) ||
-                (_inputConfig.dropdownLabel &&
-                    getSuperControl.value &&
-                    getSuperControl.valid &&
-                    !focusInput &&
-                    !_inputConfig.isDisabled) ||
                 (_inputConfig.multipleInputValues?.options.length &&
                     !focusInput),
             'invalid-focus-in':
@@ -995,6 +1011,7 @@
                 !_inputConfig.blackInput &&
                 !_inputConfig.mergeDropdownBodyWithInput &&
                 !_inputConfig.isDisabled &&
+                !_inputConfig.dropdownLabel &&
                 !(
                     _inputConfig.dropdownImageInput?.url ||
                     _inputConfig.dropdownImageInput?.nameInitialsInsteadUrl

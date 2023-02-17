@@ -229,12 +229,15 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                 .get(formControlName)
                 .valueChanges.pipe(takeUntil(this.destroy$))
                 .subscribe((value) => {
-                    this.quantity[index] = value;
-                    this.subtotal = [...this.subtotal];
-                    const price = convertThousanSepInNumber(
-                        this.items.at(index).get('price').value
-                    );
-                    this.subtotal[index].value = this.quantity[index] * price;
+                    if (value) {
+                        this.quantity[index] = value;
+                        this.subtotal = [...this.subtotal];
+                        const price = convertThousanSepInNumber(
+                            this.items.at(index).get('price').value
+                        );
+                        this.subtotal[index].value =
+                            this.quantity[index] * price;
+                    }
                 });
         } else {
             this.items
@@ -242,25 +245,31 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                 .get(formControlName)
                 .valueChanges.pipe(takeUntil(this.destroy$))
                 .subscribe((value) => {
-                    if (!this.quantity[index] || this.quantity[index] === 0) {
-                        this.quantity[index] = 1;
-                        this.items.at(index).get('quantity').patchValue(1);
+                    if (value) {
+                        if (
+                            !this.quantity[index] ||
+                            this.quantity[index] === 0
+                        ) {
+                            this.quantity[index] = 1;
+                            this.items.at(index).get('quantity').patchValue(1);
+                        }
+                        if (!value) {
+                            value = 0;
+                        }
+                        const price = convertThousanSepInNumber(
+                            this.items.at(index).get('price').value
+                        );
+                        this.subtotal = [...this.subtotal];
+                        this.subtotal[index].value =
+                            this.quantity[index] * price;
                     }
-                    if (!value) {
-                        value = 0;
-                    }
-                    const price = convertThousanSepInNumber(
-                        this.items.at(index).get('price').value
-                    );
-                    this.subtotal = [...this.subtotal];
-                    this.subtotal[index].value = this.quantity[index] * price;
                 });
         }
     }
 
     public onModalHeaderTabChange(event: any) {
         this.selectedHeaderTab = event.id;
-        console.log(event);
+        console.log('event: ', event);
         if (event.id === 1) {
             setTimeout(() => {
                 this.DetailsDataService.setUnitValue(
@@ -272,24 +281,22 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                 this.repairOrderForm.get('repairShopId'),
                 false
             );
+
             this.inputService.changeValidators(
                 this.repairOrderForm.get('date'),
-                false,
-                [],
-                true
+                false
             );
+
             this.inputService.changeValidators(
                 this.repairOrderForm.get('odometer'),
-                false,
-                [],
-                true
+                false
             );
+
             this.inputService.changeValidators(
                 this.repairOrderForm.get('invoice'),
-                false,
-                [],
-                true
+                false
             );
+
             this.repairOrderForm.get('repairType').patchValue('Order');
 
             if (this.items.length) {
@@ -314,12 +321,25 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                     );
                 }
             }
+
+            if (
+                this.items.length === 1 &&
+                !this.items.controls[0].get('description').value &&
+                !this.items.controls[0].get('quantity').value &&
+                !this.items.controls[0].get('price').value
+            ) {
+                this.removeItems(0);
+            }
         } else {
             this.inputService.changeValidators(
                 this.repairOrderForm.get('repairShopId')
             );
             this.inputService.changeValidators(
                 this.repairOrderForm.get('date')
+            );
+
+            this.inputService.changeValidators(
+                this.repairOrderForm.get('invoice')
             );
             this.repairOrderForm.get('repairType').patchValue('Bill');
 
@@ -328,6 +348,10 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                     this.repairOrderForm.get('odometer'),
                     false
                 );
+            }
+
+            if (!this.items.length) {
+                this.addItems({ check: true, action: null });
             }
 
             if (this.items.length) {
@@ -459,13 +483,13 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                               this.selectedUnit?.id,
                               null,
                               'Trucks',
-                              false
+                              true
                           )
                         : this.getRepairDropdowns(
                               null,
                               this.selectedUnit?.id,
                               'Trailers',
-                              false
+                              true
                           );
                 }
                 break;
@@ -648,13 +672,6 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
             .subscribe((isFormChange: boolean) => {
                 this.isFormDirty = isFormChange;
             });
-
-        if (
-            !this.editData?.storageData &&
-            !this.editData?.type?.includes('edit')
-        ) {
-            this.addItems({ check: true, action: null });
-        }
     }
 
     private createItems(data?: {
@@ -760,10 +777,11 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                     this.labelsRepairShop = [...res.repairShops];
 
                     this.tags = res.tags;
-
+                    console.log('kolko se puta izvrsava getDropdowns');
                     // ------------- EDIT --------------
                     // storage data
                     if (this.editData?.storageData) {
+                        console.log('editdata: ', this.editData);
                         this.disableCardAnimation = true;
                         this.populateForm(this.editData?.storageData);
                     }
@@ -1080,87 +1098,84 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
     }
 
     private populateForm(res: any) {
-        console.log('storage data: ', res);
-        const timeout = setTimeout(() => {
-            res.typeOfRepair.find((item) => item.checked).name === 'Truck'
-                ? this.getRepairDropdowns(
-                      res.selectedUnit?.id,
-                      null,
-                      'Trucks',
-                      false
-                  )
-                : this.getRepairDropdowns(
-                      null,
-                      res.selectedUnit?.id,
-                      'Trailers',
-                      false
-                  );
+        res.typeOfRepair.find((item) => item.checked).name === 'Truck'
+            ? this.getRepairDropdowns(
+                  res.selectedUnit?.id,
+                  null,
+                  'Trucks',
+                  true
+              )
+            : this.getRepairDropdowns(
+                  null,
+                  res.selectedUnit?.id,
+                  'Trailers',
+                  true
+              );
+
+        const timeout2 = setTimeout(() => {
+            this.repairOrderForm.patchValue({
+                repairType: res.repairType,
+                unitType: res.unitType,
+                unit: res.unit,
+                odometer: res.odometer,
+                date: res.date,
+                invoice: res.invoice,
+                repairShopId: res?.editRepairShop ? null : res.repairShopId,
+                note: res.note,
+            });
+
+            // Truck/Trailer Unit number
+            this.selectedUnit = res.selectedUnit;
+
+            // Repair Services
+            this.services = res.services;
+
+            // Repair Shop
+            this.selectedRepairShop = res?.editRepairShop
+                ? null
+                : res.selectedRepairShop;
+
+            // Header Tabs
+            this.headerTabs = res.headerTabs;
+            this.selectedHeaderTab = res.selectedHeaderTab;
+
+            // Repair Type
+            this.typeOfRepair = res.typeOfRepair;
+
+            // Items
+            this.subtotal = [...res.subtotal];
+
+            // PMS-ovi
+            this.selectedPM = [...res.selectedPM];
+
+            if (res.items_array.length) {
+                this.itemsCounter = 0;
+                for (let i = 0; i < res.items_array.length; i++) {
+                    this.items.push(
+                        this.createItems({
+                            id: res.items_array[i].id,
+                            orderingId: ++this.itemsCounter,
+                            description: res.items_array[i].description,
+                            price: res.items_array[i].price,
+                            quantity: res.items_array[i].quantity,
+                            subtotal: res.items_array[i].subtotal,
+                            pmTruckId: res.items_array[i].pmTruck,
+                            pmTrailerId: res.items_array[i].pmTrailer,
+                        })
+                    );
+                    this.selectedPMIndex = 0;
+                }
+            }
 
             this.onModalHeaderTabChange(
                 this.headerTabs.find((item) => item.name === res.repairType)
             );
+            clearTimeout(timeout2);
+        }, 250);
 
-            const timeout2 = setTimeout(() => {
-                this.repairOrderForm.patchValue({
-                    repairType: res.repairType,
-                    unitType: res.unitType,
-                    unit: res.unit,
-                    odometer: res.odometer,
-                    date: res.date,
-                    invoice: res.invoice,
-                    repairShopId: res?.editRepairShop ? null : res.repairShopId,
-                    note: res.note,
-                });
-
-                // Truck/Trailer Unit number
-                this.selectedUnit = res.selectedUnit;
-
-                // Repair Services
-                this.services = res.services;
-
-                // Repair Shop
-                this.selectedRepairShop = res?.editRepairShop
-                    ? null
-                    : res.selectedRepairShop;
-
-                // Header Tabs
-                this.headerTabs = res.headerTabs;
-                this.selectedHeaderTab = res.selectedHeaderTab;
-
-                // Repair Type
-                this.typeOfRepair = res.typeOfRepair;
-
-                // Items
-                this.subtotal = [...res.subtotal];
-
-                // PMS-ovi
-                this.selectedPM = [...res.selectedPM];
-
-                if (res.items_array.length) {
-                    this.itemsCounter = 0;
-                    for (const iterator of res.items_array) {
-                        this.items.push(
-                            this.createItems({
-                                id: iterator.id,
-                                orderingId: ++this.itemsCounter,
-                                description: iterator.description,
-                                price: iterator.price,
-                                quantity: iterator.quantity,
-                                subtotal: iterator.subtotal,
-                                pmTruckId: iterator.pmTruck,
-                                pmTrailerId: iterator.pmTrailer,
-                            })
-                        );
-                        this.selectedPMIndex = 0;
-                    }
-                }
-                clearTimeout(timeout2);
-            }, 250);
-            setTimeout(() => {
-                this.disableCardAnimation = false;
-            }, 1000);
-            clearTimeout(timeout);
-        }, 400);
+        setTimeout(() => {
+            this.disableCardAnimation = false;
+        }, 1000);
     }
 
     private editRepairById(id: number) {

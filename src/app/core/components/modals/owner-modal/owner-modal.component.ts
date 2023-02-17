@@ -552,9 +552,15 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
                         });
 
                         this.addNewAfterSave = false;
-                    } else {
+
                         this.modalService.setModalSpinner({
                             action: 'save and add new',
+                            status: false,
+                            close: false,
+                        });
+                    } else {
+                        this.modalService.setModalSpinner({
+                            action: null,
                             status: false,
                             close: true,
                         });

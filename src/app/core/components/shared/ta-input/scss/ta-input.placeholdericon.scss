@@ -96,6 +96,12 @@
         }
     }
 
+    &.valid-focus-out-dropdown-label {
+        &::after {
+            background-color: $valid-placeholderIcon-pipe;
+        }
+    }
+
     &.invalid-focus-in {
         svg {
             path {
