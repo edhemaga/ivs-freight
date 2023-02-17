@@ -62,7 +62,7 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
         private ownerInactiveQuery: OwnerInactiveQuery,
         private ownerService: OwnerTService,
         private phonePipe: formatPhonePipe,
-        private ownerInactiveStore: OwnerInactiveStore,
+        private ownerInactiveStore: OwnerInactiveStore
     ) {}
     ngOnInit(): void {
         this.sendOwnerData();
@@ -170,6 +170,7 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
                         res?.action === 'Set'
                             ? res?.queryParams.rangeValue
                             : undefined;
+                    console.log(this.backFilterQuery);
                 }
                 // Set Filter
                 if (
@@ -317,7 +318,9 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
     observTableContainer() {
         this.resizeObserver = new ResizeObserver((entries) => {
             entries.forEach((entry) => {
-                this.tableService.sendCurrentSetTableWidth(entry.contentRect.width);
+                this.tableService.sendCurrentSetTableWidth(
+                    entry.contentRect.width
+                );
             });
         });
 
@@ -436,7 +439,7 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
             textType: data?.ownerType?.name ? data.ownerType.name : '',
             textPhone: data?.phone ? this.phonePipe.transform(data.phone) : '',
             textAddress: data?.address?.address ? data.address.address : '',
-            textBankName: data?.bank?.name ? data.bank.name : '',
+            textBankName: data?.bankName ? data.bankName : '',
             tableAttachments: data?.files ? data.files : [],
             fileCount: data?.fileCount,
         };

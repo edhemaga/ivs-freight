@@ -72,5 +72,6 @@ export interface TruckResponse {
     ownerHistories?: Array<OwnerHistoryResponse> | null;
     assignedTo?: DispatchShortResponse;
     files?: Array<FileResponse> | null;
+    filesCountForList?: number | null;
 }
 

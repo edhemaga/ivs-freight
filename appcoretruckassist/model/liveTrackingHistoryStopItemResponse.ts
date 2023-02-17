@@ -9,7 +9,6 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { GpsMotionStatus } from './gpsMotionStatus';
 
 
 export interface LiveTrackingHistoryStopItemResponse { 
@@ -20,6 +19,6 @@ export interface LiveTrackingHistoryStopItemResponse {
     stopTime?: string | null;
     totalLegMiles?: number | null;
     legMiles?: number | null;
-    stopType?: GpsMotionStatus;
+    stopType?: number | null;
 }
 

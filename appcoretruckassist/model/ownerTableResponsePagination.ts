@@ -9,16 +9,13 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { OwnerTableResponse } from './ownerTableResponse';
 
 
-export interface LiveTrackingHistoryItemResponse { 
-    id?: number;
-    latitude?: number | null;
-    longitude?: number | null;
-    motionStatus?: number | null;
-    updateTime?: string;
-    stopTime?: string | null;
-    startTime?: string | null;
-    dateString?: string | null;
+export interface OwnerTableResponsePagination { 
+    pageIndex?: number;
+    pageSize?: number;
+    count?: number;
+    data?: Array<OwnerTableResponse> | null;
 }
 

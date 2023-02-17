@@ -11,14 +11,10 @@
  */
 
 
-export interface LiveTrackingHistoryItemResponse { 
-    id?: number;
-    latitude?: number | null;
-    longitude?: number | null;
-    motionStatus?: number | null;
-    updateTime?: string;
-    stopTime?: string | null;
-    startTime?: string | null;
-    dateString?: string | null;
-}
+export type UnitType = 'Truck' | 'Trailer';
+
+export const UnitType = {
+    Truck: 'Truck' as UnitType,
+    Trailer: 'Trailer' as UnitType
+};
 
