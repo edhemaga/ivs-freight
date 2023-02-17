@@ -62,6 +62,7 @@ import { TaReCardComponent } from '../../shared/ta-common-card/ta-re-card.compon
         TaThousandSeparatorPipe,
         formatDatePipe,
         TaReCardComponent,
+        TaLogoChangeComponent
     ],
     exports: [SharedModule],
     declarations: [

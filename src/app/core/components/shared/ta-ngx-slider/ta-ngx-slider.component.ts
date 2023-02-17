@@ -3,12 +3,15 @@ import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
+import { NgxSliderModule } from '@angular-slider/ngx-slider';
+import { Ng5SliderModule } from 'ng5-slider';
+
 @Component({
     selector: 'app-ta-ngx-slider',
     templateUrl: './ta-ngx-slider.component.html',
     styleUrls: ['./ta-ngx-slider.component.scss'],
     standalone: true,
-    imports: [CommonModule, FormsModule],
+    imports: [CommonModule, FormsModule, NgxSliderModule, Ng5SliderModule],
 })
 export class TaNgxSliderComponent {
     @Input() sliderTemplate: string = 'commission';
