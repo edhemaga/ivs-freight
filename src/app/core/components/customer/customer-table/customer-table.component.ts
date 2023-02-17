@@ -576,8 +576,12 @@ export class CustomerTableComponent
             localStorage.getItem('brokerShipperTableCount')
         );
 
-        this.tableData[0].length = brokerShipperCount.broker;
-        this.tableData[1].length = brokerShipperCount.shipper;
+        const updatedTableData = [...this.tableData];
+
+        updatedTableData[0].length = brokerShipperCount.broker;
+        updatedTableData[1].length = brokerShipperCount.shipper;
+
+        this.tableData = [...updatedTableData]
     }
 
     // Broker Back Filter Query
