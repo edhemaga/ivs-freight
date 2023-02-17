@@ -477,11 +477,13 @@ export class TaInputComponent
             this.clearInputEvent.emit(true);
             return;
         }
-        // Clear value
+        // Incorrect Input
         if (this._inputConfig.incorrectInput) {
             this.incorrectValue = !this.incorrectValue;
             this.incorrectInput.emit(this.incorrectValue);
-        } else {
+        }
+        // Native clear
+        else {
             this.input.nativeElement.value = null;
             this.getSuperControl.setValue(null);
             this.numberOfConsecutivelySpaces = 0;
@@ -613,6 +615,7 @@ export class TaInputComponent
     }
 
     public onKeydown(event) {
+        console.log('keydown: ', event.keyCode);
         if (event) {
             this.capsLockOn =
                 event?.getModifierState('CapsLock') || event?.shiftKey;
@@ -638,6 +641,7 @@ export class TaInputComponent
     }
 
     public onKeyup(event): void {
+        console.log('keyUp: ', event.keyCode);
         // Reset function property for disabling multiple dots
         if (this.isDotDeleted && !this.getSuperControl?.value?.includes('.')) {
             this.numberOfPoints = 0;
@@ -652,10 +656,6 @@ export class TaInputComponent
             // Reset One Space Only
             if (!this.getSuperControl.value?.includes(' ')) {
                 this.oneSpaceOnlyCounter = 0;
-            }
-
-            if (!this.input.nativeElement.value) {
-                this.clearInput(event);
             }
         }
 
