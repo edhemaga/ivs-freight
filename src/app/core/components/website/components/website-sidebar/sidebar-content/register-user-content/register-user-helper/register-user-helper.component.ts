@@ -51,12 +51,6 @@ export class RegisterUserHelperComponent implements OnInit {
         });
 
         if (isValid) {
-            /*   localStorage.clear();
-
-            this.websiteAuthService.accountLogout(); */
-
-            this.router.navigate([ConstantString.WEBSITE]);
-
             this.websiteActionsService.setRegisterUserInfoSubject(
                 this.registerUserInfo
             );
@@ -68,6 +62,8 @@ export class RegisterUserHelperComponent implements OnInit {
             );
 
             this.websiteActionsService.setIsEmailRouteSubject(true);
+
+            this.websiteAuthService.accountLogout(true);
         }
     }
 }

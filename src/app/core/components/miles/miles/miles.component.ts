@@ -18,7 +18,6 @@ export class MilesComponent implements OnInit, AfterViewInit {
     selectedTab = 'active';
     activeViewMode: string = 'List';
     columns: any[] = [];
-    tableContainerWidth: number = 0;
     resizeObserver: ResizeObserver;
     milesActive: any;
     milesInactive: any;
@@ -146,7 +145,7 @@ export class MilesComponent implements OnInit, AfterViewInit {
     observTableContainer() {
         this.resizeObserver = new ResizeObserver((entries) => {
             entries.forEach((entry) => {
-                this.tableContainerWidth = entry.contentRect.width;
+                this.tableService.sendCurrentSetTableWidth(entry.contentRect.width);
             });
         });
 
@@ -231,9 +230,9 @@ export class MilesComponent implements OnInit, AfterViewInit {
         this.destroy$.next();
         this.destroy$.complete();
         this.tableService.sendActionAnimation({});
-        this.resizeObserver.unobserve(
-            document.querySelector('.table-container')
-        );
+        // this.resizeObserver.unobserve(
+        //     document.querySelector('.table-container')
+        // );
         this.resizeObserver.disconnect();
     }
 }

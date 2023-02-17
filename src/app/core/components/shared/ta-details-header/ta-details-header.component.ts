@@ -7,6 +7,7 @@ import { DetailsDropdownComponent } from '../details-page-dropdown/details-dropd
 import { TaCounterComponent } from '../ta-counter/ta-counter.component';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { FilterComponent } from '../../standalone-components/filter/filter.component';
+import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
     selector: 'app-ta-details-header',
@@ -21,7 +22,8 @@ import { FilterComponent } from '../../standalone-components/filter/filter.compo
         TaCounterComponent,
         AngularSvgIconModule,
         FilterComponent,
-        RouterModule
+        RouterModule,
+        NgbPopoverModule
     ],
 })
 export class TaCommonHeaderComponent implements OnInit {
@@ -62,9 +64,13 @@ export class TaCommonHeaderComponent implements OnInit {
     @Input() pmFilter: boolean = false;
     @Input() categoryFilter: boolean = false;
     @Input() moneyFilter: boolean = false;
+    @Input() brokerLoadDrop: boolean = false;
 
     public up: boolean = false;
     public down: boolean = false;
+    public dropOpened: boolean = false;
+    public tooltip: any;
+    public activeTemplate: any = 'All Load';
     constructor(private routes: ActivatedRoute) {}
 
     ngOnInit(): void {}
@@ -127,7 +133,7 @@ export class TaCommonHeaderComponent implements OnInit {
                             action.name = 'remove-from-favourite';
                             action.blueIcon = true;
                         } else {
-                            action.title = 'Move to Favourite';
+                            action.title = 'Mark as favorite';
                             action.name = 'move-to-favourite';
                             action.blueIcon = false;
                         }
@@ -193,5 +199,26 @@ export class TaCommonHeaderComponent implements OnInit {
 
                 break;
         }
+    }
+
+    showDropdown(tooltip: any){
+        if ( this.brokerLoadDrop ) {
+
+            this.tooltip = tooltip;
+            if (tooltip.isOpen()) {
+                //tooltip.close();
+            } else {
+                tooltip.open();
+            }
+            this.dropOpened = !this.dropOpened;
+        }
+    }
+
+    dropdownClosed(){
+        this.dropOpened = false;
+    }
+
+    setLoadType(mod){
+        console.log('mooood---', mod);
     }
 }

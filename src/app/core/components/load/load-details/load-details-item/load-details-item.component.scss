@@ -60,10 +60,10 @@ app-load-details-item {
     height: fit-content;
     border-radius: 3px;
     .finance-wrapper {
-        padding: 0 6px;
+        padding: 0 8px;
         padding-bottom: 1px;
         .balance-wrapper {
-            padding: 12px 10px;
+            padding: 12px 4px;
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -233,7 +233,7 @@ app-load-details-item {
     }
 }
 .biling-header {
-    padding: 0 12px;
+    padding: 0PX 4px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -252,7 +252,7 @@ app-load-details-item {
     }
 }
 .billing-item {
-    padding: 4px 12px;
+    padding: 4px 4px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -290,7 +290,7 @@ app-load-details-item {
     }
 }
 .billing-item-payments {
-    padding: 4px 12px;
+    padding: 4px 4px;
     display: grid;
     grid-template-columns: 100px 135px 74px;
     align-items: center;
@@ -344,7 +344,7 @@ app-load-details-item {
     }
 }
 .total-bill-wrapper {
-    padding: 0 6px;
+    //padding: 0 6px;
     .total-bill {
         background-color: #f9f9f9;
         display: flex;

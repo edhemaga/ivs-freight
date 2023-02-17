@@ -14,6 +14,7 @@ import { TaCustomCardComponent } from '../../shared/ta-custom-card/ta-custom-car
 import { TaInputNoteComponent } from '../../shared/ta-input-note/ta-input-note.component';
 import { formatTimePipe } from '../../../pipes/formatTime.pipe';
 import { AngularSvgIconModule } from 'angular-svg-icon';
+import { TaCommonHeaderComponent } from '../../shared/ta-details-header/ta-details-header.component';
 
 @NgModule({
     declarations: [
@@ -34,7 +35,8 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
         TaCustomCardComponent,
         TaInputNoteComponent,
         formatTimePipe,
-        AngularSvgIconModule
+        AngularSvgIconModule,
+        TaCommonHeaderComponent
     ],
     providers: [formatDatePipe],
 })

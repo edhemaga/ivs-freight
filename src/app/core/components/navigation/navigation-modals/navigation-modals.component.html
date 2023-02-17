@@ -6,7 +6,7 @@
         'opened-navigation': isNavigationHovered,
         'closed-navigation': !isNavigationHovered,
         'add-hover':
-            !OpenCloseModal &&
+            !isModalPanelOpen &&
             !isNavigationHoveredAndPanelOpen &&
             isNavigationHovered,
         'modal-media-query-height':
@@ -22,7 +22,7 @@
             (mouseleave)="
                 changeTextHoverOnCloseModal = false; showToolTip = false
             "
-            (click)="OpenMainModal(!OpenCloseModal)"
+            (click)="OpenMainModal(!isModalPanelOpen)"
             class="modal-nav-close"
         >
             <p class="modal-nav-close-text">
@@ -31,10 +31,10 @@
                     (mouseenter)="changeText(true)"
                     (mouseleave)="changeText(false)"
                     [ngClass]="{
-                        'closed-modal': !OpenCloseModal,
-                        'opened-modal': OpenCloseModal
+                        'closed-modal': !isModalPanelOpen,
+                        'opened-modal': isModalPanelOpen
                     }"
-                    src="assets/svg/common/ic_x.svg"
+                    src="assets/svg/common/ic_plus.svg"
                 ></svg-icon>
                 <span class="title">{{ Title }}</span>
             </p>
@@ -50,7 +50,7 @@
             </div>
         </div>
 
-        <div class="modal-nav-content">
+        <div class="modal-nav-content" *ngIf="isNavigationHovered">
             <p class="modal-nav-header">GENERAL <span></span></p>
             <div class="modal-nav-routes">
                 <p
@@ -73,7 +73,7 @@
             </div>
         </div>
 
-        <div class="modal-nav-content">
+        <div class="modal-nav-content" *ngIf="isNavigationHovered">
             <p class="modal-nav-header">TOOLS <span></span></p>
             <div class="modal-nav-routes">
                 <p
@@ -91,7 +91,7 @@
             </div>
         </div>
 
-        <div class="modal-nav-content">
+        <div class="modal-nav-content" *ngIf="isNavigationHovered">
             <p class="modal-nav-header">REPAIR <span></span></p>
             <div class="modal-nav-routes">
                 <p
@@ -108,7 +108,7 @@
             </div>
         </div>
 
-        <div class="modal-nav-content">
+        <div class="modal-nav-content" *ngIf="isNavigationHovered">
             <p class="modal-nav-header">FUEL <span></span></p>
             <div class="modal-nav-routes">
                 <p
@@ -125,7 +125,7 @@
             </div>
         </div>
 
-        <div class="modal-nav-content">
+        <div class="modal-nav-content" *ngIf="isNavigationHovered">
             <p class="modal-nav-header">SAFETY <span></span></p>
             <div class="modal-nav-routes">
                 <p

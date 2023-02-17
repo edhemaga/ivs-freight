@@ -40,11 +40,11 @@ export class ApplicantSphFormResolver implements Resolve<ApplicantState> {
                         };
                     });
                 } else {
-                    this.router.navigate(['/auth']);
+                    this.router.navigate(['/website']);
                 }
             }),
             catchError((error: any) => {
-                this.router.navigate(['/auth']);
+                this.router.navigate(['/website']);
                 // TODO: MILADIN: uhvati error.error i obavesti korisnika da ne poostoji applicant sa tim id-em
                 return throwError(() => error);
             })

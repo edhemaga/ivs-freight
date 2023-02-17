@@ -515,7 +515,6 @@ export class MapListComponent
                 element.scrollHeight - element.scrollTop - element.clientHeight
             ) <= 3.0
         ) {
-            //this.loadMoreData.emit(this.item);
             this.mapsService.mapListScroll(this.mapListContent);
         }
     }

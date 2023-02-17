@@ -8,6 +8,7 @@ import { TerminalResolver } from './settings-location/settings-terminal/state/co
 import { companyRepairShopResolver } from './settings-location/settings-repair-shop/state/company-repairshop.resolver';
 import { UserResolver } from '../user/state/user-state/user.resolver';
 import { UnderConstructionComponent } from '../under-construction/under-construction.component';
+import { integrationResolver } from './settings-integration/state/company-integrations.resolver';
 
 const routes: Routes = [
     {
@@ -16,7 +17,7 @@ const routes: Routes = [
         children: [
             { path: '', redirectTo: 'company', pathMatch: 'full' },
             {
-                path: 'company',
+                path: 'settings',
                 loadChildren: () =>
                     import('./settings-company/settings-company.module').then(
                         (m) => m.SettingsCompanyModule
@@ -92,12 +93,12 @@ const routes: Routes = [
             },
             {
                 path: 'integration',
-                // loadChildren: () =>
-                //     import(
-                //         './settings-integration/settings-integration.module'
-                //     ).then((m) => m.SettingsIntegrationModule),
-                component: UnderConstructionComponent,
+                loadChildren: () =>
+                    import(
+                        './settings-integration/settings-integration.module'
+                    ).then((m) => m.SettingsIntegrationModule),
                 data: { title: 'Integration' },
+                resolve: { integrationResolver },
             },
         ],
     },

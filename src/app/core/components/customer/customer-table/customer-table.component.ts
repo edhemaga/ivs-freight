@@ -32,6 +32,7 @@ import {
 import { TaThousandSeparatorPipe } from '../../../pipes/taThousandSeparator.pipe';
 import { ReviewsRatingService } from '../../../services/reviews-rating/reviewsRating.service';
 import { DatePipe } from '@angular/common';
+import { MapsService } from 'src/app/core/services/shared/maps.service';
 
 @Component({
     selector: 'app-customer-table',
@@ -57,7 +58,6 @@ export class CustomerTableComponent
     shipper: ShipperState[] = [];
     selectedTab = 'active';
     activeViewMode: string = 'List';
-    tableContainerWidth: number = 0;
     resizeObserver: ResizeObserver;
     backBrokerFilterQuery = {
         ban: null,
@@ -105,7 +105,8 @@ export class CustomerTableComponent
         private reviewRatingService: ReviewsRatingService,
         private DetailsDataService: DetailsDataService,
         private ref: ChangeDetectorRef,
-        public datePipe: DatePipe
+        public datePipe: DatePipe,
+        private mapsService: MapsService,
     ) {}
 
     ngOnInit(): void {
@@ -288,7 +289,7 @@ export class CustomerTableComponent
     observTableContainer() {
         this.resizeObserver = new ResizeObserver((entries) => {
             entries.forEach((entry) => {
-                this.tableContainerWidth = entry.contentRect.width;
+                this.tableService.sendCurrentSetTableWidth(entry.contentRect.width);
             });
         });
 
@@ -856,6 +857,8 @@ export class CustomerTableComponent
 
                         clearInterval(inetval);
                     }, 1000);
+
+                    this.mapsService.addRating(res);
                 });
         }
     }
@@ -957,9 +960,9 @@ export class CustomerTableComponent
         this.tableService.sendActionAnimation({});
         this.tableService.sendDeleteSelectedRows([]);
 
-        this.resizeObserver.unobserve(
-            document.querySelector('.table-container')
-        );
+        // this.resizeObserver.unobserve(
+        //     document.querySelector('.table-container')
+        // );
         this.resizeObserver.disconnect();
     }
 

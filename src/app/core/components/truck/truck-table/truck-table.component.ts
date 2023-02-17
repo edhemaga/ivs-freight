@@ -42,7 +42,6 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
     trucksActive: TruckActiveState[] = [];
     trucksInactive: TruckInactiveState[] = [];
     loadingPage: boolean = true;
-    tableContainerWidth: number = 0;
     backFilterQuery = {
         active: 1,
         pageIndex: 1,
@@ -308,7 +307,9 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
     observTableContainer() {
         this.resizeObserver = new ResizeObserver((entries) => {
             entries.forEach((entry) => {
-                this.tableContainerWidth = entry.contentRect.width;
+                this.tableService.sendCurrentSetTableWidth(
+                    entry.contentRect.width
+                );
             });
         });
 
@@ -801,9 +802,9 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.destroy$.next();
         this.destroy$.complete();
         this.tableService.sendActionAnimation({});
-        this.resizeObserver.unobserve(
-            document.querySelector('.table-container')
-        );
+        // this.resizeObserver.unobserve(
+        //     document.querySelector('.table-container')
+        // );
         this.resizeObserver.disconnect();
     }
 }
