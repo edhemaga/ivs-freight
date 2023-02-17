@@ -689,13 +689,14 @@ p {
             align-items: baseline;
             height: 18px;
             .charts-template-item-name {
-                margin-left: 6px;
+                margin-left: 4px;
             }
         }
         .charts-template-item-name {
             font-size: $font-size12;
             font-weight: $font-semibold;
             color: $color-gray-dark;
+            font-weight: 700;
 
             &::-moz-selection {
                 color: $color-gray-dark;

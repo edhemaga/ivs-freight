@@ -17,6 +17,7 @@ import { Subject, takeUntil } from 'rxjs';
 import { TruckassistTableService } from '../../../../services/truckassist-table/truckassist-table.service';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { ResizeColumnDirective } from 'src/app/core/directives/resize-column.directive';
 
 const rotate: { [key: string]: any } = {
     asc: '',
@@ -30,12 +31,12 @@ const rotate: { [key: string]: any } = {
     styleUrls: ['./truckassist-table-head.component.scss'],
     standalone: true,
     imports: [
-                CommonModule, 
-                FormsModule, 
-                ReactiveFormsModule,
-                AngularSvgIconModule,
-                NgbModule
-
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+        AngularSvgIconModule,
+        NgbModule,
+        ResizeColumnDirective,
     ],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -47,7 +48,6 @@ export class TruckassistTableHeadComponent
     @Input() options: any;
     @Input() tableData: any[];
     @Input() viewData: any[];
-    @Input() tableContainerWidth: number;
     @Output() headActions: EventEmitter<any> = new EventEmitter();
     mySelection: any[] = [];
     locked: boolean = true;
@@ -76,6 +76,13 @@ export class TruckassistTableHeadComponent
         this.setColumnNameUpperCase();
         this.setVisibleColumns();
         this.getActiveTableData();
+
+        // Get Table Width
+        this.tableService.currentSetTableWidth
+            .pipe(takeUntil(this.destroy$))
+            .subscribe(() => {
+                this.getNotPinedMaxWidth();
+            });
 
         // Scroll
         this.tableService.currentScroll
@@ -125,13 +132,6 @@ export class TruckassistTableHeadComponent
             this.tableData = changes.tableData.currentValue;
 
             this.getActiveTableData();
-        }
-
-        if (
-            !changes?.tableContainerWidth?.firstChange &&
-            changes?.tableContainerWidth
-        ) {
-            this.getNotPinedMaxWidth();
         }
 
         if (!changes?.options?.firstChange && changes?.options) {

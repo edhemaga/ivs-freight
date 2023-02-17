@@ -671,11 +671,13 @@ export class RepairTService implements OnDestroy {
         });
     }
 
+    public getRepairShopChart(id: number, chartType: number) {
+        return this.shopServices.apiRepairshopExpensesGet(id, chartType);
+    }
+
     public addShopFavorite(shopId: number) {
         return this.shopServices.apiRepairshopPinnedIdPut(shopId);
     }
-
-
 
     public changeShopStatus(shopId: any){
         const closeShop = this.shopServices.apiRepairshopStatusIdPut(shopId)

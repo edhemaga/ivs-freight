@@ -1,8 +1,10 @@
 import {
     Component,
+    ElementRef,
     OnDestroy,
     OnInit,
     Renderer2,
+    ViewChild,
     ViewEncapsulation,
 } from '@angular/core';
 
@@ -12,9 +14,9 @@ import { Subject, takeUntil } from 'rxjs';
 
 import { WebsiteActionsService } from '../../state/service/website-actions.service';
 
-import { ConstantString } from '../../state/enum/const-string.enum';
-
 import { fadeInAnimation } from '../../state/utils/animation';
+
+import { ConstantString } from '../../state/enum/const-string.enum';
 
 @Component({
     selector: 'app-website-sidebar',
@@ -24,6 +26,8 @@ import { fadeInAnimation } from '../../state/utils/animation';
     animations: [fadeInAnimation()],
 })
 export class WebsiteSidebarComponent implements OnInit, OnDestroy {
+    @ViewChild('hideSidebarBtn') hideSidebarBtn: ElementRef<HTMLElement>;
+
     private destroy$ = new Subject<void>();
 
     public selectedContentType: string = null;
@@ -39,7 +43,7 @@ export class WebsiteSidebarComponent implements OnInit, OnDestroy {
 
         this.listenForSidebarHideEvent();
 
-        this.showSidebar();
+        this.showOrHideSidebar();
     }
 
     private getSidebarContentType(): void {
@@ -101,7 +105,7 @@ export class WebsiteSidebarComponent implements OnInit, OnDestroy {
         });
     }
 
-    private showSidebar(): void {
+    private showOrHideSidebar(): void {
         this.websiteActionsService.getOpenSidebarSubject$
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
@@ -109,6 +113,13 @@ export class WebsiteSidebarComponent implements OnInit, OnDestroy {
                     new Offcanvas(ConstantString.SIDEBAR).toggle();
 
                     this.websiteActionsService.setOpenSidebarSubject(false);
+                } else {
+                    if (this.hideSidebarBtn) {
+                        const hideSidebarBtn: HTMLElement =
+                            this.hideSidebarBtn.nativeElement;
+
+                        hideSidebarBtn.click();
+                    }
                 }
             });
     }

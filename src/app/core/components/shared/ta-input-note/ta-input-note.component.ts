@@ -17,6 +17,7 @@ import { CommonModule } from '@angular/common';
 import { SafeHtmlPipe } from 'src/app/core/pipes/safe-html.pipe';
 import { TaNoteContainerComponent } from '../ta-note/ta-note-container/ta-note-container.component';
 import { AngularSvgIconModule } from 'angular-svg-icon';
+import { TaSpinnerComponent } from '../ta-spinner/ta-spinner.component';
 
 @Component({
     selector: 'app-ta-input-note',
@@ -30,7 +31,8 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
             SafeHtmlPipe, 
             TaNoteContainerComponent,
             AngularSvgIconModule,
-            ReactiveFormsModule
+            ReactiveFormsModule,
+            TaSpinnerComponent
     ],
 })
 export class TaInputNoteComponent implements OnInit, ControlValueAccessor {

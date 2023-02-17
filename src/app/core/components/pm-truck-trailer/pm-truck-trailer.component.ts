@@ -22,6 +22,7 @@ export class PmTruckTrailerComponent implements OnInit {
     columns: any[] = [];
     selectedTab = 'active';
     activeViewMode: string = 'List';
+    resizeObserver: ResizeObserver;
 
     constructor(
         private modalService: ModalService,
@@ -39,6 +40,24 @@ export class PmTruckTrailerComponent implements OnInit {
                     this.sendPMData();
                 }
             });
+    }
+
+    ngAfterViewInit(): void {
+        setTimeout(() => {
+            this.observTableContainer();
+        }, 10);
+    }
+
+    observTableContainer() {
+        this.resizeObserver = new ResizeObserver((entries) => {
+            entries.forEach((entry) => {
+                this.tableService.sendCurrentSetTableWidth(
+                    entry.contentRect.width
+                );
+            });
+        });
+
+        this.resizeObserver.observe(document.querySelector('.table-container'));
     }
 
     initTableOptions(): void {

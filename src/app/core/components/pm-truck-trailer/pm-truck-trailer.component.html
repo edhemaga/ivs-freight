@@ -1,5 +1,4 @@
 <div class="table-container">
-    <!-- [tableContainerWidth]="tableContainerWidth" -->
     <app-truckassist-table-toolbar
         (toolBarAction)="onToolBarAction($event)"
         [options]="tableOptions"
@@ -15,7 +14,6 @@
             [columns]="columns"
             [tableData]="tableData"
             (headActions)="onTableHeadActions($event)"
-            [tableContainerWidth]="tableContainerWidth"
         ></app-truckassist-table-head>
 
         <app-truckassist-table-body
@@ -25,7 +23,6 @@
             [selectedTab]="selectedTab"
             (bodyActions)="onTableBodyActions($event)"
             [tableData]="tableData"
-            [tableContainerWidth]="tableContainerWidth"
         ></app-truckassist-table-body>
     </div>
 </div>

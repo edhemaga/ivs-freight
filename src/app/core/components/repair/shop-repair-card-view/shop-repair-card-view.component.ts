@@ -16,6 +16,7 @@ import { DetailsPageService } from '../../../services/details-page/details-page-
 import { RepairShopMinimalListResponse } from '../../../../../../appcoretruckassist/model/repairShopMinimalListResponse';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { RepairDQuery } from '../state/details-state/repair-d.query';
+import { RepairTService } from '../state/repair.service';
 
 @Component({
     selector: 'app-shop-repair-card-view',
@@ -26,8 +27,8 @@ export class ShopRepairCardViewComponent
     implements OnInit, OnChanges, OnDestroy
 {
     private destroy$ = new Subject<void>();
-    @ViewChild('reparExpensesChart', { static: false })
-    public reparExpensesChart: any;
+    @ViewChild('repairExpensesChart', { static: false })
+    public repairExpensesChart: any;
     @Input() repairShopCardViewData: RepairShopResponse;
     @Input() templateCard: boolean;
     public noteControl: UntypedFormControl = new UntypedFormControl();
@@ -37,15 +38,27 @@ export class ShopRepairCardViewComponent
     public shopsList: any;
     public repairShopObject: any;
     public shopIndex: any;
+    public currentShopId: number;
+    public monthList: any[] = [
+        'JAN',
+        'FEB',
+        'MAR',
+        'APR',
+        'MAY',
+        'JUN',
+        'JUL',
+        'AUG',
+        'SEP',
+        'OCT',
+        'NOV',
+        'DEC',
+    ];
     barChartConfig: any = {
         dataProperties: [
             {
                 defaultConfig: {
                     type: 'line',
-                    data: [
-                        1050, 950, 2200, 1100, 1250, 1550, 2100, 2500, 2000,
-                        1150, 1300, 1700,
-                    ],
+                    data: [],
                     label: 'Salary',
                     yAxisID: 'y-axis-1',
                     borderColor: '#6D82C7',
@@ -59,10 +72,7 @@ export class ShopRepairCardViewComponent
             {
                 defaultConfig: {
                     type: 'bar',
-                    data: [
-                        2200, 1700, 2800, 1100, 1500, 2200, 3300, 3700, 2500,
-                        1400, 2200, 2800,
-                    ],
+                    data: [],
                     label: 'Miles',
                     yAxisID: 'y-axis-0',
                     borderColor: '#FFCC80',
@@ -73,7 +83,7 @@ export class ShopRepairCardViewComponent
             },
         ],
         showLegend: false,
-        chartValues: [46, 755, 0, 36.854],
+        chartValues: [0, 0],
         onHoverAnnotation: true,
         hoverTimeDisplay: true,
         defaultType: 'bar',
@@ -121,7 +131,7 @@ export class ShopRepairCardViewComponent
             minValue: 0,
             maxValue: 4000,
             stepSize: 1000,
-            showGridLines: true,
+            showGridLines: false,
         },
         verticalRightAxes: {
             visible: true,
@@ -137,17 +147,22 @@ export class ShopRepairCardViewComponent
         },
     };
 
+    public repairCall: any = {
+        id: -1,
+        chartType: -1,
+    };
+
     constructor(
         private detailsPageDriverSer: DetailsPageService,
         private tableService: TruckassistTableService,
         private cdRef: ChangeDetectorRef,
         private repairDQuery: RepairDQuery,
         private act_route: ActivatedRoute,
-        private router: Router
+        private router: Router,
+        private repairService: RepairTService
     ) {}
 
     ngOnChanges(changes: SimpleChanges): void {
-        
         if (
             changes.repairShopCardViewData?.currentValue !=
             changes.repairShopCardViewData?.previousValue
@@ -156,12 +171,17 @@ export class ShopRepairCardViewComponent
                 changes.repairShopCardViewData.currentValue.note
             );
             this.repairShopCardViewData =
-                changes.repairShopCardViewData?.currentValue;    
+                changes.repairShopCardViewData?.currentValue;
         }
-
+        this.currentShopId = changes.repairShopCardViewData.currentValue.id;
+        this.getRepairShopChartData(
+            changes.repairShopCardViewData.currentValue.id,
+            1,
+            false
+        );
         this.getActiveServices(changes.repairShopCardViewData.currentValue);
         this.getShopsDropdown(changes.repairShopCardViewData.currentValue);
-        
+
         this.cdRef.detectChanges();
     }
 
@@ -213,7 +233,7 @@ export class ShopRepairCardViewComponent
                 })
             )
             .subscribe((data) => {
-                if ( newData ) {
+                if (newData) {
                     data[0]['name'] = newData.name;
                 }
                 this.shopsDropdowns = data;
@@ -279,6 +299,7 @@ export class ShopRepairCardViewComponent
             {
                 id: 223,
                 name: '1M',
+                checked: true,
             },
             {
                 name: '3M',
@@ -310,6 +331,89 @@ export class ShopRepairCardViewComponent
     /**Function return id */
     public identity(index: number, item: any): number {
         return item.id;
+    }
+
+    public changeRepairTabs(ev: any) {
+        const chartType = this.repairExpensesChart?.detailsTimePeriod(ev.name);
+        this.getRepairShopChartData(this.currentShopId, chartType);
+    }
+
+    public getRepairShopChartData(
+        id: number,
+        chartType: number,
+        hideAnimation?: boolean
+    ) {
+        if (
+            id != this.repairCall.id ||
+            chartType != this.repairCall.chartType
+        ) {
+            this.repairCall.id = id;
+            this.repairCall.chartType = chartType;
+        } else {
+            return false;
+        }
+        this.repairService
+            .getRepairShopChart(id, chartType)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((item) => {
+                console.log(item, 'item');
+                this.barChartConfig.dataLabels = [];
+                this.barChartConfig.chartValues = [item.repair, item.cost];
+                this.barChartLegend[0].value = item.repair;
+                this.barChartLegend[1].value = item.cost;
+                let milesPerGallon = [],
+                    costPerGallon = [],
+                    labels = [],
+                    maxValue = 0,
+                    maxValue2 = 0;
+                if (item?.repairShopExpensesChartResponse?.length > 17) {
+                    this.barChartConfig.dataProperties[1].defaultConfig.barThickness = 10;
+                } else {
+                    this.barChartConfig.dataProperties[1].defaultConfig.barThickness = 18;
+                }
+                this.repairExpensesChart.toolTipData = [];
+                item.repairShopExpensesChartResponse.map((data, index) => {
+                    this.repairExpensesChart.toolTipData.push(data);
+                    milesPerGallon.push(data.repair);
+                    costPerGallon.push(data.repairCost);
+                    if (data.repair > maxValue) {
+                        maxValue = data.repair + (data.repair * 7) / 100;
+                    }
+                    if (data.repairCost > maxValue2) {
+                        maxValue2 =
+                            data.repairCost + (data.repairCost * 7) / 100;
+                    }
+                    if (data.day) {
+                        labels.push([data.day, this.monthList[data.month - 1]]);
+                    } else {
+                        labels.push([this.monthList[data.month - 1]]);
+                    }
+                });
+
+                this.barAxes['verticalLeftAxes']['maxValue'] = maxValue;
+                this.barAxes['verticalRightAxes']['maxValue'] = maxValue2;
+                this.barChartConfig.dataLabels = labels;
+                this.barChartConfig.dataProperties[0].defaultConfig.data =
+                    costPerGallon;
+                this.barChartConfig.dataProperties[1].defaultConfig.data =
+                    milesPerGallon;
+                this.repairExpensesChart.chartDataCheck(
+                    this.barChartConfig.chartValues
+                );
+                this.repairExpensesChart.updateChartData(hideAnimation);
+                this.repairExpensesChart.saveValues = JSON.parse(
+                    JSON.stringify(this.barChartLegend)
+                );
+                this.repairExpensesChart.legendAttributes = JSON.parse(
+                    JSON.stringify(this.barChartLegend)
+                );
+            });
+
+        this.cdRef.detectChanges();
+    }
+
+    public chartHovered(event) {
+        this.repairExpensesChart.hoveringStatus = event;
     }
 
     ngOnDestroy(): void {
