@@ -385,7 +385,6 @@ model/getTrailerModalResponse.ts
 model/getTransactionModalFranchiseStopResponse.ts
 model/getTransactionModalFranchiseStopResponsePagination.ts
 model/getTruckModalResponse.ts
-model/gpsMotionStatus.ts
 model/gpsType.ts
 model/hazardousMaterialResponse.ts
 model/hireApplicantCommand.ts
@@ -695,6 +694,7 @@ model/truckShortResponse.ts
 model/truckShortResponsePagination.ts
 model/truckTypeFilterResponse.ts
 model/truckTypeResponse.ts
+model/unitType.ts
 model/updateAccidentItemCommand.ts
 model/updateAccidentItemReviewCommand.ts
 model/updateAccidentRecordCommand.ts

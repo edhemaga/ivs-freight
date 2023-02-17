@@ -9,7 +9,6 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { GpsMotionStatus } from './gpsMotionStatus';
 import { GpsType } from './gpsType';
 
 
@@ -23,7 +22,8 @@ export interface LiveTrackingItemLiteResponse {
     heading?: number | null;
     headingString?: string | null;
     location?: string | null;
-    motionStatus?: GpsMotionStatus;
+    motionStatus?: number | null;
+    motionStatusPeriod?: string | null;
     type?: GpsType;
     updateTime?: string;
     dateString?: string | null;
