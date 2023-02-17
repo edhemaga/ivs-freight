@@ -17,6 +17,9 @@ import { formatEinPipe } from '../../pipes/formatEin.pipe';
 import { formatDatePipe } from '../../pipes/formatDate.pipe';
 import { TruckassistTableBodyComponent } from '../shared/truckassist-table/truckassist-table-body/truckassist-table-body.component';
 import { TruckassistTableHeadComponent } from '../shared/truckassist-table/truckassist-table-head/truckassist-table-head.component';
+import { MapsComponent } from '../shared/maps/maps.component';
+import { MapListComponent } from '../shared/map-list/map-list.component';
+import { MapListCardComponent } from '../shared/map-list-card/map-list-card.component';
 
 @NgModule({
     declarations: [CustomerTableComponent, BrokerCardComponent],
@@ -37,6 +40,9 @@ import { TruckassistTableHeadComponent } from '../shared/truckassist-table/truck
         formatDatePipe,
         TruckassistTableBodyComponent, 
         TruckassistTableHeadComponent,
+        MapsComponent,
+        MapListComponent,
+        MapListCardComponent
     ],
 })
 export class CustomerModule {}

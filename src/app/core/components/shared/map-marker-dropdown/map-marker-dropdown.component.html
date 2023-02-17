@@ -1,5 +1,8 @@
 <div class="marker-tool-tip" *ngIf="type != 'cluster'">
-    <div class="marker-info-container-all" *ngIf="type != 'gps' || (type == 'gps' && title)">
+    <div
+        class="marker-info-container-all"
+        *ngIf="type != 'gps' || (type == 'gps' && title)"
+    >
         <div class="title-container">
             <div class="d-flex" [ngStyle]="{ overflow: 'hidden' }">
                 <app-profile-images
@@ -10,15 +13,20 @@
                     [name]="title"
                     [ngStyle]="{ 'margin-right': '6px' }"
                 ></app-profile-images>
-                <div class="marker-business-name text-ellipsis">
-                    {{ title }}
-                    <ng-container *ngIf="type == 'fuelStop'">- {{ item?.store }}</ng-container>
-                </div>
-                <span
-                    *ngIf="
-                        item?.pinned || item?.favourite 
-                    "
+                <div
+                    class="marker-business-name text-ellipsis"
+                    (click)="goToDetails(item)"
+                    [ngClass]="{
+                        'has-details-page':
+                            type == 'shipper' || type == 'repairShop'
+                    }"
                 >
+                    {{ title }}
+                    <ng-container *ngIf="type == 'fuelStop'"
+                        >- {{ item?.store }}</ng-container
+                    >
+                </div>
+                <span *ngIf="item?.pinned || item?.favourite">
                     <svg-icon
                         class="favorite-svg active"
                         src="assets/svg/detail-cards/favorite.svg"
@@ -293,7 +301,10 @@
             </div>
         </div>
     </div>
-    <div class="marker-divider" *ngIf="type != 'gps' || (type == 'gps' && title)"></div>
+    <div
+        class="marker-divider"
+        *ngIf="type != 'gps' || (type == 'gps' && title)"
+    ></div>
     <div class="marker-info-container-all">
         <div *ngIf="type == 'gps'">
             <div>
@@ -310,11 +321,7 @@
                     </div>
 
                     <div class="marker-like-text mg-top-6">
-                        {{
-                            item?.truckNumber
-                                ? 'Device ID'
-                                : 'No GPS Device'
-                        }}
+                        {{ item?.truckNumber ? 'Device ID' : 'No GPS Device' }}
                         <span
                             class="marker-bold-text"
                             *ngIf="item?.truckNumber"
@@ -496,7 +503,11 @@
                 (mouseenter)="copyHover('phone', true)"
                 (mouseleave)="copyHover('phone', false)"
             >
-                <div class="copy-tooltip" [ngClass]="{ 'active-tooltip': copiedPhone }" *ngIf="copyPhoneHover">
+                <div
+                    class="copy-tooltip"
+                    [ngClass]="{ 'active-tooltip': copiedPhone }"
+                    *ngIf="copyPhoneHover"
+                >
                     {{ copiedPhone ? 'Copied' : 'Copy' }}
                 </div>
                 <svg-icon
@@ -523,7 +534,11 @@
                 (mouseenter)="copyHover('email', true)"
                 (mouseleave)="copyHover('email', false)"
             >
-                <div class="copy-tooltip" [ngClass]="{ 'active-tooltip': copiedEmail }" *ngIf="copyEmailHover">
+                <div
+                    class="copy-tooltip"
+                    [ngClass]="{ 'active-tooltip': copiedEmail }"
+                    *ngIf="copyEmailHover"
+                >
                     {{ copiedEmail ? 'Copied' : 'Copy' }}
                 </div>
                 <svg-icon
@@ -610,7 +625,11 @@
                 (mouseenter)="copyHover('address', true)"
                 (mouseleave)="copyHover('address', false)"
             >
-                <div class="copy-tooltip address-tooltip" [ngClass]="{ 'active-tooltip': copiedAddress }" *ngIf="copyAddressHover">
+                <div
+                    class="copy-tooltip address-tooltip"
+                    [ngClass]="{ 'active-tooltip': copiedAddress }"
+                    *ngIf="copyAddressHover"
+                >
                     {{ copiedAddress ? 'Copied' : 'Copy' }}
                 </div>
                 <svg-icon
@@ -736,7 +755,8 @@
                         <div
                             class="marker-info-text"
                             *ngIf="
-                                !item?.openHours || !item?.openHours[6]?.startTime
+                                !item?.openHours ||
+                                !item?.openHours[6]?.startTime
                             "
                         >
                             Closed
@@ -818,27 +838,18 @@
                             : ''
                     }}</span>
                     <span class="align-center">
-                        <!-- {{
-                            type == 'shipper'
-                                ? '769'
-                                : type == 'repairShop'
-                                ? item.order
-                                : type == 'accident' || type == 'inspection'
-                                ? '9'
-                                : type == 'fuelStop'
-                                ? '769'
-                                : ''
-                        }} -->
                         <app-ta-counter
                             [count]="
                                 type == 'shipper'
-                                    ? (item?.pickups + item?.deliveries)
+                                    ? item?.pickups + item?.deliveries
                                     : type == 'repairShop'
                                     ? item?.order
                                     : type == 'accident' || type == 'inspection'
                                     ? '9'
                                     : type == 'fuelStop'
-                                    ? (item?.fuelTransactions ? item?.fuelTransactions.length : '769')
+                                    ? item?.fuelTransactions
+                                        ? item?.fuelTransactions.length
+                                        : '769'
                                     : ''
                             "
                             [countBackground]="'#424242'"
@@ -855,7 +866,13 @@
                     *ngIf="type == 'repairShop' || type == 'fuelStop'"
                 >
                     <span class="marker-bold-text blue-text"
-                        >${{ item?.totalCost != null ? item?.totalCost : item?.cost != null ? item?.cost : '0' }} </span
+                        >${{
+                            item?.totalCost != null && item.totalCost > 0
+                                ? (item?.totalCost | taThousandSeparator)
+                                : item?.cost != null && item.cost > 0
+                                ? (item?.cost | taThousandSeparator)
+                                : '0'
+                        }} </span
                     ><span class="load-text font-weight-normal">Cost</span>
                 </div>
             </div>
@@ -865,20 +882,34 @@
             >
                 <div class="marker-dual-info-container">
                     <div class="marker-info-text mg-bottom-4">
-                        <span class="marker-bold-text">{{ item?.pickups }}</span> Picked Up
+                        <span class="marker-bold-text">{{
+                            item?.pickups
+                        }}</span>
+                        Picked Up
                     </div>
                     <div class="marker-like-text">
                         Avg. Loading
-                        <span class="marker-bold-text">{{ item?.avgPickupTime != null ? item?.avgPickupTime : '0m' }}</span>
+                        <span class="marker-bold-text">{{
+                            item?.avgPickupTime != null
+                                ? item?.avgPickupTime
+                                : '0m'
+                        }}</span>
                     </div>
                 </div>
                 <div class="marker-dual-info-container">
                     <div class="marker-info-text mg-bottom-4">
-                        <span class="marker-bold-text">{{ item?.deliveries }}</span> Delivered
+                        <span class="marker-bold-text">{{
+                            item?.deliveries
+                        }}</span>
+                        Delivered
                     </div>
                     <div class="marker-like-text">
                         Avg. Offloading
-                        <span class="marker-bold-text">{{ item?.avgDeliveryTime != null ? item?.avgDeliveryTime : '0m' }}</span>
+                        <span class="marker-bold-text">{{
+                            item?.avgDeliveryTime != null
+                                ? item?.avgDeliveryTime
+                                : '0m'
+                        }}</span>
                     </div>
                 </div>
             </div>
@@ -916,7 +947,17 @@
                     <div class="marker-like-text marker-bold-text mg-bottom-4">
                         {{ item?.status == 2 ? 'Perm. Closed' : 'Last Used' }}
                     </div>
-                    <div class="marker-info-text">{{ item?.lastUsed != null ? item?.lastUsed : '&nbsp;' }}</div>
+                    <div class="marker-info-text">
+                        {{
+                            item?.lastUsed != null
+                                ? item?.lastUsed
+                                : item?.lastVisited != null
+                                ? item.lastVisited
+                                : item?.updatedAt != null
+                                ? (item.updatedAt | formatDateP)
+                                : '&nbsp;'
+                        }}
+                    </div>
                 </div>
             </div>
         </div>
@@ -1011,23 +1052,6 @@
 </div>
 
 <div class="cluster-list" *ngIf="type == 'cluster'">
-    <!-- <div class="cluster-list-header">
-        <div class="header-content">
-            <app-ta-counter
-                [count]="item.count"
-                [countBackground]="'#424242'"
-                [countColor]="'#ffffff'"
-                [countHeight]="'22px'"
-                [countWidth]="'22px'"
-                [countBorderRadius]="'11px'"
-                [marginLeft]="'4px'"
-            ></app-ta-counter>
-            <div class="header-text" [style]="{ 'margin-left': '4px' }">
-                {{ title }}
-            </div>
-        </div>
-        <div class="divider"></div>
-    </div> -->
     <div class="cluster-list-content" (scroll)="clusterListScroll($event)">
         <div
             class="cluster-list-item"
@@ -1035,7 +1059,7 @@
             *ngFor="let item2 of item?.pagination.data"
         >
             <span class="cluster-list-name">{{ item2.name }}</span>
-            
+
             <svg-icon
                 *ngIf="item2?.pinned || item2?.favourite"
                 class="favorite-svg active"

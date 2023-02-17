@@ -8,6 +8,9 @@ import { SharedModule } from '../shared/shared.module';
 import { TruckassistTableToolbarComponent } from '../shared/truckassist-table/truckassist-table-toolbar/truckassist-table-toolbar.component';
 import { TruckassistTableBodyComponent } from '../shared/truckassist-table/truckassist-table-body/truckassist-table-body.component';
 import { TruckassistTableHeadComponent } from '../shared/truckassist-table/truckassist-table-head/truckassist-table-head.component';
+import { MapsComponent } from '../shared/maps/maps.component';
+import { MapListComponent } from '../shared/map-list/map-list.component';
+import { MapListCardComponent } from '../shared/map-list-card/map-list-card.component';
 
 @NgModule({
     declarations: [FuelTableComponent],
@@ -20,7 +23,10 @@ import { TruckassistTableHeadComponent } from '../shared/truckassist-table/truck
         SharedModule,
         TruckassistTableToolbarComponent,
         TruckassistTableBodyComponent, 
-        TruckassistTableHeadComponent
+        TruckassistTableHeadComponent,
+        MapsComponent,
+        MapListComponent,
+        MapListCardComponent
     ],
 })
 export class FuelModule {}

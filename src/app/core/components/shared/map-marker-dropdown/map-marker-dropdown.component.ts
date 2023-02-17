@@ -9,6 +9,9 @@ import {
 } from '@angular/core';
 import { card_component_animation } from '../../shared/animations/card-component.animations';
 import { DetailsDataService } from 'src/app/core/services/details-data/details-data.service';
+import { TaThousandSeparatorPipe } from '../../../pipes/taThousandSeparator.pipe';
+import { Router } from '@angular/router';
+import { MapsService } from '../../../services/shared/maps.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { formatDatePipe } from 'src/app/core/pipes/formatDate.pipe';
@@ -24,6 +27,7 @@ import { GpsProgressbarComponent } from '../gps-progressbar/gps-progressbar.comp
     styleUrls: ['./map-marker-dropdown.component.scss'],
     animations: [card_component_animation('showHideCardBody')],
     changeDetection: ChangeDetectionStrategy.OnPush,
+    providers: [TaThousandSeparatorPipe],
     standalone: true,
     imports: [
         CommonModule,
@@ -33,6 +37,7 @@ import { GpsProgressbarComponent } from '../gps-progressbar/gps-progressbar.comp
         AngularSvgIconModule,
         DetailsDropdownComponent,
         TaCounterComponent,
+        TaThousandSeparatorPipe,
         GpsProgressbarComponent
     ],
 })
@@ -69,7 +74,9 @@ export class MapMarkerDropdownComponent implements OnInit {
 
     constructor(
         private ref: ChangeDetectorRef,
-        private detailsDataService: DetailsDataService
+        private detailsDataService: DetailsDataService,
+        private router: Router,
+        private mapsService: MapsService
     ) {}
 
     ngOnInit(): void {}
@@ -197,5 +204,37 @@ export class MapMarkerDropdownComponent implements OnInit {
         }
 
         this.ref.detectChanges();
+    }
+
+    goToDetails(data) {
+        var linkStart = '';
+        var linkEnd = '';
+        var doesNotHaveRout = false;
+
+        if ( this.type == 'shipper' ) {
+            linkStart = '/list/customer/';
+            linkEnd = '/shipper-details';
+        } else if ( this.type == 'repairShop' ) {
+            linkStart = '/list/repair/';
+            linkEnd = '/shop-details';
+        } else if ( this.type == 'fuelStop' ) {
+            doesNotHaveRout = true;
+        } else if ( this.type == 'accident' ) {
+            doesNotHaveRout = true;
+        } else {
+            doesNotHaveRout = true;
+        }
+
+        if ( !doesNotHaveRout ) {
+            const link =
+                linkStart +
+                data['id'] +
+                linkEnd;
+
+            this.detailsDataService.setNewData(data);
+            this.mapsService.selectedMarker(0);
+
+            this.router.navigate([link]);
+        }
     }
 }
