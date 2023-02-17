@@ -185,7 +185,7 @@
     height: 100vh;
     pointer-events: none;
 
-    padding: 62px 0px 18px 74px;
+    padding: 62px 0px 25px 74px;
 
     z-index: 2;
 
@@ -545,7 +545,7 @@
 .sort-filter-holder {
     width: 169px;
     border-radius: 3px;
-    background-color: $white;
+    background-color: #2f2f2f;
     display: flex;
     justify-content: flex-start;
     align-items: flex-start;
@@ -557,7 +557,7 @@
 
     .sort-items-holder {
         width: 100%;
-        background-color: $white;
+        background-color: #2f2f2f;
         display: flex;
         justify-content: flex-start;
         align-items: flex-start;
@@ -576,33 +576,34 @@
             box-sizing: border-box;
             font-size: 14px;
             font-weight: 400;
-            color: $bw6-2;
+            color: #fff;
             line-height: 22px;
             margin-bottom: 2px;
 
             &:hover {
                 cursor: pointer;
-                background-color: #f7f7f7;
-                color: $ta-light-grey-3 !important;
+                background-color: #1d1d1d;
+                color: #fff !important;
             }
         }
 
         &.sort-item-active {
             .sort-items {
-                color: $primary;
+                color: #fff;
+                background-color: #1d1d1d;
 
                 svg-icon {
                     margin-right: 6px;
 
                     svg {
                         path {
-                            fill: $ta-light-blue;
+                            fill: #fff;
                         }
                     }
                 }
 
                 &:hover {
-                    color: $primary !important;
+                    color: #fff !important;
                 }
             }
         }

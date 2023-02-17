@@ -32,6 +32,7 @@ import {
 import { TaThousandSeparatorPipe } from '../../../pipes/taThousandSeparator.pipe';
 import { ReviewsRatingService } from '../../../services/reviews-rating/reviewsRating.service';
 import { DatePipe } from '@angular/common';
+import { MapsService } from 'src/app/core/services/shared/maps.service';
 
 @Component({
     selector: 'app-customer-table',
@@ -104,7 +105,8 @@ export class CustomerTableComponent
         private reviewRatingService: ReviewsRatingService,
         private DetailsDataService: DetailsDataService,
         private ref: ChangeDetectorRef,
-        public datePipe: DatePipe
+        public datePipe: DatePipe,
+        private mapsService: MapsService,
     ) {}
 
     ngOnInit(): void {
@@ -855,6 +857,8 @@ export class CustomerTableComponent
 
                         clearInterval(inetval);
                     }, 1000);
+
+                    this.mapsService.addRating(res);
                 });
         }
     }
