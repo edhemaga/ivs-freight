@@ -1,4 +1,4 @@
-import { CdkDragDrop } from '@angular/cdk/drag-drop';
+import { CdkDragDrop, DragDropModule } from '@angular/cdk/drag-drop';
 import { CommonModule } from '@angular/common';
 import {
     Component,
@@ -37,6 +37,7 @@ const rotate: { [key: string]: any } = {
         AngularSvgIconModule,
         NgbModule,
         ResizeColumnDirective,
+        DragDropModule
     ],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
