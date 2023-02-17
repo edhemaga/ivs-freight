@@ -262,6 +262,10 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
         {
             api: 'tag',
             value: 'TAG'
+        },
+        {
+            api: 'bank',
+            value: 'BANK'
         }
     ];
     constructor(
@@ -1056,8 +1060,11 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
                     this.message = this.DetailsDataService.documentName ? this.DetailsDataService.documentName : '';
                 break;
             case 'CREDIT': 
-            this.message = this.httpRequest?.body?.creditLimit ? this.httpRequest?.body?.creditLimit : '';
-            break;
+                this.message = this.httpRequest?.body?.creditLimit ? this.httpRequest?.body?.creditLimit : '';
+                break;
+            case 'BANK':
+                    this.message = this.httpRequest?.body?.name ? this.httpRequest?.body?.name : '';
+                break;
         }
 
         if (this.actionType == 'DRIVER' && !this.message) {

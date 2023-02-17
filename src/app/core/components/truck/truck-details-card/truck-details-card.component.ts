@@ -432,10 +432,13 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
         //this.truck.ownerHistories = array1;
         this.ownersData = array1;
 
-        let currentIndex = this.truck_list.findIndex(
-            (truck) => truck.id === this.truck.id
-        );
-        this.truckIndex = currentIndex;
+        setTimeout(()=>{
+            let currentIndex = this.truckDropDowns.findIndex(
+                (truck) => truck.id === this.truck.id
+            );
+            
+            this.truckIndex = currentIndex;
+        }, 300)
     }
 
     public sortKeys = (a, b) => {
@@ -699,6 +702,10 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
                     active: item.id === this.truck.id,
                 };
             });
+
+        this.truckDropDowns = this.truckDropDowns.sort(
+            (x, y) => Number(y.status) - Number(x.status)
+        );
     }
 
     public onSelectedTruck(event: any) {
@@ -716,21 +723,26 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
                     };
                 });
             this.detailsPageDriverSer.getDataDetailId(event.id);
+
+            this.truckDropDowns = this.truckDropDowns.sort(
+                (x, y) => Number(y.status) - Number(x.status)
+            );
         }
     }
     public onChangeTruck(action: string) {
-        let currentIndex = this.truck_list.findIndex(
+        let currentIndex = this.truckDropDowns.findIndex(
             (truck) => truck.id === this.truck.id
         );
+
         switch (action) {
             case 'previous': {
                 currentIndex = --currentIndex;
                 if (currentIndex != -1) {
                     this.detailsPageDriverSer.getDataDetailId(
-                        this.truck_list[currentIndex].id
+                        this.truckDropDowns[currentIndex].id
                     );
                     this.onSelectedTruck({
-                        id: this.truck_list[currentIndex].id,
+                        id: this.truckDropDowns[currentIndex].id,
                     });
                     this.truckIndex = currentIndex;
                 }
@@ -740,13 +752,13 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
                 currentIndex = ++currentIndex;
                 if (
                     currentIndex !== -1 &&
-                    this.truck_list.length > currentIndex
+                    this.truckDropDowns.length > currentIndex
                 ) {
                     this.detailsPageDriverSer.getDataDetailId(
-                        this.truck_list[currentIndex].id
+                        this.truckDropDowns[currentIndex].id
                     );
                     this.onSelectedTruck({
-                        id: this.truck_list[currentIndex].id,
+                        id: this.truckDropDowns[currentIndex].id,
                     });
                     this.truckIndex = currentIndex;
                 }
