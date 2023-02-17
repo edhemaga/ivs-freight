@@ -12,7 +12,11 @@ import {
 import { TableType } from 'appcoretruckassist';
 import { Subject, takeUntil } from 'rxjs';
 import { TruckassistTableService } from '../../../../services/truckassist-table/truckassist-table.service';
-import { UntypedFormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {
+    UntypedFormControl,
+    FormsModule,
+    ReactiveFormsModule,
+} from '@angular/forms';
 import { Titles } from 'src/app/core/utils/application.decorators';
 import {
     Confirmation,
@@ -39,7 +43,7 @@ import { TaInputDropdownComponent } from '../../ta-input-dropdown/ta-input-dropd
         ToolbarFiltersComponent,
         AngularSvgIconModule,
         NgbModule,
-        TaInputDropdownComponent
+        TaInputDropdownComponent,
     ],
 })
 export class TruckassistTableToolbarComponent
@@ -650,10 +654,27 @@ export class TruckassistTableToolbarComponent
 
     // Set Table Configuration
     setTableConfig(column: any, index: number) {
+        let newColumns = [...this.columns];
+
+        newColumns = newColumns.map((c) => {
+            if (c.title === column.title) {
+                c = column;
+            }
+
+            return c;
+        });
+
         localStorage.setItem(
             `table-${this.tableConfigurationType}-Configuration`,
-            JSON.stringify(this.columns)
+            JSON.stringify(newColumns)
         );
+
+        this.tableService
+            .sendTableConfig({
+                tableType: this.tableConfigurationType,
+                config: JSON.stringify(newColumns),
+            })
+            .subscribe(() => {});
 
         this.tableService.sendToaggleColumn({
             column: column,
