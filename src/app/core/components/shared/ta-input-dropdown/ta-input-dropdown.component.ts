@@ -18,7 +18,7 @@ import { input_dropdown_animation } from './ta-input-dropdown.animation';
 import { TaInputService } from '../ta-input/ta-input.service';
 import { v4 as uuidv4 } from 'uuid';
 import { ITaInput } from '../ta-input/ta-input.config';
-import { NgbPopover, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbPopover, NgbPopoverModule, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { TaInputComponent } from '../ta-input/ta-input.component';
 import { TaInputResetService } from '../ta-input/ta-input-reset.service';
 import { ImageBase64Service } from '../../../utils/base64.image';
@@ -53,7 +53,8 @@ import { TaSvgPipe } from '../../../pipes/ta-svg.pipe';
             AngularSvgIconModule,
             ProfileImagesComponent,
             LoadModalProgressBarComponent,
-            TaSvgPipe
+            TaSvgPipe,
+            NgbModule
     ]
 })
 export class TaInputDropdownComponent
