@@ -764,9 +764,13 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
             localStorage.getItem('repairShopTableCount')
         );
 
-        this.tableData[0].length = repairTruckTrailerCount.repairTrucks;
-        this.tableData[1].length = repairTruckTrailerCount.repairTrailers;
-        this.tableData[2].length = repairShopCount.repairShops;
+        const updatedTableData = [...this.tableData];
+
+        updatedTableData[0].length = repairTruckTrailerCount.repairTrucks;
+        updatedTableData[1].length = repairTruckTrailerCount.repairTrailers;
+        updatedTableData[2].length = repairShopCount.repairShops;
+
+        this.tableData = [...updatedTableData]
     }
 
     // Table Toolbar Actions

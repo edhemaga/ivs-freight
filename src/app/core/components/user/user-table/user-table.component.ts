@@ -525,6 +525,12 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
         const userCount = JSON.parse(localStorage.getItem('userTableCount'));
 
         this.tableData[0].length = userCount.users;
+
+        const updatedTableData = [...this.tableData];
+
+        updatedTableData[0].length = userCount.users;
+
+        this.tableData = [...updatedTableData]
     }
 
     // Get Avatar Color

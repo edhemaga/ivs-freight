@@ -330,8 +330,12 @@ export class ContactsTableComponent
         const contactCount = JSON.parse(
             localStorage.getItem('contactTableCount')
         );
+        
+        const updatedTableData = [...this.tableData];
 
-        this.tableData[0].length = contactCount.contact;
+        updatedTableData[0].length = contactCount.contact;
+
+        this.tableData = [...updatedTableData]
     }
 
     // Get Columns Definition

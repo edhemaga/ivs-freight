@@ -505,6 +505,13 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
         this.tableData[0].length = truckCount.active;
         this.tableData[1].length = truckCount.inactive;
+
+        const updatedTableData = [...this.tableData];
+
+        updatedTableData[0].length = truckCount.active;
+        updatedTableData[1].length = truckCount.inactive;
+
+        this.tableData = [...updatedTableData]
     }
 
     getTabData(dataType: string) {

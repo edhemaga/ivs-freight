@@ -560,8 +560,12 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
     updateDataCount() {
         const truckCount = JSON.parse(localStorage.getItem('truckTableCount'));
 
-        this.tableData[0].length = truckCount.active;
-        this.tableData[1].length = truckCount.inactive;
+        const updatedTableData = [...this.tableData];
+
+        updatedTableData[0].length = truckCount.active;
+        updatedTableData[1].length = truckCount.inactive;
+
+        this.tableData = [...updatedTableData]
     }
 
     getTabData(dataType: string) {
