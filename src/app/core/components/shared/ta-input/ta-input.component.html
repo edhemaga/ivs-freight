@@ -1,10 +1,7 @@
 <div
     class="input-custom-group {{ _inputConfig.customClass }}"
     [ngClass]="{
-        'custom-empty-hover':
-            !focusInput &&
-            !_inputConfig.dropdownLabel &&
-            !selectedDropdownLabelColor,
+        'custom-empty-hover': !focusInput && !selectedDropdownLabelColor,
         'custom-filled-hover':
             getSuperControl.value &&
             !focusInput &&

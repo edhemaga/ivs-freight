@@ -135,9 +135,7 @@ export class TaInputDropdownComponent
     @Input() set preloadMultiselectItems(values: any[]) {
         if (values?.length) {
             this._preloadMultiselectItems = [...values];
-            console.log('preload multiselect items');
-            console.log('values: ', values);
-            console.log('inputConfig: ', this.inputConfig);
+
             if (this.inputConfig.multiselectDropdown) {
                 if (!values?.length) {
                     this.deleteAllMultiSelectItems(this.inputConfig.label);
@@ -574,8 +572,6 @@ export class TaInputDropdownComponent
 
         this.multiselectItems = this._options.filter((item) => item.active);
 
-        console.log('this.multiselectItems: ', this.multiselectItems);
-
         this.selectedItems.emit(this.multiselectItems);
 
         this._options = this._options.sort(
@@ -596,8 +592,6 @@ export class TaInputDropdownComponent
             ...this.inputConfig,
             multiSelectDropdownActive: true,
         };
-
-        console.log('after update inputconfig: ', this.inputConfig);
     }
 
     public removeMultiSelectItem(index: number) {

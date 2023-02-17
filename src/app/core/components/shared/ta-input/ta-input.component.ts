@@ -399,7 +399,6 @@ export class TaInputComponent
 
             // Password
             if (this._inputConfig.type === 'password') {
-                console.log('izvrsava li se ?');
                 this.blurOnPassword();
             }
             // Normal focus out
@@ -427,7 +426,6 @@ export class TaInputComponent
             this.focusInput = false;
             this.input.nativeElement.blur();
 
-            console.log('focusinput: ', this.focusInput);
             this.refChange.detectChanges();
         }, 200);
     }

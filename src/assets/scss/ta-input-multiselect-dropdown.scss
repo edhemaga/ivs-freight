@@ -30,7 +30,7 @@
             -ms-user-select: auto !important;
             user-select: auto !important;
             pointer-events: all !important;
-            transition: all 0.2s ease-in-out;
+            transition: all 0.3s ease-in-out;
 
             &::-moz-selection {
                 background-color: $default-content-background-selection;

@@ -112,6 +112,7 @@
             .input-invalid-danger-mark,
             .input-dropdown-arrow,
             .input-icon,
+            .input-label-counter,
             .input-password-eye {
                 display: inline-block;
 
@@ -123,6 +124,10 @@
                 &:after:hover ~ .input-control {
                     background-color: $invalid-input-hover;
                 }
+            }
+
+            .input-label-counter {
+                display: flex;
             }
         }
     }
@@ -178,6 +183,7 @@
             .input-pen-container,
             .input-dropdown-arrow,
             .input-icon,
+            .input-label-counter,
             .input-password-eye {
                 display: inline-block;
                 transition: all 0.3s ease-in-out;
@@ -190,6 +196,10 @@
                 &:after:hover ~ .input-control {
                     background-color: $valid-input-hover;
                 }
+            }
+
+            .input-label-counter {
+                display: flex;
             }
 
             .input-required-check {
