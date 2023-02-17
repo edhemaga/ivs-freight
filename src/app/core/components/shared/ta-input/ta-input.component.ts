@@ -39,6 +39,7 @@ import { AppTooltipComponent } from '../../standalone-components/app-tooltip/app
 import { TaSvgPipe } from '../../../pipes/ta-svg.pipe';
 import { InputErrorPipe } from './input-error.pipe';
 import { CustomDatetimePickersComponent } from '../custom-datetime-pickers/custom-datetime-pickers.component';
+import { TaSpinnerComponent } from '../ta-spinner/ta-spinner.component';
 @Component({
     selector: 'app-ta-input',
     templateUrl: './ta-input.component.html',
@@ -62,7 +63,8 @@ import { CustomDatetimePickersComponent } from '../custom-datetime-pickers/custo
             TaSvgPipe,
             ReactiveFormsModule,
             InputErrorPipe,
-            CustomDatetimePickersComponent
+            CustomDatetimePickersComponent,
+            TaSpinnerComponent
     ]
 })
 export class TaInputComponent

@@ -12,9 +12,10 @@ import { HttpHandler, HttpRequest } from '@angular/common/http';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { DetailsDataService } from '../../../services/details-data/details-data.service';
 import moment from 'moment';
-import { Subject } from 'rxjs';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { TaSpinnerComponent } from '../ta-spinner/ta-spinner.component';
+import { AngularSvgIconModule } from 'angular-svg-icon';
 
 const routeSpecify = {
     '/api/account/login': 'Driver',
@@ -25,7 +26,7 @@ const routeSpecify = {
     templateUrl: './custom-toast-messages.component.html',
     styleUrls: ['./custom-toast-messages.component.scss'],
     standalone: true,
-    imports: [CommonModule, FormsModule],
+    imports: [CommonModule, FormsModule, TaSpinnerComponent, AngularSvgIconModule, ReactiveFormsModule],
     animations: [
         trigger('flyInOut', [
             state(
@@ -74,7 +75,6 @@ const routeSpecify = {
     ],
 })
 export class CustomToastMessagesComponent extends Toast implements OnInit {
-    private destroy$ = new Subject<void>();
     toastrType: string = '';
     retryBtnHovered: boolean = false;
     retryStarted: boolean = false;

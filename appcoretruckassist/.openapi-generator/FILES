@@ -580,7 +580,6 @@ model/repairedVehicleResponse.ts
 model/repairedVehicleResponsePagination.ts
 model/resendInviteCommand.ts
 model/resendSignUpCompanyOrUserCommand.ts
-model/resendVerifyDriverCommand.ts
 model/reviewByEntityTypeListResponse.ts
 model/reviewResponse.ts
 model/reviewResponsePagination.ts
@@ -618,7 +617,6 @@ model/shipperShortResponse.ts
 model/signInCommand.ts
 model/signInResponse.ts
 model/signUpCompanyCommand.ts
-model/signUpDriverMobileCommand.ts
 model/signupUserCommand.ts
 model/sphAccidentHistoryItemResponse.ts
 model/sphAccidentHistoryResponse.ts

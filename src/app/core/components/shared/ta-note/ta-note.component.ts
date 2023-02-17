@@ -22,6 +22,7 @@ import { FormsModule } from '@angular/forms';
 import { AppTooltipComponent } from '../../standalone-components/app-tooltip/app-tooltip.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { SafeHtmlPipe } from '../../../pipes/safe-html.pipe';
+import { TaSpinnerComponent } from '../ta-spinner/ta-spinner.component';
 
 @Component({
     selector: 'app-ta-note',
@@ -29,7 +30,7 @@ import { SafeHtmlPipe } from '../../../pipes/safe-html.pipe';
     styleUrls: ['./ta-note.component.scss'],
     encapsulation: ViewEncapsulation.None,
     standalone: true,
-    imports: [CommonModule, FormsModule, AppTooltipComponent, NgbModule, SafeHtmlPipe],
+    imports: [CommonModule, FormsModule, AppTooltipComponent, NgbModule, SafeHtmlPipe, TaSpinnerComponent],
     animations: [
         trigger('pickupAnimation', [
             transition(':enter', [
