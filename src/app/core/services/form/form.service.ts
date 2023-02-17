@@ -17,7 +17,7 @@ export class FormService implements OnDestroy {
 
     public checkFormChange(
         form: UntypedFormGroup,
-        debounceTimeProp: number = 600
+        debounceTimeProp: number = 1000
     ) {
         // When the form loads, changes are made for each control separately
         // and it is hard to determine when it has actually finished initializing,
