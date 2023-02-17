@@ -170,7 +170,6 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
                         res?.action === 'Set'
                             ? res?.queryParams.rangeValue
                             : undefined;
-                    console.log(this.backFilterQuery);
                 }
                 // Set Filter
                 if (
@@ -438,7 +437,7 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
             isSelected: false,
             textType: data?.ownerType?.name ? data.ownerType.name : '',
             textPhone: data?.phone ? this.phonePipe.transform(data.phone) : '',
-            textAddress: data?.address?.address ? data.address.address : '',
+            textAddress: data?.address ? data.address : '',
             textBankName: data?.bankName ? data.bankName : '',
             tableAttachments: data?.files ? data.files : [],
             fileCount: data?.fileCount,
@@ -539,7 +538,7 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
                         25
                     )
                     .pipe(takeUntil(this.destroy$))
-                    .subscribe((ownerPagination: GetOwnerListResponse) => {
+                    .subscribe((ownerPagination: any) => {
                         this.ownerInactiveStore.set(
                             ownerPagination.pagination.data
                         );
