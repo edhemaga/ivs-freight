@@ -2558,7 +2558,6 @@ export class FilterComponent implements OnInit, AfterViewInit {
                 let selectedUsersIdArray: any = [];
                 this.totalFiltersNum = this.filterActiveArray.length;
 
-                console.log('---this.type', this.type);
                 let mainArray: any[] = [];
                 switch (this.type) {
                     case 'departmentFilter':
@@ -2629,8 +2628,6 @@ export class FilterComponent implements OnInit, AfterViewInit {
                 queryParams: queryParams,
                 subType: subType,
             };
-
-            console.log('--data--', data)
 
             if (this.setFilter) {
                 this.setFilter.emit(data);
