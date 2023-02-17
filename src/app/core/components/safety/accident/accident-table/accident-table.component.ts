@@ -36,7 +36,6 @@ export class AccidentTableComponent
     columns: any[] = [];
     selectedTab = 'active';
     activeViewMode: string = 'List';
-    tableContainerWidth: number = 0;
     resizeObserver: ResizeObserver;
     accidentActive: AccidentActiveState[] = [];
     accidentInactive: AccidentInactiveState[] = [];
@@ -262,7 +261,9 @@ export class AccidentTableComponent
     observTableContainer() {
         this.resizeObserver = new ResizeObserver((entries) => {
             entries.forEach((entry) => {
-                this.tableContainerWidth = entry.contentRect.width;
+                this.tableService.sendCurrentSetTableWidth(
+                    entry.contentRect.width
+                );
             });
         });
 
@@ -479,9 +480,9 @@ export class AccidentTableComponent
     ngOnDestroy(): void {
         this.tableService.sendActionAnimation({});
 
-        this.resizeObserver.unobserve(
-            document.querySelector('.table-container')
-        );
+        // this.resizeObserver.unobserve(
+        //     document.querySelector('.table-container')
+        // );
         this.resizeObserver.disconnect();
 
         this.destroy$.next();

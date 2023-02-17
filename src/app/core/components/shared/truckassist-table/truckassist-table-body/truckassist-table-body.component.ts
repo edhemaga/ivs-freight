@@ -41,15 +41,14 @@ import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
     changeDetection: ChangeDetectionStrategy.OnPush,
     standalone: true,
     imports: [
-                CommonModule, 
-                FormsModule, 
-                ReactiveFormsModule,
-                CustomScrollbarComponent,
-                AngularSvgIconModule,
-                TaNoteComponent,
-                TaUploadFilesComponent,
-                NgbPopoverModule
-
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+        CustomScrollbarComponent,
+        AngularSvgIconModule,
+        TaNoteComponent,
+        TaUploadFilesComponent,
+        NgbPopoverModule,
     ],
     providers: [
         {
@@ -74,7 +73,6 @@ export class TruckassistTableBodyComponent
     @Input() options: any;
     @Input() tableData: any[];
     @Input() selectedTab: string;
-    @Input() tableContainerWidth: number;
 
     pinedColumns: any = [];
     pinedWidth: number = 0;
@@ -133,6 +131,13 @@ export class TruckassistTableBodyComponent
 
         // For Rendering One By One
         this.renderOneByOne();
+
+        // Get Table Width
+        this.tableService.currentSetTableWidth
+            .pipe(takeUntil(this.destroy$))
+            .subscribe(() => {
+                this.getNotPinedMaxWidth();
+            });
 
         // Select Or Deselect All
         this.tableService.currentSelectOrDeselect
@@ -216,14 +221,6 @@ export class TruckassistTableBodyComponent
 
         if (!changes?.tableData?.firstChange && changes?.tableData) {
             this.getSelectedTabTableData();
-        }
-
-        if (
-            !changes?.tableContainerWidth?.firstChange &&
-            changes?.tableContainerWidth &&
-            changes?.tableContainerWidth?.previousValue > 0
-        ) {
-            this.getNotPinedMaxWidth();
         }
 
         if (
@@ -697,5 +694,6 @@ export class TruckassistTableBodyComponent
         this.destroy$.next();
         this.destroy$.complete();
         this.tableService.sendRowsSelected([]);
+        this.tableService.sendCurrentSetTableWidth(null);
     }
 }

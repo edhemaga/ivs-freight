@@ -48,7 +48,6 @@ export class TruckassistTableHeadComponent
     @Input() options: any;
     @Input() tableData: any[];
     @Input() viewData: any[];
-    @Input() tableContainerWidth: number;
     @Output() headActions: EventEmitter<any> = new EventEmitter();
     mySelection: any[] = [];
     locked: boolean = true;
@@ -77,6 +76,13 @@ export class TruckassistTableHeadComponent
         this.setColumnNameUpperCase();
         this.setVisibleColumns();
         this.getActiveTableData();
+
+        // Get Table Width
+        this.tableService.currentSetTableWidth
+            .pipe(takeUntil(this.destroy$))
+            .subscribe(() => {
+                this.getNotPinedMaxWidth();
+            });
 
         // Scroll
         this.tableService.currentScroll
@@ -126,13 +132,6 @@ export class TruckassistTableHeadComponent
             this.tableData = changes.tableData.currentValue;
 
             this.getActiveTableData();
-        }
-
-        if (
-            !changes?.tableContainerWidth?.firstChange &&
-            changes?.tableContainerWidth
-        ) {
-            this.getNotPinedMaxWidth();
         }
 
         if (!changes?.options?.firstChange && changes?.options) {

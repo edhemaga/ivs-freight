@@ -1,5 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import {
+    UntypedFormBuilder,
+    UntypedFormGroup,
+    Validators,
+} from '@angular/forms';
 
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 
@@ -103,7 +107,7 @@ export class SphComponent implements OnInit, OnDestroy {
                 } else {
                     this.isValidLoad = false;
 
-                    this.router.navigate(['/auth']);
+                    this.router.navigate(['/website']);
                 }
             });
     }

@@ -9,16 +9,14 @@ import {
 } from '@angular/common/http';
 import { Observable, catchError, throwError, switchMap } from 'rxjs';
 import { AccountService, SignInResponse } from 'appcoretruckassist';
-import { Router } from '@angular/router';
-import { UserLoggedService } from '../components/authentication/state/user-logged.service';
 import { WebsiteAuthService } from '../components/website/state/service/website-auth.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { UserLoggedService } from '../components/website/state/service/user-logged.service';
 
 @Injectable()
 export class RefreshTokenInterceptor implements HttpInterceptor {
     constructor(
         private accountService: AccountService,
-        private router: Router,
         private websiteAuthService: WebsiteAuthService,
         private userLoggedService: UserLoggedService,
         private ngbModal: NgbModal
@@ -43,11 +41,14 @@ export class RefreshTokenInterceptor implements HttpInterceptor {
                             switchMap((res: any) => {
                                 user.token = res.token;
                                 user.refreshToken = res.refreshToken;
+
                                 localStorage.setItem(
                                     'user',
                                     JSON.stringify(user)
                                 );
+
                                 configFactory(this.userLoggedService);
+
                                 return next.handle(
                                     httpRequest.clone({
                                         setHeaders: {
@@ -59,10 +60,12 @@ export class RefreshTokenInterceptor implements HttpInterceptor {
                             catchError((err: HttpErrorResponse) => {
                                 if (err.status === 404 || err.status === 500) {
                                     this.ngbModal.dismissAll();
+
                                     localStorage.clear();
+
                                     this.websiteAuthService.accountLogout();
-                                    this.router.navigate(['/website']);
                                 }
+
                                 return throwError(() => err);
                             })
                         );

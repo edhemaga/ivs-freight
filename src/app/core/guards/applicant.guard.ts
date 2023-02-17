@@ -13,7 +13,7 @@ export class ApplicantGuard implements CanActivate {
         // ----------------------- DEVELOP MODE ----------------------------
         this.applicantQuery.applicant$.subscribe((value) => {
             if (!value) {
-                this.router.navigate(['/auth']);
+                this.router.navigate(['/website']);
                 return false;
             }
         });

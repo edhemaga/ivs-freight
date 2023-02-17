@@ -17,6 +17,7 @@ import { TaCounterComponent } from '../../shared/ta-counter/ta-counter.component
 import { TaCommonHeaderComponent } from '../../shared/ta-details-header/ta-details-header.component';
 import { TaDetailsHeaderCardComponent } from '../../shared/ta-details-header-card/ta-details-header-card.component';
 import { TaChartComponent } from '../../standalone-components/ta-chart/ta-chart.component';
+import { TaTabSwitchComponent } from '../../standalone-components/ta-tab-switch/ta-tab-switch.component';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 @NgModule({
     declarations: [
@@ -42,6 +43,7 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
         TaCommonHeaderComponent,
         TaDetailsHeaderCardComponent,
         TaChartComponent,
+        TaTabSwitchComponent,
         AngularSvgIconModule
     ],
 })

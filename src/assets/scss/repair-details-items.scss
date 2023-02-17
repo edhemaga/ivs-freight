@@ -84,22 +84,17 @@ $transition: all 0.3s ease-in-out;
                 cursor: pointer;
             }
 
-            &.address-cont{
+            &.address-cont {
                 padding-right: 20px;
 
-
-                .app-ta-copy-wrapper{
-
-                    .copy-value{
-                        
+                .app-ta-copy-wrapper {
+                    .copy-value {
                         max-width: 365px;
                         text-overflow: ellipsis;
-                        overflow: hidden; 
+                        overflow: hidden;
                         white-space: nowrap;
                     }
-                   
                 }
-               
             }
         }
     }
@@ -401,8 +396,12 @@ $transition: all 0.3s ease-in-out;
     grid-row-gap: 12px;
     row-gap: 12px;
     margin-bottom: 12px;
-    padding-left: 2px;
+    padding-left: 6px;
     padding-right: 6px;
+
+    .charts-item-wrapper {
+        margin-left: 4px;
+    }
     .charts-template-item {
         display: flex;
         flex-direction: column;
@@ -412,13 +411,14 @@ $transition: all 0.3s ease-in-out;
             align-items: baseline;
             height: 18px;
             .charts-template-item-name {
-                margin-left: 6px;
+                margin-left: 4px;
             }
         }
         .charts-template-item-name {
             font-size: $font-size12;
             font-weight: $font-semibold;
             color: $color-gray-dark;
+            font-weight: 700;
 
             &::-moz-selection {
                 color: $color-gray-dark;
