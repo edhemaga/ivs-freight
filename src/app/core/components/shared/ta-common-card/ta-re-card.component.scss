@@ -128,11 +128,15 @@
         }
         .icon-counter {
             position: relative;
-            top: -2px;
+            top: 1px;
             display: flex;
             align-items: baseline;
+            line-height: 16px;
+
             .note-icon {
                 svg {
+                    height: 16px;
+                    width: 14px;
                     path {
                         fill: #cccccc;
                     }
@@ -189,13 +193,13 @@ p {
 .rotate-common {
     transition: all 0.4s ease-in-out;
     position: relative;
-    top: -2px;
+    top: 1px;
     display: flex;
     justify-content: center;
     align-items: center;
     svg {
         transform: rotate(180deg);
-        transition: all 0.3s ease-in-out;
+       
         path {
             fill: #6d82c7 !important;
             &:hover {
@@ -267,9 +271,12 @@ p {
 }
 .resize-icon {
     height: 18px;
+    line-height: 20px;
     cursor: pointer;
     transition: all 0.4s ease-in-out;
+    
     svg {
+        transition: all 0.3s ease-in-out;
         path {
             &:hover {
                 fill: #6c6c6c;
@@ -297,6 +304,7 @@ p {
     font-size: 14px;
     font-weight: 800;
     color: #6c6c6c;
+    line-height: 17px;
     cursor: pointer;
     &::-moz-selection {
         color: #6c6c6c;
@@ -403,7 +411,8 @@ p {
 .dots-common-cards {
     display: flex;
     align-items: flex-end;
-    height: 15px;
+    line-height: 30px;
+    //height: 15px;
 }
 .hide-padding {
     transition: all 0.3s ease-in-out;
