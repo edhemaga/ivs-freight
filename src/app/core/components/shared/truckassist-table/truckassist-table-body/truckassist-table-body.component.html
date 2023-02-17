@@ -29,9 +29,6 @@
                 <!-- *ngIf="i <= tableRowCounter" -->
                 <tr
                     class="table-tr"
-                    [ngStyle]="{
-                        'margin-top': i > 0 ? '2px' : '0px'
-                    }"
                     [ngClass]="{
                         'regular-row': !row.isSelected,
                         'selected-row': row.isSelected,
@@ -676,8 +673,9 @@
                                                         ?.doesNotHaveRout
                                             }"
                                             (click)="goToDetails(column, row)"
-                                            >{{ row[column.field] }}</div
                                         >
+                                            {{ row[column.field] }}
+                                        </div>
                                     </div>
 
                                     <!-- OOS COLUMN -->
@@ -2251,8 +2249,9 @@
                                                         ?.doesNotHaveRout
                                             }"
                                             (click)="goToDetails(column, row)"
-                                            >{{ row[column.field] }}</div
                                         >
+                                            {{ row[column.field] }}
+                                        </div>
                                     </div>
 
                                     <!-- OOS COLUMN -->
