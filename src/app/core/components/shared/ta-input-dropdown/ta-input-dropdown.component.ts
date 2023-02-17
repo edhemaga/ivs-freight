@@ -129,7 +129,29 @@ export class TaInputDropdownComponent
             }
         }
     }
-    @Input() preloadMultiselectItems: any[] = [];
+
+    // MultiSelect Selected Items From Backend
+    public _preloadMultiselectItems: any[] = [];
+    @Input() set preloadMultiselectItems(values: any[]) {
+        if (values?.length) {
+            this._preloadMultiselectItems = [...values];
+            console.log('preload multiselect items');
+            console.log('values: ', values);
+            console.log('inputConfig: ', this.inputConfig);
+            if (this.inputConfig.multiselectDropdown) {
+                if (!values?.length) {
+                    this.deleteAllMultiSelectItems(this.inputConfig.label);
+                    return;
+                }
+
+                if (values?.length) {
+                    values.forEach((item) => {
+                        this.onMultiselectSelect(item);
+                    });
+                }
+            }
+        }
+    }
     @Input() isDetailsPages: boolean; // only for details pages
     @Input() incorrectValue: boolean; // applicant review option
 
@@ -192,29 +214,7 @@ export class TaInputDropdownComponent
         return this.superControl.control;
     }
 
-    ngOnChanges(changes: SimpleChanges): void {
-        // MultiSelect Selected Items From Backend
-        if (
-            this.inputConfig.multiselectDropdown &&
-            changes.preloadMultiselectItems?.previousValue?.length !==
-                changes.preloadMultiselectItems?.currentValue?.length
-        ) {
-            if (!changes.preloadMultiselectItems?.currentValue?.length) {
-                this.deleteAllMultiSelectItems(
-                    changes.inputConfig?.currentValue?.label
-                );
-                return;
-            }
-
-            if (changes.preloadMultiselectItems?.currentValue?.length) {
-                changes.preloadMultiselectItems?.currentValue?.forEach(
-                    (item) => {
-                        this.onMultiselectSelect(item);
-                    }
-                );
-            }
-        }
-    }
+    ngOnChanges(changes: SimpleChanges): void {}
 
     ngAfterViewInit() {
         if (this.inputConfig.autoFocus) {
@@ -574,6 +574,8 @@ export class TaInputDropdownComponent
 
         this.multiselectItems = this._options.filter((item) => item.active);
 
+        console.log('this.multiselectItems: ', this.multiselectItems);
+
         this.selectedItems.emit(this.multiselectItems);
 
         this._options = this._options.sort(
@@ -594,6 +596,8 @@ export class TaInputDropdownComponent
             ...this.inputConfig,
             multiSelectDropdownActive: true,
         };
+
+        console.log('after update inputconfig: ', this.inputConfig);
     }
 
     public removeMultiSelectItem(index: number) {

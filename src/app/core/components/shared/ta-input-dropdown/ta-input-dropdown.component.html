@@ -17,21 +17,21 @@
 
     <!-- Multiselect arrow -->
     <svg-icon
-        (click)="toggleMultiselectDropdown()"
         *ngIf="inputConfig.multiSelectDropdownActive"
         class="multiselect-arrow"
         src="assets/svg/common/ic_arrow_input.svg"
+        (click)="toggleMultiselectDropdown()"
     ></svg-icon>
 
     <!-- Multiselect clear all -->
     <div
-        (click)="deleteAllMultiSelectItems()"
         *ngIf="multiselectItems.length > 0 && !inputConfig.isDisabled"
         class="input-clear multiselect-clear"
         mainTooltip="Clear All"
         ngbTooltip
         position="top"
         tooltipBackground="#2f2f2f"
+        (click)="deleteAllMultiSelectItems()"
     >
         <svg-icon class="input-clear-x" src="assets/svg/ic_x.svg"></svg-icon>
     </div>
@@ -41,7 +41,7 @@
         *ngIf="
             inputConfig.multiselectDropdown &&
             multiselectItems.length > 0 &&
-            template === 'multiselect'
+            _template === 'multiselect'
         "
         class="multiselect-items {{ multiselectTemplate }}"
     >

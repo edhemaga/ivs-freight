@@ -16,7 +16,7 @@
         justify-items: center;
         border-radius: 2px;
         position: relative;
-        transition: all 0.3s ease-in-out;
+        transition: all 0.2s ease-in-out;
 
         .multiselect-label {
             position: absolute;
@@ -30,7 +30,7 @@
             -ms-user-select: auto !important;
             user-select: auto !important;
             pointer-events: all !important;
-            transition: all 0.3s ease-in-out;
+            transition: all 0.2s ease-in-out;
 
             &::-moz-selection {
                 background-color: $default-content-background-selection;
@@ -105,7 +105,8 @@
                 .multiselect-item-clear {
                     position: absolute;
                     right: 4px;
-                    top: 1px;
+                    top: auto;
+                    bottom: 3px;
                     border-radius: 1px;
                     display: none;
                     transition: all 0.3s ease-in-out;
