@@ -69,28 +69,37 @@ export class TruckassistTableService {
     private searchTableData = new BehaviorSubject<any>(null);
     public currentSearchTableData = this.searchTableData.asObservable();
 
-    /* Set Filter  */
+    /* Set Filter */
     private setTableFilter = new BehaviorSubject<any>(null);
     public currentSetTableFilter = this.setTableFilter.asObservable();
+
+    /* Set Table Width */
+    private setTableWidth = new BehaviorSubject<number>(null);
+    public currentSetTableWidth = this.setTableWidth.asObservable();
 
     constructor(private tableColumnsConfigService: TableConfigService) {}
 
     // ------------------------------ Table Back Service Methods --------------------------------
-    sendTableConfig(
-        tableConfig: UpdateTableConfigCommand
-    ): Observable<object> {
+    sendTableConfig(tableConfig: UpdateTableConfigCommand): Observable<object> {
         return this.tableColumnsConfigService.apiTableconfigPut(tableConfig);
     }
 
     getTableConfig(tableType: number): Observable<TableConfigResponse> {
-        return this.tableColumnsConfigService.apiTableconfigTableTypeGet(tableType);
+        return this.tableColumnsConfigService.apiTableconfigTableTypeGet(
+            tableType
+        );
     }
 
     // ------------------------------ Table Custom Service Methods --------------------------------
-    
+
+    /* Set Table Width */
+    public sendCurrentSetTableWidth(width: number) {
+        this.setTableWidth.next(width);
+    }
+
     /* Set Filter  */
-    public sendCurrentSetTableFilter(search: any) {
-        this.setTableFilter.next(search);
+    public sendCurrentSetTableFilter(filter: any) {
+        this.setTableFilter.next(filter);
     }
 
     /*  Search  */

@@ -82,7 +82,6 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
         searchTwo: undefined,
         searchThree: undefined,
     };
-    tableContainerWidth: number = 0;
     resizeObserver: ResizeObserver;
     mapingIndex: number = 0;
 
@@ -367,7 +366,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
     observTableContainer() {
         this.resizeObserver = new ResizeObserver((entries) => {
             entries.forEach((entry) => {
-                this.tableContainerWidth = entry.contentRect.width;
+                this.tableService.sendCurrentSetTableWidth(entry.contentRect.width);
             });
         });
 
@@ -1143,9 +1142,9 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.destroy$.next();
         this.destroy$.complete();
         this.tableService.sendActionAnimation({});
-        this.resizeObserver.unobserve(
-            document.querySelector('.table-container')
-        );
+        // this.resizeObserver.unobserve(
+        //     document.querySelector('.table-container')
+        // );
         this.resizeObserver.disconnect();
     }
 
