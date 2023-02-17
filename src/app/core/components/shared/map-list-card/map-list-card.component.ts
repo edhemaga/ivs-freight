@@ -13,11 +13,20 @@ import { Subject, takeUntil } from 'rxjs';
 import { DetailsDataService } from '../../../services/details-data/details-data.service';
 import { ConfirmationModalComponent } from '../../modals/confirmation-modal/confirmation-modal.component';
 import { ModalService } from './../../shared/ta-modal/modal.service';
+import { TaThousandSeparatorPipe } from '../../../pipes/taThousandSeparator.pipe';
+import { throws } from 'assert';
+import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { DetailsDropdownComponent } from '../details-page-dropdown/details-dropdown';
+import { AngularSvgIconModule } from 'angular-svg-icon';
 
 @Component({
     selector: 'app-map-list-card',
     templateUrl: './map-list-card.component.html',
     styleUrls: ['./map-list-card.component.scss'],
+    providers: [TaThousandSeparatorPipe],
+    standalone: true,
+    imports: [CommonModule, FormsModule, DetailsDropdownComponent, AngularSvgIconModule, ReactiveFormsModule],
 })
 export class MapListCardComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
@@ -67,7 +76,9 @@ export class MapListCardComponent implements OnInit, OnDestroy {
             return false;
         }
 
-        this.clickedMarker.emit([this.item.id, false]);
+        //this.clickedMarker.emit([this.item.id, false]);
+        const selectId = this.isSelected ? 0 : this.item.id;
+        this.mapsService.selectedMapListCard(selectId);
     }
 
     showMoreOptions(event) {

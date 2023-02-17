@@ -19,12 +19,17 @@ import {
     DropDownAnimation,
     navigation_route_animation,
 } from '../navigation.animation';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { AngularSvgIconModule } from 'angular-svg-icon';
 
 @Component({
     selector: 'app-navigation-user-profile',
     templateUrl: './navigation-user-profile.component.html',
     styleUrls: ['./navigation-user-profile.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
+    imports: [CommonModule, FormsModule, AngularSvgIconModule],
     animations: [
         navigation_route_animation('showHideDetails'),
         DropDownAnimation,
@@ -60,6 +65,7 @@ export class NavigationUserProfileComponent implements OnInit, OnDestroy {
         // }
         // ----------------------- DEVELOP MODE ----------------------------
         this.loggedUser = JSON.parse(localStorage.getItem('user'));
+
         this.loggedUser = {
             ...this.loggedUser,
             avatar: this.loggedUser.avatar

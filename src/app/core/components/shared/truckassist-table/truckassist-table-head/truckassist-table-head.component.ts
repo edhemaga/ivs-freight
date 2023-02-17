@@ -1,4 +1,5 @@
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
+import { CommonModule } from '@angular/common';
 import {
     Component,
     Input,
@@ -11,8 +12,12 @@ import {
     ChangeDetectorRef,
     ChangeDetectionStrategy,
 } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Subject, takeUntil } from 'rxjs';
 import { TruckassistTableService } from '../../../../services/truckassist-table/truckassist-table.service';
+import { AngularSvgIconModule } from 'angular-svg-icon';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { ResizeColumnDirective } from 'src/app/core/directives/resize-column.directive';
 
 const rotate: { [key: string]: any } = {
     asc: '',
@@ -24,6 +29,15 @@ const rotate: { [key: string]: any } = {
     selector: 'app-truckassist-table-head',
     templateUrl: './truckassist-table-head.component.html',
     styleUrls: ['./truckassist-table-head.component.scss'],
+    standalone: true,
+    imports: [
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+        AngularSvgIconModule,
+        NgbModule,
+        ResizeColumnDirective,
+    ],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TruckassistTableHeadComponent
@@ -34,7 +48,6 @@ export class TruckassistTableHeadComponent
     @Input() options: any;
     @Input() tableData: any[];
     @Input() viewData: any[];
-    @Input() tableContainerWidth: number;
     @Output() headActions: EventEmitter<any> = new EventEmitter();
     mySelection: any[] = [];
     locked: boolean = true;
@@ -63,6 +76,13 @@ export class TruckassistTableHeadComponent
         this.setColumnNameUpperCase();
         this.setVisibleColumns();
         this.getActiveTableData();
+
+        // Get Table Width
+        this.tableService.currentSetTableWidth
+            .pipe(takeUntil(this.destroy$))
+            .subscribe(() => {
+                this.getNotPinedMaxWidth();
+            });
 
         // Scroll
         this.tableService.currentScroll
@@ -112,13 +132,6 @@ export class TruckassistTableHeadComponent
             this.tableData = changes.tableData.currentValue;
 
             this.getActiveTableData();
-        }
-
-        if (
-            !changes?.tableContainerWidth?.firstChange &&
-            changes?.tableContainerWidth
-        ) {
-            this.getNotPinedMaxWidth();
         }
 
         if (!changes?.options?.firstChange && changes?.options) {
@@ -277,7 +290,7 @@ export class TruckassistTableHeadComponent
         let previousIndex: number = null,
             currentIndex: number = null;
 
-        this.columns.map((c, i) => { 
+        this.columns.map((c, i) => {
             if (this.notPinedColumns[event.previousIndex].field === c.field) {
                 previousIndex = i;
             }

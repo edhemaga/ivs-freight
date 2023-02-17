@@ -12,7 +12,7 @@
             [isDopplerOn]="isDopplerOn"
             [trafficLayerShow]="trafficLayerShow"
         ></app-map-toolbar>
-    </div>
+    </div> 
 
     <div class="customer-map-container">
         <div class="route-card-container">
@@ -298,7 +298,8 @@
                                 [ngClass]="{ 'focused-route': route.isFocused }"
                                 [ngStyle]="{
                                     cursor:
-                                        route.stops.length == 1 || stop.showEditInput
+                                        route.stops.length == 1 ||
+                                        stop.showEditInput
                                             ? 'pointer'
                                             : '',
                                     order:
@@ -306,7 +307,9 @@
                                         insertBeforeActive >= b
                                             ? b + 2
                                             : b + 1,
-                                    'padding-right': stop.showEditInput ? '0px' : '4px'
+                                    'padding-right': stop.showEditInput
+                                        ? '0px'
+                                        : '4px'
                                 }"
                                 (click)="stopClick($event, i, b)"
                                 (dblclick)="stopDoubleClick($event, i, b)"
@@ -333,7 +336,13 @@
                                     (click)="deleteRouteStop($event, route, b)"
                                     (mouseenter)="stop.deleteHover = true"
                                     (mouseleave)="stop.deleteHover = false"
-                                    [ngStyle]="{ 'margin-right': stop.showEditInput && !stop.deleteHover ? '9px' : '16px' }"
+                                    [ngStyle]="{
+                                        'margin-right':
+                                            stop.showEditInput &&
+                                            !stop.deleteHover
+                                                ? '9px'
+                                                : '16px'
+                                    }"
                                 ></svg-icon>
                                 <div class="delete-button drag-arrows">
                                     <svg
@@ -374,7 +383,9 @@
                                         color: route.isFocused
                                             ? '#fff'
                                             : route.color,
-                                        'margin-right': stop.showEditInput ? '9px' : '16px'
+                                        'margin-right': stop.showEditInput
+                                            ? '9px'
+                                            : '16px'
                                     }"
                                 >
                                     {{ b + 1 }}
@@ -411,7 +422,9 @@
                                             'min-width': stop.deleteHover
                                                 ? '90px'
                                                 : '',
-                                            width: stop.deleteHover ? '90px' : ''
+                                            width: stop.deleteHover
+                                                ? '90px'
+                                                : ''
                                         }"
                                     >
                                         {{
@@ -439,21 +452,27 @@
                                                 width: item.value.width,
                                                 'margin-right': '18px',
                                                 color:
-                                                    b == route.stops.length - 1 &&
+                                                    b ==
+                                                        route.stops.length -
+                                                            1 &&
                                                     item.value.boldValue
                                                         ? route.color
                                                         : '',
-                                                'font-weight': item.value.boldValue
+                                                'font-weight': item.value
+                                                    .boldValue
                                                     ? '800'
                                                     : ''
                                             }"
                                             *ngIf="
                                                 ((item.value.checkMainValue &&
                                                     route[
-                                                        item.value.checkMainValue
+                                                        item.value
+                                                            .checkMainValue
                                                     ]) ||
-                                                    !item.value.checkMainValue) &&
-                                                stop[item.value.value] != null &&
+                                                    !item.value
+                                                        .checkMainValue) &&
+                                                stop[item.value.value] !=
+                                                    null &&
                                                 ((item.value.expandedOnly &&
                                                     route.expanded &&
                                                     route.expandFinished) ||
@@ -463,21 +482,22 @@
                                             {{
                                                 b === 0
                                                     ? route.expanded &&
-                                                    route.expandFinished
-                                                        ? item.value.expandedText +
-                                                        (item.value
-                                                            .insertExpandedText &&
-                                                        item.value
-                                                            .insertExpandedText ==
-                                                            'distanceUnit'
-                                                            ? ' ' +
+                                                      route.expandFinished
+                                                        ? item.value
+                                                              .expandedText +
+                                                          (item.value
+                                                              .insertExpandedText &&
+                                                          item.value
+                                                              .insertExpandedText ==
+                                                              'distanceUnit'
+                                                              ? ' ' +
                                                                 tableData[
                                                                     selectedMapIndex
                                                                 ].distanceUnit
-                                                            : '')
+                                                              : '')
                                                         : item.value.text
                                                     : (stop[item.value.value]
-                                                    | taThousandSeparator)
+                                                      | taThousandSeparator)
                                             }}
                                         </div>
                                     </div>
@@ -535,7 +555,8 @@
                                                 label: stop.cityAddress,
                                                 placeholder: stop.cityAddress,
                                                 textTransform: 'capitalize',
-                                                dropdownWidthClass: dropdownWidth,
+                                                dropdownWidthClass:
+                                                    dropdownWidth,
                                                 minLength: 6,
                                                 maxLength: 256,
                                                 blackInput: true,
@@ -589,7 +610,11 @@
                                                     : (stop.empty = true)
                                             "
                                             (commandEvent)="
-                                                handleAddressEdit($event, route, b)
+                                                handleAddressEdit(
+                                                    $event,
+                                                    route,
+                                                    b
+                                                )
                                             "
                                         ></app-input-address-dropdown>
                                     </div>
@@ -1022,16 +1047,22 @@
                                 [ngClass]="{ 'focused-route': route.isFocused }"
                                 [ngStyle]="{
                                     cursor:
-                                        route.stops.length == 1
+                                        route.stops.length == 1 ||
+                                        stop.showEditInput
                                             ? 'pointer'
                                             : '',
                                     order:
                                         insertBeforeActive > -1 &&
                                         insertBeforeActive >= b
                                             ? b + 2
-                                            : b + 1
+                                            : b + 1,
+                                    'padding-right': stop.showEditInput
+                                        ? '0px'
+                                        : '4px'
                                 }"
-                                (click)="focusStop($event, i, b)"
+                                (click)="stopClick($event, i, b)"
+                                (dblclick)="stopDoubleClick($event, i, b)"
+                                [formGroup]="editStopForm"
                             >
                                 <div
                                     class="focused-route-number-background"
@@ -1054,6 +1085,13 @@
                                     (click)="deleteRouteStop($event, route, b)"
                                     (mouseenter)="stop.deleteHover = true"
                                     (mouseleave)="stop.deleteHover = false"
+                                    [ngStyle]="{
+                                        'margin-right':
+                                            stop.showEditInput &&
+                                            !stop.deleteHover
+                                                ? '9px'
+                                                : '16px'
+                                    }"
                                 ></svg-icon>
                                 <div class="delete-button drag-arrows">
                                     <svg
@@ -1093,7 +1131,10 @@
                                     [ngStyle]="{
                                         color: route.isFocused
                                             ? '#fff'
-                                            : route.color
+                                            : route.color,
+                                        'margin-right': stop.showEditInput
+                                            ? '9px'
+                                            : '16px'
                                     }"
                                 >
                                     {{ b + 1 }}
@@ -1115,123 +1156,218 @@
                                 >
                                     Delete
                                 </div>
-                                <div
-                                    class="route-row-location marker-like-text"
-                                    [ngClass]="{
-                                        'full-address':
-                                            tableData[selectedMapIndex]
-                                                .addressType == 'address'
-                                    }"
-                                    [ngStyle]="{
-                                        'font-weight': stop.isSelected
-                                            ? '700'
-                                            : '400',
-                                        'min-width': stop.deleteHover
-                                            ? '90px'
-                                            : '',
-                                        width: stop.deleteHover ? '90px' : ''
-                                    }"
-                                >
-                                    {{
-                                        tableData[selectedMapIndex]
-                                            .addressType == 'address' &&
-                                        stop.address.address
-                                            ? stop.address.address
-                                            : stop.cityAddress
-                                    }}
-                                </div>
-
-                                <div
-                                    *ngFor="
-                                        let item of routeProperties
-                                            | keyvalue : sortKeys
-                                    "
-                                >
+                                <ng-container *ngIf="!stop.showEditInput">
                                     <div
-                                        [class]="item.value.class"
+                                        class="route-row-location marker-like-text"
                                         [ngClass]="{
-                                            'marker-bold-text gray-text':
-                                                b === 0
+                                            'full-address':
+                                                tableData[selectedMapIndex]
+                                                    .addressType == 'address'
                                         }"
                                         [ngStyle]="{
-                                            width: item.value.width,
-                                            'margin-right': '18px',
-                                            color:
-                                                b == route.stops.length - 1 &&
-                                                item.value.boldValue
-                                                    ? route.color
-                                                    : '',
-                                            'font-weight': item.value.boldValue
-                                                ? '800'
+                                            'font-weight': stop.isSelected
+                                                ? '700'
+                                                : '400',
+                                            'min-width': stop.deleteHover
+                                                ? '90px'
+                                                : '',
+                                            width: stop.deleteHover
+                                                ? '90px'
                                                 : ''
                                         }"
-                                        *ngIf="
-                                            ((item.value.checkMainValue &&
-                                                route[
-                                                    item.value.checkMainValue
-                                                ]) ||
-                                                !item.value.checkMainValue) &&
-                                            stop[item.value.value] != null &&
-                                            ((item.value.expandedOnly &&
-                                                route.expanded &&
-                                                route.expandFinished) ||
-                                                !item.value.expandedOnly)
-                                        "
                                     >
                                         {{
-                                            b === 0
-                                                ? route.expanded &&
-                                                  route.expandFinished
-                                                    ? item.value.expandedText +
-                                                      (item.value
-                                                          .insertExpandedText &&
-                                                      item.value
-                                                          .insertExpandedText ==
-                                                          'distanceUnit'
-                                                          ? ' ' +
-                                                            tableData[
-                                                                selectedMapIndex
-                                                            ].distanceUnit
-                                                          : '')
-                                                    : item.value.text
-                                                : stop[item.value.value]
+                                            tableData[selectedMapIndex]
+                                                .addressType == 'address' &&
+                                            stop.address.address
+                                                ? stop.address.address
+                                                : stop.cityAddress
                                         }}
                                     </div>
-                                </div>
 
-                                <div
-                                    *ngIf="stop.showLoaded"
-                                    class="loaded-stop-background"
-                                    [ngStyle]="{
-                                        height:
-                                            b >= route.stops.length - 1 ||
-                                            !route.stops[b + 1] ||
-                                            route.stops[b + 1].empty
-                                                ? '18px'
-                                                : '24px',
-                                        background: route.isFocused
-                                            ? '#ffffff4d'
-                                            : route.color + '33',
-                                        'border-top-left-radius':
-                                            b == 0 || stop.empty
-                                                ? '2px'
-                                                : '0px',
-                                        'border-top-right-radius':
-                                            b == 0 || stop.empty
-                                                ? '2px'
-                                                : '0px',
-                                        'border-bottom-right-radius':
-                                            !route.stops[b + 1] ||
-                                            route.stops[b + 1].empty
-                                                ? '2px'
-                                                : '0px',
-                                        'border-bottom-left-radius':
-                                            !route.stops[b + 1] ||
-                                            route.stops[b + 1].empty
-                                                ? '2px'
-                                                : '0px'
-                                    }"
-                                ></div>
+                                    <div
+                                        *ngFor="
+                                            let item of routeProperties
+                                                | keyvalue : sortKeys
+                                        "
+                                    >
+                                        <div
+                                            [class]="item.value.class"
+                                            [ngClass]="{
+                                                'marker-bold-text gray-text':
+                                                    b === 0
+                                            }"
+                                            [ngStyle]="{
+                                                width: item.value.width,
+                                                'margin-right': '18px',
+                                                color:
+                                                    b ==
+                                                        route.stops.length -
+                                                            1 &&
+                                                    item.value.boldValue
+                                                        ? route.color
+                                                        : '',
+                                                'font-weight': item.value
+                                                    .boldValue
+                                                    ? '800'
+                                                    : ''
+                                            }"
+                                            *ngIf="
+                                                ((item.value.checkMainValue &&
+                                                    route[
+                                                        item.value
+                                                            .checkMainValue
+                                                    ]) ||
+                                                    !item.value
+                                                        .checkMainValue) &&
+                                                stop[item.value.value] !=
+                                                    null &&
+                                                ((item.value.expandedOnly &&
+                                                    route.expanded &&
+                                                    route.expandFinished) ||
+                                                    !item.value.expandedOnly)
+                                            "
+                                        >
+                                            {{
+                                                b === 0
+                                                    ? route.expanded &&
+                                                      route.expandFinished
+                                                        ? item.value
+                                                              .expandedText +
+                                                          (item.value
+                                                              .insertExpandedText &&
+                                                          item.value
+                                                              .insertExpandedText ==
+                                                              'distanceUnit'
+                                                              ? ' ' +
+                                                                tableData[
+                                                                    selectedMapIndex
+                                                                ].distanceUnit
+                                                              : '')
+                                                        : item.value.text
+                                                    : (stop[item.value.value]
+                                                      | taThousandSeparator)
+                                            }}
+                                        </div>
+                                    </div>
+
+                                    <div
+                                        *ngIf="stop.showLoaded"
+                                        class="loaded-stop-background"
+                                        [ngStyle]="{
+                                            height:
+                                                b >= route.stops.length - 1 ||
+                                                !route.stops[b + 1] ||
+                                                route.stops[b + 1].empty
+                                                    ? '18px'
+                                                    : '24px',
+                                            background: route.isFocused
+                                                ? '#ffffff4d'
+                                                : route.color + '33',
+                                            'border-top-left-radius':
+                                                b == 0 || stop.empty
+                                                    ? '2px'
+                                                    : '0px',
+                                            'border-top-right-radius':
+                                                b == 0 || stop.empty
+                                                    ? '2px'
+                                                    : '0px',
+                                            'border-bottom-right-radius':
+                                                !route.stops[b + 1] ||
+                                                route.stops[b + 1].empty
+                                                    ? '2px'
+                                                    : '0px',
+                                            'border-bottom-left-radius':
+                                                !route.stops[b + 1] ||
+                                                route.stops[b + 1].empty
+                                                    ? '2px'
+                                                    : '0px'
+                                        }"
+                                    ></div>
+                                </ng-container>
+                                <ng-container *ngIf="stop.showEditInput">
+                                    <div
+                                        class="route-row-location marker-like-text marker-bold-text gray-text add-new-stop"
+                                        [ngClass]="{
+                                            'full-address':
+                                                tableData[selectedMapIndex]
+                                                    .addressType == 'address'
+                                        }"
+                                    >
+                                        <!-- Edit Stop -->
+                                        <app-input-address-dropdown
+                                            #editAddressInput
+                                            formControlName="address"
+                                            [inputConfig]="{
+                                                name: 'RoutingAddress',
+                                                type: 'text',
+                                                label: stop.cityAddress,
+                                                placeholder: stop.cityAddress,
+                                                textTransform: 'capitalize',
+                                                dropdownWidthClass:
+                                                    dropdownWidth,
+                                                minLength: 6,
+                                                maxLength: 256,
+                                                blackInput: true,
+                                                placeholderInsteadOfLabel: true,
+                                                routingAddress: true,
+                                                isDropdown: true
+                                            }"
+                                            [placeholderType]="
+                                                this.tableData[
+                                                    this.selectedMapIndex
+                                                ].addressType == 'address'
+                                                    ? 'longAddress'
+                                                    : 'shortAddress'
+                                            "
+                                            [closedBorder]="
+                                                this.tableData[
+                                                    this.selectedMapIndex
+                                                ].borderType == 'closed'
+                                                    ? 'true'
+                                                    : 'false'
+                                            "
+                                            [commandHandler]="{
+                                                commands: {
+                                                    active: true,
+                                                    type: 'confirm-cancel',
+                                                    firstCommand: {
+                                                        popup: {
+                                                            name: 'Confirm',
+                                                            backgroundColor:
+                                                                '#6C6C6C'
+                                                        },
+                                                        name: 'confirm',
+                                                        svg: 'assets/svg/ic_spec-confirm.svg'
+                                                    },
+                                                    secondCommand: {
+                                                        popup: {
+                                                            name: 'Cancel',
+                                                            backgroundColor:
+                                                                '#6C6C6C'
+                                                        },
+                                                        name: 'cancel',
+                                                        svg: 'assets/svg/ic_x.svg'
+                                                    }
+                                                }
+                                            }"
+                                            [isRouting]="true"
+                                            [hideEmptyLoaded]="b == 0"
+                                            (changeFlag)="
+                                                $event === true
+                                                    ? (stop.empty = false)
+                                                    : (stop.empty = true)
+                                            "
+                                            (commandEvent)="
+                                                handleAddressEdit(
+                                                    $event,
+                                                    route,
+                                                    b
+                                                )
+                                            "
+                                        ></app-input-address-dropdown>
+                                    </div>
+                                </ng-container>
                             </div>
 
                             <div
@@ -1429,6 +1565,7 @@
                                 placement="bottom"
                                 [showCloseButton]="false"
                                 [pointer]="false"
+                                [panOnOpen]="false"
                             >
                                 <ng-template>
                                     <div
@@ -1448,19 +1585,6 @@
                                         "
                                         class="marker-container marker-icon"
                                         *ngIf="route.isFocused"
-                                        [ngStyle]="{
-                                            visibility:
-                                                focusedRouteIndex == i &&
-                                                (stopPickerLocation.editIndex ==
-                                                    j ||
-                                                    (stopPickerLocation.lat ==
-                                                        route.stops[j].lat &&
-                                                        stopPickerLocation.long ==
-                                                            route.stops[j]
-                                                                .long))
-                                                    ? 'hidden'
-                                                    : 'visible'
-                                        }"
                                         (click)="stopMarkerClick($event, i, j)"
                                         (mousewheel)="
                                             markerZoom($event, route.stops[j])
@@ -1583,12 +1707,6 @@
                                     </div>
                                     <div
                                         class="marker-container circle-marker"
-                                        [ngStyle]="{
-                                            visibility:
-                                                focusedRouteIndex == i
-                                                    ? 'hidden'
-                                                    : 'visible'
-                                        }"
                                         [ngClass]="
                                             route.isFocused || route.lineHover
                                                 ? 'route-zIndex-998'
@@ -1722,13 +1840,7 @@
                                                 ', ' +
                                                 route.color +
                                                 '33)' +
-                                                ', #FFFFFF',
-                                            visibility:
-                                                focusedRouteIndex == i &&
-                                                stopPickerLocation.editIndex ==
-                                                    j
-                                                    ? 'hidden'
-                                                    : 'visible'
+                                                ', #FFFFFF'
                                         }"
                                         *ngIf="
                                             route.stops[j].isSelected ||
@@ -1754,50 +1866,6 @@
                                 </ng-template>
                             </agm-snazzy-info-window>
                         </agm-marker>
-                    </div>
-                    <div
-                        *ngFor="
-                            let e of [].constructor(route.stops.length - 1);
-                            let j = index
-                        "
-                    >
-                        <!-- <agm-direction
-              [renderOptions]="{
-                preserveViewport: true,
-                polylineOptions: {
-                  strokeColor: route.color,
-                  strokeWeight: 6,
-                  zIndex: 1
-                },
-                suppressMarkers: true
-              }"
-              [optimizeWaypoints]="false"
-              [origin]="{ lat: route.stops[j].lat, lng: route.stops[j].long }"
-              [destination]="{
-                lat: route.stops[j + 1].lat,
-                lng: route.stops[j + 1].long
-              }"
-              [visible]="!route.hidden"
-            ></agm-direction>
-            <agm-direction
-              *ngIf="route.stops[j + 1].empty"
-              [renderOptions]="{
-                preserveViewport: true,
-                polylineOptions: {
-                  strokeColor: '#fff',
-                  strokeWeight: 3,
-                  zIndex: 2
-                },
-                suppressMarkers: true
-              }"
-              [optimizeWaypoints]="false"
-              [origin]="{ lat: route.stops[j].lat, lng: route.stops[j].long }"
-              [destination]="{
-                lat: route.stops[j + 1].lat,
-                lng: route.stops[j + 1].long
-              }"
-              [visible]="!route.hidden"
-            ></agm-direction> -->
                     </div>
                 </div>
             </div>
@@ -1888,12 +1956,9 @@
                                             cx="2"
                                             cy="2"
                                             r="2"
-                                            transform="translate(1115 985)"
+                                            transform="translate(1115 985.5)"
                                             [ngStyle]="{
-                                                fill: tableData[
-                                                    selectedMapIndex
-                                                ].routes[focusedRouteIndex]
-                                                    .color
+                                                fill: '#fff'
                                             }"
                                         />
                                     </g>
@@ -2011,13 +2076,9 @@
                                             : stopPickerLocation.cityAddress
                                     }}
                                 </div>
-                                <svg-icon
-                                    src="assets/svg/truckassist-table/dropdown/content/delete.svg"
+
+                                <span
                                     class="delete-button"
-                                    [svgStyle]="{
-                                        'width.px': 14,
-                                        'height.px': 14
-                                    }"
                                     (click)="deleteStopPickerLocation($event)"
                                     (mouseover)="
                                         stopPickerLocation.deleteHover = true
@@ -2025,7 +2086,41 @@
                                     (mouseleave)="
                                         stopPickerLocation.deleteHover = false
                                     "
-                                ></svg-icon>
+                                >
+                                    <svg
+                                        height="16"
+                                        viewBox="0 0 14.005 16"
+                                        width="14.005"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        [ngStyle]="{
+                                            width: '14px',
+                                            height: '14px'
+                                        }"
+                                    >
+                                        <g transform="translate(0 0)">
+                                            <path
+                                                d="M32.663,106.988,32,96H44l-.663,10.988a1.469,1.469,0,0,1-1.5,1.333H34.16a1.469,1.469,0,0,1-1.5-1.333Z"
+                                                transform="translate(-31 -92.321)"
+                                                [ngStyle]="{
+                                                    fill: tableData[
+                                                        selectedMapIndex
+                                                    ].routes[focusedRouteIndex]
+                                                        .color
+                                                }"
+                                            />
+                                            <path
+                                                d="M0,2.5v-1A.5.5,0,0,1,.5,1H4.251L4.545.416A.741.741,0,0,1,5.214,0H8.787a.75.75,0,0,1,.672.416L9.753,1H13.5a.5.5,0,0,1,.5.5v1a.5.5,0,0,1-.5.5H.5A.5.5,0,0,1,0,2.5Z"
+                                                transform="translate(0 0)"
+                                                [ngStyle]="{
+                                                    fill: tableData[
+                                                        selectedMapIndex
+                                                    ].routes[focusedRouteIndex]
+                                                        .color
+                                                }"
+                                            />
+                                        </g>
+                                    </svg>
+                                </span>
 
                                 <div
                                     class="stop-picker-address stop-picker-delete"

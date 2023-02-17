@@ -7,11 +7,12 @@ import {
     Output,
     EventEmitter,
     OnDestroy,
+    ChangeDetectorRef,
 } from '@angular/core';
 import { TableType } from 'appcoretruckassist';
 import { Subject, takeUntil } from 'rxjs';
 import { TruckassistTableService } from '../../../../services/truckassist-table/truckassist-table.service';
-import { UntypedFormControl } from '@angular/forms';
+import { UntypedFormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Titles } from 'src/app/core/utils/application.decorators';
 import {
     Confirmation,
@@ -19,12 +20,27 @@ import {
 } from '../../../modals/confirmation-modal/confirmation-modal.component';
 import { ModalService } from '../../ta-modal/modal.service';
 import { ConfirmationService } from '../../../modals/confirmation-modal/confirmation.service';
+import { CommonModule } from '@angular/common';
+import { ToolbarFiltersComponent } from './toolbar-filters/toolbar-filters.component';
+import { AngularSvgIconModule } from 'angular-svg-icon';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { TaInputDropdownComponent } from '../../ta-input-dropdown/ta-input-dropdown.component';
 
 @Titles()
 @Component({
     selector: 'app-truckassist-table-toolbar',
     templateUrl: './truckassist-table-toolbar.component.html',
     styleUrls: ['./truckassist-table-toolbar.component.scss'],
+    standalone: true,
+    imports: [
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+        ToolbarFiltersComponent,
+        AngularSvgIconModule,
+        NgbModule,
+        TaInputDropdownComponent
+    ],
 })
 export class TruckassistTableToolbarComponent
     implements OnInit, OnChanges, OnDestroy
@@ -36,7 +52,6 @@ export class TruckassistTableToolbarComponent
     @Input() options: any;
     @Input() selectedTab: string;
     @Input() columns: any[];
-    @Input() tableContainerWidth: number;
     @Input() selectedDispatcher: any;
     @Input() dispathcboardTableLocked: boolean;
     listName: string = '';
@@ -124,7 +139,8 @@ export class TruckassistTableToolbarComponent
     constructor(
         private tableService: TruckassistTableService,
         private modalService: ModalService,
-        private confirmationService: ConfirmationService
+        private confirmationService: ConfirmationService,
+        private changeDetectorRef: ChangeDetectorRef
     ) {}
 
     // --------------------------------NgOnInit---------------------------------
@@ -136,6 +152,13 @@ export class TruckassistTableToolbarComponent
         this.getToolbarWidth();
 
         this.getActiveTableData();
+
+        // Get Table Width
+        this.tableService.currentSetTableWidth
+            .pipe(takeUntil(this.destroy$))
+            .subscribe(() => {
+                this.getToolbarWidth();
+            });
 
         // Columns Reorder
         this.tableService.currentColumnsOrder
@@ -188,13 +211,6 @@ export class TruckassistTableToolbarComponent
             this.options = changes.options.currentValue;
 
             this.getSelectedViewMode();
-        }
-
-        if (
-            !changes?.tableContainerWidth?.firstChange &&
-            changes?.tableContainerWidth
-        ) {
-            this.getToolbarWidth();
         }
 
         if (!changes?.tableData?.firstChange && changes?.tableData) {
@@ -255,6 +271,8 @@ export class TruckassistTableToolbarComponent
         const tableContainer = document.querySelector('.table-container');
 
         this.maxToolbarWidth = tableContainer.clientWidth;
+
+        this.changeDetectorRef.detectChanges();
 
         this.setToolbarWidth();
     }

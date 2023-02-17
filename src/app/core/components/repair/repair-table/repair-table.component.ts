@@ -24,6 +24,7 @@ import { Subject, takeUntil } from 'rxjs';
 import { TaThousandSeparatorPipe } from '../../../pipes/taThousandSeparator.pipe';
 import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
 import { ReviewsRatingService } from '../../../services/reviews-rating/reviewsRating.service';
+import { MapsService } from '../../../services/shared/maps.service';
 import {
     tableSearch,
     closeAnimationAction,
@@ -55,7 +56,6 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
     repairTrucks: RepairTruckState[] = [];
     repairTrailers: RepairTrailerState[] = [];
     repairShops: ShopState[] = [];
-    tableContainerWidth: number = 0;
     resizeObserver: ResizeObserver;
 
     backFilterQuery = {
@@ -110,7 +110,8 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
         public datePipe: DatePipe,
         private thousandSeparator: TaThousandSeparatorPipe,
         private reviewRatingService: ReviewsRatingService,
-        private ref: ChangeDetectorRef
+        private ref: ChangeDetectorRef,
+        private mapsService: MapsService
     ) {}
 
     ngOnInit(): void {
@@ -305,7 +306,9 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
     observTableContainer() {
         this.resizeObserver = new ResizeObserver((entries) => {
             entries.forEach((entry) => {
-                this.tableContainerWidth = entry.contentRect.width;
+                this.tableService.sendCurrentSetTableWidth(
+                    entry.contentRect.width
+                );
             });
         });
 
@@ -949,6 +952,8 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
 
                         clearInterval(inetval);
                     }, 1000);
+                    
+                    this.mapsService.addRating(res);
                 });
         }
         // Favorite
@@ -989,9 +994,9 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
         this.destroy$.complete();
         this.tableService.sendActionAnimation({});
         this.tableService.sendCurrentSwitchOptionSelected(null);
-        this.resizeObserver.unobserve(
-            document.querySelector('.table-container')
-        );
+        // this.resizeObserver.unobserve(
+        //     document.querySelector('.table-container')
+        // );
         this.resizeObserver.disconnect();
     }
 

@@ -4,19 +4,25 @@ import {
     phoneFaxRegex,
 } from '../../shared/ta-input/ta-input.regex-validations';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { Subject, takeUntil } from 'rxjs';
 import { ApplicantTService } from '../../driver/state/applicant.service';
 import { FormService } from '../../../services/form/form.service';
 import { ApplicantAdminResponse } from '../../../../../../appcoretruckassist';
+import { CommonModule } from '@angular/common';
+import { TaModalComponent } from '../../shared/ta-modal/ta-modal.component';
+import { TaInputComponent } from '../../shared/ta-input/ta-input.component';
+import { TaInputNoteComponent } from '../../shared/ta-input-note/ta-input-note.component';
 
 @Component({
     selector: 'app-applicant-modal',
     templateUrl: './applicant-modal.component.html',
     styleUrls: ['./applicant-modal.component.scss'],
     providers: [ModalService, FormService],
+    standalone: true,
+    imports: [CommonModule, FormsModule, TaModalComponent, ReactiveFormsModule,TaInputComponent, TaInputNoteComponent]
 })
 export class ApplicantModalComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();

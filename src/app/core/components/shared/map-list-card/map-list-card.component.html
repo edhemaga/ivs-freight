@@ -25,7 +25,6 @@
                     [ngClass]="{ 'active': item?.pinned || item?.favourite }"
                     src="assets/svg/detail-cards/favorite.svg"
                     [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
-                    (click)="onFavorite($event)"
                     *ngIf="
                         sortCategory.name == 'Favorites' ||
                         sortCategory.name == 'Fuel Price' ||
@@ -121,7 +120,7 @@
             </div>
             <div *ngIf="sortCategory.name == 'Last Used Date'">
                 <div class="marker-like-text marker-medium-text">
-                    Last Used <span class="marker-bold-text">{{ item.updatedAt ? (item.updatedAt | formatDateP) : '10/09/21' }}</span>
+                    Last Used <span class="marker-bold-text">{{ item?.lastUsed != null ? item?.lastUsed : item?.lastVisited != null ? item.lastVisited : item?.updatedAt != null ? (item.updatedAt | formatDateP) : '&nbsp;' }}</span>
                 </div>
             </div>
             <div *ngIf="sortCategory.name == 'Pickups'">
@@ -192,7 +191,7 @@
                 <div class="marker-like-text">
                     Total Cost
                     <span class="marker-bold-text"
-                        >${{ item.totalCost != null ? item.totalCost : item.cost != null ? item.cost : '0' }}</span
+                        >${{ item.totalCost != null && item.totalCost > 0 ? (item.totalCost | taThousandSeparator) : item.cost != null && item.cost > 0 ? (item.cost | taThousandSeparator) : '0' }}</span
                     >
                 </div>
             </div>

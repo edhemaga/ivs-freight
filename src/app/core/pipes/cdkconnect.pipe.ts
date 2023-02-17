@@ -2,6 +2,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
     name: 'cdkconnect',
+    standalone: true
 })
 export class CdkConnectPipe implements PipeTransform {
     constructor() {}

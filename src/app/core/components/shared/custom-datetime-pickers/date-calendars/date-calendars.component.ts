@@ -4,6 +4,10 @@ import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { RANGE, STARTING_YEAR } from './calendar_strategy';
 import { Subject, Subscription, takeUntil } from 'rxjs';
 import moment from 'moment';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { CalendarDatesMainComponent } from '../calendar-dates-main/calendar-dates-main.component';
+import { CalendarLeftComponent } from '../calendar-left/calendar-left.component';
 
 const MONTHS = [
     'January',
@@ -24,6 +28,13 @@ const MONTHS = [
     selector: 'app-date-calendars',
     templateUrl: './date-calendars.component.html',
     styleUrls: ['./date-calendars.component.scss'],
+    standalone: true,
+    imports: [
+            CommonModule, 
+            FormsModule, 
+            CalendarDatesMainComponent, 
+            CalendarLeftComponent
+    ]
 })
 export class DateCalendarsComponent implements OnInit {
     @Input() listPreview: string;

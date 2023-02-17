@@ -9,14 +9,27 @@ import {
 } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
 import { TaUploadFileService } from './ta-upload-file.service';
-import { UploadFile } from './ta-upload-file/ta-upload-file.component';
+import { UploadFile, TaUploadFileComponent } from './ta-upload-file/ta-upload-file.component';
 import { TaUploadFilesCarouselComponent } from './ta-upload-files-carousel/ta-upload-files-carousel.component';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { AngularSvgIconModule } from 'angular-svg-icon';
+import { TaUploadDropzoneComponent } from './ta-upload-dropzone/ta-upload-dropzone.component';
 
 @Component({
     selector: 'app-ta-upload-files',
     templateUrl: './ta-upload-files.component.html',
     styleUrls: ['./ta-upload-files.component.scss'],
     encapsulation: ViewEncapsulation.None,
+    standalone: true,
+    imports: [
+                CommonModule, 
+                FormsModule,
+                TaUploadFilesCarouselComponent,
+                AngularSvgIconModule,
+                TaUploadDropzoneComponent,
+                TaUploadFileComponent
+    ]
 })
 export class TaUploadFilesComponent implements OnInit {
     private destroy$ = new Subject<void>();

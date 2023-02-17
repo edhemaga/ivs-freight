@@ -394,6 +394,10 @@
                     height: 0 !important;
                 }
             }
+
+            .pdfViewer {
+                box-shadow: 0px 0px 4px rgb(0 0 0 / 15%);
+            }
         }
 
         .image_main_holder {
@@ -452,12 +456,12 @@
 
             &.driver-card-pdf {
                 margin-top: 4px;
-                width: 420px;
-                height: 418px;
+                width: 408px;
+                height: 408px;
 
                 .ta-upload-file-image {
-                    max-width: 420px;
-                    max-height: 418px;
+                    max-width: 408px;
+                    max-height: 408px;
                 }
             }
 
@@ -629,17 +633,17 @@
         }
 
         &.driver-card-pdf {
-            width: 428px;
-            height: 428px;
+            width: 416px;
+            height: 416px;
             .ng2-pdf-viewer-container {
-                width: 420px !important;
-                height: 420px !important;
+                width: 408px !important;
+                height: 408px !important;
                 .canvasWrapper,
                 .pdfViewer,
                 .pdfViewer .page,
                 canvas {
-                    max-width: 420px !important;
-                    max-height: 420px !important;
+                    max-width: 408px !important;
+                    max-height: 408px !important;
                     min-width: 314px;
                 }
             }
@@ -1007,6 +1011,15 @@
                 transition: 0.1s all ease-in-out;
                 background-color: #3074d3e6;
             }
+
+            &.default {
+                background-color: #42424280;
+
+                &:hover {
+                    transition: 0.1s all ease-in-out;
+                    background-color: #424242e6;
+                }
+            }
         }
 
         &:hover {
@@ -1148,18 +1161,18 @@
     }
 
     &.driver-card-pdf {
-        width: 428px;
-        height: 428px;
-        grid-template-rows: 428px;
+        width: 416px;
+        height: 416px;
+        grid-template-rows: 416px;
 
         .ta-upload-file-footer {
             bottom: 37px;
             right: -4px;
 
-            width: 420px;
+            width: 408px;
 
             .ta-upload-file-name {
-                max-width: 420px;
+                max-width: 408px;
             }
         }
 
@@ -1281,7 +1294,6 @@
 }
 
 .tags_main_holder {
-    min-width: 172px;
     padding: 4px;
 
     background-color: #2f2f2f;

@@ -13,6 +13,8 @@ import {
     ViewEncapsulation,
 } from '@angular/core';
 import {
+    FormsModule,
+    ReactiveFormsModule,
     UntypedFormBuilder,
     UntypedFormGroup,
     Validators,
@@ -43,6 +45,16 @@ import { convertThousanSepInNumber } from '../../../utils/methods.calculations';
 import { FormService } from '../../../services/form/form.service';
 import { TruckAutocompleteModelResponse } from '../../../../../../appcoretruckassist/model/truckAutocompleteModelResponse';
 import { EditTagsService } from 'src/app/core/services/shared/editTags.service';
+import { CommonModule } from '@angular/common';
+import { TaModalComponent } from '../../shared/ta-modal/ta-modal.component';
+import { TaTabSwitchComponent } from '../../standalone-components/ta-tab-switch/ta-tab-switch.component';
+import { TaInputComponent } from '../../shared/ta-input/ta-input.component';
+import { TaInputDropdownComponent } from '../../shared/ta-input-dropdown/ta-input-dropdown.component';
+import { TaCheckboxCardComponent } from '../../shared/ta-checkbox-card/ta-checkbox-card.component';
+import { TaCustomCardComponent } from '../../shared/ta-custom-card/ta-custom-card.component';
+import { TaUploadFilesComponent } from '../../shared/ta-upload-files/ta-upload-files.component';
+import { TaInputNoteComponent } from '../../shared/ta-input-note/ta-input-note.component';
+import { TaCheckboxComponent } from '../../shared/ta-checkbox/ta-checkbox.component';
 
 @Component({
     selector: 'app-truck-modal',
@@ -51,6 +63,21 @@ import { EditTagsService } from 'src/app/core/services/shared/editTags.service';
     animations: [tab_modal_animation('animationTabsModal')],
     encapsulation: ViewEncapsulation.None,
     providers: [ModalService, TaInputService, FormService],
+    standalone: true,
+    imports: [
+            CommonModule, 
+            FormsModule, 
+            TaModalComponent, 
+            TaTabSwitchComponent, 
+            ReactiveFormsModule,
+            TaInputComponent,
+            TaInputDropdownComponent,
+            TaCheckboxCardComponent,
+            TaCustomCardComponent,
+            TaUploadFilesComponent,
+            TaInputNoteComponent,
+            TaCheckboxComponent
+    ]
 })
 export class TruckModalComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();

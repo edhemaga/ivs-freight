@@ -10,6 +10,8 @@ import {
     Validators,
     UntypedFormArray,
     AbstractControl,
+    FormsModule,
+    ReactiveFormsModule,
 } from '@angular/forms';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
 import {
@@ -32,12 +34,26 @@ import { Subject, switchMap, takeUntil } from 'rxjs';
 import Croppie from 'croppie';
 import { FormService } from '../../../services/form/form.service';
 import { phoneExtension } from '../../shared/ta-input/ta-input.regex-validations';
+import { CommonModule } from '@angular/common';
+import { AppTooltipComponent } from '../../standalone-components/app-tooltip/app-tooltip.component';
+import { TaModalComponent } from '../../shared/ta-modal/ta-modal.component';
+import { TaTabSwitchComponent } from '../../standalone-components/ta-tab-switch/ta-tab-switch.component';
+import { TaCustomCardComponent } from '../../shared/ta-custom-card/ta-custom-card.component';
+import { TaCheckboxCardComponent } from '../../shared/ta-checkbox-card/ta-checkbox-card.component';
+import { TaInputDropdownComponent } from '../../shared/ta-input-dropdown/ta-input-dropdown.component';
+import { TaLogoChangeComponent } from '../../shared/ta-logo-change/ta-logo-change.component';
+import { TaInputNoteComponent } from '../../shared/ta-input-note/ta-input-note.component';
+import { TaInputComponent } from '../../shared/ta-input/ta-input.component';
+import { InputAddressDropdownComponent } from '../../shared/input-address-dropdown/input-address-dropdown.component';
+import { TaInputDropdownLabelComponent } from '../../shared/ta-input-dropdown-label/ta-input-dropdown-label.component';
 
 @Component({
     selector: 'app-contact-modal',
     templateUrl: './contact-modal.component.html',
     styleUrls: ['./contact-modal.component.scss'],
     providers: [ModalService, FormService],
+    standalone: true,
+    imports: [CommonModule, FormsModule, AppTooltipComponent, TaModalComponent, TaTabSwitchComponent, ReactiveFormsModule, TaCustomCardComponent, TaCheckboxCardComponent, TaInputDropdownComponent, TaLogoChangeComponent, TaInputNoteComponent, TaInputComponent, InputAddressDropdownComponent, TaInputDropdownLabelComponent]
 })
 export class ContactModalComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();

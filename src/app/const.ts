@@ -424,7 +424,7 @@ export const GOOGLE_MAP_STYLES = [
         elementType: 'labels.icon',
         stylers: [
             {
-                visibility: 'off',
+                visibility: 'on',
             },
         ],
     },

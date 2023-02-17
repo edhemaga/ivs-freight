@@ -5,6 +5,7 @@
     height: auto;
 
     .charts-template-item-value {
+        font-weight: 700;
         line-height: 22px;
     }
 
@@ -45,7 +46,7 @@
 
     &.hover {
         border-radius: 2px;
-        padding: 6px;
+        padding: 6px 9px;
         box-shadow: 0 0 4px rgb(0 0 0 / 15%);
     }
 
@@ -71,6 +72,10 @@
     .chart_all_inner_hold {
         display: flex;
         align-items: center;
+
+        &.hold_hover_out {
+            padding: 0px 3px;
+        }
     }
 
     &.row {
@@ -109,7 +114,14 @@
     }
 
     .no_chart_data {
+        height: 130px;
         user-select: none;
+
+        svg-icon {
+            svg {
+                height: 130px;
+            }
+        }
     }
 
     .hover_data_holder {

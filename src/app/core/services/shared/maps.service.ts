@@ -29,9 +29,12 @@ export class MapsService implements OnDestroy {
     searchTextChange: Subject<any> = new Subject<any>();
 
     selectedMarkerChange: Subject<any> = new Subject<any>();
+    selectedMapListCardChange: Subject<any> = new Subject<any>();
     selectedMarkerId: any;
     searchLoadingChanged: Subject<any> = new Subject<any>();
     mapListScrollChange: Subject<any> = new Subject<any>();
+    mapFilterChange: Subject<any> = new Subject<any>();
+    mapRatingChange: Subject<any> = new Subject<any>();
 
     private hubConnection: signalR.HubConnection;
     public statusChange = new Subject<any>();
@@ -128,7 +131,20 @@ export class MapsService implements OnDestroy {
         this.selectedMarkerChange.next(id);
     }
 
+    selectedMapListCard(id) {
+        this.selectedMarkerId = id;
+        this.selectedMapListCardChange.next(id);
+    }
+
     mapListScroll(data) {
         this.mapListScrollChange.next(data);
+    }
+
+    toggleFilter(filter) {
+        this.mapFilterChange.next(filter);
+    }
+
+    addRating(item) {
+        this.mapRatingChange.next(item);
     }
 }

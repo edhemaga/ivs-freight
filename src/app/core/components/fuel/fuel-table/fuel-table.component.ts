@@ -68,7 +68,6 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
         '#6C6C6C',
     ];
 
-    tableContainerWidth: number = 0;
     resizeObserver: ResizeObserver;
     fuelData: FuelTransactionListResponse | FuelStopListResponse;
 
@@ -298,7 +297,7 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
     observTableContainer() {
         this.resizeObserver = new ResizeObserver((entries) => {
             entries.forEach((entry) => {
-                this.tableContainerWidth = entry.contentRect.width;
+                this.tableService.sendCurrentSetTableWidth(entry.contentRect.width);
             });
         });
 
@@ -693,9 +692,9 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.destroy$.next();
         this.destroy$.complete();
         this.tableService.sendActionAnimation({});
-        this.resizeObserver.unobserve(
-            document.querySelector('.table-container')
-        );
+        // this.resizeObserver.unobserve(
+        //     document.querySelector('.table-container')
+        // );
         this.resizeObserver.disconnect();
     }
 }

@@ -377,7 +377,7 @@ export class OwnerInfoComponent implements OnInit, OnDestroy {
                 } else {
                     this.isValidLoad = false;
 
-                    this.router.navigate(['/auth']);
+                    this.router.navigate(['/website']);
                 }
             });
     }

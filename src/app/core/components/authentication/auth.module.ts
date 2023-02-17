@@ -24,6 +24,9 @@ import { RegisterUserComponent } from './register-user/register-user.component';
 import { HelperSignupUserComponent } from './helper-signup-user/helper-signup-user.component';
 import { SharedModule } from '../shared/shared.module';
 import { SlickCarouselModule } from 'ngx-slick-carousel';
+import { RouterModule } from '@angular/router';
+import { TaInputComponent } from '../shared/ta-input/ta-input.component';
+import { TaCheckboxComponent } from '../shared/ta-checkbox/ta-checkbox.component';
 @NgModule({
     declarations: [
         LoginComponent,
@@ -49,6 +52,9 @@ import { SlickCarouselModule } from 'ngx-slick-carousel';
         AngularSvgIconModule,
         NgbTooltipModule,
         SlickCarouselModule,
+        RouterModule,
+        TaInputComponent,
+        TaCheckboxComponent
     ],
     exports: [SelectCompanyComponent],
     schemas: [CUSTOM_ELEMENTS_SCHEMA],

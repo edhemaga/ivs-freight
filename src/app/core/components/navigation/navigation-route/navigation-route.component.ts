@@ -16,11 +16,17 @@ import {
 } from '../navigation.animation';
 import { StaticInjectorService } from 'src/app/core/utils/application.decorators';
 import { NavigationService } from '../services/navigation.service';
+import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { AngularSvgIconModule } from 'angular-svg-icon';
+import { TooltipSlideComponent } from '../../standalone-components/tooltip-slide/tooltip-slide.component';
 
 @Component({
     selector: 'app-navigation-route',
     templateUrl: './navigation-route.component.html',
     styleUrls: ['./navigation-route.component.scss'],
+    standalone: true,
+    imports: [CommonModule, FormsModule, AngularSvgIconModule, TooltipSlideComponent, ReactiveFormsModule],
     animations: [
         navigation_route_animation('showHideDetails'),
         navigation_magic_line('magicLine'),
@@ -121,7 +127,11 @@ export class NavigationRouteComponent implements OnInit, OnChanges {
         let router = StaticInjectorService.Injector.get(Router);
         let n = router.url.split('/');
         if (n[2]) {
-            this.activeRouteName = n[2];
+            if (n[2] == 'todo') {
+                this.activeRouteName = 'To-Do';
+            } else {
+                this.activeRouteName = n[2];
+            }
         } else {
             this.activeRouteName = n[1];
         }

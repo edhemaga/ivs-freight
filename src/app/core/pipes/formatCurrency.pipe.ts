@@ -2,6 +2,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
     name: 'formatCurrency',
+    standalone: true
 })
 export class formatCurrency implements PipeTransform {
     transform(currency: any) {

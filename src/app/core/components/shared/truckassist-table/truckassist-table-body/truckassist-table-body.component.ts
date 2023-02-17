@@ -25,6 +25,13 @@ import { SharedService } from '../../../../services/shared/shared.service';
 import { DetailsDataService } from '../../../../services/details-data/details-data.service';
 import { Titles } from 'src/app/core/utils/application.decorators';
 import { FilesService } from 'src/app/core/services/shared/files.service';
+import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { CustomScrollbarComponent } from '../../custom-scrollbar/custom-scrollbar.component';
+import { AngularSvgIconModule } from 'angular-svg-icon';
+import { TaNoteComponent } from '../../ta-note/ta-note.component';
+import { TaUploadFilesComponent } from '../../ta-upload-files/ta-upload-files.component';
+import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 
 @Titles()
 @Component({
@@ -32,6 +39,17 @@ import { FilesService } from 'src/app/core/services/shared/files.service';
     templateUrl: './truckassist-table-body.component.html',
     styleUrls: ['./truckassist-table-body.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
+    imports: [
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+        CustomScrollbarComponent,
+        AngularSvgIconModule,
+        TaNoteComponent,
+        TaUploadFilesComponent,
+        NgbPopoverModule,
+    ],
     providers: [
         {
             provide: VIRTUAL_SCROLL_STRATEGY,
@@ -55,7 +73,6 @@ export class TruckassistTableBodyComponent
     @Input() options: any;
     @Input() tableData: any[];
     @Input() selectedTab: string;
-    @Input() tableContainerWidth: number;
 
     pinedColumns: any = [];
     pinedWidth: number = 0;
@@ -114,6 +131,13 @@ export class TruckassistTableBodyComponent
 
         // For Rendering One By One
         this.renderOneByOne();
+
+        // Get Table Width
+        this.tableService.currentSetTableWidth
+            .pipe(takeUntil(this.destroy$))
+            .subscribe(() => {
+                this.getNotPinedMaxWidth();
+            });
 
         // Select Or Deselect All
         this.tableService.currentSelectOrDeselect
@@ -197,14 +221,6 @@ export class TruckassistTableBodyComponent
 
         if (!changes?.tableData?.firstChange && changes?.tableData) {
             this.getSelectedTabTableData();
-        }
-
-        if (
-            !changes?.tableContainerWidth?.firstChange &&
-            changes?.tableContainerWidth &&
-            changes?.tableContainerWidth?.previousValue > 0
-        ) {
-            this.getNotPinedMaxWidth();
         }
 
         if (
@@ -678,5 +694,6 @@ export class TruckassistTableBodyComponent
         this.destroy$.next();
         this.destroy$.complete();
         this.tableService.sendRowsSelected([]);
+        this.tableService.sendCurrentSetTableWidth(null);
     }
 }

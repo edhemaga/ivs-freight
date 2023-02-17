@@ -1,5 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import {
+    FormsModule,
+    ReactiveFormsModule,
     UntypedFormBuilder,
     UntypedFormGroup,
     Validators,
@@ -20,11 +22,28 @@ import {
     convertDateFromBackend,
     convertNumberInThousandSep,
 } from '../../../../utils/methods.calculations';
+import { CommonModule } from '@angular/common';
+import { TaModalComponent } from '../../../shared/ta-modal/ta-modal.component';
+import { TaTabSwitchComponent } from '../../../standalone-components/ta-tab-switch/ta-tab-switch.component';
+import { TaInputComponent } from '../../../shared/ta-input/ta-input.component';
+import { TaInputDropdownComponent } from '../../../shared/ta-input-dropdown/ta-input-dropdown.component';
+import { TaCheckboxComponent } from '../../../shared/ta-checkbox/ta-checkbox.component';
 
 @Component({
     selector: 'app-payroll-deduction-modal',
     templateUrl: './payroll-deduction-modal.component.html',
     styleUrls: ['./payroll-deduction-modal.component.scss'],
+    standalone: true,
+    imports: [
+                CommonModule, 
+                FormsModule, 
+                TaModalComponent, 
+                TaTabSwitchComponent, 
+                ReactiveFormsModule, 
+                TaInputComponent, 
+                TaInputDropdownComponent, 
+                TaCheckboxComponent
+    ]
 })
 export class PayrollDeductionModalComponent implements OnInit {
     @Input() editData: any;

@@ -291,7 +291,7 @@ export class DriverTService {
                             this.driverItemStore.remove(
                                 ({ id }) => id === data.id
                             );
-                            
+
                             driver = {
                                 ...driver,
                                 fullName:
@@ -302,6 +302,9 @@ export class DriverTService {
                                     : null,
                                 mvrs: newData?.mvrs ? newData.mvrs : null,
                                 tests: newData?.tests ? newData.tests : null,
+                                fileCount: driver?.filesCountForList
+                                    ? driver.filesCountForList
+                                    : 0,
                             };
 
                             this.driverActiveStore.add(driver);

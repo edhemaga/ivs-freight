@@ -1,5 +1,6 @@
 import { Component, OnInit, AfterViewInit, Input, ChangeDetectorRef, ViewEncapsulation } from '@angular/core';
 import { Observable, Subject, takeUntil } from 'rxjs';
+import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { Titles } from 'src/app/core/utils/application.decorators';
 import { DispatcherQuery } from '../state/dispatcher.query';
 import { DispatcherStoreService } from '../state/dispatcher.service';
@@ -17,7 +18,6 @@ export class DispatchComponent implements OnInit, AfterViewInit {
     tableData: any[] = [];
     selectedTab = 'active';
     columns: any[] = [];
-    tableContainerWidth: number = 0;
     dispatchBoardSmallList: Observable<any>;
     dispatchTableList: Observable<number[]>;
     resizeObserver: ResizeObserver;
@@ -31,7 +31,8 @@ export class DispatchComponent implements OnInit, AfterViewInit {
     constructor(
         private dispatcherQuery: DispatcherQuery,
         public dispatcherStoreService: DispatcherStoreService,
-        private cd: ChangeDetectorRef
+        private cd: ChangeDetectorRef,
+        private tableService: TruckassistTableService,
     ) {}
 
     ngOnInit(): void {
@@ -128,7 +129,7 @@ export class DispatchComponent implements OnInit, AfterViewInit {
     observTableContainer() {
         this.resizeObserver = new ResizeObserver((entries) => {
             entries.forEach((entry) => {
-                this.tableContainerWidth = entry.contentRect.width;
+                this.tableService.sendCurrentSetTableWidth(entry.contentRect.width);
             });
         });
 

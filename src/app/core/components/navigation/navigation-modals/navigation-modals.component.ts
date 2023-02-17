@@ -38,12 +38,17 @@ import {
     moveElementsTopDownModal,
     smoothHeight,
 } from '../navigation.animation';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { AngularSvgIconModule } from 'angular-svg-icon';
 
 @Component({
     selector: 'app-navigation-modals',
     templateUrl: './navigation-modals.component.html',
     styleUrls: ['./navigation-modals.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
+    imports: [CommonModule, FormsModule, AngularSvgIconModule],
     animations: [
         smoothHeight('showHideDetails'),
         moveElementsTopDownModal('moveTopDown'),
@@ -52,6 +57,7 @@ import {
 export class NavigationModalsComponent {
     @Input() isNavigationHoveredAndPanelOpen: boolean = false;
     @Input() isNavigationHovered: boolean = false;
+    @Input() isModalPanelOpen: boolean;
     public generalNavigationData: NavigationModal[] = generalNavigationData;
     public toolsNavigationData: NavigationModal[] = toolsNavigationData;
     public repairNavigationData: NavigationModal[] = repairNavigationData;
@@ -63,16 +69,14 @@ export class NavigationModalsComponent {
     public showToolTip: boolean = false;
     public changeTextHoverOnCloseModal: boolean = false;
     public Title: string = 'Add Anything';
-    public OpenCloseModal: boolean = false;
     constructor(
         private modalService: ModalService,
         private navigationService: NavigationService
     ) {}
     public OpenMainModal(openClose: boolean) {
-        this.OpenCloseModal = openClose;
         this.navigationService.onDropdownActivation({
             name: 'Modal Panel',
-            type: this.OpenCloseModal,
+            type: openClose,
         });
     }
     public changeText(text: boolean) {

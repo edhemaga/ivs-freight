@@ -67,7 +67,7 @@ app-shop-repair-details-item {
         }
     }
     .working-hours-container {
-        padding: 0 4px;
+        //padding: 0 4px;
         .open-now-wrapper {
             .open-now-icon-text {
                 display: flex;
@@ -135,6 +135,7 @@ app-shop-repair-details-item {
             .note-textarea {
                 color: #6c6c6c !important;
                 font-weight: 500 !important;
+                padding-bottom: 12px !important;
                 &::-moz-selection {
                     color: $bw6-2;
                     background: rgb(108, 108, 108, 0.2);

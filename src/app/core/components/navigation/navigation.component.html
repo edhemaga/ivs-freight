@@ -7,7 +7,6 @@
         <div class="navigation-top">
             <app-navigation-header
                 (click)="onHoveredNavigation(true)"
-                [isModalPanelOpen]="isModalPanelOpen"
                 [isNavigationHovered]="isNavigationHovered"
             ></app-navigation-header>
 
@@ -16,6 +15,7 @@
                 [isNavigationHoveredAndPanelOpen]="
                     isModalPanelOpen && isNavigationHovered
                 "
+                [isModalPanelOpen]="isModalPanelOpen"
                 [isNavigationHovered]="isNavigationHovered"
             ></app-navigation-modals>
         </div>
@@ -149,7 +149,7 @@
                         !isUserCompanyDetailsOpen &&
                         !isUserPanelOpen &&
                         !openedDropdown &&
-                        selectedRoute != 'Settings' &&
+                        selectedRoute != 'Company' &&
                         selectedRoute != 'Notifications')
                 "
                 [@showHideDetails]="

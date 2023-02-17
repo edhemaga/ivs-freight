@@ -10,12 +10,17 @@ import { SelectCompanyResponse } from 'appcoretruckassist';
 import { AuthStoreService } from '../../authentication/state/auth.service';
 import { NavigationService } from '../services/navigation.service';
 import { SignInResponse } from '../../../../../../appcoretruckassist/model/signInResponse';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { AngularSvgIconModule } from 'angular-svg-icon';
 
 @Component({
     selector: 'app-navigation-user-company',
     templateUrl: './navigation-user-company.component.html',
     styleUrls: ['./navigation-user-company.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
+    imports: [CommonModule, FormsModule, AngularSvgIconModule],
 })
 export class NavigationUserCompanyComponent implements OnInit {
     @Input() isNavigationHoveredAndPanelOpen: boolean = false;

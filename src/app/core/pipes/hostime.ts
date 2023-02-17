@@ -2,6 +2,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
     name: 'hosTime',
+    standalone: true
 })
 export class HosTimePipe implements PipeTransform {
     constructor() {}

@@ -8,6 +8,7 @@ import {
 
 @Directive({
     selector: '[appHoverSvg]',
+    standalone: true
 })
 export class HoverSvgDirective {
     public _fill: string = null;

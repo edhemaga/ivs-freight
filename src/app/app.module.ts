@@ -1,6 +1,3 @@
-import { NavigationUserProfileComponent } from './core/components/navigation/navigation-user-profile/navigation-user-profile.component';
-import { NavigationModalsComponent } from './core/components/navigation/navigation-modals/navigation-modals.component';
-import { NavigationFooterComponent } from './core/components/navigation/navigation-footer/navigation-footer.component';
 import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import {
     BrowserModule,
@@ -10,22 +7,18 @@ import {
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe, CurrencyPipe } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SharedModule } from './core/components/shared/shared.module';
 import { ToastrModule } from 'ngx-toastr';
 import { NgIdleModule } from '@ng-idle/core';
-import { GoogleMapsAPIWrapper } from '@agm/core';
+import { AgmCoreModule, GoogleMapsAPIWrapper } from '@agm/core';
 // ---- NAVIGATION
 import { NavigationComponent } from './core/components/navigation/navigation.component';
-import { NavigationRouteComponent } from './core/components/navigation/navigation-route/navigation-route.component';
 import { ChangeLogoPipe } from './core/components/navigation/pipe/change-logo.pipe';
-import { NavigationSubrouteComponent } from './core/components/navigation/navigation-subroute/navigation-subroute.component';
-import { NavigationSubrouteCardComponent } from './core/components/navigation/navigation-subroute-card/navigation-subroute-card.component';
-import { NavigationUserCompanyComponent } from './core/components/navigation/navigation-user-company/navigation-user-company.component';
-import { NavigationHeaderComponent } from './core/components/navigation/navigation-header/navigation-header.component';
 import { ApiModule, Configuration } from 'appcoretruckassist';
-import { UserLoggedService } from './core/components/authentication/state/user-logged.service';
+import { UserLoggedService } from './core/components/website/state/service/user-logged.service';
+
 import { CustomToastMessagesComponent } from './core/components/shared/custom-toast-messages/custom-toast-messages.component';
 import { AppInterceptor } from './app.inteceptor';
 
@@ -34,26 +27,19 @@ import { EncryptionDecryptionService } from './core/services/encryption-decrypti
 import { RefreshTokenInterceptor } from './core/interceptors/refresh-token.interceptor';
 import { configFactory } from './app.config';
 import { StaticInjectorService } from './core/utils/application.decorators';
-import { NavigationSettingsComponent } from './core/components/navigation/navigation-settings/navigation-settings.component';
-import { UnderConstructionComponent } from './core/components/under-construction/under-construction.component';
 import { TooltipSlideComponent } from './core/components/standalone-components/tooltip-slide/tooltip-slide.component';
+import { BlockedContentPipe } from './core/pipes/blockedContent.pipe';
+import { ReactiveFormsModule } from '@angular/forms';
+import { CustomScrollbarComponent } from './core/components/shared/custom-scrollbar/custom-scrollbar.component';
+import { LottieModule } from 'ngx-lottie';
+import player from 'lottie-web';
+
+function playerFactory() {
+    return player;
+}
 
 @NgModule({
-    declarations: [
-        AppComponent,
-        NavigationComponent,
-        NavigationRouteComponent,
-        NavigationHeaderComponent,
-        NavigationFooterComponent,
-        ChangeLogoPipe,
-        NavigationSubrouteComponent,
-        NavigationSubrouteCardComponent,
-        NavigationModalsComponent,
-        NavigationUserProfileComponent,
-        NavigationUserCompanyComponent,
-        NavigationSettingsComponent,
-        UnderConstructionComponent,
-    ],
+    declarations: [AppComponent, ChangeLogoPipe],
     imports: [
         BrowserModule,
         CommonModule,
@@ -63,6 +49,11 @@ import { TooltipSlideComponent } from './core/components/standalone-components/t
         HttpClientModule,
         SharedModule,
         TooltipSlideComponent,
+        LottieModule.forRoot({ player: playerFactory }),
+        AgmCoreModule.forRoot({
+            apiKey: 'AIzaSyCw4WQw1T4N6TjFWdS731mM09x88SGW81I',
+            libraries: ['geometry', 'places'],
+        }),
         ToastrModule.forRoot({
             preventDuplicates: true,
             enableHtml: true,
@@ -71,6 +62,12 @@ import { TooltipSlideComponent } from './core/components/standalone-components/t
         }),
         NgIdleModule.forRoot(),
         ApiModule,
+        BlockedContentPipe,
+        NavigationComponent,
+        CustomScrollbarComponent,
+        ReactiveFormsModule.withConfig({
+            warnOnNgModelWithFormControl: 'never',
+        }),
     ],
     providers: [
         {
@@ -96,8 +93,9 @@ import { TooltipSlideComponent } from './core/components/standalone-components/t
         EncryptionDecryptionService,
         GoogleMapsAPIWrapper,
         StaticInjectorService,
+        DatePipe,
+        CurrencyPipe,
     ],
-    exports: [],
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
     bootstrap: [AppComponent],
 })

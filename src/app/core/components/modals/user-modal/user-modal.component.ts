@@ -12,6 +12,8 @@ import {
     salaryValidation,
 } from '../../shared/ta-input/ta-input.regex-validations';
 import {
+    FormsModule,
+    ReactiveFormsModule,
     UntypedFormBuilder,
     UntypedFormGroup,
     Validators,
@@ -57,6 +59,17 @@ import {
 import { HttpResponseBase } from '@angular/common/http';
 import { TaUserService } from '../../../services/user/user.service';
 import { CheckUserByEmailResponse } from '../../../../../../appcoretruckassist/model/checkUserByEmailResponse';
+import { CommonModule } from '@angular/common';
+import { AppTooltipComponent } from '../../standalone-components/app-tooltip/app-tooltip.component';
+import { TaModalComponent } from '../../shared/ta-modal/ta-modal.component';
+import { TaTabSwitchComponent } from '../../standalone-components/ta-tab-switch/ta-tab-switch.component';
+import { TaInputComponent } from '../../shared/ta-input/ta-input.component';
+import { InputAddressDropdownComponent } from '../../shared/input-address-dropdown/input-address-dropdown.component';
+import { TaCustomCardComponent } from '../../shared/ta-custom-card/ta-custom-card.component';
+import { TaCheckboxCardComponent } from '../../shared/ta-checkbox-card/ta-checkbox-card.component';
+import { TaNgxSliderComponent } from '../../shared/ta-ngx-slider/ta-ngx-slider.component';
+import { TaInputNoteComponent } from '../../shared/ta-input-note/ta-input-note.component';
+import { TaInputDropdownComponent } from '../../shared/ta-input-dropdown/ta-input-dropdown.component';
 
 @Component({
     selector: 'app-user-modal',
@@ -65,6 +78,22 @@ import { CheckUserByEmailResponse } from '../../../../../../appcoretruckassist/m
     animations: [tab_modal_animation('animationTabsModal')],
     encapsulation: ViewEncapsulation.None,
     providers: [ModalService, BankVerificationService],
+    standalone: true,
+    imports: [
+            CommonModule, 
+            FormsModule, 
+            AppTooltipComponent, 
+            TaModalComponent, 
+            TaTabSwitchComponent, 
+            ReactiveFormsModule,
+            TaInputComponent,
+            InputAddressDropdownComponent,
+            TaCustomCardComponent,
+            TaCheckboxCardComponent,
+            TaNgxSliderComponent,
+            TaInputNoteComponent,
+            TaInputDropdownComponent
+    ]
 })
 export class UserModalComponent implements OnInit, OnDestroy {
     @Input() editData: any;

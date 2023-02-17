@@ -1,5 +1,5 @@
 import { debounceTime, skip, Subject, takeUntil } from 'rxjs';
-import { ControlValueAccessor, NgControl } from '@angular/forms';
+import { ControlValueAccessor, NgControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import {
     AfterViewInit,
@@ -18,18 +18,44 @@ import { input_dropdown_animation } from './ta-input-dropdown.animation';
 import { TaInputService } from '../ta-input/ta-input.service';
 import { v4 as uuidv4 } from 'uuid';
 import { ITaInput } from '../ta-input/ta-input.config';
-import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
+import { NgbPopover, NgbPopoverModule, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { TaInputComponent } from '../ta-input/ta-input.component';
 import { TaInputResetService } from '../ta-input/ta-input-reset.service';
 import { ImageBase64Service } from '../../../utils/base64.image';
 import { Options } from '@popperjs/core';
+import { CommonModule } from '@angular/common';
+import { FormControlPipe } from '../ta-input/form-control.pipe';
+import { AppTooltipComponent } from '../../standalone-components/app-tooltip/app-tooltip.component';
+import { DropdownCountPipe } from './dropdown-count.pipe';
+import { HighlightSearchPipe } from 'src/app/core/pipes/highlight-search.pipe';
+import { AngularSvgIconModule } from 'angular-svg-icon';
+import { ProfileImagesComponent } from '../profile-images/profile-images.component';
+import { LoadModalProgressBarComponent } from '../../modals/load-modal/load-modal-progress-bar/load-modal-progress-bar.component';
+import { TaSvgPipe } from '../../../pipes/ta-svg.pipe';
 
 @Component({
     selector: 'app-ta-input-dropdown',
     templateUrl: './ta-input-dropdown.component.html',
     styleUrls: ['./ta-input-dropdown.component.scss'],
-    providers: [TaInputService],
+    providers: [TaInputService, FormControlPipe],
     animations: [input_dropdown_animation('showHideDropdownOptions')],
+    standalone: true,
+    imports: [
+            CommonModule,
+            FormsModule, 
+            NgbPopoverModule, 
+            TaInputComponent, 
+            ReactiveFormsModule, 
+            FormControlPipe, 
+            AppTooltipComponent,
+            DropdownCountPipe,
+            HighlightSearchPipe,
+            AngularSvgIconModule,
+            ProfileImagesComponent,
+            LoadModalProgressBarComponent,
+            TaSvgPipe,
+            NgbModule
+    ]
 })
 export class TaInputDropdownComponent
     implements

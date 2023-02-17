@@ -7,11 +7,13 @@ import {
     OnDestroy,
     ChangeDetectionStrategy,
     ChangeDetectorRef,
+    OnChanges,
+    SimpleChanges,
 } from '@angular/core';
 import { FooterData } from '../model/navigation.model';
 import { footerData } from '../model/navigation-data';
 import { debounceTime, Subject, takeUntil } from 'rxjs';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { NavigationService } from '../services/navigation.service';
 import {
     navigation_magic_line,
@@ -19,18 +21,33 @@ import {
 } from '../navigation.animation';
 import { ImageBase64Service } from '../../../utils/base64.image';
 import { TaUserService } from '../../../services/user/user.service';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { NavigationSettingsComponent } from '../navigation-settings/navigation-settings.component';
+import { UserDataPipe } from '../pipe/user-data.pipe';
+import { AngularSvgIconModule } from 'angular-svg-icon';
 
 @Component({
     selector: 'app-navigation-footer',
     templateUrl: './navigation-footer.component.html',
     styleUrls: ['./navigation-footer.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
+    imports: [
+        CommonModule,
+        FormsModule,
+        NavigationSettingsComponent,
+        UserDataPipe,
+        RouterModule,
+        AngularSvgIconModule,
+    ],
     animations: [
         navigation_route_animation('showHideDetails'),
         navigation_magic_line('showHideDetailsMagicLine'),
     ],
+    providers: [UserDataPipe],
 })
-export class NavigationFooterComponent implements OnInit, OnDestroy {
+export class NavigationFooterComponent implements OnInit, OnDestroy, OnChanges {
     private destroy$ = new Subject<void>();
     @Input() isNavigationHovered: boolean = false;
     @Input() isUserCompanyDetailsOpen: boolean = false;
@@ -56,6 +73,7 @@ export class NavigationFooterComponent implements OnInit, OnDestroy {
     public showMagicLine: boolean;
     public midleRouteActive: boolean = false;
     public showToolTip: boolean;
+    public magicBoxAnime: boolean = true;
     constructor(
         private router: Router,
         private navigationService: NavigationService,
@@ -156,6 +174,15 @@ export class NavigationFooterComponent implements OnInit, OnDestroy {
                     this.cdRef.detectChanges();
                 }
             });
+    }
+    ngOnChanges(changes: SimpleChanges): void {
+        if (changes.hasOwnProperty('isNavigationHovered')) {
+            const prev = changes.isNavigationHovered;
+
+            if (changes && prev.previousValue != undefined) {
+                this.magicBoxAnime = changes.isNavigationHovered.currentValue;
+            }
+        }
     }
     //If route is clicked get true
     public settingsRouteClicked($event) {

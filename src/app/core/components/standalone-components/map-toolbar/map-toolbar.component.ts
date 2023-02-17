@@ -10,21 +10,29 @@ import {
     ChangeDetectorRef,
     ViewChild,
 } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators, FormsModule } from '@angular/forms';
 import { distinctUntilChanged, Subject, takeUntil } from 'rxjs';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
 import { TruckTService } from '../../truck/state/truck.service';
 import { TruckListResponse } from 'appcoretruckassist';
 import { card_component_animation } from '../../shared/animations/card-component.animations';
-import { ModalService } from '../ta-modal/modal.service';
 import { MapSettingsModalComponent } from '../../modals/map-settings-modal/map-settings-modal.component';
 import { MapRouteModalComponent } from '../../modals/map-route-modal/map-route-modal.component';
+import { ModalService } from '../../shared/ta-modal/modal.service';
+import { FilterComponent } from '../filter/filter.component';
+import { AngularSvgIconModule } from 'angular-svg-icon';
+import { CommonModule } from '@angular/common';
+import { AppTooltipComponent } from '../app-tooltip/app-tooltip.component';
+import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
     selector: 'app-map-toolbar',
     templateUrl: './map-toolbar.component.html',
     styleUrls: ['./map-toolbar.component.scss'],
     animations: [card_component_animation('showHideCardBody')],
+    standalone: true,
+    imports: [FilterComponent, AngularSvgIconModule, CommonModule, FormsModule, AppTooltipComponent, NgbPopoverModule]
+
 })
 export class MapToolbarComponent implements OnInit, OnChanges, OnDestroy {
     private destroy$ = new Subject<void>();

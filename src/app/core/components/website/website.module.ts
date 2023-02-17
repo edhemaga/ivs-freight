@@ -1,10 +1,10 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 
 import { WebsiteRoutingModule } from './website-routing.module';
 
 import { SharedModule } from '../shared/shared.module';
-import { TaSpinnerModule } from '../shared/ta-spinner/ta-spinner.module';
 import { SlickCarouselModule } from 'ngx-slick-carousel';
 
 import { WebsiteMainComponent } from './components/website-main/website-main.component';
@@ -25,10 +25,16 @@ import { ResendConfirmationComponent } from './components/website-sidebar/sideba
 import { PasswordUpdatedComponent } from './components/website-sidebar/sidebar-content/login-content/password-updated/password-updated.component';
 import { RegisterUserComponent } from './components/website-sidebar/sidebar-content/register-user-content/register-user/register-user.component';
 import { RegisterUserHelperComponent } from './components/website-sidebar/sidebar-content/register-user-content/register-user-helper/register-user-helper.component';
+import { RegisterUserHaveAccountHelperComponent } from './components/website-sidebar/sidebar-content/register-user-content/register-user-have-account-helper/register-user-have-account-helper.component';
 import { VerifyUserHelperComponent } from './components/website-sidebar/sidebar-content/register-user-content/verify-user-helper/verify-user-helper.component';
 import { SelectCompanyComponent } from './components/website-sidebar/sidebar-content/login-content/select-company/select-company.component';
 
 import { WebsiteUnderConstructionComponent } from './components/website-under-construction/website-under-construction.component';
+
+import { TaInputComponent } from '../shared/ta-input/ta-input.component';
+import { InputAddressDropdownComponent } from '../shared/input-address-dropdown/input-address-dropdown.component';
+import { TaCheckboxComponent } from '../shared/ta-checkbox/ta-checkbox.component';
+import { TaSpinnerComponent } from '../shared/ta-spinner/ta-spinner.component';
 
 @NgModule({
     declarations: [
@@ -52,6 +58,7 @@ import { WebsiteUnderConstructionComponent } from './components/website-under-co
         PasswordUpdatedComponent,
         RegisterUserComponent,
         RegisterUserHelperComponent,
+        RegisterUserHaveAccountHelperComponent,
         VerifyUserHelperComponent,
         SelectCompanyComponent,
 
@@ -60,11 +67,20 @@ import { WebsiteUnderConstructionComponent } from './components/website-under-co
         WebsiteUnderConstructionComponent,
     ],
     imports: [
+        /* MODULES */
+
         CommonModule,
         WebsiteRoutingModule,
         SharedModule,
-        TaSpinnerModule,
         SlickCarouselModule,
+        RouterModule,
+
+        /* COMPONENTS */
+
+        TaInputComponent,
+        InputAddressDropdownComponent,
+        TaCheckboxComponent,
+        TaSpinnerComponent
     ],
 })
 export class WebsiteModule {}
@@ -74,9 +90,7 @@ export class WebsiteModule {}
 DEPENDENCIES
 
 AngularSvgIconModule
-app-ta-input
-app-ta-checkbox
-TaSpinnerModule
-SlickCarouselModule
+
+spinner
 
 */
