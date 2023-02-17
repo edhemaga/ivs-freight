@@ -11,7 +11,10 @@ import {
 } from '@angular/core';
 import { ModalService } from './modal.service';
 import { UploadFile } from '../ta-upload-files/ta-upload-file/ta-upload-file.component';
-import { DropZoneConfig, TaUploadDropzoneComponent } from '../ta-upload-files/ta-upload-dropzone/ta-upload-dropzone.component';
+import {
+    DropZoneConfig,
+    TaUploadDropzoneComponent,
+} from '../ta-upload-files/ta-upload-dropzone/ta-upload-dropzone.component';
 import { TaUploadFileService } from '../ta-upload-files/ta-upload-file.service';
 import { AuthGuard } from '../../../guards/authentication.guard';
 import {
@@ -28,6 +31,7 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 import { AppTooltipComponent } from '../../standalone-components/app-tooltip/app-tooltip.component';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { TaSpinnerComponent } from '../ta-spinner/ta-spinner.component';
+import { TaTabSwitchComponent } from '../../standalone-components/ta-tab-switch/ta-tab-switch.component';
 
 @Component({
     selector: 'app-ta-modal',
@@ -36,14 +40,15 @@ import { TaSpinnerComponent } from '../ta-spinner/ta-spinner.component';
     encapsulation: ViewEncapsulation.None,
     standalone: true,
     imports: [
-            CommonModule,
-            CustomScrollbarComponent, 
-            TaUploadDropzoneComponent, 
-            FormsModule, 
-            DragDropModule, 
-            AppTooltipComponent,
-            AngularSvgIconModule,
-            TaSpinnerComponent
+        CommonModule,
+        CustomScrollbarComponent,
+        TaUploadDropzoneComponent,
+        TaTabSwitchComponent,
+        FormsModule,
+        DragDropModule,
+        AppTooltipComponent,
+        AngularSvgIconModule,
+        TaSpinnerComponent,
     ],
     animations: [
         trigger('widthGrow', [
@@ -293,7 +298,7 @@ export class TaModalComponent implements OnInit, OnDestroy {
                 this.action.emit({ action: action, bool: false });
                 break;
             }
-            case 'favorite':{
+            case 'favorite': {
                 this.confirmationAction.emit(this.confirmationData);
                 break;
             }

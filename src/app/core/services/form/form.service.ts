@@ -1,4 +1,4 @@
-import { Subject, takeUntil } from 'rxjs';
+import { Subject, takeUntil, skip } from 'rxjs';
 import { Injectable, OnDestroy } from '@angular/core';
 import { UntypedFormGroup } from '@angular/forms';
 import { debounceTime, distinctUntilChanged, first } from 'rxjs/operators';
@@ -9,8 +9,8 @@ import { diff } from 'deep-object-diff';
 })
 export class FormService implements OnDestroy {
     private originalValue: any;
+    private initForm: boolean = false;
     private destroy$: Subject<void> = new Subject<void>();
-    constructor() {}
 
     public formValueChange$: Subject<boolean> = new Subject<boolean>();
     public formReset$: Subject<boolean> = new Subject<boolean>();
@@ -31,9 +31,9 @@ export class FormService implements OnDestroy {
                 takeUntil(this.destroy$)
             )
             .subscribe(() => {
-                if (!form.dirty) {
+                if (!this.initForm) {
                     this.originalValue = form.value;
-
+                    this.initForm = true;
                     this.formValueChange$.next(false);
                 }
             });
@@ -42,22 +42,19 @@ export class FormService implements OnDestroy {
         // // If it is the same, we emit a value to the Subject (if one was provided), or
         // // we mark the form as pristine again.
         form.valueChanges
-            .pipe(
-                debounceTime(debounceTimeProp),
-                distinctUntilChanged(),
-                takeUntil(this.destroy$)
-            )
+            .pipe(skip(1), distinctUntilChanged(), takeUntil(this.destroy$))
             .subscribe(() => {
-                let current_value = form.value;
+                if (this.initForm) {
+                    let current_value = form.value;
 
-                console.log('diff: ', diff(this.originalValue, current_value));
-                if (
-                    Object.keys(diff(this.originalValue, current_value))
-                        .length !== 0
-                ) {
-                    this.formValueChange$.next(true);
-                } else {
-                    this.formValueChange$.next(false);
+                    if (
+                        Object.keys(diff(this.originalValue, current_value))
+                            .length !== 0
+                    ) {
+                        this.formValueChange$.next(true);
+                    } else {
+                        this.formValueChange$.next(false);
+                    }
                 }
             });
     }

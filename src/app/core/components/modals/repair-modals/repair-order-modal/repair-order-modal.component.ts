@@ -961,6 +961,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                             }
                         );
 
+                        this.onModalHeaderTabChange({ id: 1 });
                         this.onTypeOfRepair(this.typeOfRepair[0]);
 
                         this.services = this.services.map((item) => {
@@ -975,9 +976,6 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                         this.subtotal = [];
                         this.selectedPM = [];
                         this.items.controls = [];
-                        setTimeout(() => {
-                            this.addItems({ check: true, action: null });
-                        }, 100);
 
                         this.documents = [];
                         this.fileModified = null;

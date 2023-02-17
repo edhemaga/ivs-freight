@@ -1,5 +1,10 @@
 import { debounceTime, skip, Subject, takeUntil } from 'rxjs';
-import { ControlValueAccessor, NgControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {
+    ControlValueAccessor,
+    NgControl,
+    FormsModule,
+    ReactiveFormsModule,
+} from '@angular/forms';
 
 import {
     AfterViewInit,
@@ -18,7 +23,11 @@ import { input_dropdown_animation } from './ta-input-dropdown.animation';
 import { TaInputService } from '../ta-input/ta-input.service';
 import { v4 as uuidv4 } from 'uuid';
 import { ITaInput } from '../ta-input/ta-input.config';
-import { NgbPopover, NgbPopoverModule, NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import {
+    NgbPopover,
+    NgbPopoverModule,
+    NgbModule,
+} from '@ng-bootstrap/ng-bootstrap';
 import { TaInputComponent } from '../ta-input/ta-input.component';
 import { TaInputResetService } from '../ta-input/ta-input-reset.service';
 import { ImageBase64Service } from '../../../utils/base64.image';
@@ -41,21 +50,21 @@ import { TaSvgPipe } from '../../../pipes/ta-svg.pipe';
     animations: [input_dropdown_animation('showHideDropdownOptions')],
     standalone: true,
     imports: [
-            CommonModule,
-            FormsModule, 
-            NgbPopoverModule, 
-            TaInputComponent, 
-            ReactiveFormsModule, 
-            FormControlPipe, 
-            AppTooltipComponent,
-            DropdownCountPipe,
-            HighlightSearchPipe,
-            AngularSvgIconModule,
-            ProfileImagesComponent,
-            LoadModalProgressBarComponent,
-            TaSvgPipe,
-            NgbModule
-    ]
+        CommonModule,
+        FormsModule,
+        NgbPopoverModule,
+        TaInputComponent,
+        ReactiveFormsModule,
+        FormControlPipe,
+        AppTooltipComponent,
+        DropdownCountPipe,
+        HighlightSearchPipe,
+        AngularSvgIconModule,
+        ProfileImagesComponent,
+        LoadModalProgressBarComponent,
+        TaSvgPipe,
+        NgbModule,
+    ],
 })
 export class TaInputDropdownComponent
     implements
@@ -102,9 +111,8 @@ export class TaInputDropdownComponent
     // currently active item
     public _activeItem: any;
     @Input() set activeItem(value: any) {
+        this._activeItem = value;
         if (value) {
-            console.log('activeItem - label: ', value);
-            this._activeItem = value;
             if (!this.inputConfig?.name?.toLowerCase()?.includes('address')) {
                 this.clearTimeoutDropdown = setTimeout(() => {
                     this.getSuperControl.patchValue(
