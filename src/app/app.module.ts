@@ -20,7 +20,8 @@ import { NavigationRouteComponent } from './core/components/navigation/navigatio
 import { ChangeLogoPipe } from './core/components/navigation/pipe/change-logo.pipe';
 import { NavigationHeaderComponent } from './core/components/navigation/navigation-header/navigation-header.component';
 import { ApiModule, Configuration } from 'appcoretruckassist';
-import { UserLoggedService } from './core/components/authentication/state/user-logged.service';
+import { UserLoggedService } from './core/components/website/state/service/user-logged.service';
+
 import { CustomToastMessagesComponent } from './core/components/shared/custom-toast-messages/custom-toast-messages.component';
 import { AppInterceptor } from './app.inteceptor';
 
@@ -33,11 +34,15 @@ import { TooltipSlideComponent } from './core/components/standalone-components/t
 import { BlockedContentPipe } from './core/pipes/blockedContent.pipe';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CustomScrollbarComponent } from './core/components/shared/custom-scrollbar/custom-scrollbar.component';
+import { LottieModule } from 'ngx-lottie';
+import player from 'lottie-web';
+
+function playerFactory() {
+    return player;
+  }
+
 @NgModule({
-    declarations: [
-        AppComponent,
-        ChangeLogoPipe
-    ],
+    declarations: [AppComponent, ChangeLogoPipe],
     imports: [
         BrowserModule,
         CommonModule,
@@ -47,6 +52,7 @@ import { CustomScrollbarComponent } from './core/components/shared/custom-scroll
         HttpClientModule,
         SharedModule,
         TooltipSlideComponent,
+        LottieModule.forRoot({ player: playerFactory }),
         AgmCoreModule.forRoot({
             apiKey: 'AIzaSyCw4WQw1T4N6TjFWdS731mM09x88SGW81I',
             libraries: ['geometry', 'places'],
@@ -90,7 +96,7 @@ import { CustomScrollbarComponent } from './core/components/shared/custom-scroll
         GoogleMapsAPIWrapper,
         StaticInjectorService,
         DatePipe,
-        CurrencyPipe
+        CurrencyPipe,
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
     bootstrap: [AppComponent],

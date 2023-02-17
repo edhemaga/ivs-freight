@@ -583,3 +583,12 @@
         bottom: 44px;
     }
 }
+
+.has-details-page {
+    cursor: pointer;
+
+    &:hover {
+        color: #5673aa !important;
+        transition: 0.25s;
+    }
+}

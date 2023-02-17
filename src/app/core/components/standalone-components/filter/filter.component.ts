@@ -39,6 +39,8 @@ import { TaInputComponent } from '../../shared/ta-input/ta-input.component';
 import { InputAddressDropdownComponent } from '../../shared/input-address-dropdown/input-address-dropdown.component';
 import { TaNgxSliderComponent } from '../../shared/ta-ngx-slider/ta-ngx-slider.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { FilterStateService } from './state/filter-state.service';
+import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 
 @Component({
     selector: 'app-filter',
@@ -1362,10 +1364,19 @@ export class FilterComponent implements OnInit, AfterViewInit {
         private formBuilder: UntypedFormBuilder,
         private thousandSeparator: TaThousandSeparatorPipe,
         private elementRef: ElementRef,
-        private cdRef: ChangeDetectorRef
+        private cdRef: ChangeDetectorRef,
+        private filterService: FilterStateService,
+        private tableService: TruckassistTableService,
     ) {}
 
     ngOnInit(): void {
+
+        if ( this.type === 'truckTypeFilter' ) {
+            this.getTruckType();
+        } else if ( this.type === 'trailerTypeFilter' ) {
+            this.getTrailerType();
+        }
+
         if (this.type == 'timeFilter') {
             var d = new Date();
             var pastYear = d.getFullYear() - 1;
@@ -1847,6 +1858,36 @@ export class FilterComponent implements OnInit, AfterViewInit {
                     this.searchInputValue = '';
                 }
             });
+
+        this.tableService.currentActionAnimation
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res: any) => {
+                if ( this.type == 'truckTypeFilter' ) {
+                        if ( res.animation == 'truck-type-update' ) {
+
+                            let newData = res.data.map(
+                                (type: any, index: number) => {
+                                    type['icon'] = 'assets/svg/common/trucks/' + type.logoName;
+                                    return type;
+                                }
+                            );
+
+                            this.truckTypeArray = newData;
+                        }
+                } else if ( this.type == 'trailerTypeFilter' ) {
+                    if ( res.animation == 'trailer-type-update' ) {
+                        let newData = res.data.map(
+                            (type: any, index: number) => {
+                                type['icon'] = 'assets/svg/common/trailers/' + type.logoName;
+                                return type;
+                            }
+                        );
+                        this.trailerTypeArray = newData;
+                    }
+                }
+                    
+            
+            });
     }
 
     ngAfterViewInit(): void {}
@@ -2207,6 +2248,7 @@ export class FilterComponent implements OnInit, AfterViewInit {
         let data = {
             action: 'Clear',
             type: this.type,
+            filterType: this.type
         };
 
         if (this.setFilter) {
@@ -2963,5 +3005,13 @@ export class FilterComponent implements OnInit, AfterViewInit {
        //console.log('event', event.name);
        this.sideAnimation = true;
        this.areaFilterSelected = event.name;
+    }
+
+    public getTruckType(){
+        this.filterService.getTruckType();
+    }
+
+    public getTrailerType(){
+        this.filterService.getTrailerType();
     }
 }

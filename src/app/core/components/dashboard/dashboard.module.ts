@@ -18,6 +18,7 @@ import { TaChartComponent } from '../standalone-components/ta-chart/ta-chart.com
 import { AgmCoreModule } from '@agm/core';
 import { TaTabSwitchComponent } from '../standalone-components/ta-tab-switch/ta-tab-switch.component';
 import { AppTooltipComponent } from '../standalone-components/app-tooltip/app-tooltip.component';
+import { TaSpinnerComponent } from '../shared/ta-spinner/ta-spinner.component';
 @NgModule({
     declarations: [
         DashboardComponent,
@@ -40,7 +41,8 @@ import { AppTooltipComponent } from '../standalone-components/app-tooltip/app-to
         TaChartComponent,
         AgmCoreModule,
         TaTabSwitchComponent,
-        AppTooltipComponent
+        AppTooltipComponent,
+        TaSpinnerComponent
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })

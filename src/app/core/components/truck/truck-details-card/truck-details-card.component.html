@@ -1,9 +1,12 @@
 <div *ngIf="truck" class="cards-item-wrapper-1">
     <app-ta-details-header-card
-        [ngClass]="{ 'disabedPreviousArrow': truckIndex == 0, 'disableNextArrow': truckIndex == (truck_list.length -1 ) }"
+        [ngClass]="{
+            disabedPreviousArrow: truckIndex == 0,
+            disableNextArrow: truckIndex == truck_list.length - 1
+        }"
         [cardDetailsDate]="truck.createdAt | formatDateP"
-        [tooltipNext]=" truckIndex == (truck_list.length -1 )  ?  '' : 'Next Truck' "
-        [tooltipPrevious]=" truckIndex == 0 ? '' : 'Previous Truck' "
+        [tooltipNext]="truckIndex == truck_list.length - 1 ? '' : 'Next Truck'"
+        [tooltipPrevious]="truckIndex == 0 ? '' : 'Previous Truck'"
         [searchInputName]="'Search Truck'"
         [options]="truckDropDowns"
         (selectValue)="onSelectedTruck($event)"
@@ -16,7 +19,7 @@
                         <svg-icon
                             class="truck truck-color-code"
                             [class.inactiveTruckLogo]="truck.status == 0"
-                            [class.whiteTruck]="truck?.color?.code == '#F9F9F9' "
+                            [class.whiteTruck]="truck?.color?.code == '#F9F9F9'"
                             src="{{
                                 'assets/svg/common/trucks/' +
                                     truck?.truckType?.logoName
@@ -24,7 +27,7 @@
                         >
                         </svg-icon>
                     </div>
-                    
+
                     <div class="model-name">
                         <div class="svg-wrapper">
                             <svg-icon
@@ -41,10 +44,13 @@
                 </div>
                 <div class="details-header-data">
                     <div class="details-header-data-item">
-                        <div *ngIf="truck.color" 
+                        <div
+                            *ngIf="truck.color"
                             class="light-green"
-                            [class.whiteColorCode]="truck?.color?.code == '#F9F9F9' "
-                            >
+                            [class.whiteColorCode]="
+                                truck?.color?.code == '#F9F9F9'
+                            "
+                        >
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 width="18"
@@ -111,25 +117,46 @@
                 }"
             >
                 <div class="assignTo">
-                    <div class="assignTo-item first" *ngIf="truck?.assignedTo?.trailer?.id">
+                    <div
+                        class="assignTo-item first"
+                        *ngIf="truck?.assignedTo?.trailer?.id"
+                    >
                         <svg-icon
                             class="assignTo-vehicle"
                             src="assets/svg/common/trailer.svg"
                         ></svg-icon>
-                        <p class="assignTo-value">{{truck.assignedTo.trailer.trailerNumber}}</p>
+                        <p class="assignTo-value">
+                            {{ truck.assignedTo.trailer.trailerNumber }}
+                        </p>
                     </div>
-                    <div class="assignTo-item" *ngIf="!truck?.assignedTo?.trailer?.id">
-                        <p class="assignTo-value inactive-assignTo-value">No Trailer</p>
+                    <div
+                        class="assignTo-item"
+                        *ngIf="!truck?.assignedTo?.trailer?.id"
+                    >
+                        <p class="assignTo-value inactive-assignTo-value">
+                            No Trailer
+                        </p>
                     </div>
-                    <div class="assignTo-item" *ngIf="truck?.assignedTo?.driver?.id"> 
+                    <div
+                        class="assignTo-item"
+                        *ngIf="truck?.assignedTo?.driver?.id"
+                    >
                         <svg-icon
                             class="assignTo-vehicle"
                             src="assets/svg/common/user-image.svg"
                         ></svg-icon>
-                        <p class="assignTo-value">{{truck.assignedTo.driver.firstName}} {{truck.assignedTo.driver.lastName}}</p>
+                        <p class="assignTo-value">
+                            {{ truck.assignedTo.driver.firstName }}
+                            {{ truck.assignedTo.driver.lastName }}
+                        </p>
                     </div>
-                    <div class="assignTo-item" *ngIf="!truck?.assignedTo?.driver?.id">
-                        <p class="assignTo-value inactive-assignTo-value">No Driver</p>
+                    <div
+                        class="assignTo-item"
+                        *ngIf="!truck?.assignedTo?.driver?.id"
+                    >
+                        <p class="assignTo-value inactive-assignTo-value">
+                            No Driver
+                        </p>
                     </div>
                 </div>
             </app-ta-custom-card>
@@ -372,7 +399,9 @@
             <!--------Owner--------->
             <app-ta-custom-card
                 class="item-cards"
-                [cardName]=" ownerCardOpened ? 'Owner' : 'Owner ' + truck.owner.name "
+                [cardName]="
+                    ownerCardOpened ? 'Owner' : 'Owner ' + truck.owner.name
+                "
                 [bodyTemplate]="'card'"
                 [isCardOpen]="true"
                 [animationMarginParams]="{
@@ -395,9 +424,7 @@
                         </div>
                     </div>
                 </div>
-                <div
-                    class="wrapper-owner"
-                >
+                <div class="wrapper-owner">
                     <div class="owner-items">
                         <svg-icon
                             class="icons-details"
@@ -420,7 +447,9 @@
                             src="assets/svg/common/ic_address.svg"
                         ></svg-icon>
                         <p class="information-value">
-                            <app-ta-copy [copyValue]="truck?.owner?.address?.address"></app-ta-copy>
+                            <app-ta-copy
+                                [copyValue]="truck?.owner?.address?.address"
+                            ></app-ta-copy>
                         </p>
                     </div>
                 </div>
@@ -437,7 +466,7 @@
                     class="charts-template perfomance"
                     [class.p-0]="stackedBarChart.hoveringStatus"
                 >
-                    <div *ngIf="!stackedBarChart.hoveringStatus">
+                    <div [class.d-none]="stackedBarChart.hoveringStatus">
                         <app-ta-tab-switch
                             [type]="'type2-modal-popup'"
                             (switchClicked)="changeTabPerfomance($event)"
@@ -447,6 +476,8 @@
                     </div>
                     <app-ta-chart
                         #stackedBarChart
+                        class="chart_hold"
+                        [class.extend]="stackedBarChartConfig.extendFull"
                         [chartConfig]="stackedBarChartConfig"
                         [axesProperties]="stackedBarAxes"
                         [legendAttributes]="stackedBarChartLegend"
@@ -466,7 +497,7 @@
                     class="charts-template perfomance"
                     [class.p-0]="payrollChart.hoveringStatus"
                 >
-                    <div *ngIf="!payrollChart.hoveringStatus">
+                    <div [class.d-none]="payrollChart.hoveringStatus">
                         <app-ta-tab-switch
                             [type]="'type2-modal-popup'"
                             (switchClicked)="changeTabFuel($event)"
@@ -497,7 +528,7 @@
                     class="charts-template perfomance"
                     [class.p-0]="revenueChart.hoveringStatus"
                 >
-                    <div *ngIf="!revenueChart.hoveringStatus">
+                    <div [class.d-none]="revenueChart.hoveringStatus">
                         <app-ta-tab-switch
                             [type]="'type2-modal-popup'"
                             (switchClicked)="changeTabRevenue($event)"
@@ -545,24 +576,32 @@
                         <div
                             class="status-items"
                             *ngFor="
-                                let owHist of truck.ownerHistories | keyvalue: sortKeys;
+                                let owHist of truck.ownerHistories
+                                    | keyvalue : sortKeys;
                                 trackBy: identity
                             "
                         >
                             <div class="item-wrapper">
-                                <p class="employment">{{ owHist.value.name }}</p>
+                                <p class="employment">
+                                    {{ owHist.value.name }}
+                                </p>
 
                                 <p class="date-from-to">
                                     {{ owHist.value.startDate | formatDateP }} -
                                     <span *ngIf="owHist.value.endDate">{{
                                         owHist.value.endDate | formatDateP
                                     }}</span>
-                                    <span *ngIf="!owHist.value.endDate">Today</span>
+                                    <span *ngIf="!owHist.value.endDate"
+                                        >Today</span
+                                    >
                                 </p>
                                 <p class="duration">
-                                    <span *ngIf="owHist?.value.duration?.Years"> {{ owHist.value.duration.Years }} y </span>
-                                    <span> {{ owHist.value.duration.Days }} d </span>
-                                    
+                                    <span *ngIf="owHist?.value.duration?.Years">
+                                        {{ owHist.value.duration.Years }} y
+                                    </span>
+                                    <span>
+                                        {{ owHist.value.duration.Days }} d
+                                    </span>
                                 </p>
                             </div>
                             <div class="truck-card-line"></div>
@@ -578,13 +617,16 @@
                 class="item-cards"
                 [bodyTemplate]="'card'"
             >
-                <div class="card_files_holder" [class.active]="truck?.files?.length > 1">
+                <div
+                    class="card_files_holder"
+                    [class.active]="truck?.files?.length > 1"
+                >
                     <app-ta-upload-files
                         [files]="truck?.files"
                         [customClassName]="'driver-card-pdf'"
                         [hasCarouselBottomTabs]="true"
                         [type]="'details'"
-                        [slideWidth]="440"
+                        [slideWidth]="428"
                         [reviewMode]="'REVIEW_MODE'"
                     ></app-ta-upload-files>
                 </div>
@@ -595,7 +637,7 @@
                 <app-ta-input-note
                     [formControl]="noteControl"
                     [note]="truck.note"
-                    [blankNote]=" truck?.note ? true : false"
+                    [blankNote]="truck?.note ? true : false"
                     [isVisibleDivider]="false"
                     [isVisibleNote]="true"
                     [isVisibleArrow]="true"

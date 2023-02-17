@@ -456,12 +456,12 @@
 
             &.driver-card-pdf {
                 margin-top: 4px;
-                width: 420px;
-                height: 418px;
+                width: 408px;
+                height: 408px;
 
                 .ta-upload-file-image {
-                    max-width: 420px;
-                    max-height: 418px;
+                    max-width: 408px;
+                    max-height: 408px;
                 }
             }
 
@@ -633,17 +633,17 @@
         }
 
         &.driver-card-pdf {
-            width: 428px;
-            height: 428px;
+            width: 416px;
+            height: 416px;
             .ng2-pdf-viewer-container {
-                width: 420px !important;
-                height: 420px !important;
+                width: 408px !important;
+                height: 408px !important;
                 .canvasWrapper,
                 .pdfViewer,
                 .pdfViewer .page,
                 canvas {
-                    max-width: 420px !important;
-                    max-height: 420px !important;
+                    max-width: 408px !important;
+                    max-height: 408px !important;
                     min-width: 314px;
                 }
             }
@@ -1161,18 +1161,18 @@
     }
 
     &.driver-card-pdf {
-        width: 428px;
-        height: 428px;
-        grid-template-rows: 428px;
+        width: 416px;
+        height: 416px;
+        grid-template-rows: 416px;
 
         .ta-upload-file-footer {
             bottom: 37px;
             right: -4px;
 
-            width: 420px;
+            width: 408px;
 
             .ta-upload-file-name {
-                max-width: 420px;
+                max-width: 408px;
             }
         }
 
