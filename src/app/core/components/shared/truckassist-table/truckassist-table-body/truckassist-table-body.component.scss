@@ -7,6 +7,7 @@ table {
         // display: flex;
 
         tr {
+            margin-top: 2px;
             min-height: 32px;
             width: fit-content;
             height: fit-content;
@@ -512,14 +513,14 @@ table {
                                 transition: 0.2s;
                             }
 
-                            .user-avatar-archived-icon{
+                            .user-avatar-archived-icon {
                                 width: 18px;
                                 height: 18px;
                                 display: flex;
                                 align-items: center;
                                 justify-content: center;
 
-                                svg-icon{
+                                svg-icon {
                                     display: flex;
                                     align-items: center;
                                     justify-content: center;
@@ -2744,7 +2745,6 @@ table {
         width: fit-content;
         height: 100%;
         display: flex;
-        justify-content: center;
         align-items: center;
     }
 
@@ -2753,6 +2753,7 @@ table {
         font-size: 12px;
         font-weight: 500;
         color: #919191;
+        min-width: 80px;
 
         &::selection {
             color: #919191;
@@ -2767,6 +2768,8 @@ table {
         font-size: 14px;
         font-weight: bold;
         color: #6c6c6c;
+        justify-content: center;
+        min-width: 97px;
 
         &:hover {
             color: #5673aa;
