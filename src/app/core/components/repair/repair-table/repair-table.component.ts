@@ -575,7 +575,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                   })
                 : null,
             tableCost: data?.total
-                ? '$ ' + this.thousandSeparator.transform(data.total)
+                ? '$' + this.thousandSeparator.transform(data.total)
                 : '',
             tableAdded: data.createdAt
                 ? this.datePipe.transform(data.createdAt, 'MM/dd/yy')
@@ -713,7 +713,6 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
         },
         isShowMore?: boolean
     ) {
-        console.log();
         this.repairService
             .getRepairShopList(
                 filter.active,
@@ -749,8 +748,6 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                     });
 
                     this.viewData = [...newData];
-
-                    console.log(this.viewData);
                 }
             });
     }
