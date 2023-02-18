@@ -325,6 +325,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                 showCategoryRepairFilter: true,
                 showMoneyFilter: true,
                 showLocationFilter: true,
+                showMoneyCount: this.selectedTab !== 'repair-shop',
                 viewModeOptions: this.getViewModeOptions(),
             },
             actions: [
@@ -400,6 +401,10 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                 title: 'Truck',
                 field: 'active',
                 length: repairTruckTrailerCount.repairTrucks,
+                moneyCount:
+                    this.selectedTab === 'active'
+                        ? repairTruckTrailerCount.truckMoneyTotal
+                        : 0,
                 data: repairTruckData,
                 gridNameTitle: 'Repair',
                 stateName: 'repair_trucks',
@@ -411,6 +416,10 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                 title: 'Trailer',
                 field: 'inactive',
                 length: repairTruckTrailerCount.repairTrailers,
+                moneyCount:
+                    this.selectedTab === 'inactive'
+                        ? repairTruckTrailerCount.trailerMoneyTotal
+                        : 0,
                 data: repairTrailerData,
                 gridNameTitle: 'Repair',
                 stateName: 'repair_trailers',
@@ -764,10 +773,14 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
         const updatedTableData = [...this.tableData];
 
         updatedTableData[0].length = repairTruckTrailerCount.repairTrucks;
+        updatedTableData[0].moneyCount =
+            repairTruckTrailerCount.truckMoneyTotal;
         updatedTableData[1].length = repairTruckTrailerCount.repairTrailers;
+        updatedTableData[1].moneyCount =
+            repairTruckTrailerCount.trailerMoneyTotal;
         updatedTableData[2].length = repairShopCount.repairShops;
 
-        this.tableData = [...updatedTableData]
+        this.tableData = [...updatedTableData];
     }
 
     // Table Toolbar Actions
@@ -953,7 +966,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
 
                         clearInterval(inetval);
                     }, 1000);
-                    
+
                     this.mapsService.addRating(res);
                 });
         }
