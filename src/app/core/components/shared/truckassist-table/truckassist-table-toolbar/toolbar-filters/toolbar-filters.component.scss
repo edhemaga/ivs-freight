@@ -13,12 +13,12 @@
         justify-content: center;
         align-items: center;
         padding: 0 16px;
-        background: #6d82c7;
-        color: #ffffff;
+        color: #3074D3;
         font-size: 14px;
         font-weight: 700;
         border-radius: 2px;
         margin: 0px 6px 0px 4px;
+        transition: color 0.25s;
 
         &::selection {
             color: #ffffff;
@@ -90,4 +90,12 @@
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+// NG CLASS
+.money-count-select-style{
+    background: #3074D3;
+    color: white !important;
+
+    transition: 0.25s;
 }

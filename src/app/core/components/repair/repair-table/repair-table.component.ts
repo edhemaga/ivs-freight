@@ -405,6 +405,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                     this.selectedTab === 'active'
                         ? repairTruckTrailerCount.truckMoneyTotal
                         : 0,
+                moneyCountSelected: true,
                 data: repairTruckData,
                 gridNameTitle: 'Repair',
                 stateName: 'repair_trucks',
@@ -420,6 +421,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                     this.selectedTab === 'inactive'
                         ? repairTruckTrailerCount.trailerMoneyTotal
                         : 0,
+                moneyCountSelected: false,
                 data: repairTrailerData,
                 gridNameTitle: 'Repair',
                 stateName: 'repair_trailers',

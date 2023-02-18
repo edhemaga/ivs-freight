@@ -2,9 +2,12 @@
     <!-- TOTAL MONEY COUNT -->
     <div
         class="money-count-container"
+        [ngClass]="{
+            'money-count-select-style': activeTableData.moneyCountSelected
+        }"
         *ngIf="options.toolbarActions.showMoneyCount"
     >
-        {{ activeTableData.moneyCount }}
+        $12.34K
     </div>
 
     <!-- VIEW MODE SELECT -->
