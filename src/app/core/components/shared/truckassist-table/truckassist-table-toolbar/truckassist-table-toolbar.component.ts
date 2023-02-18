@@ -392,7 +392,9 @@ export class TruckassistTableToolbarComponent
 
     // Select Tab
     onSelectTab(selectedTabData: any) {
-        this.tableService.sendSelectOrDeselect('deselect');
+        if (this.tableRowsSelected.length) {
+            this.tableService.sendSelectOrDeselect('deselect');
+        }
 
         this.toolBarAction.emit({
             action: 'tab-selected',
@@ -417,8 +419,12 @@ export class TruckassistTableToolbarComponent
 
     // Chnage View Mode
     changeModeView(modeView: any) {
-        this.tableService.sendSelectOrDeselect('deselect');
-        
+        // Treba da se sredi da kada se prebacujes samo na map da brise, al imamo konfilkt logike oko slekta i deslekta pa se u head brise kada se ukolni koponenta
+        // && modeView === 'Map'
+        if(this.tableRowsSelected.length){
+            this.tableService.sendSelectOrDeselect('deselect');
+        }
+
         this.selectedViewMode = modeView.mode;
 
         this.toolBarAction.emit({
