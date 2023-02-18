@@ -143,9 +143,16 @@
                         *ngIf="truck?.assignedTo?.driver?.id"
                     >
                         <svg-icon
+                            *ngIf="!truck.assignedTo.driver.avatar"
                             class="assignTo-vehicle"
                             src="assets/svg/common/user-image.svg"
                         ></svg-icon>
+                        <img
+                            *ngIf="truck.assignedTo.driver.avatar"
+                            class="driverAvatarImg"
+                            [src]="imageBase64Service.sanitizer(truck.assignedTo.driver.avatar)"
+                            alt="driver-image"
+                        />
                         <p class="assignTo-value">
                             {{ truck.assignedTo.driver.firstName }}
                             {{ truck.assignedTo.driver.lastName }}
