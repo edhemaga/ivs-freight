@@ -25,11 +25,14 @@ export class CarrierSearchComponent implements OnInit, OnChanges, OnDestroy {
     openSearch: boolean;
     searchText = '';
     searchIsActive: boolean = false;
+    typingTimeout: any;
 
     constructor(private tableService: TruckassistTableService) {}
 
+    // --------------------------------NgOnInit---------------------------------
     ngOnInit(): void {}
 
+    // --------------------------------NgOnChanges---------------------------------
     ngOnChanges(changes: SimpleChanges): void {
         // Search Type
         if (!changes?.searchType?.firstChange && changes?.searchType) {
@@ -45,6 +48,7 @@ export class CarrierSearchComponent implements OnInit, OnChanges, OnDestroy {
         }
     }
 
+    // Open Search
     toggleSearch() {
         this.openSearch = !this.openSearch;
 
@@ -55,7 +59,10 @@ export class CarrierSearchComponent implements OnInit, OnChanges, OnDestroy {
         }
     }
 
+    // On Typing Send Search
     onTyping(event: KeyboardEvent) {
+        clearTimeout(this.typingTimeout);
+
         const searchNumber = !this.chips.length
             ? 'searchOne'
             : this.chips.length === 1
@@ -63,27 +70,30 @@ export class CarrierSearchComponent implements OnInit, OnChanges, OnDestroy {
             : 'searchThree';
 
         if (event.key !== 'Enter') {
-            if (this.searchText.length >= 3) {
-                this.searchIsActive = true;
+            this.typingTimeout = setTimeout(() => {
+                if (this.searchText.length >= 3) {
+                    this.searchIsActive = true;
 
-                this.tableService.sendCurrentSearchTableData({
-                    chip: searchNumber,
-                    search: this.searchText,
-                    searchType: this.searchType,
-                });
-            } else if (this.searchIsActive && this.searchText.length < 3) {
-                this.searchIsActive = false;
+                    this.tableService.sendCurrentSearchTableData({
+                        chip: searchNumber,
+                        search: this.searchText,
+                        searchType: this.searchType,
+                    });
+                } else if (this.searchIsActive && this.searchText.length < 3) {
+                    this.searchIsActive = false;
 
-                this.tableService.sendCurrentSearchTableData({
-                    chip: searchNumber,
-                    doReset: true,
-                    all: searchNumber === 'searchOne',
-                    searchType: this.searchType,
-                });
-            }
+                    this.tableService.sendCurrentSearchTableData({
+                        chip: searchNumber,
+                        doReset: true,
+                        all: searchNumber === 'searchOne',
+                        searchType: this.searchType,
+                    });
+                }
+            }, 500);
         }
     }
 
+    // On Enter Action
     onEnter() {
         if (this.chips.length < 3) {
             this.chips.push({
@@ -105,6 +115,7 @@ export class CarrierSearchComponent implements OnInit, OnChanges, OnDestroy {
         }
     }
 
+    // On Delete Chip
     onDeleteChip(index: number) {
         this.chips.splice(index, 1);
 
@@ -137,18 +148,21 @@ export class CarrierSearchComponent implements OnInit, OnChanges, OnDestroy {
         });
     }
 
+    // Get Chip Color
     getChipColor(index: number) {
         const chipsColors = ['#4DB6A2', '#BA68C8', '#FFB74D'];
 
         return chipsColors[index];
     }
 
+    // Get Chip Query
     getChipQuery(index: number) {
         const chipsQuery = ['searchOne', 'searchTwo', 'searchThree'];
 
         return chipsQuery[index];
     }
 
+    // --------------------------------NgOnChanges---------------------------------
     ngOnDestroy(): void {
         this.tableService.sendCurrentSearchTableData(null);
     }

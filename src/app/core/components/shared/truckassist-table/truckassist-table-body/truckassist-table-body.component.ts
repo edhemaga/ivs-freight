@@ -447,7 +447,10 @@ export class TruckassistTableBodyComponent
 
             this.tableWidthTimeout = setTimeout(() => {
                 const table = document.querySelector('.table-tr');
+                
                 this.tableWidth = table?.clientWidth ? table.clientWidth : 0;
+
+                this.changeDetectorRef.detectChanges();
             }, 100);
         }
     }

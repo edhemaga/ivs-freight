@@ -190,6 +190,13 @@ export class TruckassistTableToolbarComponent
             .pipe(takeUntil(this.destroy$))
             .subscribe((response: any[]) => {
                 this.tableRowsSelected = response;
+
+                if (this.options.toolbarActions.showMoneyCount) {
+                    this.activeTableData.moneyCountSelected = this
+                        .tableRowsSelected.length
+                        ? true
+                        : false;
+                }
             });
 
         // Confirmation For Reset Table Configuration
@@ -386,6 +393,10 @@ export class TruckassistTableToolbarComponent
 
     // Select Tab
     onSelectTab(selectedTabData: any) {
+        if (this.tableRowsSelected.length) {
+            this.tableService.sendSelectOrDeselect('deselect');
+        }
+
         this.toolBarAction.emit({
             action: 'tab-selected',
             tabData: selectedTabData,
@@ -409,6 +420,12 @@ export class TruckassistTableToolbarComponent
 
     // Chnage View Mode
     changeModeView(modeView: any) {
+        // Treba da se sredi da kada se prebacujes samo na map da brise, al imamo konfilkt logike oko slekta i deslekta pa se u head brise kada se ukolni koponenta
+        // && modeView === 'Map'
+        if(this.tableRowsSelected.length){
+            this.tableService.sendSelectOrDeselect('deselect');
+        }
+
         this.selectedViewMode = modeView.mode;
 
         this.toolBarAction.emit({
