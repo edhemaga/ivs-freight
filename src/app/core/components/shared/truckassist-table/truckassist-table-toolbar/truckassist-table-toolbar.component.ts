@@ -189,6 +189,13 @@ export class TruckassistTableToolbarComponent
             .pipe(takeUntil(this.destroy$))
             .subscribe((response: any[]) => {
                 this.tableRowsSelected = response;
+
+                if (this.options.toolbarActions.showMoneyCount) {
+                    this.activeTableData.moneyCountSelected = this
+                        .tableRowsSelected.length
+                        ? true
+                        : false;
+                }
             });
 
         // Confirmation For Reset Table Configuration
@@ -385,6 +392,8 @@ export class TruckassistTableToolbarComponent
 
     // Select Tab
     onSelectTab(selectedTabData: any) {
+        this.tableService.sendSelectOrDeselect('deselect');
+
         this.toolBarAction.emit({
             action: 'tab-selected',
             tabData: selectedTabData,
@@ -408,6 +417,8 @@ export class TruckassistTableToolbarComponent
 
     // Chnage View Mode
     changeModeView(modeView: any) {
+        this.tableService.sendSelectOrDeselect('deselect');
+        
         this.selectedViewMode = modeView.mode;
 
         this.toolBarAction.emit({

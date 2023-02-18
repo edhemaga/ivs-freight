@@ -42,8 +42,6 @@ export class ToolbarFiltersComponent implements OnInit, OnChanges, OnDestroy {
             changes?.activeTableData
         ) {
             this.activeTableData = changes.activeTableData.currentValue;
-
-            console.log(this.activeTableData);
         }
     }
 

@@ -405,7 +405,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                     this.selectedTab === 'active'
                         ? repairTruckTrailerCount.truckMoneyTotal
                         : 0,
-                moneyCountSelected: true,
+                moneyCountSelected: false,
                 data: repairTruckData,
                 gridNameTitle: 'Repair',
                 stateName: 'repair_trucks',
