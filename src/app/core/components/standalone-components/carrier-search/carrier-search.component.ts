@@ -89,7 +89,7 @@ export class CarrierSearchComponent implements OnInit, OnChanges, OnDestroy {
                         searchType: this.searchType,
                     });
                 }
-            }, 200);
+            }, 500);
         }
     }
 
