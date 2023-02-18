@@ -15,71 +15,84 @@ import { FormsModule } from '@angular/forms';
 import { AppTooltipComponent } from '../../standalone-components/app-tooltip/app-tooltip.component';
 import { DetailsDropdownComponent } from '../details-page-dropdown/details-dropdown';
 import { AngularSvgIconModule } from 'angular-svg-icon';
+import { NgbModule, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 @Component({
     selector: 'app-ta-re-card',
     templateUrl: './ta-re-card.component.html',
     styleUrls: ['./ta-re-card.component.scss'],
     standalone: true,
-    imports: [CommonModule, FormsModule, AppTooltipComponent, DetailsDropdownComponent, AngularSvgIconModule],
-    animations: [card_component_animation('showHideCardBody'),
-    trigger('cardOpenAnimation', [
-        state(
-            'true',
-            style({
-                height: '*',
-                overflow: 'hidden',
-                opacity: 1,
-            })
-        ),
-        state(
-            'false',
-            style({
-                height: '0px',
-                overflow: 'hidden',
-                opacity: 0,
-            })
-        ),
-        transition('false <=> true', [animate('200ms ease-in-out')]),
-        transition('true <=> false', [animate('200ms ease-in-out')]),
-    ]),
-    trigger('footerOpenAnimation', [
-        state(
-            'true',
-            style({
-                height: '*',
-                overflow: 'hidden',
-                opacity: 1,
-                'margin-left': '12px',
-                'margin-right': '10px',
-                'padding-bottom': '11px',
-                'padding-top': '0px',
-            })
-        ),
-        state(
-            'false',
-            style({
-                height: '0px',
-                overflow: 'hidden',
-                opacity: 0,
-                'margin-left': '0px',
-                'margin-right': '0px',
-                'padding-bottom': '0px',
-                'padding-top': '0px',
-            })
-        ),
-        transition('false <=> true', [animate('200ms ease-in-out')]),
-        transition('true <=> false', [animate('200ms ease-in-out')]),
-    ]),
-    trigger('cardAppearanceAnimation', [
-        transition(':enter', [
-            style({ 'max-height': '0px', overflow: 'hidden' }),
-            animate(
-                '3100ms ease',
-                style({ 'max-height': '170px', overflow: 'hidden' })
+    imports: [
+        CommonModule,
+        FormsModule,
+        AppTooltipComponent,
+        DetailsDropdownComponent,
+        AngularSvgIconModule,
+        NgbModule,
+        NgbPopoverModule
+    ],
+    animations: [
+        card_component_animation('showHideCardBody'),
+        trigger('cardOpenAnimation', [
+            state(
+                'true',
+                style({
+                    height: '*',
+                    overflow: 'hidden',
+                    opacity: 1,
+                })
             ),
+            state(
+                'false',
+                style({
+                    height: '0px',
+                    overflow: 'hidden',
+                    opacity: 0,
+                })
+            ),
+            transition('false <=> true', [animate('200ms ease-in-out')]),
+            transition('true <=> false', [animate('200ms ease-in-out')]),
         ]),
-        transition(':leave', [animate('3100ms ease', style({ 'max-height': 0 }))]),
-    ]),],
+        trigger('footerOpenAnimation', [
+            state(
+                'true',
+                style({
+                    height: '*',
+                    overflow: 'hidden',
+                    opacity: 1,
+                    'margin-left': '12px',
+                    'margin-right': '10px',
+                    'padding-bottom': '11px',
+                    'padding-top': '0px',
+                })
+            ),
+            state(
+                'false',
+                style({
+                    height: '0px',
+                    overflow: 'hidden',
+                    opacity: 0,
+                    'margin-left': '0px',
+                    'margin-right': '0px',
+                    'padding-bottom': '0px',
+                    'padding-top': '0px',
+                })
+            ),
+            transition('false <=> true', [animate('200ms ease-in-out')]),
+            transition('true <=> false', [animate('200ms ease-in-out')]),
+        ]),
+        trigger('cardAppearanceAnimation', [
+            transition(':enter', [
+                style({ 'max-height': '0px', overflow: 'hidden' }),
+                animate(
+                    '3100ms ease',
+                    style({ 'max-height': '170px', overflow: 'hidden' })
+                ),
+            ]),
+            transition(':leave', [
+                animate('3100ms ease', style({ 'max-height': 0 })),
+            ]),
+        ]),
+    ],
 })
 export class TaReCardComponent implements OnInit {
     @Input() public cardNameCommon: string;
@@ -139,8 +152,9 @@ export class TaReCardComponent implements OnInit {
     public CloseCard() {
         let currentDate = moment().format('MM/DD/YYYY');
         if (
-            ( moment(this.expDateClose).isBefore(currentDate) ||
-            this.isDeactivated ) && !this.forcedOpen
+            (moment(this.expDateClose).isBefore(currentDate) ||
+                this.isDeactivated) &&
+            !this.forcedOpen
         ) {
             this.isCardOpen = false;
             this.animationStarted = false;
@@ -151,52 +165,50 @@ export class TaReCardComponent implements OnInit {
         console.log('--sendData function---', data);
         this.data = data;
         this.DetailsDataService.setCardMainTitle(this.cardNameCommon);
-        if ( this.mainData?.id ){
+        if (this.mainData?.id) {
             this.DetailsDataService.setCdlId(this.mainData.id);
         }
-        
+
         // api start after every click
         //this.dataDropDopwn.emit(data);
-        if ( this.preloadData ) {
+        if (this.preloadData) {
             this.preloadData.emit(data);
         }
     }
     public toggleCard(event: any) {
         event.preventDefault();
         event.stopPropagation();
-        
-        if ( this.forcedOpen ) {
+
+        if (this.forcedOpen) {
             return false;
         }
         let currentDate = moment().format('MM/DD/YYYY');
 
         this.DetailsDataService.setCardMainTitle(this.cardNameCommon);
-        if ( this.mainData?.id ){
+        if (this.mainData?.id) {
             this.DetailsDataService.setCdlId(this.mainData.id);
         }
-        
+
         if (
             moment(this.expDateClose).isBefore(currentDate) ||
             this.isDeactivated ||
             this.statusActive == 0 ||
             this.hasToggler ||
-            ( this.notExpired && this.openCloseStatus )
+            (this.notExpired && this.openCloseStatus)
         ) {
-            
-            if ( this.isCardOpen ) {
+            if (this.isCardOpen) {
                 this.animationStarted = false;
             } else {
                 this.animationStarted = true;
             }
-            
+
             let timeOut = 0;
-            if ( this.isCardOpen ) {
+            if (this.isCardOpen) {
                 timeOut = 200;
             }
-            setTimeout(()=>{
+            setTimeout(() => {
                 this.isCardOpen = !this.isCardOpen;
-            }, timeOut)
-            
+            }, timeOut);
         }
     }
 
@@ -270,8 +282,8 @@ export class TaReCardComponent implements OnInit {
             let daysDiff = endDate.diff(moment(), 'days');
 
             this.options.actions.map((action, index) => {
-                if ( index == 8 ) {
-                    if ( this.mainData?.status == 0 ) {
+                if (index == 8) {
+                    if (this.mainData?.status == 0) {
                         action.title = 'Activate';
                         action.name = 'activate-item';
                         action.iconName = 'activate-item';
@@ -282,17 +294,16 @@ export class TaReCardComponent implements OnInit {
                         action.name = 'deactivate-item';
                         action.iconName = 'deactivate-item';
                         action.redIcon = true;
-                        action.blueIcon = false; 
+                        action.blueIcon = false;
                     }
-                } else if ( index == 3 ) {
+                } else if (index == 3) {
                     if (daysDiff < -365) {
                         action.disabled = true;
                     } else {
                         action.disabled = false;
                     }
                 }
-            })
-            
+            });
         }
     }
 }

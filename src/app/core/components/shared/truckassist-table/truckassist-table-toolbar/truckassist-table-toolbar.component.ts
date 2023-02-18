@@ -27,7 +27,7 @@ import { ConfirmationService } from '../../../modals/confirmation-modal/confirma
 import { CommonModule } from '@angular/common';
 import { ToolbarFiltersComponent } from './toolbar-filters/toolbar-filters.component';
 import { AngularSvgIconModule } from 'angular-svg-icon';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModule, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 import { TaInputDropdownComponent } from '../../ta-input-dropdown/ta-input-dropdown.component';
 
 @Titles()
@@ -43,6 +43,7 @@ import { TaInputDropdownComponent } from '../../ta-input-dropdown/ta-input-dropd
         ToolbarFiltersComponent,
         AngularSvgIconModule,
         NgbModule,
+        NgbPopoverModule,
         TaInputDropdownComponent,
     ],
 })

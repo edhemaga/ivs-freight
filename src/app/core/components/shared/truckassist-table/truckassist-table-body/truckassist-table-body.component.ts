@@ -48,7 +48,7 @@ import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
         AngularSvgIconModule,
         TaNoteComponent,
         TaUploadFilesComponent,
-        NgbPopoverModule,
+        NgbPopoverModule
     ],
     providers: [
         {

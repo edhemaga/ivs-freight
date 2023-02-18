@@ -67,6 +67,7 @@ import { TaUploadFilesComponent } from '../../shared/ta-upload-files/ta-upload-f
 import { TaInputNoteComponent } from '../../shared/ta-input-note/ta-input-note.component';
 import { LoadDatetimeRangePipe } from './pipes/load-datetime-range.pipe';
 import { LoadTimeTypePipe } from './pipes/load-time-type.pipe';
+import { MapsComponent } from '../../shared/maps/maps.component';
 
 interface IStopRoutes {
     longitude: number;
@@ -98,7 +99,8 @@ interface IStopRoutes {
             TaInputNoteComponent,
             FinancialCalculationPipe,
             LoadDatetimeRangePipe,
-            LoadTimeTypePipe
+            LoadTimeTypePipe,
+            MapsComponent
         ],
     animations: [
         trigger('fadeIn', [

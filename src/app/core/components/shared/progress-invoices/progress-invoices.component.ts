@@ -5,7 +5,8 @@ import {
     Input,
     OnInit,
 } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { formatCurrency } from '../../../pipes/formatCurrency.pipe';
 
 @Component({
     selector: 'app-progress-invoices',
@@ -13,7 +14,7 @@ import { FormsModule } from '@angular/forms';
     styleUrls: ['./progress-invoices.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
     standalone: true,
-    imports: [CommonModule, FormsModule],
+    imports: [CommonModule, FormsModule, ReactiveFormsModule,formatCurrency],
 })
 export class ProgressInvoicesComponent implements OnInit {
     @Input() invoiceDays: string = '';

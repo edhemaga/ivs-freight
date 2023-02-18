@@ -41,6 +41,7 @@ import { TaNgxSliderComponent } from '../../shared/ta-ngx-slider/ta-ngx-slider.c
 import { ReactiveFormsModule } from '@angular/forms';
 import { FilterStateService } from './state/filter-state.service';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
+import { TaTabSwitchComponent } from '../ta-tab-switch/ta-tab-switch.component';
 
 @Component({
     selector: 'app-filter',
@@ -58,7 +59,9 @@ import { TruckassistTableService } from 'src/app/core/services/truckassist-table
             InputAddressDropdownComponent,
             TaNgxSliderComponent,
             NgbModule,
-            AutoclosePopoverComponent
+            AutoclosePopoverComponent,
+            TaTabSwitchComponent,
+            
     ],
     templateUrl: './filter.component.html',
     styleUrls: ['./filter.component.scss'],
