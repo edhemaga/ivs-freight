@@ -35,14 +35,6 @@ export class RepairTrailerResolver implements Resolve<RepairTrailerState> {
             this.tableService.getTableConfig(11),
         ]).pipe(
             tap(([repairTrailerPagination, tableConfig]) => {
-                localStorage.setItem(
-                    'repairTruckTrailerTableCount',
-                    JSON.stringify({
-                        repairTrucks: repairTrailerPagination.truckCount,
-                        repairTrailers: repairTrailerPagination.trailerCount,
-                    })
-                );
-
                 if (tableConfig) {
                     const config = JSON.parse(tableConfig.config);
 

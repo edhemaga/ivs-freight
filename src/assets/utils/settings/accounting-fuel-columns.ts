@@ -506,12 +506,6 @@ export function getFuelStopColumnDefinition() {
             hidden: false,
             width: 40,
             minWidth: 40,
-            headIconStyle: {
-                width: 18,
-                height: 18,
-                imgPath:
-                    '../../../assets/svg/truckassist-table/favorite-selected-row.svg',
-            },
             filter: '',
             isNumeric: false,
             index: 17,
