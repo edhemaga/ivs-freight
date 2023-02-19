@@ -95,6 +95,7 @@ export class TruckassistTableBodyComponent
     rowData: any;
     activeDescriptionDropdown: number = -1;
     descriptionTooltip: any;
+    descriptionPopoverOpen: boolean = false;
     pageHeight: number = window.innerHeight;
     activeAttachment: number = -1;
     activeMedia: number = -1;
@@ -586,7 +587,7 @@ export class TruckassistTableBodyComponent
     }
 
     // Show Description Dropdown
-    onShowDescriptionDropdown(popup: any, row: any) {
+    onShowDescriptionDropdown(popup: any, row: any, column: any) {
         this.descriptionTooltip = popup;
 
         if (popup.isOpen()) {

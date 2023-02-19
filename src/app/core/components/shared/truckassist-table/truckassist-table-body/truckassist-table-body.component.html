@@ -816,13 +816,15 @@
                                         }"
                                     >
                                         <div
-                                            *ngIf="row[column.field]"
+                                            #t1="ngbPopover"
+                                            *ngIf="
+                                                row[column.field]
+                                            "
                                             [ngStyle]="{
                                                 width: column.width - 5 + 'px'
                                             }"
                                             class="description-container"
-                                            [innerHtml]="row[column.field]"
-                                            #t1="ngbPopover"
+                                            [innerHtml]="!descriptionPopoverOpen ? row[column.field] : null"
                                             (click)="
                                                 onShowDescriptionDropdown(
                                                     t1,
@@ -834,6 +836,8 @@
                                             [placement]="'bottom-left'"
                                             popoverClass="table-description-popover"
                                             triggers="manual"
+                                            (hidden)="descriptionPopoverOpen = false"
+                                            (shown)="descriptionPopoverOpen = true"
                                         ></div>
                                     </div>
 
@@ -914,7 +918,7 @@
                                         <!-- [innerHtml]=" row[column.field] ? (row[column.field] | taHighlight:
   highlightingWords) : '' " -->
                                         <span
-                                            *ngIf="!row.isRepairOrder"
+                                            *ngIf="!row.isRepairOrder && !descriptionPopoverOpen"
                                             class="table-total"
                                             [innerHtml]="
                                                 row[column.field]
@@ -2392,13 +2396,15 @@
                                         }"
                                     >
                                         <div
-                                            *ngIf="row[column.field]"
+                                            #t1="ngbPopover"
+                                            *ngIf="
+                                                row[column.field]
+                                            "
                                             [ngStyle]="{
                                                 width: column.width - 5 + 'px'
                                             }"
                                             class="description-container"
-                                            [innerHtml]="row[column.field]"
-                                            #t1="ngbPopover"
+                                            [innerHtml]="!descriptionPopoverOpen ? row[column.field] : null"
                                             (click)="
                                                 onShowDescriptionDropdown(
                                                     t1,
@@ -2410,6 +2416,8 @@
                                             [placement]="'bottom-left'"
                                             popoverClass="table-description-popover"
                                             triggers="manual"
+                                            (hidden)="descriptionPopoverOpen = false"
+                                            (shown)="descriptionPopoverOpen = true"
                                         ></div>
                                     </div>
 
@@ -2639,7 +2647,7 @@
                                         <!-- [innerHtml]=" row[column.field] ? (row[column.field] | taHighlight:
 highlightingWords) : '' " -->
                                         <span
-                                            *ngIf="!row.isRepairOrder"
+                                            *ngIf="!row.isRepairOrder && !descriptionPopoverOpen"
                                             class="table-total"
                                             [innerHtml]="
                                                 row[column.field]
@@ -4233,7 +4241,9 @@ highlightingWords) : '' " -->
             <div class="item-title">Item</div>
             <div class="qty-title">Qty</div>
             <div class="price-title">Price</div>
-            <div class="price-total-title">$4,866.23</div>
+            <div class="price-total-title">
+                {{ data.tabelDescriptionDropTotal }}
+            </div>
         </div>
         <div class="description-items">
             <div

@@ -585,6 +585,9 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                       };
                   })
                 : null,
+            tabelDescriptionDropTotal: data?.total
+                ? '$' + this.thousandSeparator.transform(data.total)
+                : '',
             tableCost: data?.total
                 ? '$' + this.thousandSeparator.transform(data.total)
                 : '',
