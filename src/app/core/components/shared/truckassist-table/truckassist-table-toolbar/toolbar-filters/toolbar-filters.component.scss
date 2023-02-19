@@ -1,5 +1,6 @@
 // FILTER CONTAINER
 .table-filter-container {
+    height: 32px;
     display: flex;
     align-items: center;
     background: #ffffff;
@@ -98,4 +99,8 @@
     color: white !important;
 
     transition: 0.25s;
+}
+
+.table-filter-padding{
+    padding-left: 4px;
 }

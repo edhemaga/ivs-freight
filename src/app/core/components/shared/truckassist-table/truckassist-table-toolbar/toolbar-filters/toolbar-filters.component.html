@@ -1,4 +1,4 @@
-<div class="table-filter-container">
+<div class="table-filter-container" [ngClass]="{'table-filter-padding': options.toolbarActions.showSearchBorder}">
     <!-- TOTAL MONEY COUNT -->
     <div
         class="money-count-container"
@@ -37,9 +37,18 @@
 
     <!-- SEARCH -->
     <app-carrier-search
+        *ngIf="!options.toolbarActions.hideSearch"
         [searchType]="'tabel'"
         [selectedTabData]="activeTableData"
     ></app-carrier-search>
+
+    <!-- SEARCH BORDER ONLY -->
+    <div
+        class="border-container"
+        *ngIf="options.toolbarActions.showSearchBorder"
+    >
+        <div class="border"></div>
+    </div>
 
     <!-- BORDER -->
     <div
