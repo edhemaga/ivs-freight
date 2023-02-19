@@ -297,7 +297,9 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
     observTableContainer() {
         this.resizeObserver = new ResizeObserver((entries) => {
             entries.forEach((entry) => {
-                this.tableService.sendCurrentSetTableWidth(entry.contentRect.width);
+                this.tableService.sendCurrentSetTableWidth(
+                    entry.contentRect.width
+                );
             });
         });
 
@@ -324,7 +326,7 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     contentType: 'edit',
                     show: true,
                     svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
-                    iconName: 'edit'
+                    iconName: 'edit',
                 },
                 {
                     title: 'Delete',
@@ -337,7 +339,7 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     danger: true,
                     svg: 'assets/svg/truckassist-table/dropdown/content/delete.svg',
                     iconName: 'delete',
-                    redIcon: true, 
+                    redIcon: true,
                 },
             ],
         };
@@ -394,11 +396,12 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     // Check If Selected Tab Has Active View Mode
-    checkActiveViewMode(){
-        if(this.activeViewMode === 'Map'){
+    checkActiveViewMode() {
+        if (this.activeViewMode === 'Map') {
             let hasMapView = false;
 
-            let viewModeOptions = this.tableOptions.toolbarActions.viewModeOptions;
+            let viewModeOptions =
+                this.tableOptions.toolbarActions.viewModeOptions;
 
             viewModeOptions.map((viewMode: any) => {
                 if (viewMode.name === 'Map') {
@@ -406,13 +409,15 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 }
             });
 
-            if(!hasMapView){
+            if (!hasMapView) {
                 this.activeViewMode = 'List';
 
                 viewModeOptions = this.getViewModeOptions();
             }
 
-            this.tableOptions.toolbarActions.viewModeOptions = [...viewModeOptions];
+            this.tableOptions.toolbarActions.viewModeOptions = [
+                ...viewModeOptions,
+            ];
         }
     }
 
@@ -515,6 +520,9 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 : null,
             tableQTY: 'Treba da se pogleda gde je property',
             tbalePPG: 'Treba da se pogleda gde je property',
+            tabelDescriptionDropTotal: data?.total
+                ? '$' + this.thousandSeparator.transform(data.total)
+                : '',
             tableTotal: data?.total
                 ? '$ ' + this.thousandSeparator.transform(data.total)
                 : '',
@@ -607,29 +615,40 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.mapsComponent.clickedMarker(data[0]);
 
         this.mapListData.map((item) => {
-            if ( item.id == data[0] ) {
+            if (item.id == data[0]) {
                 let itemIndex = this.mapsComponent.viewData.findIndex(
                     (item2) => item2.id === item.id
                 );
 
-                if ( itemIndex > -1 && this.mapsComponent.viewData[itemIndex].showMarker ) {
-                    item.isSelected = this.mapsComponent.viewData[itemIndex].isSelected;
+                if (
+                    itemIndex > -1 &&
+                    this.mapsComponent.viewData[itemIndex].showMarker
+                ) {
+                    item.isSelected =
+                        this.mapsComponent.viewData[itemIndex].isSelected;
                 } else {
                     this.mapsComponent.clusterMarkers.map((cluster) => {
                         var clusterData = cluster.pagination.data;
-            
+
                         let clusterItemIndex = clusterData.findIndex(
                             (item2) => item2.id === data[0]
                         );
-            
-                        if ( clusterItemIndex > -1 ) {
-                            if ( !data[1] ) {
-                                if ( !cluster.isSelected || (cluster.isSelected && cluster.detailedInfo?.id == data[0]) ) {
+
+                        if (clusterItemIndex > -1) {
+                            if (!data[1]) {
+                                if (
+                                    !cluster.isSelected ||
+                                    (cluster.isSelected &&
+                                        cluster.detailedInfo?.id == data[0])
+                                ) {
                                     this.mapsComponent.clickedCluster(cluster);
                                 }
-            
-                                if ( cluster.isSelected ) {
-                                    this.mapsComponent.showClusterItemInfo([cluster, clusterData[clusterItemIndex]]);
+
+                                if (cluster.isSelected) {
+                                    this.mapsComponent.showClusterItemInfo([
+                                        cluster,
+                                        clusterData[clusterItemIndex],
+                                    ]);
                                 }
                             }
 
@@ -646,7 +665,7 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
         var listChanged = false;
         var addData = mapListResponse.addData ? true : false;
 
-        if ( !addData ) {
+        if (!addData) {
             for (var i = 0; i < this.mapListData.length; i++) {
                 let item = this.mapListData[i];
 
@@ -670,7 +689,7 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
             );
 
             if (itemIndex == -1) {
-                if ( addData ) {
+                if (addData) {
                     this.mapListData.push(item);
                 } else {
                     this.mapListData.splice(b, 0, item);

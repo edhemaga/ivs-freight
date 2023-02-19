@@ -1,15 +1,4 @@
-<div class="table-filter-container">
-    <!-- TOTAL MONEY COUNT -->
-    <div
-        class="money-count-container"
-        [ngClass]="{
-            'money-count-select-style': activeTableData.moneyCountSelected
-        }"
-        *ngIf="options.toolbarActions.showMoneyCount"
-    >
-        $12.34K
-    </div>
-
+<div class="table-filter-container" [ngClass]="{'table-filter-padding': options.toolbarActions.showSearchBorder}">
     <!-- VIEW MODE SELECT -->
     <div
         class="view-mode-container"
@@ -37,9 +26,18 @@
 
     <!-- SEARCH -->
     <app-carrier-search
+        *ngIf="!options.toolbarActions.hideSearch"
         [searchType]="'tabel'"
         [selectedTabData]="activeTableData"
     ></app-carrier-search>
+
+    <!-- SEARCH BORDER ONLY -->
+    <div
+        class="border-container"
+        *ngIf="options.toolbarActions.showSearchBorder"
+    >
+        <div class="border"></div>
+    </div>
 
     <!-- BORDER -->
     <div
@@ -424,4 +422,23 @@
         (setFilter)="onFilter($event)"
     >
     </app-filter>
+
+    <!-- BORDER -->
+    <div
+        class="border-container"
+        *ngIf="options.toolbarActions.showMoneyCount"
+    >
+        <div class="border"></div>
+    </div>
+
+    <!-- TOTAL MONEY COUNT -->
+    <div
+        class="money-count-container"
+        [ngClass]="{
+            'money-count-select-style': activeTableData.moneyCountSelected
+        }"
+        *ngIf="options.toolbarActions.showMoneyCount"
+    >
+        $12.34K
+    </div>
 </div>
