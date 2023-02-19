@@ -13,9 +13,9 @@
             width: fit-content;
             height: auto;
             border-radius: 3px;
-            background: white;
-            box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.15);
+            background: #2F2F2F;
             padding: 2px;
+            margin-top: -5px;
 
             .table-dropdown-content {
                 cursor: pointer;
@@ -145,7 +145,7 @@
                 }
 
                 .dropdown-content-text {
-                    color: #b7b7b7;
+                    color: #FFFFFF;
                 }
             }
 

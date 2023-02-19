@@ -442,7 +442,7 @@ export class TruckassistTableBodyComponent
             this.notPinedMaxWidth =
                 tableContainer.clientWidth -
                 (this.pinedWidth + this.actionsWidth) -
-                12;
+                14;
 
             this.changeDetectorRef.detectChanges();
 

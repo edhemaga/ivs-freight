@@ -817,14 +817,16 @@
                                     >
                                         <div
                                             #t1="ngbPopover"
-                                            *ngIf="
-                                                row[column.field]
-                                            "
+                                            *ngIf="row[column.field]"
                                             [ngStyle]="{
                                                 width: column.width - 5 + 'px'
                                             }"
                                             class="description-container"
-                                            [innerHtml]="!descriptionPopoverOpen ? row[column.field] : null"
+                                            [innerHtml]="
+                                                !descriptionPopoverOpen
+                                                    ? row[column.field]
+                                                    : null
+                                            "
                                             (click)="
                                                 onShowDescriptionDropdown(
                                                     t1,
@@ -836,8 +838,12 @@
                                             [placement]="'bottom-left'"
                                             popoverClass="table-description-popover"
                                             triggers="manual"
-                                            (hidden)="descriptionPopoverOpen = false"
-                                            (shown)="descriptionPopoverOpen = true"
+                                            (hidden)="
+                                                descriptionPopoverOpen = false
+                                            "
+                                            (shown)="
+                                                descriptionPopoverOpen = true
+                                            "
                                         ></div>
                                     </div>
 
@@ -918,7 +924,10 @@
                                         <!-- [innerHtml]=" row[column.field] ? (row[column.field] | taHighlight:
   highlightingWords) : '' " -->
                                         <span
-                                            *ngIf="!row.isRepairOrder && !descriptionPopoverOpen"
+                                            *ngIf="
+                                                !row.isRepairOrder &&
+                                                !descriptionPopoverOpen
+                                            "
                                             class="table-total"
                                             [innerHtml]="
                                                 row[column.field]
@@ -2397,14 +2406,16 @@
                                     >
                                         <div
                                             #t1="ngbPopover"
-                                            *ngIf="
-                                                row[column.field]
-                                            "
+                                            *ngIf="row[column.field]"
                                             [ngStyle]="{
                                                 width: column.width - 5 + 'px'
                                             }"
                                             class="description-container"
-                                            [innerHtml]="!descriptionPopoverOpen ? row[column.field] : null"
+                                            [innerHtml]="
+                                                !descriptionPopoverOpen
+                                                    ? row[column.field]
+                                                    : null
+                                            "
                                             (click)="
                                                 onShowDescriptionDropdown(
                                                     t1,
@@ -2416,8 +2427,12 @@
                                             [placement]="'bottom-left'"
                                             popoverClass="table-description-popover"
                                             triggers="manual"
-                                            (hidden)="descriptionPopoverOpen = false"
-                                            (shown)="descriptionPopoverOpen = true"
+                                            (hidden)="
+                                                descriptionPopoverOpen = false
+                                            "
+                                            (shown)="
+                                                descriptionPopoverOpen = true
+                                            "
                                         ></div>
                                     </div>
 
@@ -2647,7 +2662,10 @@
                                         <!-- [innerHtml]=" row[column.field] ? (row[column.field] | taHighlight:
 highlightingWords) : '' " -->
                                         <span
-                                            *ngIf="!row.isRepairOrder && !descriptionPopoverOpen"
+                                            *ngIf="
+                                                !row.isRepairOrder &&
+                                                !descriptionPopoverOpen
+                                            "
                                             class="table-total"
                                             [innerHtml]="
                                                 row[column.field]
@@ -3449,7 +3467,7 @@ highlightingWords) : '' " -->
                                 <td class="action-td">
                                     <!-- ATTACHMENTS COLUMN -->
                                     <div
-                                        class="td-content set-center"
+                                        class="td-content set-right"
                                         *ngIf="
                                             column.ngTemplate === 'attachments'
                                         "
@@ -3488,7 +3506,7 @@ highlightingWords) : '' " -->
 
                                     <!-- MEDIA COLUMN -->
                                     <div
-                                        class="td-content set-center"
+                                        class="td-content set-right"
                                         *ngIf="column.ngTemplate === 'media'"
                                         [ngStyle]="{
                                             width: column.width + 'px',
@@ -3519,7 +3537,7 @@ highlightingWords) : '' " -->
 
                                     <!-- INSURANCE COLUMN -->
                                     <div
-                                        class="td-content set-center"
+                                        class="td-content set-right"
                                         *ngIf="
                                             column.ngTemplate === 'insurance'
                                         "
@@ -3552,7 +3570,7 @@ highlightingWords) : '' " -->
 
                                     <!-- COMMENT COLUMN -->
                                     <div
-                                        class="td-content set-center"
+                                        class="td-content set-right"
                                         *ngIf="column.ngTemplate === 'comment'"
                                         [ngStyle]="{
                                             width: column.width + 'px',
@@ -3624,7 +3642,7 @@ highlightingWords) : '' " -->
 
                                     <!-- HIRE COLUMN -->
                                     <div
-                                        class="td-content set-center"
+                                        class="td-content set-right"
                                         *ngIf="column.ngTemplate === 'hire'"
                                         [ngStyle]="{
                                             width: column.width + 'px',
@@ -3642,7 +3660,7 @@ highlightingWords) : '' " -->
 
                                     <!-- FAVORITE COLUMN -->
                                     <div
-                                        class="td-content set-center"
+                                        class="td-content set-right"
                                         *ngIf="column.ngTemplate === 'favorite'"
                                         [ngStyle]="{
                                             width: column.width + 'px',
@@ -3664,7 +3682,7 @@ highlightingWords) : '' " -->
 
                                     <!-- NOTE COLUMN -->
                                     <div
-                                        class="td-content set-center"
+                                        class="td-content set-right"
                                         *ngIf="column.ngTemplate === 'note'"
                                         [ngStyle]="{
                                             width: column.width + 'px',
@@ -3696,7 +3714,7 @@ highlightingWords) : '' " -->
 
                                     <!-- ACTIONS COLUMN -->
                                     <div
-                                        class="td-content set-center"
+                                        class="td-content set-right"
                                         *ngIf="column.ngTemplate === 'actions'"
                                         [ngStyle]="{
                                             width: column.width + 'px',
@@ -3720,7 +3738,17 @@ highlightingWords) : '' " -->
                                             container="body"
                                             popoverClass="table-dropdown-popover"
                                             triggers="manual"
-                                        ></div>
+                                        >
+                                            <svg-icon
+                                                [src]="
+                                                    '../../../../../../assets/svg/truckassist-table/dropdown/dropdown.svg'
+                                                "
+                                                [svgStyle]="{
+                                                    'width.px': '18',
+                                                    'height.px': '18'
+                                                }"
+                                            ></svg-icon>
+                                        </div>
                                     </div>
                                 </td>
                             </ng-container>
