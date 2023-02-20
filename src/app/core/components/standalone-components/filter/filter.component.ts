@@ -45,11 +45,13 @@ import { TaNgxSliderComponent } from '../../shared/ta-ngx-slider/ta-ngx-slider.c
 import { ReactiveFormsModule } from '@angular/forms';
 import { FilterStateService } from './state/filter-state.service';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
+import { TaTabSwitchComponent } from '../ta-tab-switch/ta-tab-switch.component';
 
 @Component({
     selector: 'app-filter',
     standalone: true,
     imports: [
+<<<<<<< HEAD
         CommonModule,
         AngularSvgIconModule,
         FormsModule,
@@ -64,6 +66,23 @@ import { TruckassistTableService } from 'src/app/core/services/truckassist-table
         NgbModule,
         AutoclosePopoverComponent,
         NgxSliderModule,
+=======
+            CommonModule, 
+            AngularSvgIconModule, 
+            FormsModule,
+            ReactiveFormsModule,
+            AutoclosePopoverComponent, 
+            AppTooltipComponent, 
+            TaSvgPipe, 
+            ProfileImagesComponent,
+            TaInputComponent,
+            InputAddressDropdownComponent,
+            TaNgxSliderComponent,
+            NgbModule,
+            AutoclosePopoverComponent,
+            TaTabSwitchComponent,
+            
+>>>>>>> dev-14
     ],
     templateUrl: './filter.component.html',
     styleUrls: ['./filter.component.scss'],
@@ -2584,7 +2603,6 @@ export class FilterComponent implements OnInit, AfterViewInit {
                 let selectedUsersIdArray: any = [];
                 this.totalFiltersNum = this.filterActiveArray.length;
 
-                console.log('---this.type', this.type);
                 let mainArray: any[] = [];
                 switch (this.type) {
                     case 'departmentFilter':
@@ -2656,8 +2674,11 @@ export class FilterComponent implements OnInit, AfterViewInit {
                 subType: subType,
             };
 
+<<<<<<< HEAD
             console.log('--data--', data);
 
+=======
+>>>>>>> dev-14
             if (this.setFilter) {
                 this.setFilter.emit(data);
             }

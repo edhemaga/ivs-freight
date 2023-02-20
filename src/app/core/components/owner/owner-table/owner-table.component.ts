@@ -402,9 +402,13 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     updateDataCount() {
         const ownerCount = JSON.parse(localStorage.getItem('ownerTableCount'));
+        
+        const updatedTableData = [...this.tableData];
 
-        this.tableData[0].length = ownerCount.active;
-        this.tableData[1].length = ownerCount.inactive;
+        updatedTableData[0].length = ownerCount.active;
+        updatedTableData[1].length = ownerCount.inactive;
+
+        this.tableData = [...updatedTableData]
     }
 
     getGridColumns(configType: string) {

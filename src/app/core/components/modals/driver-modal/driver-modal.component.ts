@@ -61,6 +61,7 @@ import { TaUploadFilesComponent } from '../../shared/ta-upload-files/ta-upload-f
 import { TaInputNoteComponent } from '../../shared/ta-input-note/ta-input-note.component';
 import { TaCheckboxCardComponent } from '../../shared/ta-checkbox-card/ta-checkbox-card.component';
 import { TaInputDropdownComponent } from '../../shared/ta-input-dropdown/ta-input-dropdown.component';
+import { TaLogoChangeComponent } from '../../shared/ta-logo-change/ta-logo-change.component';
 
 @Component({
     selector: 'app-driver-modal',
@@ -84,7 +85,8 @@ import { TaInputDropdownComponent } from '../../shared/ta-input-dropdown/ta-inpu
             TaUploadFilesComponent,
             TaInputNoteComponent,
             TaCheckboxCardComponent,
-            TaInputDropdownComponent
+            TaInputDropdownComponent,
+            TaLogoChangeComponent
     ]
 
 })

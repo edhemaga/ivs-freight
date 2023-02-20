@@ -91,15 +91,15 @@ export class TruckTService implements OnDestroy {
                                 localStorage.getItem('truckTableCount')
                             );
 
-                            // truckCount.active++;
+                            truckCount.active++;
 
-                            // localStorage.setItem(
-                            //     'truckTableCount',
-                            //     JSON.stringify({
-                            //         active: truckCount.active,
-                            //         inactive: truckCount.inactive,
-                            //     })
-                            // );
+                            localStorage.setItem(
+                                'truckTableCount',
+                                JSON.stringify({
+                                    active: truckCount.active,
+                                    inactive: truckCount.inactive,
+                                })
+                            );
 
                             this.tableService.sendActionAnimation({
                                 animation: 'add',

@@ -9,6 +9,7 @@
         [tooltipPrevious]="truckIndex == 0 ? '' : 'Previous Truck'"
         [searchInputName]="'Search Truck'"
         [options]="truckDropDowns"
+        [sortOptions]="'active-drivers'"
         (selectValue)="onSelectedTruck($event)"
         (changeEvent)="onChangeTruck($event)"
     >
@@ -626,7 +627,7 @@
                         [customClassName]="'driver-card-pdf'"
                         [hasCarouselBottomTabs]="true"
                         [type]="'details'"
-                        [slideWidth]="440"
+                        [slideWidth]="428"
                         [reviewMode]="'REVIEW_MODE'"
                     ></app-ta-upload-files>
                 </div>

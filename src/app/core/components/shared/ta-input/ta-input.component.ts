@@ -17,7 +17,7 @@ import {
 import { ControlValueAccessor, NgControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ITaInput } from './ta-input.config';
 import { TaInputService } from './ta-input.service';
-import { NgbDropdownConfig, NgbPopover, NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbDropdownConfig, NgbPopover, NgbModule, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 import { CalendarScrollService } from '../custom-datetime-pickers/calendar-scroll.service';
 import moment from 'moment';
 
@@ -39,6 +39,9 @@ import { AppTooltipComponent } from '../../standalone-components/app-tooltip/app
 import { TaSvgPipe } from '../../../pipes/ta-svg.pipe';
 import { InputErrorPipe } from './input-error.pipe';
 import { CustomDatetimePickersComponent } from '../custom-datetime-pickers/custom-datetime-pickers.component';
+import { TaSpinnerComponent } from '../ta-spinner/ta-spinner.component';
+import { ProfileImagesComponent } from '../profile-images/profile-images.component';
+import { LoadModalProgressBarComponent } from '../../modals/load-modal/load-modal-progress-bar/load-modal-progress-bar.component';
 @Component({
     selector: 'app-ta-input',
     templateUrl: './ta-input.component.html',
@@ -62,8 +65,12 @@ import { CustomDatetimePickersComponent } from '../custom-datetime-pickers/custo
             TaSvgPipe,
             ReactiveFormsModule,
             InputErrorPipe,
-            CustomDatetimePickersComponent
-    ]
+            CustomDatetimePickersComponent,
+            TaSpinnerComponent,
+            NgbPopoverModule,
+            ProfileImagesComponent,
+            LoadModalProgressBarComponent
+    ],
 })
 export class TaInputComponent
     implements OnInit, OnChanges, OnDestroy, ControlValueAccessor

@@ -27,6 +27,8 @@ import { FormsModule } from '@angular/forms';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { AppTooltipComponent } from '../../standalone-components/app-tooltip/app-tooltip.component';
 import { AngularSvgIconModule } from 'angular-svg-icon';
+import { TaSpinnerComponent } from '../ta-spinner/ta-spinner.component';
+import { TaTabSwitchComponent } from '../../standalone-components/ta-tab-switch/ta-tab-switch.component';
 
 @Component({
     selector: 'app-ta-modal',
@@ -41,7 +43,9 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
             FormsModule, 
             DragDropModule, 
             AppTooltipComponent,
-            AngularSvgIconModule
+            AngularSvgIconModule,
+            TaSpinnerComponent,
+            TaTabSwitchComponent
     ],
     animations: [
         trigger('widthGrow', [

@@ -33,6 +33,7 @@ import { CommonModule } from '@angular/common';
 import { AppTooltipComponent } from '../../standalone-components/app-tooltip/app-tooltip.component';
 import { TaInputDropdownComponent } from '../ta-input-dropdown/ta-input-dropdown.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { AngularSvgIconModule } from 'angular-svg-icon';
 
 @Component({
     selector: 'app-input-address-dropdown',
@@ -43,7 +44,14 @@ import { ReactiveFormsModule } from '@angular/forms';
     ],
     encapsulation: ViewEncapsulation.None,
     standalone: true,
-    imports: [CommonModule, FormsModule, AppTooltipComponent, TaInputDropdownComponent, ReactiveFormsModule],
+    imports: [
+        CommonModule,
+        FormsModule,
+        AppTooltipComponent,
+        TaInputDropdownComponent,
+        ReactiveFormsModule,
+        AngularSvgIconModule
+    ],
 })
 export class InputAddressDropdownComponent
     implements OnInit, ControlValueAccessor, OnDestroy
@@ -223,7 +231,7 @@ export class InputAddressDropdownComponent
                 valid: res.address && res.longLat ? true : false,
                 longLat: res.longLat,
             };
-            
+
             if (this.currentAddressData.valid) {
                 this.getSuperControl.setErrors(null);
             }
@@ -264,7 +272,7 @@ export class InputAddressDropdownComponent
             (type == 'confirm' && this.currentAddressData) ||
             type == 'cancel'
         ) {
-            if ( !this.currentAddressData ) this.currentAddressData = {};
+            if (!this.currentAddressData) this.currentAddressData = {};
             this.currentAddressData.type = type;
             this.commandEvent.emit(this.currentAddressData);
 

@@ -34,6 +34,7 @@ import { WebsiteUnderConstructionComponent } from './components/website-under-co
 import { TaInputComponent } from '../shared/ta-input/ta-input.component';
 import { InputAddressDropdownComponent } from '../shared/input-address-dropdown/input-address-dropdown.component';
 import { TaCheckboxComponent } from '../shared/ta-checkbox/ta-checkbox.component';
+import { TaSpinnerComponent } from '../shared/ta-spinner/ta-spinner.component';
 
 @NgModule({
     declarations: [
@@ -79,6 +80,7 @@ import { TaCheckboxComponent } from '../shared/ta-checkbox/ta-checkbox.component
         TaInputComponent,
         InputAddressDropdownComponent,
         TaCheckboxComponent,
+        TaSpinnerComponent
     ],
 })
 export class WebsiteModule {}

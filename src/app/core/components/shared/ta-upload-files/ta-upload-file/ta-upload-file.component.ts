@@ -20,8 +20,9 @@ import { DetailsDataService } from '../../../../services/details-data/details-da
 import { CommonModule } from '@angular/common';
 import { AppTooltipComponent } from '../../../standalone-components/app-tooltip/app-tooltip.component';
 import { ByteConvertPipe } from 'src/app/core/pipes/byte-convert.pipe';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModule, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 import { AngularSvgIconModule } from 'angular-svg-icon';
+import { TaSpinnerComponent } from '../../ta-spinner/ta-spinner.component';
 
 export interface UploadFile {
     name?: any;
@@ -55,6 +56,11 @@ export interface UploadFile {
         NgbModule,
         UrlExtensionPipe,
         AngularSvgIconModule,
+        TaSpinnerComponent,
+        NgbPopoverModule,
+        TaInputComponent,
+        
+
     ],
 })
 export class TaUploadFileComponent implements OnInit, OnDestroy {

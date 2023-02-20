@@ -11,7 +11,14 @@ import { HideAccountPipe } from 'src/app/core/pipes/driver-hide-account.pipe';
     templateUrl: './ta-copy.component.html',
     styleUrls: ['./ta-copy.component.scss'],
     standalone: true,
-    imports: [CommonModule, FormsModule, AppTooltipComponent, NgbModule, AngularSvgIconModule, HideAccountPipe],
+    imports: [
+        CommonModule,
+        FormsModule,
+        AppTooltipComponent,
+        NgbModule,
+        AngularSvgIconModule,
+        HideAccountPipe,
+    ],
 })
 export class TaCopyComponent implements OnInit {
     @Input() copyValue: string;

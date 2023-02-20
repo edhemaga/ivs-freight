@@ -77,6 +77,12 @@ export class RepairTService implements OnDestroy {
                                 JSON.stringify({
                                     repairTrucks: repairCount.repairTrucks,
                                     repairTrailers: repairCount.repairTrailers,
+                                    truckMoneyTotal: repair?.truckMoneyTotal
+                                        ? repair.truckMoneyTotal
+                                        : 'NA',
+                                    trailerMoneyTotal: repair?.trailerMoneyTotal
+                                        ? repair.trailerMoneyTotal
+                                        : 'NA',
                                 })
                             );
                             this.tableService.sendActionAnimation({
@@ -199,6 +205,7 @@ export class RepairTService implements OnDestroy {
                             subShop.unsubscribe();
                         },
                     });
+
                 const repairCount = JSON.parse(
                     localStorage.getItem('repairTruckTrailerTableCount')
                 );
@@ -217,6 +224,8 @@ export class RepairTService implements OnDestroy {
                     JSON.stringify({
                         repairTrucks: repairCount.repairTrucks,
                         repairTrailers: repairCount.repairTrucks,
+                        truckMoneyTotal: repairCount.truckMoneyTotal,
+                        trailerMoneyTotal: repairCount.trailerMoneyTotal,
                     })
                 );
 

@@ -446,7 +446,7 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
             tableMileage: data?.mileage
                 ? this.thousandSeparator.transform(data.mileage)
                 : '',
-            tableLicencePlateDetailNumber: 'NA',
+            tableLicencePlateDetailNumber: data?.licensePlate ? data.licensePlate : '',
             tableLicencePlateDetailST: 'NA',
             tableLicencePlateDetailExpiration: {
                 expirationDays: data?.registrationExpirationDays
@@ -505,6 +505,13 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
         this.tableData[0].length = truckCount.active;
         this.tableData[1].length = truckCount.inactive;
+
+        const updatedTableData = [...this.tableData];
+
+        updatedTableData[0].length = truckCount.active;
+        updatedTableData[1].length = truckCount.inactive;
+
+        this.tableData = [...updatedTableData]
     }
 
     getTabData(dataType: string) {

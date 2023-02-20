@@ -50,6 +50,7 @@ import { TaUploadFilesComponent } from '../../../shared/ta-upload-files/ta-uploa
 import { TaInputNoteComponent } from '../../../shared/ta-input-note/ta-input-note.component';
 import { ActiveItemsPipe } from 'src/app/core/pipes/activeItems.pipe';
 import { AngularSvgIconModule } from 'angular-svg-icon';
+import { TaCopyComponent } from '../../../shared/ta-copy/ta-copy.component';
 
 @Component({
     selector: 'app-repair-order-modal',
@@ -72,7 +73,8 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
             TaInputNoteComponent, 
             ActiveItemsPipe,
             NgbModule,
-            AngularSvgIconModule
+            AngularSvgIconModule,
+            TaCopyComponent
     ]
 })
 export class RepairOrderModalComponent implements OnInit, OnDestroy {
