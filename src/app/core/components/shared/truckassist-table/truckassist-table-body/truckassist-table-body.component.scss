@@ -7,20 +7,24 @@ table {
         // display: flex;
 
         tr {
+            margin-top: 2px;
             min-height: 32px;
             width: fit-content;
             height: fit-content;
             background: white;
             display: flex;
+            justify-content: center;
             flex-direction: column;
             border-radius: 3px;
-            padding: 2px;
+            padding: 2px 3px;
             transition: margin-bottom 0.25s;
 
             // Columns
             .columns-container {
                 width: 100%;
                 height: 100%;
+                max-height: 26px;
+                min-height: 26px;
                 display: flex;
                 border-radius: 2px;
 
@@ -512,14 +516,14 @@ table {
                                 transition: 0.2s;
                             }
 
-                            .user-avatar-archived-icon{
+                            .user-avatar-archived-icon {
                                 width: 18px;
                                 height: 18px;
                                 display: flex;
                                 align-items: center;
                                 justify-content: center;
 
-                                svg-icon{
+                                svg-icon {
                                     display: flex;
                                     align-items: center;
                                     justify-content: center;
@@ -1656,15 +1660,40 @@ table {
 
                         // DROPDOWN
                         .table-dropdown-container {
-                            width: 30px;
-                            height: 28px;
-                            background-image: url('../../../../../../assets/svg/truckassist-table/dropdown/dropdown.svg');
-                            background-repeat: no-repeat;
-                            background-position: center;
                             cursor: pointer;
+                            width: 26px;
+                            height: 26px;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+
+                            svg-icon {
+                                display: flex;
+                                // transform: rotateZ(0deg);
+                                transition: transform 0.2s;
+
+                                svg {
+                                    circle {
+                                        fill: #919191;
+                                    }
+                                }
+                            }
 
                             &:hover {
-                                background-image: url('../../../../../../assets/svg/truckassist-table/dropdown/dropdown-hover.svg');
+                                border-radius: 2px;
+                                background: #42424220;
+
+                                transition: background 0.2s;
+
+                                svg-icon {
+                                    svg {
+                                        circle {
+                                            fill: #424242;
+
+                                            transition: fill 0.2s;
+                                        }
+                                    }
+                                }
                             }
                         }
 
@@ -2709,7 +2738,7 @@ table {
                 position: absolute;
                 width: 8px;
                 height: 32px;
-                margin-top: -2px;
+                margin-top: -3px;
             }
         }
 
@@ -2735,7 +2764,7 @@ table {
 .show-more-container {
     height: 18px;
     width: fit-content;
-    margin-top: 3px;
+    margin-top: 2px;
     display: flex;
     align-items: center;
 
@@ -2744,7 +2773,6 @@ table {
         width: fit-content;
         height: 100%;
         display: flex;
-        justify-content: center;
         align-items: center;
     }
 
@@ -2753,6 +2781,7 @@ table {
         font-size: 12px;
         font-weight: 500;
         color: #919191;
+        min-width: 80px;
 
         &::selection {
             color: #919191;
@@ -2767,6 +2796,8 @@ table {
         font-size: 14px;
         font-weight: bold;
         color: #6c6c6c;
+        justify-content: center;
+        min-width: 97px;
 
         &:hover {
             color: #5673aa;
@@ -2783,6 +2814,10 @@ table {
 // GLOBAL STYLE
 .set-center {
     justify-content: center;
+}
+
+.set-right {
+    justify-content: flex-end !important;
 }
 
 // PROGRESS COLOR CLASSES
@@ -3122,10 +3157,13 @@ table {
 }
 
 .active-drop {
-    background-image: url('../../../../../../assets/svg/truckassist-table/dropdown/dropdown-select.svg') !important;
+    background: #42424220;
+    border-radius: 2px;
 
-    &:hover {
-        background-image: url('../../../../../../assets/svg/truckassist-table/dropdown/dropdown-select-hover.svg') !important;
+    svg-icon{
+        transform: rotateZ(90deg);
+
+        transition: transform 0.2s;
     }
 }
 

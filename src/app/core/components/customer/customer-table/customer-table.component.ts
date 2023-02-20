@@ -106,7 +106,7 @@ export class CustomerTableComponent
         private DetailsDataService: DetailsDataService,
         private ref: ChangeDetectorRef,
         public datePipe: DatePipe,
-        private mapsService: MapsService,
+        private mapsService: MapsService
     ) {}
 
     ngOnInit(): void {
@@ -265,13 +265,12 @@ export class CustomerTableComponent
                             ? this.backBrokerFilterQuery
                             : this.backShipperFilterQuery
                     );
+
                     if (searchEvent) {
                         if (searchEvent.action === 'api') {
                             this.selectedTab === 'active'
                                 ? this.brokerBackFilter(searchEvent.query)
-                                : this.shipperBackFilter(
-                                      searchEvent.query
-                                  );
+                                : this.shipperBackFilter(searchEvent.query);
                         } else if (searchEvent.action === 'store') {
                             this.sendCustomerData();
                         }
@@ -289,7 +288,9 @@ export class CustomerTableComponent
     observTableContainer() {
         this.resizeObserver = new ResizeObserver((entries) => {
             entries.forEach((entry) => {
-                this.tableService.sendCurrentSetTableWidth(entry.contentRect.width);
+                this.tableService.sendCurrentSetTableWidth(
+                    entry.contentRect.width
+                );
             });
         });
 
@@ -576,8 +577,12 @@ export class CustomerTableComponent
             localStorage.getItem('brokerShipperTableCount')
         );
 
-        this.tableData[0].length = brokerShipperCount.broker;
-        this.tableData[1].length = brokerShipperCount.shipper;
+        const updatedTableData = [...this.tableData];
+
+        updatedTableData[0].length = brokerShipperCount.broker;
+        updatedTableData[1].length = brokerShipperCount.shipper;
+
+        this.tableData = [...updatedTableData];
     }
 
     // Broker Back Filter Query
@@ -756,10 +761,7 @@ export class CustomerTableComponent
             } else {
                 this.backShipperFilterQuery.pageIndex++;
 
-                this.shipperBackFilter(
-                    this.backShipperFilterQuery,
-                    true
-                );
+                this.shipperBackFilter(this.backShipperFilterQuery, true);
             }
         } else if (event.type === 'edit-cutomer-or-shipper') {
             // Edit Broker Call Modal

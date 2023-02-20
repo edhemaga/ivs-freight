@@ -31,6 +31,7 @@ import { NFormatterPipe } from '../../../pipes/n-formatter.pipe';
         FormsModule,
         ChartsModule,
         NFormatterPipe,
+        
     ],
 })
 export class TaChartComponent implements OnInit {

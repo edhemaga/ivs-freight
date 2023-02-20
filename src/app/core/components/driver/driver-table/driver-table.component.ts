@@ -822,8 +822,12 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
             localStorage.getItem('driverTableCount')
         );
 
-        this.tableData[1].length = driverCount.active;
-        this.tableData[2].length = driverCount.inactive;
+        const updatedTableData = [...this.tableData];
+
+        updatedTableData[1].length = driverCount.active;
+        updatedTableData[2].length = driverCount.inactive;
+
+        this.tableData = [...updatedTableData]
     }
 
     // Get Driver Back Filter

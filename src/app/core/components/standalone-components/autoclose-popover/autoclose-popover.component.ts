@@ -9,13 +9,14 @@ import {
     Output,
 } from '@angular/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
     selector: '[app-autoclose-popover]',
     templateUrl: './autoclose-popover.component.html',
     styleUrls: ['./autoclose-popover.component.scss'],
     standalone: true,
-    imports: [CommonModule, NgbModule],
+    imports: [CommonModule, NgbModule, FormsModule, ReactiveFormsModule],
 })
 export class AutoclosePopoverComponent implements OnInit {
     @Input() isDisabled: boolean;

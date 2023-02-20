@@ -76,6 +76,12 @@ export class RepairTService implements OnDestroy {
                                 JSON.stringify({
                                     repairTrucks: repairCount.repairTrucks,
                                     repairTrailers: repairCount.repairTrailers,
+                                    truckMoneyTotal: repair?.truckMoneyTotal
+                                        ? repair.truckMoneyTotal
+                                        : 'NA',
+                                    trailerMoneyTotal: repair?.trailerMoneyTotal
+                                        ? repair.trailerMoneyTotal
+                                        : 'NA',
                                 })
                             );
                             this.tableService.sendActionAnimation({
@@ -198,6 +204,7 @@ export class RepairTService implements OnDestroy {
                             subShop.unsubscribe();
                         },
                     });
+
                 const repairCount = JSON.parse(
                     localStorage.getItem('repairTruckTrailerTableCount')
                 );
@@ -216,6 +223,8 @@ export class RepairTService implements OnDestroy {
                     JSON.stringify({
                         repairTrucks: repairCount.repairTrucks,
                         repairTrailers: repairCount.repairTrucks,
+                        truckMoneyTotal: repairCount.truckMoneyTotal,
+                        trailerMoneyTotal: repairCount.trailerMoneyTotal,
                     })
                 );
 
@@ -296,7 +305,7 @@ export class RepairTService implements OnDestroy {
                                 let shopStored = JSON.parse(
                                     JSON.stringify(store)
                                 );
-                                
+
                                 shopStored.repairShop.map(
                                     (data: any, index: any) => {
                                         if (data.id == shop.id) {
@@ -304,20 +313,26 @@ export class RepairTService implements OnDestroy {
                                         }
                                     }
                                 );
-                                
+
                                 shopStored.repairShopMinimal.pagination.data.map(
                                     (data: any, index: any) => {
                                         if (data.id == shop.id) {
                                             minimalListIndex = index;
-                                            store.repairShopMinimal.pagination.data[index]['name'] = shop.name;
-                                            store.repairShopMinimal.pagination.data[index]['pinned'] = shop.pinned;
-                                            store.repairShopMinimal.pagination.data[index]['status'] = shop.status;
+                                            store.repairShopMinimal.pagination.data[
+                                                index
+                                            ]['name'] = shop.name;
+                                            store.repairShopMinimal.pagination.data[
+                                                index
+                                            ]['pinned'] = shop.pinned;
+                                            store.repairShopMinimal.pagination.data[
+                                                index
+                                            ]['status'] = shop.status;
                                         }
                                     }
-                                );    
-                                
+                                );
+
                                 shopStored.repairShop[ind] = shop;
-                              
+
                                 return {
                                     ...store,
                                     repairShop: [...shopStored.repairShop],
@@ -679,98 +694,102 @@ export class RepairTService implements OnDestroy {
         return this.shopServices.apiRepairshopPinnedIdPut(shopId);
     }
 
-    public changeShopStatus(shopId: any){
-        const closeShop = this.shopServices.apiRepairshopStatusIdPut(shopId)
+    public changeShopStatus(shopId: any) {
+        const closeShop = this.shopServices
+            .apiRepairshopStatusIdPut(shopId)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (res: any) => {
                     const subShop = this.getRepairShopById(shopId)
-                    .pipe(takeUntil(this.destroy$))
-                    .subscribe({
-                        next: (shop: RepairShopResponse | any) => {
-                            this.shopStore.remove(({ id }) => id === shopId);
-                            this.shopStore.add(shop);
-                            this.rDs.update((store) => {
-                                let ind;
-                                let shopStored = JSON.parse(
-                                    JSON.stringify(store)
+                        .pipe(takeUntil(this.destroy$))
+                        .subscribe({
+                            next: (shop: RepairShopResponse | any) => {
+                                this.shopStore.remove(
+                                    ({ id }) => id === shopId
                                 );
-                                shopStored.repairShop.map(
-                                    (data: any, index: any) => {
-                                        if (data.id == shop.id) {
-                                            ind = index;
+                                this.shopStore.add(shop);
+                                this.rDs.update((store) => {
+                                    let ind;
+                                    let shopStored = JSON.parse(
+                                        JSON.stringify(store)
+                                    );
+                                    shopStored.repairShop.map(
+                                        (data: any, index: any) => {
+                                            if (data.id == shop.id) {
+                                                ind = index;
+                                            }
                                         }
-                                    }
-                                );
+                                    );
 
-                                shopStored.repairShop[ind] = shop;
+                                    shopStored.repairShop[ind] = shop;
 
-                                return {
-                                    ...store,
-                                    repairShop: [...shopStored.repairShop],
-                                };
-                            });
+                                    return {
+                                        ...store,
+                                        repairShop: [...shopStored.repairShop],
+                                    };
+                                });
 
-                            this.tableService.sendActionAnimation({
-                                animation: 'update',
-                                tab: 'repair-shop',
-                                data: shop,
-                                id: shop.id,
-                            });
+                                this.tableService.sendActionAnimation({
+                                    animation: 'update',
+                                    tab: 'repair-shop',
+                                    data: shop,
+                                    id: shop.id,
+                                });
 
-                            subShop.unsubscribe();
-                        },
-                    });
-                }
-            }) 
+                                subShop.unsubscribe();
+                            },
+                        });
+                },
+            });
     }
 
-    public changePinnedStatus(shopId: any){
-        const changePinnedStatus = this.shopServices.apiRepairshopPinnedIdPut(shopId)
+    public changePinnedStatus(shopId: any) {
+        const changePinnedStatus = this.shopServices
+            .apiRepairshopPinnedIdPut(shopId)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (res: any) => {
                     const subShop = this.getRepairShopById(shopId)
-                    .pipe(takeUntil(this.destroy$))
-                    .subscribe({
-                        next: (shop: RepairShopResponse | any) => {
-                            this.shopStore.remove(({ id }) => id === shopId);
-                            this.shopStore.add(shop);
-                            this.rDs.update((store) => {
-                                let ind;
-                                let shopStored = JSON.parse(
-                                    JSON.stringify(store)
+                        .pipe(takeUntil(this.destroy$))
+                        .subscribe({
+                            next: (shop: RepairShopResponse | any) => {
+                                this.shopStore.remove(
+                                    ({ id }) => id === shopId
                                 );
-                                shopStored.repairShop.map(
-                                    (data: any, index: any) => {
-                                        if (data.id == shop.id) {
-                                            ind = index;
+                                this.shopStore.add(shop);
+                                this.rDs.update((store) => {
+                                    let ind;
+                                    let shopStored = JSON.parse(
+                                        JSON.stringify(store)
+                                    );
+                                    shopStored.repairShop.map(
+                                        (data: any, index: any) => {
+                                            if (data.id == shop.id) {
+                                                ind = index;
+                                            }
                                         }
-                                    }
-                                );
+                                    );
 
-                                shopStored.repairShop[ind] = shop;
+                                    shopStored.repairShop[ind] = shop;
 
-                                return {
-                                    ...store,
-                                    repairShop: [...shopStored.repairShop],
-                                };
-                            });
+                                    return {
+                                        ...store,
+                                        repairShop: [...shopStored.repairShop],
+                                    };
+                                });
 
-                            this.tableService.sendActionAnimation({
-                                animation: 'update',
-                                tab: 'repair-shop',
-                                data: shop,
-                                id: shop.id,
-                            });
+                                this.tableService.sendActionAnimation({
+                                    animation: 'update',
+                                    tab: 'repair-shop',
+                                    data: shop,
+                                    id: shop.id,
+                                });
 
-                            subShop.unsubscribe();
-                        },
-                    });
-                }
-            })
-
-        
+                                subShop.unsubscribe();
+                            },
+                        });
+                },
+            });
     }
 
     ngOnDestroy(): void {

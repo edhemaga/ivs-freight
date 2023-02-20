@@ -307,7 +307,11 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
             localStorage.getItem('accountTableCount')
         );
 
-        this.tableData[0].length = accountCount.account;
+        const updatedTableData = [...this.tableData];
+
+        updatedTableData[0].length = accountCount.account;
+
+        this.tableData = [...updatedTableData]
     }
 
     getTabData() {

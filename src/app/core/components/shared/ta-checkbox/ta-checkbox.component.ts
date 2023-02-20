@@ -7,7 +7,8 @@ import {
     Self,
     ViewEncapsulation,
 } from '@angular/core';
-import { ControlValueAccessor, FormsModule, NgControl } from '@angular/forms';
+import { ControlValueAccessor, FormsModule, NgControl, ReactiveFormsModule } from '@angular/forms';
+import { AngularSvgIconModule } from 'angular-svg-icon';
 
 @Component({
     selector: 'app-ta-checkbox',
@@ -15,7 +16,7 @@ import { ControlValueAccessor, FormsModule, NgControl } from '@angular/forms';
     styleUrls: ['./ta-checkbox.component.scss'],
     encapsulation: ViewEncapsulation.None,
     standalone: true,
-    imports: [CommonModule, FormsModule],
+    imports: [CommonModule, FormsModule, ReactiveFormsModule, AngularSvgIconModule],
 })
 export class TaCheckboxComponent implements ControlValueAccessor {
     @Input() label: string;

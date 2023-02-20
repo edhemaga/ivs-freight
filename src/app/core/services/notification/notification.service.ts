@@ -59,7 +59,9 @@ export class NotificationService {
             httpRequest.url.indexOf('setnewpassword') > -1 ||
             httpRequest.url.indexOf('verifyforgotpassword') > -1 ||
             httpRequest.url.indexOf('resendsignupuser') > -1 ||
-            httpRequest.url.indexOf('selectcompany') > -1 
+            httpRequest.url.indexOf('selectcompany') > -1  ||
+            httpRequest.url.indexOf('account/login') > -1  
+            
         ) {
             return false;
         }
@@ -88,7 +90,8 @@ export class NotificationService {
             httpRequest.url.indexOf('setnewpassword') > -1 ||
             httpRequest.url.indexOf('verifyforgotpassword') > -1 ||
             httpRequest.url.indexOf('resendsignupuser') > -1 ||
-            httpRequest.url.indexOf('selectcompany') > -1 
+            httpRequest.url.indexOf('selectcompany') > -1 ||
+            httpRequest.url.indexOf('account/login') > -1 
         ) {
             return false;
         }
