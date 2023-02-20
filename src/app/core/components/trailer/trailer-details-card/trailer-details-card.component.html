@@ -110,7 +110,10 @@
             >
                 <div class="assignTo">
                     <div class="assignTo-item first" *ngIf="trailer?.assignedTo?.truck?.id">
-                        <svg-icon class="assignTo-vehicle"> </svg-icon>
+                        <svg-icon 
+                            class="assignTo-vehicle backImage"
+                            [src]="'assets/svg/common/trucks/' + trailer.assignedTo.truck.truckType.logoName "
+                            > </svg-icon>
                         <p class="assignTo-value no-truck">{{trailer.assignedTo.truck.truckNumber}}</p>
                        <span
                             tooltipBackground="#6c6c6c"
@@ -130,6 +133,19 @@
                     </div>
                     <div class="assignTo-item second" *ngIf="trailer?.assignedTo?.driver?.id">
                         <svg-icon class="assignTo-vehicle"></svg-icon>
+
+                        <svg-icon
+                            *ngIf="!trailer.assignedTo.driver.avatar"
+                            class="assignTo-vehicle"
+                            src="assets/svg/common/user-image.svg"
+                        ></svg-icon>
+                        <img
+                            *ngIf="trailer.assignedTo.driver.avatar"
+                            class="driverAvatarImg"
+                            [src]="imageBase64Service.sanitizer(trailer.assignedTo.driver.avatar)"
+                            alt="driver-image"
+                        />
+
                         <p class="assignTo-value no-truck">{{trailer?.assignedTo?.driver?.firstName}} {{trailer?.assignedTo?.driver?.lastName}}</p>
                         <span
                             tooltipBackground="#6c6c6c"

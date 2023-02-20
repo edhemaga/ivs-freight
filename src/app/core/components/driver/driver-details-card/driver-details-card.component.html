@@ -89,11 +89,11 @@
                                 ngbTooltip
                                 mainTooltip="Semi Truck"
                                 position="top"
-                                class="semi-tooltip"
+                                class="semi-tooltip typeDetails"
                             >
                                 <svg-icon
                                     class="assignTo-vehicle"
-                                    src="assets/svg/common/trucks/ic_truck_semi-wSleeper.svg"
+                                    [src]="'assets/svg/common/trucks/' + driver.assignedTo.truck.truckType.logoName "
                                 >
                                 </svg-icon>
                             </span>
@@ -123,11 +123,11 @@
                                 ngbTooltip
                                 mainTooltip="Container"
                                 position="top"
-                                class="semi-tooltip"
+                                class="semi-tooltip typeDetails"
                             >
                                 <svg-icon
                                     class="assignTo-vehicle"
-                                    src="assets/svg/common/trailers/ic_trailer_container.svg"
+                                    [src]="'assets/svg/common/trailers/' + driver.assignedTo.trailer.trailerType.logoName "
                                 ></svg-icon>
                             </span>
                             <span class="assignTo-value container-value">

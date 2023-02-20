@@ -287,6 +287,7 @@ export class TaInputDropdownComponent
     registerOnTouched(_: any): void {}
 
     public onActiveItem(option: any, group?: any): void {
+        console.log('---here------')
         // Prevent user to pick franchise, without group
         if (
             this.template === 'fuel-franchise' &&

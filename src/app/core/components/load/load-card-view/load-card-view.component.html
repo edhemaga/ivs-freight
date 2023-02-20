@@ -170,6 +170,7 @@
                                 <svg-icon
                                     class="flex-load"
                                     src="assets/svg/common/trucks/ic_truck_car-hauler.svg"
+                                    [src]="'assets/svg/common/trucks/' + load.dispatch?.truck?.truckType.logoName "
                                 ></svg-icon>
                                 <span class="driver-name">{{
                                     load?.dispatch?.truck?.truckNumber
@@ -180,6 +181,7 @@
                             <div class="driver-info">
                                 <svg-icon
                                     class="flex-load"
+                                    [src]="'assets/svg/common/trailers/' + load.dispatch?.trailer?.trailerType.logoName "
                                     src="assets/svg/common/trailers/ic_trailer_conestoga.svg"
                                 ></svg-icon>
                                 <span class="driver-name">{{

@@ -123,8 +123,8 @@
                         *ngIf="truck?.assignedTo?.trailer?.id"
                     >
                         <svg-icon
-                            class="assignTo-vehicle"
-                            src="assets/svg/common/trailer.svg"
+                            class="assignTo-vehicle backImage"
+                            [src]="'assets/svg/common/trailers/' + truck.assignedTo.trailer.trailerType.logoName "
                         ></svg-icon>
                         <p class="assignTo-value">
                             {{ truck.assignedTo.trailer.trailerNumber }}
