@@ -46,6 +46,7 @@ import { TaInputNoteComponent } from '../../shared/ta-input-note/ta-input-note.c
 import { TaInputComponent } from '../../shared/ta-input/ta-input.component';
 import { InputAddressDropdownComponent } from '../../shared/input-address-dropdown/input-address-dropdown.component';
 import { TaInputDropdownLabelComponent } from '../../shared/ta-input-dropdown-label/ta-input-dropdown-label.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
     selector: 'app-contact-modal',
@@ -56,6 +57,7 @@ import { TaInputDropdownLabelComponent } from '../../shared/ta-input-dropdown-la
     imports: [
         CommonModule,
         FormsModule,
+        NgbModule,
         AppTooltipComponent,
         TaModalComponent,
         TaTabSwitchComponent,

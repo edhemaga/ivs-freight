@@ -182,7 +182,7 @@ export class TaInputComponent
         if (this.inputConfig.name === 'timepicker')
             this.dateTimeInputDate = new Date(
                 moment().format('MM/DD/YYYY') +
-                    (this.inputConfig?.isFromDate ? ' 12:15' : ' 12:00')
+                    (this.inputConfig?.isFromDate ? ' 12:00' : ' 12:00')
             );
     }
 

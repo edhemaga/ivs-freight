@@ -1,5 +1,5 @@
 import { distinctUntilChanged, Subject, takeUntil } from 'rxjs';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import {
     Component,
     EventEmitter,
@@ -45,7 +45,8 @@ import { TaTabSwitchComponent } from '../../standalone-components/ta-tab-switch/
             AppTooltipComponent,
             AngularSvgIconModule,
             TaSpinnerComponent,
-            TaTabSwitchComponent
+            TaTabSwitchComponent,
+            NgbModule
     ],
     animations: [
         trigger('widthGrow', [

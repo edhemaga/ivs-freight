@@ -34,6 +34,7 @@ import { AppTooltipComponent } from '../../standalone-components/app-tooltip/app
 import { TaInputDropdownComponent } from '../ta-input-dropdown/ta-input-dropdown.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AngularSvgIconModule } from 'angular-svg-icon';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
     selector: 'app-input-address-dropdown',
@@ -47,6 +48,7 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
     imports: [
         CommonModule,
         FormsModule,
+        NgbModule,
         AppTooltipComponent,
         TaInputDropdownComponent,
         ReactiveFormsModule,

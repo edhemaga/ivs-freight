@@ -60,8 +60,7 @@ import { TaCopyComponent } from '../../../shared/ta-copy/ta-copy.component';
     standalone: true,
     imports: [
             CommonModule, 
-            FormsModule, 
-            AppTooltipComponent, 
+            FormsModule,  
             AppTooltipComponent, 
             TaModalComponent, 
             TaTabSwitchComponent, 

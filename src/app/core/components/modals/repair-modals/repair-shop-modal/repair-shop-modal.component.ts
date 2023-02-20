@@ -65,6 +65,7 @@ import { InputAddressDropdownComponent } from '../../../shared/input-address-dro
 import { TaInputNoteComponent } from '../../../shared/ta-input-note/ta-input-note.component';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { TaCheckboxComponent } from '../../../shared/ta-checkbox/ta-checkbox.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
     selector: 'app-repair-shop-modal',
@@ -77,6 +78,7 @@ import { TaCheckboxComponent } from '../../../shared/ta-checkbox/ta-checkbox.com
     imports: [
             CommonModule, 
             FormsModule, 
+            NgbModule,
             AppTooltipComponent, 
             TaModalComponent, 
             TaTabSwitchComponent, 
