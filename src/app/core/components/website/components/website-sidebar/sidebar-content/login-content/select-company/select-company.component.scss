@@ -1,3 +1,4 @@
+@import 'src/theme/variables.scss';
 .select_company_main {
     width: 100%;
     min-height: 100vh;
@@ -7,7 +8,7 @@
     padding-top: 120px;
     padding-top: 190px;
     text-align: center;
-    background: white;
+    background: $white;
     position: absolute;
     left: 0;
     right: 0;
@@ -26,7 +27,7 @@
         font-weight: 700;
         margin: 0 auto 55px;
         color: #707070;
-        color: #424242;
+        color: $ta-black;
         margin-bottom: 12px;
         user-select: none;
     }
@@ -34,7 +35,7 @@
         width: fit-content;
         font-size: 17px;
         font-weight: 700;
-        color: #aaaaaa;
+        color: $ta-light-grey-2;
         font-family: Montserrat;
         margin-bottom: 42px;
         user-select: none;
@@ -73,8 +74,9 @@
         flex-direction: column;
         transform: scale(1);
         &:hover {
-            box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.15);
+            box-shadow: $box-shadow;
             opacity: 1;
+            transition: $transition;
         }
         .slide-inner {
             width: 100%;
@@ -84,7 +86,7 @@
         }
     }
     .slick-center {
-        box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.15);
+        box-shadow: $box-shadow;
         margin: 5px 6px;
         transition: all 0.1s ease;
         opacity: 1;
@@ -120,11 +122,11 @@
         }
         .slick-active {
             width: 32px;
-            transition: width 0.3s ease-in-out;
+            transition: $transition;
             button {
                 width: 100%;
                 height: 8px;
-                background: #919191;
+                background: $muted;
                 &::before {
                     content: none;
                 }
@@ -187,7 +189,7 @@
         justify-content: center;
         align-items: center;
         .select_company_main_button {
-            background-color: #3074d3;
+            background-color: $ta-blue-5;
             height: 62px;
             width: 420px;
             display: flex;
@@ -195,21 +197,21 @@
             justify-content: center;
             font-size: 14px;
             font-weight: 700;
-            color: #ffffff;
+            color: $white;
             border-radius: 3px;
             margin-bottom: 22px;
             -webkit-user-select: none;
             user-select: none;
             cursor: pointer;
             &:hover {
-                background-color: #255bb9;
-                transition: background-color 0.3s;
+                background-color: $ta-blue-9;
+                transition: $transition;
             }
         }
         .logout {
             width: 180px;
             height: 42px;
-            color: #424242;
+            color: $ta-black;
             font-weight: 700;
             font-size: 14px;
             cursor: pointer;
@@ -218,9 +220,9 @@
             align-items: center;
             justify-content: center;
             &:hover {
-                transition: all 0.3s;
-                background: rgba(238, 238, 238, 1);
-                color: rgba(244, 67, 54, 1);
+                transition: $transition;
+                background: $bw2;
+                color: $ta-red-3;
             }
         }
     }
@@ -250,12 +252,12 @@
         transform: scale(0.6);
         bottom: 8px;
         .text {
-            color: #424242;
+            color: $ta-black;
             font-size: 14px;
             font-weight: 400;
         }
         .time {
-            color: #424242;
+            color: $ta-black;
             font-size: 14px;
             font-weight: 700;
         }

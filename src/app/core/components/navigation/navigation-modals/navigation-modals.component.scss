@@ -243,6 +243,12 @@
         }
     }
 }
+@media only screen and (max-height: 950px) {
+    .modal-media-query-height {
+        height: 700px !important;
+        overflow-y: scroll;
+    }
+}
 @media only screen and (max-height: 800px) {
     .modal-media-query-height {
         height: 500px !important;

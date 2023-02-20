@@ -2,14 +2,14 @@
     *ngIf="isNavItemHovered && isActiveSubroute && !route.isRouteActive"
     class="nav-item-hover"
     [ngClass]="{
-        'route-hover': isNavigationHovered
+        'route-hover': navigationIsOpened
     }"
 ></div>
 <div
     class="{{ class }}"
     class="nav-item"
     [ngClass]="{
-        'nav-width': isNavigationHovered,
+        'nav-width': navigationIsOpened,
         'nav-item-parent-active':
             selectedRoute == route.name && !subrouteContainerOpened,
         'disable-cursor':
@@ -23,7 +23,7 @@
 >
     <div
         class="tooltip-right"
-        [ngClass]="{ 'hide-tooltip': isNavigationHovered }"
+        [ngClass]="{ 'hide-tooltip': navigationIsOpened }"
     >
         <app-tooltip-slide
             [show]="showToolTip"
@@ -37,7 +37,7 @@
                     footerRouteActive ||
                     route.isSubrouteActive) &&
                 footerRouteActive &&
-                !isNavigationHovered &&
+                !navigationIsOpened &&
                 !isSettingsPanelOpen &&
                 !isUserPanelOpen &&
                 selectedRoute == route.name &&
@@ -61,9 +61,9 @@
                 !isUserPanelOpen,
             'nav-item-svg-active': selectedRoute == route.name,
             'route-not-active-svg':
-                route.construction == true && isNavigationHovered,
+                route.construction == true && navigationIsOpened,
             'route-closed-nav-svg-not-active':
-                route.construction == true && !isNavigationHovered
+                route.construction == true && !navigationIsOpened
         }"
     ></svg-icon>
 
@@ -71,8 +71,8 @@
         <svg-icon
             class="{{ class }}"
             [ngClass]="{
-                'notification-light': !isNavigationHovered,
-                'notification-dark': isNavigationHovered
+                'notification-light': !navigationIsOpened,
+                'notification-dark': navigationIsOpened
             }"
             class="notification-img"
             src="../../../../../assets/svg/applicant/notification-light.svg"
@@ -82,7 +82,7 @@
     <div
         class="{{ class }}"
         class="nav-item-rightSide"
-        [@showHideDetails]="isNavigationHovered ? 'true' : 'false'"
+        [@showHideDetails]="navigationIsOpened ? 'true' : 'false'"
     >
         <p
             class="nav-item-name"
@@ -101,7 +101,7 @@
                 'route-name-files': files,
                 'route-name-message': message
             }"
-            [@showHideDetails]="isNavigationHovered ? 'true' : 'false'"
+            [@showHideDetails]="navigationIsOpened ? 'true' : 'false'"
         >
             {{ route.name }}
             <!-- prettier-ignore -->
@@ -112,7 +112,7 @@
                      route.id == activeRouteIdFromLocalStorage && !activeLinkHighlight 
                      && activeRouteName != 'notifications' 
                 "
-                [ngClass]="{'animation-text': isNavigationHovered}"
+                [ngClass]="{'animation-text': navigationIsOpened}"
             >   
                 &nbsp;[{{ activeRouteName | titlecase }}]
             </span>
@@ -120,7 +120,7 @@
         <div
             class="message"
             *ngIf="message"
-            [@showHideDetails]="isNavigationHovered ? 'true' : 'false'"
+            [@showHideDetails]="navigationIsOpened ? 'true' : 'false'"
         >
             <span>
                 {{ message }}
@@ -129,7 +129,7 @@
         <div
             *ngIf="files"
             class="files"
-            [@showHideDetails]="isNavigationHovered ? 'true' : 'false'"
+            [@showHideDetails]="navigationIsOpened ? 'true' : 'false'"
         >
             <span>{{ files }}% full</span>
             <svg-icon src="assets/svg/common/ic_danger_white.svg"></svg-icon>
@@ -145,13 +145,13 @@
                     !isUserPanelOpen,
 
                 'nav-item-arrow-first': route.id === 3,
-                'nav-openend-svg': isNavigationHovered
+                'nav-openend-svg': navigationIsOpened
             }"
             *ngIf="route.arrow"
             src="{{ route.arrow }}"
         ></svg-icon>
         <svg-icon
-            *ngIf="isNavigationHovered && !route.arrow && !message && !files"
+            *ngIf="navigationIsOpened && !route.arrow && !message && !files"
             class="nav-item-arrow_top"
             src="assets/svg/common/arrow_top_right.svg"
             (click)="openLinkInNewWindow(route.route); $event.stopPropagation()"
