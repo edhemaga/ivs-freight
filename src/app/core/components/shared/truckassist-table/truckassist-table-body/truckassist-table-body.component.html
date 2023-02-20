@@ -9,12 +9,12 @@
                 activeAttachment !== -1 ||
                 activeMedia !== -1 ||
                 activeInsurance !== -1
-                    ? viewData.length * 32 +
+                    ? viewData.length * 34 +
                       (viewData.length - 1) * 2 +
                       22 +
                       300 +
                       7
-                    : viewData.length * 32 + (viewData.length - 1) * 2 + 22 + 7
+                    : viewData.length * 34 + (viewData.length - 1) * 2 + 22 + 7
             "
             (scrollEvent)="onHorizontalScroll($event)"
         >
@@ -4246,7 +4246,8 @@ highlightingWords) : '' " -->
 
 <!-- DROPDOWN -->
 <ng-template #dropdownPopover let-data="data">
-    <div class="table-dropdown">
+    <!-- Old Dropdown (Delete After New Is Implemented On Every Table) -->
+    <div class="table-dropdown" *ngIf="!data.hasContent">
         <div
             (click)="onDropAction(action)"
             *ngFor="let action of data"
@@ -4257,6 +4258,46 @@ highlightingWords) : '' " -->
                 <div [class]="action.contentType"></div>
             </div>
             <div class="dropdown-content-text">{{ action.title }}</div>
+        </div>
+    </div>
+
+    <!-- New Dropdown -->
+    <div class="table-list-dropdown">
+        <div
+            class="table-list-dropdown-content-container"
+            *ngFor="let action of data.content"
+        >
+            <!-- Regular Action -->
+            <div
+                class="table-list-dropdown-content"
+                (click)="onDropAction(action)"
+                [ngClass]="{
+                    'table-list-dropdown-content-muted': action.mutedStyle
+                }"
+                [ngStyle]="action.tableListDropdownContentStyle"
+            >
+                <div class="table-list-dropdown-content-text">
+                    {{ action.title }}
+                </div>
+                <svg-icon
+                    *ngIf="action.svgUrl"
+                    [class]="action.svgClass"
+                    class="table-list-dropdown-content-icon"
+                    [src]="action.svgUrl"
+                    [svgStyle]="{
+                        'width.px': action.svgStyle.width,
+                        'height.px': action.svgStyle.height
+                    }"
+                ></svg-icon>
+            </div>
+
+            <!-- Regular Border -->
+            <div
+                class="table-list-dropdown-border-container"
+                *ngIf="action.hasBorder"
+            >
+                <div class="table-list-dropdown-border"></div>
+            </div>
         </div>
     </div>
 </ng-template>
