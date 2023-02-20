@@ -210,10 +210,12 @@ export class TaModalComponent implements OnInit, OnDestroy {
     @HostListener('body:dragenter', ['$event'])
     onWindowDragEnter(event: any): void {
         event.preventDefault();
-        if (this.dropZoneCounter < 1 && !this.isLeaveZone) {
-            this.dropZoneCounter++;
+        if (!event.fromElement) {
+            if (this.dropZoneCounter < 1 && !this.isLeaveZone) {
+                this.dropZoneCounter++;
+            }
+            this.isDropZoneVisible = true;
         }
-        this.isDropZoneVisible = true;
     }
 
     @HostListener('body:dragleave', ['$event'])
