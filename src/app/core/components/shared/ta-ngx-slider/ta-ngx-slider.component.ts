@@ -7,7 +7,6 @@ import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-import { NgxSliderModule } from '@angular-slider/ngx-slider';
 import { Ng5SliderModule } from 'ng5-slider';
 
 @Component({
@@ -15,9 +14,6 @@ import { Ng5SliderModule } from 'ng5-slider';
     templateUrl: './ta-ngx-slider.component.html',
     styleUrls: ['./ta-ngx-slider.component.scss'],
     standalone: true,
-<<<<<<< HEAD
-    imports: [CommonModule, FormsModule, NgxSliderModule],
-=======
     imports: [
         CommonModule,
         FormsModule,
@@ -25,7 +21,6 @@ import { Ng5SliderModule } from 'ng5-slider';
         NgxSliderModule,
         Ng5SliderModule,
     ],
->>>>>>> dev-14
 })
 export class TaNgxSliderComponent {
     @Input() sliderTemplate: string = 'commission';

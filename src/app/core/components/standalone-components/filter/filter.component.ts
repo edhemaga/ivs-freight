@@ -51,7 +51,6 @@ import { TaTabSwitchComponent } from '../ta-tab-switch/ta-tab-switch.component';
     selector: 'app-filter',
     standalone: true,
     imports: [
-<<<<<<< HEAD
         CommonModule,
         AngularSvgIconModule,
         FormsModule,
@@ -65,24 +64,8 @@ import { TaTabSwitchComponent } from '../ta-tab-switch/ta-tab-switch.component';
         TaNgxSliderComponent,
         NgbModule,
         AutoclosePopoverComponent,
+        TaTabSwitchComponent,
         NgxSliderModule,
-=======
-            CommonModule, 
-            AngularSvgIconModule, 
-            FormsModule,
-            ReactiveFormsModule,
-            AutoclosePopoverComponent, 
-            AppTooltipComponent, 
-            TaSvgPipe, 
-            ProfileImagesComponent,
-            TaInputComponent,
-            InputAddressDropdownComponent,
-            TaNgxSliderComponent,
-            NgbModule,
-            AutoclosePopoverComponent,
-            TaTabSwitchComponent,
-            
->>>>>>> dev-14
     ],
     templateUrl: './filter.component.html',
     styleUrls: ['./filter.component.scss'],
@@ -2674,11 +2657,6 @@ export class FilterComponent implements OnInit, AfterViewInit {
                 subType: subType,
             };
 
-<<<<<<< HEAD
-            console.log('--data--', data);
-
-=======
->>>>>>> dev-14
             if (this.setFilter) {
                 this.setFilter.emit(data);
             }
