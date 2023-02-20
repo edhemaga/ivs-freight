@@ -43,12 +43,12 @@ import { TaTabSwitchComponent } from '../../standalone-components/ta-tab-switch/
         CommonModule,
         CustomScrollbarComponent,
         TaUploadDropzoneComponent,
-        TaTabSwitchComponent,
         FormsModule,
         DragDropModule,
         AppTooltipComponent,
         AngularSvgIconModule,
         TaSpinnerComponent,
+        TaTabSwitchComponent,
     ],
     animations: [
         trigger('widthGrow', [

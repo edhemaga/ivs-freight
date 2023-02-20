@@ -82,11 +82,15 @@ export class TrailerDetailsCardComponent
         this.initTableOptions();
         this.getTrailerDropdown();
 
-        let currentIndex = this.trailer_list.findIndex(
-            (trailer) => trailer.id === this.trailer.id
-        );
+
+        setTimeout(()=>{
+            let currentIndex = this.trailerDropDowns.findIndex(
+                (trailer) => trailer.id === this.trailer.id
+            );
+            
+            this.trailerIndex = currentIndex;
+        }, 300)
         
-        this.trailerIndex = currentIndex;
     }
 
     public getTrailerById(id: number) {
@@ -158,6 +162,10 @@ export class TrailerDetailsCardComponent
                     active: item.id === this.trailer.id,
                 };
             });
+
+        this.trailerDropDowns = this.trailerDropDowns.sort(
+            (x, y) => Number(y.status) - Number(x.status)
+        );
     }
     public onSelectedTrailer(event: any) {
         
@@ -175,11 +183,15 @@ export class TrailerDetailsCardComponent
                     };
                 });
             this.detailsPageDriverSer.getDataDetailId(event.id);
+
+            this.trailerDropDowns = this.trailerDropDowns.sort(
+                (x, y) => Number(y.status) - Number(x.status)
+            );
         }
     }
     public onChangeTrailer(action: string) {
         
-        let currentIndex = this.trailer_list.findIndex(
+        let currentIndex = this.trailerDropDowns.findIndex(
             (trailer) => trailer.id === this.trailer.id
         );
 
@@ -188,10 +200,10 @@ export class TrailerDetailsCardComponent
                 currentIndex = --currentIndex;
                 if (currentIndex != -1) {
                     this.detailsPageDriverSer.getDataDetailId(
-                        this.trailer_list[currentIndex].id
+                        this.trailerDropDowns[currentIndex].id
                     );
                     this.onSelectedTrailer({
-                        id: this.trailer_list[currentIndex].id,
+                        id: this.trailerDropDowns[currentIndex].id,
                     });
                     this.trailerIndex = currentIndex;
                 }
@@ -201,13 +213,13 @@ export class TrailerDetailsCardComponent
                 currentIndex = ++currentIndex;
                 if (
                     currentIndex !== -1 &&
-                    this.trailer_list.length > currentIndex
+                    this.trailerDropDowns.length > currentIndex
                 ) {
                     this.detailsPageDriverSer.getDataDetailId(
-                        this.trailer_list[currentIndex].id
+                        this.trailerDropDowns[currentIndex].id
                     );
                     this.onSelectedTrailer({
-                        id: this.trailer_list[currentIndex].id,
+                        id: this.trailerDropDowns[currentIndex].id,
                     });
                     this.trailerIndex = currentIndex;
                 }

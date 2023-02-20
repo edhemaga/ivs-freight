@@ -10,13 +10,22 @@ import { FormsModule } from '@angular/forms';
 /* import {CroppieDirective} from "angular-croppie-module"; */
 import { Options } from 'ng5-slider';
 /* import Croppie from 'croppie'; */
+import { AngularSvgIconModule } from 'angular-svg-icon';
+import { NgxSliderModule } from '@angular-slider/ngx-slider';
+import { Ng5SliderModule } from 'ng5-slider';
 
 @Component({
     selector: 'app-edit-profile-image',
     templateUrl: './edit-profile-image.component.html',
     styleUrls: ['./edit-profile-image.component.scss'],
     standalone: true,
-    imports: [CommonModule, FormsModule],
+    imports: [
+        CommonModule,
+        FormsModule,
+        AngularSvgIconModule,
+        NgxSliderModule,
+        Ng5SliderModule,
+    ],
 })
 export class EditProfileImageComponent {
     @Input() src: string;

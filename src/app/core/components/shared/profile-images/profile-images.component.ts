@@ -1,7 +1,7 @@
 import { NameInitialsPipe } from './../../../pipes/nameinitials';
 import { Component, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AppTooltipComponent } from '../../standalone-components/app-tooltip/app-tooltip.component';
 
 @Component({
@@ -10,7 +10,7 @@ import { AppTooltipComponent } from '../../standalone-components/app-tooltip/app
     styleUrls: ['./profile-images.component.scss'],
     providers: [NameInitialsPipe],
     standalone: true,
-    imports: [CommonModule, FormsModule, AppTooltipComponent, NameInitialsPipe],
+    imports: [CommonModule, FormsModule, AppTooltipComponent, NameInitialsPipe, ReactiveFormsModule],
 })
 export class ProfileImagesComponent implements OnInit {
     textColors: string[] = [

@@ -53,7 +53,22 @@ import { TaInputDropdownLabelComponent } from '../../shared/ta-input-dropdown-la
     styleUrls: ['./contact-modal.component.scss'],
     providers: [ModalService, FormService],
     standalone: true,
-    imports: [CommonModule, FormsModule, AppTooltipComponent, TaModalComponent, TaTabSwitchComponent, ReactiveFormsModule, TaCustomCardComponent, TaCheckboxCardComponent, TaInputDropdownComponent, TaLogoChangeComponent, TaInputNoteComponent, TaInputComponent, InputAddressDropdownComponent, TaInputDropdownLabelComponent]
+    imports: [
+        CommonModule,
+        FormsModule,
+        AppTooltipComponent,
+        TaModalComponent,
+        TaTabSwitchComponent,
+        ReactiveFormsModule,
+        TaCustomCardComponent,
+        TaCheckboxCardComponent,
+        TaInputDropdownComponent,
+        TaLogoChangeComponent,
+        TaInputNoteComponent,
+        TaInputComponent,
+        InputAddressDropdownComponent,
+        TaInputDropdownLabelComponent
+    ],
 })
 export class ContactModalComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();

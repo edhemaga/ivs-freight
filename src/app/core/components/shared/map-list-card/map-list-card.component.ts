@@ -19,6 +19,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DetailsDropdownComponent } from '../details-page-dropdown/details-dropdown';
 import { AngularSvgIconModule } from 'angular-svg-icon';
+import { ProfileImagesComponent } from '../profile-images/profile-images.component';
 
 @Component({
     selector: 'app-map-list-card',
@@ -26,7 +27,14 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
     styleUrls: ['./map-list-card.component.scss'],
     providers: [TaThousandSeparatorPipe],
     standalone: true,
-    imports: [CommonModule, FormsModule, DetailsDropdownComponent, AngularSvgIconModule, ReactiveFormsModule],
+    imports: [
+        CommonModule,
+        FormsModule,
+        DetailsDropdownComponent,
+        AngularSvgIconModule,
+        ReactiveFormsModule,
+        ProfileImagesComponent
+    ],
 })
 export class MapListCardComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();

@@ -25,6 +25,8 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AppTooltipComponent } from '../../standalone-components/app-tooltip/app-tooltip.component';
 import { TaNgxSliderComponent } from '../ta-ngx-slider/ta-ngx-slider.component';
+import { AngularSvgIconModule } from 'angular-svg-icon';
+import { NgbModule, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
     selector: 'app-ta-logo-change',
@@ -38,6 +40,9 @@ import { TaNgxSliderComponent } from '../ta-ngx-slider/ta-ngx-slider.component';
         CroppieModule,
         TaUploadDropzoneComponent,
         TaNgxSliderComponent,
+        AngularSvgIconModule,
+        NgbModule,
+        NgbPopoverModule
     ],
 })
 export class TaLogoChangeComponent

@@ -55,7 +55,6 @@ import { TaInputNoteComponent } from '../../../shared/ta-input-note/ta-input-not
 import { ActiveItemsPipe } from 'src/app/core/pipes/activeItems.pipe';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { TaCopyComponent } from '../../../shared/ta-copy/ta-copy.component';
-import { formatPhonePipe } from '../../../../pipes/formatPhone.pipe';
 
 @Component({
     selector: 'app-repair-order-modal',
@@ -67,6 +66,7 @@ import { formatPhonePipe } from '../../../../pipes/formatPhone.pipe';
         CommonModule,
         FormsModule,
         AppTooltipComponent,
+        AppTooltipComponent,
         TaModalComponent,
         TaTabSwitchComponent,
         TaInputDropdownComponent,
@@ -75,11 +75,10 @@ import { formatPhonePipe } from '../../../../pipes/formatPhone.pipe';
         TaCustomCardComponent,
         TaUploadFilesComponent,
         TaInputNoteComponent,
-        TaCopyComponent,
-        formatPhonePipe,
         ActiveItemsPipe,
         NgbModule,
         AngularSvgIconModule,
+        TaCopyComponent,
     ],
 })
 export class RepairOrderModalComponent implements OnInit, OnDestroy {

@@ -37,6 +37,11 @@ export function getUsersColumnDefinition() {
             sortable: true,
             isActionColumn: false,
             isSelectColumn: false,
+            link: {
+                doesNotHaveRout: true,
+                routerLinkStart: '/list/user/',
+                routerLinkEnd: '/details',
+            },
             progress: null,
             hoverTemplate: null,
             filterable: true,

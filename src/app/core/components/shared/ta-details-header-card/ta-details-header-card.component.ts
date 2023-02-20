@@ -17,7 +17,7 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 import { DetailsActiveItemPipe } from 'src/app/core/pipes/detailsActiveItem.pipe';
 import { TaInputDropdownComponent } from '../ta-input-dropdown/ta-input-dropdown.component';
 import { DetailsDropdownComponent } from '../details-page-dropdown/details-dropdown';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModule, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
     selector: 'app-ta-details-header-card',
@@ -33,7 +33,9 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
         AngularSvgIconModule,
         DetailsActiveItemPipe,
         TaInputDropdownComponent,
-        DetailsDropdownComponent
+        DetailsDropdownComponent,
+        NgbPopoverModule,
+        NgbModule
     ],
 })
 export class TaDetailsHeaderCardComponent implements OnInit, OnChanges {

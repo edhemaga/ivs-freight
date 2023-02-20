@@ -31,7 +31,12 @@ import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
     encapsulation: ViewEncapsulation.None,
     changeDetection: ChangeDetectionStrategy.OnPush,
     standalone: true,
-    imports: [CommonModule, FormsModule, AngularSvgIconModule, NgbPopoverModule],
+    imports: [
+        CommonModule,
+        FormsModule,
+        AngularSvgIconModule,
+        NgbPopoverModule,
+    ],
     animations: [
         trigger('SubtypeAnimation', [
             state(
@@ -193,7 +198,7 @@ export class DetailsDropdownComponent implements OnInit, OnChanges, OnDestroy {
         return options;
     };
 
-    ngOnDestroy(){
+    ngOnDestroy() {
         this.tooltip?.close();
     }
 }
