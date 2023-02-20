@@ -45,6 +45,7 @@ import { SumArraysPipe } from '../../pipes/sum-arrays.pipe';
 import { TaInputDropdownComponent } from '../shared/ta-input-dropdown/ta-input-dropdown.component';
 import { TaInputArrowsComponent } from '../shared/ta-input-arrows/ta-input-arrows.component';
 import { RouterModule } from '@angular/router';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
     declarations: [
@@ -84,6 +85,7 @@ import { RouterModule } from '@angular/router';
         ReactiveFormsModule,
         SharedModule,
         AngularSignaturePadModule,
+        NgbModule,
         AppTooltipComponent,
         TaCheckboxComponent,
         TaInputRadiobuttonsComponent,

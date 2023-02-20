@@ -19,6 +19,7 @@ import { TaInputNoteComponent } from '../shared/ta-input-note/ta-input-note.comp
 import { TaReCardComponent } from '../shared/ta-common-card/ta-re-card.component';
 import { TruckassistProgressExpirationComponent } from '../shared/truckassist-progress-expiration/truckassist-progress-expiration.component';
 import { TaCounterComponent } from '../shared/ta-counter/ta-counter.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 @NgModule({
     declarations: [DriverTableComponent, DriverCardComponent],
 
@@ -27,6 +28,7 @@ import { TaCounterComponent } from '../shared/ta-counter/ta-counter.component';
         DriverRoutingModule,
         AngularSvgIconModule,
         SharedModule,
+        NgbModule,
         AppTooltipComponent,
         TruckassistTableToolbarComponent,
         TruckassistTableBodyComponent, 

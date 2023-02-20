@@ -17,6 +17,7 @@ import { FormsModule } from '@angular/forms';
 import { AppTooltipComponent } from '../../standalone-components/app-tooltip/app-tooltip.component';
 import { ProfileImagesComponent } from '../profile-images/profile-images.component';
 import { AngularSvgIconModule } from 'angular-svg-icon';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 export interface ReviewCommentModal {
     sortData: any[];
@@ -36,6 +37,7 @@ export interface ReviewCommentModal {
         AngularSvgIconModule,
         AppTooltipComponent,
         ProfileImagesComponent,
+        NgbModule
         
     ],
 })
