@@ -138,6 +138,8 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
             .subscribe((res: any) => {
                 // On Add Driver Active
                 if (res.animation === 'add') {
+                    this.mapingIndex = 0;
+
                     this.viewData.push(this.mapUserData(res.data));
 
                     this.viewData = this.viewData.map((user: any) => {
@@ -158,6 +160,30 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
                         clearInterval(inetval);
                     }, 2300);
+                }
+                // On Update User
+                else if (res.animation === 'update') {
+                    this.mapingIndex = 0;
+
+                    const updatedDriver = this.mapUserData(res.data);
+
+                    this.viewData = this.viewData.map((user: any) => {
+                        if (user.id === res.id) {
+                            user = updatedDriver;
+                            user.actionAnimation = 'update';
+                        }
+
+                        return user;
+                    });
+
+                    const inetval = setInterval(() => {
+                        this.viewData = closeAnimationAction(
+                            false,
+                            this.viewData
+                        );
+
+                        clearInterval(inetval);
+                    }, 1000);
                 }
                 // On Update User Status
                 else if (res.animation === 'update-status') {
