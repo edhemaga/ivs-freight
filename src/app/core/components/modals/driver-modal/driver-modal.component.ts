@@ -62,6 +62,7 @@ import { TaInputNoteComponent } from '../../shared/ta-input-note/ta-input-note.c
 import { TaCheckboxCardComponent } from '../../shared/ta-checkbox-card/ta-checkbox-card.component';
 import { TaInputDropdownComponent } from '../../shared/ta-input-dropdown/ta-input-dropdown.component';
 import { TaLogoChangeComponent } from '../../shared/ta-logo-change/ta-logo-change.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
     selector: 'app-driver-modal',
@@ -73,6 +74,7 @@ import { TaLogoChangeComponent } from '../../shared/ta-logo-change/ta-logo-chang
     imports: [
             CommonModule, 
             FormsModule, 
+            NgbModule,
             AppTooltipComponent, 
             TaModalComponent, 
             TaTabSwitchComponent, 
@@ -86,7 +88,7 @@ import { TaLogoChangeComponent } from '../../shared/ta-logo-change/ta-logo-chang
             TaInputNoteComponent,
             TaCheckboxCardComponent,
             TaInputDropdownComponent,
-            TaLogoChangeComponent
+            TaLogoChangeComponent,
     ]
 
 })

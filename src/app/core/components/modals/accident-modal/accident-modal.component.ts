@@ -25,6 +25,7 @@ import { TaCustomCardComponent } from '../../shared/ta-custom-card/ta-custom-car
 import { TaInputDropdownComponent } from '../../shared/ta-input-dropdown/ta-input-dropdown.component';
 import { TaUploadFilesComponent } from '../../shared/ta-upload-files/ta-upload-files.component';
 import { TaInputNoteComponent } from '../../shared/ta-input-note/ta-input-note.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
     selector: 'app-accident-modal',
@@ -36,6 +37,7 @@ import { TaInputNoteComponent } from '../../shared/ta-input-note/ta-input-note.c
     imports: [
                 CommonModule, 
                 FormsModule, 
+                NgbModule,
                 AppTooltipComponent, 
                 TaModalComponent, 
                 TaTabSwitchComponent, 

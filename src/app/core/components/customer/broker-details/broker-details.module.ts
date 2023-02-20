@@ -18,6 +18,7 @@ import { formatCurrency } from 'src/app/core/pipes/formatCurrency.pipe';
 import { formatEinPipe } from 'src/app/core/pipes/formatEin.pipe';
 import { formatDatePipe } from 'src/app/core/pipes/formatDate.pipe';
 import { TaCommonHeaderComponent } from '../../shared/ta-details-header/ta-details-header.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 
 @NgModule({
@@ -32,6 +33,7 @@ import { TaCommonHeaderComponent } from '../../shared/ta-details-header/ta-detai
         BrokerDetailsRoutes,
         SharedModule,
         TaChartComponent,
+        NgbModule,
         AppTooltipComponent,
         TaDetailsHeaderCardComponent,
         TaCopyComponent,

@@ -20,6 +20,7 @@ import { TaTabSwitchComponent } from '../../standalone-components/ta-tab-switch/
 import { TaReCardComponent } from '../../shared/ta-common-card/ta-re-card.component';
 import { TaCopyComponent } from '../../shared/ta-copy/ta-copy.component';
 import { formatDatePipe } from 'src/app/core/pipes/formatDate.pipe';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
     imports: [
@@ -27,6 +28,7 @@ import { formatDatePipe } from 'src/app/core/pipes/formatDate.pipe';
         ReactiveFormsModule,
         SettingsLocationRoutes,
         AppTooltipComponent,
+        NgbModule,
         TaCounterComponent,
         AngularSvgIconModule,
         TaModalComponent,
