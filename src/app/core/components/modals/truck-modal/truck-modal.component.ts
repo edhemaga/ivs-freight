@@ -55,6 +55,7 @@ import { TaCustomCardComponent } from '../../shared/ta-custom-card/ta-custom-car
 import { TaUploadFilesComponent } from '../../shared/ta-upload-files/ta-upload-files.component';
 import { TaInputNoteComponent } from '../../shared/ta-input-note/ta-input-note.component';
 import { TaCheckboxComponent } from '../../shared/ta-checkbox/ta-checkbox.component';
+import { TaNgxSliderComponent } from '../../shared/ta-ngx-slider/ta-ngx-slider.component';
 
 @Component({
     selector: 'app-truck-modal',
@@ -76,7 +77,8 @@ import { TaCheckboxComponent } from '../../shared/ta-checkbox/ta-checkbox.compon
             TaCustomCardComponent,
             TaUploadFilesComponent,
             TaInputNoteComponent,
-            TaCheckboxComponent
+            TaCheckboxComponent,
+            TaNgxSliderComponent
     ]
 })
 export class TruckModalComponent implements OnInit, OnDestroy {

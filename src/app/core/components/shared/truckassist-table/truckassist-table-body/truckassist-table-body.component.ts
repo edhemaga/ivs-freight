@@ -48,7 +48,7 @@ import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
         AngularSvgIconModule,
         TaNoteComponent,
         TaUploadFilesComponent,
-        NgbPopoverModule,
+        NgbPopoverModule
     ],
     providers: [
         {
@@ -95,6 +95,7 @@ export class TruckassistTableBodyComponent
     rowData: any;
     activeDescriptionDropdown: number = -1;
     descriptionTooltip: any;
+    descriptionPopoverOpen: boolean = false;
     pageHeight: number = window.innerHeight;
     activeAttachment: number = -1;
     activeMedia: number = -1;
@@ -441,13 +442,16 @@ export class TruckassistTableBodyComponent
             this.notPinedMaxWidth =
                 tableContainer.clientWidth -
                 (this.pinedWidth + this.actionsWidth) -
-                12;
+                14;
 
             this.changeDetectorRef.detectChanges();
 
             this.tableWidthTimeout = setTimeout(() => {
                 const table = document.querySelector('.table-tr');
+                
                 this.tableWidth = table?.clientWidth ? table.clientWidth : 0;
+
+                this.changeDetectorRef.detectChanges();
             }, 100);
         }
     }
@@ -583,7 +587,7 @@ export class TruckassistTableBodyComponent
     }
 
     // Show Description Dropdown
-    onShowDescriptionDropdown(popup: any, row: any) {
+    onShowDescriptionDropdown(popup: any, row: any, column: any) {
         this.descriptionTooltip = popup;
 
         if (popup.isOpen()) {

@@ -16,7 +16,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Subject, takeUntil } from 'rxjs';
 import { TruckassistTableService } from '../../../../services/truckassist-table/truckassist-table.service';
 import { AngularSvgIconModule } from 'angular-svg-icon';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModule, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 import { ResizeColumnDirective } from 'src/app/core/directives/resize-column.directive';
 
 const rotate: { [key: string]: any } = {
@@ -37,7 +37,8 @@ const rotate: { [key: string]: any } = {
         AngularSvgIconModule,
         NgbModule,
         ResizeColumnDirective,
-        DragDropModule 
+        DragDropModule,
+        NgbPopoverModule
     ],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -238,7 +239,7 @@ export class TruckassistTableHeadComponent
             this.notPinedMaxWidth =
                 tableContainer.clientWidth -
                 (this.pinedWidth + this.actionsWidth) -
-                12;
+                14;
 
             this.changeDetectorRef.detectChanges();
         }

@@ -6,16 +6,30 @@ import {
     OnChanges,
     SimpleChanges,
 } from '@angular/core';
-import { FormsModule, UntypedFormGroup } from '@angular/forms';
+import {
+    FormsModule,
+    UntypedFormGroup,
+    ReactiveFormsModule,
+} from '@angular/forms';
 import { OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { CustomScrollbarComponent } from '../custom-scrollbar/custom-scrollbar.component';
+import { AngularSignaturePadModule } from '@almothafar/angular-signature-pad';
+import { TaInputComponent } from '../ta-input/ta-input.component';
 
 @Component({
     selector: 'app-table-modal',
     templateUrl: './table-modal.component.html',
     styleUrls: ['./table-modal.component.scss'],
     standalone: true,
-    imports: [CommonModule, FormsModule],
+    imports: [
+        CommonModule,
+        ReactiveFormsModule,
+        FormsModule,
+        CustomScrollbarComponent,
+        AngularSignaturePadModule,
+        TaInputComponent
+    ],
 })
 export class TableModalComponent implements OnInit, OnChanges, OnDestroy {
     @Input() columns: any[];

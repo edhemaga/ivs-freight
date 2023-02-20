@@ -16,6 +16,7 @@ import { SharedService } from '../../../services/shared/shared.service';
 import { AfterViewInit, OnChanges } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import {ObserversModule} from '@angular/cdk/observers';
 
 let hasTablePageHeight = false;
 @Component({
@@ -23,7 +24,7 @@ let hasTablePageHeight = false;
     templateUrl: './custom-scrollbar.component.html',
     styleUrls: ['./custom-scrollbar.component.scss'],
     standalone: true,
-    imports: [FormsModule, CommonModule]
+    imports: [FormsModule, CommonModule, ObserversModule]
 })
 export class CustomScrollbarComponent
     implements OnInit, OnChanges, AfterViewInit, OnDestroy

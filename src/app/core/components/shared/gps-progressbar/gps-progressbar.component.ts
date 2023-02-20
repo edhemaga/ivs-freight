@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
 @Component({
@@ -8,7 +8,7 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
     templateUrl: './gps-progressbar.component.html',
     styleUrls: ['./gps-progressbar.component.scss'],
     standalone: true,
-    imports: [CommonModule, FormsModule, AngularSvgIconModule],
+    imports: [CommonModule, FormsModule, AngularSvgIconModule, ReactiveFormsModule],
 })
 export class GpsProgressbarComponent implements OnInit {
     constructor() {}
