@@ -382,15 +382,15 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
     public truckIndex: any;
     public revenueCall: any = {
         id: -1,
-        chartType: -1,
+        chartType: 1,
     };
     public expensesCall: any = {
         id: -1,
-        chartType: -1,
+        chartType: 1,
     };
     public fuelCall: any = {
         id: -1,
-        chartType: -1,
+        chartType: 1,
     };
     constructor(
         private detailsPageDriverSer: DetailsPageService,
@@ -403,13 +403,21 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
             this.noteControl.patchValue(changes.truck.currentValue.note);
             this.getTruckDropdown();
         }
-        this.getExpensesChartData(changes.truck.currentValue.id, 1, false);
-        this.getFuelConsumtionChartData(
+        this.getExpensesChartData(
             changes.truck.currentValue.id,
-            1,
+            this.expensesCall.chartType,
             false
         );
-        this.getRevenueChartData(changes.truck.currentValue.id, 1, false);
+        this.getFuelConsumtionChartData(
+            changes.truck.currentValue.id,
+            this.fuelCall.chartType,
+            false
+        );
+        this.getRevenueChartData(
+            changes.truck.currentValue.id,
+            this.revenueCall.chartType,
+            false
+        );
 
         this.changeColor();
         this.truckMinimalListQuery
@@ -786,14 +794,14 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
                 ? item.milesPerGallon
                 : item?.miles
                 ? item.miles
-                : null,
+                : 0,
             item?.repairCost
                 ? item.repairCost
                 : item?.costPerGallon
                 ? item.costPerGallon
                 : item?.revenue
                 ? item.revenue
-                : null,
+                : 0,
             item?.totalCost ? item.totalCost : null,
         ];
 
@@ -802,12 +810,12 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
                 ? item.fuelCost
                 : item?.milesPerGallon
                 ? item.milesPerGallon
-                : null;
+                : 0;
             legend[1].value = item?.repairCost
                 ? item.repairCost
                 : item?.costPerGallon
                 ? item.costPerGallon
-                : null;
+                : 0;
             legend[2].value = item?.totalCost ? item.totalCost : null;
         } else {
             legend[0].value = item?.fuelCost
@@ -816,14 +824,14 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
                 ? item.milesPerGallon
                 : item?.miles
                 ? item.miles
-                : null;
+                : 0;
             legend[1].value = item?.repairCost
                 ? item.repairCost
                 : item?.costPerGallon
                 ? item.costPerGallon
                 : item?.revenue
                 ? item.revenue
-                : null;
+                : 0;
         }
 
         let fuelCost = [],

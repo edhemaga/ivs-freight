@@ -9,14 +9,14 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { TimeSpan } from './timeSpan';
 
 
-export type GpsMotionStatus = 'MOTION' | 'SHORT_STOP' | 'EXTENDED_STOP' | 'PARKING';
-
-export const GpsMotionStatus = {
-    Motion: 'MOTION' as GpsMotionStatus,
-    ShortStop: 'SHORT_STOP' as GpsMotionStatus,
-    ExtendedStop: 'EXTENDED_STOP' as GpsMotionStatus,
-    Parking: 'PARKING' as GpsMotionStatus
-};
+export interface ShipperAverageWaitingTimeChartResponse { 
+    avgPickupTime?: TimeSpan;
+    avgDeliveryTime?: TimeSpan;
+    day?: number | null;
+    month?: number | null;
+    year?: number | null;
+}
 

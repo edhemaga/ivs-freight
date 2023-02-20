@@ -462,6 +462,10 @@ export class ShipperTService implements OnDestroy {
         });
     }
 
+    public getShipperChart(id: number, chartType: number) {
+        return this.shipperService.apiShipperAveragewaitingtimeGet(id, chartType);
+    }
+
     ngOnDestroy(): void {
         this.destroy$.next();
         this.destroy$.complete();

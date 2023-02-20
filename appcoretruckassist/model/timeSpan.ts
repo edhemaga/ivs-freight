@@ -11,12 +11,17 @@
  */
 
 
-export type GpsMotionStatus = 'MOTION' | 'SHORT_STOP' | 'EXTENDED_STOP' | 'PARKING';
-
-export const GpsMotionStatus = {
-    Motion: 'MOTION' as GpsMotionStatus,
-    ShortStop: 'SHORT_STOP' as GpsMotionStatus,
-    ExtendedStop: 'EXTENDED_STOP' as GpsMotionStatus,
-    Parking: 'PARKING' as GpsMotionStatus
-};
+export interface TimeSpan { 
+    ticks?: number;
+    days?: number;
+    hours?: number;
+    milliseconds?: number;
+    minutes?: number;
+    seconds?: number;
+    readonly totalDays?: number;
+    readonly totalHours?: number;
+    readonly totalMilliseconds?: number;
+    readonly totalMinutes?: number;
+    readonly totalSeconds?: number;
+}
 
