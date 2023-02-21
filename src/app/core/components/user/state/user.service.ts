@@ -1,7 +1,10 @@
 import { Injectable } from '@angular/core';
 import {
+    AccountService,
     CompanyUserService,
+    ForgotPasswordCommand,
     GetCompanyUserListResponse,
+    ResendSignUpCompanyOrUserCommand,
 } from 'appcoretruckassist';
 import { Observable, tap } from 'rxjs';
 import { CompanyUserModalResponse } from '../../../../../../appcoretruckassist/model/companyUserModalResponse';
@@ -19,6 +22,7 @@ import { UserQuery } from './user-state/user.query';
 export class UserTService {
     constructor(
         private userService: CompanyUserService,
+        private accountUserService: AccountService,
         private tableService: TruckassistTableService,
         private userStore: UserStore,
         private userQuery: UserQuery
@@ -180,6 +184,14 @@ export class UserTService {
                 });
             })
         );
+    }
+
+    public userResendIvitation(email: ResendSignUpCompanyOrUserCommand): Observable<any> {
+        return this.accountUserService.apiAccountResendsignupcompanyoruserPut(email);
+    }
+
+    public userResetPassword(email: ForgotPasswordCommand): Observable<any> {
+        return this.accountUserService.apiAccountForgotpasswordPut(email);
     }
 
     public getModalDropdowns(): Observable<CompanyUserModalResponse> {

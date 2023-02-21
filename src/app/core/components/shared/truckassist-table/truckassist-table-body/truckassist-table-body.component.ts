@@ -149,7 +149,10 @@ export class TruckassistTableBodyComponent
                     this.mySelection = [];
 
                     this.viewData = this.viewData.map((data) => {
-                        data.isSelected = isSelect;
+                        // If For User Table, To Not Select User Owner Row
+                        data.isSelected = !data?.tableIsUserOwner
+                            ? isSelect
+                            : false;
 
                         if (data.isSelected) {
                             this.mySelection.push({ id: data.id });
@@ -618,12 +621,15 @@ export class TruckassistTableBodyComponent
             this.viewData = [...viewData];
         }
 
-        // Send Drop Action
-        this.bodyActions.emit({
-            id: this.dropDownActive,
-            data: this.rowData,
-            type: action.name,
-        });
+        // Only If Action Is Not Muted
+        if (!action?.mutedStyle) {
+            // Send Drop Action
+            this.bodyActions.emit({
+                id: this.dropDownActive,
+                data: this.rowData,
+                type: action.name,
+            });
+        }
 
         this.tooltip.close();
     }

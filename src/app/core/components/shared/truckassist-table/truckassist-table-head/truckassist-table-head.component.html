@@ -33,7 +33,7 @@
             >
                 <!-- Selected Row Count -->
                 <div
-                    *ngIf="column.ngTemplate === 'checkbox'"
+                    *ngIf="column.ngTemplate === 'checkbox' || column.ngTemplate === 'user-checkbox'"
                     class="selected-rows-count"
                     #op="ngbPopover"
                     (click)="onSelectedOptions(op)"
