@@ -73,7 +73,7 @@ import { TaTabSwitchComponent } from '../ta-tab-switch/ta-tab-switch.component';
                 'true',
                 style({
                     height: '*',
-                    overflow: 'visible',
+                    //overflow: 'visible',
                     opacity: 1,
                 })
             ),
@@ -81,7 +81,7 @@ import { TaTabSwitchComponent } from '../ta-tab-switch/ta-tab-switch.component';
                 'false',
                 style({
                     height: '0px',
-                    overflow: 'hidden',
+                    //overflow: 'hidden',
                     'margin-top': '0px',
                     opacity: 0,
                 })
@@ -99,7 +99,7 @@ import { TaTabSwitchComponent } from '../ta-tab-switch/ta-tab-switch.component';
             state('in', style({ opacity: 1, scale: 1, height: '28px' })),
             transition(':enter', [
                 animate(
-                    100,
+                    3100,
                     keyframes([
                         style({
                             opacity: 0,
@@ -136,7 +136,7 @@ import { TaTabSwitchComponent } from '../ta-tab-switch/ta-tab-switch.component';
             ]),
             transition(':leave', [
                 animate(
-                    100,
+                    3100,
                     keyframes([
                         style({
                             opacity: 1,
@@ -176,7 +176,7 @@ import { TaTabSwitchComponent } from '../ta-tab-switch/ta-tab-switch.component';
             state('in', style({ opacity: 1, height: '*' })),
             transition(':enter', [
                 animate(
-                    100,
+                    3100,
                     keyframes([
                         style({ opacity: 0, offset: 0, height: '0px' }),
                         style({ opacity: 1, offset: 1, height: '*' }),
@@ -185,7 +185,7 @@ import { TaTabSwitchComponent } from '../ta-tab-switch/ta-tab-switch.component';
             ]),
             transition(':leave', [
                 animate(
-                    100,
+                    3100,
                     keyframes([
                         style({ opacity: 1, offset: 0 }),
                         style({ opacity: 0, offset: 1, height: '0px' }),
@@ -213,14 +213,14 @@ import { TaTabSwitchComponent } from '../ta-tab-switch/ta-tab-switch.component';
             state(
                 'null',
                 style({
-                    height: '0px',
+                    height: '10px',
                     overflow: 'hidden',
                 })
             ),
             transition('false => true', [
-                animate('100ms cubic-bezier(0, 0, 0.60, 1.99)'),
+                animate('3100ms cubic-bezier(0, 0, 0.60, 1.99)'),
             ]),
-            transition('true => false', [animate('100ms ease')]),
+            transition('true => false', [animate('3100ms ease')]),
         ]),
         trigger('areaRightSideAnimation', [
             state('in', style({ width: '100%', 'position' : 'relative' })),
@@ -228,8 +228,15 @@ import { TaTabSwitchComponent } from '../ta-tab-switch/ta-tab-switch.component';
                 animate(
                     200,
                     keyframes([
-                        style({ width: '0%', right: '0px', overflow: 'hidden', }),
-                        style({ width: '100%', right: '0px', overflow: 'hidden' }),
+                        style({ 
+                            width: '0%', 
+                            right: '0px', 
+                            //overflow: 'hidden', 
+                        }),
+                        style({ width: '100%', 
+                            right: '0px', 
+                            //overflow: 'hidden' 
+                        }),
                     ])
                 ),
             ]),
@@ -237,8 +244,14 @@ import { TaTabSwitchComponent } from '../ta-tab-switch/ta-tab-switch.component';
                 animate(
                     200,
                     keyframes([
-                        style({ width: '100%', right: '0px', overflow: 'hidden' }),
-                        style({ width: '0%', right: '0px', overflow: 'hidden',}),
+                        style({ width: '100%', 
+                            right: '0px', 
+                            //overflow: 'hidden' 
+                        }),
+                        style({ width: '0%', 
+                            right: '0px', 
+                            //overflow: 'hidden',
+                        }),
                     ])
                 ),
             ]),
@@ -249,8 +262,15 @@ import { TaTabSwitchComponent } from '../ta-tab-switch/ta-tab-switch.component';
                 animate(
                     200,
                     keyframes([
-                        style({ width: '0%', 'position' : 'relative', left: '0px', overflow: 'hidden', }),
-                        style({ width: '100%', left: '0px', overflow: 'hidden' }),
+                        style({ width: '0%', 
+                            'position' : 'relative', 
+                            left: '0px', 
+                            //overflow: 'hidden', 
+                        }),
+                        style({ width: '100%', 
+                            left: '0px', 
+                            //overflow: 'hidden' 
+                        }),
                     ])
                 ),
             ]),
@@ -258,8 +278,14 @@ import { TaTabSwitchComponent } from '../ta-tab-switch/ta-tab-switch.component';
                 animate(
                     200,
                     keyframes([
-                        style({ width: '100%', left: '0px', overflow: 'hidden' }),
-                        style({ width: '0%', left: '0px', overflow: 'hidden', }),
+                        style({ width: '100%', 
+                            left: '0px', 
+                            //overflow: 'hidden' 
+                        }),
+                        style({ width: '0%', 
+                            left: '0px', 
+                            //overflow: 'hidden', 
+                        }),
                     ])
                 ),
             ]),
@@ -2831,13 +2857,13 @@ export class FilterComponent implements OnInit, AfterViewInit {
         if (!this.activeFilter) {
             return false;
         }
-
+        /*
         if (this.isAnimated) {
             this.isAnimated = true;
             this.cdRef.detectChanges();
             this.autoClose.tooltip.open();
         }
-
+        */
         this.activeFilter = false;
 
         let mainElementHolder;
@@ -2849,13 +2875,13 @@ export class FilterComponent implements OnInit, AfterViewInit {
         }
 
         mainElementHolder?.classList.add('closeFilterAnimation');
-
+        /*
         setTimeout(() => {
             this.isAnimated = false;
             this.autoClose.tooltip.close();
             mainElementHolder?.classList.remove('closeFilterAnimation');
         }, 120);
-
+        */
         if (this.defFilterHolder && this.type != 'stateFilter') {
             let mainArray: any[] = [];
             switch (this.type) {
