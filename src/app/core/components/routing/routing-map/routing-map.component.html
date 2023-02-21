@@ -27,7 +27,7 @@
             >
                 <ng-container
                     *ngFor="
-                        let route of tableData[selectedMapIndex].routes;
+                        let route of tableData[selectedMapIndex]?.routes;
                         let i = index
                     "
                 >
@@ -771,14 +771,14 @@
                 class="route-free-drag-area"
                 cdkDropList
                 #routeFreeDrag="cdkDropList"
-                [cdkDropListData]="tableData[selectedMapIndex].routes"
+                [cdkDropListData]="tableData[selectedMapIndex]?.routes"
                 [cdkDropListConnectedTo]="[routeList]"
                 cdkDropListSortingDisabled="true"
                 (cdkDropListDropped)="dropRoutes($event)"
             >
                 <ng-container
                     *ngFor="
-                        let route of tableData[selectedMapIndex].routes;
+                        let route of tableData[selectedMapIndex]?.routes;
                         let i = index
                     "
                 >
@@ -1536,7 +1536,7 @@
         >
             <div
                 *ngFor="
-                    let route of tableData[selectedMapIndex].routes;
+                    let route of tableData[selectedMapIndex]?.routes;
                     let i = index
                 "
             >
@@ -1712,7 +1712,7 @@
                                                 ? 'route-zIndex-998'
                                                 : 'route-zIndex-' +
                                                   (tableData[selectedMapIndex]
-                                                      .routes.length -
+                                                      ?.routes.length -
                                                       i)
                                         "
                                         (click)="stopMarkerClick($event, i, j)"
@@ -1946,7 +1946,7 @@
                                             [ngStyle]="{
                                                 fill: tableData[
                                                     selectedMapIndex
-                                                ].routes[focusedRouteIndex]
+                                                ]?.routes[focusedRouteIndex]
                                                     .color
                                             }"
                                         />
@@ -1986,7 +1986,7 @@
                                         transform="translate(9 9.001)"
                                         [ngStyle]="{
                                             fill: tableData[selectedMapIndex]
-                                                .routes[focusedRouteIndex].color
+                                                ?.routes[focusedRouteIndex].color
                                         }"
                                     />
 
@@ -2013,7 +2013,7 @@
                                                     ? focusedStopIndex + 2
                                                     : tableData[
                                                           selectedMapIndex
-                                                      ].routes[
+                                                      ]?.routes[
                                                           focusedRouteIndex
                                                       ].stops.length + 1
                                             }}
@@ -2023,7 +2023,7 @@
                             </div>
                             <div
                                 *ngIf="
-                                    tableData[selectedMapIndex].routes[
+                                    tableData[selectedMapIndex]?.routes[
                                         focusedRouteIndex
                                     ].stops.length &&
                                     (stopPickerLocation.editIndex == null ||
@@ -2049,12 +2049,12 @@
                                 [ngStyle]="{
                                     background:
                                         'linear-gradient(0deg, ' +
-                                        tableData[selectedMapIndex].routes[
+                                        tableData[selectedMapIndex]?.routes[
                                             focusedRouteIndex
                                         ].color +
                                         '33' +
                                         ', ' +
-                                        tableData[selectedMapIndex].routes[
+                                        tableData[selectedMapIndex]?.routes[
                                             focusedRouteIndex
                                         ].color +
                                         '33)' +
@@ -2066,7 +2066,7 @@
                                     class="stop-picker-address-text"
                                     [ngStyle]="{
                                         color: tableData[selectedMapIndex]
-                                            .routes[focusedRouteIndex].color
+                                            ?.routes[focusedRouteIndex].color
                                     }"
                                 >
                                     {{
@@ -2104,7 +2104,7 @@
                                                 [ngStyle]="{
                                                     fill: tableData[
                                                         selectedMapIndex
-                                                    ].routes[focusedRouteIndex]
+                                                    ]?.routes[focusedRouteIndex]
                                                         .color
                                                 }"
                                             />
@@ -2114,7 +2114,7 @@
                                                 [ngStyle]="{
                                                     fill: tableData[
                                                         selectedMapIndex
-                                                    ].routes[focusedRouteIndex]
+                                                    ]?.routes[focusedRouteIndex]
                                                         .color
                                                 }"
                                             />
@@ -2194,7 +2194,7 @@
                     r="9"
                     transform="translate(8 8)"
                     [ngStyle]="{
-                        fill: tableData[selectedMapIndex].routes[
+                        fill: tableData[selectedMapIndex]?.routes[
                             focusedRouteIndex
                         ].color
                     }"
@@ -2214,7 +2214,7 @@
                         {{
                             focusedStopIndex != null
                                 ? focusedStopIndex + 2
-                                : tableData[selectedMapIndex].routes[
+                                : tableData[selectedMapIndex]?.routes[
                                       focusedRouteIndex
                                   ].stops.length + 1
                         }}

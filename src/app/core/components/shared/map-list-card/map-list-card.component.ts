@@ -20,6 +20,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DetailsDropdownComponent } from '../details-page-dropdown/details-dropdown';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { ProfileImagesComponent } from '../profile-images/profile-images.component';
+import { formatDatePipe } from 'src/app/core/pipes/formatDate.pipe';
 
 @Component({
     selector: 'app-map-list-card',
@@ -28,12 +29,18 @@ import { ProfileImagesComponent } from '../profile-images/profile-images.compone
     providers: [TaThousandSeparatorPipe],
     standalone: true,
     imports: [
+        // Modules
         CommonModule,
         FormsModule,
-        DetailsDropdownComponent,
-        AngularSvgIconModule,
         ReactiveFormsModule,
-        ProfileImagesComponent
+        AngularSvgIconModule,
+
+        // Components
+        DetailsDropdownComponent,
+        ProfileImagesComponent,
+
+        // Pipes
+        formatDatePipe
     ],
 })
 export class MapListCardComponent implements OnInit, OnDestroy {

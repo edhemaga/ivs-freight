@@ -484,15 +484,17 @@ export class MapToolbarComponent implements OnInit, OnChanges, OnDestroy {
             routeName: 'Route 0' + (this.activeTableData.length + 1),
         };
 
-        this.modalService.openModal(
-            MapRouteModalComponent,
-            { size: 'small' },
-            {
-                ...routeInfo,
-                mapId: this.activeTableData.id,
-                type: 'add',
-            }
-        );
+        if ( this.activeTableData.length < 8 ) {
+            this.modalService.openModal(
+                MapRouteModalComponent,
+                { size: 'small' },
+                {
+                    ...routeInfo,
+                    mapId: this.activeTableData.id,
+                    type: 'add',
+                }
+            );
+        }
     }
 
     onShowLayersPopover(layersPopup: any) {

@@ -120,7 +120,7 @@
             </div>
             <div *ngIf="sortCategory.name == 'Last Used Date'">
                 <div class="marker-like-text marker-medium-text">
-                    Last Used <span class="marker-bold-text">{{ item?.lastUsed != null ? item?.lastUsed : item?.lastVisited != null ? item.lastVisited : item?.updatedAt != null ? (item.updatedAt | formatDateP) : '&nbsp;' }}</span>
+                    Last Used <span class="marker-bold-text">{{ item?.lastUsed != null ? (item?.lastUsed | formatDateP) : item?.lastVisited != null ? (item.lastVisited | formatDateP) : item?.updatedAt != null ? (item.updatedAt | formatDateP) : '&nbsp;' }}</span>
                 </div>
             </div>
             <div *ngIf="sortCategory.name == 'Pickups'">

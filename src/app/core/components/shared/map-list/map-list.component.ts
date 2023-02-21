@@ -39,14 +39,17 @@ import { AgmSnazzyInfoWindowModule } from '@agm/snazzy-info-window';
     encapsulation: ViewEncapsulation.None,
     standalone: true,
     imports: [
+        // Modules
         CommonModule,
         FormsModule,
         ReactiveFormsModule,
         AgmCoreModule,
-        TaInputComponent,
         AngularSvgIconModule,
         NgbPopoverModule,
-        AgmSnazzyInfoWindowModule
+        AgmSnazzyInfoWindowModule,
+
+        // Components
+        TaInputComponent
     ],
 })
 export class MapListComponent
