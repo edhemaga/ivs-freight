@@ -422,7 +422,7 @@ export class TruckassistTableToolbarComponent
     changeModeView(modeView: any) {
         // Treba da se sredi da kada se prebacujes samo na map da brise, al imamo konfilkt logike oko slekta i deslekta pa se u head brise kada se ukolni koponenta
         // && modeView === 'Map'
-        if(this.tableRowsSelected.length){
+        if (this.tableRowsSelected.length) {
             this.tableService.sendSelectOrDeselect('deselect');
         }
 

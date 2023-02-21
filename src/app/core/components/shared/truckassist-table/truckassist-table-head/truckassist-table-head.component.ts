@@ -38,7 +38,7 @@ const rotate: { [key: string]: any } = {
         NgbModule,
         ResizeColumnDirective,
         DragDropModule,
-        NgbPopoverModule
+        NgbPopoverModule,
     ],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
