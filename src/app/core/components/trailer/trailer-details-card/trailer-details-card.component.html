@@ -100,6 +100,7 @@
                 [hasDivider]="false"
                 [tooltipName]="'Dispatch History'"
                 [hasHeaderSvg]="'assets/svg/common/ic_half_time.svg'"
+                [customClass]="'detailsPadding'"
                 [isCardOpen]="true"
                 [bodyTemplate]="'card'"
                 [animationMarginParams]="{
@@ -169,6 +170,7 @@
             <!-- Additional info -->
             <app-ta-custom-card
                 [cardName]="'Additional Details'"
+                [customClass]="'detailsPadding'"
                 [isCardOpen]="true"
                 [bodyTemplate]="'card'"
                 [animationMarginParams]="{
@@ -265,6 +267,7 @@
                 [cardName]=" ownerCardOpened ? 'Owner' : 'Owner ' + trailer.owner.name "
                 [isCardOpen]="true"
                 [bodyTemplate]="'card'"
+                [customClass]="'detailsPadding'"
                 [animationMarginParams]="{
                     marginTop: '0px',
                     marginBottom: '10px'
@@ -322,6 +325,7 @@
                     marginTop: '0px',
                     marginBottom: '10px'
                 }"
+                [customClass]="'detailsPadding'"
             >
                 <div class="owner-history-container">
                     <div class="status-container">
@@ -371,6 +375,7 @@
                 [hasCounter]="trailer?.files?.length ? trailer?.files.length : 0"
                 class="item-cards"
                 [bodyTemplate]="'card'"
+                [customClass]="'detailsPadding'"
             >
                 <div class="card_files_holder" [class.active]="trailer?.files?.length > 1">
                     <app-ta-upload-files
@@ -411,6 +416,7 @@
                     [bodyTemplate]="'card'"
                     [hasCounter]="trailer.registrations.length"
                     [hasPlusHeader]="true"
+                    [customClass]="'detailsPadding'"
                 >
                     <div
                         *ngFor="
@@ -512,6 +518,7 @@
                     [cardDocumentCounter]="1"
                     [hasCounter]="trailer.inspections.length"
                     [hasPlusHeader]="true"
+                    [customClass]="'detailsPadding'"
                 >
                     <div
                         *ngFor="
@@ -589,6 +596,7 @@
                     [bodyTemplate]="'card'"
                     [hasCounter]="trailer.titles.length"
                     [hasPlusHeader]="true"
+                    [customClass]="'detailsPadding'"
                 >
                     <div
                         *ngFor="
@@ -692,6 +700,7 @@
                     [bodyTemplate]="'card'"
                     [hasCounter]="0"
                     [hasPlusHeader]="true"
+                    [customClass]="'detailsPadding'"
                 >
                 </app-ta-custom-card>
             </div>

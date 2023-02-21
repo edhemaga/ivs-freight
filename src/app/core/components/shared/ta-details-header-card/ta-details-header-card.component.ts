@@ -55,6 +55,7 @@ export class TaDetailsHeaderCardComponent implements OnInit, OnChanges {
     @Input() public hasArrow: boolean;
     @Input() public optionsId: number;
     @Input() public sortOptions: string;
+    @Input() public currentName: string;
     @Output() public dropActions = new EventEmitter<any>();
     @Output() selectValue = new EventEmitter<string>();
     @Output() selectValueStore = new EventEmitter<string>();
@@ -76,6 +77,7 @@ export class TaDetailsHeaderCardComponent implements OnInit, OnChanges {
     ngOnChanges(changes: SimpleChanges) {}
     ngOnInit(): void {
         // this.hideArrowOnStart(this.driverId);
+        console.log('----this.currentName', this.currentName);
     }
 
     public hideArrowOnStart(id: number) {
@@ -126,6 +128,7 @@ export class TaDetailsHeaderCardComponent implements OnInit, OnChanges {
         }
     }
     public onSelecItem(value: any): void {
+        console.log('value----', value);
         if (this.options.length > 1) {
             this.selectedDropdown = !this.selectedDropdown;
             this.selectValue.emit(value);

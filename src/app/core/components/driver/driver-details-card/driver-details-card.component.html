@@ -79,6 +79,7 @@
                 [isCardOpen]="true"
                 [bodyTemplate]="'card'"
                 class="first-custom-card"
+                [customClass]="'detailsPadding'" 
                 
             >
                 <div class="assignTo">
@@ -163,6 +164,7 @@
                     marginTop: '0px',
                     marginBottom: '10px'
                 }"
+                [customClass]="'detailsPadding'" 
             >
                 <div class="additional-container">
                     <div class="addres-wrapper">
@@ -206,6 +208,7 @@
                     marginBottom: '0px'
                 }"
                 class="item-cards"
+                [customClass]="'detailsPadding'" 
             >
                 <div
                     *ngIf="driver.offDutyLocations === ''"
@@ -258,6 +261,7 @@
                     marginTop: '0px',
                     marginBottom: '10px'
                 }"
+                [customClass]="'detailsPadding'" 
             >
                 <div class="employment-history-container">
                     <div class="years-of-service">
@@ -453,6 +457,7 @@
                     marginTop: '0px',
                     marginBottom: '10px'
                 }"
+                [customClass]="'detailsPadding'" 
             >
                 <div *ngIf="driver.owner" class="purchase-template">
                     <div class="purchase-template-item">
@@ -503,6 +508,7 @@
                     marginTop: '0px',
                     marginBottom: '10px'
                 }"
+                [customClass]="'detailsPadding'" 
             >
                 <div *ngIf="driver?.commissionSolo" class="purchase-template">
                     <div class="purchase-template-item">
@@ -604,6 +610,7 @@
                     marginTop: '0px',
                     marginBottom: '10px'
                 }"
+                [customClass]="'detailsPadding'" 
             >
                 <div
                     class="charts-template perfomance"
@@ -644,6 +651,7 @@
                     marginTop: '0px',
                     marginBottom: '10px'
                 }"
+                [customClass]="'detailsPadding'" 
             >
                 <div class="purchase-template">
                     <div class="purchase-template-item">
@@ -679,6 +687,7 @@
                     marginTop: '0px',
                     marginBottom: '10px'
                 }"
+                [customClass]="'detailsPadding'" 
             >
                 <div
                     *ngIf="
@@ -730,6 +739,7 @@
                     marginTop: '0px',
                     marginBottom: '10px'
                 }"
+                [customClass]="'detailsPadding'" 
             >
                 <div class="card_files_holder" [class.active]="driver?.files?.length > 1">
                     <app-ta-upload-files
@@ -774,6 +784,7 @@
                     [hasCounter]="driver.cdls.length"
                     [hasPlusHeader]="true"
                     (onActionEvent)="onModalAction('CDL')"
+                    [customClass]="'detailsPadding'" 
                 >
                     <div
                         *ngFor="
@@ -1052,6 +1063,7 @@
                     [hasCounter]="driver.tests.length"
                     [hasPlusHeader]="true"
                     (onActionEvent)="onModalAction('DrugAlcohol')"
+                    [customClass]="'detailsPadding'" 
                 >
                     <div
                         *ngFor="
@@ -1162,6 +1174,7 @@
                     [hasCounter]="driver.medicals.length"
                     [hasPlusHeader]="true"
                     (onActionEvent)="onModalAction('Medical')"
+                    [customClass]="'detailsPadding'" 
                 >
                     <div
                         *ngFor="
@@ -1291,6 +1304,7 @@
                     [hasCounter]="driver.mvrs.length"
                     [hasPlusHeader]="true"
                     (onActionEvent)="onModalAction('MVR')"
+                    [customClass]="'detailsPadding'" 
                 >
                     <div
                         *ngFor="

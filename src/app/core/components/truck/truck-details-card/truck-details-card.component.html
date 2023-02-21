@@ -112,6 +112,7 @@
                 [tooltipName]="'Dispatch History'"
                 [hasHeaderSvg]="'assets/svg/common/ic_half_time.svg'"
                 [isCardOpen]="true"
+                [customClass]="'detailsPadding'"
                 [animationMarginParams]="{
                     marginTop: '0px',
                     marginBottom: '10px'
@@ -175,6 +176,7 @@
                 [bodyTemplate]="'card'"
                 [isCardOpen]="true"
                 [cardName]="'Additional Details'"
+                [customClass]="'detailsPadding'"
                 [animationMarginParams]="{
                     marginTop: '0px',
                     marginBottom: '10px'
@@ -412,6 +414,7 @@
                 "
                 [bodyTemplate]="'card'"
                 [isCardOpen]="true"
+                [customClass]="'detailsPadding'"
                 [animationMarginParams]="{
                     marginTop: '0px',
                     marginBottom: '10px'
@@ -469,6 +472,7 @@
                 [cardName]="'Expenses'"
                 [bodyTemplate]="'card'"
                 [isCardOpen]="true"
+                [customClass]="'detailsPadding'"
             >
                 <div
                     class="charts-template perfomance"
@@ -500,6 +504,7 @@
                 [cardName]="'Fuel Consumption'"
                 [hasHeaderSvg]="'assets/svg/common/arrow_top_right.svg'"
                 class="item-cards"
+                [customClass]="'detailsPadding'"
             >
                 <div
                     class="charts-template perfomance"
@@ -531,6 +536,7 @@
                 [hasHeaderSvg]="'assets/svg/common/arrow_top_right.svg'"
                 class="item-cards"
                 [isCardOpen]="true"
+                [customClass]="'detailsPadding'"
             >
                 <div
                     class="charts-template perfomance"
@@ -562,6 +568,7 @@
                 [bodyTemplate]="'card'"
                 [hasHeaderSvg]="'assets/svg/common/arrow_top_right.svg'"
                 class="item-cards"
+                [customClass]="'detailsPadding'"
                 [animationMarginParams]="{
                     marginTop: '0px',
                     marginBottom: '10px'
@@ -624,6 +631,7 @@
                 [hasCounter]="truck?.files?.length ? truck?.files.length : 0"
                 class="item-cards"
                 [bodyTemplate]="'card'"
+                [customClass]="'detailsPadding'"
             >
                 <div
                     class="card_files_holder"
@@ -666,6 +674,7 @@
                     [hasDivider]="false"
                     class="item-cards"
                     [bodyTemplate]="'card'"
+                    [customClass]="'detailsPadding'"
                     [hasCounter]="
                         truck?.registrations?.length
                             ? truck.registrations.length
@@ -761,6 +770,7 @@
             <div class="custom-card-single">
                 <app-ta-custom-card
                     [cardName]="'FHWA Inspection'"
+                    [customClass]="'detailsPadding'"
                     [isCardOpen]="false"
                     [hasDivider]="false"
                     class="item-cards"
@@ -838,6 +848,7 @@
                     [hasDivider]="false"
                     class="item-cards"
                     [bodyTemplate]="'card'"
+                    [customClass]="'detailsPadding'"
                     [hasCounter]="
                         truck?.titles?.length ? truck.titles.length : 0
                     "
@@ -933,6 +944,7 @@
                     [bodyTemplate]="'card'"
                     [hasCounter]="0"
                     [hasPlusHeader]="true"
+                    [customClass]="'detailsPadding'"
                 >
                 </app-ta-custom-card>
             </div>
