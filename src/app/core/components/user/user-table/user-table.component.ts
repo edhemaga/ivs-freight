@@ -305,6 +305,7 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
     initTableOptions(): void {
         this.tableOptions = {
             toolbarActions: {
+                showCountSelectedInList: true,
                 viewModeOptions: [
                     { name: 'List', active: this.activeViewMode === 'List' },
                     { name: 'Card', active: this.activeViewMode === 'Card' },
@@ -432,7 +433,6 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 ? '$' + this.thousandSeparator.transform(data.salary)
                 : '',
             userStatus: data.status,
-            tableIsUserOwner: data.userType.name === 'Owner',
             // User Dropdown Action Set Up
             tableDropdownContent: {
                 hasContent: true,
@@ -443,8 +443,6 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     // Get User Dropdown Content
     getDropdownContent(data: any) {
-        let testIcon = true;
-
         return [
             {
                 title: 'Edit',
