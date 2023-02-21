@@ -86,7 +86,34 @@ export class UserTService {
     }
 
     public updateUser(data: UpdateCompanyUserCommand): Observable<any> {
-        return this.userService.apiCompanyuserPut(data);
+        return this.userService.apiCompanyuserPut(data).pipe(
+            tap(() => {
+                const subUser = this.getUserByid(data.id).subscribe({
+                    next: (user: any) => {
+                        this.userStore.remove(
+                            ({ id }) => id === data.id
+                        );
+
+                        user = {
+                            ...user,
+                            userAvatar: {
+                                name: user.firstName + ' ' + user.lastName,
+                            },
+                        };
+
+                        this.userStore.add(user);
+
+                        this.tableService.sendActionAnimation({
+                            animation: 'update',
+                            data: user,
+                            id: user.id,
+                        });
+
+                        subUser.unsubscribe();
+                    },
+                });
+            })
+        );
     }
 
     public deleteUserById(userId: number): Observable<any> {

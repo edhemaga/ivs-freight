@@ -123,7 +123,7 @@
             position: relative;
 
             // Override Input classes
-            .input-control {
+            .input-control:not(.date_time_holder) {
                 background-color: transparent !important;
                 transition: all 0.3s ease-in-out;
 
@@ -131,7 +131,7 @@
                     background-color: transparent !important;
                 }
 
-                &:hover {
+                &:hover:not(.date_time_holder) {
                     background-color: #f7f7f7 !important;
                 }
 
