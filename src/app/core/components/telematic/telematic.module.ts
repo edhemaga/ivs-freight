@@ -21,19 +21,22 @@ import { GpsProgressbarComponent } from '../shared/gps-progressbar/gps-progressb
 @NgModule({
     declarations: [TelematicMapComponent],
     imports: [
+        // Modules
         CommonModule,
         TelematicRoutingModule,
         AgmCoreModule,
-        MapToolbarComponent,
-        TruckassistTableBodyComponent,
-        TruckassistTableHeadComponent,
         NgbPopoverModule,
-        TaInputComponent,
-        TaInputDropdownComponent,
         AngularSvgIconModule,
         FormsModule,
         ReactiveFormsModule,
         AgmSnazzyInfoWindowModule,
+
+        // Components
+        MapToolbarComponent,
+        TruckassistTableBodyComponent,
+        TruckassistTableHeadComponent,
+        TaInputComponent,
+        TaInputDropdownComponent,
         TaCheckboxComponent,
         MapMarkerDropdownComponent,
         GpsProgressbarComponent
