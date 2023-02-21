@@ -8,7 +8,7 @@ table {
 
         tr {
             margin-top: 2px;
-            min-height: 32px;
+            min-height: 34px;
             width: fit-content;
             height: fit-content;
             background: white;
@@ -16,7 +16,7 @@ table {
             justify-content: center;
             flex-direction: column;
             border-radius: 3px;
-            padding: 2px 3px;
+            padding: 4px;
             transition: margin-bottom 0.25s;
 
             // Columns
@@ -2737,8 +2737,8 @@ table {
             .border-scroll-section {
                 position: absolute;
                 width: 8px;
-                height: 32px;
-                margin-top: -3px;
+                height: 34px;
+                margin-top: -4px;
             }
         }
 

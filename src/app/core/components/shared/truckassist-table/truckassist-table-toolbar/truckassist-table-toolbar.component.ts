@@ -339,7 +339,7 @@ export class TruckassistTableToolbarComponent
         this.setColumnsOptionsGroups();
 
         this.toolbarWidth = hasMinWidth
-            ? columnsSumWidth + 24 + 'px'
+            ? columnsSumWidth + 26 + 'px'
             : 100 + '%';
     }
 
