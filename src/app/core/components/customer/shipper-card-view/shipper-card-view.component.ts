@@ -333,7 +333,7 @@ export class ShipperCardViewComponent implements OnInit, OnChanges, OnDestroy {
                         let delivery = this.convertTimeSpanToMinutes(
                             data.avgDeliveryTime
                         );
-
+                        
                         this.stackedBarChart.toolTipData.push(data);
 
                         if (delivery + pickup > maxValue) {
@@ -356,9 +356,12 @@ export class ShipperCardViewComponent implements OnInit, OnChanges, OnDestroy {
                         costPerGallon.push(delivery);
                     }
                 );
-                
-                this.stackedBarAxes['verticalLeftAxes']['maxValue'] = maxValue/2;
-                this.stackedBarAxes['verticalLeftAxes']['minValue'] = -(maxValue/2);
+
+                this.stackedBarAxes['verticalLeftAxes']['maxValue'] =
+                    maxValue / 2;
+                this.stackedBarAxes['verticalLeftAxes']['minValue'] = -(
+                    maxValue / 2
+                );
                 this.stackedBarChartConfig.dataLabels = labels;
                 this.stackedBarChartConfig.dataProperties[0].defaultConfig.data =
                     milesPerGallon;
@@ -383,14 +386,23 @@ export class ShipperCardViewComponent implements OnInit, OnChanges, OnDestroy {
         if (!timespan) {
             return 0;
         }
+        let totalMinutes = 0;
         let timeArr = JSON.stringify(timespan);
         timeArr = JSON.parse(timeArr).split('.');
-        let hoursAndMinutes = timeArr[0].split(':');
-        const hours = Number(hoursAndMinutes[0]);
-        const minutes = Number([hoursAndMinutes[1]]);
+        if (timeArr.length > 1) {
+            const days = Number(timeArr[0]);
+            console.log(days, 'timeArr');
+            let hoursAndMinutes = timeArr[1].split(':');
+            const hours = Number(hoursAndMinutes[0]) + days * 24;
+            const minutes = Number([hoursAndMinutes[1]]);
 
-        const totalMinutes = hours * 60 + minutes;
-        console.log(totalMinutes, 'timearr');
+            totalMinutes = hours * 60 + minutes;
+        } else {
+            let hoursAndMinutes = timeArr[0].split(':');
+            const hours = Number(hoursAndMinutes[0]);
+            const minutes = Number([hoursAndMinutes[1]]);
+            totalMinutes = hours * 60 + minutes;
+        }
 
         return totalMinutes;
     }
