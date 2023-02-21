@@ -26,7 +26,7 @@ import { TaSpinnerComponent } from '../../ta-spinner/ta-spinner.component';
 
 export interface UploadFile {
     name?: any;
-    fileName: string;
+    fileName?: string;
     url: string | any;
     extension?: string;
     guid?: string;

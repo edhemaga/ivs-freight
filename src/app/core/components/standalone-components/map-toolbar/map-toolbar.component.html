@@ -78,7 +78,6 @@
             [icon]="'truck'"
             [leftSideIcon]="true"
             [largeLeftIcon]="true"
-            [svgCustom]="true"
             [legendView]="true"
             (setFilter)="setFilterEvent($event)"
         >
@@ -98,7 +97,6 @@
             [icon]="'trailer'"
             [leftSideIcon]="true"
             [largeLeftIcon]="true"
-            [svgCustom]="true"
             [legendView]="true"
             (setFilter)="setFilterEvent($event)"
         >
@@ -118,7 +116,6 @@
             [icon]="'ic_steering-wheel'"
             [leftSideIcon]="true"
             [largeLeftIcon]="true"
-            [svgCustom]="true"
             [legendView]="true"
             (setFilter)="setFilterEvent($event)"
         >
@@ -562,7 +559,7 @@
                 class="close-svg"
                 src="assets/svg/applicant/close-x.svg"
                 [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
-                (click)="onShowRoutePopover(addRoutePopup)"
+                (click)="onShowRoutePopover()"
             ></svg-icon>
         </div>
         <div class="map-settings-divider"></div>
@@ -613,7 +610,7 @@
                 }"
                 [options]="truckType"
                 [activeItem]="selectedTruckType"
-                (selectedItem)="onSelectDropdown($event, 'truck')"
+                (selectedItem)="onSelectDropdown($event)"
             ></app-ta-input-dropdown>
         </div>
 

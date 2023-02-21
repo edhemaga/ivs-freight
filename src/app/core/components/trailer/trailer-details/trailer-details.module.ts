@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TruckDetailsRoutes } from './trailer-details.routing';
 import { TrailerDetailsComponent } from './trailer-details.component';
@@ -19,6 +19,7 @@ import { TaChartComponent } from '../../standalone-components/ta-chart/ta-chart.
 import { ProfileImagesComponent } from '../../shared/profile-images/profile-images.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AngularSvgIconModule } from 'angular-svg-icon';
+import { TaThousandSeparatorPipe } from '../../../pipes/taThousandSeparator.pipe';
 @NgModule({
     declarations: [
         TrailerDetailsComponent,
@@ -42,7 +43,11 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
         TaChartComponent,
         ProfileImagesComponent,
         ReactiveFormsModule,
-        AngularSvgIconModule
+        AngularSvgIconModule,
+
+        // PIPES
+        TaThousandSeparatorPipe
     ],
+    schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class TrailerDetailsModule {}

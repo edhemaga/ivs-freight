@@ -14,7 +14,8 @@ import { ChangeDetectorRef } from '@angular/core';
 import { DispatcherStoreService } from '../../dispatch/state/dispatcher.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { DispatchService } from 'appcoretruckassist';
 
 export interface IDispatchModel {
     id: number;
@@ -28,7 +29,7 @@ export interface IDispatchModel {
     changeDetection: ChangeDetectionStrategy.OnPush,
     providers: [StatusPipePipe],
     standalone: true,
-    imports: [CommonModule, FormsModule, StatusPipePipe, NgbPopoverModule],
+    imports: [CommonModule, FormsModule, StatusPipePipe, NgbModule],
     animations: [
         trigger('shadowAnimation', [
             transition(':enter', [
@@ -54,13 +55,14 @@ export class TaStatusSwitchComponent implements OnInit {
     @Input() openedStatus: number;
     @Input() statusHeight: number;
     @Input() withStatusAgo: boolean;
-    @Input() possibleNextStatuses: any;
+    @Input() dispatchId: number;
 
     statusAgo: string = '';
     changeIndex: any;
     changedStatusLoadCount: any;
     items: any = [];
     statusMainSignal = 0;
+    @Input() possibleNextStatuses: any;
 
     @Output() openIndex: EventEmitter<any> = new EventEmitter();
     @Output() changeStatus: EventEmitter<any> = new EventEmitter();
@@ -68,7 +70,8 @@ export class TaStatusSwitchComponent implements OnInit {
     constructor(
         private statusPipe: StatusPipePipe,
         private cdr: ChangeDetectorRef,
-        private dss: DispatcherStoreService
+        private dss: DispatcherStoreService,
+        private dispatchService: DispatchService
     ) {}
 
     ngOnInit(): void {
@@ -96,7 +99,16 @@ export class TaStatusSwitchComponent implements OnInit {
 
     public updateStatusFilter() {}
 
-    public openPopover(t2) {
+    public async openPopover(t2) {
+        // OTKOMENTARISATI KAD DARKO PREBACI DISPATCH NOVE IZMENE
+        // if (this.dispatchId) {
+        //     this.dispatchService
+        //         .apiDispatchNextstatusesIdGet(this.dispatchId)
+        //         .subscribe((statuses) => {
+        //             t2.open({ data: statuses });
+        //             this.openMainIndex();
+        //         });
+        // }
         t2.open({ data: this.possibleNextStatuses });
         this.openMainIndex();
     }

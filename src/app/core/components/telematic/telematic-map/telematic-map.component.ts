@@ -29,6 +29,7 @@ import { DetailsDataService } from '../../../services/details-data/details-data.
         '../../../../../assets/scss/maps.scss',
     ],
     encapsulation: ViewEncapsulation.None,
+    
 })
 export class TelematicMapComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
