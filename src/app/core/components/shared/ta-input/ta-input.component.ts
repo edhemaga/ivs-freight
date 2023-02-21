@@ -192,7 +192,6 @@ export class TaInputComponent
 
     @Input() set inputConfig(config: ITaInput) {
         this._inputConfig = config;
-        console.log('inputconfig: ', this._inputConfig);
         // Price Separator
         if (this._inputConfig.priceSeparator) {
             this.originPriceSeparatorLimit =
@@ -634,7 +633,6 @@ export class TaInputComponent
     }
 
     public onKeydown(event) {
-        console.log('keydown: ', event.keyCode);
         if (event) {
             this.capsLockOn =
                 event?.getModifierState('CapsLock') || event?.shiftKey;
@@ -660,7 +658,6 @@ export class TaInputComponent
     }
 
     public onKeyup(event): void {
-        console.log('keyUp: ', event.keyCode);
         // Reset function property for disabling multiple dots
         if (this.isDotDeleted && !this.getSuperControl?.value?.includes('.')) {
             this.numberOfPoints = 0;
@@ -1108,24 +1105,6 @@ export class TaInputComponent
                 this.editInputMode = false;
                 this.isVisibleCommands = false;
                 this.focusInput = false;
-
-                console.log(
-                    ' getSuperControl.value : ',
-                    this.getSuperControl.value
-                );
-                console.log(
-                    ' getSuperControl.valid : ',
-                    this.getSuperControl.valid
-                );
-                console.log(' focusInput : ', !this.focusInput);
-                console.log(
-                    ' _inputConfig.isDisabled : ',
-                    !this._inputConfig.isDisabled
-                );
-                console.log(
-                    ' _inputConfig.isDisabled : ',
-                    !this._inputConfig.isDisabled
-                );
 
                 break;
             }

@@ -121,7 +121,7 @@ export class TaInputDropdownComponent
     public _activeItem: any;
     @Input() set activeItem(value: any) {
         this._activeItem = value;
-        console.log('activeItem: ', this._activeItem);
+
         if (value) {
             if (!this.inputConfig?.name?.toLowerCase()?.includes('address')) {
                 this.clearTimeoutDropdown = setTimeout(() => {
