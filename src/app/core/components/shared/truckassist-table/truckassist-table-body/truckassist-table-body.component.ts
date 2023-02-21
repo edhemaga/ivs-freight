@@ -149,10 +149,7 @@ export class TruckassistTableBodyComponent
                     this.mySelection = [];
 
                     this.viewData = this.viewData.map((data) => {
-                        // If For User Table, To Not Select User Owner Row
-                        data.isSelected = !data?.tableIsUserOwner
-                            ? isSelect
-                            : false;
+                        data.isSelected = isSelect;
 
                         if (data.isSelected) {
                             this.mySelection.push({ id: data.id });
