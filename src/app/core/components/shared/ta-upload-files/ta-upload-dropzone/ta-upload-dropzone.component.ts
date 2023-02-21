@@ -79,20 +79,21 @@ export class TaUploadDropzoneComponent {
     public unSupporetedType: boolean = false;
     public supportedExtensions: string[] = [];
 
-    @HostListener('dragover', ['$event']) onDragOver(evt) {
-        evt.preventDefault();
-        evt.stopPropagation();
-        this.onDropBackground.emit({ action: 'dragover', value: true });
-        this.textChangeOverModal = true;
-        this.windowDragOver = true;
-    }
+    @HostListener('body:dragleave', ['$event'])
+    onDragLeaveWindows(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        if (!e.fromElement) {
+            this.onDropBackground.emit({ action: 'dragleave', value: false });
+            this.textChangeOverModal = false;
+            const target = this.dropzoneFocusElem?.nativeElement;
+            if (target) {
+                this.windowDragOver = false;
+                target.removeAllListeners();
+            }
 
-    @HostListener('dragleave', ['$event'])
-    public onDragLeave(evt) {
-        evt.preventDefault();
-        evt.stopPropagation();
-        this.onDropBackground.emit({ action: 'dragleave', value: false });
-        this.textChangeOverModal = false;
+            this.hasDragEntered = false;
+        }
     }
 
     @HostListener('drop', ['$event'])
@@ -106,21 +107,28 @@ export class TaUploadDropzoneComponent {
         this.windowDragOver = false;
     }
 
+    @HostListener('dragover', ['$event']) public onDragOver(evt) {
+        evt.preventDefault();
+        this.textChangeOverModal = true;
+        this.windowDragOver = true;
+        this.hasDragEntered = true;
+    }
+
+    @HostListener('dragleave', ['$event']) public onleave(evt) {
+        evt.preventDefault();
+        this.textChangeOverModal = false;
+        this.windowDragOver = false;
+        this.hasDragEntered = false;
+    }
+
+    hasDragEntered: boolean = false;
     @HostListener('window:dragenter', ['$event'])
     onWindowDragEnter(event: any): void {
         event.preventDefault();
         event.stopPropagation();
-        this.windowDragOver = true;
-        const target = this.dropzoneFocusElem?.nativeElement;
-        if (target) {
-            target.addEventListener('dragleave', (event) => {
-                setTimeout(() => {
-                    if (!this.textChangeOverModal) {
-                        this.windowDragOver = false;
-                        target.removeAllListeners();
-                    }
-                }, 100);
-            });
+
+        if (!this.hasDragEntered) {
+           this.onDropBackground.emit({ action: 'dragover', value: true });
         }
     }
 

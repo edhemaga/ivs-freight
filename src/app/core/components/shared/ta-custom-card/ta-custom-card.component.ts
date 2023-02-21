@@ -15,6 +15,7 @@ import { TaCheckboxComponent } from '../ta-checkbox/ta-checkbox.component';
 import { TaCounterComponent } from '../ta-counter/ta-counter.component';
 import { PayrollStatusesComponent } from '../payroll-statuses/payroll-statuses.component';
 import { TaLikeDislikeComponent } from '../ta-like-dislike/ta-like-dislike.component';
+import { NgbModule, NgbPopoverModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
     selector: 'app-ta-custom-card',
@@ -23,15 +24,16 @@ import { TaLikeDislikeComponent } from '../ta-like-dislike/ta-like-dislike.compo
     animations: [card_modal_animation('showHideCardBody')],
     encapsulation: ViewEncapsulation.None,
     standalone: true,
-    imports: [
+    imports: [ 
         CommonModule,
         FormsModule,
         AngularSvgIconModule,
+        NgbModule,
         AppTooltipComponent,
         TaCheckboxComponent,
         TaCounterComponent,
         PayrollStatusesComponent,
-        TaLikeDislikeComponent,
+        TaLikeDislikeComponent
     ],
 })
 export class TaCustomCardComponent {

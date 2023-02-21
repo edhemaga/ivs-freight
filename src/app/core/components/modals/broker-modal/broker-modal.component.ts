@@ -69,6 +69,7 @@ import { TaUploadFilesComponent } from '../../shared/ta-upload-files/ta-upload-f
 import { TaInputDropdownComponent } from '../../shared/ta-input-dropdown/ta-input-dropdown.component';
 import { TaCustomCardComponent } from '../../shared/ta-custom-card/ta-custom-card.component';
 import { TaInputNoteComponent } from '../../shared/ta-input-note/ta-input-note.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
     selector: 'app-broker-modal',
@@ -93,7 +94,8 @@ import { TaInputNoteComponent } from '../../shared/ta-input-note/ta-input-note.c
             TaInputDropdownComponent,
             TaCustomCardComponent,
             TaUserReviewComponent,
-            TaInputNoteComponent
+            TaInputNoteComponent,
+            NgbModule
     ]
 })
 export class BrokerModalComponent implements OnInit, OnDestroy {

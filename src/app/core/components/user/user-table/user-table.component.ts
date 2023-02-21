@@ -138,6 +138,8 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
             .subscribe((res: any) => {
                 // On Add Driver Active
                 if (res.animation === 'add') {
+                    this.mapingIndex = 0;
+
                     this.viewData.push(this.mapUserData(res.data));
 
                     this.viewData = this.viewData.map((user: any) => {
@@ -158,6 +160,30 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
                         clearInterval(inetval);
                     }, 2300);
+                }
+                // On Update User
+                else if (res.animation === 'update') {
+                    this.mapingIndex = 0;
+
+                    const updatedDriver = this.mapUserData(res.data);
+
+                    this.viewData = this.viewData.map((user: any) => {
+                        if (user.id === res.id) {
+                            user = updatedDriver;
+                            user.actionAnimation = 'update';
+                        }
+
+                        return user;
+                    });
+
+                    const inetval = setInterval(() => {
+                        this.viewData = closeAnimationAction(
+                            false,
+                            this.viewData
+                        );
+
+                        clearInterval(inetval);
+                    }, 1000);
                 }
                 // On Update User Status
                 else if (res.animation === 'update-status') {
@@ -284,34 +310,6 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     { name: 'Card', active: this.activeViewMode === 'Card' },
                 ],
             },
-            actions: [
-                {
-                    title: 'Edit',
-                    name: 'edit',
-                    class: 'regular-text',
-                    contentType: 'edit',
-                },
-                {
-                    title: 'Reset Password',
-                    name: 'reset-password',
-                    class: 'regular-text',
-                    contentType: 'reset',
-                },
-                {
-                    title: 'Deactivate',
-                    name: 'deactivate',
-                    class: 'regular-text',
-                    contentType: 'activate',
-                },
-                {
-                    title: 'Delete',
-                    name: 'delete',
-                    type: 'users',
-                    text: 'Are you sure you want to delete user(s)?',
-                    class: 'delete-text',
-                    contentType: 'delete',
-                },
-            ],
         };
     }
 
@@ -350,8 +348,6 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
         const td = this.tableData.find((t) => t.field === this.selectedTab);
 
-        console.log(td.data);
-
         this.setUserData(td);
     }
 
@@ -378,6 +374,9 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
             );
 
             this.viewData = [...sortedUserData];
+
+            console.log('User Data');
+            console.log(this.viewData);
         } else {
             this.viewData = [];
         }
@@ -433,7 +432,120 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 ? '$' + this.thousandSeparator.transform(data.salary)
                 : '',
             userStatus: data.status,
+            // User Dropdown Action Set Up
+            tableDropdownContent: {
+                hasContent: true,
+                content: this.getDropdownContent(data),
+            },
         };
+    }
+
+    // Get User Dropdown Content
+    getDropdownContent(data: any) {
+        let testIcon = true;
+
+        return [
+            {
+                title: 'Edit',
+                name: 'edit',
+                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Edit.svg',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                svgClass: 'regular',
+                hasBorder: true,
+            },
+            {
+                title: 'Send Message',
+                name: 'send-message',
+                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Send Message.svg',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                svgClass: 'regular',
+                tableListDropdownContentStyle: {
+                    'margin-bottom.px': 4,
+                },
+                mutedStyle: true,
+            },
+            {
+                title: 'Reset Password',
+                name: 'reset-password',
+                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Password.svg',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                svgClass: 'regular',
+                tableListDropdownContentStyle: {
+                    'margin-bottom.px': 4,
+                },
+                mutedStyle: true,
+            },
+            {
+                title: 'Resend Invitation',
+                name: 'resend-invitation',
+                svgUrl: testIcon
+                    ? 'assets/svg/truckassist-table/new-list-dropdown/Email - Invitation.svg'
+                    : 'assets/svg/truckassist-table/new-list-dropdown/Check.svg',
+                svgStyle: {
+                    width: testIcon ? 18 : 14,
+                    height: testIcon ? 18 : 14,
+                },
+                svgClass: testIcon ? 'regular' : 'check',
+                hasBorder: true,
+                mutedStyle: true,
+            },
+            {
+                title: 'Share',
+                name: 'share',
+                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Share.svg',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                svgClass: 'regular',
+                tableListDropdownContentStyle: {
+                    'margin-bottom.px': 4,
+                },
+            },
+            {
+                title: 'Print',
+                name: 'print',
+                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Print.svg',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                svgClass: 'regular',
+                hasBorder: true,
+            },
+            {
+                title: data.status ? 'Deactivate' : 'Activate',
+                name: data.status ? 'deactivate' : 'activate' ,
+                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Deactivate.svg',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                svgClass: data.status ? 'deactivate' : 'activate',
+                tableListDropdownContentStyle: {
+                    'margin-bottom.px': 4,
+                },
+            },
+            {
+                title: 'Delete',
+                name: 'delete',
+                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Delete.svg',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                svgClass: 'delete',
+            },
+        ];
     }
 
     // User Back Filter Query
@@ -530,7 +642,7 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
         updatedTableData[0].length = userCount.users;
 
-        this.tableData = [...updatedTableData]
+        this.tableData = [...updatedTableData];
     }
 
     // Get Avatar Color

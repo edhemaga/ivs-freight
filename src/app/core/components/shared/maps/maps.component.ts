@@ -40,6 +40,7 @@ import { AgmDirectionModule } from 'agm-direction';
 import { GooglePlaceModule } from 'ngx-google-places-autocomplete';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
     selector: 'app-maps',
@@ -54,6 +55,7 @@ import { TruckassistTableService } from 'src/app/core/services/truckassist-table
         // Modules
         CommonModule,
         FormsModule,
+        NgbModule,
         AgmCoreModule,
         AgmSnazzyInfoWindowModule,
         AgmDirectionModule,

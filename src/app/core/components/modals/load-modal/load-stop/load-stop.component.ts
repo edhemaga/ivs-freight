@@ -9,13 +9,14 @@ import {
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AppTooltipComponent } from '../../../standalone-components/app-tooltip/app-tooltip.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
     selector: 'app-load-stop',
     templateUrl: './load-stop.component.html',
     styleUrls: ['./load-stop.component.scss'],
     standalone: true,
-    imports: [CommonModule, FormsModule, AppTooltipComponent],
+    imports: [CommonModule, FormsModule, AppTooltipComponent, NgbModule],
     animations: [
         trigger('collapse', [
             state(

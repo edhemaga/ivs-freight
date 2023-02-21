@@ -4,6 +4,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AppTooltipComponent } from '../../standalone-components/app-tooltip/app-tooltip.component';
 import { TaTabSwitchComponent } from '../../standalone-components/ta-tab-switch/ta-tab-switch.component';
 import { AngularSvgIconModule } from 'angular-svg-icon';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
     selector: 'app-ta-pickup-delivery',
@@ -16,7 +17,8 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
         ReactiveFormsModule,
         AppTooltipComponent,
         TaTabSwitchComponent,
-        AngularSvgIconModule
+        AngularSvgIconModule,
+        NgbModule
     ],
 })
 export class TaPickupDeliveryComponent implements OnInit {
