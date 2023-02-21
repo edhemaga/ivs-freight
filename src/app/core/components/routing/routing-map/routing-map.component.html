@@ -575,8 +575,8 @@
                                                 this.tableData[
                                                     this.selectedMapIndex
                                                 ].borderType == 'closed'
-                                                    ? 'true'
-                                                    : 'false'
+                                                    ? true
+                                                    : false
                                             "
                                             [commandHandler]="{
                                                 commands: {
@@ -698,8 +698,8 @@
                                             this.tableData[
                                                 this.selectedMapIndex
                                             ].borderType == 'closed'
-                                                ? 'true'
-                                                : 'false'
+                                                ? true
+                                                : false
                                         "
                                         [commandHandler]="{
                                             commands: {
@@ -807,7 +807,7 @@
                                 route.hover && !route.hidden ? '14px' : '4px',
                             top: route.y + 'px',
                             left: route.x + 'px',
-                            zIndex: route.z - index ? route.z - index : '0'
+                            zIndex: route.z - i ? route.z - i : '0'
                         }"
                     >
                         <div class="route-info-header">
@@ -1324,8 +1324,8 @@
                                                 this.tableData[
                                                     this.selectedMapIndex
                                                 ].borderType == 'closed'
-                                                    ? 'true'
-                                                    : 'false'
+                                                    ? true
+                                                    : false
                                             "
                                             [commandHandler]="{
                                                 commands: {
@@ -1447,8 +1447,8 @@
                                             this.tableData[
                                                 this.selectedMapIndex
                                             ].borderType == 'closed'
-                                                ? 'true'
-                                                : 'false'
+                                                ? true
+                                                : false
                                         "
                                         [commandHandler]="{
                                             commands: {
@@ -1591,7 +1591,6 @@
                                         "
                                     >
                                         <svg
-                                            [tooltipBackground]="route.color"
                                             xmlns="http://www.w3.org/2000/svg"
                                             xmlns:xlink="http://www.w3.org/1999/xlink"
                                             width="34"

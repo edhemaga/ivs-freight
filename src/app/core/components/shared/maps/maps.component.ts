@@ -271,7 +271,7 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
 
         this.mapsService.mapRatingChange
             .pipe(takeUntil(this.destroy$))
-            .subscribe((data) => {
+            .subscribe(() => {
                 this.getClusters(true, true);
             });
 
@@ -292,7 +292,7 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
                     
                     this.mapsService.selectedMarker(id);
                 } else {
-                    this.viewData.map((data: any, index) => {
+                    this.viewData.map((data: any) => {
                         data.isSelected = false;
                     });
 

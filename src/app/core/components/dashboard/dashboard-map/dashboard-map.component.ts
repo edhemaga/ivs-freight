@@ -15,7 +15,7 @@ export class DashboardMapComponent implements OnInit, OnDestroy {
     dashboardMapSwitchTabs: any[] = [];
 
     agmMap: any;
-    styles = AppConst.GOOGLE_MAP_STYLES;
+    styles: any = AppConst.GOOGLE_MAP_STYLES;
     mapRestrictions = {
         latLngBounds: AppConst.NORTH_AMERICA_BOUNDS,
         strictBounds: true,
