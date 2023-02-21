@@ -31,7 +31,7 @@ import {
 import { TaInputComponent } from '../ta-input/ta-input.component';
 import { TaInputResetService } from '../ta-input/ta-input-reset.service';
 import { ImageBase64Service } from '../../../utils/base64.image';
-import { Options } from '@popperjs/core';
+// import { Options } from '@popperjs/core';
 import { CommonModule } from '@angular/common';
 import { FormControlPipe } from '../ta-input/form-control.pipe';
 import { AppTooltipComponent } from '../../standalone-components/app-tooltip/app-tooltip.component';
@@ -121,6 +121,7 @@ export class TaInputDropdownComponent
     public _activeItem: any;
     @Input() set activeItem(value: any) {
         this._activeItem = value;
+        console.log('activeItem: ', this._activeItem);
         if (value) {
             if (!this.inputConfig?.name?.toLowerCase()?.includes('address')) {
                 this.clearTimeoutDropdown = setTimeout(() => {
@@ -1089,12 +1090,12 @@ export class TaInputDropdownComponent
                 }
 
                 if (this.inputConfig.name !== 'RoutingAddress') {
-                    this.clearTimeoutDropdown = setTimeout(() => {
-                        this.inputConfig = {
-                            ...this.inputConfig,
-                            blackInput: false,
-                        };
-                    }, 100);
+                    // this.clearTimeoutDropdown = setTimeout(() => {
+                    this.inputConfig = {
+                        ...this.inputConfig,
+                        blackInput: false,
+                    };
+                    // }, 100);
                 }
             }
             this.popoverRef.close();

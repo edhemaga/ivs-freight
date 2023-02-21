@@ -1,5 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { AfterViewInit, Component, Input, Self } from '@angular/core';
+import {
+    AfterViewInit,
+    Component,
+    Input,
+    Self,
+    ChangeDetectionStrategy,
+} from '@angular/core';
 import {
     ControlValueAccessor,
     FormsModule,
@@ -14,13 +20,17 @@ import { TaInputComponent } from '../ta-input/ta-input.component';
     selector: 'app-ta-input-arrows',
     templateUrl: './ta-input-arrows.component.html',
     styleUrls: ['./ta-input-arrows.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
     standalone: true,
     imports: [
+        // Module
         CommonModule,
         FormsModule,
-        AngularSvgIconModule,
-        TaInputComponent,
         ReactiveFormsModule,
+        AngularSvgIconModule,
+
+        // Component
+        TaInputComponent,
     ],
 })
 export class TaInputArrowsComponent

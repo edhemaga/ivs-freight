@@ -192,7 +192,7 @@ export class TaInputComponent
 
     @Input() set inputConfig(config: ITaInput) {
         this._inputConfig = config;
-
+        console.log('inputconfig: ', this._inputConfig);
         // Price Separator
         if (this._inputConfig.priceSeparator) {
             this.originPriceSeparatorLimit =
