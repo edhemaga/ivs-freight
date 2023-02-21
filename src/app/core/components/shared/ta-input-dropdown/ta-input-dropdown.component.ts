@@ -50,20 +50,25 @@ import { TaSvgPipe } from '../../../pipes/ta-svg.pipe';
     animations: [input_dropdown_animation('showHideDropdownOptions')],
     standalone: true,
     imports: [
+        // Module
         CommonModule,
         FormsModule,
         NgbPopoverModule,
-        TaInputComponent,
         ReactiveFormsModule,
-        FormControlPipe,
-        AppTooltipComponent,
-        DropdownCountPipe,
-        HighlightSearchPipe,
+        NgbModule,
         AngularSvgIconModule,
+
+        // Component
+        TaInputComponent,
+        AppTooltipComponent,
         ProfileImagesComponent,
         LoadModalProgressBarComponent,
+
+        // Pipe
         TaSvgPipe,
-        NgbModule,
+        FormControlPipe,
+        DropdownCountPipe,
+        HighlightSearchPipe,
     ],
 })
 export class TaInputDropdownComponent
@@ -78,7 +83,9 @@ export class TaInputDropdownComponent
     @ViewChild('t2') public popoverRef: NgbPopover;
 
     // different templates for body rendering
+
     public _template: string = null;
+
     @Input() set template(value: string) {
         this._template = value;
         if (value === 'details-template' && this.isDetailsPages) {
@@ -166,22 +173,17 @@ export class TaInputDropdownComponent
     }
 
     // MultiSelect Selected Items From Backend
-    public _preloadMultiselectItems: any[] = [];
     @Input() set preloadMultiselectItems(values: any[]) {
-        if (values?.length) {
-            this._preloadMultiselectItems = [...values];
+        if (this.inputConfig.multiselectDropdown) {
+            if (!values?.length) {
+                this.deleteAllMultiSelectItems(this.inputConfig.label);
+                return;
+            }
 
-            if (this.inputConfig.multiselectDropdown) {
-                if (!values?.length) {
-                    this.deleteAllMultiSelectItems(this.inputConfig.label);
-                    return;
-                }
-
-                if (values?.length) {
-                    values.forEach((item) => {
-                        this.onMultiselectSelect(item);
-                    });
-                }
+            if (values?.length) {
+                values.forEach((item) => {
+                    this.onMultiselectSelect(item);
+                });
             }
         }
     }

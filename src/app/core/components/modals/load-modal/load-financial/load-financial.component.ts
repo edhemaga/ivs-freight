@@ -36,7 +36,15 @@ export interface IPayment {
     animations: [card_modal_animation('showHideCardBody')],
     encapsulation: ViewEncapsulation.None,
     standalone: true,
-    imports: [CommonModule, FormsModule, AppTooltipComponent, AngularSvgIconModule]
+    imports: [
+        // Module
+        CommonModule,
+        FormsModule,
+        AngularSvgIconModule,
+
+        // Component
+        AppTooltipComponent,
+    ],
 })
 export class LoadFinancialComponent implements OnChanges {
     @Input() firstHeaderTitle: string;

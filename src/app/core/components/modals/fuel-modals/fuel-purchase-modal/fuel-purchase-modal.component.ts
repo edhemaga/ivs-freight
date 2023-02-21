@@ -1,4 +1,10 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import {
+    Component,
+    Input,
+    OnDestroy,
+    OnInit,
+    ViewEncapsulation,
+} from '@angular/core';
 import {
     FormsModule,
     ReactiveFormsModule,
@@ -41,18 +47,35 @@ import { TaInputComponent } from '../../../shared/ta-input/ta-input.component';
 import { TaCustomCardComponent } from '../../../shared/ta-custom-card/ta-custom-card.component';
 import { TaInputDropdownComponent } from '../../../shared/ta-input-dropdown/ta-input-dropdown.component';
 import { TaUploadFilesComponent } from '../../../shared/ta-upload-files/ta-upload-files.component';
+import { AngularSvgIconModule } from 'angular-svg-icon';
 
 @Component({
     selector: 'app-fuel-purchase-modal',
     templateUrl: './fuel-purchase-modal.component.html',
     styleUrls: ['./fuel-purchase-modal.component.scss'],
     providers: [ModalService, FormService, SumArraysPipe],
+    encapsulation: ViewEncapsulation.None,
     standalone: true,
-    imports: [CommonModule, FormsModule, AppTooltipComponent, TaModalComponent, ReactiveFormsModule, TaInputComponent, TaCustomCardComponent, TaInputDropdownComponent, SumArraysPipe, TaUploadFilesComponent]
+    imports: [
+        // Module
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+        AngularSvgIconModule,
+
+        // Component
+        AppTooltipComponent,
+        TaModalComponent,
+        TaInputComponent,
+        TaCustomCardComponent,
+        TaInputDropdownComponent,
+        TaUploadFilesComponent,
+
+        // Pipe
+        SumArraysPipe,
+    ],
 })
 export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
-    private destroy$ = new Subject<void>();
-
     @Input() editData: any;
 
     public fuelForm: UntypedFormGroup;
@@ -61,9 +84,9 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
     public fuelStops: any[] = [];
 
     public selectedTruckType: any = null;
-    public selectedDispatchHistory: any = null;
     public selectedTrailerType: any = null;
     public selectedFuelStop: any = null;
+    public selectedDispatchHistory: any = null;
 
     public selectedFuelItemDropFArray: any[] = [];
     public fuelItemsDropdown: any[] = [];
@@ -82,6 +105,8 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
     public fuelTransactionName: string = null;
 
     public disableCardAnimation: boolean = false;
+
+    private destroy$ = new Subject<void>();
 
     constructor(
         private formBuilder: UntypedFormBuilder,
@@ -182,9 +207,11 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
                 data.reorderingNumber ? data.reorderingNumber : null,
             ],
             itemId: [data?.itemId ? data.itemId : null, Validators.required],
-            qty: [data?.qty ? data.qty : null],
+            qty: [data?.qty ? data?.qty : 1],
             price: [
-                [data?.price ? data.price : undefined],
+                data?.price && !data?.price && data?.price !== undefined
+                    ? data.price
+                    : null,
                 [...priceValidation],
             ],
             subtotal: [[data?.subtotal ? data.subtotal : null]],
@@ -243,18 +270,22 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
                     }
 
                     this.subtotal = [...this.subtotal];
-                    const price = parseInt(
+
+                    if (this.fuelItems.at(index).get('price').value) {
+                        const price = parseInt(
+                            this.fuelItems
+                                .at(index)
+                                .get('price')
+                                .value?.toString()
+                                ?.replace(/,/g, '')
+                        );
+                        this.subtotal[index].value =
+                            this.quantity[index] * price;
                         this.fuelItems
                             .at(index)
-                            .get('price')
-                            .value?.toString()
-                            ?.replace(/,/g, '')
-                    );
-                    this.subtotal[index].value = this.quantity[index] * price;
-                    this.fuelItems
-                        .at(index)
-                        .get('subtotal')
-                        .patchValue(this.subtotal[index].value);
+                            .get('subtotal')
+                            .patchValue(this.subtotal[index].value);
+                    }
                 });
         } else {
             this.fuelItems
@@ -465,7 +496,15 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
                         total: res.total,
                     });
 
-                    this.selectedTruckType = res.truck;
+                    this.selectedTruckType = {
+                        id: res.truck.id,
+                        number: res.truck.truckNumber,
+                        logoName: res.truck.truckType.logoName,
+                        name: res.truck.truckNumber,
+                        folder: 'common',
+                        subFolder: 'trucks',
+                    };
+
                     this.getDriverTrailerBySelectedTruck('truckId');
 
                     this.selectedDispatchHistory = {
@@ -672,7 +711,7 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
                                 id: item.id,
                                 number: item.truckNumber,
                                 logoName: item.truckType.logoName,
-                                name: item.truckType.name,
+                                name: item.truckNumber,
                                 folder: 'common',
                                 subFolder: 'trucks',
                             };

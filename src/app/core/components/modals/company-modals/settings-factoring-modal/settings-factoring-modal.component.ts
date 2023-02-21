@@ -3,7 +3,13 @@ import {
     addressUnitValidation,
     addressValidation,
 } from '../../../shared/ta-input/ta-input.regex-validations';
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import {
+    FormsModule,
+    ReactiveFormsModule,
+    UntypedFormBuilder,
+    UntypedFormGroup,
+    Validators,
+} from '@angular/forms';
 import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { SettingsCompanyService } from '../../../settings/state/company-state/settings-company.service';
 import { UpdateFactoringCompanyCommand } from 'appcoretruckassist';
@@ -12,16 +18,43 @@ import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
 import { phoneFaxRegex } from '../../../shared/ta-input/ta-input.regex-validations';
 import { FormService } from '../../../../services/form/form.service';
+import { CommonModule } from '@angular/common';
+import { AngularSvgIconModule } from 'angular-svg-icon';
+import { TaInputComponent } from '../../../shared/ta-input/ta-input.component';
+import { TaInputDropdownComponent } from '../../../shared/ta-input-dropdown/ta-input-dropdown.component';
+import { TaModalComponent } from '../../../shared/ta-modal/ta-modal.component';
+import { TaCustomCardComponent } from '../../../shared/ta-custom-card/ta-custom-card.component';
+import { InputAddressDropdownComponent } from '../../../shared/input-address-dropdown/input-address-dropdown.component';
+import { TaNoticeOfAsignmentComponent } from '../../../shared/ta-notice-of-asignment/ta-notice-of-asignment.component';
+import { TaInputNoteComponent } from '../../../shared/ta-input-note/ta-input-note.component';
 
 @Component({
     selector: 'app-settings-factoring-modal',
     templateUrl: './settings-factoring-modal.component.html',
     styleUrls: ['./settings-factoring-modal.component.scss'],
     providers: [ModalService, FormService],
+    standalone: true,
+    imports: [
+        // Module
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+        AngularSvgIconModule,
+
+        // Component
+        TaInputComponent,
+        TaInputDropdownComponent,
+        TaModalComponent,
+        TaNoticeOfAsignmentComponent,
+        TaInputNoteComponent,
+        InputAddressDropdownComponent,
+        TaCustomCardComponent,
+    ],
 })
 export class SettingsFactoringModalComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
-    @ViewChild('noticeOfAssignment', { static: false }) public noticeOfAssignment: any;
+    @ViewChild('noticeOfAssignment', { static: false })
+    public noticeOfAssignment: any;
     @Input() editData: any;
 
     public factoringForm: UntypedFormGroup;
@@ -42,8 +75,8 @@ export class SettingsFactoringModalComponent implements OnInit, OnDestroy {
         textTransform: true,
         textAligment: true,
         textIndent: false,
-        textLists: false
-      };
+        textLists: false,
+    };
 
     constructor(
         private formBuilder: UntypedFormBuilder,

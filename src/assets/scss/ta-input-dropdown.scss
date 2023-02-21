@@ -1346,6 +1346,7 @@
     flex-direction: column;
     background-color: rgb(111, 158, 224, 0.2);
     position: relative;
+    border-radius: 2px;
 
     .selected-item-label {
         position: absolute;
@@ -1443,6 +1444,14 @@
                     }
                 }
             }
+
+            p {
+                font-size: 11px;
+                height: 13px;
+                font-weight: 400;
+                margin: 0;
+                padding: 0;
+            }
         }
     }
 
@@ -1490,25 +1499,6 @@
     }
 
     &:hover {
-        p {
-            color: #2f2f2f;
-        }
-
-        .selected-item-label {
-            color: #2f2f2f;
-        }
-
-        .selected-item-additional {
-            .selected-item-info {
-                svg-icon {
-                    svg {
-                        path {
-                            fill: #3074d3;
-                        }
-                    }
-                }
-            }
-        }
         .clear-selected-item {
             display: flex;
             align-items: center;

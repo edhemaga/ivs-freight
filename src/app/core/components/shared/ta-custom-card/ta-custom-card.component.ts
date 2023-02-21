@@ -24,9 +24,12 @@ import { TaLikeDislikeComponent } from '../ta-like-dislike/ta-like-dislike.compo
     encapsulation: ViewEncapsulation.None,
     standalone: true,
     imports: [
+        // Module
         CommonModule,
         FormsModule,
         AngularSvgIconModule,
+
+        // Component
         AppTooltipComponent,
         TaCheckboxComponent,
         TaCounterComponent,

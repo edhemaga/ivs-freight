@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import {
     FormsModule,
     ReactiveFormsModule,
@@ -34,16 +34,19 @@ import { TaInputDropdownComponent } from '../../../shared/ta-input-dropdown/ta-i
     styleUrls: ['./payroll-credit-bonus.component.scss'],
     standalone: true,
     imports: [
-            CommonModule, 
-            FormsModule, 
-            TaModalComponent, 
-            TaTabSwitchComponent, 
-            ReactiveFormsModule, 
-            TaInputComponent,
-            TaInputDropdownComponent
-    ]
+        // Module
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+
+        // Component
+        TaModalComponent,
+        TaTabSwitchComponent,
+        TaInputComponent,
+        TaInputDropdownComponent,
+    ],
 })
-export class PayrollCreditBonusComponent implements OnInit {
+export class PayrollCreditBonusComponent implements OnInit, OnDestroy {
     @Input() editData: any;
 
     public payrollCreditForm: UntypedFormGroup;
@@ -106,7 +109,7 @@ export class PayrollCreditBonusComponent implements OnInit {
         this.tabs = this.tabs.map((item) => {
             return {
                 ...item,
-                checked: item.id === this.selectedTab,
+                checked: item.id === event.id,
             };
         });
 
@@ -481,5 +484,10 @@ export class PayrollCreditBonusComponent implements OnInit {
                 break;
             }
         }
+    }
+
+    ngOnDestroy(): void {
+        this.destroy$.next();
+        this.destroy$.complete();
     }
 }

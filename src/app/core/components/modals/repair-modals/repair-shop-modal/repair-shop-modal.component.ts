@@ -65,6 +65,7 @@ import { InputAddressDropdownComponent } from '../../../shared/input-address-dro
 import { TaInputNoteComponent } from '../../../shared/ta-input-note/ta-input-note.component';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { TaCheckboxComponent } from '../../../shared/ta-checkbox/ta-checkbox.component';
+import { TaUploadFilesComponent } from '../../../shared/ta-upload-files/ta-upload-files.component';
 
 @Component({
     selector: 'app-repair-shop-modal',
@@ -75,21 +76,27 @@ import { TaCheckboxComponent } from '../../../shared/ta-checkbox/ta-checkbox.com
     providers: [ModalService, BankVerificationService, FormService],
     standalone: true,
     imports: [
-            CommonModule, 
-            FormsModule, 
-            AppTooltipComponent, 
-            TaModalComponent, 
-            TaTabSwitchComponent, 
-            ReactiveFormsModule,
-            ActiveItemsPipe,
-            TaInputComponent,
-            TaCustomCardComponent,
-            TaInputDropdownComponent,
-            InputAddressDropdownComponent,
-            TaInputNoteComponent,
-            AngularSvgIconModule,
-            TaCheckboxComponent
-    ]
+        // Module
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+        AngularSvgIconModule,
+
+        // Component
+        AppTooltipComponent,
+        TaModalComponent,
+        TaTabSwitchComponent,
+        TaInputComponent,
+        TaCustomCardComponent,
+        TaInputDropdownComponent,
+        InputAddressDropdownComponent,
+        TaInputNoteComponent,
+        TaCheckboxComponent,
+        TaUploadFilesComponent,
+
+        // Pipe
+        ActiveItemsPipe,
+    ],
 })
 export class RepairShopModalComponent implements OnInit, OnDestroy {
     @Input() editData: any;

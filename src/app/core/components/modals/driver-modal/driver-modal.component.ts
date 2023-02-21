@@ -62,6 +62,7 @@ import { TaInputNoteComponent } from '../../shared/ta-input-note/ta-input-note.c
 import { TaCheckboxCardComponent } from '../../shared/ta-checkbox-card/ta-checkbox-card.component';
 import { TaInputDropdownComponent } from '../../shared/ta-input-dropdown/ta-input-dropdown.component';
 import { TaLogoChangeComponent } from '../../shared/ta-logo-change/ta-logo-change.component';
+import { AngularSvgIconModule } from 'angular-svg-icon';
 
 @Component({
     selector: 'app-driver-modal',
@@ -71,54 +72,67 @@ import { TaLogoChangeComponent } from '../../shared/ta-logo-change/ta-logo-chang
     providers: [ModalService, FormService, BankVerificationService],
     standalone: true,
     imports: [
-            CommonModule, 
-            FormsModule, 
-            AppTooltipComponent, 
-            TaModalComponent, 
-            TaTabSwitchComponent, 
-            ReactiveFormsModule,
-            TaInputComponent,
-            InputAddressDropdownComponent,
-            TaCustomCardComponent,
-            TaCheckboxComponent,
-            TaNgxSliderComponent,
-            TaUploadFilesComponent,
-            TaInputNoteComponent,
-            TaCheckboxCardComponent,
-            TaInputDropdownComponent,
-            TaLogoChangeComponent
-    ]
+        // Module
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+        AngularSvgIconModule,
 
+        // Component
+        AppTooltipComponent,
+        TaModalComponent,
+        TaTabSwitchComponent,
+        TaInputComponent,
+        InputAddressDropdownComponent,
+        TaCustomCardComponent,
+        TaCheckboxComponent,
+        TaNgxSliderComponent,
+        TaUploadFilesComponent,
+        TaInputNoteComponent,
+        TaCheckboxCardComponent,
+        TaInputDropdownComponent,
+        TaLogoChangeComponent,
+    ],
 })
 export class DriverModalComponent implements OnInit, OnDestroy {
     @ViewChild(TaTabSwitchComponent) tabSwitch: TaTabSwitchComponent;
+
     @Input() editData: any;
+
     public driverForm: UntypedFormGroup;
+
     public labelsBank: any[] = [];
     public labelsPayType: any[] = [];
+
     public isOwner: boolean = false;
-    public selectedTab: number = 1;
+    public isBankSelected: boolean = false;
+
     public selectedOwnerTab: any = null;
     public selectedAddress: AddressEntity = null;
     public selectedOffDutyAddressArray: AddressEntity[] = [];
     public selectedBank: any = null;
-    public isBankSelected: boolean = false;
     public selectedPayType: any = null;
+
     public driverFullName: string = null;
+
     public owner: CheckOwnerSsnEinResponse = null;
+
     public disablePayType: boolean = false;
     public driverStatus: boolean = true;
+
     public documents: any[] = [];
     public fileModified: boolean = false;
     public filesForDelete: any[] = [];
-    public isFormDirty: boolean;
-    public addNewAfterSave: boolean = false;
+    public tags: any[] = [];
+
     // Delete when back coming
     public hasMilesSameRate: boolean = false;
     public fleetType: string = 'Solo';
     public payrollCompany: any;
     public loadingOwnerEin: boolean = false;
     public disableCardAnimation: boolean = false;
+
+    public selectedTab: number = 1;
     public tabs: any[] = [
         {
             id: 1,
@@ -149,6 +163,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
         showSelectionBar: true,
         hideLimitLabels: true,
     };
+
     public teamSliderOptions: Options = {
         floor: 10,
         ceil: 50,
@@ -156,10 +171,12 @@ export class DriverModalComponent implements OnInit, OnDestroy {
         showSelectionBar: true,
         hideLimitLabels: true,
     };
+
     public animationObject = {
         value: this.selectedTab,
         params: { height: '0px' },
     };
+
     public dropZoneConfig: DropZoneConfig = {
         dropZoneType: 'files',
         dropZoneSvg: 'assets/svg/common/ic_files_dropzone.svg',
@@ -168,9 +185,14 @@ export class DriverModalComponent implements OnInit, OnDestroy {
         multiple: true,
         globalDropZone: true,
     };
+
     public longitude: number;
     public latitude: number;
-    public tags: any[] = [];
+
+    public isFormDirty: boolean;
+
+    public addNewAfterSave: boolean = false;
+
     private destroy$ = new Subject<void>();
 
     constructor(
@@ -398,6 +420,13 @@ export class DriverModalComponent implements OnInit, OnDestroy {
 
     public tabChange(event: any): void {
         this.selectedTab = event.id;
+
+        this.tabs = this.tabs.map((item) => {
+            return {
+                ...item,
+                checked: item.id === event.id,
+            };
+        });
 
         this.uploadFileService.visibilityDropZone(this.selectedTab === 2);
 
@@ -1478,6 +1507,8 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                         this.driverForm.get('ownerType').patchValue(null);
                         this.driverForm.get('payType').patchValue(null);
 
+                        this.tabChange({ id: 1 });
+
                         this.driverForm
                             .get('soloEmptyMile')
                             .patchValue(this.payrollCompany.solo.emptyMile);
@@ -1557,6 +1588,11 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                             this.driverForm.get('teamDriver').patchValue(true);
                             this.driverForm.get('soloDriver').patchValue(true);
                         }
+
+                        this.documents = [];
+                        this.fileModified = false;
+                        this.filesForDelete = [];
+                        this.tags = [];
 
                         this.offDutyLocations.clear();
                         this.addNewAfterSave = false;

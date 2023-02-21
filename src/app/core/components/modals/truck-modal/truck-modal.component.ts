@@ -66,24 +66,25 @@ import { TaNgxSliderComponent } from '../../shared/ta-ngx-slider/ta-ngx-slider.c
     providers: [ModalService, TaInputService, FormService],
     standalone: true,
     imports: [
-            CommonModule, 
-            FormsModule, 
-            TaModalComponent, 
-            TaTabSwitchComponent, 
-            ReactiveFormsModule,
-            TaInputComponent,
-            TaInputDropdownComponent,
-            TaCheckboxCardComponent,
-            TaCustomCardComponent,
-            TaUploadFilesComponent,
-            TaInputNoteComponent,
-            TaCheckboxComponent,
-            TaNgxSliderComponent
-    ]
+        // Module
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+
+        // Component
+        TaModalComponent,
+        TaTabSwitchComponent,
+        TaInputComponent,
+        TaInputDropdownComponent,
+        TaCheckboxCardComponent,
+        TaCustomCardComponent,
+        TaUploadFilesComponent,
+        TaInputNoteComponent,
+        TaCheckboxComponent,
+        TaNgxSliderComponent,
+    ],
 })
 export class TruckModalComponent implements OnInit, OnDestroy {
-    private destroy$ = new Subject<void>();
-
     @Input() editData: any;
 
     public truckForm: UntypedFormGroup;
@@ -112,20 +113,18 @@ export class TruckModalComponent implements OnInit, OnDestroy {
     public selectedColor: any = null;
     public selectedOwner: any = null;
     public selectedTruckGrossWeight: any = null;
-
     public selectedTireSize: any = null;
     public selectedtruckEngineModelId: any = null;
     public selectedEngineOilType: any = null;
     public selectedAPUnit: any = null;
     public selectedGearRatio: any = null;
     public selectedTollTransponders: any = null;
-
     public selectedTruckLengthId: any = null;
-
     public selectedFrontWheels: any = null;
     public selectedRearWheels: any = null;
-
     public selectedFuelType: any = null;
+
+    private storedfhwaExpValue: any = null;
 
     public selectedTab: number = 1;
     public tabs: any[] = [
@@ -163,6 +162,10 @@ export class TruckModalComponent implements OnInit, OnDestroy {
     public fileModified: boolean = false;
     public tags: any[] = [];
 
+    public addNewAfterSave: boolean = false;
+
+    private destroy$ = new Subject<void>();
+
     constructor(
         private formBuilder: UntypedFormBuilder,
         private inputService: TaInputService,
@@ -183,11 +186,6 @@ export class TruckModalComponent implements OnInit, OnDestroy {
             this.populateStorageData(this.editData.storageData);
         } else {
             this.getTruckDropdowns();
-        }
-
-        if (this.editData?.id) {
-            this.skipVinDecocerEdit = true;
-            this.editTruckById(this.editData.id);
         }
 
         this.vinDecoder();
@@ -263,6 +261,12 @@ export class TruckModalComponent implements OnInit, OnDestroy {
 
     public tabChange(event: any): void {
         this.selectedTab = event.id;
+        this.tabs = this.tabs.map((item) => {
+            return {
+                ...item,
+                checked: item.id === event.id,
+            };
+        });
         let dotAnimation = document.querySelector('.animation-two-tabs');
         this.animationObject = {
             value: this.selectedTab,
@@ -312,6 +316,20 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                         },
                         error: () => {},
                     });
+            }
+            // Save And Add New
+            else if (data.action === 'save and add new') {
+                if (this.truckForm.invalid || !this.isFormDirty) {
+                    this.inputService.markInvalid(this.truckForm);
+                    return;
+                }
+                this.addTruck();
+                this.modalService.setModalSpinner({
+                    action: 'save and add new',
+                    status: true,
+                    close: false,
+                });
+                this.addNewAfterSave = true;
             } else {
                 // Save & Update
                 if (data.action === 'save') {
@@ -589,6 +607,13 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                     this.rearWheels = this.frontWheels = res.wheelsTypes;
                     this.fuelTypes = res.fuelTypes;
                     this.truckForm.get('fhwaExp').patchValue(res.fhwaExp);
+                    this.storedfhwaExpValue = res.fhwaExp;
+
+                    // Edit part
+                    if (this.editData?.id) {
+                        this.skipVinDecocerEdit = true;
+                        this.editTruckById(this.editData.id);
+                    }
                 },
                 error: () => {},
             });
@@ -936,6 +961,67 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                                 break;
                             }
                         }
+                    }
+
+                    if (this.addNewAfterSave) {
+                        this.formService.resetForm(this.truckForm);
+
+                        this.selectedBrakes = null;
+                        this.selectedShifter = null;
+                        this.selectedTruckType = null;
+                        this.selectedTruckMake = null;
+                        this.selectedColor = null;
+                        this.selectedOwner = null;
+                        this.selectedTruckGrossWeight = null;
+                        this.selectedTireSize = null;
+                        this.selectedtruckEngineModelId = null;
+                        this.selectedEngineOilType = null;
+                        this.selectedAPUnit = null;
+                        this.selectedGearRatio = null;
+                        this.selectedTollTransponders = null;
+                        this.selectedTruckLengthId = null;
+                        this.selectedFrontWheels = null;
+                        this.selectedRearWheels = null;
+                        this.selectedFuelType = null;
+
+                        this.commissionOptions = {
+                            floor: 2,
+                            ceil: 25,
+                            step: 0.5,
+                            showSelectionBar: true,
+                            hideLimitLabels: true,
+                        };
+
+                        this.truckStatus = true;
+                        this.loadingVinDecoder = false;
+                        this.isFormDirty;
+                        this.skipVinDecocerEdit = false;
+
+                        this.documents = [];
+                        this.filesForDelete = [];
+                        this.fileModified = false;
+                        this.tags = [];
+
+                        this.tabChange({ id: 1 });
+
+                        this.truckForm.get('commission').patchValue(14.5);
+                        this.truckForm
+                            .get('fhwaExp')
+                            .patchValue(this.storedfhwaExpValue);
+
+                        this.truckForm.get('companyOwned').patchValue(true);
+
+                        this.inputService.changeValidators(
+                            this.truckForm.get('ownerId'),
+                            false
+                        );
+
+                        this.modalService.setModalSpinner({
+                            action: 'save and add new',
+                            status: false,
+                            close: false,
+                        });
+                        this.addNewAfterSave = false;
                     } else {
                         this.modalService.setModalSpinner({
                             action: null,
@@ -1140,9 +1226,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                     }
                 });
 
-                this.truckForm
-                    .get('tags')
-                    .patchValue(changedTag ? true : null);
+                this.truckForm.get('tags').patchValue(changedTag ? true : null);
                 break;
             }
             default: {
@@ -1181,7 +1265,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
             }
         });
 
-        if(tags.length) {
+        if (tags.length) {
             this.tagsService.updateTag({ tags: tags }).subscribe();
         }
     }

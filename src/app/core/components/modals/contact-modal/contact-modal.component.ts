@@ -46,6 +46,7 @@ import { TaInputNoteComponent } from '../../shared/ta-input-note/ta-input-note.c
 import { TaInputComponent } from '../../shared/ta-input/ta-input.component';
 import { InputAddressDropdownComponent } from '../../shared/input-address-dropdown/input-address-dropdown.component';
 import { TaInputDropdownLabelComponent } from '../../shared/ta-input-dropdown-label/ta-input-dropdown-label.component';
+import { AngularSvgIconModule } from 'angular-svg-icon';
 
 @Component({
     selector: 'app-contact-modal',
@@ -54,12 +55,16 @@ import { TaInputDropdownLabelComponent } from '../../shared/ta-input-dropdown-la
     providers: [ModalService, FormService],
     standalone: true,
     imports: [
+        // Module
         CommonModule,
         FormsModule,
+        ReactiveFormsModule,
+        AngularSvgIconModule,
+
+        // Component
         AppTooltipComponent,
         TaModalComponent,
         TaTabSwitchComponent,
-        ReactiveFormsModule,
         TaCustomCardComponent,
         TaCheckboxCardComponent,
         TaInputDropdownComponent,
@@ -67,11 +72,10 @@ import { TaInputDropdownLabelComponent } from '../../shared/ta-input-dropdown-la
         TaInputNoteComponent,
         TaInputComponent,
         InputAddressDropdownComponent,
-        TaInputDropdownLabelComponent
+        TaInputDropdownLabelComponent,
     ],
 })
 export class ContactModalComponent implements OnInit, OnDestroy {
-    private destroy$ = new Subject<void>();
     @Input() editData: any;
 
     public contactForm: UntypedFormGroup;
@@ -123,6 +127,8 @@ export class ContactModalComponent implements OnInit, OnDestroy {
 
     public addNewAfterSave: boolean = false;
 
+    private destroy$ = new Subject<void>();
+
     constructor(
         private formBuilder: UntypedFormBuilder,
         private inputService: TaInputService,
@@ -161,6 +167,64 @@ export class ContactModalComponent implements OnInit, OnDestroy {
             .subscribe((isFormChange: boolean) => {
                 this.isFormDirty = isFormChange;
             });
+    }
+
+    public onModalAction(data: { action: string; bool: boolean }) {
+        switch (data.action) {
+            case 'close': {
+                break;
+            }
+            case 'save and add new': {
+                if (this.contactForm.invalid || !this.isFormDirty) {
+                    this.inputService.markInvalid(this.contactForm);
+                    return;
+                }
+                this.addCompanyContact();
+                this.modalService.setModalSpinner({
+                    action: 'save and add new',
+                    status: true,
+                    close: false,
+                });
+                this.addNewAfterSave = true;
+                break;
+            }
+            case 'save': {
+                if (this.contactForm.invalid || !this.isFormDirty) {
+                    this.inputService.markInvalid(this.contactForm);
+                    return;
+                }
+                if (this.editData) {
+                    this.updateCompanyContact(this.editData.id);
+                    this.modalService.setModalSpinner({
+                        action: null,
+                        status: true,
+                        close: false,
+                    });
+                } else {
+                    this.addCompanyContact();
+                    this.modalService.setModalSpinner({
+                        action: null,
+                        status: true,
+                        close: false,
+                    });
+                }
+                break;
+            }
+            case 'delete': {
+                if (this.editData) {
+                    this.deleteCompanyContactById(this.editData.id);
+                    this.modalService.setModalSpinner({
+                        action: 'delete',
+                        status: true,
+                        close: false,
+                    });
+                }
+                break;
+            }
+            default: {
+                break;
+            }
+        }
     }
 
     public get contactPhones(): UntypedFormArray {
@@ -240,64 +304,6 @@ export class ContactModalComponent implements OnInit, OnDestroy {
             case 'contact-email': {
                 this.contactEmails.removeAt(index);
                 this.selectedContactEmail.splice(index, 1);
-                break;
-            }
-            default: {
-                break;
-            }
-        }
-    }
-
-    public onModalAction(data: { action: string; bool: boolean }) {
-        switch (data.action) {
-            case 'close': {
-                break;
-            }
-            case 'save and add new': {
-                if (this.contactForm.invalid || !this.isFormDirty) {
-                    this.inputService.markInvalid(this.contactForm);
-                    return;
-                }
-                this.addCompanyContact();
-                this.modalService.setModalSpinner({
-                    action: 'save and add new',
-                    status: true,
-                    close: false,
-                });
-                this.addNewAfterSave = true;
-                break;
-            }
-            case 'save': {
-                if (this.contactForm.invalid || !this.isFormDirty) {
-                    this.inputService.markInvalid(this.contactForm);
-                    return;
-                }
-                if (this.editData) {
-                    this.updateCompanyContact(this.editData.id);
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: true,
-                        close: false,
-                    });
-                } else {
-                    this.addCompanyContact();
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: true,
-                        close: false,
-                    });
-                }
-                break;
-            }
-            case 'delete': {
-                if (this.editData) {
-                    this.deleteCompanyContactById(this.editData.id);
-                    this.modalService.setModalSpinner({
-                        action: 'delete',
-                        status: true,
-                        close: false,
-                    });
-                }
                 break;
             }
             default: {

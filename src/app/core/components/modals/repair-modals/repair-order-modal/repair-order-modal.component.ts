@@ -2,10 +2,13 @@ import {
     convertDateFromBackend,
     convertDateToBackend,
     convertNumberInThousandSep,
+    convertNumberWithCurrencyFormatterToBackend,
+    convertThousanSepInNumber,
 } from '../../../../utils/methods.calculations';
 import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import {
     FormsModule,
+    ReactiveFormsModule,
     UntypedFormArray,
     UntypedFormBuilder,
     UntypedFormGroup,
@@ -16,8 +19,8 @@ import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { RepairModalResponse, RepairShopResponse } from 'appcoretruckassist';
 import {
     NgbActiveModal,
-    NgbPopover,
     NgbModule,
+    NgbPopover,
 } from '@ng-bootstrap/ng-bootstrap';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
 import { RepairPmModalComponent } from '../repair-pm-modal/repair-pm-modal.component';
@@ -37,10 +40,6 @@ import {
 } from '../../../shared/ta-input/ta-input.regex-validations';
 import { DetailsDataService } from '../../../../services/details-data/details-data.service';
 import { PriceCalculationArraysPipe } from '../../../../pipes/price-calculation-arrays.pipe';
-import {
-    convertThousanSepInNumber,
-    convertNumberWithCurrencyFormatterToBackend,
-} from '../../../../utils/methods.calculations';
 import { EditTagsService } from 'src/app/core/services/shared/editTags.service';
 import { CommonModule } from '@angular/common';
 import { AppTooltipComponent } from '../../../standalone-components/app-tooltip/app-tooltip.component';
@@ -48,13 +47,13 @@ import { TaModalComponent } from '../../../shared/ta-modal/ta-modal.component';
 import { TaTabSwitchComponent } from '../../../standalone-components/ta-tab-switch/ta-tab-switch.component';
 import { TaInputDropdownComponent } from '../../../shared/ta-input-dropdown/ta-input-dropdown.component';
 import { TaInputComponent } from '../../../shared/ta-input/ta-input.component';
-import { ReactiveFormsModule } from '@angular/forms';
 import { TaCustomCardComponent } from '../../../shared/ta-custom-card/ta-custom-card.component';
 import { TaUploadFilesComponent } from '../../../shared/ta-upload-files/ta-upload-files.component';
 import { TaInputNoteComponent } from '../../../shared/ta-input-note/ta-input-note.component';
 import { ActiveItemsPipe } from 'src/app/core/pipes/activeItems.pipe';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { TaCopyComponent } from '../../../shared/ta-copy/ta-copy.component';
+import { formatPhonePipe } from '../../../../pipes/formatPhone.pipe';
 
 @Component({
     selector: 'app-repair-order-modal',
@@ -63,22 +62,28 @@ import { TaCopyComponent } from '../../../shared/ta-copy/ta-copy.component';
     providers: [PriceCalculationArraysPipe, ModalService, FormService],
     standalone: true,
     imports: [
+        // Module
         CommonModule,
         FormsModule,
-        AppTooltipComponent,
+        ReactiveFormsModule,
+        NgbModule,
+        AngularSvgIconModule,
+
+        // Component
         AppTooltipComponent,
         TaModalComponent,
         TaTabSwitchComponent,
         TaInputDropdownComponent,
         TaInputComponent,
-        ReactiveFormsModule,
         TaCustomCardComponent,
         TaUploadFilesComponent,
         TaInputNoteComponent,
-        ActiveItemsPipe,
-        NgbModule,
-        AngularSvgIconModule,
         TaCopyComponent,
+
+        // Pipe
+        ActiveItemsPipe,
+        formatPhonePipe,
+        PriceCalculationArraysPipe,
     ],
 })
 export class RepairOrderModalComponent implements OnInit, OnDestroy {
@@ -685,6 +690,75 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
             });
         }
         this.popoverRef.close();
+    }
+
+    public onBlurDescription(ind: number) {
+        const description = this.items.at(ind).get('description').value;
+
+        if (description) {
+            this.repairService
+                .autocompleteRepairByDescription(description)
+                .pipe(takeUntil(this.destroy$))
+                .subscribe({
+                    next: (res: RepairAutocompleteDescriptionResponse) => {
+                        console.log('autocomplete: ', res);
+                    },
+                    error: (error) => {
+                        console.log(error);
+                    },
+                });
+        }
+    }
+
+    public openRepairShop() {
+        this.ngbActiveModal.close();
+        this.modalService.setProjectionModal({
+            action: 'open',
+            payload: {
+                key: 'repair-modal',
+                value: {
+                    ...this.repairOrderForm.value,
+                    selectedUnit: this.selectedUnit,
+                    services: this.services,
+                    selectedRepairShop: this.selectedRepairShop,
+                    headerTabs: this.headerTabs,
+                    selectedHeaderTab: this.selectedHeaderTab,
+                    typeOfRepair: this.typeOfRepair,
+                    items_array: this.items.value,
+                    subtotal: this.subtotal,
+                    selectedPM: this.selectedPM,
+                    selectedPMIndex: this.selectedPMIndex,
+                    editRepairShop: true,
+                },
+                id: this.selectedRepairShop.id,
+            },
+            component: RepairShopModalComponent,
+            size: 'small',
+            type: this.repairOrderForm.get('unitType').value,
+        });
+    }
+
+    updateTags() {
+        let tags = [];
+
+        this.documents.map((item) => {
+            if (item?.tagChanged && item?.fileId) {
+                var tagsData = {
+                    storageId: item.fileId,
+                    tagId: item.tagId?.length ? item.tagId[0] : null,
+                };
+                tags.push(tagsData);
+            }
+        });
+
+        if (tags.length) {
+            this.tagsService.updateTag({ tags: tags }).subscribe();
+        }
+    }
+
+    ngOnDestroy(): void {
+        this.destroy$.next();
+        this.destroy$.complete();
     }
 
     private createForm() {
@@ -1449,74 +1523,5 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                         : null,
             };
         });
-    }
-
-    public onBlurDescription(ind: number) {
-        const description = this.items.at(ind).get('description').value;
-
-        if (description) {
-            this.repairService
-                .autocompleteRepairByDescription(description)
-                .pipe(takeUntil(this.destroy$))
-                .subscribe({
-                    next: (res: RepairAutocompleteDescriptionResponse) => {
-                        console.log('autocomplete: ', res);
-                    },
-                    error: (error) => {
-                        console.log(error);
-                    },
-                });
-        }
-    }
-
-    public openRepairShop() {
-        this.ngbActiveModal.close();
-        this.modalService.setProjectionModal({
-            action: 'open',
-            payload: {
-                key: 'repair-modal',
-                value: {
-                    ...this.repairOrderForm.value,
-                    selectedUnit: this.selectedUnit,
-                    services: this.services,
-                    selectedRepairShop: this.selectedRepairShop,
-                    headerTabs: this.headerTabs,
-                    selectedHeaderTab: this.selectedHeaderTab,
-                    typeOfRepair: this.typeOfRepair,
-                    items_array: this.items.value,
-                    subtotal: this.subtotal,
-                    selectedPM: this.selectedPM,
-                    selectedPMIndex: this.selectedPMIndex,
-                    editRepairShop: true,
-                },
-                id: this.selectedRepairShop.id,
-            },
-            component: RepairShopModalComponent,
-            size: 'small',
-            type: this.repairOrderForm.get('unitType').value,
-        });
-    }
-
-    updateTags() {
-        let tags = [];
-
-        this.documents.map((item) => {
-            if (item?.tagChanged && item?.fileId) {
-                var tagsData = {
-                    storageId: item.fileId,
-                    tagId: item.tagId?.length ? item.tagId[0] : null,
-                };
-                tags.push(tagsData);
-            }
-        });
-
-        if (tags.length) {
-            this.tagsService.updateTag({ tags: tags }).subscribe();
-        }
-    }
-
-    ngOnDestroy(): void {
-        this.destroy$.next();
-        this.destroy$.complete();
     }
 }

@@ -1,4 +1,5 @@
 import {
+    AfterViewInit,
     ChangeDetectorRef,
     Component,
     ElementRef,
@@ -61,25 +62,30 @@ import { LoadModalProgressBarComponent } from '../../modals/load-modal/load-moda
     encapsulation: ViewEncapsulation.None,
     standalone: true,
     imports: [
+        // Module
         CommonModule,
         AngularSvgIconModule,
         FormsModule,
         NgxMaskModule,
-        InputTypePipe,
-        AppTooltipComponent,
         NgbModule,
-        TaSvgPipe,
         ReactiveFormsModule,
-        InputErrorPipe,
+        NgbPopoverModule,
+
+        // Component
+        AppTooltipComponent,
         CustomDatetimePickersComponent,
         TaSpinnerComponent,
-        NgbPopoverModule,
         ProfileImagesComponent,
         LoadModalProgressBarComponent,
+
+        // Pipe
+        InputTypePipe,
+        TaSvgPipe,
+        InputErrorPipe,
     ],
 })
 export class TaInputComponent
-    implements OnInit, OnDestroy, ControlValueAccessor
+    implements OnInit, AfterViewInit, OnDestroy, ControlValueAccessor
 {
     @ViewChild('input', { static: true }) public input: ElementRef;
     @ViewChild('span1', { static: false }) span1: ElementRef;
@@ -219,13 +225,6 @@ export class TaInputComponent
                 this.input.nativeElement.focus();
             }
         }
-
-        // Auto Focus First Input
-        if (this._inputConfig.autoFocus && !this.getSuperControl?.value) {
-            this.input.nativeElement.focus();
-            this.focusInput = true;
-            this._inputConfig.autoFocus = false;
-        }
     }
 
     setTimePickerTime() {
@@ -237,13 +236,6 @@ export class TaInputComponent
     }
 
     ngOnInit(): void {
-        // Toggle label transition animation
-        $('.input-label').addClass('no-transition');
-
-        this.timeoutCleaner = setTimeout(() => {
-            $('.input-label').removeClass('no-transition');
-        }, 1000);
-
         // Reset Inputs
         this.inputResetService.resetInputSubject
             .pipe(takeUntil(this.destroy$))
@@ -263,6 +255,25 @@ export class TaInputComponent
                     this.resetDateTimeInputs();
                 }
             });
+    }
+
+    ngAfterViewInit(): void {
+        // Toggle label transition animation
+        $('.input-label').addClass('no-transition');
+
+        this.timeoutCleaner = setTimeout(() => {
+            $('.input-label').removeClass('no-transition');
+        }, 1000);
+
+        // Auto Focus First Input
+
+        if (this._inputConfig.autoFocus && !this.getSuperControl?.value) {
+            this.timeoutCleaner = setTimeout(() => {
+                this.input.nativeElement.focus();
+                this.focusInput = true;
+                this._inputConfig.autoFocus = false;
+            }, 30);
+        }
     }
 
     get getSuperControl() {

@@ -15,7 +15,14 @@ import { AppTooltipComponent } from '../../../standalone-components/app-tooltip/
     templateUrl: './load-stop.component.html',
     styleUrls: ['./load-stop.component.scss'],
     standalone: true,
-    imports: [CommonModule, FormsModule, AppTooltipComponent],
+    imports: [
+        // Module
+        CommonModule,
+        FormsModule,
+
+        // Component
+        AppTooltipComponent,
+    ],
     animations: [
         trigger('collapse', [
             state(
@@ -86,7 +93,7 @@ export class LoadStopComponent {
             this.isCardOpen = !this.isCardOpen;
 
             this.toggleEvent.emit(this.isCardOpen);
-        } 
+        }
     }
 
     public deleteStop() {

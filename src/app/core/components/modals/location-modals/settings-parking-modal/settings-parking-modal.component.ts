@@ -19,6 +19,17 @@ import { ModalService } from '../../../shared/ta-modal/modal.service';
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { rentValidation } from '../../../shared/ta-input/ta-input.regex-validations';
 import { FormService } from '../../../../services/form/form.service';
+import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { AngularSvgIconModule } from 'angular-svg-icon';
+import { TaInputComponent } from '../../../shared/ta-input/ta-input.component';
+import { TaInputDropdownComponent } from '../../../shared/ta-input-dropdown/ta-input-dropdown.component';
+import { TaModalComponent } from '../../../shared/ta-modal/ta-modal.component';
+import { TaTabSwitchComponent } from '../../../standalone-components/ta-tab-switch/ta-tab-switch.component';
+import { TaCheckboxCardComponent } from '../../../shared/ta-checkbox-card/ta-checkbox-card.component';
+import { InputAddressDropdownComponent } from '../../../shared/input-address-dropdown/input-address-dropdown.component';
+import { SumArraysPipe } from '../../../../pipes/sum-arrays.pipe';
+import { TaCustomCardComponent } from '../../../shared/ta-custom-card/ta-custom-card.component';
 import {
     addressValidation,
     addressUnitValidation,
@@ -40,9 +51,28 @@ import {
     styleUrls: ['./settings-parking-modal.component.scss'],
     animations: [tab_modal_animation('animationTabsModal')],
     providers: [ModalService],
+    standalone: true,
+    imports: [
+        // Module
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+        AngularSvgIconModule,
+
+        // Component
+        TaInputComponent,
+        TaInputDropdownComponent,
+        TaModalComponent,
+        TaTabSwitchComponent,
+        TaCheckboxCardComponent,
+        InputAddressDropdownComponent,
+        TaCustomCardComponent,
+
+        // Pipe
+        SumArraysPipe,
+    ],
 })
 export class SettingsParkingModalComponent implements OnInit, OnDestroy {
-    private destroy$ = new Subject<void>();
     @Input() editData: any;
 
     public parkingForm: UntypedFormGroup;
@@ -121,6 +151,8 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
     public isParkingCardOpen: boolean = true;
 
     public disableCardAnimation: boolean = false;
+
+    private destroy$ = new Subject<void>();
 
     constructor(
         private formBuilder: UntypedFormBuilder,

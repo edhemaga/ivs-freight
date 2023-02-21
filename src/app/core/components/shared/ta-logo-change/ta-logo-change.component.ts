@@ -24,9 +24,10 @@ import { Subject, takeUntil } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AppTooltipComponent } from '../../standalone-components/app-tooltip/app-tooltip.component';
-import { TaNgxSliderComponent } from '../ta-ngx-slider/ta-ngx-slider.component';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { NgbModule, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
+import { TaNgxSliderComponent } from '../ta-ngx-slider/ta-ngx-slider.component';
+import { LogoSliderPipe } from './logoSlider.pipe';
 
 @Component({
     selector: 'app-ta-logo-change',
@@ -34,15 +35,21 @@ import { NgbModule, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
     styleUrls: ['./ta-logo-change.component.scss'],
     standalone: true,
     imports: [
+        // Module
         CommonModule,
         FormsModule,
-        AppTooltipComponent,
-        CroppieModule,
-        TaUploadDropzoneComponent,
-        TaNgxSliderComponent,
         AngularSvgIconModule,
         NgbModule,
-        NgbPopoverModule
+        NgbPopoverModule,
+        CroppieModule,
+
+        // Component
+        AppTooltipComponent,
+        TaUploadDropzoneComponent,
+        TaNgxSliderComponent,
+
+        // Pipe
+        LogoSliderPipe,
     ],
 })
 export class TaLogoChangeComponent

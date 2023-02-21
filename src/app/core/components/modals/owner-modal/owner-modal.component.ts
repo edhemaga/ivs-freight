@@ -58,24 +58,29 @@ import { TaUploadFilesComponent } from '../../shared/ta-upload-files/ta-upload-f
     providers: [ModalService, BankVerificationService, FormService],
     standalone: true,
     imports: [
-                CommonModule, 
-                FormsModule, 
-                TaModalComponent, 
-                TaTabSwitchComponent, 
-                ReactiveFormsModule, 
-                TaInputComponent, 
-                TaInputDropdownComponent, 
-                InputAddressDropdownComponent, 
-                TaCustomCardComponent, 
-                TaInputNoteComponent, 
-                TaUploadFilesComponent
-    ]
+        // Module
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+
+        // Component
+        TaModalComponent,
+        TaTabSwitchComponent,
+        TaInputComponent,
+        TaInputDropdownComponent,
+        InputAddressDropdownComponent,
+        TaCustomCardComponent,
+        TaInputNoteComponent,
+        TaUploadFilesComponent,
+    ],
 })
 export class OwnerModalComponent implements OnInit, OnDestroy {
     @ViewChild(TabSwitcherComponent) tabSwitcher: any;
+
     @Input() editData: any;
-    public isFormDirty: boolean;
+
     public ownerForm: UntypedFormGroup;
+
     public selectedTab: number = 1;
     public tabs: any[] = [
         {
@@ -88,17 +93,25 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
             name: 'Sole Proprietor',
         },
     ];
+
     public labelsBank: any[] = [];
     public selectedAddress: AddressEntity = null;
+
     public selectedBank: any = null;
     public isBankSelected: boolean = false;
+
     public documents: any[] = [];
     public fileModified: boolean = false;
     public filesForDelete: any[] = [];
+
     public addNewAfterSave: boolean = false;
+
     public longitude: number;
     public latitude: number;
+
     private destroy$ = new Subject<void>();
+
+    public isFormDirty: boolean;
 
     constructor(
         private formBuilder: UntypedFormBuilder,
@@ -113,6 +126,41 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
         this.createForm();
         this.getOwnerDropdowns();
         this.onBankSelected();
+    }
+
+    private createForm() {
+        this.ownerForm = this.formBuilder.group({
+            bussinesName: [
+                null,
+                [Validators.required, ...businessNameValidation],
+            ],
+            firstName: [null, [...firstNameValidation]],
+            lastName: [null, [...lastNameValidation]],
+            ssn: [null, ssnNumberRegex],
+            ein: [null, [Validators.required, einNumberRegex]],
+            address: [null, [Validators.required, ...addressValidation]],
+            addressUnit: [null, [...addressUnitValidation]],
+            phone: [null, [Validators.required, phoneFaxRegex]],
+            email: [null, [Validators.required]],
+            bankId: [null, [...bankValidation]],
+            accountNumber: [null, accountBankValidation],
+            routingNumber: [null, routingBankValidation],
+            note: [null],
+            files: [null],
+        });
+
+        this.inputService.customInputValidator(
+            this.ownerForm.get('email'),
+            'email',
+            this.destroy$
+        );
+
+        this.formService.checkFormChange(this.ownerForm);
+        this.formService.formValueChange$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((isFormChange: boolean) => {
+                this.isFormDirty = isFormChange;
+            });
     }
 
     public tabChange(event: any): void {
@@ -282,46 +330,6 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
                 break;
             }
         }
-    }
-
-    ngOnDestroy(): void {
-        this.destroy$.next();
-        this.destroy$.complete();
-    }
-
-    private createForm() {
-        this.ownerForm = this.formBuilder.group({
-            bussinesName: [
-                null,
-                [Validators.required, ...businessNameValidation],
-            ],
-            firstName: [null, [...firstNameValidation]],
-            lastName: [null, [...lastNameValidation]],
-            ssn: [null, ssnNumberRegex],
-            ein: [null, [Validators.required, einNumberRegex]],
-            address: [null, [Validators.required, ...addressValidation]],
-            addressUnit: [null, [...addressUnitValidation]],
-            phone: [null, [Validators.required, phoneFaxRegex]],
-            email: [null, [Validators.required]],
-            bankId: [null, [...bankValidation]],
-            accountNumber: [null, accountBankValidation],
-            routingNumber: [null, routingBankValidation],
-            note: [null],
-            files: [null],
-        });
-
-        this.inputService.customInputValidator(
-            this.ownerForm.get('email'),
-            'email',
-            this.destroy$
-        );
-
-        this.formService.checkFormChange(this.ownerForm);
-        this.formService.formValueChange$
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((isFormChange: boolean) => {
-                this.isFormDirty = isFormChange;
-            });
     }
 
     private manipulateWithOwnerInputs() {
@@ -569,12 +577,12 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
                         this.selectedAddress = null;
                         this.selectedBank = null;
                         this.selectedTab = 1;
-                        this.tabs = this.tabs.map((item, index) => {
-                            return {
-                                ...item,
-                                checked: index === 0,
-                            };
-                        });
+
+                        this.documents = [];
+                        this.fileModified = false;
+                        this.filesForDelete = [];
+
+                        this.tabChange({ id: 1 });
 
                         this.addNewAfterSave = false;
 
@@ -586,7 +594,7 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
                     } else {
                         this.modalService.setModalSpinner({
                             action: null,
-                            status: false,
+                            status: true,
                             close: true,
                         });
                     }
@@ -652,5 +660,10 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
                 },
                 error: () => {},
             });
+    }
+
+    ngOnDestroy(): void {
+        this.destroy$.next();
+        this.destroy$.complete();
     }
 }

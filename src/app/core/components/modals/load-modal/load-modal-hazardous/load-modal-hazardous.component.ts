@@ -8,7 +8,12 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
     templateUrl: './load-modal-hazardous.component.html',
     styleUrls: ['./load-modal-hazardous.component.scss'],
     standalone: true,
-    imports: [CommonModule, FormsModule, AngularSvgIconModule]
+    imports: [
+        // Module
+        CommonModule,
+        FormsModule,
+        AngularSvgIconModule,
+    ],
 })
 export class LoadModalHazardousComponent {
     public hazardous_materials_section = [

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import {
     FormsModule,
     ReactiveFormsModule,
@@ -35,17 +35,20 @@ import { TaCheckboxComponent } from '../../../shared/ta-checkbox/ta-checkbox.com
     styleUrls: ['./payroll-deduction-modal.component.scss'],
     standalone: true,
     imports: [
-                CommonModule, 
-                FormsModule, 
-                TaModalComponent, 
-                TaTabSwitchComponent, 
-                ReactiveFormsModule, 
-                TaInputComponent, 
-                TaInputDropdownComponent, 
-                TaCheckboxComponent
-    ]
+        // Module
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+
+        // Component
+        TaModalComponent,
+        TaTabSwitchComponent,
+        TaInputComponent,
+        TaInputDropdownComponent,
+        TaCheckboxComponent,
+    ],
 })
-export class PayrollDeductionModalComponent implements OnInit {
+export class PayrollDeductionModalComponent implements OnInit, OnDestroy {
     @Input() editData: any;
 
     public payrollDeductionForm: UntypedFormGroup;
@@ -612,5 +615,10 @@ export class PayrollDeductionModalComponent implements OnInit {
                         .patchValue(null);
                 }
             });
+    }
+
+    ngOnDestroy(): void {
+        this.destroy$.next();
+        this.destroy$.complete();
     }
 }

@@ -23,11 +23,10 @@ ngb-modal-window[aria-hidden='true'] {
     //     transform: scale(1) !important;
     // }
 
-
-    .modal-dialog{
+    .modal-dialog {
         opacity: 0;
         transform: scale(0.6) !important;
-        transition: all 0.4s ease-out !important;
+        transition: all 0.3s ease-out !important;
     }
 
     &.show .modal-dialog {

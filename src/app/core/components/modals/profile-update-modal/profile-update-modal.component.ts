@@ -6,9 +6,14 @@ import {
     passwordValidation,
 } from '../../shared/ta-input/ta-input.regex-validations';
 import { phoneFaxRegex } from '../../shared/ta-input/ta-input.regex-validations';
-
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormsModule, UntypedFormBuilder, UntypedFormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import {
+    FormsModule,
+    UntypedFormBuilder,
+    UntypedFormGroup,
+    Validators,
+    ReactiveFormsModule,
+} from '@angular/forms';
 import { tab_modal_animation } from '../../shared/animations/tabs-modal.animation';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
 import {
@@ -27,8 +32,9 @@ import { TaModalComponent } from '../../shared/ta-modal/ta-modal.component';
 import { TaTabSwitchComponent } from '../../standalone-components/ta-tab-switch/ta-tab-switch.component';
 import { TaInputComponent } from '../../shared/ta-input/ta-input.component';
 import { InputAddressDropdownComponent } from '../../shared/input-address-dropdown/input-address-dropdown.component';
-import { TaCheckboxComponent } from '../../shared/ta-checkbox/ta-checkbox.component';
 import { TaLogoChangeComponent } from '../../shared/ta-logo-change/ta-logo-change.component';
+import { TaCheckboxCardComponent } from '../../shared/ta-checkbox-card/ta-checkbox-card.component';
+import { TaCustomCardComponent } from '../../shared/ta-custom-card/ta-custom-card.component';
 
 @Component({
     selector: 'app-profile-update-modal',
@@ -38,19 +44,22 @@ import { TaLogoChangeComponent } from '../../shared/ta-logo-change/ta-logo-chang
     providers: [FormService, ModalService],
     standalone: true,
     imports: [
-            CommonModule, 
-            FormsModule, 
-            TaModalComponent, 
-            TaTabSwitchComponent, 
-            ReactiveFormsModule,
-            TaInputComponent,
-            InputAddressDropdownComponent,
-            TaCheckboxComponent,
-            TaLogoChangeComponent
-    ]
+        // Module
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+
+        // Modal
+        TaModalComponent,
+        TaTabSwitchComponent,
+        TaInputComponent,
+        InputAddressDropdownComponent,
+        TaCheckboxCardComponent,
+        TaLogoChangeComponent,
+        TaCustomCardComponent,
+    ],
 })
 export class ProfileUpdateModalComponent implements OnInit, OnDestroy {
-    private destroy$ = new Subject<void>();
     private user: SignInResponse;
 
     public selectedTab: number = 1;
@@ -63,7 +72,7 @@ export class ProfileUpdateModalComponent implements OnInit, OnDestroy {
         {
             id: 1,
             name: 'Basic',
-            checked: true
+            checked: true,
         },
         {
             id: 2,
@@ -84,6 +93,11 @@ export class ProfileUpdateModalComponent implements OnInit, OnDestroy {
         },
     };
 
+    public animationObject = {
+        value: this.selectedTab,
+        params: { height: '0px' },
+    };
+
     public selectedAddress: AddressEntity = null;
     public userPasswordTyping: boolean = false;
     public correctPassword: boolean = false;
@@ -91,6 +105,8 @@ export class ProfileUpdateModalComponent implements OnInit, OnDestroy {
     public loadingOldPassword: boolean = false;
 
     public isFormDirty: boolean = false;
+
+    private destroy$ = new Subject<void>();
 
     constructor(
         private formBuilder: UntypedFormBuilder,
@@ -101,26 +117,12 @@ export class ProfileUpdateModalComponent implements OnInit, OnDestroy {
     ) {}
 
     ngOnInit() {
-        this.user = JSON.parse(localStorage.getItem('user'));
         this.createForm();
-        this.disableCardAnimation = true;
+        this.user = JSON.parse(localStorage.getItem('user'));
+
         this.getUserById();
         this.changeCheckboxDetection();
-    }
-
-    public animationObject = {
-        value: this.selectedTab,
-        params: { height: '0px' },
-    };
-
-    public tabChange(event: any): void {
-        this.selectedTab = event.id;
-        let dotAnimation = document.querySelector('.animation-two-tabs');
-
-        this.animationObject = {
-            value: this.selectedTab,
-            params: { height: `${dotAnimation.getClientRects()[0].height}px` },
-        };
+        this.disableCardAnimation = true;
     }
 
     private createForm() {
@@ -151,6 +153,16 @@ export class ProfileUpdateModalComponent implements OnInit, OnDestroy {
             .subscribe((isFormChange: boolean) => {
                 this.isFormDirty = isFormChange;
             });
+    }
+
+    public tabChange(event: any): void {
+        this.selectedTab = event.id;
+        let dotAnimation = document.querySelector('.animation-two-tabs');
+
+        this.animationObject = {
+            value: this.selectedTab,
+            params: { height: `${dotAnimation.getClientRects()[0].height}px` },
+        };
     }
 
     public onModalAction(data: { action: string; bool: boolean }): void {
