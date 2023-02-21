@@ -432,6 +432,7 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 ? '$' + this.thousandSeparator.transform(data.salary)
                 : '',
             userStatus: data.status,
+            tableIsUserOwner: data.userType.name === 'Owner',
             // User Dropdown Action Set Up
             tableDropdownContent: {
                 hasContent: true,
@@ -457,20 +458,6 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 hasBorder: true,
             },
             {
-                title: 'Send Message',
-                name: 'send-message',
-                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Send Message.svg',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                svgClass: 'regular',
-                tableListDropdownContentStyle: {
-                    'margin-bottom.px': 4,
-                },
-                mutedStyle: true,
-            },
-            {
                 title: 'Reset Password',
                 name: 'reset-password',
                 svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Password.svg',
@@ -482,49 +469,25 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 tableListDropdownContentStyle: {
                     'margin-bottom.px': 4,
                 },
-                mutedStyle: true,
+                mutedStyle: !data.verified,
             },
             {
                 title: 'Resend Invitation',
                 name: 'resend-invitation',
-                svgUrl: testIcon
+                svgUrl: !data.verified
                     ? 'assets/svg/truckassist-table/new-list-dropdown/Email - Invitation.svg'
                     : 'assets/svg/truckassist-table/new-list-dropdown/Check.svg',
                 svgStyle: {
-                    width: testIcon ? 18 : 14,
-                    height: testIcon ? 18 : 14,
+                    width: !data.verified ? 18 : 14,
+                    height: !data.verified ? 18 : 14,
                 },
-                svgClass: testIcon ? 'regular' : 'check',
+                svgClass: data.verified ? 'check' : 'regular',
                 hasBorder: true,
-                mutedStyle: true,
-            },
-            {
-                title: 'Share',
-                name: 'share',
-                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Share.svg',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                svgClass: 'regular',
-                tableListDropdownContentStyle: {
-                    'margin-bottom.px': 4,
-                },
-            },
-            {
-                title: 'Print',
-                name: 'print',
-                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Print.svg',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                svgClass: 'regular',
-                hasBorder: true,
+                mutedStyle: data.verified,
             },
             {
                 title: data.status ? 'Deactivate' : 'Activate',
-                name: data.status ? 'deactivate' : 'activate' ,
+                name: data.status ? 'deactivate' : 'activate',
                 svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Deactivate.svg',
                 svgStyle: {
                     width: 18,
@@ -753,6 +716,26 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     image: true,
                 }
             );
+        }
+        // User Reset Password
+        else if (event.type === 'reset-password') {
+            // this.userService
+            //     .userResetPassword(event.data.email)
+            //     .pipe(takeUntil(this.destroy$))
+            //     .subscribe((res: any) => {
+            //         console.log('userResetPassword');
+            //         console.log(res);
+            //     });
+        }
+        // User Resend Ivitation
+        else if (event.type === 'resend-invitation') {
+            this.userService
+                .userResendIvitation({
+                    email: event.data.email,
+                    isResendConfirmation: true,
+                })
+                .pipe(takeUntil(this.destroy$))
+                .subscribe((res: any) => {});
         }
         // User Delete
         else if (event.type === 'delete') {
