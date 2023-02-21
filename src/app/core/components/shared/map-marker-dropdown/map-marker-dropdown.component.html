@@ -830,7 +830,7 @@
                         type == 'shipper'
                             ? 'Load'
                             : type == 'repairShop'
-                            ? 'Order'
+                            ? 'Repairs'
                             : type == 'accident' || type == 'inspection'
                             ? 'Total Weight'
                             : type == 'fuelStop'
@@ -950,9 +950,9 @@
                     <div class="marker-info-text">
                         {{
                             item?.lastUsed != null
-                                ? item?.lastUsed
+                                ? (item?.lastUsed | formatDateP)
                                 : item?.lastVisited != null
-                                ? item.lastVisited
+                                ? (item.lastVisited | formatDateP)
                                 : item?.updatedAt != null
                                 ? (item.updatedAt | formatDateP)
                                 : '&nbsp;'

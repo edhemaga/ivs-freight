@@ -35,7 +35,7 @@ export class MapSettingsModalComponent implements OnInit, OnDestroy {
         {
             id: 1,
             name: 'MILES',
-            checked: false,
+            checked: true,
         },
         {
             id: 2,
@@ -48,7 +48,7 @@ export class MapSettingsModalComponent implements OnInit, OnDestroy {
         {
             id: 1,
             name: 'CITY',
-            checked: false,
+            checked: true,
         },
         {
             id: 2,
@@ -61,7 +61,7 @@ export class MapSettingsModalComponent implements OnInit, OnDestroy {
         {
             id: 1,
             name: 'OPEN BORDER',
-            checked: false,
+            checked: true,
         },
         {
             id: 2,

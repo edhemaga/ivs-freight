@@ -1,4 +1,9 @@
-<div class="table-filter-container" [ngClass]="{'table-filter-padding': options.toolbarActions.showSearchBorder}">
+<div
+    class="table-filter-container"
+    [ngClass]="{
+        'table-filter-padding': options.toolbarActions.showSearchBorder
+    }"
+>
     <!-- VIEW MODE SELECT -->
     <div
         class="view-mode-container"
@@ -37,6 +42,25 @@
         *ngIf="options.toolbarActions.showSearchBorder"
     >
         <div class="border"></div>
+    </div>
+
+    <!-- BORDER -->
+    <div
+        class="border-container"
+        *ngIf="options.toolbarActions.showCountSelectedInList"
+    >
+        <div class="border"></div>
+    </div>
+
+    <!-- COUNT SELECTED IN LIST  -->
+    <div
+        class="count-selected-in-list-container"
+        *ngIf="
+            options.toolbarActions.showCountSelectedInList &&
+            activeTableData?.listSelectedCount
+        "
+    >
+        {{ activeTableData.listSelectedCount }} Selected
     </div>
 
     <!-- BORDER -->
@@ -449,10 +473,7 @@
     </app-filter>
 
     <!-- BORDER -->
-    <div
-        class="border-container"
-        *ngIf="options.toolbarActions.showMoneyCount"
-    >
+    <div class="border-container" *ngIf="options.toolbarActions.showMoneyCount">
         <div class="border"></div>
     </div>
 

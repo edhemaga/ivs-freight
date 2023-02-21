@@ -6,6 +6,22 @@
     background: #ffffff;
     border-radius: 3px 0px 0px 3px;
 
+    // COUNT SELECTED IN LIST
+    .count-selected-in-list-container{
+        width: fit-content;
+        height: 26px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 2px;
+        background: #3074D3;
+        padding: 0 8px;
+        color: #FFFFFF;
+        font-size: 14px;
+        font-weight: 700;
+        margin-left: 4px;
+    }
+
     // TOTAL MONEY COUNT
     .money-count-container {
         width: fit-content;

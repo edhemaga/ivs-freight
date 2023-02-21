@@ -394,7 +394,7 @@
             <div class="card-width" *ngSwitchCase="'lease-purchase'">
                 <app-ta-re-card
                     [hasSvg]="'assets/svg/common/green_arrow_down.svg'"
-                    (resizePage)="toggleResizePage(5 + 'lease')"
+                    (resizePage)="toggleResizePage(5, 'lease')"
                     [cardNameCommon]="'KSKA FREIGHT, INC'"
                     [isCardOpen]="true"
                     [expDateClose]="'04/04/27' | formatDateP"

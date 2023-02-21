@@ -854,7 +854,7 @@
                     "
                     [hasPlusHeader]="true"
                 >
-                    <div *ngFor="let title of truck?.titles; trackBy: identity">
+                    <div *ngFor="let title of truck?.titles; let i = index; trackBy: identity">
                         <app-ta-re-card
                             [cardDocumentCounter]="
                                 title?.files?.length ? title?.files?.length : 0

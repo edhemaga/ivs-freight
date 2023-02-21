@@ -1,6 +1,7 @@
 import {
     ChangeDetectorRef,
     Component,
+    CUSTOM_ELEMENTS_SCHEMA,
     ElementRef,
     EventEmitter,
     HostListener,
@@ -71,6 +72,7 @@ import { LoadModalProgressBarComponent } from '../../modals/load-modal/load-moda
             ProfileImagesComponent,
             LoadModalProgressBarComponent
     ],
+    schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class TaInputComponent
     implements OnInit, OnChanges, OnDestroy, ControlValueAccessor
