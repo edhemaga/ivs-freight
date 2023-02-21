@@ -457,20 +457,6 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 hasBorder: true,
             },
             {
-                title: 'Send Message',
-                name: 'send-message',
-                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Send Message.svg',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                svgClass: 'regular',
-                tableListDropdownContentStyle: {
-                    'margin-bottom.px': 4,
-                },
-                mutedStyle: true,
-            },
-            {
                 title: 'Reset Password',
                 name: 'reset-password',
                 svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Password.svg',
@@ -715,6 +701,9 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     // On Body Actions
     onTableBodyActions(event: any) {
+        console.log('onTableBodyActions');
+        console.log(event);
+
         const confirmationModalData = {
             ...event,
             data: {

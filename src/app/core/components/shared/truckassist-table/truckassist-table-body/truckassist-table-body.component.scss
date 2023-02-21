@@ -1669,8 +1669,8 @@ table {
 
                             svg-icon {
                                 display: flex;
-                                // transform: rotateZ(0deg);
-                                transition: transform 0.2s;
+                                
+                                transition: transform 0.1s;
 
                                 svg {
                                     circle {
@@ -3163,7 +3163,7 @@ table {
     svg-icon{
         transform: rotateZ(90deg);
 
-        transition: transform 0.2s;
+        transition: transform 0.1s;
     }
 }
 
