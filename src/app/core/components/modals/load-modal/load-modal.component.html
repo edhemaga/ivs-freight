@@ -39,7 +39,7 @@
                         src="assets/svg/common/load/ic_load_template_btn.svg"
                     ></svg-icon>
                 </div>
-                <app-ta-input-dropdown
+                <!-- <app-ta-input-dropdown
                     formControlName="dispatcherId"
                     [template]="'load-dispatcher'"
                     [inputConfig]="{
@@ -64,7 +64,7 @@
                     [options]="labelsDispatcher"
                     [activeItem]="selectedDispatcher"
                     (selectedItem)="onSelectDropdown($event, 'dispatcher')"
-                ></app-ta-input-dropdown>
+                ></app-ta-input-dropdown> -->
                 <!------------------ Companies Cassses ------------------>
                 <!-- Only One Company -->
                 <app-ta-input
@@ -98,14 +98,14 @@
             </div>
             <div class="row">
                 <div class="col-12">
-                    <app-ta-input-dropdown
+                    <!-- <app-ta-input-dropdown
                         formControlName="dispatchId"
                         [template]="'load-dispatches-ttd'"
                         [inputConfig]="loadDispatchesTTDInputConfig"
                         [options]="labelsDispatches"
                         [activeItem]="selectedDispatches"
                         (selectedItem)="onSelectDropdown($event, 'dispatches')"
-                    ></app-ta-input-dropdown>
+                    ></app-ta-input-dropdown> -->
                 </div>
             </div>
             <div class="load-ftl-third-row">
@@ -119,7 +119,7 @@
                         textTransform: 'uppercase'
                     }"
                 ></app-ta-input>
-                <app-ta-input-dropdown
+                <!-- <app-ta-input-dropdown
                     formControlName="brokerId"
                     [template]="'load-broker'"
                     [inputConfig]="loadBrokerInputConfig"
@@ -128,10 +128,10 @@
                     [options]="labelsBroker"
                     [activeItem]="selectedBroker"
                     (selectedItem)="onSelectDropdown($event, 'broker')"
-                ></app-ta-input-dropdown>
+                ></app-ta-input-dropdown> -->
             </div>
             <div class="load-ftl-fourth-row">
-                <app-ta-input-dropdown
+                <!-- <app-ta-input-dropdown
                     formControlName="brokerContactId"
                     [template]="'load-broker-contact'"
                     [inputConfig]="loadBrokerContactsInputConfig"
@@ -140,7 +140,7 @@
                     [options]="labelsBrokerContacts"
                     [activeItem]="selectedBrokerContact"
                     (selectedItem)="onSelectDropdown($event, 'broker-contact')"
-                ></app-ta-input-dropdown>
+                ></app-ta-input-dropdown> -->
                 <app-ta-input-dropdown
                     formControlName="generalCommodity"
                     [template]="'svgtext-template'"
@@ -441,7 +441,7 @@
                             [type]="'type2-modal-popup'"
                         ></app-ta-tab-switch>
 
-                        <app-ta-input-dropdown
+                        <!-- <app-ta-input-dropdown
                             formControlName="pickupShipperContactId"
                             [template]="'load-broker-contact'"
                             [inputConfig]="loadPickupShipperContactsInputConfig"
@@ -455,7 +455,7 @@
                                     'shipper-contact-pickup'
                                 )
                             "
-                        ></app-ta-input-dropdown>
+                        ></app-ta-input-dropdown> -->
                     </div>
                     <div
                         class="stop-load-date-time"
@@ -710,7 +710,7 @@
                                 <!-- Stop Information -->
                                 <div class="row">
                                     <div class="col-12">
-                                        <app-ta-input-dropdown
+                                        <!-- <app-ta-input-dropdown
                                             formControlName="shipperId"
                                             [template]="'load-shipper'"
                                             [inputConfig]="
@@ -737,7 +737,7 @@
                                                     .get('shipperId')
                                                     .markAsTouched()
                                             "
-                                        ></app-ta-input-dropdown>
+                                        ></app-ta-input-dropdown> -->
                                     </div>
                                 </div>
                                 <div class="load-shipper-contact-row">
@@ -1019,7 +1019,7 @@
                             [type]="'type2-modal-popup'"
                         ></app-ta-tab-switch>
 
-                        <app-ta-input-dropdown
+                        <!-- <app-ta-input-dropdown
                             formControlName="deliveryShipperContactId"
                             [template]="'load-broker-contact'"
                             [inputConfig]="
@@ -1035,7 +1035,7 @@
                                     'shipper-contact-delivery'
                                 )
                             "
-                        ></app-ta-input-dropdown>
+                        ></app-ta-input-dropdown> -->
                     </div>
                     <div
                         class="stop-load-date-time"
