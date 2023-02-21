@@ -7,21 +7,10 @@ ngb-modal-window[aria-hidden='true'] {
 .modal {
     z-index: 1000;
 
-    // &.fade .modal-dialog {
-    //     -webkit-animation-name: fade-in-scale-animation 0.5s;
-    //     animation-name: fade-in-scale-animation 0.5s;
-    // }
-
-    // &.show .modal-dialog {
-    //     opacity: 0;
-    //     transform: scale(0.6) !important;
-    //     transition: all 0.3s ease-out !important;
-    // }
-
-    // &.modal-animation .modal-dialog {
-    //     opacity: 1;
-    //     transform: scale(1) !important;
-    // }
+    &.fade .modal-dialog {
+        -webkit-animation-name: fade-in-scale-animation 0.3s;
+        animation-name: fade-in-scale-animation 0.3s;
+    }
 
     .modal-dialog {
         opacity: 0;
@@ -744,10 +733,7 @@ body:not(.modal-open) {
         position: absolute;
         top: 0px;
         width: 100%;
-        // background-color: #fff;
         border-radius: 3px;
-        //box-shadow: $box-shadow !important;
-        // padding: 4px;
 
         &.popover-wraper {
             background-color: #424242;
@@ -804,10 +790,6 @@ body:not(.modal-open) {
                 .time_ago {
                     display: none;
                 }
-
-                // margin: 0px 1px;
-                // box-shadow: 0px 0px 5px rgba(0, 0, 0, .15) inset;
-                // border-radius: 3px;
             }
 
             .load-count-number {
@@ -1024,8 +1006,6 @@ ngb-modal-window.modal {
             left: 0;
             width: 100vw;
             height: 100vh;
-
-            //transition: all 0.3s;
 
             .modal-container {
                 margin: 75px auto 60px auto;

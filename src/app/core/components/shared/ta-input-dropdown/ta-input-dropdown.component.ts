@@ -11,16 +11,13 @@ import {
     Component,
     EventEmitter,
     Input,
-    OnChanges,
     OnDestroy,
     OnInit,
     Output,
     Self,
-    SimpleChanges,
     ViewChild,
 } from '@angular/core';
 import { input_dropdown_animation } from './ta-input-dropdown.animation';
-import { TaInputService } from '../ta-input/ta-input.service';
 import { v4 as uuidv4 } from 'uuid';
 import { ITaInput } from '../ta-input/ta-input.config';
 import {
@@ -29,9 +26,7 @@ import {
     NgbModule,
 } from '@ng-bootstrap/ng-bootstrap';
 import { TaInputComponent } from '../ta-input/ta-input.component';
-import { TaInputResetService } from '../ta-input/ta-input-reset.service';
 import { ImageBase64Service } from '../../../utils/base64.image';
-// import { Options } from '@popperjs/core';
 import { CommonModule } from '@angular/common';
 import { FormControlPipe } from '../ta-input/form-control.pipe';
 import { AppTooltipComponent } from '../../standalone-components/app-tooltip/app-tooltip.component';
@@ -47,7 +42,7 @@ import { ChangeDetectionStrategy } from '@angular/core';
     selector: 'app-ta-input-dropdown',
     templateUrl: './ta-input-dropdown.component.html',
     styleUrls: ['./ta-input-dropdown.component.scss'],
-    providers: [TaInputService, FormControlPipe],
+    providers: [FormControlPipe],
     changeDetection: ChangeDetectionStrategy.OnPush,
     animations: [input_dropdown_animation('showHideDropdownOptions')],
     standalone: true,
@@ -74,20 +69,13 @@ import { ChangeDetectionStrategy } from '@angular/core';
     ],
 })
 export class TaInputDropdownComponent
-    implements
-        OnInit,
-        AfterViewInit,
-        OnDestroy,
-        OnChanges,
-        ControlValueAccessor
+    implements OnInit, AfterViewInit, OnDestroy, ControlValueAccessor
 {
     @ViewChild('input') inputRef: TaInputComponent;
     @ViewChild('t2') public popoverRef: NgbPopover;
 
     // different templates for body rendering
-
     public _template: string = null;
-
     @Input() set template(value: string) {
         this._template = value;
         if (value === 'details-template' && this.isDetailsPages) {
@@ -117,6 +105,7 @@ export class TaInputDropdownComponent
     @Input() set sort(value: string) {
         this._sort = value;
     }
+
     // currently active item
     public _activeItem: any;
     @Input() set activeItem(value: any) {
@@ -241,8 +230,6 @@ export class TaInputDropdownComponent
 
     constructor(
         @Self() public superControl: NgControl,
-        private inputService: TaInputService,
-        private inputResetService: TaInputResetService,
         public imageBase64Service: ImageBase64Service
     ) {
         this.superControl.valueAccessor = this;
@@ -252,23 +239,11 @@ export class TaInputDropdownComponent
         return this.superControl.control;
     }
 
-    ngOnChanges(changes: SimpleChanges): void {}
+    writeValue(_: any): void {}
 
-    ngAfterViewInit() {
-        if (this.inputConfig.autoFocus) {
-            this.clearTimeoutDropdown = setTimeout(() => {
-                this.popoverRef.open();
-            }, 450);
-        }
-    }
+    registerOnChange(_: any): void {}
 
-    public onScrollDropdown(event: any) {
-        if (event.scrollTop + event.offsetHeight === event.scrollHeight) {
-            this.paginationNumber += 1;
-
-            this.paginationEvent.emit(this.paginationNumber);
-        }
-    }
+    registerOnTouched(_: any): void {}
 
     ngOnInit(): void {
         // Multiselect
@@ -285,40 +260,23 @@ export class TaInputDropdownComponent
                 }
                 this.search(searchText);
             });
-
-        // Clear Input
-        this.inputService.onClearInput$
-            .pipe(debounceTime(50), takeUntil(this.destroy$))
-            .subscribe((action: boolean) => {
-                if (action) {
-                    this.popoverRef.close();
-                    // label dropdown
-                    if (this.inputConfig.dropdownLabel) {
-                        this.clearDropdownLabel();
-                    }
-                    // normal dropdown
-                    else {
-                        this.onClearSearch();
-                    }
-                }
-            });
-
-        // Reset Input
-        this.inputResetService.resetInputSubject
-            .pipe(debounceTime(50), takeUntil(this.destroy$))
-            .subscribe(() => {
-                this.inputRef.touchedInput = false;
-            });
-
-        this.dropDownShowHideEvent();
-        this.dropDownKeyboardNavigationEvent();
     }
 
-    writeValue(_: any): void {}
+    ngAfterViewInit() {
+        if (this.inputConfig.autoFocus) {
+            this.clearTimeoutDropdown = setTimeout(() => {
+                this.popoverRef.open();
+            }, 450);
+        }
+    }
 
-    registerOnChange(_: any): void {}
+    public onScrollDropdown(event: any) {
+        if (event.scrollTop + event.offsetHeight === event.scrollHeight) {
+            this.paginationNumber += 1;
 
-    registerOnTouched(_: any): void {}
+            this.paginationEvent.emit(this.paginationNumber);
+        }
+    }
 
     public onActiveItem(option: any, group?: any): void {
         // Prevent user to pick franchise, without group
@@ -392,37 +350,37 @@ export class TaInputDropdownComponent
                 this._options = this.originalOptions;
 
                 if (this.inputConfig.name !== 'RoutingAddress') {
-                    this.clearTimeoutDropdown = setTimeout(() => {
-                        this.inputConfig = {
-                            ...this.inputConfig,
-                            blackInput: false,
-                        };
+                    // this.clearTimeoutDropdown = setTimeout(() => {
+                    this.inputConfig = {
+                        ...this.inputConfig,
+                        blackInput: false,
+                    };
 
+                    this.getSuperControl.patchValue(
+                        option?.number ? option.number : option.name
+                    );
+
+                    if (this._template === 'fuel-franchise') {
                         this.getSuperControl.patchValue(
-                            option?.number ? option.number : option.name
+                            group ? option.name : option.businessName
                         );
-
-                        if (this._template === 'fuel-franchise') {
-                            this.getSuperControl.patchValue(
-                                group ? option.name : option.businessName
-                            );
-                            const { id } = option;
-                            group
-                                ? this.selectedItem.emit({
-                                      ...option,
-                                      ...group,
-                                      storeId: id,
-                                  })
-                                : this.selectedItem.emit(option);
-                        } else {
-                            group
-                                ? this.selectedItem.emit({
-                                      ...option,
-                                      ...group,
-                                  })
-                                : this.selectedItem.emit(option);
-                        }
-                    }, 100);
+                        const { id } = option;
+                        group
+                            ? this.selectedItem.emit({
+                                  ...option,
+                                  ...group,
+                                  storeId: id,
+                              })
+                            : this.selectedItem.emit(option);
+                    } else {
+                        group
+                            ? this.selectedItem.emit({
+                                  ...option,
+                                  ...group,
+                              })
+                            : this.selectedItem.emit(option);
+                    }
+                    // }, 100);
                 }
             }
             this.getSuperControl.markAsDirty();
@@ -580,6 +538,172 @@ export class TaInputDropdownComponent
         }
     }
 
+    public onBlurInput(event: boolean) {
+        this.closeDropdown.emit(event);
+    }
+
+    public onClearInputEvent(event: boolean) {
+        this.clearInputEvent.emit(event);
+
+        if (event) {
+            this.popoverRef.close();
+            // label dropdown
+            if (this.inputConfig.dropdownLabel) {
+                this.clearDropdownLabel();
+            }
+            // normal dropdown
+            else {
+                this.onClearSearch();
+            }
+        }
+    }
+
+    public showHideDropdown(action?: boolean) {
+        if (this.inputConfig.multiselectDropdown) {
+            this.isMultiSelectInputFocus = action;
+        }
+
+        if (this.labelMode !== 'Color') {
+            // Focus Out
+            if (!action) {
+                if (this._template !== 'fuel-franchise') {
+                    this.popoverRef.open();
+                }
+
+                // Prevent user to typing dummmy data if _activeItem doesn't exist
+                if (this._activeItem) {
+                    this.getSuperControl.setValue(this._activeItem.name);
+                } else {
+                    const index = this.originalOptions.findIndex(
+                        (item) => item.name === this.getSuperControl.value
+                    );
+
+                    if (index === -1) {
+                        this.onClearSearch();
+                    }
+                }
+                if (this._template !== 'fuel-franchise') {
+                    this.popoverRef.close();
+                }
+            }
+            // Focus In
+            else {
+                this.inputConfig = {
+                    ...this.inputConfig,
+                    placeholder: this.getSuperControl.value
+                        ? this.getSuperControl.value
+                        : this._activeItem?.name,
+                };
+
+                this.getSuperControl.setValue(null);
+
+                if (this.popoverRef) {
+                    this.popoverRef.close();
+                }
+
+                if (this.isInAddMode) {
+                    this.inputConfig = {
+                        ...this.inputConfig,
+                        placeholder: null,
+                    };
+                }
+            }
+        }
+
+        // Details pages
+        if (
+            this.inputConfig.customClass?.includes('details-pages') &&
+            !action
+        ) {
+            this.selectedItem.emit(this._activeItem);
+        }
+    }
+
+    public dropDownKeyNavigation({ keyCode, data }) {
+        // Navigate down
+        if (keyCode === 40) {
+            this.dropdownNavigation(1);
+        }
+        // Navigate up
+        if (keyCode === 38) {
+            this.dropdownNavigation(-1);
+        }
+
+        // Press Escape
+        if (keyCode === 27) {
+            if (this.inputConfig?.commands?.active) {
+                this.inputConfig.commands = null;
+                this.inputRef.isVisibleCommands = false;
+                this.inputRef.focusInput = false;
+            }
+
+            if (this.inputConfig.dropdownLabel) {
+                this.getSuperControl.setErrors(null);
+                this.inputConfig.dropdownLabelNew = false;
+                this.inputConfig.commands.active = false;
+                this.inputConfig.blackInput = false;
+                this.inputRef.focusInput = false;
+                this.inputRef.editInputMode = false;
+                this.inputRef.input.nativeElement.blur();
+                if (this.labelMode === 'Color') {
+                    this.getSuperControl.patchValue(null);
+                    this.selectedLabelMode.emit('Label');
+                }
+            }
+        }
+        // Press 'enter'
+        if (keyCode === 13) {
+            let selectedItem = $('.dropdown-option-hovered').text().trim();
+
+            // // Open New Modal
+            if (this.canOpenModal && selectedItem.toLowerCase() === 'add new') {
+                this.selectedItem.emit({
+                    id: 7655,
+                    name: 'ADD NEW',
+                    canOpenModal: true,
+                });
+            } else {
+                if (this._options.length === 1 && !selectedItem) {
+                    if (this._template === 'fuel-franchise') {
+                        selectedItem = this._options[0]?.businessName
+                            ? this._options[0]?.businessName
+                            : this._options[0]?.name;
+                    } else {
+                        selectedItem = this._options[0]?.number
+                            ? this._options[0]?.number.toString().trim()
+                            : this._options[0].name.toString().trim();
+                    }
+                }
+
+                this.pickupElementWithKeyboard(selectedItem, data);
+            }
+        }
+
+        if (keyCode === 9) {
+            if (
+                this._options.length === 1 &&
+                this._options[0].id !== 7655 &&
+                this._options[0].id !== 7654
+            ) {
+                let selectedItem = null;
+
+                if (this._template === 'fuel-franchise') {
+                    selectedItem = this._options[0]?.businessName
+                        ? this._options[0]?.businessName
+                        : this._options[0]?.name;
+                } else {
+                    selectedItem = this._options[0]?.number
+                        ? this._options[0]?.number.toString().trim()
+                        : this._options[0].name.toString().trim();
+                }
+
+                this.pickupElementWithKeyboard(selectedItem, data);
+            } else {
+                this.popoverRef.open();
+            }
+        }
+    }
+
     // ----------------------------------  Multiselect Dropdown ----------------------------------
     public onMultiselectSelect(option: any): void {
         this.isMultiSelectInputFocus = false;
@@ -705,177 +829,7 @@ export class TaInputDropdownComponent
             this.popoverRef.close();
         }
     }
-
-    onBlurInput(e) {
-        this.closeDropdown.emit(e);
-    }
-
-    onClearInputEvent(e) {
-        this.clearInputEvent.emit(e);
-    }
-
-    private dropDownShowHideEvent() {
-        this.inputService.dropDownShowHide$
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((action: boolean) => {
-                // Multiselect dropdown
-                if (this.inputConfig.multiselectDropdown) {
-                    this.isMultiSelectInputFocus = action;
-                }
-
-                if (this.labelMode !== 'Color') {
-                    // Focus Out
-                    if (!action) {
-                        if (this._template !== 'fuel-franchise') {
-                            this.popoverRef.open();
-                        }
-
-                        // Prevent user to typing dummmy data if _activeItem doesn't exist
-                        if (this._activeItem) {
-                            this.getSuperControl.setValue(
-                                this._activeItem.name
-                            );
-                        } else {
-                            const index = this.originalOptions.findIndex(
-                                (item) =>
-                                    item.name === this.getSuperControl.value
-                            );
-
-                            if (index === -1) {
-                                this.onClearSearch();
-                            }
-                        }
-                        if (this._template !== 'fuel-franchise') {
-                            this.popoverRef.close();
-                        }
-                    }
-                    // Focus In
-                    else {
-                        this.inputConfig = {
-                            ...this.inputConfig,
-                            placeholder: this.getSuperControl.value
-                                ? this.getSuperControl.value
-                                : this._activeItem?.name,
-                        };
-
-                        this.getSuperControl.setValue(null);
-
-                        if (this.popoverRef) {
-                            this.popoverRef.close();
-                        }
-
-                        if (this.isInAddMode) {
-                            this.inputConfig = {
-                                ...this.inputConfig,
-                                placeholder: null,
-                            };
-                        }
-                    }
-                }
-
-                // Details pages
-                if (
-                    this.inputConfig.customClass?.includes('details-pages') &&
-                    !action
-                ) {
-                    this.selectedItem.emit(this._activeItem);
-                }
-            });
-    }
-
-    private dropDownKeyboardNavigationEvent() {
-        this.inputService.dropDownKeyNavigation$
-            .pipe(takeUntil(this.destroy$))
-            .subscribe(({ keyCode, data }) => {
-                // Navigate down
-                if (keyCode === 40) {
-                    this.dropdownNavigation(1);
-                }
-                // Navigate up
-                if (keyCode === 38) {
-                    this.dropdownNavigation(-1);
-                }
-
-                // Press Escape
-                if (keyCode === 27) {
-                    if (this.inputConfig?.commands?.active) {
-                        this.inputConfig.commands = null;
-                        this.inputRef.isVisibleCommands = false;
-                        this.inputRef.focusInput = false;
-                    }
-
-                    if (this.inputConfig.dropdownLabel) {
-                        this.getSuperControl.setErrors(null);
-                        this.inputConfig.dropdownLabelNew = false;
-                        this.inputConfig.commands.active = false;
-                        this.inputConfig.blackInput = false;
-                        this.inputRef.focusInput = false;
-                        this.inputRef.editInputMode = false;
-                        this.inputRef.input.nativeElement.blur();
-                        if (this.labelMode === 'Color') {
-                            this.getSuperControl.patchValue(null);
-                            this.selectedLabelMode.emit('Label');
-                        }
-                    }
-                }
-                // Press 'enter'
-                if (keyCode === 13) {
-                    let selectedItem = $('.dropdown-option-hovered')
-                        .text()
-                        .trim();
-
-                    // // Open New Modal
-                    if (
-                        this.canOpenModal &&
-                        selectedItem.toLowerCase() === 'add new'
-                    ) {
-                        this.selectedItem.emit({
-                            id: 7655,
-                            name: 'ADD NEW',
-                            canOpenModal: true,
-                        });
-                    } else {
-                        if (this._options.length === 1 && !selectedItem) {
-                            if (this._template === 'fuel-franchise') {
-                                selectedItem = this._options[0]?.businessName
-                                    ? this._options[0]?.businessName
-                                    : this._options[0]?.name;
-                            } else {
-                                selectedItem = this._options[0]?.number
-                                    ? this._options[0]?.number.toString().trim()
-                                    : this._options[0].name.toString().trim();
-                            }
-                        }
-
-                        this.pickupElementWithKeyboard(selectedItem, data);
-                    }
-                }
-
-                if (keyCode === 9) {
-                    if (
-                        this._options.length === 1 &&
-                        this._options[0].id !== 7655 &&
-                        this._options[0].id !== 7654
-                    ) {
-                        let selectedItem = null;
-
-                        if (this._template === 'fuel-franchise') {
-                            selectedItem = this._options[0]?.businessName
-                                ? this._options[0]?.businessName
-                                : this._options[0]?.name;
-                        } else {
-                            selectedItem = this._options[0]?.number
-                                ? this._options[0]?.number.toString().trim()
-                                : this._options[0].name.toString().trim();
-                        }
-
-                        this.pickupElementWithKeyboard(selectedItem, data);
-                    } else {
-                        this.popoverRef.open();
-                    }
-                }
-            });
-    }
+    // ----------------------------------  End ----------------------------------
 
     private pickupElementWithKeyboard(selectedItem: string, data: any) {
         // Address Select
@@ -1090,12 +1044,10 @@ export class TaInputDropdownComponent
                 }
 
                 if (this.inputConfig.name !== 'RoutingAddress') {
-                    // this.clearTimeoutDropdown = setTimeout(() => {
                     this.inputConfig = {
                         ...this.inputConfig,
                         blackInput: false,
                     };
-                    // }, 100);
                 }
             }
             this.popoverRef.close();
@@ -1304,15 +1256,6 @@ export class TaInputDropdownComponent
             .eq(this.dropdownPosition)
             .addClass(cssClass);
     }
-
-    // customPopoverOption = (options: Partial<Options>) => {
-    //     for (const modifier of options.modifiers || []) {
-    //         if (modifier.name === 'offset' && modifier.options) {
-    //             modifier.options.offset = () => [0, 4];
-    //         }
-    //     }
-    //     return options;
-    // };
 
     ngOnDestroy(): void {
         this.destroy$.next();

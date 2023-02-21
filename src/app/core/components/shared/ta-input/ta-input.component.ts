@@ -29,7 +29,6 @@ import {
 import { CalendarScrollService } from '../custom-datetime-pickers/calendar-scroll.service';
 import moment from 'moment';
 
-import { TaInputResetService } from './ta-input-reset.service';
 import { Subject, takeUntil } from 'rxjs';
 import { TaThousandSeparatorPipe } from '../../../pipes/taThousandSeparator.pipe';
 import {
@@ -100,34 +99,78 @@ export class TaInputComponent
     @Input() incorrectValue: boolean;
     @Input() selectedDropdownLabelColor: any;
 
+    public _inputConfig: ITaInput = null;
+    @Input() set inputConfig(config: ITaInput) {
+        this._inputConfig = config;
+        // Price Separator
+        if (this._inputConfig.priceSeparator) {
+            this.originPriceSeparatorLimit =
+                this._inputConfig.priceSeparatorLimitation;
+        }
+
+        // DatePicker
+        if (
+            this._inputConfig.name === 'datepicker' ||
+            this._inputConfig.name === 'timepicker'
+        ) {
+            this.setTimePickerTime();
+            this.calendarService.dateChanged
+                .pipe(takeUntil(this.destroy$))
+                .subscribe((date) => {
+                    if (!this._inputConfig.isDisabled) {
+                        this.setTimeDateInput(date);
+                        this.t2.close();
+                    }
+                });
+        }
+
+        // When add mode in dropdown
+        if (
+            this._inputConfig.commands?.active &&
+            !this._inputConfig.isDisabled
+        ) {
+            if (this._inputConfig.commands.type === 'confirm-cancel') {
+                this._inputConfig.blackInput = true;
+                this.isVisibleCommands = true;
+                this.focusInput = true;
+                this.input.nativeElement.focus();
+            }
+        }
+    }
+
     @Output('incorrectEvent') incorrectInput: EventEmitter<any> =
         new EventEmitter<any>();
-
     @Output('blurInput') blurInput: EventEmitter<boolean> =
         new EventEmitter<boolean>();
-
     @Output('focusInput') focusInputEvent: EventEmitter<boolean> =
         new EventEmitter<boolean>();
-
     @Output('change') changeInput: EventEmitter<any> = new EventEmitter<any>();
     @Output('commandEvent') commandEvent: EventEmitter<any> =
         new EventEmitter<any>();
-
     @Output('clear') clearInputEvent: EventEmitter<boolean> =
-        new EventEmitter<any>();
+        new EventEmitter<boolean>();
 
-    public _inputConfig: ITaInput = null;
+    // Dropdown
+    @Output('showHideDropdown') showHideDropdownEvent: EventEmitter<boolean> =
+        new EventEmitter<boolean>();
+    @Output('dropDownKeyNavigation') dropDownKeyNavigationEvemt: EventEmitter<{
+        keyCode: number;
+        data: ITaInput | any;
+    }> = new EventEmitter<{
+        keyCode: number;
+        data: ITaInput | any;
+    }>();
+
     public focusInput: boolean = false;
     public touchedInput: boolean = false;
 
     // Password
     public togglePassword: boolean = false;
 
+    // Date
     public showDateInput: boolean = false;
-
-    public newInputChanged: boolean = false;
-
     public dateTimeInputDate: Date = new Date();
+    public newInputChanged: boolean = false;
 
     // Number of spaces
     public numberOfConsecutivelySpaces: number = 0;
@@ -180,7 +223,6 @@ export class TaInputComponent
     constructor(
         @Self() public superControl: NgControl,
         private inputService: TaInputService,
-        private inputResetService: TaInputResetService,
         private calendarService: CalendarScrollService,
         private thousandSeparatorPipe: TaThousandSeparatorPipe,
         private refChange: ChangeDetectorRef,
@@ -188,93 +230,6 @@ export class TaInputComponent
         public imageBase64Service: ImageBase64Service
     ) {
         this.superControl.valueAccessor = this;
-    }
-
-    @Input() set inputConfig(config: ITaInput) {
-        this._inputConfig = config;
-        // Price Separator
-        if (this._inputConfig.priceSeparator) {
-            this.originPriceSeparatorLimit =
-                this._inputConfig.priceSeparatorLimitation;
-        }
-
-        // DatePicker
-        if (
-            this._inputConfig.name === 'datepicker' ||
-            this._inputConfig.name === 'timepicker'
-        ) {
-            this.setTimePickerTime();
-            this.calendarService.dateChanged
-                .pipe(takeUntil(this.destroy$))
-                .subscribe((date) => {
-                    if (!this._inputConfig.isDisabled) {
-                        this.setTimeDateInput(date);
-                        this.t2.close();
-                    }
-                });
-        }
-
-        // When add mode in dropdown
-        if (
-            this._inputConfig.commands?.active &&
-            !this._inputConfig.isDisabled
-        ) {
-            if (this._inputConfig.commands.type === 'confirm-cancel') {
-                this._inputConfig.blackInput = true;
-                this.isVisibleCommands = true;
-                this.focusInput = true;
-                this.input.nativeElement.focus();
-            }
-        }
-    }
-
-    setTimePickerTime() {
-        if (this._inputConfig.name === 'timepicker')
-            this.dateTimeInputDate = new Date(
-                moment().format('MM/DD/YYYY') +
-                    (this._inputConfig?.isFromDate ? ' 12:15' : ' 12:00')
-            );
-    }
-
-    ngOnInit(): void {
-        // Reset Inputs
-        this.inputResetService.resetInputSubject
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((value) => {
-                if (value) {
-                    this.resetForms();
-                }
-            });
-
-        // Reset Form
-        this.formService.formReset$
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((value) => {
-                if (value) {
-                    this.touchedInput = false;
-                    this.formService.formReset$.next(false);
-                    this.resetDateTimeInputs();
-                }
-            });
-    }
-
-    ngAfterViewInit(): void {
-        // Toggle label transition animation
-        $('.input-label').addClass('no-transition');
-
-        this.timeoutCleaner = setTimeout(() => {
-            $('.input-label').removeClass('no-transition');
-        }, 1000);
-
-        // Auto Focus First Input
-
-        if (this._inputConfig.autoFocus && !this.getSuperControl?.value) {
-            this.timeoutCleaner = setTimeout(() => {
-                this.input.nativeElement.focus();
-                this.focusInput = true;
-                this._inputConfig.autoFocus = false;
-            }, 30);
-        }
     }
 
     get getSuperControl() {
@@ -309,6 +264,38 @@ export class TaInputComponent
     public registerOnTouched(_: any): void {}
 
     public setDisabledState?(_: boolean): void {}
+
+    ngOnInit(): void {
+        // Reset Form
+        this.formService.formReset$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((value) => {
+                if (value) {
+                    this.touchedInput = false;
+                    this.formService.formReset$.next(false);
+                    this.resetDateTimeInputs();
+                }
+            });
+    }
+
+    ngAfterViewInit(): void {
+        // Toggle label transition animation
+        $('.input-label').addClass('no-transition');
+
+        this.timeoutCleaner = setTimeout(() => {
+            $('.input-label').removeClass('no-transition');
+        }, 1000);
+
+        // Auto Focus First Input
+
+        if (this._inputConfig.autoFocus && !this.getSuperControl?.value) {
+            this.timeoutCleaner = setTimeout(() => {
+                this.input.nativeElement.focus();
+                this.focusInput = true;
+                this._inputConfig.autoFocus = false;
+            }, 30);
+        }
+    }
 
     public onFocus(e?): void {
         this.focusInputEvent.emit(true);
@@ -345,7 +332,7 @@ export class TaInputComponent
         // Dropdown
         if (this._inputConfig.isDropdown) {
             this.dropdownToggler = true;
-            this.inputService.dropDownShowHide$.next(true);
+            this.showHideDropdownEvent.emit(this.dropdownToggler);
         }
 
         // Commands
@@ -457,17 +444,7 @@ export class TaInputComponent
         }
 
         this.blurInput.emit(true);
-        this.inputService.onFocusOutInput$.next(true);
         this.touchedInput = true;
-    }
-
-    private blurOnCommands() {
-        this.inputCommandsTimeout = setTimeout(() => {
-            this._inputConfig.commands.active = false;
-            this.isVisibleCommands = false;
-            this._inputConfig.blackInput = false;
-            this.refChange.detectChanges();
-        }, 200);
     }
 
     public blurOnPassword() {
@@ -483,7 +460,7 @@ export class TaInputComponent
         this.timeoutCleaner = setTimeout(() => {
             this.dropdownToggler = false;
             this.focusInput = false;
-            this.inputService.dropDownShowHide$.next(false);
+            this.showHideDropdownEvent.emit(this.dropdownToggler);
         }, 150);
     }
 
@@ -515,65 +492,11 @@ export class TaInputComponent
                 this.resetDateTimeInputs();
             }
 
-            this.inputService.onClearInput$.next(true);
             this.clearInputEvent.emit(true);
         }
     }
 
-    resetForms() {
-        this.touchedInput = false;
-        this.getSuperControl.patchValue(null);
-        this.inputResetService.resetInputSubject.next(false);
-
-        this.resetDateTimeInputs();
-    }
-
-    public setTimeDateInput(date) {
-        let text, dateFormat, timeFormat;
-        if (this._inputConfig.name === 'datepicker') {
-            text = moment(new Date(date)).format('MM/DD/YY');
-            dateFormat = text.split('/');
-        } else {
-            date =
-                date instanceof Date
-                    ? date
-                    : new Date(moment().format('MM/DD/YYYY') + ' ' + date);
-            text = moment(new Date(date)).format('HH:mm');
-
-            timeFormat = moment(new Date(date)).format('hh/mm/A');
-            dateFormat = timeFormat.split('/');
-        }
-
-        this.input.nativeElement.value = text;
-        this.onChange(this.input.nativeElement.value);
-        this.focusInput = false;
-
-        this.span1.nativeElement.innerHTML = dateFormat[0];
-        this.span2.nativeElement.innerHTML = dateFormat[1];
-        this.span3.nativeElement.innerHTML = dateFormat[2];
-        this.dateTimeInputDate = new Date(date);
-        this.showDateInput = true;
-    }
-
-    public resetDateTimeInputs() {
-        if (this.span1) {
-            if (this._inputConfig.name === 'datepicker') {
-                this.span1.nativeElement.innerHTML = 'mm';
-                this.span2.nativeElement.innerHTML = 'dd';
-                this.span3.nativeElement.innerHTML = 'yy';
-            } else if (this._inputConfig.name === 'timepicker') {
-                this.span1.nativeElement.innerHTML = 'HH';
-                this.span2.nativeElement.innerHTML = 'MM';
-                this.span3.nativeElement.innerHTML = 'AM';
-            }
-        }
-
-        this.setTimePickerTime();
-        this.newInputChanged = true;
-        this.focusInput = false;
-        this.showDateInput = false;
-    }
-
+    // Dropdowns
     public toggleDropdownOptions() {
         if (this._inputConfig.isDisabled) {
             return;
@@ -603,7 +526,7 @@ export class TaInputComponent
 
         this.dropdownToggler = !this.dropdownToggler;
 
-        this.inputService.dropDownShowHide$.next(this.dropdownToggler);
+        this.showHideDropdownEvent.emit(this.dropdownToggler);
 
         if (this.dropdownToggler) {
             this.input.nativeElement.focus();
@@ -611,6 +534,7 @@ export class TaInputComponent
         }
     }
 
+    // Password
     public onTogglePassword(event: any): void {
         event.preventDefault();
         clearTimeout(this.passwordTimeout);
@@ -632,6 +556,7 @@ export class TaInputComponent
         }, time);
     }
 
+    //-------------- Event Input Actions
     public onKeydown(event) {
         if (event) {
             this.capsLockOn =
@@ -650,7 +575,7 @@ export class TaInputComponent
         }
 
         if (event.keyCode === 9) {
-            this.inputService.dropDownKeyNavigation$.next({
+            this.dropDownKeyNavigationEvemt.emit({
                 keyCode: event.keyCode,
                 data: null,
             });
@@ -681,13 +606,13 @@ export class TaInputComponent
             this._inputConfig.name == 'Address'
         ) {
             if (event.keyCode === 40 || event.keyCode === 38) {
-                this.inputService.dropDownKeyNavigation$.next({
+                this.dropDownKeyNavigationEvemt.emit({
                     keyCode: event.keyCode,
                     data: null,
                 });
             }
             if (event.keyCode === 13) {
-                this.inputService.dropDownKeyNavigation$.next({
+                this.dropDownKeyNavigationEvemt.emit({
                     keyCode: event.keyCode,
                     data: this._inputConfig,
                 });
@@ -701,7 +626,7 @@ export class TaInputComponent
                 this.onBlur();
                 this.blurOnDropDownArrow();
                 this.input.nativeElement.blur();
-                this.inputService.dropDownKeyNavigation$.next({
+                this.dropDownKeyNavigationEvemt.emit({
                     keyCode: event.keyCode,
                     data: null,
                 });
@@ -709,7 +634,7 @@ export class TaInputComponent
             if (event.keyCode === 9) {
                 this.onFocus();
                 this.input.nativeElement.focus();
-                this.inputService.dropDownKeyNavigation$.next({
+                this.dropDownKeyNavigationEvemt.emit({
                     keyCode: event.keyCode,
                     data: null,
                 });
@@ -982,197 +907,6 @@ export class TaInputComponent
                 this.getSuperControl.patchValue('0');
                 return;
             }
-        }
-    }
-
-    public selectionChange(event: any) {
-        if (event) {
-            this.inputSelection = true;
-        }
-    }
-
-    public onEditInput(event: Event) {
-        event.preventDefault();
-        event.stopPropagation();
-
-        this.editInputMode = true;
-        this._inputConfig.dropdownLabelNew = false;
-        this._inputConfig.blackInput = true;
-        this._inputConfig.commands.active = true;
-        this.isVisibleCommands = true;
-        this.focusInput = true;
-
-        this.setInputCursorAtTheEnd(this.input.nativeElement);
-        this.getSuperControl.setErrors({ required: true });
-        this.commandEvent.emit({
-            data: this.getSuperControl.value,
-            action: 'Edit Input',
-        });
-    }
-
-    public onCommands(event: Event, type: string, action: string) {
-        event.stopPropagation();
-        event.preventDefault();
-
-        switch (type) {
-            case 'pm-increment-decrement': {
-                const value = convertThousanSepInNumber(
-                    this.getSuperControl.value
-                );
-                switch (action) {
-                    case 'decrement': {
-                        if (value >= 10000 && value < 20000) {
-                            this.getSuperControl.patchValue(
-                                convertNumberInThousandSep(value - 1000)
-                            );
-                        } else if (value >= 20001 && value < 50000) {
-                            this.getSuperControl.patchValue(
-                                convertNumberInThousandSep(value - 3000)
-                            );
-                        } else if (value >= 50001 && value < 100000) {
-                            this.getSuperControl.patchValue(
-                                convertNumberInThousandSep(value - 5000)
-                            );
-                        } else if (value >= 10000) {
-                            this.getSuperControl.patchValue(
-                                convertNumberInThousandSep(value - 10000)
-                            );
-                        } else if (value >= 1000) {
-                            this.getSuperControl.patchValue(
-                                convertNumberInThousandSep(value - 500)
-                            );
-                        }
-                        break;
-                    }
-                    case 'increment': {
-                        if (value > 10000 && value < 20000) {
-                            this.getSuperControl.patchValue(
-                                convertNumberInThousandSep(value + 1000)
-                            );
-                        } else if (value >= 20001 && value < 50000) {
-                            this.getSuperControl.patchValue(
-                                convertNumberInThousandSep(value + 3000)
-                            );
-                        } else if (value >= 50001 && value < 100000) {
-                            this.getSuperControl.patchValue(
-                                convertNumberInThousandSep(value + 5000)
-                            );
-                        } else if (value >= 10000) {
-                            this.getSuperControl.patchValue(
-                                convertNumberInThousandSep(value + 10000)
-                            );
-                        } else {
-                            this.getSuperControl.patchValue(
-                                convertNumberInThousandSep(value + 500)
-                            );
-                        }
-                        break;
-                    }
-                    default: {
-                        break;
-                    }
-                }
-                this.setInputCursorAtTheEnd(this.input.nativeElement);
-                break;
-            }
-            case 'confirm-cancel': {
-                switch (action) {
-                    case 'confirm': {
-                        this.commandEvent.emit({
-                            data: this.getSuperControl.value,
-                            action: 'confirm',
-                            mode:
-                                !this._inputConfig.dropdownLabelNew &&
-                                this._inputConfig.name !==
-                                    'Input Dropdown Bank Name'
-                                    ? 'edit'
-                                    : 'new',
-                        });
-                        break;
-                    }
-                    case 'cancel': {
-                        this.commandEvent.emit({ action: 'cancel' });
-                        break;
-                    }
-                    default: {
-                        break;
-                    }
-                }
-                this.getSuperControl.setErrors(null);
-                this._inputConfig.dropdownLabelNew = false;
-                this._inputConfig.commands.active = false;
-                this._inputConfig.blackInput = false;
-                this.editInputMode = false;
-                this.isVisibleCommands = false;
-                this.focusInput = false;
-
-                break;
-            }
-            case 'months': {
-                clearTimeout(this.inputCommandsTimeout);
-                switch (action) {
-                    case 'minus': {
-                        if (
-                            parseInt(this.getSuperControl.value) === 1 ||
-                            !this.getSuperControl.value
-                        ) {
-                            this.blurOnCommands();
-                            return;
-                        }
-
-                        this.getSuperControl.patchValue(
-                            (this.getSuperControl.value
-                                ? parseInt(this.getSuperControl.value)
-                                : 0) - 1
-                        );
-                        break;
-                    }
-                    case 'plus': {
-                        if (parseInt(this.getSuperControl.value) === 12) {
-                            this.blurOnCommands();
-                            return;
-                        }
-                        this.getSuperControl.patchValue(
-                            (this.getSuperControl.value
-                                ? parseInt(this.getSuperControl.value)
-                                : 0) + 1
-                        );
-                        break;
-                    }
-                    default: {
-                        break;
-                    }
-                }
-                if (
-                    parseInt(this.getSuperControl.value) < 1 ||
-                    parseInt(this.getSuperControl.value) > 12
-                ) {
-                    this.getSuperControl.setErrors({ invalid: true });
-                } else {
-                    this.getSuperControl.setErrors(null);
-                }
-                this.setInputCursorAtTheEnd(this.input.nativeElement);
-                break;
-            }
-            default: {
-                break;
-            }
-        }
-    }
-
-    public onPlaceholderIconEvent(event: Event) {
-        event.preventDefault();
-        event.stopPropagation();
-        if (this.editInputMode) {
-            this.commandEvent.emit({
-                data: this.getSuperControl.value,
-                action: 'Toggle Dropdown',
-            });
-        } else {
-            this.commandEvent.emit({
-                data: this.getSuperControl.value,
-                action: 'Placeholder Icon Event',
-            });
         }
     }
 
@@ -1822,7 +1556,203 @@ export class TaInputComponent
 
         this.input.nativeElement.value.trim();
     }
+    //-------------- end
 
+    public onEditInput(event: Event) {
+        event.preventDefault();
+        event.stopPropagation();
+
+        this.editInputMode = true;
+        this._inputConfig.dropdownLabelNew = false;
+        this._inputConfig.blackInput = true;
+        this._inputConfig.commands.active = true;
+        this.isVisibleCommands = true;
+        this.focusInput = true;
+
+        this.setInputCursorAtTheEnd(this.input.nativeElement);
+        this.getSuperControl.setErrors({ required: true });
+        this.commandEvent.emit({
+            data: this.getSuperControl.value,
+            action: 'Edit Input',
+        });
+    }
+
+    public onCommands(event: Event, type: string, action: string) {
+        event.stopPropagation();
+        event.preventDefault();
+
+        switch (type) {
+            case 'pm-increment-decrement': {
+                const value = convertThousanSepInNumber(
+                    this.getSuperControl.value
+                );
+                switch (action) {
+                    case 'decrement': {
+                        if (value >= 10000 && value < 20000) {
+                            this.getSuperControl.patchValue(
+                                convertNumberInThousandSep(value - 1000)
+                            );
+                        } else if (value >= 20001 && value < 50000) {
+                            this.getSuperControl.patchValue(
+                                convertNumberInThousandSep(value - 3000)
+                            );
+                        } else if (value >= 50001 && value < 100000) {
+                            this.getSuperControl.patchValue(
+                                convertNumberInThousandSep(value - 5000)
+                            );
+                        } else if (value >= 10000) {
+                            this.getSuperControl.patchValue(
+                                convertNumberInThousandSep(value - 10000)
+                            );
+                        } else if (value >= 1000) {
+                            this.getSuperControl.patchValue(
+                                convertNumberInThousandSep(value - 500)
+                            );
+                        }
+                        break;
+                    }
+                    case 'increment': {
+                        if (value > 10000 && value < 20000) {
+                            this.getSuperControl.patchValue(
+                                convertNumberInThousandSep(value + 1000)
+                            );
+                        } else if (value >= 20001 && value < 50000) {
+                            this.getSuperControl.patchValue(
+                                convertNumberInThousandSep(value + 3000)
+                            );
+                        } else if (value >= 50001 && value < 100000) {
+                            this.getSuperControl.patchValue(
+                                convertNumberInThousandSep(value + 5000)
+                            );
+                        } else if (value >= 10000) {
+                            this.getSuperControl.patchValue(
+                                convertNumberInThousandSep(value + 10000)
+                            );
+                        } else {
+                            this.getSuperControl.patchValue(
+                                convertNumberInThousandSep(value + 500)
+                            );
+                        }
+                        break;
+                    }
+                    default: {
+                        break;
+                    }
+                }
+                this.setInputCursorAtTheEnd(this.input.nativeElement);
+                break;
+            }
+            case 'confirm-cancel': {
+                switch (action) {
+                    case 'confirm': {
+                        this.commandEvent.emit({
+                            data: this.getSuperControl.value,
+                            action: 'confirm',
+                            mode:
+                                !this._inputConfig.dropdownLabelNew &&
+                                this._inputConfig.name !==
+                                    'Input Dropdown Bank Name'
+                                    ? 'edit'
+                                    : 'new',
+                        });
+                        break;
+                    }
+                    case 'cancel': {
+                        this.commandEvent.emit({ action: 'cancel' });
+                        break;
+                    }
+                    default: {
+                        break;
+                    }
+                }
+                this.getSuperControl.setErrors(null);
+                this._inputConfig.dropdownLabelNew = false;
+                this._inputConfig.commands.active = false;
+                this._inputConfig.blackInput = false;
+                this.editInputMode = false;
+                this.isVisibleCommands = false;
+                this.focusInput = false;
+
+                break;
+            }
+            case 'months': {
+                clearTimeout(this.inputCommandsTimeout);
+                switch (action) {
+                    case 'minus': {
+                        if (
+                            parseInt(this.getSuperControl.value) === 1 ||
+                            !this.getSuperControl.value
+                        ) {
+                            this.blurOnCommands();
+                            return;
+                        }
+
+                        this.getSuperControl.patchValue(
+                            (this.getSuperControl.value
+                                ? parseInt(this.getSuperControl.value)
+                                : 0) - 1
+                        );
+                        break;
+                    }
+                    case 'plus': {
+                        if (parseInt(this.getSuperControl.value) === 12) {
+                            this.blurOnCommands();
+                            return;
+                        }
+                        this.getSuperControl.patchValue(
+                            (this.getSuperControl.value
+                                ? parseInt(this.getSuperControl.value)
+                                : 0) + 1
+                        );
+                        break;
+                    }
+                    default: {
+                        break;
+                    }
+                }
+                if (
+                    parseInt(this.getSuperControl.value) < 1 ||
+                    parseInt(this.getSuperControl.value) > 12
+                ) {
+                    this.getSuperControl.setErrors({ invalid: true });
+                } else {
+                    this.getSuperControl.setErrors(null);
+                }
+                this.setInputCursorAtTheEnd(this.input.nativeElement);
+                break;
+            }
+            default: {
+                break;
+            }
+        }
+    }
+
+    private blurOnCommands() {
+        this.inputCommandsTimeout = setTimeout(() => {
+            this._inputConfig.commands.active = false;
+            this.isVisibleCommands = false;
+            this._inputConfig.blackInput = false;
+            this.refChange.detectChanges();
+        }, 200);
+    }
+
+    public onPlaceholderIconEvent(event: Event) {
+        event.preventDefault();
+        event.stopPropagation();
+        if (this.editInputMode) {
+            this.commandEvent.emit({
+                data: this.getSuperControl.value,
+                action: 'Toggle Dropdown',
+            });
+        } else {
+            this.commandEvent.emit({
+                data: this.getSuperControl.value,
+                action: 'Placeholder Icon Event',
+            });
+        }
+    }
+
+    // Logic Validation Input
     private enableOneSpaceOnly(event: any) {
         if (
             /^\s*$/.test(String.fromCharCode(event.charCode)) ||
@@ -1902,7 +1832,9 @@ export class TaInputComponent
             this.numberOfPoints = 0;
         }
     }
+    // ------- end
 
+    // Paste
     public onPaste(event?: any) {
         event.preventDefault();
 
@@ -2012,11 +1944,72 @@ export class TaInputComponent
         // Text Transform Format
         this.transformText(newText, true);
     }
+    // ------- end
 
     // Optimization for *ngFor
     public trackIdentity = (index: number): number => index;
 
-    //------------------- Date & Time Picker -------------------
+    //-------------------------------------- Date & Time Picker --------------------------------------
+
+    public setTimePickerTime() {
+        if (this._inputConfig.name === 'timepicker')
+            this.dateTimeInputDate = new Date(
+                moment().format('MM/DD/YYYY') +
+                    (this._inputConfig?.isFromDate ? ' 12:15' : ' 12:00')
+            );
+    }
+
+    public setTimeDateInput(date) {
+        let text, dateFormat, timeFormat;
+        if (this._inputConfig.name === 'datepicker') {
+            text = moment(new Date(date)).format('MM/DD/YY');
+            dateFormat = text.split('/');
+        } else {
+            date =
+                date instanceof Date
+                    ? date
+                    : new Date(moment().format('MM/DD/YYYY') + ' ' + date);
+            text = moment(new Date(date)).format('HH:mm');
+
+            timeFormat = moment(new Date(date)).format('hh/mm/A');
+            dateFormat = timeFormat.split('/');
+        }
+
+        this.input.nativeElement.value = text;
+        this.onChange(this.input.nativeElement.value);
+        this.focusInput = false;
+
+        this.span1.nativeElement.innerHTML = dateFormat[0];
+        this.span2.nativeElement.innerHTML = dateFormat[1];
+        this.span3.nativeElement.innerHTML = dateFormat[2];
+        this.dateTimeInputDate = new Date(date);
+        this.showDateInput = true;
+    }
+
+    public resetDateTimeInputs() {
+        if (this.span1) {
+            if (this._inputConfig.name === 'datepicker') {
+                this.span1.nativeElement.innerHTML = 'mm';
+                this.span2.nativeElement.innerHTML = 'dd';
+                this.span3.nativeElement.innerHTML = 'yy';
+            } else if (this._inputConfig.name === 'timepicker') {
+                this.span1.nativeElement.innerHTML = 'HH';
+                this.span2.nativeElement.innerHTML = 'MM';
+                this.span3.nativeElement.innerHTML = 'AM';
+            }
+        }
+
+        this.setTimePickerTime();
+        this.newInputChanged = true;
+        this.focusInput = false;
+        this.showDateInput = false;
+    }
+
+    public selectionChange(event: any) {
+        if (event) {
+            this.inputSelection = true;
+        }
+    }
 
     public onDatePaste(e: any) {
         e.preventDefault();
@@ -2568,7 +2561,6 @@ export class TaInputComponent
                     this.span3.nativeElement.innerHTML = 'yy';
                     this.dateTimeInputDate = new Date();
                     this.showDateInput = false;
-                    this.resetForms(); // PITANJE STO SE OVO SKLANJA I UOPSTE STO JE TREBALO
                 }
             } else {
                 if (
