@@ -49,6 +49,7 @@ import { CustomDatetimePickersComponent } from '../custom-datetime-pickers/custo
 import { TaSpinnerComponent } from '../ta-spinner/ta-spinner.component';
 import { ProfileImagesComponent } from '../profile-images/profile-images.component';
 import { LoadModalProgressBarComponent } from '../../modals/load-modal/load-modal-progress-bar/load-modal-progress-bar.component';
+import { ChangeDetectionStrategy } from '@angular/core';
 @Component({
     selector: 'app-ta-input',
     templateUrl: './ta-input.component.html',
@@ -60,6 +61,7 @@ import { LoadModalProgressBarComponent } from '../../modals/load-modal/load-moda
         InputTypePipe,
     ],
     encapsulation: ViewEncapsulation.None,
+    changeDetection: ChangeDetectionStrategy.OnPush,
     standalone: true,
     imports: [
         // Module

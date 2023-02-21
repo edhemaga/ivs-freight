@@ -41,12 +41,14 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 import { ProfileImagesComponent } from '../profile-images/profile-images.component';
 import { LoadModalProgressBarComponent } from '../../modals/load-modal/load-modal-progress-bar/load-modal-progress-bar.component';
 import { TaSvgPipe } from '../../../pipes/ta-svg.pipe';
+import { ChangeDetectionStrategy } from '@angular/core';
 
 @Component({
     selector: 'app-ta-input-dropdown',
     templateUrl: './ta-input-dropdown.component.html',
     styleUrls: ['./ta-input-dropdown.component.scss'],
     providers: [TaInputService, FormControlPipe],
+    changeDetection: ChangeDetectionStrategy.OnPush,
     animations: [input_dropdown_animation('showHideDropdownOptions')],
     standalone: true,
     imports: [
@@ -1302,14 +1304,14 @@ export class TaInputDropdownComponent
             .addClass(cssClass);
     }
 
-    customPopoverOption = (options: Partial<Options>) => {
-        for (const modifier of options.modifiers || []) {
-            if (modifier.name === 'offset' && modifier.options) {
-                modifier.options.offset = () => [0, 4];
-            }
-        }
-        return options;
-    };
+    // customPopoverOption = (options: Partial<Options>) => {
+    //     for (const modifier of options.modifiers || []) {
+    //         if (modifier.name === 'offset' && modifier.options) {
+    //             modifier.options.offset = () => [0, 4];
+    //         }
+    //     }
+    //     return options;
+    // };
 
     ngOnDestroy(): void {
         this.destroy$.next();
