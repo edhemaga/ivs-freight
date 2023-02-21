@@ -32,6 +32,7 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 import { ProfileImagesComponent } from '../profile-images/profile-images.component';
 import { LoadModalProgressBarComponent } from '../../modals/load-modal/load-modal-progress-bar/load-modal-progress-bar.component';
 import { TaSvgPipe } from '../../../pipes/ta-svg.pipe';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 @Component({
     selector: 'app-ta-input-dropdown',
@@ -55,7 +56,8 @@ import { TaSvgPipe } from '../../../pipes/ta-svg.pipe';
             LoadModalProgressBarComponent,
             TaSvgPipe,
             NgbModule
-    ]
+    ],
+    schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class TaInputDropdownComponent
     implements 

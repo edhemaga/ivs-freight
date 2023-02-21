@@ -21,6 +21,8 @@ import { TaReCardComponent } from '../../shared/ta-common-card/ta-re-card.compon
 import { TaCopyComponent } from '../../shared/ta-copy/ta-copy.component';
 import { formatDatePipe } from 'src/app/core/pipes/formatDate.pipe';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { TaCustomCardComponent } from '../../shared/ta-custom-card/ta-custom-card.component';
+import { TruckassistProgressExpirationComponent } from '../../shared/truckassist-progress-expiration/truckassist-progress-expiration.component';
 
 @NgModule({
     imports: [
@@ -36,6 +38,9 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
         ActiveItemsPipe,
         TaReCardComponent,
         TaCopyComponent,
+        TaCustomCardComponent,
+        TruckassistProgressExpirationComponent,
+
         formatDatePipe
     ],
     declarations: [
