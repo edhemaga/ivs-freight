@@ -24,7 +24,7 @@
                     <svg-icon
                         *ngIf="haveDropSVG"
                         class="current-active-owner"
-                        src="{{ (options | detailActiveItem).svg }}"
+                        src="{{ customPinnedSvg  ? customPinnedSvg : (options | detailActiveItem).svg}}"
                     ></svg-icon>
                 </span>
             </div>

@@ -223,7 +223,7 @@ export class ShopRepairCardViewComponent
                             id: item.id,
                             name: item.name,
                             status: item.status,
-                            svg: 'ic_star.svg',
+                            svg:  item.pinned ? 'ic_star.svg' : '',
                             folder: 'common',
                             active:
                                 item.id ===
