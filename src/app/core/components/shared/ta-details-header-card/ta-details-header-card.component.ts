@@ -128,7 +128,6 @@ export class TaDetailsHeaderCardComponent implements OnInit, OnChanges {
         }
     }
     public onSelecItem(value: any): void {
-        console.log('value----', value);
         if (this.options.length > 1) {
             this.selectedDropdown = !this.selectedDropdown;
             this.selectValue.emit(value);
