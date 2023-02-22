@@ -92,8 +92,8 @@ import { TaTabSwitchComponent } from '../ta-tab-switch/ta-tab-switch.component';
                     height: '*',
                 })
             ),
-            transition('false <=> true', [animate('.1s linear')]),
-            transition('true <=> false', [animate('.1s ease-in-out')]),
+            transition('false <=> true', [animate('0.1s linear')]),
+            transition('true <=> false', [animate('0.1s ease-in-out')]),
         ]),
         trigger('inOutAnimation', [
             state('in', style({ opacity: 1, scale: 1, height: '28px' })),
@@ -215,12 +215,13 @@ import { TaTabSwitchComponent } from '../ta-tab-switch/ta-tab-switch.component';
                 style({
                     height: '10px',
                     overflow: 'hidden',
+                    opacity: '0.5',
                 })
             ),
             transition('false => true', [
-                animate('3100ms cubic-bezier(0, 0, 0.60, 1.99)'),
+                animate('150ms cubic-bezier(0, 0, 0.60, 1.99)'),
             ]),
-            transition('true => false', [animate('3100ms ease')]),
+            transition('true => false', [animate('150ms ease')]),
         ]),
         trigger('areaRightSideAnimation', [
             state('in', style({ width: '100%', 'position' : 'relative' })),
