@@ -46,13 +46,16 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     encapsulation: ViewEncapsulation.None,
     standalone: true,
     imports: [
+        // Module
         CommonModule,
         FormsModule,
         NgbModule,
+        ReactiveFormsModule,
+        AngularSvgIconModule,
+
+        // Component
         AppTooltipComponent,
         TaInputDropdownComponent,
-        ReactiveFormsModule,
-        AngularSvgIconModule
     ],
 })
 export class InputAddressDropdownComponent
@@ -144,9 +147,16 @@ export class InputAddressDropdownComponent
                 takeUntil(this.destroy$),
                 filter((term: string) => {
                     if (!term) {
-                        this.inputConfig.loadingSpinner = {
-                            isLoading: false,
+                        this.inputConfig = {
+                            ...this.inputConfig,
+                            loadingSpinner: {
+                                ...this.inputConfig.loadingSpinner,
+                                isLoading: false,
+                            },
                         };
+                        // this.inputConfig.loadingSpinner = {
+                        //     isLoading: false,
+                        // };
                         this.addresList = [];
                     } else if (
                         term != this.currentAddressData?.address.address &&
@@ -171,10 +181,20 @@ export class InputAddressDropdownComponent
                     return term?.length >= 3;
                 }),
                 switchMap((query) => {
-                    this.inputConfig.loadingSpinner = {
-                        size: 'small',
-                        color: 'white',
-                        isLoading: true,
+                    // this.inputConfig.loadingSpinner = {
+                    //     size: 'small',
+                    //     color: 'white',
+                    //     isLoading: true,
+                    // };
+
+                    this.inputConfig = {
+                        ...this.inputConfig,
+                        loadingSpinner: {
+                            ...this.inputConfig.loadingSpinner,
+                            isLoading: true,
+                            size: 'small',
+                            color: 'white',
+                        },
                     };
 
                     return this.addressService.getAddresses(
@@ -194,8 +214,16 @@ export class InputAddressDropdownComponent
                     this.getSuperControl.setErrors(null);
                 }
 
-                this.inputConfig.loadingSpinner = {
-                    isLoading: false,
+                // this.inputConfig.loadingSpinner = {
+                //     isLoading: false,
+                // };
+
+                this.inputConfig = {
+                    ...this.inputConfig,
+                    loadingSpinner: {
+                        ...this.inputConfig.loadingSpinner,
+                        isLoading: false,
+                    },
                 };
 
                 this.addresList = res.addresses.map((item, indx) => {

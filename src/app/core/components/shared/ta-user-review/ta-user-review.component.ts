@@ -18,7 +18,6 @@ import { AppTooltipComponent } from '../../standalone-components/app-tooltip/app
 import { ProfileImagesComponent } from '../profile-images/profile-images.component';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { ChangeDetectionStrategy } from '@angular/core';
 
 export interface ReviewCommentModal {
     sortData: any[];
@@ -31,18 +30,14 @@ export interface ReviewCommentModal {
     templateUrl: './ta-user-review.component.html',
     styleUrls: ['./ta-user-review.component.scss'],
     providers: [TitleCasePipe],
-    changeDetection: ChangeDetectionStrategy.OnPush,
     standalone: true,
     imports: [
-        // Module
         CommonModule,
         FormsModule,
         AngularSvgIconModule,
-        NgbModule,
-
-        // Component
         AppTooltipComponent,
         ProfileImagesComponent,
+        NgbModule,
     ],
 })
 export class TaUserReviewComponent implements OnChanges {

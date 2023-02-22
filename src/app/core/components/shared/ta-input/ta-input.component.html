@@ -62,7 +62,10 @@
         "
         class="input-clear {{ _inputConfig.customClass }}"
         [ngClass]="{
-            focus: focusInput && getSuperControl.value,
+            focus:
+                focusInput &&
+                getSuperControl.value &&
+                !(_inputConfig.blackInput && _inputConfig.isDropdown),
             'valid-focus-in':
                 getSuperControl.value &&
                 getSuperControl.valid &&
@@ -119,15 +122,17 @@
                 (getSuperControl.value &&
                     _inputConfig.isDropdown &&
                     !_inputConfig.isDisabled &&
+                    !_inputConfig.blackInput &&
                     !_inputConfig.multiSelectDropdownActive &&
                     !_inputConfig.mergeDropdownBodyWithInput) ||
                 (_inputConfig.dropdownImageInput?.url &&
                     !_inputConfig.isDisabled &&
+                    !_inputConfig.blackInput &&
                     !_inputConfig.multiSelectDropdownActive &&
                     !_inputConfig.mergeDropdownBodyWithInput) ||
-                selectedDropdownLabelColor ||
+                (!_inputConfig.blackInput && selectedDropdownLabelColor) ||
                 (_inputConfig?.dropdownImageInput?.url &&
-                    !focusInput &&
+                    !_inputConfig.blackInput &&
                     !_inputConfig.mergeDropdownBodyWithInput),
             'trash-can-svg': _inputConfig.removeInput
         }"
@@ -1002,7 +1007,12 @@
                     (!focusInput && _inputConfig.dropdownImageInput?.url)) &&
                     !_inputConfig.blackInput) ||
                 (_inputConfig.multipleInputValues?.options.length &&
-                    !focusInput),
+                    !focusInput &&
+                    !_inputConfig.blackInput) ||
+                (_inputConfig.dropdownLabel &&
+                    selectedDropdownLabelColor &&
+                    !focusInput &&
+                    !_inputConfig.blackInput),
             'invalid-focus-in':
                 getSuperControl.invalid &&
                 getSuperControl.value &&
@@ -1032,8 +1042,6 @@
                 !getSuperControl.value &&
                 getSuperControl.invalid &&
                 (touchedInput || getSuperControl.touched) &&
-                _inputConfig.multipleLabel?.labels.length &&
-                !_inputConfig.multipleInputValues?.options.length &&
                 !_inputConfig.isDisabled,
             'invalid-search-in-dropdown-focus-in':
                 focusInput &&

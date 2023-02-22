@@ -4,6 +4,7 @@ import {
     ChangeDetectionStrategy,
     Component,
     EventEmitter,
+    HostListener,
     Input,
     OnDestroy,
     OnInit,
@@ -11,10 +12,12 @@ import {
     ViewEncapsulation,
 } from '@angular/core';
 import { ModalService } from './modal.service';
+import { UploadFile } from '../ta-upload-files/ta-upload-file/ta-upload-file.component';
 import {
     DropZoneConfig,
     TaUploadDropzoneComponent,
 } from '../ta-upload-files/ta-upload-dropzone/ta-upload-dropzone.component';
+import { TaUploadFileService } from '../ta-upload-files/ta-upload-file.service';
 import { AuthGuard } from '../../../guards/authentication.guard';
 import {
     animate,
@@ -42,14 +45,14 @@ import { TaTabSwitchComponent } from '../../standalone-components/ta-tab-switch/
     imports: [
         // Module
         CommonModule,
-        NgbModule,
-        AngularSvgIconModule,
+        FormsModule,
         DragDropModule,
+        AngularSvgIconModule,
+        NgbModule,
 
         // Component
         CustomScrollbarComponent,
         TaUploadDropzoneComponent,
-        FormsModule,
         AppTooltipComponent,
         TaSpinnerComponent,
         TaTabSwitchComponent,
@@ -158,12 +161,104 @@ export class TaModalComponent implements OnInit, OnDestroy {
 
     constructor(
         private ngbActiveModal: NgbActiveModal,
-        private modalService: ModalService
+        private modalService: ModalService,
+        private uploadFileService: TaUploadFileService
     ) {}
 
     ngOnInit(): void {
         this.onModalStatus();
         this.onModalSpinner();
+
+        this.uploadFileService.visibilityDropZone$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((value) => {
+                if (value) {
+                    this.dragOver();
+                    this.dragLeave();
+                    this.dragDrop();
+                }
+            });
+    }
+
+    public dragOver() {
+        // $("body").on('dragenter', (event) => {
+        //     event.preventDefault();
+        //     event.stopPropagation();
+        //     if (this.dropZoneCounter < 1 && !this.isLeaveZone) {
+        //         this.dropZoneCounter++;
+        //     }
+        //     this.isDropZoneVisible = true;
+        // });
+    }
+
+    public dragLeave() {
+        // $("body").on('dragleave', (event: any) => {
+        //     event.preventDefault();
+        //     event.stopPropagation();
+        //     if (!event.fromElement) {
+        //         setTimeout(() => {
+        //             this.dropZoneCounter--;
+        //             if (this.dropZoneCounter < 1) {
+        //                 this.isDropZoneVisible = false;
+        //                 this.dropZoneCounter = 0;
+        //                 this.isLeaveZone = false;
+        //             }
+        //         }, 150);
+        //     }
+        // });
+    }
+
+    @HostListener('dragover', ['$event']) public onDragOver(evt) {
+        evt.preventDefault();
+    }
+
+    @HostListener('body:dragenter', ['$event'])
+    onWindowDragEnter(event: any): void {
+        event.preventDefault();
+        if (!event.fromElement) {
+            if (this.dropZoneCounter < 1 && !this.isLeaveZone) {
+                this.dropZoneCounter++;
+            }
+            this.isDropZoneVisible = true;
+        }
+    }
+
+    @HostListener('body:dragleave', ['$event'])
+    onDragLeaveWindows(e) {
+        e.preventDefault();
+        if (!e.fromElement) {
+            // this will ensure that you are not in the browser anymore
+            setTimeout(() => {
+                this.dropZoneCounter--;
+                if (this.dropZoneCounter < 1) {
+                    this.isDropZoneVisible = false;
+                    this.dropZoneCounter = 0;
+                    this.isLeaveZone = false;
+                }
+            }, 150);
+        }
+    }
+
+    @HostListener('drop', ['$event'])
+    onDragDrop(e) {
+        e.preventDefault();
+        setTimeout(() => {
+            this.dropZoneCounter = 0;
+            this.isDropZoneVisible = false;
+            this.isLeaveZone = false;
+        }, 150);
+    }
+
+    public dragDrop() {
+        // $("body").on('drop',(event) => {
+        //     event.preventDefault();
+        //     event.stopPropagation();
+        //     setTimeout(() => {
+        //         this.dropZoneCounter = 0;
+        //         this.isDropZoneVisible = false;
+        //         this.isLeaveZone = false;
+        //     }, 150);
+        // });
     }
 
     public onAction(action: string) {
@@ -184,6 +279,8 @@ export class TaModalComponent implements OnInit, OnDestroy {
                 this.action.emit({ action: action, bool: false });
                 $('.pac-container').remove();
                 this.ngbActiveModal.close();
+                this.uploadFileService.visibilityDropZone(false);
+                this.uploadFileService.uploadFiles(null);
                 break;
             }
             case 'deactivate': {
@@ -256,6 +353,10 @@ export class TaModalComponent implements OnInit, OnDestroy {
                 break;
             }
         }
+    }
+
+    public onFilesEvent(event: { files: UploadFile[]; action: string }) {
+        this.uploadFileService.uploadFiles(event);
     }
 
     public onDropBackground(event: { action: string; value: boolean }) {
@@ -388,6 +489,8 @@ export class TaModalComponent implements OnInit, OnDestroy {
                     ) {
                         $('.pac-container').remove();
                         this.ngbActiveModal.close();
+                        this.uploadFileService.visibilityDropZone(false);
+                        this.uploadFileService.uploadFiles(null);
                     }
                 }
             );

@@ -23,14 +23,12 @@ import { SafeHtmlPipe } from 'src/app/core/pipes/safe-html.pipe';
 import { TaNoteContainerComponent } from '../ta-note/ta-note-container/ta-note-container.component';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { TaSpinnerComponent } from '../ta-spinner/ta-spinner.component';
-import { ChangeDetectionStrategy } from '@angular/core';
 
 @Component({
     selector: 'app-ta-input-note',
     templateUrl: './ta-input-note.component.html',
     styleUrls: ['./ta-input-note.component.scss'],
     animations: [card_modal_animation('showHideCardBody')],
-    changeDetection: ChangeDetectionStrategy.OnPush,
     standalone: true,
     imports: [
         // Module

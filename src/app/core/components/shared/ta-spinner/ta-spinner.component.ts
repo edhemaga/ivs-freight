@@ -1,10 +1,10 @@
 import { CommonModule } from '@angular/common';
 import {
+    ChangeDetectionStrategy,
     Component,
     Input,
     OnChanges,
     SimpleChanges,
-    ChangeDetectionStrategy,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { LottieModule } from 'ngx-lottie';

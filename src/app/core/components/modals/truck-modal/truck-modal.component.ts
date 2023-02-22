@@ -1237,7 +1237,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
 
     public onBlurTruckModel() {
         const model = this.truckForm.get('model').value;
-        if (model.length >= 1) {
+        if (model?.length >= 1) {
             this.truckModalService
                 .autocompleteByTruckModel(model)
                 .pipe(takeUntil(this.destroy$))

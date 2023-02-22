@@ -50,6 +50,7 @@ import { TaSpinnerComponent } from '../ta-spinner/ta-spinner.component';
 import { ProfileImagesComponent } from '../profile-images/profile-images.component';
 import { LoadModalProgressBarComponent } from '../../modals/load-modal/load-modal-progress-bar/load-modal-progress-bar.component';
 import { ChangeDetectionStrategy } from '@angular/core';
+import { HoverSvgDirective } from '../../../directives/hoverSvg.directive';
 @Component({
     selector: 'app-ta-input',
     templateUrl: './ta-input.component.html',
@@ -84,6 +85,9 @@ import { ChangeDetectionStrategy } from '@angular/core';
         InputTypePipe,
         TaSvgPipe,
         InputErrorPipe,
+
+        // Directive
+        HoverSvgDirective,
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
@@ -220,7 +224,7 @@ export class TaInputComponent
     public passwordTimeout = null;
 
     // Destroy
-    private destroy$ = new Subject<void>();
+    private destroy$: Subject<void> = new Subject<void>();
 
     constructor(
         @Self() public superControl: NgControl,
@@ -229,7 +233,8 @@ export class TaInputComponent
         private thousandSeparatorPipe: TaThousandSeparatorPipe,
         private refChange: ChangeDetectorRef,
         private formService: FormService,
-        public imageBase64Service: ImageBase64Service
+        public imageBase64Service: ImageBase64Service,
+        private cdRef: ChangeDetectorRef
     ) {
         this.superControl.valueAccessor = this;
     }
@@ -268,6 +273,13 @@ export class TaInputComponent
     public setDisabledState?(_: boolean): void {}
 
     ngOnInit(): void {
+        // Track input changes
+        this.getSuperControl.valueChanges
+            .pipe(takeUntil(this.destroy$))
+            .subscribe(() => {
+                this.cdRef.detectChanges();
+            });
+
         // Reset Form
         this.formService.formReset$
             .pipe(takeUntil(this.destroy$))
@@ -1962,7 +1974,7 @@ export class TaInputComponent
     }
     public setTimeDateInput(date) {
         let text, dateFormat, timeFormat;
-        if (this.inputConfig.name === 'datepicker') {
+        if (this._inputConfig.name === 'datepicker') {
             text = moment(new Date(date)).format('MM/DD/YY');
             dateFormat = text.split('/');
         } else {

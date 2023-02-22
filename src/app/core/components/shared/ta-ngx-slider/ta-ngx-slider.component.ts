@@ -1,11 +1,11 @@
 import { ChangeContext, Options } from '@angular-slider/ngx-slider';
 import { CommonModule } from '@angular/common';
 import {
+    ChangeDetectionStrategy,
     Component,
     EventEmitter,
     Input,
     Output,
-    ChangeDetectionStrategy,
 } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 

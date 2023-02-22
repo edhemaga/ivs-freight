@@ -14,7 +14,6 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    transition: all 0.2s ease-in-out;
 
     &::-moz-selection {
         background-color: $default-content-background-selection;
@@ -45,6 +44,8 @@
     &:focus {
         background-color: $default-focus-input;
         color: $default-focus-content;
+
+        transition: all 0.2s ease-in-out;
 
         &::-webkit-input-placeholder {
             color: $default-focus-placeholder;

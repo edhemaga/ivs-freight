@@ -74,6 +74,7 @@ import { TaCustomCardComponent } from '../../shared/ta-custom-card/ta-custom-car
 import { TaInputNoteComponent } from '../../shared/ta-input-note/ta-input-note.component';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { TaSpinnerComponent } from '../../shared/ta-spinner/ta-spinner.component';
 
 @Component({
     selector: 'app-broker-modal',
@@ -104,6 +105,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
         TaCustomCardComponent,
         TaUserReviewComponent,
         TaInputNoteComponent,
+        TaSpinnerComponent,
     ],
 })
 export class BrokerModalComponent implements OnInit, OnDestroy {

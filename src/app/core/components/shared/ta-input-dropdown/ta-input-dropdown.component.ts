@@ -36,7 +36,8 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 import { ProfileImagesComponent } from '../profile-images/profile-images.component';
 import { LoadModalProgressBarComponent } from '../../modals/load-modal/load-modal-progress-bar/load-modal-progress-bar.component';
 import { TaSvgPipe } from '../../../pipes/ta-svg.pipe';
-import { ChangeDetectionStrategy } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+import { HoverSvgDirective } from '../../../directives/hoverSvg.directive';
 
 @Component({
     selector: 'app-ta-input-dropdown',
@@ -66,6 +67,9 @@ import { ChangeDetectionStrategy } from '@angular/core';
         FormControlPipe,
         DropdownCountPipe,
         HighlightSearchPipe,
+
+        // Directive
+        HoverSvgDirective,
     ],
 })
 export class TaInputDropdownComponent
@@ -109,10 +113,34 @@ export class TaInputDropdownComponent
     // currently active item
     public _activeItem: any;
     @Input() set activeItem(value: any) {
+        this.inputConfig = {
+            ...this.inputConfig,
+            blackInput: true,
+        };
         this._activeItem = value;
 
-        if (value) {
-            if (!this.inputConfig?.name?.toLowerCase()?.includes('address')) {
+        console.log('name: ', this.inputConfig.name);
+        // With address
+        if (
+            this.inputConfig.name &&
+            this._activeItem &&
+            this.inputConfig.name.toLowerCase().includes('address')
+        ) {
+            this.getSuperControl.patchValue(
+                value.address ? value.address : null
+            );
+
+            this.clearTimeoutDropdown = setTimeout(() => {
+                this.inputConfig = {
+                    ...this.inputConfig,
+                    blackInput: false,
+                };
+                this.cdRef.detectChanges();
+            }, 150);
+        }
+        // Without address
+        else {
+            if (this._activeItem) {
                 this.clearTimeoutDropdown = setTimeout(() => {
                     this.getSuperControl.patchValue(
                         value.number
@@ -126,7 +154,8 @@ export class TaInputDropdownComponent
                         ...this.inputConfig,
                         blackInput: false,
                     };
-                }, 350);
+                    this.cdRef.detectChanges();
+                }, 150);
             }
         }
     }
@@ -230,7 +259,8 @@ export class TaInputDropdownComponent
 
     constructor(
         @Self() public superControl: NgControl,
-        public imageBase64Service: ImageBase64Service
+        public imageBase64Service: ImageBase64Service,
+        private cdRef: ChangeDetectorRef
     ) {
         this.superControl.valueAccessor = this;
     }
@@ -340,22 +370,11 @@ export class TaInputDropdownComponent
             }
             // Normal Dropdown option selected
             else {
-                this.inputConfig = {
-                    ...this.inputConfig,
-                    blackInput: true,
-                };
-
                 this._activeItem = option;
 
                 this._options = this.originalOptions;
 
                 if (this.inputConfig.name !== 'RoutingAddress') {
-                    // this.clearTimeoutDropdown = setTimeout(() => {
-                    this.inputConfig = {
-                        ...this.inputConfig,
-                        blackInput: false,
-                    };
-
                     this.getSuperControl.patchValue(
                         option?.number ? option.number : option.name
                     );
@@ -380,7 +399,6 @@ export class TaInputDropdownComponent
                               })
                             : this.selectedItem.emit(option);
                     }
-                    // }, 100);
                 }
             }
             this.getSuperControl.markAsDirty();
@@ -1011,11 +1029,6 @@ export class TaInputDropdownComponent
             }
             // Normal Dropdown
             else {
-                this.inputConfig = {
-                    ...this.inputConfig,
-                    blackInput: true,
-                };
-
                 // Dropdown labels option selected
                 if (this.inputConfig.dropdownLabel) {
                     if (this.labelMode === 'Label') {
@@ -1041,13 +1054,6 @@ export class TaInputDropdownComponent
                     this._activeItem = existItem;
                     this.inputRef.focusInput = false;
                     this.inputRef.input.nativeElement.blur();
-                }
-
-                if (this.inputConfig.name !== 'RoutingAddress') {
-                    this.inputConfig = {
-                        ...this.inputConfig,
-                        blackInput: false,
-                    };
                 }
             }
             this.popoverRef.close();

@@ -482,6 +482,22 @@
                 </button>
             </div>
             <!-- End Confirmation Modal -->
+
+            <!-- Modal DropZone -->
+            <div
+                class="drop-zone-active"
+                [class.drop-zone-active-hovered]="hoverZone"
+                [hidden]="!isDropZoneVisible"
+                [@widthGrow]="isDropZoneVisible ? 'open' : 'closed'"
+            >
+                <h5 class="drop-zone-title">{{ modalTitle }}</h5>
+                <app-ta-upload-dropzone
+                    [dropZoneConfig]="dropZoneConfig"
+                    [disableUnsupportedPreview]="true"
+                    (onFileEvent)="onFilesEvent($event)"
+                    (onDropBackground)="onDropBackground($event)"
+                ></app-ta-upload-dropzone>
+            </div>
         </div>
         <!-- Modal Additional Part -->
         <div

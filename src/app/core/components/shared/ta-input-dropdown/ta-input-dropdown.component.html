@@ -86,19 +86,19 @@
             </div>
         </span>
     </div>
-    <!--   [popperOptions]="customPopoverOption" -->
+
     <!-- Dropdown search -->
     <app-ta-input
-        #input
         #t2="ngbPopover"
         popoverClass="ta-input-dropdown"
         [autoClose]="_template === 'fuel-franchise' ? 'outside' : true"
         [container]="'body'"
+        [ngbPopover]="taInputDropdownPopover"
+        [placement]="['bottom-left']"
+        #input
         [formControl]="getSuperControl | formControl"
         [incorrectValue]="incorrectValue"
         [inputConfig]="inputConfig"
-        [ngbPopover]="taInputDropdownPopover"
-        [placement]="['bottom-left']"
         [selectedDropdownLabelColor]="
             inputConfig.dropdownLabel
                 ? _activeItem
