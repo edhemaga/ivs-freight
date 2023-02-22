@@ -19,21 +19,26 @@ import { DetailsDropdownComponent } from '../shared/details-page-dropdown/detail
 @NgModule({
     declarations: [RoutingMapComponent, FilterRoutesPipe],
     imports: [
+        // Modules
         CommonModule,
         RoutingRoutingModule,
-        MapToolbarComponent,
         DragDropModule,
         AgmCoreModule,
         NgbModule,
-        AppTooltipComponent,
-        TaThousandSeparatorPipe,
-        InputAddressDropdownComponent,
         NgbPopoverModule,
         FormsModule,
         ReactiveFormsModule,
         AgmSnazzyInfoWindowModule,
         AngularSvgIconModule,
-        DetailsDropdownComponent
+
+        // Components
+        MapToolbarComponent,
+        AppTooltipComponent,
+        InputAddressDropdownComponent,
+        DetailsDropdownComponent,
+
+        // Pipes
+        TaThousandSeparatorPipe
     ],
 })
 export class RoutingModule {}

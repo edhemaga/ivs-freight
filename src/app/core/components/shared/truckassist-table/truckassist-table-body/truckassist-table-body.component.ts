@@ -618,12 +618,15 @@ export class TruckassistTableBodyComponent
             this.viewData = [...viewData];
         }
 
-        // Send Drop Action
-        this.bodyActions.emit({
-            id: this.dropDownActive,
-            data: this.rowData,
-            type: action.name,
-        });
+        // Only If Action Is Not Muted
+        if (!action?.mutedStyle) {
+            // Send Drop Action
+            this.bodyActions.emit({
+                id: this.dropDownActive,
+                data: this.rowData,
+                type: action.name,
+            });
+        }
 
         this.tooltip.close();
     }
