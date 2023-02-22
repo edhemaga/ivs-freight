@@ -1,9 +1,10 @@
 import { distinctUntilChanged, Subject, takeUntil } from 'rxjs';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import {
     ChangeDetectionStrategy,
     Component,
     EventEmitter,
+    HostListener,
     Input,
     OnDestroy,
     OnInit,
@@ -42,13 +43,17 @@ import { TaTabSwitchComponent } from '../../standalone-components/ta-tab-switch/
     changeDetection: ChangeDetectionStrategy.OnPush,
     standalone: true,
     imports: [
+        // Module
         CommonModule,
+        NgbModule,
+        AngularSvgIconModule,
+        DragDropModule,
+
+        // Component
         CustomScrollbarComponent,
         TaUploadDropzoneComponent,
         FormsModule,
-        DragDropModule,
         AppTooltipComponent,
-        AngularSvgIconModule,
         TaSpinnerComponent,
         TaTabSwitchComponent,
     ],
@@ -176,22 +181,53 @@ export class TaModalComponent implements OnInit, OnDestroy {
     }
 
     public dragOver() {
-        $(document).on('dragover', '.modal', (event) => {
-            event.preventDefault();
-            event.stopPropagation();
+        // $("body").on('dragenter', (event) => {
+        //     event.preventDefault();
+        //     event.stopPropagation();
+        //     if (this.dropZoneCounter < 1 && !this.isLeaveZone) {
+        //         this.dropZoneCounter++;
+        //     }
+        //     this.isDropZoneVisible = true;
+        // });
+    }
 
+    public dragLeave() {
+        // $("body").on('dragleave', (event: any) => {
+        //     event.preventDefault();
+        //     event.stopPropagation();
+        //     if (!event.fromElement) {
+        //         setTimeout(() => {
+        //             this.dropZoneCounter--;
+        //             if (this.dropZoneCounter < 1) {
+        //                 this.isDropZoneVisible = false;
+        //                 this.dropZoneCounter = 0;
+        //                 this.isLeaveZone = false;
+        //             }
+        //         }, 150);
+        //     }
+        // });
+    }
+
+    @HostListener('dragover', ['$event']) public onDragOver(evt) {
+        evt.preventDefault();
+    }
+
+    @HostListener('body:dragenter', ['$event'])
+    onWindowDragEnter(event: any): void {
+        event.preventDefault();
+        if (!event.fromElement) {
             if (this.dropZoneCounter < 1 && !this.isLeaveZone) {
                 this.dropZoneCounter++;
             }
             this.isDropZoneVisible = true;
-        });
+        }
     }
 
-    public dragLeave() {
-        $(document).on('dragleave', '.modal', (event) => {
-            event.preventDefault();
-            event.stopPropagation();
-
+    @HostListener('body:dragleave', ['$event'])
+    onDragLeaveWindows(e) {
+        e.preventDefault();
+        if (!e.fromElement) {
+            // this will ensure that you are not in the browser anymore
             setTimeout(() => {
                 this.dropZoneCounter--;
                 if (this.dropZoneCounter < 1) {
@@ -200,20 +236,29 @@ export class TaModalComponent implements OnInit, OnDestroy {
                     this.isLeaveZone = false;
                 }
             }, 150);
-        });
+        }
+    }
+
+    @HostListener('drop', ['$event'])
+    onDragDrop(e) {
+        e.preventDefault();
+        setTimeout(() => {
+            this.dropZoneCounter = 0;
+            this.isDropZoneVisible = false;
+            this.isLeaveZone = false;
+        }, 150);
     }
 
     public dragDrop() {
-        $(document).on('drop', '.modal', (event) => {
-            event.preventDefault();
-            event.stopPropagation();
-
-            setTimeout(() => {
-                this.dropZoneCounter = 0;
-                this.isDropZoneVisible = false;
-                this.isLeaveZone = false;
-            }, 150);
-        });
+        // $("body").on('drop',(event) => {
+        //     event.preventDefault();
+        //     event.stopPropagation();
+        //     setTimeout(() => {
+        //         this.dropZoneCounter = 0;
+        //         this.isDropZoneVisible = false;
+        //         this.isLeaveZone = false;
+        //     }, 150);
+        // });
     }
 
     public onAction(action: string) {

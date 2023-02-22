@@ -2,6 +2,7 @@ import {
     AfterViewInit,
     ChangeDetectorRef,
     Component,
+    CUSTOM_ELEMENTS_SCHEMA,
     ElementRef,
     EventEmitter,
     Input,
@@ -84,6 +85,7 @@ import { ChangeDetectionStrategy } from '@angular/core';
         TaSvgPipe,
         InputErrorPipe,
     ],
+    schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class TaInputComponent
     implements OnInit, AfterViewInit, OnDestroy, ControlValueAccessor
@@ -1958,10 +1960,9 @@ export class TaInputComponent
                     (this._inputConfig?.isFromDate ? ' 12:15' : ' 12:00')
             );
     }
-
     public setTimeDateInput(date) {
         let text, dateFormat, timeFormat;
-        if (this._inputConfig.name === 'datepicker') {
+        if (this.inputConfig.name === 'datepicker') {
             text = moment(new Date(date)).format('MM/DD/YY');
             dateFormat = text.split('/');
         } else {
@@ -2389,7 +2390,7 @@ export class TaInputComponent
                 if (this.selectionInput == 0) {
                     this.dateTimeInputDate = new Date(
                         this.dateTimeInputDate.setMonth(
-                            this.dateTimeInputDate.getMonth() + 1
+                            this.dateTimeInputDate.getMonth() - 1
                         )
                     );
                     this.span1.nativeElement.innerHTML = (
@@ -2400,7 +2401,7 @@ export class TaInputComponent
                 } else if (this.selectionInput == 1) {
                     this.dateTimeInputDate = new Date(
                         this.dateTimeInputDate.setDate(
-                            this.dateTimeInputDate.getDate() + 1
+                            this.dateTimeInputDate.getDate() - 1
                         )
                     );
                     this.span2.nativeElement.innerHTML = (

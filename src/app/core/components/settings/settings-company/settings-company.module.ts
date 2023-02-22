@@ -33,6 +33,8 @@ import { formatDatePipe } from 'src/app/core/pipes/formatDate.pipe';
 import { TaLogoChangeComponent } from '../../shared/ta-logo-change/ta-logo-change.component';
 
 import { TaReCardComponent } from '../../shared/ta-common-card/ta-re-card.component';
+import { TaCounterComponent } from '../../shared/ta-counter/ta-counter.component';
+import { TruckassistProgressExpirationComponent } from '../../shared/truckassist-progress-expiration/truckassist-progress-expiration.component';
 
 @NgModule({
     imports: [
@@ -60,6 +62,8 @@ import { TaReCardComponent } from '../../shared/ta-common-card/ta-re-card.compon
         formatDatePipe,
         TaReCardComponent,
         TaLogoChangeComponent,
+        TaCounterComponent,
+        TruckassistProgressExpirationComponent,
     ],
     exports: [SharedModule],
     declarations: [

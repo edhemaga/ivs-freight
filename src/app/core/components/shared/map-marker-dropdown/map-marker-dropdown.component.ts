@@ -30,15 +30,20 @@ import { GpsProgressbarComponent } from '../gps-progressbar/gps-progressbar.comp
     providers: [TaThousandSeparatorPipe],
     standalone: true,
     imports: [
+        // Modules
         CommonModule,
         FormsModule,
-        formatDatePipe,
-        ProfileImagesComponent,
         AngularSvgIconModule,
+
+        // Components
+        ProfileImagesComponent,
         DetailsDropdownComponent,
         TaCounterComponent,
-        TaThousandSeparatorPipe,
-        GpsProgressbarComponent
+        GpsProgressbarComponent,
+
+        // Pipes
+        formatDatePipe,
+        TaThousandSeparatorPipe
     ],
 })
 export class MapMarkerDropdownComponent implements OnInit {

@@ -11,6 +11,7 @@
         padding-right: 5px;
         height: 26px;
         cursor: pointer;
+        user-select: none;
 
         .header-content {
             display: flex;

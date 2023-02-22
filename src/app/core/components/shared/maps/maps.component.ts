@@ -40,6 +40,7 @@ import { AgmDirectionModule } from 'agm-direction';
 import { GooglePlaceModule } from 'ngx-google-places-autocomplete';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
     selector: 'app-maps',
@@ -51,15 +52,19 @@ import { TruckassistTableService } from 'src/app/core/services/truckassist-table
     encapsulation: ViewEncapsulation.None,
     standalone: true,
     imports: [
+        // Modules
         CommonModule,
         FormsModule,
-        AppTooltipComponent,
+        NgbModule,
         AgmCoreModule,
         AgmSnazzyInfoWindowModule,
-        MapMarkerDropdownComponent,
         AgmDirectionModule,
         GooglePlaceModule,
-        AngularSvgIconModule
+        AngularSvgIconModule,
+
+        // Components
+        AppTooltipComponent,
+        MapMarkerDropdownComponent
     ],
 })
 export class MapsComponent implements OnInit, OnDestroy, OnChanges {
@@ -266,7 +271,7 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
 
         this.mapsService.mapRatingChange
             .pipe(takeUntil(this.destroy$))
-            .subscribe((data) => {
+            .subscribe(() => {
                 this.getClusters(true, true);
             });
 
@@ -287,7 +292,7 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
                     
                     this.mapsService.selectedMarker(id);
                 } else {
-                    this.viewData.map((data: any, index) => {
+                    this.viewData.map((data: any) => {
                         data.isSelected = false;
                     });
 
@@ -346,11 +351,11 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
 
                     if (!data.createdAt) {
                         if (this.mapType == 'repairShop') {
-                            this.getRepairShop(data.id, index);
+                            this.getRepairShop(data.id, index, callFromMapList);
                         } else if (this.mapType == 'shipper') {
-                            this.getShipper(data.id, index);
+                            this.getShipper(data.id, index, callFromMapList);
                         } else if (this.mapType == 'fuelStop') {
-                            this.getFuelStop(data.id, index);
+                            this.getFuelStop(data.id, index, callFromMapList);
                         }
                     } else {
                         data.isSelected = true;
@@ -759,6 +764,7 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
 
                     this.updateMapList.emit(mapListData);
                     this.mapsService.searchLoadingChanged.next(false);
+                    this.mapsService.searchResultsCountChange.next(mapListData.pagination.count);
                 });
         } else if (this.mapType == 'shipper') {
             this.shipperService
@@ -935,6 +941,7 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
 
                     this.updateMapList.emit(mapListData);
                     this.mapsService.searchLoadingChanged.next(false);
+                    this.mapsService.searchResultsCountChange.next(mapListData.pagination.count);
                 });
         } else if (this.mapType == 'fuelStop') {
             this.fuelStopService
@@ -1093,6 +1100,7 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
 
                     this.updateMapList.emit(mapListData);
                     this.mapsService.searchLoadingChanged.next(false);
+                    this.mapsService.searchResultsCountChange.next(mapListData.pagination.count);
                 });
         }
 
@@ -1197,7 +1205,7 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
         this.ref.detectChanges();
     }
 
-    getRepairShop(id, index) {
+    getRepairShop(id, index, callFromMapList?) {
         this.repairShopService
             .getRepairShopById(id)
             .pipe(takeUntil(this.destroy$))
@@ -1236,8 +1244,10 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
 
                     setTimeout(() => {
                         if (index > -1) {
-                            this.viewData[index].isSelected = true;
-                            this.mapsService.selectedMarker(id);
+                            if ( !(callFromMapList && this.mapsService.selectedMarkerId != this.viewData[index].id) ) {
+                                this.viewData[index].isSelected = true;
+                                this.mapsService.selectedMarker(id);
+                            }
                         }
 
                         this.ref.detectChanges();
@@ -1247,7 +1257,7 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
             });
     }
 
-    getShipper(id, index) {
+    getShipper(id, index, callFromMapList?) {
         this.shipperService
             .getShipperById(id)
             .pipe(takeUntil(this.destroy$))
@@ -1286,8 +1296,10 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
 
                     setTimeout(() => {
                         if (index > -1) {
-                            this.viewData[index].isSelected = true;
-                            this.mapsService.selectedMarker(id);
+                            if ( !(callFromMapList && this.mapsService.selectedMarkerId != this.viewData[index].id) ) {
+                                this.viewData[index].isSelected = true;
+                                this.mapsService.selectedMarker(id);
+                            }
                         }
 
                         this.ref.detectChanges();
@@ -1297,7 +1309,7 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
             });
     }
 
-    getFuelStop(id, index) {
+    getFuelStop(id, index, callFromMapList?) {
         this.fuelStopService
             .getFuelStopById(id)
             .pipe(takeUntil(this.destroy$))
@@ -1330,8 +1342,10 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
 
                     setTimeout(() => {
                         if (index > -1) {
-                            this.viewData[index].isSelected = true;
-                            this.mapsService.selectedMarker(id);
+                            if ( !(callFromMapList && this.mapsService.selectedMarkerId != this.viewData[index].id) ) {
+                                this.viewData[index].isSelected = true;
+                                this.mapsService.selectedMarker(id);
+                            }
                         }
 
                         this.ref.detectChanges();

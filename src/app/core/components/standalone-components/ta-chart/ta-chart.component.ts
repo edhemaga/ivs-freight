@@ -9,7 +9,7 @@ import {
     Output,
     EventEmitter,
 } from '@angular/core';
-import { Chart, ChartDataSets, ChartOptions } from 'chart.js';
+import { Chart, ChartDataSets, ChartOptions, ChartType } from 'chart.js';
 import { ChartsModule } from 'ng2-charts';
 import { BaseChartDirective, Color, Label } from 'ng2-charts';
 import * as annotation from 'chartjs-plugin-annotation';
@@ -54,7 +54,7 @@ export class TaChartComponent implements OnInit {
     public lineChartOptions: ChartOptions = {};
     lineChartColors: Color[] = [];
     public lineChartLegend: boolean = false;
-    public lineChartType: string = 'bar';
+    public lineChartType: ChartType = 'bar';
     public lineChartPlugins = [];
     doughnutChartLegend: boolean = false;
     chartWidth: string = '';

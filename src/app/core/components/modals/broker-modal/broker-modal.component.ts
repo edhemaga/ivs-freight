@@ -73,6 +73,7 @@ import { TaInputDropdownComponent } from '../../shared/ta-input-dropdown/ta-inpu
 import { TaCustomCardComponent } from '../../shared/ta-custom-card/ta-custom-card.component';
 import { TaInputNoteComponent } from '../../shared/ta-input-note/ta-input-note.component';
 import { AngularSvgIconModule } from 'angular-svg-icon';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
     selector: 'app-broker-modal',
@@ -88,6 +89,7 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
         FormsModule,
         ReactiveFormsModule,
         AngularSvgIconModule,
+        NgbModule,
 
         // Component
         AppTooltipComponent,

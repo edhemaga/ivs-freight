@@ -27,6 +27,7 @@ import { TaTabSwitchComponent } from '../../../standalone-components/ta-tab-swit
 import { TaCustomCardComponent } from '../../../shared/ta-custom-card/ta-custom-card.component';
 import { TaCheckboxComponent } from '../../../shared/ta-checkbox/ta-checkbox.component';
 import { TaInputComponent } from '../../../shared/ta-input/ta-input.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
     selector: 'app-repair-pm-modal',
@@ -43,7 +44,8 @@ import { TaInputComponent } from '../../../shared/ta-input/ta-input.component';
             ReactiveFormsModule, 
             TaCustomCardComponent,
             TaCheckboxComponent,
-            TaInputComponent
+            TaInputComponent,
+            NgbModule
     ]
 })
 export class RepairPmModalComponent implements OnInit, OnDestroy {

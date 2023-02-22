@@ -59,8 +59,7 @@
                     !latlong.showMarker ? false :
                     !showMarkerWindow[latlong.id] && !latlong.actionAnimation
                 "
-                [iconUrl]="{
-                    url:
+                [iconUrl]="
                         latlong?.isSelected && latlong?.status == 2
                             ? 'assets/svg/common/ic_marker_closed_big.svg'
                             : latlong?.status == 2
@@ -72,7 +71,7 @@
                             : mapType == 'fuelStop'
                             ? 'assets/svg/common/ic_marker_orange.svg'
                             : 'assets/svg/common/ic_marker.svg'
-                }"
+                "
             >
                 <agm-snazzy-info-window
                     [closeOnMapClick]="false"
@@ -437,7 +436,6 @@
                                 "
                                 [type]="'cluster'"
                                 [item]="cluster"
-                                [clusterItems]="cluster.data"
                                 [dropdownActions]="dropdownActions"
                                 (showClusterItemInfo)="
                                     showClusterItemInfo($event)
@@ -589,11 +587,6 @@
                                 <ng-template>
                                     <div class="marker-container marker-icon">
                                         <svg
-                                            [tooltipBackground]="
-                                                route.stops[j].stopColor
-                                                    ? route.stops[j].stopColor
-                                                    : routeColors[0]
-                                            "
                                             xmlns="http://www.w3.org/2000/svg"
                                             xmlns:xlink="http://www.w3.org/1999/xlink"
                                             width="34"
@@ -723,40 +716,6 @@
                                                 </text>
                                             </g>
                                         </svg>
-                                    </div>
-                                    <div
-                                        class="stop-picker-address smaller-marker-address"
-                                        [ngClass]="{
-                                            'small-marker-tooltip':
-                                                !route.isFocused
-                                        }"
-                                        [ngStyle]="{
-                                            backgroundColor: route.stops[j]
-                                                .stopColor
-                                                ? route.stops[j].stopColor
-                                                : routeColors[0],
-                                            visibility:
-                                                focusedRouteIndex == i &&
-                                                stopPickerLocation.editIndex ==
-                                                    j
-                                                    ? 'hidden'
-                                                    : 'visible'
-                                        }"
-                                        *ngIf="
-                                            route.stops[j].isSelected ||
-                                            route.stops[j].hovered
-                                        "
-                                    >
-                                        <div class="stop-picker-address-text">
-                                            {{
-                                                tableData[selectedMapIndex]
-                                                    .addressType == 'address' &&
-                                                route.stops[j].address.address
-                                                    ? route.stops[j].address
-                                                          .address
-                                                    : route.stops[j].cityAddress
-                                            }}
-                                        </div>
                                     </div>
                                 </ng-template>
                             </agm-snazzy-info-window>

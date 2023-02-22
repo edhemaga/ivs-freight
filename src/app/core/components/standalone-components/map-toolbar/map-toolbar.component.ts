@@ -33,6 +33,7 @@ import { TaInputComponent } from '../../shared/ta-input/ta-input.component';
 import { TaTabSwitchComponent } from '../ta-tab-switch/ta-tab-switch.component';
 import { TaInputDropdownComponent } from '../../shared/ta-input-dropdown/ta-input-dropdown.component';
 import { TaCheckboxComponent } from '../../shared/ta-checkbox/ta-checkbox.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @Component({
     selector: 'app-map-toolbar',
@@ -45,6 +46,7 @@ import { TaCheckboxComponent } from '../../shared/ta-checkbox/ta-checkbox.compon
         AngularSvgIconModule,
         CommonModule,
         FormsModule,
+        ReactiveFormsModule,
         AppTooltipComponent,
         NgbPopoverModule,
         NgbModule,
@@ -484,15 +486,17 @@ export class MapToolbarComponent implements OnInit, OnChanges, OnDestroy {
             routeName: 'Route 0' + (this.activeTableData.length + 1),
         };
 
-        this.modalService.openModal(
-            MapRouteModalComponent,
-            { size: 'small' },
-            {
-                ...routeInfo,
-                mapId: this.activeTableData.id,
-                type: 'add',
-            }
-        );
+        if ( this.activeTableData.length < 8 ) {
+            this.modalService.openModal(
+                MapRouteModalComponent,
+                { size: 'small' },
+                {
+                    ...routeInfo,
+                    mapId: this.activeTableData.id,
+                    type: 'add',
+                }
+            );
+        }
     }
 
     onShowLayersPopover(layersPopup: any) {

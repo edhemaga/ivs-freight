@@ -6,6 +6,7 @@ import { AppTooltipComponent } from '../../../standalone-components/app-tooltip/
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AngularSvgIconModule } from 'angular-svg-icon';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
     selector: 'app-ta-note-container',
@@ -16,7 +17,8 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
                 CommonModule, 
                 FormsModule, 
                 AppTooltipComponent,
-                AngularSvgIconModule
+                AngularSvgIconModule,
+                NgbModule
     ],
     animations: [
         trigger('pickupAnimation', [

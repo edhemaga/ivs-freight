@@ -15,6 +15,7 @@ import { TaCheckboxComponent } from '../ta-checkbox/ta-checkbox.component';
 import { TaCounterComponent } from '../ta-counter/ta-counter.component';
 import { PayrollStatusesComponent } from '../payroll-statuses/payroll-statuses.component';
 import { TaLikeDislikeComponent } from '../ta-like-dislike/ta-like-dislike.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
     selector: 'app-ta-custom-card',
@@ -28,6 +29,7 @@ import { TaLikeDislikeComponent } from '../ta-like-dislike/ta-like-dislike.compo
         CommonModule,
         FormsModule,
         AngularSvgIconModule,
+        NgbModule,
 
         // Component
         AppTooltipComponent,

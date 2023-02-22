@@ -175,7 +175,7 @@ export class ToDoListCardComponent implements OnInit, OnDestroy {
         private notificationService: NotificationService,
         private confirmationService: ConfirmationService,
         private DetailsDataService: DetailsDataService,
-        private imageBase64Service: ImageBase64Service
+        public imageBase64Service: ImageBase64Service
     ) {}
 
     ngOnInit(): void {

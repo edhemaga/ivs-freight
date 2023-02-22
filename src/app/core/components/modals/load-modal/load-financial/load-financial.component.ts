@@ -13,6 +13,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AppTooltipComponent } from '../../../standalone-components/app-tooltip/app-tooltip.component';
 import { AngularSvgIconModule } from 'angular-svg-icon';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 export interface IBilling {
     baseRate: number;
@@ -41,6 +42,7 @@ export interface IPayment {
         CommonModule,
         FormsModule,
         AngularSvgIconModule,
+        NgbModule,
 
         // Component
         AppTooltipComponent,

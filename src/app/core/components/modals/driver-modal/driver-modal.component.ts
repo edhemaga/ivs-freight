@@ -62,6 +62,7 @@ import { TaInputNoteComponent } from '../../shared/ta-input-note/ta-input-note.c
 import { TaCheckboxCardComponent } from '../../shared/ta-checkbox-card/ta-checkbox-card.component';
 import { TaInputDropdownComponent } from '../../shared/ta-input-dropdown/ta-input-dropdown.component';
 import { TaLogoChangeComponent } from '../../shared/ta-logo-change/ta-logo-change.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
 @Component({
@@ -77,6 +78,7 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
         FormsModule,
         ReactiveFormsModule,
         AngularSvgIconModule,
+        NgbModule,
 
         // Component
         AppTooltipComponent,

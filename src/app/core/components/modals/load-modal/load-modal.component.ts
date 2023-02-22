@@ -48,7 +48,7 @@ import {
 } from './load-financial/load-financial.component';
 import { MapRouteModel } from '../../shared/model/map-route';
 import { BrokerModalComponent } from '../broker-modal/broker-modal.component';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ShipperModalComponent } from '../shipper-modal/shipper-modal.component';
 import { FinancialCalculationPipe } from './load-financial/financialCalculation.pipe';
 import { RoutingResponse } from '../../../../../../appcoretruckassist/model/routingResponse';
@@ -91,6 +91,7 @@ interface IStopRoutes {
         FormsModule,
         ReactiveFormsModule,
         AngularSvgIconModule,
+        NgbModule,
 
         // Component
         AppTooltipComponent,

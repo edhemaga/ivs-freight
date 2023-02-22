@@ -659,12 +659,13 @@
                                 [dispatchboardId]="item.id"
                                 [statusHeight]="32"
                                 [status]="item.status"
-                                [possibleNextStatuses]="
-                                    item.possibleNextStatuses
-                                "
+                                [dispatchId]="item.id"
                                 [statusMainIndex]="rowIndex"
                                 [statusTypes]="'dispatch'"
                                 [withStatusAgo]="true"
+                                [possibleNextStatuses]="
+                                    item.possibleNextStatuses
+                                "
                                 [nextStopType]="item.nextStopType"
                                 [currentStopType]="item.currentStopType"
                             ></app-ta-status-switch>

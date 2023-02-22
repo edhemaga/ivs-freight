@@ -41,7 +41,7 @@ import {
     CreateCompanyUserCommand,
     UpdateCompanyUserCommand,
 } from '../../../../../../appcoretruckassist';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { SettingsOfficeModalComponent } from '../location-modals/settings-office-modal/settings-office-modal.component';
 import { Options } from 'ng5-slider';
 import {

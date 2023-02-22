@@ -7,15 +7,14 @@ import {
     AfterViewInit,
     Input,
 } from '@angular/core';
-import { NgbTooltip, NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbTooltip, NgbModule, NgbTooltipModule, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
     selector: 'mainTooltip, [mainTooltip]',
     templateUrl: './app-tooltip.component.html',
     standalone: true,
-    imports: [CommonModule, FormsModule, ReactiveFormsModule, NgbModule],
-    providers: [NgbTooltip]
+    imports: [CommonModule, FormsModule, ReactiveFormsModule, NgbTooltipModule, NgbPopoverModule, NgbModule]
 
 })
 export class AppTooltipComponent implements AfterViewInit {

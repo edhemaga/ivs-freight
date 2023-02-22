@@ -48,7 +48,7 @@ import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
         AngularSvgIconModule,
         TaNoteComponent,
         TaUploadFilesComponent,
-        NgbPopoverModule
+        NgbPopoverModule,
     ],
     providers: [
         {
@@ -216,7 +216,7 @@ export class TruckassistTableBodyComponent
 
                 this.renderOneByOne();
             }
-            
+
             this.checkAttachmentUpdate();
         }
 
@@ -448,7 +448,7 @@ export class TruckassistTableBodyComponent
 
             this.tableWidthTimeout = setTimeout(() => {
                 const table = document.querySelector('.table-tr');
-                
+
                 this.tableWidth = table?.clientWidth ? table.clientWidth : 0;
 
                 this.changeDetectorRef.detectChanges();
@@ -550,7 +550,7 @@ export class TruckassistTableBodyComponent
     setDropContent() {
         this.dropContent = [];
 
-        if (this.options.actions.length) {
+        if (this.options?.actions?.length) {
             for (let i = 0; i < this.options.actions.length; i++) {
                 this.dropContent.push(this.options.actions[i]);
             }
@@ -564,7 +564,9 @@ export class TruckassistTableBodyComponent
         if (tooltip.isOpen()) {
             tooltip.close();
         } else {
-            tooltip.open({ data: this.dropContent });
+            !row.tableDropdownContent?.hasContent
+                ? tooltip.open({ data: this.dropContent })
+                : tooltip.open({ data: row.tableDropdownContent });
         }
 
         this.dropDownActive = tooltip.isOpen() ? row.id : -1;
@@ -616,12 +618,15 @@ export class TruckassistTableBodyComponent
             this.viewData = [...viewData];
         }
 
-        // Send Drop Action
-        this.bodyActions.emit({
-            id: this.dropDownActive,
-            data: this.rowData,
-            type: action.name,
-        });
+        // Only If Action Is Not Muted
+        if (!action?.mutedStyle) {
+            // Send Drop Action
+            this.bodyActions.emit({
+                id: this.dropDownActive,
+                data: this.rowData,
+                type: action.name,
+            });
+        }
 
         this.tooltip.close();
     }

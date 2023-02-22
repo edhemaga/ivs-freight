@@ -9,6 +9,7 @@ import {
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AppTooltipComponent } from '../../../standalone-components/app-tooltip/app-tooltip.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
     selector: 'app-load-stop',
@@ -19,6 +20,7 @@ import { AppTooltipComponent } from '../../../standalone-components/app-tooltip/
         // Module
         CommonModule,
         FormsModule,
+        NgbModule,
 
         // Component
         AppTooltipComponent,

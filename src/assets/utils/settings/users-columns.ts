@@ -4,6 +4,7 @@ export function getUsersColumnDefinition() {
             ngTemplate: 'user-checkbox',
             title: 'Checkbox',
             field: 'active',
+            thSetCenter: true,
             name: '',
             hidden: false,
             width: 28,

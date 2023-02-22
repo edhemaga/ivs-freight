@@ -16,6 +16,9 @@ import { TaTabSwitchComponent } from '../../standalone-components/ta-tab-switch/
 import { TaReCardComponent } from '../../shared/ta-common-card/ta-re-card.component';
 import { TaCopyComponent } from '../../shared/ta-copy/ta-copy.component';
 import { formatDatePipe } from 'src/app/core/pipes/formatDate.pipe';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { TaCustomCardComponent } from '../../shared/ta-custom-card/ta-custom-card.component';
+import { TruckassistProgressExpirationComponent } from '../../shared/truckassist-progress-expiration/truckassist-progress-expiration.component';
 
 @NgModule({
     imports: [
@@ -23,6 +26,7 @@ import { formatDatePipe } from 'src/app/core/pipes/formatDate.pipe';
         ReactiveFormsModule,
         SettingsLocationRoutes,
         AppTooltipComponent,
+        NgbModule,
         TaCounterComponent,
         AngularSvgIconModule,
         TaModalComponent,
@@ -30,6 +34,8 @@ import { formatDatePipe } from 'src/app/core/pipes/formatDate.pipe';
         ActiveItemsPipe,
         TaReCardComponent,
         TaCopyComponent,
+        TaCustomCardComponent,
+        TruckassistProgressExpirationComponent,
         formatDatePipe,
     ],
     declarations: [

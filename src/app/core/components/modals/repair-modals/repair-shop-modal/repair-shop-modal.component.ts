@@ -66,6 +66,7 @@ import { TaInputNoteComponent } from '../../../shared/ta-input-note/ta-input-not
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { TaCheckboxComponent } from '../../../shared/ta-checkbox/ta-checkbox.component';
 import { TaUploadFilesComponent } from '../../../shared/ta-upload-files/ta-upload-files.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
     selector: 'app-repair-shop-modal',
@@ -81,6 +82,7 @@ import { TaUploadFilesComponent } from '../../../shared/ta-upload-files/ta-uploa
         FormsModule,
         ReactiveFormsModule,
         AngularSvgIconModule,
+        NgbModule,
 
         // Component
         AppTooltipComponent,

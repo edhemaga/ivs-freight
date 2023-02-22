@@ -9,6 +9,7 @@ import { TruckassistTableBodyComponent } from '../shared/truckassist-table/truck
 import { TruckassistTableHeadComponent } from '../shared/truckassist-table/truckassist-table-head/truckassist-table-head.component';
 import { TaThousandSeparatorPipe } from '../../pipes/taThousandSeparator.pipe';
 import { formatDatePipe } from '../../pipes/formatDate.pipe';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 @NgModule({
     declarations: [TrailerTableComponent],
     imports: [
@@ -19,6 +20,7 @@ import { formatDatePipe } from '../../pipes/formatDate.pipe';
         TruckassistTableToolbarComponent,
         TruckassistTableBodyComponent,
         TruckassistTableHeadComponent,
+        NgbModule,
         TaThousandSeparatorPipe,
         formatDatePipe
     ],
