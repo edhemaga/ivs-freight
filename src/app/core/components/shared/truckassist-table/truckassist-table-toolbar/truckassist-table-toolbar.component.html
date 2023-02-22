@@ -15,7 +15,7 @@
     </div>
 
     <!-- ONE TAB -->
-    <div class="one-tab-container" *ngIf="tableData.length === 1">
+    <div class="one-tab-container" *ngIf="tableData.length === 1 && !options.toolbarActions.hideDataCount">
         {{ tableData[0].length }}
     </div>
 

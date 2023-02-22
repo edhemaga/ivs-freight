@@ -38,6 +38,7 @@ import { TaLogoChangeComponent } from '../../shared/ta-logo-change/ta-logo-chang
 import { TaReCardComponent } from '../../shared/ta-common-card/ta-re-card.component';
 import { TaCounterComponent } from '../../shared/ta-counter/ta-counter.component';
 import { TruckassistProgressExpirationComponent } from '../../shared/truckassist-progress-expiration/truckassist-progress-expiration.component';
+import { HidePasswordPipe } from '../../../pipes/hide-password.pipe';
 
 @NgModule({
     imports: [
@@ -66,7 +67,10 @@ import { TruckassistProgressExpirationComponent } from '../../shared/truckassist
         TaReCardComponent,
         TaLogoChangeComponent,
         TaCounterComponent,
-        TruckassistProgressExpirationComponent
+        TruckassistProgressExpirationComponent,
+
+        // PIPES
+        HidePasswordPipe
         
     ],
     exports: [SharedModule],

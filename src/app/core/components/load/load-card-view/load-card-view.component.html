@@ -83,6 +83,7 @@
                     marginBottom: '0px'
                 }"
                 class="first-custom-card"
+                [customClass]="'detailsPadding'" 
             >
                 <div class="load-broker-container">
                     <div class="company-name">
@@ -142,6 +143,7 @@
                 [isCardOpen]="true"
                 [bodyTemplate]="'card'"
                 [animationsDisabled]="false"
+                [customClass]="'detailsPadding'" 
             >
                 <div class="load-assigned-container">
                     <div class="assigned-driver">
@@ -170,6 +172,7 @@
                                 <svg-icon
                                     class="flex-load"
                                     src="assets/svg/common/trucks/ic_truck_car-hauler.svg"
+                                    [src]="'assets/svg/common/trucks/' + load.dispatch?.truck?.truckType.logoName "
                                 ></svg-icon>
                                 <span class="driver-name">{{
                                     load?.dispatch?.truck?.truckNumber
@@ -180,6 +183,7 @@
                             <div class="driver-info">
                                 <svg-icon
                                     class="flex-load"
+                                    [src]="'assets/svg/common/trailers/' + load.dispatch?.trailer?.trailerType.logoName "
                                     src="assets/svg/common/trailers/ic_trailer_conestoga.svg"
                                 ></svg-icon>
                                 <span class="driver-name">{{
@@ -205,6 +209,7 @@
                 [isCardOpen]="false"
                 [bodyTemplate]="'card'"
                 [animationsDisabled]="false"
+                [customClass]="'detailsPadding'" 
             >
             </app-ta-custom-card>
 
@@ -219,6 +224,7 @@
                     marginTop: '0px',
                     marginBottom: '0px'
                 }"
+                [customClass]="'detailsPadding'" 
             >
                 <div class="load-details-container">
                     <div class="load-details-wrapper">
@@ -296,6 +302,7 @@
                 [hasCounter]="load.files?.length"
                 [bodyTemplate]="'card'"
                 [animationsDisabled]="false"
+                [customClass]="'detailsPadding'" 
             >
             <div class="card_files_holder" [class.active]="load.files?.length > 1">
                 <app-ta-upload-files

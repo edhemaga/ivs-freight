@@ -8,6 +8,9 @@ import { SharedModule } from '../../shared/shared.module';
 import { TruckassistTableToolbarComponent } from '../../shared/truckassist-table/truckassist-table-toolbar/truckassist-table-toolbar.component';
 import { TruckassistTableBodyComponent } from '../../shared/truckassist-table/truckassist-table-body/truckassist-table-body.component';
 import { TruckassistTableHeadComponent } from '../../shared/truckassist-table/truckassist-table-head/truckassist-table-head.component';
+import { MapListCardComponent } from '../../shared/map-list-card/map-list-card.component';
+import { MapListComponent } from '../../shared/map-list/map-list.component';
+import { MapsComponent } from '../../shared/maps/maps.component';
 
 @NgModule({
     declarations: [AccidentTableComponent],
@@ -19,7 +22,10 @@ import { TruckassistTableHeadComponent } from '../../shared/truckassist-table/tr
         SharedModule,
         TruckassistTableToolbarComponent,
         TruckassistTableBodyComponent, 
-        TruckassistTableHeadComponent
+        TruckassistTableHeadComponent,
+        MapListComponent,
+        MapListCardComponent,
+        MapsComponent
     ],
 })
 export class AccidentModule {}

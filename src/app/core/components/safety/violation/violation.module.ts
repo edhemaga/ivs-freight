@@ -6,6 +6,8 @@ import { AppTooltipComponent } from '../../standalone-components/app-tooltip/app
 import { TruckassistTableToolbarComponent } from '../../shared/truckassist-table/truckassist-table-toolbar/truckassist-table-toolbar.component';
 import { formatDatePipe } from 'src/app/core/pipes/formatDate.pipe';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { TruckassistTableHeadComponent } from '../../shared/truckassist-table/truckassist-table-head/truckassist-table-head.component';
+import { TruckassistTableBodyComponent } from '../../shared/truckassist-table/truckassist-table-body/truckassist-table-body.component';
 
 @NgModule({
     declarations: [ViolationTableComponent],
@@ -14,6 +16,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
         ViolationRoutingModule,
         AppTooltipComponent,
         TruckassistTableToolbarComponent,
+        TruckassistTableHeadComponent,
+        TruckassistTableBodyComponent,
         NgbModule,
         formatDatePipe,
     ],
