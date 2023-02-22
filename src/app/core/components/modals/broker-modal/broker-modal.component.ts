@@ -36,7 +36,10 @@ import {
 } from '../../shared/ta-input/ta-input.regex-validations';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { HttpResponseBase } from '@angular/common/http';
-import { ReviewCommentModal, TaUserReviewComponent } from '../../shared/ta-user-review/ta-user-review.component';
+import {
+    ReviewCommentModal,
+    TaUserReviewComponent,
+} from '../../shared/ta-user-review/ta-user-review.component';
 import {
     LikeDislikeModel,
     TaLikeDislikeService,
@@ -69,7 +72,9 @@ import { TaUploadFilesComponent } from '../../shared/ta-upload-files/ta-upload-f
 import { TaInputDropdownComponent } from '../../shared/ta-input-dropdown/ta-input-dropdown.component';
 import { TaCustomCardComponent } from '../../shared/ta-custom-card/ta-custom-card.component';
 import { TaInputNoteComponent } from '../../shared/ta-input-note/ta-input-note.component';
+import { AngularSvgIconModule } from 'angular-svg-icon';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { TaSpinnerComponent } from '../../shared/ta-spinner/ta-spinner.component';
 
 @Component({
     selector: 'app-broker-modal',
@@ -80,26 +85,30 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     providers: [ModalService, TaLikeDislikeService, FormService],
     standalone: true,
     imports: [
-            CommonModule, 
-            FormsModule, 
-            AppTooltipComponent, 
-            TaModalComponent, 
-            TaTabSwitchComponent, 
-            ReactiveFormsModule,
-            TaInputComponent,
-            InputAddressDropdownComponent,
-            TaCheckboxComponent,
-            TaCurrencyProgressBarComponent,
-            TaUploadFilesComponent,
-            TaInputDropdownComponent,
-            TaCustomCardComponent,
-            TaUserReviewComponent,
-            TaInputNoteComponent,
-            NgbModule
-    ]
+        // Module
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+        AngularSvgIconModule,
+        NgbModule,
+
+        // Component
+        AppTooltipComponent,
+        TaModalComponent,
+        TaTabSwitchComponent,
+        TaInputComponent,
+        InputAddressDropdownComponent,
+        TaCheckboxComponent,
+        TaCurrencyProgressBarComponent,
+        TaUploadFilesComponent,
+        TaInputDropdownComponent,
+        TaCustomCardComponent,
+        TaUserReviewComponent,
+        TaInputNoteComponent,
+        TaSpinnerComponent,
+    ],
 })
 export class BrokerModalComponent implements OnInit, OnDestroy {
-    private destroy$ = new Subject<void>();
     @Input() editData: any;
 
     public brokerForm: UntypedFormGroup;
@@ -201,6 +210,8 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
 
     public brokerName: string = '';
 
+    private destroy$ = new Subject<void>();
+
     constructor(
         private formBuilder: UntypedFormBuilder,
         private inputService: TaInputService,
@@ -262,7 +273,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
             'email',
             this.destroy$
         );
-        this.formService.checkFormChange(this.brokerForm, 400);
+        this.formService.checkFormChange(this.brokerForm);
         this.formService.formValueChange$
             .pipe(takeUntil(this.destroy$))
             .subscribe((isFormChange: boolean) => {
@@ -270,100 +281,15 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
             });
     }
 
-    public get brokerContacts(): UntypedFormArray {
-        return this.brokerForm.get('brokerContacts') as UntypedFormArray;
-    }
-
-    private createBrokerContacts(data?: {
-        contactName: string;
-        departmentId: string;
-        phone: string;
-        extensionPhone: string;
-        email: string;
-    }): UntypedFormGroup {
-        return this.formBuilder.group({
-            contactName: [
-                data?.contactName ? data.contactName : null,
-                Validators.required,
-            ],
-            departmentId: [
-                data?.departmentId ? data.departmentId : null,
-                [Validators.required, ...departmentValidation],
-            ],
-            phone: [
-                data?.phone ? data.phone : null,
-                [Validators.required, phoneFaxRegex],
-            ],
-            extensionPhone: [
-                data?.extensionPhone ? data.extensionPhone : null,
-                [...phoneExtension],
-            ],
-            email: [data?.email ? data.email : null],
-        });
-    }
-
-    public addBrokerContacts(event: { check: boolean; action: string }) {
-        const form = this.createBrokerContacts();
-
-        if (event.check) {
-            this.brokerContacts.push(form);
-        }
-        this.inputService.customInputValidator(
-            form.get('email'),
-            'email',
-            this.destroy$
+    public tabChange(event: any): void {
+        this.selectedTab = event.id;
+        let dotAnimation = document.querySelector(
+            this.editData ? '.animation-three-tabs' : '.animation-two-tabs'
         );
-
-        setTimeout(() => {
-            this.trackBrokerContactEmail();
-        }, 50);
-    }
-
-    public removeBrokerContacts(id: number) {
-        this.brokerContacts.removeAt(id);
-        this.selectedContractDepartmentFormArray.splice(id, 1);
-
-        if (this.brokerContacts.length === 0) {
-            this.brokerForm.markAsUntouched();
-        }
-    }
-
-    public trackBrokerContactEmail() {
-        const helper = new Array(this.brokerContacts.length).fill(false);
-
-        this.brokerContacts.valueChanges
-            .pipe(debounceTime(300), takeUntil(this.destroy$))
-            .subscribe((items) => {
-                items.forEach((item, index) => {
-                    if (item.email && helper[index] === false) {
-                        helper[index] = true;
-
-                        this.inputService.changeValidators(
-                            this.brokerContacts.at(index).get('phone'),
-                            false,
-                            [],
-                            false
-                        );
-                    }
-
-                    if (!item.email && helper[index] === true) {
-                        this.brokerContacts
-                            .at(index)
-                            .get('email')
-                            .patchValue(null);
-                        this.inputService.changeValidators(
-                            this.brokerContacts.at(index).get('phone'),
-                            true,
-                            [phoneFaxRegex]
-                        );
-                        helper[index] = false;
-                    }
-                });
-            });
-    }
-
-    public onScrollingBrokerContacts(event: any) {
-        this.isContactCardsScrolling = event.target.scrollLeft > 1;
+        this.animationObject = {
+            value: this.selectedTab,
+            params: { height: `${dotAnimation.getClientRects()[0].height}px` },
+        };
     }
 
     public onModalAction(data: { action: string; bool: boolean }) {
@@ -482,15 +408,100 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
         }
     }
 
-    public tabChange(event: any): void {
-        this.selectedTab = event.id;
-        let dotAnimation = document.querySelector(
-            this.editData ? '.animation-three-tabs' : '.animation-two-tabs'
+    public get brokerContacts(): UntypedFormArray {
+        return this.brokerForm.get('brokerContacts') as UntypedFormArray;
+    }
+
+    private createBrokerContacts(data?: {
+        contactName: string;
+        departmentId: string;
+        phone: string;
+        extensionPhone: string;
+        email: string;
+    }): UntypedFormGroup {
+        return this.formBuilder.group({
+            contactName: [
+                data?.contactName ? data.contactName : null,
+                Validators.required,
+            ],
+            departmentId: [
+                data?.departmentId ? data.departmentId : null,
+                [Validators.required, ...departmentValidation],
+            ],
+            phone: [
+                data?.phone ? data.phone : null,
+                [Validators.required, phoneFaxRegex],
+            ],
+            extensionPhone: [
+                data?.extensionPhone ? data.extensionPhone : null,
+                [...phoneExtension],
+            ],
+            email: [data?.email ? data.email : null],
+        });
+    }
+
+    public addBrokerContacts(event: { check: boolean; action: string }) {
+        const form = this.createBrokerContacts();
+
+        if (event.check) {
+            this.brokerContacts.push(form);
+        }
+        this.inputService.customInputValidator(
+            form.get('email'),
+            'email',
+            this.destroy$
         );
-        this.animationObject = {
-            value: this.selectedTab,
-            params: { height: `${dotAnimation.getClientRects()[0].height}px` },
-        };
+
+        setTimeout(() => {
+            this.trackBrokerContactEmail();
+        }, 50);
+    }
+
+    public removeBrokerContacts(id: number) {
+        this.brokerContacts.removeAt(id);
+        this.selectedContractDepartmentFormArray.splice(id, 1);
+
+        if (this.brokerContacts.length === 0) {
+            this.brokerForm.markAsUntouched();
+        }
+    }
+
+    public trackBrokerContactEmail() {
+        const helper = new Array(this.brokerContacts.length).fill(false);
+
+        this.brokerContacts.valueChanges
+            .pipe(debounceTime(300), takeUntil(this.destroy$))
+            .subscribe((items) => {
+                items.forEach((item, index) => {
+                    if (item.email && helper[index] === false) {
+                        helper[index] = true;
+
+                        this.inputService.changeValidators(
+                            this.brokerContacts.at(index).get('phone'),
+                            false,
+                            [],
+                            false
+                        );
+                    }
+
+                    if (!item.email && helper[index] === true) {
+                        this.brokerContacts
+                            .at(index)
+                            .get('email')
+                            .patchValue(null);
+                        this.inputService.changeValidators(
+                            this.brokerContacts.at(index).get('phone'),
+                            true,
+                            [phoneFaxRegex]
+                        );
+                        helper[index] = false;
+                    }
+                });
+            });
+    }
+
+    public onScrollingBrokerContacts(event: any) {
+        this.isContactCardsScrolling = event.target.scrollLeft > 1;
     }
 
     public tabPhysicalAddressChange(event: any): void {
@@ -650,6 +661,8 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
         }
     }
 
+    // ------ Review ------
+
     public createReview() {
         if (
             this.reviews.some((item) => item.isNewReview) ||
@@ -657,18 +670,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
         ) {
             return;
         }
-        // ------------------------ PRODUCTION MODE -----------------------------
-        // this.reviews.unshift({
-        //   companyUser: {
-        //     fullName: this.companyUser.firstName.concat(' ', this.companyUser.lastName),
-        //     avatar: this.companyUser.avatar,
-        //   },
-        //   commentContent: '',
-        //   createdAt: new Date().toISOString(),
-        //   updatedAt: new Date().toISOString(),
-        //   isNewReview: true,
-        // });
-        // -------------------------- DEVELOP MODE --------------------------------
+
         this.reviews.unshift({
             companyUser: {
                 fullName: this.companyUser.firstName.concat(
@@ -956,12 +958,6 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                         }
                     }
                     if (this.addNewAfterSave) {
-                        this.modalService.setModalSpinner({
-                            action: 'save and add new',
-                            status: false,
-                            close: false,
-                        });
-
                         this.formService.resetForm(this.brokerForm);
 
                         this.selectedBillingAddress = null;
@@ -1020,10 +1016,16 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                         );
 
                         this.addNewAfterSave = false;
+
+                        this.modalService.setModalSpinner({
+                            action: 'save and add new',
+                            status: false,
+                            close: false,
+                        });
                     } else {
                         this.modalService.setModalSpinner({
                             action: null,
-                            status: false,
+                            status: true,
                             close: true,
                         });
                     }
@@ -1126,7 +1128,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                     } else {
                         this.modalService.setModalSpinner({
                             action: null,
-                            status: false,
+                            status: true,
                             close: true,
                         });
                     }
@@ -1149,7 +1151,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                 next: () => {
                     this.modalService.setModalSpinner({
                         action: 'delete',
-                        status: false,
+                        status: true,
                         close: true,
                     });
                 },

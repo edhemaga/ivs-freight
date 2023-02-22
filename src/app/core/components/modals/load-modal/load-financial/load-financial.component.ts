@@ -38,11 +38,14 @@ export interface IPayment {
     encapsulation: ViewEncapsulation.None,
     standalone: true,
     imports: [
+        // Module
         CommonModule,
         FormsModule,
-        AppTooltipComponent,
         AngularSvgIconModule,
-        NgbModule
+        NgbModule,
+
+        // Component
+        AppTooltipComponent,
     ],
 })
 export class LoadFinancialComponent implements OnChanges {

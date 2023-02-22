@@ -56,8 +56,7 @@
                     [inputConfig]="{
                         name: 'Input Dropdown',
                         type: 'text',
-                        label: 'Truck',
-                        isRequired: true,
+                        label: 'Truck Unit',
                         isDropdown: true,
                         dropdownImageInput: {
                             withText: true,
@@ -70,7 +69,7 @@
                                 .replace(' ', '')
                                 .toLowerCase()
                         },
-                        dropdownWidthClass: 'w-col-216',
+                        dropdownWidthClass: 'w-col-216 truck-trailer-dropdown',
                         customClass: 'truck-trailer-dropdown'
                     }"
                     [options]="truckType"
@@ -304,7 +303,6 @@
                                     isDropdown: true,
                                     dropdownWidthClass: 'w-col-114',
                                     hideErrorMessage: true,
-                                    blackInput: true,
                                     hideRequiredCheck: true,
                                     isDisabled:
                                         editData?.type === 'edit' &&
@@ -323,8 +321,8 @@
                                     name: 'QTY',
                                     type: 'text',
                                     hideErrorMessage: true,
-                                    blackInput: true,
                                     hideRequiredCheck: true,
+                                    hideClear: true,
                                     isDisabled:
                                         editData?.type === 'edit' &&
                                         fuelTransactionType?.name !== 'Manual'
@@ -339,9 +337,6 @@
                                         type: 'text',
                                         minLength: 4,
                                         maxLength: 11,
-                                        blackInput: true,
-                                        hideClear:
-                                            !bluringFuelItemsPrice[index],
                                         hideErrorMessage: true,
                                         thousandSeparator: true,
                                         hideRequiredCheck: true,

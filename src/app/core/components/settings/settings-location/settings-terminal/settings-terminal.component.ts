@@ -1,7 +1,6 @@
 import { ChangeDetectorRef, Component, OnInit, OnDestroy } from '@angular/core';
 import { SettingsLocationService } from '../../state/location-state/settings-location.service';
 import { DropDownService } from 'src/app/core/services/details-page/drop-down.service';
-import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { ConfirmationService } from '../../../modals/confirmation-modal/confirmation.service';
 import { formatCurrency } from '../../../../pipes/formatCurrency.pipe';
@@ -28,8 +27,6 @@ export class SettingsTerminalComponent implements OnInit, OnDestroy {
         private cdRef: ChangeDetectorRef,
         private dropDownService: DropDownService,
         private confirmationService: ConfirmationService,
-        private notificationService: NotificationService,
-        private formatCurrency: formatCurrency,
         private activatedRoute: ActivatedRoute
     ) {}
 

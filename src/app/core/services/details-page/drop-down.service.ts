@@ -59,7 +59,7 @@ export class DropDownService {
                         ...dataCdl,
                         state: dataCdl.state.stateShortName,
                     },
-                    cdlsArray: cdlsArray?.length > 0 ? cdlsArray : []
+                    cdlsArray: cdlsArray?.length > 0 ? cdlsArray : [],
                 };
                 this.modalService.openModal(
                     ConfirmationModalComponent,
@@ -290,7 +290,7 @@ export class DropDownService {
                         subType: 'cdl void',
                         cdlStatus: 'New',
                         modalHeader: true,
-                        cdlsArray: cdlsArray?.length > 0 ? cdlsArray : []
+                        cdlsArray: cdlsArray?.length > 0 ? cdlsArray : [],
                     }
                 );
                 break;
@@ -715,7 +715,7 @@ export class DropDownService {
                 ...dataObject,
             },
         };
-        
+
         switch (event.type) {
             case 'edit': {
                 this.modalService.openModal(
@@ -730,7 +730,7 @@ export class DropDownService {
                 break;
             }
             case 'add-favourites':
-            case 'remove-favourites':{
+            case 'remove-favourites': {
                 this.modalService.openModal(
                     ConfirmationModalComponent,
                     { size: 'small' },
@@ -743,7 +743,7 @@ export class DropDownService {
                 );
                 break;
             }
-            case 'move-to-favourite':{
+            case 'move-to-favourite': {
                 this.modalService.openModal(
                     ConfirmationModalComponent,
                     { size: 'small' },
@@ -758,7 +758,7 @@ export class DropDownService {
                 );
                 break;
             }
-            case 'remove-from-favourite':{
+            case 'remove-from-favourite': {
                 this.modalService.openModal(
                     ConfirmationModalComponent,
                     { size: 'small' },
@@ -773,7 +773,7 @@ export class DropDownService {
                 );
                 break;
             }
-            case 'delete-item':{
+            case 'delete-item': {
                 this.modalService.openModal(
                     ConfirmationModalComponent,
                     { size: 'small' },
@@ -786,7 +786,7 @@ export class DropDownService {
                 );
                 break;
             }
-            case 'close-business':{
+            case 'close-business': {
                 this.modalService.openModal(
                     ConfirmationModalComponent,
                     { size: 'small' },
@@ -799,7 +799,7 @@ export class DropDownService {
                 );
                 break;
             }
-            case 'open-business':{
+            case 'open-business': {
                 this.modalService.openModal(
                     ConfirmationModalComponent,
                     { size: 'small' },
@@ -812,20 +812,17 @@ export class DropDownService {
                 );
                 break;
             }
-            case 'Repair':{
+            case 'Repair': {
                 this.modalService.openModal(
                     RepairOrderModalComponent,
                     { size: 'large' },
                     {
-                        ...mappedEvent,
                         template: 'Repair Shop',
-                        type: 'activate',
-                        image: false,
+                        type: 'specific-repair-shop',
                         shopId: event.id ? event.id : null,
                     }
-                )
-                
-                
+                );
+
                 break;
             }
         }

@@ -40,7 +40,7 @@
                     dropdownWidthClass:
                         statusInactive === 0 ? 'w-col-366' : 'w-col-366',
                     textTransform: 'capitalize',
-                    customClass: 'input-32 input-32-font-20 details-pages'
+                    customClass: 'input-32-font-20 details-pages'
                 }"
                 [options]="options"
                 [sort]="sortOptions"
@@ -55,7 +55,9 @@
                 ngbTooltip
                 [mainTooltip]="tooltipPrevious"
                 position="top"
-                [tooltipBackground]=" !tooltipPrevious ? 'rgba(0,0,0,0)' : '#6C6C6C'"
+                [tooltipBackground]="
+                    !tooltipPrevious ? 'rgba(0,0,0,0)' : '#6C6C6C'
+                "
                 class="previousArrow"
                 (click)="onAction('previous')"
             >
@@ -68,7 +70,7 @@
             <span
                 ngbTooltip
                 [mainTooltip]="tooltipNext"
-                [tooltipBackground]=" !tooltipNext ? 'rgba(0,0,0,0)' : '#6C6C6C'"
+                [tooltipBackground]="!tooltipNext ? 'rgba(0,0,0,0)' : '#6C6C6C'"
                 position="top"
                 class="nextArrow"
                 (click)="onAction('next')"
@@ -128,7 +130,7 @@
                     isDropdown: true,
                     dropdownWidthClass: 'w-col-366',
                     textTransform: 'capitalize',
-                    customClass: 'input-32 input-32-font-20 details-pages'
+                    customClass: 'input-32-font-20 details-pages'
                 }"
                 [options]="optionsSecondInput"
                 [template]="'details-template'"
@@ -171,7 +173,8 @@
         <div class="border-line"></div>
         <div class="details-header-wrapper-data">
             <span>
-                <div class="details-header-wrapper-data-item bottom"
+                <div
+                    class="details-header-wrapper-data-item bottom"
                     tooltipBackground="#6C6C6C"
                     ngbTooltip
                     mainTooltip="Date Added"
@@ -204,11 +207,7 @@
                 </div>
             </span>
 
-            <span
-                style="margin-left: 130px"
-                *ngIf="dateChecked"
-                
-            >
+            <span style="margin-left: 130px" *ngIf="dateChecked">
                 <div
                     *ngIf="dateChecked"
                     class="details-header-wrapper-data-item bottom"

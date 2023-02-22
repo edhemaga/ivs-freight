@@ -215,11 +215,13 @@
                         [cardName]="'Profile Picture'"
                         [disableAnimation]="disableCardAnimation"
                         [isCardOpen]="true"
+                        [animationMarginParams]="{
+                            marginTop: '0px',
+                            marginBottom: '18px'
+                        }"
                     >
                         <app-ta-logo-change
-                            [imageUrl]="
-                                this.profileUserForm.get('avatar').value
-                            "
+                            [imageUrl]="profileUserForm.get('avatar').value"
                             [croppieOptions]="croppieOptions"
                             (validationEvent)="onImageValidation($event)"
                             (base64ImageEvent)="onUploadImage($event)"

@@ -4,7 +4,13 @@ import {
     vinNumberValidation,
 } from '../../shared/ta-input/ta-input.regex-validations';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { FormsModule, UntypedFormArray, UntypedFormBuilder, UntypedFormGroup, ReactiveFormsModule } from '@angular/forms';
+import {
+    FormsModule,
+    UntypedFormArray,
+    UntypedFormBuilder,
+    UntypedFormGroup,
+    ReactiveFormsModule,
+} from '@angular/forms';
 import { tab_modal_animation } from '../../shared/animations/tabs-modal.animation';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
 import { AddressEntity } from 'appcoretruckassist';
@@ -35,20 +41,23 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     providers: [ModalService, FormService],
     standalone: true,
     imports: [
-                CommonModule, 
-                FormsModule, 
-                NgbModule,
-                AppTooltipComponent, 
-                TaModalComponent, 
-                TaTabSwitchComponent, 
-                ReactiveFormsModule,
-                TaInputComponent,
-                InputAddressDropdownComponent,
-                TaCustomCardComponent,
-                TaInputDropdownComponent,
-                TaUploadFilesComponent,
-                TaInputNoteComponent
-    ]
+        // Module
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+        NgbModule,
+
+        // Component
+        AppTooltipComponent,
+        TaModalComponent,
+        TaTabSwitchComponent,
+        TaInputComponent,
+        InputAddressDropdownComponent,
+        TaCustomCardComponent,
+        TaInputDropdownComponent,
+        TaUploadFilesComponent,
+        TaInputNoteComponent,
+    ],
 })
 export class AccidentModalComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
@@ -62,7 +71,7 @@ export class AccidentModalComponent implements OnInit, OnDestroy {
         {
             id: 1,
             name: 'Basic',
-            checked: true
+            checked: true,
         },
         {
             id: 2,

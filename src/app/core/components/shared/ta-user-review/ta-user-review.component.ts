@@ -37,8 +37,7 @@ export interface ReviewCommentModal {
         AngularSvgIconModule,
         AppTooltipComponent,
         ProfileImagesComponent,
-        NgbModule
-        
+        NgbModule,
     ],
 })
 export class TaUserReviewComponent implements OnChanges {

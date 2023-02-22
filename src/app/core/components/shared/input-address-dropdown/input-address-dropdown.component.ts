@@ -46,13 +46,16 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     encapsulation: ViewEncapsulation.None,
     standalone: true,
     imports: [
+        // Module
         CommonModule,
         FormsModule,
         NgbModule,
+        ReactiveFormsModule,
+        AngularSvgIconModule,
+
+        // Component
         AppTooltipComponent,
         TaInputDropdownComponent,
-        ReactiveFormsModule,
-        AngularSvgIconModule
     ],
 })
 export class InputAddressDropdownComponent
@@ -136,6 +139,15 @@ export class InputAddressDropdownComponent
 
     registerOnTouched(_: any): void {}
 
+    // 1. put pretrazuje google
+    // 2. activeAddress sadrzi adresu iz google
+    // 3. requestSent svakako se desava kad se iazbere iz google i tamo se mapira currentAddress koji nije isti sa activeAddress
+    // 4. activeAddress ima adresu sa google, currentAddress ima adresu sa servera i dolazi do konflitka
+    // 5. reqeustSent je true uvek kad se izabere adresa, i kod clearDropdowna on uvek bude true i ne ulazi u setErrors(REQUIRED TRUE).
+    // 6. setuje adresu kao da je validna
+    // 7. kad se izabere activeAddress sa google ne upisivati u superControl, nego upisati tek adresu koja dodje sa servera kasnije da
+    // se ne deesava dva puta upis i spinner
+
     ngOnInit(): void {
         this.getSuperControl.valueChanges
             .pipe(
@@ -144,9 +156,16 @@ export class InputAddressDropdownComponent
                 takeUntil(this.destroy$),
                 filter((term: string) => {
                     if (!term) {
-                        this.inputConfig.loadingSpinner = {
-                            isLoading: false,
+                        this.inputConfig = {
+                            ...this.inputConfig,
+                            loadingSpinner: {
+                                ...this.inputConfig.loadingSpinner,
+                                isLoading: false,
+                            },
                         };
+                        // this.inputConfig.loadingSpinner = {
+                        //     isLoading: false,
+                        // };
                         this.addresList = [];
                     } else if (
                         term != this.currentAddressData?.address.address &&
@@ -171,10 +190,20 @@ export class InputAddressDropdownComponent
                     return term?.length >= 3;
                 }),
                 switchMap((query) => {
-                    this.inputConfig.loadingSpinner = {
-                        size: 'small',
-                        color: 'white',
-                        isLoading: true,
+                    // this.inputConfig.loadingSpinner = {
+                    //     size: 'small',
+                    //     color: 'white',
+                    //     isLoading: true,
+                    // };
+
+                    this.inputConfig = {
+                        ...this.inputConfig,
+                        loadingSpinner: {
+                            ...this.inputConfig.loadingSpinner,
+                            isLoading: true,
+                            size: 'small',
+                            color: 'white',
+                        },
                     };
 
                     return this.addressService.getAddresses(
@@ -194,8 +223,16 @@ export class InputAddressDropdownComponent
                     this.getSuperControl.setErrors(null);
                 }
 
-                this.inputConfig.loadingSpinner = {
-                    isLoading: false,
+                // this.inputConfig.loadingSpinner = {
+                //     isLoading: false,
+                // };
+
+                this.inputConfig = {
+                    ...this.inputConfig,
+                    loadingSpinner: {
+                        ...this.inputConfig.loadingSpinner,
+                        isLoading: false,
+                    },
                 };
 
                 this.addresList = res.addresses.map((item, indx) => {

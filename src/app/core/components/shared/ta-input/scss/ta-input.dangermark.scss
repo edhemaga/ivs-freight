@@ -2,25 +2,16 @@
 
 .input-invalid-danger-mark {
     position: absolute;
-    right: 4px;
-    line-height: 24px;
-
+    right: 5px;
     top: 48%;
     transform: translateY(-50%);
+    line-height: 13.3px;
+
     svg {
-        width: 18px;
-        height: 18px;
+        width: 13.3px;
+        height: 13.3px;
         path {
-            fill: $input-danger-mark-path-fill;
+            fill: $invalid-danger-mark;
         }
-    }
-
-    &:hover ~ .input-label {
-        color: $input-label-color-hover;
-    }
-
-    &:hover ~ .input-control {
-        background-color: $input-background-color-normal-hover;
-        color: $input-text-color-normal-hover;
     }
 }
