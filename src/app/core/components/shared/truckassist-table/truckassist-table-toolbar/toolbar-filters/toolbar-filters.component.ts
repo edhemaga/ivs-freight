@@ -13,13 +13,20 @@ import { CarrierSearchComponent } from 'src/app/core/components/standalone-compo
 import { FilterComponent } from '../../../../standalone-components/filter/filter.component';
 import { OnDestroy } from '@angular/core';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
+import { AngularSvgIconModule } from 'angular-svg-icon';
 
 @Component({
     selector: 'app-toolbar-filters',
     templateUrl: './toolbar-filters.component.html',
     styleUrls: ['./toolbar-filters.component.scss'],
     standalone: true,
-    imports: [CommonModule, FormsModule, CarrierSearchComponent, FilterComponent]
+    imports: [
+        CommonModule,
+        FormsModule,
+        CarrierSearchComponent,
+        FilterComponent,
+        AngularSvgIconModule,
+    ],
 })
 export class ToolbarFiltersComponent implements OnInit, OnChanges, OnDestroy {
     @Output() toolbarFilter: EventEmitter<any> = new EventEmitter();
@@ -60,7 +67,7 @@ export class ToolbarFiltersComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     // On Filter
-    onFilter(event: any){
+    onFilter(event: any) {
         this.tableSevice.sendCurrentSetTableFilter(event);
     }
 

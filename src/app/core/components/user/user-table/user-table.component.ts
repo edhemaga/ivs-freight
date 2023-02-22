@@ -306,7 +306,8 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.tableOptions = {
             toolbarActions: {
                 hideDataCount: true,
-                showCountSelectedInList: true,
+                showArhiveCount: true,
+                showCountSelectedInList: false,
                 viewModeOptions: [
                     { name: 'List', active: this.activeViewMode === 'List' },
                     { name: 'Card', active: this.activeViewMode === 'Card' },
@@ -492,10 +493,15 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     width: 18,
                     height: 18,
                 },
-                svgClass: data.status ? 'deactivate' : 'activate',
+                svgClass: !data.verified
+                    ? 'regular'
+                    : data.status
+                    ? 'deactivate'
+                    : 'activate',
                 tableListDropdownContentStyle: {
                     'margin-bottom.px': 4,
                 },
+                mutedStyle: !data.verified,
             },
             {
                 title: 'Delete',
