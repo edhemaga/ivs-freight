@@ -149,12 +149,13 @@ export class TruckassistTableBodyComponent
                     this.mySelection = [];
 
                     this.viewData = this.viewData.map((data) => {
-                        data.isSelected = isSelect;
+                        if (!data?.tableCantSelect) {
+                            data.isSelected = isSelect;
 
-                        if (data.isSelected) {
-                            this.mySelection.push({ id: data.id });
+                            if (data.isSelected) {
+                                this.mySelection.push({ id: data.id });
+                            }
                         }
-
                         return data;
                     });
 

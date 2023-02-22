@@ -67,6 +67,7 @@ export class TruckassistTableHeadComponent
     notPinedMaxWidth: number = 0;
     sortDirection: string = '';
     tableConfigurationType: string = '';
+    selectableRow: any[] = [];
 
     constructor(
         private tableService: TruckassistTableService,
@@ -78,6 +79,7 @@ export class TruckassistTableHeadComponent
         this.setColumnNameUpperCase();
         this.setVisibleColumns();
         this.getActiveTableData();
+        this.getSelectableRows();
 
         // Get Table Width
         this.tableService.currentSetTableWidth
@@ -144,6 +146,8 @@ export class TruckassistTableHeadComponent
 
         if (!changes?.viewData?.firstChange && changes?.viewData) {
             this.viewData = changes.viewData.currentValue;
+
+            this.getSelectableRows();
 
             this.changeDetectorRef.detectChanges();
         }
@@ -358,6 +362,19 @@ export class TruckassistTableHeadComponent
         } else {
             selectedPopover.open({});
         }
+    }
+
+    // Get Selectable Row
+    getSelectableRows(){
+        let selectable = [];
+
+        this.viewData.map((data: any, index: number) => {
+            if(!data?.tableCantSelect){
+                selectable.push(index);
+            }
+        })
+
+        this.selectableRow = [...selectable];
     }
 
     // On Select Option From Select Popup

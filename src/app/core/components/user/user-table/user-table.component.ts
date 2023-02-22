@@ -433,6 +433,7 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 ? '$' + this.thousandSeparator.transform(data.salary)
                 : '',
             userStatus: data.status,
+            tableCantSelect: data.userType.name === 'Owner',
             // User Dropdown Action Set Up
             tableDropdownContent: {
                 hasContent: true,

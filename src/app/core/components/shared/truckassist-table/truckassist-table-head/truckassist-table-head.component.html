@@ -33,7 +33,7 @@
             >
                 <!-- Selected Row Count -->
                 <div
-                    *ngIf="column.ngTemplate === 'checkbox'"
+                    *ngIf="column.ngTemplate === 'checkbox' || column.ngTemplate === 'user-checkbox'"
                     class="selected-rows-count"
                     #op="ngbPopover"
                     (click)="onSelectedOptions(op)"
@@ -706,25 +706,25 @@
             *ngIf="!mySelection.length"
         >
             <div class="text">Select All</div>
-            <div class="count">{{ viewData.length }}</div>
+            <div class="count">{{ selectableRow.length }}</div>
         </div>
 
         <!-- Deselect All -->
         <div
             class="select-option"
             (click)="onSelect('deselect')"
-            *ngIf="mySelection.length === viewData.length"
+            *ngIf="mySelection.length === selectableRow.length"
         >
             <div class="text">Deselect All</div>
-            <div class="count">{{ viewData.length }}</div>
+            <div class="count">{{ selectableRow.length }}</div>
         </div>
 
         <!-- Select Remaining Or  Clear Selected -->
-        <div *ngIf="mySelection.length < viewData.length && mySelection.length">
+        <div *ngIf="mySelection.length < selectableRow.length && mySelection.length">
             <div class="select-option" (click)="onSelect('select')">
                 <div class="text">Select Remaining</div>
                 <div class="count">
-                    {{ viewData.length - mySelection.length }}
+                    {{ selectableRow.length - mySelection.length }}
                 </div>
             </div>
 
