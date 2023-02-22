@@ -2740,7 +2740,7 @@ table {
 
             .border-scroll-section {
                 position: absolute;
-                width: 8px;
+                width: 0px;
                 height: 34px;
                 margin-top: -4px;
             }
@@ -2750,8 +2750,14 @@ table {
             margin-right: 7px;
 
             .border-scroll-section {
-                left: -8px;
+                right: 0px;
             }
+        }
+
+        .border-left,
+        .border-right {
+            width: 8px !important;
+            transition: width 0.25s;
         }
 
         .border-left {

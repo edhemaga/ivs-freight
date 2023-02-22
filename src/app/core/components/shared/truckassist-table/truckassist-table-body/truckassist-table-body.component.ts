@@ -362,6 +362,8 @@ export class TruckassistTableBodyComponent
         ) {
             this.showScrollSectionBorder = scrollEvent.isScrollBarShowing;
 
+            this.tableService.sendIsScrollShownig(this.showScrollSectionBorder);
+
             this.changeDetectorRef.detectChanges();
         }
     }
@@ -705,5 +707,6 @@ export class TruckassistTableBodyComponent
         this.destroy$.complete();
         this.tableService.sendRowsSelected([]);
         this.tableService.sendCurrentSetTableWidth(null);
+        this.tableService.sendIsScrollShownig(false);
     }
 }

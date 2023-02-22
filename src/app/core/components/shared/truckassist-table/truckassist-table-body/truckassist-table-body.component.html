@@ -3,7 +3,8 @@
         <app-custom-scrollbar
             [scrollBarOptions]="{
                 showVerticalScrollBar: false,
-                showHorizontalScrollBar: true
+                showHorizontalScrollBar: true,
+                dataLength: viewData.length
             }"
             [horizontalScrollHeight]="
                 activeAttachment !== -1 ||

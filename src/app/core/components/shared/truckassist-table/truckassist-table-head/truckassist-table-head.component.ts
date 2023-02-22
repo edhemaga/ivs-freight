@@ -68,6 +68,7 @@ export class TruckassistTableHeadComponent
     sortDirection: string = '';
     tableConfigurationType: string = '';
     selectableRow: any[] = [];
+    showBorder: boolean = false;
 
     constructor(
         private tableService: TruckassistTableService,
@@ -113,6 +114,17 @@ export class TruckassistTableHeadComponent
             .subscribe((response: any) => {
                 if (response.toaggleUnlockTable) {
                     this.locked = !this.locked;
+
+                    this.changeDetectorRef.detectChanges();
+                }
+            });
+
+        // Is Scroll Showing
+        this.tableService.isScrollShownig
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((isScrollShownig: boolean) => {
+                if(this.showBorder !== isScrollShownig){
+                    this.showBorder = isScrollShownig;
 
                     this.changeDetectorRef.detectChanges();
                 }
