@@ -388,22 +388,6 @@ export class ContactsTableComponent
             },
         };
     }
-    // actions: [
-    //     {
-    //         title: 'Edit',
-    //         name: 'edit-contact',
-    //         class: 'regular-text',
-    //         contentType: 'edit',
-    //     },
-    //     {
-    //         title: 'Delete',
-    //         type: 'contact',
-    //         name: 'delete-contact',
-    //         text: 'Are you sure you want to delete contact(s)?',
-    //         class: 'delete-text',
-    //         contentType: 'delete',
-    //     },
-    // ],
     getDropdownContactContent(data: any) {
         return [
             {

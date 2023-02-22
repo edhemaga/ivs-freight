@@ -547,6 +547,18 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 },
             },
             {
+                title: 'Add Registration',
+                name: 'add-registration',
+            },
+            {
+                title: 'Add Inspection',
+                name: 'add-inspection',
+            },
+            {
+                title: 'Add Repair',
+                name: 'add-repair',
+            },
+            {
                 title: 'Add New',
                 name: 'add-new',
                 svgUrl: '',
