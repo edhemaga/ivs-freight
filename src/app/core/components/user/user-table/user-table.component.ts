@@ -340,6 +340,7 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 title: 'User',
                 field: 'active',
                 length: userCount.users,
+                arhiveCount: 0,
                 data: userData,
                 gridNameTitle: 'User',
                 stateName: 'users',
@@ -377,9 +378,6 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
             );
 
             this.viewData = [...sortedUserData];
-
-            console.log('User Data');
-            console.log(this.viewData);
         } else {
             this.viewData = [];
         }
@@ -724,13 +722,10 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
         }
         // User Reset Password
         else if (event.type === 'reset-password') {
-            // this.userService
-            //     .userResetPassword(event.data.email)
-            //     .pipe(takeUntil(this.destroy$))
-            //     .subscribe((res: any) => {
-            //         console.log('userResetPassword');
-            //         console.log(res);
-            //     });
+            this.userService
+                .userResetPassword(event.data.email)
+                .pipe(takeUntil(this.destroy$))
+                .subscribe(() => {});
         }
         // User Resend Ivitation
         else if (event.type === 'resend-invitation') {
@@ -740,7 +735,7 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     isResendConfirmation: true,
                 })
                 .pipe(takeUntil(this.destroy$))
-                .subscribe((res: any) => {});
+                .subscribe(() => {});
         }
         // User Delete
         else if (event.type === 'delete') {
