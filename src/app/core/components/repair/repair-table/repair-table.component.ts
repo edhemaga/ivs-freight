@@ -934,6 +934,8 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
             }
         } else if (event.action === 'view-mode') {
             this.activeViewMode = event.mode;
+            
+            this.tableOptions.toolbarActions.hideSearch = event.mode == 'Map';
         }
     }
 

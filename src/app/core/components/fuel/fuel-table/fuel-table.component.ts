@@ -570,6 +570,8 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
             this.sendFuelData();
         } else if (event.action === 'view-mode') {
             this.activeViewMode = event.mode;
+            
+            this.tableOptions.toolbarActions.hideSearch = event.mode == 'Map';
         }
     }
 
