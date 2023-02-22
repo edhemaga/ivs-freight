@@ -328,44 +328,7 @@
                 [customClass]="'detailsPadding'"
             >
                 <div class="owner-history-container">
-                    <div class="status-container">
-                        <div class="status-header">
-                            <div class="status-item">
-                                <p class="p-status">COMPANY</p>
-                            </div>
-                            <div class="status-item">
-                                <p class="p-status">FROM - TO</p>
-                            </div>
-                            <div class="status-item">
-                                <p class="p-status">DURATION</p>
-                            </div>
-                        </div>
-                        <div class="divider"></div>
-                        <div
-                            class="status-items"
-                            *ngFor="
-                                let owHist of trailer.ownerHistories | keyvalue: sortKeys;
-                                trackBy: identity
-                            "
-                        >
-                            <div class="item-wrapper">
-                                <p class="employment">{{ owHist.value.name }}</p>
-
-                                <p class="date-from-to">
-                                    {{ owHist.value.startDate | formatDateP }} -
-                                    <span *ngIf="owHist.value.endDate">{{
-                                        owHist.value.endDate | formatDateP
-                                    }}</span>
-                                    <span *ngIf="!owHist.value.endDate">Today</span>
-                                </p>
-                                <p class="duration">
-                                    <span *ngIf="owHist.value.duration.Years">{{ owHist.value.duration.Years }} y</span>
-                                    <span> {{ owHist.value.duration.Days }} d</span>
-                                </p>
-                            </div>
-                            <div class="divider"></div>
-                        </div>
-                    </div>
+                    
                 </div>
             </app-ta-custom-card>
             <app-ta-custom-card

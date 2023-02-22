@@ -22,6 +22,7 @@ import {
     state,
 } from '@angular/animations';
 import { ImageBase64Service } from '../../../utils/base64.image';
+import { TruckResponse } from 'appcoretruckassist';
 
 @Component({
     selector: 'app-truck-details-card',
@@ -70,7 +71,7 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
     public dataEdit: any;
     private destroy$ = new Subject<void>();
     @Input() templateCard: boolean = false;
-    @Input() truck: any;
+    @Input() truck: TruckResponse;
     public ownersData: any;
     public truck_list: any[] = this.truckMinimalListQuery.getAll();
     public monthList: any[] = [

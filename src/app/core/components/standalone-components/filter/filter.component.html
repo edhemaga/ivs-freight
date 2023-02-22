@@ -1516,10 +1516,8 @@
                                     placeholderInsteadOfLabel: true
                                 }"
                                 [placeholderType]="'shortAddress'"
-                                (incorrectEvent)="incorrectInput($event, 0, 18)"
-                                [activeAddress]="selectedAddress"
                                 (selectedAddress)="
-                                    handleOriginSelect($event, 'ADDRESS')
+                                    handleOriginSelect($event)
                                 "
                             ></app-input-address-dropdown>
                         </div>
@@ -1539,10 +1537,8 @@
                                     placeholderInsteadOfLabel: true
                                 }"
                                 [placeholderType]="'shortAddress'"
-                                (incorrectEvent)="incorrectInput($event, 0, 18)"
-                                [activeAddress]="selectedAddress"
                                 (selectedAddress)="
-                                    handleDestinationSelect($event, 'ADDRESS')
+                                    handleDestinationSelect($event)
                                 "
                             ></app-input-address-dropdown>
                         </div>
@@ -1577,10 +1573,8 @@
                                 placeholderInsteadOfLabel: true
                             }"
                             [placeholderType]="'shortAddress'"
-                            (incorrectEvent)="incorrectInput($event, 0, 18)"
-                            [activeAddress]="selectedAddress"
                             (selectedAddress)="
-                                handleInputSelect($event, 'ADDRESS')
+                                handleInputSelect($event)
                             "
                         ></app-input-address-dropdown>
                     </div>
