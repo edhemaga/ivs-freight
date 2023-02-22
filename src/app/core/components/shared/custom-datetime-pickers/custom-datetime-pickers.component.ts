@@ -121,8 +121,7 @@ export class CustomDatetimePickersComponent implements OnInit {
     }
 
     public setTimeValue() {
-        const dateInputArray = moment(this.dateTime).format('H/m/A').split('/');
-        console.log(dateInputArray);
+        const dateInputArray = moment(this.dateTime).format('H/mm/A').split('/');
         this.scrollTypes.hourScroll = dateInputArray[0];
         this.scrollTypes.minutesScroll = this.timeMinutes.indexOf(dateInputArray[1]); 
         this.scrollTypes.pmAmScroll = dateInputArray[2] == 'AM' ? 0 : 1;

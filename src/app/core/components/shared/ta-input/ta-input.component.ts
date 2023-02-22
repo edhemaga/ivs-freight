@@ -1,6 +1,7 @@
 import {
     ChangeDetectorRef,
     Component,
+    CUSTOM_ELEMENTS_SCHEMA,
     ElementRef,
     EventEmitter,
     HostListener,
@@ -71,6 +72,7 @@ import { LoadModalProgressBarComponent } from '../../modals/load-modal/load-moda
             ProfileImagesComponent,
             LoadModalProgressBarComponent
     ],
+    schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class TaInputComponent
     implements OnInit, OnChanges, OnDestroy, ControlValueAccessor
@@ -182,7 +184,7 @@ export class TaInputComponent
         if (this.inputConfig.name === 'timepicker')
             this.dateTimeInputDate = new Date(
                 moment().format('MM/DD/YYYY') +
-                    (this.inputConfig?.isFromDate ? ' 12:15' : ' 12:00')
+                    (this.inputConfig?.isFromDate ? ' 12:00' : ' 12:00')
             );
     }
 
@@ -2027,8 +2029,6 @@ export class TaInputComponent
                     this.selectSpanByTabIndex(this.selectionInput, true);
                 }
             } else if (e.keyCode == 39 || e.keyCode == 9) {
-                console.log(e.keyCode);
-                console.log(e.shiftKey);
                 if (this.selectionInput != 2 && !e.shiftKey) {
                     this.selectionInput = this.selectionInput + 1;
                     this.selectSpanByTabIndex(this.selectionInput, true);
@@ -2077,6 +2077,7 @@ export class TaInputComponent
             } else if (e.keyCode == 38) {
                 this.setDateTimeModel('up');
             } else if (e.keyCode == 40) {
+            
                 this.setDateTimeModel('down');
             } else if (e.keyCode == 8 || e.keyCode == 46) {
                 this.handleKeyboardInputs(e, true);
@@ -2315,7 +2316,7 @@ export class TaInputComponent
                 if (this.selectionInput == 0) {
                     this.dateTimeInputDate = new Date(
                         this.dateTimeInputDate.setMonth(
-                            this.dateTimeInputDate.getMonth() + 1
+                            this.dateTimeInputDate.getMonth() - 1
                         )
                     );
                     this.span1.nativeElement.innerHTML = (
@@ -2326,7 +2327,7 @@ export class TaInputComponent
                 } else if (this.selectionInput == 1) {
                     this.dateTimeInputDate = new Date(
                         this.dateTimeInputDate.setDate(
-                            this.dateTimeInputDate.getDate() + 1
+                            this.dateTimeInputDate.getDate() - 1
                         )
                     );
                     this.span2.nativeElement.innerHTML = (

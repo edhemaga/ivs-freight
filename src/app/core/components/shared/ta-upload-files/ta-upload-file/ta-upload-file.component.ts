@@ -10,7 +10,7 @@ import {
     ViewChild,
     ViewEncapsulation,
 } from '@angular/core';
-import { FormsModule, UntypedFormControl } from '@angular/forms';
+import { FormsModule, UntypedFormControl, ReactiveFormsModule } from '@angular/forms';
 import { PDFDocumentProxy, PdfViewerModule } from 'ng2-pdf-viewer';
 import { Subject, takeUntil, debounceTime, distinctUntilChanged } from 'rxjs';
 import { TaInputComponent } from '../../ta-input/ta-input.component';
@@ -26,11 +26,12 @@ import { TaSpinnerComponent } from '../../ta-spinner/ta-spinner.component';
 
 export interface UploadFile {
     name?: any;
-    fileName: string;
+    fileName?: string;
     url: string | any;
     extension?: string;
     guid?: string;
-    size?: number | string;
+    size?: number;
+    fileSize?: number;
     tags?: any;
     realFile?: File;
     tagId?: any;
@@ -51,6 +52,7 @@ export interface UploadFile {
         CommonModule,
         FormsModule,
         AppTooltipComponent,
+        ReactiveFormsModule,
         PdfViewerModule,
         ByteConvertPipe,
         NgbModule,

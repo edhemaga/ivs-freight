@@ -20,6 +20,7 @@ import { TruckassistTableHeadComponent } from '../shared/truckassist-table/truck
 import { MapsComponent } from '../shared/maps/maps.component';
 import { MapListComponent } from '../shared/map-list/map-list.component';
 import { MapListCardComponent } from '../shared/map-list-card/map-list-card.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
     declarations: [CustomerTableComponent, BrokerCardComponent],
@@ -32,6 +33,7 @@ import { MapListCardComponent } from '../shared/map-list-card/map-list-card.comp
         SharedModule,
         AgmCoreModule,
         AgmSnazzyInfoWindowModule,
+        NgbModule,
         AppTooltipComponent,
         TaCopyComponent,
         TaCustomCardComponent,

@@ -20,6 +20,7 @@ import { InputAddressDropdownComponent } from '../shared/input-address-dropdown/
 import { TaStatusSwitchComponent } from '../shared/ta-status-switch/ta-status-switch.component';
 import { GpsProgressbarComponent } from '../shared/gps-progressbar/gps-progressbar.component';
 import { TaNoteComponent } from '../shared/ta-note/ta-note.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -40,6 +41,7 @@ import { TaNoteComponent } from '../shared/ta-note/ta-note.component';
     AppTooltipComponent,
     TruckassistTableToolbarComponent,
     CdkConnectPipe,
+    NgbModule,
     HosTimePipe,
     TaInputDropdownComponent,
     InputAddressDropdownComponent,

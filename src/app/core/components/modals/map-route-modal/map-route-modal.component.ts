@@ -112,6 +112,10 @@ export class MapRouteModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe((isFormChange: boolean) => {
                 this.isFormDirty = isFormChange;
+                
+                if (routeName) {
+                    this.isFormDirty = true;
+                }
             });
     }
 

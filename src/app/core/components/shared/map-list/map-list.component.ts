@@ -39,14 +39,17 @@ import { AgmSnazzyInfoWindowModule } from '@agm/snazzy-info-window';
     encapsulation: ViewEncapsulation.None,
     standalone: true,
     imports: [
+        // Modules
         CommonModule,
         FormsModule,
         ReactiveFormsModule,
         AgmCoreModule,
-        TaInputComponent,
         AngularSvgIconModule,
         NgbPopoverModule,
-        AgmSnazzyInfoWindowModule
+        AgmSnazzyInfoWindowModule,
+
+        // Components
+        TaInputComponent
     ],
 })
 export class MapListComponent
@@ -77,6 +80,7 @@ export class MapListComponent
     searchText: string = '';
     searchLoading: boolean = false;
     searchTimeout: any;
+    searchResultsCount: number = 0;
 
     constructor(
         private formBuilder: UntypedFormBuilder,
@@ -133,6 +137,12 @@ export class MapListComponent
             .pipe(takeUntil(this.destroy$))
             .subscribe((loading) => {
                 this.searchLoading = loading;
+            });
+
+        this.mapsService.searchResultsCountChange
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((count) => {
+                this.searchResultsCount = count;
             });
 
         this.setVisibleColumns();

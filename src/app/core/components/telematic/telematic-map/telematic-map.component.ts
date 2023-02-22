@@ -29,6 +29,7 @@ import { DetailsDataService } from '../../../services/details-data/details-data.
         '../../../../../assets/scss/maps.scss',
     ],
     encapsulation: ViewEncapsulation.None,
+    
 })
 export class TelematicMapComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
@@ -36,7 +37,7 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
     @ViewChild('op2') columnsMenuPopover: any;
 
     agmMap: any;
-    styles = AppConst.GOOGLE_MAP_STYLES;
+    styles: any = AppConst.GOOGLE_MAP_STYLES;
     mapRestrictions = {
         latLngBounds: AppConst.NORTH_AMERICA_BOUNDS,
         strictBounds: true,

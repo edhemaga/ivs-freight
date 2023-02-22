@@ -3,6 +3,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AppTooltipComponent } from '../../standalone-components/app-tooltip/app-tooltip.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
     selector: 'app-profile-images',
@@ -10,7 +11,14 @@ import { AppTooltipComponent } from '../../standalone-components/app-tooltip/app
     styleUrls: ['./profile-images.component.scss'],
     providers: [NameInitialsPipe],
     standalone: true,
-    imports: [CommonModule, FormsModule, AppTooltipComponent, NameInitialsPipe, ReactiveFormsModule],
+    imports: [
+        CommonModule,
+        FormsModule,
+        AppTooltipComponent,
+        NgbModule,
+        NameInitialsPipe,
+        ReactiveFormsModule,
+    ],
 })
 export class ProfileImagesComponent implements OnInit {
     textColors: string[] = [
