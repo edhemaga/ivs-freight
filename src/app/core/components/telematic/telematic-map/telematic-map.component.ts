@@ -418,7 +418,7 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
 
     getUnassignedGpsData() {
         this.telematicService
-            .getAllUnassignedGpsData({})
+            .getCompanyUnassignedGpsData({})
             .pipe(takeUntil(this.destroy$))
             .subscribe((gpsData: any) => {
                 console.log('getUnassignedGpsData', gpsData);
