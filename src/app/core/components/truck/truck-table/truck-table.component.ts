@@ -549,14 +549,41 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
             {
                 title: 'Add Registration',
                 name: 'add-registration',
+                svgUrl: '',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                tableListDropdownContentStyle: {
+                    'margin-bottom.px': 4,
+                },
+                svgClass: 'regular',
             },
             {
                 title: 'Add Inspection',
                 name: 'add-inspection',
+                svgUrl: '',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                tableListDropdownContentStyle: {
+                    'margin-bottom.px': 4,
+                },
+                svgClass: 'regular',
             },
             {
                 title: 'Add Repair',
                 name: 'add-repair',
+                svgUrl: '',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                tableListDropdownContentStyle: {
+                    'margin-bottom.px': 4,
+                },
+                svgClass: 'regular',
             },
             {
                 title: 'Add New',
@@ -567,6 +594,7 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     height: 18,
                 },
                 svgClass: 'regular',
+
                 hasBorder: true,
             },
             {

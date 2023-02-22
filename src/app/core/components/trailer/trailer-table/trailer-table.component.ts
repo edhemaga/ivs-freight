@@ -493,14 +493,29 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
             },
             {
                 title: 'Add Registration',
-
+                svgUrl: '',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                svgClass: 'regular',
                 name: 'add-registration',
+                tableListDropdownContentStyle: {
+                    'margin-bottom.px': 4,
+                },
             },
 
             {
                 title: 'Add Inspection',
-
+                svgUrl: '',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
                 name: 'add-inspection',
+                tableListDropdownContentStyle: {
+                    'margin-bottom.px': 4,
+                },
             },
             {
                 title: 'Add New',
