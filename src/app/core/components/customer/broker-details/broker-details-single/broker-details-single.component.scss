@@ -23,13 +23,11 @@ app-broker-details-single {
     height: fit-content;
     background-color: #ffffff;
     border-radius: 3px;
-    padding: 0px 11px 21px 11px;
+    padding: 0px 8px 12px 8px;
     .t-headear-broker {
         display: grid;
         grid-template-columns: 92px 88px 149px 101px 169px 71.5px;
-        padding: 0 4px;
-        padding-top: 8px;
-        padding-bottom: 6px;
+        padding: 8px 4px 6px 4px;
         .t-head-items {
             display: flex;
             flex-direction: column;
@@ -92,7 +90,7 @@ app-broker-details-single {
             display: grid;
             grid-template-columns: 91px 89px 124px 126px 153px 87px;
             align-items: center;
-            padding: 0px 0px 0px 5px;
+            padding: 0px 4px 0px 4px;
             margin: 2px 0;
             grid-auto-flow: column;
             .t-body-items {
@@ -281,7 +279,7 @@ app-broker-details-single {
     // min-height: calc(24vh - 8px);
     overflow-x: hidden;
     &::-webkit-scrollbar {
-        width: 4px;
+        //width: 4px;
     }
 
     &::-webkit-scrollbar-track {
