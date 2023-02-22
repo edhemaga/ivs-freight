@@ -156,10 +156,10 @@
     <div
         class="card-body-cmp"
         [@.disabled]="animationsDisabled"
-        [ngClass]="{ active: ( isCardOpen || forcedOpen )}"
+        [ngClass]="{ 'active': ( isCardOpen || forcedOpen )}"
         
     >
-        <div [@cardOpenAnimation]="animationStarted || isCardOpen ? 'true' : 'false'">
+        <div [@cardOpenAnimation]="animationStarted || isCardOpen ? 'true' : 'false'"> 
             <ng-content></ng-content>
         </div>
     </div>

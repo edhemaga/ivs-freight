@@ -44,13 +44,13 @@ import { NgbModule, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
             state(
                 'false',
                 style({
-                    height: '0px',
+                    'height': '0px',
                     overflow: 'hidden',
                     opacity: 0,
                 })
             ),
-            transition('false <=> true', [animate('200ms ease-in-out')]),
-            transition('true <=> false', [animate('200ms ease-in-out')]),
+            transition('false <=> true', [animate('3100ms ease-in-out')]),
+            transition('true <=> false', [animate('3100ms ease-in-out')]),
         ]),
         trigger('footerOpenAnimation', [
             state(
