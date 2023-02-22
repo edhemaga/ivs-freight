@@ -57,7 +57,7 @@
         class="ahrive-count-container"
         *ngIf="options.toolbarActions.showArhiveCount"
     >
-        <div class="ahrive-count">2</div>
+        <div class="ahrive-count">{{ activeTableData.arhiveCount }}</div>
         <svg-icon
             [svgStyle]="{ 'width.px': 17, 'height.px': 17 }"
             [src]="'assets/svg/truckassist-table/new-list-dropdown/Deactivate.svg'"
