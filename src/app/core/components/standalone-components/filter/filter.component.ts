@@ -99,7 +99,7 @@ import { TaTabSwitchComponent } from '../ta-tab-switch/ta-tab-switch.component';
             state('in', style({ opacity: 1, scale: 1, height: '28px' })),
             transition(':enter', [
                 animate(
-                    3100,
+                    150,
                     keyframes([
                         style({
                             opacity: 0,
@@ -136,7 +136,7 @@ import { TaTabSwitchComponent } from '../ta-tab-switch/ta-tab-switch.component';
             ]),
             transition(':leave', [
                 animate(
-                    3100,
+                    150,
                     keyframes([
                         style({
                             opacity: 1,
@@ -176,7 +176,7 @@ import { TaTabSwitchComponent } from '../ta-tab-switch/ta-tab-switch.component';
             state('in', style({ opacity: 1, height: '*' })),
             transition(':enter', [
                 animate(
-                    3100,
+                    150,
                     keyframes([
                         style({ opacity: 0, offset: 0, height: '0px' }),
                         style({ opacity: 1, offset: 1, height: '*' }),
@@ -185,7 +185,7 @@ import { TaTabSwitchComponent } from '../ta-tab-switch/ta-tab-switch.component';
             ]),
             transition(':leave', [
                 animate(
-                    3100,
+                    150,
                     keyframes([
                         style({ opacity: 1, offset: 0 }),
                         style({ opacity: 0, offset: 1, height: '0px' }),
@@ -1400,11 +1400,12 @@ export class FilterComponent implements OnInit, AfterViewInit {
     ) {}
 
     ngOnInit(): void {
-
         if ( this.type === 'truckTypeFilter' ) {
             this.getTruckType();
         } else if ( this.type === 'trailerTypeFilter' ) {
             this.getTrailerType();
+        } else if ( this.type === 'categoryRepairFilter' ) {
+            this.getRepairCategory();
         }
 
         if (this.type == 'timeFilter') {
@@ -1913,6 +1914,16 @@ export class FilterComponent implements OnInit, AfterViewInit {
                             }
                         );
                         this.trailerTypeArray = newData;
+                    }
+                } else if ( this.type === 'categoryRepairFilter' ) {
+                    if ( res.animation == 'repair-category-update' ) {
+                        let newData = res.data.map(
+                            (type: any, index: number) => {
+                                type['icon'] = 'assets/svg/common/category/' + type.logo;
+                                return type;
+                            }
+                        );
+                        this.categoryRepairArray = newData;
                     }
                 }
                     
@@ -3041,4 +3052,9 @@ export class FilterComponent implements OnInit, AfterViewInit {
     public getTrailerType(){
         this.filterService.getTrailerType();
     }
+
+    public getRepairCategory(){
+        this.filterService.getRepairCategory();
+    }
+
 }

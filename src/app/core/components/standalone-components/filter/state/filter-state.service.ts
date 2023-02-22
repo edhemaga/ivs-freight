@@ -4,7 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { FilterStateStore } from './filter-state.store';
 import { FilterState } from './filter-state.model';
 import { takeUntil, Subject, Observable, tap, BehaviorSubject } from 'rxjs';
-import { TruckTypeService, TrailerTypeService } from 'appcoretruckassist';
+import { TruckTypeService, TrailerTypeService, RepairService } from 'appcoretruckassist';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 
 @Injectable({ providedIn: 'root' })
@@ -17,6 +17,7 @@ export class FilterStateService implements OnDestroy {
         private TruckTypeService: TruckTypeService,
         private tableService: TruckassistTableService,
         private TrailerTypeService: TrailerTypeService,
+        private repairService: RepairService,
     ) {}
 
     // get() {
@@ -66,6 +67,22 @@ export class FilterStateService implements OnDestroy {
                     }); 
 
                     trailerType.unsubscribe();
+                },
+            });
+    }
+
+    public getRepairCategory(){
+        const repairCategory = this.repairService.apiRepairCategoryFilterGet()
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: (data: any) => {
+                    this.tableService.sendActionAnimation({
+                        animation: 'repair-category-update',
+                        data: data,
+                        id: null,
+                    }); 
+
+                    repairCategory.unsubscribe();
                 },
             });
     }
