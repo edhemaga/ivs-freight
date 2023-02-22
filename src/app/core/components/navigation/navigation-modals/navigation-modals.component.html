@@ -24,6 +24,10 @@
             "
             (click)="OpenMainModal(!isModalPanelOpen)"
             class="modal-nav-close"
+            [ngClass]="{
+                'closed-modal': !isModalPanelOpen,
+                'modal-is-open': isModalPanelOpen
+            }"
         >
             <p class="modal-nav-close-text">
                 <svg-icon
@@ -50,9 +54,12 @@
             </div>
         </div>
 
-        <div class="modal-nav-content" *ngIf="isNavigationHovered">
+        <div
+            class="modal-nav-content"
+            *ngIf="isNavigationHovered && isModalPanelOpen"
+        >
             <p class="modal-nav-header">GENERAL <span></span></p>
-            <div class="modal-nav-routes">
+            <div class="modal-nav-routes first-modal">
                 <p
                     class="ta-font-regular modal-item"
                     *ngFor="
@@ -73,7 +80,10 @@
             </div>
         </div>
 
-        <div class="modal-nav-content" *ngIf="isNavigationHovered">
+        <div
+            class="modal-nav-content"
+            *ngIf="isNavigationHovered && isModalPanelOpen"
+        >
             <p class="modal-nav-header">TOOLS <span></span></p>
             <div class="modal-nav-routes">
                 <p
@@ -91,7 +101,10 @@
             </div>
         </div>
 
-        <div class="modal-nav-content" *ngIf="isNavigationHovered">
+        <div
+            class="modal-nav-content"
+            *ngIf="isNavigationHovered && isModalPanelOpen"
+        >
             <p class="modal-nav-header">REPAIR <span></span></p>
             <div class="modal-nav-routes">
                 <p
@@ -108,7 +121,10 @@
             </div>
         </div>
 
-        <div class="modal-nav-content" *ngIf="isNavigationHovered">
+        <div
+            class="modal-nav-content"
+            *ngIf="isNavigationHovered && isModalPanelOpen"
+        >
             <p class="modal-nav-header">FUEL <span></span></p>
             <div class="modal-nav-routes">
                 <p
@@ -125,7 +141,10 @@
             </div>
         </div>
 
-        <div class="modal-nav-content" *ngIf="isNavigationHovered">
+        <div
+            class="modal-nav-content"
+            *ngIf="isNavigationHovered && isModalPanelOpen"
+        >
             <p class="modal-nav-header">SAFETY <span></span></p>
             <div class="modal-nav-routes">
                 <p
@@ -142,7 +161,10 @@
             </div>
         </div>
 
-        <div class="modal-nav-content">
+        <div
+            class="modal-nav-content"
+            *ngIf="isNavigationHovered && isModalPanelOpen"
+        >
             <p class="modal-nav-header">ACCOUNTING <span></span></p>
             <div class="modal-nav-routes">
                 <p
@@ -159,7 +181,10 @@
             </div>
         </div>
 
-        <div class="modal-nav-content">
+        <div
+            class="modal-nav-content"
+            *ngIf="isNavigationHovered && isModalPanelOpen"
+        >
             <p class="modal-nav-header">REQUEST <span></span></p>
             <div class="modal-nav-routes">
                 <p

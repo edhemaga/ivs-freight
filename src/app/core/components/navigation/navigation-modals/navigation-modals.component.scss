@@ -62,7 +62,8 @@
         .title {
             position: absolute;
             left: 46px;
-            top: 9px;
+            top: 8px;
+            width: 104px;
         }
         .modal-nav-close-text {
             font-size: $nav-font-size;
@@ -86,7 +87,21 @@
             z-index: -1;
         }
     }
-
+    .closed-modal {
+        width: 36px;
+    }
+    .modal-is-open {
+        padding-right: 4px;
+        height: 45px;
+        background: $nav-svg-active;
+        z-index: 9;
+        top: 65px;
+        left: 21px;
+        padding-top: 13px;
+        position: fixed;
+        width: 230px;
+        transition: width 0.3s;
+    }
     .modal-nav-content {
         height: auto;
         margin-top: 12px;
@@ -101,13 +116,19 @@
             gap: 6px;
             align-items: center;
             padding-right: 4px;
+            margin-top: 25px;
             span {
                 width: 100%;
                 height: 0.1px;
                 background: $nav-dark;
             }
         }
-
+        .modal-nav-header:nth-child(1) {
+            position: sticky;
+            top: 32px;
+            background-color: $nav-svg-active;
+            z-index: 8;
+        }
         .modal-nav-routes {
             display: flex;
             flex-wrap: wrap;
@@ -140,6 +161,9 @@
                     background: $nav-blue-3;
                 }
             }
+        }
+        .first-modal {
+            // padding-top: 14px;
         }
     }
 }
@@ -252,6 +276,24 @@
 @media only screen and (max-height: 800px) {
     .modal-media-query-height {
         height: 500px !important;
+        overflow-y: scroll;
+    }
+}
+@media only screen and (max-height: 600px) {
+    .modal-media-query-height {
+        height: 400px !important;
+        overflow-y: scroll;
+    }
+}
+@media only screen and (max-height: 490px) {
+    .modal-media-query-height {
+        height: 300px !important;
+        overflow-y: scroll;
+    }
+}
+@media only screen and (max-height: 370px) {
+    .modal-media-query-height {
+        height: 200px !important;
         overflow-y: scroll;
     }
 }
