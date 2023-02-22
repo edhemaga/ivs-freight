@@ -107,6 +107,7 @@ export class TaDetailsHeaderCardComponent implements OnInit, OnChanges {
         //   currentIndex = --currentIndex;
         //   this.hideArrowOnStart(this.driversList[currentIndex].id);
         // }
+        this.selectedDropdown = false;
         this.changeEvent.emit(action);
     }
 
