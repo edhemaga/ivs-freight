@@ -112,6 +112,7 @@
                 [tooltipName]="'Dispatch History'"
                 [hasHeaderSvg]="'assets/svg/common/ic_half_time.svg'"
                 [isCardOpen]="true"
+                [customClass]="'detailsPadding'"
                 [animationMarginParams]="{
                     marginTop: '0px',
                     marginBottom: '10px'
@@ -123,8 +124,8 @@
                         *ngIf="truck?.assignedTo?.trailer?.id"
                     >
                         <svg-icon
-                            class="assignTo-vehicle"
-                            src="assets/svg/common/trailer.svg"
+                            class="assignTo-vehicle backImage"
+                            [src]="'assets/svg/common/trailers/' + truck.assignedTo.trailer.trailerType.logoName "
                         ></svg-icon>
                         <p class="assignTo-value">
                             {{ truck.assignedTo.trailer.trailerNumber }}
@@ -143,9 +144,16 @@
                         *ngIf="truck?.assignedTo?.driver?.id"
                     >
                         <svg-icon
+                            *ngIf="!truck.assignedTo.driver.avatar"
                             class="assignTo-vehicle"
                             src="assets/svg/common/user-image.svg"
                         ></svg-icon>
+                        <img
+                            *ngIf="truck.assignedTo.driver.avatar"
+                            class="driverAvatarImg"
+                            [src]="imageBase64Service.sanitizer(truck.assignedTo.driver.avatar)"
+                            alt="driver-image"
+                        />
                         <p class="assignTo-value">
                             {{ truck.assignedTo.driver.firstName }}
                             {{ truck.assignedTo.driver.lastName }}
@@ -168,6 +176,7 @@
                 [bodyTemplate]="'card'"
                 [isCardOpen]="true"
                 [cardName]="'Additional Details'"
+                [customClass]="'detailsPadding'"
                 [animationMarginParams]="{
                     marginTop: '0px',
                     marginBottom: '10px'
@@ -405,6 +414,7 @@
                 "
                 [bodyTemplate]="'card'"
                 [isCardOpen]="true"
+                [customClass]="'detailsPadding'"
                 [animationMarginParams]="{
                     marginTop: '0px',
                     marginBottom: '10px'
@@ -462,6 +472,7 @@
                 [cardName]="'Expenses'"
                 [bodyTemplate]="'card'"
                 [isCardOpen]="true"
+                [customClass]="'detailsPadding'"
             >
                 <div
                     class="charts-template perfomance"
@@ -493,6 +504,7 @@
                 [cardName]="'Fuel Consumption'"
                 [hasHeaderSvg]="'assets/svg/common/arrow_top_right.svg'"
                 class="item-cards"
+                [customClass]="'detailsPadding'"
             >
                 <div
                     class="charts-template perfomance"
@@ -524,6 +536,7 @@
                 [hasHeaderSvg]="'assets/svg/common/arrow_top_right.svg'"
                 class="item-cards"
                 [isCardOpen]="true"
+                [customClass]="'detailsPadding'"
             >
                 <div
                     class="charts-template perfomance"
@@ -555,6 +568,7 @@
                 [bodyTemplate]="'card'"
                 [hasHeaderSvg]="'assets/svg/common/arrow_top_right.svg'"
                 class="item-cards"
+                [customClass]="'detailsPadding'"
                 [animationMarginParams]="{
                     marginTop: '0px',
                     marginBottom: '10px'
@@ -574,7 +588,39 @@
                             </div>
                         </div>
                         <div class="truck-card-line"></div>
-                       
+                        <div
+                            class="status-items"
+                            *ngFor="
+                                let owHist of truck.ownerHistories
+                                    | keyvalue : sortKeys;
+                                trackBy: identity
+                            "
+                        >
+                            <div class="item-wrapper">
+                                <p class="employment">
+                                    {{ owHist.value.name }}
+                                </p>
+
+                                <p class="date-from-to">
+                                    {{ owHist.value.startDate | formatDateP }} -
+                                    <span *ngIf="owHist.value.endDate">{{
+                                        owHist.value.endDate | formatDateP
+                                    }}</span>
+                                    <span *ngIf="!owHist.value.endDate"
+                                        >Today</span
+                                    >
+                                </p>
+                                <p class="duration">
+                                    <span *ngIf="owHist?.value.duration?.Years">
+                                        {{ owHist.value.duration.Years }} y
+                                    </span>
+                                    <span>
+                                        {{ owHist.value.duration.Days }} d
+                                    </span>
+                                </p>
+                            </div>
+                            <div class="truck-card-line"></div>
+                        </div>
                     </div>
                 </div>
             </app-ta-custom-card>
@@ -585,12 +631,14 @@
                 [hasCounter]="truck?.files?.length ? truck?.files.length : 0"
                 class="item-cards"
                 [bodyTemplate]="'card'"
+                [customClass]="'detailsPadding'"
             >
                 <div
                     class="card_files_holder"
                     [class.active]="truck?.files?.length > 1"
                 >
                     <app-ta-upload-files
+                        [files]="truck?.files"
                         [customClassName]="'driver-card-pdf'"
                         [hasCarouselBottomTabs]="true"
                         [type]="'details'"
@@ -620,13 +668,272 @@
         </div>
         <div *ngIf="templateCard">
             <div class="custom-card-single">
-                
+                <app-ta-custom-card
+                    [cardName]="'Registration'"
+                    [isCardOpen]="false"
+                    [hasDivider]="false"
+                    class="item-cards"
+                    [bodyTemplate]="'card'"
+                    [customClass]="'detailsPadding'"
+                    [hasCounter]="
+                        truck?.registrations?.length
+                            ? truck.registrations.length
+                            : 0
+                    "
+                    [hasPlusHeader]="true"
+                >
+                    <div
+                        *ngFor="
+                            let reg of truck?.registrations;
+                            let i = index;
+                            trackBy: identity
+                        "
+                    >
+                        <app-ta-re-card
+                            [cardDocumentCounter]="
+                                reg?.files?.length ? reg?.files?.length : 0
+                            "
+                            (resizePage)="toggleResizePage(i, 'registration')"
+                            [cardNameCommon]="reg.licensePlate"
+                            [hasCopyIcon]="true"
+                            [options]="dataEdit"
+                            [expDateClose]="reg.expDate | formatDateP"
+                        >
+                            <div class="cards-container">
+                                <div class="card-body-cdl">
+                                    <div class="card-row-endor">
+                                        <div class="card-item">
+                                            <div class="card-item-name">
+                                                State
+                                            </div>
+                                            <div class="card-item-value">
+                                                KV
+                                            </div>
+                                        </div>
+                                        <div class="card-item">
+                                            <div class="card-item-name">
+                                                Issued
+                                            </div>
+                                            <div class="card-item-value">
+                                                {{
+                                                    reg.issueDate | formatDateP
+                                                }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div
+                                        class="card-row-progress"
+                                        [ngClass]="{
+                                            'second-progress':
+                                                toggler[i + 'registration']
+                                        }"
+                                    >
+                                        <div
+                                            class="card-details-progress-container"
+                                        >
+                                            <app-truckassist-progress-expiration
+                                                [expireDate]="
+                                                    reg.expDate | formatDateP
+                                                "
+                                                [startDate]="
+                                                    reg.issueDate | formatDateP
+                                                "
+                                                [expiresSettings]="'details'"
+                                            >
+                                            </app-truckassist-progress-expiration>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div
+                                    *ngIf="toggler[i + 'registration']"
+                                    class="note-wrapper"
+                                >
+                                    <div class="divider"></div>
+                                    <app-ta-input-note
+                                        [formControl]="registrationNote"
+                                        [isVisibleDivider]="false"
+                                        [placeholder]="'Write something.'"
+                                        [customClass]="'note-small'"
+                                        [isVisibleArrow]="false"
+                                        [minRows]="1"
+                                        [isVisibleNote]="true"
+                                        [noteType]="'details-card'"
+                                        [entityId]="truck.id"
+                                        [entityType]="'Truck'"
+                                    ></app-ta-input-note>
+                                </div>
+                            </div>
+                        </app-ta-re-card>
+                    </div>
+                </app-ta-custom-card>
             </div>
             <div class="custom-card-single">
-             
+                <app-ta-custom-card
+                    [cardName]="'FHWA Inspection'"
+                    [customClass]="'detailsPadding'"
+                    [isCardOpen]="false"
+                    [hasDivider]="false"
+                    class="item-cards"
+                    [bodyTemplate]="'card'"
+                    [hasCounter]="
+                        truck?.inspections?.length
+                            ? truck.inspections.length
+                            : 0
+                    "
+                    [hasPlusHeader]="true"
+                >
+                    <div
+                        *ngFor="
+                            let fhwa of truck?.inspections;
+                            let i = index;
+                            trackBy: identity
+                        "
+                    >
+                        <app-ta-re-card
+                            [options]="dataEdit"
+                            [cardNameCommon]="fhwa.issueDate | formatDateP"
+                            [expDateClose]="'04/04/24' | formatDateP"
+                            (resizePage)="toggleResizePage(i, 'inspection')"
+                        >
+                            <div class="cards-container">
+                                <div class="card-body-cdl">
+                                    <div
+                                        class="card-row-progress"
+                                        [ngClass]="{
+                                            'second-progress':
+                                                toggler[i + 'inspection']
+                                        }"
+                                    >
+                                        <div
+                                            class="card-details-progress-container"
+                                        >
+                                            <app-truckassist-progress-expiration
+                                                [expireDate]="
+                                                    fhwa.expDate | formatDateP
+                                                "
+                                                [startDate]="
+                                                    fhwa.issueDate | formatDateP
+                                                "
+                                                [expiresSettings]="'details'"
+                                            >
+                                            </app-truckassist-progress-expiration>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div
+                                    *ngIf="toggler[i + 'inspection']"
+                                    class="note-wrapper"
+                                >
+                                    <app-ta-input-note
+                                        [formControl]="fhwaNote"
+                                        [placeholder]="'Write something.'"
+                                        [customClass]="'note-small'"
+                                        [isVisibleArrow]="false"
+                                        [minRows]="1"
+                                        [isVisibleNote]="true"
+                                        [noteType]="'details-card'"
+                                        [entityId]="truck.id"
+                                        [entityType]="'Truck'"
+                                    ></app-ta-input-note>
+                                </div>
+                            </div>
+                        </app-ta-re-card>
+                    </div>
+                </app-ta-custom-card>
             </div>
             <div class="custom-card-single">
-                
+                <app-ta-custom-card
+                    [cardName]="'Title'"
+                    [isCardOpen]="false"
+                    [hasDivider]="false"
+                    class="item-cards"
+                    [bodyTemplate]="'card'"
+                    [customClass]="'detailsPadding'"
+                    [hasCounter]="
+                        truck?.titles?.length ? truck.titles.length : 0
+                    "
+                    [hasPlusHeader]="true"
+                >
+                    <div *ngFor="let title of truck?.titles; let i = index; trackBy: identity">
+                        <app-ta-re-card
+                            [cardDocumentCounter]="
+                                title?.files?.length ? title?.files?.length : 0
+                            "
+                            (resizePage)="toggleResizePage(i, 'title')"
+                            [cardNameCommon]="title.number"
+                            [options]="dataEdit"
+                            [expDateClose]="'04/04/27' | formatDateP"
+                        >
+                            <div class="cards-container">
+                                <div class="card-body-cdl">
+                                    <div class="card-row-endor">
+                                        <div class="card-item">
+                                            <div class="card-item-name">
+                                                State
+                                            </div>
+                                            <div class="card-item-value">
+                                                KV
+                                            </div>
+                                        </div>
+                                        <div class="card-item">
+                                            <div class="card-item-name">
+                                                Issued
+                                            </div>
+                                            <div class="card-item-value">
+                                                {{
+                                                    title.issueDate
+                                                        | formatDateP
+                                                }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div
+                                        class="card-row-progress"
+                                        [ngClass]="{
+                                            'second-progress':
+                                                toggler[i + 'title']
+                                        }"
+                                    >
+                                        <div
+                                            class="card-details-progress-container"
+                                        >
+                                            <app-truckassist-progress-expiration
+                                                [expireDate]="
+                                                    title.issueDate
+                                                        | formatDateP
+                                                "
+                                                [startDate]="
+                                                    title.purchaseDate
+                                                        | formatDateP
+                                                "
+                                                [expiresSettings]="'details'"
+                                            >
+                                            </app-truckassist-progress-expiration>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div
+                                    *ngIf="toggler[i + 'title']"
+                                    class="note-wrapper"
+                                >
+                                    <div class="divider"></div>
+                                    <app-ta-input-note
+                                        [formControl]="titleNote"
+                                        [placeholder]="'Write something.'"
+                                        [customClass]="'note-small'"
+                                        [isVisibleArrow]="false"
+                                        [minRows]="1"
+                                        [isVisibleDivider]="false"
+                                        [isVisibleNote]="true"
+                                        [noteType]="'details-card'"
+                                        [entityId]="truck.id"
+                                        [entityType]="'Truck'"
+                                    ></app-ta-input-note>
+                                </div>
+                            </div>
+                        </app-ta-re-card>
+                    </div>
+                </app-ta-custom-card>
             </div>
             <div class="custom-card-single">
                 <app-ta-custom-card
@@ -637,6 +944,7 @@
                     [bodyTemplate]="'card'"
                     [hasCounter]="0"
                     [hasPlusHeader]="true"
+                    [customClass]="'detailsPadding'"
                 >
                 </app-ta-custom-card>
             </div>

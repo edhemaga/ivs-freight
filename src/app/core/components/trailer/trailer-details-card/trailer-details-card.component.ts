@@ -16,6 +16,7 @@ import { TrailerTService } from '../state/trailer.service';
 import { animate, style, transition, trigger, state } from '@angular/animations';
 import { TrailerItemStore } from '../state/trailer-details-state/trailer-details.store';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ImageBase64Service } from '../../../utils/base64.image';
 
 @Component({
     selector: 'app-trailer-details-card',
@@ -67,6 +68,7 @@ export class TrailerDetailsCardComponent
         private trailerService: TrailerTService,
         private trailerItemStore: TrailerItemStore,
         private activated_route: ActivatedRoute,
+        public imageBase64Service: ImageBase64Service,
     ) {}
     ngOnChanges(changes: SimpleChanges): void {
         if (!changes?.trailer?.firstChange) {
@@ -90,7 +92,6 @@ export class TrailerDetailsCardComponent
             
             this.trailerIndex = currentIndex;
         }, 300)
-        
     }
 
     public getTrailerById(id: number) {

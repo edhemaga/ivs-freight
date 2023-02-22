@@ -61,6 +61,7 @@ export class TaCustomCardComponent {
     @Input() hasDeleteAction: boolean = false;
     @Input() hasPayrollStatus: boolean = false;
     @Input() bottomCollapseArrow: boolean = false;
+    @Input() customClass: string;
 
     @Input() controlName: UntypedFormControl;
 
