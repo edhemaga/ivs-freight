@@ -97,8 +97,6 @@ export class CustomScrollbarComponent
         ) {
             this.scrollBarOptions =
                 changes.scrollBarOptions.currentValue;
-
-                console.log(this.scrollBarOptions.dataLength);
         }
     }
 

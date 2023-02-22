@@ -2743,6 +2743,8 @@ table {
                 width: 0px;
                 height: 34px;
                 margin-top: -4px;
+
+                transition: width 0.25s;
             }
         }
 
@@ -2754,8 +2756,8 @@ table {
             }
         }
 
-        .border-left,
-        .border-right {
+        .border-left-show,
+        .border-right-show {
             width: 8px !important;
             transition: width 0.25s;
         }

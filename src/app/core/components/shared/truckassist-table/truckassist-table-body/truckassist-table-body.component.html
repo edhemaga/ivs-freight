@@ -1839,9 +1839,9 @@
                         <!-- Border -->
                         <div class="border-scroll-section-container">
                             <div
-                                class="border-scroll-section"
+                                class="border-scroll-section border-left"
                                 [ngClass]="{
-                                    'border-left': showScrollSectionBorder
+                                    'border-left-show': showScrollSectionBorder
                                 }"
                             ></div>
                         </div>
@@ -3447,9 +3447,10 @@ highlightingWords) : '' " -->
                             class="border-scroll-section-container border-scroll-section-container-right"
                         >
                             <div
-                                class="border-scroll-section"
+                                class="border-scroll-section border-right"
                                 [ngClass]="{
-                                    'border-right': showScrollSectionBorder
+                                    'border-right-show':
+                                        showScrollSectionBorder
                                 }"
                             ></div>
                         </div>
