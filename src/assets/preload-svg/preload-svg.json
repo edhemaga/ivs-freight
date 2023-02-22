@@ -249,6 +249,54 @@
       "iconPath": "/assets/svg/common/trailermake/ic_trailer_atro.svg"
     },
     {
+      "iconName": "ic_trailer_beall.svg",
+      "iconPath": "/assets/svg/common/trailermake/ic_trailer_beall.svg"
+    },
+    {
+      "iconName": "ic_trailer_bedard.svg",
+      "iconPath": "/assets/svg/common/trailermake/ic_trailer_bedard.svg"
+    },
+    {
+      "iconName": "ic_trailer_butler.svg",
+      "iconPath": "/assets/svg/common/trailermake/ic_trailer_butler.svg"
+    },
+    {
+      "iconName": "ic_trailer_gallegos.svg",
+      "iconPath": "/assets/svg/common/trailermake/ic_trailer_gallegos.svg"
+    },
+    {
+      "iconName": "ic_trailer_heil.svg",
+      "iconPath": "/assets/svg/common/trailermake/ic_trailer_heil.svg"
+    },
+    {
+      "iconName": "ic_trailer_mac.svg",
+      "iconPath": "/assets/svg/common/trailermake/ic_trailer_mac.svg"
+    },
+    {
+      "iconName": "ic_trailer_timpte.svg",
+      "iconPath": "/assets/svg/common/trailermake/ic_trailer_timpte.svg"
+    },
+     {
+      "iconName": "ic_trailer_trail_king.svg",
+      "iconPath": "/assets/svg/common/trailermake/ic_trailer_trail_king.svg"
+    },
+     {
+      "iconName": "ic_trailer_tremcar.svg",
+      "iconPath": "/assets/svg/common/trailermake/ic_trailer_tremcar.svg"
+    },
+      {
+      "iconName": "ic_trailer_tytal.svg",
+      "iconPath": "/assets/svg/common/trailermake/ic_trailer_tytal.svg"
+    },
+      {
+      "iconName": "ic_trailer_vantage.svg",
+      "iconPath": "/assets/svg/common/trailermake/ic_trailer_vantage.svg"
+    },
+      {
+      "iconName": "ic_trailer_walinga.svg",
+      "iconPath": "/assets/svg/common/trailermake/ic_trailer_walinga.svg"
+    },
+    {
       "iconName": "ic_trailer_carhauler.svg",
       "iconPath": "/assets/svg/common/trailers/ic_trailer_carhauler.svg"
     },

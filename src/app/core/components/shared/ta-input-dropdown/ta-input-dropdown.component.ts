@@ -1,28 +1,32 @@
 import { debounceTime, skip, Subject, takeUntil } from 'rxjs';
-import { ControlValueAccessor, NgControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {
+    ControlValueAccessor,
+    NgControl,
+    FormsModule,
+    ReactiveFormsModule,
+} from '@angular/forms';
 
 import {
     AfterViewInit,
     Component,
     EventEmitter,
     Input,
-    OnChanges,
     OnDestroy,
     OnInit,
     Output,
     Self,
-    SimpleChanges,
     ViewChild,
 } from '@angular/core';
 import { input_dropdown_animation } from './ta-input-dropdown.animation';
-import { TaInputService } from '../ta-input/ta-input.service';
 import { v4 as uuidv4 } from 'uuid';
 import { ITaInput } from '../ta-input/ta-input.config';
-import { NgbPopover, NgbPopoverModule, NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import {
+    NgbPopover,
+    NgbPopoverModule,
+    NgbModule,
+} from '@ng-bootstrap/ng-bootstrap';
 import { TaInputComponent } from '../ta-input/ta-input.component';
-import { TaInputResetService } from '../ta-input/ta-input-reset.service';
 import { ImageBase64Service } from '../../../utils/base64.image';
-import { Options } from '@popperjs/core';
 import { CommonModule } from '@angular/common';
 import { FormControlPipe } from '../ta-input/form-control.pipe';
 import { AppTooltipComponent } from '../../standalone-components/app-tooltip/app-tooltip.component';
@@ -32,54 +36,181 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 import { ProfileImagesComponent } from '../profile-images/profile-images.component';
 import { LoadModalProgressBarComponent } from '../../modals/load-modal/load-modal-progress-bar/load-modal-progress-bar.component';
 import { TaSvgPipe } from '../../../pipes/ta-svg.pipe';
+import { ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+import { HoverSvgDirective } from '../../../directives/hoverSvg.directive';
 
 @Component({
     selector: 'app-ta-input-dropdown',
     templateUrl: './ta-input-dropdown.component.html',
     styleUrls: ['./ta-input-dropdown.component.scss'],
-    providers: [TaInputService, FormControlPipe],
+    providers: [FormControlPipe],
+    changeDetection: ChangeDetectionStrategy.OnPush,
     animations: [input_dropdown_animation('showHideDropdownOptions')],
     standalone: true,
     imports: [
-            CommonModule,
-            FormsModule, 
-            NgbPopoverModule, 
-            TaInputComponent, 
-            ReactiveFormsModule, 
-            FormControlPipe, 
-            AppTooltipComponent,
-            DropdownCountPipe,
-            HighlightSearchPipe,
-            AngularSvgIconModule,
-            ProfileImagesComponent,
-            LoadModalProgressBarComponent,
-            TaSvgPipe,
-            NgbModule
-    ]
+        // Module
+        CommonModule,
+        FormsModule,
+        NgbPopoverModule,
+        ReactiveFormsModule,
+        NgbModule,
+        AngularSvgIconModule,
+
+        // Component
+        TaInputComponent,
+        AppTooltipComponent,
+        ProfileImagesComponent,
+        LoadModalProgressBarComponent,
+
+        // Pipe
+        TaSvgPipe,
+        FormControlPipe,
+        DropdownCountPipe,
+        HighlightSearchPipe,
+
+        // Directive
+        HoverSvgDirective,
+    ],
 })
 export class TaInputDropdownComponent
-    implements 
-        OnInit,
-        AfterViewInit,
-        OnDestroy,
-        OnChanges,
-        ControlValueAccessor
+    implements OnInit, AfterViewInit, OnDestroy, ControlValueAccessor
 {
     @ViewChild('input') inputRef: TaInputComponent;
     @ViewChild('t2') public popoverRef: NgbPopover;
-    @Input() template: string; // different templates for body rendering
+
+    // different templates for body rendering
+    public _template: string = null;
+    @Input() set template(value: string) {
+        this._template = value;
+        if (value === 'details-template' && this.isDetailsPages) {
+            this.clearTimeoutDropdown = setTimeout(() => {
+                this.inputRef.setInputCursorAtTheEnd(
+                    this.inputRef.input.nativeElement
+                );
+                const option = this._options.find((item) => item.active);
+                this._activeItem = option;
+                this.getSuperControl.setValue(option.name);
+
+                const timeout2 = setTimeout(() => {
+                    this.popoverRef.open();
+                    clearTimeout(timeout2);
+                }, 150);
+            });
+        }
+    }
+
     @Input() multiselectTemplate: string;
     @Input() inputConfig: ITaInput;
     @Input() canAddNew: boolean; // ADD NEW item in options
     @Input() canOpenModal: boolean; // open modal with ADD NEW button
-    @Input() sort: string; // sort-template for different options
-    @Input() activeItem: any; // currently active item
+
+    // sort-template for different options
+    public _sort: string = null;
+    @Input() set sort(value: string) {
+        this._sort = value;
+    }
+
+    // currently active item
+    public _activeItem: any;
+    @Input() set activeItem(value: any) {
+        this.inputConfig = {
+            ...this.inputConfig,
+            blackInput: true,
+        };
+        this._activeItem = value;
+
+        console.log('name: ', this.inputConfig.name);
+        // With address
+        if (
+            this.inputConfig.name &&
+            this._activeItem &&
+            this.inputConfig.name.toLowerCase().includes('address')
+        ) {
+            this.getSuperControl.patchValue(
+                value.address ? value.address : null
+            );
+
+            this.clearTimeoutDropdown = setTimeout(() => {
+                this.inputConfig = {
+                    ...this.inputConfig,
+                    blackInput: false,
+                };
+                this.cdRef.detectChanges();
+            }, 150);
+        }
+        // Without address
+        else {
+            if (this._activeItem) {
+                this.clearTimeoutDropdown = setTimeout(() => {
+                    this.getSuperControl.patchValue(
+                        value.number
+                            ? value.number
+                            : value.name
+                            ? value.name
+                            : null
+                    );
+
+                    this.inputConfig = {
+                        ...this.inputConfig,
+                        blackInput: false,
+                    };
+                    this.cdRef.detectChanges();
+                }, 150);
+            }
+        }
+    }
+
     @Input() activeItemColor: any; // currently active color in dropdown
     @Input() labelMode: 'Label' | 'Color';
-    @Input() options: any[] = []; // when send SVG, please premmaped object: add 'folder' | 'subfolder'
-    @Input() preloadMultiselectItems: any[] = [];
+
+    // when send SVG, please premmaped object: add 'folder' | 'subfolder'
+    public _options: any[] = [];
+    @Input() set options(values: any[]) {
+        this._options = [...values];
+        switch (this._sort) {
+            case 'active-drivers': {
+                this._options = values.sort(
+                    (x, y) => Number(y.status) - Number(x.status)
+                );
+
+                this.originalOptions = [...this._options];
+                break;
+            }
+            default: {
+                if (
+                    this.canAddNew &&
+                    !this._options.find((item) => item.id === 7655)
+                ) {
+                    this._options.unshift({
+                        id: 7655,
+                        name: 'ADD NEW',
+                    });
+                }
+
+                this.originalOptions = this._options;
+                break;
+            }
+        }
+    }
+
+    // MultiSelect Selected Items From Backend
+    @Input() set preloadMultiselectItems(values: any[]) {
+        if (this.inputConfig.multiselectDropdown) {
+            if (!values?.length) {
+                this.deleteAllMultiSelectItems(this.inputConfig.label);
+                return;
+            }
+
+            if (values?.length) {
+                values.forEach((item) => {
+                    this.onMultiselectSelect(item);
+                });
+            }
+        }
+    }
     @Input() isDetailsPages: boolean; // only for details pages
     @Input() incorrectValue: boolean; // applicant review option
+
     @Output() selectedItem: EventEmitter<any> = new EventEmitter<any>();
     @Output() selectedItems: EventEmitter<any> = new EventEmitter<any>();
     @Output() selectedItemColor: EventEmitter<any> = new EventEmitter<any>();
@@ -98,26 +229,38 @@ export class TaInputDropdownComponent
         new EventEmitter<number>();
     @Output('clearInputEvent') clearInputEvent: EventEmitter<boolean> =
         new EventEmitter<any>();
-    public paginationNumber: number = 0;
+
+    // Copy of Options
     public originalOptions: any[] = [];
+
+    // Pagination
+    public paginationNumber: number = 0;
+
     // Multiselect dropdown options
     public multiselectItems: any[] = [];
     public isMultiSelectInputFocus: boolean = false;
     public multiSelectLabel: string = null;
     public lastActiveMultiselectItem: any = null;
+
     // Add mode
     public isInAddMode: boolean = false;
+
     // For Dispatchboard hover options
     public hoveredOption: number = -1;
-    private destroy$ = new Subject<void>();
+
     // Dropdown navigation with keyboard
     private dropdownPosition: number = -1;
 
+    // Dropdown Cleartimeout
+    public clearTimeoutDropdown: any = null;
+
+    // Destroy
+    private destroy$ = new Subject<void>();
+
     constructor(
         @Self() public superControl: NgControl,
-        private inputService: TaInputService,
-        private inputResetService: TaInputResetService,
-        public imageBase64Service: ImageBase64Service
+        public imageBase64Service: ImageBase64Service,
+        private cdRef: ChangeDetectorRef
     ) {
         this.superControl.valueAccessor = this;
     }
@@ -126,115 +269,11 @@ export class TaInputDropdownComponent
         return this.superControl.control;
     }
 
-    ngOnChanges(changes: SimpleChanges): void {
-        // Sorting backend options
+    writeValue(_: any): void {}
 
-        if (changes.options?.currentValue != changes.options?.previousValue) {
-            switch (this.sort) {
-                case 'active-drivers': {
-                    this.options = this.options.sort(
-                        (x, y) => Number(y.status) - Number(x.status)
-                    );
+    registerOnChange(_: any): void {}
 
-                    this.originalOptions = [...this.options];
-                    break;
-                }
-                default: {
-                    if (
-                        this.canAddNew &&
-                        !this.options.find((item) => item.id === 7655)
-                    ) {
-                        this.options.unshift({
-                            id: 7655,
-                            name: 'ADD NEW',
-                        });
-                    }
-
-                    this.originalOptions = this.options;
-                    break;
-                }
-            }
-        }
-
-        if (
-            changes.activeItem?.currentValue !==
-            changes.activeItem?.previousValue
-        ) {
-            if (!this.inputConfig?.name?.toLowerCase()?.includes('address')) {
-                setTimeout(() => {
-                    this.getSuperControl.patchValue(
-                        changes.activeItem.currentValue?.number
-                            ? changes.activeItem.currentValue?.number
-                            : changes.activeItem.currentValue?.name
-                            ? changes.activeItem.currentValue?.name
-                            : null
-                    );
-
-                    this.inputConfig = {
-                        ...this.inputConfig,
-                        blackInput: false,
-                    };
-                }, 350);
-            }
-        }
-
-        // MultiSelect Selected Items From Backend
-        if (
-            this.inputConfig.multiselectDropdown &&
-            changes.preloadMultiselectItems?.previousValue?.length !==
-                changes.preloadMultiselectItems?.currentValue?.length
-        ) {
-            if (!changes.preloadMultiselectItems?.currentValue?.length) {
-                this.deleteAllMultiSelectItems(
-                    changes.inputConfig?.currentValue?.label
-                );
-                return;
-            }
-
-            if (changes.preloadMultiselectItems?.currentValue?.length) {
-                changes.preloadMultiselectItems?.currentValue?.forEach(
-                    (item) => {
-                        this.onMultiselectSelect(item);
-                    }
-                );
-            }
-        }
-
-        // Details Pages
-        if (this.template === 'details-template' && this.isDetailsPages) {
-            const timeout = setTimeout(() => {
-                this.inputRef.setInputCursorAtTheEnd(
-                    this.inputRef.input.nativeElement
-                );
-                const option = this.options.find((item) => item.active);
-                this.activeItem = option;
-                this.getSuperControl.setValue(option.name);
-
-                const timeout2 = setTimeout(() => {
-                    this.popoverRef.open();
-                    clearTimeout(timeout2);
-                }, 150);
-                clearTimeout(timeout);
-            });
-        }
-    }
-
-    ngAfterViewInit() {
-        if (this.inputConfig.autoFocus) {
-            const timeout = setTimeout(() => {
-                this.popoverRef.open();
-                clearTimeout(timeout);
-            }, 450);
-        }
-    }
-
-    public onScrollDropdown(event: any) {
-        if (event.scrollTop + event.offsetHeight === event.scrollHeight) {
-            this.paginationNumber += 1;
-
-            this.paginationEvent.emit(this.paginationNumber);
-        }
-    }
+    registerOnTouched(_: any): void {}
 
     ngOnInit(): void {
         // Multiselect
@@ -251,45 +290,28 @@ export class TaInputDropdownComponent
                 }
                 this.search(searchText);
             });
-
-        // Clear Input
-        this.inputService.onClearInput$
-            .pipe(debounceTime(50), takeUntil(this.destroy$))
-            .subscribe((action: boolean) => {
-                if (action) {
-                    this.popoverRef.close();
-                    // label dropdown
-                    if (this.inputConfig.dropdownLabel) {
-                        this.clearDropdownLabel();
-                    }
-                    // normal dropdown
-                    else {
-                        this.onClearSearch();
-                    }
-                }
-            });
-
-        // Reset Input
-        this.inputResetService.resetInputSubject
-            .pipe(debounceTime(50), takeUntil(this.destroy$))
-            .subscribe(() => {
-                this.inputRef.touchedInput = false;
-            });
-
-        this.dropDownShowHideEvent();
-        this.dropDownKeyboardNavigationEvent();
     }
 
-    writeValue(_: any): void {}
+    ngAfterViewInit() {
+        if (this.inputConfig.autoFocus) {
+            this.clearTimeoutDropdown = setTimeout(() => {
+                this.popoverRef.open();
+            }, 450);
+        }
+    }
 
-    registerOnChange(_: any): void {}
+    public onScrollDropdown(event: any) {
+        if (event.scrollTop + event.offsetHeight === event.scrollHeight) {
+            this.paginationNumber += 1;
 
-    registerOnTouched(_: any): void {}
+            this.paginationEvent.emit(this.paginationNumber);
+        }
+    }
 
     public onActiveItem(option: any, group?: any): void {
         // Prevent user to pick franchise, without group
         if (
-            this.template === 'fuel-franchise' &&
+            this._template === 'fuel-franchise' &&
             option?.isFranchise &&
             !group
         ) {
@@ -334,9 +356,9 @@ export class TaInputDropdownComponent
             // Dropdown labels option selected
             if (this.inputConfig.dropdownLabel) {
                 if (this.labelMode === 'Label') {
-                    this.activeItem = option;
+                    this._activeItem = option;
                     this.getSuperControl.setValue(option.name);
-                    this.options = this.originalOptions;
+                    this._options = this.originalOptions;
                     this.selectedItem.emit(option);
                 }
 
@@ -348,60 +370,50 @@ export class TaInputDropdownComponent
             }
             // Normal Dropdown option selected
             else {
-                this.inputConfig = {
-                    ...this.inputConfig,
-                    blackInput: true,
-                };
+                this._activeItem = option;
 
-                this.activeItem = option;
-
-                this.getSuperControl.patchValue(
-                    option?.number ? option.number : option.name
-                );
-
-                this.options = this.originalOptions;
-
-                if (this.template === 'fuel-franchise') {
-                    this.getSuperControl.patchValue(
-                        group ? option.name : option.businessName
-                    );
-                    const { id } = option;
-                    group
-                        ? this.selectedItem.emit({
-                              ...option,
-                              ...group,
-                              storeId: id,
-                          })
-                        : this.selectedItem.emit(option);
-                } else {
-                    group
-                        ? this.selectedItem.emit({ ...option, ...group })
-                        : this.selectedItem.emit(option);
-                }
+                this._options = this.originalOptions;
 
                 if (this.inputConfig.name !== 'RoutingAddress') {
-                    const timeout = setTimeout(() => {
-                        this.inputConfig = {
-                            ...this.inputConfig,
-                            blackInput: false,
-                        };
-                        clearTimeout(timeout);
-                    }, 300);
+                    this.getSuperControl.patchValue(
+                        option?.number ? option.number : option.name
+                    );
+
+                    if (this._template === 'fuel-franchise') {
+                        this.getSuperControl.patchValue(
+                            group ? option.name : option.businessName
+                        );
+                        const { id } = option;
+                        group
+                            ? this.selectedItem.emit({
+                                  ...option,
+                                  ...group,
+                                  storeId: id,
+                              })
+                            : this.selectedItem.emit(option);
+                    } else {
+                        group
+                            ? this.selectedItem.emit({
+                                  ...option,
+                                  ...group,
+                              })
+                            : this.selectedItem.emit(option);
+                    }
                 }
             }
+            this.getSuperControl.markAsDirty();
         }
 
-        if (this.template === 'fuel-franchise') {
-            const timeout = setTimeout(() => {
+        if (this._template === 'fuel-franchise') {
+            this.clearTimeoutDropdown = setTimeout(() => {
                 this.popoverRef.close();
-                clearTimeout(timeout);
             }, 100);
         }
     }
 
     public onClearSearch(): void {
-        this.options = this.originalOptions;
-        this.activeItem = null;
+        this._options = this.originalOptions;
+        this._activeItem = null;
         this.inputConfig.selectedDropdown = false;
         this.getSuperControl.patchValue(null);
         this.inputConfig = {
@@ -413,7 +425,7 @@ export class TaInputDropdownComponent
     }
 
     public clearDropdownLabel() {
-        this.activeItem = null;
+        this._activeItem = null;
         this.activeItemColor = null;
         this.selectedItem.emit(null);
         this.selectedItemColor.emit(null);
@@ -442,7 +454,7 @@ export class TaInputDropdownComponent
 
         if (event.action === 'cancel') {
             this.saveItem.emit({
-                data: this.activeItem,
+                data: this._activeItem,
                 action: 'cancel',
             });
             this.selectedLabelMode.emit('Label');
@@ -450,7 +462,7 @@ export class TaInputDropdownComponent
     }
 
     public addNewItem(): void {
-        this.activeItem = {
+        this._activeItem = {
             id: uuidv4(),
             name: this.getSuperControl.value,
         };
@@ -458,7 +470,7 @@ export class TaInputDropdownComponent
         this.inputRef.isVisibleCommands = false;
         this.inputRef.focusInput = false;
 
-        this.saveItem.emit({ data: this.activeItem, action: 'new' });
+        this.saveItem.emit({ data: this._activeItem, action: 'new' });
 
         if (this.inputConfig.dropdownLabel) {
             this.selectedLabelMode.emit('Label');
@@ -467,22 +479,22 @@ export class TaInputDropdownComponent
     }
 
     public updateItem(): void {
-        this.activeItem = {
-            ...this.activeItem,
+        this._activeItem = {
+            ...this._activeItem,
             name: this.getSuperControl.value,
             colorId: this.activeItemColor
                 ? this.activeItemColor.id
-                : this.activeItem.colorId,
+                : this._activeItem.colorId,
             color: this.activeItemColor
                 ? this.activeItemColor.name
-                : this.activeItem.color,
+                : this._activeItem.color,
             code: this.activeItemColor
                 ? this.activeItemColor.code
-                : this.activeItem.code,
+                : this._activeItem.code,
         };
 
         this.saveItem.emit({
-            data: this.activeItem,
+            data: this._activeItem,
             action: 'edit',
         });
         this.selectedLabelMode.emit('Label');
@@ -497,7 +509,7 @@ export class TaInputDropdownComponent
                 firstCommand: {
                     popup: {
                         name: 'Confirm',
-                        backgroundColor: '#536BC2',
+                        backgroundColor: '#3074d3',
                     },
                     name: 'confirm',
                     svg: 'assets/svg/ic_spec-confirm.svg',
@@ -505,7 +517,7 @@ export class TaInputDropdownComponent
                 secondCommand: {
                     popup: {
                         name: 'Cancel',
-                        backgroundColor: '#6c6c6c',
+                        backgroundColor: '#2f2f2f',
                     },
                     name: 'cancel',
                     svg: 'assets/svg/ic_x.svg',
@@ -514,17 +526,12 @@ export class TaInputDropdownComponent
             placeholder: null,
         };
 
-        this.inputService.dropDownAddMode$.next({
-            action: true,
-            inputConfig: this.inputConfig,
-        });
         this.popoverRef.close();
 
         this.isInAddMode = true;
-        const timeout = setTimeout(() => {
+        this.clearTimeoutDropdown = setTimeout(() => {
             this.isInAddMode = false;
-            clearTimeout(timeout);
-        }, 500);
+        }, 200);
     }
 
     public onIncorrectInput(event: boolean) {
@@ -540,12 +547,178 @@ export class TaInputDropdownComponent
             option.open = false;
             return;
         }
-        this.options.filter((item) => (item.open = false));
+        this._options.filter((item) => (item.open = false));
 
         option.open = !option.open;
 
         if (option.open) {
             this.activeGroupEvent.emit(option);
+        }
+    }
+
+    public onBlurInput(event: boolean) {
+        this.closeDropdown.emit(event);
+    }
+
+    public onClearInputEvent(event: boolean) {
+        this.clearInputEvent.emit(event);
+
+        if (event) {
+            this.popoverRef.close();
+            // label dropdown
+            if (this.inputConfig.dropdownLabel) {
+                this.clearDropdownLabel();
+            }
+            // normal dropdown
+            else {
+                this.onClearSearch();
+            }
+        }
+    }
+
+    public showHideDropdown(action?: boolean) {
+        if (this.inputConfig.multiselectDropdown) {
+            this.isMultiSelectInputFocus = action;
+        }
+
+        if (this.labelMode !== 'Color') {
+            // Focus Out
+            if (!action) {
+                if (this._template !== 'fuel-franchise') {
+                    this.popoverRef.open();
+                }
+
+                // Prevent user to typing dummmy data if _activeItem doesn't exist
+                if (this._activeItem) {
+                    this.getSuperControl.setValue(this._activeItem.name);
+                } else {
+                    const index = this.originalOptions.findIndex(
+                        (item) => item.name === this.getSuperControl.value
+                    );
+
+                    if (index === -1) {
+                        this.onClearSearch();
+                    }
+                }
+                if (this._template !== 'fuel-franchise') {
+                    this.popoverRef.close();
+                }
+            }
+            // Focus In
+            else {
+                this.inputConfig = {
+                    ...this.inputConfig,
+                    placeholder: this.getSuperControl.value
+                        ? this.getSuperControl.value
+                        : this._activeItem?.name,
+                };
+
+                this.getSuperControl.setValue(null);
+
+                if (this.popoverRef) {
+                    this.popoverRef.close();
+                }
+
+                if (this.isInAddMode) {
+                    this.inputConfig = {
+                        ...this.inputConfig,
+                        placeholder: null,
+                    };
+                }
+            }
+        }
+
+        // Details pages
+        if (
+            this.inputConfig.customClass?.includes('details-pages') &&
+            !action
+        ) {
+            this.selectedItem.emit(this._activeItem);
+        }
+    }
+
+    public dropDownKeyNavigation({ keyCode, data }) {
+        // Navigate down
+        if (keyCode === 40) {
+            this.dropdownNavigation(1);
+        }
+        // Navigate up
+        if (keyCode === 38) {
+            this.dropdownNavigation(-1);
+        }
+
+        // Press Escape
+        if (keyCode === 27) {
+            if (this.inputConfig?.commands?.active) {
+                this.inputConfig.commands = null;
+                this.inputRef.isVisibleCommands = false;
+                this.inputRef.focusInput = false;
+            }
+
+            if (this.inputConfig.dropdownLabel) {
+                this.getSuperControl.setErrors(null);
+                this.inputConfig.dropdownLabelNew = false;
+                this.inputConfig.commands.active = false;
+                this.inputConfig.blackInput = false;
+                this.inputRef.focusInput = false;
+                this.inputRef.editInputMode = false;
+                this.inputRef.input.nativeElement.blur();
+                if (this.labelMode === 'Color') {
+                    this.getSuperControl.patchValue(null);
+                    this.selectedLabelMode.emit('Label');
+                }
+            }
+        }
+        // Press 'enter'
+        if (keyCode === 13) {
+            let selectedItem = $('.dropdown-option-hovered').text().trim();
+
+            // // Open New Modal
+            if (this.canOpenModal && selectedItem.toLowerCase() === 'add new') {
+                this.selectedItem.emit({
+                    id: 7655,
+                    name: 'ADD NEW',
+                    canOpenModal: true,
+                });
+            } else {
+                if (this._options.length === 1 && !selectedItem) {
+                    if (this._template === 'fuel-franchise') {
+                        selectedItem = this._options[0]?.businessName
+                            ? this._options[0]?.businessName
+                            : this._options[0]?.name;
+                    } else {
+                        selectedItem = this._options[0]?.number
+                            ? this._options[0]?.number.toString().trim()
+                            : this._options[0].name.toString().trim();
+                    }
+                }
+
+                this.pickupElementWithKeyboard(selectedItem, data);
+            }
+        }
+
+        if (keyCode === 9) {
+            if (
+                this._options.length === 1 &&
+                this._options[0].id !== 7655 &&
+                this._options[0].id !== 7654
+            ) {
+                let selectedItem = null;
+
+                if (this._template === 'fuel-franchise') {
+                    selectedItem = this._options[0]?.businessName
+                        ? this._options[0]?.businessName
+                        : this._options[0]?.name;
+                } else {
+                    selectedItem = this._options[0]?.number
+                        ? this._options[0]?.number.toString().trim()
+                        : this._options[0].name.toString().trim();
+                }
+
+                this.pickupElementWithKeyboard(selectedItem, data);
+            } else {
+                this.popoverRef.open();
+            }
         }
     }
 
@@ -558,7 +731,7 @@ export class TaInputDropdownComponent
             return;
         }
 
-        this.options = this.options.map((item) => {
+        this._options = this._options.map((item) => {
             if (item.id === option.id) {
                 return {
                     ...item,
@@ -579,16 +752,16 @@ export class TaInputDropdownComponent
             }
         });
 
-        this.multiselectItems = this.options.filter((item) => item.active);
+        this.multiselectItems = this._options.filter((item) => item.active);
 
         this.selectedItems.emit(this.multiselectItems);
 
-        this.options = this.options.sort(
+        this._options = this._options.sort(
             (x, y) => Number(y.active) - Number(x.active)
         );
-        this.originalOptions = [...this.options];
+        this.originalOptions = [...this._options];
 
-        this.lastActiveMultiselectItem = this.options
+        this.lastActiveMultiselectItem = this._options
             .filter((item) => item.active)
             .slice(-1)[0];
 
@@ -604,7 +777,7 @@ export class TaInputDropdownComponent
     }
 
     public removeMultiSelectItem(index: number) {
-        this.options = this.originalOptions.map((item) => {
+        this._options = this.originalOptions.map((item) => {
             if (item.id === this.multiselectItems[index].id) {
                 return {
                     ...this.multiselectItems[index],
@@ -614,11 +787,11 @@ export class TaInputDropdownComponent
             return item;
         });
 
-        this.options = this.options.sort(
+        this._options = this._options.sort(
             (x, y) => Number(y.active) - Number(x.active)
         );
 
-        this.originalOptions = this.options;
+        this.originalOptions = this._options;
         this.multiselectItems.splice(index, 1);
 
         if (!this.multiselectItems.length) {
@@ -626,7 +799,7 @@ export class TaInputDropdownComponent
             this.lastActiveMultiselectItem = null;
             this.inputConfig.label = this.multiSelectLabel;
         } else {
-            this.lastActiveMultiselectItem = this.options
+            this.lastActiveMultiselectItem = this._options
                 .filter((item) => item.active)
                 .slice(-1)[0];
         }
@@ -644,13 +817,13 @@ export class TaInputDropdownComponent
         this.inputConfig.label = currentLabel
             ? currentLabel
             : this.multiSelectLabel;
-        this.options = this.options.map((item) => {
+        this._options = this._options.map((item) => {
             return {
                 ...item,
                 active: false,
             };
         });
-        this.originalOptions = this.options;
+        this.originalOptions = this._options;
         this.selectedItems.emit([]);
         this.lastActiveMultiselectItem = null;
     }
@@ -666,190 +839,15 @@ export class TaInputDropdownComponent
                 this.inputRef.input.nativeElement
             );
 
-            const timeout = setTimeout(() => {
+            this.clearTimeoutDropdown = setTimeout(() => {
                 this.popoverRef.open();
-                clearTimeout(timeout);
             }, 150);
         } else {
             this.inputRef.focusInput = false;
             this.popoverRef.close();
         }
     }
-
-    onBlurInput(e) {
-        this.closeDropdown.emit(e);
-    }
-
-    onClearInputEvent(e) {
-        this.clearInputEvent.emit(e);
-    }
-
-    ngOnDestroy(): void {
-        this.destroy$.next();
-        this.destroy$.complete();
-    }
-
-    private dropDownShowHideEvent() {
-        this.inputService.dropDownShowHide$
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((action: boolean) => {
-                // Multiselect dropdown
-                if (this.inputConfig.multiselectDropdown) {
-                    this.isMultiSelectInputFocus = action;
-                }
-
-                if (this.labelMode !== 'Color') {
-                    // Focus Out
-                    if (!action) {
-                        if (this.template !== 'fuel-franchise') {
-                            this.popoverRef.open();
-                        }
-
-                        // Prevent user to typing dummmy data if activeItem doesn't exist
-                        if (this.activeItem) {
-                            this.getSuperControl.setValue(this.activeItem.name);
-                        } else {
-                            const index = this.originalOptions.findIndex(
-                                (item) =>
-                                    item.name === this.getSuperControl.value
-                            );
-
-                            if (index === -1) {
-                                this.onClearSearch();
-                            }
-                        }
-                        if (this.template !== 'fuel-franchise') {
-                            this.popoverRef.close();
-                        }
-                    }
-                    // Focus In
-                    else {
-                        this.inputConfig = {
-                            ...this.inputConfig,
-                            placeholder: this.getSuperControl.value
-                                ? this.getSuperControl.value
-                                : this.activeItem?.name,
-                        };
-
-                        this.getSuperControl.setValue(null);
-                        this.popoverRef.close();
-
-                        if (this.isInAddMode) {
-                            this.inputConfig = {
-                                ...this.inputConfig,
-                                placeholder: null,
-                            };
-                        }
-                    }
-                }
-
-                // Details pages
-                if (
-                    this.inputConfig.customClass?.includes('details-pages') &&
-                    !action
-                ) {
-                    this.selectedItem.emit(this.activeItem);
-                }
-            });
-    }
-
-    private dropDownKeyboardNavigationEvent() {
-        this.inputService.dropDownKeyNavigation$
-            .pipe(takeUntil(this.destroy$))
-            .subscribe(({ keyCode, data }) => {
-                // Navigate down
-                if (keyCode === 40) {
-                    this.dropdownNavigation(1);
-                }
-                // Navigate up
-                if (keyCode === 38) {
-                    this.dropdownNavigation(-1);
-                }
-
-                // Press Escape
-                if (keyCode === 27) {
-                    if (this.inputConfig?.commands?.active) {
-                        this.inputConfig.commands.active = false;
-                    }
-
-                    if (this.inputConfig.name === 'Input Dropdown Bank Name') {
-                        this.inputConfig.commands.active = false;
-                        this.inputRef.isVisibleCommands = false;
-                        this.inputRef.focusInput = false;
-                    }
-
-                    if (this.inputConfig.dropdownLabel) {
-                        this.getSuperControl.setErrors(null);
-                        this.inputConfig.dropdownLabelNew = false;
-                        this.inputConfig.commands.active = false;
-                        this.inputConfig.blackInput = false;
-                        this.inputRef.focusInput = false;
-                        this.inputRef.editInputMode = false;
-                        this.inputRef.input.nativeElement.blur();
-                        if (this.labelMode === 'Color') {
-                            this.getSuperControl.patchValue(null);
-                            this.selectedLabelMode.emit('Label');
-                        }
-                    }
-                }
-                // Press 'enter'
-                if (keyCode === 13) {
-                    let selectedItem = $('.dropdown-option-hovered')
-                        .text()
-                        .trim();
-
-                    // // Open New Modal
-                    if (
-                        this.canOpenModal &&
-                        selectedItem.toLowerCase() === 'add new'
-                    ) {
-                        this.selectedItem.emit({
-                            id: 7655,
-                            name: 'ADD NEW',
-                            canOpenModal: true,
-                        });
-                    } else {
-                        if (this.options.length === 1 && !selectedItem) {
-                            if (this.template === 'fuel-franchise') {
-                                selectedItem = this.options[0]?.businessName
-                                    ? this.options[0]?.businessName
-                                    : this.options[0]?.name;
-                            } else {
-                                selectedItem = this.options[0]?.number
-                                    ? this.options[0]?.number.toString().trim()
-                                    : this.options[0].name.toString().trim();
-                            }
-                        }
-
-                        this.pickupElementWithKeyboard(selectedItem, data);
-                    }
-                }
-
-                if (keyCode === 9) {
-                    if (
-                        this.options.length === 1 &&
-                        this.options[0].id !== 7655 &&
-                        this.options[0].id !== 7654
-                    ) {
-                        let selectedItem = null;
-
-                        if (this.template === 'fuel-franchise') {
-                            selectedItem = this.options[0]?.businessName
-                                ? this.options[0]?.businessName
-                                : this.options[0]?.name;
-                        } else {
-                            selectedItem = this.options[0]?.number
-                                ? this.options[0]?.number.toString().trim()
-                                : this.options[0].name.toString().trim();
-                        }
-
-                        this.pickupElementWithKeyboard(selectedItem, data);
-                    } else {
-                        this.popoverRef.open();
-                    }
-                }
-            });
-    }
+    // ----------------------------------  End ----------------------------------
 
     private pickupElementWithKeyboard(selectedItem: string, data: any) {
         // Address Select
@@ -858,7 +856,7 @@ export class TaInputDropdownComponent
                 this.inputConfig.name == 'RoutingAddress') &&
             (!selectedItem || selectedItem == '')
         ) {
-            selectedItem = this.options[0].name;
+            selectedItem = this._options[0].name;
         }
 
         // Input Dropdown Bank Name
@@ -876,7 +874,7 @@ export class TaInputDropdownComponent
                 action: 'confirm',
                 mode: data.dropdownLabelNew ? 'new' : 'edit',
             });
-            setTimeout(() => {
+            this.clearTimeoutDropdown = setTimeout(() => {
                 this.getSuperControl.setErrors(null);
                 this.inputConfig.dropdownLabelNew = false;
                 this.inputConfig.commands.active = false;
@@ -912,7 +910,7 @@ export class TaInputDropdownComponent
         }
         // Normal Pick Dropdown
         else {
-            const existItem = this.options
+            const existItem = this._options
                 .map((item) => {
                     // Address
                     if (
@@ -934,7 +932,7 @@ export class TaInputDropdownComponent
                             'load-dispatches-ttd',
                             'load-broker',
                             'load-shipper',
-                        ].includes(this.template)
+                        ].includes(this._template)
                     ) {
                         return { ...item };
                     }
@@ -986,7 +984,7 @@ export class TaInputDropdownComponent
                             'load-broker',
                             'load-dispatcher',
                             'load-shipper',
-                        ].includes(this.template) &&
+                        ].includes(this._template) &&
                         selectedItem
                             ?.toLowerCase()
                             .includes(item?.name?.toLowerCase())
@@ -995,7 +993,7 @@ export class TaInputDropdownComponent
                     }
                     // Dropdown Load Dispatches
                     if (
-                        this.template === 'load-dispatches-ttd' &&
+                        this._template === 'load-dispatches-ttd' &&
                         selectedItem
                             ?.toLowerCase()
                             .includes(
@@ -1018,7 +1016,7 @@ export class TaInputDropdownComponent
                     // Default
                     if (
                         !this.inputConfig.dropdownLabel &&
-                        this.template !== 'load-dispatches-ttd' &&
+                        this._template !== 'load-dispatches-ttd' &&
                         selectedItem?.toLowerCase() === item?.name.toLowerCase()
                     ) {
                         return item;
@@ -1031,23 +1029,16 @@ export class TaInputDropdownComponent
             }
             // Normal Dropdown
             else {
-                this.inputConfig = {
-                    ...this.inputConfig,
-                    blackInput: true,
-                };
-
                 // Dropdown labels option selected
                 if (this.inputConfig.dropdownLabel) {
                     if (this.labelMode === 'Label') {
-                        this.activeItem = existItem;
+                        this._activeItem = existItem;
                         this.getSuperControl.setValue(existItem.name);
-                        this.options = this.originalOptions;
+                        this._options = this.originalOptions;
                         this.selectedItem.emit(existItem);
-
-                        this.inputService.dropDownItemSelectedOnEnter$.next({
-                            action: true,
-                            inputConfig: null,
-                        });
+                        this.inputRef.dropdownToggler = false;
+                        this.inputRef.focusInput = false;
+                        this.inputRef.input.nativeElement.blur();
                     }
 
                     if (this.labelMode === 'Color') {
@@ -1060,19 +1051,9 @@ export class TaInputDropdownComponent
                 else {
                     this.getSuperControl.setValue(existItem?.name);
                     this.selectedItem.emit(existItem);
-                    this.activeItem = existItem;
+                    this._activeItem = existItem;
                     this.inputRef.focusInput = false;
                     this.inputRef.input.nativeElement.blur();
-                }
-
-                if (this.inputConfig.name !== 'RoutingAddress') {
-                    const timeout = setTimeout(() => {
-                        this.inputConfig = {
-                            ...this.inputConfig,
-                            blackInput: false,
-                        };
-                        clearTimeout(timeout);
-                    }, 300);
                 }
             }
             this.popoverRef.close();
@@ -1087,14 +1068,14 @@ export class TaInputDropdownComponent
                 'load-broker-contact',
                 'fuel-franchise',
                 'load-dispatches-ttd',
-            ].includes(this.template)
+            ].includes(this._template)
         ) {
             if (
                 searchText?.length &&
                 this.getSuperControl.value &&
-                this.activeItem?.name !== this.getSuperControl.value
+                this._activeItem?.name !== this.getSuperControl.value
             ) {
-                this.options = this.originalOptions.filter((item) =>
+                this._options = this.originalOptions.filter((item) =>
                     item.name
                         ? item.name
                               .toLowerCase()
@@ -1106,6 +1087,14 @@ export class TaInputDropdownComponent
                               .includes(searchText.toLowerCase())
                         : searchText.toLowerCase()
                 );
+
+                if (!this._options.length) {
+                    this.getSuperControl.setErrors({ invalid: true });
+                    this.inputConfig.isInvalidSearchInDropdown = true;
+                } else {
+                    this.getSuperControl.setErrors(null);
+                    this.inputConfig.isInvalidSearchInDropdown = false;
+                }
 
                 if (
                     ['truck', 'trailer'].includes(
@@ -1121,8 +1110,8 @@ export class TaInputDropdownComponent
                     };
                 }
 
-                if (!this.options.length) {
-                    this.options.push({
+                if (!this._options.length) {
+                    this._options.push({
                         id: 7654,
                         name: 'No Results',
                     });
@@ -1136,8 +1125,7 @@ export class TaInputDropdownComponent
                     }
                 }
             } else {
-                this.options = this.originalOptions;
-
+                this._options = this.originalOptions;
                 if (
                     ['truck', 'trailer'].includes(
                         this.inputConfig?.dropdownImageInput?.template
@@ -1159,8 +1147,8 @@ export class TaInputDropdownComponent
                 searchText?.length &&
                 this.getSuperControl.value?.toLowerCase()
             ) {
-                if (this.template === 'groups') {
-                    this.options = this.originalOptions
+                if (this._template === 'groups') {
+                    this._options = this.originalOptions
                         .map((element) => {
                             return {
                                 ...element,
@@ -1173,8 +1161,8 @@ export class TaInputDropdownComponent
                         })
                         .filter((item) => item.groups.length);
 
-                    if (!this.options.length) {
-                        this.options.push({
+                    if (!this._options.length) {
+                        this._options.push({
                             groups: [
                                 {
                                     id: 7654,
@@ -1185,8 +1173,8 @@ export class TaInputDropdownComponent
                     }
                 }
 
-                if (this.template === 'load-broker-contact') {
-                    this.options = this.originalOptions.map((element) => {
+                if (this._template === 'load-broker-contact') {
+                    this._options = this.originalOptions.map((element) => {
                         return {
                             ...element,
                             contacts: element?.contacts?.filter(
@@ -1200,8 +1188,8 @@ export class TaInputDropdownComponent
                     });
                 }
 
-                if (this.template === 'fuel-franchise') {
-                    this.options = this.originalOptions.map((element) => {
+                if (this._template === 'fuel-franchise') {
+                    this._options = this.originalOptions.map((element) => {
                         return {
                             ...element,
                             stores: element?.stores?.filter((subElement) =>
@@ -1214,8 +1202,8 @@ export class TaInputDropdownComponent
                     });
                 }
 
-                if (this.template === 'load-dispatches-ttd') {
-                    this.options = this.originalOptions.filter((item) => {
+                if (this._template === 'load-dispatches-ttd') {
+                    this._options = this.originalOptions.filter((item) => {
                         if (
                             item.fullName
                                 ?.toLowerCase()
@@ -1225,15 +1213,15 @@ export class TaInputDropdownComponent
                         }
                     });
 
-                    if (!this.options.length) {
-                        this.options.push({
+                    if (!this._options.length) {
+                        this._options.push({
                             id: 7654,
                             name: 'No Results',
                         });
                     }
                 }
             } else {
-                this.options = this.originalOptions;
+                this._options = this.originalOptions;
             }
         }
     }
@@ -1244,12 +1232,12 @@ export class TaInputDropdownComponent
     private dropdownNavigation(step: number) {
         this.dropdownPosition += step;
 
-        if (this.dropdownPosition > this.options.length - 1) {
+        if (this.dropdownPosition > this._options.length - 1) {
             this.dropdownPosition = 0;
         }
 
         if (this.dropdownPosition < 0) {
-            this.dropdownPosition = this.options.length - 1;
+            this.dropdownPosition = this._options.length - 1;
         }
 
         let cssClass = 'dropdown-option-hovered';
@@ -1275,12 +1263,9 @@ export class TaInputDropdownComponent
             .addClass(cssClass);
     }
 
-    customPopoverOption = (options: Partial<Options>) => {
-        for (const modifier of options.modifiers || []) {
-            if (modifier.name === 'offset' && modifier.options) {
-                modifier.options.offset = () => [0, 4];
-            }
-        }
-        return options;
+    ngOnDestroy(): void {
+        this.destroy$.next();
+        this.destroy$.complete();
+        clearTimeout(this.clearTimeoutDropdown);
     }
 }

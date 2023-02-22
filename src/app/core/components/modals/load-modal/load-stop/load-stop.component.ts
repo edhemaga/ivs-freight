@@ -16,7 +16,15 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     templateUrl: './load-stop.component.html',
     styleUrls: ['./load-stop.component.scss'],
     standalone: true,
-    imports: [CommonModule, FormsModule, AppTooltipComponent, NgbModule],
+    imports: [
+        // Module
+        CommonModule,
+        FormsModule,
+        NgbModule,
+
+        // Component
+        AppTooltipComponent,
+    ],
     animations: [
         trigger('collapse', [
             state(
@@ -87,7 +95,7 @@ export class LoadStopComponent {
             this.isCardOpen = !this.isCardOpen;
 
             this.toggleEvent.emit(this.isCardOpen);
-        } 
+        }
     }
 
     public deleteStop() {

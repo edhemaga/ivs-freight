@@ -20,7 +20,6 @@ import {
     CreateResponse,
     UpdateCompanyAccountCommand,
 } from 'appcoretruckassist';
-
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { AccountTService } from '../../account/state/account.service';
 import { Subject, switchMap, takeUntil } from 'rxjs';
@@ -45,10 +44,20 @@ import { TaInputNoteComponent } from '../../shared/ta-input-note/ta-input-note.c
     encapsulation: ViewEncapsulation.None,
     providers: [ModalService, FormService],
     standalone: true,
-    imports: [CommonModule, FormsModule, ReactiveFormsModule,TaModalComponent,TaInputComponent, TaInputDropdownLabelComponent, TaInputNoteComponent]
+    imports: [
+        // Module
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+
+        // Component
+        TaModalComponent,
+        TaInputComponent,
+        TaInputDropdownLabelComponent,
+        TaInputNoteComponent,
+    ],
 })
 export class AccountModalComponent implements OnInit, OnDestroy {
-    private destroy$ = new Subject<void>();
     @Input() editData: any;
 
     public accountForm: UntypedFormGroup;
@@ -63,6 +72,10 @@ export class AccountModalComponent implements OnInit, OnDestroy {
 
     public addNewAfterSave: boolean = false;
 
+    public disabledFormValidation: boolean = false;
+
+    private destroy$ = new Subject<void>();
+
     constructor(
         private formBuilder: UntypedFormBuilder,
         private inputService: TaInputService,
@@ -75,12 +88,6 @@ export class AccountModalComponent implements OnInit, OnDestroy {
         this.createForm();
         this.companyAccountModal();
         this.companyAccountColorLabels();
-
-        this.inputService.customInputValidator(
-            this.accountForm.get('url'),
-            'url',
-            this.destroy$
-        );
     }
 
     private createForm(): void {
@@ -235,21 +242,22 @@ export class AccountModalComponent implements OnInit, OnDestroy {
             .subscribe({
                 next: () => {
                     if (this.addNewAfterSave) {
-                        this.modalService.setModalSpinner({
-                            action: 'save and add new',
-                            status: false,
-                            close: false,
-                        });
                         this.formService.resetForm(this.accountForm);
 
                         this.selectedAccountColor = null;
                         this.selectedAccountLabel = null;
 
                         this.addNewAfterSave = false;
+
+                        this.modalService.setModalSpinner({
+                            action: 'save and add new',
+                            status: false,
+                            close: false,
+                        });
                     } else {
                         this.modalService.setModalSpinner({
                             action: null,
-                            status: false,
+                            status: true,
                             close: true,
                         });
                     }
@@ -407,7 +415,6 @@ export class AccountModalComponent implements OnInit, OnDestroy {
         }
     }
 
-    public disabledFormValidation: boolean = false;
     public companyAccountLabelMode(event: boolean) {
         this.disabledFormValidation = event;
     }

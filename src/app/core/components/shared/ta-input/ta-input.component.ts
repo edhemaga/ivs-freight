@@ -1,27 +1,35 @@
 import {
+    AfterViewInit,
     ChangeDetectorRef,
     Component,
+    CUSTOM_ELEMENTS_SCHEMA,
     ElementRef,
     EventEmitter,
-    HostListener,
     Input,
-    OnChanges,
     OnDestroy,
     OnInit,
     Output,
     Self,
-    SimpleChanges,
     ViewChild,
     ViewEncapsulation,
 } from '@angular/core';
-import { ControlValueAccessor, NgControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {
+    ControlValueAccessor,
+    NgControl,
+    FormsModule,
+    ReactiveFormsModule,
+} from '@angular/forms';
 import { ITaInput } from './ta-input.config';
 import { TaInputService } from './ta-input.service';
-import { NgbDropdownConfig, NgbPopover, NgbModule, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
+import {
+    NgbDropdownConfig,
+    NgbPopover,
+    NgbModule,
+    NgbPopoverModule,
+} from '@ng-bootstrap/ng-bootstrap';
 import { CalendarScrollService } from '../custom-datetime-pickers/calendar-scroll.service';
 import moment from 'moment';
 
-import { TaInputResetService } from './ta-input-reset.service';
 import { Subject, takeUntil } from 'rxjs';
 import { TaThousandSeparatorPipe } from '../../../pipes/taThousandSeparator.pipe';
 import {
@@ -30,7 +38,6 @@ import {
 } from '../../../utils/methods.calculations';
 import { FormService } from 'src/app/core/services/form/form.service';
 import { ImageBase64Service } from '../../../utils/base64.image';
-import { NotificationService } from '../../../services/notification/notification.service';
 import { CommonModule } from '@angular/common';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { NgxMaskModule } from 'ngx-mask';
@@ -42,6 +49,8 @@ import { CustomDatetimePickersComponent } from '../custom-datetime-pickers/custo
 import { TaSpinnerComponent } from '../ta-spinner/ta-spinner.component';
 import { ProfileImagesComponent } from '../profile-images/profile-images.component';
 import { LoadModalProgressBarComponent } from '../../modals/load-modal/load-modal-progress-bar/load-modal-progress-bar.component';
+import { ChangeDetectionStrategy } from '@angular/core';
+import { HoverSvgDirective } from '../../../directives/hoverSvg.directive';
 @Component({
     selector: 'app-ta-input',
     templateUrl: './ta-input.component.html',
@@ -50,32 +59,41 @@ import { LoadModalProgressBarComponent } from '../../modals/load-modal/load-moda
         NgbDropdownConfig,
         CalendarScrollService,
         TaThousandSeparatorPipe,
-        InputTypePipe
+        InputTypePipe,
     ],
     encapsulation: ViewEncapsulation.None,
+    changeDetection: ChangeDetectionStrategy.OnPush,
     standalone: true,
     imports: [
-            CommonModule, 
-            AngularSvgIconModule, 
-            FormsModule, 
-            NgxMaskModule, 
-            InputTypePipe, 
-            AppTooltipComponent,
-            NgbModule,
-            TaSvgPipe,
-            ReactiveFormsModule,
-            InputErrorPipe,
-            CustomDatetimePickersComponent,
-            TaSpinnerComponent,
-            NgbPopoverModule,
-            ProfileImagesComponent,
-            LoadModalProgressBarComponent
+        // Module
+        CommonModule,
+        AngularSvgIconModule,
+        FormsModule,
+        NgxMaskModule,
+        NgbModule,
+        ReactiveFormsModule,
+        NgbPopoverModule,
+
+        // Component
+        AppTooltipComponent,
+        CustomDatetimePickersComponent,
+        TaSpinnerComponent,
+        ProfileImagesComponent,
+        LoadModalProgressBarComponent,
+
+        // Pipe
+        InputTypePipe,
+        TaSvgPipe,
+        InputErrorPipe,
+
+        // Directive
+        HoverSvgDirective,
     ],
+    schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class TaInputComponent
-    implements OnInit, OnChanges, OnDestroy, ControlValueAccessor
+    implements OnInit, AfterViewInit, OnDestroy, ControlValueAccessor
 {
-    private destroy$ = new Subject<void>();
     @ViewChild('input', { static: true }) public input: ElementRef;
     @ViewChild('span1', { static: false }) span1: ElementRef;
     @ViewChild('span2', { static: false }) span2: ElementRef;
@@ -84,41 +102,86 @@ export class TaInputComponent
     @ViewChild('t2') t2: any;
     @ViewChild(NgbPopover) ngbMainPopover: NgbPopover;
 
-    @Input() inputConfig: ITaInput;
     @Input() incorrectValue: boolean;
     @Input() selectedDropdownLabelColor: any;
 
+    public _inputConfig: ITaInput = null;
+    @Input() set inputConfig(config: ITaInput) {
+        this._inputConfig = config;
+        // Price Separator
+        if (this._inputConfig.priceSeparator) {
+            this.originPriceSeparatorLimit =
+                this._inputConfig.priceSeparatorLimitation;
+        }
+
+        // DatePicker
+        if (
+            this._inputConfig.name === 'datepicker' ||
+            this._inputConfig.name === 'timepicker'
+        ) {
+            this.setTimePickerTime();
+            this.calendarService.dateChanged
+                .pipe(takeUntil(this.destroy$))
+                .subscribe((date) => {
+                    if (!this._inputConfig.isDisabled) {
+                        this.setTimeDateInput(date);
+                        this.t2.close();
+                    }
+                });
+        }
+
+        // When add mode in dropdown
+        if (
+            this._inputConfig.commands?.active &&
+            !this._inputConfig.isDisabled
+        ) {
+            if (this._inputConfig.commands.type === 'confirm-cancel') {
+                this._inputConfig.blackInput = true;
+                this.isVisibleCommands = true;
+                this.focusInput = true;
+                this.input.nativeElement.focus();
+            }
+        }
+    }
+
     @Output('incorrectEvent') incorrectInput: EventEmitter<any> =
         new EventEmitter<any>();
-
     @Output('blurInput') blurInput: EventEmitter<boolean> =
         new EventEmitter<boolean>();
-
     @Output('focusInput') focusInputEvent: EventEmitter<boolean> =
         new EventEmitter<boolean>();
-
     @Output('change') changeInput: EventEmitter<any> = new EventEmitter<any>();
     @Output('commandEvent') commandEvent: EventEmitter<any> =
         new EventEmitter<any>();
-
     @Output('clear') clearInputEvent: EventEmitter<boolean> =
-        new EventEmitter<any>();
+        new EventEmitter<boolean>();
+
+    // Dropdown
+    @Output('showHideDropdown') showHideDropdownEvent: EventEmitter<boolean> =
+        new EventEmitter<boolean>();
+    @Output('dropDownKeyNavigation') dropDownKeyNavigationEvemt: EventEmitter<{
+        keyCode: number;
+        data: ITaInput | any;
+    }> = new EventEmitter<{
+        keyCode: number;
+        data: ITaInput | any;
+    }>();
 
     public focusInput: boolean = false;
     public touchedInput: boolean = false;
 
+    // Password
     public togglePassword: boolean = false;
-    public isVisiblePasswordEye: boolean = false;
 
+    // Date
     public showDateInput: boolean = false;
-
-    public newInputChanged: boolean = false;
-
     public dateTimeInputDate: Date = new Date();
+    public newInputChanged: boolean = false;
 
     // Number of spaces
     public numberOfConsecutivelySpaces: number = 0;
     public oneSpaceOnlyCounter: number = 0;
+    public lastCursorSpacePosition: number = 0;
 
     // Number of points
     public numberOfConsecutivelyPoints: number = 0;
@@ -143,183 +206,37 @@ export class TaInputComponent
     // Input Selection
     public inputSelection: boolean = false;
 
-    // Password Timeout
-    public timeoutPassword = null;
-    public savedFocusEl: any = null;
-
+    // Bluring
     public focusBlur: any;
 
     // Price Separator
     public cursorInputPosition: number;
     public hasDecimalIndex: number = -1;
     public originPriceSeparatorLimit: number;
-    public decimalIndexTimeout = null;
     public isDotDeleted: boolean = false;
 
+    // DatePicker
     public wholeInputSelection: any;
+
+    // Timeout
+    public timeoutCleaner: any = null;
+    public inputCommandsTimeout = null;
+    public passwordTimeout = null;
+
+    // Destroy
+    private destroy$: Subject<void> = new Subject<void>();
 
     constructor(
         @Self() public superControl: NgControl,
         private inputService: TaInputService,
-        private inputResetService: TaInputResetService,
         private calendarService: CalendarScrollService,
         private thousandSeparatorPipe: TaThousandSeparatorPipe,
         private refChange: ChangeDetectorRef,
         private formService: FormService,
         public imageBase64Service: ImageBase64Service,
-        private notificationService: NotificationService
+        private cdRef: ChangeDetectorRef
     ) {
         this.superControl.valueAccessor = this;
-    }
-    ngOnChanges(changes: SimpleChanges): void {
-        if (changes.inputConfig.currentValue?.multipleInputValues?.options) {
-            this.inputConfig.multipleInputValues.options =
-                changes.inputConfig.currentValue?.multipleInputValues?.options;
-        }
-    }
-
-    setTimePickerTime() {
-        if (this.inputConfig.name === 'timepicker')
-            this.dateTimeInputDate = new Date(
-                moment().format('MM/DD/YYYY') +
-                    (this.inputConfig?.isFromDate ? ' 12:00' : ' 12:00')
-            );
-    }
-
-    ngOnInit(): void {
-        // Toggle label transition animation
-        $('.input-label').addClass('no-transition');
-
-        setTimeout(() => {
-            $('.input-label').removeClass('no-transition');
-        }, 1000);
-
-        if (this.inputConfig.priceSeparator) {
-            this.originPriceSeparatorLimit =
-                this.inputConfig.priceSeparatorLimitation;
-        }
-
-        // DatePicker
-        if (
-            this.inputConfig.name === 'datepicker' ||
-            this.inputConfig.name === 'timepicker'
-        ) {
-            this.setTimePickerTime();
-            this.calendarService.dateChanged
-                .pipe(takeUntil(this.destroy$))
-                .subscribe((date) => {
-                    if (!this.inputConfig.isDisabled) {
-                        this.setTimeDateInput(date);
-                        this.t2.close();
-                    }
-                });
-        }
-
-        // Dropdown add mode
-        if (
-            (this.inputConfig.isDropdown || this.inputConfig.dropdownLabel) &&
-            !this.inputConfig.isDisabled
-        ) {
-            this.inputService.dropDownAddMode$
-                .pipe(takeUntil(this.destroy$))
-                .subscribe(
-                    (data: { action: boolean; inputConfig: ITaInput }) => {
-                        if (data.action) {
-                            this.dropdownToggler = false;
-
-                            setTimeout(() => {
-                                this.inputConfig = data.inputConfig;
-                                this.setInputCursorAtTheEnd(
-                                    this.input.nativeElement
-                                );
-                                this.isVisibleCommands = true;
-                            }, 300);
-                        }
-                    }
-                );
-
-            // Dropdown select item with enter
-            this.inputService.dropDownItemSelectedOnEnter$
-                .pipe(takeUntil(this.destroy$))
-                .subscribe(
-                    (data: { action: boolean; inputConfig: ITaInput }) => {
-                        if (data.action) {
-                            this.dropdownToggler = false;
-                            this.focusInput = false;
-                            this.input.nativeElement.blur();
-                        }
-                    }
-                );
-        }
-
-        // Auto Focus First Input
-        if (this.inputConfig.autoFocus && !this.getSuperControl.value) {
-            setTimeout(() => {
-                if (
-                    this.inputConfig.name !== 'datepicker' &&
-                    this.inputConfig.name !== 'timepicker'
-                ) {
-                    this.onFocus();
-                }
-
-                this.input.nativeElement.focus();
-            }, 250);
-        }
-
-        // Reset Inputs
-        this.inputResetService.resetInputSubject
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((value) => {
-                if (value) {
-                    this.resetForms();
-                }
-            });
-
-        // Reset Form
-        this.formService.formReset$
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((value) => {
-                if (value) {
-                    this.touchedInput = false;
-                    this.formService.formReset$.next(false);
-                    this.resetDateTimeInputs();
-                }
-            });
-    }
-
-    resetForms() {
-        this.touchedInput = false;
-        this.getSuperControl.patchValue(null);
-        this.inputResetService.resetInputSubject.next(false);
-
-        this.resetDateTimeInputs();
-    }
-
-    public setTimeDateInput(date) {
-        let text, dateFormat, timeFormat;
-        if (this.inputConfig.name === 'datepicker') {
-            text = moment(new Date(date)).format('MM/DD/YY');
-            dateFormat = text.split('/');
-        } else {
-            date =
-                date instanceof Date
-                    ? date
-                    : new Date(moment().format('MM/DD/YYYY') + ' ' + date);
-            text = moment(new Date(date)).format('HH:mm');
-
-            timeFormat = moment(new Date(date)).format('hh/mm/A');
-            dateFormat = timeFormat.split('/');
-        }
-
-        this.input.nativeElement.value = text;
-        this.onChange(this.input.nativeElement.value);
-        this.focusInput = false;
-
-        this.span1.nativeElement.innerHTML = dateFormat[0];
-        this.span2.nativeElement.innerHTML = dateFormat[1];
-        this.span3.nativeElement.innerHTML = dateFormat[2];
-        this.dateTimeInputDate = new Date(date);
-        this.showDateInput = true;
     }
 
     get getSuperControl() {
@@ -329,11 +246,11 @@ export class TaInputComponent
     public writeValue(obj: any): void {
         this.changeInput.emit(obj);
         if (
-            this.inputConfig.name === 'datepicker' ||
-            this.inputConfig.name === 'timepicker'
+            this._inputConfig.name === 'datepicker' ||
+            this._inputConfig.name === 'timepicker'
         ) {
             if (obj) {
-                setTimeout(() => {
+                this.timeoutCleaner = setTimeout(() => {
                     this.setTimeDateInput(obj);
                 }, 300);
             } else {
@@ -353,32 +270,60 @@ export class TaInputComponent
 
     public registerOnTouched(_: any): void {}
 
-    public setDisabledState?(isDisabled: boolean): void {
-        this.inputConfig.isDisabled = isDisabled;
+    public setDisabledState?(_: boolean): void {}
+
+    ngOnInit(): void {
+        // Track input changes
+        this.getSuperControl.valueChanges
+            .pipe(takeUntil(this.destroy$))
+            .subscribe(() => {
+                this.cdRef.detectChanges();
+            });
+
+        // Reset Form
+        this.formService.formReset$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((value) => {
+                if (value) {
+                    this.touchedInput = false;
+                    this.formService.formReset$.next(false);
+                    this.resetDateTimeInputs();
+                }
+            });
+    }
+
+    ngAfterViewInit(): void {
+        // Toggle label transition animation
+        $('.input-label').addClass('no-transition');
+
+        this.timeoutCleaner = setTimeout(() => {
+            $('.input-label').removeClass('no-transition');
+        }, 1000);
+
+        // Auto Focus First Input
+
+        if (this._inputConfig.autoFocus && !this.getSuperControl?.value) {
+            this.timeoutCleaner = setTimeout(() => {
+                this.input.nativeElement.focus();
+                this.focusInput = true;
+                this._inputConfig.autoFocus = false;
+            }, 30);
+        }
     }
 
     public onFocus(e?): void {
         this.focusInputEvent.emit(true);
-        // Password
-        if (this.inputConfig.type === 'password') {
-            this.isVisiblePasswordEye = true;
-        }
-
-        // Input Commands
-        if (this.inputConfig.commands?.active) {
-            this.isVisibleCommands = true;
-        }
 
         // DropDown Label
-        if (this.inputConfig.dropdownLabel) {
-            this.inputConfig.placeholderIcon = 'ic_dynamic_focus_label.svg';
+        if (this._inputConfig.dropdownLabel) {
+            this._inputConfig.placeholderIcon = 'ic_dynamic_focus_label.svg';
         }
 
         // Datepicker
         if (
-            (this.inputConfig.name === 'datepicker' ||
-                this.inputConfig.name === 'timepicker') &&
-            !this.inputConfig.isDisabled
+            (this._inputConfig.name === 'datepicker' ||
+                this._inputConfig.name === 'timepicker') &&
+            !this._inputConfig.isDisabled
         ) {
             clearTimeout(this.dateTimeMainTimer);
             clearTimeout(this.focusBlur);
@@ -399,9 +344,18 @@ export class TaInputComponent
         }
 
         // Dropdown
-        if (this.inputConfig.isDropdown) {
+        if (this._inputConfig.isDropdown) {
             this.dropdownToggler = true;
-            this.inputService.dropDownShowHide$.next(true);
+            this.showHideDropdownEvent.emit(this.dropdownToggler);
+        }
+
+        // Commands
+        if (this._inputConfig.commands && !this._inputConfig.isDisabled) {
+            if (this._inputConfig.commands.type === 'months') {
+                this._inputConfig.blackInput = true;
+                this._inputConfig.commands.active = true;
+                this.isVisibleCommands = true;
+            }
         }
 
         this.focusInput = true;
@@ -409,25 +363,30 @@ export class TaInputComponent
 
     public onBlur(e?): void {
         // DropDown Label
-        if (this.inputConfig.dropdownLabel && !this.editInputMode) {
-            this.inputConfig.placeholderIcon = 'ic_dynamic_label.svg';
+        if (this._inputConfig.dropdownLabel && !this.editInputMode) {
+            this._inputConfig.placeholderIcon = 'ic_dynamic_label.svg';
         }
-        this.savedFocusEl = e?.target;
+
         // Edit Input
         if (this.editInputMode) {
             this.getSuperControl.setErrors({ invalid: true });
             return;
         }
 
-        // // Datepicker
+        // Datepicker;
         if (this.preventBlur) {
             this.preventBlur = false;
             return;
         }
 
+        // Bank
+        if (this._inputConfig.name === 'Input Dropdown Bank Name') {
+            this._inputConfig.blackInput = false;
+        }
+
         // Price Separator - remove dot on focus out
         if (
-            this.inputConfig.priceSeparator &&
+            this._inputConfig.priceSeparator &&
             this.getSuperControl?.value?.indexOf('.') >= 0
         ) {
             // 4.1. Check for Dot position
@@ -436,7 +395,7 @@ export class TaInputComponent
             let integerPart = this.thousandSeparatorPipe.transform(
                 this.getSuperControl.value
                     .slice(0, this.hasDecimalIndex)
-                    .slice(0, this.inputConfig.priceSeparatorLimitation)
+                    .slice(0, this._inputConfig.priceSeparatorLimitation)
             );
 
             let decimalPart = this.getSuperControl.value.slice(
@@ -454,22 +413,21 @@ export class TaInputComponent
         }
 
         // Dropdown
-        if (this.inputConfig.isDropdown || this.inputConfig.dropdownLabel) {
+        if (this._inputConfig.isDropdown || this._inputConfig.dropdownLabel) {
             if (
-                (this.inputConfig.name === 'datepicker' ||
-                    this.inputConfig.name === 'timepicker') &&
-                !this.inputConfig.isDisabled
+                (this._inputConfig.name === 'datepicker' ||
+                    this._inputConfig.name === 'timepicker') &&
+                !this._inputConfig.isDisabled
             ) {
                 if (e?.target?.nodeName === 'INPUT') {
                     return;
                 }
                 // Datepicker
                 if (
-                    this.inputConfig.name === 'datepicker' ||
-                    this.inputConfig.name === 'timepicker'
+                    this._inputConfig.name === 'datepicker' ||
+                    this._inputConfig.name === 'timepicker'
                 ) {
                     this.focusBlur = setTimeout(() => {
-                        // this.focusInput = false;
                         this.blurOnDateTime();
                     }, 100);
                 } else {
@@ -478,49 +436,45 @@ export class TaInputComponent
             } else {
                 this.blurOnDropDownArrow();
             }
-        } else {
+        }
+        // Normal, without dropdown
+        else {
             let selection = window.getSelection();
             selection.removeAllRanges();
 
-            // Password
-            if (this.inputConfig.type === 'password') {
-                this.blurOnPassword();
-            }
-
             // Input Commands
-            if (this.inputConfig.commands?.active) {
+            if (this._inputConfig.commands) {
                 this.blurOnCommands();
             }
 
-            this.focusInput = false;
+            // Password
+            if (this._inputConfig.type === 'password') {
+                this.blurOnPassword();
+            }
+            // Normal focus out
+            else {
+                this.focusInput = false;
+            }
         }
 
         this.blurInput.emit(true);
-
-        this.inputService.onFocusOutInput$.next(true);
         this.touchedInput = true;
     }
 
-    private blurOnPassword() {
-        this.timeoutPassword = setTimeout(() => {
-            this.isVisiblePasswordEye = false;
+    public blurOnPassword() {
+        this.passwordTimeout = setTimeout(() => {
             this.focusInput = false;
-            this.savedFocusEl = null;
+            this.input.nativeElement.blur();
+
             this.refChange.detectChanges();
         }, 150);
     }
 
-    private blurOnCommands() {
-        setTimeout(() => {
-            this.isVisibleCommands = false;
-        }, 150);
-    }
-
     private blurOnDropDownArrow() {
-        setTimeout(() => {
+        this.timeoutCleaner = setTimeout(() => {
             this.dropdownToggler = false;
             this.focusInput = false;
-            this.inputService.dropDownShowHide$.next(false);
+            this.showHideDropdownEvent.emit(this.dropdownToggler);
         }, 150);
     }
 
@@ -528,62 +482,43 @@ export class TaInputComponent
         event.preventDefault();
         event.stopPropagation();
         // Clear whole input
-        if (this.inputConfig.removeInput) {
+        if (this._inputConfig.removeInput) {
             this.clearInputEvent.emit(true);
             return;
         }
-        // Clear value
-        if (this.inputConfig.incorrectInput) {
+        // Incorrect Input
+        if (this._inputConfig.incorrectInput) {
             this.incorrectValue = !this.incorrectValue;
             this.incorrectInput.emit(this.incorrectValue);
-        } else {
+        }
+        // Native clear
+        else {
             this.input.nativeElement.value = null;
             this.getSuperControl.setValue(null);
             this.numberOfConsecutivelySpaces = 0;
             this.numberOfConsecutivelyPoints = 0;
             this.numberOfPoints = 0;
             this.oneSpaceOnlyCounter = 0;
-            this.inputConfig.dropdownImageInput = null;
+            this._inputConfig.dropdownImageInput = null;
             this.touchedInput = true;
-
-            if (['datepicker', 'timepicker'].includes(this.inputConfig.name)) {
+            this.focusInput = false;
+            if (['datepicker', 'timepicker'].includes(this._inputConfig.name)) {
                 this.resetDateTimeInputs();
             }
 
-            this.inputService.onClearInput$.next(true);
             this.clearInputEvent.emit(true);
         }
     }
 
-    public resetDateTimeInputs() {
-        if (this.span1) {
-            if (this.inputConfig.name === 'datepicker') {
-                this.span1.nativeElement.innerHTML = 'mm';
-                this.span2.nativeElement.innerHTML = 'dd';
-                this.span3.nativeElement.innerHTML = 'yy';
-            } else if (this.inputConfig.name === 'timepicker') {
-                this.span1.nativeElement.innerHTML = 'HH';
-                this.span2.nativeElement.innerHTML = 'MM';
-                this.span3.nativeElement.innerHTML = 'AM';
-            }
-        }
-
-        this.setTimePickerTime();
-        this.newInputChanged = true;
-        this.focusInput = false;
-        this.showDateInput = false;
-    }
-
+    // Dropdowns
     public toggleDropdownOptions() {
-        console.log("OPENED");
-        if (this.inputConfig.isDisabled) {
+        if (this._inputConfig.isDisabled) {
             return;
         }
 
         if (
-            (this.inputConfig.name === 'datepicker' ||
-                this.inputConfig.name === 'timepicker') &&
-            !this.inputConfig.isDisabled
+            this._inputConfig.name === 'datepicker' ||
+            this._inputConfig.name === 'timepicker'
         ) {
             if (this.t2) {
                 if (!this.t2.isOpen()) {
@@ -605,7 +540,7 @@ export class TaInputComponent
 
         this.dropdownToggler = !this.dropdownToggler;
 
-        this.inputService.dropDownShowHide$.next(this.dropdownToggler);
+        this.showHideDropdownEvent.emit(this.dropdownToggler);
 
         if (this.dropdownToggler) {
             this.input.nativeElement.focus();
@@ -613,12 +548,14 @@ export class TaInputComponent
         }
     }
 
+    // Password
     public onTogglePassword(event: any): void {
         event.preventDefault();
-        event.stopPropagation();
-        clearTimeout(this.timeoutPassword);
+        clearTimeout(this.passwordTimeout);
+
         this.togglePassword = !this.togglePassword;
-        if (this.savedFocusEl) {
+
+        if (this.focusInput) {
             this.setInputCursorAtTheEnd(this.input.nativeElement);
         }
     }
@@ -628,21 +565,31 @@ export class TaInputComponent
         if (input.setSelectionRange) {
             input.setSelectionRange(selectionEnd, selectionEnd);
         }
-        setTimeout(() => {
+        this.timeoutCleaner = setTimeout(() => {
             input.focus();
         }, time);
     }
 
+    //-------------- Event Input Actions
     public onKeydown(event) {
-        this.capsLockOn =
-            event?.getModifierState('CapsLock') || event?.shiftKey;
+        if (event) {
+            this.capsLockOn =
+                event?.getModifierState('CapsLock') || event?.shiftKey;
+        }
 
-        if (this.inputConfig.priceSeparator) {
+        if (this._inputConfig.priceSeparator) {
             this.isDotDeleted = this.getSuperControl?.value?.includes('.');
         }
 
+        // Disable for phone field first character to be 0
+        if (this._inputConfig.name.toLowerCase() === 'phone') {
+            if (event.target.selectionStart === 0 && event.key === '0') {
+                event.preventDefault();
+            }
+        }
+
         if (event.keyCode === 9) {
-            this.inputService.dropDownKeyNavigation$.next({
+            this.dropDownKeyNavigationEvemt.emit({
                 keyCode: event.keyCode,
                 data: null,
             });
@@ -656,7 +603,7 @@ export class TaInputComponent
         }
         if (
             event.keyCode == 8 &&
-            !(this.inputConfig.isDropdown || this.inputConfig.dropdownLabel)
+            !(this._inputConfig.isDropdown || this._inputConfig.dropdownLabel)
         ) {
             // Reset Multiple Consecutively Spaces
             this.numberOfConsecutivelySpaces = 0;
@@ -665,30 +612,26 @@ export class TaInputComponent
             if (!this.getSuperControl.value?.includes(' ')) {
                 this.oneSpaceOnlyCounter = 0;
             }
-
-            if (!this.input.nativeElement.value) {
-                this.clearInput(event);
-            }
         }
 
         if (
-            this.inputConfig.isDropdown ||
-            this.inputConfig.dropdownLabel ||
-            this.inputConfig.name == 'Address'
+            this._inputConfig.isDropdown ||
+            this._inputConfig.dropdownLabel ||
+            this._inputConfig.name == 'Address'
         ) {
             if (event.keyCode === 40 || event.keyCode === 38) {
-                this.inputService.dropDownKeyNavigation$.next({
+                this.dropDownKeyNavigationEvemt.emit({
                     keyCode: event.keyCode,
                     data: null,
                 });
             }
             if (event.keyCode === 13) {
-                this.inputService.dropDownKeyNavigation$.next({
+                this.dropDownKeyNavigationEvemt.emit({
                     keyCode: event.keyCode,
-                    data: this.inputConfig,
+                    data: this._inputConfig,
                 });
 
-                if (this.inputConfig.name == 'Address') {
+                if (this._inputConfig.name == 'Address') {
                     this.input.nativeElement.blur();
                 }
             }
@@ -697,7 +640,7 @@ export class TaInputComponent
                 this.onBlur();
                 this.blurOnDropDownArrow();
                 this.input.nativeElement.blur();
-                this.inputService.dropDownKeyNavigation$.next({
+                this.dropDownKeyNavigationEvemt.emit({
                     keyCode: event.keyCode,
                     data: null,
                 });
@@ -705,7 +648,7 @@ export class TaInputComponent
             if (event.keyCode === 9) {
                 this.onFocus();
                 this.input.nativeElement.focus();
-                this.inputService.dropDownKeyNavigation$.next({
+                this.dropDownKeyNavigationEvemt.emit({
                     keyCode: event.keyCode,
                     data: null,
                 });
@@ -722,12 +665,12 @@ export class TaInputComponent
 
                 if (
                     this.input.nativeElement.value.length >
-                    this.inputConfig.maxLength
+                    this._inputConfig.maxLength
                 ) {
                     this.input.nativeElement.value =
                         this.input.nativeElement.value.substring(
                             0,
-                            this.inputConfig.maxLength
+                            this._inputConfig.maxLength
                         );
                 }
             } else {
@@ -747,7 +690,7 @@ export class TaInputComponent
             }
         }
 
-        switch (this.inputConfig.textTransform) {
+        switch (this._inputConfig.textTransform) {
             case 'capitalize': {
                 this.input.nativeElement.value =
                     this.input.nativeElement.value.charAt(0)?.toUpperCase() +
@@ -767,7 +710,7 @@ export class TaInputComponent
             }
         }
 
-        if (this.inputConfig.thousandSeparator && this.getSuperControl.value) {
+        if (this._inputConfig.thousandSeparator && this.getSuperControl.value) {
             if (
                 this.getSuperControl.value
                     .toString()
@@ -789,7 +732,7 @@ export class TaInputComponent
                 );
         }
 
-        if (this.inputConfig.priceSeparator && this.getSuperControl.value) {
+        if (this._inputConfig.priceSeparator && this.getSuperControl.value) {
             // 0. Don't allow 0 as first character
             if (
                 this.getSuperControl.value
@@ -810,13 +753,13 @@ export class TaInputComponent
                 this.hasDecimalIndex = this.getSuperControl.value.indexOf('.');
 
                 this.originPriceSeparatorLimit =
-                    this.inputConfig.priceSeparatorLimitation + 3;
+                    this._inputConfig.priceSeparatorLimitation + 3;
 
                 // 4.2. Divide number on decimal and integer part
                 let integerPart = this.thousandSeparatorPipe.transform(
                     this.getSuperControl.value
                         .slice(0, this.hasDecimalIndex)
-                        .slice(0, this.inputConfig.priceSeparatorLimitation)
+                        .slice(0, this._inputConfig.priceSeparatorLimitation)
                 );
 
                 let decimalPart = this.getSuperControl.value.slice(
@@ -831,7 +774,6 @@ export class TaInputComponent
                 decimalPart = decimalPart.slice(0, 2);
 
                 if (decimalPart) {
-                    clearTimeout(this.decimalIndexTimeout);
                     // 4.5. Set formatted number
                     this.getSuperControl.patchValue(
                         integerPart + '.' + decimalPart
@@ -854,13 +796,13 @@ export class TaInputComponent
 
                     // Limit validation
                     this.originPriceSeparatorLimit =
-                        this.inputConfig.priceSeparatorLimitation;
+                        this._inputConfig.priceSeparatorLimitation;
 
                     // Cut value
                     this.getSuperControl.patchValue(
                         this.getSuperControl.value.slice(
                             0,
-                            this.inputConfig.priceSeparatorLimitation
+                            this._inputConfig.priceSeparatorLimitation
                         )
                     );
 
@@ -873,7 +815,7 @@ export class TaInputComponent
                 }
             }
 
-            setTimeout(() => {
+            this.timeoutCleaner = setTimeout(() => {
                 this.input.nativeElement.setSelectionRange(
                     this.cursorInputPosition +
                         (this.getSuperControl.value.indexOf('.') === -1
@@ -889,7 +831,7 @@ export class TaInputComponent
          *  Custom Validation For This Type of Input Below, DONT TOUCH !
          */
 
-        if (['year'].includes(this.inputConfig.name.toLowerCase())) {
+        if (['year'].includes(this._inputConfig.name.toLowerCase())) {
             if (
                 parseInt(value) >
                 parseInt(moment().add(1, 'year').format('YYYY'))
@@ -898,7 +840,7 @@ export class TaInputComponent
             }
         }
 
-        if (['months'].includes(this.inputConfig.name.toLowerCase())) {
+        if (['months'].includes(this._inputConfig.name.toLowerCase())) {
             if (parseInt(value) < 1 || parseInt(value) > 12) {
                 this.getSuperControl.setErrors({ invalid: true });
             } else {
@@ -906,7 +848,7 @@ export class TaInputComponent
             }
         }
 
-        if (['axles'].includes(this.inputConfig.name.toLowerCase())) {
+        if (['axles'].includes(this._inputConfig.name.toLowerCase())) {
             if (parseInt(value) < 1 || parseInt(value) > 17) {
                 if (parseInt(value) < 1) {
                     this.getSuperControl.setErrors({ min: 1 });
@@ -918,7 +860,55 @@ export class TaInputComponent
             }
         }
 
-        if (['hos'].includes(this.inputConfig.name.toLowerCase())) {
+        if (['full name'].includes(this._inputConfig.name.toLowerCase())) {
+            if (this.getSuperControl.value) {
+                const capitalizeWords = this.getSuperControl.value
+                    .split(' ')
+                    .map((word: string) => {
+                        const firstLetter = word.charAt(0).toUpperCase();
+                        const restOfWord = word.slice(1).toLowerCase();
+                        return `${firstLetter}${restOfWord}`;
+                    });
+
+                this.input.nativeElement.value = capitalizeWords.join(' ');
+            }
+        }
+
+        // Disable consectevily spaces
+        if (
+            [
+                'business name',
+                'shop name',
+                'fuel stop',
+                'producer name',
+                'terminal name',
+                'address',
+                'license plate',
+                'description',
+                'emergency name',
+                'cdl-number',
+                'full name',
+                'file name',
+                'input dropdown label',
+            ].includes(this._inputConfig.name.toLowerCase())
+        ) {
+            const sanitizedInput = this.input.nativeElement.value.replace(
+                /\s{2,}/g,
+                ' '
+            ); // replace multiple spaces with a single space
+
+            if (sanitizedInput !== this.input.nativeElement.value) {
+                this.input.nativeElement.value = sanitizedInput;
+                this.timeoutCleaner = setTimeout(() => {
+                    this.input.nativeElement.setSelectionRange(
+                        this.lastCursorSpacePosition - 1,
+                        this.lastCursorSpacePosition - 1
+                    );
+                });
+            }
+        }
+
+        if (['hos'].includes(this._inputConfig.name.toLowerCase())) {
             if (
                 this.getSuperControl.value
                     .toString()
@@ -934,21 +924,665 @@ export class TaInputComponent
         }
     }
 
-    public selectionChange(event: any) {
-        if (event) {
-            this.inputSelection = true;
+    public onKeypress(event: KeyboardEvent): boolean {
+        // Disable first character to be space
+        if (
+            !this.input.nativeElement.value &&
+            /^\s*$/.test(String.fromCharCode(event.charCode))
+        ) {
+            event.preventDefault();
+            return false;
         }
+
+        if (this._inputConfig.priceSeparator) {
+            if (
+                this.inputService
+                    .getInputRegexPattern('price-separator')
+                    .test(String.fromCharCode(event.charCode))
+            ) {
+                if (
+                    this.getSuperControl?.value?.length ===
+                        this.originPriceSeparatorLimit &&
+                    event.keyCode !== 46
+                ) {
+                    event.preventDefault();
+                    return;
+                }
+                //  Disable multiple dots
+                this.disableMultiplePoints(event);
+
+                // Find index of dot
+                this.hasDecimalIndex =
+                    this.getSuperControl?.value?.indexOf('.');
+
+                if (this.hasDecimalIndex >= 0) {
+                    // 1. Divide number on decimal and integer part
+                    let integerPart = this.getSuperControl.value.slice(
+                        0,
+                        this.hasDecimalIndex
+                    );
+
+                    if (!integerPart) {
+                        integerPart = '0';
+                    }
+
+                    let decimalPart = this.getSuperControl.value.slice(
+                        this.hasDecimalIndex + 1
+                    );
+
+                    // 2. Disable more than two decimals
+                    if (decimalPart.length > 2) {
+                        event.preventDefault();
+                        return;
+                    }
+
+                    // 3. Get only two numbers of decimal part
+                    decimalPart = decimalPart.slice(0, 2);
+
+                    const currentPosition =
+                        this.input.nativeElement.selectionStart;
+
+                    // 4. Set formatted number
+                    this.getSuperControl.patchValue(
+                        integerPart + '.' + decimalPart
+                    );
+
+                    this.timeoutCleaner = setTimeout(() => {
+                        if (event.keyCode === 51) {
+                            this.cursorInputPosition =
+                                this.input.nativeElement.selectionStart;
+                            this.input.nativeElement.setSelectionRange(
+                                currentPosition,
+                                currentPosition
+                            );
+                        } else {
+                            this.input.nativeElement.setSelectionRange(
+                                currentPosition,
+                                currentPosition
+                            );
+                        }
+                    }, 0);
+                }
+
+                return true;
+            }
+            event.preventDefault();
+            return false;
+        }
+
+        if (
+            [
+                'business name',
+                'shop name',
+                'fuel stop',
+                'producer name',
+                'terminal name',
+            ].includes(this._inputConfig.name.toLowerCase())
+        ) {
+            if (
+                this.inputService
+                    .getInputRegexPattern('business name')
+                    .test(String.fromCharCode(event.charCode))
+            ) {
+                this.disableMultiplePoints(event);
+                this.disableConsecutivelySpaces(event);
+                return true;
+            }
+
+            event.preventDefault();
+            return false;
+        }
+
+        if (
+            [
+                'ein',
+                'mc/ff',
+                'phone',
+                'phone-extension',
+                'account-bank',
+                'routing-bank',
+                'ssn',
+                'fuel-card',
+                'empty-weight',
+                'credit limit',
+                'po box',
+                'price',
+                'trailer-volume',
+                'repair-odometer',
+                'usdot',
+                'irp',
+                'starting',
+                'customer pay term',
+                'customer credit',
+                'default base',
+                'each occurrence',
+                'damage',
+                'personal-adver-inj',
+                'medical expenses',
+                'bodily injury',
+                'general aggregate',
+                'products-comp-op-agg',
+                'combined-single-limit',
+                'single-conveyance',
+                'deductable',
+                'compreh-collision',
+                'trailer-value-insurance-policy',
+                'rent',
+                'salary',
+                'mileage',
+                'months',
+                'empty weight',
+                'qty',
+                'purchase price',
+                'fuel tank size',
+                'device no',
+                'weight',
+                'fuel per miles',
+                'fuel price map',
+                'amount',
+            ].includes(this._inputConfig.name.toLowerCase())
+        ) {
+            // Only numbers
+            if (
+                this.inputService
+                    .getInputRegexPattern('qty')
+                    .test(String.fromCharCode(event.charCode))
+            ) {
+                return true;
+            }
+
+            event.preventDefault();
+            return false;
+        }
+
+        if (['email'].includes(this._inputConfig.name.toLowerCase())) {
+            if (
+                this.inputService
+                    .getInputRegexPattern('email')
+                    .test(String.fromCharCode(event.charCode))
+            ) {
+                this.disableConsecutivelyPoints(event);
+                return true;
+            }
+            event.preventDefault();
+            return false;
+        }
+
+        if (['invoice'].includes(this._inputConfig.name.toLowerCase())) {
+            if (
+                this.inputService
+                    .getInputRegexPattern('invoice')
+                    .test(String.fromCharCode(event.charCode))
+            ) {
+                return true;
+            }
+            event.preventDefault();
+            return false;
+        }
+
+        if (['address'].includes(this._inputConfig.name.toLowerCase())) {
+            if (
+                /^[A-Za-z0-9\s.&/,_-]*$/.test(
+                    String.fromCharCode(event.charCode)
+                )
+            ) {
+                this.disableConsecutivelySpaces(event);
+                return true;
+            } else {
+                event.preventDefault();
+                return false;
+            }
+        }
+
+        if (
+            ['address-unit', 'department', 'vehicle-unit'].includes(
+                this._inputConfig.name.toLowerCase()
+            )
+        ) {
+            if (
+                this.inputService
+                    .getInputRegexPattern('address-unit')
+                    .test(String.fromCharCode(event.charCode))
+            ) {
+                return true;
+            }
+            event.preventDefault();
+            return false;
+        }
+
+        if (['first name'].includes(this._inputConfig.name.toLowerCase())) {
+            if (
+                this.inputService
+                    .getInputRegexPattern('first name')
+                    .test(String.fromCharCode(event.charCode))
+            ) {
+                this.disableMultiplePoints(event);
+                this.enableOneSpaceOnly(event);
+                return true;
+            }
+            event.preventDefault();
+            return false;
+        }
+
+        if (['last name'].includes(this._inputConfig.name.toLowerCase())) {
+            if (
+                this.inputService
+                    .getInputRegexPattern('last name')
+                    .test(String.fromCharCode(event.charCode))
+            ) {
+                this.enableOneSpaceOnly(event);
+                return true;
+            }
+            event.preventDefault();
+            return false;
+        }
+
+        if (['bank name'].includes(this._inputConfig.name.toLowerCase())) {
+            if (
+                this.inputService
+                    .getInputRegexPattern('bank name')
+                    .test(String.fromCharCode(event.charCode))
+            ) {
+                this.disableMultiplePoints(event);
+                this.enableOneSpaceOnly(event);
+                return true;
+            }
+            event.preventDefault();
+            return false;
+        }
+
+        if (
+            ['vin-number', 'insurance-policy', 'ifta'].includes(
+                this._inputConfig.name.toLowerCase()
+            )
+        ) {
+            if (
+                this.inputService
+                    .getInputRegexPattern('vin-number')
+                    .test(String.fromCharCode(event.charCode))
+            ) {
+                return !/^[IiOQ]*$/.test(String.fromCharCode(event.charCode));
+            }
+            event.preventDefault();
+            return false;
+        }
+
+        if (
+            ['truck-trailer-model'].includes(
+                this._inputConfig.name.toLowerCase()
+            )
+        ) {
+            if (
+                this.inputService
+                    .getInputRegexPattern('truck-trailer-model')
+                    .test(String.fromCharCode(event.charCode))
+            ) {
+                this.enableOneSpaceOnly(event);
+                return true;
+            }
+            event.preventDefault();
+            return false;
+        }
+
+        if (['year'].includes(this._inputConfig.name.toLowerCase())) {
+            if (
+                /^0*$/.test(String.fromCharCode(event.charCode)) &&
+                !this.input.nativeElement.value
+            ) {
+                event.preventDefault();
+                return false;
+            }
+
+            if (
+                this.inputService
+                    .getInputRegexPattern('year')
+                    .test(String.fromCharCode(event.charCode))
+            ) {
+                return true;
+            }
+
+            event.preventDefault();
+            return false;
+        }
+
+        if (['axles'].includes(this._inputConfig.name.toLowerCase())) {
+            if (
+                this.inputService
+                    .getInputRegexPattern('axles')
+                    .test(String.fromCharCode(event.charCode))
+            ) {
+                return true;
+            }
+            event.preventDefault();
+            return false;
+        }
+
+        if (['license plate'].includes(this._inputConfig.name.toLowerCase())) {
+            if (
+                this.inputService
+                    .getInputRegexPattern('license plate')
+                    .test(String.fromCharCode(event.charCode))
+            ) {
+                this.disableConsecutivelySpaces(event);
+                return true;
+            }
+            event.preventDefault();
+            return false;
+        }
+
+        if (['description'].includes(this._inputConfig.name.toLowerCase())) {
+            if (
+                this.inputService
+                    .getInputRegexPattern('description')
+                    .test(String.fromCharCode(event.charCode))
+            ) {
+                this.disableConsecutivelySpaces(event);
+                return true;
+            }
+            event.preventDefault();
+            return false;
+        }
+
+        if (['allow all'].includes(this._inputConfig.name.toLowerCase())) {
+            if (/.*/.test(String.fromCharCode(event.charCode))) {
+                return true;
+            }
+            event.preventDefault();
+            return false;
+        }
+
+        if (['dba name'].includes(this._inputConfig.name.toLowerCase())) {
+            if (
+                this.inputService
+                    .getInputRegexPattern('dba name')
+                    .test(String.fromCharCode(event.charCode))
+            ) {
+                return true;
+            }
+            event.preventDefault();
+            return false;
+        }
+
+        if (['per mile'].includes(this._inputConfig.name.toLowerCase())) {
+            if (
+                this.inputService
+                    .getInputRegexPattern('per mile')
+                    .test(String.fromCharCode(event.charCode))
+            ) {
+                this.disableMultiplePoints(event);
+
+                // Check for max length
+                if (this.getSuperControl.value?.toString().includes('.')) {
+                    this._inputConfig.maxLength = 4;
+                } else {
+                    this._inputConfig.maxLength = 2;
+                }
+
+                // Check for range
+                if (
+                    this.getSuperControl.value > this._inputConfig.max ||
+                    this.getSuperControl.value < this._inputConfig.min
+                ) {
+                    this.getSuperControl.setErrors({ invalid: true });
+                }
+                return true;
+            } else {
+                event.preventDefault();
+                return false;
+            }
+        }
+
+        if (
+            ['per stop', 'flat rate', 'per load'].includes(
+                this._inputConfig.name.toLowerCase()
+            )
+        ) {
+            if (
+                this.inputService
+                    .getInputRegexPattern('per stop')
+                    .test(String.fromCharCode(event.charCode))
+            ) {
+                this.timeoutCleaner = setTimeout(() => {
+                    if (this.getSuperControl.value) {
+                        let perStopValue = this.getSuperControl.value.replace(
+                            /,/g,
+                            ''
+                        );
+                        if (
+                            perStopValue > this._inputConfig.max ||
+                            perStopValue < this._inputConfig.min
+                        ) {
+                            this.getSuperControl.setErrors({ invalid: true });
+                            return false;
+                        }
+                        return true;
+                    }
+                }, 0);
+            } else {
+                event.preventDefault();
+                return false;
+            }
+        }
+
+        if (
+            ['relationship', 'scac'].includes(
+                this._inputConfig.name.toLowerCase()
+            )
+        ) {
+            if (
+                this.inputService
+                    .getInputRegexPattern('emergency name')
+                    .test(String.fromCharCode(event.charCode))
+            ) {
+                return true;
+            }
+            event.preventDefault();
+            return false;
+        }
+
+        if (['emergency name'].includes(this._inputConfig.name.toLowerCase())) {
+            if (
+                this.inputService
+                    .getInputRegexPattern('emergency name')
+                    .test(String.fromCharCode(event.charCode))
+            ) {
+                this.disableConsecutivelySpaces(event);
+                this.enableOneSpaceOnly(event);
+                return true;
+            }
+            event.preventDefault();
+            return false;
+        }
+
+        if (['fuel-store'].includes(this._inputConfig.name.toLowerCase())) {
+            if (
+                this.inputService
+                    .getInputRegexPattern('fuel store')
+                    .test(String.fromCharCode(event.charCode))
+            ) {
+                return true;
+            }
+            event.preventDefault();
+            return false;
+        }
+
+        if (['hos'].includes(this._inputConfig.name.toLowerCase())) {
+            if (
+                !this.inputSelection &&
+                this.inputService
+                    .getInputRegexPattern('hos')
+                    .test(String.fromCharCode(event.charCode))
+            ) {
+                return (
+                    this.getSuperControl.value * 10 + event.charCode - 48 <=
+                    this._inputConfig.max
+                );
+            } else {
+                if (this.inputSelection) {
+                    this.getSuperControl.patchValue(
+                        String.fromCharCode(event.charCode)
+                    );
+                    this.inputSelection = false;
+                }
+
+                event.preventDefault();
+                return false;
+            }
+        }
+
+        if (
+            ['full parking slot', 'parking slot'].includes(
+                this._inputConfig.name.toLowerCase()
+            )
+        ) {
+            if (
+                this.inputService
+                    .getInputRegexPattern('full parking slot')
+                    .test(String.fromCharCode(event.charCode))
+            ) {
+                return true;
+            } else {
+                event.preventDefault();
+                return false;
+            }
+        }
+
+        if (['cdl-number'].includes(this._inputConfig.name.toLowerCase())) {
+            if (
+                this.inputService
+                    .getInputRegexPattern('cdl-number')
+                    .test(String.fromCharCode(event.charCode))
+            ) {
+                this.enableOneSpaceOnly(event);
+                this.disableConsecutivelySpaces(event);
+                return true;
+            } else {
+                event.preventDefault();
+                return false;
+            }
+        }
+
+        // All Simbols
+        if (
+            ['username', 'nickname', 'password'].includes(
+                this._inputConfig.name.toLowerCase()
+            )
+        ) {
+            if (
+                this.inputService
+                    .getInputRegexPattern('username')
+                    .test(String.fromCharCode(event.charCode))
+            ) {
+                return true;
+            } else {
+                event.preventDefault();
+                return false;
+            }
+        }
+
+        if (['full name'].includes(this._inputConfig.name.toLowerCase())) {
+            if (
+                this.inputService
+                    .getInputRegexPattern('full name')
+                    .test(String.fromCharCode(event.charCode))
+            ) {
+                this.enableOneSpaceOnly(event);
+                this.disableMultiplePoints(event);
+                this.disableConsecutivelySpaces(event);
+                return true;
+            } else {
+                event.preventDefault();
+                return false;
+            }
+        }
+
+        if (['tollvalidation'].includes(this._inputConfig.name.toLowerCase())) {
+            if (
+                this.inputService
+                    .getInputRegexPattern('tollvalidation')
+                    .test(String.fromCharCode(event.charCode))
+            ) {
+                return true;
+            } else {
+                event.preventDefault();
+                return false;
+            }
+        }
+
+        // Just characters and numbers
+        if (
+            ['prefix', 'suffix', 'parking name'].includes(
+                this._inputConfig.name.toLowerCase()
+            )
+        ) {
+            if (
+                this.inputService
+                    .getInputRegexPattern('prefix')
+                    .test(String.fromCharCode(event.charCode))
+            ) {
+                return true;
+            } else {
+                event.preventDefault();
+                return false;
+            }
+        }
+
+        if (['file name'].includes(this._inputConfig.name.toLowerCase())) {
+            if (
+                this.inputService
+                    .getInputRegexPattern('file name')
+                    .test(String.fromCharCode(event.charCode))
+            ) {
+                event.preventDefault();
+                return false;
+            } else {
+                this.disableConsecutivelySpaces(event);
+                return true;
+            }
+        }
+
+        if (
+            ['insurer name', 'office name'].includes(
+                this._inputConfig.name.toLowerCase()
+            )
+        ) {
+            if (
+                this.inputService
+                    .getInputRegexPattern('producer name')
+                    .test(String.fromCharCode(event.charCode))
+            ) {
+                this.disableMultiplePoints(event);
+                return true;
+            } else {
+                event.preventDefault();
+                return false;
+            }
+        }
+
+        if (
+            ['input dropdown label'].includes(
+                this._inputConfig.name.toLowerCase()
+            )
+        ) {
+            this.disableConsecutivelySpaces(event);
+            this.disableConsecutivelyPoints(event);
+        }
+
+        this.input.nativeElement.value.trim();
     }
+    //-------------- end
 
     public onEditInput(event: Event) {
         event.preventDefault();
         event.stopPropagation();
 
         this.editInputMode = true;
-        this.inputConfig.dropdownLabelNew = false;
-        this.inputConfig.blackInput = true;
-        this.inputConfig.commands.active = true;
+        this._inputConfig.dropdownLabelNew = false;
+        this._inputConfig.blackInput = true;
+        this._inputConfig.commands.active = true;
+        this.isVisibleCommands = true;
         this.focusInput = true;
+
         this.setInputCursorAtTheEnd(this.input.nativeElement);
         this.getSuperControl.setErrors({ required: true });
         this.commandEvent.emit({
@@ -1029,8 +1663,8 @@ export class TaInputComponent
                             data: this.getSuperControl.value,
                             action: 'confirm',
                             mode:
-                                !this.inputConfig.dropdownLabelNew &&
-                                this.inputConfig.name !==
+                                !this._inputConfig.dropdownLabelNew &&
+                                this._inputConfig.name !==
                                     'Input Dropdown Bank Name'
                                     ? 'edit'
                                     : 'new',
@@ -1046,20 +1680,24 @@ export class TaInputComponent
                     }
                 }
                 this.getSuperControl.setErrors(null);
+                this._inputConfig.dropdownLabelNew = false;
+                this._inputConfig.commands.active = false;
+                this._inputConfig.blackInput = false;
                 this.editInputMode = false;
-                this.inputConfig.dropdownLabelNew = false;
-                this.inputConfig.commands.active = false;
-                this.inputConfig.blackInput = false;
-                this.onBlur();
+                this.isVisibleCommands = false;
+                this.focusInput = false;
+
                 break;
             }
             case 'months': {
+                clearTimeout(this.inputCommandsTimeout);
                 switch (action) {
                     case 'minus': {
                         if (
                             parseInt(this.getSuperControl.value) === 1 ||
                             !this.getSuperControl.value
                         ) {
+                            this.blurOnCommands();
                             return;
                         }
 
@@ -1072,6 +1710,7 @@ export class TaInputComponent
                     }
                     case 'plus': {
                         if (parseInt(this.getSuperControl.value) === 12) {
+                            this.blurOnCommands();
                             return;
                         }
                         this.getSuperControl.patchValue(
@@ -1085,6 +1724,14 @@ export class TaInputComponent
                         break;
                     }
                 }
+                if (
+                    parseInt(this.getSuperControl.value) < 1 ||
+                    parseInt(this.getSuperControl.value) > 12
+                ) {
+                    this.getSuperControl.setErrors({ invalid: true });
+                } else {
+                    this.getSuperControl.setErrors(null);
+                }
                 this.setInputCursorAtTheEnd(this.input.nativeElement);
                 break;
             }
@@ -1092,6 +1739,15 @@ export class TaInputComponent
                 break;
             }
         }
+    }
+
+    private blurOnCommands() {
+        this.inputCommandsTimeout = setTimeout(() => {
+            this._inputConfig.commands.active = false;
+            this.isVisibleCommands = false;
+            this._inputConfig.blackInput = false;
+            this.refChange.detectChanges();
+        }, 200);
     }
 
     public onPlaceholderIconEvent(event: Event) {
@@ -1110,652 +1766,7 @@ export class TaInputComponent
         }
     }
 
-    public onKeypress(event: KeyboardEvent): boolean {
-        // Disable first character to be space
-        if (
-            !this.input.nativeElement.value &&
-            /^\s*$/.test(String.fromCharCode(event.charCode))
-        ) {
-            event.preventDefault();
-            return false;
-        }
-
-        if (this.inputConfig.priceSeparator) {
-            if (
-                this.inputService
-                    .getInputRegexPattern('price-separator')
-                    .test(String.fromCharCode(event.charCode))
-            ) {
-                if (
-                    this.getSuperControl?.value?.length ===
-                        this.originPriceSeparatorLimit &&
-                    event.keyCode !== 46
-                ) {
-                    event.preventDefault();
-                    return;
-                }
-                //  Disable multiple dots
-                this.disableMultiplePoints(event);
-
-                // Find index of dot
-                this.hasDecimalIndex =
-                    this.getSuperControl?.value?.indexOf('.');
-
-                if (this.hasDecimalIndex >= 0) {
-                    // 1. Divide number on decimal and integer part
-                    let integerPart = this.getSuperControl.value.slice(
-                        0,
-                        this.hasDecimalIndex
-                    );
-
-                    if (!integerPart) {
-                        integerPart = '0';
-                    }
-
-                    let decimalPart = this.getSuperControl.value.slice(
-                        this.hasDecimalIndex + 1
-                    );
-
-                    // 2. Disable more than two decimals
-                    if (decimalPart.length > 2) {
-                        event.preventDefault();
-                        return;
-                    }
-
-                    // 3. Get only two numbers of decimal part
-                    decimalPart = decimalPart.slice(0, 2);
-
-                    const currentPosition =
-                        this.input.nativeElement.selectionStart;
-
-                    // 4. Set formatted number
-                    this.getSuperControl.patchValue(
-                        integerPart + '.' + decimalPart
-                    );
-
-                    setTimeout(() => {
-                        if (event.keyCode === 51) {
-                            this.cursorInputPosition =
-                                this.input.nativeElement.selectionStart;
-                            this.input.nativeElement.setSelectionRange(
-                                currentPosition,
-                                currentPosition
-                            );
-                        } else {
-                            this.input.nativeElement.setSelectionRange(
-                                currentPosition,
-                                currentPosition
-                            );
-                        }
-                    }, 0);
-                }
-
-                return true;
-            }
-            event.preventDefault();
-            return false;
-        }
-
-        if (
-            [
-                'business name',
-                'shop name',
-                'fuel stop',
-                'producer name',
-                'terminal name',
-            ].includes(this.inputConfig.name.toLowerCase())
-        ) {
-            if (
-                this.inputService
-                    .getInputRegexPattern('business name')
-                    .test(String.fromCharCode(event.charCode))
-            ) {
-                this.disableMultiplePoints(event);
-                this.disableConsecutivelySpaces(event);
-                return true;
-            }
-
-            event.preventDefault();
-            return false;
-        }
-
-        if (
-            [
-                'ein',
-                'mc/ff',
-                'phone',
-                'phone-extension',
-                'account-bank',
-                'routing-bank',
-                'ssn',
-                'fuel-card',
-                'empty-weight',
-                'credit limit',
-                'po box',
-                'price',
-                'trailer-volume',
-                'repair-odometer',
-                'usdot',
-                'irp',
-                'starting',
-                'customer pay term',
-                'customer credit',
-                'default base',
-                'each occurrence',
-                'damage',
-                'personal-adver-inj',
-                'medical expenses',
-                'bodily injury',
-                'general aggregate',
-                'products-comp-op-agg',
-                'combined-single-limit',
-                'single-conveyance',
-                'deductable',
-                'compreh-collision',
-                'trailer-value-insurance-policy',
-                'rent',
-                'salary',
-                'mileage',
-                'months',
-                'empty weight',
-                'qty',
-                'purchase price',
-                'fuel tank size',
-                'device no',
-                'weight',
-                'fuel per miles',
-                'fuel price map',
-                'amount',
-            ].includes(this.inputConfig.name.toLowerCase())
-        ) {
-            // Only numbers
-            if (
-                this.inputService
-                    .getInputRegexPattern('qty')
-                    .test(String.fromCharCode(event.charCode))
-            ) {
-                return true;
-            }
-            event.preventDefault();
-            return false;
-        }
-
-        if (['email'].includes(this.inputConfig.name.toLowerCase())) {
-            if (
-                this.inputService
-                    .getInputRegexPattern('email')
-                    .test(String.fromCharCode(event.charCode))
-            ) {
-                this.disableConsecutivelyPoints(event);
-                return true;
-            }
-            event.preventDefault();
-            return false;
-        }
-
-        if (['invoice'].includes(this.inputConfig.name.toLowerCase())) {
-            if (
-                this.inputService
-                    .getInputRegexPattern('invoice')
-                    .test(String.fromCharCode(event.charCode))
-            ) {
-                return true;
-            }
-            event.preventDefault();
-            return false;
-        }
-
-        if (['address'].includes(this.inputConfig.name.toLowerCase())) {
-            if (
-                /^[A-Za-z0-9\s.&/,_-]*$/.test(
-                    String.fromCharCode(event.charCode)
-                )
-            ) {
-                this.disableConsecutivelySpaces(event);
-                return true;
-            } else {
-                event.preventDefault();
-                return false;
-            }
-        }
-
-        if (
-            ['address-unit', 'department', 'vehicle-unit'].includes(
-                this.inputConfig.name.toLowerCase()
-            )
-        ) {
-            if (
-                this.inputService
-                    .getInputRegexPattern('address-unit')
-                    .test(String.fromCharCode(event.charCode))
-            ) {
-                return true;
-            }
-            event.preventDefault();
-            return false;
-        }
-
-        if (['first name'].includes(this.inputConfig.name.toLowerCase())) {
-            if (
-                this.inputService
-                    .getInputRegexPattern('first name')
-                    .test(String.fromCharCode(event.charCode))
-            ) {
-                this.disableMultiplePoints(event);
-                this.enableOneSpaceOnly(event);
-                return true;
-            }
-            event.preventDefault();
-            return false;
-        }
-
-        if (['last name'].includes(this.inputConfig.name.toLowerCase())) {
-            if (
-                this.inputService
-                    .getInputRegexPattern('last name')
-                    .test(String.fromCharCode(event.charCode))
-            ) {
-                this.enableOneSpaceOnly(event);
-                return true;
-            }
-            event.preventDefault();
-            return false;
-        }
-
-        if (['bank name'].includes(this.inputConfig.name.toLowerCase())) {
-            if (
-                this.inputService
-                    .getInputRegexPattern('bank name')
-                    .test(String.fromCharCode(event.charCode))
-            ) {
-                this.disableMultiplePoints(event);
-                this.enableOneSpaceOnly(event);
-                return true;
-            }
-            event.preventDefault();
-            return false;
-        }
-
-        if (
-            ['vin-number', 'insurance-policy', 'ifta'].includes(
-                this.inputConfig.name.toLowerCase()
-            )
-        ) {
-            if (
-                this.inputService
-                    .getInputRegexPattern('vin-number')
-                    .test(String.fromCharCode(event.charCode))
-            ) {
-                return !/^[IiOQ]*$/.test(String.fromCharCode(event.charCode));
-            }
-            event.preventDefault();
-            return false;
-        }
-
-        if (
-            ['truck-trailer-model'].includes(
-                this.inputConfig.name.toLowerCase()
-            )
-        ) {
-            if (
-                this.inputService
-                    .getInputRegexPattern('truck-trailer-model')
-                    .test(String.fromCharCode(event.charCode))
-            ) {
-                this.enableOneSpaceOnly(event);
-                return true;
-            }
-            event.preventDefault();
-            return false;
-        }
-
-        if (['year'].includes(this.inputConfig.name.toLowerCase())) {
-            if (
-                /^0*$/.test(String.fromCharCode(event.charCode)) &&
-                !this.input.nativeElement.value
-            ) {
-                event.preventDefault();
-                return false;
-            }
-
-            if (
-                this.inputService
-                    .getInputRegexPattern('year')
-                    .test(String.fromCharCode(event.charCode))
-            ) {
-                return true;
-            }
-
-            event.preventDefault();
-            return false;
-        }
-
-        if (['axles'].includes(this.inputConfig.name.toLowerCase())) {
-            if (
-                this.inputService
-                    .getInputRegexPattern('axles')
-                    .test(String.fromCharCode(event.charCode))
-            ) {
-                return true;
-            }
-            event.preventDefault();
-            return false;
-        }
-
-        if (['license plate'].includes(this.inputConfig.name.toLowerCase())) {
-            if (
-                this.inputService
-                    .getInputRegexPattern('license plate')
-                    .test(String.fromCharCode(event.charCode))
-            ) {
-                this.disableConsecutivelySpaces(event);
-                return true;
-            }
-            event.preventDefault();
-            return false;
-        }
-
-        if (['description'].includes(this.inputConfig.name.toLowerCase())) {
-            if (
-                this.inputService
-                    .getInputRegexPattern('description')
-                    .test(String.fromCharCode(event.charCode))
-            ) {
-                this.disableConsecutivelySpaces(event);
-                return true;
-            }
-            event.preventDefault();
-            return false;
-        }
-
-        if (['allow all'].includes(this.inputConfig.name.toLowerCase())) {
-            if (/.*/.test(String.fromCharCode(event.charCode))) {
-                return true;
-            }
-            event.preventDefault();
-            return false;
-        }
-
-        if (['dba name'].includes(this.inputConfig.name.toLowerCase())) {
-            if (
-                this.inputService
-                    .getInputRegexPattern('dba name')
-                    .test(String.fromCharCode(event.charCode))
-            ) {
-                return true;
-            }
-            event.preventDefault();
-            return false;
-        }
-
-        if (['per mile'].includes(this.inputConfig.name.toLowerCase())) {
-            if (
-                this.inputService
-                    .getInputRegexPattern('per mile')
-                    .test(String.fromCharCode(event.charCode))
-            ) {
-                this.disableMultiplePoints(event);
-
-                // Check for max length
-                if (this.getSuperControl.value?.toString().includes('.')) {
-                    this.inputConfig.maxLength = 4;
-                } else {
-                    this.inputConfig.maxLength = 2;
-                }
-
-                // Check for range
-                if (
-                    this.getSuperControl.value > this.inputConfig.max ||
-                    this.getSuperControl.value < this.inputConfig.min
-                ) {
-                    this.getSuperControl.setErrors({ invalid: true });
-                }
-                return true;
-            } else {
-                event.preventDefault();
-                return false;
-            }
-        }
-
-        if (
-            ['per stop', 'flat rate', 'per load'].includes(
-                this.inputConfig.name.toLowerCase()
-            )
-        ) {
-            if (
-                this.inputService
-                    .getInputRegexPattern('per stop')
-                    .test(String.fromCharCode(event.charCode))
-            ) {
-                setTimeout(() => {
-                    if (this.getSuperControl.value) {
-                        let perStopValue = this.getSuperControl.value.replace(
-                            /,/g,
-                            ''
-                        );
-                        if (
-                            perStopValue > this.inputConfig.max ||
-                            perStopValue < this.inputConfig.min
-                        ) {
-                            this.getSuperControl.setErrors({ invalid: true });
-                            return false;
-                        }
-                        return true;
-                    }
-                }, 0);
-            } else {
-                event.preventDefault();
-                return false;
-            }
-        }
-
-        if (
-            ['relationship', 'scac'].includes(
-                this.inputConfig.name.toLowerCase()
-            )
-        ) {
-            if (
-                this.inputService
-                    .getInputRegexPattern('emergency name')
-                    .test(String.fromCharCode(event.charCode))
-            ) {
-                return true;
-            }
-            event.preventDefault();
-            return false;
-        }
-
-        if (['emergency name'].includes(this.inputConfig.name.toLowerCase())) {
-            if (
-                this.inputService
-                    .getInputRegexPattern('emergency name')
-                    .test(String.fromCharCode(event.charCode))
-            ) {
-                this.disableConsecutivelySpaces(event);
-                this.enableOneSpaceOnly(event);
-                return true;
-            }
-            event.preventDefault();
-            return false;
-        }
-
-        if (['fuel-store'].includes(this.inputConfig.name.toLowerCase())) {
-            if (
-                this.inputService
-                    .getInputRegexPattern('fuel store')
-                    .test(String.fromCharCode(event.charCode))
-            ) {
-                return true;
-            }
-            event.preventDefault();
-            return false;
-        }
-
-        if (['hos'].includes(this.inputConfig.name.toLowerCase())) {
-            if (
-                !this.inputSelection &&
-                this.inputService
-                    .getInputRegexPattern('hos')
-                    .test(String.fromCharCode(event.charCode))
-            ) {
-                return (
-                    this.getSuperControl.value * 10 + event.charCode - 48 <=
-                    this.inputConfig.max
-                );
-            } else {
-                if (this.inputSelection) {
-                    this.getSuperControl.patchValue(
-                        String.fromCharCode(event.charCode)
-                    );
-                    this.inputSelection = false;
-                }
-
-                event.preventDefault();
-                return false;
-            }
-        }
-
-        if (
-            ['full parking slot', 'parking slot'].includes(
-                this.inputConfig.name.toLowerCase()
-            )
-        ) {
-            if (
-                this.inputService
-                    .getInputRegexPattern('full parking slot')
-                    .test(String.fromCharCode(event.charCode))
-            ) {
-                return true;
-            } else {
-                event.preventDefault();
-                return false;
-            }
-        }
-
-        if (['cdl-number'].includes(this.inputConfig.name.toLowerCase())) {
-            if (
-                this.inputService
-                    .getInputRegexPattern('cdl-number')
-                    .test(String.fromCharCode(event.charCode))
-            ) {
-                this.enableOneSpaceOnly(event);
-                this.disableConsecutivelySpaces(event);
-                return true;
-            } else {
-                event.preventDefault();
-                return false;
-            }
-        }
-
-        // All Simbols
-        if (
-            ['username', 'nickname', 'password'].includes(
-                this.inputConfig.name.toLowerCase()
-            )
-        ) {
-            if (
-                this.inputService
-                    .getInputRegexPattern('username')
-                    .test(String.fromCharCode(event.charCode))
-            ) {
-                return true;
-            } else {
-                event.preventDefault();
-                return false;
-            }
-        }
-
-        if (['full name'].includes(this.inputConfig.name.toLowerCase())) {
-            if (
-                this.inputService
-                    .getInputRegexPattern('full name')
-                    .test(String.fromCharCode(event.charCode))
-            ) {
-                this.enableOneSpaceOnly(event);
-                this.disableMultiplePoints(event);
-                this.disableConsecutivelySpaces(event);
-                return true;
-            } else {
-                event.preventDefault();
-                return false;
-            }
-        }
-
-        if (['tollvalidation'].includes(this.inputConfig.name.toLowerCase())) {
-            if (
-                this.inputService
-                    .getInputRegexPattern('tollvalidation')
-                    .test(String.fromCharCode(event.charCode))
-            ) {
-                return true;
-            } else {
-                event.preventDefault();
-                return false;
-            }
-        }
-
-        // Just characters and numbers
-        if (
-            ['prefix', 'suffix', 'parking name'].includes(
-                this.inputConfig.name.toLowerCase()
-            )
-        ) {
-            if (
-                this.inputService
-                    .getInputRegexPattern('prefix')
-                    .test(String.fromCharCode(event.charCode))
-            ) {
-                return true;
-            } else {
-                event.preventDefault();
-                return false;
-            }
-        }
-
-        if (['file name'].includes(this.inputConfig.name.toLowerCase())) {
-            if (
-                this.inputService
-                    .getInputRegexPattern('file name')
-                    .test(String.fromCharCode(event.charCode))
-            ) {
-                event.preventDefault();
-                return false;
-            } else {
-                this.disableConsecutivelySpaces(event);
-                return true;
-            }
-        }
-
-        if (
-            ['insurer name', 'office name'].includes(
-                this.inputConfig.name.toLowerCase()
-            )
-        ) {
-            if (
-                this.inputService
-                    .getInputRegexPattern('producer name')
-                    .test(String.fromCharCode(event.charCode))
-            ) {
-                this.disableMultiplePoints(event);
-                return true;
-            } else {
-                event.preventDefault();
-                return false;
-            }
-        }
-
-        if (
-            ['input dropdown label'].includes(
-                this.inputConfig.name.toLowerCase()
-            )
-        ) {
-            this.disableConsecutivelySpaces(event);
-            this.disableConsecutivelyPoints(event);
-        }
-
-        this.input.nativeElement.value.trim();
-    }
-
+    // Logic Validation Input
     private enableOneSpaceOnly(event: any) {
         if (
             /^\s*$/.test(String.fromCharCode(event.charCode)) ||
@@ -1776,15 +1787,30 @@ export class TaInputComponent
     }
 
     private disableConsecutivelySpaces(event: any) {
-        if (/^\s*$/.test(String.fromCharCode(event.charCode))) {
-            this.numberOfConsecutivelySpaces++;
-            if (this.numberOfConsecutivelySpaces > 1) {
-                event.preventDefault();
-                return false;
-            }
-        } else {
-            this.numberOfConsecutivelySpaces = 0;
+        const inputElement = this.input.nativeElement as HTMLInputElement;
+
+        // Get cursor position
+        const cursorPosition = inputElement.selectionStart;
+
+        // If the cursor is in the middle of a word, allow spaces
+        if (
+            cursorPosition > 0 &&
+            !/\s/.test(inputElement.value[cursorPosition - 1]) &&
+            !/\s/.test(inputElement.value[cursorPosition])
+        ) {
+            return;
         }
+
+        // If the user is typing a space and the previous character is a space, prevent the default behavior
+        if (
+            event.key === ' ' &&
+            /\s/.test(inputElement.value[cursorPosition - 1])
+        ) {
+            event.preventDefault();
+        }
+
+        // Save the cursor position for the next input event
+        this.lastCursorSpacePosition = cursorPosition;
     }
 
     private disableConsecutivelyPoints(event: any) {
@@ -1820,14 +1846,16 @@ export class TaInputComponent
             this.numberOfPoints = 0;
         }
     }
+    // ------- end
 
+    // Paste
     public onPaste(event?: any) {
         event.preventDefault();
 
         this.pasteCheck(
             event.clipboardData.getData('text'),
             this.inputService.getInputRegexPattern(
-                this.inputConfig.name.toLowerCase()
+                this._inputConfig.name.toLowerCase()
             )
         );
     }
@@ -1838,11 +1866,11 @@ export class TaInputComponent
         let countOfCaracters = 0;
 
         // Max Length For Paste
-        if (this.inputConfig.maxLength) {
+        if (this._inputConfig.maxLength) {
             if (
                 pastedText.startsWith('+1') ||
                 (pastedText.startsWith('1') &&
-                    this.inputConfig.name === 'Phone')
+                    this._inputConfig.name === 'Phone')
             ) {
                 if (pastedText.startsWith('+1')) {
                     pastedText = pastedText.split('+1')[1];
@@ -1856,7 +1884,7 @@ export class TaInputComponent
                     countOfCaracters++;
                 }
 
-                if (countOfCaracters === this.inputConfig.maxLength) {
+                if (countOfCaracters === this._inputConfig.maxLength) {
                     break;
                 }
             }
@@ -1881,11 +1909,11 @@ export class TaInputComponent
 
         if (
             ['phone', 'ein', 'ssn'].includes(
-                this.inputConfig.name.toLowerCase()
+                this._inputConfig.name.toLowerCase()
             )
         ) {
-            if ('phone' === this.inputConfig.name.toLowerCase()) {
-                setTimeout(() => {
+            if ('phone' === this._inputConfig.name.toLowerCase()) {
+                this.timeoutCleaner = setTimeout(() => {
                     this.getSuperControl.setErrors(null);
 
                     this.input.nativeElement.value = newText.substring(0, 10);
@@ -1900,8 +1928,8 @@ export class TaInputComponent
                 }, 0);
             }
 
-            if ('ein' === this.inputConfig.name.toLowerCase()) {
-                setTimeout(() => {
+            if ('ein' === this._inputConfig.name.toLowerCase()) {
+                this.timeoutCleaner = setTimeout(() => {
                     this.getSuperControl.setErrors(null);
                     this.input.nativeElement.value = newText.substring(0, 9);
                     this.getSuperControl.patchValue(
@@ -1912,8 +1940,8 @@ export class TaInputComponent
                 }, 0);
             }
 
-            if ('ssn' === this.inputConfig.name.toLowerCase()) {
-                setTimeout(() => {
+            if ('ssn' === this._inputConfig.name.toLowerCase()) {
+                this.timeoutCleaner = setTimeout(() => {
                     this.getSuperControl.setErrors(null);
                     this.input.nativeElement.value = newText.substring(0, 9);
                     this.getSuperControl.patchValue(
@@ -1930,11 +1958,71 @@ export class TaInputComponent
         // Text Transform Format
         this.transformText(newText, true);
     }
+    // ------- end
 
     // Optimization for *ngFor
     public trackIdentity = (index: number): number => index;
 
-    //------------------- Date & Time Picker -------------------
+    //-------------------------------------- Date & Time Picker --------------------------------------
+
+    public setTimePickerTime() {
+        if (this._inputConfig.name === 'timepicker')
+            this.dateTimeInputDate = new Date(
+                moment().format('MM/DD/YYYY') +
+                    (this._inputConfig?.isFromDate ? ' 12:15' : ' 12:00')
+            );
+    }
+    public setTimeDateInput(date) {
+        let text, dateFormat, timeFormat;
+        if (this._inputConfig.name === 'datepicker') {
+            text = moment(new Date(date)).format('MM/DD/YY');
+            dateFormat = text.split('/');
+        } else {
+            date =
+                date instanceof Date
+                    ? date
+                    : new Date(moment().format('MM/DD/YYYY') + ' ' + date);
+            text = moment(new Date(date)).format('HH:mm');
+
+            timeFormat = moment(new Date(date)).format('hh/mm/A');
+            dateFormat = timeFormat.split('/');
+        }
+
+        this.input.nativeElement.value = text;
+        this.onChange(this.input.nativeElement.value);
+        this.focusInput = false;
+
+        this.span1.nativeElement.innerHTML = dateFormat[0];
+        this.span2.nativeElement.innerHTML = dateFormat[1];
+        this.span3.nativeElement.innerHTML = dateFormat[2];
+        this.dateTimeInputDate = new Date(date);
+        this.showDateInput = true;
+    }
+
+    public resetDateTimeInputs() {
+        if (this.span1) {
+            if (this._inputConfig.name === 'datepicker') {
+                this.span1.nativeElement.innerHTML = 'mm';
+                this.span2.nativeElement.innerHTML = 'dd';
+                this.span3.nativeElement.innerHTML = 'yy';
+            } else if (this._inputConfig.name === 'timepicker') {
+                this.span1.nativeElement.innerHTML = 'HH';
+                this.span2.nativeElement.innerHTML = 'MM';
+                this.span3.nativeElement.innerHTML = 'AM';
+            }
+        }
+
+        this.setTimePickerTime();
+        this.newInputChanged = true;
+        this.focusInput = false;
+        this.showDateInput = false;
+    }
+
+    public selectionChange(event: any) {
+        if (event) {
+            this.inputSelection = true;
+        }
+    }
 
     public onDatePaste(e: any) {
         e.preventDefault();
@@ -2018,7 +2106,8 @@ export class TaInputComponent
             e.keyCode == 8 ||
             e.keyCode == 9 ||
             e.keyCode == 46 ||
-            (this.selectionInput == 3 && this.inputConfig.name === 'timepicker')
+            (this.selectionInput == 3 &&
+                this._inputConfig.name === 'timepicker')
         ) {
             !e.noPrevent && e.preventDefault();
             if (e.keyCode == 37) {
@@ -2075,7 +2164,6 @@ export class TaInputComponent
             } else if (e.keyCode == 38) {
                 this.setDateTimeModel('up');
             } else if (e.keyCode == 40) {
-            
                 this.setDateTimeModel('down');
             } else if (e.keyCode == 8 || e.keyCode == 46) {
                 this.handleKeyboardInputs(e, true);
@@ -2110,7 +2198,7 @@ export class TaInputComponent
                 : parseInt(this.span3.nativeElement.innerHTML);
 
         this.newInputChanged = false;
-        if (this.inputConfig.name === 'datepicker') {
+        if (this._inputConfig.name === 'datepicker') {
             if (this.selectionInput == 0) {
                 if (isRestart) {
                     this.span1.nativeElement.innerHTML = 'mm';
@@ -2275,7 +2363,7 @@ export class TaInputComponent
 
     setDateTimeModel(direction: string) {
         if (this.selectionInput == -1) this.selectionInput = 0;
-        if (this.inputConfig.name === 'datepicker') {
+        if (this._inputConfig.name === 'datepicker') {
             if (direction == 'up') {
                 if (this.selectionInput == 0) {
                     this.dateTimeInputDate = new Date(
@@ -2449,14 +2537,14 @@ export class TaInputComponent
     }
 
     onPopoverShown() {
-        if (!this.inputConfig.dropdownLabel) {
+        if (!this._inputConfig.dropdownLabel) {
             this.focusInput = true;
             this.showDateInput = true;
         }
     }
 
     onPopoverHidden() {
-        if (!this.inputConfig.dropdownLabel) {
+        if (!this._inputConfig.dropdownLabel) {
             this.focusInput = false;
             this.blurOnDateTime();
         }
@@ -2471,7 +2559,7 @@ export class TaInputComponent
     private blurOnDateTime() {
         clearTimeout(this.dateTimeMainTimer);
         this.dateTimeMainTimer = setTimeout(() => {
-            if (this.inputConfig.name === 'datepicker') {
+            if (this._inputConfig.name === 'datepicker') {
                 if (
                     !isNaN(this.span1.nativeElement.innerHTML) &&
                     !isNaN(this.span2.nativeElement.innerHTML) &&
@@ -2486,7 +2574,6 @@ export class TaInputComponent
                     this.span3.nativeElement.innerHTML = 'yy';
                     this.dateTimeInputDate = new Date();
                     this.showDateInput = false;
-                    this.resetForms(); // PITANJE STO SE OVO SKLANJA I UOPSTE STO JE TREBALO
                 }
             } else {
                 if (
@@ -2513,11 +2600,6 @@ export class TaInputComponent
         }, 100);
     }
 
-    ngOnDestroy(): void {
-        this.destroy$.next();
-        this.destroy$.complete();
-    }
-
     selectLastOneForSelection() {
         clearTimeout(this.wholeInputSelection);
         let range, selection;
@@ -2536,7 +2618,7 @@ export class TaInputComponent
             selection.addRange(range);
         }
 
-        setTimeout(() => {
+        this.timeoutCleaner = setTimeout(() => {
             clearTimeout(this.dateTimeMainTimer);
             clearTimeout(this.focusBlur);
         }, 90);
@@ -2547,11 +2629,20 @@ export class TaInputComponent
         this.span3.nativeElement.focus();
         this.setSpanSelection(this.span3.nativeElement);
         this.showDateInput = true;
-        setTimeout(() => {
-            console.log('ON KEY UPPPPP _____________________');
+        this.timeoutCleaner = setTimeout(() => {
             clearTimeout(this.dateTimeMainTimer);
             clearTimeout(this.focusBlur);
             clearTimeout(this.wholeInputSelection);
         }, 90);
+    }
+
+    ngOnDestroy(): void {
+        this.destroy$.next();
+        this.destroy$.complete();
+        clearTimeout(this.timeoutCleaner);
+        clearTimeout(this.wholeInputSelection);
+        clearTimeout(this.dateTimeMainTimer);
+        clearTimeout(this.inputCommandsTimeout);
+        clearTimeout(this.passwordTimeout);
     }
 }

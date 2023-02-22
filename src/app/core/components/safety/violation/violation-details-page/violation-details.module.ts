@@ -11,6 +11,11 @@ import { TaCustomCardComponent } from '../../../shared/ta-custom-card/ta-custom-
 import { TaCopyComponent } from '../../../shared/ta-copy/ta-copy.component';
 import { TaInputNoteComponent } from '../../../shared/ta-input-note/ta-input-note.component';
 import { formatDatePipe } from 'src/app/core/pipes/formatDate.pipe';
+import { TaCounterComponent } from '../../../shared/ta-counter/ta-counter.component';
+import { TaUploadFilesComponent } from '../../../shared/ta-upload-files/ta-upload-files.component';
+import { TruckassistProgressExpirationComponent } from '../../../shared/truckassist-progress-expiration/truckassist-progress-expiration.component';
+import { TaReCardComponent } from '../../../shared/ta-common-card/ta-re-card.component';
+import { TaCommonHeaderComponent } from '../../../shared/ta-details-header/ta-details-header.component';
 
 @NgModule({
     declarations: [
@@ -28,7 +33,12 @@ import { formatDatePipe } from 'src/app/core/pipes/formatDate.pipe';
         TaCustomCardComponent,
         TaCopyComponent,
         TaInputNoteComponent,
-        formatDatePipe
+        formatDatePipe,
+        TaCounterComponent,
+        TaUploadFilesComponent,
+        TruckassistProgressExpirationComponent,
+        TaReCardComponent,
+        TaCommonHeaderComponent
     ],
 })
 export class ViolationDetailsModule {}

@@ -14,6 +14,7 @@ import { TaUploadFilesComponent } from '../shared/ta-upload-files/ta-upload-file
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { formatEinPipe } from '../../pipes/formatEin.pipe';
 import { RouterModule } from '@angular/router';
+import { TaCounterComponent } from '../shared/ta-counter/ta-counter.component';
 
 @NgModule({
     imports: [
@@ -25,7 +26,8 @@ import { RouterModule } from '@angular/router';
         TaUploadFilesComponent,
         AngularSvgIconModule,
         formatEinPipe,
-        RouterModule
+        RouterModule,
+        TaCounterComponent
     ],
     declarations: [
         SettingsComponent,

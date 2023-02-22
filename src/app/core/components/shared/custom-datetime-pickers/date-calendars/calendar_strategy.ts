@@ -4,7 +4,7 @@ import {
 } from '@angular/cdk/scrolling';
 import { Subject } from 'rxjs';
 import { distinctUntilChanged } from 'rxjs/operators';
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { CalendarScrollService } from '../calendar-scroll.service';
 
 // POCETNA GODINA KALENDARA IDE UNAZAD 90 GODINA
@@ -20,9 +20,9 @@ const BUFFER = 500;
 export class CalendarStrategy implements VirtualScrollStrategy {
     constructor(
         private calendarService: CalendarScrollService,
-        private startedHeight,
-        private FULL_SIZE,
-        private SCROLL_TYPE
+        @Inject(String) private startedHeight: number,
+        @Inject(String) private FULL_SIZE,
+        @Inject(String) private SCROLL_TYPE
     ) {}
 
     private index$ = new Subject<any>();

@@ -41,7 +41,11 @@ import {
 } from '../../../utils/methods.calculations';
 import moment from 'moment';
 import { CreateLoadTemplateCommand } from '../../../../../../appcoretruckassist/model/createLoadTemplateCommand';
-import { IBilling, IPayment, LoadFinancialComponent } from './load-financial/load-financial.component';
+import {
+    IBilling,
+    IPayment,
+    LoadFinancialComponent,
+} from './load-financial/load-financial.component';
 import { MapRouteModel } from '../../shared/model/map-route';
 import { BrokerModalComponent } from '../broker-modal/broker-modal.component';
 import { NgbActiveModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -82,27 +86,32 @@ interface IStopRoutes {
     styleUrls: ['./load-modal.component.scss'],
     standalone: true,
     imports: [
-            CommonModule, 
-            FormsModule, 
-            NgbModule,
-            AppTooltipComponent, 
-            TaModalComponent, 
-            TaTabSwitchComponent, 
-            ReactiveFormsModule,
-            AngularSvgIconModule,
-            TaInputDropdownComponent,
-            TaInputComponent,
-            TaCustomCardComponent,
-            TaCheckboxComponent,
-            LoadStopComponent,
-            LoadFinancialComponent,
-            TaUploadFilesComponent,
-            TaInputNoteComponent,
-            FinancialCalculationPipe,
-            LoadDatetimeRangePipe,
-            LoadTimeTypePipe,
-            MapsComponent
-        ],
+        // Module
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+        AngularSvgIconModule,
+        NgbModule,
+
+        // Component
+        AppTooltipComponent,
+        TaModalComponent,
+        TaTabSwitchComponent,
+        TaInputDropdownComponent,
+        TaInputComponent,
+        TaCustomCardComponent,
+        TaCheckboxComponent,
+        LoadStopComponent,
+        LoadFinancialComponent,
+        TaUploadFilesComponent,
+        TaInputNoteComponent,
+        MapsComponent,
+
+        // Pipe
+        FinancialCalculationPipe,
+        LoadDatetimeRangePipe,
+        LoadTimeTypePipe,
+    ],
     animations: [
         trigger('fadeIn', [
             transition(':enter', [
@@ -3727,7 +3736,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             }
         });
 
-        if(tags.length) {
+        if (tags.length) {
             this.tagsService.updateTag({ tags: tags }).subscribe();
         }
     }

@@ -122,41 +122,6 @@
             background-color: #f7f7f7;
             position: relative;
 
-            // Override Input classes
-            .input-control:not(.date_time_holder) {
-                background-color: transparent !important;
-                transition: all 0.3s ease-in-out;
-
-                &.valid-focus-out-filled {
-                    background-color: transparent !important;
-                }
-
-                &:hover:not(.date_time_holder) {
-                    background-color: #f7f7f7 !important;
-                }
-
-                &:focus {
-                    background-color: #2f2f2f !important;
-                }
-
-                &.valid-focus-in,
-                &.dropdown-placeholder-active {
-                    background-color: #255bb9 !important;
-                    color: #ffffff !important;
-                }
-
-                &.invalid-focus-in {
-                    background-color: #f44336 !important;
-                }
-            }
-
-            .input-clear {
-                &:hover ~ .input-control {
-                    background-color: #f7f7f7 !important;
-                    color: #2f2f2f !important;
-                }
-            }
-
             p {
                 font-size: 14px;
                 font-weight: 600;
@@ -1044,7 +1009,6 @@
 }
 
 // New Design For Fake Table Modal
-
 .common-table-modal-container {
     display: flex;
     flex-direction: column;
@@ -1118,32 +1082,6 @@
 
                 &-contact-modal-email {
                     grid-template-columns: 285px 100px 1fr;
-                }
-                // ---------
-
-                .input-control {
-                    background-color: transparent !important;
-                    transition: all 0.3s ease-in-out;
-
-                    &.valid-focus-out-filled {
-                        background-color: transparent !important;
-                    }
-
-                    &:hover {
-                        background-color: #f7f7f7 !important;
-                    }
-
-                    &:focus {
-                        background-color: #2f2f2f !important;
-                    }
-
-                    &.valid-focus-in {
-                        background-color: #255bb9 !important;
-                    }
-
-                    &.invalid-focus-in {
-                        background-color: #f44336 !important;
-                    }
                 }
 
                 .common-table-modal-container-extension {

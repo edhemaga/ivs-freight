@@ -429,6 +429,64 @@ export const GOOGLE_MAP_STYLES = [
         ],
     },
     {
+        featureType: 'administrative.land_parcel',
+        elementType: 'labels',
+        stylers: [
+            {
+                visibility: 'off',
+            },
+        ],
+    },
+    {
+        featureType: 'poi',
+        elementType: 'labels.text',
+        stylers: [
+            {
+                visibility: 'off',
+            },
+        ],
+    },
+    {
+        featureType: 'poi',
+        elementType: 'labels',
+        stylers: [
+            {
+                visibility: 'off',
+            },
+        ],
+    },
+    {
+        featureType: 'poi',
+        elementType: 'labels.text',
+        stylers: [
+            {
+                visibility: 'off',
+            },
+        ],
+    },
+    {
+        featureType: 'transit',
+        stylers: [
+            {
+                visibility: 'off',
+            },
+        ],
+    },
+    {
+        featureType: 'administrative.country',
+        stylers: [
+            {
+                color: '#616161',
+            },
+            {
+                visibility: 'on',
+            },
+            {
+                weight: 1,
+            },
+        ],
+    },
+    {
         elementType: 'labels.text.fill',
         stylers: [
             {
@@ -495,6 +553,17 @@ export const GOOGLE_MAP_STYLES = [
         stylers: [
             {
                 color: '#ffffff',
+            },
+        ],
+    },
+    {
+        featureType: 'road',
+        stylers: [
+            {
+                saturation: -100,
+            },
+            {
+                lightness: 30,
             },
         ],
     },

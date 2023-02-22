@@ -30,10 +30,22 @@ import { TaUploadFilesComponent } from '../../../shared/ta-upload-files/ta-uploa
     styleUrls: ['./tt-registration-modal.component.scss'],
     providers: [ModalService, FormService],
     standalone: true,
-    imports: [CommonModule, FormsModule, TaModalComponent, ReactiveFormsModule,TaInputComponent, TaInputDropdownComponent, TaCustomCardComponent, TaInputNoteComponent, TaUploadFilesComponent]
+    imports: [
+        // Module
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+
+        // Component
+        TaModalComponent,
+        TaInputComponent,
+        TaInputDropdownComponent,
+        TaCustomCardComponent,
+        TaInputNoteComponent,
+        TaUploadFilesComponent,
+    ],
 })
 export class TtRegistrationModalComponent implements OnInit, OnDestroy {
-    private destroy$ = new Subject<void>();
     @Input() editData: any;
 
     public registrationForm: UntypedFormGroup;
@@ -50,6 +62,8 @@ export class TtRegistrationModalComponent implements OnInit, OnDestroy {
     public disableCardAnimation: boolean = false;
 
     public registrationExpirationDate: boolean = false;
+
+    private destroy$ = new Subject<void>();
 
     constructor(
         private formBuilder: UntypedFormBuilder,

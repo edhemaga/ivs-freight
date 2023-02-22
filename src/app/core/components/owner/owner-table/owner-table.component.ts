@@ -62,7 +62,7 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
         private ownerInactiveQuery: OwnerInactiveQuery,
         private ownerService: OwnerTService,
         private phonePipe: formatPhonePipe,
-        private ownerInactiveStore: OwnerInactiveStore,
+        private ownerInactiveStore: OwnerInactiveStore
     ) {}
     ngOnInit(): void {
         this.sendOwnerData();
@@ -287,7 +287,9 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
     observTableContainer() {
         this.resizeObserver = new ResizeObserver((entries) => {
             entries.forEach((entry) => {
-                this.tableService.sendCurrentSetTableWidth(entry.contentRect.width);
+                this.tableService.sendCurrentSetTableWidth(
+                    entry.contentRect.width
+                );
             });
         });
 
@@ -370,13 +372,13 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     updateDataCount() {
         const ownerCount = JSON.parse(localStorage.getItem('ownerTableCount'));
-        
+
         const updatedTableData = [...this.tableData];
 
         updatedTableData[0].length = ownerCount.active;
         updatedTableData[1].length = ownerCount.inactive;
 
-        this.tableData = [...updatedTableData]
+        this.tableData = [...updatedTableData];
     }
 
     getGridColumns(configType: string) {

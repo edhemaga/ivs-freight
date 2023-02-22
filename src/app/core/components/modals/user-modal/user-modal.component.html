@@ -159,7 +159,7 @@
                                     "
                                 ></app-ta-input-dropdown>
                             </div>
-                            <div class="col-5">
+                            <div class="col-4">
                                 <app-ta-input-dropdown
                                     formControlName="companyOfficeId"
                                     [inputConfig]="{
@@ -167,7 +167,7 @@
                                         type: 'text',
                                         label: 'Office',
                                         isDropdown: true,
-                                        dropdownWidthClass: 'w-col-188'
+                                        dropdownWidthClass: 'w-col-148'
                                     }"
                                     [canAddNew]="true"
                                     [canOpenModal]="true"
@@ -178,7 +178,7 @@
                                     "
                                 ></app-ta-input-dropdown>
                             </div>
-                            <div class="col-3 no-p-left">
+                            <div class="col-4 no-p-left">
                                 <app-ta-tab-switch
                                     [tabs]="
                                         selectedUserType?.name === 'Owner'
@@ -253,8 +253,10 @@
                                         isDisabled:
                                             selectedUserType?.name ===
                                                 'Owner' || isUserReturned,
-                                        textTransform: 'lowercase'
+                                        textTransform: 'lowercase',
+                                        removeInput: isUserReturned
                                     }"
+                                    (clear)="resetDataByEmail($event)"
                                 ></app-ta-input>
                             </div>
                         </div>

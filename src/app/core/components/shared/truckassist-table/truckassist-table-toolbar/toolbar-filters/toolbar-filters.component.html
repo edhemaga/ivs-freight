@@ -1,4 +1,9 @@
-<div class="table-filter-container" [ngClass]="{'table-filter-padding': options.toolbarActions.showSearchBorder}">
+<div
+    class="table-filter-container"
+    [ngClass]="{
+        'table-filter-padding': options.toolbarActions.showSearchBorder
+    }"
+>
     <!-- VIEW MODE SELECT -->
     <div
         class="view-mode-container"
@@ -42,6 +47,48 @@
     <!-- BORDER -->
     <div
         class="border-container"
+        *ngIf="options.toolbarActions.showArhiveCount"
+    >
+        <div class="border"></div>
+    </div>
+
+    <!-- ARHIVE COUNT -->
+    <div
+        class="ahrive-count-container"
+        *ngIf="options.toolbarActions.showArhiveCount"
+    >
+        <div class="ahrive-count">{{ activeTableData.arhiveCount }}</div>
+        <svg-icon
+            [svgStyle]="{ 'width.px': 17, 'height.px': 17 }"
+            [src]="'assets/svg/truckassist-table/new-list-dropdown/Deactivate.svg'"
+        ></svg-icon>
+    </div>
+
+    <!-- BORDER -->
+    <div
+        class="border-container"
+        *ngIf="
+            options.toolbarActions.showCountSelectedInList &&
+            activeTableData?.listSelectedCount
+        "
+    >
+        <div class="border"></div>
+    </div>
+
+    <!-- COUNT SELECTED IN LIST  -->
+    <div
+        class="count-selected-in-list-container"
+        *ngIf="
+            options.toolbarActions.showCountSelectedInList &&
+            activeTableData?.listSelectedCount
+        "
+    >
+        {{ activeTableData.listSelectedCount }} Selected
+    </div>
+
+    <!-- BORDER -->
+    <div
+        class="border-container"
         *ngIf="options.toolbarActions.showLocationFilter"
     >
         <div class="border"></div>
@@ -79,17 +126,21 @@
     </app-filter>
 
     <!-- BORDER -->
+    <!--
     <div
         class="border-container"
         *ngIf="options.toolbarActions.showDriverFilter"
     >
         <div class="border"></div>
     </div>
+    -->
 
     <!-- DRIVER FILTER -->
+    <!--
     <div class="no-filter" *ngIf="options.toolbarActions.showDriverFilter">
         Driver Filter
     </div>
+    -->
 
     <!-- BORDER -->
     <div
@@ -112,18 +163,22 @@
     </app-filter>
 
     <!-- BORDER -->
+    <!--
     <div
         class="border-container"
         *ngIf="options.toolbarActions.showArhiveFilter"
     >
         <div class="border"></div>
     </div>
+    -->
 
     <!-- ARHIVE FILTER -->
+    <!--
     <div class="no-filter" *ngIf="options.toolbarActions.showArhiveFilter">
         Arhive Filter
     </div>
-
+    -->
+    
     <!-- BORDER -->
     <div class="border-container" *ngIf="options.toolbarActions.showTimeFilter">
         <div class="border"></div>
@@ -199,44 +254,55 @@
     </app-filter>
 
     <!-- BORDER -->
+    <!--
     <div
         class="border-container"
         *ngIf="options.toolbarActions.showTowingFilter"
     >
         <div class="border"></div>
     </div>
-
+    -->
     <!-- TOWING FILTER -->
+    <!--
     <div class="no-filter" *ngIf="options.toolbarActions.showTowingFilter">
         Towing Filter
     </div>
+    -->
 
     <!-- BORDER -->
+    <!--
     <div
         class="border-container"
         *ngIf="options.toolbarActions.showHazmatFilter"
     >
         <div class="border"></div>
     </div>
+    -->
 
     <!-- HAZMAT FILTER -->
+    <!--
     <div class="no-filter" *ngIf="options.toolbarActions.showHazmatFilter">
         Hazmat Filter
     </div>
+    -->
+
 
     <!-- BORDER -->
+    <!--
     <div
         class="border-container"
         *ngIf="options.toolbarActions.showRepairOrderFilter"
     >
         <div class="border"></div>
     </div>
-
+    -->
+    
     <!-- REPAIR ORDER FILTER -->
+    <!--
     <div class="no-filter" *ngIf="options.toolbarActions.showRepairOrderFilter">
         Repair Order Filter
     </div>
-
+    -->
     <!-- BORDER -->
     <div class="border-container" *ngIf="options.toolbarActions.showPMFilter">
         <div class="border"></div>
@@ -337,15 +403,18 @@
     </app-filter>
 
     <!-- BORDER -->
+    <!--
     <div class="border-container" *ngIf="options.toolbarActions.showLtlFilter">
         <div class="border"></div>
     </div>
-
+    -->
     <!-- LTL FILTER -->
+    <!--
     <div class="no-filter" *ngIf="options.toolbarActions.showLtlFilter">
         LTL Filter
     </div>
-
+    -->
+    
     <!-- BORDER -->
     <div
         class="border-container"
@@ -390,17 +459,20 @@
     </app-filter>
 
     <!-- BORDER -->
+    <!--
     <div
         class="border-container"
         *ngIf="options.toolbarActions.showLabelFilter"
     >
         <div class="border"></div>
     </div>
-
+    -->
     <!-- LABEL FILTER -->
+    <!--
     <div class="no-filter" *ngIf="options.toolbarActions.showLabelFilter">
         Label Filter
     </div>
+    -->
 
     <!-- BORDER -->
     <div
@@ -424,10 +496,7 @@
     </app-filter>
 
     <!-- BORDER -->
-    <div
-        class="border-container"
-        *ngIf="options.toolbarActions.showMoneyCount"
-    >
+    <div class="border-container" *ngIf="options.toolbarActions.showMoneyCount">
         <div class="border"></div>
     </div>
 

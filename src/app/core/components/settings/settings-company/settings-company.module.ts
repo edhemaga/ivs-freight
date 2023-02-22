@@ -10,11 +10,8 @@ import { SettingsInsurancepolicyComponent } from './settings-insurancepolicy/set
 import { SettingsFactoringComponent } from './settings-factoring/settings-factoring.component';
 
 // Modals
-import { SettingsBasicModalComponent } from '../../modals/company-modals/settings-basic-modal/settings-basic-modal.component';
-import { SettingsInsurancePolicyModalComponent } from '../../modals/company-modals/settings-insurance-policy-modal/settings-insurance-policy-modal.component';
-import { SettingsFactoringModalComponent } from '../../modals/company-modals/settings-factoring-modal/settings-factoring-modal.component';
 import { SettingsNodataComponent } from './settings-nodata/settings-nodata.component';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '../../shared/shared.module';
 import { AppTooltipComponent } from '../../standalone-components/app-tooltip/app-tooltip.component';
 import { TaCustomCardComponent } from '../../shared/ta-custom-card/ta-custom-card.component';
@@ -36,6 +33,9 @@ import { formatDatePipe } from 'src/app/core/pipes/formatDate.pipe';
 import { TaLogoChangeComponent } from '../../shared/ta-logo-change/ta-logo-change.component';
 
 import { TaReCardComponent } from '../../shared/ta-common-card/ta-re-card.component';
+import { TaCounterComponent } from '../../shared/ta-counter/ta-counter.component';
+import { TruckassistProgressExpirationComponent } from '../../shared/truckassist-progress-expiration/truckassist-progress-expiration.component';
+import { HidePasswordPipe } from '../../../pipes/hide-password.pipe';
 
 @NgModule({
     imports: [
@@ -62,7 +62,12 @@ import { TaReCardComponent } from '../../shared/ta-common-card/ta-re-card.compon
         TaThousandSeparatorPipe,
         formatDatePipe,
         TaReCardComponent,
-        TaLogoChangeComponent
+        TaLogoChangeComponent,
+        TaCounterComponent,
+        TruckassistProgressExpirationComponent,
+
+        // PIPES
+        HidePasswordPipe,
     ],
     exports: [SharedModule],
     declarations: [
@@ -71,12 +76,7 @@ import { TaReCardComponent } from '../../shared/ta-common-card/ta-re-card.compon
         SettingsPayrollComponent,
         SettingsInsurancepolicyComponent,
         SettingsFactoringComponent,
-
         SettingsNodataComponent,
-        //Modals
-        SettingsBasicModalComponent,
-        SettingsInsurancePolicyModalComponent,
-        SettingsFactoringModalComponent,
     ],
 })
 export class SettingsCompanyModule {}

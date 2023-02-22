@@ -305,6 +305,9 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
     initTableOptions(): void {
         this.tableOptions = {
             toolbarActions: {
+                hideDataCount: true,
+                showArhiveCount: true,
+                showCountSelectedInList: false,
                 viewModeOptions: [
                     { name: 'List', active: this.activeViewMode === 'List' },
                     { name: 'Card', active: this.activeViewMode === 'Card' },
@@ -337,6 +340,7 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 title: 'User',
                 field: 'active',
                 length: userCount.users,
+                arhiveCount: 0,
                 data: userData,
                 gridNameTitle: 'User',
                 stateName: 'users',
@@ -374,9 +378,6 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
             );
 
             this.viewData = [...sortedUserData];
-
-            console.log('User Data');
-            console.log(this.viewData);
         } else {
             this.viewData = [];
         }
@@ -391,7 +392,7 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
         return {
             ...data,
             isSelected: false,
-            userAvatar: {
+            tableAvatar: {
                 name:
                     data?.firstName && data?.lastName
                         ? data.firstName + ' ' + data.lastName
@@ -406,32 +407,46 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
                         : ''
                 ),
             },
-            userTableDept: data?.department?.name ? data.department.name : '',
-            userTableOffice: data?.companyOffice?.name
+            tableTableDept: data?.department?.name ? data.department.name : '',
+            tableTableOffice: data?.companyOffice?.name
                 ? data.companyOffice.name
                 : '',
-            userTablePhone: data?.phone
+            tableTablePhone: data?.phone
                 ? this.phoneFormater.transform(data.phone)
                 : '',
-            uesrTableExt: data?.extensionPhone ? data.extensionPhone : '',
-            userTableHired: data?.startDate
+            tableTableHired: data?.startDate
                 ? this.datePipe.transform(data?.startDate, 'MM/dd/yy')
                 : '',
-            userTablePersonalPH: data?.personalPhone
+            tableDeactivated: 'NA',
+            tablePersonalDetailsPhone: data?.personalPhone
                 ? this.phoneFormater.transform(data.personalPhone)
                 : '',
-            userTableStatus: {
+            tablePersonalDetailsEmail: 'NA',
+            tableTableStatus: {
                 status:
                     data?.userType?.name && data?.userType?.name !== '0'
                         ? data.userType.name
                         : 'No',
                 isInvited: false,
             },
-            userTableCommission: data?.commission ? data.commission + '%' : '',
-            userTableSalary: data?.salary
+            tablePersonalDetailsBankName: 'NA',
+            tablePersonalDetailsRouting: 'NA',
+            tablePersonalDetailsAccount: 'NA',
+            tablePaymentDetailsType: 'NA',
+            tablePaymentDetailsComm: data?.commission
+                ? data.commission + '%'
+                : '',
+            tablePaymentDetailsSalary: data?.salary
                 ? '$' + this.thousandSeparator.transform(data.salary)
                 : '',
+            tableAdded: data.createdAt
+                ? this.datePipe.transform(data.createdAt, 'MM/dd/yy')
+                : '',
+            tableEdited: data.updatedAt
+                ? this.datePipe.transform(data.updatedAt, 'MM/dd/yy')
+                : '',
             userStatus: data.status,
+            tableCantSelect: data.userType.name === 'Owner',
             // User Dropdown Action Set Up
             tableDropdownContent: {
                 hasContent: true,
@@ -442,8 +457,6 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     // Get User Dropdown Content
     getDropdownContent(data: any) {
-        let testIcon = true;
-
         return [
             {
                 title: 'Edit',
@@ -457,20 +470,6 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 hasBorder: true,
             },
             {
-                title: 'Send Message',
-                name: 'send-message',
-                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Send Message.svg',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                svgClass: 'regular',
-                tableListDropdownContentStyle: {
-                    'margin-bottom.px': 4,
-                },
-                mutedStyle: true,
-            },
-            {
                 title: 'Reset Password',
                 name: 'reset-password',
                 svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Password.svg',
@@ -482,58 +481,39 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 tableListDropdownContentStyle: {
                     'margin-bottom.px': 4,
                 },
-                mutedStyle: true,
+                mutedStyle: !data.verified,
             },
             {
                 title: 'Resend Invitation',
                 name: 'resend-invitation',
-                svgUrl: testIcon
+                svgUrl: !data.verified
                     ? 'assets/svg/truckassist-table/new-list-dropdown/Email - Invitation.svg'
                     : 'assets/svg/truckassist-table/new-list-dropdown/Check.svg',
                 svgStyle: {
-                    width: testIcon ? 18 : 14,
-                    height: testIcon ? 18 : 14,
+                    width: !data.verified ? 18 : 14,
+                    height: !data.verified ? 18 : 14,
                 },
-                svgClass: testIcon ? 'regular' : 'check',
+                svgClass: data.verified ? 'check' : 'regular',
                 hasBorder: true,
-                mutedStyle: true,
-            },
-            {
-                title: 'Share',
-                name: 'share',
-                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Share.svg',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                svgClass: 'regular',
-                tableListDropdownContentStyle: {
-                    'margin-bottom.px': 4,
-                },
-            },
-            {
-                title: 'Print',
-                name: 'print',
-                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Print.svg',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                svgClass: 'regular',
-                hasBorder: true,
+                mutedStyle: data.verified,
             },
             {
                 title: data.status ? 'Deactivate' : 'Activate',
-                name: data.status ? 'deactivate' : 'activate' ,
+                name: data.status ? 'deactivate' : 'activate',
                 svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Deactivate.svg',
                 svgStyle: {
                     width: 18,
                     height: 18,
                 },
-                svgClass: data.status ? 'deactivate' : 'activate',
+                svgClass: !data.verified
+                    ? 'regular'
+                    : data.status
+                    ? 'deactivate'
+                    : 'activate',
                 tableListDropdownContentStyle: {
                     'margin-bottom.px': 4,
                 },
+                mutedStyle: !data.verified,
             },
             {
                 title: 'Delete',
@@ -719,7 +699,9 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
             ...event,
             data: {
                 ...event.data,
-                name: event.data.userAvatar.name,
+                name: event.data?.userAvatar?.name
+                    ? event.data.userAvatar.name
+                    : '',
             },
         };
 
@@ -753,6 +735,23 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     image: true,
                 }
             );
+        }
+        // User Reset Password
+        else if (event.type === 'reset-password') {
+            this.userService
+                .userResetPassword(event.data.email)
+                .pipe(takeUntil(this.destroy$))
+                .subscribe(() => {});
+        }
+        // User Resend Ivitation
+        else if (event.type === 'resend-invitation') {
+            this.userService
+                .userResendIvitation({
+                    email: event.data.email,
+                    isResendConfirmation: true,
+                })
+                .pipe(takeUntil(this.destroy$))
+                .subscribe(() => {});
         }
         // User Delete
         else if (event.type === 'delete') {

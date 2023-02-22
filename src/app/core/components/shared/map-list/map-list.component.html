@@ -34,9 +34,9 @@
                     *ngIf="searchForm?.get('search').value?.length >= 3"
                 >
                     <div class="marker-bold-text">
-                        {{ mapListContent.length }}
+                        {{ searchResultsCount }}
                     </div>
-                    {{ mapListContent.length == 1 ? 'result' : 'results' }} 
+                    {{ searchResultsCount == 1 ? 'result' : 'results' }} 
                 </div>
 
                 <div class="map-list-sort">

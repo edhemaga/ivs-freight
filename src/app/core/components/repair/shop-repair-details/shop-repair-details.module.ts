@@ -21,6 +21,7 @@ import { TaCounterComponent } from '../../shared/ta-counter/ta-counter.component
 import { TaCommonHeaderComponent } from '../../shared/ta-details-header/ta-details-header.component';
 import { TaTabSwitchComponent } from '../../standalone-components/ta-tab-switch/ta-tab-switch.component';
 import { formatCurrency } from 'src/app/core/pipes/formatCurrency.pipe';
+import { DetailsDropdownComponent } from '../../shared/details-page-dropdown/details-dropdown';
 
 @NgModule({
     declarations: [
@@ -48,7 +49,8 @@ import { formatCurrency } from 'src/app/core/pipes/formatCurrency.pipe';
         TaCounterComponent,
         TaCommonHeaderComponent,
         TaTabSwitchComponent,
-        formatCurrency
+        formatCurrency,
+        DetailsDropdownComponent
     ],
 })
 export class ShopRepairDetailsModule {}

@@ -35,7 +35,10 @@ import {
     fullNameValidation,
 } from '../../shared/ta-input/ta-input.regex-validations';
 import { ModalService } from '../../shared/ta-modal/modal.service';
-import { ReviewCommentModal, TaUserReviewComponent } from '../../shared/ta-user-review/ta-user-review.component';
+import {
+    ReviewCommentModal,
+    TaUserReviewComponent,
+} from '../../shared/ta-user-review/ta-user-review.component';
 import {
     LikeDislikeModel,
     TaLikeDislikeService,
@@ -70,26 +73,27 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     providers: [ModalService, TaLikeDislikeService, FormService],
     standalone: true,
     imports: [
-            CommonModule, 
-            FormsModule,
-            NgbModule,
-            AppTooltipComponent, 
-            TaModalComponent, 
-            TaTabSwitchComponent, 
-            ReactiveFormsModule,
-            TaInputComponent,
-            AngularSvgIconModule,
-            InputAddressDropdownComponent,
-            TaCustomCardComponent,
-            TaCheckboxComponent,
-            TaUploadFilesComponent,
-            TaInputNoteComponent,
-            TaUserReviewComponent,
-            TaInputDropdownComponent
-    ] 
+        // Module
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+        AngularSvgIconModule,
+
+        // Component
+        AppTooltipComponent,
+        TaModalComponent,
+        TaTabSwitchComponent,
+        TaInputComponent,
+        InputAddressDropdownComponent,
+        TaCustomCardComponent,
+        TaCheckboxComponent,
+        TaUploadFilesComponent,
+        TaInputNoteComponent,
+        TaUserReviewComponent,
+        TaInputDropdownComponent,
+    ],
 })
 export class ShipperModalComponent implements OnInit, OnDestroy {
-    private destroy$ = new Subject<void>();
     @Input() editData: any = null;
 
     public shipperForm: UntypedFormGroup;
@@ -132,8 +136,6 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
 
     public disableOneMoreReview: boolean = false;
 
-    public user: SignInResponse = JSON.parse(localStorage.getItem('user'));
-
     public documents: any[] = [];
     public fileModified: boolean = false;
     public filesForDelete: any[] = [];
@@ -145,6 +147,8 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
     public disableCardAnimation: boolean = false;
 
     public shipperName: string = '';
+
+    private destroy$ = new Subject<void>();
 
     constructor(
         private formBuilder: UntypedFormBuilder,
@@ -159,7 +163,6 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.createForm();
         this.getShipperDropdowns();
-
         this.companyUser = JSON.parse(localStorage.getItem('user'));
     }
 
@@ -410,6 +413,7 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
         }
     }
 
+    // ------- Review ------
     public createReview() {
         if (
             this.reviews.some((item) => item.isNewReview) ||
@@ -418,17 +422,6 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
             return;
         }
 
-        // ------------------------ PRODUCTION MODE -----------------------------
-        // this.reviews.unshift({
-        //   companyUser: {
-        //     fullName: this.companyUser.firstName.concat(' ', this.companyUser.lastName),
-        //     avatar: this.companyUser.avatar,
-        //   },
-        //   commentContent: '',
-        //   createdAt: new Date().toISOString(),
-        //   updatedAt: new Date().toISOString(),
-        //   isNewReview: true,
-        // });
         // -------------------------- DEVELOP MODE --------------------------------
         this.reviews.unshift({
             companyUser: {
@@ -491,7 +484,7 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
                                 const reviewIndex = this.reviews.findIndex(
                                     (item) =>
                                         item.companyUser.id ===
-                                        this.user.companyUserId
+                                        this.companyUser.companyUserId
                                 );
 
                                 if (reviewIndex !== -1) {
@@ -893,7 +886,8 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
 
                     const reviewIndex = this.reviews.findIndex(
                         (item) =>
-                            item.companyUser.id === this.user.companyUserId
+                            item.companyUser.id ===
+                            this.companyUser.companyUserId
                     );
 
                     if (reviewIndex !== -1) {

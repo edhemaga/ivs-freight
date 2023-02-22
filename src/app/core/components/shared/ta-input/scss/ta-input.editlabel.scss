@@ -1,9 +1,9 @@
 @import './ta-input.colors.scss';
 
-.input-edit-pen {
+.input-pen-container {
     position: absolute;
     right: 50px;
-    top: 48%;
+    top: 46%;
     transform: translateY(-50%);
     display: none;
     z-index: 10;
@@ -16,24 +16,25 @@
             height: 18px !important;
             overflow: visible;
             path {
-                fill: $input-edit-label-path-normal;
+                fill: $valid-pen-path;
             }
             rect {
                 transition: transform 0.3s;
                 transform: scale(1);
                 transform-origin: center;
-                fill: #b7b7b7;
+                fill: $valid-pen-rect;
             }
         }
 
         &:hover {
             svg {
                 overflow: visible;
+
                 rect {
                     transform: scale(1.2);
                     transform-origin: center;
                     transition: transform 0.3s;
-                    fill: $input-edit-label-rect-normal-hover;
+                    fill: $valid-on-pen-rect-hover;
                 }
             }
         }

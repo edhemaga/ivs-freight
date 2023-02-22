@@ -552,16 +552,20 @@ table {
 
                         // USER STATUS COLUMN
                         .user-status-container {
-                            width: 64px;
-                            height: 20px;
-                            border-radius: 2px;
+                            min-width: 68px;
+                            height: 18px;
+                            border-radius: 1px;
                             background: #6c6c6c20;
                             color: #6c6c6c;
-                            font-size: 12px;
-                            font-weight: bold;
+                            font-size: 11px;
+                            font-weight: 700;
                             display: flex;
                             justify-content: center;
                             align-items: center;
+                            padding: 0 4px;
+                            overflow: hidden;
+                            white-space: nowrap;
+                            text-overflow: ellipsis;
 
                             &::selection {
                                 color: #6c6c6c;
@@ -1669,8 +1673,8 @@ table {
 
                             svg-icon {
                                 display: flex;
-                                // transform: rotateZ(0deg);
-                                transition: transform 0.2s;
+
+                                transition: transform 0.1s;
 
                                 svg {
                                     circle {
@@ -2731,30 +2735,38 @@ table {
         }
 
         // Border Scroll Section
-        .border-scroll-section-container {
+        .table-border-scroll-section-container {
             position: relative;
 
-            .border-scroll-section {
+            .table-border-scroll-section {
                 position: absolute;
-                width: 8px;
+                width: 0px;
                 height: 34px;
                 margin-top: -4px;
+
+                transition: width 0.25s;
             }
         }
 
-        .border-scroll-section-container-right {
+        .table-border-scroll-section-container-right {
             margin-right: 7px;
 
-            .border-scroll-section {
-                left: -8px;
+            .table-border-scroll-section {
+                right: 0px;
             }
         }
 
-        .border-left {
+        .table-border-left-show,
+        .table-border-right-show {
+            width: 8px !important;
+            transition: width 0.25s;
+        }
+
+        .table-border-left {
             background-image: linear-gradient(to right, #eeeeee, #eeeeee00);
         }
 
-        .border-right {
+        .table-border-right {
             background-image: linear-gradient(to right, #eeeeee00, #eeeeee);
         }
     }
@@ -3160,10 +3172,10 @@ table {
     background: #42424220;
     border-radius: 2px;
 
-    svg-icon{
+    svg-icon {
         transform: rotateZ(90deg);
 
-        transition: transform 0.2s;
+        transition: transform 0.1s;
     }
 }
 

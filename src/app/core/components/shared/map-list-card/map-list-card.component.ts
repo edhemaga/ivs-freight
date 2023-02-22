@@ -14,12 +14,12 @@ import { DetailsDataService } from '../../../services/details-data/details-data.
 import { ConfirmationModalComponent } from '../../modals/confirmation-modal/confirmation-modal.component';
 import { ModalService } from './../../shared/ta-modal/modal.service';
 import { TaThousandSeparatorPipe } from '../../../pipes/taThousandSeparator.pipe';
-import { throws } from 'assert';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DetailsDropdownComponent } from '../details-page-dropdown/details-dropdown';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { ProfileImagesComponent } from '../profile-images/profile-images.component';
+import { formatDatePipe } from 'src/app/core/pipes/formatDate.pipe';
 
 @Component({
     selector: 'app-map-list-card',
@@ -28,12 +28,19 @@ import { ProfileImagesComponent } from '../profile-images/profile-images.compone
     providers: [TaThousandSeparatorPipe],
     standalone: true,
     imports: [
+        // Modules
         CommonModule,
         FormsModule,
-        DetailsDropdownComponent,
-        AngularSvgIconModule,
         ReactiveFormsModule,
-        ProfileImagesComponent
+        AngularSvgIconModule,
+
+        // Components
+        DetailsDropdownComponent,
+        ProfileImagesComponent,
+
+        // Pipes
+        formatDatePipe,
+        TaThousandSeparatorPipe
     ],
 })
 export class MapListCardComponent implements OnInit, OnDestroy {
@@ -78,20 +85,17 @@ export class MapListCardComponent implements OnInit, OnDestroy {
         }
     }
 
-    selectCard(event) {
+    selectCard() {
         if (this.clickedOnDots) {
             this.clickedOnDots = false;
             return false;
         }
 
-        //this.clickedMarker.emit([this.item.id, false]);
         const selectId = this.isSelected ? 0 : this.item.id;
         this.mapsService.selectedMapListCard(selectId);
     }
 
-    showMoreOptions(event) {
-        // event.preventDefault();
-        // event.stopPropagation();
+    showMoreOptions() {
         this.clickedOnDots = true;
     }
 
