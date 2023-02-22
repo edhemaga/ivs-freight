@@ -47,7 +47,30 @@
     <!-- BORDER -->
     <div
         class="border-container"
-        *ngIf="options.toolbarActions.showCountSelectedInList"
+        *ngIf="options.toolbarActions.showArhiveCount"
+    >
+        <div class="border"></div>
+    </div>
+
+    <!-- ARHIVE COUNT -->
+    <div
+        class="ahrive-count-container"
+        *ngIf="options.toolbarActions.showArhiveCount"
+    >
+        <div class="ahrive-count">2</div>
+        <svg-icon
+            [svgStyle]="{ 'width.px': 17, 'height.px': 17 }"
+            [src]="'assets/svg/truckassist-table/new-list-dropdown/Deactivate.svg'"
+        ></svg-icon>
+    </div>
+
+    <!-- BORDER -->
+    <div
+        class="border-container"
+        *ngIf="
+            options.toolbarActions.showCountSelectedInList &&
+            activeTableData?.listSelectedCount
+        "
     >
         <div class="border"></div>
     </div>
