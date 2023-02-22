@@ -12,19 +12,30 @@ import { CarrierSearchComponent } from '../standalone-components/carrier-search/
 import { FilterComponent } from '../standalone-components/filter/filter.component';
 import { AppTooltipComponent } from '../standalone-components/app-tooltip/app-tooltip.component';
 import { formatDatePipe } from '../../pipes/formatDate.pipe';
+import { TaUploadFilesComponent } from '../shared/ta-upload-files/ta-upload-files.component';
+import { DetailsDropdownComponent } from '../shared/details-page-dropdown/details-dropdown';
+import { TruckassistProgressExpirationComponent } from '../shared/truckassist-progress-expiration/truckassist-progress-expiration.component';
 
 @NgModule({
     declarations: [ToDoListCardComponent],
     imports: [
+        //Modules
         CommonModule,
         ToDoRoutingModule,
         AngularSvgIconModule,
         GridsterModule,
         SharedModule,
         NgxSmoothDnDModule,
+
+        //Components
         CarrierSearchComponent,
         FilterComponent,
         AppTooltipComponent,
+        TaUploadFilesComponent,
+        DetailsDropdownComponent,
+        TruckassistProgressExpirationComponent,
+
+        //Pipes
         formatDatePipe
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
