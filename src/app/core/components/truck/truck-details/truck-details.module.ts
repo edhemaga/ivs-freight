@@ -20,6 +20,7 @@ import { TaChartComponent } from '../../standalone-components/ta-chart/ta-chart.
 import { TaTabSwitchComponent } from '../../standalone-components/ta-tab-switch/ta-tab-switch.component';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { TaThousandSeparatorPipe } from '../../../pipes/taThousandSeparator.pipe';
+import { ReactiveFormsModule } from '@angular/forms';
 @NgModule({
     declarations: [
         TruckDetailsComponent,
@@ -31,6 +32,7 @@ import { TaThousandSeparatorPipe } from '../../../pipes/taThousandSeparator.pipe
         CommonModule,
         TruckDetailsRoutes,
         SharedModule,
+        ReactiveFormsModule,
         formatDatePipe,
         ProfileImagesComponent,
         TaCopyComponent,
