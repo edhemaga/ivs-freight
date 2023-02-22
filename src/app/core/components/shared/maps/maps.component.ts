@@ -808,6 +808,20 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
                                     );
                                 });
 
+                                let clusterIndex =
+                                    this.clusterMarkers.findIndex(
+                                        (item) =>
+                                            item.latitude ===
+                                                clusterItem.latitude &&
+                                            item.longitude ===
+                                                clusterItem.longitude
+                                    );
+
+                                if (clusterIndex == -1) {
+                                    this.clusterMarkers[clusterIndex].pagination.data = clusterPagination.pagination.data;
+                                    this.ref.detectChanges();
+                                }
+
                                 clustersToShow.push(clusterItem.latitude);
                             }
                         } else {
@@ -842,60 +856,62 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
                         }
                     });
 
-                    this.viewData.map((item) => {
-                        if (
-                            markersToShow.includes(item.id) &&
-                            !item.showMarker
-                        ) {
-                            var randomTime = Math.floor(Math.random() * 800);
+                    if (!clusterPagination) {
+                        this.viewData.map((item) => {
+                            if (
+                                markersToShow.includes(item.id) &&
+                                !item.showMarker
+                            ) {
+                                var randomTime = Math.floor(Math.random() * 800);
 
-                            setTimeout(() => {
-                                item.showMarker = true;
-                                this.ref.detectChanges();
-                            }, randomTime);
-                            
-                        } else if (
-                            !markersToShow.includes(item.id) &&
-                            item.showMarker
-                        ) {
-                            item.showMarker = false;
-                            item.isSelected = false;
-                            this.markerSelected = false;
-                            this.mapsService.selectedMarker(0);
-                        }
-                    });
-
-                    this.clusterMarkers.map((cluster) => {
-                        if (
-                            clustersToShow.includes(cluster.latitude) &&
-                            !cluster.showMarker
-                        ) {
-                            cluster.fadeIn = true;
-                            setTimeout(() => {
-                                cluster.fadeIn = false;
-                                this.ref.detectChanges();
-                            }, 200);
-
-                            cluster.showMarker = true;
-                        } else if (
-                            !clustersToShow.includes(cluster.latitude) &&
-                            cluster.showMarker
-                        ) {
-                            cluster.fadeOut = true;
-                            setTimeout(() => {
-                                cluster.fadeOut = false;
-                                cluster.showMarker = false;
-                                cluster.detailedInfo = false;
-                                cluster.isSelected = false;
+                                setTimeout(() => {
+                                    item.showMarker = true;
+                                    this.ref.detectChanges();
+                                }, randomTime);
+                                
+                            } else if (
+                                !markersToShow.includes(item.id) &&
+                                item.showMarker
+                            ) {
+                                item.showMarker = false;
+                                item.isSelected = false;
+                                this.markerSelected = false;
                                 this.mapsService.selectedMarker(0);
-                                this.clusterDetailedInfo = false;
-                                this.ref.detectChanges();
-                            }, 200);
-                        }
-                    });
+                            }
+                        });
 
-                    if (newMarkersAdded) this.markersDropAnimation();
-                    if (newClusterAdded) this.clusterDropAnimation();
+                        this.clusterMarkers.map((cluster) => {
+                            if (
+                                clustersToShow.includes(cluster.latitude) &&
+                                !cluster.showMarker
+                            ) {
+                                cluster.fadeIn = true;
+                                setTimeout(() => {
+                                    cluster.fadeIn = false;
+                                    this.ref.detectChanges();
+                                }, 200);
+
+                                cluster.showMarker = true;
+                            } else if (
+                                !clustersToShow.includes(cluster.latitude) &&
+                                cluster.showMarker
+                            ) {
+                                cluster.fadeOut = true;
+                                setTimeout(() => {
+                                    cluster.fadeOut = false;
+                                    cluster.showMarker = false;
+                                    cluster.detailedInfo = false;
+                                    cluster.isSelected = false;
+                                    this.mapsService.selectedMarker(0);
+                                    this.clusterDetailedInfo = false;
+                                    this.ref.detectChanges();
+                                }, 200);
+                            }
+                        });
+
+                        if (newMarkersAdded) this.markersDropAnimation();
+                        if (newClusterAdded) this.clusterDropAnimation();
+                    }
 
                     this.ref.detectChanges();
                 });

@@ -722,6 +722,8 @@ export class CustomerTableComponent
             this.sendCustomerData();
         } else if (event.action === 'view-mode') {
             this.activeViewMode = event.mode;
+
+            this.tableOptions.toolbarActions.hideSearch = event.mode == 'Map';
         }
     }
 
