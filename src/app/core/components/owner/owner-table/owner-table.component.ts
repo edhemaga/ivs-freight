@@ -308,22 +308,6 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     { name: 'Card', active: this.activeViewMode === 'Card' },
                 ],
             },
-            actions: [
-                {
-                    title: 'Edit',
-                    name: 'edit-owner',
-                    class: 'regular-text',
-                    contentType: 'edit',
-                },
-                {
-                    title: 'Delete',
-                    name: 'delete-owner',
-                    type: 'owner',
-                    text: 'Are you sure you want to delete owner(s)?',
-                    class: 'delete-text',
-                    contentType: 'delete',
-                },
-            ],
         };
     }
 
@@ -415,9 +399,99 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
             textBankName: data?.bank?.name ? data.bank.name : '',
             tableAttachments: data?.files ? data.files : [],
             fileCount: data?.fileCount,
+            tableDropdownContent: {
+                hasContent: true,
+                content: this.getDropdownOwnerContent(data),
+            },
         };
     }
+    getDropdownOwnerContent(data: any) {
+        return [
+            {
+                title: 'Edit',
+                name: 'edit-owner',
+                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Edit.svg',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                hasBorder: true,
+                svgClass: 'regular',
+            },
+            {
+                title: 'View Details',
+                name: 'view-details',
+                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Information.svg',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                svgClass: 'regular',
+                tableListDropdownContentStyle: {
+                    'margin-bottom.px': 4,
+                },
+            },
+            {
+                title: 'Add Truck',
+                name: 'add-truck',
+                svgUrl: '',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                svgClass: 'regular',
+                tableListDropdownContentStyle: {
+                    'margin-bottom.px': 4,
+                },
+            },
+            {
+                title: 'Add Trailer',
+                name: 'add-trailer',
+                svgUrl: '',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                svgClass: 'regular',
+                hasBorder: true,
+            },
+            {
+                title: 'Share',
+                name: 'share',
+                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Share.svg',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                svgClass: 'regular',
+                tableListDropdownContentStyle: {
+                    'margin-bottom.px': 4,
+                },
+            },
+            {
+                title: 'Print',
+                name: 'print',
+                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Print.svg',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
 
+                svgClass: 'regular',
+                hasBorder: true,
+            },
+            {
+                title: 'Delete',
+                name: 'delete-owner',
+                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Delete.svg',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                svgClass: 'delete',
+            },
+        ];
+    }
     getTabData(dataType: string) {
         if (dataType === 'active') {
             this.ownerActive = this.ownerActiveQuery.getAll();
