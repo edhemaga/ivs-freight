@@ -10,12 +10,14 @@ import {
 import { FormsModule, NgControl, ReactiveFormsModule } from '@angular/forms';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { ControlValueAccessor } from '@angular/forms';
+import { ChangeDetectionStrategy } from '@angular/core';
 
 @Component({
     selector: 'app-ta-checkbox',
     templateUrl: './ta-checkbox.component.html',
     styleUrls: ['./ta-checkbox.component.scss'],
     encapsulation: ViewEncapsulation.None,
+    changeDetection: ChangeDetectionStrategy.OnPush,
     standalone: true,
     imports: [
         // Module

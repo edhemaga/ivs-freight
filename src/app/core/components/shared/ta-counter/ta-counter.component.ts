@@ -1,5 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, ViewEncapsulation } from '@angular/core';
+import {
+    Component,
+    Input,
+    ViewEncapsulation,
+    ChangeDetectionStrategy,
+} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { TaThousandSeparatorPipe } from 'src/app/core/pipes/taThousandSeparator.pipe';
 
@@ -8,8 +13,16 @@ import { TaThousandSeparatorPipe } from 'src/app/core/pipes/taThousandSeparator.
     templateUrl: './ta-counter.component.html',
     styleUrls: ['./ta-counter.component.scss'],
     encapsulation: ViewEncapsulation.None,
+    changeDetection: ChangeDetectionStrategy.OnPush,
     standalone: true,
-    imports: [CommonModule, FormsModule, TaThousandSeparatorPipe],
+    imports: [
+        // Module
+        CommonModule,
+        FormsModule,
+
+        // Pipe
+        TaThousandSeparatorPipe,
+    ],
 })
 export class TaCounterComponent {
     @Input() count: number = 0;

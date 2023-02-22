@@ -1,5 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import {
+    Component,
+    EventEmitter,
+    Input,
+    Output,
+    ChangeDetectionStrategy,
+} from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 interface RadioButton {
@@ -15,8 +21,14 @@ interface RadioButton {
     selector: 'app-ta-input-radiobuttons',
     templateUrl: './ta-input-radiobuttons.component.html',
     styleUrls: ['./ta-input-radiobuttons.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
     standalone: true,
-    imports: [CommonModule, FormsModule, ReactiveFormsModule],
+    imports: [
+        // Module
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+    ],
 })
 export class TaInputRadiobuttonsComponent {
     @Input() buttons: RadioButton[] = null;

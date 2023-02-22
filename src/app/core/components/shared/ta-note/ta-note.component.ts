@@ -25,12 +25,14 @@ import { SafeHtmlPipe } from '../../../pipes/safe-html.pipe';
 import { TaSpinnerComponent } from '../ta-spinner/ta-spinner.component';
 import { TaNoteContainerComponent } from './ta-note-container/ta-note-container.component';
 import { AngularSvgIconModule } from 'angular-svg-icon';
+import { ChangeDetectionStrategy } from '@angular/core';
 
 @Component({
     selector: 'app-ta-note',
     templateUrl: './ta-note.component.html',
     styleUrls: ['./ta-note.component.scss'],
     encapsulation: ViewEncapsulation.None,
+    changeDetection: ChangeDetectionStrategy.OnPush,
     standalone: true,
     imports: [
         CommonModule,
@@ -40,7 +42,7 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
         SafeHtmlPipe,
         TaSpinnerComponent,
         TaNoteContainerComponent,
-        AngularSvgIconModule
+        AngularSvgIconModule,
     ],
     animations: [
         trigger('pickupAnimation', [

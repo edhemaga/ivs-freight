@@ -14,14 +14,22 @@ import { DetailsDataService } from '../../../services/details-data/details-data.
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AngularSvgIconModule } from 'angular-svg-icon';
+import { ChangeDetectionStrategy } from '@angular/core';
 
 @Component({
     selector: 'app-ta-like-dislike',
     templateUrl: './ta-like-dislike.component.html',
     styleUrls: ['./ta-like-dislike.component.scss'],
     encapsulation: ViewEncapsulation.None,
+    changeDetection: ChangeDetectionStrategy.OnPush,
     standalone: true,
-    imports: [CommonModule, FormsModule, ReactiveFormsModule, AngularSvgIconModule],
+    imports: [
+        // Module
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+        AngularSvgIconModule,
+    ],
 })
 export class TaLikeDislikeComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();

@@ -1,4 +1,3 @@
-import { TaUploadFileService } from '../ta-upload-files/ta-upload-file.service';
 import { ImageBase64Service } from '../../../utils/base64.image';
 import {
     AfterViewInit,
@@ -28,11 +27,14 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 import { NgbModule, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 import { TaNgxSliderComponent } from '../ta-ngx-slider/ta-ngx-slider.component';
 import { LogoSliderPipe } from './logoSlider.pipe';
+import { TaUploadFileService } from '../ta-upload-files/ta-upload-file.service';
+import { ChangeDetectionStrategy } from '@angular/core';
 
 @Component({
     selector: 'app-ta-logo-change',
     templateUrl: './ta-logo-change.component.html',
     styleUrls: ['./ta-logo-change.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
     standalone: true,
     imports: [
         // Module

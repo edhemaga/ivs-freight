@@ -7,7 +7,12 @@ import {
     Self,
     ViewChild,
 } from '@angular/core';
-import { ControlValueAccessor, FormsModule, NgControl, ReactiveFormsModule } from '@angular/forms';
+import {
+    ControlValueAccessor,
+    FormsModule,
+    NgControl,
+    ReactiveFormsModule,
+} from '@angular/forms';
 import { SharedService } from '../../../services/shared/shared.service';
 import moment from 'moment';
 import { card_modal_animation } from '../animations/card-modal.animation';
@@ -18,21 +23,28 @@ import { SafeHtmlPipe } from 'src/app/core/pipes/safe-html.pipe';
 import { TaNoteContainerComponent } from '../ta-note/ta-note-container/ta-note-container.component';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { TaSpinnerComponent } from '../ta-spinner/ta-spinner.component';
+import { ChangeDetectionStrategy } from '@angular/core';
 
 @Component({
     selector: 'app-ta-input-note',
     templateUrl: './ta-input-note.component.html',
     styleUrls: ['./ta-input-note.component.scss'],
     animations: [card_modal_animation('showHideCardBody')],
+    changeDetection: ChangeDetectionStrategy.OnPush,
     standalone: true,
     imports: [
-            CommonModule, 
-            FormsModule, 
-            SafeHtmlPipe, 
-            TaNoteContainerComponent,
-            AngularSvgIconModule,
-            ReactiveFormsModule,
-            TaSpinnerComponent
+        // Module
+        CommonModule,
+        FormsModule,
+        AngularSvgIconModule,
+        ReactiveFormsModule,
+
+        // Component
+        TaNoteContainerComponent,
+        TaSpinnerComponent,
+
+        // Pipe
+        SafeHtmlPipe,
     ],
 })
 export class TaInputNoteComponent implements OnInit, ControlValueAccessor {
@@ -44,7 +56,10 @@ export class TaInputNoteComponent implements OnInit, ControlValueAccessor {
     @Input() blankNote: boolean = false;
 
     @Input() set note(value) {
-        if (value && value != '' && value != 'null' && !this.gotValue || this.blankNote) {
+        if (
+            (value && value != '' && value != 'null' && !this.gotValue) ||
+            this.blankNote
+        ) {
             this.showNote = value;
         }
     }
@@ -57,7 +72,7 @@ export class TaInputNoteComponent implements OnInit, ControlValueAccessor {
     @Input() isVisibleDivider: boolean = true;
     @Input() public animationsDisabled = false;
     @Input() noteType: string = '';
-    
+
     savingNote: boolean = false;
     @Input() entityId: number = 0;
     @Input() entityType: string = '';

@@ -17,17 +17,24 @@ import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
 import { TaInputDropdownComponent } from '../ta-input-dropdown/ta-input-dropdown.component';
 import { ITaInput } from '../ta-input/ta-input.config';
 import { FormControlPipe } from '../ta-input/form-control.pipe';
+import { ChangeDetectionStrategy } from '@angular/core';
 
 @Component({
     selector: 'app-ta-input-dropdown-label',
     templateUrl: './ta-input-dropdown-label.component.html',
     styleUrls: ['./ta-input-dropdown-label.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
     standalone: true,
     imports: [
+        // Module
         CommonModule,
         FormsModule,
-        TaInputDropdownComponent,
         ReactiveFormsModule,
+
+        // Component
+        TaInputDropdownComponent,
+
+        // Pipe
         FormControlPipe,
     ],
 })
