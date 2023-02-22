@@ -16,11 +16,14 @@ import { TaInputComponent } from '../ta-input/ta-input.component';
     styleUrls: ['./ta-input-arrows.component.scss'],
     standalone: true,
     imports: [
+        // Module
         CommonModule,
         FormsModule,
-        AngularSvgIconModule,
-        TaInputComponent,
         ReactiveFormsModule,
+        AngularSvgIconModule,
+
+        // Component
+        TaInputComponent,
     ],
 })
 export class TaInputArrowsComponent
@@ -42,6 +45,15 @@ export class TaInputArrowsComponent
     constructor(@Self() public superControl: NgControl) {
         this.superControl.valueAccessor = this;
     }
+
+    get getSuperControl() {
+        return this.superControl.control;
+    }
+
+    public writeValue(_: any): void {}
+    public registerOnChange(_: any): void {}
+    public onChange(): void {}
+    public registerOnTouched(_: any): void {}
 
     ngAfterViewInit() {
         this.buttonHolding(this.elementOrder);
@@ -96,13 +108,4 @@ export class TaInputArrowsComponent
             );
         }
     }
-
-    get getSuperControl() {
-        return this.superControl.control;
-    }
-
-    public writeValue(_: any): void {}
-    public registerOnChange(_: any): void {}
-    public onChange(): void {}
-    public registerOnTouched(_: any): void {}
 }

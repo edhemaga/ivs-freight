@@ -210,10 +210,11 @@
 
     // Driver Notification
     .driver-notification {
-        display: flex;
+        display: grid;
         gap: 22px;
         align-items: center;
         padding-left: 6px;
+        grid-template-columns: 79px 61px 143px 1fr;
 
         p {
             margin: 0;
@@ -234,7 +235,7 @@
             }
         }
 
-        &-general {
+        &-payroll {
             margin-top: 20px;
         }
     }

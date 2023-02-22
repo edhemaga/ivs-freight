@@ -4,7 +4,7 @@ import {
     addressValidation,
     addressUnitValidation,
 } from '../../../shared/ta-input/ta-input.regex-validations';
-import { Validators } from '@angular/forms';
+import { Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import {
@@ -19,6 +19,15 @@ import { ModalService } from '../../../shared/ta-modal/modal.service';
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { RepairTService } from '../../../repair/state/repair.service';
 import { FormService } from '../../../../services/form/form.service';
+import { CommonModule } from '@angular/common';
+import { AngularSvgIconModule } from 'angular-svg-icon';
+import { TaInputComponent } from '../../../shared/ta-input/ta-input.component';
+import { TaModalComponent } from '../../../shared/ta-modal/ta-modal.component';
+import { TaInputDropdownComponent } from '../../../shared/ta-input-dropdown/ta-input-dropdown.component';
+import { TaTabSwitchComponent } from '../../../standalone-components/ta-tab-switch/ta-tab-switch.component';
+import { ActiveItemsPipe } from '../../../../pipes/activeItems.pipe';
+import { InputAddressDropdownComponent } from '../../../shared/input-address-dropdown/input-address-dropdown.component';
+import { TaCheckboxCardComponent } from '../../../shared/ta-checkbox-card/ta-checkbox-card.component';
 import {
     repairShopValidation,
     rentValidation,
@@ -34,9 +43,27 @@ import {
     styleUrls: ['./settings-repairshop-modal.component.scss'],
     animations: [tab_modal_animation('animationTabsModal')],
     providers: [ModalService, FormService],
+    standalone: true,
+    imports: [
+        // Module
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+        AngularSvgIconModule,
+
+        // Component
+        TaInputComponent,
+        TaInputDropdownComponent,
+        TaModalComponent,
+        TaTabSwitchComponent,
+        TaCheckboxCardComponent,
+        InputAddressDropdownComponent,
+
+        // Pipe
+        ActiveItemsPipe,
+    ],
 })
 export class SettingsRepairshopModalComponent implements OnInit, OnDestroy {
-    private destroy$ = new Subject<void>();
     @Input() editData: any;
 
     public repairShopForm: UntypedFormGroup;
@@ -79,6 +106,8 @@ export class SettingsRepairshopModalComponent implements OnInit, OnDestroy {
     public isServiceCardOpen: boolean = true;
 
     public disableCardAnimation: boolean = false;
+
+    private destroy$ = new Subject<void>();
 
     constructor(
         private formBuilder: UntypedFormBuilder,

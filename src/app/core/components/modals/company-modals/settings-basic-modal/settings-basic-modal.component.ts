@@ -61,6 +61,19 @@ import {
 import { convertNumberInThousandSep } from '../../../../utils/methods.calculations';
 import { FormService } from '../../../../services/form/form.service';
 import { CompanyResponse } from '../../../../../../../appcoretruckassist/model/companyResponse';
+import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { AngularSvgIconModule } from 'angular-svg-icon';
+import { TaInputComponent } from '../../../shared/ta-input/ta-input.component';
+import { TaInputDropdownComponent } from '../../../shared/ta-input-dropdown/ta-input-dropdown.component';
+import { TaModalComponent } from '../../../shared/ta-modal/ta-modal.component';
+import { TaTabSwitchComponent } from '../../../standalone-components/ta-tab-switch/ta-tab-switch.component';
+import { InputAddressDropdownComponent } from '../../../shared/input-address-dropdown/input-address-dropdown.component';
+import { TaCustomCardComponent } from '../../../shared/ta-custom-card/ta-custom-card.component';
+import { TaCheckboxCardComponent } from '../../../shared/ta-checkbox-card/ta-checkbox-card.component';
+import { TaLogoChangeComponent } from '../../../shared/ta-logo-change/ta-logo-change.component';
+import { TaCheckboxComponent } from '../../../shared/ta-checkbox/ta-checkbox.component';
+import { TaNgxSliderComponent } from '../../../shared/ta-ngx-slider/ta-ngx-slider.component';
 import {
     startingValidation,
     cvcValidation,
@@ -72,9 +85,28 @@ import {
     styleUrls: ['./settings-basic-modal.component.scss'],
     animations: [tab_modal_animation('animationTabsModal')],
     providers: [ModalService, BankVerificationService, FormService],
+    standalone: true,
+    imports: [
+        // Module
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+        AngularSvgIconModule,
+
+        // Component
+        TaInputComponent,
+        TaInputDropdownComponent,
+        TaModalComponent,
+        TaCheckboxComponent,
+        TaTabSwitchComponent,
+        TaCheckboxCardComponent,
+        TaNgxSliderComponent,
+        InputAddressDropdownComponent,
+        TaCustomCardComponent,
+        TaLogoChangeComponent,
+    ],
 })
 export class SettingsBasicModalComponent implements OnInit, OnDestroy {
-    private destroy$ = new Subject<void>();
     @Input() editData: any;
 
     public companyForm: UntypedFormGroup;
@@ -215,7 +247,6 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
     public companyData: any[] = [];
 
     public selectedCompanyData: any = null;
-
     public selectedDriverPayPeriod: any = null;
     public selectedDriverEndingIn: any = null;
     public selectedAccountingPayPeriod: any = null;
@@ -234,7 +265,6 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
     public selectedSafetyEndingIn: any = null;
     public selectedOtherPayPeriod: any = null;
     public selectedOtherEndingIn: any = null;
-
     public selectedFleetType: string = null;
 
     // Logo Actions
@@ -256,6 +286,8 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
     public displayUploadZone: boolean = false;
 
     public disableCardAnimation: boolean = false;
+
+    private destroy$ = new Subject<void>();
 
     constructor(
         private formBuilder: UntypedFormBuilder,

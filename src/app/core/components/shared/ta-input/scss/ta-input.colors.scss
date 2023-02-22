@@ -1,60 +1,242 @@
-//----------------------- BASE COLORS -----------------------
-
-$input-black-color-1: #1d1d1d; // was #3c3c3c :: hover mode
-
-$input-gray-color-1: #2f2f2f; // was #6c6c6c :: normal, focus, focus hover
-$input-gray-color-2: #919191;
-$input-gray-color-3: #aaaaaa;
-$input-gray-color-4: #b7b7b7;
-$input-gray-color-5: #cccccc;
-$input-gray-color-6: #dadada;
-
-$input-white-color-1: #ffffff;
-$input-white-color-2: #f3f3f3;
-$input-white-color-3: #f5fafc;
-$input-white-color-4: #fffafa;
-$input-white-color-5: #eeeeee;
-$input-white-color-6: #f7f7f7;
-$input-white-color-7: #e5e5e5;
-$input-white-color-8: #fbfbfb;
-
-$input-blue-color-1: #255bb9; // was #536bc2 :: input
-$input-blue-color-2: #6d82c7;
-$input-blue-color-3: #97a8dc;
-$input-blue-color-4: #bdcaeb;
-$input-blue-color-5: #d4dff4;
-$input-blue-color-6: #6f9ee0; // required-check (valid)
-$input-blue-color-7: rgb(
-    111,
-    158,
-    224,
-    0.2
-); // state when input valid and focus out
-$input-blue-color-8: rgb(111, 158, 224, 0.4); // placeholder-icon divider
-$input-blue-color-9: rgb(111, 158, 224, 0);
-
-$input-red-color-1: #ef5350; // was #f44336 :: input-error
-$input-red-color-2: #ff5050; // :: component hover
-$input-red-color-3: #f44336; // was #ef5350 :: input, required-star
-$input-red-color-4: #e57373; // :: input-danger
-$input-red-color-5: #ef9a9a; // :: component empty-focus-required
-$input-red-color-6: #ffcdd2; // :: placeholder-icon, clear, dropdown
-$input-red-color-7: #ffe1e4; // :: input-error-selection
-$input-red-color-8: rgb(
-    229,
-    115,
-    115,
-    0.2
-); // state when input invalid and focus out
-$input-red-color-9: rgb(239, 83, 80, 0.4); // placeholder-icon divider
-
-$input-green-color-1: #26a690;
-$input-green-color-2: #f6faf5;
-
-$input-yellow-color-1: #ffa726;
-$input-yellow-color-2: #ffb74d;
+//-------------------------------------------------- NEW PALLETE OF COLORS  --------------------------------------------------
 
 $input-transparent-color: transparent;
+$input-capslock-color: #ffb74d;
+
+//---------------------------- INACTIVE ----------------------------------------
+//Inactive State Empty
+$inactive-empty-input: #f7f7f7;
+$inactive-empty-label: #919191;
+$inactive-empty-placeholderIcon: #cccccc;
+$inactive-empty-placeholderIcon-pipe: rgba(204, 204, 204, 0.4);
+
+//Inactive State Filled
+$inactive-filled-input: #f7f7f7;
+$inactive-filled-label: #2f2f2f;
+$inactive-filled-content: #2f2f2f;
+$inactive-filled-placeholderIcon: #aaaaaa;
+$inactive-filled-placeholderIcon-pipe: rgb(170, 170, 170, 0.4);
+$inactive-filled-placeholderText: #aaaaaa;
+
+// Selection
+$inactive-filled-content-background-selection: rgb(47, 47, 47, 0.2);
+
+// Password
+$inactive-password: #cccccc;
+
+//------------------------------ DEFAULT --------------------------------------
+//Default Empty
+$default-input: #eeeeee;
+$default-label: #2f2f2f;
+$default-content: #2f2f2f;
+$default-placeholderIcon: #919191;
+$default-placeholderIcon-yellow: #ffa726;
+$default-placeholderIcon-green: #4db6a2;
+$default-placeholderIcon-purple: #ba68c8;
+$default-placeholderIcon-pipe: rgb(145, 145, 145, 0.4);
+$default-arrow: #919191;
+$default-path-clear: #eeeeee;
+$default-rect-clear: #919191;
+
+// Counter
+$default-counter-content: #424242;
+$default-counter-background: rgb(66, 66, 66, 0.2);
+
+// Selection
+$default-content-background-selection: rgb(47, 47, 47, 0.2);
+$default-label-background-selection: rgb(47, 47, 47, 0.2);
+
+//Default Hover
+$default-on-input-hover: #dadada;
+$default-on-arrow-hover: #424242;
+$default-on-rect-clear-hover: #424242;
+
+// Password
+$default-password: #919191;
+
+//Focus
+$default-focus-input: #1d1d1d;
+$default-focus-label: #2f2f2f;
+$default-focus-content: #ffffff;
+$default-focus-placeholder: rgb(255, 255, 255, 0.4);
+$default-focus-placeholderIcon: #cccccc;
+$default-focus-placehilderIcon-pipe: rgb(204, 204, 204, 0.4);
+$default-focus-placeholderText: #919191;
+$default-focus-arrow: #cccccc;
+$default-focus-path-clear: #1d1d1d;
+$default-focus-rect-clear: #aaaaaa;
+
+// Commands
+$focus-commands-path: #1d1d1d;
+$focus-commands-rect: #cccccc;
+
+// Selection
+$default-focus-content-selection: rgb(255, 255, 255, 0.2);
+
+//Focus Hover
+$default-focus-on-arrow-hover: #ffffff;
+$default-focus-on-rect-clear: #ffffff;
+$default-focus-commands-rect-hover: #ffffff;
+
+//------------------------------ VALID --------------------------------------
+//Valid
+$valid-input: #e2ecf9;
+$valid-label: #2f2f2f;
+$valid-content: #2f2f2f;
+$valid-placeholderIcon: #6f9ee0;
+$valid-placeholderIcon-pipe: rgb(111, 158, 224, 0.4);
+$valid-placholderText: #919191;
+$valid-checkmark: #6f9ee0;
+$valid-path-clear: #c5d8f3;
+$valid-rect-clear: #6f9ee0;
+$valid-arrow: #6f9ee0;
+
+$valid-pen-path: #c5d8f3;
+$valid-pen-rect: #6f9ee0;
+
+// MultiSelect
+$valid-multiselect-item-path-clear: #ffffff;
+$valid-multiselect-item-rect-clear: #6f9ee0;
+
+// Selection
+$valid-content-background-selection: rgb(47, 47, 47, 0.2);
+
+// Password
+$valid-password: #6f9ee0;
+
+//Valid Hover
+$valid-input-hover: #c5d8f3;
+$valid-on-rect-clear-hover: #3074d3;
+$valid-on-pen-rect-hover: #3074d3;
+$valid-on-arrow-hover: #3074d3;
+$valid-on-password-hover: #3074d3;
+$valid-on-multiselect-item-hover: #ffffff;
+
+// Multiselect
+$valid-multiselect-item-on-rect-clear-hover: #3074d3;
+
+//Valid Focus
+$valid-focus-input: #255bb9;
+$valid-focus-content: #ffffff;
+$valid-focus-placeholderIcon: #98b9ea;
+$valid-focus-placeholderIcon-pipe: #c5d8f3;
+$valid-focus-placeholderText: #c5d8f3;
+$valid-focus-placeholder-native: #6f9ee0;
+$valid-focus-placehilder-image: #98b9ea;
+$valid-focus-path-clear: #255bb9;
+$valid-focus-rect-clear: #c5d8f3;
+$valid-focus-arrow: #c5d8f3;
+
+// Multiselect
+$valid-focus-multiselect-item: #3074d3;
+$valid-focus-multiselect-item-path-clear: #6f9ee0;
+$valid-focus-multiselect-item-rect-clear: #e2ecf9;
+
+// Selection
+$valid-focus-content-background-selection: rgb(255, 255, 255, 0.2);
+
+// Password
+$valid-focus-password: #98b9ea;
+
+//Valid Focus Hover
+$valid-focus-on-rect-clear-hover: #ffffff;
+$valid-focus-on-arrow-hover: #ffffff;
+$valid-focus-on-password-hover: #ffffff;
+$valid-focus-multiselect-item-rect-clear-hover: #ffffff;
+
+// Multiselect
+$valid-focus-on-multiselect-item: #6f9ee0;
+
+//------------------------------- INVALID -------------------------------------
+
+//Invalid
+$invalid-input: #fae3e3;
+$invalid-label: #2f2f2f;
+$invalid-content: #2f2f2f;
+$invalid-placeholderIcon: #e57373;
+$invalid-placeholderIcon-pipe: rgb(229, 115, 115, 0.4);
+$invalid-placeholderText: #919191;
+$invalid-danger-mark: #e57373;
+$invalid-message: #ef5350;
+$invalid-path-clear: #f5c7c7;
+$invalid-rect-clear: #e57373;
+$invalid-arrow: #e57373;
+
+$invalid-pen-path: #f5c7c7;
+$invalid-pen-rect: #e57373;
+
+// Selection
+$invalid-content-background-selection: rgb(47, 47, 47, 0.2);
+$invalid-message-background-selection: rgb(239, 83, 80, 0.2);
+
+// Password
+$invalid-password: #e57373;
+
+//Invalid Hover
+$invalid-input-hover: #f5c7c7;
+$invalid-on-rect-clear-hover: #ef5350;
+$invalid-on-pen-rect-hover: #ef5350;
+$invalid-on-arrow-hover: #ef5350;
+$invalid-on-password-hover: #ef5350;
+
+//Invalid Focus
+$invalid-focus-input: #e22e22;
+$invalid-focus-content: #ffffff;
+$invalid-focus-placeholderIcon: #ffb0a8;
+$invalid-focus-placeholderIcon-pipe: #f5c7c7;
+$invalid-focus-placeholderText: #f5c7c7;
+$invalid-focus-path-clear: #e22e22;
+$invalid-focus-rect-clear: #f5c7c7;
+$invalid-focus-arrow: #f5c7c7;
+
+// Selection
+$invalid-focus-content-background-selection: rgb(255, 255, 255, 0.2);
+
+// Password
+$invalid-focus-password: #ffb0a8;
+
+// Commands
+$invalid-focus-commands-path: #e22e22;
+$invalid-focus-commands-rect: #f5c7c7;
+
+//Invalid Focus Hover
+$invalid-focus-on-rect-clear-hover: #ffffff;
+$invalid-focus-on-arrow-hover: #ffffff;
+$invalid-focus-on-commands-rect-hover: #ffffff;
+$invalid-focus-on-password-hover: #ffffff;
+
+//------------------------------- Requiered Star -------------------------------
+$input-required-star: #ef5350;
+
+//------------------------------- Font Weight Label -------------------------------
+$input-label-font-weight-600: 600;
+
+//------------------------------- SPECIFIC CASES -------------------------------
+
+// Label
+$default-focus-in-input-label: #ffffff;
+
+// Input
+$default-content-blue: #255bb9;
+
+//-------------------------------------- Trash Can (Clear) --------------------------------------
+// Default
+$default-trash-can: #aaaaaa;
+$default-trash-can-hover: #919191;
+// Valid
+$valid-trash-can: #6f9ee0;
+$valid-trash-can-hover: #3074d3;
+$valid-focus-trash-can: #c5d8f3;
+$valid-focus-trash-can-hover: #ffffff;
+// Invalid
+$invalid-trash-can: #e57373;
+$invalid-trash-can-hover: #ef5350;
+$invalid-focus-trash-can: #f5c7c7;
+$invalid-focus-trash-can-hover: #ffffff;
+
+//-------------------------------------- Input Counter (Clear) --------------------------------------
+$input-counter-color: #424242;
+$input-counter-background-color: rgb(66, 66, 66, 0.2);
 
 //----------------------- DROPDOWN INPUT IMAGE --------------
 // Trucks
@@ -82,385 +264,3 @@ $input-flatbedtrailer-path-fill: #ff9800;
 $input-lowboyrgntrailer-path-fill: #f76629;
 $input-chassistrailer-path-fill: #ef5350;
 $input-stepdecktrailer-path-fill: #d80300;
-
-//----------------------- INPUT ADDRESS FLAG ----------------
-$input-address-flag-background-color: $input-gray-color-2;
-$input-address-flag-text-color: $input-white-color-1;
-$input-address-flag-background-color-hover: $input-gray-color-4;
-
-//----------------------- INPUT CLEAR -----------------------
-// Normal Color
-$input-clear-path-fill-normal: $input-white-color-2;
-
-// Normal Color Focus
-$input-clear-path-fill-normal-focus: $input-gray-color-1;
-$input-clear-rect-fill-normal-focus: $input-gray-color-4;
-$input-clear-rect-fill-normal-focus-hover: $input-white-color-2;
-
-// Valid Color Focus
-$input-clear-path-fill-valid-focus: $input-blue-color-1;
-$input-clear-rect-fill-valid-focus: $input-blue-color-4;
-$input-clear-rect-fill-valid-focus-hover: $input-white-color-3;
-
-// Invalid Color Focus
-$input-clear-path-fill-invalid-focus: $input-red-color-3;
-$input-clear-rect-fill-invalid-focus: $input-red-color-6;
-$input-clear-rect-fill-invalid-focus-hover: $input-white-color-4;
-
-$input-clear-path-fill-invalid-empty-focus-required: $input-red-color-5;
-
-// Component Hover
-$input-clear-path-fill-invalid-component-hover: $input-white-color-5;
-$input-clear-rect-fill-invalid-component-hover: $input-gray-color-4;
-
-$input-clear-path-fill-invalid-component-hover-on-hover: $input-white-color-5;
-$input-clear-rect-fill-invalid-component-hover-on-hover: $input-gray-color-1;
-
-// Incorrect Color
-$input-clear-path-fill-incorrect: $input-red-color-3;
-$input-clear-rect-fill-incorrect: $input-transparent-color;
-
-$input-clear-path-fill-incorrect-hover: $input-white-color-1;
-$input-clear-rect-fill-incorrect-hover: $input-red-color-3;
-
-// Incorrect Enabled Color
-$input-clear-path-fill-incorrect-enabled: $input-white-color-1;
-$input-clear-rect-fill-incorrect-enabled: $input-red-color-3;
-
-//----------------------- INPUT COMMANDS -----------------------
-// Normal Color
-$input-commands-path-fill-normal: $input-gray-color-1;
-$input-commands-rect-fill-normal: $input-gray-color-4;
-$input-commands-rect-fill-normal-hover: $input-white-color-2;
-
-// Invalid Color
-$input-commands-path-fill-invalid-focus: $input-red-color-3;
-$input-commands-rect-fill-invalid-focus: $input-red-color-6;
-$input-commands-rect-fill-invalid-focus-hover: $input-white-color-4;
-
-// Address Flag Color
-$input-commands-path-fill-address-flag: $input-white-color-1;
-$input-commands-rect-fill-address-flag: $input-gray-color-4;
-$input-commands-rect-fill-address-flag-hover: $input-gray-color-1;
-
-//----------------------- INPUT DANGER MARK --------------------
-$input-danger-mark-path-fill: $input-red-color-3;
-
-//----------------------- INPUT DROPDOWN -----------------------
-// Normal Color
-$input-dropdown-path-fill-normal: $input-gray-color-3;
-$input-dropdown-path-fill-normal-hover: $input-gray-color-1;
-
-$input-dropdown-path-fill-focus-out-hover: $input-gray-color-3;
-
-// Active Color
-$input-dropdown-active-path-fill-normal: $input-gray-color-6;
-$input-dropdown-active-path-fill-normal-hover: $input-white-color-6;
-
-// Invalid Color
-$input-dropdown-path-fill-invalid-focus: $input-red-color-6;
-$input-dropdown-path-fill-invalid-focus-hover: $input-white-color-4;
-$input-dropdown-path-fill-invalid: $input-red-color-3;
-
-// Valid Color
-$input-dropdown-path-fill-valid-focus: $input-blue-color-5;
-$input-dropdown-path-fill-valid-focus-hover: $input-white-color-3;
-$input-dropdown-path-fill-valid: $input-blue-color-3;
-
-// Confirm Color
-$input-dropdown-confirm-path-fill-valid: $input-blue-color-1;
-$input-dropdown-confirm-rect-fill-valid: $input-blue-color-4;
-$input-dropdown-confirm-rect-fill-valid-hover: $input-white-color-3;
-
-$input-dropdown-path-fill-component-hover: $input-blue-color-2;
-
-//----------------------- INPUT EDIT LABEL ----------------
-$input-edit-label-path-normal: $input-white-color-2;
-$input-edit-label-rect-normal: $input-gray-color-4;
-$input-edit-label-rect-normal-hover: $input-gray-color-1;
-
-//----------------------- INPUT ERROR ---------------------
-$input-error-color: $input-red-color-3;
-$input-error-background-selection: $input-red-color-7;
-$input-error-color-component-hover: $input-red-color-1;
-
-//----------------------- INPUT ---------------------------
-// Normal Color
-$input-background-color-normal: $input-white-color-2;
-$input-text-color-normal: $input-gray-color-1;
-$input-background-selection-normal: rgb(255, 255, 255, 0.3);
-$input-text-selection-normal: #ffffff;
-
-// Normal Color Hover
-$input-background-color-normal-hover: $input-white-color-5;
-$input-text-color-normal-hover: $input-black-color-1;
-
-// Normal Color Focus
-$input-background-color-normal-focus: $input-gray-color-1;
-$input-text-color-normal-focus: $input-white-color-1;
-$input-placeholder-color-normal-focus: $input-gray-color-3;
-$input-background-selection-normal-focus: $input-gray-color-2;
-
-// Invalid Color Focus
-$input-background-color-invalid-focus: $input-red-color-3;
-$input-background-selection-invalid-focus: $input-red-color-4;
-
-// Invalid Color Focus Out
-$input-background-color-invalid-focus-out: $input-red-color-8;
-$input-text-color-invalid-focus-out: $input-black-color-1;
-
-// Valid Color Focus
-$input-background-color-valid-focus: $input-blue-color-1;
-$input-placeholder-color-valid-focus: $input-blue-color-3;
-$input-background-selection-valid-focus: $input-blue-color-2;
-
-// Valid Color Focus Out
-$input-background-color-valid-focus-out: $input-blue-color-7;
-$input-background-color-valid-focus-out-datepicker: $input-blue-color-9;
-$input-text-color-valid-focus-out: $input-black-color-1;
-
-// Disabled Color
-$input-background-color-disabled: $input-white-color-8;
-
-// Disabled Filled Color
-$input-text-color-filled-disabled: $input-gray-color-2;
-
-// Blue Text Color
-$input-text-color-blue: $input-blue-color-1;
-
-// Load Stop Details Color
-$input-background-color-load-stop-details-focus-out: $input-green-color-2;
-
-//----------------------- INPUT LABEL -----------------------
-$input-label-color-active-up: 600;
-
-// Normal Color
-$input-label-color: $input-gray-color-1;
-$input-label-color-hover: $input-black-color-1;
-
-$input-label-background-selection: $input-white-color-7;
-$input-label-text-selection: $input-gray-color-1;
-
-$input-label-required-star: $input-red-color-3;
-
-// Disabled Color
-$input-label-color-disabled: $input-gray-color-4;
-$input-label-color-disabled-filled: $input-gray-color-2;
-
-// Derived Color
-$input-label-color-dark-yellow: $input-yellow-color-1;
-$input-label-color-dark-green: $input-green-color-1;
-
-//----------------------- INPUT LABEL COUNTER ------------------
-$input-label-counter-color: $input-white-color-6;
-$input-label-counter-background-color: $input-gray-color-4;
-
-//----------------------- INPUT PASSWORD -----------------------
-// Capslock
-$input-password-capslock-color: $input-yellow-color-2;
-
-// Password
-$input-password-path-fill-normal: $input-gray-color-6;
-$input-password-path-fill-normal-hover: $input-white-color-6;
-
-$input-password-path-fill-valid: $input-blue-color-3;
-
-$input-password-path-fill-valid-component-hover: $input-blue-color-2;
-
-$input-password-path-fill-invalid: $input-red-color-6;
-$input-password-path-fill-invalid-hover: $input-white-color-1;
-
-//----------------------- INPUT PLACEHOLDER ICON ----------------
-// Normal Color
-$input-placeholder-icon-normal: $input-gray-color-4;
-$input-placeholder-icon-normal-after: $input-white-color-7;
-
-$input-placeholder-icon-focus-out-hover: $input-gray-color-3;
-
-// Disabled Color
-$input-placeholder-icon-disabled: $input-gray-color-6;
-$input-placeholder-icon-disabled-filled: $input-gray-color-5;
-
-// Valid Color
-$input-placeholder-icon-path-valid-focus: $input-blue-color-4;
-$input-placeholder-icon-path-valid: $input-blue-color-3;
-
-$input-placeholder-icon-path-valid-required-out-component-hover: $input-blue-color-2;
-$input-placeholder-icon-valid-after: $input-blue-color-8;
-
-// Invalid Color
-$input-placeholder-icon-path-invalid-focus: $input-red-color-6;
-$input-placeholder-icon-path-invalid: $input-red-color-4;
-$input-placeholder-icon-path-invalid-component-hover: $input-red-color-2;
-
-$input-placeholder-icon-invalid-after: $input-red-color-9;
-
-$input-placeholder-icon-path-invalid-empty-required-component-hover: $input-red-color-3;
-
-// Derived Color
-$input-placeholder-icon-color-dark-yellow: $input-yellow-color-1;
-$input-placeholder-icon-color-dark-green: $input-green-color-1;
-
-//----------------------- INPUT PLACEHOLDER TEXT --------------------
-$input-placeholder-text-normal: $input-gray-color-3;
-$input-placeholder-text-focus: $input-white-color-1;
-
-//----------------------- INPUT REQUIRED CHECK -----------------------
-$input-required-check-normal: $input-blue-color-6;
-
-//-------------------------------------------------- NEW PALLETE OF COLORS  --------------------------------------------------
-
-$input-transparent-color: transparent;
-$input-capslock-color: #ffb74d;
-
-//---------------------------- INACTIVE ----------------------------------------
-//Inactive State Empty
-$inactive-empty-input: #eeeeee;
-$inactive-empty-label: #919191;
-$inactive-empty-placeholderIcon: #cccccc;
-$inactive-empty-placeholderIcon-pipe: rgba(204, 204, 204, 0.4); // #CCCCCC
-
-//Inactive State Filled
-$inactive-filled-input: #f7f7f7;
-$inactive-filled-label: #2f2f2f;
-$inactive-filled-content: #2f2f2f;
-$inactive-filled-placeholderIcon: #aaaaaa;
-$inactive-filled-placeholderIcon-pipe: rgb(170, 170, 170, 0.4); //#AAAAAA
-$inactive-filled-placeholderText: #919191;
-$inactive-filled-arrow: rgba(145, 145, 145, 1);
-
-$inactive-content-background-selection: rgb(47, 47, 47, 0.2); //#2f2f2f
-
-//------------------------------ DEFAULT --------------------------------------
-//Default Empty
-$default-input: #eeeeee;
-$default-label: #2f2f2f;
-$default-content: #2f2f2f;
-$default-password: #919191;
-$default-placeholderIcon: #919191;
-$default-counter: #424242;
-$default-counter-opacity: rgb(66, 66, 66, 0.2);
-$input-placeholderIcon-yellow: #ffa726;
-$input-placeholderIcon-green: #26a690;
-$input-placeholderIcon-light-green: #4db6a2;
-$input-placeholderIcon-purple: #ba68c8;
-$default-placeholderIcon-pipe: rgb(145, 145, 145, 0.4); //#919191
-$default-placeholderText: #919191;
-$default-arrow: #919191;
-$default-clear: #919191;
-
-$default-content-background-selection: rgb(47, 47, 47, 0.2); //#2f2f2f
-$default-label-background-selection: rgb(47, 47, 47, 0.2); //#2f2f2f
-
-//Default Hover
-$default-input-hover: #dadada;
-$default-arrow-hover: #424242;
-
-//Focus
-$default-focus-input: #1d1d1d;
-$default-focus-label: #2f2f2f;
-$default-focus-content: #ffffff;
-$default-focus-placeholderIcon: #cccccc;
-$default-focus-placehilderIcon-pipe: rgb(204, 204, 204, 0.4); //#CCCCCC
-$default-focus-placeholderText: #919191;
-$default-focus-arrow: #cccccc;
-$default-cous-clear: #cccccc;
-
-//Focus Hover
-$default-focus-arrow-hover: #ffffff;
-
-//------------------------------ VALID --------------------------------------
-//Valid
-$valid-input: rgba(111, 158, 224, 0.2);
-$valid-label: #2f2f2f;
-$valid-content: #2f2f2f;
-$valid-password: #6f9ee0;
-$valid-placeholderIcon: #6f9ee0;
-$valid-placeholderIcon-pipe: rgb(111, 158, 224, 0.4); //#6F9EE0
-$valid-placholderText: #6f9ee0;
-$valid-checkmark: #6f9ee0;
-$valid-clear: #6f9ee0;
-$valid-pen-path: rgba(111, 158, 224, 0.4);
-$valid-pen-rect: #6f9ee0;
-$valid-arrow: #6f9ee0;
-
-$valid-content-background-selection: rgb(47, 47, 47, 0.2); //#2f2f2f
-
-//Valid Hover
-$valid-input-hover: rgba(111, 158, 224, 0.4);
-$valid-clear-hover: #3074d3;
-$valid-pen-rect-hover: #3074d3;
-$valid-password-hover: #3074d3;
-$valid-placeholderText-hover: #6f9ee0;
-$valid-arrow-hover: #3074d3;
-
-//Valid Focus
-$valid-focus-input: #255bb9;
-$valid-focus-content: #ffffff;
-$valid-focus-password: #98b9ea;
-$valid-focus-placeholderIcon: #98b9ea;
-$valid-focus-placeholderIcon-pipe: rgb(152, 185, 234, 0.4); //#98B9EA
-$valid-focus-placeholderText: rgb(111, 158, 224, 0.4); //#6F9EE0
-$valid-focus-clear: rgb(111, 158, 224, 0.4); //#6F9EE0
-$valid-focus-arrow: rgb(111, 158, 224, 0.4); //#6F9EE0
-
-//Valid Focus Hover
-$valid-focus-clear-hover: #ffffff;
-$valid-focus-password-hover: #ffffff;
-$valid-focus-arrow-hover: #ffffff;
-
-//------------------------------- INVALID -------------------------------------
-
-//Invalid
-$invalid-input: rgba(229, 115, 115, 0.2);
-$invalid-label: #2f2f2f;
-$invalid-content: #2f2f2f;
-$invalid-password: #e57373;
-$invalid-placeholderIcon: #e57373;
-$invalid-placeholderIcon-pipe: rgb(229, 115, 115, 0.2); //#E57373
-$invalid-placeholderText: #919191;
-$invalid-danger-mark: #e57373;
-$invalid-message: #ef5350;
-$invalid-clear: #e57373;
-$invalid-pen-path: rgba(229, 115, 115, 0.4);
-$invalid-pen-rect: #e57373;
-$invalid-arrow: #e57373;
-
-$invalid-content-background-selection: rgb(47, 47, 47, 0.2); //#2f2f2f
-$invalid-message-background-selection: rgb(239, 83, 80, 0.2); //#ef5350
-
-//Invalid Hover
-$invalid-input-hover: rgba(229, 115, 115, 0.4);
-$invalid-clear-hover: #ef5350;
-$invalid-pen-rect-hover: #ef5350;
-$invalid-password-hover: #ef5350;
-$invalid-arrow-hover: #ef5350;
-
-//Invalid Focus
-$invalid-focus-input: #e22e22;
-$invalid-focus-content: #ffffff;
-$invalid-focus-password: #ffb0a8;
-$invalid-focus-placeholderIcon: #ffb0a8;
-$invalid-focus-placeholderIcon-pipe: rgb(255, 176, 168, 0.4);
-$invalid-focus-placeholderText: rgb(229, 115, 115, 0.4); //#E57373
-$invalid-focus-clear: rgb(229, 115, 115, 0.4); //#E57373
-$invalid-focus-arrow: rgb(229, 115, 115, 0.4); //#E57373
-
-//Invalid Focus Hover
-$invalid-focus-clear-hover: #ffffff;
-$invalid-focus-password-hover: #ffffff;
-$invalid-focus-arrow-hover: #ffffff;
-
-//------------------------------- Requiered Star -------------------------------
-$input-required-star: #ef5350;
-
-//------------------------------- Font Weight Label -------------------------------
-$input-label-font-weight-600: 600;
-
-//------------------------------- LABEL IN INPUT -------------------------------
-$default-label-in-input: #ffffff;
-
-//------------------------------- DOUBLE TEXT IN INPUT -------------------------------
-$double-input-content: #919191;
-
-//Treba videti ?

@@ -37,14 +37,17 @@ import { TaInputDropdownComponent } from '../../../shared/ta-input-dropdown/ta-i
     styleUrls: ['./payroll-bonus-modal.component.scss'],
     standalone: true,
     imports: [
-            CommonModule, 
-            FormsModule, 
-            TaModalComponent, 
-            TaTabSwitchComponent, 
-            ReactiveFormsModule, 
-            TaInputComponent, 
-            TaInputDropdownComponent
-    ]
+        // Module
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+
+        // Component
+        TaModalComponent,
+        TaTabSwitchComponent,
+        TaInputComponent,
+        TaInputDropdownComponent,
+    ],
 })
 export class PayrollBonusModalComponent implements OnInit, OnDestroy {
     @Input() editData: any;
@@ -85,7 +88,7 @@ export class PayrollBonusModalComponent implements OnInit, OnDestroy {
             amount: [null, [Validators.required, ...creditLimitValidation]],
         });
 
-        this.formService.checkFormChange(this.payrollBonusForm, 400);
+        this.formService.checkFormChange(this.payrollBonusForm);
         this.formService.formValueChange$
             .pipe(takeUntil(this.destroy$))
             .subscribe((isFormChange: boolean) => {
@@ -334,6 +337,7 @@ export class PayrollBonusModalComponent implements OnInit, OnDestroy {
                 error: () => {},
             });
     }
+
     ngOnDestroy(): void {
         this.destroy$.next();
         this.destroy$.complete();
