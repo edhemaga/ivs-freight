@@ -211,6 +211,18 @@ app-truck-details-card {
             }
         }
 
+        .driverAvatarImg{
+            height: 20px;
+            width: 24px;
+            margin-right: 6px;
+            margin-left: 6px;
+            position: relative;
+            bottom: 0px;
+
+            background-size: cover;
+            background-position: center;
+        }
+
         &.inactive-assignTo-item{
             
 

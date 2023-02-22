@@ -305,7 +305,9 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
     initTableOptions(): void {
         this.tableOptions = {
             toolbarActions: {
-                showCountSelectedInList: true,
+                hideDataCount: true,
+                showArhiveCount: true,
+                showCountSelectedInList: false,
                 viewModeOptions: [
                     { name: 'List', active: this.activeViewMode === 'List' },
                     { name: 'Card', active: this.activeViewMode === 'Card' },
@@ -338,6 +340,7 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 title: 'User',
                 field: 'active',
                 length: userCount.users,
+                arhiveCount: 0,
                 data: userData,
                 gridNameTitle: 'User',
                 stateName: 'users',
@@ -375,9 +378,6 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
             );
 
             this.viewData = [...sortedUserData];
-
-            console.log('User Data');
-            console.log(this.viewData);
         } else {
             this.viewData = [];
         }
@@ -491,10 +491,15 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     width: 18,
                     height: 18,
                 },
-                svgClass: data.status ? 'deactivate' : 'activate',
+                svgClass: !data.verified
+                    ? 'regular'
+                    : data.status
+                    ? 'deactivate'
+                    : 'activate',
                 tableListDropdownContentStyle: {
                     'margin-bottom.px': 4,
                 },
+                mutedStyle: !data.verified,
             },
             {
                 title: 'Delete',
@@ -717,13 +722,10 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
         }
         // User Reset Password
         else if (event.type === 'reset-password') {
-            // this.userService
-            //     .userResetPassword(event.data.email)
-            //     .pipe(takeUntil(this.destroy$))
-            //     .subscribe((res: any) => {
-            //         console.log('userResetPassword');
-            //         console.log(res);
-            //     });
+            this.userService
+                .userResetPassword(event.data.email)
+                .pipe(takeUntil(this.destroy$))
+                .subscribe(() => {});
         }
         // User Resend Ivitation
         else if (event.type === 'resend-invitation') {
@@ -733,7 +735,7 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     isResendConfirmation: true,
                 })
                 .pipe(takeUntil(this.destroy$))
-                .subscribe((res: any) => {});
+                .subscribe(() => {});
         }
         // User Delete
         else if (event.type === 'delete') {

@@ -19,6 +19,7 @@ import { TaCommonHeaderComponent } from '../../shared/ta-details-header/ta-detai
 import { TaDetailsHeaderCardComponent } from '../../shared/ta-details-header-card/ta-details-header-card.component';
 import { TaChartComponent } from '../../standalone-components/ta-chart/ta-chart.component';
 import { formatCurrency } from 'src/app/core/pipes/formatCurrency.pipe';
+import { MapsComponent } from '../../shared/maps/maps.component';
 
 @NgModule({
     declarations: [
@@ -44,7 +45,8 @@ import { formatCurrency } from 'src/app/core/pipes/formatCurrency.pipe';
         TaCommonHeaderComponent,
         TaDetailsHeaderCardComponent,
         TaChartComponent,
-        formatCurrency
+        formatCurrency,
+        MapsComponent
     ],
 })
 export class LoadDetailsModule {}

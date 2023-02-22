@@ -100,6 +100,7 @@
                 [hasDivider]="false"
                 [tooltipName]="'Dispatch History'"
                 [hasHeaderSvg]="'assets/svg/common/ic_half_time.svg'"
+                [customClass]="'detailsPadding'"
                 [isCardOpen]="true"
                 [bodyTemplate]="'card'"
                 [animationMarginParams]="{
@@ -110,7 +111,10 @@
             >
                 <div class="assignTo">
                     <div class="assignTo-item first" *ngIf="trailer?.assignedTo?.truck?.id">
-                        <svg-icon class="assignTo-vehicle"> </svg-icon>
+                        <svg-icon 
+                            class="assignTo-vehicle backImage"
+                            [src]="'assets/svg/common/trucks/' + trailer.assignedTo.truck.truckType.logoName "
+                            > </svg-icon>
                         <p class="assignTo-value no-truck">{{trailer.assignedTo.truck.truckNumber}}</p>
                        <span
                             tooltipBackground="#6c6c6c"
@@ -130,6 +134,19 @@
                     </div>
                     <div class="assignTo-item second" *ngIf="trailer?.assignedTo?.driver?.id">
                         <svg-icon class="assignTo-vehicle"></svg-icon>
+
+                        <svg-icon
+                            *ngIf="!trailer.assignedTo.driver.avatar"
+                            class="assignTo-vehicle"
+                            src="assets/svg/common/user-image.svg"
+                        ></svg-icon>
+                        <img
+                            *ngIf="trailer.assignedTo.driver.avatar"
+                            class="driverAvatarImg"
+                            [src]="imageBase64Service.sanitizer(trailer.assignedTo.driver.avatar)"
+                            alt="driver-image"
+                        />
+
                         <p class="assignTo-value no-truck">{{trailer?.assignedTo?.driver?.firstName}} {{trailer?.assignedTo?.driver?.lastName}}</p>
                         <span
                             tooltipBackground="#6c6c6c"
@@ -153,6 +170,7 @@
             <!-- Additional info -->
             <app-ta-custom-card
                 [cardName]="'Additional Details'"
+                [customClass]="'detailsPadding'"
                 [isCardOpen]="true"
                 [bodyTemplate]="'card'"
                 [animationMarginParams]="{
@@ -249,6 +267,7 @@
                 [cardName]=" ownerCardOpened ? 'Owner' : 'Owner ' + trailer.owner.name "
                 [isCardOpen]="true"
                 [bodyTemplate]="'card'"
+                [customClass]="'detailsPadding'"
                 [animationMarginParams]="{
                     marginTop: '0px',
                     marginBottom: '10px'
@@ -306,46 +325,10 @@
                     marginTop: '0px',
                     marginBottom: '10px'
                 }"
+                [customClass]="'detailsPadding'"
             >
                 <div class="owner-history-container">
-                    <div class="status-container">
-                        <div class="status-header">
-                            <div class="status-item">
-                                <p class="p-status">COMPANY</p>
-                            </div>
-                            <div class="status-item">
-                                <p class="p-status">FROM - TO</p>
-                            </div>
-                            <div class="status-item">
-                                <p class="p-status">DURATION</p>
-                            </div>
-                        </div>
-                        <div class="divider"></div>
-                        <div
-                            class="status-items"
-                            *ngFor="
-                                let owHist of trailer.ownerHistories | keyvalue: sortKeys;
-                                trackBy: identity
-                            "
-                        >
-                            <div class="item-wrapper">
-                                <p class="employment">{{ owHist.value.name }}</p>
-
-                                <p class="date-from-to">
-                                    {{ owHist.value.startDate | formatDateP }} -
-                                    <span *ngIf="owHist.value.endDate">{{
-                                        owHist.value.endDate | formatDateP
-                                    }}</span>
-                                    <span *ngIf="!owHist.value.endDate">Today</span>
-                                </p>
-                                <p class="duration">
-                                    <span *ngIf="owHist.value.duration.Years">{{ owHist.value.duration.Years }} y</span>
-                                    <span> {{ owHist.value.duration.Days }} d</span>
-                                </p>
-                            </div>
-                            <div class="divider"></div>
-                        </div>
-                    </div>
+                    
                 </div>
             </app-ta-custom-card>
             <app-ta-custom-card
@@ -355,6 +338,7 @@
                 [hasCounter]="trailer?.files?.length ? trailer?.files.length : 0"
                 class="item-cards"
                 [bodyTemplate]="'card'"
+                [customClass]="'detailsPadding'"
             >
                 <div class="card_files_holder" [class.active]="trailer?.files?.length > 1">
                     <app-ta-upload-files
@@ -395,6 +379,7 @@
                     [bodyTemplate]="'card'"
                     [hasCounter]="trailer.registrations.length"
                     [hasPlusHeader]="true"
+                    [customClass]="'detailsPadding'"
                 >
                     <div
                         *ngFor="
@@ -496,6 +481,7 @@
                     [cardDocumentCounter]="1"
                     [hasCounter]="trailer.inspections.length"
                     [hasPlusHeader]="true"
+                    [customClass]="'detailsPadding'"
                 >
                     <div
                         *ngFor="
@@ -573,6 +559,7 @@
                     [bodyTemplate]="'card'"
                     [hasCounter]="trailer.titles.length"
                     [hasPlusHeader]="true"
+                    [customClass]="'detailsPadding'"
                 >
                     <div
                         *ngFor="
@@ -676,6 +663,7 @@
                     [bodyTemplate]="'card'"
                     [hasCounter]="0"
                     [hasPlusHeader]="true"
+                    [customClass]="'detailsPadding'"
                 >
                 </app-ta-custom-card>
             </div>

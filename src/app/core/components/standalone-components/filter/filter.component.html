@@ -1197,9 +1197,10 @@
                 >
                     <div
                         class="money-value-holder"
-                        [@showAnimation]="activeFilter ? 'true' : 'false'"
+                        
                     >
                         <app-ta-input
+                            [@showAnimation]="activeFilter ? 'true' : 'false'"
                             formControlName="multiFromFirstFrom"
                             [inputConfig]="{
                                 name: 'multiFromFirstFrom',
@@ -1212,9 +1213,10 @@
                     <div
                         class="money-value-holder"
                         [class.errorForm]="multiFormFirstError"
-                        [@showAnimation]="activeFilter ? 'true' : 'false'"
+                        
                     >
                         <app-ta-input
+                            [@showAnimation]="activeFilter ? 'true' : 'false'"
                             formControlName="multiFromFirstTo"
                             [inputConfig]="{
                                 name: 'multiFromFirstTo',
@@ -1273,9 +1275,10 @@
                 >
                     <div
                         class="money-value-holder"
-                        [@showAnimation]="activeFilter ? 'true' : 'false'"
+                        
                     >
                         <app-ta-input
+                            [@showAnimation]="activeFilter ? 'true' : 'false'"
                             formControlName="multiFormSecondFrom"
                             [inputConfig]="{
                                 name: 'multiFormSecondFrom',
@@ -1288,9 +1291,10 @@
                     <div
                         class="money-value-holder"
                         [class.errorForm]="multiFormSecondError"
-                        [@showAnimation]="activeFilter ? 'true' : 'false'"
+                        
                     >
                         <app-ta-input
+                            [@showAnimation]="activeFilter ? 'true' : 'false'"
                             formControlName="multiFormSecondTo"
                             [inputConfig]="{
                                 name: 'multiFormSecondTo',
@@ -1349,9 +1353,10 @@
                 >
                     <div
                         class="money-value-holder"
-                        [@showAnimation]="activeFilter ? 'true' : 'false'"
+                       
                     >
                         <app-ta-input
+                            [@showAnimation]="activeFilter ? 'true' : 'false'"
                             formControlName="multiFormThirdFrom"
                             [inputConfig]="{
                                 name: 'multiFormThirdFrom',
@@ -1364,9 +1369,10 @@
                     <div
                         class="money-value-holder"
                         [class.errorForm]="multiFormThirdError"
-                        [@showAnimation]="activeFilter ? 'true' : 'false'"
+                        
                     >
                         <app-ta-input
+                            [@showAnimation]="activeFilter ? 'true' : 'false'" 
                             formControlName="multiFormThirdTo"
                             [inputConfig]="{
                                 name: 'multiFormThirdTo',
@@ -1510,10 +1516,8 @@
                                     placeholderInsteadOfLabel: true
                                 }"
                                 [placeholderType]="'shortAddress'"
-                                (incorrectEvent)="incorrectInput($event, 0, 18)"
-                                [activeAddress]="selectedAddress"
                                 (selectedAddress)="
-                                    handleOriginSelect($event, 'ADDRESS')
+                                    handleOriginSelect($event)
                                 "
                             ></app-input-address-dropdown>
                         </div>
@@ -1533,10 +1537,8 @@
                                     placeholderInsteadOfLabel: true
                                 }"
                                 [placeholderType]="'shortAddress'"
-                                (incorrectEvent)="incorrectInput($event, 0, 18)"
-                                [activeAddress]="selectedAddress"
                                 (selectedAddress)="
-                                    handleDestinationSelect($event, 'ADDRESS')
+                                    handleDestinationSelect($event)
                                 "
                             ></app-input-address-dropdown>
                         </div>
@@ -1571,10 +1573,8 @@
                                 placeholderInsteadOfLabel: true
                             }"
                             [placeholderType]="'shortAddress'"
-                            (incorrectEvent)="incorrectInput($event, 0, 18)"
-                            [activeAddress]="selectedAddress"
                             (selectedAddress)="
-                                handleInputSelect($event, 'ADDRESS')
+                                handleInputSelect($event)
                             "
                         ></app-input-address-dropdown>
                     </div>
