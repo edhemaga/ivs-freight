@@ -55,7 +55,6 @@ export class RepairTService implements OnDestroy {
         this.formDataService.extractFormDataFromFunction(data);
         return this.repairService.apiRepairPost().pipe(
             tap((res: any) => {
-                console.log(res);
                 const subRepair = this.getRepairById(res.id)
                     .pipe(takeUntil(this.destroy$))
                     .subscribe({
@@ -564,7 +563,7 @@ export class RepairTService implements OnDestroy {
             shipperLong,
             shipperLat,
             shipperDistance,
-            shipperStates,
+            shipperStates
             // pageIndex,
             // pageSize,
             // companyId,
@@ -592,7 +591,7 @@ export class RepairTService implements OnDestroy {
             northEastLatitude,
             northEastLongitude,
             southWestLatitude,
-            southWestLongitude,
+            southWestLongitude
             // pageIndex,
             // pageSize,
             // companyId,

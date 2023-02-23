@@ -329,7 +329,6 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
     initTableOptions(): void {
         this.tableOptions = {
             toolbarActions: {
-                // showMoneyFilter: true,
                 showLocationFilter: true,
                 showTruckTypeFilter: true,
                 showTrailerTypeFilter: true,
