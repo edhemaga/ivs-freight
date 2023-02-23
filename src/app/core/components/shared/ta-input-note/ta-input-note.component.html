@@ -17,6 +17,7 @@
                 [popoverNote]="false"
                 [selectedEditor]="noteRef?.nativeElement"
                 [isVisibleArrow]="isVisibleArrow"
+                (stopBlurRemoveTimeout)="stopBlurRemoveTimeout()"
             ></app-ta-note-container>
         </div>
         <div class="note_upper_hold" *ngIf="isVisibleArrow">

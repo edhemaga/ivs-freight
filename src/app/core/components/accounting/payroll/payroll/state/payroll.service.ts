@@ -50,12 +50,13 @@ export class PayrollStoreService {
     set payrollList(data) {
         let payrollData = [];
         Object.keys(data).map((item) => {
+            console.log(this.payrollData[item]);
             if (this.payrollData[item]) {
                 payrollData.push({
                     title: this.payrollData[item].title,
                     short_title: this.payrollData[item].short_title,
                     data: data[item].data,
-                    count: data[this.payrollData[item].count],
+                    count: data[item].count,
                     tableSettings: this.getTableDefinitions(
                         this.payrollData[item].title
                     ),
