@@ -37,7 +37,7 @@ export class ShipperCardViewComponent implements OnInit, OnChanges, OnDestroy {
             {
                 defaultConfig: {
                     type: 'bar',
-                    data: [20, 17, 30, 23, 27, 25, 19, 29, 22, 25, 22, 20],
+                    data: [],
                     label: 'Miles',
                     yAxisID: 'y-axis-0',
                     borderColor: '#80CBBA',
@@ -50,10 +50,7 @@ export class ShipperCardViewComponent implements OnInit, OnChanges, OnDestroy {
             {
                 defaultConfig: {
                     type: 'bar',
-                    data: [
-                        -20, -25, -21, -22, -15, -26, -24, -21, -23, -24, -25,
-                        -20,
-                    ],
+                    data: [],
                     label: 'Miles',
                     yAxisID: 'y-axis-0',
                     borderColor: '#EF9A9A',
@@ -65,7 +62,7 @@ export class ShipperCardViewComponent implements OnInit, OnChanges, OnDestroy {
             },
         ],
         showLegend: false,
-        chartValues: [150, 257.7, 190, 568.85],
+        chartValues: [0, 0],
         defaultType: 'bar',
         chartWidth: '417',
         chartHeight: '130',
@@ -333,7 +330,7 @@ export class ShipperCardViewComponent implements OnInit, OnChanges, OnDestroy {
                         let delivery = this.convertTimeSpanToMinutes(
                             data.avgDeliveryTime
                         );
-                        
+
                         this.stackedBarChart.toolTipData.push(data);
 
                         if (delivery + pickup > maxValue) {
