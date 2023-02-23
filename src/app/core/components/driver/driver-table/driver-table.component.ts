@@ -612,6 +612,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
             },
         };
     }
+    
     getDropdownDriverContent(data: any) {
         return [
             {
@@ -653,79 +654,65 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 svgClass: 'regular',
             },
             {
-                title: 'Add CDL',
-                name: 'new-licence',
-                svgUrl: '',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                tableListDropdownContentStyle: {
-                    'margin-bottom.px': 4,
-                },
-                svgClass: 'regular',
-            },
-            {
-                title: 'Add MVR',
-                name: 'new-mvr',
-                svgUrl: '',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                tableListDropdownContentStyle: {
-                    'margin-bottom.px': 4,
-                },
-                svgClass: 'regular',
-            },
-            {
-                title: 'Medical Exam',
-                name: 'new-medical',
-                svgUrl: '',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                tableListDropdownContentStyle: {
-                    'margin-bottom.px': 4,
-                },
-                svgClass: 'regular',
-            },
-            {
-                title: 'Test (Drug, Alcohol)',
-                name: 'new-drug',
-                svgUrl: '',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                tableListDropdownContentStyle: {
-                    'margin-bottom.px': 4,
-                },
-                svgClass: 'regular',
-            },
-            {
                 title: 'Add New',
                 name: 'add-new',
-                svgUrl: '',
+                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Show More.svg',
                 svgStyle: {
-                    width: 18,
-                    height: 18,
+                    width: 15,
+                    height: 15,
                 },
+                svgClass: 'regular',
                 tableListDropdownContentStyle: {
                     'margin-bottom.px': 4,
                 },
-                svgClass: 'regular',
+                isDropdown: true,
+                insideDropdownContent: [
+                    {
+                        title: 'Add CDL',
+                        name: 'new-licence',
+                    },
+                    {
+                        title: 'Add MVR',
+                        name: 'new-mvr',
+                    },
+                    {
+                        title: 'Medical Exam',
+                        name: 'new-medical',
+                    },
+                    {
+                        title: 'Test (Drug, Alcohol)',
+                        name: 'new-drug',
+                    },
+                ]
             },
             {
                 title: 'Request',
                 name: 'add-to-favourites',
+                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Show More.svg',
                 svgStyle: {
-                    width: 18,
-                    height: 18,
+                    width: 15,
+                    height: 15,
                 },
-                svgUrl: '',
                 svgClass: 'regular',
+                isDropdown: true,
+                insideDropdownContent: [
+                    {
+                        title: 'Background Check',
+                        name: 'background-check',
+                    },
+                    {
+                        title: 'Medical Exam',
+                        name: 'medical-exam',
+                    },
+                    {
+                        title: 'Test (Drug, Alcohol)',
+                        name: 'test-drug',
+                    },
+                    {
+                        title: 'MVR',
+                        name: 'test-mvr',
+                    },
+                ],
                 hasBorder: true,
             },
 
@@ -750,22 +737,21 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     width: 18,
                     height: 18,
                 },
-
                 svgClass: 'regular',
                 hasBorder: true,
             },
             {
                 title: 'Deactivate',
-                name: 'deactivate',
+                name: 'activate-item',
                 svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Deactivate.svg',
                 svgStyle: {
                     width: 18,
                     height: 18,
                 },
+                svgClass: 'delete',
                 tableListDropdownContentStyle: {
                     'margin-bottom.px': 4,
                 },
-                svgClass: 'delete',
             },
             {
                 title: 'Delete',
@@ -779,6 +765,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
             },
         ];
     }
+
     mapApplicantsData(data: any) {
         return {
             ...data,
