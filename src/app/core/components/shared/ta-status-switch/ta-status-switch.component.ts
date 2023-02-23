@@ -101,16 +101,16 @@ export class TaStatusSwitchComponent implements OnInit {
 
     public async openPopover(t2) {
         //OTKOMENTARISATI KAD DARKO PREBACI DISPATCH NOVE IZMENE
-        if (this.dispatchId) {
-            this.dispatchService
-                .apiDispatchNextstatusesIdGet(this.dispatchId)
-                .subscribe((statuses) => {
-                    t2.open({ data: statuses });
-                    this.openMainIndex();
-                });
-        }
-        // t2.open({ data: this.possibleNextStatuses });
-        // this.openMainIndex();
+        // if (this.dispatchId) {
+        //     this.dispatchService
+        //         .apiDispatchNextstatusesIdGet(this.dispatchId)
+        //         .subscribe((statuses) => {
+        //             t2.open({ data: statuses });
+        //             this.openMainIndex();
+        //         });
+        // }
+        t2.open({ data: this.possibleNextStatuses });
+        this.openMainIndex();
     }
 
     public ngOnDestroy(): void {
