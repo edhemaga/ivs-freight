@@ -1,14 +1,14 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ResendSignUpCompanyOrUserCommand } from 'appcoretruckassist';
 
 import { Subject, takeUntil, tap } from 'rxjs';
 
 import { TaInputService } from 'src/app/core/components/shared/ta-input/ta-input.service';
-import { ConstantString } from 'src/app/core/components/website/state/enum/const-string.enum';
 import { WebsiteActionsService } from 'src/app/core/components/website/state/service/website-actions.service';
-
 import { WebsiteAuthService } from 'src/app/core/components/website/state/service/website-auth.service';
+
+import { ConstantString } from 'src/app/core/components/website/state/enum/const-string.enum';
+import { ResendSignUpCompanyOrUserCommand } from 'appcoretruckassist';
 
 @Component({
     selector: 'app-resend-confirmation',

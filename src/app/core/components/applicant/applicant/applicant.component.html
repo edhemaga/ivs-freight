@@ -37,7 +37,13 @@
                                 : 'step-active'
                         "
                         [ngClass]="{
-                            disabled: !isStepCompletedArray[i].isCompleted,
+                            disabled:
+                                (selectedMode === 'APPLICANT_MODE' &&
+                                    !isStepCompletedArray[i === 0 ? i : i - 1]
+                                        .isCompleted) ||
+                                (selectedMode === 'REVIEW_MODE' &&
+                                    !isStepReviewedArray[i === 0 ? i : i - 1]
+                                        .isReviewed),
                             'completed-step':
                                 selectedMode === 'APPLICANT_MODE' &&
                                 isStepCompletedArray[i].isCompleted,
@@ -65,12 +71,12 @@
                             [class]="menuItem.class"
                             [routerLink]="menuItem.route"
                         >
-                            <p class="m-0 ta-font-semi-bold">
+                            <p class="m-0 ta-font-bold">
                                 {{ menuItem.route }}
                             </p>
                         </div>
                         <p
-                            class="m-0 step-text ta-font-regular"
+                            class="m-0 step-text ta-font-medium"
                             [routerLink]="menuItem.route"
                         >
                             {{ menuItem.title }}

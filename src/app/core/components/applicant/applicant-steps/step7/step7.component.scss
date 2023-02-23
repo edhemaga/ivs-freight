@@ -355,6 +355,7 @@
                     color: $ta-red-2;
                     visibility: hidden;
                     opacity: 0;
+                    margin-left: 6px !important;
 
                     &::-moz-selection {
                         color: $ta-red-2;

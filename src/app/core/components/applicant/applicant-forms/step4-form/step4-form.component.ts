@@ -12,7 +12,11 @@ import {
     SimpleChanges,
     ViewChild,
 } from '@angular/core';
-import { UntypedFormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
+import {
+    UntypedFormGroup,
+    UntypedFormBuilder,
+    Validators,
+} from '@angular/forms';
 
 import {
     Subscription,
@@ -36,11 +40,7 @@ import {
 
 import { AnswerChoices } from '../../state/model/applicant-question.model';
 import { SelectedMode } from '../../state/enum/selected-mode.enum';
-import {
-    AddressEntity,
-    ApplicantModalResponse,
-    TruckTypeResponse,
-} from 'appcoretruckassist';
+import { ApplicantModalResponse, TruckTypeResponse } from 'appcoretruckassist';
 import { InputSwitchActions } from '../../state/enum/input-switch-actions.enum';
 import { AccidentModel } from '../../state/model/accident.model';
 
@@ -91,12 +91,9 @@ export class Step4FormComponent
 
     public accidentForm: UntypedFormGroup;
 
-    public selectedAddress: AddressEntity;
     public selectedVehicleType: any = null;
 
     public isAccidentEdited: boolean;
-
-    public editingCardAddress: any;
 
     public vehicleType: TruckTypeResponse[] = [];
 
@@ -180,16 +177,6 @@ export class Step4FormComponent
                     takeUntil(this.destroy$)
                 )
                 .subscribe((res) => {
-                    if (this.selectedAddress) {
-                        const selectedAddress = {
-                            ...this.selectedAddress,
-                            addressUnit: '',
-                            county: '',
-                        };
-
-                        res.location = selectedAddress;
-                    }
-
                     this.lastFormValuesEmitter.emit(res);
                 });
         }
@@ -338,7 +325,7 @@ export class Step4FormComponent
         }
 
         this.accidentForm.patchValue({
-            location: formValue?.location ? formValue?.location?.address : null,
+            location: formValue?.location,
             date: formValue?.date,
             hazmatSpill: formValue?.hazmatSpill,
             fatalities: formValue?.fatalities,
@@ -346,8 +333,6 @@ export class Step4FormComponent
             vehicleType: formValue?.vehicleType,
             description: formValue?.description,
         });
-
-        this.selectedAddress = formValue?.location;
 
         setTimeout(() => {
             const hazmatSpillValue = this.accidentForm.get('hazmatSpill').value;
@@ -379,7 +364,6 @@ export class Step4FormComponent
             .subscribe((updatedFormValues) => {
                 const {
                     date,
-                    location,
                     accidentState,
                     accidentStateShort,
                     isEditingAccident,
@@ -389,21 +373,12 @@ export class Step4FormComponent
                     ...previousFormValues
                 } = this.formValuesToPatch;
 
-                previousFormValues.location = location?.address;
                 previousFormValues.date = moment(new Date(date)).format(
                     'MM/DD/YY'
                 );
 
-                this.editingCardAddress = location;
-
-                const {
-                    firstRowReview,
-                    secondRowReview,
-                    location: newLocation,
-                    ...newFormValues
-                } = updatedFormValues;
-
-                newFormValues.location = newLocation?.address;
+                const { firstRowReview, secondRowReview, ...newFormValues } =
+                    updatedFormValues;
 
                 if (isFormValueEqual(previousFormValues, newFormValues)) {
                     this.isAccidentEdited = false;
@@ -433,16 +408,7 @@ export class Step4FormComponent
                 this.selectedVehicleType = event;
 
                 break;
-            case InputSwitchActions.ADDRESS:
-                this.selectedAddress = event.address;
 
-                if (!event.valid) {
-                    this.accidentForm
-                        .get('location')
-                        .setErrors({ invalid: true });
-                }
-
-                break;
             default:
                 break;
         }
@@ -464,26 +430,16 @@ export class Step4FormComponent
             return;
         }
 
-        const { location, firstRowReview, secondRowReview, ...accidentForm } =
+        const { firstRowReview, secondRowReview, ...accidentForm } =
             this.accidentForm.value;
-
-        const selectedAddress = {
-            ...this.selectedAddress,
-            addressUnit: '',
-            county: '',
-        };
 
         const saveData: AccidentModel = {
             ...accidentForm,
-            location: selectedAddress,
-            accidentState: this.selectedAddress.state,
-            accidentStateShort: this.selectedAddress.stateShortName,
             isEditingAccident: false,
         };
 
         this.formValuesEmitter.emit(saveData);
 
-        this.selectedAddress = null;
         this.selectedVehicleType = null;
 
         this.formService.resetForm(this.accidentForm);
@@ -510,26 +466,11 @@ export class Step4FormComponent
             return;
         }
 
-        const { location, firstRowReview, secondRowReview, ...accidentForm } =
+        const { firstRowReview, secondRowReview, ...accidentForm } =
             this.accidentForm.value;
-
-        const selectedAddress = {
-            ...this.selectedAddress,
-            addressUnit: '',
-            county: '',
-        };
 
         const saveData: AccidentModel = {
             ...accidentForm,
-            location: this.selectedAddress
-                ? selectedAddress
-                : this.editingCardAddress,
-            accidentState: this.selectedAddress
-                ? this.selectedAddress.state
-                : this.editingCardAddress.state,
-            accidentStateShort: this.selectedAddress
-                ? this.selectedAddress.stateShortName
-                : this.editingCardAddress.stateShortName,
             isEditingAccident: false,
         };
 
