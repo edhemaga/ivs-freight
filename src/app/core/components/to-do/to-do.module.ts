@@ -15,6 +15,7 @@ import { formatDatePipe } from '../../pipes/formatDate.pipe';
 import { TaUploadFilesComponent } from '../shared/ta-upload-files/ta-upload-files.component';
 import { DetailsDropdownComponent } from '../shared/details-page-dropdown/details-dropdown';
 import { TruckassistProgressExpirationComponent } from '../shared/truckassist-progress-expiration/truckassist-progress-expiration.component';
+import { TaUserReviewComponent } from '../shared/ta-user-review/ta-user-review.component';
 
 @NgModule({
     declarations: [ToDoListCardComponent],
@@ -34,6 +35,7 @@ import { TruckassistProgressExpirationComponent } from '../shared/truckassist-pr
         TaUploadFilesComponent,
         DetailsDropdownComponent,
         TruckassistProgressExpirationComponent,
+        TaUserReviewComponent,
 
         //Pipes
         formatDatePipe

@@ -214,9 +214,17 @@ export class InputAddressDropdownComponent
                 })
             )
             .subscribe((res) => {
+                let isValid = true;
+                if (this.searchLayers[0] == 'Address') {
+                    isValid = this.checkAddressValidation(
+                        this.activeAddress?.address
+                    );
+                }
+
                 if (
                     !this.activeAddress ||
-                    this.activeAddress?.address != this.getSuperControl.value
+                    this.activeAddress?.address != this.getSuperControl.value ||
+                    !isValid
                 ) {
                     this.getSuperControl.setErrors({ invalid: true });
                 } else {
@@ -251,11 +259,20 @@ export class InputAddressDropdownComponent
     }
 
     public onCloseDropdown(e) {
+        let isValid = true;
         setTimeout(() => {
             if (!this.requestSent) {
                 this.getSuperControl.setErrors({ invalid: true });
             }
-            if (this.getSuperControl.value == this.activeAddress?.address) {
+            if (this.searchLayers[0] == 'Address') {
+                isValid = this.checkAddressValidation(
+                    this.activeAddress?.address
+                );
+            }
+            if (
+                this.getSuperControl.value == this.activeAddress?.address &&
+                isValid
+            ) {
                 this.getSuperControl.setErrors(null);
             }
         }, 200);
@@ -285,9 +302,23 @@ export class InputAddressDropdownComponent
                     ? { ...event, address: event?.name }
                     : null;
                 if (event?.name) {
-                    this.getAddressData(event.name);
-                    this.getSuperControl.setValue(event.name);
-                    this.getSuperControl.setErrors(null);
+                    if ((this.searchLayers[0] = 'Address')) {
+                        const isValid = this.checkAddressValidation(event.name);
+
+                        if (isValid) {
+                            this.getAddressData(event.name);
+                            this.getSuperControl.setValue(event.name);
+                            this.getSuperControl.setErrors(null);
+                        } else {
+                            this.getSuperControl.setErrors({
+                                invalid: true,
+                            });
+                        }
+                    } else {
+                        this.getAddressData(event.name);
+                        this.getSuperControl.setValue(event.name);
+                        this.getSuperControl.setErrors(null);
+                    }
 
                     this.chosenFromDropdown = true;
                 } else {
@@ -383,6 +414,16 @@ export class InputAddressDropdownComponent
             longLat: [],
         };
         this.selectedAddress.emit(addressData);
+    }
+
+    checkAddressValidation(address) {
+        const regex =
+            /\b(?:avenue|ave|boulevard|blvd|circle|ct|drive|dr|lane|ln|parkway|pkwy|place|pl|road|rd|square|st|street|trl|way)\b/i;
+
+        const streetNum = /\d.*\d/;
+
+
+        return regex.test(address) && streetNum.test(address) ? true : false;
     }
 
     ngOnDestroy(): void {
