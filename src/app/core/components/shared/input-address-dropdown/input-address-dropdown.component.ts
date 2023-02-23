@@ -139,15 +139,6 @@ export class InputAddressDropdownComponent
 
     registerOnTouched(_: any): void {}
 
-    // 1. put pretrazuje google
-    // 2. activeAddress sadrzi adresu iz google
-    // 3. requestSent svakako se desava kad se iazbere iz google i tamo se mapira currentAddress koji nije isti sa activeAddress
-    // 4. activeAddress ima adresu sa google, currentAddress ima adresu sa servera i dolazi do konflitka
-    // 5. reqeustSent je true uvek kad se izabere adresa, i kod clearDropdowna on uvek bude true i ne ulazi u setErrors(REQUIRED TRUE).
-    // 6. setuje adresu kao da je validna
-    // 7. kad se izabere activeAddress sa google ne upisivati u superControl, nego upisati tek adresu koja dodje sa servera kasnije da
-    // se ne deesava dva puta upis i spinner
-
     ngOnInit(): void {
         this.getSuperControl.valueChanges
             .pipe(
@@ -163,9 +154,6 @@ export class InputAddressDropdownComponent
                                 isLoading: false,
                             },
                         };
-                        // this.inputConfig.loadingSpinner = {
-                        //     isLoading: false,
-                        // };
                         this.addresList = [];
                     } else if (
                         term != this.currentAddressData?.address.address &&
@@ -190,12 +178,6 @@ export class InputAddressDropdownComponent
                     return term?.length >= 3;
                 }),
                 switchMap((query) => {
-                    // this.inputConfig.loadingSpinner = {
-                    //     size: 'small',
-                    //     color: 'white',
-                    //     isLoading: true,
-                    // };
-
                     this.inputConfig = {
                         ...this.inputConfig,
                         loadingSpinner: {
@@ -418,7 +400,7 @@ export class InputAddressDropdownComponent
 
     checkAddressValidation(address) {
         const regex =
-            /\b(?:avenue|ave|boulevard|blvd|circle|ct|drive|dr|lane|ln|parkway|pkwy|place|pl|road|rd|square|st|street|trl|way)\b/i;
+            /\b(?:avenue|ave|boulevard|broadway|blvd|circle|ct|drive|dr|lane|ln|parkway|pkwy|place|pl|road|rd|square|st|street|trl|way)\b/i;
 
         const streetNum = /\d.*\d/;
 
