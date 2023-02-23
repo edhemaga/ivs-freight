@@ -241,7 +241,7 @@ export class ShopRepairCardViewComponent
     }
 
     public onSelectedShop(event: any) {
-        if (event.id !== +this.act_route.snapshot.params['id']) {
+        if ( event && event.id !== +this.act_route.snapshot.params['id']) {
             this.shopsDropdowns = this.shopsDropdowns.map((item) => {
                 return {
                     id: item.id,
