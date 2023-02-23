@@ -625,7 +625,7 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
             {
                 title: 'Deactivate',
                 name: 'close-business',
-                svgUrl: '',
+                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Deactivate.svg',
                 svgStyle: {
                     width: 18,
                     height: 18,
