@@ -32,7 +32,7 @@
                       '</br>' +
                       totalFiltersNum +
                       ' Selected'
-                    : filterTitle
+                    :  activeFilter ? 'Close Filter' : filterTitle
                 : 'Clear ' + filterTitle
         }}"
         position="bottom"
@@ -1583,12 +1583,19 @@
                         *ngIf="type == 'locationFilter'"
                         [@showAnimation]="activeFilter ? 'true' : 'false'"
                     >
-                        <app-ta-ngx-slider
-                            [sliderOptions]="locationSliderData"
-                            [startedValue]="locationRange"
-                            [customClass]="'custom-slider-filter'"
-                            (onUserValueChange)="setRangeValue($event)"
-                        ></app-ta-ngx-slider>
+                        <div class="range-new-value-holder">
+                            <div class="range-text">
+                                Range
+                            </div>
+                            <div class="range-flex-holder">
+                                <app-ta-ngx-slider
+                                    [sliderOptions]="locationSliderData"
+                                    [startedValue]="locationRange"
+                                    [customClass]="'custom-slider-filter'"
+                                    (onUserValueChange)="setRangeValue($event)"
+                                ></app-ta-ngx-slider>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1701,7 +1708,7 @@
                     (click)="clearAll($event)"
                     class="button-clear"
                     [class.active]="
-                        longVal != 0 || latVal != 0 || locationRange != 50
+                        longVal != 0 || latVal != 0 || locationRange != 25
                     "
                 >
                     Clear All

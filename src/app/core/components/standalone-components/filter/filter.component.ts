@@ -1273,7 +1273,7 @@ export class FilterComponent implements OnInit, AfterViewInit {
     multiFormSecondToActive: any = 0;
     multiFormThirdFromActive: any = 0;
     multiFormThirdToActive: any = 0;
-    locationRange: any = 50;
+    locationRange: any = 25;
     hoverClose: any = false;
     areaFilterSelected: any = 'Location';
 
@@ -1286,7 +1286,7 @@ export class FilterComponent implements OnInit, AfterViewInit {
     };
 
     public locationSliderData: Options = {
-        floor: 50,
+        floor: 25,
         ceil: 350,
         step: 5,
         showSelectionBar: true,
@@ -1345,7 +1345,7 @@ export class FilterComponent implements OnInit, AfterViewInit {
     destLongValSet: any = 0;
     destLatValSet: any = 0;
 
-    locationRangeSet: any = 50;
+    locationRangeSet: any = 25;
     loactionNameSet: any = '';
 
     activeFormNum: any = 0;
@@ -1359,6 +1359,7 @@ export class FilterComponent implements OnInit, AfterViewInit {
         {
             id: 1,
             name: 'Location',
+            checked: true,
         },
         {
             id: 2,
@@ -2238,7 +2239,7 @@ export class FilterComponent implements OnInit, AfterViewInit {
                         origin: '',
                        destination: '',
                     });
-                    this.locationRange = 50;
+                    this.locationRange = 25;
                     this.locationState = '';
                     this.longVal = 0;
                     this.latVal = 0;
@@ -3040,7 +3041,7 @@ export class FilterComponent implements OnInit, AfterViewInit {
     }
 
     public onTabChange(event: any, type: string): void {
-       //console.log('event', event.name);
+       console.log('event', event);
        this.sideAnimation = true;
        this.areaFilterSelected = event.name;
     }
