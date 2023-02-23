@@ -61,6 +61,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
     repairShops: ShopState[] = [];
     resizeObserver: ResizeObserver;
     inactiveTabClicked: boolean = false;
+    repairShopTabClicked: boolean = false;
     backFilterQuery = {
         repairShopId: undefined,
         unitType: 1,
@@ -455,10 +456,14 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
 
             return this.repairTrucks?.length ? this.repairTrucks : [];
         } else if (dataType === 'inactive') {
+            this.inactiveTabClicked = true;
+
             this.repairTrailers = this.repairTrailerQuery.getAll();
 
             return this.repairTrailers?.length ? this.repairTrailers : [];
         } else if (dataType === 'repair-shop') {
+            this.repairShopTabClicked = true;
+
             this.repairShops = this.shopQuery.getAll();
 
             return this.repairShops?.length ? this.repairShops : [];
@@ -923,7 +928,6 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                 ])
                     .pipe(takeUntil(this.destroy$))
                     .subscribe(([repairTrailerPagination, tableConfig]) => {
-                        // Ne baca mi nikakvu gresku kad ga nema tableconfig a vidim da je bio u resolveru pa sam ga stavio ovde prekontrolisati vraca null
                         if (tableConfig) {
                             const config = JSON.parse(tableConfig.config);
 
@@ -937,7 +941,10 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                         );
                         this.sendRepairData();
                     });
-            } else if (this.selectedTab === 'repair-shop') {
+            } else if (
+                this.selectedTab === 'repair-shop' &&
+                !this.repairShopTabClicked
+            ) {
                 forkJoin([
                     this.repairService.getRepairShopList(
                         1,
@@ -956,7 +963,6 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                 ])
                     .pipe(takeUntil(this.destroy$))
                     .subscribe(([repairPagination, tableConfig]) => {
-                        // Ne baca mi nikakvu gresku kad ga nema tableconfig a vidim da je bio u resolveru pa sam ga stavio ovde prekontrolisati vraca null
                         if (tableConfig) {
                             const config = JSON.parse(tableConfig.config);
 
