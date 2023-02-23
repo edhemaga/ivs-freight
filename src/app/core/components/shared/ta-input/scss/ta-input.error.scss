@@ -3,20 +3,20 @@
 .input-error {
     position: absolute;
     top: 100%;
-    // transform: translateY(-50%);
     right: 5px;
-    color: $input-error-color;
+    color: $invalid-message;
     font-size: 11px;
     font-weight: 600;
+    line-height: 14px;
     display: inline-block;
 
     &::-moz-selection {
-        background-color: $input-error-background-selection;
-        color: $input-error-color;
+        background-color: $invalid-message-background-selection;
+        color: $invalid-message;
     }
 
     &::selection {
-        background-color: $input-error-background-selection;
-        color: $input-error-color;
+        background-color: $invalid-message-background-selection;
+        color: $invalid-message;
     }
 }

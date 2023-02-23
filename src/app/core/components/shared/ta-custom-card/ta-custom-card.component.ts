@@ -15,18 +15,25 @@ import { TaCheckboxComponent } from '../ta-checkbox/ta-checkbox.component';
 import { TaCounterComponent } from '../ta-counter/ta-counter.component';
 import { PayrollStatusesComponent } from '../payroll-statuses/payroll-statuses.component';
 import { TaLikeDislikeComponent } from '../ta-like-dislike/ta-like-dislike.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { ChangeDetectionStrategy } from '@angular/core';
 
 @Component({
     selector: 'app-ta-custom-card',
     templateUrl: './ta-custom-card.component.html',
     styleUrls: ['./ta-custom-card.component.scss'],
     animations: [card_modal_animation('showHideCardBody')],
+    changeDetection: ChangeDetectionStrategy.OnPush,
     encapsulation: ViewEncapsulation.None,
     standalone: true,
     imports: [
+        // Module
         CommonModule,
         FormsModule,
         AngularSvgIconModule,
+        NgbModule,
+
+        // Component
         AppTooltipComponent,
         TaCheckboxComponent,
         TaCounterComponent,
@@ -59,6 +66,7 @@ export class TaCustomCardComponent {
     @Input() hasDeleteAction: boolean = false;
     @Input() hasPayrollStatus: boolean = false;
     @Input() bottomCollapseArrow: boolean = false;
+    @Input() customClass: string;
 
     @Input() controlName: UntypedFormControl;
 

@@ -18,7 +18,6 @@ import { fadeInAnimation } from '../../../../state/utils/animation';
 })
 export class SidebarResendBtnComponent implements OnInit, OnChanges {
     @Input() btnText: string = null;
-    @Input() blueText?: boolean = false;
     @Input() requestedResend?: boolean = false;
 
     @Output() clickValueEmitter = new EventEmitter<any>();

@@ -16,6 +16,7 @@ import { TrailerTService } from '../state/trailer.service';
 import { animate, style, transition, trigger, state } from '@angular/animations';
 import { TrailerItemStore } from '../state/trailer-details-state/trailer-details.store';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ImageBase64Service } from '../../../utils/base64.image';
 
 @Component({
     selector: 'app-trailer-details-card',
@@ -67,6 +68,7 @@ export class TrailerDetailsCardComponent
         private trailerService: TrailerTService,
         private trailerItemStore: TrailerItemStore,
         private activated_route: ActivatedRoute,
+        public imageBase64Service: ImageBase64Service,
     ) {}
     ngOnChanges(changes: SimpleChanges): void {
         if (!changes?.trailer?.firstChange) {
@@ -82,11 +84,14 @@ export class TrailerDetailsCardComponent
         this.initTableOptions();
         this.getTrailerDropdown();
 
-        let currentIndex = this.trailer_list.findIndex(
-            (trailer) => trailer.id === this.trailer.id
-        );
-        
-        this.trailerIndex = currentIndex;
+
+        setTimeout(()=>{
+            let currentIndex = this.trailerDropDowns.findIndex(
+                (trailer) => trailer.id === this.trailer.id
+            );
+            
+            this.trailerIndex = currentIndex;
+        }, 300)
     }
 
     public getTrailerById(id: number) {
@@ -158,6 +163,10 @@ export class TrailerDetailsCardComponent
                     active: item.id === this.trailer.id,
                 };
             });
+
+        this.trailerDropDowns = this.trailerDropDowns.sort(
+            (x, y) => Number(y.status) - Number(x.status)
+        );
     }
     public onSelectedTrailer(event: any) {
         
@@ -175,11 +184,15 @@ export class TrailerDetailsCardComponent
                     };
                 });
             this.detailsPageDriverSer.getDataDetailId(event.id);
+
+            this.trailerDropDowns = this.trailerDropDowns.sort(
+                (x, y) => Number(y.status) - Number(x.status)
+            );
         }
     }
     public onChangeTrailer(action: string) {
         
-        let currentIndex = this.trailer_list.findIndex(
+        let currentIndex = this.trailerDropDowns.findIndex(
             (trailer) => trailer.id === this.trailer.id
         );
 
@@ -188,10 +201,10 @@ export class TrailerDetailsCardComponent
                 currentIndex = --currentIndex;
                 if (currentIndex != -1) {
                     this.detailsPageDriverSer.getDataDetailId(
-                        this.trailer_list[currentIndex].id
+                        this.trailerDropDowns[currentIndex].id
                     );
                     this.onSelectedTrailer({
-                        id: this.trailer_list[currentIndex].id,
+                        id: this.trailerDropDowns[currentIndex].id,
                     });
                     this.trailerIndex = currentIndex;
                 }
@@ -201,13 +214,13 @@ export class TrailerDetailsCardComponent
                 currentIndex = ++currentIndex;
                 if (
                     currentIndex !== -1 &&
-                    this.trailer_list.length > currentIndex
+                    this.trailerDropDowns.length > currentIndex
                 ) {
                     this.detailsPageDriverSer.getDataDetailId(
-                        this.trailer_list[currentIndex].id
+                        this.trailerDropDowns[currentIndex].id
                     );
                     this.onSelectedTrailer({
-                        id: this.trailer_list[currentIndex].id,
+                        id: this.trailerDropDowns[currentIndex].id,
                     });
                     this.trailerIndex = currentIndex;
                 }

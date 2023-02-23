@@ -1,13 +1,9 @@
 import { DriverDetailsCardComponent } from './../driver-details-card/driver-details-card.component';
-import { DriverDrugAlcoholModalComponent } from '../../modals/driver-modal/driver-drugAlcohol-modal/driver-drugAlcohol-modal.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DriverDetailsComponent } from './driver-details.component';
 import { DriverDetailsRoutes } from './driver-details.routing';
 import { DriverDetailsItemComponent } from './driver-details-item/driver-details-item.component';
-import { DriverMvrModalComponent } from '../../modals/driver-modal/driver-mvr-modal/driver-mvr-modal.component';
-import { DriverMedicalModalComponent } from '../../modals/driver-modal/driver-medical-modal/driver-medical-modal.component';
-import { DriverCdlModalComponent } from '../../modals/driver-modal/driver-cdl-modal/driver-cdl-modal.component';
 import { SharedModule } from '../../shared/shared.module';
 import { AppTooltipComponent } from '../../standalone-components/app-tooltip/app-tooltip.component';
 import { TaModalComponent } from '../../shared/ta-modal/ta-modal.component';
@@ -33,11 +29,6 @@ import { TaChartComponent } from '../../standalone-components/ta-chart/ta-chart.
         DriverDetailsComponent,
         DriverDetailsItemComponent,
         DriverDetailsCardComponent,
-        // ModalsA
-        DriverCdlModalComponent,
-        DriverDrugAlcoholModalComponent,
-        DriverMedicalModalComponent,
-        DriverMvrModalComponent,
     ],
     exports: [DriverDetailsCardComponent, SharedModule],
 
@@ -46,8 +37,8 @@ import { TaChartComponent } from '../../standalone-components/ta-chart/ta-chart.
         DriverDetailsRoutes,
         SharedModule,
         AppTooltipComponent,
-        TaModalComponent, 
-        TaTabSwitchComponent, 
+        TaModalComponent,
+        TaTabSwitchComponent,
         ReactiveFormsModule,
         TaInputComponent,
         TaInputDropdownComponent,
@@ -65,7 +56,7 @@ import { TaChartComponent } from '../../standalone-components/ta-chart/ta-chart.
         formatDatePipe,
         TaCommonHeaderComponent,
         TaDetailsHeaderCardComponent,
-        TaChartComponent
+        TaChartComponent,
     ],
 })
 export class DriverDetailsModule {}

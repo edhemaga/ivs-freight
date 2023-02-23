@@ -17,7 +17,6 @@
             [longitude]="mapLongitude"
             [restriction]="mapRestrictions"
             [streetViewControl]="false"
-            [styles]="styles"
             [zoom]="mapZoom"
             [usePanning]="true"
             [keyboardShortcuts]="false"
@@ -320,7 +319,7 @@
                                 <div
                                     [ngClass]="{
                                         'hide-marker':
-                                            !latlong.isSelected && markerSelected,
+                                            !latlong.isSelected,
                                         'hide-marker-tooltip': latlong.isSelected
                                     }"
                                 >
@@ -1172,7 +1171,7 @@
                                     label: 'Truck',
                                     isRequired: true,
                                     isDropdown: true,
-                                    dropdownWidthClass: 'w-col-158',
+                                    dropdownWidthClass: 'w-col-138',
                                     placeholderIcon: 'ic_truck',
                                     customClass: 'truck-trailer-dropdown',
                                     placeholderInsteadOfLabel: true,

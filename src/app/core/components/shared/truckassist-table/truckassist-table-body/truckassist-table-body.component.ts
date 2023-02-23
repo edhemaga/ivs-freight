@@ -95,6 +95,7 @@ export class TruckassistTableBodyComponent
     rowData: any;
     activeDescriptionDropdown: number = -1;
     descriptionTooltip: any;
+    descriptionPopoverOpen: boolean = false;
     pageHeight: number = window.innerHeight;
     activeAttachment: number = -1;
     activeMedia: number = -1;
@@ -148,12 +149,13 @@ export class TruckassistTableBodyComponent
                     this.mySelection = [];
 
                     this.viewData = this.viewData.map((data) => {
-                        data.isSelected = isSelect;
+                        if (!data?.tableCantSelect) {
+                            data.isSelected = isSelect;
 
-                        if (data.isSelected) {
-                            this.mySelection.push({ id: data.id });
+                            if (data.isSelected) {
+                                this.mySelection.push({ id: data.id });
+                            }
                         }
-
                         return data;
                     });
 
@@ -360,6 +362,8 @@ export class TruckassistTableBodyComponent
         ) {
             this.showScrollSectionBorder = scrollEvent.isScrollBarShowing;
 
+            this.tableService.sendIsScrollShownig(this.showScrollSectionBorder);
+
             this.changeDetectorRef.detectChanges();
         }
     }
@@ -441,13 +445,16 @@ export class TruckassistTableBodyComponent
             this.notPinedMaxWidth =
                 tableContainer.clientWidth -
                 (this.pinedWidth + this.actionsWidth) -
-                12;
+                14;
 
             this.changeDetectorRef.detectChanges();
 
             this.tableWidthTimeout = setTimeout(() => {
                 const table = document.querySelector('.table-tr');
+
                 this.tableWidth = table?.clientWidth ? table.clientWidth : 0;
+
+                this.changeDetectorRef.detectChanges();
             }, 100);
         }
     }
@@ -546,7 +553,7 @@ export class TruckassistTableBodyComponent
     setDropContent() {
         this.dropContent = [];
 
-        if (this.options.actions.length) {
+        if (this.options?.actions?.length) {
             for (let i = 0; i < this.options.actions.length; i++) {
                 this.dropContent.push(this.options.actions[i]);
             }
@@ -560,7 +567,9 @@ export class TruckassistTableBodyComponent
         if (tooltip.isOpen()) {
             tooltip.close();
         } else {
-            tooltip.open({ data: this.dropContent });
+            !row.tableDropdownContent?.hasContent
+                ? tooltip.open({ data: this.dropContent })
+                : tooltip.open({ data: row.tableDropdownContent });
         }
 
         this.dropDownActive = tooltip.isOpen() ? row.id : -1;
@@ -583,7 +592,7 @@ export class TruckassistTableBodyComponent
     }
 
     // Show Description Dropdown
-    onShowDescriptionDropdown(popup: any, row: any) {
+    onShowDescriptionDropdown(popup: any, row: any, column: any) {
         this.descriptionTooltip = popup;
 
         if (popup.isOpen()) {
@@ -612,12 +621,15 @@ export class TruckassistTableBodyComponent
             this.viewData = [...viewData];
         }
 
-        // Send Drop Action
-        this.bodyActions.emit({
-            id: this.dropDownActive,
-            data: this.rowData,
-            type: action.name,
-        });
+        // Only If Action Is Not Muted
+        if (!action?.mutedStyle) {
+            // Send Drop Action
+            this.bodyActions.emit({
+                id: this.dropDownActive,
+                data: this.rowData,
+                type: action.name,
+            });
+        }
 
         this.tooltip.close();
     }
@@ -695,5 +707,6 @@ export class TruckassistTableBodyComponent
         this.destroy$.complete();
         this.tableService.sendRowsSelected([]);
         this.tableService.sendCurrentSetTableWidth(null);
+        this.tableService.sendIsScrollShownig(false);
     }
 }

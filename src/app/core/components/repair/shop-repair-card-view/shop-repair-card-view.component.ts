@@ -217,8 +217,8 @@ export class ShopRepairCardViewComponent
         this.repairDQuery.repairShopMinimal$
             .pipe(
                 takeUntil(this.destroy$),
-                map((data: RepairShopMinimalListResponse) => {
-                    return data.pagination.data.map((item) => {
+                map((data: any) => {
+                    return data?.pagination?.data.map((item) => {
                         return {
                             id: item.id,
                             name: item.name,

@@ -11,7 +11,7 @@ import { AgmCoreModule } from '@agm/core';
 import { AppTooltipComponent } from '../standalone-components/app-tooltip/app-tooltip.component';
 import { TaThousandSeparatorPipe } from '../../pipes/taThousandSeparator.pipe';
 import { InputAddressDropdownComponent } from '../shared/input-address-dropdown/input-address-dropdown.component';
-import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModule, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AgmSnazzyInfoWindowModule } from '@agm/snazzy-info-window';
 import { AngularSvgIconModule } from 'angular-svg-icon';
@@ -19,20 +19,26 @@ import { DetailsDropdownComponent } from '../shared/details-page-dropdown/detail
 @NgModule({
     declarations: [RoutingMapComponent, FilterRoutesPipe],
     imports: [
+        // Modules
         CommonModule,
         RoutingRoutingModule,
-        MapToolbarComponent,
         DragDropModule,
         AgmCoreModule,
-        AppTooltipComponent,
-        TaThousandSeparatorPipe,
-        InputAddressDropdownComponent,
+        NgbModule,
         NgbPopoverModule,
         FormsModule,
         ReactiveFormsModule,
         AgmSnazzyInfoWindowModule,
         AngularSvgIconModule,
-        DetailsDropdownComponent
+
+        // Components
+        MapToolbarComponent,
+        AppTooltipComponent,
+        InputAddressDropdownComponent,
+        DetailsDropdownComponent,
+
+        // Pipes
+        TaThousandSeparatorPipe
     ],
 })
 export class RoutingModule {}

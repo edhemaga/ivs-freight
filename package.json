@@ -56,7 +56,7 @@
         "agm-direction": "^0.8.10",
         "angular-croppie-module": "0.0.7",
         "angular-gridster2": "^13.2.1",
-        "angular-svg-icon": "^13.0.0",
+        "angular-svg-icon": "^14.0.0",
         "angular-svg-icon-preloader": "^2.0.1",
         "angular2-chartjs": "^0.5.1",
         "bank-routing-number-validator": "0.0.4",
@@ -99,7 +99,7 @@
         "tslib": "^2.4.1",
         "uuid": "^9.0.0",
         "validator": "^13.7.0",
-        "zone.js": "~0.11.4"
+        "zone.js": "~0.12.0"
     },
     "devDependencies": {
         "@angular-devkit/build-angular": "^14.2.10",

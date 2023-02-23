@@ -380,7 +380,7 @@
 
         .picker_buttons {
             display: flex;
-            padding: 12px;
+            padding: 6px;
             justify-content: space-between;
 
             .pick_button {
@@ -586,8 +586,4 @@ input[type='date']::-webkit-inner-spin-button,
 input[type='date']::-webkit-calendar-picker-indicator {
     display: none;
     -webkit-appearance: none;
-}
-
-.datetimepopovermain {
-    width: 5px;
 }

@@ -1,4 +1,9 @@
-import { FormsModule, ReactiveFormsModule, UntypedFormGroup, Validators } from '@angular/forms';
+import {
+    FormsModule,
+    ReactiveFormsModule,
+    UntypedFormGroup,
+    Validators,
+} from '@angular/forms';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { UntypedFormBuilder } from '@angular/forms';
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
@@ -25,10 +30,21 @@ import { TaUploadFilesComponent } from '../../../shared/ta-upload-files/ta-uploa
     styleUrls: ['./tt-fhwa-inspection-modal.component.scss'],
     providers: [ModalService, FormService],
     standalone: true,
-    imports: [CommonModule, FormsModule, TaModalComponent, ReactiveFormsModule,TaInputComponent, TaCustomCardComponent, TaInputNoteComponent, TaUploadFilesComponent]
+    imports: [
+        // Module
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+
+        // Component
+        TaModalComponent,
+        TaInputComponent,
+        TaCustomCardComponent,
+        TaInputNoteComponent,
+        TaUploadFilesComponent,
+    ],
 })
 export class TtFhwaInspectionModalComponent implements OnInit, OnDestroy {
-    private destroy$ = new Subject<void>();
     @Input() editData: any;
 
     public fhwaInspectionForm: UntypedFormGroup;
@@ -40,6 +56,8 @@ export class TtFhwaInspectionModalComponent implements OnInit, OnDestroy {
     public isFormDirty: boolean;
 
     public disableCardAnimation: boolean = false;
+
+    private destroy$ = new Subject<void>();
 
     constructor(
         private formBuilder: UntypedFormBuilder,

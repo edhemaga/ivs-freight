@@ -35,6 +35,7 @@ export class MapsService implements OnDestroy {
     mapListScrollChange: Subject<any> = new Subject<any>();
     mapFilterChange: Subject<any> = new Subject<any>();
     mapRatingChange: Subject<any> = new Subject<any>();
+    searchResultsCountChange: Subject<any> = new Subject<any>();
 
     private hubConnection: signalR.HubConnection;
     public statusChange = new Subject<any>();

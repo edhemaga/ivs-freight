@@ -1,18 +1,33 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, Self } from '@angular/core';
-import { ControlValueAccessor, FormsModule, NgControl, ReactiveFormsModule } from '@angular/forms';
+import {
+    ControlValueAccessor,
+    FormsModule,
+    NgControl,
+    ReactiveFormsModule,
+} from '@angular/forms';
 import {
     card_modal_animation,
     card_modal_animation_false,
 } from '../animations/card-modal.animation';
 import { TaCheckboxComponent } from '../ta-checkbox/ta-checkbox.component';
+import { AngularSvgIconModule } from 'angular-svg-icon';
 
 @Component({
     selector: 'app-ta-checkbox-card',
     templateUrl: './ta-checkbox-card.component.html',
     styleUrls: ['./ta-checkbox-card.component.scss'],
     standalone: true,
-    imports: [CommonModule, FormsModule, TaCheckboxComponent, ReactiveFormsModule],
+    imports: [
+        // Module
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+        AngularSvgIconModule,
+
+        // Component
+        TaCheckboxComponent,
+    ],
     animations: [
         card_modal_animation('showHideCardBody'),
         card_modal_animation_false('showHideCardBodyFalsy'),

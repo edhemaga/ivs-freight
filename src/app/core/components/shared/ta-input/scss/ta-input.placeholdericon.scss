@@ -3,13 +3,14 @@
 .input-icon {
     position: absolute;
     left: 6px;
-    top: 46%;
+    top: 47%;
     transform: translateY(-50%);
     z-index: 10;
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
+    transition: all 0.3s ease-in-out;
 
     svg-icon {
         svg {
@@ -25,143 +26,131 @@
     &.default-svg-color {
         svg {
             path {
-                fill: $input-placeholder-icon-normal;
+                fill: $default-placeholderIcon;
             }
         }
-    }
-
-    &::after {
-        content: '';
-        display: block;
-        height: 16px;
-        width: 1px;
-        border-radius: 3px;
-        background: $input-placeholder-icon-normal-after;
-        position: absolute;
-        left: 24px;
-        top: 56%;
-        transform: translateY(-50%);
     }
 
     &.cursor-pointer {
         cursor: pointer;
     }
 
-    &.valid-required-in {
-        transition: all 0.3s ease-in-out;
+    &::after {
+        content: '';
+        display: block;
+        height: 15px;
+        width: 1px;
+        border-radius: 3px;
+        background: $default-placeholderIcon-pipe;
+        position: absolute;
+        left: 24px;
+        top: 55%;
+        transform: translateY(-50%);
+    }
+
+    &.focus {
         svg {
             path {
-                fill: $input-placeholder-icon-path-valid-focus !important;
+                fill: $default-focus-placeholderIcon;
             }
         }
 
         text {
-            fill: $input-placeholder-icon-path-valid-focus !important;
+            fill: $default-focus-placeholderIcon;
         }
 
         &::after {
-            background: $input-placeholder-icon-path-valid-focus !important;
+            background: $default-focus-placehilderIcon-pipe;
         }
     }
 
-    &.valid-required-out {
-        transition: all 0.3s ease-in-out;
+    &.valid-focus-in {
         svg {
             path {
-                fill: $input-placeholder-icon-path-valid;
+                fill: $valid-focus-placeholderIcon;
             }
         }
 
         text {
-            fill: $input-placeholder-icon-path-valid !important;
+            fill: $valid-focus-placeholderIcon;
         }
 
         &::after {
-            background-color: $input-placeholder-icon-valid-after !important;
+            background: $valid-focus-placeholderIcon-pipe;
         }
     }
 
-    &.valid-required-out-dropdown-label {
-        text {
-            fill: $input-placeholder-icon-path-valid !important;
-        }
-        &::after {
-            background: $input-placeholder-icon-valid-after !important;
-        }
-    }
-
-    &.invalid-required-in {
-        transition: all 0.3s ease-in-out;
+    &.valid-focus-out {
         svg {
             path {
-                fill: $input-placeholder-icon-path-invalid-focus !important;
+                fill: $valid-placeholderIcon;
             }
         }
 
         text {
-            fill: $input-placeholder-icon-path-invalid-focus !important;
+            fill: $valid-placeholderIcon;
         }
 
         &::after {
-            background-color: $input-placeholder-icon-path-invalid-focus !important;
+            background-color: $valid-placeholderIcon-pipe;
         }
     }
 
-    &.invalid-required-empty,
-    &.invalid-required-filled-out {
-        transition: all 0.3s ease-in-out;
+    &.valid-focus-out-dropdown-label {
+        &::after {
+            background-color: $valid-placeholderIcon-pipe;
+        }
+    }
+
+    &.invalid-focus-in {
         svg {
             path {
-                fill: #e57373;
+                fill: $invalid-focus-placeholderIcon;
             }
         }
 
         text {
-            fill: $input-placeholder-icon-path-invalid !important;
+            fill: $invalid-focus-placeholderIcon;
         }
 
         &::after {
-            background: $input-placeholder-icon-invalid-after !important;
+            background-color: $invalid-focus-placeholderIcon-pipe;
         }
     }
 
-    &.password-eye {
+    &.invalid-focus-out {
         svg {
             path {
-                fill: $input-placeholder-icon-normal !important;
+                fill: $invalid-placeholderIcon;
+            }
+        }
+
+        text {
+            fill: $invalid-placeholderIcon;
+        }
+
+        &::after {
+            background: $invalid-placeholderIcon-pipe;
+        }
+    }
+
+    &.inactive-empty {
+        svg {
+            path {
+                fill: $inactive-empty-placeholderIcon;
             }
         }
     }
 
-    &.password-eye-invalid {
+    &.inactive-filled {
         svg {
             path {
-                fill: $input-placeholder-icon-path-invalid-focus !important;
-            }
-        }
-    }
-
-    &.input-dropdown {
-        display: none !important;
-    }
-
-    &.disabled-empty {
-        svg {
-            path {
-                fill: $input-placeholder-icon-disabled !important;
-            }
-        }
-    }
-
-    &.disabled-filled {
-        svg {
-            path {
-                fill: $input-placeholder-icon-disabled-filled !important;
+                fill: $inactive-filled-placeholderIcon;
             }
         }
 
         &::after {
-            background-color: $input-placeholder-icon-disabled-filled !important;
+            background-color: $inactive-filled-placeholderIcon-pipe;
         }
     }
 
@@ -170,15 +159,7 @@
     &.discolor-placeholder {
         svg {
             path {
-                fill: $input-placeholder-icon-normal !important;
-            }
-        }
-    }
-
-    &.repair-shop-open-hour {
-        svg {
-            path {
-                fill: $input-placeholder-icon-normal !important;
+                fill: $default-placeholderIcon;
             }
         }
     }
@@ -186,7 +167,7 @@
     &.load-adjusted-rate {
         svg {
             path {
-                fill: $input-placeholder-icon-color-dark-yellow !important;
+                fill: $default-placeholderIcon-yellow;
             }
         }
     }
@@ -194,22 +175,12 @@
     &.load-advance-rate {
         svg {
             path {
-                fill: $input-placeholder-icon-color-dark-green !important;
+                fill: $default-placeholderIcon-green;
             }
         }
     }
 
-    &.hazardous-svg {
-        transition: all 0.3s ease-in-out;
-        cursor: pointer;
-        svg {
-            path:not(:nth-child(2)) {
-                fill: unset !important;
-            }
-
-            path:nth-child(2) {
-                fill: #424242 !important;
-            }
-        }
+    &.hidden {
+        display: none !important;
     }
 }

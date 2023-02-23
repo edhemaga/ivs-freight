@@ -15,6 +15,9 @@ import { SignInResponse } from 'appcoretruckassist';
 import { ImageBase64Service } from '../../../utils/base64.image';
 import { FormsModule } from '@angular/forms';
 import { AppTooltipComponent } from '../../standalone-components/app-tooltip/app-tooltip.component';
+import { ProfileImagesComponent } from '../profile-images/profile-images.component';
+import { AngularSvgIconModule } from 'angular-svg-icon';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 export interface ReviewCommentModal {
     sortData: any[];
@@ -28,7 +31,14 @@ export interface ReviewCommentModal {
     styleUrls: ['./ta-user-review.component.scss'],
     providers: [TitleCasePipe],
     standalone: true,
-    imports: [CommonModule, FormsModule, AppTooltipComponent],
+    imports: [
+        CommonModule,
+        FormsModule,
+        AngularSvgIconModule,
+        AppTooltipComponent,
+        ProfileImagesComponent,
+        NgbModule,
+    ],
 })
 export class TaUserReviewComponent implements OnChanges {
     @ViewChildren('reviewMessage') reviewMessageRef: QueryList<ElementRef>;
@@ -230,9 +240,9 @@ export class TaUserReviewComponent implements OnChanges {
     }
 
     public openComment(data: any, ind: number) {
-        if(!this.doubleClick) {
+        if (!this.doubleClick) {
             this.doubleClick = true;
-            setTimeout(()=>{
+            setTimeout(() => {
                 this.doubleClick = false;
             }, 250);
         } else {

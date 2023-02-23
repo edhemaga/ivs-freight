@@ -1,9 +1,65 @@
 // FILTER CONTAINER
 .table-filter-container {
+    height: 32px;
     display: flex;
     align-items: center;
     background: #ffffff;
     border-radius: 3px 0px 0px 3px;
+
+    // ARHIVE COUNT
+    .ahrive-count-container {
+        width: fit-content;
+        min-width: 49px;
+        height: 26px;
+        background: #3074d315;
+        border-radius: 2px;
+        display: flex;
+        align-items: center;
+        padding: 0 4px 0 3px;
+        margin-left: 4px;
+
+        .ahrive-count {
+            min-width: 20px;
+            width: fit-content;
+            height: 20px;
+            border-radius: 1px;
+            background: #3074d315;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #3074d3;
+            font-size: 14px;
+            font-weight: 700;
+            padding: 0 6px;
+            margin-right: 5px;
+        }
+
+        svg-icon {
+            display: flex;
+
+            svg {
+                path {
+                    fill: #3074d3;
+                }
+            }
+        }
+    }
+
+    // COUNT SELECTED IN LIST
+    .count-selected-in-list-container {
+        width: fit-content;
+        height: 26px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 2px;
+        background: #3074d3;
+        padding: 0 8px;
+        color: #ffffff;
+        font-size: 14px;
+        font-weight: 700;
+        margin-left: 4px;
+    }
 
     // TOTAL MONEY COUNT
     .money-count-container {
@@ -12,13 +68,13 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        padding: 0 10px;
-        background: #6d82c7;
-        color: #ffffff;
+        padding: 0 16px;
+        color: #3074d3;
         font-size: 14px;
-        font-weight: 600;
-        border-radius: 3px;
+        font-weight: 700;
+        border-radius: 2px;
         margin: 0px 6px 0px 4px;
+        transition: color 0.25s;
 
         &::selection {
             color: #ffffff;
@@ -90,4 +146,16 @@
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+// NG CLASS
+.money-count-select-style {
+    background: #3074d3;
+    color: white !important;
+
+    transition: 0.25s;
+}
+
+.table-filter-padding {
+    padding-left: 4px;
 }

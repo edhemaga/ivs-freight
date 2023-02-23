@@ -12,7 +12,11 @@ import {
 import { TableType } from 'appcoretruckassist';
 import { Subject, takeUntil } from 'rxjs';
 import { TruckassistTableService } from '../../../../services/truckassist-table/truckassist-table.service';
-import { UntypedFormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {
+    UntypedFormControl,
+    FormsModule,
+    ReactiveFormsModule,
+} from '@angular/forms';
 import { Titles } from 'src/app/core/utils/application.decorators';
 import {
     Confirmation,
@@ -23,7 +27,7 @@ import { ConfirmationService } from '../../../modals/confirmation-modal/confirma
 import { CommonModule } from '@angular/common';
 import { ToolbarFiltersComponent } from './toolbar-filters/toolbar-filters.component';
 import { AngularSvgIconModule } from 'angular-svg-icon';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModule, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 import { TaInputDropdownComponent } from '../../ta-input-dropdown/ta-input-dropdown.component';
 
 @Titles()
@@ -39,7 +43,8 @@ import { TaInputDropdownComponent } from '../../ta-input-dropdown/ta-input-dropd
         ToolbarFiltersComponent,
         AngularSvgIconModule,
         NgbModule,
-        TaInputDropdownComponent
+        NgbPopoverModule,
+        TaInputDropdownComponent,
     ],
 })
 export class TruckassistTableToolbarComponent
@@ -185,6 +190,20 @@ export class TruckassistTableToolbarComponent
             .pipe(takeUntil(this.destroy$))
             .subscribe((response: any[]) => {
                 this.tableRowsSelected = response;
+
+                if (this.options.toolbarActions.showMoneyCount) {
+                    this.activeTableData.moneyCountSelected = this
+                        .tableRowsSelected.length
+                        ? true
+                        : false;
+                }
+
+                if (this.options.toolbarActions.showCountSelectedInList) {
+                    this.activeTableData = {
+                        ...this.activeTableData,
+                        listSelectedCount: response.length,
+                    };
+                }
             });
 
         // Confirmation For Reset Table Configuration
@@ -327,7 +346,7 @@ export class TruckassistTableToolbarComponent
         this.setColumnsOptionsGroups();
 
         this.toolbarWidth = hasMinWidth
-            ? columnsSumWidth + 22 + 'px'
+            ? columnsSumWidth + 26 + 'px'
             : 100 + '%';
     }
 
@@ -381,6 +400,10 @@ export class TruckassistTableToolbarComponent
 
     // Select Tab
     onSelectTab(selectedTabData: any) {
+        if (this.tableRowsSelected.length) {
+            this.tableService.sendSelectOrDeselect('deselect');
+        }
+
         this.toolBarAction.emit({
             action: 'tab-selected',
             tabData: selectedTabData,
@@ -404,6 +427,12 @@ export class TruckassistTableToolbarComponent
 
     // Chnage View Mode
     changeModeView(modeView: any) {
+        // Treba da se sredi da kada se prebacujes samo na map da brise, al imamo konfilkt logike oko slekta i deslekta pa se u head brise kada se ukolni koponenta
+        // && modeView === 'Map'
+        if (this.tableRowsSelected.length) {
+            this.tableService.sendSelectOrDeselect('deselect');
+        }
+
         this.selectedViewMode = modeView.mode;
 
         this.toolBarAction.emit({
@@ -650,10 +679,27 @@ export class TruckassistTableToolbarComponent
 
     // Set Table Configuration
     setTableConfig(column: any, index: number) {
+        let newColumns = [...this.columns];
+
+        newColumns = newColumns.map((c) => {
+            if (c.title === column.title) {
+                c = column;
+            }
+
+            return c;
+        });
+
         localStorage.setItem(
             `table-${this.tableConfigurationType}-Configuration`,
-            JSON.stringify(this.columns)
+            JSON.stringify(newColumns)
         );
+
+        this.tableService
+            .sendTableConfig({
+                tableType: this.tableConfigurationType,
+                config: JSON.stringify(newColumns),
+            })
+            .subscribe(() => {});
 
         this.tableService.sendToaggleColumn({
             column: column,

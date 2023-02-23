@@ -1,4 +1,3 @@
-import { NavigationFooterComponent } from './core/components/navigation/navigation-footer/navigation-footer.component';
 import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import {
     BrowserModule,
@@ -16,9 +15,7 @@ import { NgIdleModule } from '@ng-idle/core';
 import { AgmCoreModule, GoogleMapsAPIWrapper } from '@agm/core';
 // ---- NAVIGATION
 import { NavigationComponent } from './core/components/navigation/navigation.component';
-import { NavigationRouteComponent } from './core/components/navigation/navigation-route/navigation-route.component';
 import { ChangeLogoPipe } from './core/components/navigation/pipe/change-logo.pipe';
-import { NavigationHeaderComponent } from './core/components/navigation/navigation-header/navigation-header.component';
 import { ApiModule, Configuration } from 'appcoretruckassist';
 import { UserLoggedService } from './core/components/website/state/service/user-logged.service';
 
@@ -34,6 +31,13 @@ import { TooltipSlideComponent } from './core/components/standalone-components/t
 import { BlockedContentPipe } from './core/pipes/blockedContent.pipe';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CustomScrollbarComponent } from './core/components/shared/custom-scrollbar/custom-scrollbar.component';
+import { LottieModule } from 'ngx-lottie';
+import player from 'lottie-web';
+
+function playerFactory() {
+    return player;
+}
+
 @NgModule({
     declarations: [AppComponent, ChangeLogoPipe],
     imports: [
@@ -45,6 +49,7 @@ import { CustomScrollbarComponent } from './core/components/shared/custom-scroll
         HttpClientModule,
         SharedModule,
         TooltipSlideComponent,
+        LottieModule.forRoot({ player: playerFactory }),
         AgmCoreModule.forRoot({
             apiKey: 'AIzaSyCw4WQw1T4N6TjFWdS731mM09x88SGW81I',
             libraries: ['geometry', 'places'],
@@ -72,6 +77,7 @@ import { CustomScrollbarComponent } from './core/components/shared/custom-scroll
             deps: [UserLoggedService],
             multi: false,
         },
+
         [
             {
                 provide: HTTP_INTERCEPTORS,

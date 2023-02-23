@@ -238,7 +238,9 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
     observTableContainer() {
         this.resizeObserver = new ResizeObserver((entries) => {
             entries.forEach((entry) => {
-                this.tableService.sendCurrentSetTableWidth(entry.contentRect.width);
+                this.tableService.sendCurrentSetTableWidth(
+                    entry.contentRect.width
+                );
             });
         });
 
@@ -254,22 +256,6 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     { name: 'Card', active: this.activeViewMode === 'Card' },
                 ],
             },
-            actions: [
-                {
-                    title: 'Edit',
-                    name: 'edit-account',
-                    class: 'regular-text',
-                    contentType: 'edit',
-                },
-                {
-                    title: 'Delete',
-                    name: 'delete-account',
-                    type: 'account',
-                    text: 'Are you sure you want to delete account(s)?',
-                    class: 'delete-text',
-                    contentType: 'delete',
-                },
-            ],
         };
     }
 
@@ -307,7 +293,11 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
             localStorage.getItem('accountTableCount')
         );
 
-        this.tableData[0].length = accountCount.account;
+        const updatedTableData = [...this.tableData];
+
+        updatedTableData[0].length = accountCount.account;
+
+        this.tableData = [...updatedTableData];
     }
 
     getTabData() {
@@ -365,9 +355,112 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 password: data?.password ? data.password : '',
                 hidemCharacters: this.getHidenCharacters(data),
             },
+            tableDropdownContent: {
+                hasContent: true,
+                content: this.getDropdownOwnerContent(data),
+            },
         };
     }
+    getDropdownOwnerContent(data: any) {
+        return [
+            {
+                title: 'Edit',
+                name: 'edit-account',
+                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Edit.svg',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                hasBorder: true,
+                svgClass: 'regular',
+            },
+            {
+                title: 'View Details',
+                name: 'view-details',
+                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Information.svg',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                svgClass: 'regular',
+                tableListDropdownContentStyle: {
+                    'margin-bottom.px': 4,
+                },
+            },
+            {
+                title: 'Go to Link',
+                name: 'go-to-link',
+                svgUrl: '',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                svgClass: 'regular',
+                tableListDropdownContentStyle: {
+                    'margin-bottom.px': 4,
+                },
+            },
+            {
+                title: 'Copy Username',
+                name: 'copy-username',
+                svgUrl: '',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                svgClass: 'regular',
+                tableListDropdownContentStyle: {
+                    'margin-bottom.px': 4,
+                },
+            },
+            {
+                title: 'Copy Password',
+                name: 'copy-password',
+                svgUrl: '',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                svgClass: 'regular',
+                hasBorder: true,
+            },
+            {
+                title: 'Share',
+                name: 'share',
+                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Share.svg',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                svgClass: 'regular',
+                tableListDropdownContentStyle: {
+                    'margin-bottom.px': 4,
+                },
+            },
+            {
+                title: 'Print',
+                name: 'print',
+                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Print.svg',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
 
+                svgClass: 'regular',
+                hasBorder: true,
+            },
+            {
+                title: 'Delete',
+                name: 'delete-account',
+                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Delete.svg',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                svgClass: 'delete',
+            },
+        ];
+    }
     getHidenCharacters(data: any) {
         let caracters: any = '';
 

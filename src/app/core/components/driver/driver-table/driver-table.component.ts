@@ -366,7 +366,9 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
     observTableContainer() {
         this.resizeObserver = new ResizeObserver((entries) => {
             entries.forEach((entry) => {
-                this.tableService.sendCurrentSetTableWidth(entry.contentRect.width);
+                this.tableService.sendCurrentSetTableWidth(
+                    entry.contentRect.width
+                );
             });
         });
 
@@ -383,89 +385,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     { name: 'Card', active: this.activeViewMode === 'Card' },
                 ],
             },
-            actions: this.getTableActions(),
         };
-    }
-
-    getTableActions() {
-        return this.selectedTab === 'applicants'
-            ? [
-                  {
-                      title: 'Hire Applicant',
-                      name: 'hire-applicant',
-                      class: '',
-                      contentType: '',
-                  },
-                  {
-                      title: 'Resend Invitation',
-                      name: 'resend-invitation',
-                      class: '',
-                      contentType: '',
-                  },
-                  {
-                      title: 'Add to Favourites',
-                      name: 'add-to-favourites',
-                      class: '',
-                      contentType: '',
-                  },
-                  {
-                      title: 'Delete',
-                      name: 'delete-applicant',
-                      type: 'driver',
-                      text: 'Are you sure you want to delete applicant(s)?',
-                      class: 'delete-text',
-                      contentType: 'delete',
-                  },
-              ]
-            : [
-                  {
-                      title: 'Edit Driver',
-                      name: 'edit',
-                      class: 'regular-text',
-                      contentType: 'edit',
-                  },
-                  {
-                      title: 'Add CDL',
-                      name: 'new-licence',
-                      class: 'regular-text',
-                      contentType: 'add',
-                  },
-                  {
-                      title: 'Add Medical',
-                      name: 'new-medical',
-                      class: 'regular-text',
-                      contentType: 'add',
-                  },
-                  {
-                      title: 'Add MVR',
-                      name: 'new-mvr',
-                      class: 'regular-text',
-                      contentType: 'add',
-                  },
-                  {
-                      title: 'Add Test',
-                      name: 'new-drug',
-                      class: 'regular-text',
-                      contentType: 'add',
-                  },
-                  {
-                      title:
-                          this.selectedTab === 'inactive'
-                              ? 'Activate'
-                              : 'Deactivate',
-                      name: 'activate-item',
-                      class: 'regular-text',
-                      contentType: 'activate',
-                  },
-                  {
-                      title: 'Delete',
-                      name: 'delete-item',
-                      type: 'driver',
-                      text: 'Are you sure you want to delete driver(s)?',
-                      class: 'delete-text',
-                      contentType: 'delete',
-                  },
-              ];
     }
 
     sendDriverData() {
@@ -686,9 +606,179 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
             tableEdited: 'NA',
             tableAttachments: data?.files ? data.files : [],
             fileCount: data?.fileCount,
+            tableDropdownContent: {
+                hasContent: true,
+                content: this.getDropdownDriverContent(data),
+            },
         };
     }
+    getDropdownDriverContent(data: any) {
+        return [
+            {
+                title: 'Edit',
+                name: 'edit',
+                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Edit.svg',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                hasBorder: true,
+                svgClass: 'regular',
+            },
 
+            {
+                title: 'View Details',
+                name: 'view-details',
+                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Information.svg',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                svgClass: 'regular',
+                tableListDropdownContentStyle: {
+                    'margin-bottom.px': 4,
+                },
+            },
+            {
+                title: 'Send Message',
+                name: 'send-message',
+                svgUrl: '',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                tableListDropdownContentStyle: {
+                    'margin-bottom.px': 4,
+                },
+                svgClass: 'regular',
+            },
+            {
+                title: 'Add CDL',
+                name: 'new-licence',
+                svgUrl: '',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                tableListDropdownContentStyle: {
+                    'margin-bottom.px': 4,
+                },
+                svgClass: 'regular',
+            },
+            {
+                title: 'Add MVR',
+                name: 'new-mvr',
+                svgUrl: '',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                tableListDropdownContentStyle: {
+                    'margin-bottom.px': 4,
+                },
+                svgClass: 'regular',
+            },
+            {
+                title: 'Medical Exam',
+                name: 'new-medical',
+                svgUrl: '',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                tableListDropdownContentStyle: {
+                    'margin-bottom.px': 4,
+                },
+                svgClass: 'regular',
+            },
+            {
+                title: 'Test (Drug, Alcohol)',
+                name: 'new-drug',
+                svgUrl: '',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                tableListDropdownContentStyle: {
+                    'margin-bottom.px': 4,
+                },
+                svgClass: 'regular',
+            },
+            {
+                title: 'Add New',
+                name: 'add-new',
+                svgUrl: '',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                tableListDropdownContentStyle: {
+                    'margin-bottom.px': 4,
+                },
+                svgClass: 'regular',
+            },
+            {
+                title: 'Request',
+                name: 'add-to-favourites',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                svgUrl: '',
+                svgClass: 'regular',
+                hasBorder: true,
+            },
+
+            {
+                title: 'Share',
+                name: 'share',
+                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Share.svg',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                svgClass: 'regular',
+                tableListDropdownContentStyle: {
+                    'margin-bottom.px': 4,
+                },
+            },
+            {
+                title: 'Print',
+                name: 'print',
+                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Print.svg',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+
+                svgClass: 'regular',
+                hasBorder: true,
+            },
+            {
+                title: 'Deactivate',
+                name: 'deactivate',
+                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Deactivate.svg',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                tableListDropdownContentStyle: {
+                    'margin-bottom.px': 4,
+                },
+                svgClass: 'delete',
+            },
+            {
+                title: 'Delete',
+                name: 'delete-item',
+                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Delete.svg',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                svgClass: 'delete',
+            },
+        ];
+    }
     mapApplicantsData(data: any) {
         return {
             ...data,
@@ -774,9 +864,144 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
             },
             hire: false,
             isFavorite: false,
+            tableDropdownContent: {
+                hasContent: true,
+                content: this.getDropdownApplicantContent(data),
+            },
         };
     }
+    getDropdownApplicantContent(data: any) {
+        return [
+            {
+                title: 'Edit',
+                name: 'edit',
+                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Edit.svg',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                hasBorder: true,
+                svgClass: 'regular',
+            },
 
+            {
+                title: 'View Details',
+                name: 'view-details',
+                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Information.svg',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                svgClass: 'regular',
+                tableListDropdownContentStyle: {
+                    'margin-bottom.px': 4,
+                },
+            },
+            {
+                title: 'Hire Applicant',
+                name: 'hire-applicant',
+                mutedStyle: true,
+                svgUrl: '',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                tableListDropdownContentStyle: {
+                    'margin-bottom.px': 4,
+                },
+                svgClass: 'regular',
+            },
+            {
+                title: 'Review',
+                name: 'review',
+                mutedStyle: true,
+                svgUrl: '',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                tableListDropdownContentStyle: {
+                    'margin-bottom.px': 4,
+                },
+                svgClass: 'regular',
+            },
+            {
+                title: 'Move to Favourites',
+                name: 'add-to-favourites',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                svgUrl: '',
+                svgClass: 'regular',
+                tableListDropdownContentStyle: {
+                    'margin-bottom.px': 4,
+                },
+            },
+            {
+                title: 'Resend Invitation',
+                name: 'resend-invitation',
+                svgUrl: '',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                tableListDropdownContentStyle: {
+                    'margin-bottom.px': 4,
+                },
+                svgClass: 'regular',
+                hasBorder: true,
+            },
+            {
+                title: 'Share',
+                name: 'share',
+                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Share.svg',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                svgClass: 'regular',
+                tableListDropdownContentStyle: {
+                    'margin-bottom.px': 4,
+                },
+            },
+            {
+                title: 'Print',
+                name: 'print',
+                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Print.svg',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+
+                svgClass: 'regular',
+                hasBorder: true,
+            },
+            {
+                title: 'Move to Archive',
+                name: 'move-to-archive',
+                svgUrl: '',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                tableListDropdownContentStyle: {
+                    'margin-bottom.px': 4,
+                },
+                svgClass: 'delete',
+            },
+            {
+                title: 'Delete',
+                name: 'delete-applicant',
+                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Delete.svg',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                svgClass: 'delete',
+            },
+        ];
+    }
     // Get Avatar Color
     getAvatarColors() {
         let textColors: string[] = [
@@ -822,8 +1047,12 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
             localStorage.getItem('driverTableCount')
         );
 
-        this.tableData[1].length = driverCount.active;
-        this.tableData[2].length = driverCount.inactive;
+        const updatedTableData = [...this.tableData];
+
+        updatedTableData[1].length = driverCount.active;
+        updatedTableData[2].length = driverCount.inactive;
+
+        this.tableData = [...updatedTableData];
     }
 
     // Get Driver Back Filter

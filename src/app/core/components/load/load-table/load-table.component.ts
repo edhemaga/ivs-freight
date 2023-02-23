@@ -312,7 +312,9 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
     observTableContainer() {
         this.resizeObserver = new ResizeObserver((entries) => {
             entries.forEach((entry) => {
-                this.tableService.sendCurrentSetTableWidth(entry.contentRect.width);
+                this.tableService.sendCurrentSetTableWidth(
+                    entry.contentRect.width
+                );
             });
         });
 
@@ -332,22 +334,6 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     { name: 'Card', active: this.activeViewMode === 'Card' },
                 ],
             },
-            actions: [
-                {
-                    title: 'Edit',
-                    name: 'edit-load',
-                    class: 'regular-text',
-                    contentType: 'edit',
-                },
-                {
-                    title: 'Delete',
-                    name: 'delete',
-                    type: 'load',
-                    text: 'Are you sure you want to delete load(s)?',
-                    class: 'delete-text',
-                    contentType: 'delete',
-                },
-            ],
         };
     }
 
@@ -542,7 +528,74 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
             },
             tableAttachments: data?.files ? data.files : [],
             fileCount: data?.fileCount,
+            tableDropdownContent: {
+                hasContent: true,
+                content: this.getDropdownLoadContent(data),
+            },
         };
+    }
+    getDropdownLoadContent(data: any) {
+        return [
+            {
+                title: 'Edit',
+                name: 'edit-load',
+                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Edit.svg',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                svgClass: 'regular',
+                hasBorder: true,
+            },
+            {
+                title: 'View Details',
+                name: 'view-details',
+                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Information.svg',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                svgClass: 'regular',
+                hasBorder: true,
+                tableListDropdownContentStyle: {
+                    'margin-bottom.px': 4,
+                },
+            },
+            {
+                title: 'Share',
+                name: 'share',
+                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Share.svg',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                svgClass: 'regular',
+                tableListDropdownContentStyle: {
+                    'margin-bottom.px': 4,
+                },
+            },
+            {
+                title: 'Print',
+                name: 'print',
+                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Print.svg',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                svgClass: 'regular',
+                hasBorder: true,
+            },
+            {
+                title: 'Delete',
+                name: 'delete',
+                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Delete.svg',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                svgClass: 'delete',
+            },
+        ];
     }
 
     getTabData(dataType: string) {

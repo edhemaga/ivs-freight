@@ -5,9 +5,21 @@ import { ViolationTableComponent } from './violation-table/violation-table.compo
 import { AppTooltipComponent } from '../../standalone-components/app-tooltip/app-tooltip.component';
 import { TruckassistTableToolbarComponent } from '../../shared/truckassist-table/truckassist-table-toolbar/truckassist-table-toolbar.component';
 import { formatDatePipe } from 'src/app/core/pipes/formatDate.pipe';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { TruckassistTableHeadComponent } from '../../shared/truckassist-table/truckassist-table-head/truckassist-table-head.component';
+import { TruckassistTableBodyComponent } from '../../shared/truckassist-table/truckassist-table-body/truckassist-table-body.component';
 
 @NgModule({
     declarations: [ViolationTableComponent],
-    imports: [CommonModule, ViolationRoutingModule, AppTooltipComponent, TruckassistTableToolbarComponent, formatDatePipe],
+    imports: [
+        CommonModule,
+        ViolationRoutingModule,
+        AppTooltipComponent,
+        TruckassistTableToolbarComponent,
+        TruckassistTableHeadComponent,
+        TruckassistTableBodyComponent,
+        NgbModule,
+        formatDatePipe,
+    ],
 })
 export class ViolationModule {}

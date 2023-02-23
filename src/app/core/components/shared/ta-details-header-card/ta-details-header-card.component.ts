@@ -9,7 +9,7 @@ import {
     SimpleChanges,
     ViewEncapsulation,
 } from '@angular/core';
-import { FormsModule, UntypedFormControl } from '@angular/forms';
+import { FormsModule, UntypedFormControl, ReactiveFormsModule } from '@angular/forms';
 import { DriversMinimalListQuery } from '../../driver/state/driver-details-minimal-list-state/driver-minimal-list.query';
 import { DriversItemStore } from '../../driver/state/driver-details-state/driver-details.store';
 import { AppTooltipComponent } from '../../standalone-components/app-tooltip/app-tooltip.component';
@@ -17,6 +17,7 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 import { DetailsActiveItemPipe } from 'src/app/core/pipes/detailsActiveItem.pipe';
 import { TaInputDropdownComponent } from '../ta-input-dropdown/ta-input-dropdown.component';
 import { DetailsDropdownComponent } from '../details-page-dropdown/details-dropdown';
+import { NgbModule, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
     selector: 'app-ta-details-header-card',
@@ -27,11 +28,14 @@ import { DetailsDropdownComponent } from '../details-page-dropdown/details-dropd
     imports: [
         CommonModule,
         FormsModule,
+        ReactiveFormsModule,
         AppTooltipComponent,
         AngularSvgIconModule,
         DetailsActiveItemPipe,
         TaInputDropdownComponent,
-        DetailsDropdownComponent
+        DetailsDropdownComponent,
+        NgbPopoverModule,
+        NgbModule
     ],
 })
 export class TaDetailsHeaderCardComponent implements OnInit, OnChanges {
@@ -51,6 +55,7 @@ export class TaDetailsHeaderCardComponent implements OnInit, OnChanges {
     @Input() public hasArrow: boolean;
     @Input() public optionsId: number;
     @Input() public sortOptions: string;
+    @Input() public currentName: string;
     @Output() public dropActions = new EventEmitter<any>();
     @Output() selectValue = new EventEmitter<string>();
     @Output() selectValueStore = new EventEmitter<string>();
@@ -72,6 +77,7 @@ export class TaDetailsHeaderCardComponent implements OnInit, OnChanges {
     ngOnChanges(changes: SimpleChanges) {}
     ngOnInit(): void {
         // this.hideArrowOnStart(this.driverId);
+        console.log('----this.currentName', this.currentName);
     }
 
     public hideArrowOnStart(id: number) {

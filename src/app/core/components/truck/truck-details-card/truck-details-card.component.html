@@ -9,6 +9,7 @@
         [tooltipPrevious]="truckIndex == 0 ? '' : 'Previous Truck'"
         [searchInputName]="'Search Truck'"
         [options]="truckDropDowns"
+        [sortOptions]="'active-drivers'"
         (selectValue)="onSelectedTruck($event)"
         (changeEvent)="onChangeTruck($event)"
     >
@@ -111,6 +112,7 @@
                 [tooltipName]="'Dispatch History'"
                 [hasHeaderSvg]="'assets/svg/common/ic_half_time.svg'"
                 [isCardOpen]="true"
+                [customClass]="'detailsPadding'"
                 [animationMarginParams]="{
                     marginTop: '0px',
                     marginBottom: '10px'
@@ -122,8 +124,8 @@
                         *ngIf="truck?.assignedTo?.trailer?.id"
                     >
                         <svg-icon
-                            class="assignTo-vehicle"
-                            src="assets/svg/common/trailer.svg"
+                            class="assignTo-vehicle backImage"
+                            [src]="'assets/svg/common/trailers/' + truck.assignedTo.trailer.trailerType.logoName "
                         ></svg-icon>
                         <p class="assignTo-value">
                             {{ truck.assignedTo.trailer.trailerNumber }}
@@ -142,9 +144,16 @@
                         *ngIf="truck?.assignedTo?.driver?.id"
                     >
                         <svg-icon
+                            *ngIf="!truck.assignedTo.driver.avatar"
                             class="assignTo-vehicle"
                             src="assets/svg/common/user-image.svg"
                         ></svg-icon>
+                        <img
+                            *ngIf="truck.assignedTo.driver.avatar"
+                            class="driverAvatarImg"
+                            [src]="imageBase64Service.sanitizer(truck.assignedTo.driver.avatar)"
+                            alt="driver-image"
+                        />
                         <p class="assignTo-value">
                             {{ truck.assignedTo.driver.firstName }}
                             {{ truck.assignedTo.driver.lastName }}
@@ -167,6 +176,7 @@
                 [bodyTemplate]="'card'"
                 [isCardOpen]="true"
                 [cardName]="'Additional Details'"
+                [customClass]="'detailsPadding'"
                 [animationMarginParams]="{
                     marginTop: '0px',
                     marginBottom: '10px'
@@ -404,6 +414,7 @@
                 "
                 [bodyTemplate]="'card'"
                 [isCardOpen]="true"
+                [customClass]="'detailsPadding'"
                 [animationMarginParams]="{
                     marginTop: '0px',
                     marginBottom: '10px'
@@ -461,6 +472,7 @@
                 [cardName]="'Expenses'"
                 [bodyTemplate]="'card'"
                 [isCardOpen]="true"
+                [customClass]="'detailsPadding'"
             >
                 <div
                     class="charts-template perfomance"
@@ -492,6 +504,7 @@
                 [cardName]="'Fuel Consumption'"
                 [hasHeaderSvg]="'assets/svg/common/arrow_top_right.svg'"
                 class="item-cards"
+                [customClass]="'detailsPadding'"
             >
                 <div
                     class="charts-template perfomance"
@@ -523,6 +536,7 @@
                 [hasHeaderSvg]="'assets/svg/common/arrow_top_right.svg'"
                 class="item-cards"
                 [isCardOpen]="true"
+                [customClass]="'detailsPadding'"
             >
                 <div
                     class="charts-template perfomance"
@@ -554,6 +568,7 @@
                 [bodyTemplate]="'card'"
                 [hasHeaderSvg]="'assets/svg/common/arrow_top_right.svg'"
                 class="item-cards"
+                [customClass]="'detailsPadding'"
                 [animationMarginParams]="{
                     marginTop: '0px',
                     marginBottom: '10px'
@@ -616,6 +631,7 @@
                 [hasCounter]="truck?.files?.length ? truck?.files.length : 0"
                 class="item-cards"
                 [bodyTemplate]="'card'"
+                [customClass]="'detailsPadding'"
             >
                 <div
                     class="card_files_holder"
@@ -658,6 +674,7 @@
                     [hasDivider]="false"
                     class="item-cards"
                     [bodyTemplate]="'card'"
+                    [customClass]="'detailsPadding'"
                     [hasCounter]="
                         truck?.registrations?.length
                             ? truck.registrations.length
@@ -753,6 +770,7 @@
             <div class="custom-card-single">
                 <app-ta-custom-card
                     [cardName]="'FHWA Inspection'"
+                    [customClass]="'detailsPadding'"
                     [isCardOpen]="false"
                     [hasDivider]="false"
                     class="item-cards"
@@ -830,12 +848,13 @@
                     [hasDivider]="false"
                     class="item-cards"
                     [bodyTemplate]="'card'"
+                    [customClass]="'detailsPadding'"
                     [hasCounter]="
                         truck?.titles?.length ? truck.titles.length : 0
                     "
                     [hasPlusHeader]="true"
                 >
-                    <div *ngFor="let title of truck?.titles; trackBy: identity">
+                    <div *ngFor="let title of truck?.titles; let i = index; trackBy: identity">
                         <app-ta-re-card
                             [cardDocumentCounter]="
                                 title?.files?.length ? title?.files?.length : 0
@@ -925,6 +944,7 @@
                     [bodyTemplate]="'card'"
                     [hasCounter]="0"
                     [hasPlusHeader]="true"
+                    [customClass]="'detailsPadding'"
                 >
                 </app-ta-custom-card>
             </div>

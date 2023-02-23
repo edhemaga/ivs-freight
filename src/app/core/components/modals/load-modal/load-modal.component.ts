@@ -41,10 +41,14 @@ import {
 } from '../../../utils/methods.calculations';
 import moment from 'moment';
 import { CreateLoadTemplateCommand } from '../../../../../../appcoretruckassist/model/createLoadTemplateCommand';
-import { IBilling, IPayment, LoadFinancialComponent } from './load-financial/load-financial.component';
+import {
+    IBilling,
+    IPayment,
+    LoadFinancialComponent,
+} from './load-financial/load-financial.component';
 import { MapRouteModel } from '../../shared/model/map-route';
 import { BrokerModalComponent } from '../broker-modal/broker-modal.component';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ShipperModalComponent } from '../shipper-modal/shipper-modal.component';
 import { FinancialCalculationPipe } from './load-financial/financialCalculation.pipe';
 import { RoutingResponse } from '../../../../../../appcoretruckassist/model/routingResponse';
@@ -67,6 +71,7 @@ import { TaUploadFilesComponent } from '../../shared/ta-upload-files/ta-upload-f
 import { TaInputNoteComponent } from '../../shared/ta-input-note/ta-input-note.component';
 import { LoadDatetimeRangePipe } from './pipes/load-datetime-range.pipe';
 import { LoadTimeTypePipe } from './pipes/load-time-type.pipe';
+import { MapsComponent } from '../../shared/maps/maps.component';
 
 interface IStopRoutes {
     longitude: number;
@@ -81,25 +86,32 @@ interface IStopRoutes {
     styleUrls: ['./load-modal.component.scss'],
     standalone: true,
     imports: [
-            CommonModule, 
-            FormsModule, 
-            AppTooltipComponent, 
-            TaModalComponent, 
-            TaTabSwitchComponent, 
-            ReactiveFormsModule,
-            AngularSvgIconModule,
-            TaInputDropdownComponent,
-            TaInputComponent,
-            TaCustomCardComponent,
-            TaCheckboxComponent,
-            LoadStopComponent,
-            LoadFinancialComponent,
-            TaUploadFilesComponent,
-            TaInputNoteComponent,
-            FinancialCalculationPipe,
-            LoadDatetimeRangePipe,
-            LoadTimeTypePipe
-        ],
+        // Module
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+        AngularSvgIconModule,
+        NgbModule,
+
+        // Component
+        AppTooltipComponent,
+        TaModalComponent,
+        TaTabSwitchComponent,
+        TaInputDropdownComponent,
+        TaInputComponent,
+        TaCustomCardComponent,
+        TaCheckboxComponent,
+        LoadStopComponent,
+        LoadFinancialComponent,
+        TaUploadFilesComponent,
+        TaInputNoteComponent,
+        MapsComponent,
+
+        // Pipe
+        FinancialCalculationPipe,
+        LoadDatetimeRangePipe,
+        LoadTimeTypePipe,
+    ],
     animations: [
         trigger('fadeIn', [
             transition(':enter', [
@@ -3724,7 +3736,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             }
         });
 
-        if(tags.length) {
+        if (tags.length) {
             this.tagsService.updateTag({ tags: tags }).subscribe();
         }
     }

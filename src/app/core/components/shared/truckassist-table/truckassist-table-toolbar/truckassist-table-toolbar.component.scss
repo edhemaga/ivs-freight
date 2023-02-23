@@ -158,10 +158,10 @@
             }
         }
 
-        .new-load{
+        .new-load {
             width: 36px;
             height: 36px;
-            background-color: #3074D3;
+            background-color: #3074d3;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -169,15 +169,15 @@
             align-self: center;
             cursor: pointer;
 
-            svg-icon{
+            svg-icon {
                 display: flex;
-                svg{
-
+                svg {
                 }
             }
         }
 
-        .settings-dispatch, .lock-unlock-dispatch{
+        .settings-dispatch,
+        .lock-unlock-dispatch {
             width: 26px;
             height: 26px;
             display: flex;
@@ -187,9 +187,10 @@
             justify-content: flex-end;
             cursor: pointer;
 
-            svg-icon{
+            svg-icon {
                 display: flex;
-                svg, path{
+                svg,
+                path {
                     width: 18px;
                     height: 18px;
 

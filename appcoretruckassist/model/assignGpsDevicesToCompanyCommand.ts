@@ -9,9 +9,12 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { UnitType } from './unitType';
 
 
 export interface AssignGpsDevicesToCompanyCommand { 
     deviceIds?: Array<string> | null;
+    companyId?: number | null;
+    unitType?: UnitType;
 }
 

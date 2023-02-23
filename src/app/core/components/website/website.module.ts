@@ -11,6 +11,7 @@ import { WebsiteMainComponent } from './components/website-main/website-main.com
 import { WebsiteNavbarComponent } from './components/website-navbar/website-navbar.component';
 import { SidebarConfirmBtnComponent } from './components/website-sidebar/sidebar-btn/sidebar-confirm-btn/sidebar-confirm-btn.component';
 import { SidebarResendBtnComponent } from './components/website-sidebar/sidebar-btn/sidebar-resend-btn/sidebar-resend-btn.component';
+import { SidebarDropdownComponent } from './components/website-sidebar/sidebar-dropdown/sidebar-dropdown.component';
 
 import { WebsiteSidebarComponent } from './components/website-sidebar/website-sidebar.component';
 import { RegisterCompanyComponent } from './components/website-sidebar/sidebar-content/register-company-content/register-company/register-company.component';
@@ -34,6 +35,7 @@ import { WebsiteUnderConstructionComponent } from './components/website-under-co
 import { TaInputComponent } from '../shared/ta-input/ta-input.component';
 import { InputAddressDropdownComponent } from '../shared/input-address-dropdown/input-address-dropdown.component';
 import { TaCheckboxComponent } from '../shared/ta-checkbox/ta-checkbox.component';
+import { TaSpinnerComponent } from '../shared/ta-spinner/ta-spinner.component';
 
 @NgModule({
     declarations: [
@@ -45,6 +47,7 @@ import { TaCheckboxComponent } from '../shared/ta-checkbox/ta-checkbox.component
         WebsiteSidebarComponent,
         SidebarConfirmBtnComponent,
         SidebarResendBtnComponent,
+        SidebarDropdownComponent,
         RegisterCompanyComponent,
         ConfirmationComponent,
         RegisterCompanyHelperComponent,
@@ -79,16 +82,7 @@ import { TaCheckboxComponent } from '../shared/ta-checkbox/ta-checkbox.component
         TaInputComponent,
         InputAddressDropdownComponent,
         TaCheckboxComponent,
+        TaSpinnerComponent,
     ],
 })
 export class WebsiteModule {}
-
-/* 
-
-DEPENDENCIES
-
-AngularSvgIconModule
-
-spinner
-
-*/

@@ -1,5 +1,9 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import {
+    UntypedFormBuilder,
+    UntypedFormGroup,
+    Validators,
+} from '@angular/forms';
 import { DriverListResponse, MedicalResponse } from 'appcoretruckassist';
 import { Subject, takeUntil } from 'rxjs';
 import { DriverTService } from '../../../driver/state/driver.service';
@@ -7,6 +11,16 @@ import { MedicalTService } from '../../../driver/state/medical.service';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { FormService } from '../../../../services/form/form.service';
+import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { AngularSvgIconModule } from 'angular-svg-icon';
+import { AppTooltipComponent } from '../../../shared/app-tooltip/app-tooltip.component';
+import { TaModalComponent } from '../../../shared/ta-modal/ta-modal.component';
+import { TaInputDropdownComponent } from '../../../shared/ta-input-dropdown/ta-input-dropdown.component';
+import { TaUploadFilesComponent } from '../../../shared/ta-upload-files/ta-upload-files.component';
+import { TaInputComponent } from '../../../shared/ta-input/ta-input.component';
+import { TaCustomCardComponent } from '../../../shared/ta-custom-card/ta-custom-card.component';
+import { TaInputNoteComponent } from '../../../shared/ta-input-note/ta-input-note.component';
 import {
     convertDateToBackend,
     convertDateFromBackend,
@@ -17,6 +31,23 @@ import {
     templateUrl: './driver-medical-modal.component.html',
     styleUrls: ['./driver-medical-modal.component.scss'],
     providers: [ModalService, FormService],
+    standalone: true,
+    imports: [
+        // Module
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+        AngularSvgIconModule,
+
+        // Component
+        AppTooltipComponent,
+        TaModalComponent,
+        TaInputDropdownComponent,
+        TaUploadFilesComponent,
+        TaInputComponent,
+        TaCustomCardComponent,
+        TaInputNoteComponent,
+    ],
 })
 export class DriverMedicalModalComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();

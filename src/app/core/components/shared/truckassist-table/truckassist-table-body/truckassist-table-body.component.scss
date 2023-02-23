@@ -7,20 +7,24 @@ table {
         // display: flex;
 
         tr {
-            min-height: 32px;
+            margin-top: 2px;
+            min-height: 34px;
             width: fit-content;
             height: fit-content;
             background: white;
             display: flex;
+            justify-content: center;
             flex-direction: column;
             border-radius: 3px;
-            padding: 2px;
+            padding: 4px;
             transition: margin-bottom 0.25s;
 
             // Columns
             .columns-container {
                 width: 100%;
                 height: 100%;
+                max-height: 26px;
+                min-height: 26px;
                 display: flex;
                 border-radius: 2px;
 
@@ -512,14 +516,14 @@ table {
                                 transition: 0.2s;
                             }
 
-                            .user-avatar-archived-icon{
+                            .user-avatar-archived-icon {
                                 width: 18px;
                                 height: 18px;
                                 display: flex;
                                 align-items: center;
                                 justify-content: center;
 
-                                svg-icon{
+                                svg-icon {
                                     display: flex;
                                     align-items: center;
                                     justify-content: center;
@@ -548,16 +552,20 @@ table {
 
                         // USER STATUS COLUMN
                         .user-status-container {
-                            width: 64px;
-                            height: 20px;
-                            border-radius: 2px;
+                            min-width: 68px;
+                            height: 18px;
+                            border-radius: 1px;
                             background: #6c6c6c20;
                             color: #6c6c6c;
-                            font-size: 12px;
-                            font-weight: bold;
+                            font-size: 11px;
+                            font-weight: 700;
                             display: flex;
                             justify-content: center;
                             align-items: center;
+                            padding: 0 4px;
+                            overflow: hidden;
+                            white-space: nowrap;
+                            text-overflow: ellipsis;
 
                             &::selection {
                                 color: #6c6c6c;
@@ -1656,15 +1664,40 @@ table {
 
                         // DROPDOWN
                         .table-dropdown-container {
-                            width: 30px;
-                            height: 28px;
-                            background-image: url('../../../../../../assets/svg/truckassist-table/dropdown/dropdown.svg');
-                            background-repeat: no-repeat;
-                            background-position: center;
                             cursor: pointer;
+                            width: 26px;
+                            height: 26px;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+
+                            svg-icon {
+                                display: flex;
+
+                                transition: transform 0.1s;
+
+                                svg {
+                                    circle {
+                                        fill: #919191;
+                                    }
+                                }
+                            }
 
                             &:hover {
-                                background-image: url('../../../../../../assets/svg/truckassist-table/dropdown/dropdown-hover.svg');
+                                border-radius: 2px;
+                                background: #42424220;
+
+                                transition: background 0.2s;
+
+                                svg-icon {
+                                    svg {
+                                        circle {
+                                            fill: #424242;
+
+                                            transition: fill 0.2s;
+                                        }
+                                    }
+                                }
                             }
                         }
 
@@ -2702,30 +2735,38 @@ table {
         }
 
         // Border Scroll Section
-        .border-scroll-section-container {
+        .table-border-scroll-section-container {
             position: relative;
 
-            .border-scroll-section {
+            .table-border-scroll-section {
                 position: absolute;
-                width: 8px;
-                height: 32px;
-                margin-top: -2px;
+                width: 0px;
+                height: 34px;
+                margin-top: -4px;
+
+                transition: width 0.25s;
             }
         }
 
-        .border-scroll-section-container-right {
+        .table-border-scroll-section-container-right {
             margin-right: 7px;
 
-            .border-scroll-section {
-                left: -8px;
+            .table-border-scroll-section {
+                right: 0px;
             }
         }
 
-        .border-left {
+        .table-border-left-show,
+        .table-border-right-show {
+            width: 8px !important;
+            transition: width 0.25s;
+        }
+
+        .table-border-left {
             background-image: linear-gradient(to right, #eeeeee, #eeeeee00);
         }
 
-        .border-right {
+        .table-border-right {
             background-image: linear-gradient(to right, #eeeeee00, #eeeeee);
         }
     }
@@ -2735,7 +2776,7 @@ table {
 .show-more-container {
     height: 18px;
     width: fit-content;
-    margin-top: 3px;
+    margin-top: 2px;
     display: flex;
     align-items: center;
 
@@ -2744,7 +2785,6 @@ table {
         width: fit-content;
         height: 100%;
         display: flex;
-        justify-content: center;
         align-items: center;
     }
 
@@ -2753,6 +2793,7 @@ table {
         font-size: 12px;
         font-weight: 500;
         color: #919191;
+        min-width: 80px;
 
         &::selection {
             color: #919191;
@@ -2767,6 +2808,8 @@ table {
         font-size: 14px;
         font-weight: bold;
         color: #6c6c6c;
+        justify-content: center;
+        min-width: 97px;
 
         &:hover {
             color: #5673aa;
@@ -2783,6 +2826,10 @@ table {
 // GLOBAL STYLE
 .set-center {
     justify-content: center;
+}
+
+.set-right {
+    justify-content: flex-end !important;
 }
 
 // PROGRESS COLOR CLASSES
@@ -3122,10 +3169,13 @@ table {
 }
 
 .active-drop {
-    background-image: url('../../../../../../assets/svg/truckassist-table/dropdown/dropdown-select.svg') !important;
+    background: #42424220;
+    border-radius: 2px;
 
-    &:hover {
-        background-image: url('../../../../../../assets/svg/truckassist-table/dropdown/dropdown-select-hover.svg') !important;
+    svg-icon {
+        transform: rotateZ(90deg);
+
+        transition: transform 0.1s;
     }
 }
 

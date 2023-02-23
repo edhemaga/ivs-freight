@@ -1,11 +1,12 @@
 import { Subject } from 'rxjs';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { animate, style, transition, trigger } from '@angular/animations';
 import { noteColors } from '../../../../../const';
 import { AppTooltipComponent } from '../../../standalone-components/app-tooltip/app-tooltip.component';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AngularSvgIconModule } from 'angular-svg-icon';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
     selector: 'app-ta-note-container',
@@ -13,10 +14,14 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
     styleUrls: ['./ta-note-container.component.scss'],
     standalone: true,
     imports: [
-                CommonModule, 
-                FormsModule, 
-                AppTooltipComponent,
-                AngularSvgIconModule
+        // Module
+        CommonModule,
+        FormsModule,
+        AngularSvgIconModule,
+        NgbModule,
+
+        // Component
+        AppTooltipComponent,
     ],
     animations: [
         trigger('pickupAnimation', [
@@ -38,6 +43,8 @@ export class TaNoteContainerComponent implements OnInit {
     @Input() popoverNote: boolean = false;
     @Input() isVisibleArrow: boolean = true;
     @Input() type: string;
+    @Output() stopBlurRemoveTimeout = new EventEmitter();
+
     selectedPaternColor = '#6c6c6c';
     showCollorPattern: boolean;
     activeOptions: any = {
@@ -71,12 +78,13 @@ export class TaNoteContainerComponent implements OnInit {
     }
 
     executeEditor(action: string, color?: string, indx?: number) {
-  
+        this.stopBlurRemoveTimeout.emit();
         if (indx || indx === 0) {
             this.selectedColorName = this.containerColors[indx];
         }
         document.execCommand('styleWithCSS', false, 'true');
         if (this.range) {
+            console.log("RANGE ON INPUT");
             this.selectionTaken.removeAllRanges();
             this.selectionTaken.addRange(this.range);
         }

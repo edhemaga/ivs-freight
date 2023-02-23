@@ -6,15 +6,23 @@ import {
     Output,
     ViewChild,
 } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import moment from 'moment';
+import { AngularSvgIconModule } from 'angular-svg-icon';
+import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
     selector: 'app-ta-time-period',
     templateUrl: './ta-time-period.component.html',
     styleUrls: ['./ta-time-period.component.scss'],
     standalone: true,
-    imports: [CommonModule, FormsModule],
+    imports: [
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+        AngularSvgIconModule,
+        NgbPopoverModule,
+    ],
 })
 export class TaTimePeriodComponent implements OnInit {
     @ViewChild('t2') t2: any;

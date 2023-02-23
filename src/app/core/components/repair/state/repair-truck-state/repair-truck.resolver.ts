@@ -40,6 +40,8 @@ export class RepairTruckResolver implements Resolve<RepairTruckState> {
                     JSON.stringify({
                         repairTrucks: repairTruckPagination.truckCount,
                         repairTrailers: repairTruckPagination.trailerCount,
+                        truckMoneyTotal:  repairTruckPagination?.truckMoneyTotal ? repairTruckPagination.truckMoneyTotal : 'NA',
+                        trailerMoneyTotal:  repairTruckPagination?.trailerMoneyTotal ? repairTruckPagination.trailerMoneyTotal : 'NA'
                     })
                 );
 

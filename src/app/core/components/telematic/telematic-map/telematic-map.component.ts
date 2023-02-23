@@ -29,6 +29,7 @@ import { DetailsDataService } from '../../../services/details-data/details-data.
         '../../../../../assets/scss/maps.scss',
     ],
     encapsulation: ViewEncapsulation.None,
+    
 })
 export class TelematicMapComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
@@ -36,7 +37,7 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
     @ViewChild('op2') columnsMenuPopover: any;
 
     agmMap: any;
-    styles = AppConst.GOOGLE_MAP_STYLES;
+    styles: any = AppConst.GOOGLE_MAP_STYLES;
     mapRestrictions = {
         latLngBounds: AppConst.NORTH_AMERICA_BOUNDS,
         strictBounds: true,
@@ -322,78 +323,10 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
         this.telematicService.startGpsConnection();
         this.addGpsListener();
 
-        // this.driverLocations = [
-        //     {
-        //         latitude: 40.037375,
-        //         longitude: -95.284267,
-        //         heading: 45,
-        //         deviceId: 1211211211,
-        //         speed: 0,
-        //         unitType: 'Truck',
-        //         driver: 'Aleksandar Mitrovic',
-        //         unitNumber: 115452,
-        //         motionStatus: 'MOTION',
-        //         headingString: 'WE',
-        //         dispatchStatus: 'loaded',
-        //         ignition: 'OFF',
-        //         location: 'Lincoln County, Nevada USA',
-        //         coordinates: '32° 18’ 23.1” N 122° 36’ 52.5” W'
-        //     },
-        //     {
-        //         latitude: 29.108181,
-        //         longitude: -104.738062,
-        //         heading: 125,
-        //         deviceId: 1221221221,
-        //         speed: 73.68,
-        //         unitType: 'Truck',
-        //         driver: 'Luka Jovic',
-        //         unitNumber: 115452,
-        //         motionStatus: 'PARKING',
-        //         headingString: 'SE',
-        //         dispatchStatus: null,
-        //         ignition: 'ON',
-        //         location: 'Lincoln County, Nevada USA',
-        //         coordinates: '32° 18’ 23.1” N 122° 36’ 52.5” W'
-        //     },
-        //     {
-        //         latitude: 37.747531,
-        //         longitude: -111.942789,
-        //         heading: 277,
-        //         deviceId: 1231231231,
-        //         speed: 72.25,
-        //         unitType: 'Trailer',
-        //         unitNumber: 115452,
-        //         motionStatus: 'SHORT_STOP',
-        //         headingString: 'S',
-        //         dispatchStatus: 'loaded',
-        //         ignition: 'ON',
-        //         location: 'Lincoln County, Nevada USA',
-        //         coordinates: '32° 18’ 23.1” N 122° 36’ 52.5” W'
-        //     },
-        // ];
-        // this.gpsAssignedData = this.driverLocations;
-
-        // this.driverDestinations = [
-        //     {
-        //         latitude: 42.037375,
-        //         longitude: -88.284267,
-        //     },
-        //     {
-        //         latitude: 31.108181,
-        //         longitude: -97.738062,
-        //     },
-        //     {
-        //         latitude: 39.747531,
-        //         longitude: -104.942789,
-        //     },
-        // ];
-
         this.getGpsData();
         this.getUnassignedGpsData();
 
         this.createSearchForm();
-        //this.getTrucks();
-        //this.getTrailers();
         this.initColumnsForm();
     }
 
@@ -425,11 +358,6 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
         map.addListener('idle', () => {
             // update the coordinates here
 
-            // var mapCenter = map.getCenter();
-
-            // this.mapLatitude = mapCenter.lat();
-            // this.mapLongitude = mapCenter.lng();
-
             clearTimeout(this.clustersTimeout);
 
             this.clustersTimeout = setTimeout(() => {
@@ -455,8 +383,18 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe((gpsData: any) => {
                 console.log('getGpsData', gpsData);
-                gpsData.data.map((data) => {
+                gpsData.data.map((data, index) => {
                     data.speed = Math.round(data.speed);
+                    data.motionStatus = 
+                        data.motionStatus === 1 ? 'MOTION' 
+                        : data.motionStatus === 2 ? 'SHORT_STOP'
+                        : data.motionStatus === 3 ? 'EXTENDED_STOP'
+                        : data.motionStatus === 4 ? 'PARKING'
+                        : data.motionStatus;
+
+                    if ( index > 0 ) {
+                        this.calculateDistanceBetweenDevices(gpsData.data[index-1], data);
+                    }
                 });
 
                 this.gpsAssignedData = gpsData.data;
@@ -480,12 +418,18 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
 
     getUnassignedGpsData() {
         this.telematicService
-            .getCompanyUnassignedGpsData({})
+            .getAllUnassignedGpsData({})
             .pipe(takeUntil(this.destroy$))
             .subscribe((gpsData: any) => {
                 console.log('getUnassignedGpsData', gpsData);
                 gpsData.data.map((data) => {
                     data.speed = Math.round(data.speed);
+                    data.motionStatus = 
+                        data.motionStatus === 1 ? 'MOTION' 
+                        : data.motionStatus === 2 ? 'SHORT_STOP'
+                        : data.motionStatus === 3 ? 'EXTENDED_STOP'
+                        : data.motionStatus === 4 ? 'PARKING'
+                        : data.motionStatus;
                 });
 
                 this.gpsUnassignedData = gpsData.data;
@@ -514,6 +458,12 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
                     'translate(-3309.177px, 10942px) rotate(' +
                     deviceData.heading +
                     'deg)';
+                deviceData.motionStatus = 
+                    deviceData.motionStatus === 1 ? 'MOTION' 
+                    : deviceData.motionStatus === 2 ? 'SHORT_STOP'
+                    : deviceData.motionStatus === 3 ? 'EXTENDED_STOP'
+                    : deviceData.motionStatus === 4 ? 'PARKING'
+                    : deviceData.motionStatus;
 
                 let driverIndex = this.driverLocations.findIndex(
                     (device) => device.deviceId === deviceId
@@ -674,9 +624,6 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
                 console.log('assignDeviceToTruck res', res);
 
                 this.getDataByDeviceId(deviceId, true);
-
-                //this.getGpsData();
-                //this.getUnassignedGpsData();
             });
     }
 
@@ -688,9 +635,6 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
                 console.log('assignDeviceToTrailer res', res);
 
                 this.getDataByDeviceId(deviceId, true);
-
-                //this.getGpsData();
-                //this.getUnassignedGpsData();
             });
     }
 
@@ -722,7 +666,6 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
         this.searchUnassignedText = '';
 
         this.filterUnassignedDevices();
-        //this.mapsService.searchTextChanged('');
         this.highlightSearchedText();
     }
 
@@ -752,7 +695,6 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
             this.searchForm.get('truckUnit').patchValue(null);
         }
         item.addTruckShown = false;
-        //this.selectedTruckUnit = event;
     }
 
     saveTrailerSelection(event, item) {
@@ -1098,6 +1040,12 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
             .subscribe((data) => {
                 console.log('gpsStatusChange data', data);
                 data.speed = Math.round(data.speed);
+                data.motionStatus = 
+                    data.motionStatus === 1 ? 'MOTION' 
+                    : data.motionStatus === 2 ? 'SHORT_STOP'
+                    : data.motionStatus === 3 ? 'EXTENDED_STOP'
+                    : data.motionStatus === 4 ? 'PARKING'
+                    : data.motionStatus;
 
                 let driverIndex = this.driverLocations.findIndex(
                     (device) => device.deviceId === data.deviceId
@@ -1338,6 +1286,29 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
 
                 this.ref.detectChanges();
             });
+    }
+
+    calculateDistanceBetweenDevices(device1, device2) {
+        const firstAddress = new google.maps.LatLng(
+            device1.latitude,
+            device1.longitude
+        );
+        const secondAddress = new google.maps.LatLng(
+            device2.latitude,
+            device2.longitude
+        );
+
+        let distance =
+                google.maps.geometry.spherical.computeDistanceBetween(
+                    firstAddress,
+                    secondAddress
+                );
+            
+        if ( distance < 50 ) {
+            console.log('calculateDistanceBetweenDevices device1', device1);
+            console.log('calculateDistanceBetweenDevices device2', device2);
+            console.log('calculateDistanceBetweenDevices distance', distance);
+        }
     }
 
     ngOnDestroy(): void {

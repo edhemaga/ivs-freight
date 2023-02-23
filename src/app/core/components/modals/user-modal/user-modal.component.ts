@@ -18,13 +18,7 @@ import {
     UntypedFormGroup,
     Validators,
 } from '@angular/forms';
-import {
-    Component,
-    Input,
-    OnDestroy,
-    OnInit,
-    ViewEncapsulation,
-} from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
 import { AddressEntity, CreateResponse, EnumValue } from 'appcoretruckassist';
 import { tab_modal_animation } from '../../shared/animations/tabs-modal.animation';
@@ -35,6 +29,7 @@ import {
     switchMap,
     of,
     debounceTime,
+    takeWhile,
 } from 'rxjs';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { BankVerificationService } from '../../../services/BANK-VERIFICATION/bankVerification.service';
@@ -46,7 +41,7 @@ import {
     CreateCompanyUserCommand,
     UpdateCompanyUserCommand,
 } from '../../../../../../appcoretruckassist';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { SettingsOfficeModalComponent } from '../location-modals/settings-office-modal/settings-office-modal.component';
 import { Options } from 'ng5-slider';
 import {
@@ -69,30 +64,34 @@ import { TaCheckboxCardComponent } from '../../shared/ta-checkbox-card/ta-checkb
 import { TaNgxSliderComponent } from '../../shared/ta-ngx-slider/ta-ngx-slider.component';
 import { TaInputNoteComponent } from '../../shared/ta-input-note/ta-input-note.component';
 import { TaInputDropdownComponent } from '../../shared/ta-input-dropdown/ta-input-dropdown.component';
+import { AngularSvgIconModule } from 'angular-svg-icon';
 
 @Component({
     selector: 'app-user-modal',
     templateUrl: './user-modal.component.html',
     styleUrls: ['./user-modal.component.scss'],
     animations: [tab_modal_animation('animationTabsModal')],
-    encapsulation: ViewEncapsulation.None,
     providers: [ModalService, BankVerificationService],
     standalone: true,
     imports: [
-            CommonModule, 
-            FormsModule, 
-            AppTooltipComponent, 
-            TaModalComponent, 
-            TaTabSwitchComponent, 
-            ReactiveFormsModule,
-            TaInputComponent,
-            InputAddressDropdownComponent,
-            TaCustomCardComponent,
-            TaCheckboxCardComponent,
-            TaNgxSliderComponent,
-            TaInputNoteComponent,
-            TaInputDropdownComponent
-    ]
+        // Module
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+        AngularSvgIconModule,
+
+        // Component
+        AppTooltipComponent,
+        TaModalComponent,
+        TaTabSwitchComponent,
+        TaInputComponent,
+        InputAddressDropdownComponent,
+        TaCustomCardComponent,
+        TaCheckboxCardComponent,
+        TaNgxSliderComponent,
+        TaInputNoteComponent,
+        TaInputDropdownComponent,
+    ],
 })
 export class UserModalComponent implements OnInit, OnDestroy {
     @Input() editData: any;
@@ -264,7 +263,9 @@ export class UserModalComponent implements OnInit, OnDestroy {
         address: AddressEntity;
         valid: boolean;
     }): void {
-        if (event.valid) this.selectedAddress = event.address;
+        if (event.valid) {
+            this.selectedAddress = event.address;
+        }
     }
 
     public onSaveNewBank(bank: { data: any; action: string }) {
@@ -423,11 +424,6 @@ export class UserModalComponent implements OnInit, OnDestroy {
         }
     }
 
-    ngOnDestroy(): void {
-        this.destroy$.next();
-        this.destroy$.complete();
-    }
-
     private createForm() {
         this.userForm = this.formBuilder.group({
             firstName: [null, [Validators.required, ...firstNameValidation]],
@@ -486,6 +482,7 @@ export class UserModalComponent implements OnInit, OnDestroy {
             .get('email')
             .valueChanges.pipe(
                 takeUntil(this.destroy$),
+                takeWhile(() => !this.isUserReturned),
                 debounceTime(500),
                 switchMap((value) => {
                     if (this.userForm.get('email').valid) {
@@ -509,10 +506,25 @@ export class UserModalComponent implements OnInit, OnDestroy {
                         this.selectedAddress = res.address;
                     }
                 },
-                error: (error) => {
+                error: () => {
                     this.isUserReturned = false;
                 },
             });
+    }
+
+    public resetDataByEmail(event: boolean) {
+        if (event) {
+            this.isUserReturned = false;
+            this.userForm.patchValue({
+                firstName: null,
+                lastName: null,
+                email: null,
+                phone: null,
+                address: null,
+            });
+            this.selectedAddress = null;
+            this.checkUserEmail();
+        }
     }
 
     private trackUserPayroll() {
@@ -933,5 +945,10 @@ export class UserModalComponent implements OnInit, OnDestroy {
                 },
                 error: () => {},
             });
+    }
+
+    ngOnDestroy(): void {
+        this.destroy$.next();
+        this.destroy$.complete();
     }
 }

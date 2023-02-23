@@ -24,7 +24,7 @@ app-truck-details-card {
             
             svg {
                 position: relative;
-                left: -30px;
+                left: -10px;
                 transform: scaleX(-1);
                 path {
                         fill: #AAAAAA !important;
@@ -209,6 +209,18 @@ app-truck-details-card {
             svg {
                 width: fit-content !important;
             }
+        }
+
+        .driverAvatarImg{
+            height: 20px;
+            width: 24px;
+            margin-right: 6px;
+            margin-left: 6px;
+            position: relative;
+            bottom: 0px;
+
+            background-size: cover;
+            background-position: center;
         }
 
         &.inactive-assignTo-item{

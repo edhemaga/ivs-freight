@@ -54,8 +54,6 @@
                 down: latlong?.downRatingCount
             }"
             [type]="'accident'"
-            [sortCategory]="activeSortType"
-            [locationFilterOn]="locationFilterOn"
             [dropdownActions]="tableOptions.actions"
             (bodyActions)="onTableBodyActions($event)"
             (clickedMarker)="selectItem(latlong.id)"

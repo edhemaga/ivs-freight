@@ -385,7 +385,6 @@ model/getTrailerModalResponse.ts
 model/getTransactionModalFranchiseStopResponse.ts
 model/getTransactionModalFranchiseStopResponsePagination.ts
 model/getTruckModalResponse.ts
-model/gpsMotionStatus.ts
 model/gpsType.ts
 model/hazardousMaterialResponse.ts
 model/hireApplicantCommand.ts
@@ -580,7 +579,6 @@ model/repairedVehicleResponse.ts
 model/repairedVehicleResponsePagination.ts
 model/resendInviteCommand.ts
 model/resendSignUpCompanyOrUserCommand.ts
-model/resendVerifyDriverCommand.ts
 model/reviewByEntityTypeListResponse.ts
 model/reviewResponse.ts
 model/reviewResponsePagination.ts
@@ -620,7 +618,6 @@ model/shipperShortResponse.ts
 model/signInCommand.ts
 model/signInResponse.ts
 model/signUpCompanyCommand.ts
-model/signUpDriverMobileCommand.ts
 model/signupUserCommand.ts
 model/sphAccidentHistoryItemResponse.ts
 model/sphAccidentHistoryResponse.ts
@@ -700,6 +697,7 @@ model/truckShortResponse.ts
 model/truckShortResponsePagination.ts
 model/truckTypeFilterResponse.ts
 model/truckTypeResponse.ts
+model/unitType.ts
 model/updateAccidentItemCommand.ts
 model/updateAccidentItemReviewCommand.ts
 model/updateAccidentRecordCommand.ts

@@ -44,7 +44,7 @@ export class AccountTService {
                                 localStorage.getItem('accountTableCount')
                             );
 
-                            accountCount.active++;
+                            accountCount.account++;
 
                             localStorage.setItem(
                                 'accountTableCount',

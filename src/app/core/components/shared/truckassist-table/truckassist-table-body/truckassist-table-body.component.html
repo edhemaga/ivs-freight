@@ -3,18 +3,19 @@
         <app-custom-scrollbar
             [scrollBarOptions]="{
                 showVerticalScrollBar: false,
-                showHorizontalScrollBar: true
+                showHorizontalScrollBar: true,
+                dataLength: viewData.length
             }"
             [horizontalScrollHeight]="
                 activeAttachment !== -1 ||
                 activeMedia !== -1 ||
                 activeInsurance !== -1
-                    ? viewData.length * 32 +
+                    ? viewData.length * 34 +
                       (viewData.length - 1) * 2 +
                       22 +
                       300 +
                       7
-                    : viewData.length * 32 + (viewData.length - 1) * 2 + 22 + 7
+                    : viewData.length * 34 + (viewData.length - 1) * 2 + 22 + 7
             "
             (scrollEvent)="onHorizontalScroll($event)"
         >
@@ -29,9 +30,6 @@
                 <!-- *ngIf="i <= tableRowCounter" -->
                 <tr
                     class="table-tr"
-                    [ngStyle]="{
-                        'margin-top': i > 0 ? '2px' : '0px'
-                    }"
                     [ngClass]="{
                         'regular-row': !row.isSelected,
                         'selected-row': row.isSelected,
@@ -665,7 +663,7 @@
                                                 : 'unset'
                                         }"
                                     >
-                                        <span
+                                        <div
                                             [ngStyle]="{
                                                 width: column.width + 'px'
                                             }"
@@ -676,8 +674,9 @@
                                                         ?.doesNotHaveRout
                                             }"
                                             (click)="goToDetails(column, row)"
-                                            >{{ row[column.field] }}</span
                                         >
+                                            {{ row[column.field] }}
+                                        </div>
                                     </div>
 
                                     <!-- OOS COLUMN -->
@@ -818,13 +817,17 @@
                                         }"
                                     >
                                         <div
+                                            #t1="ngbPopover"
                                             *ngIf="row[column.field]"
                                             [ngStyle]="{
                                                 width: column.width - 5 + 'px'
                                             }"
                                             class="description-container"
-                                            [innerHtml]="row[column.field]"
-                                            #t1="ngbPopover"
+                                            [innerHtml]="
+                                                !descriptionPopoverOpen
+                                                    ? row[column.field]
+                                                    : null
+                                            "
                                             (click)="
                                                 onShowDescriptionDropdown(
                                                     t1,
@@ -836,6 +839,12 @@
                                             [placement]="'bottom-left'"
                                             popoverClass="table-description-popover"
                                             triggers="manual"
+                                            (hidden)="
+                                                descriptionPopoverOpen = false
+                                            "
+                                            (shown)="
+                                                descriptionPopoverOpen = true
+                                            "
                                         ></div>
                                     </div>
 
@@ -916,7 +925,10 @@
                                         <!-- [innerHtml]=" row[column.field] ? (row[column.field] | taHighlight:
   highlightingWords) : '' " -->
                                         <span
-                                            *ngIf="!row.isRepairOrder"
+                                            *ngIf="
+                                                !row.isRepairOrder &&
+                                                !descriptionPopoverOpen
+                                            "
                                             class="table-total"
                                             [innerHtml]="
                                                 row[column.field]
@@ -1825,11 +1837,11 @@
                         </div>
 
                         <!-- Border -->
-                        <div class="border-scroll-section-container">
+                        <div class="table-border-scroll-section-container">
                             <div
-                                class="border-scroll-section"
+                                class="table-border-scroll-section table-border-left"
                                 [ngClass]="{
-                                    'border-left': showScrollSectionBorder
+                                    'table-border-left-show': showScrollSectionBorder
                                 }"
                             ></div>
                         </div>
@@ -2240,7 +2252,7 @@
                                                 : 'unset'
                                         }"
                                     >
-                                        <span
+                                        <div
                                             [ngStyle]="{
                                                 width: column.width + 'px'
                                             }"
@@ -2251,8 +2263,9 @@
                                                         ?.doesNotHaveRout
                                             }"
                                             (click)="goToDetails(column, row)"
-                                            >{{ row[column.field] }}</span
                                         >
+                                            {{ row[column.field] }}
+                                        </div>
                                     </div>
 
                                     <!-- OOS COLUMN -->
@@ -2393,13 +2406,17 @@
                                         }"
                                     >
                                         <div
+                                            #t1="ngbPopover"
                                             *ngIf="row[column.field]"
                                             [ngStyle]="{
                                                 width: column.width - 5 + 'px'
                                             }"
                                             class="description-container"
-                                            [innerHtml]="row[column.field]"
-                                            #t1="ngbPopover"
+                                            [innerHtml]="
+                                                !descriptionPopoverOpen
+                                                    ? row[column.field]
+                                                    : null
+                                            "
                                             (click)="
                                                 onShowDescriptionDropdown(
                                                     t1,
@@ -2411,6 +2428,12 @@
                                             [placement]="'bottom-left'"
                                             popoverClass="table-description-popover"
                                             triggers="manual"
+                                            (hidden)="
+                                                descriptionPopoverOpen = false
+                                            "
+                                            (shown)="
+                                                descriptionPopoverOpen = true
+                                            "
                                         ></div>
                                     </div>
 
@@ -2640,7 +2663,10 @@
                                         <!-- [innerHtml]=" row[column.field] ? (row[column.field] | taHighlight:
 highlightingWords) : '' " -->
                                         <span
-                                            *ngIf="!row.isRepairOrder"
+                                            *ngIf="
+                                                !row.isRepairOrder &&
+                                                !descriptionPopoverOpen
+                                            "
                                             class="table-total"
                                             [innerHtml]="
                                                 row[column.field]
@@ -3418,12 +3444,13 @@ highlightingWords) : '' " -->
 
                         <!-- Border -->
                         <div
-                            class="border-scroll-section-container border-scroll-section-container-right"
+                            class="table-border-scroll-section-container table-border-scroll-section-container-right"
                         >
                             <div
-                                class="border-scroll-section"
+                                class="table-border-scroll-section table-border-right"
                                 [ngClass]="{
-                                    'border-right': showScrollSectionBorder
+                                    'table-border-right-show':
+                                        showScrollSectionBorder
                                 }"
                             ></div>
                         </div>
@@ -3442,7 +3469,7 @@ highlightingWords) : '' " -->
                                 <td class="action-td">
                                     <!-- ATTACHMENTS COLUMN -->
                                     <div
-                                        class="td-content set-center"
+                                        class="td-content set-right"
                                         *ngIf="
                                             column.ngTemplate === 'attachments'
                                         "
@@ -3481,7 +3508,7 @@ highlightingWords) : '' " -->
 
                                     <!-- MEDIA COLUMN -->
                                     <div
-                                        class="td-content set-center"
+                                        class="td-content set-right"
                                         *ngIf="column.ngTemplate === 'media'"
                                         [ngStyle]="{
                                             width: column.width + 'px',
@@ -3512,7 +3539,7 @@ highlightingWords) : '' " -->
 
                                     <!-- INSURANCE COLUMN -->
                                     <div
-                                        class="td-content set-center"
+                                        class="td-content set-right"
                                         *ngIf="
                                             column.ngTemplate === 'insurance'
                                         "
@@ -3545,7 +3572,7 @@ highlightingWords) : '' " -->
 
                                     <!-- COMMENT COLUMN -->
                                     <div
-                                        class="td-content set-center"
+                                        class="td-content set-right"
                                         *ngIf="column.ngTemplate === 'comment'"
                                         [ngStyle]="{
                                             width: column.width + 'px',
@@ -3617,7 +3644,7 @@ highlightingWords) : '' " -->
 
                                     <!-- HIRE COLUMN -->
                                     <div
-                                        class="td-content set-center"
+                                        class="td-content set-right"
                                         *ngIf="column.ngTemplate === 'hire'"
                                         [ngStyle]="{
                                             width: column.width + 'px',
@@ -3635,7 +3662,7 @@ highlightingWords) : '' " -->
 
                                     <!-- FAVORITE COLUMN -->
                                     <div
-                                        class="td-content set-center"
+                                        class="td-content set-right"
                                         *ngIf="column.ngTemplate === 'favorite'"
                                         [ngStyle]="{
                                             width: column.width + 'px',
@@ -3657,7 +3684,7 @@ highlightingWords) : '' " -->
 
                                     <!-- NOTE COLUMN -->
                                     <div
-                                        class="td-content set-center"
+                                        class="td-content set-right"
                                         *ngIf="column.ngTemplate === 'note'"
                                         [ngStyle]="{
                                             width: column.width + 'px',
@@ -3689,7 +3716,7 @@ highlightingWords) : '' " -->
 
                                     <!-- ACTIONS COLUMN -->
                                     <div
-                                        class="td-content set-center"
+                                        class="td-content set-right"
                                         *ngIf="column.ngTemplate === 'actions'"
                                         [ngStyle]="{
                                             width: column.width + 'px',
@@ -3713,7 +3740,17 @@ highlightingWords) : '' " -->
                                             container="body"
                                             popoverClass="table-dropdown-popover"
                                             triggers="manual"
-                                        ></div>
+                                        >
+                                            <svg-icon
+                                                [src]="
+                                                    '../../../../../../assets/svg/truckassist-table/dropdown/dropdown.svg'
+                                                "
+                                                [svgStyle]="{
+                                                    'width.px': '18',
+                                                    'height.px': '18'
+                                                }"
+                                            ></svg-icon>
+                                        </div>
                                     </div>
                                 </td>
                             </ng-container>
@@ -4195,7 +4232,7 @@ highlightingWords) : '' " -->
             >
                 <div class="showing">
                     {{ viewData.length }} OF
-                    {{ activeTableData.length }} SHOWING
+                    {{ activeTableData.length }}
                 </div>
                 <div
                     class="show-more"
@@ -4211,7 +4248,8 @@ highlightingWords) : '' " -->
 
 <!-- DROPDOWN -->
 <ng-template #dropdownPopover let-data="data">
-    <div class="table-dropdown">
+    <!-- Old Dropdown (Delete After New Is Implemented On Every Table) -->
+    <div class="table-dropdown" *ngIf="!data.hasContent">
         <div
             (click)="onDropAction(action)"
             *ngFor="let action of data"
@@ -4224,6 +4262,46 @@ highlightingWords) : '' " -->
             <div class="dropdown-content-text">{{ action.title }}</div>
         </div>
     </div>
+
+    <!-- New Dropdown -->
+    <div class="table-list-dropdown">
+        <div
+            class="table-list-dropdown-content-container"
+            *ngFor="let action of data.content"
+        >
+            <!-- Regular Action -->
+            <div
+                class="table-list-dropdown-content"
+                (click)="onDropAction(action)"
+                [ngClass]="{
+                    'table-list-dropdown-content-muted': action.mutedStyle
+                }"
+                [ngStyle]="action.tableListDropdownContentStyle"
+            >
+                <div class="table-list-dropdown-content-text">
+                    {{ action.title }}
+                </div>
+                <svg-icon
+                    *ngIf="action.svgUrl"
+                    [class]="action.svgClass"
+                    class="table-list-dropdown-content-icon"
+                    [src]="action.svgUrl"
+                    [svgStyle]="{
+                        'width.px': action.svgStyle.width,
+                        'height.px': action.svgStyle.height
+                    }"
+                ></svg-icon>
+            </div>
+
+            <!-- Regular Border -->
+            <div
+                class="table-list-dropdown-border-container"
+                *ngIf="action.hasBorder"
+            >
+                <div class="table-list-dropdown-border"></div>
+            </div>
+        </div>
+    </div>
 </ng-template>
 
 <!-- DESCRIPTION -->
@@ -4234,7 +4312,9 @@ highlightingWords) : '' " -->
             <div class="item-title">Item</div>
             <div class="qty-title">Qty</div>
             <div class="price-title">Price</div>
-            <div class="price-total-title">$4,866.23</div>
+            <div class="price-total-title">
+                {{ data.tabelDescriptionDropTotal }}
+            </div>
         </div>
         <div class="description-items">
             <div

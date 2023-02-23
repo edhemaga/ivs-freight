@@ -34,7 +34,7 @@
             [options]="repairsActions"
             [optionsId]="item.id"
             (dropActions)="repairDropActions($event, 'repair-shop')"
-            [paddingDots]="'11px 0px 0px 0px'"
+            [paddingDots]="'12px 0px 0px 0px'"
         >
             <div class="settings-body-items">
                 <div *ngIf="item.phone" class="single-item">
@@ -64,6 +64,7 @@
                 [cardName]="'Services'"
                 [isCardOpen]="true"
                 [bodyTemplate]="'card'"
+                [customClass]="'detailsPadding'"
             >
                 <div
                     class="repair-shop-template-data"
