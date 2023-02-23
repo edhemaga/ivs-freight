@@ -1,4 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 import { Subject, takeUntil } from 'rxjs';
 
@@ -7,6 +8,7 @@ import { NAVBAR_MENU_ITEMS } from '../../state/utils/static';
 import { WebsiteActionsService } from '../../state/service/website-actions.service';
 
 import { NavigationModel } from '../../state/model/navigation.model';
+import { ConstantString } from '../../state/enum/const-string.enum';
 
 @Component({
     selector: 'app-website-navbar',
@@ -19,12 +21,14 @@ export class WebsiteNavbarComponent implements OnInit, OnDestroy {
     public navbarMenuItems: NavigationModel[] = null;
 
     public isSidebarOpen: boolean = true;
+    public isEmailRoute: boolean = false;
 
     public sidebarContentWidth: number = null;
 
-    public isEmailRoute: boolean = false;
-
-    constructor(private websiteActionsService: WebsiteActionsService) {}
+    constructor(
+        private router: Router,
+        private websiteActionsService: WebsiteActionsService
+    ) {}
 
     ngOnInit(): void {
         this.navbarMenuItems = NAVBAR_MENU_ITEMS;
@@ -52,15 +56,19 @@ export class WebsiteNavbarComponent implements OnInit, OnDestroy {
             });
     }
 
-    public handleNavbarBtnClick(type: string): void {
-        if (this.isSidebarOpen) {
-            this.isSidebarOpen = false;
+    public handleNavbarBtnClick(navPosition: string, type: string): void {
+        if (navPosition === ConstantString.LEFT) {
+            this.router.navigate([type]);
         } else {
-            const selectedType = type.toLowerCase();
+            if (this.isSidebarOpen) {
+                this.isSidebarOpen = false;
+            } else {
+                const selectedType = type.toLowerCase();
 
-            this.isSidebarOpen = true;
+                this.isSidebarOpen = true;
 
-            this.websiteActionsService.setSidebarContentType(selectedType);
+                this.websiteActionsService.setSidebarContentType(selectedType);
+            }
         }
     }
 
