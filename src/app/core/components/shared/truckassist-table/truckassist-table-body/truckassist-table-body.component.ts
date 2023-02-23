@@ -603,21 +603,24 @@ export class TruckassistTableBodyComponent
             );
 
             innerDropdownContent.forEach((content) => {
-                content.addEventListener('click', () => {
-                    this.dropdownActions.map((action: any) => {
-                        if (action.isInnerDropActive) {
-                            action.insideDropdownContent.map(
-                                (innerAction: any) => {
-                                    if (content.id === innerAction.title) {
-                                        this.onDropAction(innerAction);
-                                    }
-                                }
-                            );
-                        }
-                    });
-                });
+                content.addEventListener('click', this.onInnerDropdownClick.bind(null, content));
             });
         }, 100);
+    }
+
+    // On Inner Drop Click
+    onInnerDropdownClick(content: any){
+        this.dropdownActions.map((action: any) => {
+            if (action.isInnerDropActive) {
+                action.insideDropdownContent.map(
+                    (innerAction: any) => {
+                        if (content.id === innerAction.title) {
+                            this.onDropAction(innerAction);
+                        }
+                    }
+                );
+            }
+        });
     }
 
     // Remove Click Event On Inner Dropdown
@@ -695,7 +698,11 @@ export class TruckassistTableBodyComponent
         let newDropdownActions = [...this.dropdownActions];
 
         newDropdownActions.map((actions) => {
-            if (actions.isDropdown && actions.isInnerDropActive) {
+            if (
+                actions.isDropdown &&
+                actions.isInnerDropActive &&
+                actions.title !== action.title
+            ) {
                 this.onRemoveClickEventListener();
 
                 actions.isInnerDropActive = false;
@@ -718,6 +725,8 @@ export class TruckassistTableBodyComponent
 
         if (action.isInnerDropActive) {
             this.setInnerDropdownClickEvent();
+        } else {
+            this.onRemoveClickEventListener();
         }
     }
 

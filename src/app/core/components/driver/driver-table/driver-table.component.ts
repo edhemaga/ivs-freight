@@ -661,10 +661,10 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     width: 15,
                     height: 15,
                 },
+                svgClass: 'regular',
                 tableListDropdownContentStyle: {
                     'margin-bottom.px': 4,
                 },
-                svgClass: 'regular',
                 isDropdown: true,
                 insideDropdownContent: [
                     {
