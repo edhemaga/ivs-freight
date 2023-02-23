@@ -20,8 +20,6 @@ export class ResetPasswordComponent implements OnInit, OnDestroy {
 
     public resetPasswordForm: FormGroup;
 
-    public openHavingTroubleContent: boolean = false;
-
     public displaySpinner: boolean = false;
 
     constructor(
@@ -47,30 +45,15 @@ export class ResetPasswordComponent implements OnInit, OnDestroy {
         );
     }
 
-    public onHavingTroubleClick(): void {
-        this.openHavingTroubleContent = !this.openHavingTroubleContent;
-    }
-
     public onKeyDown(event: any): void {
         if (event.keyCode === 13) {
             this.resetPassword();
         }
     }
 
-    public onGetBtnClickValue(
-        event: { notDisabledClick: boolean },
-        type?: string
-    ): void {
+    public onGetBtnClickValue(event: { notDisabledClick: boolean }): void {
         if (event.notDisabledClick) {
-            if (type === ConstantString.RESET_PASSWORD_BTN) {
-                this.resetPassword();
-            }
-
-            if (type === ConstantString.RESEND_CONFIRMATION_BTN) {
-                this.websiteActionsService.setSidebarContentType(
-                    ConstantString.RESEND_CONFIRMATION
-                );
-            }
+            this.resetPassword();
         }
     }
 
