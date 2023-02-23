@@ -261,13 +261,13 @@ export class InputAddressDropdownComponent
     public onCloseDropdown(e) {
         let isValid = true;
         setTimeout(() => {
-            if (!this.requestSent) {
-                this.getSuperControl.setErrors({ invalid: true });
-            }
             if (this.searchLayers[0] == 'Address') {
                 isValid = this.checkAddressValidation(
                     this.activeAddress?.address
                 );
+            }
+            if (!this.requestSent && isValid) {
+                this.getSuperControl.setErrors({ invalid: true });
             }
             if (
                 this.getSuperControl.value == this.activeAddress?.address &&
@@ -421,7 +421,6 @@ export class InputAddressDropdownComponent
             /\b(?:avenue|ave|boulevard|blvd|circle|ct|drive|dr|lane|ln|parkway|pkwy|place|pl|road|rd|square|st|street|trl|way)\b/i;
 
         const streetNum = /\d.*\d/;
-
 
         return regex.test(address) && streetNum.test(address) ? true : false;
     }
