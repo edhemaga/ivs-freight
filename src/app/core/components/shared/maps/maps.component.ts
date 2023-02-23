@@ -764,7 +764,7 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
 
                     this.updateMapList.emit(mapListData);
                     this.mapsService.searchLoadingChanged.next(false);
-                    this.mapsService.searchResultsCountChange.next(mapListData.pagination.count);
+                    this.mapsService.searchResultsCountChange.next(mapListData.repairShopCount);
                 });
         } else if (this.mapType == 'shipper') {
             this.shipperService
@@ -957,7 +957,7 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
 
                     this.updateMapList.emit(mapListData);
                     this.mapsService.searchLoadingChanged.next(false);
-                    this.mapsService.searchResultsCountChange.next(mapListData.pagination.count);
+                    this.mapsService.searchResultsCountChange.next(mapListData.shipperCount);
                 });
         } else if (this.mapType == 'fuelStop') {
             this.fuelStopService
@@ -1116,7 +1116,7 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
 
                     this.updateMapList.emit(mapListData);
                     this.mapsService.searchLoadingChanged.next(false);
-                    this.mapsService.searchResultsCountChange.next(mapListData.pagination.count);
+                    this.mapsService.searchResultsCountChange.next(mapListData.fuelStopCount);
                 });
         }
 
