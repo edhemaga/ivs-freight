@@ -16,7 +16,6 @@
 }
 .card-flex {
     height: 42px !important;
-    transition: all 3.3s ease-in-out;
 }
 
 .text-icon-common {
@@ -95,7 +94,7 @@
 
         &.active {
             max-height: 1200px;
-            transition: all 3.3s ease-in-out;
+            transition: all 0.200s ease-in-out;
         }
         .dates {
             display: flex;

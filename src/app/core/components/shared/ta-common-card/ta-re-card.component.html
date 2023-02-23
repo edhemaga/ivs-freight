@@ -159,7 +159,7 @@
         [ngClass]="{ 'active': ( isCardOpen || forcedOpen )}"
         
     >
-        <div [@cardOpenAnimation]="animationStarted || isCardOpen ? 'true' : 'false'"> 
+        <div [@cardOpenAnimation]="animationStarted ? 'true' : 'false'"> 
             <ng-content></ng-content>
         </div>
     </div>
@@ -167,7 +167,7 @@
         class="card-footer-cmp"
         [ngClass]="{ 'hide-padding': resPage, 'insuranceCard' : insuranceCard }"
         *ngIf="( isCardOpen || forcedOpen) && hasFooter"
-        [@footerOpenAnimation]="animationStarted || isCardOpen ? 'true' : 'false'"
+        [@footerOpenAnimation]="animationStarted ? 'true' : 'false'"
     >
         <div class="icon-counter">
             <svg-icon
