@@ -9,10 +9,14 @@
             height: 1px;
             border-radius: 1px;
             background-color: #424242;
+            position: absolute;
+            z-index: 99999;
+            top: 0px;
+            left: 0px;
 
             @for $i from 1 through 800 {
                 &.w-col-#{$i} {
-                    width: unquote($i + 'px');
+                    width: unquote($i - 8 + 'px');
                 }
             }
         }
@@ -22,11 +26,11 @@
             top: 0px;
             left: 0px;
             z-index: 1000;
-            max-height: 187px;
+            max-height: 190px;
             width: 100%;
             background-color: #2f2f2f;
-            border-radius: 2px;
-            padding: 2px;
+            border-radius: 3px;
+            padding: 4px;
             overflow: hidden;
 
             &.scroll {
@@ -55,6 +59,10 @@
             &-fuel-franchise {
                 padding: 4px;
                 max-height: 300px;
+            }
+
+            &.no-result-container {
+                padding: 8px 10px !important;
             }
 
             //------------------------ Svg-Template-Logo Template ------------------------
@@ -158,10 +166,24 @@
                 }
 
                 &.no-result {
-                    height: 19px;
+                    line-height: 14px;
                     font-size: 11px;
-                    font-weight: 600;
-                    padding: 1.5px 4px;
+                    font-weight: 700;
+                    padding: 0px !important;
+                    color: #919191;
+                    height: auto !important;
+                    -webkit-user-select: none;
+                    -moz-user-select: none;
+                    -ms-user-select: none;
+                    user-select: none;
+                    pointer-events: none;
+
+                    &:hover {
+                        background-color: transparent !important;
+                    }
+                    div {
+                        padding-top: 1px;
+                    }
                 }
 
                 &.add-new {
@@ -241,7 +263,8 @@
                         display: inline-block;
                         position: absolute;
                         right: 6px;
-                        top: 3px;
+                        top: 28%;
+                        transform: translateY(-50%);
                         content: url('../../assets/svg/common/ic_confirm.svg');
                         width: 14px;
                         height: 10px;
@@ -259,7 +282,7 @@
                     &::before {
                         content: '';
                         position: absolute;
-                        bottom: 0;
+                        bottom: -1px;
                         left: 0px;
                         height: 2px;
                         width: 100%;
@@ -393,10 +416,25 @@
                             }
 
                             &.no-result {
-                                height: 19px;
+                                line-height: 14px;
                                 font-size: 11px;
-                                font-weight: 600;
-                                padding: 1px 4px;
+                                font-weight: 700;
+                                padding: 0px !important;
+                                color: #919191;
+                                height: 12px;
+                                -webkit-user-select: none;
+                                -moz-user-select: none;
+                                -ms-user-select: none;
+                                user-select: none;
+                                pointer-events: none;
+
+                                &:hover {
+                                    background-color: transparent !important;
+                                }
+
+                                div {
+                                    padding-top: 1px;
+                                }
                             }
                         }
 
@@ -414,8 +452,24 @@
                     }
 
                     &.no-result {
-                        height: 19px;
-                        padding: 0px 4px;
+                        height: 14px;
+                        font-size: 11px;
+                        font-weight: 700;
+                        padding: 0px !important;
+                        color: #919191;
+                        -webkit-user-select: none;
+                        -moz-user-select: none;
+                        -ms-user-select: none;
+                        user-select: none;
+                        pointer-events: none;
+
+                        &:hover {
+                            background-color: transparent !important;
+                        }
+
+                        div {
+                            padding-top: 1px;
+                        }
                     }
 
                     &:hover {
@@ -963,11 +1017,6 @@
                 }
             }
 
-            &.connectDropdown {
-                top: 0 !important;
-                border-radius: 0 0 2px 2px;
-            }
-
             // ---------------------------------------- DROPDOWN GROUPS ----------------------------------------
             &.dropdown-options-groups {
                 max-height: 198px;
@@ -1188,10 +1237,9 @@
             }
 
             // Merged Dropdown
-            &.merged-dropdown {
-                top: 0px !important;
-                border-top-left-radius: 0px !important;
-                border-top-right-radius: 0px !important;
+            &.merge-dropdown-body-with-input {
+                border-radius: 0 0 2px 2px !important;
+                left: -4px !important;
             }
         }
     }
@@ -1298,6 +1346,7 @@
     flex-direction: column;
     background-color: rgb(111, 158, 224, 0.2);
     position: relative;
+    border-radius: 2px;
 
     .selected-item-label {
         position: absolute;
@@ -1395,6 +1444,14 @@
                     }
                 }
             }
+
+            p {
+                font-size: 11px;
+                height: 13px;
+                font-weight: 400;
+                margin: 0;
+                padding: 0;
+            }
         }
     }
 
@@ -1442,25 +1499,6 @@
     }
 
     &:hover {
-        p {
-            color: #2f2f2f;
-        }
-
-        .selected-item-label {
-            color: #2f2f2f;
-        }
-
-        .selected-item-additional {
-            .selected-item-info {
-                svg-icon {
-                    svg {
-                        path {
-                            fill: #3074d3;
-                        }
-                    }
-                }
-            }
-        }
         .clear-selected-item {
             display: flex;
             align-items: center;

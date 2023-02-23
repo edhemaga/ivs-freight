@@ -2735,30 +2735,38 @@ table {
         }
 
         // Border Scroll Section
-        .border-scroll-section-container {
+        .table-border-scroll-section-container {
             position: relative;
 
-            .border-scroll-section {
+            .table-border-scroll-section {
                 position: absolute;
-                width: 8px;
+                width: 0px;
                 height: 34px;
                 margin-top: -4px;
+
+                transition: width 0.25s;
             }
         }
 
-        .border-scroll-section-container-right {
+        .table-border-scroll-section-container-right {
             margin-right: 7px;
 
-            .border-scroll-section {
-                left: -8px;
+            .table-border-scroll-section {
+                right: 0px;
             }
         }
 
-        .border-left {
+        .table-border-left-show,
+        .table-border-right-show {
+            width: 8px !important;
+            transition: width 0.25s;
+        }
+
+        .table-border-left {
             background-image: linear-gradient(to right, #eeeeee, #eeeeee00);
         }
 
-        .border-right {
+        .table-border-right {
             background-image: linear-gradient(to right, #eeeeee00, #eeeeee);
         }
     }

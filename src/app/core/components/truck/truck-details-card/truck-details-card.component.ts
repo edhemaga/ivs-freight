@@ -21,6 +21,7 @@ import {
     trigger,
     state,
 } from '@angular/animations';
+import { ImageBase64Service } from '../../../utils/base64.image';
 import { TruckResponse } from 'appcoretruckassist';
 
 @Component({
@@ -396,7 +397,8 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
     constructor(
         private detailsPageDriverSer: DetailsPageService,
         private truckMinimalListQuery: TrucksMinimalListQuery,
-        private truckService: TruckTService
+        private truckService: TruckTService,
+        public imageBase64Service: ImageBase64Service,
     ) {}
 
     ngOnChanges(changes: SimpleChanges): void {

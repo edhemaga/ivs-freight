@@ -149,12 +149,13 @@ export class TruckassistTableBodyComponent
                     this.mySelection = [];
 
                     this.viewData = this.viewData.map((data) => {
-                        data.isSelected = isSelect;
+                        if (!data?.tableCantSelect) {
+                            data.isSelected = isSelect;
 
-                        if (data.isSelected) {
-                            this.mySelection.push({ id: data.id });
+                            if (data.isSelected) {
+                                this.mySelection.push({ id: data.id });
+                            }
                         }
-
                         return data;
                     });
 
@@ -360,6 +361,8 @@ export class TruckassistTableBodyComponent
             this.showScrollSectionBorder !== scrollEvent.isScrollBarShowing
         ) {
             this.showScrollSectionBorder = scrollEvent.isScrollBarShowing;
+
+            this.tableService.sendIsScrollShownig(this.showScrollSectionBorder);
 
             this.changeDetectorRef.detectChanges();
         }
@@ -704,5 +707,6 @@ export class TruckassistTableBodyComponent
         this.destroy$.complete();
         this.tableService.sendRowsSelected([]);
         this.tableService.sendCurrentSetTableWidth(null);
+        this.tableService.sendIsScrollShownig(false);
     }
 }

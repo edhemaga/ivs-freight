@@ -1,10 +1,15 @@
 import { Component, OnDestroy, OnInit, Input } from '@angular/core';
-import { UntypedFormGroup, UntypedFormBuilder, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {
+    UntypedFormGroup,
+    UntypedFormBuilder,
+    Validators,
+    FormsModule,
+    ReactiveFormsModule,
+} from '@angular/forms';
 import { Subject, takeUntil } from 'rxjs';
 import { FormService } from '../../../services/form/form.service';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
-import { NotificationService } from '../../../services/notification/notification.service';
 import { RoutingStateService } from '../../routing/state/routing-state/routing-state.service';
 import { UpdateMapCommand } from 'appcoretruckassist';
 import { CommonModule } from '@angular/common';
@@ -17,18 +22,23 @@ import { TaInputComponent } from '../../shared/ta-input/ta-input.component';
     templateUrl: './map-settings-modal.component.html',
     styleUrls: ['./map-settings-modal.component.scss'],
     standalone: true,
-    imports: [ 
-                CommonModule, 
-                FormsModule, 
-                TaModalComponent, 
-                TaTabSwitchComponent, 
-                ReactiveFormsModule, 
-                TaInputComponent
-    ]
+    imports: [
+        // Module
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+
+        // Component
+        TaModalComponent,
+        TaTabSwitchComponent,
+        TaInputComponent,
+    ],
 })
 export class MapSettingsModalComponent implements OnInit, OnDestroy {
     public mapSettingsForm: UntypedFormGroup;
+
     public isFormDirty: boolean = false;
+
     @Input() editData: any;
 
     public distanceTabs: { id: number; name: string; checked: boolean }[] = [
@@ -77,7 +87,6 @@ export class MapSettingsModalComponent implements OnInit, OnDestroy {
         private formService: FormService,
         private modalService: ModalService,
         private inputService: TaInputService,
-        private notificationService: NotificationService,
         private routingService: RoutingStateService
     ) {}
 
@@ -213,46 +222,28 @@ export class MapSettingsModalComponent implements OnInit, OnDestroy {
         } else {
             this.mapSettingsForm.reset();
             this.isFormDirty = false;
+
+            this.distanceTabs = this.distanceTabs.map((item, index) => {
+                return {
+                    ...item,
+                    checked: index === 0,
+                };
+            });
+
+            this.addressTabs = this.addressTabs.map((item, index) => {
+                return {
+                    ...item,
+                    checked: index === 0,
+                };
+            });
+
+            this.borderTabs = this.borderTabs.map((item, index) => {
+                return {
+                    ...item,
+                    checked: index === 0,
+                };
+            });
         }
-
-        this.distanceTabs = [
-            {
-                id: 1,
-                name: 'Miles',
-                checked: false,
-            },
-            {
-                id: 2,
-                name: 'Km',
-                checked: false,
-            },
-        ];
-
-        this.addressTabs = [
-            {
-                id: 1,
-                name: 'City',
-                checked: false,
-            },
-            {
-                id: 2,
-                name: 'Address',
-                checked: false,
-            },
-        ];
-
-        this.borderTabs = [
-            {
-                id: 1,
-                name: 'Open Border',
-                checked: false,
-            },
-            {
-                id: 2,
-                name: 'Closed Border',
-                checked: false,
-            },
-        ];
     }
 
     ngOnDestroy(): void {

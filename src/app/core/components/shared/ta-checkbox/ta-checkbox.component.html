@@ -34,13 +34,16 @@
             class="ta-checkbox-disabled"
             src="assets/svg/common/ic_disable.svg"
         ></svg-icon>
-        <svg-icon *ngIf="svg" class="ta-checkbox-svg" src="{{ svg }}">
-        </svg-icon>
-        <span class="ta-checkbox-label"
-            >{{ label }}
-            <span class="ta-checkbox-label-required" *ngIf="required"
-                >*</span
-            ></span
-        >
+
+        <svg-icon
+            *ngIf="svg"
+            class="ta-checkbox-svg"
+            src="{{ svg }}"
+        ></svg-icon>
+
+        <span class="ta-checkbox-label">
+            {{ label }}
+            <span class="ta-checkbox-label-required" *ngIf="required">*</span>
+        </span>
     </label>
 </div>

@@ -16,7 +16,12 @@ interface RadioButton {
     templateUrl: './ta-input-radiobuttons.component.html',
     styleUrls: ['./ta-input-radiobuttons.component.scss'],
     standalone: true,
-    imports: [CommonModule, FormsModule, ReactiveFormsModule],
+    imports: [
+        // Module
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+    ],
 })
 export class TaInputRadiobuttonsComponent {
     @Input() buttons: RadioButton[] = null;

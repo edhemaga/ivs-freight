@@ -263,7 +263,7 @@ p {
     align-items: center;
     justify-content: space-between;
     padding-left: 4px !important;
-    padding-right: 4px !important;
+    padding-right: 0px !important;
 
 }
 .drop-common {
@@ -276,6 +276,8 @@ p {
     transition: all 0.4s ease-in-out;
     
     svg {
+        position: relative;
+        right: -2px;
         transition: all 0.3s ease-in-out;
         path {
             &:hover {
@@ -410,7 +412,7 @@ p {
 }
 .dots-common-cards {
     display: flex;
-    align-items: flex-end;
+    align-items: center;
     line-height: 30px;
     //height: 15px;
 }

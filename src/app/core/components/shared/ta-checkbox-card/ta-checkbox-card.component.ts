@@ -19,11 +19,14 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
     styleUrls: ['./ta-checkbox-card.component.scss'],
     standalone: true,
     imports: [
+        // Module
         CommonModule,
         FormsModule,
-        TaCheckboxComponent,
         ReactiveFormsModule,
-        AngularSvgIconModule
+        AngularSvgIconModule,
+
+        // Component
+        TaCheckboxComponent,
     ],
     animations: [
         card_modal_animation('showHideCardBody'),

@@ -3,6 +3,7 @@
     [editData]="editData"
     [editName]="editData?.data?.truckNumber"
     [isModalValid]="truckForm.valid && isFormDirty"
+    [saveAndAddNew]="editData?.type !== 'edit'"
     (action)="onModalAction($event)"
 >
     <div origin class="origin-part-modal">
@@ -139,7 +140,8 @@
                                         withText: false,
                                         svg: true,
                                         image: false,
-                                        url: selectedTruckMake?.logoName
+                                        url: selectedTruckMake?.logoName,
+                                        class: 'truck-make'
                                     },
                                     dropdownWidthClass: 'w-col-228'
                                 }"
@@ -331,7 +333,7 @@
                                 dropdownWidthClass: 'w-col-248'
                             }"
                             [options]="engineModels"
-                            [activeItem]="selectedEngineModelId"
+                            [activeItem]="selectedtruckEngineModelId"
                             (selectedItem)="
                                 onSelectDropdown($event, 'engine-model')
                             "

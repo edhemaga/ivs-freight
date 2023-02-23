@@ -19,6 +19,7 @@ import { formatEinPipe } from 'src/app/core/pipes/formatEin.pipe';
 import { formatDatePipe } from 'src/app/core/pipes/formatDate.pipe';
 import { TaCommonHeaderComponent } from '../../shared/ta-details-header/ta-details-header.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { DetailsDropdownComponent } from '../../shared/details-page-dropdown/details-dropdown';
 
 
 @NgModule({
@@ -43,7 +44,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
         formatCurrency,
         formatEinPipe,
         formatDatePipe,
-        TaCommonHeaderComponent
+        TaCommonHeaderComponent,
+        DetailsDropdownComponent
     ],
 })
 export class BrokerDetailsModule {}

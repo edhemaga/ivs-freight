@@ -26,15 +26,18 @@ import { TaTabSwitchComponent } from '../../standalone-components/ta-tab-switch/
     styleUrls: ['./map-route-modal.component.scss'],
     standalone: true,
     imports: [
-            CommonModule, 
-            FormsModule, 
-            TaModalComponent, 
-            ReactiveFormsModule, 
-            TaInputComponent,
-            TaInputDropdownComponent, 
-            TaCheckboxCardComponent, 
-            TaTabSwitchComponent
-    ]
+        // Module
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+
+        // Component
+        TaModalComponent,
+        TaInputComponent,
+        TaInputDropdownComponent,
+        TaCheckboxCardComponent,
+        TaTabSwitchComponent,
+    ],
 })
 export class MapRouteModalComponent implements OnInit, OnDestroy {
     @Input() editData: any;
@@ -81,10 +84,6 @@ export class MapRouteModalComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.createForm();
         this.getTrucks();
-
-        if (this.editData?.type === 'edit') {
-            this.getRoute(this.editData.id);
-        }
     }
 
     private createForm() {
@@ -215,6 +214,11 @@ export class MapRouteModalComponent implements OnInit, OnDestroy {
                         logoName: truck.truckType.logoName,
                     };
                 });
+
+                // Edit
+                if (this.editData?.type === 'edit') {
+                    this.getRoute(this.editData.id);
+                }
             });
     }
 
@@ -249,7 +253,7 @@ export class MapRouteModalComponent implements OnInit, OnDestroy {
                     } else {
                         this.modalService.setModalSpinner({
                             action: null,
-                            status: false,
+                            status: true,
                             close: true,
                         });
                     }

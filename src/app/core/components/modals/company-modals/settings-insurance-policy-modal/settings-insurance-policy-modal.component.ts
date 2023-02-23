@@ -31,6 +31,8 @@ import {
     UntypedFormBuilder,
     Validators,
     AbstractControl,
+    FormsModule,
+    ReactiveFormsModule,
 } from '@angular/forms';
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { FormService } from '../../../../services/form/form.service';
@@ -40,12 +42,42 @@ import {
     convertDateFromBackend,
     convertNumberInThousandSep,
 } from '../../../../utils/methods.calculations';
+import { CommonModule } from '@angular/common';
+import { AngularSvgIconModule } from 'angular-svg-icon';
+import { TaInputComponent } from '../../../shared/ta-input/ta-input.component';
+import { TaInputDropdownComponent } from '../../../shared/ta-input-dropdown/ta-input-dropdown.component';
+import { TaModalComponent } from '../../../shared/ta-modal/ta-modal.component';
+import { TaInputNoteComponent } from '../../../shared/ta-input-note/ta-input-note.component';
+import { InputAddressDropdownComponent } from '../../../shared/input-address-dropdown/input-address-dropdown.component';
+import { TaCustomCardComponent } from '../../../shared/ta-custom-card/ta-custom-card.component';
+import { TaCheckboxCardComponent } from '../../../shared/ta-checkbox-card/ta-checkbox-card.component';
+import { TaCheckboxComponent } from '../../../shared/ta-checkbox/ta-checkbox.component';
+import { TaUploadFilesComponent } from '../../../shared/ta-upload-files/ta-upload-files.component';
 
 @Component({
     selector: 'app-settings-insurance-policy-modal',
     templateUrl: './settings-insurance-policy-modal.component.html',
     styleUrls: ['./settings-insurance-policy-modal.component.scss'],
     providers: [ModalService, FormService],
+    standalone: true,
+    imports: [
+        // Module
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+        AngularSvgIconModule,
+
+        // Component
+        TaInputComponent,
+        TaInputDropdownComponent,
+        TaCheckboxCardComponent,
+        TaCheckboxComponent,
+        TaModalComponent,
+        TaInputNoteComponent,
+        InputAddressDropdownComponent,
+        TaCustomCardComponent,
+        TaUploadFilesComponent,
+    ],
 })
 export class SettingsInsurancePolicyModalComponent
     implements OnInit, OnDestroy
