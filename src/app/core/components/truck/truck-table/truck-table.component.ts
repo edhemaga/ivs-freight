@@ -24,7 +24,7 @@ import {
 } from '../../../utils/methods.globals';
 import { getTruckColumnDefinition } from '../../../../../assets/utils/settings/truck-columns';
 import { DatePipe } from '@angular/common';
-
+import { TruckInactiveStore } from '../state/truck-inactive-state/truck-inactive.store';
 @Component({
     selector: 'app-truck-table',
     templateUrl: './truck-table.component.html',
@@ -42,6 +42,7 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
     trucksActive: TruckActiveState[] = [];
     trucksInactive: TruckInactiveState[] = [];
     loadingPage: boolean = true;
+    inactiveTabClicked: boolean = false;
     backFilterQuery = {
         active: 1,
         pageIndex: 1,
@@ -62,6 +63,7 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
         private truckService: TruckTService,
         private thousandSeparator: TaThousandSeparatorPipe,
         private confirmationService: ConfirmationService,
+        private truckInactiveStore: TruckInactiveStore,
         public datePipe: DatePipe
     ) {}
 
@@ -665,6 +667,8 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
             return this.trucksActive?.length ? this.trucksActive : [];
         } else if (dataType === 'inactive') {
+            this.inactiveTabClicked = true;
+
             this.trucksInactive = this.truckInactiveQuery.getAll();
 
             return this.trucksInactive?.length ? this.trucksInactive : [];
@@ -723,8 +727,19 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
             this.backFilterQuery.pageIndex = 1;
             this.backFilterQuery.active = this.selectedTab === 'active' ? 1 : 0;
-
-            this.sendTruckData();
+            if (this.selectedTab === 'inactive' && !this.inactiveTabClicked) {
+                this.truckService
+                    .getTruckList(0, 1, 25)
+                    .pipe(takeUntil(this.destroy$))
+                    .subscribe((truckPagination: TruckListResponse) => {
+                        this.truckInactiveStore.set(
+                            truckPagination.pagination.data
+                        );
+                        this.sendTruckData();
+                    });
+            } else {
+                this.sendTruckData();
+            }
         } else if (event.action === 'view-mode') {
             this.activeViewMode = event.mode;
         }

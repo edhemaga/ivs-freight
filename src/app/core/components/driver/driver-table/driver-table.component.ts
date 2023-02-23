@@ -11,7 +11,10 @@ import { DriverDrugAlcoholModalComponent } from '../../modals/driver-modal/drive
 import { DriverMedicalModalComponent } from '../../modals/driver-modal/driver-medical-modal/driver-medical-modal.component';
 import { DriverMvrModalComponent } from '../../modals/driver-modal/driver-mvr-modal/driver-mvr-modal.component';
 
-import { DriversInactiveState } from '../state/driver-inactive-state/driver-inactive.store';
+import {
+    DriversInactiveState,
+    DriversInactiveStore,
+} from '../state/driver-inactive-state/driver-inactive.store';
 import { DriversInactiveQuery } from '../state/driver-inactive-state/driver-inactive.query';
 import { ApplicantShortResponse, DriverListResponse } from 'appcoretruckassist';
 
@@ -20,7 +23,7 @@ import {
     ConfirmationModalComponent,
 } from '../../modals/confirmation-modal/confirmation-modal.component';
 import { ConfirmationService } from '../../modals/confirmation-modal/confirmation.service';
-import { Subject, takeUntil } from 'rxjs';
+import { forkJoin, Subject, takeUntil } from 'rxjs';
 import { NameInitialsPipe } from '../../../pipes/nameinitials';
 import { TaThousandSeparatorPipe } from '../../../pipes/taThousandSeparator.pipe';
 import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
@@ -37,7 +40,7 @@ import { ApplicantTableQuery } from '../state/applicant-state/applicant-table.qu
 import { getLoadModalColumnDefinition } from 'src/assets/utils/settings/modal-columns-configuration/table-load-modal-columns';
 import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { ApplicantTService } from '../state/applicant.service';
-
+import { ApplicantTableStore } from '../state/applicant-state/applicant-table.store';
 @Component({
     selector: 'app-driver-table',
     templateUrl: './driver-table.component.html',
@@ -57,6 +60,8 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
     driversInactive: DriversInactiveState[] = [];
     applicantData: ApplicantShortResponse[] = [];
     loadingPage: boolean = true;
+    inactiveTabClicked: boolean = false;
+    applicantTabActive: boolean = false;
     driverBackFilterQuery = {
         active: 1,
         long: undefined,
@@ -98,7 +103,9 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
         private nameInitialsPipe: NameInitialsPipe,
         private thousandSeparator: TaThousandSeparatorPipe,
         private imageBase64Service: ImageBase64Service,
-        private confirmationService: ConfirmationService
+        private confirmationService: ConfirmationService,
+        private driversInactiveStore: DriversInactiveStore,
+        private applicantTableStore: ApplicantTableStore
     ) {}
 
     ngOnInit(): void {
@@ -460,10 +467,11 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
             return this.driversActive?.length ? this.driversActive : [];
         } else if (dataType === 'inactive') {
+            this.inactiveTabClicked = true;
             this.driversInactive = this.driversInactiveQuery.getAll();
-
             return this.driversInactive?.length ? this.driversInactive : [];
         } else if ('applicants') {
+            this.applicantTabActive = true;
             this.applicantData = this.applicantQuery.getAll();
 
             return this.applicantData?.length ? this.applicantData : [];
@@ -1172,10 +1180,44 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
             this.driverBackFilterQuery.active =
                 this.selectedTab === 'active' ? 1 : 0;
             this.driverBackFilterQuery.pageIndex = 1;
-
+            if (this.selectedTab === 'inactive' && !this.inactiveTabClicked) {
+                this.driverTService
+                    .getDrivers(0, undefined, undefined, undefined, 1, 25)
+                    .pipe(takeUntil(this.destroy$))
+                    .subscribe((driverPagination: DriverListResponse) => {
+                        this.driversInactiveStore.set(
+                            driverPagination.pagination.data
+                        );
+                        this.sendDriverData();
+                    });
+            } else if (
+                this.selectedTab === 'applicants' &&
+                !this.applicantTabActive
+            ) {
+                forkJoin([
+                    this.applicantService
+                        .getApplicantAdminList(
+                            undefined,
+                            undefined,
+                            undefined,
+                            1,
+                            25
+                        )
+                        .pipe(takeUntil(this.destroy$))
+                        .subscribe(
+                            (applicantPagination: DriverListResponse) => {
+                                this.applicantTableStore.set(
+                                    applicantPagination.pagination.data
+                                );
+                                this.sendDriverData();
+                            }
+                        ),
+                    this.tableService.getTableConfig(7),
+                ]);
+            } else {
+                this.sendDriverData();
+            }
             this.applicantBackFilterQuery.applicantSpecParamsPageIndex = 1;
-
-            this.sendDriverData();
         } else if (event.action === 'view-mode') {
             this.mapingIndex = 0;
 
