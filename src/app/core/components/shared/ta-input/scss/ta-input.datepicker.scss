@@ -1,3 +1,4 @@
+@import './ta-input.colors.scss';
 .date_time_holder {
     display: flex;
     align-items: center;
@@ -10,30 +11,6 @@
     padding-left: 35px;
     z-index: 20;
     cursor: text;
-
-    &:focus {
-        span:nth-child(2) {
-            z-index: 12;
-            pointer-events: none;
-        }
-        span:nth-child(3) {
-            z-index: 13;
-        }
-
-        span:nth-child(4) {
-            z-index: 14;
-            pointer-events: none;
-        }
-
-        span:nth-child(5) {
-            z-index: 15;
-        }
-    }
-
-    &.active {
-        opacity: 1;
-        padding-left: 35px;
-    }
 
     span {
         position: relative;
@@ -56,8 +33,8 @@
 
         &::selection,
         & div::selection {
-            background-color: #808080 !important;
-            color: #ffffff !important;
+            background-color: $default-content-background-selection !important;
+            color: $default-content !important;
         }
     }
 
@@ -73,13 +50,42 @@
         }
     }
 
-    &.valid-focus-in-datepicker.focused {
-        span {
-            &::selection,
-            & div::selection {
-                background-color: #6d82c7 !important;
-                color: #ffffff !important;
-            }
+    &:focus {
+        opacity: 1;
+        padding-left: 35px;
+        span:nth-child(2) {
+            z-index: 12;
+            pointer-events: none;
+        }
+        span:nth-child(3) {
+            z-index: 13;
+        }
+
+        span:nth-child(4) {
+            z-index: 14;
+            pointer-events: none;
+        }
+
+        span:nth-child(5) {
+            z-index: 15;
+        }
+    }
+
+    &.valid-focus-out-filled {
+        opacity: 1;
+        span,
+        span .border-picker {
+            color: $valid-content !important;
+            user-select: none;
+        }
+    }
+
+    &.valid-focus-in {
+        opacity: 1;
+        &::selection,
+        & div::selection {
+            background-color: $valid-focus-content-background-selection !important;
+            color: $valid-focus-content !important;
         }
     }
 }

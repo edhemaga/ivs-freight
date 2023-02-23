@@ -15,7 +15,12 @@ export interface ILoadStatus {
     templateUrl: './load-modal-statuses.component.html',
     styleUrls: ['./load-modal-statuses.component.scss'],
     standalone: true,
-    imports: [CommonModule, FormsModule, NgbPopoverModule]
+    imports: [
+        // Module
+        CommonModule,
+        FormsModule,
+        NgbPopoverModule,
+    ],
 })
 export class LoadModalStatusesComponent implements OnInit {
     @Input() mode: 'Create' | 'Edit';

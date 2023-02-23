@@ -1,6 +1,7 @@
 import { distinctUntilChanged, Subject, takeUntil } from 'rxjs';
 import { NgbActiveModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import {
+    ChangeDetectionStrategy,
     Component,
     EventEmitter,
     HostListener,
@@ -39,18 +40,22 @@ import { TaTabSwitchComponent } from '../../standalone-components/ta-tab-switch/
     templateUrl: './ta-modal.component.html',
     styleUrls: ['./ta-modal.component.scss'],
     encapsulation: ViewEncapsulation.None,
+    changeDetection: ChangeDetectionStrategy.OnPush,
     standalone: true,
     imports: [
+        // Module
         CommonModule,
-        CustomScrollbarComponent,
-        TaUploadDropzoneComponent,
         FormsModule,
         DragDropModule,
-        AppTooltipComponent,
         AngularSvgIconModule,
+        NgbModule,
+
+        // Component
+        CustomScrollbarComponent,
+        TaUploadDropzoneComponent,
+        AppTooltipComponent,
         TaSpinnerComponent,
         TaTabSwitchComponent,
-        NgbModule,
     ],
     animations: [
         trigger('widthGrow', [

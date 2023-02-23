@@ -164,6 +164,7 @@ export class ShopRepairDetailsItemComponent implements OnInit, OnChanges {
     public finishOrder(repairId: number, data: any, event?: any) {
         event.stopPropagation();
         event.preventDefault();
+        console.log('repair order: ', data);
         this.modalService.openModal(
             RepairOrderModalComponent,
             { size: 'small' },

@@ -7,7 +7,12 @@ import {
     Self,
     ViewChild,
 } from '@angular/core';
-import { ControlValueAccessor, FormsModule, NgControl, ReactiveFormsModule } from '@angular/forms';
+import {
+    ControlValueAccessor,
+    FormsModule,
+    NgControl,
+    ReactiveFormsModule,
+} from '@angular/forms';
 import { SharedService } from '../../../services/shared/shared.service';
 import moment from 'moment';
 import { card_modal_animation } from '../animations/card-modal.animation';
@@ -26,13 +31,18 @@ import { TaSpinnerComponent } from '../ta-spinner/ta-spinner.component';
     animations: [card_modal_animation('showHideCardBody')],
     standalone: true,
     imports: [
-            CommonModule, 
-            FormsModule, 
-            SafeHtmlPipe, 
-            TaNoteContainerComponent,
-            AngularSvgIconModule,
-            ReactiveFormsModule,
-            TaSpinnerComponent
+        // Module
+        CommonModule,
+        FormsModule,
+        AngularSvgIconModule,
+        ReactiveFormsModule,
+
+        // Component
+        TaNoteContainerComponent,
+        TaSpinnerComponent,
+
+        // Pipe
+        SafeHtmlPipe,
     ],
 })
 export class TaInputNoteComponent implements OnInit, ControlValueAccessor {
@@ -44,7 +54,10 @@ export class TaInputNoteComponent implements OnInit, ControlValueAccessor {
     @Input() blankNote: boolean = false;
 
     @Input() set note(value) {
-        if (value && value != '' && value != 'null' && !this.gotValue || this.blankNote) {
+        if (
+            (value && value != '' && value != 'null' && !this.gotValue) ||
+            this.blankNote
+        ) {
             this.showNote = value;
         }
     }
@@ -57,7 +70,7 @@ export class TaInputNoteComponent implements OnInit, ControlValueAccessor {
     @Input() isVisibleDivider: boolean = true;
     @Input() public animationsDisabled = false;
     @Input() noteType: string = '';
-    
+
     savingNote: boolean = false;
     @Input() entityId: number = 0;
     @Input() entityType: string = '';

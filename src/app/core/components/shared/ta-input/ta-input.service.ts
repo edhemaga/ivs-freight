@@ -8,33 +8,11 @@ import {
 } from '@angular/forms';
 import validator from 'validator';
 import { NotificationService } from '../../../services/notification/notification.service';
-import { ITaInput } from './ta-input.config';
 
 @Injectable({
     providedIn: 'root',
 })
 export class TaInputService {
-    public onClearInput$: Subject<boolean> = new Subject<boolean>();
-
-    public onFocusOutInput$: Subject<boolean> = new Subject<boolean>();
-
-    public dropDownShowHide$: Subject<boolean> = new Subject<boolean>();
-
-    public dropDownKeyNavigation$: Subject<{
-        keyCode: number;
-        data: ITaInput | any;
-    }> = new Subject<{ keyCode: number; data: ITaInput | any }>();
-
-    public dropDownItemSelectedOnEnter$: Subject<{
-        action: boolean;
-        inputConfig: ITaInput;
-    }> = new Subject<{ action: boolean; inputConfig: ITaInput }>();
-
-    public dropDownAddMode$: Subject<{
-        action: boolean;
-        inputConfig: ITaInput;
-    }> = new Subject<{ action: boolean; inputConfig: ITaInput }>();
-
     constructor(public notificationService: NotificationService) {}
 
     /**

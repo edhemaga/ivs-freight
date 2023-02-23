@@ -33,14 +33,19 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
     encapsulation: ViewEncapsulation.None,
     standalone: true,
     imports: [
+        // Module
         CommonModule,
         FormsModule,
-        AppTooltipComponent,
         NgbModule,
-        SafeHtmlPipe,
+        AngularSvgIconModule,
+
+        // Component
+        AppTooltipComponent,
         TaSpinnerComponent,
         TaNoteContainerComponent,
-        AngularSvgIconModule
+
+        // Pipe
+        SafeHtmlPipe,
     ],
     animations: [
         trigger('pickupAnimation', [

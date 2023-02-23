@@ -250,7 +250,9 @@ export class ContactsTableComponent
     observTableContainer() {
         this.resizeObserver = new ResizeObserver((entries) => {
             entries.forEach((entry) => {
-                this.tableService.sendCurrentSetTableWidth(entry.contentRect.width);
+                this.tableService.sendCurrentSetTableWidth(
+                    entry.contentRect.width
+                );
             });
         });
 
@@ -267,22 +269,6 @@ export class ContactsTableComponent
                     { name: 'Card', active: this.activeViewMode === 'Card' },
                 ],
             },
-            actions: [
-                {
-                    title: 'Edit',
-                    name: 'edit-contact',
-                    class: 'regular-text',
-                    contentType: 'edit',
-                },
-                {
-                    title: 'Delete',
-                    type: 'contact',
-                    name: 'delete-contact',
-                    text: 'Are you sure you want to delete contact(s)?',
-                    class: 'delete-text',
-                    contentType: 'delete',
-                },
-            ],
         };
     }
 
@@ -330,12 +316,12 @@ export class ContactsTableComponent
         const contactCount = JSON.parse(
             localStorage.getItem('contactTableCount')
         );
-        
+
         const updatedTableData = [...this.tableData];
 
         updatedTableData[0].length = contactCount.contact;
 
-        this.tableData = [...updatedTableData]
+        this.tableData = [...updatedTableData];
     }
 
     // Get Columns Definition
@@ -396,9 +382,86 @@ export class ContactsTableComponent
                           : '',
                   }
                 : null,
+            tableDropdownContent: {
+                hasContent: true,
+                content: this.getDropdownContactContent(data),
+            },
         };
     }
+    getDropdownContactContent(data: any) {
+        return [
+            {
+                title: 'Edit',
+                name: 'edit-contact',
+                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Edit.svg',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                hasBorder: true,
+                svgClass: 'regular',
+            },
+            {
+                title: 'View Details',
+                name: 'view-details',
+                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Information.svg',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                svgClass: 'regular',
+                tableListDropdownContentStyle: {
+                    'margin-bottom.px': 4,
+                },
+            },
+            {
+                title: 'Send SMS',
+                name: 'send-sms',
+                svgUrl: '',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                svgClass: 'regular',
+                hasBorder: true,
+            },
+            {
+                title: 'Share',
+                name: 'share',
+                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Share.svg',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                svgClass: 'regular',
+                tableListDropdownContentStyle: {
+                    'margin-bottom.px': 4,
+                },
+            },
+            {
+                title: 'Print',
+                name: 'print',
+                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Print.svg',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
 
+                svgClass: 'regular',
+                hasBorder: true,
+            },
+            {
+                title: 'Delete',
+                name: 'delete-contact',
+                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Delete.svg',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                svgClass: 'delete',
+            },
+        ];
+    }
     // Get Avatar Color
     getAvatarColors() {
         let textColors: string[] = [

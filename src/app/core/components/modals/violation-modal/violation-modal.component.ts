@@ -46,20 +46,21 @@ import { InputAddressDropdownComponent } from '../../shared/input-address-dropdo
     providers: [ModalService, FormService],
     standalone: true,
     imports: [
-         CommonModule, 
-         FormsModule, 
-         TaModalComponent, 
-         TaTabSwitchComponent, 
-         ReactiveFormsModule,
-         TaInputComponent,
-         TaInputDropdownComponent,
-         TaCustomCardComponent,
-         InputAddressDropdownComponent
-    ]
+        // Module
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+
+        //  Component
+        TaModalComponent,
+        TaTabSwitchComponent,
+        TaInputComponent,
+        TaInputDropdownComponent,
+        TaCustomCardComponent,
+        InputAddressDropdownComponent,
+    ],
 })
 export class ViolationModalComponent implements OnInit, OnDestroy {
-    private destroy$ = new Subject<void>();
-
     @Input() editData: any;
 
     public violationForm: UntypedFormGroup;
@@ -192,6 +193,8 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
 
     public longitude: number;
     public latitude: number;
+
+    private destroy$ = new Subject<void>();
 
     constructor(
         private formBuilder: UntypedFormBuilder,
