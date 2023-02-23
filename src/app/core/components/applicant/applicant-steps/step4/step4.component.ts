@@ -169,8 +169,8 @@ export class Step4Component implements OnInit, OnDestroy, AfterContentChecked {
                         reviewId: item.accidentItemReview?.id,
                         isEditingAccident: false,
                         location: item.location,
-                        accidentState: item.location.state,
-                        accidentStateShort: item.location.stateShortName,
+                        // accidentState: item.location.state,
+                        // accidentStateShort: item.location.stateShortName,
                         date: convertDateFromBackend(item.date).replace(
                             /-/g,
                             '/'
@@ -192,9 +192,9 @@ export class Step4Component implements OnInit, OnDestroy, AfterContentChecked {
                 reviewId: lastItemInAccidentArray.accidentItemReview?.id,
                 isEditingAccident: false,
                 location: lastItemInAccidentArray.location,
-                accidentState: lastItemInAccidentArray.location.state,
-                accidentStateShort:
-                    lastItemInAccidentArray.location.stateShortName,
+                // accidentState: lastItemInAccidentArray.location.state,
+                // accidentStateShort:
+                //     lastItemInAccidentArray.location.stateShortName,
                 date: convertDateFromBackend(
                     lastItemInAccidentArray.date
                 ).replace(/-/g, '/'),

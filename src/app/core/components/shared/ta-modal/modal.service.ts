@@ -120,8 +120,6 @@ export class ModalService {
         backdropClass?: string,
         keyboardEsc: boolean = true
     ) {
-        console.log(keyboardEsc);
-        
         options = {
             ...options,
             backdrop: 'static' as any,

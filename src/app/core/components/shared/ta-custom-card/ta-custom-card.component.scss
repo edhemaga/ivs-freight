@@ -7,7 +7,6 @@
     }
 }
 
-
 .ta-custom-card {
     display: block;
 
@@ -474,8 +473,6 @@
         }
 
         .content-holder {
-            //user-select: none;
-            
             &.innactive {
                 height: 0px !important;
                 overflow: hidden !important;
@@ -489,14 +486,13 @@
                 opacity: 1 !important;
             }
 
-            &.openedCardClass{
+            &.openedCardClass {
                 animation: selectFix 1.5s ease;
             }
 
-            &.detailsPadding{
+            &.detailsPadding {
                 padding: 0px 4px !important;
             }
-
         }
     }
 
@@ -528,5 +524,3 @@
         }
     }
 }
-
-

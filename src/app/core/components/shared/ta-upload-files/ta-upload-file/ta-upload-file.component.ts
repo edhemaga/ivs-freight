@@ -12,7 +12,7 @@ import {
 } from '@angular/core';
 import { FormsModule, UntypedFormControl, ReactiveFormsModule } from '@angular/forms';
 import { PDFDocumentProxy, PdfViewerModule } from 'ng2-pdf-viewer';
-import { Subject, takeUntil, debounceTime, distinctUntilChanged } from 'rxjs';
+import { Subject, debounceTime, distinctUntilChanged } from 'rxjs';
 import { TaInputComponent } from '../../ta-input/ta-input.component';
 import { TaInputService } from '../../ta-input/ta-input.service';
 import { UrlExtensionPipe } from 'src/app/core/pipes/url-extension.pipe';
@@ -61,8 +61,6 @@ export interface UploadFile {
         TaSpinnerComponent,
         NgbPopoverModule,
         TaInputComponent,
-        
-
     ],
 })
 export class TaUploadFileComponent implements OnInit, OnDestroy {
@@ -117,20 +115,6 @@ export class TaUploadFileComponent implements OnInit, OnDestroy {
     ) {}
 
     ngOnInit(): void {
-        this.inputService.onFocusOutInput$
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((value) => {
-                if (value) {
-                    this.editFile = false;
-                    if (this.fileNewName.value) {
-                        this.file.fileName = this.fileNewName.value;
-                        // this.file.fileName =
-                        //   this.fileNewName.value[0].toUpperCase() +
-                        //   this.fileAction.emit({ file: this.file, action: 'edit' });
-                    }
-                }
-            });
-
         if (!this.file.realFile) {
             let setName = '';
             const name = this.file.fileName
@@ -168,6 +152,18 @@ export class TaUploadFileComponent implements OnInit, OnDestroy {
         this.setTags();
         if (this.file.tags?.length) {
             this.categoryTag = this.file.tags[0];
+        }
+    }
+
+    public onBlurInput(event: boolean) {
+        if (event) {
+            this.editFile = false;
+            if (this.fileNewName.value) {
+                this.file.fileName = this.fileNewName.value;
+                // this.file.fileName =
+                //   this.fileNewName.value[0].toUpperCase() +
+                //   this.fileAction.emit({ file: this.file, action: 'edit' });
+            }
         }
     }
 

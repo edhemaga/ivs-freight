@@ -34,15 +34,18 @@ import { NgbModule, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
     styleUrls: ['./ta-logo-change.component.scss'],
     standalone: true,
     imports: [
+        // Module
         CommonModule,
         FormsModule,
-        AppTooltipComponent,
         CroppieModule,
-        TaUploadDropzoneComponent,
-        TaNgxSliderComponent,
         AngularSvgIconModule,
         NgbModule,
-        NgbPopoverModule
+        NgbPopoverModule,
+
+        // Component
+        AppTooltipComponent,
+        TaUploadDropzoneComponent,
+        TaNgxSliderComponent,
     ],
 })
 export class TaLogoChangeComponent

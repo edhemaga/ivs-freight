@@ -1,11 +1,19 @@
 import { ImageBase64Service } from '../../../utils/base64.image';
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ConfirmationService } from './confirmation.service';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { FormBuilder, FormGroup, FormsModule, Validators } from '@angular/forms';
+import {
+    FormBuilder,
+    FormGroup,
+    FormsModule,
+    ReactiveFormsModule,
+} from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { TaModalComponent } from '../../shared/ta-modal/ta-modal.component';
 import { formatDatePipe } from 'src/app/core/pipes/formatDate.pipe';
+import { AngularSvgIconModule } from 'angular-svg-icon';
+import { TaInputDropdownComponent } from '../../shared/ta-input-dropdown/ta-input-dropdown.component';
+import { ProfileImagesComponent } from '../../shared/profile-images/profile-images.component';
 
 export interface Confirmation {
     template: string; // examples: driver, broker, shipper, cdl.....
@@ -32,9 +40,23 @@ export interface Confirmation {
     templateUrl: './confirmation-modal.component.html',
     styleUrls: ['./confirmation-modal.component.scss'],
     standalone: true,
-    imports: [CommonModule, FormsModule, TaModalComponent, formatDatePipe]
+    imports: [
+        // Module
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+        AngularSvgIconModule,
+
+        // Component
+        TaModalComponent,
+        TaInputDropdownComponent,
+        ProfileImagesComponent,
+
+        // Pipe
+        formatDatePipe,
+    ],
 })
-export class ConfirmationModalComponent {
+export class ConfirmationModalComponent implements OnInit {
     @Input() editData: Confirmation;
     public cdlForm: FormGroup;
     selectedCdl: any;
@@ -43,14 +65,14 @@ export class ConfirmationModalComponent {
         public imageBase64Service: ImageBase64Service,
         private ngbActiveModal: NgbActiveModal,
         private confirmationDataSubject: ConfirmationService,
-        private formBuilder: FormBuilder,
+        private formBuilder: FormBuilder
     ) {}
-    
+
     ngOnInit() {
         this.cdlForm = this.formBuilder.group({
             cdlId: [null],
         });
-    }    
+    }
 
     public onModalAction(data: any) {
         // Multiple Delete
@@ -60,21 +82,21 @@ export class ConfirmationModalComponent {
                 array: data.array.map((item) => item.id),
             });
         } else {
-            if ( !this.selectedCdl ) {
+            if (!this.selectedCdl) {
                 this.confirmationDataSubject.sendConfirmationData(data);
             } else {
                 data['data']['newCdlID'] = this.selectedCdl.id;
                 this.confirmationDataSubject.sendConfirmationData(data);
             }
-            
         }
 
         this.ngbActiveModal.close();
     }
 
     public onSelectDropdown(event: any, action: string) {
-        this.selectedCdl = event;
-        console.log('--event---', event);
+        if (action === 'cdl') {
+            this.selectedCdl = event;
+        }
     }
 
     public identity = (index: number, _: any): number => index;

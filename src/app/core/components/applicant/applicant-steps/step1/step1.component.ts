@@ -8,7 +8,12 @@ import {
     QueryList,
     AfterViewInit,
 } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup, Validators, UntypedFormArray } from '@angular/forms';
+import {
+    UntypedFormBuilder,
+    UntypedFormGroup,
+    Validators,
+    UntypedFormArray,
+} from '@angular/forms';
 import { Router } from '@angular/router';
 
 import {
@@ -59,7 +64,7 @@ import { BankResponse } from 'appcoretruckassist/model/bankResponse';
 import {
     AddressEntity,
     CreateResponse,
-    UpdatePersonalInfoCommand,
+    // UpdatePersonalInfoCommand,
     PersonalInfoFeedbackResponse,
     ApplicantResponse,
     ApplicantModalResponse,
@@ -405,7 +410,9 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
     }
 
     public get previousAddresses(): UntypedFormArray {
-        return this.personalInfoForm.get('previousAddresses') as UntypedFormArray;
+        return this.personalInfoForm.get(
+            'previousAddresses'
+        ) as UntypedFormArray;
     }
 
     public trackByIdentity = (index: number, _: any): number => index;
@@ -1871,7 +1878,7 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
 
         const stepPreviousAddresses = this.stepValues?.previousAddresses;
 
-        const saveData: UpdatePersonalInfoCommand = {
+        const saveData: any /*UpdatePersonalInfoCommand*/ = {
             ...personalInfoForm,
             applicantId: this.applicantId,
             doB: convertDateToBackend(dateOfBirth),

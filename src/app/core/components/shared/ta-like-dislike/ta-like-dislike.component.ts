@@ -21,7 +21,13 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
     styleUrls: ['./ta-like-dislike.component.scss'],
     encapsulation: ViewEncapsulation.None,
     standalone: true,
-    imports: [CommonModule, FormsModule, ReactiveFormsModule, AngularSvgIconModule],
+    imports: [
+        // Module
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+        AngularSvgIconModule,
+    ],
 })
 export class TaLikeDislikeComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();

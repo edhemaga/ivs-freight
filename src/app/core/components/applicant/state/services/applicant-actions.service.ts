@@ -10,7 +10,7 @@ import {
     CreateDisclosureReviewCommand,
     AcceptApplicationCommand,
     ApplicantResponse,
-    UpdatePersonalInfoCommand,
+    // UpdatePersonalInfoCommand,
     CreateSevenDaysHosCommand,
     CreateDrugAndAlcoholCommand,
     UpdateDriverRightsCommand,
@@ -60,7 +60,7 @@ import {
     UpdateWorkExperienceReviewCommand,
     CreatePspAuthReviewCommand,
     CreateMedicalCertificateReviewCommand,
-    CreatePersonalInfoCommand,
+    // CreatePersonalInfoCommand,
     CreateSphReviewCommand,
     CreateHosRulesReviewCommand,
     UpdateMedicalCertificateReviewCommand,
@@ -96,7 +96,7 @@ export class ApplicantActionsService {
     }
 
     public createPersonalInfo(
-        data: CreatePersonalInfoCommand
+        data: any /*CreatePersonalInfoCommand*/
     ): Observable<CreateResponse> {
         return this.applicantService.apiApplicantPersonalPost(data);
     }
@@ -166,7 +166,7 @@ export class ApplicantActionsService {
     /* BACKEND PUT ACTION FUNCTIONS - APPLICANT & FEEDBACK MODE */
 
     public updatePersonalInfo(
-        data: UpdatePersonalInfoCommand
+        data: any /*UpdatePersonalInfoCommand*/
     ): Observable<object> {
         return this.applicantService.apiApplicantPersonalPut(data);
     }

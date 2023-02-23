@@ -1,4 +1,3 @@
-import { NavigationFooterComponent } from './core/components/navigation/navigation-footer/navigation-footer.component';
 import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import {
     BrowserModule,
@@ -16,9 +15,7 @@ import { NgIdleModule } from '@ng-idle/core';
 import { AgmCoreModule, GoogleMapsAPIWrapper } from '@agm/core';
 // ---- NAVIGATION
 import { NavigationComponent } from './core/components/navigation/navigation.component';
-import { NavigationRouteComponent } from './core/components/navigation/navigation-route/navigation-route.component';
 import { ChangeLogoPipe } from './core/components/navigation/pipe/change-logo.pipe';
-import { NavigationHeaderComponent } from './core/components/navigation/navigation-header/navigation-header.component';
 import { ApiModule, Configuration } from 'appcoretruckassist';
 import { UserLoggedService } from './core/components/website/state/service/user-logged.service';
 
@@ -39,7 +36,7 @@ import player from 'lottie-web';
 
 function playerFactory() {
     return player;
-  }
+}
 
 @NgModule({
     declarations: [AppComponent, ChangeLogoPipe],
@@ -80,6 +77,7 @@ function playerFactory() {
             deps: [UserLoggedService],
             multi: false,
         },
+
         [
             {
                 provide: HTTP_INTERCEPTORS,

@@ -280,7 +280,7 @@
                                                     type: 'text',
                                                     placeholderIcon: 'time',
                                                     customClass:
-                                                        'datetimeclass repair-shop-open-hour',
+                                                        'datetimeclass',
                                                     hideClear: true
                                                 }"
                                                 formControlName="startTime"
@@ -294,7 +294,7 @@
                                                     type: 'text',
                                                     placeholderIcon: 'time',
                                                     customClass:
-                                                        'datetimeclass repair-shop-open-hour',
+                                                        'datetimeclass',
                                                     hideClear: true
                                                 }"
                                                 formControlName="endTime"
@@ -513,12 +513,11 @@
                                                 id: 'Email' + ind,
                                                 name: 'Email',
                                                 type: 'text',
-                                                hideRequiredCheck: true,
-                                                blackInput: true,
-                                                hideErrorMessage: true,
                                                 minLength: 5,
                                                 maxLength: 64,
-                                                textTransform: 'lowercase'
+                                                textTransform: 'lowercase',
+                                                hideRequiredCheck: true,
+                                                hideErrorMessage: true
                                             }"
                                             formControlName="email"
                                         ></app-ta-input>

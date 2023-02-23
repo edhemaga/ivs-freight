@@ -40,36 +40,50 @@ import { TaInputDropdownComponent } from '../../../shared/ta-input-dropdown/ta-i
     providers: [ModalService],
     standalone: true,
     imports: [
-                CommonModule, 
-                FormsModule, 
-                TaModalComponent, 
-                ReactiveFormsModule, 
-                TaInputComponent, 
-                AngularSvgIconModule, 
-                InputAddressDropdownComponent, 
-                TaCustomCardComponent, 
-                TaInputNoteComponent, 
-                TaUploadFilesComponent,
-                TaInputDropdownComponent
-    ] 
+        // Module
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+        AngularSvgIconModule,
+
+        // Component
+        TaModalComponent,
+        TaInputComponent,
+        InputAddressDropdownComponent,
+        TaCustomCardComponent,
+        TaInputNoteComponent,
+        TaUploadFilesComponent,
+        TaInputDropdownComponent,
+    ],
 })
 export class FuelStopModalComponent implements OnInit, OnDestroy {
     @Input() editData: any;
+
     public fuelStopForm: UntypedFormGroup;
+
     public fuelStops: any[] = [];
     public selectedFuelStop: any = null;
+
     public selectedAddress: AddressEntity;
+
     public isFavouriteFuelStop: boolean = false;
-    public isFormDirty: boolean;
+
     public fuelStopName: string = null;
+
     public companyId: number = null;
+
     public documents: any[] = [];
     public fileModified: boolean = false;
     public filesForDelete: any[] = [];
+
     public disableCardAnimation: boolean = false;
+
     public longitude: number;
     public latitude: number;
+
     private destroy$ = new Subject<void>();
+
+    public isFormDirty: boolean;
 
     constructor(
         private formBuilder: UntypedFormBuilder,
@@ -85,6 +99,30 @@ export class FuelStopModalComponent implements OnInit, OnDestroy {
 
         this.trackFuelStopPhone();
         this.trackFuelStopFranchise();
+    }
+
+    private createForm() {
+        this.fuelStopForm = this.formBuilder.group({
+            businessName: [null, [...businessNameValidation]],
+            fuelStopFranchiseId: [
+                null,
+                [Validators.required, ...fuelStopValidation],
+            ],
+            store: [null, fuelStoreValidation],
+            favourite: [false],
+            phone: [null, [Validators.required, phoneFaxRegex]],
+            fax: [null, phoneFaxRegex],
+            address: [null, [Validators.required, ...addressValidation]],
+            note: [null],
+            files: [null],
+        });
+
+        this.formService.checkFormChange(this.fuelStopForm);
+        this.formService.formValueChange$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((isFormChange: boolean) => {
+                this.isFormDirty = isFormChange;
+            });
     }
 
     public onModalAction(data: { action: string; bool: boolean }) {
@@ -213,35 +251,6 @@ export class FuelStopModalComponent implements OnInit, OnDestroy {
                 break;
             }
         }
-    }
-
-    ngOnDestroy(): void {
-        this.destroy$.next();
-        this.destroy$.complete();
-    }
-
-    private createForm() {
-        this.fuelStopForm = this.formBuilder.group({
-            businessName: [null, [...businessNameValidation]],
-            fuelStopFranchiseId: [
-                null,
-                [Validators.required, ...fuelStopValidation],
-            ],
-            store: [null, fuelStoreValidation],
-            favourite: [false],
-            phone: [null, [Validators.required, phoneFaxRegex]],
-            fax: [null, phoneFaxRegex],
-            address: [null, [Validators.required, ...addressValidation]],
-            note: [null],
-            files: [null],
-        });
-
-        this.formService.checkFormChange(this.fuelStopForm);
-        this.formService.formValueChange$
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((isFormChange: boolean) => {
-                this.isFormDirty = isFormChange;
-            });
     }
 
     private trackFuelStopAddress(address: AddressEntity) {
@@ -494,5 +503,10 @@ export class FuelStopModalComponent implements OnInit, OnDestroy {
                 },
                 error: () => {},
             });
+    }
+
+    ngOnDestroy(): void {
+        this.destroy$.next();
+        this.destroy$.complete();
     }
 }
