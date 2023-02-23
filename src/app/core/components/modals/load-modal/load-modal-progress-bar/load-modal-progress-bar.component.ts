@@ -7,11 +7,15 @@ import { FormsModule } from '@angular/forms';
     templateUrl: './load-modal-progress-bar.component.html',
     styleUrls: ['./load-modal-progress-bar.component.scss'],
     standalone: true,
-    imports: [CommonModule, FormsModule]
+    imports: [
+        // Module
+        CommonModule,
+        FormsModule,
+    ],
 })
 export class LoadModalProgressBarComponent implements OnChanges {
-    @Input() totalAmount: number;
-    @Input() availableCredit: number;
+    @Input() totalAmount: number | string;
+    @Input() availableCredit: number | string;
     @Input() inputFocus: boolean;
     @Input() disable: boolean;
 
@@ -36,7 +40,7 @@ export class LoadModalProgressBarComponent implements OnChanges {
             return;
         } else {
             this.activePercentageOfPaid =
-                (this.availableCredit / this.totalAmount) * 100;
+                (+this.availableCredit / +this.totalAmount) * 100;
         }
 
         if (

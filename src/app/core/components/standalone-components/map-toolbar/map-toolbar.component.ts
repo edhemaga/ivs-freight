@@ -10,7 +10,12 @@ import {
     ChangeDetectorRef,
     ViewChild,
 } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup, Validators, FormsModule } from '@angular/forms';
+import {
+    UntypedFormBuilder,
+    UntypedFormGroup,
+    Validators,
+    FormsModule,
+} from '@angular/forms';
 import { distinctUntilChanged, Subject, takeUntil } from 'rxjs';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
 import { TruckTService } from '../../truck/state/truck.service';
@@ -23,7 +28,12 @@ import { FilterComponent } from '../filter/filter.component';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { CommonModule } from '@angular/common';
 import { AppTooltipComponent } from '../app-tooltip/app-tooltip.component';
-import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbPopoverModule, NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { TaInputComponent } from '../../shared/ta-input/ta-input.component';
+import { TaTabSwitchComponent } from '../ta-tab-switch/ta-tab-switch.component';
+import { TaInputDropdownComponent } from '../../shared/ta-input-dropdown/ta-input-dropdown.component';
+import { TaCheckboxComponent } from '../../shared/ta-checkbox/ta-checkbox.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @Component({
     selector: 'app-map-toolbar',
@@ -31,8 +41,20 @@ import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
     styleUrls: ['./map-toolbar.component.scss'],
     animations: [card_component_animation('showHideCardBody')],
     standalone: true,
-    imports: [FilterComponent, AngularSvgIconModule, CommonModule, FormsModule, AppTooltipComponent, NgbPopoverModule]
-
+    imports: [
+        FilterComponent,
+        AngularSvgIconModule,
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+        AppTooltipComponent,
+        NgbPopoverModule,
+        NgbModule,
+        TaInputComponent,
+        TaTabSwitchComponent,
+        TaInputDropdownComponent,
+        TaCheckboxComponent
+    ],
 })
 export class MapToolbarComponent implements OnInit, OnChanges, OnDestroy {
     private destroy$ = new Subject<void>();
@@ -464,15 +486,17 @@ export class MapToolbarComponent implements OnInit, OnChanges, OnDestroy {
             routeName: 'Route 0' + (this.activeTableData.length + 1),
         };
 
-        this.modalService.openModal(
-            MapRouteModalComponent,
-            { size: 'small' },
-            {
-                ...routeInfo,
-                mapId: this.activeTableData.id,
-                type: 'add',
-            }
-        );
+        if ( this.activeTableData.length < 8 ) {
+            this.modalService.openModal(
+                MapRouteModalComponent,
+                { size: 'small' },
+                {
+                    ...routeInfo,
+                    mapId: this.activeTableData.id,
+                    type: 'add',
+                }
+            );
+        }
     }
 
     onShowLayersPopover(layersPopup: any) {
@@ -761,7 +785,7 @@ export class MapToolbarComponent implements OnInit, OnChanges, OnDestroy {
 
     showHideUnassignedDevices() {
         this.toolBarAction.emit({
-            action: 'show-hide-unassigned'
+            action: 'show-hide-unassigned',
         });
     }
 

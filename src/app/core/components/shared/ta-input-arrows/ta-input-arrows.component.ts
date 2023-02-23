@@ -1,6 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { AfterViewInit, Component, Input, Self } from '@angular/core';
-import { ControlValueAccessor, FormsModule, NgControl, ReactiveFormsModule } from '@angular/forms';
+import {
+    ControlValueAccessor,
+    FormsModule,
+    NgControl,
+    ReactiveFormsModule,
+} from '@angular/forms';
 import { ITaInput } from '../ta-input/ta-input.config';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { TaInputComponent } from '../ta-input/ta-input.component';
@@ -10,7 +15,16 @@ import { TaInputComponent } from '../ta-input/ta-input.component';
     templateUrl: './ta-input-arrows.component.html',
     styleUrls: ['./ta-input-arrows.component.scss'],
     standalone: true,
-    imports: [CommonModule, FormsModule, AngularSvgIconModule, TaInputComponent, ReactiveFormsModule],
+    imports: [
+        // Module
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+        AngularSvgIconModule,
+
+        // Component
+        TaInputComponent,
+    ],
 })
 export class TaInputArrowsComponent
     implements AfterViewInit, ControlValueAccessor
@@ -31,6 +45,15 @@ export class TaInputArrowsComponent
     constructor(@Self() public superControl: NgControl) {
         this.superControl.valueAccessor = this;
     }
+
+    get getSuperControl() {
+        return this.superControl.control;
+    }
+
+    public writeValue(_: any): void {}
+    public registerOnChange(_: any): void {}
+    public onChange(): void {}
+    public registerOnTouched(_: any): void {}
 
     ngAfterViewInit() {
         this.buttonHolding(this.elementOrder);
@@ -85,13 +108,4 @@ export class TaInputArrowsComponent
             );
         }
     }
-
-    get getSuperControl() {
-        return this.superControl.control;
-    }
-
-    public writeValue(_: any): void {}
-    public registerOnChange(_: any): void {}
-    public onChange(): void {}
-    public registerOnTouched(_: any): void {}
 }

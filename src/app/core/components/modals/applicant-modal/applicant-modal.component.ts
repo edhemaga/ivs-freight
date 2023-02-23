@@ -4,7 +4,13 @@ import {
     phoneFaxRegex,
 } from '../../shared/ta-input/ta-input.regex-validations';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { FormsModule, ReactiveFormsModule, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import {
+    FormsModule,
+    ReactiveFormsModule,
+    UntypedFormBuilder,
+    UntypedFormGroup,
+    Validators,
+} from '@angular/forms';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { Subject, takeUntil } from 'rxjs';
@@ -22,11 +28,19 @@ import { TaInputNoteComponent } from '../../shared/ta-input-note/ta-input-note.c
     styleUrls: ['./applicant-modal.component.scss'],
     providers: [ModalService, FormService],
     standalone: true,
-    imports: [CommonModule, FormsModule, TaModalComponent, ReactiveFormsModule,TaInputComponent, TaInputNoteComponent]
+    imports: [
+        // Module
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+
+        // Component
+        TaModalComponent,
+        TaInputComponent,
+        TaInputNoteComponent,
+    ],
 })
 export class ApplicantModalComponent implements OnInit, OnDestroy {
-    private destroy$ = new Subject<void>();
-
     @Input() editData: any;
 
     public applicantForm: UntypedFormGroup;
@@ -35,6 +49,8 @@ export class ApplicantModalComponent implements OnInit, OnDestroy {
     public applicantFullName: string = null;
 
     public isFormDirty: boolean = false;
+
+    private destroy$ = new Subject<void>();
 
     constructor(
         private formBuilder: UntypedFormBuilder,
@@ -151,7 +167,7 @@ export class ApplicantModalComponent implements OnInit, OnDestroy {
                     this.modalService.setModalSpinner({
                         action: null,
                         status: true,
-                        close: false,
+                        close: true,
                     });
                 },
                 error: () => {
@@ -171,17 +187,18 @@ export class ApplicantModalComponent implements OnInit, OnDestroy {
             .subscribe({
                 next: () => {
                     if (this.addNewApplicant) {
+                        this.addNewApplicant = false;
+                        this.formService.resetForm(this.applicantForm);
+
                         this.modalService.setModalSpinner({
                             action: 'save and add new',
                             status: false,
                             close: false,
                         });
-                        this.addNewApplicant = false;
-                        this.formService.resetForm(this.applicantForm);
                     } else {
                         this.modalService.setModalSpinner({
                             action: null,
-                            status: false,
+                            status: true,
                             close: true,
                         });
                     }

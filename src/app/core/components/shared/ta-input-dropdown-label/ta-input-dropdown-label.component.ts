@@ -7,18 +7,36 @@ import {
     Self,
     ViewChild,
 } from '@angular/core';
-import { ControlValueAccessor, FormsModule, NgControl, ReactiveFormsModule } from '@angular/forms';
+import {
+    ControlValueAccessor,
+    FormsModule,
+    NgControl,
+    ReactiveFormsModule,
+} from '@angular/forms';
 import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
 import { TaInputDropdownComponent } from '../ta-input-dropdown/ta-input-dropdown.component';
 import { ITaInput } from '../ta-input/ta-input.config';
 import { FormControlPipe } from '../ta-input/form-control.pipe';
+import { ChangeDetectionStrategy } from '@angular/core';
 
 @Component({
     selector: 'app-ta-input-dropdown-label',
     templateUrl: './ta-input-dropdown-label.component.html',
     styleUrls: ['./ta-input-dropdown-label.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
     standalone: true,
-    imports: [CommonModule, FormsModule, TaInputDropdownComponent, ReactiveFormsModule, FormControlPipe],
+    imports: [
+        // Module
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+
+        // Component
+        TaInputDropdownComponent,
+
+        // Pipe
+        FormControlPipe,
+    ],
 })
 export class TaInputDropdownLabelComponent implements ControlValueAccessor {
     @ViewChild('t2') t2Ref: NgbPopover;
@@ -27,12 +45,10 @@ export class TaInputDropdownLabelComponent implements ControlValueAccessor {
     @Input() selectedLabel: any;
     @Input() colors: any[] = [];
     @Input() selectedLabelColor: any;
-
     @Input() inputConfig: ITaInput;
 
     @Output() pickExistLabel: EventEmitter<any> = new EventEmitter<any>();
     @Output() pickColorLabel: EventEmitter<any> = new EventEmitter<any>();
-
     @Output() saveLabel: EventEmitter<{ data: any; action: string }> =
         new EventEmitter<{ data: string; action: string }>();
 

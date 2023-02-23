@@ -6,6 +6,7 @@ import { AppTooltipComponent } from '../../../standalone-components/app-tooltip/
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AngularSvgIconModule } from 'angular-svg-icon';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
     selector: 'app-ta-note-container',
@@ -13,10 +14,14 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
     styleUrls: ['./ta-note-container.component.scss'],
     standalone: true,
     imports: [
-                CommonModule, 
-                FormsModule, 
-                AppTooltipComponent,
-                AngularSvgIconModule
+        // Module
+        CommonModule,
+        FormsModule,
+        AngularSvgIconModule,
+        NgbModule,
+
+        // Component
+        AppTooltipComponent,
     ],
     animations: [
         trigger('pickupAnimation', [
@@ -71,7 +76,6 @@ export class TaNoteContainerComponent implements OnInit {
     }
 
     executeEditor(action: string, color?: string, indx?: number) {
-  
         if (indx || indx === 0) {
             this.selectedColorName = this.containerColors[indx];
         }

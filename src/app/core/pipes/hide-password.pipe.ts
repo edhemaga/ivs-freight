@@ -5,7 +5,7 @@ import { Pipe, PipeTransform } from '@angular/core';
     standalone: true
 })
 export class HidePasswordPipe implements PipeTransform {
-    transform(value: any, template: string, toogleVisibility: boolean): any {
+    transform(value: any, template: string, toogleVisibility?: boolean): any {
         let hideNumber: string = '';
         switch (template) {
             case 'card': {

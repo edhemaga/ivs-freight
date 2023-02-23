@@ -16,7 +16,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Subject, takeUntil } from 'rxjs';
 import { TruckassistTableService } from '../../../../services/truckassist-table/truckassist-table.service';
 import { AngularSvgIconModule } from 'angular-svg-icon';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModule, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 import { ResizeColumnDirective } from 'src/app/core/directives/resize-column.directive';
 
 const rotate: { [key: string]: any } = {
@@ -37,7 +37,8 @@ const rotate: { [key: string]: any } = {
         AngularSvgIconModule,
         NgbModule,
         ResizeColumnDirective,
-        DragDropModule 
+        DragDropModule,
+        NgbPopoverModule,
     ],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -66,6 +67,8 @@ export class TruckassistTableHeadComponent
     notPinedMaxWidth: number = 0;
     sortDirection: string = '';
     tableConfigurationType: string = '';
+    selectableRow: any[] = [];
+    showBorder: boolean = false;
 
     constructor(
         private tableService: TruckassistTableService,
@@ -77,6 +80,7 @@ export class TruckassistTableHeadComponent
         this.setColumnNameUpperCase();
         this.setVisibleColumns();
         this.getActiveTableData();
+        this.getSelectableRows();
 
         // Get Table Width
         this.tableService.currentSetTableWidth
@@ -115,6 +119,17 @@ export class TruckassistTableHeadComponent
                 }
             });
 
+        // Is Scroll Showing
+        this.tableService.isScrollShownig
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((isScrollShownig: boolean) => {
+                if(this.showBorder !== isScrollShownig){
+                    this.showBorder = isScrollShownig;
+
+                    this.changeDetectorRef.detectChanges();
+                }
+            });
+
         setTimeout(() => {
             this.getNotPinedMaxWidth();
         }, 10);
@@ -143,6 +158,8 @@ export class TruckassistTableHeadComponent
 
         if (!changes?.viewData?.firstChange && changes?.viewData) {
             this.viewData = changes.viewData.currentValue;
+
+            this.getSelectableRows();
 
             this.changeDetectorRef.detectChanges();
         }
@@ -238,7 +255,7 @@ export class TruckassistTableHeadComponent
             this.notPinedMaxWidth =
                 tableContainer.clientWidth -
                 (this.pinedWidth + this.actionsWidth) -
-                12;
+                15;
 
             this.changeDetectorRef.detectChanges();
         }
@@ -357,6 +374,19 @@ export class TruckassistTableHeadComponent
         } else {
             selectedPopover.open({});
         }
+    }
+
+    // Get Selectable Row
+    getSelectableRows(){
+        let selectable = [];
+
+        this.viewData.map((data: any, index: number) => {
+            if(!data?.tableCantSelect){
+                selectable.push(index);
+            }
+        })
+
+        this.selectableRow = [...selectable];
     }
 
     // On Select Option From Select Popup

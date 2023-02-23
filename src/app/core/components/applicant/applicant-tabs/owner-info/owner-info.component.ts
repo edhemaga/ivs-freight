@@ -422,7 +422,7 @@ export class OwnerInfoComponent implements OnInit, OnDestroy {
                     isAddressValid,
                     isAddressUnitValid,
                     isAccountValid,
-                    accountRoutingMessage,
+                    // accountRoutingMessage,
                     addressMessage,
                     isTruckVinValid,
                     truckVinMessage,
@@ -473,13 +473,13 @@ export class OwnerInfoComponent implements OnInit, OnDestroy {
                 this.openAnnotationArray[3] = {
                     ...this.openAnnotationArray[3],
                     lineInputs: [!isAccountValid],
-                    displayAnnotationButton:
-                        !isAccountValid && !accountRoutingMessage
-                            ? true
-                            : false,
-                    displayAnnotationTextArea: accountRoutingMessage
-                        ? true
-                        : false,
+                    // displayAnnotationButton:
+                    //     !isAccountValid && !accountRoutingMessage
+                    //         ? true
+                    //         : false,
+                    // displayAnnotationTextArea: accountRoutingMessage
+                    //     ? true
+                    //     : false,
                 };
                 this.openAnnotationArray[4] = {
                     ...this.openAnnotationArray[4],
@@ -540,7 +540,7 @@ export class OwnerInfoComponent implements OnInit, OnDestroy {
                     firstRowReview: businessNameEinMessage,
                     secondRowReview: contactMessage,
                     thirdRowReview: addressMessage,
-                    fourthRowReview: accountRoutingMessage,
+                    // fourthRowReview: accountRoutingMessage,
                     fifthRowReview: truckVinMessage,
                     sixthRowReview: truckModelYearMessage,
                     seventhRowReview: trailerVinMessage,
@@ -1868,8 +1868,8 @@ export class OwnerInfoComponent implements OnInit, OnDestroy {
             isAddressUnitValid: !this.openAnnotationArray[2].lineInputs[1],
             addressMessage: thirdRowReview,
             isAccountValid: !this.openAnnotationArray[3].lineInputs[0],
-            isRoutingValid: true,
-            accountRoutingMessage: fourthRowReview,
+            // isRoutingValid: true,
+            // accountRoutingMessage: fourthRowReview,
             isTruckVinValid: !this.openAnnotationArray[4].lineInputs[0],
             truckVinMessage: fifthRowReview,
             isTruckModelValid: !this.openAnnotationArray[5].lineInputs[0],

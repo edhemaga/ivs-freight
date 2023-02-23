@@ -10,6 +10,7 @@ import { UntypedFormControl } from '@angular/forms';
 import { LoadResponse } from 'appcoretruckassist';
 import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
 import { LoadMinimalListQuery } from '../state/load-details-state/load-minimal-list-state/load-details-minimal.query';
+import { ImageBase64Service } from '../../../utils/base64.image';
 
 @Component({
     selector: 'app-load-card-view',
@@ -26,7 +27,8 @@ export class LoadCardViewComponent implements OnInit, OnChanges {
     public currentLoadIndex: any;
     constructor(
         private lmquery: LoadMinimalListQuery,
-        private detailsPageDriverSer: DetailsPageService
+        private detailsPageDriverSer: DetailsPageService,
+        public imageBase64Service: ImageBase64Service,
     ) {}
 
     ngOnChanges(changes: SimpleChanges): void {

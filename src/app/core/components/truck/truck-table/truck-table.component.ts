@@ -325,47 +325,6 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     { name: 'Card', active: this.activeViewMode === 'Card' },
                 ],
             },
-            actions: [
-                {
-                    title: 'Edit Truck',
-                    name: 'edit-truck',
-                    class: 'regular-text',
-                    contentType: 'edit',
-                },
-                {
-                    title: 'Add Registration',
-                    name: 'add-registration',
-                    class: 'regular-text',
-                    contentType: 'add',
-                },
-                {
-                    title: 'Add Inspection',
-                    name: 'add-inspection',
-                    class: 'regular-text',
-                    contentType: 'add',
-                },
-                {
-                    title: 'Add Repair',
-                    name: 'add-repair',
-                    class: 'regular-text',
-                    contentType: 'add',
-                },
-                {
-                    title: 'Activate',
-                    reverseTitle: 'Deactivate',
-                    name: 'activate-item',
-                    class: 'regular-text',
-                    contentType: 'activate',
-                },
-                {
-                    title: 'Delete',
-                    name: 'delete-item',
-                    type: 'truck',
-                    text: 'Are you sure you want to delete truck(s)?',
-                    class: 'delete-text',
-                    contentType: 'delete',
-                },
-            ],
         };
     }
 
@@ -554,7 +513,139 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 : '',
             tableAttachments: data?.files ? data.files : [],
             fileCount: data?.fileCount,
+            tableDropdownContent: {
+                hasContent: true,
+                content: this.getDropdownTruckContent(data),
+            },
         };
+    }
+
+    getDropdownTruckContent(data: any) {
+        return [
+            {
+                title: 'Edit',
+                name: 'edit-truck',
+                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Edit.svg',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                hasBorder: true,
+                svgClass: 'regular',
+            },
+            {
+                title: 'View Details',
+                name: 'view-details',
+                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Information.svg',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                svgClass: 'regular',
+                tableListDropdownContentStyle: {
+                    'margin-bottom.px': 4,
+                },
+            },
+            {
+                title: 'Add Registration',
+                name: 'add-registration',
+                svgUrl: '',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                tableListDropdownContentStyle: {
+                    'margin-bottom.px': 4,
+                },
+                svgClass: 'regular',
+            },
+            {
+                title: 'Add Inspection',
+                name: 'add-inspection',
+                svgUrl: '',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                tableListDropdownContentStyle: {
+                    'margin-bottom.px': 4,
+                },
+                svgClass: 'regular',
+            },
+            {
+                title: 'Add Repair',
+                name: 'add-repair',
+                svgUrl: '',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                tableListDropdownContentStyle: {
+                    'margin-bottom.px': 4,
+                },
+                svgClass: 'regular',
+            },
+            {
+                title: 'Add New',
+                name: 'add-new',
+                svgUrl: '',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                svgClass: 'regular',
+
+                hasBorder: true,
+            },
+            {
+                title: 'Share',
+                name: 'share',
+                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Share.svg',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                svgClass: 'regular',
+                tableListDropdownContentStyle: {
+                    'margin-bottom.px': 4,
+                },
+            },
+            {
+                title: 'Print',
+                name: 'print',
+                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Print.svg',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+
+                svgClass: 'regular',
+                hasBorder: true,
+            },
+            {
+                title: 'Deactivate',
+                name: 'activate-item',
+                svgUrl: '',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                tableListDropdownContentStyle: {
+                    'margin-bottom.px': 4,
+                },
+                svgClass: 'delete',
+            },
+            {
+                title: 'Delete',
+                name: 'delete-item',
+                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Delete.svg',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                svgClass: 'delete',
+            },
+        ];
     }
 
     updateDataCount() {
@@ -565,7 +656,7 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
         updatedTableData[0].length = truckCount.active;
         updatedTableData[1].length = truckCount.inactive;
 
-        this.tableData = [...updatedTableData]
+        this.tableData = [...updatedTableData];
     }
 
     getTabData(dataType: string) {
@@ -676,7 +767,7 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     { size: 'small' },
                     {
                         ...event,
-                        type: 'edit', 
+                        type: 'edit',
                         disableButton: true,
                         tabSelected: this.selectedTab,
                     }

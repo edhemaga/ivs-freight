@@ -6,12 +6,24 @@ import { AppTooltipComponent } from '../../standalone-components/app-tooltip/app
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { HideAccountPipe } from 'src/app/core/pipes/driver-hide-account.pipe';
+import { HidePasswordPipe } from '../../../pipes/hide-password.pipe';
 @Component({
     selector: 'app-ta-copy',
     templateUrl: './ta-copy.component.html',
     styleUrls: ['./ta-copy.component.scss'],
     standalone: true,
-    imports: [CommonModule, FormsModule, AppTooltipComponent, NgbModule, AngularSvgIconModule, HideAccountPipe],
+    imports: [
+        CommonModule,
+        FormsModule,
+        AppTooltipComponent,
+        NgbModule,
+        AngularSvgIconModule,
+        HideAccountPipe,
+
+        // Pipes
+
+        HidePasswordPipe
+    ],
 })
 export class TaCopyComponent implements OnInit {
     @Input() copyValue: string;

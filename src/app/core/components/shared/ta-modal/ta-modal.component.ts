@@ -1,8 +1,10 @@
 import { distinctUntilChanged, Subject, takeUntil } from 'rxjs';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import {
+    ChangeDetectionStrategy,
     Component,
     EventEmitter,
+    HostListener,
     Input,
     OnDestroy,
     OnInit,
@@ -11,7 +13,10 @@ import {
 } from '@angular/core';
 import { ModalService } from './modal.service';
 import { UploadFile } from '../ta-upload-files/ta-upload-file/ta-upload-file.component';
-import { DropZoneConfig, TaUploadDropzoneComponent } from '../ta-upload-files/ta-upload-dropzone/ta-upload-dropzone.component';
+import {
+    DropZoneConfig,
+    TaUploadDropzoneComponent,
+} from '../ta-upload-files/ta-upload-dropzone/ta-upload-dropzone.component';
 import { TaUploadFileService } from '../ta-upload-files/ta-upload-file.service';
 import { AuthGuard } from '../../../guards/authentication.guard';
 import {
@@ -28,22 +33,29 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 import { AppTooltipComponent } from '../../standalone-components/app-tooltip/app-tooltip.component';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { TaSpinnerComponent } from '../ta-spinner/ta-spinner.component';
+import { TaTabSwitchComponent } from '../../standalone-components/ta-tab-switch/ta-tab-switch.component';
 
 @Component({
     selector: 'app-ta-modal',
     templateUrl: './ta-modal.component.html',
     styleUrls: ['./ta-modal.component.scss'],
     encapsulation: ViewEncapsulation.None,
+    changeDetection: ChangeDetectionStrategy.OnPush,
     standalone: true,
     imports: [
-            CommonModule,
-            CustomScrollbarComponent, 
-            TaUploadDropzoneComponent, 
-            FormsModule, 
-            DragDropModule, 
-            AppTooltipComponent,
-            AngularSvgIconModule,
-            TaSpinnerComponent
+        // Module
+        CommonModule,
+        FormsModule,
+        DragDropModule,
+        AngularSvgIconModule,
+        NgbModule,
+
+        // Component
+        CustomScrollbarComponent,
+        TaUploadDropzoneComponent,
+        AppTooltipComponent,
+        TaSpinnerComponent,
+        TaTabSwitchComponent,
     ],
     animations: [
         trigger('widthGrow', [
@@ -169,22 +181,53 @@ export class TaModalComponent implements OnInit, OnDestroy {
     }
 
     public dragOver() {
-        $(document).on('dragover', '.modal', (event) => {
-            event.preventDefault();
-            event.stopPropagation();
+        // $("body").on('dragenter', (event) => {
+        //     event.preventDefault();
+        //     event.stopPropagation();
+        //     if (this.dropZoneCounter < 1 && !this.isLeaveZone) {
+        //         this.dropZoneCounter++;
+        //     }
+        //     this.isDropZoneVisible = true;
+        // });
+    }
 
+    public dragLeave() {
+        // $("body").on('dragleave', (event: any) => {
+        //     event.preventDefault();
+        //     event.stopPropagation();
+        //     if (!event.fromElement) {
+        //         setTimeout(() => {
+        //             this.dropZoneCounter--;
+        //             if (this.dropZoneCounter < 1) {
+        //                 this.isDropZoneVisible = false;
+        //                 this.dropZoneCounter = 0;
+        //                 this.isLeaveZone = false;
+        //             }
+        //         }, 150);
+        //     }
+        // });
+    }
+
+    @HostListener('dragover', ['$event']) public onDragOver(evt) {
+        evt.preventDefault();
+    }
+
+    @HostListener('body:dragenter', ['$event'])
+    onWindowDragEnter(event: any): void {
+        event.preventDefault();
+        if (!event.fromElement) {
             if (this.dropZoneCounter < 1 && !this.isLeaveZone) {
                 this.dropZoneCounter++;
             }
             this.isDropZoneVisible = true;
-        });
+        }
     }
 
-    public dragLeave() {
-        $(document).on('dragleave', '.modal', (event) => {
-            event.preventDefault();
-            event.stopPropagation();
-
+    @HostListener('body:dragleave', ['$event'])
+    onDragLeaveWindows(e) {
+        e.preventDefault();
+        if (!e.fromElement) {
+            // this will ensure that you are not in the browser anymore
             setTimeout(() => {
                 this.dropZoneCounter--;
                 if (this.dropZoneCounter < 1) {
@@ -193,20 +236,29 @@ export class TaModalComponent implements OnInit, OnDestroy {
                     this.isLeaveZone = false;
                 }
             }, 150);
-        });
+        }
+    }
+
+    @HostListener('drop', ['$event'])
+    onDragDrop(e) {
+        e.preventDefault();
+        setTimeout(() => {
+            this.dropZoneCounter = 0;
+            this.isDropZoneVisible = false;
+            this.isLeaveZone = false;
+        }, 150);
     }
 
     public dragDrop() {
-        $(document).on('drop', '.modal', (event) => {
-            event.preventDefault();
-            event.stopPropagation();
-
-            setTimeout(() => {
-                this.dropZoneCounter = 0;
-                this.isDropZoneVisible = false;
-                this.isLeaveZone = false;
-            }, 150);
-        });
+        // $("body").on('drop',(event) => {
+        //     event.preventDefault();
+        //     event.stopPropagation();
+        //     setTimeout(() => {
+        //         this.dropZoneCounter = 0;
+        //         this.isDropZoneVisible = false;
+        //         this.isLeaveZone = false;
+        //     }, 150);
+        // });
     }
 
     public onAction(action: string) {
@@ -293,7 +345,7 @@ export class TaModalComponent implements OnInit, OnDestroy {
                 this.action.emit({ action: action, bool: false });
                 break;
             }
-            case 'favorite':{
+            case 'favorite': {
                 this.confirmationAction.emit(this.confirmationData);
                 break;
             }

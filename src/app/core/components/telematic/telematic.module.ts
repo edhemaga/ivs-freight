@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { TelematicRoutingModule } from './telematic-routing.module';
@@ -21,22 +21,26 @@ import { GpsProgressbarComponent } from '../shared/gps-progressbar/gps-progressb
 @NgModule({
     declarations: [TelematicMapComponent],
     imports: [
+        // Modules
         CommonModule,
         TelematicRoutingModule,
         AgmCoreModule,
-        MapToolbarComponent,
-        TruckassistTableBodyComponent,
-        TruckassistTableHeadComponent,
         NgbPopoverModule,
-        TaInputComponent,
-        TaInputDropdownComponent,
         AngularSvgIconModule,
         FormsModule,
         ReactiveFormsModule,
         AgmSnazzyInfoWindowModule,
+
+        // Components
+        MapToolbarComponent,
+        TruckassistTableBodyComponent,
+        TruckassistTableHeadComponent,
+        TaInputComponent,
+        TaInputDropdownComponent,
         TaCheckboxComponent,
         MapMarkerDropdownComponent,
         GpsProgressbarComponent
     ],
+    schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class TelematicModule {}

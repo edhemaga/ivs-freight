@@ -1,6 +1,6 @@
 import { TruckDetailsItemComponent } from './truck-details-item/truck-details-item.component';
 import { TruckDetailsComponent } from './truck-details.component';
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TruckDetailsRoutes } from './truck-details.routing';
 import { TruckDetailsCardComponent } from '../truck-details-card/truck-details-card.component';
@@ -19,6 +19,8 @@ import { TaDetailsHeaderCardComponent } from '../../shared/ta-details-header-car
 import { TaChartComponent } from '../../standalone-components/ta-chart/ta-chart.component';
 import { TaTabSwitchComponent } from '../../standalone-components/ta-tab-switch/ta-tab-switch.component';
 import { AngularSvgIconModule } from 'angular-svg-icon';
+import { TaThousandSeparatorPipe } from '../../../pipes/taThousandSeparator.pipe';
+import { ReactiveFormsModule } from '@angular/forms';
 @NgModule({
     declarations: [
         TruckDetailsComponent,
@@ -30,6 +32,7 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
         CommonModule,
         TruckDetailsRoutes,
         SharedModule,
+        ReactiveFormsModule,
         formatDatePipe,
         ProfileImagesComponent,
         TaCopyComponent,
@@ -44,7 +47,11 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
         TaDetailsHeaderCardComponent,
         TaChartComponent,
         TaTabSwitchComponent,
-        AngularSvgIconModule
+        AngularSvgIconModule,
+
+        // PIPES
+        TaThousandSeparatorPipe
     ],
+    schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class TruckDetailsModule {}

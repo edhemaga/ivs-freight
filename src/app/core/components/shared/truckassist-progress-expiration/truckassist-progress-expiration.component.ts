@@ -6,7 +6,7 @@ import {
     OnInit,
     SimpleChanges,
 } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import moment from 'moment';
 
 @Component({
@@ -15,7 +15,7 @@ import moment from 'moment';
     styleUrls: ['./truckassist-progress-expiration.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
     standalone: true,
-    imports: [CommonModule, FormsModule],
+    imports: [CommonModule, FormsModule, ReactiveFormsModule],
 })
 export class TruckassistProgressExpirationComponent implements OnInit {
     @Input() expireDate: any;

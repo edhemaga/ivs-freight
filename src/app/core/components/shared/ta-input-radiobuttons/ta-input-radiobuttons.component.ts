@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 interface RadioButton {
     id: string;
@@ -16,7 +16,12 @@ interface RadioButton {
     templateUrl: './ta-input-radiobuttons.component.html',
     styleUrls: ['./ta-input-radiobuttons.component.scss'],
     standalone: true,
-    imports: [CommonModule, FormsModule],
+    imports: [
+        // Module
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+    ],
 })
 export class TaInputRadiobuttonsComponent {
     @Input() buttons: RadioButton[] = null;

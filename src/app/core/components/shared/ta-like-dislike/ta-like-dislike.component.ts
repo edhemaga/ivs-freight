@@ -12,7 +12,8 @@ import {
 import { Subject, takeUntil } from 'rxjs';
 import { DetailsDataService } from '../../../services/details-data/details-data.service';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { AngularSvgIconModule } from 'angular-svg-icon';
 
 @Component({
     selector: 'app-ta-like-dislike',
@@ -20,7 +21,13 @@ import { FormsModule } from '@angular/forms';
     styleUrls: ['./ta-like-dislike.component.scss'],
     encapsulation: ViewEncapsulation.None,
     standalone: true,
-    imports: [CommonModule, FormsModule],
+    imports: [
+        // Module
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+        AngularSvgIconModule,
+    ],
 })
 export class TaLikeDislikeComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();

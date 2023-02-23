@@ -36,6 +36,15 @@ import {
 } from '../../../../utils/methods.calculations';
 import { Address } from '../../../shared/model/address';
 import { FormService } from '../../../../services/form/form.service';
+import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { AngularSvgIconModule } from 'angular-svg-icon';
+import { TaInputComponent } from '../../../shared/ta-input/ta-input.component';
+import { TaInputDropdownComponent } from '../../../shared/ta-input-dropdown/ta-input-dropdown.component';
+import { TaModalComponent } from '../../../shared/ta-modal/ta-modal.component';
+import { TaTabSwitchComponent } from '../../../standalone-components/ta-tab-switch/ta-tab-switch.component';
+import { TaCheckboxCardComponent } from '../../../shared/ta-checkbox-card/ta-checkbox-card.component';
+import { InputAddressDropdownComponent } from '../../../shared/input-address-dropdown/input-address-dropdown.component';
 
 @Component({
     selector: 'app-settings-terminal-modal',
@@ -43,10 +52,26 @@ import { FormService } from '../../../../services/form/form.service';
     styleUrls: ['./settings-terminal-modal.component.scss'],
     animations: [tab_modal_animation('animationTabsModal')],
     providers: [ModalService, FormService],
+    standalone: true,
+    imports: [
+        // Module
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+        AngularSvgIconModule,
+
+        // Component
+        TaInputComponent,
+        TaInputDropdownComponent,
+        TaModalComponent,
+        TaTabSwitchComponent,
+        TaCheckboxCardComponent,
+        InputAddressDropdownComponent,
+    ],
 })
 export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
-    private destroy$ = new Subject<void>();
     @Input() editData: any;
+
     public terminalForm: UntypedFormGroup;
 
     public selectedTab: number = 1;
@@ -121,6 +146,8 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
     public isFormDirty: boolean;
 
     public terminalName: string = null;
+
+    private destroy$ = new Subject<void>();
 
     constructor(
         private formBuilder: UntypedFormBuilder,

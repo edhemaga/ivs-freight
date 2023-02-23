@@ -12,9 +12,11 @@ import {
     UpdateCommentCommand,
 } from 'appcoretruckassist';
 import { ModalService } from '../../shared/ta-modal/modal.service';
-
 import { TodoTService } from '../../to-do/state/todo.service';
-import { ReviewCommentModal, TaUserReviewComponent } from '../../shared/ta-user-review/ta-user-review.component';
+import {
+    ReviewCommentModal,
+    TaUserReviewComponent,
+} from '../../shared/ta-user-review/ta-user-review.component';
 import {
     departmentValidation,
     descriptionValidation,
@@ -43,20 +45,22 @@ import { TaUploadFilesComponent } from '../../shared/ta-upload-files/ta-upload-f
     providers: [ModalService, FormService],
     standalone: true,
     imports: [
-            CommonModule, 
-            FormsModule, 
-            TaModalComponent, 
-            TaTabSwitchComponent, 
-            ReactiveFormsModule, 
-            TaInputComponent, 
-            TaInputDropdownComponent, 
-            TaCustomCardComponent, 
-            TaUploadFilesComponent,
-            TaUserReviewComponent
-    ]
+        // Module
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+
+        // Component
+        TaModalComponent,
+        TaTabSwitchComponent,
+        TaInputComponent,
+        TaInputDropdownComponent,
+        TaCustomCardComponent,
+        TaUploadFilesComponent,
+        TaUserReviewComponent,
+    ],
 })
 export class TaskModalComponent implements OnInit, OnDestroy {
-    private destroy$ = new Subject<void>();
     @Input() editData: any;
 
     public taskForm: UntypedFormGroup;
@@ -84,6 +88,8 @@ export class TaskModalComponent implements OnInit, OnDestroy {
 
     public disableCardAnimation: boolean = false;
 
+    private destroy$ = new Subject<void>();
+
     constructor(
         private formBuilder: UntypedFormBuilder,
         private inputService: TaInputService,
@@ -96,10 +102,7 @@ export class TaskModalComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.createForm();
         this.getTaskDropdowns();
-        // -------------- PRODUCTION MODE -----------------
-        // this.companyUser = this.authQuery.getEntity(1);
 
-        // -------------- DEVELOP MODE --------------------
         this.companyUser = JSON.parse(localStorage.getItem('user'));
     }
 
@@ -211,19 +214,7 @@ export class TaskModalComponent implements OnInit, OnDestroy {
         if (this.comments.some((item) => item.isNewReview)) {
             return;
         }
-        // ------------------------ PRODUCTION MODE -----------------------------
-        // this.comments.unshift({
-        //   companyUser: {
-        //     fullName: this.companyUser.firstName.concat(' ', this.companyUser.lastName),
-        //     avatar: this.companyUser.avatar,
-        //   },
-        //   commentContent: '',
-        //   createdAt: new Date().toISOString(),
-        //   updatedAt: new Date().toISOString(),
-        //   isNewReview: true,
-        // });
 
-        // -------------------------- DEVELOP MODE --------------------------------
         this.comments.unshift({
             companyUser: {
                 fullName: this.companyUser.firstName.concat(

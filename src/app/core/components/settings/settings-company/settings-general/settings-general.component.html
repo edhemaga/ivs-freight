@@ -1,8 +1,11 @@
 <div class="settings-general">
-    <div class="toolbar-general-cmp" >
+    <div class="toolbar-general-cmp">
         <div class="icon-text-wrapper">
-            <p class="disable-selection">Company
-                <span *ngIf="optionsCompany.length > 1" >({{optionsCompany.length}})</span>
+            <p class="disable-selection">
+                Company
+                <span *ngIf="optionsCompany.length > 1"
+                    >({{ optionsCompany.length }})</span
+                >
             </p>
         </div>
         <div class="icon-right-holder">
@@ -21,7 +24,10 @@
                     "
                 ></svg-icon>
             </div>
-            <div class="settings-header-button less-width-button" *ngIf="companyDivision">
+            <div
+                class="settings-header-button less-width-button"
+                *ngIf="companyDivision"
+            >
                 <svg-icon
                     src="assets/svg/common/ic_trash.svg"
                     class="settings-edit-button"
@@ -41,27 +47,35 @@
                     "
                 ></svg-icon>
             </div>
-        </div>   
+        </div>
     </div>
     <div class="settings-body">
         <div class="basic-details">
             <!-- Header -->
             <div class="company-select-holder">
                 <div class="inactive-icon-input">
-                    <div 
+                    <div
                         *ngIf="!selectedDropdown"
                         class="current-active-item"
-                        [ngClass]="{ 'single-data': optionsCompany.length == 1 }"
+                        [ngClass]="{
+                            'single-data': optionsCompany.length == 1
+                        }"
                         (click)="showDropdown()"
                     >
                         <p class="current-active-name">
                             {{ (optionsCompany | detailActiveItem).name }}
                         </p>
                         <div class="select-right-side-holders">
-                            <div class="division-card-holder" *ngIf="!selectedDropdown && companyDivision">
-                                <span> DIVISION CO </span> 
+                            <div
+                                class="division-card-holder"
+                                *ngIf="!selectedDropdown && companyDivision"
+                            >
+                                <span> DIVISION CO </span>
                             </div>
-                            <div class="arrow-company-icon-holder" *ngIf="optionsCompany.length > 1">
+                            <div
+                                class="arrow-company-icon-holder"
+                                *ngIf="optionsCompany.length > 1"
+                            >
                                 <svg-icon
                                     class="arrow-down"
                                     src="assets/svg/common/arrow-left.svg"
@@ -70,38 +84,55 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <app-ta-input-dropdown
-                    *ngIf="selectedDropdown && optionsCompany.length > 1"
-                    class="dropInput"
-                    [formControl]="inputFormControl"
-                    [inputConfig]="{
-                        name: 'Input Dropdown',
-                        type: 'text',
-                        isDropdown: true,
-                        dropdownWidthClass:
-                            statusInactive === 0 ? 'w-col-366' : 'w-col-366',
-                        textTransform: 'capitalize',
-                        customClass: 'input-32 input-32-font-20 details-pages'
-                    }"
-                    [options]="optionsCompany"
-                    [template]="'details-template'"
-                    [isDetailsPages]="selectedDropdown"
-                    (selectedItem)="onSelectItem($event)"
-                >
-                </app-ta-input-dropdown>
-                    
-                </div>
-                <div *ngIf="optionsCompany.length > 1" class="arrows"
-                    [class.disabedPreviousArrow]="currentCompanyIndex == 0 || currentCompanyIndex == -1"
-                    [class.disableNextArrow]="currentCompanyIndex == (optionsCompany.length -1 )"
+                        *ngIf="selectedDropdown && optionsCompany.length > 1"
+                        class="dropInput"
+                        [formControl]="inputFormControl"
+                        [inputConfig]="{
+                            name: 'Input Dropdown',
+                            type: 'text',
+                            isDropdown: true,
+                            dropdownWidthClass:
+                                statusInactive === 0
+                                    ? 'w-col-366'
+                                    : 'w-col-366',
+                            textTransform: 'capitalize',
+                            customClass:
+                                'input-32 input-32-font-20 details-pages'
+                        }"
+                        [options]="optionsCompany"
+                        [template]="'details-template'"
+                        [isDetailsPages]="selectedDropdown"
+                        (selectedItem)="onSelectItem($event)"
                     >
+                    </app-ta-input-dropdown>
+                </div>
+                <div
+                    *ngIf="optionsCompany.length > 1"
+                    class="arrows"
+                    [class.disabedPreviousArrow]="
+                        currentCompanyIndex == 0 || currentCompanyIndex == -1
+                    "
+                    [class.disableNextArrow]="
+                        currentCompanyIndex == optionsCompany.length - 1
+                    "
+                >
                     <span
-                       
                         ngbTooltip
-                        [mainTooltip]="currentCompanyIndex == 0 || currentCompanyIndex == -1 ? ' ' : 'Previous'"
+                        [mainTooltip]="
+                            currentCompanyIndex == 0 ||
+                            currentCompanyIndex == -1
+                                ? ' '
+                                : 'Previous'
+                        "
                         position="top"
-                        [tooltipBackground]=" currentCompanyIndex == 0 || currentCompanyIndex == -1 ? 'rgba(0,0,0,0)' : '#6C6C6C'"
+                        [tooltipBackground]="
+                            currentCompanyIndex == 0 ||
+                            currentCompanyIndex == -1
+                                ? 'rgba(0,0,0,0)'
+                                : '#6C6C6C'
+                        "
                         class="previousArrow"
                         (click)="onActionChange('previous')"
                     >
@@ -112,10 +143,17 @@
                         </svg-icon>
                     </span>
                     <span
-                        
                         ngbTooltip
-                        [mainTooltip]="currentCompanyIndex == (optionsCompany.length -1 ) ? '' : 'Next'"
-                        [tooltipBackground]=" currentCompanyIndex == (optionsCompany.length -1 ) ? 'rgba(0,0,0,0)' : '#6C6C6C'"
+                        [mainTooltip]="
+                            currentCompanyIndex == optionsCompany.length - 1
+                                ? ''
+                                : 'Next'
+                        "
+                        [tooltipBackground]="
+                            currentCompanyIndex == optionsCompany.length - 1
+                                ? 'rgba(0,0,0,0)'
+                                : '#6C6C6C'
+                        "
                         position="top"
                         class="nextArrow"
                         (click)="onActionChange('next')"
@@ -162,7 +200,9 @@
                         src="assets/svg/common/ic_address.svg"
                     ></svg-icon>
                     <p class="basic-data-value">
-                        <app-ta-copy [copyValue]="companyData?.address?.address">
+                        <app-ta-copy
+                            [copyValue]="companyData?.address?.address"
+                        >
                         </app-ta-copy>
                     </p>
                 </div>
@@ -199,21 +239,42 @@
                     <p class="basic-data-value">{{ companyData?.webUrl }}</p>
                 </div>
             </div>
-            <div class="basic-mid-holder" *ngIf=" companyData?.usDot || companyData?.ein || companyData?.mc">
+            <div
+                class="basic-mid-holder"
+                *ngIf="
+                    companyData?.usDot || companyData?.ein || companyData?.mc
+                "
+            >
                 <div class="divider"></div>
             </div>
-            
+
             <!-- Bottom -->
-            <div class="basic-bottom" *ngIf=" companyData?.usDot || companyData?.ein || companyData?.mc">
-                <div class="basic-bottom-cards-redesign" *ngIf="companyData?.usDot">
+            <div
+                class="basic-bottom"
+                *ngIf="
+                    companyData?.usDot || companyData?.ein || companyData?.mc
+                "
+            >
+                <div
+                    class="basic-bottom-cards-redesign"
+                    *ngIf="companyData?.usDot"
+                >
                     <div class="bottom-title-value">USDOT</div>
                     <div class="bottom-value">{{ companyData?.usDot }}</div>
                 </div>
-                <div class="basic-bottom-cards-redesign" *ngIf="companyData?.ein">
+                <div
+                    class="basic-bottom-cards-redesign"
+                    *ngIf="companyData?.ein"
+                >
                     <div class="bottom-title-value">EIN</div>
-                    <div class="bottom-value">{{ companyData?.ein | formatEinP }}</div>
+                    <div class="bottom-value">
+                        {{ companyData?.ein | formatEinP }}
+                    </div>
                 </div>
-                <div class="basic-bottom-cards-redesign" *ngIf="companyData?.mc">
+                <div
+                    class="basic-bottom-cards-redesign"
+                    *ngIf="companyData?.mc"
+                >
                     <div class="bottom-title-value">MC</div>
                     <div class="bottom-value">{{ companyData?.mc }}</div>
                 </div>
@@ -223,59 +284,85 @@
             <app-ta-custom-card
                 [cardName]="'Additional Details'"
                 [bodyTemplate]="'card'"
-                [isCardOpen]="companyData?.ifta || 
-                            companyData?.irp || 
-                            companyData?.toll || 
-                            companyData?.scac || 
-                            companyData?.timeZone?.name || 
-                            companyData?.currency?.name ? true : false"
-                [disabledCard]=" companyData?.ifta || 
-                                companyData?.irp || 
-                                companyData?.toll || 
-                                companyData?.scac || 
-                                companyData?.timeZone?.name || 
-                                companyData?.currency?.name ? false : true"
+                [isCardOpen]="
+                    companyData?.ifta ||
+                    companyData?.irp ||
+                    companyData?.toll ||
+                    companyData?.scac ||
+                    companyData?.timeZone?.name ||
+                    companyData?.currency?.name
+                        ? true
+                        : false
+                "
+                [disabledCard]="
+                    companyData?.ifta ||
+                    companyData?.irp ||
+                    companyData?.toll ||
+                    companyData?.scac ||
+                    companyData?.timeZone?.name ||
+                    companyData?.currency?.name
+                        ? false
+                        : true
+                "
                 [animationMarginParams]="{
                     marginTop: '0px',
                     marginBottom: '10px'
-                }"                
+                }"
+                [customClass]="'detailsPadding'"
             >
                 <div class="additional-template-data">
-                    <div class="additional-template-item" *ngIf="companyData?.ifta">
+                    <div
+                        class="additional-template-item"
+                        *ngIf="companyData?.ifta"
+                    >
                         <p class="additional-template-value-name">IFTA</p>
                         <p class="additional-template-value">
                             {{ companyData?.ifta }}
                         </p>
                     </div>
-                    <div class="additional-template-item" *ngIf="companyData?.irp">
+                    <div
+                        class="additional-template-item"
+                        *ngIf="companyData?.irp"
+                    >
                         <p class="additional-template-value-name">IRP</p>
                         <p class="additional-template-value">
                             {{ companyData?.irp }}
                         </p>
                     </div>
-                    <div class="additional-template-item" *ngIf="companyData?.toll">
+                    <div
+                        class="additional-template-item"
+                        *ngIf="companyData?.toll"
+                    >
                         <p class="additional-template-value-name">Toll</p>
                         <p class="additional-template-value">
                             {{ companyData?.toll }}
                         </p>
                     </div>
-                    <div class="additional-template-item" *ngIf="companyData?.scac">
+                    <div
+                        class="additional-template-item"
+                        *ngIf="companyData?.scac"
+                    >
                         <p class="additional-template-value-name">SCAC</p>
                         <p class="additional-template-value">
                             {{ companyData?.scac }}
                         </p>
                     </div>
-                    <div class="additional-template-item" *ngIf="companyData?.timeZone?.name">
+                    <div
+                        class="additional-template-item"
+                        *ngIf="companyData?.timeZone?.name"
+                    >
                         <p class="additional-template-value-name">Time Zone</p>
                         <p
                             *ngIf="companyData?.timeZone?.name"
                             class="additional-template-value"
                         >
                             {{ timeZoneFormat(companyData?.timeZone?.name) }}
-                            
                         </p>
                     </div>
-                    <div class="additional-template-item" *ngIf="companyData?.currency?.name">
+                    <div
+                        class="additional-template-item"
+                        *ngIf="companyData?.currency?.name"
+                    >
                         <p class="additional-template-value-name">Currency</p>
                         <p
                             *ngIf="companyData?.currency?.name"
@@ -301,6 +388,7 @@
                     marginTop: '0px',
                     marginBottom: '10px'
                 }"
+                [customClass]="'detailsPadding'"
             >
                 <div class="department-template-data">
                     <div class="department-template-item">
@@ -343,6 +431,7 @@
                     marginTop: '0px',
                     marginBottom: '10px'
                 }"
+                [customClass]="'detailsPadding'"
             >
                 <div
                     class="additional-template-data"
@@ -387,6 +476,7 @@
                     marginTop: '0px',
                     marginBottom: '10px'
                 }"
+                [customClass]="'detailsPadding'"
             >
                 <div class="bank-card-template-data">
                     <div class="bank-card-template-item">
@@ -418,16 +508,16 @@
                             ></svg-icon>
 
                             <p class="item-body-cvc">
-                                {{ bankC?.card | hidePassword: 'card' }}
+                                {{ bankC?.card | hidePassword : 'card' }}
                             </p>
                         </div>
 
                         <p class="item-body-cvc">
-                            {{ bankC?.cvc | hidePassword: 'cvc' }}
+                            {{ bankC?.cvc | hidePassword : 'cvc' }}
                         </p>
                         <p class="item-body-nick-name">
                             {{
-                                bankC?.expireDate | formatDateP: 'short-format'
+                                bankC?.expireDate | formatDateP : 'short-format'
                             }}
                         </p>
                     </div>
@@ -441,6 +531,7 @@
                     marginTop: '0px',
                     marginBottom: '10px'
                 }"
+                [customClass]="'detailsPadding'"
             >
                 <div class="additional-template-data">
                     <div class="additional-template-item">
@@ -523,6 +614,7 @@
                     marginTop: '0px',
                     marginBottom: '10px'
                 }"
+                [customClass]="'detailsPadding'"
             >
                 <div class="additional-template-data">
                     <div class="additional-template-item">

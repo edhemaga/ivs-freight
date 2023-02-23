@@ -7,7 +7,8 @@ import { DetailsDropdownComponent } from '../details-page-dropdown/details-dropd
 import { TaCounterComponent } from '../ta-counter/ta-counter.component';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { FilterComponent } from '../../standalone-components/filter/filter.component';
-import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModule, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
+import { formatCurrency } from '../../../pipes/formatCurrency.pipe';
 
 @Component({
     selector: 'app-ta-details-header',
@@ -17,13 +18,15 @@ import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
     imports: [
         CommonModule,
         FormsModule,
+        NgbModule,
         AppTooltipComponent,
         DetailsDropdownComponent,
         TaCounterComponent,
         AngularSvgIconModule,
         FilterComponent,
         RouterModule,
-        NgbPopoverModule
+        NgbPopoverModule,
+        formatCurrency
     ],
 })
 export class TaCommonHeaderComponent implements OnInit {

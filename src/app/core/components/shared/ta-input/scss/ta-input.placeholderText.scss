@@ -6,19 +6,60 @@
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
-    top: 45%;
+    pointer-events: none;
+    top: 47%;
     transform: translateY(-50%);
 
     svg {
         text {
-            fill: $input-placeholder-text-normal;
+            fill: $default-placeholderIcon;
         }
     }
 
-    &.focused {
+    &.inactive-filled {
         svg {
             text {
-                fill: $input-placeholder-text-focus;
+                fill: $inactive-filled-placeholderText;
+            }
+        }
+    }
+
+    &.focus {
+        svg {
+            text {
+                fill: $default-focus-placeholderText;
+            }
+        }
+    }
+
+    &.valid-focus-in {
+        svg {
+            text {
+                fill: $valid-focus-placeholderText;
+            }
+        }
+    }
+
+    &.valid-focus-out {
+        svg {
+            text {
+                fill: $valid-placholderText;
+            }
+        }
+    }
+
+    &.invalid-focus-in {
+        svg {
+            text {
+                fill: $invalid-focus-placeholderText;
+            }
+        }
+    }
+
+    &.invalid-focus-out {
+        svg {
+            text {
+                fill: $invalid-placeholderText;
             }
         }
     }

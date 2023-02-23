@@ -325,34 +325,9 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                 showCategoryRepairFilter: true,
                 showMoneyFilter: true,
                 showLocationFilter: true,
+                showMoneyCount: this.selectedTab !== 'repair-shop',
                 viewModeOptions: this.getViewModeOptions(),
             },
-            actions: [
-                {
-                    title: 'Edit',
-                    name: 'edit',
-                    class: 'regular-text',
-                    contentType: 'edit',
-                    show: true,
-                    svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
-                    iconName: 'edit',
-                },
-                {
-                    title: 'Delete',
-                    name: 'delete-repair',
-                    type: !this.selectedTab ? 'repair-shop' : 'repair',
-                    text: !this.selectedTab
-                        ? 'Are you sure you want to delete repair shop(s)?'
-                        : 'Are you sure you want to delete repair(s)',
-                    class: 'delete-text',
-                    contentType: 'delete',
-                    show: true,
-                    danger: true,
-                    redIcon: true,
-                    svg: 'assets/svg/truckassist-table/dropdown/content/delete.svg',
-                    iconName: 'delete',
-                },
-            ],
         };
     }
 
@@ -400,6 +375,11 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                 title: 'Truck',
                 field: 'active',
                 length: repairTruckTrailerCount.repairTrucks,
+                moneyCount:
+                    this.selectedTab === 'active'
+                        ? repairTruckTrailerCount.truckMoneyTotal
+                        : 0,
+                moneyCountSelected: false,
                 data: repairTruckData,
                 gridNameTitle: 'Repair',
                 stateName: 'repair_trucks',
@@ -411,6 +391,11 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                 title: 'Trailer',
                 field: 'inactive',
                 length: repairTruckTrailerCount.repairTrailers,
+                moneyCount:
+                    this.selectedTab === 'inactive'
+                        ? repairTruckTrailerCount.trailerMoneyTotal
+                        : 0,
+                moneyCountSelected: false,
                 data: repairTrailerData,
                 gridNameTitle: 'Repair',
                 stateName: 'repair_trailers',
@@ -574,8 +559,11 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                       };
                   })
                 : null,
+            tabelDescriptionDropTotal: data?.total
+                ? '$' + this.thousandSeparator.transform(data.total)
+                : '',
             tableCost: data?.total
-                ? '$ ' + this.thousandSeparator.transform(data.total)
+                ? '$' + this.thousandSeparator.transform(data.total)
                 : '',
             tableAdded: data.createdAt
                 ? this.datePipe.transform(data.createdAt, 'MM/dd/yy')
@@ -585,6 +573,10 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                 : '',
             tableAttachments: data?.files ? data.files : [],
             fileCount: data?.fileCount,
+            tableDropdownContent: {
+                hasContent: true,
+                content: this.getRepairDropdownContent(data),
+            },
         };
     }
 
@@ -625,7 +617,135 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
             isFavorite: data.pinned,
             tableAttachments: data?.files ? data.files : [],
             fileCount: data?.fileCount,
+
+            tableDropdownContent: {
+                hasContent: true,
+                content: this.getShopDropdownContent(data),
+            },
         };
+    }
+
+    // Get Repair Dropdown Content
+    getRepairDropdownContent(data: any) {
+        return [
+            {
+                title: 'Edit',
+                name: 'edit',
+                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Edit.svg',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                svgClass: 'regular',
+                hasBorder: true,
+            },
+            {
+                title: 'View Details',
+                name: 'view-details',
+                tableListDropdownContentStyle: {
+                    'margin-bottom.px': 4,
+                },
+            },
+            {
+                title: 'All Bills',
+                name: 'all-bills',
+                hasBorder: true,
+            },
+            {
+                title: 'Share',
+                name: 'share',
+                tableListDropdownContentStyle: {
+                    'margin-bottom.px': 4,
+                },
+            },
+            {
+                title: 'Print',
+                name: 'print',
+                hasBorder: true,
+            },
+            {
+                title: 'Delete',
+                name: 'delete-repair',
+                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Delete.svg',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                svgClass: 'delete',
+            },
+        ];
+    }
+
+    // Get Repair Dropdown Content
+    getShopDropdownContent(data: any) {
+        return [
+            {
+                title: 'Edit',
+                name: 'edit',
+                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Edit.svg',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                svgClass: 'regular',
+                hasBorder: true,
+            },
+            {
+                title: 'View Details',
+                name: 'view-details',
+                tableListDropdownContentStyle: {
+                    'margin-bottom.px': 4,
+                },
+            },
+            {
+                title: 'All Bill',
+                name: 'all-bill',
+                tableListDropdownContentStyle: {
+                    'margin-bottom.px': 4,
+                },
+            },
+            {
+                title: 'Move to Favourite',
+                name: 'move-to-favourite',
+                tableListDropdownContentStyle: {
+                    'margin-bottom.px': 4,
+                },
+            },
+            {
+                title: 'Write Review',
+                name: 'write-review',
+                hasBorder: true,
+            },
+            {
+                title: 'Share',
+                name: 'share',
+                tableListDropdownContentStyle: {
+                    'margin-bottom.px': 4,
+                },
+            },
+            {
+                title: 'Print',
+                name: 'print',
+                hasBorder: true,
+            },
+            {
+                title: 'Close Business',
+                name: 'close-business',
+                tableListDropdownContentStyle: {
+                    'margin-bottom.px': 4,
+                },
+            },
+            {
+                title: 'Delete',
+                name: 'delete-repair',
+                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Delete.svg',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                svgClass: 'delete',
+            },
+        ];
     }
 
     // Repair Back Filters
@@ -713,7 +833,6 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
         },
         isShowMore?: boolean
     ) {
-        console.log();
         this.repairService
             .getRepairShopList(
                 filter.active,
@@ -749,8 +868,6 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                     });
 
                     this.viewData = [...newData];
-
-                    console.log(this.viewData);
                 }
             });
     }
@@ -767,10 +884,14 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
         const updatedTableData = [...this.tableData];
 
         updatedTableData[0].length = repairTruckTrailerCount.repairTrucks;
+        updatedTableData[0].moneyCount =
+            repairTruckTrailerCount.truckMoneyTotal;
         updatedTableData[1].length = repairTruckTrailerCount.repairTrailers;
+        updatedTableData[1].moneyCount =
+            repairTruckTrailerCount.trailerMoneyTotal;
         updatedTableData[2].length = repairShopCount.repairShops;
 
-        this.tableData = [...updatedTableData]
+        this.tableData = [...updatedTableData];
     }
 
     // Table Toolbar Actions
@@ -956,7 +1077,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
 
                         clearInterval(inetval);
                     }, 1000);
-                    
+
                     this.mapsService.addRating(res);
                 });
         }
