@@ -38,7 +38,6 @@ export enum ConstantString {
     LOGIN_BTN = 'login-btn',
     RESET_PASSWORD_BTN = 'reset-password-btn',
     RESEND_CONFIRMATION_BTN = 'resend-confirmation-btn',
-    CREATE_NEW_PASSWORD_BTN = 'create-new-password-btn',
 
     CONFIRMATION_EMAIL = 'confirmationEmail',
 
@@ -54,4 +53,6 @@ export enum ConstantString {
 
     COMPANY = 'company',
     USER = 'user',
+
+    LEFT = 'left',
 }

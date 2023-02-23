@@ -8,6 +8,11 @@
     outline: none;
     border: none;
     padding: 0;
+    transition: color 0.2s ease-in-out;
+
+    &:hover {
+        color: $ta-blue-5;
+    }
 
     &::-moz-selection {
         color: $ta-black;
@@ -17,20 +22,6 @@
     &::selection {
         color: $ta-black;
         background: rgb(47, 47, 47, 0.2);
-    }
-
-    &.btn-blue {
-        color: $ta-blue-5;
-
-        &::-moz-selection {
-            color: $ta-blue-5;
-            background: rgb(48, 116, 211, 0.2);
-        }
-
-        &::selection {
-            color: $ta-blue-5;
-            background: rgb(48, 116, 211, 0.2);
-        }
     }
 
     &.disabled {
