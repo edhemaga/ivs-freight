@@ -25,6 +25,7 @@ export interface LiveTrackingItemResponse {
     headingString?: string | null;
     location?: string | null;
     motionStatus?: number | null;
+    motionStatusPeriod?: string | null;
     type?: GpsType;
     updateTime?: string;
     dateString?: string | null;
@@ -42,7 +43,6 @@ export interface LiveTrackingItemResponse {
     totalMiles?: number | null;
     traveledMiles?: number | null;
     progressBarPercentage?: number | null;
-    motionStatusPeriod?: string | null;
     dispatchStatusPeriod?: string | null;
 }
 

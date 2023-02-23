@@ -24,7 +24,6 @@ import { DriverRightsFeedbackResponse } from './driverRightsFeedbackResponse';
 import { PersonalInfoFeedbackResponse } from './personalInfoFeedbackResponse';
 import { PreviousEmployerRequestResponse } from './previousEmployerRequestResponse';
 import { PspAuthFeedbackResponse } from './pspAuthFeedbackResponse';
-import { SsnFeedbackResponse } from './ssnFeedbackResponse';
 import { CompanyOwnerInfoFeedbackResponse } from './companyOwnerInfoFeedbackResponse';
 import { SevenDaysHosFeedbackResponse } from './sevenDaysHosFeedbackResponse';
 import { CdlCardFeedbackResponse } from './cdlCardFeedbackResponse';
@@ -60,7 +59,6 @@ export interface ApplicantResponse {
     pspAuth?: PspAuthFeedbackResponse;
     sph?: SphFeedbackResponse;
     hosRule?: HosRuleFeedbackResponse;
-    ssnCard?: SsnFeedbackResponse;
     cdlCard?: CdlCardFeedbackResponse;
     companyInfo?: ApplicantCompanyInfoResponse;
     requests?: Array<PreviousEmployerRequestResponse> | null;
