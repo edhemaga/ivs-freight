@@ -499,6 +499,58 @@ export class CustomerTableComponent
             },
         };
     }
+    
+    // Map Shipper Data
+    mapShipperData(data: any) {
+        return {
+            ...data,
+            isSelected: false,
+            tableAddress: data?.address?.address ? data.address.address : '',
+            tableLoads: 'NA',
+            tableAverageWatingTimePickup: data?.avgPickupTime
+                ? data.avgPickupTime
+                : '',
+            tableAverageWatingTimeDelivery: data?.avgDeliveryTime
+                ? data.avgDeliveryTime
+                : '',
+
+            tableAvailableHoursShipping:
+                data?.shippingFrom && data?.shippingTo
+                    ? data?.shippingFrom +
+                      ' Treba AM ili PM' +
+                      ' - ' +
+                      data?.shippingTo +
+                      ' Treba AM ili PM'
+                    : '',
+            tableAvailableHoursReceiving:
+                data?.receivingFrom && data?.receivingTo
+                    ? data?.receivingFrom +
+                      ' Treba AM ili PM' +
+                      ' - ' +
+                      data?.receivingTo +
+                      ' Treba AM ili PM'
+                    : '',
+            tableRaiting: {
+                hasLiked: data.currentCompanyUserRating === 1,
+                hasDislike: data.currentCompanyUserRating === -1,
+                likeCount: data?.upCount ? data.upCount : '0',
+                dislikeCount: data?.downCount ? data.downCount : '0',
+            },
+            tableContact: data?.shipperContacts?.length
+                ? data.shipperContacts.length
+                : 0,
+            tableAdded: data.createdAt
+                ? this.datePipe.transform(data.createdAt, 'MM/dd/yy')
+                : '',
+            tableEdited: 'NA', // data.updatedAt
+            //? this.datePipe.transform(data.updatedAt, 'MM/dd/yy')
+            //: '',
+            tableDropdownContent: {
+                hasContent: true,
+                content: this.getDropdownShipperContent(data),
+            },
+        };
+    }
 
     getDropdownBrokerContent(data: any) {
         return [
@@ -642,57 +694,7 @@ export class CustomerTableComponent
             },
         ];
     }
-    // Map Shipper Data
-    mapShipperData(data: any) {
-        return {
-            ...data,
-            isSelected: false,
-            tableAddress: data?.address?.address ? data.address.address : '',
-            tableLoads: 'NA',
-            tableAverageWatingTimePickup: data?.avgPickupTime
-                ? data.avgPickupTime
-                : '',
-            tableAverageWatingTimeDelivery: data?.avgDeliveryTime
-                ? data.avgDeliveryTime
-                : '',
 
-            tableAvailableHoursShipping:
-                data?.shippingFrom && data?.shippingTo
-                    ? data?.shippingFrom +
-                      ' Treba AM ili PM' +
-                      ' - ' +
-                      data?.shippingTo +
-                      ' Treba AM ili PM'
-                    : '',
-            tableAvailableHoursReceiving:
-                data?.receivingFrom && data?.receivingTo
-                    ? data?.receivingFrom +
-                      ' Treba AM ili PM' +
-                      ' - ' +
-                      data?.receivingTo +
-                      ' Treba AM ili PM'
-                    : '',
-            tableRaiting: {
-                hasLiked: data.currentCompanyUserRating === 1,
-                hasDislike: data.currentCompanyUserRating === -1,
-                likeCount: data?.upCount ? data.upCount : '0',
-                dislikeCount: data?.downCount ? data.downCount : '0',
-            },
-            tableContact: data?.shipperContacts?.length
-                ? data.shipperContacts.length
-                : 0,
-            tableAdded: data.createdAt
-                ? this.datePipe.transform(data.createdAt, 'MM/dd/yy')
-                : '',
-            tableEdited: 'NA', // data.updatedAt
-            //? this.datePipe.transform(data.updatedAt, 'MM/dd/yy')
-            //: '',
-            tableDropdownContent: {
-                hasContent: true,
-                content: this.getDropdownShipperContent(data),
-            },
-        };
-    }
     getDropdownShipperContent(data: any) {
         return [
             {
@@ -793,6 +795,7 @@ export class CustomerTableComponent
             },
         ];
     }
+    
     // Update Broker And Shipper Count
     updateDataCount() {
         const brokerShipperCount = JSON.parse(
