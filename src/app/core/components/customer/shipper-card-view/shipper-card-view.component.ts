@@ -140,7 +140,7 @@ export class ShipperCardViewComponent implements OnInit, OnChanges, OnDestroy {
 
     public shipperCall: any = {
         id: -1,
-        chartType: -1,
+        chartType: 1,
     };
 
     public shipperIndex: any;
@@ -154,7 +154,7 @@ export class ShipperCardViewComponent implements OnInit, OnChanges, OnDestroy {
         if (changes.shipper?.currentValue != changes.shipper?.previousValue) {
             this.note.patchValue(changes?.shipper.currentValue.note);
             this.shipper = changes.shipper.currentValue;
-            this.getShipperChartData(changes.shipper.currentValue.id, 1, false);
+            this.getShipperChartData(changes.shipper.currentValue.id, this.shipperCall.chartType, false);
             this.getShipperDropdown();
         }
     }
