@@ -24,8 +24,6 @@ export class CreateNewPasswordComponent implements OnInit, OnDestroy {
 
     public createNewPasswordForm: FormGroup;
 
-    public openHavingTroubleContent: boolean = false;
-
     public userInfo: UserInfoModel = null;
     public userAvatar: any = null;
 
@@ -102,30 +100,15 @@ export class CreateNewPasswordComponent implements OnInit, OnDestroy {
             });
     }
 
-    public onHavingTroubleClick(): void {
-        this.openHavingTroubleContent = !this.openHavingTroubleContent;
-    }
-
     public onKeyDown(event: any): void {
         if (event.keyCode === 13) {
             this.createNewPassword();
         }
     }
 
-    public onGetBtnClickValue(
-        event: { notDisabledClick: boolean },
-        type?: string
-    ): void {
+    public onGetBtnClickValue(event: { notDisabledClick: boolean }): void {
         if (event.notDisabledClick) {
-            if (type === ConstantString.CREATE_NEW_PASSWORD_BTN) {
-                this.createNewPassword();
-            }
-
-            if (type === ConstantString.RESEND_CONFIRMATION_BTN) {
-                this.websiteActionsService.setSidebarContentType(
-                    ConstantString.RESEND_CONFIRMATION
-                );
-            }
+            this.createNewPassword();
         }
     }
 

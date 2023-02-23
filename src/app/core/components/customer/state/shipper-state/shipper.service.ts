@@ -309,13 +309,13 @@ export class ShipperTService implements OnDestroy {
             shipperLat,
             shipperDistance,
             shipperStates,
-            pageIndex,
-            pageSize,
-            companyId,
-            sort,
-            search,
-            search1,
-            search2
+            // pageIndex,
+            // pageSize,
+            // companyId,
+            // sort,
+            // search,
+            // search1,
+            // search2
         );
     }
 
