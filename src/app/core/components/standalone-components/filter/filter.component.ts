@@ -1,5 +1,9 @@
 import { Subject, takeUntil } from 'rxjs';
-import { NgbDropdownConfig, NgbModule, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
+import {
+    NgbDropdownConfig,
+    NgbModule,
+    NgbPopoverModule,
+} from '@ng-bootstrap/ng-bootstrap';
 import {
     Component,
     Input,
@@ -18,7 +22,7 @@ import {
     UntypedFormBuilder,
     UntypedFormGroup,
 } from '@angular/forms';
-import { Options } from '@angular-slider/ngx-slider';
+import { NgxSliderModule, Options } from '@angular-slider/ngx-slider';
 import { TaThousandSeparatorPipe } from '../../../pipes/taThousandSeparator.pipe';
 import {
     animate,
@@ -47,21 +51,21 @@ import { TaTabSwitchComponent } from '../ta-tab-switch/ta-tab-switch.component';
     selector: 'app-filter',
     standalone: true,
     imports: [
-            CommonModule, 
-            AngularSvgIconModule, 
-            FormsModule,
-            ReactiveFormsModule,
-            AutoclosePopoverComponent, 
-            AppTooltipComponent, 
-            TaSvgPipe, 
-            ProfileImagesComponent,
-            TaInputComponent,
-            InputAddressDropdownComponent,
-            TaNgxSliderComponent,
-            NgbModule,
-            AutoclosePopoverComponent,
-            TaTabSwitchComponent,
-            
+        CommonModule,
+        AngularSvgIconModule,
+        FormsModule,
+        ReactiveFormsModule,
+        AutoclosePopoverComponent,
+        AppTooltipComponent,
+        TaSvgPipe,
+        ProfileImagesComponent,
+        TaInputComponent,
+        InputAddressDropdownComponent,
+        TaNgxSliderComponent,
+        NgbModule,
+        AutoclosePopoverComponent,
+        TaTabSwitchComponent,
+        NgxSliderModule,
     ],
     templateUrl: './filter.component.html',
     styleUrls: ['./filter.component.scss'],
@@ -224,19 +228,20 @@ import { TaTabSwitchComponent } from '../ta-tab-switch/ta-tab-switch.component';
             transition('true => false', [animate('150ms ease')]),
         ]),
         trigger('areaRightSideAnimation', [
-            state('in', style({ width: '100%', 'position' : 'relative' })),
+            state('in', style({ width: '100%', position: 'relative' })),
             transition(':enter', [
                 animate(
                     200,
                     keyframes([
-                        style({ 
-                            width: '0%', 
-                            right: '0px', 
-                            //overflow: 'hidden', 
+                        style({
+                            width: '0%',
+                            right: '0px',
+                            //overflow: 'hidden',
                         }),
-                        style({ width: '100%', 
-                            right: '0px', 
-                            //overflow: 'hidden' 
+                        style({
+                            width: '100%',
+                            right: '0px',
+                            //overflow: 'hidden'
                         }),
                     ])
                 ),
@@ -245,12 +250,14 @@ import { TaTabSwitchComponent } from '../ta-tab-switch/ta-tab-switch.component';
                 animate(
                     200,
                     keyframes([
-                        style({ width: '100%', 
-                            right: '0px', 
-                            //overflow: 'hidden' 
+                        style({
+                            width: '100%',
+                            right: '0px',
+                            //overflow: 'hidden'
                         }),
-                        style({ width: '0%', 
-                            right: '0px', 
+                        style({
+                            width: '0%',
+                            right: '0px',
                             //overflow: 'hidden',
                         }),
                     ])
@@ -258,19 +265,21 @@ import { TaTabSwitchComponent } from '../ta-tab-switch/ta-tab-switch.component';
             ]),
         ]),
         trigger('areaLeftSideAnimation', [
-            state('in', style({ width: '100%', 'position' : 'relative' })),
+            state('in', style({ width: '100%', position: 'relative' })),
             transition(':enter', [
                 animate(
                     200,
                     keyframes([
-                        style({ width: '0%', 
-                            'position' : 'relative', 
-                            left: '0px', 
-                            //overflow: 'hidden', 
+                        style({
+                            width: '0%',
+                            position: 'relative',
+                            left: '0px',
+                            //overflow: 'hidden',
                         }),
-                        style({ width: '100%', 
-                            left: '0px', 
-                            //overflow: 'hidden' 
+                        style({
+                            width: '100%',
+                            left: '0px',
+                            //overflow: 'hidden'
                         }),
                     ])
                 ),
@@ -279,13 +288,15 @@ import { TaTabSwitchComponent } from '../ta-tab-switch/ta-tab-switch.component';
                 animate(
                     200,
                     keyframes([
-                        style({ width: '100%', 
-                            left: '0px', 
-                            //overflow: 'hidden' 
+                        style({
+                            width: '100%',
+                            left: '0px',
+                            //overflow: 'hidden'
                         }),
-                        style({ width: '0%', 
-                            left: '0px', 
-                            //overflow: 'hidden', 
+                        style({
+                            width: '0%',
+                            left: '0px',
+                            //overflow: 'hidden',
                         }),
                     ])
                 ),
@@ -1246,7 +1257,7 @@ export class FilterComponent implements OnInit, AfterViewInit {
     public payForm!: UntypedFormGroup;
     public sliderForm!: UntypedFormGroup;
     public rangeForm!: UntypedFormGroup;
-    public areaForm!: UntypedFormGroup; 
+    public areaForm!: UntypedFormGroup;
 
     rangeValue: any = 0;
     usaSelectedStates: any[] = [];
@@ -1339,9 +1350,9 @@ export class FilterComponent implements OnInit, AfterViewInit {
     longValueSet: any = 0;
     latValSet: any = 0;
 
-    originLongValSet: any = 0;    
-    originLatValSet: any = 0; 
-    
+    originLongValSet: any = 0;
+    originLatValSet: any = 0;
+
     destLongValSet: any = 0;
     destLatValSet: any = 0;
 
@@ -1363,7 +1374,7 @@ export class FilterComponent implements OnInit, AfterViewInit {
         {
             id: 2,
             name: 'Route',
-        }
+        },
     ];
 
     @Input() type: string = 'userFilter';
@@ -1396,15 +1407,15 @@ export class FilterComponent implements OnInit, AfterViewInit {
         private elementRef: ElementRef,
         private cdRef: ChangeDetectorRef,
         private filterService: FilterStateService,
-        private tableService: TruckassistTableService,
+        private tableService: TruckassistTableService
     ) {}
 
     ngOnInit(): void {
-        if ( this.type === 'truckTypeFilter' ) {
+        if (this.type === 'truckTypeFilter') {
             this.getTruckType();
-        } else if ( this.type === 'trailerTypeFilter' ) {
+        } else if (this.type === 'trailerTypeFilter') {
             this.getTrailerType();
-        } else if ( this.type === 'categoryRepairFilter' ) {
+        } else if (this.type === 'categoryRepairFilter') {
             this.getRepairCategory();
         }
 
@@ -1471,15 +1482,14 @@ export class FilterComponent implements OnInit, AfterViewInit {
         this.areaForm.valueChanges
             .pipe(takeUntil(this.destroy$))
             .subscribe((changes) => {
-              
                 if (changes.origin == null) {
                     this.originState = '';
                 }
 
-                if ( changes.destination == null ) {
+                if (changes.destination == null) {
                     this.destinationState = '';
                 }
-            });    
+            });
 
         this.rangeForm.valueChanges
             .pipe(takeUntil(this.destroy$))
@@ -1893,41 +1903,42 @@ export class FilterComponent implements OnInit, AfterViewInit {
         this.tableService.currentActionAnimation
             .pipe(takeUntil(this.destroy$))
             .subscribe((res: any) => {
-                if ( this.type == 'truckTypeFilter' ) {
-                        if ( res.animation == 'truck-type-update' ) {
-
-                            let newData = res.data.map(
-                                (type: any, index: number) => {
-                                    type['icon'] = 'assets/svg/common/trucks/' + type.logoName;
-                                    return type;
-                                }
-                            );
-
-                            this.truckTypeArray = newData;
-                        }
-                } else if ( this.type == 'trailerTypeFilter' ) {
-                    if ( res.animation == 'trailer-type-update' ) {
+                if (this.type == 'truckTypeFilter') {
+                    if (res.animation == 'truck-type-update') {
                         let newData = res.data.map(
                             (type: any, index: number) => {
-                                type['icon'] = 'assets/svg/common/trailers/' + type.logoName;
+                                type['icon'] =
+                                    'assets/svg/common/trucks/' + type.logoName;
+                                return type;
+                            }
+                        );
+
+                        this.truckTypeArray = newData;
+                    }
+                } else if (this.type == 'trailerTypeFilter') {
+                    if (res.animation == 'trailer-type-update') {
+                        let newData = res.data.map(
+                            (type: any, index: number) => {
+                                type['icon'] =
+                                    'assets/svg/common/trailers/' +
+                                    type.logoName;
                                 return type;
                             }
                         );
                         this.trailerTypeArray = newData;
                     }
-                } else if ( this.type === 'categoryRepairFilter' ) {
-                    if ( res.animation == 'repair-category-update' ) {
+                } else if (this.type === 'categoryRepairFilter') {
+                    if (res.animation == 'repair-category-update') {
                         let newData = res.data.map(
                             (type: any, index: number) => {
-                                type['icon'] = 'assets/svg/common/category/' + type.logo;
+                                type['icon'] =
+                                    'assets/svg/common/category/' + type.logo;
                                 return type;
                             }
                         );
                         this.categoryRepairArray = newData;
                     }
                 }
-                    
-            
             });
     }
 
@@ -2236,7 +2247,7 @@ export class FilterComponent implements OnInit, AfterViewInit {
                     });
                     this.areaForm.setValue({
                         origin: '',
-                       destination: '',
+                        destination: '',
                     });
                     this.locationRange = 50;
                     this.locationState = '';
@@ -2289,7 +2300,7 @@ export class FilterComponent implements OnInit, AfterViewInit {
         let data = {
             action: 'Clear',
             type: this.type,
-            filterType: this.type
+            filterType: this.type,
         };
 
         if (this.setFilter) {
@@ -2381,22 +2392,19 @@ export class FilterComponent implements OnInit, AfterViewInit {
         if (e?.address?.address) {
             this.originState = e.address.address;
         }
-       
-        if (e?.longLat && e?.longLat?.latitude ) {
+
+        if (e?.longLat && e?.longLat?.latitude) {
             this.originLongVal = e?.longLat?.longitude;
             this.originLatVal = e?.longLat?.latitude;
         }
-       
-     
     }
 
-    handleDestinationSelect(e){
+    handleDestinationSelect(e) {
         if (e?.address?.address) {
             this.destinationState = e.address.address;
         }
 
-        
-        if (e?.longLat && e?.longLat?.latitude ) {
+        if (e?.longLat && e?.longLat?.latitude) {
             this.destLongVal = e?.longLat?.longitude;
             this.destLatVal = e?.longLat?.latitude;
         }
@@ -2566,34 +2574,31 @@ export class FilterComponent implements OnInit, AfterViewInit {
                 this.maxValueSet = this.rangeForm.get('rangeTo')?.value;
                 this.minValueSet = this.rangeForm.get('rangeFrom')?.value;
             } else if (this.type == 'locationFilter') {
-                
-                if ( this.areaFilterSelected != 'Location' ){
+                if (this.areaFilterSelected != 'Location') {
                     queryParams = {
                         originLatValue: this.originLatVal,
                         originLongValue: this.originLongVal,
                         destinationLatValue: this.destLatVal,
                         destinationLongValue: this.destLongVal,
-                    }
+                    };
 
                     this.originLatValSet = this.originLatVal;
                     this.originLongValSet = this.originLongVal;
                     this.destLongValSet = this.destLongVal;
                     this.destLatValSet = this.destLatVal;
-
                 } else {
                     queryParams = {
                         longValue: this.longVal,
                         latValue: this.latVal,
                         rangeValue: this.locationRange,
                     };
-    
+
                     this.longValueSet = this.longVal;
                     this.latValSet = this.latVal;
                     this.locationRangeSet = this.locationRange;
-                    this.loactionNameSet = this.locationForm.get('address')?.value;
+                    this.loactionNameSet =
+                        this.locationForm.get('address')?.value;
                 }
-                
-                
             } else {
                 this.filterActiveArray = [...this.selectedUser];
                 let selectedUsersIdArray: any = [];
@@ -3040,21 +3045,20 @@ export class FilterComponent implements OnInit, AfterViewInit {
     }
 
     public onTabChange(event: any, type: string): void {
-       //console.log('event', event.name);
-       this.sideAnimation = true;
-       this.areaFilterSelected = event.name;
+        //console.log('event', event.name);
+        this.sideAnimation = true;
+        this.areaFilterSelected = event.name;
     }
 
-    public getTruckType(){
+    public getTruckType() {
         this.filterService.getTruckType();
     }
 
-    public getTrailerType(){
+    public getTrailerType() {
         this.filterService.getTrailerType();
     }
 
-    public getRepairCategory(){
+    public getRepairCategory() {
         this.filterService.getRepairCategory();
     }
-
 }

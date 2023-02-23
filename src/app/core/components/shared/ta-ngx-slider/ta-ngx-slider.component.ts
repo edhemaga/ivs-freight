@@ -1,4 +1,8 @@
-import { ChangeContext, Options } from '@angular-slider/ngx-slider';
+import {
+    ChangeContext,
+    NgxSliderModule,
+    Options,
+} from '@angular-slider/ngx-slider';
 import { CommonModule } from '@angular/common';
 import {
     ChangeDetectionStrategy,
@@ -9,7 +13,6 @@ import {
 } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-import { NgxSliderModule } from '@angular-slider/ngx-slider';
 import { Ng5SliderModule } from 'ng5-slider';
 
 @Component({
