@@ -757,7 +757,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
             {
                 title: 'Deactivate',
                 name: 'deactivate',
-                svgUrl: '',
+                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Deactivate.svg',
                 svgStyle: {
                     width: 18,
                     height: 18,
