@@ -612,6 +612,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
             },
         };
     }
+    
     getDropdownDriverContent(data: any) {
         return [
             {
@@ -707,15 +708,16 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
             {
                 title: 'Add New',
                 name: 'add-new',
-                svgUrl: '',
+                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Show More.svg',
                 svgStyle: {
-                    width: 18,
-                    height: 18,
+                    width: 15,
+                    height: 15,
                 },
                 tableListDropdownContentStyle: {
                     'margin-bottom.px': 4,
                 },
                 svgClass: 'regular',
+                isDropdown: true,
             },
             {
                 title: 'Request',
@@ -750,7 +752,6 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     width: 18,
                     height: 18,
                 },
-
                 svgClass: 'regular',
                 hasBorder: true,
             },
@@ -762,10 +763,10 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     width: 18,
                     height: 18,
                 },
+                svgClass: 'delete',
                 tableListDropdownContentStyle: {
                     'margin-bottom.px': 4,
                 },
-                svgClass: 'delete',
             },
             {
                 title: 'Delete',
@@ -779,6 +780,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
             },
         ];
     }
+
     mapApplicantsData(data: any) {
         return {
             ...data,
