@@ -429,9 +429,9 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
                         : 'No',
                 isInvited: false,
             },
-            tablePersonalDetailsBankName: 'NA',
-            tablePersonalDetailsRouting: 'NA',
-            tablePersonalDetailsAccount: 'NA',
+            tableBillingDetailsBankName: 'NA',
+            tableBillingDetailsRouting: 'NA',
+            tableBillingDetailsAccount: 'NA',
             tablePaymentDetailsType: 'NA',
             tablePaymentDetailsComm: data?.commission
                 ? data.commission + '%'

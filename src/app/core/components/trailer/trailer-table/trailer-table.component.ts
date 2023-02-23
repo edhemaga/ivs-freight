@@ -555,8 +555,8 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
             },
             {
                 title: 'Deactivate',
-                name: 'close-business',
-                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Deactivate.svg',
+                name: 'activate-item',
+                svgUrl: '',
                 svgStyle: {
                     width: 18,
                     height: 18,
