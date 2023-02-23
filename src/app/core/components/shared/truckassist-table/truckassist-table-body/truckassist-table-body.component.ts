@@ -692,6 +692,19 @@ export class TruckassistTableBodyComponent
     onShowInnerDropdown(action) {
         let innerContent = '';
 
+        let newDropdownActions = [...this.dropdownActions];
+
+        newDropdownActions.map((actions) => {
+            if (actions.isDropdown && actions.isInnerDropActive) {
+                this.onRemoveClickEventListener();
+
+                actions.isInnerDropActive = false;
+                actions.innerDropElement = null;
+            }
+        });
+
+        this.dropdownActions = [...newDropdownActions];
+
         if (action?.isDropdown && !action.isInnerDropActive) {
             action.insideDropdownContent.map((content: any) => {
                 innerContent += `<div id="${content.title}" class="inner-dropdown-action-title">${content.title}</div>`;
@@ -705,8 +718,6 @@ export class TruckassistTableBodyComponent
 
         if (action.isInnerDropActive) {
             this.setInnerDropdownClickEvent();
-        } else {
-            this.onRemoveClickEventListener();
         }
     }
 
