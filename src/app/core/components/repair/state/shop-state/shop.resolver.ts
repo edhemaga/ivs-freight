@@ -17,41 +17,42 @@ export class ShopResolver implements Resolve<ShopState> {
     ) {}
 
     resolve(): Observable<any> {
-        return forkJoin([
-            this.repairService.getRepairShopList(
-                1,
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                1,
-                25
-            ),
-            this.tableService.getTableConfig(12),
-        ]).pipe(
-            tap(([repairPagination, tableConfig]) => {
-                localStorage.setItem(
-                    'repairShopTableCount',
-                    JSON.stringify({
-                        repairShops: repairPagination.repairShopCount,
-                    })
-                );
+        return null;
+        // forkJoin([
+        //     this.repairService.getRepairShopList(
+        //         1,
+        //         undefined,
+        //         undefined,
+        //         undefined,
+        //         undefined,
+        //         undefined,
+        //         undefined,
+        //         undefined,
+        //         undefined,
+        //         1,
+        //         25
+        //     ),
+        //     this.tableService.getTableConfig(12),
+        // ]).pipe(
+        //     tap(([repairPagination, tableConfig]) => {
+        //         localStorage.setItem(
+        //             'repairShopTableCount',
+        //             JSON.stringify({
+        //                 repairShops: repairPagination.repairShopCount,
+        //             })
+        //         );
 
-                if (tableConfig) {
-                    const config = JSON.parse(tableConfig.config);
+        //         if (tableConfig) {
+        //             const config = JSON.parse(tableConfig.config);
 
-                    localStorage.setItem(
-                        `table-${tableConfig.tableType}-Configuration`,
-                        JSON.stringify(config)
-                    );
-                }
+        //             localStorage.setItem(
+        //                 `table-${tableConfig.tableType}-Configuration`,
+        //                 JSON.stringify(config)
+        //             );
+        //         }
 
-                this.shopStore.set(repairPagination.pagination.data);
-            })
-        );
+        //         this.shopStore.set(repairPagination.pagination.data);
+        //     })
+        // );
     }
 }

@@ -17,37 +17,38 @@ export class RepairTrailerResolver implements Resolve<RepairTrailerState> {
     ) {}
 
     resolve(): Observable<any> {
-        return forkJoin([
-            this.repairService.getRepairList(
-                undefined,
-                2,
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                1,
-                25
-            ),
-            this.tableService.getTableConfig(11),
-        ]).pipe(
-            tap(([repairTrailerPagination, tableConfig]) => {
-                if (tableConfig) {
-                    const config = JSON.parse(tableConfig.config);
+        return null;
+        // forkJoin([
+        //     this.repairService.getRepairList(
+        //         undefined,
+        //         2,
+        //         undefined,
+        //         undefined,
+        //         undefined,
+        //         undefined,
+        //         undefined,
+        //         undefined,
+        //         undefined,
+        //         undefined,
+        //         1,
+        //         25
+        //     ),
+        //     this.tableService.getTableConfig(11),
+        // ]).pipe(
+        //     tap(([repairTrailerPagination, tableConfig]) => {
+        //         if (tableConfig) {
+        //             const config = JSON.parse(tableConfig.config);
 
-                    localStorage.setItem(
-                        `table-${tableConfig.tableType}-Configuration`,
-                        JSON.stringify(config)
-                    );
-                }
+        //             localStorage.setItem(
+        //                 `table-${tableConfig.tableType}-Configuration`,
+        //                 JSON.stringify(config)
+        //             );
+        //         }
 
-                this.repairTrailerStore.set(
-                    repairTrailerPagination.pagination.data
-                );
-            })
-        );
+        //         this.repairTrailerStore.set(
+        //             repairTrailerPagination.pagination.data
+        //         );
+        //     })
+        // );
     }
 }

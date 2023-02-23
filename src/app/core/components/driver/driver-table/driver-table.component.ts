@@ -398,10 +398,6 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
     sendDriverData() {
         this.initTableOptions();
 
-        const applicantCount = JSON.parse(
-            localStorage.getItem('applicantTableCount')
-        );
-
         const driverCount = JSON.parse(
             localStorage.getItem('driverTableCount')
         );
@@ -416,12 +412,11 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
         const driverInactiveData =
             this.selectedTab === 'inactive' ? this.getTabData('inactive') : [];
-
         this.tableData = [
             {
                 title: 'Applicants',
                 field: 'applicants',
-                length: applicantCount.applicant,
+                length: driverCount.applicant,
                 data: applicantsData,
                 extended: true,
                 gridNameTitle: 'Driver',

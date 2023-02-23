@@ -16,22 +16,23 @@ export class ShipperResolver implements Resolve<ShipperState> {
         private tableService: TruckassistTableService
     ) {}
     resolve(): Observable<any> {
-        return forkJoin([
-            this.shipperService.getShippersList(null, null, 1, 25),
-            this.tableService.getTableConfig(5),
-        ])
-            .pipe(
-                tap(([shipperPagination, tableConfig]) => {
-                    if (tableConfig) {
-                        const config = JSON.parse(tableConfig.config);
+        return null;
+        // forkJoin([
+        //     this.shipperService.getShippersList(null, null, 1, 25),
+        //     this.tableService.getTableConfig(5),
+        // ])
+        //     .pipe(
+        //         tap(([shipperPagination, tableConfig]) => {
+        //             if (tableConfig) {
+        //                 const config = JSON.parse(tableConfig.config);
 
-                        localStorage.setItem(
-                            `table-${tableConfig.tableType}-Configuration`,
-                            JSON.stringify(config)
-                        );
-                    }
-                    this.shipperStore.set(shipperPagination.pagination.data);
-                })
-            )
+        //                 localStorage.setItem(
+        //                     `table-${tableConfig.tableType}-Configuration`,
+        //                     JSON.stringify(config)
+        //                 );
+        //             }
+        //             this.shipperStore.set(shipperPagination.pagination.data);
+        //         })
+        //     )
     }
 }
