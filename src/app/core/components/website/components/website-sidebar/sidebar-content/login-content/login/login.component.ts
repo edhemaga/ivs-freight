@@ -5,7 +5,6 @@ import { Subject, takeUntil, tap } from 'rxjs';
 
 import { TaInputService } from 'src/app/core/components/shared/ta-input/ta-input.service';
 import { WebsiteAuthService } from '../../../../../state/service/website-auth.service';
-import { WebsiteActionsService } from '../../../../../state/service/website-actions.service';
 
 import { passwordValidation } from 'src/app/core/components/shared/ta-input/ta-input.regex-validations';
 
@@ -21,15 +20,12 @@ export class LoginComponent implements OnInit, OnDestroy {
 
     public loginForm: FormGroup;
 
-    public openHavingTroubleContent: boolean = false;
-
     public displaySpinner: boolean = false;
 
     constructor(
         private formBuilder: FormBuilder,
         private inputService: TaInputService,
-        private websiteAuthService: WebsiteAuthService,
-        private websiteActionsService: WebsiteActionsService
+        private websiteAuthService: WebsiteAuthService
     ) {}
 
     ngOnInit(): void {
@@ -50,36 +46,15 @@ export class LoginComponent implements OnInit, OnDestroy {
         );
     }
 
-    public onHavingTroubleClick(): void {
-        this.openHavingTroubleContent = !this.openHavingTroubleContent;
-    }
-
     public onKeyDown(event: { keyCode: number }): void {
         if (event.keyCode === 13) {
             this.userLogin();
         }
     }
 
-    public onGetBtnClickValue(
-        event: { notDisabledClick: boolean },
-        type?: string
-    ): void {
+    public onGetBtnClickValue(event: { notDisabledClick: boolean }): void {
         if (event.notDisabledClick) {
-            if (type === ConstantString.LOGIN_BTN) {
-                this.userLogin();
-            }
-
-            if (type === ConstantString.RESET_PASSWORD_BTN) {
-                this.websiteActionsService.setSidebarContentType(
-                    ConstantString.RESET_PASSWORD
-                );
-            }
-
-            if (type === ConstantString.RESEND_CONFIRMATION_BTN) {
-                this.websiteActionsService.setSidebarContentType(
-                    ConstantString.RESEND_CONFIRMATION
-                );
-            }
+            this.userLogin();
         }
     }
 
