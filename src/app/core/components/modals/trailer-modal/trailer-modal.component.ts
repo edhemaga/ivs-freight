@@ -1,5 +1,11 @@
 import { HttpResponseBase } from '@angular/common/http';
-import { FormsModule, ReactiveFormsModule, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import {
+    FormsModule,
+    ReactiveFormsModule,
+    UntypedFormBuilder,
+    UntypedFormGroup,
+    Validators,
+} from '@angular/forms';
 import {
     Component,
     Input,
@@ -60,23 +66,24 @@ import { TaCheckboxComponent } from '../../shared/ta-checkbox/ta-checkbox.compon
     providers: [ModalService, FormService],
     standalone: true,
     imports: [
-        CommonModule, 
-            FormsModule, 
-            TaModalComponent, 
-            TaTabSwitchComponent, 
-            ReactiveFormsModule,
-            TaInputComponent,
-            TaInputDropdownComponent,
-            TaCheckboxCardComponent,
-            TaCustomCardComponent,
-            TaUploadFilesComponent,
-            TaInputNoteComponent,
-            TaCheckboxComponent
-    ]
+        // Module
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+
+        // Component
+        TaModalComponent,
+        TaTabSwitchComponent,
+        TaInputComponent,
+        TaInputDropdownComponent,
+        TaCheckboxCardComponent,
+        TaCustomCardComponent,
+        TaUploadFilesComponent,
+        TaInputNoteComponent,
+        TaCheckboxComponent,
+    ],
 })
 export class TrailerModalComponent implements OnInit, OnDestroy {
-    private destroy$ = new Subject<void>();
-
     @Input() editData: any;
 
     public trailerForm: UntypedFormGroup;
@@ -105,7 +112,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
         {
             id: 1,
             name: 'Basic',
-            checked: true
+            checked: true,
         },
         {
             id: 2,
@@ -127,6 +134,12 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
     public filesForDelete: any[] = [];
     public fileModified: boolean = false;
 
+    private destroy$ = new Subject<void>();
+
+    public addNewAfterSave: boolean = false;
+
+    private storedfhwaExpValue: any = null;
+
     constructor(
         private formBuilder: UntypedFormBuilder,
         private inputService: TaInputService,
@@ -139,20 +152,9 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.createForm();
+
+        this.getTrailerDropdowns();
         this.isCompanyOwned();
-
-        if (this.editData?.storageData) {
-            this.skipVinDecocerEdit = true;
-            this.populateStorageData(this.editData.storageData);
-        } else {
-            this.getTrailerDropdowns();
-        }
-
-        if (this.editData?.id) {
-            this.skipVinDecocerEdit = true;
-            this.editTrailerById(this.editData.id);
-        }
-
         this.vinDecoder();
     }
 
@@ -211,6 +213,8 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
                 } else {
                     this.inputService.changeValidators(
                         this.trailerForm.get('ownerId'),
+                        false,
+                        [],
                         false
                     );
                 }
@@ -259,6 +263,20 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
                         },
                         error: () => {},
                     });
+            }
+            // Save And Add New
+            else if (data.action === 'save and add new') {
+                if (this.trailerForm.invalid || !this.isFormDirty) {
+                    this.inputService.markInvalid(this.trailerForm);
+                    return;
+                }
+                this.addTrailer();
+                this.modalService.setModalSpinner({
+                    action: 'save and add new',
+                    status: true,
+                    close: false,
+                });
+                this.addNewAfterSave = true;
             } else {
                 // Save & Update
                 if (data.action === 'save') {
@@ -298,6 +316,12 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
 
     public tabChange(event: any): void {
         this.selectedTab = event.id;
+        this.tabs = this.tabs.map((item) => {
+            return {
+                ...item,
+                checked: item.id === event.id,
+            };
+        });
         let dotAnimation = document.querySelector('.animation-two-tabs');
 
         this.animationObject = {
@@ -338,6 +362,19 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
                     this.reeferUnitType = res.reeferUnits;
 
                     this.trailerForm.get('fhwaExp').patchValue(res.fhwaExp);
+
+                    this.storedfhwaExpValue = res.fhwaExp;
+
+                    // ------- EDIT -------
+                    if (this.editData?.storageData) {
+                        this.skipVinDecocerEdit = true;
+                        this.populateStorageData(this.editData.storageData);
+                    }
+
+                    if (this.editData?.id) {
+                        this.skipVinDecocerEdit = true;
+                        this.editTrailerById(this.editData.id);
+                    }
                 },
                 error: () => {},
             });
@@ -436,6 +473,43 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
                                 break;
                             }
                         }
+                    }
+
+                    if (this.addNewAfterSave) {
+                        this.formService.resetForm(this.trailerForm);
+
+                        this.selectedTrailerType = null;
+                        this.selectedTrailerMake = null;
+                        this.selectedColor = null;
+                        this.selectedTrailerLength = null;
+                        this.selectedOwner = null;
+                        this.selectedSuspension = null;
+                        this.selectedTireSize = null;
+                        this.selectedDoorType = null;
+                        this.selectedReeferType = null;
+
+                        this.tabChange({ id: 1 });
+
+                        this.trailerForm
+                            .get('fhwaExp')
+                            .patchValue(this.storedfhwaExpValue);
+
+                        this.trailerForm.get('companyOwned').patchValue(true);
+                        this.inputService.changeValidators(
+                            this.trailerForm.get('ownerId'),
+                            false
+                        );
+
+                        this.documents = [];
+                        this.filesForDelete = [];
+                        this.fileModified = false;
+
+                        this.modalService.setModalSpinner({
+                            action: 'save and add new',
+                            status: false,
+                            close: false,
+                        });
+                        this.addNewAfterSave = false;
                     } else {
                         this.modalService.setModalSpinner({
                             action: null,
@@ -842,7 +916,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
 
     public onBlurTrailerModel() {
         const model = this.trailerForm.get('model').value;
-        if (model.length >= 1) {
+        if (model?.length >= 1) {
             this.trailerModalService
                 .autocompleteByTrailerModel(model)
                 .pipe(takeUntil(this.destroy$))

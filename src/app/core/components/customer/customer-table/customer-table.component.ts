@@ -305,33 +305,6 @@ export class CustomerTableComponent
                 showStateFilter: this.selectedTab === 'inactive',
                 viewModeOptions: this.getViewModeOptions(),
             },
-            actions: [
-                {
-                    title: 'Edit',
-                    name: 'edit-cutomer-or-shipper',
-                    class: 'regular-text',
-                    contentType: 'edit',
-                    show: true,
-                    svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
-                    iconName: 'edit',
-                },
-                {
-                    title: 'Delete',
-                    name: 'delete',
-                    type: 'customer',
-                    text:
-                        this.selectedTab === 'active'
-                            ? 'Are you sure you want to delete broker(s)?'
-                            : 'Are you sure you want to delete shipper(s)?',
-                    class: 'delete-text',
-                    contentType: 'delete',
-                    show: true,
-                    danger: true,
-                    svg: 'assets/svg/truckassist-table/dropdown/content/delete.svg',
-                    iconName: 'delete',
-                    redIcon: true,
-                },
-            ],
         };
     }
 
@@ -520,9 +493,155 @@ export class CustomerTableComponent
             tableEdited: data.updatedAt
                 ? this.datePipe.transform(data.updatedAt, 'MM/dd/yy')
                 : '',
+            tableDropdownContent: {
+                hasContent: true,
+                content: this.getDropdownBrokerContent(data),
+            },
         };
     }
 
+    getDropdownBrokerContent(data: any) {
+        return [
+            {
+                title: 'Edit',
+                name: 'edit-cutomer-or-shipper',
+                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Edit.svg',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                hasBorder: true,
+                svgClass: 'regular',
+            },
+            {
+                title: 'View Details',
+                name: 'view-details',
+                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Information.svg',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                svgClass: 'regular',
+                tableListDropdownContentStyle: {
+                    'margin-bottom.px': 4,
+                },
+            },
+            {
+                title: 'Create Load',
+                name: 'create-load',
+                svgUrl: '',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                svgClass: 'regular',
+                tableListDropdownContentStyle: {
+                    'margin-bottom.px': 4,
+                },
+            },
+            {
+                title: 'Add Contact',
+                name: 'add-contact',
+                svgUrl: '',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                svgClass: 'regular',
+                tableListDropdownContentStyle: {
+                    'margin-bottom.px': 4,
+                },
+            },
+            {
+                title: 'Write Review',
+                name: 'write-review',
+                svgUrl: '',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                svgClass: 'regular',
+                tableListDropdownContentStyle: {
+                    'margin-bottom.px': 4,
+                },
+            },
+            {
+                title: 'Move to Ban List',
+                name: 'move-to-ban-list',
+                svgUrl: '',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                svgClass: 'regular',
+                tableListDropdownContentStyle: {
+                    'margin-bottom.px': 4,
+                },
+            },
+            {
+                title: 'Move to DNU List',
+                name: 'move-to-dnu-list',
+                svgUrl: '',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                svgClass: 'regular',
+                hasBorder: true,
+            },
+            {
+                title: 'Share',
+                name: 'share',
+                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Share.svg',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                svgClass: 'regular',
+                tableListDropdownContentStyle: {
+                    'margin-bottom.px': 4,
+                },
+            },
+            {
+                title: 'Print',
+                name: 'print',
+                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Print.svg',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+
+                svgClass: 'regular',
+                hasBorder: true,
+            },
+            {
+                title: 'Close Business',
+                name: 'close-business',
+                svgUrl: '',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                tableListDropdownContentStyle: {
+                    'margin-bottom.px': 4,
+                },
+                svgClass: 'delete',
+            },
+            {
+                title: 'Delete',
+                name: 'delete',
+                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Delete.svg',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                tableListDropdownContentStyle: {
+                    'margin-bottom.px': 4,
+                },
+                svgClass: 'delete',
+            },
+        ];
+    }
     // Map Shipper Data
     mapShipperData(data: any) {
         return {
@@ -568,9 +687,112 @@ export class CustomerTableComponent
             tableEdited: 'NA', // data.updatedAt
             //? this.datePipe.transform(data.updatedAt, 'MM/dd/yy')
             //: '',
+            tableDropdownContent: {
+                hasContent: true,
+                content: this.getDropdownShipperContent(data),
+            },
         };
     }
+    getDropdownShipperContent(data: any) {
+        return [
+            {
+                title: 'Edit',
+                name: 'edit-cutomer-or-shipper',
+                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Edit.svg',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                hasBorder: true,
+                svgClass: 'regular',
+            },
+            {
+                title: 'View Details',
+                name: 'view-details',
+                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Information.svg',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                svgClass: 'regular',
+                tableListDropdownContentStyle: {
+                    'margin-bottom.px': 4,
+                },
+            },
+            {
+                title: 'Add Contact',
+                name: 'add-contact',
+                svgUrl: '',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                svgClass: 'regular',
+                tableListDropdownContentStyle: {
+                    'margin-bottom.px': 4,
+                },
+            },
+            {
+                title: 'Write Review',
+                name: 'write-review',
+                svgUrl: '',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                svgClass: 'regular',
+                hasBorder: true,
+            },
+            {
+                title: 'Share',
+                name: 'share',
+                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Share.svg',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                svgClass: 'regular',
+                tableListDropdownContentStyle: {
+                    'margin-bottom.px': 4,
+                },
+            },
+            {
+                title: 'Print',
+                name: 'print',
+                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Print.svg',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
 
+                svgClass: 'regular',
+                hasBorder: true,
+            },
+            {
+                title: 'Close Business',
+                name: 'close-business',
+                svgUrl: '',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                tableListDropdownContentStyle: {
+                    'margin-bottom.px': 4,
+                },
+                svgClass: 'delete',
+            },
+            {
+                title: 'Delete',
+                name: 'delete',
+                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Delete.svg',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                svgClass: 'delete',
+            },
+        ];
+    }
     // Update Broker And Shipper Count
     updateDataCount() {
         const brokerShipperCount = JSON.parse(

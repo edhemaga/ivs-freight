@@ -242,8 +242,8 @@ export class Step2Component implements OnInit, OnDestroy, AfterContentChecked {
                         employerAddress: item.address,
                         employerAddressUnit: item.address.addressUnit,
                         isDrivingPosition: item.isDrivingPosition,
-                        cfrPart: item.cfrPart,
-                        fmCSA: item.fmcsa,
+                        // cfrPart: item.cfrPart,
+                        // fmCSA: item.fmcsa,
                         reasonForLeaving: item.reasonForLeaving.name,
                         accountForPeriod: item.accountForPeriodBetween,
                         classesOfEquipment: item.classesOfEquipment[0]
@@ -296,8 +296,8 @@ export class Step2Component implements OnInit, OnDestroy, AfterContentChecked {
                     lastItemInWorkExperienceArray.address.addressUnit,
                 isDrivingPosition:
                     lastItemInWorkExperienceArray.isDrivingPosition,
-                cfrPart: lastItemInWorkExperienceArray.cfrPart,
-                fmCSA: lastItemInWorkExperienceArray.fmcsa,
+                // cfrPart: lastItemInWorkExperienceArray.cfrPart,
+                // fmCSA: lastItemInWorkExperienceArray.fmcsa,
                 reasonForLeaving:
                     lastItemInWorkExperienceArray.reasonForLeaving.name,
                 accountForPeriod:

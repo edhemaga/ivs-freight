@@ -3,25 +3,26 @@
 .input-clear {
     position: absolute;
     right: 4px;
+    top: 47%;
+    transform: translateY(-50%);
     border-radius: 1px;
-    transition: all 0.3s ease-in-out;
     display: none;
     z-index: 10;
     cursor: pointer;
-
-    &.datetimeclass {
-        z-index: 22;
-    }
+    transition: all 0.3s ease-in-out;
 
     .input-clear-x {
         svg {
             width: 18px !important;
             height: 18px !important;
             overflow: visible;
+
             path {
-                fill: $input-clear-path-fill-normal;
+                fill: $default-path-clear;
             }
+
             rect {
+                fill: $default-rect-clear;
                 transition: transform 0.3s;
                 transform: scale(1);
                 transform-origin: center;
@@ -35,6 +36,33 @@
                     transform: scale(1.2);
                     transform-origin: center;
                     transition: transform 0.3s;
+                    fill: $default-on-rect-clear-hover;
+                }
+            }
+        }
+    }
+
+    &.datetimeclass {
+        z-index: 22 !important;
+    }
+
+    &.focus {
+        display: inline-block;
+        .input-clear-x {
+            svg {
+                path {
+                    fill: $default-focus-path-clear;
+                }
+                rect {
+                    fill: $default-focus-rect-clear;
+                }
+            }
+
+            &:hover {
+                svg {
+                    rect {
+                        fill: $default-focus-on-rect-clear;
+                    }
                 }
             }
         }
@@ -45,38 +73,131 @@
         .input-clear-x {
             svg {
                 path {
-                    fill: $input-clear-path-fill-valid-focus;
+                    fill: $valid-focus-path-clear;
                 }
                 rect {
-                    fill: $input-clear-rect-fill-valid-focus !important;
+                    fill: $valid-focus-rect-clear;
                 }
             }
 
             &:hover {
                 svg {
                     rect {
-                        fill: $input-clear-rect-fill-valid-focus-hover !important;
+                        fill: $valid-focus-on-rect-clear-hover;
                     }
                 }
             }
         }
     }
-    //  &.invalid-focus-in-required
+
+    &.valid-focus-out {
+        .input-clear-x {
+            svg {
+                path {
+                    fill: $valid-path-clear;
+                }
+                rect {
+                    fill: $valid-rect-clear;
+                }
+            }
+
+            &:hover {
+                svg {
+                    rect {
+                        fill: $valid-on-rect-clear-hover;
+                    }
+                }
+            }
+        }
+    }
+
     &.invalid-focus-in {
         display: inline-block;
         .input-clear-x {
             svg {
                 path {
-                    fill: $input-clear-path-fill-invalid-focus;
+                    fill: $invalid-focus-path-clear;
                 }
                 rect {
-                    fill: $input-clear-rect-fill-invalid-focus;
+                    fill: $invalid-focus-rect-clear;
                 }
             }
             &:hover {
                 svg {
                     rect {
-                        fill: $input-clear-rect-fill-invalid-focus-hover;
+                        fill: $invalid-focus-on-rect-clear-hover;
+                    }
+                }
+            }
+        }
+    }
+
+    &.invalid-focus-out {
+        .input-clear-x {
+            svg {
+                path {
+                    fill: $invalid-path-clear;
+                }
+                rect {
+                    fill: $invalid-rect-clear;
+                }
+            }
+            &:hover {
+                svg {
+                    rect {
+                        fill: $invalid-on-rect-clear-hover;
+                    }
+                }
+            }
+        }
+    }
+
+    &.incorrect-input {
+        display: none;
+
+        .input-clear-x {
+            svg {
+                path {
+                    fill: $invalid-on-rect-clear-hover !important;
+                }
+                rect {
+                    fill: $input-transparent-color !important;
+                }
+            }
+            &:hover {
+                display: inline-block;
+
+                svg {
+                    path {
+                        fill: $default-path-clear !important;
+                    }
+                    rect {
+                        fill: $invalid-on-rect-clear-hover !important;
+                    }
+                }
+            }
+        }
+    }
+
+    &.incorrect-input-on {
+        display: inline-block;
+        .input-clear-x {
+            svg {
+                path {
+                    fill: $default-path-clear !important;
+                }
+                rect {
+                    fill: $invalid-rect-clear !important;
+                }
+            }
+
+            &:hover {
+                svg {
+                    path {
+                        fill: $default-path-clear !important;
+                    }
+                    rect {
+                        fill: $invalid-on-rect-clear-hover !important;
                     }
                 }
             }
@@ -84,10 +205,7 @@
     }
 
     // If dropdown
-    &.dropdown-position,
-    &.dropdown-position-image,
-    &.dropdown-label-position,
-    &.repair-m-pm {
+    &.dropdown-on {
         right: 27px !important;
         top: 50%;
         transform: translateY(-50%);
@@ -97,84 +215,12 @@
         }
     }
 
-    &.dropdown-label-hide {
+    &.hidden {
         display: none;
     }
 
-    &.incorrect-input {
-        display: none;
-
-        .input-clear-x {
-            svg {
-                path {
-                    fill: $input-clear-path-fill-incorrect !important;
-                }
-                rect {
-                    fill: $input-clear-rect-fill-incorrect !important;
-                }
-            }
-            &:hover {
-                display: inline-block;
-
-                svg {
-                    path {
-                        fill: $input-clear-path-fill-incorrect-hover !important;
-                    }
-                    rect {
-                        fill: $input-clear-rect-fill-incorrect-hover !important;
-                    }
-                }
-            }
-        }
-    }
-
-    &.incorrect-input-enabled {
-        display: inline-block;
-        .input-clear-x {
-            svg {
-                path {
-                    fill: $input-clear-path-fill-incorrect-enabled !important;
-                }
-                rect {
-                    fill: $input-clear-rect-fill-incorrect-enabled !important;
-                }
-            }
-
-            &:hover {
-                svg {
-                    path {
-                        fill: $input-clear-path-fill-incorrect-enabled !important;
-                    }
-                    rect {
-                        fill: $input-clear-rect-fill-incorrect-enabled !important;
-                    }
-                }
-            }
-        }
-    }
-
-    &.visible-focus-password-invalid {
-        display: inline-block;
-        .input-clear-x {
-            svg {
-                path {
-                    fill: $input-clear-path-fill-invalid-focus !important;
-                }
-                rect {
-                    fill: $input-clear-rect-fill-invalid-focus !important;
-                }
-            }
-            &:hover {
-                svg {
-                    rect {
-                        fill: $input-clear-rect-fill-invalid-focus-hover !important;
-                    }
-                }
-            }
-        }
-    }
-
-    &.remove-input-svg {
+    // In Load MOdal Only For Now
+    &.trash-can-svg {
         .input-clear-x {
             svg {
                 width: 20px !important;
@@ -182,19 +228,19 @@
                 position: relative;
                 left: 1px;
                 path {
-                    fill: #aaaaaa;
+                    fill: $default-trash-can;
                 }
                 rect {
-                    fill: #aaaaaa;
+                    fill: $default-trash-can;
                 }
             }
             &:hover {
                 svg {
                     path {
-                        fill: #919191;
+                        fill: $default-trash-can-hover;
                     }
                     rect {
-                        fill: #919191;
+                        fill: $default-trash-can-hover;
                     }
                 }
             }
@@ -206,10 +252,10 @@
             height: 16px;
             width: 1px;
             border-radius: 3px;
-            background-color: $input-placeholder-icon-normal-after;
+            background-color: $default-placeholderIcon-pipe;
             position: absolute;
             right: 22px;
-            top: 53%;
+            top: 56%;
             transform: translateY(-50%);
         }
 
@@ -217,168 +263,53 @@
             .input-clear-x {
                 svg {
                     path {
-                        fill: $input-clear-rect-fill-valid-focus;
+                        fill: $valid-focus-trash-can;
                     }
                     rect {
-                        fill: $input-clear-rect-fill-valid-focus;
+                        fill: $valid-focus-trash-can;
                     }
                 }
                 &:hover {
                     svg {
                         path {
-                            fill: $input-clear-rect-fill-valid-focus-hover;
+                            fill: $valid-focus-trash-can-hover;
                         }
                         rect {
-                            fill: $input-clear-rect-fill-valid-focus-hover;
+                            fill: $valid-focus-trash-can-hover;
                         }
                     }
                 }
+            }
+
+            &::before {
+                background-color: $valid-focus-placeholderIcon-pipe;
             }
         }
 
         &.valid-focus-out {
-            &::before {
-                content: '';
-                display: block;
-                height: 16px;
-                width: 1px;
-                border-radius: 3px;
-                background-color: $input-placeholder-icon-valid-after;
-                position: absolute;
-                right: 22px;
-                top: 53%;
-                transform: translateY(-50%);
-            }
-        }
-
-        &.invalid-focus-in {
             .input-clear-x {
                 svg {
                     path {
-                        fill: $input-clear-rect-fill-invalid-focus;
+                        fill: $valid-trash-can;
                     }
                     rect {
-                        fill: $input-clear-rect-fill-invalid-focus;
+                        fill: $valid-trash-can;
                     }
                 }
                 &:hover {
                     svg {
                         path {
-                            fill: $input-clear-rect-fill-invalid-focus-hover;
+                            fill: $valid-trash-can-hover;
                         }
                         rect {
-                            fill: $input-clear-rect-fill-invalid-focus-hover;
+                            fill: $valid-trash-can-hover;
                         }
                     }
                 }
             }
-        }
 
-        &.invalid-focus-out {
-            .input-clear-x {
-                svg {
-                    path {
-                        fill: #e57373;
-                    }
-                    rect {
-                        fill: #e57373;
-                    }
-                }
-                &:hover {
-                    svg {
-                        path {
-                            fill: #f44336;
-                        }
-                        rect {
-                            fill: #f44336;
-                        }
-                    }
-                }
-            }
             &::before {
-                content: '';
-                display: block;
-                height: 16px;
-                width: 1px;
-                border-radius: 3px;
-                background-color: #ffcdd2;
-                position: absolute;
-                right: 22px;
-                top: 53%;
-                transform: translateY(-50%);
-            }
-        }
-    }
-
-    &.merged-dropdown {
-        display: inline-block;
-        right: 4px !important;
-
-        .input-clear-x {
-            svg {
-                path {
-                    fill: #aaaaaa !important;
-                }
-                rect {
-                    fill: transparent !important;
-                }
-            }
-            &:hover {
-                svg {
-                    path {
-                        fill: #dadada !important;
-                    }
-                    rect {
-                        fill: #1d1d1d !important;
-                    }
-                }
-            }
-        }
-    }
-
-    //------------------------- Custom class -------------------------
-    &.input-32 {
-        right: 6px;
-    }
-
-    &.focus {
-        &.repair-shop-open-hour {
-            display: inline-block;
-            svg {
-                path {
-                    fill: $input-clear-path-fill-normal-focus !important;
-                }
-                rect {
-                    fill: $input-clear-rect-fill-normal-focus !important;
-                }
-            }
-
-            &:hover {
-                svg {
-                    rect {
-                        fill: $input-clear-rect-fill-normal-focus-hover !important;
-                    }
-                }
-            }
-        }
-    }
-
-    &.visible-focus-password {
-        display: inline-block !important;
-        svg {
-            path {
-                fill: $input-clear-path-fill-normal-focus !important;
-            }
-            rect {
-                fill: $input-clear-rect-fill-normal-focus !important;
-            }
-        }
-
-        &:hover {
-            svg {
-                rect {
-                    fill: $input-clear-rect-fill-normal-focus-hover !important;
-                }
+                background-color: $valid-placeholderIcon-pipe;
             }
         }
     }

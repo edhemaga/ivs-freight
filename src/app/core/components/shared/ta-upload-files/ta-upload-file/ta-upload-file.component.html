@@ -231,7 +231,10 @@
                 [alt]="file?.fileName"
             />
             <div class="spinner" *ngIf="documentLoading">
-                <app-ta-spinner [size]="'small'" [color]="'blueDark'"></app-ta-spinner>
+                <app-ta-spinner
+                    [size]="'small'"
+                    [color]="'blueDark'"
+                ></app-ta-spinner>
             </div>
         </div>
 
@@ -255,7 +258,10 @@
     </div>
 
     <!-- File Delete Template -->
-    <div *ngIf="isFileDelete" class="ta-upload-file-delete-template  {{ customClassName }}">
+    <div
+        *ngIf="isFileDelete"
+        class="ta-upload-file-delete-template  {{ customClassName }}"
+    >
         <div class="ta-upload-file-delete-text">
             Are you sure you want to delete file?
         </div>
@@ -336,6 +342,7 @@
                 blackInput: true,
                 hideClear: true
             }"
+            (blurInput)="onBlurInput($event)"
         ></app-ta-input>
     </div>
 </div>

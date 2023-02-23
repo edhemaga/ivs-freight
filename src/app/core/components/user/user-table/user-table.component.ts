@@ -392,7 +392,7 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
         return {
             ...data,
             isSelected: false,
-            userAvatar: {
+            tableAvatar: {
                 name:
                     data?.firstName && data?.lastName
                         ? data.firstName + ' ' + data.lastName
@@ -407,32 +407,46 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
                         : ''
                 ),
             },
-            userTableDept: data?.department?.name ? data.department.name : '',
-            userTableOffice: data?.companyOffice?.name
+            tableTableDept: data?.department?.name ? data.department.name : '',
+            tableTableOffice: data?.companyOffice?.name
                 ? data.companyOffice.name
                 : '',
-            userTablePhone: data?.phone
+            tableTablePhone: data?.phone
                 ? this.phoneFormater.transform(data.phone)
                 : '',
-            uesrTableExt: data?.extensionPhone ? data.extensionPhone : '',
-            userTableHired: data?.startDate
+            tableTableHired: data?.startDate
                 ? this.datePipe.transform(data?.startDate, 'MM/dd/yy')
                 : '',
-            userTablePersonalPH: data?.personalPhone
+            tableDeactivated: 'NA',
+            tablePersonalDetailsPhone: data?.personalPhone
                 ? this.phoneFormater.transform(data.personalPhone)
                 : '',
-            userTableStatus: {
+            tablePersonalDetailsEmail: 'NA',
+            tableTableStatus: {
                 status:
                     data?.userType?.name && data?.userType?.name !== '0'
                         ? data.userType.name
                         : 'No',
                 isInvited: false,
             },
-            userTableCommission: data?.commission ? data.commission + '%' : '',
-            userTableSalary: data?.salary
+            tablePersonalDetailsBankName: 'NA',
+            tablePersonalDetailsRouting: 'NA',
+            tablePersonalDetailsAccount: 'NA',
+            tablePaymentDetailsType: 'NA',
+            tablePaymentDetailsComm: data?.commission
+                ? data.commission + '%'
+                : '',
+            tablePaymentDetailsSalary: data?.salary
                 ? '$' + this.thousandSeparator.transform(data.salary)
                 : '',
+            tableAdded: data.createdAt
+                ? this.datePipe.transform(data.createdAt, 'MM/dd/yy')
+                : '',
+            tableEdited: data.updatedAt
+                ? this.datePipe.transform(data.updatedAt, 'MM/dd/yy')
+                : '',
             userStatus: data.status,
+            tableCantSelect: data.userType.name === 'Owner',
             // User Dropdown Action Set Up
             tableDropdownContent: {
                 hasContent: true,
@@ -685,7 +699,9 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
             ...event,
             data: {
                 ...event.data,
-                name: event.data.userAvatar.name,
+                name: event.data?.userAvatar?.name
+                    ? event.data.userAvatar.name
+                    : '',
             },
         };
 

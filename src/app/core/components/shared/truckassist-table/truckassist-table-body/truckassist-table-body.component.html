@@ -3,7 +3,8 @@
         <app-custom-scrollbar
             [scrollBarOptions]="{
                 showVerticalScrollBar: false,
-                showHorizontalScrollBar: true
+                showHorizontalScrollBar: true,
+                dataLength: viewData.length
             }"
             [horizontalScrollHeight]="
                 activeAttachment !== -1 ||
@@ -1836,11 +1837,11 @@
                         </div>
 
                         <!-- Border -->
-                        <div class="border-scroll-section-container">
+                        <div class="table-border-scroll-section-container">
                             <div
-                                class="border-scroll-section"
+                                class="table-border-scroll-section table-border-left"
                                 [ngClass]="{
-                                    'border-left': showScrollSectionBorder
+                                    'table-border-left-show': showScrollSectionBorder
                                 }"
                             ></div>
                         </div>
@@ -3443,12 +3444,13 @@ highlightingWords) : '' " -->
 
                         <!-- Border -->
                         <div
-                            class="border-scroll-section-container border-scroll-section-container-right"
+                            class="table-border-scroll-section-container table-border-scroll-section-container-right"
                         >
                             <div
-                                class="border-scroll-section"
+                                class="table-border-scroll-section table-border-right"
                                 [ngClass]="{
-                                    'border-right': showScrollSectionBorder
+                                    'table-border-right-show':
+                                        showScrollSectionBorder
                                 }"
                             ></div>
                         </div>

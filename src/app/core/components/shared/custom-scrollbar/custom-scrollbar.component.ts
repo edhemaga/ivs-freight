@@ -90,6 +90,14 @@ export class CustomScrollbarComponent
             this.horizontalScrollHeight =
                 changes.horizontalScrollHeight.currentValue;
         }
+
+        if (
+            !changes?.scrollBarOptions?.firstChange &&
+            changes?.scrollBarOptions
+        ) {
+            this.scrollBarOptions =
+                changes.scrollBarOptions.currentValue;
+        }
     }
 
     ngAfterViewInit(): void {

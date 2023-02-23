@@ -9,7 +9,14 @@ import { TaThousandSeparatorPipe } from 'src/app/core/pipes/taThousandSeparator.
     styleUrls: ['./ta-counter.component.scss'],
     encapsulation: ViewEncapsulation.None,
     standalone: true,
-    imports: [CommonModule, FormsModule, TaThousandSeparatorPipe],
+    imports: [
+        // Module
+        CommonModule,
+        FormsModule,
+
+        // Pipe
+        TaThousandSeparatorPipe,
+    ],
 })
 export class TaCounterComponent {
     @Input() count: number = 0;

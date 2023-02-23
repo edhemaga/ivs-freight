@@ -27,7 +27,6 @@ export interface ITaInput {
     placeholderText?: string;
     placeholderInsteadOfLabel?: boolean;
     inputCursorOnRightSide?: boolean;
-    connectDropdown?: boolean;
     isRequired?: boolean;
     isDisabled?: boolean;
     pattern?: string;
@@ -41,7 +40,7 @@ export interface ITaInput {
     textTransform?: 'capitalize' | 'uppercase' | 'lowercase';
     textAlign?: string | 'center';
     blackInput?: boolean; // has only black background && input clear, no validations
-    blueInputColor?: boolean; // some inputs has blue color on focus out (example in repair-order)
+    textBlueColor?: boolean; // some inputs has blue color on focus out (example in repair-order)
     incorrectInput?: boolean;
     dangerMark?: boolean;
     autoFocus?: boolean;
@@ -60,11 +59,8 @@ export interface ITaInput {
         color?: string; // black, gray, white, blueLight, blueDark
         isLoading?: boolean;
     };
-    addressFlag?: string; // added text in right corner and this flag will be disabled clear button, invalid danger mark\
-    // Custom classes
-    // - 'input-32' -> height: 32px,
-    // - 'datetimeclass' -> date/time pickers
-    customClass?: string;
+    addressFlag?: string; // added text in right corner and this flag will be disabled clear button, invalid danger mark
+    customClass?: string; // - 'datetimeclass' -> date/time pickers
 
     // ***************** Multiple Inputs & Labels *****************
     multipleInputValues?: {
@@ -115,8 +111,9 @@ export interface ITaInput {
         class?: string; // colors store in front-end
         remove?: boolean; // remove svg in focus mode and when user are typing
     };
+    isInvalidSearchInDropdown?: boolean;
     selectedDropdown?: boolean;
-    mergedDropdown?: boolean;
+    mergeDropdownBodyWithInput?: boolean;
 
     // Label dropdown
     dropdownLabel?: boolean;
@@ -125,5 +122,8 @@ export interface ITaInput {
     // MultiSelect Dropdown
     multiselectDropdown?: boolean;
     multiSelectDropdownActive?: boolean;
+    multiSelectItemRange?: boolean;
+
+    // DateTime Picker
     isFromDate?: boolean;
 }

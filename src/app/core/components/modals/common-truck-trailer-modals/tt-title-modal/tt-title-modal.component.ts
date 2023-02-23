@@ -31,10 +31,22 @@ import { TaUploadFilesComponent } from '../../../shared/ta-upload-files/ta-uploa
     styleUrls: ['./tt-title-modal.component.scss'],
     providers: [FormService],
     standalone: true,
-    imports: [CommonModule, FormsModule, TaModalComponent, ReactiveFormsModule,TaInputComponent, TaInputDropdownComponent, TaCustomCardComponent, TaInputNoteComponent, TaUploadFilesComponent]
+    imports: [
+        // Module
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+
+        // Component
+        TaModalComponent,
+        TaInputComponent,
+        TaInputDropdownComponent,
+        TaCustomCardComponent,
+        TaInputNoteComponent,
+        TaUploadFilesComponent,
+    ],
 })
 export class TtTitleModalComponent implements OnInit, OnDestroy {
-    private destroy$ = new Subject<void>();
     @Input() editData: any;
 
     public ttTitleForm: UntypedFormGroup;
@@ -49,6 +61,8 @@ export class TtTitleModalComponent implements OnInit, OnDestroy {
     public isFormDirty: boolean = false;
 
     public disableCardAnimation: boolean = false;
+
+    private destroy$ = new Subject<void>();
 
     constructor(
         private formBuilder: UntypedFormBuilder,
