@@ -908,6 +908,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
             this.backFilterQuery.pageIndex = 1;
             this.shopFilterQuery.pageIndex = 1;
 
+            // Repair Trailer Api Call
             if (this.selectedTab === 'inactive' && !this.inactiveTabClicked) {
                 forkJoin([
                     this.repairService.getRepairList(
@@ -936,12 +937,16 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                                 JSON.stringify(config)
                             );
                         }
+
                         this.repairTrailerStore.set(
                             repairTrailerPagination.pagination.data
                         );
+
                         this.sendRepairData();
                     });
-            } else if (
+            } 
+            // Repair Shop Api Call
+            else if (
                 this.selectedTab === 'repair-shop' &&
                 !this.repairShopTabClicked
             ) {
@@ -971,7 +976,9 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                                 JSON.stringify(config)
                             );
                         }
+
                         this.shopStore.set(repairPagination.pagination.data);
+
                         this.sendRepairData();
                     });
             } else {

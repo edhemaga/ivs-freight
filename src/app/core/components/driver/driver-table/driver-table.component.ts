@@ -23,7 +23,7 @@ import {
     ConfirmationModalComponent,
 } from '../../modals/confirmation-modal/confirmation-modal.component';
 import { ConfirmationService } from '../../modals/confirmation-modal/confirmation.service';
-import { forkJoin, Subject, takeUntil } from 'rxjs';
+import { forkJoin, Subject, takeUntil, tap } from 'rxjs';
 import { NameInitialsPipe } from '../../../pipes/nameinitials';
 import { TaThousandSeparatorPipe } from '../../../pipes/taThousandSeparator.pipe';
 import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
@@ -105,7 +105,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
         private imageBase64Service: ImageBase64Service,
         private confirmationService: ConfirmationService,
         private driversInactiveStore: DriversInactiveStore,
-        private applicantTableStore: ApplicantTableStore
+        private applicantStore: ApplicantTableStore
     ) {}
 
     ngOnInit(): void {
@@ -463,10 +463,13 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
             return this.driversActive?.length ? this.driversActive : [];
         } else if (dataType === 'inactive') {
             this.inactiveTabClicked = true;
+
             this.driversInactive = this.driversInactiveQuery.getAll();
+
             return this.driversInactive?.length ? this.driversInactive : [];
         } else if ('applicants') {
             this.applicantTabActive = true;
+
             this.applicantData = this.applicantQuery.getAll();
 
             return this.applicantData?.length ? this.applicantData : [];
@@ -615,6 +618,99 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
             },
         };
     }
+
+    mapApplicantsData(data: any) {
+        return {
+            ...data,
+            isSelected: false,
+            tableInvited: data?.invitedDate
+                ? this.datePipe.transform(data.invitedDate, 'MM/dd/yy')
+                : '',
+            tableAccepted: data?.acceptedDate
+                ? this.datePipe.transform(data.acceptedDate, 'MM/dd/yy')
+                : '',
+            tableDOB: data?.doB ? data.doB : '',
+            tableApplicantProgress: [
+                {
+                    title: 'App.',
+                    status: data.applicationStatus,
+                    width: 34,
+                    class: 'complete-icon',
+                    percentage: 34,
+                },
+                {
+                    title: 'Mvr',
+                    status: data.mvrStatus,
+                    width: 34,
+                    class: 'complete-icon',
+                    percentage: 34,
+                },
+                {
+                    title: 'Psp',
+                    status: data.pspStatus,
+                    width: 29,
+                    class: 'wrong-icon',
+                    percentage: 34,
+                },
+                {
+                    title: 'Sph',
+                    status: data.sphStatus,
+                    width: 30,
+                    class: 'complete-icon',
+                    percentage: 34,
+                },
+                {
+                    title: 'Hos',
+                    status: data.hosStatus,
+                    width: 32,
+                    class: 'done-icon',
+                    percentage: 34,
+                },
+                {
+                    title: 'Ssn',
+                    status: data.ssnStatus,
+                    width: 29,
+                    class: 'wrong-icon',
+                    percentage: 34,
+                },
+            ],
+            tableMedical: {
+                class: '',
+                hideProgres: false,
+                isApplicant: true,
+                expirationDays: data?.medicalDaysLeft
+                    ? this.thousandSeparator.transform(data.medicalDaysLeft)
+                    : '',
+                percentage: data?.medicalPercentage
+                    ? data.medicalPercentage
+                    : null,
+            },
+            tableCdl: {
+                class: '',
+                hideProgres: false,
+                isApplicant: true,
+                expirationDays: data?.cdlDaysLeft
+                    ? this.thousandSeparator.transform(data.cdlDaysLeft)
+                    : '',
+                percentage: data?.cdlPercentage ? data.cdlPercentage : null,
+            },
+            tableRev: {
+                title: 'Incomplete',
+                iconLink:
+                    '../../../../../assets/svg/truckassist-table/applicant-wrong-icon.svg',
+                // index === 0 || index === 2
+                //     ? '../../../../../assets/svg/truckassist-table/applicant-wrong-icon.svg'
+                //     : '../../../../../assets/svg/truckassist-table/applicant-done-icon.svg',
+            },
+            hire: false,
+            isFavorite: false,
+            tableDropdownContent: {
+                hasContent: true,
+                content: this.getDropdownApplicantContent(data),
+            },
+        };
+    }
+
     getDropdownDriverContent(data: any) {
         return [
             {
@@ -782,97 +878,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
             },
         ];
     }
-    mapApplicantsData(data: any) {
-        return {
-            ...data,
-            isSelected: false,
-            tableInvited: data?.invitedDate
-                ? this.datePipe.transform(data.invitedDate, 'MM/dd/yy')
-                : '',
-            tableAccepted: data?.acceptedDate
-                ? this.datePipe.transform(data.acceptedDate, 'MM/dd/yy')
-                : '',
-            tableDOB: data?.doB ? data.doB : '',
-            tableApplicantProgress: [
-                {
-                    title: 'App.',
-                    status: data.applicationStatus,
-                    width: 34,
-                    class: 'complete-icon',
-                    percentage: 34,
-                },
-                {
-                    title: 'Mvr',
-                    status: data.mvrStatus,
-                    width: 34,
-                    class: 'complete-icon',
-                    percentage: 34,
-                },
-                {
-                    title: 'Psp',
-                    status: data.pspStatus,
-                    width: 29,
-                    class: 'wrong-icon',
-                    percentage: 34,
-                },
-                {
-                    title: 'Sph',
-                    status: data.sphStatus,
-                    width: 30,
-                    class: 'complete-icon',
-                    percentage: 34,
-                },
-                {
-                    title: 'Hos',
-                    status: data.hosStatus,
-                    width: 32,
-                    class: 'done-icon',
-                    percentage: 34,
-                },
-                {
-                    title: 'Ssn',
-                    status: data.ssnStatus,
-                    width: 29,
-                    class: 'wrong-icon',
-                    percentage: 34,
-                },
-            ],
-            tableMedical: {
-                class: '',
-                hideProgres: false,
-                isApplicant: true,
-                expirationDays: data?.medicalDaysLeft
-                    ? this.thousandSeparator.transform(data.medicalDaysLeft)
-                    : '',
-                percentage: data?.medicalPercentage
-                    ? data.medicalPercentage
-                    : null,
-            },
-            tableCdl: {
-                class: '',
-                hideProgres: false,
-                isApplicant: true,
-                expirationDays: data?.cdlDaysLeft
-                    ? this.thousandSeparator.transform(data.cdlDaysLeft)
-                    : '',
-                percentage: data?.cdlPercentage ? data.cdlPercentage : null,
-            },
-            tableRev: {
-                title: 'Incomplete',
-                iconLink:
-                    '../../../../../assets/svg/truckassist-table/applicant-wrong-icon.svg',
-                // index === 0 || index === 2
-                //     ? '../../../../../assets/svg/truckassist-table/applicant-wrong-icon.svg'
-                //     : '../../../../../assets/svg/truckassist-table/applicant-done-icon.svg',
-            },
-            hire: false,
-            isFavorite: false,
-            tableDropdownContent: {
-                hasContent: true,
-                content: this.getDropdownApplicantContent(data),
-            },
-        };
-    }
+
     getDropdownApplicantContent(data: any) {
         return [
             {
@@ -1005,6 +1011,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
             },
         ];
     }
+
     // Get Avatar Color
     getAvatarColors() {
         let textColors: string[] = [
@@ -1158,6 +1165,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     onToolBarAction(event: any) {
+        // Open Modal
         if (event.action === 'open-modal') {
             if (this.selectedTab === 'applicants') {
                 this.modalService.openModal(ApplicantModalComponent, {
@@ -1168,13 +1176,19 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     size: 'medium',
                 });
             }
-        } else if (event.action === 'tab-selected') {
+        } 
+        // Select Tab
+        else if (event.action === 'tab-selected') {
             this.selectedTab = event.tabData.field;
             this.mapingIndex = 0;
 
             this.driverBackFilterQuery.active =
                 this.selectedTab === 'active' ? 1 : 0;
             this.driverBackFilterQuery.pageIndex = 1;
+
+            this.applicantBackFilterQuery.applicantSpecParamsPageIndex = 1;
+
+            // Driver Inactive Api Call
             if (this.selectedTab === 'inactive' && !this.inactiveTabClicked) {
                 this.driverTService
                     .getDrivers(0, undefined, undefined, undefined, 1, 25)
@@ -1183,37 +1197,50 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                         this.driversInactiveStore.set(
                             driverPagination.pagination.data
                         );
+
                         this.sendDriverData();
                     });
-            } else if (
+            } 
+            // Applicants Api Call
+            else if (
                 this.selectedTab === 'applicants' &&
                 !this.applicantTabActive
             ) {
                 forkJoin([
-                    this.applicantService
-                        .getApplicantAdminList(
-                            undefined,
-                            undefined,
-                            undefined,
-                            1,
-                            25
-                        )
-                        .pipe(takeUntil(this.destroy$))
-                        .subscribe(
-                            (applicantPagination: DriverListResponse) => {
-                                this.applicantTableStore.set(
-                                    applicantPagination.pagination.data
-                                );
-                                this.sendDriverData();
-                            }
-                        ),
+                    this.applicantService.getApplicantAdminList(
+                        undefined,
+                        undefined,
+                        undefined,
+                        1,
+                        25
+                    ),
                     this.tableService.getTableConfig(7),
-                ]);
-            } else {
+                ])
+                    .pipe(takeUntil(this.destroy$))
+                    .subscribe(([applicantPagination, tableConfig]) => {
+                        if (tableConfig) {
+                            const config = JSON.parse(tableConfig.config);
+
+                            localStorage.setItem(
+                                `table-${tableConfig.tableType}-Configuration`,
+                                JSON.stringify(config)
+                            );
+                        }
+
+                        this.applicantStore.set(
+                            applicantPagination.pagination.data
+                        );
+
+                        this.sendDriverData();
+                    });
+            } 
+            // Send Driver Data
+            else {
                 this.sendDriverData();
             }
-            this.applicantBackFilterQuery.applicantSpecParamsPageIndex = 1;
-        } else if (event.action === 'view-mode') {
+        } 
+        // Change View Mode
+        else if (event.action === 'view-mode') {
             this.mapingIndex = 0;
 
             this.activeViewMode = event.mode;

@@ -720,13 +720,18 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     onToolBarAction(event: any) {
+        // Open Modal
         if (event.action === 'open-modal') {
             this.modalService.openModal(TruckModalComponent, { size: 'small' });
-        } else if (event.action === 'tab-selected') {
+        } 
+        // Select Tab
+        else if (event.action === 'tab-selected') {
             this.selectedTab = event.tabData.field;
 
             this.backFilterQuery.pageIndex = 1;
+
             this.backFilterQuery.active = this.selectedTab === 'active' ? 1 : 0;
+
             if (this.selectedTab === 'inactive' && !this.inactiveTabClicked) {
                 this.truckService
                     .getTruckList(0, 1, 25)
@@ -735,12 +740,15 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
                         this.truckInactiveStore.set(
                             truckPagination.pagination.data
                         );
+
                         this.sendTruckData();
                     });
             } else {
                 this.sendTruckData();
             }
-        } else if (event.action === 'view-mode') {
+        } 
+        // Change View Mode
+        else if (event.action === 'view-mode') {
             this.activeViewMode = event.mode;
         }
     }
