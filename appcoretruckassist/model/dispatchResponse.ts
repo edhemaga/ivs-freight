@@ -37,11 +37,9 @@ export interface DispatchResponse {
     lastStatusDateTime?: string;
     currentStopType?: EnumValue;
     nextStopType?: EnumValue;
-    possibleNextStatuses?: Array<DispatchStatusResponse> | null;
     hoursOfService?: Array<DispatchHosResponse> | null;
     note?: string | null;
     activeLoad?: LoadShortResponse;
-    assignedLoads?: Array<LoadShortResponse> | null;
     parkingSlot?: ParkingSlotShortResponse;
 }
 
