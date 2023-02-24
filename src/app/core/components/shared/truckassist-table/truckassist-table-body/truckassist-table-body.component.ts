@@ -611,7 +611,9 @@ export class TruckassistTableBodyComponent
                                     if (content.id === innerAction.title) {
                                         this.onRemoveClickEventListener();
                                         
-                                        this.onDropAction(innerAction);
+                                        setTimeout(() => {
+                                            this.onDropAction(innerAction);
+                                        }, 100)
                                     }
                                 }
                             );
