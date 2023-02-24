@@ -490,6 +490,7 @@
                 [hidden]="!isDropZoneVisible"
                 [@widthGrow]="isDropZoneVisible ? 'open' : 'closed'"
             >
+            {{isDropZoneVisible}}
                 <h5 class="drop-zone-title">{{ modalTitle }}</h5>
                 <app-ta-upload-dropzone
                     [dropZoneConfig]="dropZoneConfig"

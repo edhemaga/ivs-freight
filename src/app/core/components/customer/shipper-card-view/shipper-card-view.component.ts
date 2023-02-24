@@ -6,11 +6,14 @@ import {
     SimpleChanges,
     ViewEncapsulation,
     ViewChild,
+    OnDestroy,
 } from '@angular/core';
 import { UntypedFormControl } from '@angular/forms';
 import { ShipperMinimalListQuery } from '../state/shipper-state/shipper-details-state/shipper-minimal-list-state/shipper-minimal.query';
 import { DetailsPageService } from '../../../services/details-page/details-page-ser.service';
 import moment from 'moment';
+import { Subject, takeUntil } from 'rxjs';
+import { ShipperTService } from '../state/shipper-state/shipper.service';
 
 @Component({
     selector: 'app-shipper-card-view',
@@ -18,7 +21,8 @@ import moment from 'moment';
     encapsulation: ViewEncapsulation.None,
     styleUrls: ['./shipper-card-view.component.scss'],
 })
-export class ShipperCardViewComponent implements OnInit, OnChanges {
+export class ShipperCardViewComponent implements OnInit, OnChanges, OnDestroy {
+    private destroy$ = new Subject<void>();
     @ViewChild('stackedBarChart', { static: false })
     public stackedBarChart: any;
     @Input() shipper: any;
@@ -33,7 +37,7 @@ export class ShipperCardViewComponent implements OnInit, OnChanges {
             {
                 defaultConfig: {
                     type: 'bar',
-                    data: [20, 17, 30, 23, 27, 25, 19, 29, 22, 25, 22, 20],
+                    data: [],
                     label: 'Miles',
                     yAxisID: 'y-axis-0',
                     borderColor: '#80CBBA',
@@ -46,10 +50,7 @@ export class ShipperCardViewComponent implements OnInit, OnChanges {
             {
                 defaultConfig: {
                     type: 'bar',
-                    data: [
-                        -20, -25, -21, -22, -15, -26, -24, -21, -23, -24, -25,
-                        -20,
-                    ],
+                    data: [],
                     label: 'Miles',
                     yAxisID: 'y-axis-0',
                     borderColor: '#EF9A9A',
@@ -61,7 +62,7 @@ export class ShipperCardViewComponent implements OnInit, OnChanges {
             },
         ],
         showLegend: false,
-        chartValues: [150, 257.7, 190, 568.85],
+        chartValues: [0, 0],
         defaultType: 'bar',
         chartWidth: '417',
         chartHeight: '130',
@@ -113,7 +114,7 @@ export class ShipperCardViewComponent implements OnInit, OnChanges {
             minValue: -30,
             maxValue: 30,
             stepSize: 15,
-            showGridLines: true,
+            showGridLines: false,
         },
         horizontalAxes: {
             visible: true,
@@ -122,16 +123,38 @@ export class ShipperCardViewComponent implements OnInit, OnChanges {
         },
     };
 
+    public monthList: any[] = [
+        'JAN',
+        'FEB',
+        'MAR',
+        'APR',
+        'MAY',
+        'JUN',
+        'JUL',
+        'AUG',
+        'SEP',
+        'OCT',
+        'NOV',
+        'DEC',
+    ];
+
+    public shipperCall: any = {
+        id: -1,
+        chartType: 1,
+    };
+
     public shipperIndex: any;
 
     constructor(
         private detailsPageDriverSer: DetailsPageService,
-        private shipperMinimalListQuery: ShipperMinimalListQuery
+        private shipperMinimalListQuery: ShipperMinimalListQuery,
+        private shipperService: ShipperTService
     ) {}
     ngOnChanges(changes: SimpleChanges): void {
         if (changes.shipper?.currentValue != changes.shipper?.previousValue) {
             this.note.patchValue(changes?.shipper.currentValue.note);
             this.shipper = changes.shipper.currentValue;
+            this.getShipperChartData(changes.shipper.currentValue.id, this.shipperCall.chartType, false);
             this.getShipperDropdown();
         }
     }
@@ -154,12 +177,13 @@ export class ShipperCardViewComponent implements OnInit, OnChanges {
                 };
             });
     }
-    
+
     public tabsButton() {
         this.shipperTabs = [
             {
                 id: 223,
                 name: '1M',
+                checked: true,
             },
             {
                 name: '3M',
@@ -217,7 +241,7 @@ export class ShipperCardViewComponent implements OnInit, OnChanges {
                     this.onSelectedShipper({
                         id: this.shipperList[currentIndex].id,
                     });
-                    this.shipperIndex = currentIndex; 
+                    this.shipperIndex = currentIndex;
                 }
                 break;
             }
@@ -243,8 +267,145 @@ export class ShipperCardViewComponent implements OnInit, OnChanges {
         }
     }
 
-    public converTime(mod){
-        let time_string = moment(mod,'HH:mm').format('hh:mm A');
+    public converTime(mod) {
+        let time_string = moment(mod, 'HH:mm').format('hh:mm A');
         return time_string;
+    }
+
+    public changeShipperTabs(ev: any) {
+        const chartType = this.stackedBarChart?.detailsTimePeriod(ev.name);
+        this.getShipperChartData(this.shipper.id, chartType);
+    }
+
+    public getShipperChartData(
+        id: number,
+        chartType: number,
+        hideAnimation?: boolean
+    ) {
+        if (
+            id != this.shipperCall.id ||
+            chartType != this.shipperCall.chartType
+        ) {
+            this.shipperCall.id = id;
+            this.shipperCall.chartType = chartType;
+        } else {
+            return false;
+        }
+        this.shipperService
+            .getShipperChart(id, chartType)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((item) => {
+                console.log(item, 'item');
+
+                let avgPickupTime = this.convertTimeSpanToMinutes(
+                        item.avgPickupTime
+                    ),
+                    avgDeliveryTime = this.convertTimeSpanToMinutes(
+                        item.avgDeliveryTime
+                    );
+                this.stackedBarChartConfig.dataLabels = [];
+                this.stackedBarChartConfig.chartValues = [
+                    avgPickupTime,
+                    avgDeliveryTime,
+                ];
+                this.stackedBarChartLegend[0].value = avgPickupTime;
+                this.stackedBarChartLegend[1].value = avgDeliveryTime;
+                let milesPerGallon = [],
+                    costPerGallon = [],
+                    labels = [],
+                    maxValue = 0;
+                if (item?.shipperAverageWaitingTimeChartResponse?.length > 17) {
+                    this.stackedBarChartConfig.dataProperties[0].defaultConfig.barThickness = 10;
+                    this.stackedBarChartConfig.dataProperties[1].defaultConfig.barThickness = 10;
+                } else {
+                    this.stackedBarChartConfig.dataProperties[0].defaultConfig.barThickness = 18;
+                    this.stackedBarChartConfig.dataProperties[1].defaultConfig.barThickness = 18;
+                }
+                this.stackedBarChart.toolTipData = [];
+                item.shipperAverageWaitingTimeChartResponse.map(
+                    (data, index) => {
+                        let pickup = this.convertTimeSpanToMinutes(
+                            data.avgPickupTime
+                        );
+                        let delivery = this.convertTimeSpanToMinutes(
+                            data.avgDeliveryTime
+                        );
+
+                        this.stackedBarChart.toolTipData.push(data);
+
+                        if (delivery + pickup > maxValue) {
+                            maxValue =
+                                delivery +
+                                pickup +
+                                ((delivery + pickup) * 7) / 100;
+                        }
+                        if (data.day) {
+                            labels.push([
+                                data.day,
+                                this.monthList[data.month - 1],
+                            ]);
+                        } else {
+                            labels.push([this.monthList[data.month - 1]]);
+                        }
+
+                        delivery = delivery ? -delivery : 0;
+                        milesPerGallon.push(pickup);
+                        costPerGallon.push(delivery);
+                    }
+                );
+
+                this.stackedBarAxes['verticalLeftAxes']['maxValue'] =
+                    maxValue / 2;
+                this.stackedBarAxes['verticalLeftAxes']['minValue'] = -(
+                    maxValue / 2
+                );
+                this.stackedBarChartConfig.dataLabels = labels;
+                this.stackedBarChartConfig.dataProperties[0].defaultConfig.data =
+                    milesPerGallon;
+                this.stackedBarChartConfig.dataProperties[1].defaultConfig.data =
+                    costPerGallon;
+                this.stackedBarChart.chartDataCheck(
+                    this.stackedBarChartConfig.chartValues
+                );
+                this.stackedBarChart.updateChartData(hideAnimation);
+                this.stackedBarChart.saveValues = JSON.parse(
+                    JSON.stringify(this.stackedBarChartLegend)
+                );
+                this.stackedBarChart.legendAttributes = JSON.parse(
+                    JSON.stringify(this.stackedBarChartLegend)
+                );
+            });
+
+        //this.ref.detectChanges();
+    }
+
+    convertTimeSpanToMinutes(timespan) {
+        if (!timespan) {
+            return 0;
+        }
+        let totalMinutes = 0;
+        let timeArr = JSON.stringify(timespan);
+        timeArr = JSON.parse(timeArr).split('.');
+        if (timeArr.length > 1) {
+            const days = Number(timeArr[0]);
+            console.log(days, 'timeArr');
+            let hoursAndMinutes = timeArr[1].split(':');
+            const hours = Number(hoursAndMinutes[0]) + days * 24;
+            const minutes = Number([hoursAndMinutes[1]]);
+
+            totalMinutes = hours * 60 + minutes;
+        } else {
+            let hoursAndMinutes = timeArr[0].split(':');
+            const hours = Number(hoursAndMinutes[0]);
+            const minutes = Number([hoursAndMinutes[1]]);
+            totalMinutes = hours * 60 + minutes;
+        }
+
+        return totalMinutes;
+    }
+
+    ngOnDestroy(): void {
+        this.destroy$.next();
+        this.destroy$.complete();
     }
 }

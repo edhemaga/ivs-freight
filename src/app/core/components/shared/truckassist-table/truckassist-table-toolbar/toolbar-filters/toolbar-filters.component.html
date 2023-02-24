@@ -488,7 +488,7 @@
         [type]="'moneyFilter'"
         [icon]="'dollar'"
         [filterTitle]="'Money Filter'"
-        [subType]="'all'"
+        [subType]="options.toolbarActions.hideMoneySubType ? '' : 'all'"
         [moneyFilter]="true"
         [fuelType]="options.toolbarActions.fuelMoneyFilter ? true : false"
         (setFilter)="onFilter($event)"

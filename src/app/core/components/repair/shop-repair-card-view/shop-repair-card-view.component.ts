@@ -149,7 +149,7 @@ export class ShopRepairCardViewComponent
 
     public repairCall: any = {
         id: -1,
-        chartType: -1,
+        chartType: 1,
     };
 
     constructor(
@@ -176,7 +176,7 @@ export class ShopRepairCardViewComponent
         this.currentShopId = changes.repairShopCardViewData.currentValue.id;
         this.getRepairShopChartData(
             changes.repairShopCardViewData.currentValue.id,
-            1,
+            this.repairCall.chartType,
             false
         );
         this.getActiveServices(changes.repairShopCardViewData.currentValue);

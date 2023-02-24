@@ -603,24 +603,23 @@ export class TruckassistTableBodyComponent
             );
 
             innerDropdownContent.forEach((content) => {
-                content.addEventListener('click', this.onInnerDropdownClick.bind(null, content));
+                content.addEventListener('click', () => {
+                    this.dropdownActions.map((action: any) => {
+                        if (action.isInnerDropActive) {
+                            action.insideDropdownContent.map(
+                                (innerAction: any) => {
+                                    if (content.id === innerAction.title) {
+                                        this.onRemoveClickEventListener();
+                                        
+                                        this.onDropAction(innerAction);
+                                    }
+                                }
+                            );
+                        }
+                    });
+                });
             });
         }, 100);
-    }
-
-    // On Inner Drop Click
-    onInnerDropdownClick(content: any){
-        this.dropdownActions.map((action: any) => {
-            if (action.isInnerDropActive) {
-                action.insideDropdownContent.map(
-                    (innerAction: any) => {
-                        if (content.id === innerAction.title) {
-                            this.onDropAction(innerAction);
-                        }
-                    }
-                );
-            }
-        });
     }
 
     // Remove Click Event On Inner Dropdown
@@ -693,6 +692,8 @@ export class TruckassistTableBodyComponent
 
     // On Show Inner Dropdown
     onShowInnerDropdown(action) {
+        this.onRemoveClickEventListener();
+
         let innerContent = '';
 
         let newDropdownActions = [...this.dropdownActions];
@@ -703,8 +704,6 @@ export class TruckassistTableBodyComponent
                 actions.isInnerDropActive &&
                 actions.title !== action.title
             ) {
-                this.onRemoveClickEventListener();
-
                 actions.isInnerDropActive = false;
                 actions.innerDropElement = null;
             }
@@ -725,8 +724,6 @@ export class TruckassistTableBodyComponent
 
         if (action.isInnerDropActive) {
             this.setInnerDropdownClickEvent();
-        } else {
-            this.onRemoveClickEventListener();
         }
     }
 

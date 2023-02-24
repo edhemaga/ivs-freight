@@ -322,6 +322,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                 showPMFilter: this.selectedTab !== 'repair-shop',
                 showCategoryRepairFilter: true,
                 showMoneyFilter: true,
+                hideMoneySubType: true,
                 showLocationFilter: true,
                 showMoneyCount: this.selectedTab !== 'repair-shop',
                 viewModeOptions: this.getViewModeOptions(),
@@ -932,6 +933,8 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
             }
         } else if (event.action === 'view-mode') {
             this.activeViewMode = event.mode;
+            
+            this.tableOptions.toolbarActions.hideSearch = event.mode == 'Map';
         }
     }
 

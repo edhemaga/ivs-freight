@@ -2,6 +2,7 @@ import { distinctUntilChanged, Subject, takeUntil } from 'rxjs';
 import { NgbActiveModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import {
     ChangeDetectionStrategy,
+    ChangeDetectorRef,
     Component,
     EventEmitter,
     HostListener,
@@ -162,7 +163,8 @@ export class TaModalComponent implements OnInit, OnDestroy {
     constructor(
         private ngbActiveModal: NgbActiveModal,
         private modalService: ModalService,
-        private uploadFileService: TaUploadFileService
+        private uploadFileService: TaUploadFileService,
+        private ref: ChangeDetectorRef
     ) {}
 
     ngOnInit(): void {
@@ -234,6 +236,7 @@ export class TaModalComponent implements OnInit, OnDestroy {
                     this.isDropZoneVisible = false;
                     this.dropZoneCounter = 0;
                     this.isLeaveZone = false;
+                    this.ref.detectChanges();
                 }
             }, 150);
         }
