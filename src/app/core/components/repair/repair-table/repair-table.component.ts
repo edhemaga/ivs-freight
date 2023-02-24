@@ -11,16 +11,19 @@ import { ModalService } from '../../shared/ta-modal/modal.service';
 import { Router } from '@angular/router';
 import { RepairOrderModalComponent } from '../../modals/repair-modals/repair-order-modal/repair-order-modal.component';
 import { ShopQuery } from '../state/shop-state/shop.query';
-import { ShopState } from '../state/shop-state/shop.store';
+import { ShopState, ShopStore } from '../state/shop-state/shop.store';
 
 import { RepairTruckState } from '../state/repair-truck-state/repair-truck.store';
-import { RepairTrailerState } from '../state/repair-trailer-state/repair-trailer.store';
+import {
+    RepairTrailerState,
+    RepairTrailerStore,
+} from '../state/repair-trailer-state/repair-trailer.store';
 import { RepairTruckQuery } from '../state/repair-truck-state/repair-truck.query';
 import { RepairTrailerQuery } from '../state/repair-trailer-state/repair-trailer.query';
 import { DatePipe } from '@angular/common';
 import { RepairTService } from '../state/repair.service';
 import { RepairListResponse, RepairShopListResponse } from 'appcoretruckassist';
-import { Subject, takeUntil } from 'rxjs';
+import { forkJoin, Subject, takeUntil } from 'rxjs';
 import { TaThousandSeparatorPipe } from '../../../pipes/taThousandSeparator.pipe';
 import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
 import { ReviewsRatingService } from '../../../services/reviews-rating/reviewsRating.service';
@@ -57,7 +60,8 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
     repairTrailers: RepairTrailerState[] = [];
     repairShops: ShopState[] = [];
     resizeObserver: ResizeObserver;
-
+    inactiveTabClicked: boolean = false;
+    repairShopTabClicked: boolean = false;
     backFilterQuery = {
         repairShopId: undefined,
         unitType: 1,
@@ -111,7 +115,9 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
         private thousandSeparator: TaThousandSeparatorPipe,
         private reviewRatingService: ReviewsRatingService,
         private ref: ChangeDetectorRef,
-        private mapsService: MapsService
+        private mapsService: MapsService,
+        private repairTrailerStore: RepairTrailerStore,
+        private shopStore: ShopStore
     ) {}
 
     ngOnInit(): void {
@@ -354,10 +360,6 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
             localStorage.getItem('repairTruckTrailerTableCount')
         );
 
-        const repairShopCount = JSON.parse(
-            localStorage.getItem('repairShopTableCount')
-        );
-
         const repairTruckData =
             this.selectedTab === 'active' ? this.getTabData('active') : [];
 
@@ -405,7 +407,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
             {
                 title: 'Shop',
                 field: 'repair-shop',
-                length: repairShopCount.repairShops,
+                length: repairTruckTrailerCount.repairShops,
                 data: repairShopData,
                 gridNameTitle: 'Repair',
                 stateName: 'repair_shops',
@@ -453,10 +455,14 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
 
             return this.repairTrucks?.length ? this.repairTrucks : [];
         } else if (dataType === 'inactive') {
+            this.inactiveTabClicked = true;
+
             this.repairTrailers = this.repairTrailerQuery.getAll();
 
             return this.repairTrailers?.length ? this.repairTrailers : [];
         } else if (dataType === 'repair-shop') {
+            this.repairShopTabClicked = true;
+
             this.repairShops = this.shopQuery.getAll();
 
             return this.repairShops?.length ? this.repairShops : [];
@@ -876,9 +882,6 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
         const repairTruckTrailerCount = JSON.parse(
             localStorage.getItem('repairTruckTrailerTableCount')
         );
-        const repairShopCount = JSON.parse(
-            localStorage.getItem('repairShopTableCount')
-        );
 
         const updatedTableData = [...this.tableData];
 
@@ -888,7 +891,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
         updatedTableData[1].length = repairTruckTrailerCount.repairTrailers;
         updatedTableData[1].moneyCount =
             repairTruckTrailerCount.trailerMoneyTotal;
-        updatedTableData[2].length = repairShopCount.repairShops;
+        updatedTableData[2].length = repairTruckTrailerCount.repairShops;
 
         this.tableData = [...updatedTableData];
     }
@@ -904,7 +907,82 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
             this.backFilterQuery.pageIndex = 1;
             this.shopFilterQuery.pageIndex = 1;
 
-            this.sendRepairData();
+            // Repair Trailer Api Call
+            if (this.selectedTab === 'inactive' && !this.inactiveTabClicked) {
+                forkJoin([
+                    this.repairService.getRepairList(
+                        undefined,
+                        2,
+                        undefined,
+                        undefined,
+                        undefined,
+                        undefined,
+                        undefined,
+                        undefined,
+                        undefined,
+                        undefined,
+                        1,
+                        25
+                    ),
+                    this.tableService.getTableConfig(11),
+                ])
+                    .pipe(takeUntil(this.destroy$))
+                    .subscribe(([repairTrailerPagination, tableConfig]) => {
+                        if (tableConfig) {
+                            const config = JSON.parse(tableConfig.config);
+
+                            localStorage.setItem(
+                                `table-${tableConfig.tableType}-Configuration`,
+                                JSON.stringify(config)
+                            );
+                        }
+
+                        this.repairTrailerStore.set(
+                            repairTrailerPagination.pagination.data
+                        );
+
+                        this.sendRepairData();
+                    });
+            } 
+            // Repair Shop Api Call
+            else if (
+                this.selectedTab === 'repair-shop' &&
+                !this.repairShopTabClicked
+            ) {
+                forkJoin([
+                    this.repairService.getRepairShopList(
+                        1,
+                        undefined,
+                        undefined,
+                        undefined,
+                        undefined,
+                        undefined,
+                        undefined,
+                        undefined,
+                        undefined,
+                        1,
+                        25
+                    ),
+                    this.tableService.getTableConfig(12),
+                ])
+                    .pipe(takeUntil(this.destroy$))
+                    .subscribe(([repairPagination, tableConfig]) => {
+                        if (tableConfig) {
+                            const config = JSON.parse(tableConfig.config);
+
+                            localStorage.setItem(
+                                `table-${tableConfig.tableType}-Configuration`,
+                                JSON.stringify(config)
+                            );
+                        }
+
+                        this.shopStore.set(repairPagination.pagination.data);
+
+                        this.sendRepairData();
+                    });
+            } else {
+                this.sendRepairData();
+            }
         } else if (event.action === 'open-modal') {
             if (this.selectedTab === 'active') {
                 this.modalService.openModal(

@@ -27,28 +27,28 @@ export class DriverActiveResolver implements Resolve<DriversActiveState> {
                 25
             ),
             this.tableService.getTableConfig(6),
-        ])
-            .pipe(
-                tap(([driverPagination, tableConfig]) => {
+        ]).pipe(
+            tap(([driverPagination, tableConfig]) => {
+                localStorage.setItem(
+                    'driverTableCount',
+                    JSON.stringify({
+                        active: driverPagination.activeCount,
+                        inactive: driverPagination.inactiveCount,
+                        applicant: driverPagination.applicantCount,
+                    })
+                );
+
+                if (tableConfig) {
+                    const config = JSON.parse(tableConfig.config);
+
                     localStorage.setItem(
-                        'driverTableCount',
-                        JSON.stringify({
-                            active: driverPagination.activeCount,
-                            inactive: driverPagination.inactiveCount,
-                        })
+                        `table-${tableConfig.tableType}-Configuration`,
+                        JSON.stringify(config)
                     );
+                }
 
-                    if (tableConfig) {
-                        const config = JSON.parse(tableConfig.config);
-
-                        localStorage.setItem(
-                            `table-${tableConfig.tableType}-Configuration`,
-                            JSON.stringify(config)
-                        );
-                    }
-
-                    this.store.set(driverPagination.pagination.data);
-                })
-            )
+                this.store.set(driverPagination.pagination.data);
+            })
+        );
     }
 }

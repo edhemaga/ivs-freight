@@ -11,7 +11,10 @@ import { DriverDrugAlcoholModalComponent } from '../../modals/driver-modal/drive
 import { DriverMedicalModalComponent } from '../../modals/driver-modal/driver-medical-modal/driver-medical-modal.component';
 import { DriverMvrModalComponent } from '../../modals/driver-modal/driver-mvr-modal/driver-mvr-modal.component';
 
-import { DriversInactiveState } from '../state/driver-inactive-state/driver-inactive.store';
+import {
+    DriversInactiveState,
+    DriversInactiveStore,
+} from '../state/driver-inactive-state/driver-inactive.store';
 import { DriversInactiveQuery } from '../state/driver-inactive-state/driver-inactive.query';
 import { ApplicantShortResponse, DriverListResponse } from 'appcoretruckassist';
 
@@ -20,7 +23,7 @@ import {
     ConfirmationModalComponent,
 } from '../../modals/confirmation-modal/confirmation-modal.component';
 import { ConfirmationService } from '../../modals/confirmation-modal/confirmation.service';
-import { Subject, takeUntil } from 'rxjs';
+import { forkJoin, Subject, takeUntil, tap } from 'rxjs';
 import { NameInitialsPipe } from '../../../pipes/nameinitials';
 import { TaThousandSeparatorPipe } from '../../../pipes/taThousandSeparator.pipe';
 import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
@@ -37,7 +40,7 @@ import { ApplicantTableQuery } from '../state/applicant-state/applicant-table.qu
 import { getLoadModalColumnDefinition } from 'src/assets/utils/settings/modal-columns-configuration/table-load-modal-columns';
 import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { ApplicantTService } from '../state/applicant.service';
-
+import { ApplicantTableStore } from '../state/applicant-state/applicant-table.store';
 @Component({
     selector: 'app-driver-table',
     templateUrl: './driver-table.component.html',
@@ -57,6 +60,8 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
     driversInactive: DriversInactiveState[] = [];
     applicantData: ApplicantShortResponse[] = [];
     loadingPage: boolean = true;
+    inactiveTabClicked: boolean = false;
+    applicantTabActive: boolean = false;
     driverBackFilterQuery = {
         active: 1,
         long: undefined,
@@ -98,7 +103,9 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
         private nameInitialsPipe: NameInitialsPipe,
         private thousandSeparator: TaThousandSeparatorPipe,
         private imageBase64Service: ImageBase64Service,
-        private confirmationService: ConfirmationService
+        private confirmationService: ConfirmationService,
+        private driversInactiveStore: DriversInactiveStore,
+        private applicantStore: ApplicantTableStore
     ) {}
 
     ngOnInit(): void {
@@ -391,10 +398,6 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
     sendDriverData() {
         this.initTableOptions();
 
-        const applicantCount = JSON.parse(
-            localStorage.getItem('applicantTableCount')
-        );
-
         const driverCount = JSON.parse(
             localStorage.getItem('driverTableCount')
         );
@@ -409,12 +412,11 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
         const driverInactiveData =
             this.selectedTab === 'inactive' ? this.getTabData('inactive') : [];
-
         this.tableData = [
             {
                 title: 'Applicants',
                 field: 'applicants',
-                length: applicantCount.applicant,
+                length: driverCount.applicant,
                 data: applicantsData,
                 extended: true,
                 gridNameTitle: 'Driver',
@@ -460,10 +462,14 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
             return this.driversActive?.length ? this.driversActive : [];
         } else if (dataType === 'inactive') {
+            this.inactiveTabClicked = true;
+
             this.driversInactive = this.driversInactiveQuery.getAll();
 
             return this.driversInactive?.length ? this.driversInactive : [];
         } else if ('applicants') {
+            this.applicantTabActive = true;
+
             this.applicantData = this.applicantQuery.getAll();
 
             return this.applicantData?.length ? this.applicantData : [];
@@ -612,159 +618,6 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
             },
         };
     }
-    
-    getDropdownDriverContent(data: any) {
-        return [
-            {
-                title: 'Edit',
-                name: 'edit',
-                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Edit.svg',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                hasBorder: true,
-                svgClass: 'regular',
-            },
-
-            {
-                title: 'View Details',
-                name: 'view-details',
-                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Information.svg',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                svgClass: 'regular',
-                tableListDropdownContentStyle: {
-                    'margin-bottom.px': 4,
-                },
-            },
-            {
-                title: 'Send Message',
-                name: 'send-message',
-                svgUrl: '',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                tableListDropdownContentStyle: {
-                    'margin-bottom.px': 4,
-                },
-                svgClass: 'regular',
-            },
-            {
-                title: 'Add New',
-                name: 'add-new',
-                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Show More.svg',
-                svgStyle: {
-                    width: 15,
-                    height: 15,
-                },
-                svgClass: 'regular',
-                tableListDropdownContentStyle: {
-                    'margin-bottom.px': 4,
-                },
-                isDropdown: true,
-                insideDropdownContent: [
-                    {
-                        title: 'Add CDL',
-                        name: 'new-licence',
-                    },
-                    {
-                        title: 'Add MVR',
-                        name: 'new-mvr',
-                    },
-                    {
-                        title: 'Medical Exam',
-                        name: 'new-medical',
-                    },
-                    {
-                        title: 'Test (Drug, Alcohol)',
-                        name: 'new-drug',
-                    },
-                ]
-            },
-            {
-                title: 'Request',
-                name: 'add-to-favourites',
-                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Show More.svg',
-                svgStyle: {
-                    width: 15,
-                    height: 15,
-                },
-                svgClass: 'regular',
-                isDropdown: true,
-                insideDropdownContent: [
-                    {
-                        title: 'Background Check',
-                        name: 'background-check',
-                    },
-                    {
-                        title: 'Medical Exam',
-                        name: 'medical-exam',
-                    },
-                    {
-                        title: 'Test (Drug, Alcohol)',
-                        name: 'test-drug',
-                    },
-                    {
-                        title: 'MVR',
-                        name: 'test-mvr',
-                    },
-                ],
-                hasBorder: true,
-            },
-
-            {
-                title: 'Share',
-                name: 'share',
-                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Share.svg',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                svgClass: 'regular',
-                tableListDropdownContentStyle: {
-                    'margin-bottom.px': 4,
-                },
-            },
-            {
-                title: 'Print',
-                name: 'print',
-                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Print.svg',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                svgClass: 'regular',
-                hasBorder: true,
-            },
-            {
-                title: 'Deactivate',
-                name: 'activate-item',
-                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Deactivate.svg',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                svgClass: 'delete',
-                tableListDropdownContentStyle: {
-                    'margin-bottom.px': 4,
-                },
-            },
-            {
-                title: 'Delete',
-                name: 'delete-item',
-                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Delete.svg',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                svgClass: 'delete',
-            },
-        ];
-    }
 
     mapApplicantsData(data: any) {
         return {
@@ -857,6 +710,160 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
             },
         };
     }
+
+    getDropdownDriverContent(data: any) {
+        return [
+            {
+                title: 'Edit',
+                name: 'edit',
+                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Edit.svg',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                hasBorder: true,
+                svgClass: 'regular',
+            },
+
+            {
+                title: 'View Details',
+                name: 'view-details',
+                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Information.svg',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                svgClass: 'regular',
+                tableListDropdownContentStyle: {
+                    'margin-bottom.px': 4,
+                },
+            },
+            {
+                title: 'Send Message',
+                name: 'send-message',
+                svgUrl: '',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                tableListDropdownContentStyle: {
+                    'margin-bottom.px': 4,
+                },
+                svgClass: 'regular',
+            },
+            {
+                title: 'Add New',
+                name: 'add-new',
+                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Show More.svg',
+                svgStyle: {
+                    width: 15,
+                    height: 15,
+                },
+                svgClass: 'regular',
+                tableListDropdownContentStyle: {
+                    'margin-bottom.px': 4,
+                },
+                isDropdown: true,
+                insideDropdownContent: [
+                    {
+                        title: 'Add CDL',
+                        name: 'new-licence',
+                    },
+                    {
+                        title: 'Add MVR',
+                        name: 'new-mvr',
+                    },
+                    {
+                        title: 'Medical Exam',
+                        name: 'new-medical',
+                    },
+                    {
+                        title: 'Test (Drug, Alcohol)',
+                        name: 'new-drug',
+                    },
+                ],
+            },
+            {
+                title: 'Request',
+                name: 'add-to-favourites',
+                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Show More.svg',
+                svgStyle: {
+                    width: 15,
+                    height: 15,
+                },
+                svgClass: 'regular',
+                isDropdown: true,
+                insideDropdownContent: [
+                    {
+                        title: 'Background Check',
+                        name: 'background-check',
+                    },
+                    {
+                        title: 'Medical Exam',
+                        name: 'medical-exam',
+                    },
+                    {
+                        title: 'Test (Drug, Alcohol)',
+                        name: 'test-drug',
+                    },
+                    {
+                        title: 'MVR',
+                        name: 'test-mvr',
+                    },
+                ],
+                hasBorder: true,
+            },
+
+            {
+                title: 'Share',
+                name: 'share',
+                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Share.svg',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                svgClass: 'regular',
+                tableListDropdownContentStyle: {
+                    'margin-bottom.px': 4,
+                },
+            },
+            {
+                title: 'Print',
+                name: 'print',
+                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Print.svg',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                svgClass: 'regular',
+                hasBorder: true,
+            },
+            {
+                title: 'Deactivate',
+                name: 'activate-item',
+                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Deactivate.svg',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                svgClass: 'delete',
+                tableListDropdownContentStyle: {
+                    'margin-bottom.px': 4,
+                },
+            },
+            {
+                title: 'Delete',
+                name: 'delete-item',
+                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Delete.svg',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                svgClass: 'delete',
+            },
+        ];
+    }
+
     getDropdownApplicantContent(data: any) {
         return [
             {
@@ -989,6 +996,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
             },
         ];
     }
+
     // Get Avatar Color
     getAvatarColors() {
         let textColors: string[] = [
@@ -1142,6 +1150,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     onToolBarAction(event: any) {
+        // Open Modal
         if (event.action === 'open-modal') {
             if (this.selectedTab === 'applicants') {
                 this.modalService.openModal(ApplicantModalComponent, {
@@ -1152,7 +1161,9 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     size: 'medium',
                 });
             }
-        } else if (event.action === 'tab-selected') {
+        }
+        // Select Tab
+        else if (event.action === 'tab-selected') {
             this.selectedTab = event.tabData.field;
             this.mapingIndex = 0;
 
@@ -1162,8 +1173,59 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
             this.applicantBackFilterQuery.applicantSpecParamsPageIndex = 1;
 
-            this.sendDriverData();
-        } else if (event.action === 'view-mode') {
+            // Driver Inactive Api Call
+            if (this.selectedTab === 'inactive' && !this.inactiveTabClicked) {
+                this.driverTService
+                    .getDrivers(0, undefined, undefined, undefined, 1, 25)
+                    .pipe(takeUntil(this.destroy$))
+                    .subscribe((driverPagination: DriverListResponse) => {
+                        this.driversInactiveStore.set(
+                            driverPagination.pagination.data
+                        );
+
+                        this.sendDriverData();
+                    });
+            }
+            // Applicants Api Call
+            else if (
+                this.selectedTab === 'applicants' &&
+                !this.applicantTabActive
+            ) {
+                forkJoin([
+                    this.applicantService.getApplicantAdminList(
+                        undefined,
+                        undefined,
+                        undefined,
+                        1,
+                        25
+                    ),
+                    this.tableService.getTableConfig(7),
+                ])
+                    .pipe(takeUntil(this.destroy$))
+                    .subscribe(([applicantPagination, tableConfig]) => {
+                        if (tableConfig) {
+                            const config = JSON.parse(tableConfig.config);
+
+                            localStorage.setItem(
+                                `table-${tableConfig.tableType}-Configuration`,
+                                JSON.stringify(config)
+                            );
+                        }
+
+                        this.applicantStore.set(
+                            applicantPagination.pagination.data
+                        );
+
+                        this.sendDriverData();
+                    });
+            }
+            // Send Driver Data
+            else {
+                this.sendDriverData();
+            }
+        }
+        // Change View Mode
+        else if (event.action === 'view-mode') {
             this.mapingIndex = 0;
 
             this.activeViewMode = event.mode;
