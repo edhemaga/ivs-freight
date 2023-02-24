@@ -185,8 +185,6 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                             : this.shopFilterQuery
                     );
 
-                    console.log(searchEvent);
-
                     if (searchEvent) {
                         if (searchEvent.action === 'api') {
                             if (this.selectedTab !== 'repair-shop') {
