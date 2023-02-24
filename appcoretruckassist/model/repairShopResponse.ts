@@ -30,6 +30,7 @@ export interface RepairShopResponse {
     status?: number;
     latitude?: number;
     longitude?: number;
+    distance?: number | null;
     pinned?: boolean;
     order?: number;
     cost?: number;
@@ -47,6 +48,7 @@ export interface RepairShopResponse {
     downCount?: number;
     currentCompanyUserRating?: number | null;
     lastVisited?: string | null;
+    timesVisitedByCompany?: number | null;
     rent?: number | null;
     payPeriod?: EnumValue;
     weeklyDay?: EnumValue;
