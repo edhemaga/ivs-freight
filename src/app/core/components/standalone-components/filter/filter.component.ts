@@ -202,7 +202,7 @@ import { TaTabSwitchComponent } from '../ta-tab-switch/ta-tab-switch.component';
                 'true',
                 style({
                     height: '*',
-                    overflow: 'auto',
+                    overflow: 'visible',
                     opacity: 1,
                 })
             ),
@@ -1298,7 +1298,7 @@ export class FilterComponent implements OnInit, AfterViewInit {
 
     public locationSliderData: Options = {
         floor: 25,
-        ceil: 350,
+        ceil: 500,
         step: 5,
         showSelectionBar: true,
         hideLimitLabels: true,
@@ -1412,12 +1412,19 @@ export class FilterComponent implements OnInit, AfterViewInit {
     ) {}
 
     ngOnInit(): void {
+
+        console.log('---this.type', this.type)
+
         if (this.type === 'truckTypeFilter') {
             this.getTruckType();
         } else if (this.type === 'trailerTypeFilter') {
             this.getTrailerType();
         } else if (this.type === 'categoryRepairFilter') {
             this.getRepairCategory();
+        } else if ( this.type === 'categoryFuelFilter' ) {
+            this.getFuelCategory();
+        } else if ( this.type === 'stateFilter' ) {
+            this.getStateData();
         }
 
         if (this.type == 'timeFilter') {
@@ -1938,6 +1945,28 @@ export class FilterComponent implements OnInit, AfterViewInit {
                             }
                         );
                         this.categoryRepairArray = newData;
+                    }
+                } else if ( this.type === 'categoryFuelFilter' ) {
+                    if (res.animation == 'fuel-category-update') {
+                        this.categoryFuelArray = res.data;
+                    }
+                } else if ( this.type === 'stateFilter' ) {
+                    if (res.animation == 'state-data-update') {
+                        
+                        let usaArray = [];
+                        let canadaArray = [];
+
+                        res.data.map((state: any, index: number) => {
+                            
+                            if ( state.countryType.name == 'Canada' ) {
+                                canadaArray.push(state);
+                            } else {
+                                usaArray.push(state);
+                            }
+                        })
+                        
+                        this.usaStates = usaArray;
+                        this.canadaStates = canadaArray;
                     }
                 }
             });
@@ -3061,5 +3090,13 @@ export class FilterComponent implements OnInit, AfterViewInit {
 
     public getRepairCategory() {
         this.filterService.getRepairCategory();
+    }
+
+    public getFuelCategory(){
+        this.filterService.getFuelCategory();
+    }
+
+    public getStateData() {
+        this.filterService.getStateData();
     }
 }

@@ -60,6 +60,18 @@
             line-height: 13px;
             color: #FFFFFF;
 
+            
+            &.conf-icon-holder{
+                svg {
+                    height: 9.27px;
+                    width: 12px;     
+                    path{
+                        
+                    }
+                    
+                }
+            }
+            
             &.clear-filter-icon{
                 display: none;
             }
@@ -113,7 +125,7 @@
         }
 
         &.filter-active-colors {
-            background-color: #536bc220 !important;
+            //background-color: #536bc220 !important;
 
             .active-filter-num {
                 background-color: #536bc2 !important;
@@ -189,18 +201,23 @@
             }
         }
 
-        &:hover {
-            background-color: #255BB9 !important;
-            transition: 0.2s all;
-            .main-icon-holder {
-                svg-icon {
+        .main-icon-holder {
+            svg-icon {
+                &:hover{
                     svg {
                         path {
                             fill: #ffffff !important;
                         }
-                    }
+                    } 
                 }
+            }
+        }
 
+        &:hover {
+            background-color: #255BB9 !important;
+            transition: 0.2s all;
+            .main-icon-holder {
+               
                 .filters-selected-value-holder{
                     display: none;
                     &.clear-filter-icon{

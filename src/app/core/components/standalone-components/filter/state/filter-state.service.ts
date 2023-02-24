@@ -4,8 +4,9 @@ import { HttpClient } from '@angular/common/http';
 import { FilterStateStore } from './filter-state.store';
 import { FilterState } from './filter-state.model';
 import { takeUntil, Subject, Observable, tap, BehaviorSubject } from 'rxjs';
-import { TruckTypeService, TrailerTypeService, RepairService } from 'appcoretruckassist';
+import { TruckTypeService, TrailerTypeService, RepairService, FuelService, StateService } from 'appcoretruckassist';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
+import { co } from '@fullcalendar/core/internal-common';
 
 @Injectable({ providedIn: 'root' })
 export class FilterStateService implements OnDestroy {
@@ -18,6 +19,8 @@ export class FilterStateService implements OnDestroy {
         private tableService: TruckassistTableService,
         private TrailerTypeService: TrailerTypeService,
         private repairService: RepairService,
+        private fuelService: FuelService,
+        private stateService: StateService
     ) {}
 
     // get() {
@@ -87,6 +90,35 @@ export class FilterStateService implements OnDestroy {
             });
     }
 
+    public getFuelCategory(){
+        const fuelCategory = this.fuelService.apiFuelCategoryFilterGet()
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: (data: any) => {
+                    this.tableService.sendActionAnimation({
+                        animation: 'fuel-category-update',
+                        data: data,
+                        id: null,
+                    }); 
+                    fuelCategory.unsubscribe();
+                },
+            });
+    }
+
+    public getStateData(){
+        const stateData = this.stateService.apiStateFilterGet()
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: (data: any) => {
+                    this.tableService.sendActionAnimation({
+                        animation: 'state-data-update',
+                        data: data,
+                        id: null,
+                    }); 
+                    stateData.unsubscribe();
+                },
+            });
+    }
 
     ngOnDestroy(): void {
         this.destroy$.next();

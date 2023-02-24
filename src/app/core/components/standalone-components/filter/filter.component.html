@@ -11,10 +11,10 @@
         'clear-colors': hoverClose,
         'filter-active-colors':
             filterActiveArray.length > 0 ||
-            selectedTimeValue != '' ||
+            filterActiveTime != '' ||
             rangeValue > 0 ||
             totalFiltersNum > 0 ||
-            longVal != 0 ||
+            longValueSet != 0 ||
             maxValueSet != maxValueRange ||
             minValueSet != minValueRange ||
             singleFormActive
@@ -27,11 +27,7 @@
         mainTooltip="{{
             !hoverClose
                 ? totalFiltersNum > 0
-                    ? filterTitle +
-                      ' ' +
-                      '</br>' +
-                      totalFiltersNum +
-                      ' Selected'
+                    ? activeFilter ? 'Close Filter' : filterTitle 
                     :  activeFilter ? 'Close Filter' : filterTitle
                 : 'Remove Filter'
         }}"
@@ -44,11 +40,31 @@
         <div>
             <svg-icon [src]="icon | taSvg : 'common'"></svg-icon>
         </div>
-        <div *ngIf="filterActiveArray.length > 0" class="filters-selected-value-holder">
-            {{ filterActiveArray.length }}
+        <div *ngIf="filterActiveArray.length > 0 || totalFiltersNum > 0" class="filters-selected-value-holder">
+            {{ filterActiveArray.length > 0 ? filterActiveArray.length : totalFiltersNum  }}
+        </div>
+        <div *ngIf="
+            filterActiveTime != '' ||
+            longValueSet != 0 ||
+            singleFormActive ||
+            activeFormNum > 0
+            " 
+            class="filters-selected-value-holder conf-icon-holder">
+            <svg-icon
+                src="assets/svg/common/ic_confirm.svg"
+            ></svg-icon> 
         </div>
         <div 
-            *ngIf="filterActiveArray.length > 0" 
+            *ngIf="
+                filterActiveArray.length > 0 ||
+                selectedTimeValue != '' ||
+                totalFiltersNum > 0 ||
+                rangeValue > 0 ||
+                moneyFilterStatus ||
+                longVal != 0 ||
+                maxValueSet != maxValueRange ||
+                minValueSet != minValueRange
+            " 
             class="filters-selected-value-holder 
             clear-filter-icon" 
             (mouseenter)="hoverClose = true"
@@ -266,12 +282,12 @@
                             class="user-profile-img active state-border-radius"
                         >
                             <div class="state-short-holder">
-                                {{ item.short }}
+                                {{ item.stateShortName }}
                             </div>
                         </div>
                         <div class="selected-user-frame">
                             <div class="selected-name-text">
-                                <span> {{ item.name }} </span>
+                                <span> {{ item.stateName }} </span>
                             </div>
                             <div class="selected-icon">
                                 <svg-icon
@@ -302,12 +318,12 @@
                     >
                         <div class="user-profile-img active">
                             <div class="state-short-holder">
-                                {{ item.short }}
+                                {{ item.stateShortName }}
                             </div>
                         </div>
                         <div class="selected-user-frame">
                             <div class="selected-name-text">
-                                <span> {{ item.name }} </span>
+                                <span> {{ item.stateName }} </span>
                             </div>
                             <div class="selected-icon">
                                 <svg-icon
@@ -738,12 +754,12 @@
                     >
                         <div class="user-profile-img">
                             <div class="state-short-holder">
-                                {{ item.short }}
+                                {{ item.stateShortName }}
                             </div>
                         </div>
                         <div class="user-frame">
                             <div class="selected-name-text">
-                                <span> {{ item.name }} </span>
+                                <span> {{ item.stateName }} </span>
                             </div>
                         </div>
                     </div>
@@ -764,12 +780,12 @@
                     >
                         <div class="user-profile-img">
                             <div class="state-short-holder">
-                                {{ item.short }}
+                                {{ item.stateShortName }}
                             </div>
                         </div>
                         <div class="user-frame">
                             <div class="selected-name-text">
-                                <span> {{ item.name }} </span>
+                                <span> {{ item.stateName }} </span>
                             </div>
                         </div>
                     </div>
