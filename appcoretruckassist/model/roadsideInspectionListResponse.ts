@@ -17,5 +17,6 @@ export interface RoadsideInspectionListResponse {
     active?: number;
     inactive?: number;
     violationSummary?: number;
+    roadsideInspectionCount?: number;
 }
 
