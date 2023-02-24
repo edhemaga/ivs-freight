@@ -33,20 +33,47 @@
                       totalFiltersNum +
                       ' Selected'
                     :  activeFilter ? 'Close Filter' : filterTitle
-                : 'Clear ' + filterTitle
+                : 'Remove Filter'
         }}"
         position="bottom"
-        tooltipBackground="{{ !hoverClose ? '#424242' : '#EF5350' }}"
+        tooltipBackground="{{ activeFilter ? '#B7B7B7' : !hoverClose ? '#2F2F2F' : '#2F2F2F' }}"
+        tooltipColor="{{activeFilter ? '#2F2F2F' : '#FFFFFF'}}"
         tooltipTextAlign="center"
         class="main-icon-holder"
     >
-        <svg-icon [src]="icon | taSvg : 'common'"></svg-icon>
+        <div>
+            <svg-icon [src]="icon | taSvg : 'common'"></svg-icon>
+        </div>
+        <div *ngIf="filterActiveArray.length > 0" class="filters-selected-value-holder">
+            {{ filterActiveArray.length }}
+        </div>
+        <div 
+            *ngIf="filterActiveArray.length > 0" 
+            class="filters-selected-value-holder 
+            clear-filter-icon" 
+            (mouseenter)="hoverClose = true"
+            (mouseleave)="hoverClose = false"
+            (click)="clearAll($event, true)"
+            
+            >
+            <svg-icon
+                src="assets/svg/common/ic_cancel_violation.svg"
+            ></svg-icon>  
+        </div>
+        <!--
+        <div *ngIf="totalFiltersNum > 0" class="filters-selected-value-holder">
+            {{ totalFiltersNum }}
+        </div>
+        -->
+        <!-- old filter counter -->
+        <!--
         <div *ngIf="filterActiveArray.length > 0" class="active-filter-num">
             {{ filterActiveArray.length }}
         </div>
         <div *ngIf="totalFiltersNum > 0" class="active-filter-num">
             {{ totalFiltersNum }}
         </div>
+        
         <div
             *ngIf="
                 filterActiveArray.length > 0 ||
@@ -67,6 +94,7 @@
                 src="assets/svg/common/ic_cancel_violation.svg"
             ></svg-icon>
         </div>
+        -->
     </div>
     <div popoverContent class="main-popover-body">
         <div
