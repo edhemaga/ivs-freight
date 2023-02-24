@@ -35,13 +35,20 @@ export class RepairTruckResolver implements Resolve<RepairTruckState> {
             this.tableService.getTableConfig(10),
         ]).pipe(
             tap(([repairTruckPagination, tableConfig]) => {
+                console.log(repairTruckPagination);
                 localStorage.setItem(
                     'repairTruckTrailerTableCount',
                     JSON.stringify({
+                        repairShops: repairTruckPagination.repairShopCount,
                         repairTrucks: repairTruckPagination.truckCount,
                         repairTrailers: repairTruckPagination.trailerCount,
-                        truckMoneyTotal:  repairTruckPagination?.truckMoneyTotal ? repairTruckPagination.truckMoneyTotal : 'NA',
-                        trailerMoneyTotal:  repairTruckPagination?.trailerMoneyTotal ? repairTruckPagination.trailerMoneyTotal : 'NA'
+                        truckMoneyTotal: repairTruckPagination?.truckMoneyTotal
+                            ? repairTruckPagination.truckMoneyTotal
+                            : 'NA',
+                        trailerMoneyTotal:
+                            repairTruckPagination?.trailerMoneyTotal
+                                ? repairTruckPagination.trailerMoneyTotal
+                                : 'NA',
                     })
                 );
 
