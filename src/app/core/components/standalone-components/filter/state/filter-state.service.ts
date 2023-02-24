@@ -4,7 +4,12 @@ import { HttpClient } from '@angular/common/http';
 import { FilterStateStore } from './filter-state.store';
 import { FilterState } from './filter-state.model';
 import { takeUntil, Subject, Observable, tap, BehaviorSubject } from 'rxjs';
-import { TruckTypeService, TrailerTypeService, RepairService, FuelService, StateService } from 'appcoretruckassist';
+import { TruckTypeService, 
+    TrailerTypeService, 
+    RepairService, 
+    FuelService, 
+    StateService, 
+    DepartmentService } from 'appcoretruckassist';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { co } from '@fullcalendar/core/internal-common';
 
@@ -20,7 +25,8 @@ export class FilterStateService implements OnDestroy {
         private TrailerTypeService: TrailerTypeService,
         private repairService: RepairService,
         private fuelService: FuelService,
-        private stateService: StateService
+        private stateService: StateService,
+        private departmentService: DepartmentService
     ) {}
 
     // get() {
@@ -116,6 +122,22 @@ export class FilterStateService implements OnDestroy {
                         id: null,
                     }); 
                     stateData.unsubscribe();
+                },
+            });
+    }
+
+    public getDepartmentData(){
+        
+        const departmentData = this.departmentService.apiDepartmentFilterGet()
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: (data: any) => {
+                    this.tableService.sendActionAnimation({
+                        animation: 'department-data-update',
+                        data: data,
+                        id: null,
+                    }); 
+                    departmentData.unsubscribe();
                 },
             });
     }

@@ -1425,6 +1425,8 @@ export class FilterComponent implements OnInit, AfterViewInit {
             this.getFuelCategory();
         } else if ( this.type === 'stateFilter' ) {
             this.getStateData();
+        } else if ( this.type === 'departmentFilter' ) {
+            this.getDepartmentData();
         }
 
         if (this.type == 'timeFilter') {
@@ -1967,6 +1969,10 @@ export class FilterComponent implements OnInit, AfterViewInit {
                         
                         this.usaStates = usaArray;
                         this.canadaStates = canadaArray;
+                    }
+                } else if ( this.type === 'departmentFilter' ) {
+                    if (res.animation == 'department-data-update') {
+                        this.departmentArray = res.data;
                     }
                 }
             });
@@ -3098,5 +3104,9 @@ export class FilterComponent implements OnInit, AfterViewInit {
 
     public getStateData() {
         this.filterService.getStateData();
+    }
+
+    public getDepartmentData(){
+        this.filterService.getDepartmentData();
     }
 }

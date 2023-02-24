@@ -135,6 +135,18 @@
         .clear-filter {
             display: none !important;
         }
+
+        &:hover{
+            .main-icon-holder {
+                svg-icon {
+                    svg {
+                        path {
+                            fill: #FFFFFF !important;
+                        }
+                    }
+                }
+            }
+        }
     }
 
     &.filter-active-colors {
