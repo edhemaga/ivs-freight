@@ -170,7 +170,7 @@ export class TrailerDetailsCardComponent
     }
     public onSelectedTrailer(event: any) {
         
-        if (event.id !== this.trailer.id) {
+        if ( event && event.id !== this.trailer.id) {
             this.trailerDropDowns = this.trailerMinimalQuery
                 .getAll()
                 .map((item) => {

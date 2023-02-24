@@ -720,7 +720,7 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     public onSelectedTruck(event: any) {
-        if (event.id !== this.truck.id) {
+        if ( event && event.id !== this.truck.id) {
             this.truckDropDowns = this.truckMinimalListQuery
                 .getAll()
                 .map((item) => {

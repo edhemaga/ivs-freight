@@ -212,7 +212,7 @@ export class ShipperCardViewComponent implements OnInit, OnChanges, OnDestroy {
         ];
     }
     public onSelectedShipper(event: any) {
-        if (event.id !== this.shipper.id) {
+        if ( event && event.id !== this.shipper.id) {
             this.shipperList = this.shipperMinimalListQuery
                 .getAll()
                 .map((item) => {

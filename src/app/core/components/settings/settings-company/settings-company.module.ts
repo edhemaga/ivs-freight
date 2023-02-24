@@ -36,6 +36,7 @@ import { TaReCardComponent } from '../../shared/ta-common-card/ta-re-card.compon
 import { TaCounterComponent } from '../../shared/ta-counter/ta-counter.component';
 import { TruckassistProgressExpirationComponent } from '../../shared/truckassist-progress-expiration/truckassist-progress-expiration.component';
 import { HidePasswordPipe } from '../../../pipes/hide-password.pipe';
+import { SafeHtmlPipe } from '../../../pipes/safe-html.pipe';
 
 @NgModule({
     imports: [
@@ -68,6 +69,7 @@ import { HidePasswordPipe } from '../../../pipes/hide-password.pipe';
 
         // PIPES
         HidePasswordPipe,
+        SafeHtmlPipe,
     ],
     exports: [SharedModule],
     declarations: [
