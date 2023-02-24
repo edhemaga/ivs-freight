@@ -17,6 +17,7 @@
                 : false
         "
         [haveDropSVG]="repairShopCardViewData?.pinned ?  true : false"
+        [customPinnedSvg]="repairShopCardViewData?.pinned ?  'assets/svg/common/ic_star.svg' : ''"
     >
         <div class="repair-information-wrapper">
             <div class="repair-information-item" *ngIf="repairShopCardViewData?.phone">

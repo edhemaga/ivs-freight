@@ -717,7 +717,7 @@ export class DriverDetailsCardComponent
     }
 
     public onSelectedDriver(event: any) {
-        if (event.id !== this.driver.id) {
+        if ( event && event.id !== this.driver.id) {
             this.driversDropdowns = this.driverMinimalQuery
                 .getAll()
                 .map((item) => {

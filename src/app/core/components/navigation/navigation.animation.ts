@@ -95,7 +95,7 @@ export const smoothHeight = (type: string) =>
             'true',
             style({
                 width: '238px',
-                height: '820px',
+                height: '812px',
                 borderRadius: '3px',
             })
         ),

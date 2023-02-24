@@ -39,6 +39,8 @@ import { NgbModule, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
     ],
 })
 export class TaDetailsHeaderCardComponent implements OnInit, OnChanges {
+    
+    @Input() public customPinnedSvg: string = '';
     @Input() public cardDetailsName: string = '';
     @Input() public cardDetailsDate: any;
     @Input() public cardDetailsDateTerminated: string = null;
@@ -77,7 +79,6 @@ export class TaDetailsHeaderCardComponent implements OnInit, OnChanges {
     ngOnChanges(changes: SimpleChanges) {}
     ngOnInit(): void {
         // this.hideArrowOnStart(this.driverId);
-        console.log('----this.currentName', this.currentName);
     }
 
     public hideArrowOnStart(id: number) {
@@ -106,6 +107,7 @@ export class TaDetailsHeaderCardComponent implements OnInit, OnChanges {
         //   currentIndex = --currentIndex;
         //   this.hideArrowOnStart(this.driversList[currentIndex].id);
         // }
+        this.selectedDropdown = false;
         this.changeEvent.emit(action);
     }
 

@@ -178,6 +178,8 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
 
     public locationFilter: any;
     public stateFilter: any;
+    public categoryRepairFilter: any;
+    public moneyFilter: any;
 
     constructor(
         private ref: ChangeDetectorRef,
@@ -263,6 +265,22 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
                         this.stateFilter = data.queryParams;
                     } else {
                         this.stateFilter = null;
+                    }
+                    
+                    this.getClusters(true, true);
+                } else if ( data?.filterType == 'categoryRepairFilter' ) {
+                    if ( data.action == 'Set' ) {
+                        this.categoryRepairFilter = data.queryParams;
+                    } else {
+                        this.categoryRepairFilter = null;
+                    }
+                    
+                    this.getClusters(true, true);
+                } else if ( data?.filterType == 'moneyFilter' ) {
+                    if ( data.action == 'Set' ) {
+                        this.moneyFilter = data.queryParams;
+                    } else {
+                        this.moneyFilter = null;
                     }
                     
                     this.getClusters(true, true);
@@ -592,6 +610,8 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
         var addedNewFlag = addedNew != null ? addedNew : false;
 
         var locationFilterQuery = this.locationFilter;
+        var categoryRepairFilterQuery = this.categoryRepairFilter;
+        var moneyFilterQuery = this.moneyFilter;
 
         if (this.mapType == 'repairShop') {
             this.repairShopService
@@ -606,6 +626,16 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
                     null, // shipperLat
                     null, // shipperDistance
                     null, // shipperStates
+                    categoryRepairFilterQuery, // categoryIds?: Array<number>,
+                    locationFilterQuery ? locationFilterQuery.longValue : null, // _long?: number,
+                    locationFilterQuery ? locationFilterQuery.latValue : null, // lat?: number,
+                    locationFilterQuery ? locationFilterQuery.rangeValue : null, // distance?: number,
+                    moneyFilterQuery ? moneyFilterQuery.singleFrom : null, // costFrom?: number,
+                    moneyFilterQuery ? moneyFilterQuery.singleTo : null, // costTo?: number,
+                    null, // lastFrom?: number,
+                    null, // lastTo?: number,
+                    null, // ppgFrom?: number,
+                    null, // ppgTo?: number,
                     pageIndex,
                     pageSize,
                     null, // companyId
@@ -735,6 +765,12 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
                     clustersObj.northEastLongitude,
                     clustersObj.southWestLatitude,
                     clustersObj.southWestLongitude,
+                    categoryRepairFilterQuery, // categoryIds?: Array<number>,
+                    locationFilterQuery ? locationFilterQuery.longValue : null, // _long?: number,
+                    locationFilterQuery ? locationFilterQuery.latValue : null, // lat?: number,
+                    locationFilterQuery ? locationFilterQuery.rangeValue : null, // distance?: number,
+                    moneyFilterQuery ? moneyFilterQuery.singleFrom : null, // costFrom?: number,
+                    moneyFilterQuery ? moneyFilterQuery.singleTo : null, // costTo?: number,
                     this.mapListPagination.pageIndex,
                     this.mapListPagination.pageSize,
                     null,
@@ -764,7 +800,7 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
 
                     this.updateMapList.emit(mapListData);
                     this.mapsService.searchLoadingChanged.next(false);
-                    this.mapsService.searchResultsCountChange.next(mapListData.pagination.count);
+                    this.mapsService.searchResultsCountChange.next(mapListData.repairShopCount);
                 });
         } else if (this.mapType == 'shipper') {
             this.shipperService
@@ -779,6 +815,16 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
                     locationFilterQuery ? locationFilterQuery.latValue : null, // shipperLat
                     locationFilterQuery ? locationFilterQuery.rangeValue : null, // shipperDistance
                     null, // shipperStates
+                    null, // categoryIds?: Array<number>,
+                    null, // _long?: number,
+                    null, // lat?: number,
+                    null, // distance?: number,
+                    null, // costFrom?: number,
+                    null, // costTo?: number,
+                    null, // lastFrom?: number,
+                    null, // lastTo?: number,
+                    null, // ppgFrom?: number,
+                    null, // ppgTo?: number,
                     pageIndex,
                     pageSize,
                     null, // companyId
@@ -807,6 +853,20 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
                                         marker
                                     );
                                 });
+
+                                let clusterIndex =
+                                    this.clusterMarkers.findIndex(
+                                        (item) =>
+                                            item.latitude ===
+                                                clusterItem.latitude &&
+                                            item.longitude ===
+                                                clusterItem.longitude
+                                    );
+
+                                if (clusterIndex == -1) {
+                                    this.clusterMarkers[clusterIndex].pagination.data = clusterPagination.pagination.data;
+                                    this.ref.detectChanges();
+                                }
 
                                 clustersToShow.push(clusterItem.latitude);
                             }
@@ -842,60 +902,62 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
                         }
                     });
 
-                    this.viewData.map((item) => {
-                        if (
-                            markersToShow.includes(item.id) &&
-                            !item.showMarker
-                        ) {
-                            var randomTime = Math.floor(Math.random() * 800);
+                    if (!clusterPagination) {
+                        this.viewData.map((item) => {
+                            if (
+                                markersToShow.includes(item.id) &&
+                                !item.showMarker
+                            ) {
+                                var randomTime = Math.floor(Math.random() * 800);
 
-                            setTimeout(() => {
-                                item.showMarker = true;
-                                this.ref.detectChanges();
-                            }, randomTime);
-                            
-                        } else if (
-                            !markersToShow.includes(item.id) &&
-                            item.showMarker
-                        ) {
-                            item.showMarker = false;
-                            item.isSelected = false;
-                            this.markerSelected = false;
-                            this.mapsService.selectedMarker(0);
-                        }
-                    });
-
-                    this.clusterMarkers.map((cluster) => {
-                        if (
-                            clustersToShow.includes(cluster.latitude) &&
-                            !cluster.showMarker
-                        ) {
-                            cluster.fadeIn = true;
-                            setTimeout(() => {
-                                cluster.fadeIn = false;
-                                this.ref.detectChanges();
-                            }, 200);
-
-                            cluster.showMarker = true;
-                        } else if (
-                            !clustersToShow.includes(cluster.latitude) &&
-                            cluster.showMarker
-                        ) {
-                            cluster.fadeOut = true;
-                            setTimeout(() => {
-                                cluster.fadeOut = false;
-                                cluster.showMarker = false;
-                                cluster.detailedInfo = false;
-                                cluster.isSelected = false;
+                                setTimeout(() => {
+                                    item.showMarker = true;
+                                    this.ref.detectChanges();
+                                }, randomTime);
+                                
+                            } else if (
+                                !markersToShow.includes(item.id) &&
+                                item.showMarker
+                            ) {
+                                item.showMarker = false;
+                                item.isSelected = false;
+                                this.markerSelected = false;
                                 this.mapsService.selectedMarker(0);
-                                this.clusterDetailedInfo = false;
-                                this.ref.detectChanges();
-                            }, 200);
-                        }
-                    });
+                            }
+                        });
 
-                    if (newMarkersAdded) this.markersDropAnimation();
-                    if (newClusterAdded) this.clusterDropAnimation();
+                        this.clusterMarkers.map((cluster) => {
+                            if (
+                                clustersToShow.includes(cluster.latitude) &&
+                                !cluster.showMarker
+                            ) {
+                                cluster.fadeIn = true;
+                                setTimeout(() => {
+                                    cluster.fadeIn = false;
+                                    this.ref.detectChanges();
+                                }, 200);
+
+                                cluster.showMarker = true;
+                            } else if (
+                                !clustersToShow.includes(cluster.latitude) &&
+                                cluster.showMarker
+                            ) {
+                                cluster.fadeOut = true;
+                                setTimeout(() => {
+                                    cluster.fadeOut = false;
+                                    cluster.showMarker = false;
+                                    cluster.detailedInfo = false;
+                                    cluster.isSelected = false;
+                                    this.mapsService.selectedMarker(0);
+                                    this.clusterDetailedInfo = false;
+                                    this.ref.detectChanges();
+                                }, 200);
+                            }
+                        });
+
+                        if (newMarkersAdded) this.markersDropAnimation();
+                        if (newClusterAdded) this.clusterDropAnimation();
+                    }
 
                     this.ref.detectChanges();
                 });
@@ -941,7 +1003,7 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
 
                     this.updateMapList.emit(mapListData);
                     this.mapsService.searchLoadingChanged.next(false);
-                    this.mapsService.searchResultsCountChange.next(mapListData.pagination.count);
+                    this.mapsService.searchResultsCountChange.next(mapListData.shipperCount);
                 });
         } else if (this.mapType == 'fuelStop') {
             this.fuelStopService
@@ -956,6 +1018,16 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
                     locationFilterQuery ? locationFilterQuery.latValue : null, // shipperLat
                     locationFilterQuery ? locationFilterQuery.rangeValue : null, // shipperDistance
                     null, // shipperStates
+                    null, // categoryIds?: Array<number>,
+                    locationFilterQuery ? locationFilterQuery.longValue : null, // _long?: number,
+                    locationFilterQuery ? locationFilterQuery.latValue : null, // lat?: number,
+                    locationFilterQuery ? locationFilterQuery.rangeValue : null, // distance?: number,
+                    moneyFilterQuery ? moneyFilterQuery.thirdFormFrom : null, // costFrom?: number,
+                    moneyFilterQuery ? moneyFilterQuery.thirdFormTo : null, // costTo?: number,
+                    moneyFilterQuery ? moneyFilterQuery.firstFormFrom : null, // lastFrom?: number,
+                    moneyFilterQuery ? moneyFilterQuery.firstFormFTo : null, // lastTo?: number,
+                    moneyFilterQuery ? moneyFilterQuery.secondFormFrom : null, // ppgFrom?: number,
+                    moneyFilterQuery ? moneyFilterQuery.secondFormTo : null, // ppgTo?: number,
                     pageIndex,
                     pageSize,
                     null, // companyId
@@ -1062,15 +1134,15 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
                     clustersObj.northEastLongitude,
                     clustersObj.southWestLatitude,
                     clustersObj.southWestLongitude,
-                    null, //_long,
-                    null, //lat,
-                    null, //distance,
-                    null, //lastFrom,
-                    null, //lastTo,
-                    null, //costFrom,
-                    null, //costTo,
-                    null, //ppgFrom,
-                    null, //ppgTo,
+                    locationFilterQuery ? locationFilterQuery.longValue : null, // _long?: number,
+                    locationFilterQuery ? locationFilterQuery.latValue : null, // lat?: number,
+                    locationFilterQuery ? locationFilterQuery.rangeValue : null, // distance?: number,
+                    moneyFilterQuery ? moneyFilterQuery.firstFormFrom : null, //lastFrom,
+                    moneyFilterQuery ? moneyFilterQuery.firstFormFTo : null, //lastTo,
+                    moneyFilterQuery ? moneyFilterQuery.thirdFormFrom : null, // costFrom?: number,
+                    moneyFilterQuery ? moneyFilterQuery.thirdFormTo : null, // costTo?: number,
+                    moneyFilterQuery ? moneyFilterQuery.secondFormFrom : null, // ppgFrom?: number,
+                    moneyFilterQuery ? moneyFilterQuery.secondFormTo : null, // ppgTo?: number,
                     this.mapListPagination.pageIndex, //pageIndex,
                     this.mapListPagination.pageSize, //pageSize,
                     null, //companyId
@@ -1100,7 +1172,7 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
 
                     this.updateMapList.emit(mapListData);
                     this.mapsService.searchLoadingChanged.next(false);
-                    this.mapsService.searchResultsCountChange.next(mapListData.pagination.count);
+                    this.mapsService.searchResultsCountChange.next(mapListData.fuelStopCount);
                 });
         }
 

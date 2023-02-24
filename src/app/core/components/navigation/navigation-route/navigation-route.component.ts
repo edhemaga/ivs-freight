@@ -26,7 +26,13 @@ import { TooltipSlideComponent } from '../../standalone-components/tooltip-slide
     templateUrl: './navigation-route.component.html',
     styleUrls: ['./navigation-route.component.scss'],
     standalone: true,
-    imports: [CommonModule, FormsModule, AngularSvgIconModule, TooltipSlideComponent, ReactiveFormsModule],
+    imports: [
+        CommonModule,
+        FormsModule,
+        AngularSvgIconModule,
+        TooltipSlideComponent,
+        ReactiveFormsModule,
+    ],
     animations: [
         navigation_route_animation('showHideDetails'),
         navigation_magic_line('magicLine'),
@@ -72,13 +78,18 @@ export class NavigationRouteComponent implements OnInit, OnChanges {
     public showToolTip: boolean;
     public routeId: string;
     public magicBoxAnime = true;
+    public navigationIsOpened;
     constructor(
         public router: Router,
         public navigationService: NavigationService,
         public activatedroute: ActivatedRoute
     ) {}
-    @Input() isNavigationHovered: boolean = false;
-
+    @Input() set isNavigationHovered(value) {
+        this.navigationIsOpened = value;
+        if (!this.isNavigationHovered) {
+            this._activeLink = 'undefined';
+        }
+    }
     @Input() set activeLink(value) {
         this.activeLinkHighlight = false;
         if (typeof this._activeLink == 'undefined' && value) {

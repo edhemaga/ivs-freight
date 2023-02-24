@@ -503,7 +503,7 @@ export class CustomerTableComponent
             },
         };
     }
-    
+
     // Map Shipper Data
     mapShipperData(data: any) {
         return {
@@ -951,7 +951,14 @@ export class CustomerTableComponent
             if (this.selectedTab === 'inactive' && !this.inactiveTabClicked) {
                 this.shipperService;
                 forkJoin([
-                    this.shipperService.getShippersList(null, null, null, null, 1, 25),
+                    this.shipperService.getShippersList(
+                        null,
+                        null,
+                        null,
+                        null,
+                        1,
+                        25
+                    ),
                     this.tableService.getTableConfig(5),
                 ])
                     .pipe(takeUntil(this.destroy$))
@@ -976,6 +983,8 @@ export class CustomerTableComponent
             }
         } else if (event.action === 'view-mode') {
             this.activeViewMode = event.mode;
+
+            this.tableOptions.toolbarActions.hideSearch = event.mode == 'Map';
         }
     }
 

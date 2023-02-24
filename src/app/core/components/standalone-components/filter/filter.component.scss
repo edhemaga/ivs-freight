@@ -200,7 +200,7 @@
     position: relative;
     left: -8px;
     width: 260px;
-    padding: 7px 6px 6px 6px;
+    padding: 7px 8px 6px 8px;
     border-radius: 3px;
     background-color: #2f2f2f;
     box-shadow: 0 0 4px #00000026;
@@ -280,7 +280,7 @@
             font-size: 14px;
             font-weight: 800;
             color: #ffffff;
-            padding-left: 2px;
+            padding: 0px 4px;
             box-sizing: border-box;
 
             &.counter-padd-title {
@@ -1433,7 +1433,7 @@
 }
 
 .location-filter {
-    padding: 10px 6px 6px 6px;
+    padding: 10px 8px 6px 8px;
     width: 300px;
 
     .bottom-border-margin {
@@ -1444,16 +1444,42 @@
         padding: 0px;
     }
     .button-clear {
-        width: 141px !important;
+        width: 140px !important;
     }
 
     .button-set {
-        width: 141px !important;
+        width: 140px !important;
     }   
 
     .areaFilterHolder{
-        padding: 6px 0px;
+        padding: 6px 4px;
         width: 100%;
+
+        .tab-switch-holder{
+
+            &.type2-modal-popup {
+                background-color: #1D1D1D;
+
+                .tab-switch-items-holder {
+                    &.active {
+                        div{
+                            color: #FFFFFF !important;    
+                        }
+                        
+                    }
+        
+                    &:hover:not(.active) {
+                        //background-color: #f3f3f3;
+                        color: #AAAAAA;
+                    }
+                }
+
+                .slide-active-holder {
+                    background-color: #424242 !important;
+                }
+            }
+            
+        }
     }
 
     .area-all-holder{
@@ -1461,6 +1487,7 @@
         flex-wrap: wrap;
         flex-direction: row;
         width: 100%;
+        padding: 0px 4px;
         overflow: hidden;
 
         .main-part-holder{
@@ -1487,7 +1514,8 @@
         }
 
         &.location-slider-middle-padding {
-            padding-top: 12px;
+            padding-top: 22px;
+            padding-bottom: 8px;
             overflow: hidden !important;
             .ta-ngx-slider,
             .custom-slider-commission {
@@ -1495,60 +1523,92 @@
             }
         }
 
-        .ta-ngx-slider,
-        .custom-slider-commission {
-            margin-top: 8px;
-            margin-bottom: 8px;
+        .range-new-value-holder{
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+        }
 
-            .ngx-slider {
-                height: 6px;
+        .range-text{
+            padding-left: 6px;
+            padding-right: 12px;
+            font-weight: 400;
+            font-size: 14px;
+            line-height: 17px;
+            color: #FFFFFF;
+        }
 
-                .ngx-slider-pointer {
-                    width: 58px;
-                    height: 24px;
-                    box-shadow: none !important;
-                    border: none !important;
-                    outline: none !important;
+        .range-flex-holder{
+            width: 100%;
+
+
+            .ta-ngx-slider,
+            .custom-slider-commission {
+                margin-top: 8px;
+                margin-bottom: 8px;
+
+
+                .custom-slider-text {
+                    margin-bottom: 0px !important;
                 }
 
-                .ngx-slider-selection {
-                    background-color: #6c6c6c !important;
-                }
+                .ngx-slider {
+                    height: 6px;
 
-                .ngx-slider-bubble {
-                    position: absolute;
-                    top: -9.5px;
-                    width: 58px;
-                    height: 24px;
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-
-                    color: #6c6c6c !important;
-                    font-size: 12px !important;
-
-                    background-color: #ffffff;
-                    font-weight: bold !important;
-
-                    border-radius: 2px;
-                    box-shadow: 0 0 4px rgb(0 0 0 / 16%) !important;
-                    z-index: 1;
-                    cursor: pointer;
-
-                    &::after {
-                        padding-left: 2px;
-                        content: 'mi';
+                    .ngx-slider-bar {
+                        border-radius: 4px;
+                        background: #424242 !important;
                     }
-                }
 
-                .ngx-slider-combined {
-                    //display: none !important;
-                    opacity: 0 !important;
-                    width: 0px !important;
-                    padding: 0px !important;
+                    .ngx-slider-pointer {
+                        width: 58px;
+                        height: 24px;
+                        box-shadow: none !important;
+                        border: none !important;
+                        outline: none !important;
+                    }
+
+                    .ngx-slider-selection {
+                        background-color: #255BB9 !important;
+                    }
+
+                    .ngx-slider-bubble {
+                        position: absolute;
+                        top: -9.5px;
+                        width: 58px;
+                        height: 24px;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+
+                        color: #FFFFFF !important;
+                        font-size: 12px !important;
+
+                        background-color: #6C6C6C;
+                        font-weight: bold !important;
+
+                        border-radius: 2px;
+                        box-shadow: 0 0 4px rgb(0 0 0 / 16%) !important;
+                        z-index: 1;
+                        cursor: pointer;
+
+                        &::after {
+                            padding-left: 2px;
+                            content: 'mi';
+                        }
+                    }
+
+                    .ngx-slider-combined {
+                        //display: none !important;
+                        opacity: 0 !important;
+                        width: 0px !important;
+                        padding: 0px !important;
+                    }
                 }
             }
         }
+
+        
 
         &.slider-two-holder {
             padding-top: 22px;

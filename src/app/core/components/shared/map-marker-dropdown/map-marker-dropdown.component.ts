@@ -193,7 +193,7 @@ export class MapMarkerDropdownComponent implements OnInit {
         if (
             Math.abs(
                 element.scrollHeight - element.scrollTop - element.clientHeight
-            ) <= 3.0
+            ) <= 30.0
         ) {
             this.loadMoreData.emit(this.item);
         }

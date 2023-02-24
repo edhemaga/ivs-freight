@@ -549,54 +549,29 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 },
             },
             {
-                title: 'Add Registration',
-                name: 'add-registration',
-                svgUrl: '',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                tableListDropdownContentStyle: {
-                    'margin-bottom.px': 4,
-                },
-                svgClass: 'regular',
-            },
-            {
-                title: 'Add Inspection',
-                name: 'add-inspection',
-                svgUrl: '',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                tableListDropdownContentStyle: {
-                    'margin-bottom.px': 4,
-                },
-                svgClass: 'regular',
-            },
-            {
-                title: 'Add Repair',
-                name: 'add-repair',
-                svgUrl: '',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                tableListDropdownContentStyle: {
-                    'margin-bottom.px': 4,
-                },
-                svgClass: 'regular',
-            },
-            {
                 title: 'Add New',
                 name: 'add-new',
-                svgUrl: '',
+                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Show More.svg',
                 svgStyle: {
-                    width: 18,
-                    height: 18,
+                    width: 15,
+                    height: 15,
                 },
                 svgClass: 'regular',
-
+                isDropdown: true,
+                insideDropdownContent: [
+                    {
+                        title: 'Add Registration',
+                        name: 'add-registration',
+                    },
+                    {
+                        title: 'Add Inspection',
+                        name: 'add-inspection',
+                    },
+                    {
+                        title: 'Add Repair',
+                        name: 'add-repair',
+                    },
+                ],
                 hasBorder: true,
             },
             {
@@ -620,22 +595,21 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     width: 18,
                     height: 18,
                 },
-
                 svgClass: 'regular',
                 hasBorder: true,
             },
             {
                 title: 'Deactivate',
                 name: 'activate-item',
-                svgUrl: '',
+                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Deactivate.svg',
                 svgStyle: {
                     width: 18,
                     height: 18,
                 },
+                svgClass: 'delete',
                 tableListDropdownContentStyle: {
                     'margin-bottom.px': 4,
                 },
-                svgClass: 'delete',
             },
             {
                 title: 'Delete',

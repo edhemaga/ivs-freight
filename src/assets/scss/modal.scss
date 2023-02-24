@@ -864,12 +864,12 @@ body:not(.modal-open) {
     span[style*='color: rgb(83, 107, 194)'],
     span[style*='color: rgb(83, 107, 194)'] span {
         &::-moz-selection {
-            color: $bw6-2 !important;
+            color: rgb(83, 107, 194) !important;
             background: rgb(83, 107, 194, 0.2) !important;
         }
 
         &::selection {
-            color: $bw6-2;
+            color: rgb(83, 107, 194) !important;
             background: rgb(83, 107, 194, 0.2) !important;
         }
     }
@@ -877,12 +877,12 @@ body:not(.modal-open) {
     span[style*='color: rgb(38, 166, 144)'],
     span[style*='color: rgb(38, 166, 144)'] span {
         &::-moz-selection {
-            color: $bw6-2;
+            color: rgb(38, 166, 144) !important;
             background: rgb(38, 166, 144, 0.2) !important;
         }
 
         &::selection {
-            color: $bw6-2;
+            color: rgb(38, 166, 144) !important;
             background: rgb(38, 166, 144, 0.2) !important;
         }
     }
@@ -890,12 +890,12 @@ body:not(.modal-open) {
     span[style*='color: rgb(239, 83, 80)'],
     span[style*='color: rgb(239, 83, 80)'] span {
         &::-moz-selection {
-            color: $bw6-2;
+            color: rgb(239, 83, 80) !important;
             background: rgb(239, 83, 80, 0.2) !important;
         }
 
         &::selection {
-            color: $bw6-2;
+            color: rgb(239, 83, 80) !important;
             background: rgb(239, 83, 80, 0.2) !important;
         }
     }
@@ -903,12 +903,12 @@ body:not(.modal-open) {
     span[style*='color: rgb(255, 167, 38)'],
     span[style*='color: rgb(255, 167, 38)'] span {
         &::-moz-selection {
-            color: $bw6-2;
+            color: rgb(255, 167, 38) !important;
             background: rgb(255, 167, 38, 0.2) !important;
         }
 
         &::selection {
-            color: $bw6-2;
+            color: rgb(255, 167, 38) !important;
             background: rgb(255, 167, 38, 0.2) !important;
         }
     }
@@ -916,12 +916,12 @@ body:not(.modal-open) {
     span[style*='color: rgb(83, 107, 194)'],
     span[style*='color: rgb(83, 107, 194)'] span {
         &::-moz-selection {
-            color: $bw6-2 !important;
+            color: rgb(83, 107, 194) !important;
             background: rgb(83, 107, 194, 0.2) !important;
         }
 
         &::selection {
-            color: $bw6-2;
+            color: rgb(83, 107, 194) !important;
             background: rgb(83, 107, 194, 0.2) !important;
         }
     }
@@ -929,12 +929,12 @@ body:not(.modal-open) {
     span[style*='color: rgb(38, 166, 144)'],
     span[style*='color: rgb(38, 166, 144)'] span {
         &::-moz-selection {
-            color: $bw6-2;
+            color: rgb(38, 166, 144) !important;
             background: rgb(38, 166, 144, 0.2) !important;
         }
 
         &::selection {
-            color: $bw6-2;
+            color: rgb(38, 166, 144) !important;
             background: rgb(38, 166, 144, 0.2) !important;
         }
     }
@@ -942,12 +942,12 @@ body:not(.modal-open) {
     span[style*='color: rgb(239, 83, 80)'],
     span[style*='color: rgb(239, 83, 80)'] span {
         &::-moz-selection {
-            color: $bw6-2;
+            color: rgb(239, 83, 80) !important;
             background: rgb(239, 83, 80, 0.2) !important;
         }
 
         &::selection {
-            color: $bw6-2;
+            color: rgb(239, 83, 80) !important;
             background: rgb(239, 83, 80, 0.2) !important;
         }
     }
@@ -955,12 +955,12 @@ body:not(.modal-open) {
     span[style*='color: rgb(255, 167, 38)'],
     span[style*='color: rgb(255, 167, 38)'] span {
         &::-moz-selection {
-            color: $bw6-2;
+            color: rgb(255, 167, 38) !important;
             background: rgb(255, 167, 38, 0.2) !important;
         }
 
         &::selection {
-            color: $bw6-2;
+            color: rgb(255, 167, 38) !important;
             background: rgb(255, 167, 38, 0.2) !important;
         }
     }
