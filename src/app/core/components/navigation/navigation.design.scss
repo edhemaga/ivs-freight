@@ -80,9 +80,9 @@ $notification: #e57373;
     display: flex;
     justify-content: center;
     align-items: center;
-    position: fixed;
-    bottom: 28px;
-    left: 39px;
+    position: absolute;
+    bottom: 12px;
+    left: 17px;
 
     .status-marker {
         width: 10px;
@@ -100,6 +100,11 @@ $notification: #e57373;
         border: 2px solid $user-busy-status;
         background: #ffffff !important;
     }
+}
+.status-nav-closed {
+    position: absolute;
+    bottom: 9px;
+    left: 27px;
 }
 .status-marker-container-notification {
     width: 12px;

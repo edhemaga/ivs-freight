@@ -100,7 +100,7 @@ export class TaStatusSwitchComponent implements OnInit {
     public updateStatusFilter() {}
 
     public async openPopover(t2) {
-        // OTKOMENTARISATI KAD DARKO PREBACI DISPATCH NOVE IZMENE
+        //OTKOMENTARISATI KAD DARKO PREBACI DISPATCH NOVE IZMENE
         // if (this.dispatchId) {
         //     this.dispatchService
         //         .apiDispatchNextstatusesIdGet(this.dispatchId)

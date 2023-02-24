@@ -481,8 +481,9 @@ model/ownerDetailsResponse.ts
 model/ownerHistoryResponse.ts
 model/ownerModalResponse.ts
 model/ownerResponse.ts
-model/ownerResponsePagination.ts
 model/ownerShortResponse.ts
+model/ownerTableResponse.ts
+model/ownerTableResponsePagination.ts
 model/pMStatus.ts
 model/pMTrailerListResponse.ts
 model/pMTrailerResponse.ts

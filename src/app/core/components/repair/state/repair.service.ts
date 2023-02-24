@@ -563,14 +563,14 @@ export class RepairTService implements OnDestroy {
             shipperLong,
             shipperLat,
             shipperDistance,
-            shipperStates,
-            pageIndex,
-            pageSize,
-            companyId,
-            sort,
-            search,
-            search1,
-            search2
+            shipperStates
+            // pageIndex,
+            // pageSize,
+            // companyId,
+            // sort,
+            // search,
+            // search1,
+            // search2
         );
     }
 
@@ -591,14 +591,14 @@ export class RepairTService implements OnDestroy {
             northEastLatitude,
             northEastLongitude,
             southWestLatitude,
-            southWestLongitude,
-            pageIndex,
-            pageSize,
-            companyId,
-            sort,
-            search,
-            search1,
-            search2
+            southWestLongitude
+            // pageIndex,
+            // pageSize,
+            // companyId,
+            // sort,
+            // search,
+            // search1,
+            // search2
         );
     }
 
