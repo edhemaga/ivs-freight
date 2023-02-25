@@ -1381,6 +1381,7 @@ export class FilterComponent implements OnInit, AfterViewInit {
     @Input() type: string = 'userFilter';
     @Input() icon: string = 'user';
     @Input() subType: string = 'pendingStatus';
+    @Input() pmSubtype: string = '';
     @Input() searchState: boolean = false;
     @Input() filterTitle: string = '';
     @Input() defFilterHolder: boolean = false;
@@ -1427,6 +1428,15 @@ export class FilterComponent implements OnInit, AfterViewInit {
             this.getStateData();
         } else if ( this.type === 'departmentFilter' ) {
             this.getDepartmentData();
+        } else if ( this.type === 'userFilter' ) {
+            this.getDispatchData();
+        } else if ( this.type === 'pmFilter' ) {
+            console.log('------this.pmSubtype', this.pmSubtype)
+            if ( this.pmSubtype === 'truck' ) {
+                this.getPmData('truck');
+            } else {
+                this.getPmData('trailer');
+            }
         }
 
         if (this.type == 'timeFilter') {
@@ -1973,6 +1983,25 @@ export class FilterComponent implements OnInit, AfterViewInit {
                 } else if ( this.type === 'departmentFilter' ) {
                     if (res.animation == 'department-data-update') {
                         this.departmentArray = res.data;
+                    }
+                } else if ( this.type === 'pmFilter' && this.pmSubtype === 'truck' ) {
+                    if (res.animation == 'pm-truck-data-update') {
+                        console.log('res.data.pagination.data', res.data.pagination.data)
+
+                        let newData = res.data.pagination.data.map(
+                            (type: any, index: number) => {
+                                type['icon'] =
+                                    'assets/svg/common/repair-pm/' + type.logoName;
+                                return type;
+                            }
+                        );
+
+                        
+                        this.pmFilterArray = newData;
+                    }
+                } else if ( this.type === 'pmFilter' && this.pmSubtype === 'trailer' ) {
+                    if (res.animation == 'pm-trailer-data-update') {
+                        this.pmFilterArray = res.data.pagination.data;
                     }
                 }
             });
@@ -3108,5 +3137,13 @@ export class FilterComponent implements OnInit, AfterViewInit {
 
     public getDepartmentData(){
         this.filterService.getDepartmentData();
+    }
+
+    public getDispatchData(){
+        this.filterService.getDispatchData();
+    }
+
+    public getPmData(mod){
+        this.filterService.getPmData(mod);
     }
 }

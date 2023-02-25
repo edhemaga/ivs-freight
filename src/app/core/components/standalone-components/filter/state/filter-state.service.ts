@@ -9,7 +9,8 @@ import { TruckTypeService,
     RepairService, 
     FuelService, 
     StateService, 
-    DepartmentService } from 'appcoretruckassist';
+    DepartmentService, 
+    LoadService } from 'appcoretruckassist';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { co } from '@fullcalendar/core/internal-common';
 
@@ -26,7 +27,8 @@ export class FilterStateService implements OnDestroy {
         private repairService: RepairService,
         private fuelService: FuelService,
         private stateService: StateService,
-        private departmentService: DepartmentService
+        private departmentService: DepartmentService,
+        private loadService: LoadService
     ) {}
 
     // get() {
@@ -127,7 +129,6 @@ export class FilterStateService implements OnDestroy {
     }
 
     public getDepartmentData(){
-        
         const departmentData = this.departmentService.apiDepartmentFilterGet()
             .pipe(takeUntil(this.destroy$))
             .subscribe({
@@ -140,6 +141,57 @@ export class FilterStateService implements OnDestroy {
                     departmentData.unsubscribe();
                 },
             });
+    }
+
+    public getDispatchData(){
+        console.log('---getDispatchData')
+
+        const dispatcherData = this.loadService.apiLoadDispatcherFilterGet()
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: (data: any) => {
+                    this.tableService.sendActionAnimation({
+                        animation: 'dispatch-data-update',
+                        data: data,
+                        id: null,
+                    }); 
+                    console.log('--daata---', data)
+                    dispatcherData.unsubscribe();
+                },
+            });
+
+        
+    }
+
+    public getPmData(mod){
+       
+        if ( mod == 'truck' ) {
+            const pmTruckData = this.repairService.apiRepairPmTruckFilterListGet()
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: (data: any) => {
+                    this.tableService.sendActionAnimation({
+                        animation: 'pm-truck-data-update',
+                        data: data,
+                        id: null,
+                    }); 
+                    pmTruckData.unsubscribe();
+                },
+            });
+        } else {
+            const pmTrailerkData = this.repairService.apiRepairPmTrailerFilterListGet()
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: (data: any) => {
+                    this.tableService.sendActionAnimation({
+                        animation: 'pm-trailer-data-update',
+                        data: data,
+                        id: null,
+                    }); 
+                    pmTrailerkData.unsubscribe();
+                },
+            });
+        }
     }
 
     ngOnDestroy(): void {
