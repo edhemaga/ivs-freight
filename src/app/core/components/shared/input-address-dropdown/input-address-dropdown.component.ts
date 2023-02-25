@@ -284,7 +284,7 @@ export class InputAddressDropdownComponent
                     ? { ...event, address: event?.name }
                     : null;
                 if (event?.name) {
-                    if ((this.searchLayers[0] = 'Address')) {
+                    if ((this.searchLayers[0] == 'Address')) {
                         const isValid = this.checkAddressValidation(event.name);
 
                         if (isValid) {
