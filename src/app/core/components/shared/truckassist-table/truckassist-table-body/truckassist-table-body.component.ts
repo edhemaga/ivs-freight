@@ -109,6 +109,7 @@ export class TruckassistTableBodyComponent
     tableRowCounter: number = 0;
     renderInterval: any;
     dropdownActions: any;
+    horizontalScrollPosition: number = 0;
 
     constructor(
         private router: Router,
@@ -219,6 +220,23 @@ export class TruckassistTableBodyComponent
                 }, 10);
 
                 this.renderOneByOne();
+            }
+
+            // Reset Scroll And Elements In List
+            if(this.showScrollSectionBorder){
+                let resetSctoll = false;
+
+                document
+                .querySelectorAll('#table-not-pined-scroll-container')
+                .forEach((el) => {
+                    if(el.scrollLeft){
+                        el.scrollLeft = 0;
+
+                        resetSctoll = true;
+                    }
+                });
+
+                this.tableService.sendIsScrollReseting(resetSctoll);
             }
 
             this.checkAttachmentUpdate();
@@ -357,6 +375,8 @@ export class TruckassistTableBodyComponent
                 .forEach((el) => {
                     el.scrollLeft = scrollEvent.scrollPosition;
                 });
+
+            this.horizontalScrollPosition = scrollEvent.scrollPosition;
 
             this.tableService.sendScroll(scrollEvent.scrollPosition);
         } else if (
@@ -803,5 +823,6 @@ export class TruckassistTableBodyComponent
         this.tableService.sendRowsSelected([]);
         this.tableService.sendCurrentSetTableWidth(null);
         this.tableService.sendIsScrollShownig(false);
+        this.tableService.sendIsScrollReseting(false);
     }
 }
