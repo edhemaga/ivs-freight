@@ -86,7 +86,7 @@ export class CustomScrollbarComponent
         this.tableService.isScrollReseting
             .pipe(takeUntil(this.destroy$))
             .subscribe((response: boolean) => {
-                if (response) {
+                if (response && this.bar?.nativeElement) {
                     this.bar.nativeElement.style.transform = `translateX(${0}px)`;
                 }
             });
