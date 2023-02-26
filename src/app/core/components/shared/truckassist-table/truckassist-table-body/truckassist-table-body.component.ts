@@ -96,7 +96,7 @@ export class TruckassistTableBodyComponent
     rowData: any;
     activeDescriptionDropdown: number = -1;
     descriptionTooltip: any;
-    descriptionPopoverOpen: boolean = false;
+    descriptionPopoverOpen: number = -1;
     pageHeight: number = window.innerHeight;
     activeAttachment: number = -1;
     activeMedia: number = -1;
