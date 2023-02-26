@@ -134,54 +134,60 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.tableService.currentSetTableFilter
             .pipe(takeUntil(this.destroy$))
             .subscribe((res: any) => {
-                this.backFilterQuery.active =
-                    this.selectedTab === 'active' ? 1 : 0;
-                this.backFilterQuery.pageIndex = 1;
-                // TruckTypeFilter
-                if (
-                    res?.filterType === 'truckTypeFilter' ||
-                    res?.type === 'truckTypeFilter'
-                ) {
-                    this.backFilterQuery.truckTypeIds =
-                        res?.action === 'Set' ? res?.queryParams : undefined;
-                }
-                // TrailerTypeFilter
-                else if (
-                    res?.filterType === 'trailerTypeFilter' ||
-                    res?.type === 'trailerTypeFilter'
-                ) {
-                    this.backFilterQuery.trailerTypeIds =
-                        res?.action === 'Set' ? res?.queryParams : undefined;
-                }
-                // LocationFilter
-                else if (
-                    res?.filterType === 'locationFilter' ||
-                    res?.type === 'locationFilter'
-                ) {
-                    this.backFilterQuery.lat =
-                        res?.action === 'Set'
-                            ? res.queryParams.latValue
-                            : undefined;
-                    this.backFilterQuery.long =
-                        res?.action === 'Set'
-                            ? res?.queryParams.longValue
-                            : undefined;
-                    this.backFilterQuery.distance =
-                        res?.action === 'Set'
-                            ? res?.queryParams.rangeValue
-                            : undefined;
-                }
-                // Set Filter
-                if (
-                    this.backFilterQuery.truckTypeIds ||
-                    this.backFilterQuery.trailerTypeIds ||
-                    (this.backFilterQuery.lat &&
-                        this.backFilterQuery.long &&
-                        this.backFilterQuery.distance)
-                ) {
-                    this.ownerBackFilter(this.backFilterQuery);
-                } else {
-                    this.sendOwnerData();
+                if (res) {
+                    this.backFilterQuery.active =
+                        this.selectedTab === 'active' ? 1 : 0;
+                    this.backFilterQuery.pageIndex = 1;
+                    // TruckTypeFilter
+                    if (
+                        res?.filterType === 'truckTypeFilter' ||
+                        res?.type === 'truckTypeFilter'
+                    ) {
+                        this.backFilterQuery.truckTypeIds =
+                            res?.action === 'Set'
+                                ? res?.queryParams
+                                : undefined;
+                    }
+                    // TrailerTypeFilter
+                    else if (
+                        res?.filterType === 'trailerTypeFilter' ||
+                        res?.type === 'trailerTypeFilter'
+                    ) {
+                        this.backFilterQuery.trailerTypeIds =
+                            res?.action === 'Set'
+                                ? res?.queryParams
+                                : undefined;
+                    }
+                    // LocationFilter
+                    else if (
+                        res?.filterType === 'locationFilter' ||
+                        res?.type === 'locationFilter'
+                    ) {
+                        this.backFilterQuery.lat =
+                            res?.action === 'Set'
+                                ? res.queryParams.latValue
+                                : undefined;
+                        this.backFilterQuery.long =
+                            res?.action === 'Set'
+                                ? res?.queryParams.longValue
+                                : undefined;
+                        this.backFilterQuery.distance =
+                            res?.action === 'Set'
+                                ? res?.queryParams.rangeValue
+                                : undefined;
+                    }
+                    // Set Filter
+                    if (
+                        this.backFilterQuery.truckTypeIds ||
+                        this.backFilterQuery.trailerTypeIds ||
+                        (this.backFilterQuery.lat &&
+                            this.backFilterQuery.long &&
+                            this.backFilterQuery.distance)
+                    ) {
+                        this.ownerBackFilter(this.backFilterQuery);
+                    } else {
+                        this.sendOwnerData();
+                    }
                 }
             });
 

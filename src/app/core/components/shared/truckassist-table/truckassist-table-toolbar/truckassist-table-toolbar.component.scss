@@ -25,9 +25,10 @@
         display: flex;
         justify-content: center;
         align-items: center;
+        width: -moz-fit-content;
         width: fit-content;
         height: 32px;
-        color: #919191;
+        color: #424242;
         font-size: 26px;
         font-weight: 900;
         margin-right: 12px;
@@ -232,6 +233,10 @@
     .location-filter-container,
     .general-pm-open-container {
         background: #ffffff;
+    }
+
+    .general-pm-open-container{
+        margin-left: 4px;
     }
 
     .location-filter-container,

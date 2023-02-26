@@ -96,7 +96,7 @@ export class TruckassistTableBodyComponent
     rowData: any;
     activeDescriptionDropdown: number = -1;
     descriptionTooltip: any;
-    descriptionPopoverOpen: boolean = false;
+    descriptionPopoverOpen: number = -1;
     pageHeight: number = window.innerHeight;
     activeAttachment: number = -1;
     activeMedia: number = -1;
@@ -109,6 +109,8 @@ export class TruckassistTableBodyComponent
     tableRowCounter: number = 0;
     renderInterval: any;
     dropdownActions: any;
+    horizontalScrollPosition: number = 0;
+    viewDataLength: number = 0;
 
     constructor(
         private router: Router,
@@ -126,6 +128,8 @@ export class TruckassistTableBodyComponent
         this.getSelectedTabTableData();
 
         this.viewDataEmpty = this.viewData.length ? false : true;
+
+        this.viewDataLength = this.viewData.length;
 
         // Get Table Sections(Pined, Not Pined, Actions)
         this.getTableSections();
@@ -220,6 +224,28 @@ export class TruckassistTableBodyComponent
 
                 this.renderOneByOne();
             }
+
+            // Reset Scroll And Elements In List
+            if (
+                this.showScrollSectionBorder &&
+                this.viewDataLength !== this.viewData.length
+            ) {
+                let resetSctoll = false;
+
+                document
+                    .querySelectorAll('#table-not-pined-scroll-container')
+                    .forEach((el) => {
+                        if (el.scrollLeft) {
+                            el.scrollLeft = 0;
+
+                            resetSctoll = true;
+                        }
+                    });
+
+                this.tableService.sendIsScrollReseting(resetSctoll);
+            }
+
+            this.viewDataLength = this.viewData.length;
 
             this.checkAttachmentUpdate();
         }
@@ -357,6 +383,8 @@ export class TruckassistTableBodyComponent
                 .forEach((el) => {
                     el.scrollLeft = scrollEvent.scrollPosition;
                 });
+
+            this.horizontalScrollPosition = scrollEvent.scrollPosition;
 
             this.tableService.sendScroll(scrollEvent.scrollPosition);
         } else if (
@@ -610,10 +638,10 @@ export class TruckassistTableBodyComponent
                                 (innerAction: any) => {
                                     if (content.id === innerAction.title) {
                                         this.onRemoveClickEventListener();
-                                        
+
                                         setTimeout(() => {
                                             this.onDropAction(innerAction);
-                                        }, 100)
+                                        }, 100);
                                     }
                                 }
                             );
@@ -803,5 +831,6 @@ export class TruckassistTableBodyComponent
         this.tableService.sendRowsSelected([]);
         this.tableService.sendCurrentSetTableWidth(null);
         this.tableService.sendIsScrollShownig(false);
+        this.tableService.sendIsScrollReseting(true);
     }
 }
