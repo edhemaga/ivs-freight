@@ -10,7 +10,11 @@ import {
     ViewChild,
     ViewEncapsulation,
 } from '@angular/core';
-import { FormsModule, UntypedFormControl, ReactiveFormsModule } from '@angular/forms';
+import {
+    FormsModule,
+    UntypedFormControl,
+    ReactiveFormsModule,
+} from '@angular/forms';
 import { PDFDocumentProxy, PdfViewerModule } from 'ng2-pdf-viewer';
 import { Subject, debounceTime, distinctUntilChanged } from 'rxjs';
 import { TaInputComponent } from '../../ta-input/ta-input.component';
@@ -25,6 +29,7 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 import { TaSpinnerComponent } from '../../ta-spinner/ta-spinner.component';
 
 export interface UploadFile {
+    fileId?: number;
     name?: any;
     fileName?: string;
     url: string | any;
@@ -39,6 +44,7 @@ export interface UploadFile {
     tagChanged?: boolean;
     savedTag?: any;
     tagGeneratedByUser?: boolean;
+    lastHovered?: boolean;
 }
 @Component({
     selector: 'app-ta-upload-file',
@@ -79,6 +85,9 @@ export class TaUploadFileComponent implements OnInit, OnDestroy {
     @Output() fileAction: EventEmitter<{ file: UploadFile; action: string }> =
         new EventEmitter<{ file: UploadFile; action: string }>(null);
 
+    @Output() fileHover: EventEmitter<{ }> =
+        new EventEmitter<{ }>(null);
+
     // Review
     @Input() isReview: boolean;
     @Input() reviewMode: string;
@@ -103,6 +112,7 @@ export class TaUploadFileComponent implements OnInit, OnDestroy {
     public fileExtension: string;
     public annotationHover: boolean = false;
     public documentLoading: boolean = true;
+    public isArrowHovered: boolean = false;
     @ViewChild('t2') t2: any;
 
     @Output() landscapeCheck = new EventEmitter();
@@ -115,7 +125,7 @@ export class TaUploadFileComponent implements OnInit, OnDestroy {
     ) {}
 
     ngOnInit(): void {
-        if (!this.file.realFile) {
+        if (!this.file?.realFile) {
             let setName = '';
             const name = this.file.fileName
                 ? this.file.fileName.split('')
@@ -333,6 +343,20 @@ export class TaUploadFileComponent implements OnInit, OnDestroy {
     public openDeletePopup(name) {
         this.detailsDataService.setDocumentName(name);
         this.isFileDelete = true;
+    }
+
+    public hoverFile() {
+        this.fileHover.emit(this.file);
+    }
+
+    public updateHover(mod: boolean) {
+        this.file.lastHovered = mod;
+        this.ref.detectChanges();
+    }
+
+    public hoverArrow(mod: boolean) {
+        this.isArrowHovered = mod;
+        this.ref.detectChanges();
     }
 
     ngOnDestroy(): void {

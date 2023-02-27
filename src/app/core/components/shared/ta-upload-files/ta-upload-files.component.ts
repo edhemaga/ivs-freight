@@ -1,15 +1,21 @@
 import {
+    ChangeDetectorRef,
     Component,
+    ElementRef,
     EventEmitter,
     Input,
     OnInit,
     Output,
     ViewChild,
+    ViewChildren,
     ViewEncapsulation,
 } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
 import { TaUploadFileService } from './ta-upload-file.service';
-import { UploadFile, TaUploadFileComponent } from './ta-upload-file/ta-upload-file.component';
+import {
+    UploadFile,
+    TaUploadFileComponent,
+} from './ta-upload-file/ta-upload-file.component';
 import { TaUploadFilesCarouselComponent } from './ta-upload-files-carousel/ta-upload-files-carousel.component';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -23,18 +29,20 @@ import { TaUploadDropzoneComponent } from './ta-upload-dropzone/ta-upload-dropzo
     encapsulation: ViewEncapsulation.None,
     standalone: true,
     imports: [
-                CommonModule, 
-                FormsModule,
-                TaUploadFilesCarouselComponent,
-                AngularSvgIconModule,
-                TaUploadDropzoneComponent,
-                TaUploadFileComponent
-    ]
+        CommonModule,
+        FormsModule,
+        TaUploadFilesCarouselComponent,
+        AngularSvgIconModule,
+        TaUploadDropzoneComponent,
+        TaUploadFileComponent,
+    ],
 })
 export class TaUploadFilesComponent implements OnInit {
     private destroy$ = new Subject<void>();
     @ViewChild(TaUploadFilesCarouselComponent)
     modalCarousel: TaUploadFilesCarouselComponent;
+
+    @ViewChildren('uploadedFiles') uploadedFiles: ElementRef;
 
     @Input() customClassName: string;
     @Input() files: UploadFile[] = [];
@@ -79,7 +87,10 @@ export class TaUploadFilesComponent implements OnInit {
 
     public currentSlide: number = 0;
 
-    constructor(private uploadFileService: TaUploadFileService) {}
+    constructor(
+        private uploadFileService: TaUploadFileService,
+        private ref: ChangeDetectorRef
+    ) {}
 
     ngOnInit() {
         this.uploadFileService.uploadedFiles$
@@ -300,6 +311,28 @@ export class TaUploadFilesComponent implements OnInit {
 
     public dropZoneClose() {
         this.closeDropzone.emit();
+    }
+
+    public fileHover(file: UploadFile) {
+        if (this.customClassName == 'modals') {
+            let checkById = file?.realFile ? false : true;
+            this.files.map((item, index) => {
+                if (
+                    (checkById && file?.fileId == item.fileId) ||
+                    (!checkById && file?.realFile.name == item.realFile.name)
+                ) {
+                    this.uploadedFiles['_results'][index].updateHover(true);
+                } else {
+                    this.uploadedFiles['_results'][index].updateHover(false);
+                }
+            });
+        }
+    }
+
+    public hoverArrow(mod: boolean) {
+        this.files.map((item, index) => {
+            this.uploadedFiles['_results'][index].hoverArrow(mod);
+        });
     }
 
     ngOnDestroy(): void {
