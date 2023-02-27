@@ -144,8 +144,6 @@ export class FilterStateService implements OnDestroy {
     }
 
     public getDispatchData(){
-        console.log('---getDispatchData')
-
         const dispatcherData = this.loadService.apiLoadDispatcherFilterGet()
             .pipe(takeUntil(this.destroy$))
             .subscribe({
@@ -155,7 +153,6 @@ export class FilterStateService implements OnDestroy {
                         data: data,
                         id: null,
                     }); 
-                    console.log('--daata---', data)
                     dispatcherData.unsubscribe();
                 },
             });

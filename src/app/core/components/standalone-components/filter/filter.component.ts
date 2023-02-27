@@ -1414,8 +1414,6 @@ export class FilterComponent implements OnInit, AfterViewInit {
 
     ngOnInit(): void {
 
-        console.log('---this.type', this.type)
-
         if (this.type === 'truckTypeFilter') {
             this.getTruckType();
         } else if (this.type === 'trailerTypeFilter') {
@@ -1431,7 +1429,6 @@ export class FilterComponent implements OnInit, AfterViewInit {
         } else if ( this.type === 'userFilter' ) {
             this.getDispatchData();
         } else if ( this.type === 'pmFilter' ) {
-            console.log('------this.pmSubtype', this.pmSubtype)
             if ( this.pmSubtype === 'truck' ) {
                 this.getPmData('truck');
             } else {
