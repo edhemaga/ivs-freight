@@ -1986,8 +1986,6 @@ export class FilterComponent implements OnInit, AfterViewInit {
                     }
                 } else if ( this.type === 'pmFilter' && this.pmSubtype === 'truck' ) {
                     if (res.animation == 'pm-truck-data-update') {
-                        console.log('res.data.pagination.data', res.data.pagination.data)
-
                         let newData = res.data.pagination.data.map(
                             (type: any, index: number) => {
                                 type['icon'] =
@@ -2001,7 +1999,16 @@ export class FilterComponent implements OnInit, AfterViewInit {
                     }
                 } else if ( this.type === 'pmFilter' && this.pmSubtype === 'trailer' ) {
                     if (res.animation == 'pm-trailer-data-update') {
-                        this.pmFilterArray = res.data.pagination.data;
+
+                        let newData = res.data.pagination.data.map(
+                            (type: any, index: number) => {
+                                type['icon'] =
+                                    'assets/svg/common/repair-pm/' + type.logoName;
+                                return type;
+                            }
+                        );
+
+                        this.pmFilterArray = newData;
                     }
                 }
             });
@@ -2545,6 +2552,11 @@ export class FilterComponent implements OnInit, AfterViewInit {
                     this.filterUsaActiveArray.length +
                     this.filterCanadaActiveArray.length;
                 this.totalFiltersNum = totalStatesSelected;
+
+                queryParams = {
+                    usaArray: this.filterUsaActiveArray,
+                    canadaArray: this.filterCanadaActiveArray,
+                }
             } else if (this.type == 'moneyFilter') {
                 if (this.subType == 'all') {
                     let formActive = 0;
@@ -2739,7 +2751,7 @@ export class FilterComponent implements OnInit, AfterViewInit {
                 queryParams: queryParams,
                 subType: subType,
             };
-
+            
             if (this.setFilter) {
                 this.setFilter.emit(data);
             }
