@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import {
     ChangeDetectionStrategy,
+    ChangeDetectorRef,
     Component,
     ElementRef,
     EventEmitter,
@@ -35,12 +36,19 @@ export class TaUploadFilesCarouselComponent {
         null
     );
 
+    @Output() hoverArrowEmit: EventEmitter<number> = new EventEmitter<number>(
+        null
+    );
+
     public currentSlide: number = 0;
+    public removePointers: boolean = false;
 
     // Multiple slides
     public multipleCurrentSlide: number = 0;
     @Input() slideWidth: number = 180;
     public translateXMultipleSlides: number = 0;
+
+    constructor(private ref: ChangeDetectorRef){}
 
     ngOnInit(): void {
         this.filesShown = ['large'].includes(
@@ -108,6 +116,12 @@ export class TaUploadFilesCarouselComponent {
                         }
                     }
                 }
+                this.removePointers = true;
+                this.ref.detectChanges();
+                setTimeout(() => {
+                    this.removePointers = false;
+                    this.ref.detectChanges();
+                }, 200);
                 break;
             }
             case 'next': {
@@ -167,7 +181,12 @@ export class TaUploadFilesCarouselComponent {
                         }
                     }
                 }
-
+                this.removePointers = true;
+                this.ref.detectChanges();
+                setTimeout(() => {
+                    this.removePointers = false;
+                    this.ref.detectChanges();
+                }, 200);
                 break;
             }
             default: {
@@ -186,5 +205,9 @@ export class TaUploadFilesCarouselComponent {
     // TruckBy ngFor files changes
     public identity(index: number, item: any): number {
         return item.name;
+    }
+
+    public hoverArrow(mod) {
+        this.hoverArrowEmit.emit(mod)
     }
 }

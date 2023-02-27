@@ -1,4 +1,4 @@
-<div class="upload-carousel {{ customClass }} {{ customDetailsPageClass }}">
+<div class="upload-carousel {{ customClass }} {{ customDetailsPageClass }}" [class.remove_pointers]="removePointers">
     <div class="ta-upload-files-carousel" #fileHolder>
         <div
             class="carousel-slider"
@@ -44,6 +44,9 @@
             files?.length == 3 &&
             translateXMultipleSlides < 0
         "
+        (mouseenter)="hoverArrow(true)"
+        (mouseleave)="hoverArrow(false)"
+        [class.remove_pointers]="removePointers"
     >
         <svg-icon
             (click)="onAction('prev')"
@@ -65,6 +68,9 @@
             files?.length == 3 &&
             translateXMultipleSlides == 0
         "
+        [class.remove_pointers]="removePointers"
+        (mouseenter)="hoverArrow(true)"
+        (mouseleave)="hoverArrow(false)"
     >
         <svg-icon
             (click)="onAction('next')"
