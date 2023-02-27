@@ -118,13 +118,18 @@ export class SettingsGeneralComponent implements OnInit, OnDestroy, OnChanges {
         }
     }
     public onSelectItem(event: any) {
-        let currentIndex = this.optionsCompany.findIndex(
-            (comp) => comp.id === event.id
-        );
-        this.currentCompanyIndex = currentIndex;
-        this.toggleSelect = !this.toggleSelect;
-        this.selectDropDown.emit(event);
-        this.selectValue.emit(event);
+
+        if ( event ) {
+            let currentIndex = this.optionsCompany.findIndex(
+                (comp) => comp.id === event.id
+            );
+            this.currentCompanyIndex = currentIndex;
+            this.toggleSelect = !this.toggleSelect;
+            this.selectDropDown.emit(event);
+            this.selectValue.emit(event);
+        }
+        
+        
         this.selectedDropdown = false;
     }
 

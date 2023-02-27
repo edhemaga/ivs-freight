@@ -38,51 +38,13 @@
         <app-sidebar-confirm-btn
             [disabledValue]="resendConfirmationForm.invalid"
             [displaySpinner]="displaySpinner"
-            (clickValueEmitter)="
-                onGetBtnClickValue($event, 'resend-confirmation-btn')
-            "
+            (clickValueEmitter)="onGetBtnClickValue($event)"
         ></app-sidebar-confirm-btn>
     </form>
 
     <!-- HAVING TROUBLE TO LOGIN -->
 
-    <div
-        class="d-flex flex-column justify-content-center having-trouble-container"
-    >
-        <div
-            class="d-flex align-items-center trouble-container"
-            (click)="onHavingTroubleClick()"
-        >
-            <h3 class="m-0 ta-font-bold">Having trouble to login?</h3>
-
-            <svg-icon
-                class="arrow-icon"
-                [ngClass]="{
-                    'rotate-icon': openHavingTroubleContent
-                }"
-                src="assets/svg/website/arrow-down.svg"
-                [svgStyle]="{ 'width.px': 10, 'height.px': 6 }"
-            ></svg-icon>
-        </div>
-
-        <div
-            class="d-flex flex-column justify-content-center trouble-content"
-            [ngClass]="{
-                'open-trouble': openHavingTroubleContent
-            }"
-        >
-            <div
-                class="d-flex flex-column justify-content-center confirmation-container"
-            >
-                <p class="m-0">Already signed up, but didn't receive email?</p>
-
-                <app-sidebar-resend-btn
-                    [btnText]="'RESET PASSOWRD'"
-                    (clickValueEmitter)="
-                        onGetBtnClickValue($event, 'reset-password-btn')
-                    "
-                ></app-sidebar-resend-btn>
-            </div>
-        </div>
-    </div>
+    <app-sidebar-dropdown
+        [displayResendConfirmationBtn]="false"
+    ></app-sidebar-dropdown>
 </div>

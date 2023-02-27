@@ -77,6 +77,14 @@ export class TruckassistTableService {
     private setTableWidth = new BehaviorSubject<number>(null);
     public currentSetTableWidth = this.setTableWidth.asObservable();
 
+    /* Is Scroll Showning */
+    private scrollShownig = new BehaviorSubject<boolean>(false);
+    public isScrollShownig = this.scrollShownig.asObservable();
+
+    /* Reset Horizontal Scroll */
+    private scrollReseting = new BehaviorSubject<boolean>(false);
+    public isScrollReseting = this.scrollReseting.asObservable();
+
     constructor(private tableColumnsConfigService: TableConfigService) {}
 
     // ------------------------------ Table Back Service Methods --------------------------------
@@ -91,6 +99,16 @@ export class TruckassistTableService {
     }
 
     // ------------------------------ Table Custom Service Methods --------------------------------
+
+    /* Reset Horizontal Scroll */
+    public sendIsScrollReseting(isScrollReseting: boolean) {
+        this.scrollReseting.next(isScrollReseting);
+    }
+
+    /* Is Scroll Showning */
+    public sendIsScrollShownig(isScrollShowing: boolean) {
+        this.scrollShownig.next(isScrollShowing);
+    }
 
     /* Set Table Width */
     public sendCurrentSetTableWidth(width: number) {

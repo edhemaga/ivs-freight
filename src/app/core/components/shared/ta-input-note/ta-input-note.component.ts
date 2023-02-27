@@ -2,8 +2,10 @@ import {
     ChangeDetectorRef,
     Component,
     ElementRef,
+    EventEmitter,
     Input,
     OnInit,
+    Output,
     Self,
     ViewChild,
 } from '@angular/core';
@@ -70,6 +72,7 @@ export class TaInputNoteComponent implements OnInit, ControlValueAccessor {
     @Input() isVisibleDivider: boolean = true;
     @Input() public animationsDisabled = false;
     @Input() noteType: string = '';
+    blurNoteTimeout: any;
 
     savingNote: boolean = false;
     @Input() entityId: number = 0;
@@ -195,6 +198,10 @@ export class TaInputNoteComponent implements OnInit, ControlValueAccessor {
         }
     }
 
+    stopBlurRemoveTimeout(){
+        clearTimeout(this.blurNoteTimeout);
+    }
+
     prepareForTextRange() {
         this.isFocused = false;
         this.selectionTaken = window.getSelection();
@@ -202,6 +209,10 @@ export class TaInputNoteComponent implements OnInit, ControlValueAccessor {
             this.range = this.selectionTaken.getRangeAt(0);
             this.selectionTaken.removeAllRanges();
             this.selectionTaken.addRange(this.range);
+
+            this.blurNoteTimeout = setTimeout(() => {
+                this.selectionTaken.removeAllRanges();
+            }, 100);
         }
         this.saveIntervalStarted = false;
         clearInterval(this.saveInterval);

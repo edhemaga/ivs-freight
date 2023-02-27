@@ -18,7 +18,7 @@ import { TaCustomCardComponent } from '../shared/ta-custom-card/ta-custom-card.c
 
 @NgModule({
     declarations: [
-        AccountingIndexComponent,
+        AccountingIndexComponent, 
         PayrollComponent,
         AccountingPayrollComponent,
         PayrollTableComponent,

@@ -31,7 +31,9 @@
                     <li class="d-flex align-items-center nav-item-left">
                         <a
                             class="d-flex align-items-center ta-font-semi-bold link"
-                            [routerLink]="[menuItem.route]"
+                            (click)="
+                                handleNavbarBtnClick('left', menuItem.route)
+                            "
                         >
                             {{ menuItem.title }}
 
@@ -64,7 +66,9 @@
                             data-bs-target="#sidebar"
                             role="button"
                             aria-controls="sidebarLabel"
-                            (click)="handleNavbarBtnClick(menuItem.title)"
+                            (click)="
+                                handleNavbarBtnClick('right', menuItem.title)
+                            "
                         >
                             {{ menuItem.title }}
                         </a>

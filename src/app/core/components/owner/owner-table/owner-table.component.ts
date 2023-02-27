@@ -134,24 +134,60 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.tableService.currentSetTableFilter
             .pipe(takeUntil(this.destroy$))
             .subscribe((res: any) => {
-                this.backFilterQuery.active =
-                    this.selectedTab === 'active' ? 1 : 0;
-                this.backFilterQuery.pageIndex = 1;
-
-                // TruckTypeFilter
-                if (
-                    res?.filterType === 'truckTypeFilter' ||
-                    res?.type === 'truckTypeFilter'
-                ) {
-                    this.backFilterQuery.truckTypeIds =
-                        res?.action === 'Set' ? res.queryParams : undefined;
-                }
-
-                // Set Filter
-                if (this.backFilterQuery.truckTypeIds) {
-                    this.ownerBackFilter(this.backFilterQuery);
-                } else {
-                    this.sendOwnerData();
+                if (res) {
+                    this.backFilterQuery.active =
+                        this.selectedTab === 'active' ? 1 : 0;
+                    this.backFilterQuery.pageIndex = 1;
+                    // TruckTypeFilter
+                    if (
+                        res?.filterType === 'truckTypeFilter' ||
+                        res?.type === 'truckTypeFilter'
+                    ) {
+                        this.backFilterQuery.truckTypeIds =
+                            res?.action === 'Set'
+                                ? res?.queryParams
+                                : undefined;
+                    }
+                    // TrailerTypeFilter
+                    else if (
+                        res?.filterType === 'trailerTypeFilter' ||
+                        res?.type === 'trailerTypeFilter'
+                    ) {
+                        this.backFilterQuery.trailerTypeIds =
+                            res?.action === 'Set'
+                                ? res?.queryParams
+                                : undefined;
+                    }
+                    // LocationFilter
+                    else if (
+                        res?.filterType === 'locationFilter' ||
+                        res?.type === 'locationFilter'
+                    ) {
+                        this.backFilterQuery.lat =
+                            res?.action === 'Set'
+                                ? res.queryParams.latValue
+                                : undefined;
+                        this.backFilterQuery.long =
+                            res?.action === 'Set'
+                                ? res?.queryParams.longValue
+                                : undefined;
+                        this.backFilterQuery.distance =
+                            res?.action === 'Set'
+                                ? res?.queryParams.rangeValue
+                                : undefined;
+                    }
+                    // Set Filter
+                    if (
+                        this.backFilterQuery.truckTypeIds ||
+                        this.backFilterQuery.trailerTypeIds ||
+                        (this.backFilterQuery.lat &&
+                            this.backFilterQuery.long &&
+                            this.backFilterQuery.distance)
+                    ) {
+                        this.ownerBackFilter(this.backFilterQuery);
+                    } else {
+                        this.sendOwnerData();
+                    }
                 }
             });
 
@@ -299,7 +335,6 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
     initTableOptions(): void {
         this.tableOptions = {
             toolbarActions: {
-                showMoneyFilter: true,
                 showLocationFilter: true,
                 showTruckTypeFilter: true,
                 showTrailerTypeFilter: true,
@@ -308,22 +343,6 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     { name: 'Card', active: this.activeViewMode === 'Card' },
                 ],
             },
-            actions: [
-                {
-                    title: 'Edit',
-                    name: 'edit-owner',
-                    class: 'regular-text',
-                    contentType: 'edit',
-                },
-                {
-                    title: 'Delete',
-                    name: 'delete-owner',
-                    type: 'owner',
-                    text: 'Are you sure you want to delete owner(s)?',
-                    class: 'delete-text',
-                    contentType: 'delete',
-                },
-            ],
         };
     }
 
@@ -411,13 +430,102 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
             isSelected: false,
             textType: data?.ownerType?.name ? data.ownerType.name : '',
             textPhone: data?.phone ? this.phonePipe.transform(data.phone) : '',
-            textAddress: data?.address?.address ? data.address.address : '',
-            textBankName: data?.bank?.name ? data.bank.name : '',
-            tableAttachments: data?.files ? data.files : [],
+            textAddress: data?.address ? data.address : '',
+            textBankName: data?.bankName ? data.bankName : '',
             fileCount: data?.fileCount,
+            tableDropdownContent: {
+                hasContent: true,
+                content: this.getDropdownOwnerContent(data),
+            },
         };
     }
+    getDropdownOwnerContent(data: any) {
+        return [
+            {
+                title: 'Edit',
+                name: 'edit-owner',
+                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Edit.svg',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                hasBorder: true,
+                svgClass: 'regular',
+            },
+            {
+                title: 'View Details',
+                name: 'view-details',
+                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Information.svg',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                svgClass: 'regular',
+                tableListDropdownContentStyle: {
+                    'margin-bottom.px': 4,
+                },
+            },
+            {
+                title: 'Add Truck',
+                name: 'add-truck',
+                svgUrl: '',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                svgClass: 'regular',
+                tableListDropdownContentStyle: {
+                    'margin-bottom.px': 4,
+                },
+            },
+            {
+                title: 'Add Trailer',
+                name: 'add-trailer',
+                svgUrl: '',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                svgClass: 'regular',
+                hasBorder: true,
+            },
+            {
+                title: 'Share',
+                name: 'share',
+                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Share.svg',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                svgClass: 'regular',
+                tableListDropdownContentStyle: {
+                    'margin-bottom.px': 4,
+                },
+            },
+            {
+                title: 'Print',
+                name: 'print',
+                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Print.svg',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
 
+                svgClass: 'regular',
+                hasBorder: true,
+            },
+            {
+                title: 'Delete',
+                name: 'delete-owner',
+                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Delete.svg',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                svgClass: 'delete',
+            },
+        ];
+    }
     getTabData(dataType: string) {
         if (dataType === 'active') {
             this.ownerActive = this.ownerActiveQuery.getAll();
@@ -512,7 +620,7 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
                         25
                     )
                     .pipe(takeUntil(this.destroy$))
-                    .subscribe((ownerPagination: GetOwnerListResponse) => {
+                    .subscribe((ownerPagination: any) => {
                         this.ownerInactiveStore.set(
                             ownerPagination.pagination.data
                         );

@@ -5,33 +5,34 @@ table {
         // background: white;
         // margin: 2px 0;
 
-        .border-scroll-section-container{
+        .table-border-scroll-section-container{
             position: relative;
 
-            .border-scroll-section {
+            .table-border-scroll-section {
                 position: absolute;
                 width: 8px;
                 height: 30px;
                 z-index: 100;
             }
         }
-        .border-scroll-section-container-left{
+
+        .table-border-scroll-section-container-left{
             margin-left: 1px;
         }
 
-        .border-scroll-section-container-right{
+        .table-border-scroll-section-container-right{
             margin-right: 7px;
 
-            .border-scroll-section{
+            .table-border-scroll-section{
                 left: -8px;
             }
         }
 
-        .border-left {
+        .table-border-left {
             background-image: linear-gradient(to right, #eeeeee, #eeeeee00);
         }
 
-        .border-right {
+        .table-border-right {
             background-image: linear-gradient(to right, #eeeeee00, #eeeeee);
         }
 

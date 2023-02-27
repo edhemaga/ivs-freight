@@ -24,7 +24,7 @@ import {
 } from '../../../utils/methods.globals';
 import { getTruckColumnDefinition } from '../../../../../assets/utils/settings/truck-columns';
 import { DatePipe } from '@angular/common';
-
+import { TruckInactiveStore } from '../state/truck-inactive-state/truck-inactive.store';
 @Component({
     selector: 'app-truck-table',
     templateUrl: './truck-table.component.html',
@@ -42,6 +42,7 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
     trucksActive: TruckActiveState[] = [];
     trucksInactive: TruckInactiveState[] = [];
     loadingPage: boolean = true;
+    inactiveTabClicked: boolean = false;
     backFilterQuery = {
         active: 1,
         pageIndex: 1,
@@ -62,6 +63,7 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
         private truckService: TruckTService,
         private thousandSeparator: TaThousandSeparatorPipe,
         private confirmationService: ConfirmationService,
+        private truckInactiveStore: TruckInactiveStore,
         public datePipe: DatePipe
     ) {}
 
@@ -325,47 +327,6 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     { name: 'Card', active: this.activeViewMode === 'Card' },
                 ],
             },
-            actions: [
-                {
-                    title: 'Edit Truck',
-                    name: 'edit-truck',
-                    class: 'regular-text',
-                    contentType: 'edit',
-                },
-                {
-                    title: 'Add Registration',
-                    name: 'add-registration',
-                    class: 'regular-text',
-                    contentType: 'add',
-                },
-                {
-                    title: 'Add Inspection',
-                    name: 'add-inspection',
-                    class: 'regular-text',
-                    contentType: 'add',
-                },
-                {
-                    title: 'Add Repair',
-                    name: 'add-repair',
-                    class: 'regular-text',
-                    contentType: 'add',
-                },
-                {
-                    title: 'Activate',
-                    reverseTitle: 'Deactivate',
-                    name: 'activate-item',
-                    class: 'regular-text',
-                    contentType: 'activate',
-                },
-                {
-                    title: 'Delete',
-                    name: 'delete-item',
-                    type: 'truck',
-                    text: 'Are you sure you want to delete truck(s)?',
-                    class: 'delete-text',
-                    contentType: 'delete',
-                },
-            ],
         };
     }
 
@@ -554,7 +515,113 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 : '',
             tableAttachments: data?.files ? data.files : [],
             fileCount: data?.fileCount,
+            tableDropdownContent: {
+                hasContent: true,
+                content: this.getDropdownTruckContent(data),
+            },
         };
+    }
+
+    getDropdownTruckContent(data: any) {
+        return [
+            {
+                title: 'Edit',
+                name: 'edit-truck',
+                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Edit.svg',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                hasBorder: true,
+                svgClass: 'regular',
+            },
+            {
+                title: 'View Details',
+                name: 'view-details',
+                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Information.svg',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                svgClass: 'regular',
+                tableListDropdownContentStyle: {
+                    'margin-bottom.px': 4,
+                },
+            },
+            {
+                title: 'Add New',
+                name: 'add-new',
+                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Show More.svg',
+                svgStyle: {
+                    width: 15,
+                    height: 15,
+                },
+                svgClass: 'regular',
+                isDropdown: true,
+                insideDropdownContent: [
+                    {
+                        title: 'Add Registration',
+                        name: 'add-registration',
+                    },
+                    {
+                        title: 'Add Inspection',
+                        name: 'add-inspection',
+                    },
+                    {
+                        title: 'Add Repair',
+                        name: 'add-repair',
+                    },
+                ],
+                hasBorder: true,
+            },
+            {
+                title: 'Share',
+                name: 'share',
+                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Share.svg',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                svgClass: 'regular',
+                tableListDropdownContentStyle: {
+                    'margin-bottom.px': 4,
+                },
+            },
+            {
+                title: 'Print',
+                name: 'print',
+                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Print.svg',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                svgClass: 'regular',
+                hasBorder: true,
+            },
+            {
+                title: 'Deactivate',
+                name: 'activate-item',
+                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Deactivate.svg',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                svgClass: 'delete',
+                tableListDropdownContentStyle: {
+                    'margin-bottom.px': 4,
+                },
+            },
+            {
+                title: 'Delete',
+                name: 'delete-item',
+                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Delete.svg',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                svgClass: 'delete',
+            },
+        ];
     }
 
     updateDataCount() {
@@ -565,7 +632,7 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
         updatedTableData[0].length = truckCount.active;
         updatedTableData[1].length = truckCount.inactive;
 
-        this.tableData = [...updatedTableData]
+        this.tableData = [...updatedTableData];
     }
 
     getTabData(dataType: string) {
@@ -574,6 +641,8 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
             return this.trucksActive?.length ? this.trucksActive : [];
         } else if (dataType === 'inactive') {
+            this.inactiveTabClicked = true;
+
             this.trucksInactive = this.truckInactiveQuery.getAll();
 
             return this.trucksInactive?.length ? this.trucksInactive : [];
@@ -625,16 +694,35 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     onToolBarAction(event: any) {
+        // Open Modal
         if (event.action === 'open-modal') {
             this.modalService.openModal(TruckModalComponent, { size: 'small' });
-        } else if (event.action === 'tab-selected') {
+        } 
+        // Select Tab
+        else if (event.action === 'tab-selected') {
             this.selectedTab = event.tabData.field;
 
             this.backFilterQuery.pageIndex = 1;
+
             this.backFilterQuery.active = this.selectedTab === 'active' ? 1 : 0;
 
-            this.sendTruckData();
-        } else if (event.action === 'view-mode') {
+            if (this.selectedTab === 'inactive' && !this.inactiveTabClicked) {
+                this.truckService
+                    .getTruckList(0, 1, 25)
+                    .pipe(takeUntil(this.destroy$))
+                    .subscribe((truckPagination: TruckListResponse) => {
+                        this.truckInactiveStore.set(
+                            truckPagination.pagination.data
+                        );
+
+                        this.sendTruckData();
+                    });
+            } else {
+                this.sendTruckData();
+            }
+        } 
+        // Change View Mode
+        else if (event.action === 'view-mode') {
             this.activeViewMode = event.mode;
         }
     }
@@ -676,7 +764,7 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     { size: 'small' },
                     {
                         ...event,
-                        type: 'edit', 
+                        type: 'edit',
                         disableButton: true,
                         tabSelected: this.selectedTab,
                     }

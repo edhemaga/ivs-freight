@@ -112,7 +112,13 @@
                 </p>
             </div>
 
-            <div *ngIf="currentUserStatus" class="status-marker-container">
+            <div
+                *ngIf="currentUserStatus"
+                class="status-marker-container"
+                [ngClass]="{
+                    'status-nav-closed': !isNavigationHovered
+                }"
+            >
                 <div
                     [ngClass]="{
                         'status-active': currentUserStatus === 'active',

@@ -67,6 +67,8 @@ export class TruckassistTableHeadComponent
     notPinedMaxWidth: number = 0;
     sortDirection: string = '';
     tableConfigurationType: string = '';
+    selectableRow: any[] = [];
+    showBorder: boolean = false;
 
     constructor(
         private tableService: TruckassistTableService,
@@ -78,6 +80,7 @@ export class TruckassistTableHeadComponent
         this.setColumnNameUpperCase();
         this.setVisibleColumns();
         this.getActiveTableData();
+        this.getSelectableRows();
 
         // Get Table Width
         this.tableService.currentSetTableWidth
@@ -116,6 +119,28 @@ export class TruckassistTableHeadComponent
                 }
             });
 
+        // Is Scroll Showing
+        this.tableService.isScrollShownig
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((isScrollShownig: boolean) => {
+                if (this.showBorder !== isScrollShownig) {
+                    this.showBorder = isScrollShownig;
+
+                    this.changeDetectorRef.detectChanges();
+                }
+            });
+
+        this.tableService.isScrollReseting
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((isScrollReset: boolean) => {
+                if (isScrollReset) {
+                    let scroll = document.getElementById('scroll');
+                    scroll.scrollLeft = 0;
+
+                    // this.changeDetectorRef.detectChanges();
+                }
+            });
+
         setTimeout(() => {
             this.getNotPinedMaxWidth();
         }, 10);
@@ -144,6 +169,8 @@ export class TruckassistTableHeadComponent
 
         if (!changes?.viewData?.firstChange && changes?.viewData) {
             this.viewData = changes.viewData.currentValue;
+
+            this.getSelectableRows();
 
             this.changeDetectorRef.detectChanges();
         }
@@ -358,6 +385,19 @@ export class TruckassistTableHeadComponent
         } else {
             selectedPopover.open({});
         }
+    }
+
+    // Get Selectable Row
+    getSelectableRows() {
+        let selectable = [];
+
+        this.viewData.map((data: any, index: number) => {
+            if (!data?.tableCantSelect) {
+                selectable.push(index);
+            }
+        });
+
+        this.selectableRow = [...selectable];
     }
 
     // On Select Option From Select Popup

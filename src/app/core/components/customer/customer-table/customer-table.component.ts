@@ -17,7 +17,7 @@ import { ShipperState } from '../state/shipper-state/shipper.store';
 import { ShipperQuery } from '../state/shipper-state/shipper.query';
 import { ShipperTService } from '../state/shipper-state/shipper.service';
 import { GetBrokerListResponse, ShipperListResponse } from 'appcoretruckassist';
-import { Subject, takeUntil } from 'rxjs';
+import { forkJoin, Subject, takeUntil } from 'rxjs';
 import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
 import { NotificationService } from '../../../services/notification/notification.service';
 import { DetailsDataService } from '../../../services/details-data/details-data.service';
@@ -33,7 +33,7 @@ import { TaThousandSeparatorPipe } from '../../../pipes/taThousandSeparator.pipe
 import { ReviewsRatingService } from '../../../services/reviews-rating/reviewsRating.service';
 import { DatePipe } from '@angular/common';
 import { MapsService } from 'src/app/core/services/shared/maps.service';
-
+import { ShipperStore } from '../state/shipper-state/shipper.store';
 @Component({
     selector: 'app-customer-table',
     templateUrl: './customer-table.component.html',
@@ -59,6 +59,7 @@ export class CustomerTableComponent
     selectedTab = 'active';
     activeViewMode: string = 'List';
     resizeObserver: ResizeObserver;
+    inactiveTabClicked: boolean = false;
     backBrokerFilterQuery = {
         ban: null,
         dnu: null,
@@ -106,7 +107,8 @@ export class CustomerTableComponent
         private DetailsDataService: DetailsDataService,
         private ref: ChangeDetectorRef,
         public datePipe: DatePipe,
-        private mapsService: MapsService
+        private mapsService: MapsService,
+        private shipperStore: ShipperStore
     ) {}
 
     ngOnInit(): void {
@@ -305,33 +307,6 @@ export class CustomerTableComponent
                 showStateFilter: this.selectedTab === 'inactive',
                 viewModeOptions: this.getViewModeOptions(),
             },
-            actions: [
-                {
-                    title: 'Edit',
-                    name: 'edit-cutomer-or-shipper',
-                    class: 'regular-text',
-                    contentType: 'edit',
-                    show: true,
-                    svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
-                    iconName: 'edit',
-                },
-                {
-                    title: 'Delete',
-                    name: 'delete',
-                    type: 'customer',
-                    text:
-                        this.selectedTab === 'active'
-                            ? 'Are you sure you want to delete broker(s)?'
-                            : 'Are you sure you want to delete shipper(s)?',
-                    class: 'delete-text',
-                    contentType: 'delete',
-                    show: true,
-                    danger: true,
-                    svg: 'assets/svg/truckassist-table/dropdown/content/delete.svg',
-                    iconName: 'delete',
-                    redIcon: true,
-                },
-            ],
         };
     }
 
@@ -362,6 +337,8 @@ export class CustomerTableComponent
                 ? this.brokerQuery.getAll()
                 : [];
         } else {
+            this.inactiveTabClicked = true;
+
             this.shipper = this.shipperQuery.getAll().length
                 ? this.shipperQuery.getAll()
                 : [];
@@ -520,6 +497,10 @@ export class CustomerTableComponent
             tableEdited: data.updatedAt
                 ? this.datePipe.transform(data.updatedAt, 'MM/dd/yy')
                 : '',
+            tableDropdownContent: {
+                hasContent: true,
+                content: this.getDropdownBrokerContent(data),
+            },
         };
     }
 
@@ -568,7 +549,255 @@ export class CustomerTableComponent
             tableEdited: 'NA', // data.updatedAt
             //? this.datePipe.transform(data.updatedAt, 'MM/dd/yy')
             //: '',
+            tableDropdownContent: {
+                hasContent: true,
+                content: this.getDropdownShipperContent(data),
+            },
         };
+    }
+
+    getDropdownBrokerContent(data: any) {
+        return [
+            {
+                title: 'Edit',
+                name: 'edit-cutomer-or-shipper',
+                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Edit.svg',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                hasBorder: true,
+                svgClass: 'regular',
+            },
+            {
+                title: 'View Details',
+                name: 'view-details',
+                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Information.svg',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                svgClass: 'regular',
+                tableListDropdownContentStyle: {
+                    'margin-bottom.px': 4,
+                },
+            },
+            {
+                title: 'Create Load',
+                name: 'create-load',
+                svgUrl: '',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                svgClass: 'regular',
+                tableListDropdownContentStyle: {
+                    'margin-bottom.px': 4,
+                },
+            },
+            {
+                title: 'Add Contact',
+                name: 'add-contact',
+                svgUrl: '',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                svgClass: 'regular',
+                tableListDropdownContentStyle: {
+                    'margin-bottom.px': 4,
+                },
+            },
+            {
+                title: 'Write Review',
+                name: 'write-review',
+                svgUrl: '',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                svgClass: 'regular',
+                tableListDropdownContentStyle: {
+                    'margin-bottom.px': 4,
+                },
+            },
+            {
+                title: 'Move to Ban List',
+                name: 'move-to-ban-list',
+                svgUrl: '',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                svgClass: 'regular',
+                tableListDropdownContentStyle: {
+                    'margin-bottom.px': 4,
+                },
+            },
+            {
+                title: 'Move to DNU List',
+                name: 'move-to-dnu-list',
+                svgUrl: '',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                svgClass: 'regular',
+                hasBorder: true,
+            },
+            {
+                title: 'Share',
+                name: 'share',
+                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Share.svg',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                svgClass: 'regular',
+                tableListDropdownContentStyle: {
+                    'margin-bottom.px': 4,
+                },
+            },
+            {
+                title: 'Print',
+                name: 'print',
+                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Print.svg',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+
+                svgClass: 'regular',
+                hasBorder: true,
+            },
+            {
+                title: 'Close Business',
+                name: 'close-business',
+                svgUrl: '',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                tableListDropdownContentStyle: {
+                    'margin-bottom.px': 4,
+                },
+                svgClass: 'delete',
+            },
+            {
+                title: 'Delete',
+                name: 'delete',
+                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Delete.svg',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                tableListDropdownContentStyle: {
+                    'margin-bottom.px': 4,
+                },
+                svgClass: 'delete',
+            },
+        ];
+    }
+
+    getDropdownShipperContent(data: any) {
+        return [
+            {
+                title: 'Edit',
+                name: 'edit-cutomer-or-shipper',
+                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Edit.svg',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                hasBorder: true,
+                svgClass: 'regular',
+            },
+            {
+                title: 'View Details',
+                name: 'view-details',
+                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Information.svg',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                svgClass: 'regular',
+                tableListDropdownContentStyle: {
+                    'margin-bottom.px': 4,
+                },
+            },
+            {
+                title: 'Add Contact',
+                name: 'add-contact',
+                svgUrl: '',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                svgClass: 'regular',
+                tableListDropdownContentStyle: {
+                    'margin-bottom.px': 4,
+                },
+            },
+            {
+                title: 'Write Review',
+                name: 'write-review',
+                svgUrl: '',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                svgClass: 'regular',
+                hasBorder: true,
+            },
+            {
+                title: 'Share',
+                name: 'share',
+                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Share.svg',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                svgClass: 'regular',
+                tableListDropdownContentStyle: {
+                    'margin-bottom.px': 4,
+                },
+            },
+            {
+                title: 'Print',
+                name: 'print',
+                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Print.svg',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+
+                svgClass: 'regular',
+                hasBorder: true,
+            },
+            {
+                title: 'Close Business',
+                name: 'close-business',
+                svgUrl: '',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                tableListDropdownContentStyle: {
+                    'margin-bottom.px': 4,
+                },
+                svgClass: 'delete',
+            },
+            {
+                title: 'Delete',
+                name: 'delete',
+                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Delete.svg',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                svgClass: 'delete',
+            },
+        ];
     }
 
     // Update Broker And Shipper Count
@@ -719,9 +948,43 @@ export class CustomerTableComponent
             this.backBrokerFilterQuery.pageIndex = 1;
             this.backShipperFilterQuery.pageIndex = 1;
 
-            this.sendCustomerData();
+            if (this.selectedTab === 'inactive' && !this.inactiveTabClicked) {
+                this.shipperService;
+                forkJoin([
+                    this.shipperService.getShippersList(
+                        null,
+                        null,
+                        null,
+                        null,
+                        1,
+                        25
+                    ),
+                    this.tableService.getTableConfig(5),
+                ])
+                    .pipe(takeUntil(this.destroy$))
+                    .subscribe(([shipperPagination, tableConfig]) => {
+                        if (tableConfig) {
+                            const config = JSON.parse(tableConfig.config);
+
+                            localStorage.setItem(
+                                `table-${tableConfig.tableType}-Configuration`,
+                                JSON.stringify(config)
+                            );
+                        }
+
+                        this.shipperStore.set(
+                            shipperPagination.pagination.data
+                        );
+
+                        this.sendCustomerData();
+                    });
+            } else {
+                this.sendCustomerData();
+            }
         } else if (event.action === 'view-mode') {
             this.activeViewMode = event.mode;
+
+            this.tableOptions.toolbarActions.hideSearch = event.mode == 'Map';
         }
     }
 

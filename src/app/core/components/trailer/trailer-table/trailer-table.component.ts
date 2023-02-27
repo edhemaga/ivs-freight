@@ -23,7 +23,7 @@ import {
     ConfirmationModalComponent,
 } from '../../modals/confirmation-modal/confirmation-modal.component';
 import { DatePipe } from '@angular/common';
-
+import { TrailerInactiveStore } from '../state/trailer-inactive-state/trailer-inactive.store';
 @Component({
     selector: 'app-trailer-table',
     templateUrl: './trailer-table.component.html',
@@ -40,6 +40,7 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
     selectedTab = 'active';
     activeViewMode: string = 'List';
     resizeObserver: ResizeObserver;
+    inactiveTabClicked: boolean = false;
     public trailerActive: TrailerActiveState[] = [];
     public trailerInactive: TrailerInactiveState[] = [];
     backFilterQuery = {
@@ -61,7 +62,8 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
         private trailerService: TrailerTService,
         public datePipe: DatePipe,
         private thousandSeparator: TaThousandSeparatorPipe,
-        private confirmationService: ConfirmationService
+        private confirmationService: ConfirmationService,
+        private trailerInactiveStore: TrailerInactiveStore
     ) {}
 
     ngOnInit(): void {
@@ -303,44 +305,6 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     { name: 'Card', active: this.activeViewMode === 'Card' },
                 ],
             },
-            actions: [
-                {
-                    title: 'Edit Trailer',
-                    name: 'edit-trailer',
-                    class: 'regular-text',
-                    contentType: 'edit',
-                },
-                {
-                    title: 'Add Registration',
-                    name: 'add-registration',
-                    class: 'regular-text',
-                    contentType: 'add',
-                },
-                {
-                    title: 'Add Inspection',
-                    name: 'add-inspection',
-                    class: 'regular-text',
-                    contentType: 'add',
-                },
-                {
-                    title:
-                        this.selectedTab === 'active'
-                            ? 'Deactivate'
-                            : 'Activate',
-                    reverseTitle: 'Deactivate',
-                    name: 'activate-item',
-                    class: 'regular-text',
-                    contentType: 'activate',
-                },
-                {
-                    title: 'Delete',
-                    name: 'delete-item',
-                    type: 'trailer',
-                    text: 'Are you sure you want to delete trailer(s)?',
-                    class: 'delete-text',
-                    contentType: 'delete',
-                },
-            ],
         };
     }
 
@@ -446,7 +410,9 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
             tableMileage: data?.mileage
                 ? this.thousandSeparator.transform(data.mileage)
                 : '',
-            tableLicencePlateDetailNumber: data?.licensePlate ? data.licensePlate : '',
+            tableLicencePlateDetailNumber: data?.licensePlate
+                ? data.licensePlate
+                : '',
             tableLicencePlateDetailST: 'NA',
             tableLicencePlateDetailExpiration: {
                 expirationDays: data?.registrationExpirationDays
@@ -495,7 +461,111 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
             tableAttachments: data?.files ? data.files : [],
             fileCount: data?.fileCount,
+            tableDropdownContent: {
+                hasContent: true,
+                content: this.getDropdownTrailerContent(data),
+            },
         };
+    }
+
+    getDropdownTrailerContent(data: any) {
+        return [
+            {
+                title: 'Edit',
+                name: 'edit-trailer',
+                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Edit.svg',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                hasBorder: true,
+                svgClass: 'regular',
+            },
+            {
+                title: 'View Details',
+                name: 'view-details',
+                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Information.svg',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                svgClass: 'regular',
+                tableListDropdownContentStyle: {
+                    'margin-bottom.px': 4,
+                },
+            },
+            {
+                title: 'Add New',
+                name: 'add-new',
+                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Show More.svg',
+                svgStyle: {
+                    width: 15,
+                    height: 15,
+                },
+                svgClass: 'regular',
+                isDropdown: true,
+                insideDropdownContent: [
+                    {
+                        title: 'Add Registration',
+                        name: 'add-registration',
+                    },
+
+                    {
+                        title: 'Add Inspection',
+                        name: 'add-inspection',
+                    },
+                ],
+                hasBorder: true,
+            },
+            {
+                title: 'Share',
+                name: 'share',
+                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Share.svg',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                svgClass: 'regular',
+                tableListDropdownContentStyle: {
+                    'margin-bottom.px': 4,
+                },
+            },
+            {
+                title: 'Print',
+                name: 'print',
+                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Print.svg',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+
+                svgClass: 'regular',
+                hasBorder: true,
+            },
+            {
+                title: 'Deactivate',
+                name: 'activate-item',
+                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Deactivate.svg',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                svgClass: 'delete',
+                tableListDropdownContentStyle: {
+                    'margin-bottom.px': 4,
+                },
+            },
+            {
+                title: 'Delete',
+                name: 'delete-item',
+                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Delete.svg',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                svgClass: 'delete',
+            },
+        ];
     }
 
     updateDataCount() {
@@ -511,7 +581,7 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
         updatedTableData[0].length = truckCount.active;
         updatedTableData[1].length = truckCount.inactive;
 
-        this.tableData = [...updatedTableData]
+        this.tableData = [...updatedTableData];
     }
 
     getTabData(dataType: string) {
@@ -520,6 +590,8 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
             return this.trailerActive?.length ? this.trailerActive : [];
         } else if (dataType === 'inactive') {
+            this.inactiveTabClicked = true;
+
             this.trailerInactive = this.trailerInactiveQuery.getAll();
 
             return this.trailerInactive?.length ? this.trailerInactive : [];
@@ -571,18 +643,35 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     onToolBarAction(event: any) {
+        // Open Modal
         if (event.action === 'open-modal') {
             this.modalService.openModal(TrailerModalComponent, {
                 size: 'small',
             });
-        } else if (event.action === 'tab-selected') {
+        } 
+        // Select Tab 
+        else if (event.action === 'tab-selected') {
             this.selectedTab = event.tabData.field;
 
-            this.backFilterQuery.active = this.selectedTab === 'active' ? 1 : 0;
             this.backFilterQuery.pageIndex = 1;
+            this.backFilterQuery.active = this.selectedTab === 'active' ? 1 : 0;
 
-            this.sendTrailerData();
-        } else if (event.action === 'view-mode') {
+            if (this.selectedTab === 'inactive' && !this.inactiveTabClicked) {
+                this.trailerService
+                    .getTrailers(0, 1, 25)
+                    .pipe(takeUntil(this.destroy$))
+                    .subscribe((trailerPagination: TrailerListResponse) => {
+                        this.trailerInactiveStore.set(
+                            trailerPagination.pagination.data
+                        );
+                        this.sendTrailerData();
+                    });
+            } else {
+                this.sendTrailerData();
+            }
+        } 
+        // View Mode
+        else if (event.action === 'view-mode') {
             this.activeViewMode = event.mode;
         }
     }

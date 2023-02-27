@@ -290,6 +290,16 @@ export class ShipperTService implements OnDestroy {
         shipperLat?: number,
         shipperDistance?: number,
         shipperStates?: Array<string>,
+        categoryIds?: Array<number>,
+        _long?: number,
+        lat?: number,
+        distance?: number,
+        costFrom?: number,
+        costTo?: number,
+        lastFrom?: number,
+        lastTo?: number,
+        ppgFrom?: number,
+        ppgTo?: number,
         pageIndex?: number,
         pageSize?: number,
         companyId?: number,
@@ -309,6 +319,16 @@ export class ShipperTService implements OnDestroy {
             shipperLat,
             shipperDistance,
             shipperStates,
+            categoryIds,
+            _long,
+            lat,
+            distance,
+            costFrom,
+            costTo,
+            lastFrom,
+            lastTo,
+            ppgFrom,
+            ppgTo,
             pageIndex,
             pageSize,
             companyId,
@@ -460,6 +480,10 @@ export class ShipperTService implements OnDestroy {
             data: shipperData,
             id: shipperData.id,
         });
+    }
+
+    public getShipperChart(id: number, chartType: number) {
+        return this.shipperService.apiShipperAveragewaitingtimeGet(id, chartType);
     }
 
     ngOnDestroy(): void {

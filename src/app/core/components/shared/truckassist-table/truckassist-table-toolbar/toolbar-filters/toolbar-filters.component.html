@@ -24,7 +24,7 @@
     <!-- BORDER -->
     <div
         class="border-container"
-        *ngIf="options?.toolbarActions?.viewModeOptions?.length"
+        *ngIf="options?.toolbarActions?.viewModeOptions?.length && !options.toolbarActions.hideSearch"
     >
         <div class="border"></div>
     </div>
@@ -488,7 +488,7 @@
         [type]="'moneyFilter'"
         [icon]="'dollar'"
         [filterTitle]="'Money Filter'"
-        [subType]="'all'"
+        [subType]="options.toolbarActions.hideMoneySubType ? '' : 'all'"
         [moneyFilter]="true"
         [fuelType]="options.toolbarActions.fuelMoneyFilter ? true : false"
         (setFilter)="onFilter($event)"
