@@ -176,7 +176,7 @@ export class PayrollDeductionModalComponent implements OnInit, OnDestroy {
         this.payrollDeductionForm = this.formBuilder.group({
             driverId: [null, Validators.required],
             truckId: [null],
-            date: [null, Validators.required],
+            date: [new Date(), Validators.required],
             description: [null, Validators.required],
             amount: [null, Validators.required],
             recurring: [false],
