@@ -11,12 +11,13 @@ import {
     SimpleChanges,
     ViewChild,
 } from '@angular/core';
-import { Subject } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
 import { SharedService } from '../../../services/shared/shared.service';
 import { AfterViewInit, OnChanges } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import {ObserversModule} from '@angular/cdk/observers';
+import { ObserversModule } from '@angular/cdk/observers';
+import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 
 let hasTablePageHeight = false;
 @Component({
@@ -24,7 +25,7 @@ let hasTablePageHeight = false;
     templateUrl: './custom-scrollbar.component.html',
     styleUrls: ['./custom-scrollbar.component.scss'],
     standalone: true,
-    imports: [FormsModule, CommonModule, ObserversModule]
+    imports: [FormsModule, CommonModule, ObserversModule],
 })
 export class CustomScrollbarComponent
     implements OnInit, OnChanges, AfterViewInit, OnDestroy
@@ -60,7 +61,8 @@ export class CustomScrollbarComponent
         private ngZone: NgZone,
         private elRef: ElementRef,
         private sharedService: SharedService,
-        private chng: ChangeDetectorRef
+        private chng: ChangeDetectorRef,
+        private tableService: TruckassistTableService
     ) {}
 
     ngOnInit(): void {
@@ -80,6 +82,14 @@ export class CustomScrollbarComponent
                 this.elRef.nativeElement.children[0]
             );
         });
+
+        this.tableService.isScrollReseting
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((response: boolean) => {
+                if (response && this.bar?.nativeElement) {
+                    this.bar.nativeElement.style.transform = `translateX(${0}px)`;
+                }
+            });
     }
 
     ngOnChanges(changes: SimpleChanges): void {
@@ -95,8 +105,7 @@ export class CustomScrollbarComponent
             !changes?.scrollBarOptions?.firstChange &&
             changes?.scrollBarOptions
         ) {
-            this.scrollBarOptions =
-                changes.scrollBarOptions.currentValue;
+            this.scrollBarOptions = changes.scrollBarOptions.currentValue;
         }
     }
 
@@ -252,7 +261,10 @@ export class CustomScrollbarComponent
                 const maxWidth = this.tableNotPinedBoundingRect.width;
 
                 offsetBar = offsetBar < 0 ? 0 : offsetBar;
-                offsetBar = (e.clientX + this.tableBarClickRestWidth) > maxWidth ? maxWidth - this.tableScrollWidth : offsetBar;
+                offsetBar =
+                    e.clientX + this.tableBarClickRestWidth > maxWidth
+                        ? maxWidth - this.tableScrollWidth
+                        : offsetBar;
 
                 this.bar.nativeElement.style.transform = `translateX(${offsetBar}px)`;
 

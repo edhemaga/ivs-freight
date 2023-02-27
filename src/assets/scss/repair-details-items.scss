@@ -114,6 +114,12 @@ $transition: all 0.3s ease-in-out;
     background-color: $color-white;
     border-radius: 3px;
     max-height: calc(100vh - 62px);
+
+    &.shipper-details-padding{
+        padding: 8px 8px 12px 8px;
+    }
+
+
     .repair-items-wrapper {
         overflow-y: scroll;
         max-height: calc(96vh - 62px);

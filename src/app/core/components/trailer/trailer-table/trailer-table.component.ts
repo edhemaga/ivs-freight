@@ -23,7 +23,7 @@ import {
     ConfirmationModalComponent,
 } from '../../modals/confirmation-modal/confirmation-modal.component';
 import { DatePipe } from '@angular/common';
-
+import { TrailerInactiveStore } from '../state/trailer-inactive-state/trailer-inactive.store';
 @Component({
     selector: 'app-trailer-table',
     templateUrl: './trailer-table.component.html',
@@ -40,6 +40,7 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
     selectedTab = 'active';
     activeViewMode: string = 'List';
     resizeObserver: ResizeObserver;
+    inactiveTabClicked: boolean = false;
     public trailerActive: TrailerActiveState[] = [];
     public trailerInactive: TrailerInactiveState[] = [];
     backFilterQuery = {
@@ -61,7 +62,8 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
         private trailerService: TrailerTService,
         public datePipe: DatePipe,
         private thousandSeparator: TaThousandSeparatorPipe,
-        private confirmationService: ConfirmationService
+        private confirmationService: ConfirmationService,
+        private trailerInactiveStore: TrailerInactiveStore
     ) {}
 
     ngOnInit(): void {
@@ -465,6 +467,7 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
             },
         };
     }
+
     getDropdownTrailerContent(data: any) {
         return [
             {
@@ -564,6 +567,7 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
             },
         ];
     }
+
     updateDataCount() {
         const truckCount = JSON.parse(
             localStorage.getItem('trailerTableCount')
@@ -586,6 +590,8 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
             return this.trailerActive?.length ? this.trailerActive : [];
         } else if (dataType === 'inactive') {
+            this.inactiveTabClicked = true;
+
             this.trailerInactive = this.trailerInactiveQuery.getAll();
 
             return this.trailerInactive?.length ? this.trailerInactive : [];
@@ -637,18 +643,35 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     onToolBarAction(event: any) {
+        // Open Modal
         if (event.action === 'open-modal') {
             this.modalService.openModal(TrailerModalComponent, {
                 size: 'small',
             });
-        } else if (event.action === 'tab-selected') {
+        } 
+        // Select Tab 
+        else if (event.action === 'tab-selected') {
             this.selectedTab = event.tabData.field;
 
-            this.backFilterQuery.active = this.selectedTab === 'active' ? 1 : 0;
             this.backFilterQuery.pageIndex = 1;
+            this.backFilterQuery.active = this.selectedTab === 'active' ? 1 : 0;
 
-            this.sendTrailerData();
-        } else if (event.action === 'view-mode') {
+            if (this.selectedTab === 'inactive' && !this.inactiveTabClicked) {
+                this.trailerService
+                    .getTrailers(0, 1, 25)
+                    .pipe(takeUntil(this.destroy$))
+                    .subscribe((trailerPagination: TrailerListResponse) => {
+                        this.trailerInactiveStore.set(
+                            trailerPagination.pagination.data
+                        );
+                        this.sendTrailerData();
+                    });
+            } else {
+                this.sendTrailerData();
+            }
+        } 
+        // View Mode
+        else if (event.action === 'view-mode') {
             this.activeViewMode = event.mode;
         }
     }

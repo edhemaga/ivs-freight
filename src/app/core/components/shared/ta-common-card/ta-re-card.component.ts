@@ -37,15 +37,15 @@ import { NgbModule, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
                 'true',
                 style({
                     height: '*',
-                    overflow: 'hidden',
+                    //overflow: 'hidden',
                     opacity: 1,
                 })
             ),
             state(
                 'false',
                 style({
-                    height: '0px',
-                    overflow: 'hidden',
+                    'height': '0px',
+                    //overflow: 'hidden',
                     opacity: 0,
                 })
             ),
@@ -84,12 +84,12 @@ import { NgbModule, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
             transition(':enter', [
                 style({ 'max-height': '0px', overflow: 'hidden' }),
                 animate(
-                    '3100ms ease',
+                    '200ms ease',
                     style({ 'max-height': '170px', overflow: 'hidden' })
                 ),
             ]),
             transition(':leave', [
-                animate('3100ms ease', style({ 'max-height': 0 })),
+                animate('200ms ease', style({ 'max-height': 0 })),
             ]),
         ]),
     ],

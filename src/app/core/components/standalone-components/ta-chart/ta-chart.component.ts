@@ -1189,7 +1189,7 @@ export class TaChartComponent implements OnInit {
         }
     }
 
-    setToolTipTitle(index) {
+    setToolTipTitle(index: number) {
         if (this.toolTipData[index].day && this.toolTipData[index].month) {
             this.hoverDateTitle =
                 this.toolTipData[index].day +
