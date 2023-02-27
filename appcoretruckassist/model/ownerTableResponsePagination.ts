@@ -9,14 +9,13 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { RoadsideInspectionResponsePagination } from './roadsideInspectionResponsePagination';
+import { OwnerTableResponse } from './ownerTableResponse';
 
 
-export interface RoadsideInspectionListResponse { 
-    pagination?: RoadsideInspectionResponsePagination;
-    active?: number;
-    inactive?: number;
-    violationSummary?: number;
-    roadsideInspectionCount?: number;
+export interface OwnerTableResponsePagination { 
+    pageIndex?: number;
+    pageSize?: number;
+    count?: number;
+    data?: Array<OwnerTableResponse> | null;
 }
 

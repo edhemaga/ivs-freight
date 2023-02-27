@@ -9,11 +9,11 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { OwnerResponsePagination } from './ownerResponsePagination';
+import { OwnerTableResponsePagination } from './ownerTableResponsePagination';
 
 
 export interface GetOwnerListResponse { 
-    pagination?: OwnerResponsePagination;
+    pagination?: OwnerTableResponsePagination;
     activeCount?: number;
     inactiveCount?: number;
 }

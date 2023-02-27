@@ -29,6 +29,8 @@ import { MapMarkerListResponse } from '../model/mapMarkerListResponse';
 // @ts-ignore
 import { ProblemDetails } from '../model/problemDetails';
 // @ts-ignore
+import { ShipperAverageWaitingTimeResponse } from '../model/shipperAverageWaitingTimeResponse';
+// @ts-ignore
 import { ShipperContactCommand } from '../model/shipperContactCommand';
 // @ts-ignore
 import { ShipperListResponse } from '../model/shipperListResponse';
@@ -127,6 +129,81 @@ export class ShipperService {
     }
 
     /**
+     * @param id 
+     * @param chartTimeDetailPages 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public apiShipperAveragewaitingtimeGet(id?: number, chartTimeDetailPages?: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<ShipperAverageWaitingTimeResponse>;
+    public apiShipperAveragewaitingtimeGet(id?: number, chartTimeDetailPages?: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<ShipperAverageWaitingTimeResponse>>;
+    public apiShipperAveragewaitingtimeGet(id?: number, chartTimeDetailPages?: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<ShipperAverageWaitingTimeResponse>>;
+    public apiShipperAveragewaitingtimeGet(id?: number, chartTimeDetailPages?: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+        if (id !== undefined && id !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>id, 'Id');
+        }
+        if (chartTimeDetailPages !== undefined && chartTimeDetailPages !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>chartTimeDetailPages, 'ChartTimeDetailPages');
+        }
+
+        let localVarHeaders = this.defaultHeaders;
+
+        let localVarCredential: string | undefined;
+        // authentication (bearer) required
+        localVarCredential = this.configuration.lookupCredential('bearer');
+        if (localVarCredential) {
+            localVarHeaders = localVarHeaders.set('Authorization', 'Bearer ' + localVarCredential);
+        }
+
+        let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (localVarHttpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'text/plain',
+                'application/json',
+                'text/json'
+            ];
+            localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+        let localVarHttpContext: HttpContext | undefined = options && options.context;
+        if (localVarHttpContext === undefined) {
+            localVarHttpContext = new HttpContext();
+        }
+
+
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
+        }
+
+        let localVarPath = `/api/shipper/averagewaitingtime`;
+        return this.httpClient.request<ShipperAverageWaitingTimeResponse>('get', `${this.configuration.basePath}${localVarPath}`,
+            {
+                context: localVarHttpContext,
+                params: localVarQueryParameters,
+                responseType: <any>responseType_,
+                withCredentials: this.configuration.withCredentials,
+                headers: localVarHeaders,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
      * @param name 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
@@ -203,6 +280,16 @@ export class ShipperService {
      * @param shipperLat 
      * @param shipperDistance 
      * @param shipperStates 
+     * @param categoryIds 
+     * @param _long 
+     * @param lat 
+     * @param distance 
+     * @param costFrom 
+     * @param costTo 
+     * @param lastFrom 
+     * @param lastTo 
+     * @param ppgFrom 
+     * @param ppgTo 
      * @param pageIndex 
      * @param pageSize 
      * @param companyId 
@@ -213,10 +300,10 @@ export class ShipperService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiShipperClustersGet(northEastLatitude?: number, northEastLongitude?: number, southWestLatitude?: number, southWestLongitude?: number, zoomLevel?: number, addedNew?: boolean, shipperLong?: number, shipperLat?: number, shipperDistance?: number, shipperStates?: Array<string>, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<Array<ClusterResponse>>;
-    public apiShipperClustersGet(northEastLatitude?: number, northEastLongitude?: number, southWestLatitude?: number, southWestLongitude?: number, zoomLevel?: number, addedNew?: boolean, shipperLong?: number, shipperLat?: number, shipperDistance?: number, shipperStates?: Array<string>, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<Array<ClusterResponse>>>;
-    public apiShipperClustersGet(northEastLatitude?: number, northEastLongitude?: number, southWestLatitude?: number, southWestLongitude?: number, zoomLevel?: number, addedNew?: boolean, shipperLong?: number, shipperLat?: number, shipperDistance?: number, shipperStates?: Array<string>, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<Array<ClusterResponse>>>;
-    public apiShipperClustersGet(northEastLatitude?: number, northEastLongitude?: number, southWestLatitude?: number, southWestLongitude?: number, zoomLevel?: number, addedNew?: boolean, shipperLong?: number, shipperLat?: number, shipperDistance?: number, shipperStates?: Array<string>, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+    public apiShipperClustersGet(northEastLatitude?: number, northEastLongitude?: number, southWestLatitude?: number, southWestLongitude?: number, zoomLevel?: number, addedNew?: boolean, shipperLong?: number, shipperLat?: number, shipperDistance?: number, shipperStates?: Array<string>, categoryIds?: Array<number>, _long?: number, lat?: number, distance?: number, costFrom?: number, costTo?: number, lastFrom?: number, lastTo?: number, ppgFrom?: number, ppgTo?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<Array<ClusterResponse>>;
+    public apiShipperClustersGet(northEastLatitude?: number, northEastLongitude?: number, southWestLatitude?: number, southWestLongitude?: number, zoomLevel?: number, addedNew?: boolean, shipperLong?: number, shipperLat?: number, shipperDistance?: number, shipperStates?: Array<string>, categoryIds?: Array<number>, _long?: number, lat?: number, distance?: number, costFrom?: number, costTo?: number, lastFrom?: number, lastTo?: number, ppgFrom?: number, ppgTo?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<Array<ClusterResponse>>>;
+    public apiShipperClustersGet(northEastLatitude?: number, northEastLongitude?: number, southWestLatitude?: number, southWestLongitude?: number, zoomLevel?: number, addedNew?: boolean, shipperLong?: number, shipperLat?: number, shipperDistance?: number, shipperStates?: Array<string>, categoryIds?: Array<number>, _long?: number, lat?: number, distance?: number, costFrom?: number, costTo?: number, lastFrom?: number, lastTo?: number, ppgFrom?: number, ppgTo?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<Array<ClusterResponse>>>;
+    public apiShipperClustersGet(northEastLatitude?: number, northEastLongitude?: number, southWestLatitude?: number, southWestLongitude?: number, zoomLevel?: number, addedNew?: boolean, shipperLong?: number, shipperLat?: number, shipperDistance?: number, shipperStates?: Array<string>, categoryIds?: Array<number>, _long?: number, lat?: number, distance?: number, costFrom?: number, costTo?: number, lastFrom?: number, lastTo?: number, ppgFrom?: number, ppgTo?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
         if (northEastLatitude !== undefined && northEastLatitude !== null) {
@@ -260,6 +347,48 @@ export class ShipperService {
                 localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
                   <any>element, 'ShipperStates');
             })
+        }
+        if (categoryIds) {
+            categoryIds.forEach((element) => {
+                localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+                  <any>element, 'CategoryIds');
+            })
+        }
+        if (_long !== undefined && _long !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>_long, 'Long');
+        }
+        if (lat !== undefined && lat !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>lat, 'Lat');
+        }
+        if (distance !== undefined && distance !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>distance, 'Distance');
+        }
+        if (costFrom !== undefined && costFrom !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>costFrom, 'CostFrom');
+        }
+        if (costTo !== undefined && costTo !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>costTo, 'CostTo');
+        }
+        if (lastFrom !== undefined && lastFrom !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>lastFrom, 'LastFrom');
+        }
+        if (lastTo !== undefined && lastTo !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>lastTo, 'LastTo');
+        }
+        if (ppgFrom !== undefined && ppgFrom !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>ppgFrom, 'PpgFrom');
+        }
+        if (ppgTo !== undefined && ppgTo !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>ppgTo, 'PpgTo');
         }
         if (pageIndex !== undefined && pageIndex !== null) {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,

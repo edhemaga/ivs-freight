@@ -17,5 +17,6 @@ export interface AccidentListResponse {
     active?: number;
     inactive?: number;
     nonReportableCount?: number;
+    accidentCount?: number;
 }
 

@@ -25,10 +25,14 @@ export interface LiveTrackingItemResponse {
     headingString?: string | null;
     location?: string | null;
     motionStatus?: number | null;
+    motionStatusPeriod?: string | null;
     type?: GpsType;
     updateTime?: string;
+    startDate?: string | null;
+    stopDate?: string | null;
     dateString?: string | null;
     companyId?: number | null;
+    unitType?: number | null;
     truckNumber?: string | null;
     trailerNumber?: string | null;
     driver?: string | null;
@@ -42,7 +46,6 @@ export interface LiveTrackingItemResponse {
     totalMiles?: number | null;
     traveledMiles?: number | null;
     progressBarPercentage?: number | null;
-    motionStatusPeriod?: string | null;
     dispatchStatusPeriod?: string | null;
 }
 
