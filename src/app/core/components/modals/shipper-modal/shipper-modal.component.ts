@@ -78,6 +78,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
         FormsModule,
         ReactiveFormsModule,
         AngularSvgIconModule,
+        NgbModule,
 
         // Component
         AppTooltipComponent,

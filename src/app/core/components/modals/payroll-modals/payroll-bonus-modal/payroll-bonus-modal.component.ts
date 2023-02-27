@@ -80,7 +80,7 @@ export class PayrollBonusModalComponent implements OnInit, OnDestroy {
     private createForm() {
         this.payrollBonusForm = this.formBuilder.group({
             driverId: [null, Validators.required],
-            date: [null, Validators.required],
+            date: [new Date(), Validators.required],
             description: [
                 null,
                 [Validators.required, ...descriptionPayrollBonusValidation],

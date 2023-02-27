@@ -119,7 +119,6 @@ export class TaInputDropdownComponent
         };
         this._activeItem = value;
 
-        console.log('name: ', this.inputConfig.name);
         // With address
         if (
             this.inputConfig.name &&
@@ -1115,7 +1114,10 @@ export class TaInputDropdownComponent
                         id: 7654,
                         name: 'No Results',
                     });
-
+                    this.inputConfig = {
+                        ...this.inputConfig,
+                        hideAllItemsInInputDropdown: true,
+                    };
                     if (
                         (this.inputConfig.name === 'Address' ||
                             this.inputConfig.name === 'RoutingAddress') &&
@@ -1139,6 +1141,11 @@ export class TaInputDropdownComponent
                         },
                     };
                 }
+
+                this.inputConfig = {
+                    ...this.inputConfig,
+                    hideAllItemsInInputDropdown: false,
+                };
             }
         }
         // Group Dropdown Items
