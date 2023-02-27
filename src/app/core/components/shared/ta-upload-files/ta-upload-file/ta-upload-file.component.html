@@ -3,10 +3,22 @@
     [class.modal]="
         !customClassName || customClassName == '' || customClassName == 'modals'
     "
-    [class.keep_open]="t2?.isOpen()"
+    [class.keep_open]="
+        t2?.isOpen() ||
+        (customClassName == 'modals' && isArrowHovered && file?.lastHovered) ||
+        (customClassName != 'modals' &&
+            customClassName != 'table-details' &&
+            customClassName != 'todo-details' &&
+            isArrowHovered)
+    "
+    [class.keep_open_modals]="
+        (customClassName == 'modals' && t2?.isOpen()) ||
+        (customClassName == 'modals' && isArrowHovered && file?.lastHovered)
+    "
     [class.applicant_review]="file?.incorrect"
     [class.annotation_hover]="annotationHover"
     [class.applicant_feedback]="reviewMode === 'FEEDBACK_MODE'"
+    (mouseenter)="hoverFile()"
 >
     <!-- File Header Actions -->
 
@@ -309,14 +321,14 @@
                 <div
                     class="file_size"
                     [class.has_pages]="numberOfFilePages"
-                    *ngIf="!file.realFile"
+                    *ngIf="!file?.realFile"
                 >
                     {{ file?.fileSize | byteConvert }}
                 </div>
                 <div
                     class="file_size"
                     [class.has_pages]="numberOfFilePages"
-                    *ngIf="file.realFile"
+                    *ngIf="file?.realFile"
                 >
                     {{ file?.size | byteConvert }}
                 </div>
