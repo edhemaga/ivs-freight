@@ -20,6 +20,7 @@ import { DetailsDropdownComponent } from '../details-page-dropdown/details-dropd
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { ProfileImagesComponent } from '../profile-images/profile-images.component';
 import { formatDatePipe } from 'src/app/core/pipes/formatDate.pipe';
+import { DropDownService } from 'src/app/core/services/details-page/drop-down.service';
 
 @Component({
     selector: 'app-map-list-card',
@@ -54,19 +55,20 @@ export class MapListCardComponent implements OnInit, OnDestroy {
     @Input() item: any = {};
     @Input() index: any = {};
     @Input() type: string = '';
-    @Input() dropdownActions: any[] = [];
     @Output() clickedMarker: EventEmitter<any> = new EventEmitter<any>();
     @Output() bodyActions: EventEmitter<any> = new EventEmitter();
     public locationFilterOn: boolean = false;
     sortCategory: any = {};
     clickedOnDots: boolean = false;
+    dropdownActions: any = {};
 
     constructor(
         private mapsService: MapsService,
         private ref: ChangeDetectorRef,
         public elementRef: ElementRef,
         private detailsDataService: DetailsDataService,
-        private modalService: ModalService
+        private modalService: ModalService,
+        private dropdownService: DropDownService
     ) {}
 
     ngOnInit(): void {
@@ -83,6 +85,8 @@ export class MapListCardComponent implements OnInit, OnDestroy {
             this.item.isSelected =
                 this.mapsService.selectedMarkerId == this.item.id;
         }
+
+        this.getDropdownActions();
     }
 
     selectCard() {
@@ -100,35 +104,53 @@ export class MapListCardComponent implements OnInit, OnDestroy {
     }
 
     callBodyAction(action) {
-        if (action.type == 'delete' || action.type == 'delete-repair') {
-            var name =
-                this.type == 'repairShop'
-                    ? action.data.name
-                    : this.type == 'shipper'
-                    ? action.data.name
-                    : '';
+        // if (action.type == 'delete' || action.type == 'delete-repair') {
+        //     var name =
+        //         this.type == 'repairShop'
+        //             ? action.data.name
+        //             : this.type == 'shipper'
+        //             ? action.data.businessName
+        //             : '';
 
-            var shipperData = {
-                id: action.id,
-                type: 'delete-item',
-                data: {
-                    ...action.data,
-                    name: name,
-                },
-            };
+        //     var shipperData = {
+        //         id: action.id,
+        //         type: 'delete-item',
+        //         data: {
+        //             ...action.data,
+        //             name: name,
+        //         },
+        //     };
 
-            this.modalService.openModal(
-                ConfirmationModalComponent,
-                { size: 'small' },
-                {
-                    ...shipperData,
-                    template:
-                        this.type == 'repairShop' ? 'repair shop' : 'shipper',
-                    type: 'delete',
-                }
-            );
+        //     this.modalService.openModal(
+        //         ConfirmationModalComponent,
+        //         { size: 'small' },
+        //         {
+        //             ...shipperData,
+        //             template:
+        //                 this.type == 'repairShop' ? 'repair shop' : 'shipper',
+        //             type: 'delete',
+        //         }
+        //     );
+        // } else {
+        //     this.bodyActions.emit(action);
+        // }
+
+        if ( action.type == 'view-details' ) {
+            this.mapsService.goToDetails(this.item, this.type);
         } else {
-            this.bodyActions.emit(action);
+            if ( this.type == 'repairShop' ) {
+                if ( action.type == 'write-review' ){
+                    action.type = 'edit';
+                    action.openedTab = 'Review';
+                }
+        
+                console.log('---here---', action);
+                this.dropdownService.dropActionsHeaderRepair(
+                    action,
+                    this.item,
+                    action.id,
+                );
+            }
         }
     }
 
@@ -193,6 +215,10 @@ export class MapListCardComponent implements OnInit, OnDestroy {
             data: this.item,
             type: 'favorite',
         });
+    }
+
+    getDropdownActions() {
+        this.dropdownActions = this.mapsService.getDropdownActions(this.item, this.type);
     }
 
     ngOnDestroy(): void {

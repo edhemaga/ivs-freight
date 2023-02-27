@@ -52,12 +52,13 @@ export class MapMarkerDropdownComponent implements OnInit {
     @Input() type: string = '';
     @Input() sortCategory: any = {};
     @Input() locationFilterOn: boolean = false;
-    @Input() dropdownActions: any[] = [];
     @Input() rating: any = {};
     @Input() cluster: any = {};
     @Output() bodyActions: EventEmitter<any> = new EventEmitter();
     @Output() showClusterItemInfo: EventEmitter<any> = new EventEmitter();
     @Output() loadMoreData: EventEmitter<any> = new EventEmitter();
+
+    public dropdownActions: any = {};
 
     public copiedPhone: boolean = false;
     public copiedEmail: boolean = false;
@@ -84,7 +85,9 @@ export class MapMarkerDropdownComponent implements OnInit {
         private mapsService: MapsService
     ) {}
 
-    ngOnInit(): void {}
+    ngOnInit(): void {
+        this.getDropdownActions();
+    }
 
     expandInfo() {
         this.item.isExpanded = !this.item.isExpanded;
@@ -211,35 +214,11 @@ export class MapMarkerDropdownComponent implements OnInit {
         this.ref.detectChanges();
     }
 
-    goToDetails(data) {
-        var linkStart = '';
-        var linkEnd = '';
-        var doesNotHaveRout = false;
+    goToDetails() {
+        this.mapsService.goToDetails(this.item, this.type);
+    }
 
-        if ( this.type == 'shipper' ) {
-            linkStart = '/list/customer/';
-            linkEnd = '/shipper-details';
-        } else if ( this.type == 'repairShop' ) {
-            linkStart = '/list/repair/';
-            linkEnd = '/shop-details';
-        } else if ( this.type == 'fuelStop' ) {
-            doesNotHaveRout = true;
-        } else if ( this.type == 'accident' ) {
-            doesNotHaveRout = true;
-        } else {
-            doesNotHaveRout = true;
-        }
-
-        if ( !doesNotHaveRout ) {
-            const link =
-                linkStart +
-                data['id'] +
-                linkEnd;
-
-            this.detailsDataService.setNewData(data);
-            this.mapsService.selectedMarker(0);
-
-            this.router.navigate([link]);
-        }
+    getDropdownActions() {
+        this.dropdownActions = this.mapsService.getDropdownActions(this.item, this.type);
     }
 }

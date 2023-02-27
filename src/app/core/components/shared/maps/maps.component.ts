@@ -102,7 +102,6 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
     }
     @Input() mapType: string = 'shipper'; // shipper, repairShop, fuelStop, accident, inspection, routing
     @Input() routes: Array<MapRouteModel> = []; // array of stops to be shown on map, ex. - [{routeColor: #3074D3, stops: [{lat: 39.353087, long: -84.299328, stopColor: #EF5350, empty: true}, {lat: 39.785871, long: -86.143448, stopColor: #26A690, empty: false}]]
-    @Input() dropdownActions: any[] = [];
     @Input() darkMode: boolean = false;
     @Output() callDropDownAction: EventEmitter<any> = new EventEmitter();
     @Output() updateMapList: EventEmitter<any> = new EventEmitter();
@@ -521,13 +520,20 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
     }
 
     dropDownActionCall(action) {
-        if (action.type == 'delete') {
+        if (action.type == 'delete' || action.type == 'delete-repair') {
+            var name =
+                this.mapType == 'repairShop'
+                    ? action.data.name
+                    : this.mapType == 'shipper'
+                    ? action.data.businessName
+                    : '';
+
             var shipperData = {
                 id: action.id,
                 type: 'delete-item',
                 data: {
                     ...action.data,
-                    name: action.data.businessName,
+                    name: name,
                 },
             };
 
@@ -537,9 +543,7 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
                 {
                     ...shipperData,
                     template:
-                        this.mapType == 'repairShop'
-                            ? 'repair shop'
-                            : 'shipper',
+                        this.mapType == 'repairShop' ? 'repair shop' : 'shipper',
                     type: 'delete',
                 }
             );
