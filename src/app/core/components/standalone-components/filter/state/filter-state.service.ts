@@ -4,8 +4,15 @@ import { HttpClient } from '@angular/common/http';
 import { FilterStateStore } from './filter-state.store';
 import { FilterState } from './filter-state.model';
 import { takeUntil, Subject, Observable, tap, BehaviorSubject } from 'rxjs';
-import { TruckTypeService, TrailerTypeService, RepairService } from 'appcoretruckassist';
+import { TruckTypeService, 
+    TrailerTypeService, 
+    RepairService, 
+    FuelService, 
+    StateService, 
+    DepartmentService, 
+    LoadService } from 'appcoretruckassist';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
+import { co } from '@fullcalendar/core/internal-common';
 
 @Injectable({ providedIn: 'root' })
 export class FilterStateService implements OnDestroy {
@@ -18,6 +25,10 @@ export class FilterStateService implements OnDestroy {
         private tableService: TruckassistTableService,
         private TrailerTypeService: TrailerTypeService,
         private repairService: RepairService,
+        private fuelService: FuelService,
+        private stateService: StateService,
+        private departmentService: DepartmentService,
+        private loadService: LoadService
     ) {}
 
     // get() {
@@ -87,6 +98,98 @@ export class FilterStateService implements OnDestroy {
             });
     }
 
+    public getFuelCategory(){
+        const fuelCategory = this.fuelService.apiFuelCategoryFilterGet()
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: (data: any) => {
+                    this.tableService.sendActionAnimation({
+                        animation: 'fuel-category-update',
+                        data: data,
+                        id: null,
+                    }); 
+                    fuelCategory.unsubscribe();
+                },
+            });
+    }
+
+    public getStateData(){
+        const stateData = this.stateService.apiStateFilterGet()
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: (data: any) => {
+                    this.tableService.sendActionAnimation({
+                        animation: 'state-data-update',
+                        data: data,
+                        id: null,
+                    }); 
+                    stateData.unsubscribe();
+                },
+            });
+    }
+
+    public getDepartmentData(){
+        const departmentData = this.departmentService.apiDepartmentFilterGet()
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: (data: any) => {
+                    this.tableService.sendActionAnimation({
+                        animation: 'department-data-update',
+                        data: data,
+                        id: null,
+                    }); 
+                    departmentData.unsubscribe();
+                },
+            });
+    }
+
+    public getDispatchData(){
+        const dispatcherData = this.loadService.apiLoadDispatcherFilterGet()
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: (data: any) => {
+                    this.tableService.sendActionAnimation({
+                        animation: 'dispatch-data-update',
+                        data: data,
+                        id: null,
+                    }); 
+                    dispatcherData.unsubscribe();
+                },
+            });
+
+        
+    }
+
+    public getPmData(mod){
+       
+        if ( mod == 'truck' ) {
+            const pmTruckData = this.repairService.apiRepairPmTruckFilterListGet()
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: (data: any) => {
+                    this.tableService.sendActionAnimation({
+                        animation: 'pm-truck-data-update',
+                        data: data,
+                        id: null,
+                    }); 
+                    pmTruckData.unsubscribe();
+                },
+            });
+        } else {
+            const pmTrailerkData = this.repairService.apiRepairPmTrailerFilterListGet()
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: (data: any) => {
+                    this.tableService.sendActionAnimation({
+                        animation: 'pm-trailer-data-update',
+                        data: data,
+                        id: null,
+                    }); 
+                    pmTrailerkData.unsubscribe();
+                },
+            });
+        }
+    }
 
     ngOnDestroy(): void {
         this.destroy$.next();
