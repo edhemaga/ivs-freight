@@ -90,10 +90,10 @@
     <!-- Dropdown search -->
     <app-ta-input
         #t2="ngbPopover"
-        popoverClass="ta-input-dropdown"
-        [autoClose]="_template === 'fuel-franchise' ? 'outside' : true"
-        [container]="'body'"
         [ngbPopover]="taInputDropdownPopover"
+        popoverClass="ta-input-dropdown"
+        [autoClose]="'outside'"
+        [container]="'body'"
         [placement]="['bottom-left']"
         #input
         [formControl]="getSuperControl | formControl"
@@ -554,7 +554,13 @@
                     class="dropdown-option load-dispatcher-template"
                 >
                     <img
-                        *ngIf="option.logoName"
+                        *ngIf="
+                            option.logoName &&
+                            !(
+                                _options.length === 1 &&
+                                _options[0].name === 'No Results'
+                            )
+                        "
                         [alt]="option.name"
                         [ngClass]="{
                             active: option.id === _activeItem?.id
@@ -564,7 +570,16 @@
                         "
                         class="svg-template-logo"
                     />
-                    <div *ngIf="!option.logoName" class="no-profile-image">
+                    <div
+                        *ngIf="
+                            !option.logoName &&
+                            !(
+                                _options.length === 1 &&
+                                _options[0].name === 'No Results'
+                            )
+                        "
+                        class="no-profile-image"
+                    >
                         <app-profile-images
                             [indx]="0"
                             [name]="option.name"

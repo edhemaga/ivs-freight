@@ -51,6 +51,7 @@
             class="note-textarea"
             [class.details_textarea]="noteType == 'details-card'"
             contenteditable="true"
+            spellcheck="false"
             (input)="changeValue($event.target.innerHTML)"
             (focus)="checkFocus($event)"
             (blur)="prepareForTextRange()"

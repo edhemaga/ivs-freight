@@ -522,7 +522,7 @@
                                 customClass: 'datetimeclass'
                             }"
                             (blurInput)="
-                                loadForm.get('deliveryTimeFrom').markAsTouched()
+                                loadForm.get('pickupTimeFrom').markAsTouched()
                             "
                         ></app-ta-input>
 
@@ -970,7 +970,7 @@
                         loadForm.get('deliveryShipper').valid &&
                         loadForm.get('deliveryDateFrom').valid &&
                         loadForm.get('deliveryTimeFrom').valid &&
-                        (selectedStopTimeDelivery === 8
+                        (selectedStopTimeDelivery === 6
                             ? !loadForm.get('deliveryTimeTo').errors
                             : loadForm.get('deliveryTimeTo').valid)
                             ? 'valid'

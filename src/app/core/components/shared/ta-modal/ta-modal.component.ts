@@ -217,7 +217,8 @@ export class TaModalComponent implements OnInit, OnDestroy {
     @HostListener('body:dragenter', ['$event'])
     onWindowDragEnter(event: any): void {
         event.preventDefault();
-        if (!event.fromElement) {
+        const startPointClassToDragOver = event.toElement.classList.contains("custom-scrollbar-holder");
+        if (startPointClassToDragOver) {
             if (this.dropZoneCounter < 1 && !this.isLeaveZone) {
                 this.dropZoneCounter++;
             }

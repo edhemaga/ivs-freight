@@ -202,7 +202,7 @@ import { TaTabSwitchComponent } from '../ta-tab-switch/ta-tab-switch.component';
                 'true',
                 style({
                     height: '*',
-                    overflow: 'auto',
+                    overflow: 'visible',
                     opacity: 1,
                 })
             ),
@@ -1298,7 +1298,7 @@ export class FilterComponent implements OnInit, AfterViewInit {
 
     public locationSliderData: Options = {
         floor: 25,
-        ceil: 350,
+        ceil: 500,
         step: 5,
         showSelectionBar: true,
         hideLimitLabels: true,
@@ -1381,6 +1381,7 @@ export class FilterComponent implements OnInit, AfterViewInit {
     @Input() type: string = 'userFilter';
     @Input() icon: string = 'user';
     @Input() subType: string = 'pendingStatus';
+    @Input() pmSubtype: string = '';
     @Input() searchState: boolean = false;
     @Input() filterTitle: string = '';
     @Input() defFilterHolder: boolean = false;
@@ -1412,12 +1413,27 @@ export class FilterComponent implements OnInit, AfterViewInit {
     ) {}
 
     ngOnInit(): void {
+
         if (this.type === 'truckTypeFilter') {
             this.getTruckType();
         } else if (this.type === 'trailerTypeFilter') {
             this.getTrailerType();
         } else if (this.type === 'categoryRepairFilter') {
             this.getRepairCategory();
+        } else if ( this.type === 'categoryFuelFilter' ) {
+            this.getFuelCategory();
+        } else if ( this.type === 'stateFilter' ) {
+            this.getStateData();
+        } else if ( this.type === 'departmentFilter' ) {
+            this.getDepartmentData();
+        } else if ( this.type === 'userFilter' ) {
+            this.getDispatchData();
+        } else if ( this.type === 'pmFilter' ) {
+            if ( this.pmSubtype === 'truck' ) {
+                this.getPmData('truck');
+            } else {
+                this.getPmData('trailer');
+            }
         }
 
         if (this.type == 'timeFilter') {
@@ -1938,6 +1954,58 @@ export class FilterComponent implements OnInit, AfterViewInit {
                             }
                         );
                         this.categoryRepairArray = newData;
+                    }
+                } else if ( this.type === 'categoryFuelFilter' ) {
+                    if (res.animation == 'fuel-category-update') {
+                        this.categoryFuelArray = res.data;
+                    }
+                } else if ( this.type === 'stateFilter' ) {
+                    if (res.animation == 'state-data-update') {
+                        
+                        let usaArray = [];
+                        let canadaArray = [];
+
+                        res.data.map((state: any, index: number) => {
+                            
+                            if ( state.countryType.name == 'Canada' ) {
+                                canadaArray.push(state);
+                            } else {
+                                usaArray.push(state);
+                            }
+                        })
+                        
+                        this.usaStates = usaArray;
+                        this.canadaStates = canadaArray;
+                    }
+                } else if ( this.type === 'departmentFilter' ) {
+                    if (res.animation == 'department-data-update') {
+                        this.departmentArray = res.data;
+                    }
+                } else if ( this.type === 'pmFilter' && this.pmSubtype === 'truck' ) {
+                    if (res.animation == 'pm-truck-data-update') {
+                        let newData = res.data.pagination.data.map(
+                            (type: any, index: number) => {
+                                type['icon'] =
+                                    'assets/svg/common/repair-pm/' + type.logoName;
+                                return type;
+                            }
+                        );
+
+                        
+                        this.pmFilterArray = newData;
+                    }
+                } else if ( this.type === 'pmFilter' && this.pmSubtype === 'trailer' ) {
+                    if (res.animation == 'pm-trailer-data-update') {
+
+                        let newData = res.data.pagination.data.map(
+                            (type: any, index: number) => {
+                                type['icon'] =
+                                    'assets/svg/common/repair-pm/' + type.logoName;
+                                return type;
+                            }
+                        );
+
+                        this.pmFilterArray = newData;
                     }
                 }
             });
@@ -2481,6 +2549,11 @@ export class FilterComponent implements OnInit, AfterViewInit {
                     this.filterUsaActiveArray.length +
                     this.filterCanadaActiveArray.length;
                 this.totalFiltersNum = totalStatesSelected;
+
+                queryParams = {
+                    usaArray: this.filterUsaActiveArray,
+                    canadaArray: this.filterCanadaActiveArray,
+                }
             } else if (this.type == 'moneyFilter') {
                 if (this.subType == 'all') {
                     let formActive = 0;
@@ -2675,7 +2748,7 @@ export class FilterComponent implements OnInit, AfterViewInit {
                 queryParams: queryParams,
                 subType: subType,
             };
-
+            
             if (this.setFilter) {
                 this.setFilter.emit(data);
             }
@@ -3061,5 +3134,25 @@ export class FilterComponent implements OnInit, AfterViewInit {
 
     public getRepairCategory() {
         this.filterService.getRepairCategory();
+    }
+
+    public getFuelCategory(){
+        this.filterService.getFuelCategory();
+    }
+
+    public getStateData() {
+        this.filterService.getStateData();
+    }
+
+    public getDepartmentData(){
+        this.filterService.getDepartmentData();
+    }
+
+    public getDispatchData(){
+        this.filterService.getDispatchData();
+    }
+
+    public getPmData(mod){
+        this.filterService.getPmData(mod);
     }
 }

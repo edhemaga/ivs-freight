@@ -2291,10 +2291,9 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
 
     public removeLoadExtraStop(index: number) {
         this.loadExtraStops().removeAt(index);
-        // 1. Set Config For Shipper in Extra Stop
+
         this.loadExtraStopsShipperInputConfig.splice(index, 1);
 
-        // 2. Set Config For Shipper Contacts in Extra Stop
         this.loadExtraStopsShipperContactsInputConfig.splice(index, 1);
 
         // 3. Selected arrays

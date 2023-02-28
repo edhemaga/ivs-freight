@@ -208,7 +208,10 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
             .subscribe((value) => {
                 if (!value) {
                     this.inputService.changeValidators(
-                        this.trailerForm.get('ownerId')
+                        this.trailerForm.get('ownerId'),
+                        true,
+                        [],
+                        false
                     );
                 } else {
                     this.inputService.changeValidators(

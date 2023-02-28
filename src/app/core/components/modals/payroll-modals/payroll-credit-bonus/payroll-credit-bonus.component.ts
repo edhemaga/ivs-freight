@@ -148,7 +148,7 @@ export class PayrollCreditBonusComponent implements OnInit, OnDestroy {
         this.payrollCreditForm = this.formBuilder.group({
             driverId: [null, Validators.required],
             truckId: [null],
-            date: [null, Validators.required],
+            date: [new Date(), Validators.required],
             description: [null, Validators.required],
             amount: [null, Validators.required],
         });
