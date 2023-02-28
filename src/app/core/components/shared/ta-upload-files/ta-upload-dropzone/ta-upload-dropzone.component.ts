@@ -90,7 +90,7 @@ export class TaUploadDropzoneComponent {
             this.textChangeOverModal = false;
             const target = this.dropzoneFocusElem?.nativeElement;
             if (target) {
-                if(this.customClassName == 'company-documents') {
+                if (this.customClassName == 'company-documents') {
                     setTimeout(() => {
                         if (!this.textChangeOverModal) {
                             this.windowDragOver = false;
@@ -99,7 +99,7 @@ export class TaUploadDropzoneComponent {
                 } else {
                     this.windowDragOver = false;
                 }
-                
+
                 target.removeAllListeners();
             }
 
@@ -139,13 +139,14 @@ export class TaUploadDropzoneComponent {
     onWindowDragEnter(event: any): void {
         event.preventDefault();
         event.stopPropagation();
+        if (!event.fromElement) {
+            if (this.customClassName == 'company-documents') {
+                this.windowDragOver = true;
+            }
 
-        if (this.customClassName == 'company-documents') {
-            this.windowDragOver = true;
-        }
-        
-        if (!this.hasDragEntered) {
-           this.onDropBackground.emit({ action: 'dragover', value: true });
+            if (!this.hasDragEntered) {
+                this.onDropBackground.emit({ action: 'dragover', value: true });
+            }
         }
     }
 
