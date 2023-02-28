@@ -164,7 +164,7 @@ export class MapsService implements OnDestroy {
                     svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
                     show: true,
                     iconName: 'edit',
-                    disabled: data.status == 0
+                    disabled: data.status == 0 || data.isClosed
                 },
                 {
                     title: 'border',
@@ -182,7 +182,7 @@ export class MapsService implements OnDestroy {
                     svg: 'assets/svg/truckassist-table/customer/contact-column-avatar.svg',
                     show: true,
                     iconName: 'add-contact',
-                    disabled: data.status == 0
+                    disabled: data.status == 0 || data.isClosed
                 },
                 {
                     title: 'Write Review',
@@ -190,7 +190,7 @@ export class MapsService implements OnDestroy {
                     svg: 'assets/svg/common/review-pen.svg',
                     show: true,
                     iconName: 'write-review',
-                    disabled: data.status == 0
+                    disabled: data.status == 0 || data.isClosed
                 },
                 {
                     title: 'border',
@@ -213,13 +213,13 @@ export class MapsService implements OnDestroy {
                     title: 'border',
                 },
                 {
-                    title: data.status == 0 ? 'Open Business' : 'Close Business',
-                    name: data.status == 0 ? 'open-business' : 'close-business',
+                    title: data.status == 0 || data.isClosed ? 'Open Business' : 'Close Business',
+                    name: data.status == 0 || data.isClosed ? 'open-business' : 'close-business',
                     svg: 'assets/svg/common/close-business-icon.svg',
-                    redIcon: data.status != 0,
-                    greenIcon: data.status == 0,
+                    redIcon: data.status != 0 && !data.isClosed,
+                    greenIcon: data.status == 0 || data.isClosed,
                     show: true,
-                    iconName: data.status == 0 ? 'mark-as-done' : 'close-business',
+                    iconName: data.status == 0 || data.isClosed ? 'mark-as-done' : 'close-business',
                 },
                 {
                     title: 'Delete',
@@ -238,7 +238,7 @@ export class MapsService implements OnDestroy {
                     svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
                     show: true,
                     iconName: 'edit',
-                    disabled: data.status == 0
+                    disabled: data.status == 0 || data.isClosed
                 },
                 {
                     title: 'border',
@@ -257,7 +257,7 @@ export class MapsService implements OnDestroy {
                     show: true,
                     blueIcon: true,
                     iconName: 'ic_plus',
-                    disabled: data.status == 0
+                    disabled: data.status == 0 || data.isClosed
                 },
                 {
                     title: data.pinned || data.favourite
@@ -269,7 +269,7 @@ export class MapsService implements OnDestroy {
                     blueIcon: data.pinned || data.favourite,
                     show: true,
                     iconName: 'ic_star',
-                    disabled: data.companyOwned || data.status == 0
+                    disabled: data.companyOwned || data.status == 0 || data.isClosed
                 },
                 {
                     title: 'Write Review',
@@ -277,7 +277,7 @@ export class MapsService implements OnDestroy {
                     svg: 'assets/svg/common/review-pen.svg',
                     show: true,
                     iconName: 'write-review',
-                    disabled: data.status == 0
+                    disabled: data.status == 0 || data.isClosed
                 },
                 {
                     title: 'border',
@@ -300,13 +300,13 @@ export class MapsService implements OnDestroy {
                     title: 'border',
                 },
                 {
-                    title: data.status == 0 ? 'Reopen Business' : 'Close Business',
-                    name: data.status == 0 ? 'open-business' : 'close-business',
+                    title: data.status == 0 || data.isClosed ? 'Reopen Business' : 'Close Business',
+                    name: data.status == 0 || data.isClosed ? 'open-business' : 'close-business',
                     svg: 'assets/svg/common/close-business-icon.svg',
-                    redIcon: data.status != 0,
-                    greenIcon: data.status == 0,
+                    redIcon: data.status != 0 && !data.isClosed,
+                    greenIcon: data.status == 0 || data.isClosed,
                     show: true,
-                    iconName: data.status == 0 ? 'mark-as-done' : 'close-business',
+                    iconName: data.status == 0 || data.isClosed ? 'mark-as-done' : 'close-business',
                 },
                 {
                     title: 'Delete',

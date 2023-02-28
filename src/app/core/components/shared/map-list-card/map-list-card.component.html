@@ -8,9 +8,9 @@
         <div class="title-container">
             <div
                 class="marker-info-text marker-bold-text uppercase text-ellipsis"
-                [ngClass]="{ 'permanently-closed-text': status == 0 }"
+                [ngClass]="{ 'permanently-closed-text': status == 0 || item.isClosed }"
             >
-                <span *ngIf="status == 0">
+                <span *ngIf="status == 0 || item.isClosed">
                     <svg-icon
                         class="permanently-closed-svg"
                         src="assets/svg/common/ic_permanently_closed.svg"
