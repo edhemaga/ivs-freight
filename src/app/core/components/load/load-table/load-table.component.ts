@@ -20,6 +20,8 @@ import { TaThousandSeparatorPipe } from '../../../pipes/taThousandSeparator.pipe
 import { tableSearch } from 'src/app/core/utils/methods.globals';
 import { LoadTService } from '../state/load.service';
 import { LoadListResponse } from 'appcoretruckassist';
+import { ImageBase64Service } from 'src/app/core/utils/base64.image';
+import { DatePipe } from '@angular/common';
 
 @Component({
     selector: 'app-load-table',
@@ -71,7 +73,9 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
         private loadPandinQuery: LoadPandinQuery,
         private loadTemplateQuery: LoadTemplateQuery,
         private thousandSeparator: TaThousandSeparatorPipe,
-        private loadServices: LoadTService
+        private loadServices: LoadTService,
+        private imageBase64Service: ImageBase64Service,
+        public datePipe: DatePipe
     ) {}
 
     // ---------------------------- ngOnInit ------------------------------
@@ -407,6 +411,9 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
         const td = this.tableData.find((t) => t.field === this.selectedTab);
 
+        console.log('Load Data');
+        console.log(td.data);
+
         this.setLoadData(td);
     }
 
@@ -445,23 +452,29 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     mapLoadData(data: any) {
-        // this.thousandSeparator.transform(data.total)
-        // this.datePipe.transform(data.date, 'MM/dd/yy')
-
         return {
             ...data,
             isSelected: false,
             loadInvoice: {
-                invoice: 'Nije Povezano',
+                invoice: data?.loadNumber ? data.loadNumber : '',
                 type: data?.type?.name ? data.type.name : '',
             },
             loadDispatcher: {
-                name: 'Nije Povezano',
-                avatar: null,
+                name: data?.dispatcher?.fullName
+                    ? data.dispatcher.fullName
+                    : '',
+                avatar: data?.dispatcher?.avatar
+                    ? this.imageBase64Service.sanitizer(data.dispatcher.avatar)
+                    : null,
             },
             loadTotal: {
-                total: 'nije povezano',
-                subTotal: 'nije povezano',
+                total: data?.totalRate
+                    ? '$' + this.thousandSeparator.transform(data.totalRate)
+                    : '',
+                subTotal: data?.totalAdjustedRate
+                    ? '$' +
+                      this.thousandSeparator.transform(data.totalAdjustedRate)
+                    : '',
             },
             loadBroker: {
                 hasBanDnu: data?.broker?.ban || data?.broker?.dnu,
@@ -483,23 +496,50 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 color: '',
             },
             loadPickup: {
-                count: 2,
-                location: 'Morton, MS',
-                date: '05/09/21',
-                time: '5:10PM',
+                count: data?.stops[0]?.stopLoadOrder
+                    ? data.stops[0].stopLoadOrder
+                    : '',
+                location:
+                    data?.stops[0]?.shipper?.address?.city +
+                    ', ' +
+                    data?.stops[0]?.shipper?.address?.stateShortName,
+                date: data?.stops[0]?.dateFrom
+                    ? this.datePipe.transform(
+                          data.stops[0].dateFrom,
+                          'MM/dd/yy'
+                      )
+                    : '',
+                time: data?.stops[0]?.timeFrom ? data.stops[0].timeFrom : '',
             },
             loadDelivery: {
-                count: 'S',
-                location: 'Forest Parl, GA',
-                date: '05/12/21',
-                time: '3:15AM',
+                count: data?.stops[data.stops.length - 1]?.stopLoadOrder
+                    ? data.stops[data.stops.length - 1].stopLoadOrder
+                    : '',
+                location:
+                    data?.stops[data.stops.length - 1]?.shipper?.address?.city +
+                    ', ' +
+                    data?.stops[data.stops.length - 1]?.shipper?.address
+                        ?.stateShortName,
+                date: data?.stops[data.stops.length - 1]?.dateFrom
+                    ? this.datePipe.transform(
+                          data.stops[data.stops.length - 1].dateFrom,
+                          'MM/dd/yy'
+                      )
+                    : '',
+                time: data?.stops[data.stops.length - 1]?.timeFrom
+                    ? data.stops[data.stops.length - 1].timeFrom
+                    : '',
             },
             loadStatus: {
-                status: 'Active',
+                status: data?.status?.name ? data.status?.name : '',
                 color: '',
-                time: '5h. 18m. ago',
+                time:
+                    data?.lastStatusPassed?.hours +
+                    'h ' +
+                    data?.lastStatusPassed?.minutes +
+                    'min',
             },
-            textMiles: data?.totalMiles ? data.totalMiles : '',
+            textMiles: data?.totalMiles ? data.totalMiles + ' mi' : '',
             textCommodity: data?.generalCommodity?.name
                 ? data.generalCommodity.name
                 : '',
@@ -507,12 +547,18 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
             textBase: data?.baseRate
                 ? '$' + this.thousandSeparator.transform(data.baseRate)
                 : '',
-            textAdditional: 'Nije Povezano',
+            textAdditional: data?.additionalBillingRatesTotal
+                ? '$' +
+                  this.thousandSeparator.transform(
+                      data?.additionalBillingRatesTotal
+                  )
+                : '',
             textAdvance: data?.advancePay
                 ? '$' + this.thousandSeparator.transform(data.advancePay)
                 : '',
-            textOutstanding: 'Nije Povezano',
-            textPayTerms: 'Nije Povezano',
+            textPayTerms: data?.broker?.payTerm?.name
+                ? data.broker.payTerm?.name
+                : '',
             textDriver:
                 data?.dispatch?.driver?.firstName &&
                 data?.dispatch?.driver?.lastName
@@ -520,8 +566,6 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                       '. ' +
                       data?.dispatch?.driver?.lastName
                     : '',
-            textReceiver: 'Nije Povezano',
-            textShipper: 'Nije Povezano',
             loadComment: {
                 count: data.commentsCount,
                 comments: data.comments,
@@ -534,11 +578,12 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
             },
         };
     }
+
     getDropdownLoadContent(data: any) {
         return [
             {
                 title: 'Edit',
-                name: 'edit-load',
+                name: 'edit',
                 svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Edit.svg',
                 svgStyle: {
                     width: 18,
@@ -726,14 +771,14 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
             this.backLoadFilterQuery.pageIndex++;
             this.loadBackFilter(this.backLoadFilterQuery, true);
         } else if (event.type === 'edit') {
-            /* this.modalService.openModal(
-        DriverModalComponent,
-        { size: 'medium' },
-        {
-          ...event,
-          disableButton: true,
-        }
-      ); */
+            this.modalService.openModal(
+                LoadModalComponent,
+                { size: 'load' },
+                {
+                    ...event,
+                    disableButton: true,
+                }
+            );
         }
     }
 

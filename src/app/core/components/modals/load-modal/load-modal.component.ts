@@ -72,6 +72,7 @@ import { TaInputNoteComponent } from '../../shared/ta-input-note/ta-input-note.c
 import { LoadDatetimeRangePipe } from './pipes/load-datetime-range.pipe';
 import { LoadTimeTypePipe } from './pipes/load-time-type.pipe';
 import { MapsComponent } from '../../shared/maps/maps.component';
+import { TableModalComponent } from '../../shared/table-modal/table-modal.component';
 
 interface IStopRoutes {
     longitude: number;
@@ -106,6 +107,7 @@ interface IStopRoutes {
         TaUploadFilesComponent,
         TaInputNoteComponent,
         MapsComponent,
+        TableModalComponent,
 
         // Pipe
         FinancialCalculationPipe,
@@ -2324,49 +2326,6 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         }
     }
 
-    // ********************** Load Stop Items **********************
-    public createNewRowInStopItems(action: string, loadStopIndex?: number) {
-        switch (action) {
-            case 'pickup': {
-                this.loadPickupStopItems().push(this.newLoadStopItems());
-                break;
-            }
-            case 'delivery': {
-                this.loadDeliveryStopItems().push(this.newLoadStopItems());
-                break;
-            }
-            case 'extra-stop': {
-                this.loadExtraStopItems(loadStopIndex).push(
-                    this.newLoadStopItems()
-                );
-                break;
-            }
-            default: {
-                break;
-            }
-        }
-    }
-
-    showTableModal(isOpen: boolean, stopType: string) {
-        this.tableModalOpen = isOpen ? stopType : '';
-
-        this.modalInitialization();
-    }
-
-    public loadPickupStopItems(): UntypedFormArray {
-        return this.loadForm.get('pickupItems') as UntypedFormArray;
-    }
-
-    public loadDeliveryStopItems(): UntypedFormArray {
-        return this.loadForm.get('deliveryItems') as UntypedFormArray;
-    }
-
-    public loadExtraStopItems(loadStopIndex: number): UntypedFormArray {
-        return this.loadExtraStops()
-            .at(loadStopIndex)
-            .get('items') as UntypedFormArray;
-    }
-
     public removeLoadStopItem(
         action: string,
         loadStopIndex?: number,
@@ -2391,31 +2350,6 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 break;
             }
         }
-    }
-
-    // Common fields
-    public newLoadStopItems(): UntypedFormGroup {
-        return this.formBuilder.group({
-            id: [null],
-            bolNumber: [null],
-            appointmentNumber: [null],
-            pickupNumber: [null],
-            poNumber: [null],
-            sealNumber: [null],
-            weight: [null],
-            length: [null],
-            height: [null],
-            temperature: [null],
-            description: [null, descriptionValidation],
-            code: [null],
-            quantity: [null],
-            units: [null],
-            secure: [null],
-            tarp: [null],
-            stackable: [null],
-            driverAssist: [null],
-            hazardousMaterialId: [null],
-        });
     }
 
     // ********************** end **********************
@@ -3741,14 +3675,82 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         }
     }
 
+    // ********************** Load Stop Items **********************
     // MODAL TABLE
     public testControl: UntypedFormGroup = new UntypedFormGroup({
         email: new UntypedFormControl(null),
         password: new UntypedFormControl(null),
         phone: new UntypedFormControl(null),
     });
+
     modalColumns: any[] = [];
     modalViewData: any[] = [];
+    
+    public createNewRowInStopItems(action: string, loadStopIndex?: number) {
+        // switch (action) {
+        //     case 'pickup': {
+        //         this.loadPickupStopItems().push(this.newLoadStopItems());
+        //         break;
+        //     }
+        //     case 'delivery': {
+        //         this.loadDeliveryStopItems().push(this.newLoadStopItems());
+        //         break;
+        //     }
+        //     case 'extra-stop': {
+        //         this.loadExtraStopItems(loadStopIndex).push(
+        //             this.newLoadStopItems()
+        //         );
+        //         break;
+        //     }
+        //     default: {
+        //         break;
+        //     }
+        // }
+    }
+
+    showTableModal(isOpen: boolean, stopType: string) {
+        this.tableModalOpen = isOpen ? stopType : '';
+
+        this.modalInitialization();
+    }
+
+    public loadPickupStopItems(): UntypedFormArray {
+        return this.loadForm.get('pickupItems') as UntypedFormArray;
+    }
+
+    public loadDeliveryStopItems(): UntypedFormArray {
+        return this.loadForm.get('deliveryItems') as UntypedFormArray;
+    }
+
+    public loadExtraStopItems(loadStopIndex: number): UntypedFormArray {
+        return this.loadExtraStops()
+            .at(loadStopIndex)
+            .get('items') as UntypedFormArray;
+    }
+
+    // Table Load Filds
+    public newLoadStopItems(): UntypedFormGroup {
+        return this.formBuilder.group({
+            bolNumber: [null],
+            appointmentNumber: [null],
+            pickupNumber: [null],
+            poNumber: [null],
+            sealNumber: [null],
+            weight: [null],
+            length: [null],
+            height: [null],
+            temperature: [null],
+            description: [null, descriptionValidation],
+            code: [null],
+            quantity: [null],
+            units: [null],
+            secure: [null],
+            tarp: [null],
+            stackable: [null],
+            driverAssist: [null],
+            hazardousMaterialId: [null],
+        });
+    }
 
     modalInitialization() {
         this.modalColumns = [];
