@@ -300,7 +300,7 @@
         }
 
         .editor {
-            min-height: 32px;
+            min-height: 34px;
             max-height: 64px;
             width: 250px;
             border-radius: 3px;
@@ -445,7 +445,7 @@
 
         .note_container {
             width: 100%;
-            padding: 4px 0px 4px 2px;
+            padding: 5px 0px 5px 2px;
         }
     }
 
@@ -486,6 +486,6 @@
 
     &.closed_note_hold {
         position: relative;
-        top: -7px;
+        top: -8px;
     }
 }
