@@ -1858,6 +1858,7 @@ table {
                         .table-progress-cotnainer {
                             display: flex;
                             align-items: center;
+                            padding-left: 1px;
 
                             .table-progress-bar-container {
                                 border-radius: 2px;
@@ -2805,11 +2806,11 @@ table {
         cursor: pointer;
         justify-self: flex-end;
         margin-left: auto;
-        font-size: 14px;
+        font-size: 12px;
         font-weight: bold;
         color: #6c6c6c;
         justify-content: center;
-        min-width: 97px;
+        min-width: 84px;
 
         &:hover {
             color: #5673aa;

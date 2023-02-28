@@ -119,16 +119,17 @@ export class TaInputDropdownComponent
         };
         this._activeItem = value;
 
-        console.log('name: ', this.inputConfig.name);
         // With address
         if (
             this.inputConfig.name &&
-            this._activeItem &&
-            this.inputConfig.name.toLowerCase().includes('address')
+            this.inputConfig.name.toLowerCase().includes('address') &&
+            this._activeItem
         ) {
-            this.getSuperControl.patchValue(
-                value.address ? value.address : null
-            );
+            if (Object.keys(this._activeItem).length > 0) {
+                this.getSuperControl.patchValue(
+                    value.address ? value.address : null
+                );
+            }
 
             this.clearTimeoutDropdown = setTimeout(() => {
                 this.inputConfig = {
@@ -1115,7 +1116,10 @@ export class TaInputDropdownComponent
                         id: 7654,
                         name: 'No Results',
                     });
-
+                    this.inputConfig = {
+                        ...this.inputConfig,
+                        hideAllItemsInInputDropdown: true,
+                    };
                     if (
                         (this.inputConfig.name === 'Address' ||
                             this.inputConfig.name === 'RoutingAddress') &&
@@ -1139,6 +1143,11 @@ export class TaInputDropdownComponent
                         },
                     };
                 }
+
+                this.inputConfig = {
+                    ...this.inputConfig,
+                    hideAllItemsInInputDropdown: false,
+                };
             }
         }
         // Group Dropdown Items

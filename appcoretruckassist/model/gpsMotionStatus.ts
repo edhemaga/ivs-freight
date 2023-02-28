@@ -11,13 +11,12 @@
  */
 
 
-export type GpsMotionStatus = 'MOTION' | 'SHORT_STOP' | 'EXTENDED_STOP' | 'PARKING' | 'OFFLINE';
+export type GpsMotionStatus = 'MOTION' | 'SHORT_STOP' | 'EXTENDED_STOP' | 'PARKING';
 
 export const GpsMotionStatus = {
     Motion: 'MOTION' as GpsMotionStatus,
     ShortStop: 'SHORT_STOP' as GpsMotionStatus,
     ExtendedStop: 'EXTENDED_STOP' as GpsMotionStatus,
-    Parking: 'PARKING' as GpsMotionStatus,
-    Offline: 'OFFLINE' as GpsMotionStatus
+    Parking: 'PARKING' as GpsMotionStatus
 };
 

@@ -26,7 +26,10 @@ export interface LiveTrackingBaseResponse {
     motionStatusPeriod?: string | null;
     type?: GpsType;
     updateTime?: string;
+    startDate?: string | null;
+    stopDate?: string | null;
     dateString?: string | null;
     companyId?: number | null;
+    unitType?: number | null;
 }
 

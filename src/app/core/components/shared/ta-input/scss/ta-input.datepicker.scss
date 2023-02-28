@@ -33,8 +33,10 @@
 
         &::selection,
         & div::selection {
-            background-color: $default-content-background-selection !important;
-            color: $default-content !important;
+            // background-color: $default-content-background-selection !important;
+            // color: $default-content !important;
+            background-color: $valid-focus-content-background-selection;
+            color: $valid-focus-content;
         }
     }
 
@@ -80,12 +82,19 @@
         }
     }
 
+    &.focus {
+        background-color: $default-focus-input;
+        color: $default-focus-content;
+
+        transition: all 0.2s ease-in-out;
+    }
+
     &.valid-focus-in {
         opacity: 1;
         &::selection,
         & div::selection {
-            background-color: $valid-focus-content-background-selection !important;
-            color: $valid-focus-content !important;
+            background-color: $valid-focus-content-background-selection;
+            color: $valid-focus-content;
         }
     }
 }

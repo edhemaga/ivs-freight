@@ -15,6 +15,7 @@ import { TaInputNoteComponent } from '../../shared/ta-input-note/ta-input-note.c
 import { formatTimePipe } from '../../../pipes/formatTime.pipe';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { TaCommonHeaderComponent } from '../../shared/ta-details-header/ta-details-header.component';
+import { TaTabSwitchComponent } from '../../standalone-components/ta-tab-switch/ta-tab-switch.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
@@ -38,7 +39,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
         TaInputNoteComponent,
         formatTimePipe,
         AngularSvgIconModule,
-        TaCommonHeaderComponent
+        TaCommonHeaderComponent,
+        TaTabSwitchComponent
     ],
     providers: [formatDatePipe],
 })

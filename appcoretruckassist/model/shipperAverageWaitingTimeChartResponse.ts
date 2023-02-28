@@ -9,14 +9,14 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { RoadsideInspectionResponsePagination } from './roadsideInspectionResponsePagination';
+import { TimeSpan } from './timeSpan';
 
 
-export interface RoadsideInspectionListResponse { 
-    pagination?: RoadsideInspectionResponsePagination;
-    active?: number;
-    inactive?: number;
-    violationSummary?: number;
-    roadsideInspectionCount?: number;
+export interface ShipperAverageWaitingTimeChartResponse { 
+    avgPickupTime?: TimeSpan;
+    avgDeliveryTime?: TimeSpan;
+    day?: number | null;
+    month?: number | null;
+    year?: number | null;
 }
 

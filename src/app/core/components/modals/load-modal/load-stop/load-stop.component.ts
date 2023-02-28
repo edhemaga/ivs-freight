@@ -1,4 +1,10 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import {
+    Component,
+    Input,
+    Output,
+    EventEmitter,
+    ChangeDetectionStrategy,
+} from '@angular/core';
 import {
     animate,
     state,
@@ -10,17 +16,20 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AppTooltipComponent } from '../../../standalone-components/app-tooltip/app-tooltip.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { AngularSvgIconModule } from 'angular-svg-icon';
 
 @Component({
     selector: 'app-load-stop',
     templateUrl: './load-stop.component.html',
     styleUrls: ['./load-stop.component.scss'],
     standalone: true,
+    changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [
         // Module
         CommonModule,
         FormsModule,
         NgbModule,
+        AngularSvgIconModule,
 
         // Component
         AppTooltipComponent,

@@ -123,10 +123,21 @@ export class TruckassistTableHeadComponent
         this.tableService.isScrollShownig
             .pipe(takeUntil(this.destroy$))
             .subscribe((isScrollShownig: boolean) => {
-                if(this.showBorder !== isScrollShownig){
+                if (this.showBorder !== isScrollShownig) {
                     this.showBorder = isScrollShownig;
 
                     this.changeDetectorRef.detectChanges();
+                }
+            });
+
+        this.tableService.isScrollReseting
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((isScrollReset: boolean) => {
+                if (isScrollReset) {
+                    let scroll = document.getElementById('scroll');
+                    scroll.scrollLeft = 0;
+
+                    // this.changeDetectorRef.detectChanges();
                 }
             });
 
@@ -377,14 +388,14 @@ export class TruckassistTableHeadComponent
     }
 
     // Get Selectable Row
-    getSelectableRows(){
+    getSelectableRows() {
         let selectable = [];
 
         this.viewData.map((data: any, index: number) => {
-            if(!data?.tableCantSelect){
+            if (!data?.tableCantSelect) {
                 selectable.push(index);
             }
-        })
+        });
 
         this.selectableRow = [...selectable];
     }

@@ -62,7 +62,7 @@
             }
 
             &.no-result-container {
-                padding: 8px 10px !important;
+                padding: 6px 10px !important;
             }
 
             //------------------------ Svg-Template-Logo Template ------------------------
@@ -1019,15 +1019,13 @@
 
             // ---------------------------------------- DROPDOWN GROUPS ----------------------------------------
             &.dropdown-options-groups {
-                max-height: 198px;
+                max-height: 194px;
                 overflow-y: scroll;
 
                 // This class is only for Truck tollTransporder
                 .dropdown-groups {
                     display: flex;
                     flex-direction: column;
-                    padding: 0px 4px;
-                    padding-top: 8px;
                     position: relative;
 
                     p {
@@ -1039,16 +1037,13 @@
                         display: inline-block;
                         position: absolute;
                         bottom: -3px;
-                        height: 2px;
-                        width: 96%;
+                        height: 1px;
+                        width: 100%;
                         background-color: rgb(170, 170, 170, 0.2);
                     }
 
-                    &.last-group {
-                        padding-bottom: 4px;
-                    }
-
                     &:last-child {
+                        margin-top: 4px;
                         &::after {
                             display: none !important;
                         }
@@ -1056,11 +1051,12 @@
 
                     .dropdown-group-header {
                         font-size: 11px;
-                        color: rgb(204, 204, 204, 0.4);
+                        color: #cccccc;
                         font-weight: 700;
                         text-transform: uppercase;
                         line-height: 14px;
                         padding: 0 6px;
+                        padding-top: 8px;
                         margin-bottom: 8px;
 
                         &::-moz-selection {
@@ -1095,12 +1091,15 @@
                             background-color: #1d1d1d;
                             cursor: pointer;
                             transition: all 0.3s ease-in-out;
+                            .dropdown-subgroup-text {
+                                color: #ffffff;
+                            }
                         }
 
                         .dropdown-subgroup-text {
                             font-size: 14px;
                             font-weight: 400;
-                            color: #ffffff;
+                            color: #cccccc;
                             transition: all 0.3s ease-in-out;
 
                             &.active {
@@ -1131,7 +1130,7 @@
                     display: flex;
                     flex-direction: column;
                     position: relative;
-                    padding: 4px 2px;
+                    // padding: 4px 2px;
                     padding-bottom: 0px;
                     margin: 0;
 
@@ -1139,23 +1138,24 @@
                         margin: 0;
                     }
 
-                    &.last-group {
-                        padding-bottom: 4px;
-                    }
+                    // &.last-group {
+                    //     padding-bottom: 4px;
+                    // }
 
                     .dropdown-group-header {
                         padding: 0px;
                         margin: 0px;
-
+                        padding-top: 8px;
                         padding-left: 4px;
                         margin-bottom: 4px;
 
-                        color: #919191;
+                        color: #cccccc;
                         font-size: 11px;
                         text-transform: capitalize;
 
                         &.add-new {
                             font-size: 11px;
+                            line-height: 14px;
                             font-weight: 700;
                             color: #6f9ee0;
                             padding: 4px;
@@ -1178,12 +1178,16 @@
                         column-gap: 10px;
                         align-items: center;
                         padding: 3px 4px;
-                        margin-bottom: 2px;
+                        // margin-bottom: 2px;
                         cursor: pointer;
 
                         &:hover {
                             border-radius: 2px;
                             background-color: #1d1d1d;
+
+                            .dropdown-subgroup-text {
+                                color: #ffffff !important;
+                            }
                         }
 
                         .dropdown-subgroup-text {
@@ -1451,6 +1455,10 @@
                 font-weight: 400;
                 margin: 0;
                 padding: 0;
+            }
+
+            .hideSvgOnCopy{
+                display: none;
             }
         }
     }

@@ -374,11 +374,16 @@ export class TruckModalComponent implements OnInit, OnDestroy {
             .subscribe((value) => {
                 if (!value) {
                     this.inputService.changeValidators(
-                        this.truckForm.get('ownerId')
+                        this.truckForm.get('ownerId'),
+                        true,
+                        [],
+                        false
                     );
                 } else {
                     this.inputService.changeValidators(
                         this.truckForm.get('ownerId'),
+                        false,
+                        [],
                         false
                     );
                 }

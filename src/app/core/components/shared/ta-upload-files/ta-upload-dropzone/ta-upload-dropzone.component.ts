@@ -53,6 +53,8 @@ export class TaUploadDropzoneComponent {
         globalDropZone: false,
     };
 
+    @Input() customClassName: string;
+
     @Input() disableUnsupportedPreview: boolean = false; // only for modals upload
 
     @Input() isRequired: boolean = false;
@@ -88,7 +90,16 @@ export class TaUploadDropzoneComponent {
             this.textChangeOverModal = false;
             const target = this.dropzoneFocusElem?.nativeElement;
             if (target) {
-                this.windowDragOver = false;
+                if (this.customClassName == 'company-documents') {
+                    setTimeout(() => {
+                        if (!this.textChangeOverModal) {
+                            this.windowDragOver = false;
+                        }
+                    }, 100);
+                } else {
+                    this.windowDragOver = false;
+                }
+
                 target.removeAllListeners();
             }
 
@@ -117,7 +128,9 @@ export class TaUploadDropzoneComponent {
     @HostListener('dragleave', ['$event']) public onleave(evt) {
         evt.preventDefault();
         this.textChangeOverModal = false;
-        this.windowDragOver = false;
+        if (this.customClassName != 'company-documents') {
+            this.windowDragOver = false;
+        }
         this.hasDragEntered = false;
     }
 
@@ -126,9 +139,14 @@ export class TaUploadDropzoneComponent {
     onWindowDragEnter(event: any): void {
         event.preventDefault();
         event.stopPropagation();
+        if (!event.fromElement) {
+            if (this.customClassName == 'company-documents') {
+                this.windowDragOver = true;
+            }
 
-        if (!this.hasDragEntered) {
-           this.onDropBackground.emit({ action: 'dragover', value: true });
+            if (!this.hasDragEntered) {
+                this.onDropBackground.emit({ action: 'dragover', value: true });
+            }
         }
     }
 

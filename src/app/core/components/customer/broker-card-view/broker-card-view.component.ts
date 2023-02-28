@@ -299,7 +299,7 @@ export class BrokerCardViewComponent implements OnInit, OnChanges {
         });
     }
     public onSelectBroker(event: any) {
-        if (event.id !== this.broker.id) {
+        if ( event && event.id !== this.broker.id) {
             this.brokerList = this.brokerQuery.getAll().map((item) => {
                 return {
                     id: item.id,

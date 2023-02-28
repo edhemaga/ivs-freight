@@ -824,7 +824,7 @@
                                             }"
                                             class="description-container"
                                             [innerHtml]="
-                                                !descriptionPopoverOpen
+                                            descriptionPopoverOpen !== row.id
                                                     ? row[column.field]
                                                     : null
                                             "
@@ -840,10 +840,10 @@
                                             popoverClass="table-description-popover"
                                             triggers="manual"
                                             (hidden)="
-                                                descriptionPopoverOpen = false
+                                                descriptionPopoverOpen = -1
                                             "
                                             (shown)="
-                                                descriptionPopoverOpen = true
+                                                descriptionPopoverOpen = row.id
                                             "
                                         ></div>
                                     </div>
@@ -927,7 +927,7 @@
                                         <span
                                             *ngIf="
                                                 !row.isRepairOrder &&
-                                                !descriptionPopoverOpen
+                                                descriptionPopoverOpen !== row.id
                                             "
                                             class="table-total"
                                             [innerHtml]="
@@ -2414,7 +2414,7 @@
                                             }"
                                             class="description-container"
                                             [innerHtml]="
-                                                !descriptionPopoverOpen
+                                                descriptionPopoverOpen !== row.id
                                                     ? row[column.field]
                                                     : null
                                             "
@@ -2430,10 +2430,10 @@
                                             popoverClass="table-description-popover"
                                             triggers="manual"
                                             (hidden)="
-                                                descriptionPopoverOpen = false
+                                                descriptionPopoverOpen = -1
                                             "
                                             (shown)="
-                                                descriptionPopoverOpen = true
+                                                descriptionPopoverOpen = row.id
                                             "
                                         ></div>
                                     </div>
@@ -2666,7 +2666,7 @@ highlightingWords) : '' " -->
                                         <span
                                             *ngIf="
                                                 !row.isRepairOrder &&
-                                                !descriptionPopoverOpen
+                                                descriptionPopoverOpen !== row.id
                                             "
                                             class="table-total"
                                             [innerHtml]="

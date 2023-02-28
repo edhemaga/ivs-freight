@@ -242,8 +242,6 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
         this.tableService.currentSetTableFilter
             .pipe(takeUntil(this.destroy$))
             .subscribe((data) => {
-                console.log('currentSetTableFilter data', data);
-
                 if ( data?.filterType == 'locationFilter' ) {
                     if ( data.action == 'Set' ) {
                         this.locationFilter = data.queryParams;

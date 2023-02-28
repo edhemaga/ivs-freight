@@ -149,7 +149,7 @@ export class ShopRepairCardViewComponent
 
     public repairCall: any = {
         id: -1,
-        chartType: -1,
+        chartType: 1,
     };
 
     constructor(
@@ -176,7 +176,7 @@ export class ShopRepairCardViewComponent
         this.currentShopId = changes.repairShopCardViewData.currentValue.id;
         this.getRepairShopChartData(
             changes.repairShopCardViewData.currentValue.id,
-            1,
+            this.repairCall.chartType,
             false
         );
         this.getActiveServices(changes.repairShopCardViewData.currentValue);
@@ -223,7 +223,7 @@ export class ShopRepairCardViewComponent
                             id: item.id,
                             name: item.name,
                             status: item.status,
-                            svg: 'ic_star.svg',
+                            svg:  item.pinned ? 'ic_star.svg' : '',
                             folder: 'common',
                             active:
                                 item.id ===
@@ -241,7 +241,7 @@ export class ShopRepairCardViewComponent
     }
 
     public onSelectedShop(event: any) {
-        if (event.id !== +this.act_route.snapshot.params['id']) {
+        if ( event && event.id !== +this.act_route.snapshot.params['id']) {
             this.shopsDropdowns = this.shopsDropdowns.map((item) => {
                 return {
                     id: item.id,

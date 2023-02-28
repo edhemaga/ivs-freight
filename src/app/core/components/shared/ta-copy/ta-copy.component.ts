@@ -31,6 +31,7 @@ export class TaCopyComponent implements OnInit {
     @Input() textColor: string = '#6c6c6c';
     @Input() textFontWeight: string = '400';
     @Input() hasEye: boolean = false;
+    @Input() leftSideIcon: boolean = false;
     // @Input() marginCopyIcons: string = '6px';
     @Input() accountCompany: boolean;
     @Output() showHideEye = new EventEmitter<any>();

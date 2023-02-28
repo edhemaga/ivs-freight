@@ -300,7 +300,7 @@
         }
 
         .editor {
-            min-height: 32px;
+            min-height: 34px;
             max-height: 64px;
             width: 250px;
             border-radius: 3px;
@@ -344,12 +344,12 @@
             span[style*='color: rgb(83, 107, 194)'],
             span[style*='color: rgb(83, 107, 194)'] span {
                 &::-moz-selection {
-                    color: $bw6-2 !important;
+                    color: rgb(83, 107, 194) !important;
                     background: rgb(83, 107, 194, 0.2) !important;
                 }
 
                 &::selection {
-                    color: $bw6-2;
+                    color: rgb(83, 107, 194) !important;
                     background: rgb(83, 107, 194, 0.2) !important;
                 }
             }
@@ -357,12 +357,12 @@
             span[style*='color: rgb(38, 166, 144)'],
             span[style*='color: rgb(38, 166, 144)'] span {
                 &::-moz-selection {
-                    color: $bw6-2;
+                    color: rgb(38, 166, 144) !important;
                     background: rgb(38, 166, 144, 0.2) !important;
                 }
 
                 &::selection {
-                    color: $bw6-2;
+                    color: rgb(38, 166, 144) !important;
                     background: rgb(38, 166, 144, 0.2) !important;
                 }
             }
@@ -370,12 +370,12 @@
             span[style*='color: rgb(239, 83, 80)'],
             span[style*='color: rgb(239, 83, 80)'] span {
                 &::-moz-selection {
-                    color: $bw6-2;
+                    color: rgb(239, 83, 80) !important;
                     background: rgb(239, 83, 80, 0.2) !important;
                 }
 
                 &::selection {
-                    color: $bw6-2;
+                    color: rgb(239, 83, 80);
                     background: rgb(239, 83, 80, 0.2) !important;
                 }
             }
@@ -383,12 +383,12 @@
             span[style*='color: rgb(255, 167, 38)'],
             span[style*='color: rgb(255, 167, 38)'] span {
                 &::-moz-selection {
-                    color: $bw6-2;
+                    color: rgb(255, 167, 38) !important;
                     background: rgb(255, 167, 38, 0.2) !important;
                 }
 
                 &::selection {
-                    color: $bw6-2;
+                    color: rgb(255, 167, 38);
                     background: rgb(255, 167, 38, 0.2) !important;
                 }
             }
@@ -445,7 +445,7 @@
 
         .note_container {
             width: 100%;
-            padding: 4px 0px 4px 2px;
+            padding: 5px 0px 5px 2px;
         }
     }
 
@@ -486,6 +486,6 @@
 
     &.closed_note_hold {
         position: relative;
-        top: -7px;
+        top: -8px;
     }
 }

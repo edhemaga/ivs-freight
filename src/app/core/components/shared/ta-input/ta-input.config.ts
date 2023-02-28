@@ -114,6 +114,7 @@ export interface ITaInput {
     isInvalidSearchInDropdown?: boolean;
     selectedDropdown?: boolean;
     mergeDropdownBodyWithInput?: boolean;
+    hideAllItemsInInputDropdown?: boolean;
 
     // Label dropdown
     dropdownLabel?: boolean;
