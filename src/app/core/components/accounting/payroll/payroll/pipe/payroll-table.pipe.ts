@@ -46,6 +46,9 @@ export class PayrollTablePipe implements PipeTransform {
                 returnValue = this.currencyPipe.transform(returnValue, 'USD');
             }
 
+            if(typeof returnValue == "number"){
+                returnValue = returnValue.toFixed(2);
+            }
             return returnValue;
         } else {
             return '';
