@@ -783,7 +783,7 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
                 var allTrucks = [];
                 trucks.pagination.data.map((truck) => {
                     let assignedTruck = this.gpsAssignedData.find(
-                        (gpsData) => truck.truckNumber === gpsData.truckNumber
+                        (gpsData) => (truck.truckNumber === gpsData.truckNumber) && gpsData.unitType != 2
                     );
 
                     if (!assignedTruck) {
@@ -822,7 +822,7 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
                 trailers.pagination.data.map((trailer) => {
                     let assignedTruck = this.gpsAssignedData.find(
                         (gpsData) =>
-                            trailer.trailerNumber === gpsData.trailerNumber
+                            (trailer.trailerNumber === gpsData.trailerNumber) && gpsData.unitType == 2
                     );
 
                     if (!assignedTruck) {
