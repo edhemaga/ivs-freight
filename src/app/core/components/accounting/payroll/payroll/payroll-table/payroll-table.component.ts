@@ -26,24 +26,28 @@ export class PayrollTableComponent implements OnInit {
 
     _tableData: any[] = [];
     @Input() set tableData(value) {
-        console.log('----------');
         if (this.tableSettingsResizable) {
-            const tableSettingsValue = [...value].reduce((tbrez, item) => {
-                const newtbrez = this.tableSettingsResizable.map((data) => {
-                    if (data.data_field) {
-                     
-                      if( !tbrez[data.data_field] ) tbrez[data.data_field] = 0;
-                      tbrez[data.data_field] += item[data.data_field] ? item[data.data_field] : 0;
-                    }
-                    return data;
-                });
+            const tableSettingsValue = [...value].reduce(
+                (tbrez, item) => {
+                    this.tableSettingsResizable.map((data) => {
+                        if (data.data_field) {
+                            if (!tbrez[data.data_field])
+                                tbrez[data.data_field] = 0;
+                            tbrez[data.data_field] += item[data.data_field]
+                                ? item[data.data_field]
+                                : 0;
+                        }
+                        return data;
+                    });
 
-                return tbrez;
-            }, { reorderItem: true });
+                    return tbrez;
+                },
+                { reorderItem: true }
+            );
 
-           value.push(tableSettingsValue);
+            value.push(tableSettingsValue);
         }
-       
+
         this._tableData = value;
     }
     constructor() {}
