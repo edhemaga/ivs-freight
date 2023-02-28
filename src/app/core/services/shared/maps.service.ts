@@ -160,7 +160,7 @@ export class MapsService implements OnDestroy {
             dropActions = [
                 {
                     title: 'Edit',
-                    name: 'edit-cutomer-or-shipper',
+                    name: 'edit',
                     svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
                     show: true,
                     iconName: 'edit',
@@ -223,7 +223,7 @@ export class MapsService implements OnDestroy {
                 },
                 {
                     title: 'Delete',
-                    name: 'delete',
+                    name: 'delete-item',
                     svg: 'assets/svg/common/ic_trash_updated.svg',
                     redIcon: true,
                     show: true,
@@ -260,13 +260,13 @@ export class MapsService implements OnDestroy {
                     disabled: data.status == 0
                 },
                 {
-                    title: data.pinned
+                    title: data.pinned || data.favourite
                         ? 'Remove from Favourite'
                         : 'Move to Favourite',
-                    name: data.pinned ? 'remove-from-favourite' : 'move-to-favourite',
+                    name: data.pinned || data.favourite ? 'remove-from-favourite' : 'move-to-favourite',
                     svg: 'assets/svg/common/ic_star.svg',
                     activate: true,
-                    blueIcon: data.pinned,
+                    blueIcon: data.pinned || data.favourite,
                     show: true,
                     iconName: 'ic_star',
                     disabled: data.companyOwned || data.status == 0
@@ -310,7 +310,7 @@ export class MapsService implements OnDestroy {
                 },
                 {
                     title: 'Delete',
-                    name: 'delete-repair',
+                    name: 'delete-item',
                     type: 'truck',
                     text: 'Are you sure you want to delete truck(s)?',
                     svg: 'assets/svg/common/ic_trash_updated.svg',

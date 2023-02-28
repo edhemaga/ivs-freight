@@ -41,6 +41,7 @@ import { GooglePlaceModule } from 'ngx-google-places-autocomplete';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { DropDownService } from '../../../services/details-page/drop-down.service';
 
 @Component({
     selector: 'app-maps',
@@ -193,7 +194,8 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
         private modalService: ModalService,
         private confirmationService: ConfirmationService,
         private companyOfficeService: CompanyTOfficeService,
-        private tableService: TruckassistTableService
+        private tableService: TruckassistTableService,
+        private dropdownService: DropDownService
     ) {}
 
     ngOnInit(): void {
@@ -520,35 +522,75 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
     }
 
     dropDownActionCall(action) {
-        if (action.type == 'delete' || action.type == 'delete-repair') {
-            var name =
-                this.mapType == 'repairShop'
-                    ? action.data.name
-                    : this.mapType == 'shipper'
-                    ? action.data.businessName
-                    : '';
+        // if (action.type == 'delete' || action.type == 'delete-repair') {
+        //     var name =
+        //         this.mapType == 'repairShop'
+        //             ? action.data.name
+        //             : this.mapType == 'shipper'
+        //             ? action.data.businessName
+        //             : '';
 
-            var shipperData = {
-                id: action.id,
-                type: 'delete-item',
-                data: {
-                    ...action.data,
-                    name: name,
-                },
-            };
+        //     var shipperData = {
+        //         id: action.id,
+        //         type: 'delete-item',
+        //         data: {
+        //             ...action.data,
+        //             name: name,
+        //         },
+        //     };
 
-            this.modalService.openModal(
-                ConfirmationModalComponent,
-                { size: 'small' },
-                {
-                    ...shipperData,
-                    template:
-                        this.mapType == 'repairShop' ? 'repair shop' : 'shipper',
-                    type: 'delete',
-                }
-            );
+        //     this.modalService.openModal(
+        //         ConfirmationModalComponent,
+        //         { size: 'small' },
+        //         {
+        //             ...shipperData,
+        //             template:
+        //                 this.mapType == 'repairShop' ? 'repair shop' : 'shipper',
+        //             type: 'delete',
+        //         }
+        //     );
+        // } else {
+        //     this.callDropDownAction.emit(action);
+        // }
+
+        if ( action.type == 'view-details' ) {
+            this.mapsService.goToDetails(action.data, this.mapType);
         } else {
-            this.callDropDownAction.emit(action);
+            if ( this.mapType == 'repairShop' ) {
+                if ( action.type == 'write-review' ){
+                    action.type = 'edit';
+                    action.openedTab = 'Review';
+                }
+        
+                console.log('---here---', action);
+                this.dropdownService.dropActionsHeaderRepair(
+                    action,
+                    action.data,
+                    action.id,
+                );
+            } else if ( this.mapType == 'shipper' ) {
+                console.log('---here---', action);
+                let eventType = '';
+                if ( action.type == 'Contact' || action.type == 'edit' || action.type == 'Review'){
+                    eventType = 'edit'
+                } else {
+                    eventType = action.type;
+                }
+
+                let eventObject = {
+                    data: undefined,
+                    id: action.id,
+                    type: eventType,
+                    openedTab: action.type,
+                }
+                setTimeout(() => {
+                    this.dropdownService.dropActionsHeaderShipperBroker(
+                        eventObject,
+                        action.data,
+                        'shipper'
+                    );
+                }, 100);
+            }
         }
     }
 
@@ -1577,7 +1619,7 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
         this.confirmationService.confirmationData$
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: (res: Confirmation) => {
+                next: (res: Confirmation | any) => {
                     switch (res.type) {
                         case 'delete': {
                             if (
@@ -1600,6 +1642,26 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
                                     cluster.detailedInfo = false;
                                     this.getClusters(true, true);
                                     this.ref.detectChanges();
+                                }
+                            }
+                            break;
+                        }
+                        case 'activate': {
+                            if (res.template === 'repair shop' || res.template === 'Repair Shop') {
+                                this.repairShopService.changeShopStatus(res?.id);
+                            }
+                            break;
+                        } 
+                        case 'deactivate': {
+                            if (res.template === 'repair shop' || res.template === 'Repair Shop') {
+                                this.repairShopService.changeShopStatus(res?.id);
+                            }
+                            break;
+                        }
+                        case 'info': {
+                            if ( res.subType === 'favorite' ) {
+                                if ( res.subTypeStatus === 'move' || res.subTypeStatus === 'remove' ) {
+                                    this.repairShopService.changePinnedStatus(res?.id);
                                 }
                             }
                             break;

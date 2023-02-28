@@ -60,9 +60,9 @@
                     !showMarkerWindow[latlong.id] && !latlong.actionAnimation
                 "
                 [iconUrl]="
-                        latlong?.isSelected && latlong?.status == 2
+                        latlong?.isSelected && latlong?.status == 0
                             ? 'assets/svg/common/ic_marker_closed_big.svg'
-                            : latlong?.status == 2
+                            : latlong?.status == 0
                             ? 'assets/svg/common/ic_marker_closed.svg'
                             : latlong?.pinned || latlong?.favourite
                             ? 'assets/svg/common/ic_marker_favorite.svg'
@@ -102,7 +102,7 @@
                                     'fuel-marker': mapType == 'fuelStop'
                                 }"
                                 *ngIf="
-                                    latlong.status != 2 &&
+                                    latlong.status != 0 &&
                                     !latlong.pinned &&
                                     !latlong.favourite
                                 "
@@ -113,7 +113,7 @@
                                 [ngClass]="{
                                     'selected-marker': latlong.isSelected
                                 }"
-                                *ngIf="latlong.status == 2"
+                                *ngIf="latlong.status == 0"
                             ></svg-icon>
                             <svg-icon
                                 class="marker-icon"
@@ -122,7 +122,7 @@
                                     'selected-marker': latlong.isSelected,
                                     'fuel-marker': mapType == 'fuelStop'
                                 }"
-                                *ngIf="latlong.pinned || latlong.favourite"
+                                *ngIf="(latlong.pinned || latlong.favourite) && latlong.status != 0"
                             ></svg-icon>
                             <div
                                 [ngClass]="{

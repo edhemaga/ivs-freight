@@ -150,6 +150,28 @@ export class MapListCardComponent implements OnInit, OnDestroy {
                     this.item,
                     action.id,
                 );
+            } else if ( this.type == 'shipper' ) {
+                console.log('---here---', action);
+                let eventType = '';
+                if ( action.type == 'Contact' || action.type == 'edit' || action.type == 'Review'){
+                    eventType = 'edit'
+                } else {
+                    eventType = action.type;
+                }
+
+                let eventObject = {
+                    data: undefined,
+                    id: action.id,
+                    type: eventType,
+                    openedTab: action.type,
+                }
+                setTimeout(() => {
+                    this.dropdownService.dropActionsHeaderShipperBroker(
+                        eventObject,
+                        this.item,
+                        'shipper'
+                    );
+                }, 100);
             }
         }
     }
