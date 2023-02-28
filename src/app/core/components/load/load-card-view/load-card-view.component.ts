@@ -36,8 +36,6 @@ export class LoadCardViewComponent implements OnInit, OnChanges {
     }
     ngOnInit(): void {
         this.loadNote.patchValue(this.load?.note);
-        //console.log('*---load', this.load)
-
         let currentIndex = this.loadList.findIndex(
             (brokerId) => brokerId.id === this.load.id
         );

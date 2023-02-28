@@ -7,6 +7,7 @@
         [searchInputName]="'Search Shipper'"
         [dateChecked]="'5 days ago'"
         [options]="shipperDropdowns"
+        [currentName]="shipper.businessName"
         (selectValue)="onSelectedShipper($event)"
         (changeEvent)="onChangeShipper($event)"
     >

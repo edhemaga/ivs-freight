@@ -15,6 +15,7 @@
         [hasArrow]="hideArrow"
         [optionsDrop]="dropData"
         [haveDropSVG]="true"
+        [currentName]="driver.firstName + ' ' + driver.lastName"
         (dropActions)="onDriverActions($event)"
     >
         <div class="driver-container">

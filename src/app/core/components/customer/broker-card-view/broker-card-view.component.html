@@ -7,6 +7,7 @@
         [searchInputName]="'Search Broker'"
         [dateChecked]="'5 days ago'"
         [options]="brokerDropdowns"
+        [currentName]="broker.businessName"
         (selectValue)="onSelectBroker($event)"
         (changeEvent)="onChangeBroker($event)"
     >

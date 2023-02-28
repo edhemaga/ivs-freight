@@ -9,6 +9,7 @@
         [tooltipPrevious]="truckIndex == 0 ? '' : 'Previous Truck'"
         [searchInputName]="'Search Truck'"
         [options]="truckDropDowns"
+        [currentName]="truck?.truckNumber"
         [sortOptions]="'active-drivers'"
         (selectValue)="onSelectedTruck($event)"
         (changeEvent)="onChangeTruck($event)"
