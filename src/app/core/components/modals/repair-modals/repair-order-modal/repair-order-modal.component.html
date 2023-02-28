@@ -116,16 +116,21 @@
                             *ngIf="selectedRepairShop?.phone"
                             class="selected-item-info"
                         >
-                            <svg-icon
+                            <svg-icon 
+                                
+                                [class.hideSvgOnCopy]="hideIconIndex == 1"
                                 src="assets/svg/common/ic_phone.svg"
                             ></svg-icon>
 
                             <app-ta-copy
+                                (mouseover)="hideIconIndex = 1"
+                                (mouseleave)="hideIconIndex = 0"
                                 [copyValue]="
                                     selectedRepairShop?.phone | formatPhoneP
                                 "
                                 [textColor]="'#424242'"
                                 [textFontSize]="'11px'"
+                                [leftSideIcon]="true"
                             ></app-ta-copy>
                         </div>
 
@@ -134,13 +139,18 @@
                             class="selected-item-info"
                         >
                             <svg-icon
+                                
+                                [class.hideSvgOnCopy]="hideIconIndex == 2"
                                 src="assets/svg/common/ic_email.svg"
                             ></svg-icon>
 
                             <app-ta-copy
+                                (mouseover)="hideIconIndex = 2"
+                                (mouseleave)="hideIconIndex = 0"
                                 [copyValue]="selectedRepairShop?.email"
                                 [textColor]="'#424242'"
                                 [textFontSize]="'11px'"
+                                [leftSideIcon]="true"
                             ></app-ta-copy>
                         </div>
 
@@ -149,14 +159,19 @@
                             class="selected-item-info"
                         >
                             <svg-icon
+                                [class.hideSvgOnCopy]="hideIconIndex == 3"
+                                
                                 [ngStyle]="{ 'padding-bottom': '4px' }"
                                 src="assets/svg/common/ic_address.svg"
                             ></svg-icon>
 
                             <app-ta-copy
+                                (mouseover)="hideIconIndex = 3"
+                                (mouseleave)="hideIconIndex = 0"
                                 [copyValue]="selectedRepairShop?.address"
                                 [textColor]="'#424242'"
                                 [textFontSize]="'11px'"
+                                [leftSideIcon]="true"
                             ></app-ta-copy>
                         </div>
                     </div>

@@ -33,6 +33,10 @@
         &:hover {
             color: #3c3c3c;
         }
+
+        &.leftIconOrder{
+            order: 2;
+        }
     }
     .card-icon-copy {
         display: none;
@@ -50,6 +54,11 @@
     &:hover {
         .card-icon-copy {
             display: flex;
+
+            &.extraPadding{
+                margin-right: 4px;
+            }
+
         }
     }
 }
@@ -79,6 +88,10 @@
 .app-icon-copy {
     display: flex;
     align-items: center;
+    
+    &.leftIconOrder{
+        order: 1;
+    }
 }
 .hidden-svg-eyes {
     svg {
