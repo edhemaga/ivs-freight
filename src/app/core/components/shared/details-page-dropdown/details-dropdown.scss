@@ -87,7 +87,7 @@
 .dropdown-main-popover-body {
     position: relative;
     top: -4px;
-    //left: -4px;
+    left: -4px;
     background-color: transparent;
     transition: transform 0.1s ease;
     animation: scaleItem 0.3s;
@@ -498,5 +498,17 @@
 .bs-popover-left {
     .dropdown-main-popover-body {
         //margin-right: 4px;
+    }
+}
+
+.bs-popover-bottom-end{
+    .dropdown-main-popover-body{
+        left: 4px;
+    }
+}
+
+.bs-popover-start{
+    .dropdown-main-popover-body{
+        left: 4px;
     }
 }
