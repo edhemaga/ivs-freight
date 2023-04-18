@@ -255,6 +255,17 @@
 
             .legend-description-text {
                 font-weight: 600;
+
+                div {
+                    &::-moz-selection {
+                        color: #2f2f2f;
+                        background: #2f2f2f33;
+                    }
+                    &::selection {
+                        color: #2f2f2f;
+                        background: #2f2f2f33;
+                    }
+                }
             }
         }
     }
@@ -292,6 +303,7 @@
     display: flex;
     align-items: center;
     height: 36px;
+    user-select: none;
 }
 
 .legend-arrow {
