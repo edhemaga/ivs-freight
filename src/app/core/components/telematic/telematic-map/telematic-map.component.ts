@@ -417,12 +417,6 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
                     ...gpsData.data,
                 ];
 
-                var devicesArr = this.gpsUnassignedData.map((device) => {
-                    return { id: device.deviceId, name: device.deviceId };
-                });
-
-                //this.gpsDevicesList = [...this.gpsDevicesList, ...devicesArr];
-
                 this.initDeviceFields();
                 this.filterAssignedDevices();
                 this.getTrucks();
@@ -480,7 +474,8 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
                 ];
                 this.gpsDevicesList = [...this.gpsDevicesList, ...truckArr];
 
-                this.hasTrailerDevices = this.trailerDevicesList.length > 0 ? true : false;
+                this.hasTrailerDevices =
+                    this.trailerDevicesList.length > 0 ? true : false;
 
                 this.filterUnassignedDevices();
             });
@@ -503,7 +498,8 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
                         ? 'SHORT_STOP'
                         : deviceData.motionStatus === 3
                         ? 'EXTENDED_STOP'
-                        : deviceData.motionStatus === 4 || deviceData.motionStatus === 5 // 5 == offline
+                        : deviceData.motionStatus === 4 ||
+                          deviceData.motionStatus === 5 // 5 == offline
                         ? 'PARKING'
                         : deviceData.motionStatus;
 
@@ -771,6 +767,7 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
             this.selectedTrailerUnit = {};
             this.searchForm.get('trailerUnit').patchValue(null);
         }
+        item.addTruckShown = false;
     }
 
     getTrucks() {
@@ -783,7 +780,9 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
                 var allTrucks = [];
                 trucks.pagination.data.map((truck) => {
                     let assignedTruck = this.gpsAssignedData.find(
-                        (gpsData) => (truck.truckNumber === gpsData.truckNumber) && gpsData.unitType != 2
+                        (gpsData) =>
+                            truck.truckNumber === gpsData.truckNumber &&
+                            gpsData.unitType != 2
                     );
 
                     if (!assignedTruck) {
@@ -822,7 +821,8 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
                 trailers.pagination.data.map((trailer) => {
                     let assignedTruck = this.gpsAssignedData.find(
                         (gpsData) =>
-                            (trailer.trailerNumber === gpsData.trailerNumber) && gpsData.unitType == 2
+                            trailer.trailerNumber === gpsData.trailerNumber &&
+                            gpsData.unitType == 2
                     );
 
                     if (!assignedTruck) {
@@ -912,15 +912,23 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
 
             this.selectedDeviceUnit = event;
 
-            if ( this.selectedDeviceUnit && truck ) this.assignDeviceToTruck(this.selectedDeviceUnit.name, truck.id);
+            if (this.selectedDeviceUnit && truck)
+                this.assignDeviceToTruck(
+                    this.selectedDeviceUnit.name,
+                    truck.id
+                );
         } else {
             let trailer = this.allTrailerUnits.find(
                 (trailer) => trailer.name === location.trailerNumber
             );
-            
+
             this.selectedTrailerUnit = event;
 
-            if ( this.selectedTrailerUnit && trailer ) this.assignDeviceToTrailer(this.selectedTrailerUnit.name, trailer.id);
+            if (this.selectedTrailerUnit && trailer)
+                this.assignDeviceToTrailer(
+                    this.selectedTrailerUnit.name,
+                    trailer.id
+                );
         }
     }
 
@@ -1285,11 +1293,14 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
             }
         });
 
-        const shownDevicesCount = this.filteredAssignedDevices.filter((device) => !device.hidden).length;
-        const column = this.columns.find(
-            (col) => col.name == 'hidden'
-        );
-        column.iconUrl = shownDevicesCount == 0 ? column.activeValueIconUrl : column.inactiveValueIconUrl;
+        const shownDevicesCount = this.filteredAssignedDevices.filter(
+            (device) => !device.hidden
+        ).length;
+        const column = this.columns.find((col) => col.name == 'hidden');
+        column.iconUrl =
+            shownDevicesCount == 0
+                ? column.activeValueIconUrl
+                : column.inactiveValueIconUrl;
     }
 
     markerZoom(e, item) {
@@ -1416,7 +1427,9 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
     }
 
     showHideAllDevices() {
-        const shownDevicesCount = this.filteredAssignedDevices.filter((device) => !device.hidden).length;
+        const shownDevicesCount = this.filteredAssignedDevices.filter(
+            (device) => !device.hidden
+        ).length;
         const hideDevices = shownDevicesCount > 0 ? true : false;
 
         this.filteredAssignedDevices.map((item) => {
@@ -1425,18 +1438,18 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
             let item2 = this.gpsAssignedData.find(
                 (gpsData) => item.deviceId == gpsData.deviceId
             );
-            if ( item2 ) item2.hidden = hideDevices;
+            if (item2) item2.hidden = hideDevices;
 
             let item3 = this.driverLocations.find(
                 (data) => item.deviceId == data.deviceId
             );
-            if ( item3 ) item3.hidden = hideDevices;
+            if (item3) item3.hidden = hideDevices;
         });
 
-        const column = this.columns.find(
-            (col) => col.name == 'hidden'
-        );
-        column.iconUrl = hideDevices ? column.activeValueIconUrl : column.inactiveValueIconUrl;
+        const column = this.columns.find((col) => col.name == 'hidden');
+        column.iconUrl = hideDevices
+            ? column.activeValueIconUrl
+            : column.inactiveValueIconUrl;
     }
 
     ngOnDestroy(): void {
