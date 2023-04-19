@@ -10,8 +10,14 @@
     *ngIf="!unSupporetedType"
     [class.required]="isRequired && showRequired && !textChangeOverModal"
     [class.dropzone_focused]="dropzoneFocus && windowDragOver"
-    [class.expand]="dropZoneConfig.globalDropZone || (customClassName == 'company-documents' && windowDragOver)"
-    [class.over_modal]="textChangeOverModal || (customClassName == 'company-documents' && windowDragOver)"
+    [class.expand]="
+        dropZoneConfig.globalDropZone ||
+        (customClassName == 'company-documents' && windowDragOver)
+    "
+    [class.over_modal]="
+        textChangeOverModal ||
+        (customClassName == 'company-documents' && windowDragOver)
+    "
 >
     <svg-icon
         *ngIf="dropzoneClose && dropzoneFocus && !windowDragOver"
@@ -39,8 +45,11 @@
                 [ngClass]="{
                     'ta-upload-dropzone-text-big': dropZoneConfig.globalDropZone
                 }"
-            >
-                DRAG FILES HERE
+                >{{
+                    filesLength > 1 && size == 'medium'
+                        ? 'DRAG FILES'
+                        : 'DRAG FILES HERE'
+                }}
                 <span
                     class="required"
                     *ngIf="isRequired && !textChangeOverModal"

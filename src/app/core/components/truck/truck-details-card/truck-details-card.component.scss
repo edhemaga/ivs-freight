@@ -86,7 +86,7 @@ app-truck-details-card {
                     background: rgb(108, 108, 108, 0.2);
                 }
 
-                span {
+                span, div {
                     &::-moz-selection {
                         color: $bw6-2;
                         background: rgb(108, 108, 108, 0.2);
