@@ -80,6 +80,15 @@ export class MapListCardComponent implements OnInit, OnDestroy {
                 this.sortCategory = category;
             });
 
+        this.mapsService.markerUpdateChange
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((item) => {
+                if ( item.id == this.item.id ) {
+                    this.item = item;
+                    this.getDropdownActions();
+                }
+            });
+
         if (this.mapsService.selectedMarkerId) {
             this.isSelected = this.mapsService.selectedMarkerId == this.item.id;
             this.item.isSelected =

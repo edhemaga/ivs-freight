@@ -42,6 +42,7 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { DropDownService } from '../../../services/details-page/drop-down.service';
+import { DetailsDataService } from '../../../services/details-data/details-data.service';
 
 @Component({
     selector: 'app-maps',
@@ -196,7 +197,8 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
         private confirmationService: ConfirmationService,
         private companyOfficeService: CompanyTOfficeService,
         private tableService: TruckassistTableService,
-        private dropdownService: DropDownService
+        private dropdownService: DropDownService,
+        private detailsDataService: DetailsDataService
     ) {}
 
     ngOnInit(): void {
@@ -292,7 +294,19 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
 
         this.mapsService.mapRatingChange
             .pipe(takeUntil(this.destroy$))
-            .subscribe(() => {
+            .subscribe((res) => {
+                let markerIndex = this.viewData.findIndex(
+                    (item) => item.id === res.entityId
+                );
+
+                if (this.mapType == 'repairShop') {
+                    this.getRepairShop(res.entityId, markerIndex);
+                } else if (this.mapType == 'shipper') {
+                    this.getShipper(res.entityId, markerIndex);
+                } else if (this.mapType == 'fuelStop') {
+                    this.getFuelStop(res.entityId, markerIndex);
+                }
+
                 this.getClusters(true, true);
             });
 
@@ -331,15 +345,10 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
         this.tableService.currentActionAnimation
             .pipe(takeUntil(this.destroy$))
             .subscribe((res: any) => {
-                console.log('currentActionAnimation maps', res);
                 if (res.animation == 'update') {
-                    console.log('newData update', res.data);
                     let markerIndex = this.viewData.findIndex(
                         (item) => item.id === res.data.id
                     );
-                    console.log('newData markerIndex', markerIndex);
-                    console.log('newData clusterDetailedInfo', this.clusterDetailedInfo);
-                    //if (markerIndex < 0 && !this.clusterDetailedInfo) return false;
     
                     if (this.mapType == 'repairShop') {
                         this.getRepairShop(res.data.id, markerIndex);
@@ -348,12 +357,15 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
                     } else if (this.mapType == 'fuelStop') {
                         this.getFuelStop(res.data.id, markerIndex);
                     }
+
+                    this.mapListPagination.pageIndex = 1;
                     this.getClusters(true, true);
                 } else if (
                     res.animation == 'add' ||
                     res.animation == 'delete'
                 ) {
                     setTimeout(() => {
+                        this.mapListPagination.pageIndex = 1;
                         this.getClusters(true, true);
                     }, 1000);
                 }
@@ -590,6 +602,9 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
 
         if (action.type == 'view-details') {
             this.mapsService.goToDetails(action.data, this.mapType);
+        } else if ( action.type == 'raiting' ) {
+            this.detailsDataService.setNewData(action.data);
+            this.callDropDownAction.emit(action);
         } else {
             if (this.mapType == 'repairShop') {
                 if (action.type == 'write-review') {
@@ -597,14 +612,12 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
                     action.openedTab = 'Review';
                 }
 
-                console.log('---here---', action);
                 this.dropdownService.dropActionsHeaderRepair(
                     action,
                     action.data,
                     action.id
                 );
             } else if (this.mapType == 'shipper') {
-                console.log('---here---', action);
                 let eventType = '';
                 if (
                     action.type == 'Contact' ||
@@ -1390,6 +1403,8 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
                         };
                     }
 
+                    this.mapsService.markerUpdate(newData);
+
                     if (
                         this.clusterDetailedInfo &&
                         this.clusterDetailedInfo.id == id
@@ -1433,7 +1448,6 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (res: any) => {
-                    console.log('getShipper', res);
                     var newData = { ...res };
                     newData.raiting = {
                         hasLiked: res.currentCompanyUserRating === 1,
@@ -1448,6 +1462,8 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
                             ...newData,
                         };
                     }
+
+                    this.mapsService.markerUpdate(newData);
 
                     if (
                         this.clusterDetailedInfo &&
@@ -1500,6 +1516,8 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
                             ...newData,
                         };
                     }
+
+                    this.mapsService.markerUpdate(newData);
 
                     if (
                         this.clusterDetailedInfo &&
@@ -1685,7 +1703,6 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (res: Confirmation | any) => {
-                    console.log('confirmationData', res);
                     switch (res.type) {
                         case 'delete': {
                             if (

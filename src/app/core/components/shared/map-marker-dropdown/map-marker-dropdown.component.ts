@@ -20,6 +20,7 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 import { DetailsDropdownComponent } from '../details-page-dropdown/details-dropdown';
 import { TaCounterComponent } from '../ta-counter/ta-counter.component';
 import { GpsProgressbarComponent } from '../gps-progressbar/gps-progressbar.component';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
     selector: 'app-map-marker-dropdown',
@@ -43,10 +44,12 @@ import { GpsProgressbarComponent } from '../gps-progressbar/gps-progressbar.comp
 
         // Pipes
         formatDatePipe,
-        TaThousandSeparatorPipe
+        TaThousandSeparatorPipe,
     ],
 })
 export class MapMarkerDropdownComponent implements OnInit {
+    private destroy$ = new Subject<void>();
+    
     @Input() title: string = '';
     @Input() item: any = {};
     @Input() type: string = '';
@@ -58,7 +61,7 @@ export class MapMarkerDropdownComponent implements OnInit {
     @Output() showClusterItemInfo: EventEmitter<any> = new EventEmitter();
     @Output() loadMoreData: EventEmitter<any> = new EventEmitter();
 
-    public dropdownActions: any = {};
+    public dropdownActions: any = [];
 
     public copiedPhone: boolean = false;
     public copiedEmail: boolean = false;
@@ -87,6 +90,15 @@ export class MapMarkerDropdownComponent implements OnInit {
 
     ngOnInit(): void {
         this.getDropdownActions();
+
+        this.mapsService.markerUpdateChange
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((item) => {
+                if ( item.id == this.item.id ) {
+                    this.item = item;
+                    this.getDropdownActions();
+                }
+            });
     }
 
     expandInfo() {
@@ -219,6 +231,9 @@ export class MapMarkerDropdownComponent implements OnInit {
     }
 
     getDropdownActions() {
-        this.dropdownActions = this.mapsService.getDropdownActions(this.item, this.type);
+        this.dropdownActions = this.mapsService.getDropdownActions(
+            this.item,
+            this.type
+        );
     }
 }
