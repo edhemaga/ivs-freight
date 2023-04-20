@@ -314,6 +314,29 @@ export class FilterComponent implements OnInit, AfterViewInit {
     @ViewChild('t2') t2: any;
     @ViewChild('mainFilter') mainFilter: any;
 
+    labelArray: any[] = [
+        {
+            id: 1,
+            name: 'Test test test',
+            color: '#ff0000'
+        },
+        {
+            id: 2,
+            name: 'Test asdadasd',
+            color: '#ff1234'
+        },
+        {
+            id: 3,
+            name: 'Test dddd eeee',
+            color: '#ff4442'
+        },
+        {
+            id: 4,
+            name: 'Test ttttt tttttt',
+            color: '#ff5858'
+        }
+    ]
+
     unselectedUser: any[] = [
         {
             name: 'Aleksandar Djordjevic',
@@ -2053,6 +2076,8 @@ export class FilterComponent implements OnInit, AfterViewInit {
             } else {
                 mainArray = this.usaStates;
             }
+        } else if ( this.type == 'labelFilter' ) {
+            mainArray = this.labelArray;
         }
 
         mainArray[indx].isSelected = true;
@@ -2187,6 +2212,13 @@ export class FilterComponent implements OnInit, AfterViewInit {
                     }
                 });
             }
+        }
+        else if ( this.type == 'labelFilter' ) {
+            this.labelArray.map((item) => {
+                if (item.id == id) {
+                    item.isSelected = false;
+                }
+            });
         }
         this.checkFilterActiveValue();
     }

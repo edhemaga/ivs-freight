@@ -188,7 +188,7 @@ export class ShopRepairDetailsComponent implements OnInit, OnDestroy {
                 },
                 {
                     title: 'Add Bill',
-                    name: 'add-bill',
+                    name: 'Repair',
                     svg: 'assets/svg/common/ic_plus.svg',
                     show: true,
                     blueIcon: true,

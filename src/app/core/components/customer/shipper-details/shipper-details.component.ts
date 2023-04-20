@@ -31,6 +31,8 @@ export class ShipperDetailsComponent implements OnInit, OnDestroy {
     public currentIndex: number = 0;
     public shipperList: any = this.shipperMinimalQuery.getAll();
     public newShipperId: any = 0;
+    public shipperConfigData: any;
+    public businessOpen: boolean;
     constructor(
         private activated_route: ActivatedRoute,
         private router: Router,
@@ -69,11 +71,17 @@ export class ShipperDetailsComponent implements OnInit, OnDestroy {
                     switch (res.type) {
                         case 'delete': {
                             if (res.template === 'shipper') {
-                                this.deleteShipperById(res.id);
+                                this.deleteShipperById(res?.id);
                             }
                             break;
                         }
-
+                        case 'deactivate': 
+                            case 'activate': {
+                            if (res.template === 'Shipper') {
+                                this.changeShipperStatus(res?.id)
+                            }
+                            break;
+                        }
                         default: {
                             break;
                         }
@@ -127,10 +135,19 @@ export class ShipperDetailsComponent implements OnInit, OnDestroy {
       }
 
     public shipperConf(data: any) {
+        this.shipperConfigData = data;
         this.DetailsDataService.setNewData(data);
         this.currentIndex = this.shipperList.findIndex(
             (shipper) => shipper.id === data.id
         );
+
+        if (data?.status){
+            this.businessOpen = true;
+        }else {
+            this.businessOpen = false; 
+        }
+
+        // calling api every time
         //this.getShipperById(data.id);
         this.shipperConfig = [
             {
@@ -202,7 +219,7 @@ export class ShipperDetailsComponent implements OnInit, OnDestroy {
         this.shipperId = data?.id ? data.id : null;
 
     }
-    public deleteShipperById(id: number) {
+    public deleteShipperById(id: any) {
         let last = this.shipperList.at(-1);
         if (
             last.id ===
@@ -238,7 +255,6 @@ export class ShipperDetailsComponent implements OnInit, OnDestroy {
     }
     public onDropActions(event: any) {
         this.getShipperById(event.id);
-
         let eventType = '';
         if ( event.type == 'Contact' || event.type == 'edit' || event.type == 'Review'){
             eventType = 'edit'
@@ -252,10 +268,12 @@ export class ShipperDetailsComponent implements OnInit, OnDestroy {
             type: eventType,
             openedTab: event.type,
         }
+
+        let shipperData = this.shipperObject ? this.shipperObject : this.shipperConfigData;
         setTimeout(() => {
             this.dropDownService.dropActionsHeaderShipperBroker(
                 eventObject,
-                this.shipperObject,
+                shipperData,
                 'shipper'
             );
         }, 100);
@@ -369,6 +387,12 @@ export class ShipperDetailsComponent implements OnInit, OnDestroy {
     public identity(index: number, item: any): number {
         return item.id;
     }
+
+    public changeShipperStatus(id: any){
+        this.shipperService.changeShipperStatus(id);
+    
+    }
+
     ngOnDestroy(): void {
         this.destroy$.next();
         this.destroy$.complete();

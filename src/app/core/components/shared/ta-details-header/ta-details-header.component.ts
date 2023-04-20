@@ -54,8 +54,8 @@ export class TaCommonHeaderComponent implements OnInit {
     @Input() counterViolation: number;
     @Input() hasArrowDown: boolean;
     @Input() totalCost: any;
-    @Input() repairIsOpen: boolean;
-    @Input() showRepairHeaderOpen: boolean;
+    @Input() businessOpen: boolean;
+    @Input() showClosedBadge: boolean;
     @Input() loadNames: boolean;
     @Input() secondNameHeader: string = '';
     @Input() countViolation: number;
@@ -124,6 +124,12 @@ export class TaCommonHeaderComponent implements OnInit {
                 diasbleClosedArray = [0, 2, 3, 4, 5, 6];
             } else if (itemData.dnu || itemData.ban) {
                 diasbleClosedArray = [2];
+            }
+        }
+
+        if (this.mainData?.nameDefault == 'Shipper Detail') {
+            if (itemData.status != 1) {
+                diasbleClosedArray = [0, 2, 3];
             }
         }
 
@@ -198,8 +204,56 @@ export class TaCommonHeaderComponent implements OnInit {
                             action.name = 'move-to-dnu';
                         }
                     }
+
+                    if (index == 11) {
+                        if (itemData.status != 1) {
+                            action.title = 'Reopen Business';
+                            action.greenIcon = true;
+                            action.redIcon = false;
+                            action.name = 'open-business';
+                            action.iconName = 'mark-as-done';
+                        } else {
+                            action.title = 'Close Business';
+                            action.greenIcon = false;
+                            action.redIcon = true;
+                            action.name = 'close-business';
+                            action.iconName = 'close-business';
+                        }
+                    }
                 });
 
+                break;
+            
+            case 'Shipper Detail': 
+                    this.options?.actions.map((action, index) => {
+
+                        if (
+                            diasbleClosedArray &&
+                            diasbleClosedArray.indexOf(index) > -1
+                        ) {
+                            action.disabled = true;
+                        } else {
+                            action.disabled = false;
+                        }
+
+                        if (index == 8) {
+                            if (itemData.status != 1) {
+                                action.title = 'Reopen Business';
+                                action.greenIcon = true;
+                                action.redIcon = false;
+                                action.name = 'open-business';
+                                action.iconName = 'mark-as-done';
+                            } else {
+                                action.title = 'Close Business';
+                                action.greenIcon = false;
+                                action.redIcon = true;
+                                action.name = 'close-business';
+                                action.iconName = 'close-business';
+                            }
+                        }
+                        
+
+                    })
                 break;
         }
     }

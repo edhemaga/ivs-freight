@@ -31,6 +31,8 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
     public currentIndex: number = 0;
     public brokerList: any = this.brokerMimialQuery.getAll();
     public newBrokerId: any = 0;
+    public brokerConfData: any;
+    public businessOpen: boolean;
     constructor(
         private activated_route: ActivatedRoute,
         private router: Router,
@@ -67,6 +69,7 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (res: Confirmation) => {
+                    console.log('---res---', res);
                     switch (res.type) {
                         case 'delete': {
                             if (res.template === 'broker') {
@@ -89,6 +92,11 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
                             }
                             break;
                         }
+                        case 'activate':
+                            case 'deactivate': {
+                                this.changeBrokerStatus(res?.id);
+                                break;
+                            }
                         default: {
                             break;
                         }
@@ -172,6 +180,7 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
     }
 
     public brokerInitConfig(data: any) {
+        this.brokerConfData = data;
         this.currentIndex = this.brokerList.findIndex(
             (broker) => broker.id === data.id
         );
@@ -179,6 +188,12 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
         //calling api every time data is loaded
         //this.getBrokerById(data.id);
        
+        if (data?.status){
+            this.businessOpen = true;
+        }else {
+            this.businessOpen = false; 
+        }    
+
         let totalCost;
         this.DetailsDataService.setNewData(data);
         if (data?.loads?.length) {
@@ -191,8 +206,6 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
                 })
             );
         }
-
-        console.log('--data---', data.loadStops.loads.data.length)
 
         this.brokerConfig = [
             {
@@ -449,9 +462,11 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
             openedTab: event.type,
         }
 
+        let brokerData = this.brokerObject ? this.brokerObject : this.brokerConfData;
+
         this.dropDownService.dropActionsHeaderShipperBroker(
             eventObject,
-            this.brokerObject,
+            brokerData,
             'broker'
         );
     }
@@ -466,6 +481,7 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
             type: 'edit',
             openedTab: event,
         }
+
         setTimeout(() => {
             this.dropDownService.dropActionsHeaderShipperBroker(
                 eventObject,
@@ -479,6 +495,11 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
     public identity(index: number, item: any): number {
         return item.id;
     }
+
+    public changeBrokerStatus(id: any){
+        this.brokerService.changeBrokerStatus(id);
+    }
+
     ngOnDestroy(): void {
         this.destroy$.next();
         this.destroy$.complete();
