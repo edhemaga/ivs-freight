@@ -417,6 +417,8 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
                     ...gpsData.data,
                 ];
 
+                this.tableData[0].length = this.driverLocations.length;
+
                 this.initDeviceFields();
                 this.filterAssignedDevices();
                 this.getTrucks();
@@ -451,6 +453,8 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
                     ...this.driverLocations,
                     ...gpsData.data,
                 ];
+
+                this.tableData[0].length = this.driverLocations.length;
 
                 var devicesArr = this.gpsUnassignedData.map((device) => {
                     return {
@@ -509,6 +513,7 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
 
                 if (driverIndex == -1) {
                     this.driverLocations.push(deviceData);
+                    this.tableData[0].length = this.driverLocations.length;
                 } else {
                     this.driverLocations[driverIndex] = deviceData;
                 }
@@ -1173,6 +1178,8 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
                         this.driverLocations[driverIndex].motionStatus =
                             previousMotionStatus;
                 }
+                
+                this.tableData[0].length = this.driverLocations.length;
 
                 let gpsAssignedIndex = this.gpsAssignedData.findIndex(
                     (device) => device.deviceId === data.deviceId
