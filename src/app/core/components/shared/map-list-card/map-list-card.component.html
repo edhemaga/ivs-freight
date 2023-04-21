@@ -8,9 +8,9 @@
         <div class="title-container">
             <div
                 class="marker-info-text marker-bold-text uppercase text-ellipsis"
-                [ngClass]="{ 'permanently-closed-text': status == 2 }"
+                [ngClass]="{ 'permanently-closed-text': status == 0 || item.isClosed }"
             >
-                <span *ngIf="status == 2">
+                <span *ngIf="status == 0 || item.isClosed">
                     <svg-icon
                         class="permanently-closed-svg"
                         src="assets/svg/common/ic_permanently_closed.svg"
@@ -41,11 +41,13 @@
                     (click)="showMoreOptions()"
                 >
                     <app-details-page-dropdown
+                        #detailsDropdown
                         [options]="dropdownActions"
                         [placement]="'right-top'"
                         [hasVericalDots]="true"
                         [id]="item?.id"
                         [data]="item"
+                        [leftIcon]="true"
                         [customClassDropDown]="'map-list-card-dropdown'"
                         (dropDownActions)="callBodyAction($event)"
                     ></app-details-page-dropdown>
