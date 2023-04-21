@@ -142,6 +142,11 @@ export class ShopRepairDetailsItemComponent implements OnInit, OnChanges {
     }
 
     public optionsEvent(eventData: any, action: string) {
+
+        if ( eventData.type == 'finish order' ) {
+            this.finishOrder(eventData.id, eventData.data, undefined, 'bill');
+        }
+
         const name = dropActionNameDriver(eventData, action);
         setTimeout(() => {
             this.dropDownService.dropActions(
@@ -161,10 +166,13 @@ export class ShopRepairDetailsItemComponent implements OnInit, OnChanges {
         }, 100);
     }
 
-    public finishOrder(repairId: number, data: any, event?: any) {
-        event.stopPropagation();
-        event.preventDefault();
-        console.log('repair order: ', data);
+    public finishOrder(repairId: number, data: any, event?: any, subType?: any) {
+        
+        if ( event ) {
+            event.stopPropagation();
+            event.preventDefault();
+        }
+        
         this.modalService.openModal(
             RepairOrderModalComponent,
             { size: 'small' },
@@ -174,6 +182,7 @@ export class ShopRepairDetailsItemComponent implements OnInit, OnChanges {
                 file_id: repairId,
                 type: 'edit',
                 modal: 'repair',
+                subTypeOpened: subType ? subType : '',
             }
         );
     }
