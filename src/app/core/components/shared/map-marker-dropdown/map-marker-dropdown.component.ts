@@ -6,6 +6,7 @@ import {
     EventEmitter,
     ChangeDetectorRef,
     ChangeDetectionStrategy,
+    ViewChild,
 } from '@angular/core';
 import { card_component_animation } from '../../shared/animations/card-component.animations';
 import { DetailsDataService } from 'src/app/core/services/details-data/details-data.service';
@@ -60,6 +61,7 @@ export class MapMarkerDropdownComponent implements OnInit {
     @Output() bodyActions: EventEmitter<any> = new EventEmitter();
     @Output() showClusterItemInfo: EventEmitter<any> = new EventEmitter();
     @Output() loadMoreData: EventEmitter<any> = new EventEmitter();
+    @ViewChild("detailsDropdown") detailsDropdown: any;
 
     public dropdownActions: any = [];
 
@@ -97,6 +99,24 @@ export class MapMarkerDropdownComponent implements OnInit {
                 if ( item.id == this.item.id ) {
                     this.item = item;
                     this.getDropdownActions();
+                }
+            });
+
+        this.mapsService.selectedMarkerChange
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((id) => {
+                if ( id != this.item.id && this.detailsDropdown?.tooltip ) {
+                    this.detailsDropdown.dropDownActive = -1;
+                    this.detailsDropdown.tooltip.close();
+                }
+            });
+
+        this.mapsService.selectedMapListCardChange
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((id) => {
+                if ( id != this.item.id && this.detailsDropdown?.tooltip ) {
+                    this.detailsDropdown.dropDownActive = -1;
+                    this.detailsDropdown.tooltip.close();
                 }
             });
     }

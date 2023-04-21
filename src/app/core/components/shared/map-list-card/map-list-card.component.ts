@@ -7,6 +7,7 @@ import {
     OnDestroy,
     ChangeDetectorRef,
     ElementRef,
+    ViewChild,
 } from '@angular/core';
 import { MapsService } from '../../../services/shared/maps.service';
 import { Subject, takeUntil } from 'rxjs';
@@ -57,6 +58,7 @@ export class MapListCardComponent implements OnInit, OnDestroy {
     @Input() type: string = '';
     @Output() clickedMarker: EventEmitter<any> = new EventEmitter<any>();
     @Output() bodyActions: EventEmitter<any> = new EventEmitter();
+    @ViewChild("detailsDropdown") detailsDropdown: any;
     public locationFilterOn: boolean = false;
     sortCategory: any = {};
     clickedOnDots: boolean = false;
@@ -94,6 +96,24 @@ export class MapListCardComponent implements OnInit, OnDestroy {
             this.item.isSelected =
                 this.mapsService.selectedMarkerId == this.item.id;
         }
+
+        this.mapsService.selectedMarkerChange
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((id) => {
+                if ( id != this.item.id && this.detailsDropdown?.tooltip ) {
+                    this.detailsDropdown.dropDownActive = -1;
+                    this.detailsDropdown.tooltip.close();
+                }
+            });
+
+        this.mapsService.selectedMapListCardChange
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((id) => {
+                if ( id != this.item.id && this.detailsDropdown?.tooltip ) {
+                    this.detailsDropdown.dropDownActive = -1;
+                    this.detailsDropdown.tooltip.close();
+                }
+            });
 
         this.getDropdownActions();
     }

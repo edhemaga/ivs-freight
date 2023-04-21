@@ -41,6 +41,7 @@
                     (click)="showMoreOptions()"
                 >
                     <app-details-page-dropdown
+                        #detailsDropdown
                         [options]="dropdownActions"
                         [placement]="'right-top'"
                         [hasVericalDots]="true"
