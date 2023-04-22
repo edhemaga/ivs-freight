@@ -44,7 +44,6 @@
                 [address]="latlong.address"
                 [rating]="latlong?.raiting"
                 [type]="'shipper'"
-                [dropdownActions]="tableOptions.actions"
                 (bodyActions)="onTableBodyActions($event)"
                 (clickedMarker)="selectItem($event)"
                 [ngStyle]="{
@@ -60,7 +59,6 @@
         <app-maps
             #mapsComponent
             [_viewData]="viewData"
-            [dropdownActions]="tableOptions.actions"
             [mapType]="'shipper'"
             (callDropDownAction)="onTableBodyActions($event)"
             (updateMapList)="updateMapList($event)"

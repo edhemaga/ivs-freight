@@ -786,10 +786,28 @@
 
 .red-text {
     color: #ef5350 !important;
+
+    &::-moz-selection {
+        color: #ef5350;
+        background: #ef535033;
+    }
+    &::selection {
+        color: #ef5350;
+        background: #ef535033;
+    }
 }
 
 .blue-text {
     color: #536bc2 !important;
+
+    &::-moz-selection {
+        color: #536bc2;
+        background: #536bc233;
+    }
+    &::selection {
+        color: #536bc2;
+        background: #536bc233;
+    }
 }
 
 .lowercase {

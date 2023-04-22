@@ -23,6 +23,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgZone } from '@angular/core';
 
 @Component({
     selector: 'app-details-page-dropdown',
@@ -97,7 +98,8 @@ export class DetailsDropdownComponent implements OnInit, OnChanges, OnDestroy {
 
     constructor(
         private DetailsDataService: DetailsDataService,
-        private chnd: ChangeDetectorRef
+        private chnd: ChangeDetectorRef,
+        private ngZone: NgZone
     ) {}
 
     ngOnChanges(changes: SimpleChanges): void {
@@ -113,18 +115,20 @@ export class DetailsDropdownComponent implements OnInit, OnChanges, OnDestroy {
     ngOnInit(): void {}
 
     toggleDropdown(tooltip: any) {
-        this.tooltip = tooltip;
-        if (tooltip.isOpen()) {
-            tooltip.close();
-        } else {
-            tooltip.open({ data: [...this.options] });
-            if (this.data) {
-                this.DetailsDataService.setNewData(this.data);
+        this.ngZone.run(() => {
+            this.tooltip = tooltip;
+            if (tooltip.isOpen()) {
+                tooltip.close();
+            } else {
+                tooltip.open({ data: [...this.options] });
+                if (this.data) {
+                    this.DetailsDataService.setNewData(this.data);
+                }
             }
-        }
 
-        this.dropDownActive = tooltip.isOpen() ? this.id : -1;
-        this.chnd.detectChanges();
+            this.dropDownActive = tooltip.isOpen() ? this.id : -1;
+            this.chnd.detectChanges();
+        });
     }
 
     /**Function retrun id */
