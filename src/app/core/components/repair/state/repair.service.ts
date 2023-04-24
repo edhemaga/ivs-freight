@@ -299,45 +299,45 @@ export class RepairTService implements OnDestroy {
                             this.shopStore.remove(({ id }) => id === data.id);
                             this.shopStore.add(shop);
 
-                            this.rDs.update((store) => {
-                                let ind;
-                                let minimalListIndex;
-                                let shopStored = JSON.parse(
-                                    JSON.stringify(store)
-                                );
+                            // this.rDs.update((store) => {
+                            //     let ind;
+                            //     let minimalListIndex;
+                            //     let shopStored = JSON.parse(
+                            //         JSON.stringify(store)
+                            //     );
 
-                                shopStored.repairShop.map(
-                                    (data: any, index: any) => {
-                                        if (data.id == shop.id) {
-                                            ind = index;
-                                        }
-                                    }
-                                );
+                            //     shopStored?.repairShop.map(
+                            //         (data: any, index: any) => {
+                            //             if (data.id == shop.id) {
+                            //                 ind = index;
+                            //             }
+                            //         }
+                            //     );
 
-                                shopStored.repairShopMinimal.pagination.data.map(
-                                    (data: any, index: any) => {
-                                        if (data.id == shop.id) {
-                                            minimalListIndex = index;
-                                            store.repairShopMinimal.pagination.data[
-                                                index
-                                            ]['name'] = shop.name;
-                                            store.repairShopMinimal.pagination.data[
-                                                index
-                                            ]['pinned'] = shop.pinned;
-                                            store.repairShopMinimal.pagination.data[
-                                                index
-                                            ]['status'] = shop.status;
-                                        }
-                                    }
-                                );
+                            //     shopStored?.repairShopMinimal?.pagination?.data.map(
+                            //         (data: any, index: any) => {
+                            //             if (data.id == shop.id) {
+                            //                 minimalListIndex = index;
+                            //                 store.repairShopMinimal.pagination.data[
+                            //                     index
+                            //                 ]['name'] = shop.name;
+                            //                 store.repairShopMinimal.pagination.data[
+                            //                     index
+                            //                 ]['pinned'] = shop.pinned;
+                            //                 store.repairShopMinimal.pagination.data[
+                            //                     index
+                            //                 ]['status'] = shop.status;
+                            //             }
+                            //         }
+                            //     );
 
-                                shopStored.repairShop[ind] = shop;
+                            //     shopStored.repairShop[ind] = shop;
 
-                                return {
-                                    ...store,
-                                    repairShop: [...shopStored.repairShop],
-                                };
-                            });
+                            //     return {
+                            //         ...store,
+                            //         repairShop: [...shopStored.repairShop],
+                            //     };
+                            // });
 
                             this.tableService.sendActionAnimation({
                                 animation: 'update',

@@ -75,6 +75,7 @@ export class LoadTService {
     ): Observable<LoadMinimalListResponse> {
         return this.loadServices.apiLoadListMinimalGet(pageIndex, pageSize);
     }
+    
     // Get Load Template List
     public getLoadTemplateList(
         loadType?: number,
