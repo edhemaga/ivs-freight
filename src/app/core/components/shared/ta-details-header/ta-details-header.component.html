@@ -268,6 +268,15 @@
                     >
                        REQUEST
                     </div>
+                    <div
+                        (click)="makeRequestFun(headerText)"
+                        *ngIf="hasRequest"
+                        class="request-header-container icon-request-holder"
+                    >
+                       <svg-icon 
+                        [src]="'assets/svg/common/ic_documents.svg'">
+                        </svg-icon>
+                    </div>
                     <div class="border-line-left"></div>
                     <svg-icon
                         class="icon-plus-header"

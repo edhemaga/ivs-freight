@@ -286,6 +286,11 @@ svg {
     &:hover {
         background-color: #536bc2;
     }
+
+
+    &.icon-request-holder{
+        display: none;
+    }
 }
 .danger-svg {
     margin-left: 3px;
