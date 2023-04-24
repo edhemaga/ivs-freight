@@ -548,6 +548,15 @@ export const GOOGLE_MAP_STYLES = [
         ],
     },
     {
+        featureType: 'landscape',
+        elementType: 'labels',
+        stylers: [
+            {
+                visibility: 'off',
+            },
+        ],
+    },
+    {
         featureType: 'road',
         elementType: 'geometry',
         stylers: [

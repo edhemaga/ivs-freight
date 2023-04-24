@@ -16,10 +16,9 @@
         <ng-container>
             <div class="truck-details-wrapper">
                 <div class="details-header-avatar">
-                    <div class="svg-truck-wrapper">
+                    <div class="svg-truck-wrapper" [class.inactiveTruckLogo]="truck.status == 0">
                         <svg-icon
                             class="truck truck-color-code"
-                            [class.inactiveTruckLogo]="truck.status == 0"
                             [class.whiteTruck]="truck?.color?.code == '#F9F9F9'"
                             src="{{
                                 'assets/svg/common/trucks/' +

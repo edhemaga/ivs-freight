@@ -15,7 +15,7 @@
                 ></app-profile-images>
                 <div
                     class="marker-business-name text-ellipsis"
-                    (click)="goToDetails(item)"
+                    (click)="goToDetails()"
                     [ngClass]="{
                         'has-details-page':
                             type == 'shipper' || type == 'repairShop'
@@ -44,6 +44,7 @@
                 "
             >
                 <app-details-page-dropdown
+                    #detailsDropdown
                     [options]="dropdownActions"
                     [placement]="'right-top'"
                     [id]="item?.id"
@@ -175,13 +176,13 @@
         </div>
         <div
             class="marker-info-text marker-bold-text uppercase red-text mg-bottom-2 mg-top-4"
-            *ngIf="item.status == 2"
+            *ngIf="item.status == 0 || item.isClosed"
         >
             Permanently Closed
         </div>
         <div
             class="marker-distance-left"
-            [ngClass]="{ 'mg-top-4': item?.status == 2 }"
+            [ngClass]="{ 'mg-top-4': item?.status == 0 || item?.isClosed }"
             *ngIf="locationFilterOn && item?.distanceBetween"
         >
             <span class="marker-title">{{ item?.distanceBetween }} mi </span>
@@ -945,7 +946,7 @@
                 </div>
                 <div class="marker-dual-info-container mg-bottom-4">
                     <div class="marker-like-text marker-bold-text mg-bottom-4">
-                        {{ item?.status == 2 ? 'Perm. Closed' : 'Last Used' }}
+                        {{ item?.status == 0 || item?.isClosed ? 'Perm. Closed' : 'Last Used' }}
                     </div>
                     <div class="marker-info-text">
                         {{
