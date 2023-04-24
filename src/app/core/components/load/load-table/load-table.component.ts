@@ -567,7 +567,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                       data?.dispatch?.driver?.lastName
                     : '',
             loadComment: {
-                count: data.commentsCount,
+                count: data?.commentsCount ? data.commentsCount : '',
                 comments: data.comments,
             },
             tableAttachments: data?.files ? data.files : [],

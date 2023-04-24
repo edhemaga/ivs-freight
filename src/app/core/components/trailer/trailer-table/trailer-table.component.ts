@@ -543,14 +543,16 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 hasBorder: true,
             },
             {
-                title: 'Deactivate',
+                title:
+                    this.selectedTab === 'active' ? 'Deactivate' : 'Activate',
                 name: 'activate-item',
                 svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Deactivate.svg',
                 svgStyle: {
                     width: 18,
                     height: 18,
                 },
-                svgClass: 'delete',
+                svgClass:
+                    this.selectedTab === 'active' ? 'deactivate' : 'activate',
                 tableListDropdownContentStyle: {
                     'margin-bottom.px': 4,
                 },
@@ -648,8 +650,8 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
             this.modalService.openModal(TrailerModalComponent, {
                 size: 'small',
             });
-        } 
-        // Select Tab 
+        }
+        // Select Tab
         else if (event.action === 'tab-selected') {
             this.selectedTab = event.tabData.field;
 
@@ -669,7 +671,7 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
             } else {
                 this.sendTrailerData();
             }
-        } 
+        }
         // View Mode
         else if (event.action === 'view-mode') {
             this.activeViewMode = event.mode;
