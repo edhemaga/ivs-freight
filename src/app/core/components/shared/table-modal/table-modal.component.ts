@@ -16,6 +16,7 @@ import { CommonModule } from '@angular/common';
 import { CustomScrollbarComponent } from '../custom-scrollbar/custom-scrollbar.component';
 import { AngularSignaturePadModule } from '@almothafar/angular-signature-pad';
 import { TaInputComponent } from '../ta-input/ta-input.component';
+import { TableModalInputConfigPipe } from 'src/app/core/pipes/tableModalInputConfig.pipe';
 
 @Component({
     selector: 'app-table-modal',
@@ -23,12 +24,16 @@ import { TaInputComponent } from '../ta-input/ta-input.component';
     styleUrls: ['./table-modal.component.scss'],
     standalone: true,
     imports: [
+        // Components
         CommonModule,
         ReactiveFormsModule,
         FormsModule,
         CustomScrollbarComponent,
         AngularSignaturePadModule,
-        TaInputComponent
+        TaInputComponent,
+
+        // Pipe
+        TableModalInputConfigPipe
     ],
 })
 export class TableModalComponent implements OnInit, OnChanges, OnDestroy {
