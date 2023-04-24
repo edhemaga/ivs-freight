@@ -7,6 +7,7 @@ p {
 .counter-text {
     display: flex;
     align-items: center;
+    padding: 0px 12px;
     
 }
 .has-counter-header {
@@ -17,7 +18,7 @@ p {
 
 .counter-holder-all{
     display: flex;
-    padding: 4px 0px 4px 4px;
+    //padding: 4px 0px 4px 4px;
     margin-right: 4px;
 
     &.brokerLoadDrop{
@@ -89,7 +90,7 @@ p {
         color: #919191;
         font-size: 14px;
         font-weight: 800;
-        padding-right: 12px;
+        padding-right: 4px;
         line-height: 17px;
     }
     .header-plus-button {
@@ -178,11 +179,11 @@ svg {
     cursor: pointer;
     svg {
         path {
-            fill: #6d82c7;
+            fill: #3074D3;
         }
     }
     &:hover {
-        background-color: #6d82c7;
+        background-color: #3074D3;
         border-radius: 2px;
         svg {
             path {
@@ -266,11 +267,11 @@ svg {
     width: 86px;
     height: 24px;
     color: #ffffff;
-    background-color: #6d82c7;
+    background-color: #3074D3;
     border-radius: 2px;
     font-size: 14px;
     font-weight: 800;
-    line-height: 15px;
+    line-height: 18px;
     display: flex;
     align-items: center;
     justify-content: center;

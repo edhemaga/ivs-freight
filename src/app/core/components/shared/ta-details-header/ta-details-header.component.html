@@ -91,6 +91,8 @@
                     triggers="manual"
                     [autoClose]="'outside'"
                 >
+                    <!-- old design for counter -->
+                    <!--
                     <app-ta-counter
                         *ngIf="
                             (!danger && counterData) ||
@@ -103,6 +105,7 @@
                         [count]="counterData"
                     >
                     </app-ta-counter>
+                    -->
                     <svg-icon
                         *ngIf="danger && counterData > 0"
                         class="danger-svg"
@@ -140,6 +143,23 @@
                             {{ secondNameHeader }}
                         </p>
                     </div>
+
+                    
+                    <app-ta-counter
+                        *ngIf="
+                            (!danger && counterData) ||
+                            (counterData == 0 && !hideCounter)
+                        "
+                        [countBackground]=" dropOpened ?  '#424242' : '#424242'"
+                        [countColor]="dropOpened ?  '#FFFFFF' : '#FFFFFF'"
+                        [countHeight]="'20px'"
+                        [countWidth]="'20px'"
+                        [count]="counterData"
+                        [customClass]="'circle_counter'"
+                    >
+                    </app-ta-counter>
+                    
+
                 </div>   
                 <div *ngIf="hasIcon" class="repair-header-icons">
                     <div class="border-line-left"></div>
@@ -246,7 +266,7 @@
                         *ngIf="hasRequest"
                         class="request-header-container"
                     >
-                        Request
+                       REQUEST
                     </div>
                     <div class="border-line-left"></div>
                     <svg-icon
