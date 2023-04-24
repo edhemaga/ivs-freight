@@ -23,6 +23,14 @@
         background: #dadada;
 
         border-radius: 0.5px;
+
+        &.title-divider {
+            margin-top: 8px;
+        }
+
+        &.gps-divider {
+            margin-top: 16px;
+        }
     }
 
     agm-map {

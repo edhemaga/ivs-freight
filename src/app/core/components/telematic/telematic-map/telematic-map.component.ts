@@ -403,6 +403,10 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
                             ? 'PARKING'
                             : data.motionStatus;
 
+                    if (data.coordinates) {
+                        data.coordinates = data.coordinates.replace('-', '');
+                    }
+
                     if (index > 0) {
                         this.calculateDistanceBetweenDevices(
                             gpsData.data[index - 1],
@@ -444,6 +448,10 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
                             : data.motionStatus === 4 || data.motionStatus === 5 // 5 == offline
                             ? 'PARKING'
                             : data.motionStatus;
+
+                    if (data.coordinates) {
+                        data.coordinates = data.coordinates.replace('-', '');
+                    }
 
                     if (index == 0) data.unitType = 2;
                 });
@@ -1178,7 +1186,7 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
                         this.driverLocations[driverIndex].motionStatus =
                             previousMotionStatus;
                 }
-                
+
                 this.tableData[0].length = this.driverLocations.length;
 
                 let gpsAssignedIndex = this.gpsAssignedData.findIndex(
@@ -1310,6 +1318,43 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
                 : column.inactiveValueIconUrl;
     }
 
+    showHideUnassignedDevice(event, device) {
+        event.preventDefault();
+        event.stopPropagation();
+
+        var showHide = !device.hidden;
+
+        if (showHide && device.deviceId == this.focusedDeviceId)
+            this.focusedDeviceId = 0;
+
+        this.driverLocations.map((item) => {
+            if (item.deviceId == device.deviceId) {
+                item.hidden = showHide;
+            }
+        });
+
+        this.gpsUnassignedData.map((item) => {
+            if (item.deviceId == device.deviceId) {
+                item.hidden = showHide;
+            }
+        });
+
+        this.filteredUnassignedDevices.map((item) => {
+            if (item.deviceId == device.deviceId) {
+                item.hidden = showHide;
+            }
+        });
+
+        const shownDevicesCount = this.filteredUnassignedDevices.filter(
+            (device) => !device.hidden
+        ).length;
+        const column = this.columns.find((col) => col.name == 'hidden');
+        column.iconUrl =
+            shownDevicesCount == 0
+                ? column.activeValueIconUrl
+                : column.inactiveValueIconUrl;
+    }
+
     markerZoom(e, item) {
         var currentTime = new Date().getTime();
 
@@ -1426,6 +1471,8 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
             secondAddress
         );
 
+        // moving - distance = 5km, stopped - distance = 50m
+
         if (distance < 50) {
             console.log('calculateDistanceBetweenDevices device1', device1);
             console.log('calculateDistanceBetweenDevices device2', device2);
@@ -1434,15 +1481,37 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
     }
 
     showHideAllDevices() {
-        const shownDevicesCount = this.filteredAssignedDevices.filter(
-            (device) => !device.hidden
-        ).length;
+        const shownDevicesCount =
+            this.filteredAssignedDevices.filter((device) => !device.hidden)
+                .length +
+            this.filteredUnassignedDevices.filter((device) => !device.hidden)
+                .length;
         const hideDevices = shownDevicesCount > 0 ? true : false;
 
         this.filteredAssignedDevices.map((item) => {
             item.hidden = hideDevices;
 
+            if (hideDevices && item.deviceId == this.focusedDeviceId)
+                this.focusedDeviceId = 0;
+
             let item2 = this.gpsAssignedData.find(
+                (gpsData) => item.deviceId == gpsData.deviceId
+            );
+            if (item2) item2.hidden = hideDevices;
+
+            let item3 = this.driverLocations.find(
+                (data) => item.deviceId == data.deviceId
+            );
+            if (item3) item3.hidden = hideDevices;
+        });
+
+        this.filteredUnassignedDevices.map((item) => {
+            item.hidden = hideDevices;
+
+            if (hideDevices && item.deviceId == this.focusedDeviceId)
+                this.focusedDeviceId = 0;
+
+            let item2 = this.gpsUnassignedData.find(
                 (gpsData) => item.deviceId == gpsData.deviceId
             );
             if (item2) item2.hidden = hideDevices;
@@ -1457,6 +1526,12 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
         column.iconUrl = hideDevices
             ? column.activeValueIconUrl
             : column.inactiveValueIconUrl;
+    }
+
+    assignUnitFromMarker(item) {
+        console.log('assignUnitFromMarker item', item);
+        this.showHideUnassigned(true);
+        this.showTruckDropdown(item);
     }
 
     ngOnDestroy(): void {

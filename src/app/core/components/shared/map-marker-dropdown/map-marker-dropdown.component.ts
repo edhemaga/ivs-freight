@@ -58,6 +58,7 @@ export class MapMarkerDropdownComponent implements OnInit {
     @Output() bodyActions: EventEmitter<any> = new EventEmitter();
     @Output() showClusterItemInfo: EventEmitter<any> = new EventEmitter();
     @Output() loadMoreData: EventEmitter<any> = new EventEmitter();
+    @Output() assignUnitToDevice: EventEmitter<any> = new EventEmitter();
 
     public copiedPhone: boolean = false;
     public copiedEmail: boolean = false;
@@ -241,5 +242,9 @@ export class MapMarkerDropdownComponent implements OnInit {
 
             this.router.navigate([link]);
         }
+    }
+
+    assignUnit() {
+        this.assignUnitToDevice.emit(this.item);
     }
 }
