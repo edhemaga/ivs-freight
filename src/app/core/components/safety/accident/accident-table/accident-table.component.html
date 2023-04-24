@@ -54,7 +54,6 @@
                 down: latlong?.downRatingCount
             }"
             [type]="'accident'"
-            [dropdownActions]="tableOptions.actions"
             (bodyActions)="onTableBodyActions($event)"
             (clickedMarker)="selectItem(latlong.id)"
             [ngStyle]="{
@@ -69,7 +68,6 @@
     <app-maps
         #mapsComponent
         [_viewData]="viewData"
-        [dropdownActions]="tableOptions.actions"
         [mapType]="'accident'"
         (callDropDownAction)="onTableBodyActions($event)"
     ></app-maps>

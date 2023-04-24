@@ -41,6 +41,8 @@ import { GooglePlaceModule } from 'ngx-google-places-autocomplete';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { DropDownService } from '../../../services/details-page/drop-down.service';
+import { DetailsDataService } from '../../../services/details-data/details-data.service';
 
 @Component({
     selector: 'app-maps',
@@ -64,7 +66,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
         // Components
         AppTooltipComponent,
-        MapMarkerDropdownComponent
+        MapMarkerDropdownComponent,
     ],
 })
 export class MapsComponent implements OnInit, OnDestroy, OnChanges {
@@ -73,36 +75,36 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
     @Input() set _viewData(value) {
         // table data (shippers, repair shops)
 
-        var newData = value;
+        // var newData = value;
 
-        newData.map((data) => {
-            if (data.actionAnimation == 'update') {
-                let markerIndex = this.viewData.findIndex(
-                    (item) => item.id === data.id
-                );
-                if (markerIndex < 0 && !this.clusterDetailedInfo) return false;
+        // newData.map((data) => {
+        //     if (data.actionAnimation == 'update') {
+        //         console.log('newData update', data);
+        //         let markerIndex = this.viewData.findIndex(
+        //             (item) => item.id === data.id
+        //         );
+        //         if (markerIndex < 0 && !this.clusterDetailedInfo) return false;
 
-                if (this.mapType == 'repairShop') {
-                    this.getRepairShop(data.id, markerIndex);
-                } else if (this.mapType == 'shipper') {
-                    this.getShipper(data.id, markerIndex);
-                } else if (this.mapType == 'fuelStop') {
-                    this.getFuelStop(data.id, markerIndex);
-                }
-                this.getClusters(true, true);
-            } else if (
-                data.actionAnimation == 'add' ||
-                data.actionAnimation == 'delete'
-            ) {
-                setTimeout(() => {
-                    this.getClusters(true, true);
-                }, 1000);
-            }
-        });
+        //         if (this.mapType == 'repairShop') {
+        //             this.getRepairShop(data.id, markerIndex);
+        //         } else if (this.mapType == 'shipper') {
+        //             this.getShipper(data.id, markerIndex);
+        //         } else if (this.mapType == 'fuelStop') {
+        //             this.getFuelStop(data.id, markerIndex);
+        //         }
+        //         this.getClusters(true, true);
+        //     } else if (
+        //         data.actionAnimation == 'add' ||
+        //         data.actionAnimation == 'delete'
+        //     ) {
+        //         setTimeout(() => {
+        //             this.getClusters(true, true);
+        //         }, 1000);
+        //     }
+        // });
     }
     @Input() mapType: string = 'shipper'; // shipper, repairShop, fuelStop, accident, inspection, routing
     @Input() routes: Array<MapRouteModel> = []; // array of stops to be shown on map, ex. - [{routeColor: #3074D3, stops: [{lat: 39.353087, long: -84.299328, stopColor: #EF5350, empty: true}, {lat: 39.785871, long: -86.143448, stopColor: #26A690, empty: false}]]
-    @Input() dropdownActions: any[] = [];
     @Input() darkMode: boolean = false;
     @Output() callDropDownAction: EventEmitter<any> = new EventEmitter();
     @Output() updateMapList: EventEmitter<any> = new EventEmitter();
@@ -194,7 +196,9 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
         private modalService: ModalService,
         private confirmationService: ConfirmationService,
         private companyOfficeService: CompanyTOfficeService,
-        private tableService: TruckassistTableService
+        private tableService: TruckassistTableService,
+        private dropdownService: DropDownService,
+        private detailsDataService: DetailsDataService
     ) {}
 
     ngOnInit(): void {
@@ -238,17 +242,18 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
                 this.showMoreMapListData(data);
             });
 
-            
         this.tableService.currentSetTableFilter
             .pipe(takeUntil(this.destroy$))
             .subscribe((data) => {
-                if ( data?.filterType == 'locationFilter' ) {
-                    if ( data.action == 'Set' ) {
+                if (data?.filterType == 'locationFilter') {
+                    if (data.action == 'Set') {
                         this.locationFilter = data.queryParams;
                         this.mapCircle = {
                             lat: data.queryParams.latValue,
                             lng: data.queryParams.longValue,
-                            radius: this.mapsService.getMeters(data.queryParams.rangeValue)
+                            radius: this.mapsService.getMeters(
+                                data.queryParams.rangeValue
+                            ),
                         };
                         this.locationFilterOn = true;
 
@@ -258,56 +263,70 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
                         this.locationFilter = null;
                         this.locationFilterOn = false;
                     }
-                    
+
                     this.getClusters(true, true);
-                } else if ( data?.filterType == 'stateFilter' ) {
-                    if ( data.action == 'Set' ) {
+                } else if (data?.filterType == 'stateFilter') {
+                    if (data.action == 'Set') {
                         this.stateFilter = data.queryParams;
                     } else {
                         this.stateFilter = null;
                     }
-                    
+
                     this.getClusters(true, true);
-                } else if ( data?.filterType == 'categoryRepairFilter' ) {
-                    if ( data.action == 'Set' ) {
+                } else if (data?.filterType == 'categoryRepairFilter') {
+                    if (data.action == 'Set') {
                         this.categoryRepairFilter = data.queryParams;
                     } else {
                         this.categoryRepairFilter = null;
                     }
-                    
+
                     this.getClusters(true, true);
-                } else if ( data?.filterType == 'moneyFilter' ) {
-                    if ( data.action == 'Set' ) {
+                } else if (data?.filterType == 'moneyFilter') {
+                    if (data.action == 'Set') {
                         this.moneyFilter = data.queryParams;
                     } else {
                         this.moneyFilter = null;
                     }
-                    
+
                     this.getClusters(true, true);
                 }
             });
 
         this.mapsService.mapRatingChange
             .pipe(takeUntil(this.destroy$))
-            .subscribe(() => {
+            .subscribe((res) => {
+                let markerIndex = this.viewData.findIndex(
+                    (item) => item.id === res.entityId
+                );
+
+                if (this.mapType == 'repairShop') {
+                    this.getRepairShop(res.entityId, markerIndex);
+                } else if (this.mapType == 'shipper') {
+                    this.getShipper(res.entityId, markerIndex);
+                } else if (this.mapType == 'fuelStop') {
+                    this.getFuelStop(res.entityId, markerIndex);
+                }
+
                 this.getClusters(true, true);
             });
 
         this.mapsService.selectedMapListCardChange
             .pipe(takeUntil(this.destroy$))
             .subscribe((id) => {
-                if ( id > 0 ) {
+                if (id > 0) {
                     this.clusterMarkers.map((cluster) => {
-                        const clusterIndex = cluster.pagination.data.findIndex((item) => item.id == id);
+                        const clusterIndex = cluster.pagination.data.findIndex(
+                            (item) => item.id == id
+                        );
 
-                        if ( clusterIndex > -1 && cluster.showMarker ) {
+                        if (clusterIndex > -1 && cluster.showMarker) {
                             this.clickedCluster(cluster, true);
-                            this.showClusterItemInfo([cluster, {id: id}]);
+                            this.showClusterItemInfo([cluster, { id: id }]);
                         } else {
                             this.clickedMarker(id, true);
                         }
                     });
-                    
+
                     this.mapsService.selectedMarker(id);
                 } else {
                     this.viewData.map((data: any) => {
@@ -318,8 +337,37 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
                         cluster.isSelected = false;
                         cluster.detailedInfo = false;
                     });
-                    
+
                     this.mapsService.selectedMarker(0);
+                }
+            });
+
+        this.tableService.currentActionAnimation
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res: any) => {
+                if (res.animation == 'update') {
+                    let markerIndex = this.viewData.findIndex(
+                        (item) => item.id === res.data.id
+                    );
+    
+                    if (this.mapType == 'repairShop') {
+                        this.getRepairShop(res.data.id, markerIndex);
+                    } else if (this.mapType == 'shipper') {
+                        this.getShipper(res.data.id, markerIndex);
+                    } else if (this.mapType == 'fuelStop') {
+                        this.getFuelStop(res.data.id, markerIndex);
+                    }
+
+                    this.mapListPagination.pageIndex = 1;
+                    this.getClusters(true, true);
+                } else if (
+                    res.animation == 'add' ||
+                    res.animation == 'delete'
+                ) {
+                    setTimeout(() => {
+                        this.mapListPagination.pageIndex = 1;
+                        this.getClusters(true, true);
+                    }, 1000);
                 }
             });
     }
@@ -406,7 +454,7 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
             if (cluster.isSelected) cluster.isSelected = false;
         });
 
-        if ( !callFromMapList) this.mapsService.selectedMarker(selectId);
+        if (!callFromMapList) this.mapsService.selectedMarker(selectId);
 
         this.ref.detectChanges();
     }
@@ -521,30 +569,80 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
     }
 
     dropDownActionCall(action) {
-        if (action.type == 'delete') {
-            var shipperData = {
-                id: action.id,
-                type: 'delete-item',
-                data: {
-                    ...action.data,
-                    name: action.data.businessName,
-                },
-            };
+        // if (action.type == 'delete' || action.type == 'delete-repair') {
+        //     var name =
+        //         this.mapType == 'repairShop'
+        //             ? action.data.name
+        //             : this.mapType == 'shipper'
+        //             ? action.data.businessName
+        //             : '';
 
-            this.modalService.openModal(
-                ConfirmationModalComponent,
-                { size: 'small' },
-                {
-                    ...shipperData,
-                    template:
-                        this.mapType == 'repairShop'
-                            ? 'repair shop'
-                            : 'shipper',
-                    type: 'delete',
-                }
-            );
-        } else {
+        //     var shipperData = {
+        //         id: action.id,
+        //         type: 'delete-item',
+        //         data: {
+        //             ...action.data,
+        //             name: name,
+        //         },
+        //     };
+
+        //     this.modalService.openModal(
+        //         ConfirmationModalComponent,
+        //         { size: 'small' },
+        //         {
+        //             ...shipperData,
+        //             template:
+        //                 this.mapType == 'repairShop' ? 'repair shop' : 'shipper',
+        //             type: 'delete',
+        //         }
+        //     );
+        // } else {
+        //     this.callDropDownAction.emit(action);
+        // }
+
+        if (action.type == 'view-details') {
+            this.mapsService.goToDetails(action.data, this.mapType);
+        } else if ( action.type == 'raiting' ) {
+            this.detailsDataService.setNewData(action.data);
             this.callDropDownAction.emit(action);
+        } else {
+            if (this.mapType == 'repairShop') {
+                if (action.type == 'write-review') {
+                    action.type = 'edit';
+                    action.openedTab = 'Review';
+                }
+
+                this.dropdownService.dropActionsHeaderRepair(
+                    action,
+                    action.data,
+                    action.id
+                );
+            } else if (this.mapType == 'shipper') {
+                let eventType = '';
+                if (
+                    action.type == 'Contact' ||
+                    action.type == 'edit' ||
+                    action.type == 'Review'
+                ) {
+                    eventType = 'edit';
+                } else {
+                    eventType = action.type;
+                }
+
+                let eventObject = {
+                    data: undefined,
+                    id: action.id,
+                    type: eventType,
+                    openedTab: action.type,
+                };
+                setTimeout(() => {
+                    this.dropdownService.dropActionsHeaderShipperBroker(
+                        eventObject,
+                        action.data,
+                        'shipper'
+                    );
+                }, 100);
+            }
         }
     }
 
@@ -800,7 +898,9 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
 
                     this.updateMapList.emit(mapListData);
                     this.mapsService.searchLoadingChanged.next(false);
-                    this.mapsService.searchResultsCountChange.next(mapListData.repairShopCount);
+                    this.mapsService.searchResultsCountChange.next(
+                        mapListData.repairShopCount
+                    );
                 });
         } else if (this.mapType == 'shipper') {
             this.shipperService
@@ -864,7 +964,10 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
                                     );
 
                                 if (clusterIndex == -1) {
-                                    this.clusterMarkers[clusterIndex].pagination.data = clusterPagination.pagination.data;
+                                    this.clusterMarkers[
+                                        clusterIndex
+                                    ].pagination.data =
+                                        clusterPagination.pagination.data;
                                     this.ref.detectChanges();
                                 }
 
@@ -908,13 +1011,14 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
                                 markersToShow.includes(item.id) &&
                                 !item.showMarker
                             ) {
-                                var randomTime = Math.floor(Math.random() * 800);
+                                var randomTime = Math.floor(
+                                    Math.random() * 800
+                                );
 
                                 setTimeout(() => {
                                     item.showMarker = true;
                                     this.ref.detectChanges();
                                 }, randomTime);
-                                
                             } else if (
                                 !markersToShow.includes(item.id) &&
                                 item.showMarker
@@ -1003,7 +1107,9 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
 
                     this.updateMapList.emit(mapListData);
                     this.mapsService.searchLoadingChanged.next(false);
-                    this.mapsService.searchResultsCountChange.next(mapListData.shipperCount);
+                    this.mapsService.searchResultsCountChange.next(
+                        mapListData.shipperCount
+                    );
                 });
         } else if (this.mapType == 'fuelStop') {
             this.fuelStopService
@@ -1172,7 +1278,9 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
 
                     this.updateMapList.emit(mapListData);
                     this.mapsService.searchLoadingChanged.next(false);
-                    this.mapsService.searchResultsCountChange.next(mapListData.fuelStopCount);
+                    this.mapsService.searchResultsCountChange.next(
+                        mapListData.fuelStopCount
+                    );
                 });
         }
 
@@ -1200,10 +1308,7 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
                 });
 
                 this.companyOffices.map((item) => {
-                    if (
-                        markersToShow.includes(item.id) &&
-                        !item.showMarker
-                    ) {
+                    if (markersToShow.includes(item.id) && !item.showMarker) {
                         item.showMarker = true;
                     } else if (
                         !markersToShow.includes(item.id) &&
@@ -1267,7 +1372,7 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
             if (marker.isSelected) marker.isSelected = false;
         });
 
-        if ( !callFromMapList) this.mapsService.selectedMarker(selectId);
+        if (!callFromMapList) this.mapsService.selectedMarker(selectId);
 
         this.ref.detectChanges();
     }
@@ -1298,6 +1403,8 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
                         };
                     }
 
+                    this.mapsService.markerUpdate(newData);
+
                     if (
                         this.clusterDetailedInfo &&
                         this.clusterDetailedInfo.id == id
@@ -1316,7 +1423,13 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
 
                     setTimeout(() => {
                         if (index > -1) {
-                            if ( !(callFromMapList && this.mapsService.selectedMarkerId != this.viewData[index].id) ) {
+                            if (
+                                !(
+                                    callFromMapList &&
+                                    this.mapsService.selectedMarkerId !=
+                                        this.viewData[index].id
+                                )
+                            ) {
                                 this.viewData[index].isSelected = true;
                                 this.mapsService.selectedMarker(id);
                             }
@@ -1350,6 +1463,8 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
                         };
                     }
 
+                    this.mapsService.markerUpdate(newData);
+
                     if (
                         this.clusterDetailedInfo &&
                         this.clusterDetailedInfo.id == id
@@ -1368,7 +1483,13 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
 
                     setTimeout(() => {
                         if (index > -1) {
-                            if ( !(callFromMapList && this.mapsService.selectedMarkerId != this.viewData[index].id) ) {
+                            if (
+                                !(
+                                    callFromMapList &&
+                                    this.mapsService.selectedMarkerId !=
+                                        this.viewData[index].id
+                                )
+                            ) {
                                 this.viewData[index].isSelected = true;
                                 this.mapsService.selectedMarker(id);
                             }
@@ -1396,6 +1517,8 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
                         };
                     }
 
+                    this.mapsService.markerUpdate(newData);
+
                     if (
                         this.clusterDetailedInfo &&
                         this.clusterDetailedInfo.id == id
@@ -1414,7 +1537,13 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
 
                     setTimeout(() => {
                         if (index > -1) {
-                            if ( !(callFromMapList && this.mapsService.selectedMarkerId != this.viewData[index].id) ) {
+                            if (
+                                !(
+                                    callFromMapList &&
+                                    this.mapsService.selectedMarkerId !=
+                                        this.viewData[index].id
+                                )
+                            ) {
                                 this.viewData[index].isSelected = true;
                                 this.mapsService.selectedMarker(id);
                             }
@@ -1573,7 +1702,7 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
         this.confirmationService.confirmationData$
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: (res: Confirmation) => {
+                next: (res: Confirmation | any) => {
                     switch (res.type) {
                         case 'delete': {
                             if (
@@ -1600,6 +1729,41 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
                             }
                             break;
                         }
+                        case 'activate': {
+                            if (
+                                res.template === 'repair shop' ||
+                                res.template === 'Repair Shop'
+                            ) {
+                                this.repairShopService.changeShopStatus(
+                                    res?.id
+                                );
+                            }
+                            break;
+                        }
+                        case 'deactivate': {
+                            if (
+                                res.template === 'repair shop' ||
+                                res.template === 'Repair Shop'
+                            ) {
+                                this.repairShopService.changeShopStatus(
+                                    res?.id
+                                );
+                            }
+                            break;
+                        }
+                        case 'info': {
+                            if (res.subType === 'favorite') {
+                                if (
+                                    res.subTypeStatus === 'move' ||
+                                    res.subTypeStatus === 'remove'
+                                ) {
+                                    this.repairShopService.changePinnedStatus(
+                                        res?.id
+                                    );
+                                }
+                            }
+                            break;
+                        }
                         default: {
                             break;
                         }
@@ -1608,10 +1772,10 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
             });
     }
 
-    zoomToObject(obj){
+    zoomToObject(obj) {
         var bounds = new google.maps.LatLngBounds();
         var points = obj.getPath().getArray();
-        for (var n = 0; n < points.length ; n++){
+        for (var n = 0; n < points.length; n++) {
             bounds.extend(points[n]);
         }
         this.agmMap.fitBounds(bounds);
