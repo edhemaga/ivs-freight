@@ -824,7 +824,8 @@
                                             }"
                                             class="description-container"
                                             [innerHtml]="
-                                            descriptionPopoverOpen !== row.id
+                                                descriptionPopoverOpen !==
+                                                row.id
                                                     ? row[column.field]
                                                     : null
                                             "
@@ -927,7 +928,8 @@
                                         <span
                                             *ngIf="
                                                 !row.isRepairOrder &&
-                                                descriptionPopoverOpen !== row.id
+                                                descriptionPopoverOpen !==
+                                                    row.id
                                             "
                                             class="table-total"
                                             [innerHtml]="
@@ -1466,7 +1468,8 @@
                                             class="table-progress-cotnainer"
                                             *ngIf="
                                                 row[column.field]
-                                                    ?.expirationDays
+                                                    ?.expirationDays ||
+                                                row[column.field].percentage
                                             "
                                         >
                                             <!-- Progres Bar  -->
@@ -1549,12 +1552,15 @@
                                                         .percentage < 100
                                                 "
                                             >
-                                                in
                                                 {{
                                                     row[column.field]
-                                                        .expirationDays
+                                                        .expirationDays > 0
+                                                        ? 'in ' +
+                                                          row[column.field]
+                                                              .expirationDays +
+                                                          ' days'
+                                                        : 'a few hours'
                                                 }}
-                                                days
                                             </div>
 
                                             <!-- Progres Text Expired-->
@@ -2414,7 +2420,8 @@
                                             }"
                                             class="description-container"
                                             [innerHtml]="
-                                                descriptionPopoverOpen !== row.id
+                                                descriptionPopoverOpen !==
+                                                row.id
                                                     ? row[column.field]
                                                     : null
                                             "
@@ -2666,7 +2673,8 @@ highlightingWords) : '' " -->
                                         <span
                                             *ngIf="
                                                 !row.isRepairOrder &&
-                                                descriptionPopoverOpen !== row.id
+                                                descriptionPopoverOpen !==
+                                                    row.id
                                             "
                                             class="table-total"
                                             [innerHtml]="
@@ -3073,7 +3081,8 @@ highlightingWords) : '' " -->
                                             class="table-progress-cotnainer"
                                             *ngIf="
                                                 row[column.field]
-                                                    ?.expirationDays
+                                                    ?.expirationDays ||
+                                                row[column.field].percentage
                                             "
                                         >
                                             <!-- Progres Bar  -->
@@ -3156,12 +3165,15 @@ highlightingWords) : '' " -->
                                                         .percentage < 100
                                                 "
                                             >
-                                                in
                                                 {{
                                                     row[column.field]
-                                                        .expirationDays
+                                                        .expirationDays > 0
+                                                        ? 'in ' +
+                                                          row[column.field]
+                                                              .expirationDays +
+                                                          ' days'
+                                                        : 'a few hours'
                                                 }}
-                                                days
                                             </div>
 
                                             <!-- Progres Text Expired-->
@@ -3741,7 +3753,9 @@ highlightingWords) : '' " -->
                                             container="body"
                                             popoverClass="table-dropdown-popover"
                                             triggers="manual"
-                                            (hidden)="onRemoveClickEventListener()"
+                                            (hidden)="
+                                                onRemoveClickEventListener()
+                                            "
                                         >
                                             <svg-icon
                                                 [src]="
@@ -4254,7 +4268,8 @@ highlightingWords) : '' " -->
         <div
             class="table-list-dropdown-content-container"
             [ngClass]="{
-                'table-list-dropdown-inner-dropdown-active': action?.isInnerDropActive
+                'table-list-dropdown-inner-dropdown-active':
+                    action?.isInnerDropActive
             }"
             *ngFor="let action of data"
         >
@@ -4269,7 +4284,8 @@ highlightingWords) : '' " -->
                 [ngClass]="{
                     'table-list-dropdown-content-muted': action.mutedStyle,
                     'table-list-dropdown-content-dropdown': action?.isDropdown,
-                    'table-list-dropdown-content-dropdown-active': action?.isInnerDropActive
+                    'table-list-dropdown-content-dropdown-active':
+                        action?.isInnerDropActive
                 }"
                 [ngStyle]="action.tableListDropdownContentStyle"
             >
@@ -4280,7 +4296,9 @@ highlightingWords) : '' " -->
                     *ngIf="action.svgUrl"
                     [class]="action.svgClass"
                     class="table-list-dropdown-content-icon"
-                    [ngClass]="{'inner-dropdown-open': action?.isInnerDropActive}"
+                    [ngClass]="{
+                        'inner-dropdown-open': action?.isInnerDropActive
+                    }"
                     [src]="action.svgUrl"
                     [svgStyle]="{
                         'width.px': action.svgStyle.width,
@@ -4292,8 +4310,13 @@ highlightingWords) : '' " -->
             <!-- Inner Dropdown -->
             <div
                 class="table-list-inner-dropdown"
-                [ngClass]="{'table-list-inner-dropdown-active': action?.isInnerDropActive}"
-                [innerHtml]="action?.innerDropElement ? action.innerDropElement : null"
+                [ngClass]="{
+                    'table-list-inner-dropdown-active':
+                        action?.isInnerDropActive
+                }"
+                [innerHtml]="
+                    action?.innerDropElement ? action.innerDropElement : null
+                "
             ></div>
 
             <!-- Border -->

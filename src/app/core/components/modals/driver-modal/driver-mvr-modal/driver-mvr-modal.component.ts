@@ -263,6 +263,7 @@ export class DriverMvrModalComponent implements OnInit, OnDestroy {
                 documents.push(item.realFile);
             }
         });
+        
         const newData: any = {
             driverId: this.selectedDriver
                 ? this.selectedDriver.id
@@ -270,6 +271,7 @@ export class DriverMvrModalComponent implements OnInit, OnDestroy {
             issueDate: convertDateToBackend(issueDate),
             cdlId: this.selectedCdl.id,
             note: note,
+            tableActiveTab: this.editData.tableActiveTab,
             files: documents,
         };
 

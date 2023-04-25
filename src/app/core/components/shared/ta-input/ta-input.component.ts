@@ -2074,6 +2074,7 @@ export class TaInputComponent
     setSpanSelection(element) {
         let range, selection;
 
+        console.log(element);
         if (window.getSelection && document.createRange) {
             selection = window.getSelection();
             range = document.createRange();
