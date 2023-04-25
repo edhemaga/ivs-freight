@@ -55,7 +55,7 @@ export class PayrollStoreService {
                     title: this.payrollData[item].title,
                     short_title: this.payrollData[item].short_title,
                     data: data[item].data,
-                    count: data[this.payrollData[item].count],
+                    count: data[item].count,
                     tableSettings: this.getTableDefinitions(
                         this.payrollData[item].title
                     ),

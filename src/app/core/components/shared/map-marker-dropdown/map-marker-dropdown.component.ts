@@ -6,6 +6,7 @@ import {
     EventEmitter,
     ChangeDetectorRef,
     ChangeDetectionStrategy,
+    ViewChild,
 } from '@angular/core';
 import { card_component_animation } from '../../shared/animations/card-component.animations';
 import { DetailsDataService } from 'src/app/core/services/details-data/details-data.service';
@@ -20,6 +21,7 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 import { DetailsDropdownComponent } from '../details-page-dropdown/details-dropdown';
 import { TaCounterComponent } from '../ta-counter/ta-counter.component';
 import { GpsProgressbarComponent } from '../gps-progressbar/gps-progressbar.component';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
     selector: 'app-map-marker-dropdown',
@@ -43,21 +45,25 @@ import { GpsProgressbarComponent } from '../gps-progressbar/gps-progressbar.comp
 
         // Pipes
         formatDatePipe,
-        TaThousandSeparatorPipe
+        TaThousandSeparatorPipe,
     ],
 })
 export class MapMarkerDropdownComponent implements OnInit {
+    private destroy$ = new Subject<void>();
+    
     @Input() title: string = '';
     @Input() item: any = {};
     @Input() type: string = '';
     @Input() sortCategory: any = {};
     @Input() locationFilterOn: boolean = false;
-    @Input() dropdownActions: any[] = [];
     @Input() rating: any = {};
     @Input() cluster: any = {};
     @Output() bodyActions: EventEmitter<any> = new EventEmitter();
     @Output() showClusterItemInfo: EventEmitter<any> = new EventEmitter();
     @Output() loadMoreData: EventEmitter<any> = new EventEmitter();
+    @ViewChild("detailsDropdown") detailsDropdown: any;
+
+    public dropdownActions: any = [];
 
     public copiedPhone: boolean = false;
     public copiedEmail: boolean = false;
@@ -84,7 +90,36 @@ export class MapMarkerDropdownComponent implements OnInit {
         private mapsService: MapsService
     ) {}
 
-    ngOnInit(): void {}
+    ngOnInit(): void {
+        this.getDropdownActions();
+
+        this.mapsService.markerUpdateChange
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((item) => {
+                if ( item.id == this.item.id ) {
+                    this.item = item;
+                    this.getDropdownActions();
+                }
+            });
+
+        this.mapsService.selectedMarkerChange
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((id) => {
+                if ( id != this.item.id && this.detailsDropdown?.tooltip ) {
+                    this.detailsDropdown.dropDownActive = -1;
+                    this.detailsDropdown.tooltip.close();
+                }
+            });
+
+        this.mapsService.selectedMapListCardChange
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((id) => {
+                if ( id != this.item.id && this.detailsDropdown?.tooltip ) {
+                    this.detailsDropdown.dropDownActive = -1;
+                    this.detailsDropdown.tooltip.close();
+                }
+            });
+    }
 
     expandInfo() {
         this.item.isExpanded = !this.item.isExpanded;
@@ -193,7 +228,7 @@ export class MapMarkerDropdownComponent implements OnInit {
         if (
             Math.abs(
                 element.scrollHeight - element.scrollTop - element.clientHeight
-            ) <= 3.0
+            ) <= 30.0
         ) {
             this.loadMoreData.emit(this.item);
         }
@@ -211,35 +246,14 @@ export class MapMarkerDropdownComponent implements OnInit {
         this.ref.detectChanges();
     }
 
-    goToDetails(data) {
-        var linkStart = '';
-        var linkEnd = '';
-        var doesNotHaveRout = false;
+    goToDetails() {
+        this.mapsService.goToDetails(this.item, this.type);
+    }
 
-        if ( this.type == 'shipper' ) {
-            linkStart = '/list/customer/';
-            linkEnd = '/shipper-details';
-        } else if ( this.type == 'repairShop' ) {
-            linkStart = '/list/repair/';
-            linkEnd = '/shop-details';
-        } else if ( this.type == 'fuelStop' ) {
-            doesNotHaveRout = true;
-        } else if ( this.type == 'accident' ) {
-            doesNotHaveRout = true;
-        } else {
-            doesNotHaveRout = true;
-        }
-
-        if ( !doesNotHaveRout ) {
-            const link =
-                linkStart +
-                data['id'] +
-                linkEnd;
-
-            this.detailsDataService.setNewData(data);
-            this.mapsService.selectedMarker(0);
-
-            this.router.navigate([link]);
-        }
+    getDropdownActions() {
+        this.dropdownActions = this.mapsService.getDropdownActions(
+            this.item,
+            this.type
+        );
     }
 }

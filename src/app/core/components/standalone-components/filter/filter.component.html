@@ -11,10 +11,10 @@
         'clear-colors': hoverClose,
         'filter-active-colors':
             filterActiveArray.length > 0 ||
-            selectedTimeValue != '' ||
+            filterActiveTime != '' ||
             rangeValue > 0 ||
             totalFiltersNum > 0 ||
-            longVal != 0 ||
+            longValueSet != 0 ||
             maxValueSet != maxValueRange ||
             minValueSet != minValueRange ||
             singleFormActive
@@ -27,26 +27,69 @@
         mainTooltip="{{
             !hoverClose
                 ? totalFiltersNum > 0
-                    ? filterTitle +
-                      ' ' +
-                      '</br>' +
-                      totalFiltersNum +
-                      ' Selected'
-                    : filterTitle
-                : 'Clear ' + filterTitle
+                    ? activeFilter ? 'Close Filter' : filterTitle 
+                    :  activeFilter ? 'Close Filter' : filterTitle
+                : 'Remove Filter'
         }}"
         position="bottom"
-        tooltipBackground="{{ !hoverClose ? '#424242' : '#EF5350' }}"
+        tooltipBackground="{{ activeFilter ? '#B7B7B7' : !hoverClose ? '#2F2F2F' : '#2F2F2F' }}"
+        tooltipColor="{{activeFilter ? '#2F2F2F' : '#FFFFFF'}}"
         tooltipTextAlign="center"
         class="main-icon-holder"
     >
-        <svg-icon [src]="icon | taSvg : 'common'"></svg-icon>
+        <div>
+            <svg-icon [src]="icon | taSvg : 'common'"></svg-icon>
+        </div>
+        <div *ngIf="filterActiveArray.length > 0 || totalFiltersNum > 0" class="filters-selected-value-holder">
+            {{ filterActiveArray.length > 0 ? filterActiveArray.length : totalFiltersNum  }}
+        </div>
+        <div *ngIf="
+            filterActiveTime != '' ||
+            longValueSet != 0 ||
+            singleFormActive ||
+            activeFormNum > 0
+            " 
+            class="filters-selected-value-holder conf-icon-holder">
+            <svg-icon
+                src="assets/svg/common/ic_confirm.svg"
+            ></svg-icon> 
+        </div>
+        <div 
+            *ngIf="
+                filterActiveArray.length > 0 ||
+                selectedTimeValue != '' ||
+                totalFiltersNum > 0 ||
+                rangeValue > 0 ||
+                moneyFilterStatus ||
+                longVal != 0 ||
+                maxValueSet != maxValueRange ||
+                minValueSet != minValueRange
+            " 
+            class="filters-selected-value-holder 
+            clear-filter-icon" 
+            (mouseenter)="hoverClose = true"
+            (mouseleave)="hoverClose = false"
+            (click)="clearAll($event, true)"
+            
+            >
+            <svg-icon
+                src="assets/svg/common/ic_cancel_violation.svg"
+            ></svg-icon>  
+        </div>
+        <!--
+        <div *ngIf="totalFiltersNum > 0" class="filters-selected-value-holder">
+            {{ totalFiltersNum }}
+        </div>
+        -->
+        <!-- old filter counter -->
+        <!--
         <div *ngIf="filterActiveArray.length > 0" class="active-filter-num">
             {{ filterActiveArray.length }}
         </div>
         <div *ngIf="totalFiltersNum > 0" class="active-filter-num">
             {{ totalFiltersNum }}
         </div>
+        
         <div
             *ngIf="
                 filterActiveArray.length > 0 ||
@@ -67,6 +110,7 @@
                 src="assets/svg/common/ic_cancel_violation.svg"
             ></svg-icon>
         </div>
+        -->
     </div>
     <div popoverContent class="main-popover-body">
         <div
@@ -201,16 +245,23 @@
                     </div>
                     <div class="selected-user-frame">
                         <div class="selected-name-text">
-                            <span> {{ item.name }} </span>
+                            <span> {{ item.name }}</span>
                         </div>
-                        <div class="selected-icon">
+                        <div class="selected-icon" *ngIf="!item.counter">
                             <svg-icon
                                 src="assets/svg/common/ic_confirm.svg"
                             ></svg-icon>
                         </div>
+                        <div 
+                            *ngIf="item.counter"
+                            class="counter-holder activeCounter"
+                        >
+                            2
+                        </div>
                         <div
                             (click)="removeFromSelectedUser(item, indx)"
                             class="icon-delete"
+                            [class.counterMargin]="item.counter"
                         >
                             <div class="icon-delete-hold"></div>
                             <svg-icon
@@ -238,12 +289,12 @@
                             class="user-profile-img active state-border-radius"
                         >
                             <div class="state-short-holder">
-                                {{ item.short }}
+                                {{ item.stateShortName }}
                             </div>
                         </div>
                         <div class="selected-user-frame">
                             <div class="selected-name-text">
-                                <span> {{ item.name }} </span>
+                                <span> {{ item.stateName }} </span>
                             </div>
                             <div class="selected-icon">
                                 <svg-icon
@@ -274,12 +325,12 @@
                     >
                         <div class="user-profile-img active">
                             <div class="state-short-holder">
-                                {{ item.short }}
+                                {{ item.stateShortName }}
                             </div>
                         </div>
                         <div class="selected-user-frame">
                             <div class="selected-name-text">
-                                <span> {{ item.name }} </span>
+                                <span> {{ item.stateName }} </span>
                             </div>
                             <div class="selected-icon">
                                 <svg-icon
@@ -667,6 +718,10 @@
                                 <span> {{ item.name }} </span>
                             </div>
                         </div>
+                        <div 
+                            *ngIf="item.counter"    
+                            class="counter-holder"
+                        >27</div>
                     </div>
                 </div>
             </div>
@@ -690,6 +745,10 @@
                                 <span> {{ item.name }} </span>
                             </div>
                         </div>
+                        <div 
+                        *ngIf="item.counter" 
+                        class="counter-holder"
+                        >27</div>
                     </div>
                 </div>
             </div>
@@ -710,12 +769,12 @@
                     >
                         <div class="user-profile-img">
                             <div class="state-short-holder">
-                                {{ item.short }}
+                                {{ item.stateShortName }}
                             </div>
                         </div>
                         <div class="user-frame">
                             <div class="selected-name-text">
-                                <span> {{ item.name }} </span>
+                                <span> {{ item.stateName }} </span>
                             </div>
                         </div>
                     </div>
@@ -736,12 +795,12 @@
                     >
                         <div class="user-profile-img">
                             <div class="state-short-holder">
-                                {{ item.short }}
+                                {{ item.stateShortName }}
                             </div>
                         </div>
                         <div class="user-frame">
                             <div class="selected-name-text">
-                                <span> {{ item.name }} </span>
+                                <span> {{ item.stateName }} </span>
                             </div>
                         </div>
                     </div>
@@ -1583,12 +1642,19 @@
                         *ngIf="type == 'locationFilter'"
                         [@showAnimation]="activeFilter ? 'true' : 'false'"
                     >
-                        <app-ta-ngx-slider
-                            [sliderOptions]="locationSliderData"
-                            [startedValue]="locationRange"
-                            [customClass]="'custom-slider-filter'"
-                            (onUserValueChange)="setRangeValue($event)"
-                        ></app-ta-ngx-slider>
+                        <div class="range-new-value-holder">
+                            <div class="range-text">
+                                Range
+                            </div>
+                            <div class="range-flex-holder">
+                                <app-ta-ngx-slider
+                                    [sliderOptions]="locationSliderData"
+                                    [startedValue]="locationRange"
+                                    [customClass]="'custom-slider-filter'"
+                                    (onUserValueChange)="setRangeValue($event)"
+                                ></app-ta-ngx-slider>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1701,7 +1767,7 @@
                     (click)="clearAll($event)"
                     class="button-clear"
                     [class.active]="
-                        longVal != 0 || latVal != 0 || locationRange != 50
+                        longVal != 0 || latVal != 0 || locationRange != 25
                     "
                 >
                     Clear All

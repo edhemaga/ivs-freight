@@ -20,8 +20,6 @@ export class ResendConfirmationComponent implements OnInit, OnDestroy {
 
     public resendConfirmationForm: FormGroup;
 
-    public openHavingTroubleContent: boolean = false;
-
     public displaySpinner: boolean = false;
 
     constructor(
@@ -47,30 +45,15 @@ export class ResendConfirmationComponent implements OnInit, OnDestroy {
         );
     }
 
-    public onHavingTroubleClick(): void {
-        this.openHavingTroubleContent = !this.openHavingTroubleContent;
-    }
-
     public onKeyDown(event: any): void {
         if (event.keyCode === 13) {
             this.resendConfirmation();
         }
     }
 
-    public onGetBtnClickValue(
-        event: { notDisabledClick: boolean },
-        type?: string
-    ): void {
+    public onGetBtnClickValue(event: { notDisabledClick: boolean }): void {
         if (event.notDisabledClick) {
-            if (type === ConstantString.RESEND_CONFIRMATION_BTN) {
-                this.resendConfirmation();
-            }
-
-            if (type === ConstantString.RESET_PASSWORD_BTN) {
-                this.websiteActionsService.setSidebarContentType(
-                    ConstantString.RESET_PASSWORD
-                );
-            }
+            this.resendConfirmation();
         }
     }
 

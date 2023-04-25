@@ -478,8 +478,9 @@ model/ownerDetailsResponse.ts
 model/ownerHistoryResponse.ts
 model/ownerModalResponse.ts
 model/ownerResponse.ts
-model/ownerResponsePagination.ts
 model/ownerShortResponse.ts
+model/ownerTableResponse.ts
+model/ownerTableResponsePagination.ts
 model/pMStatus.ts
 model/pMTrailerListResponse.ts
 model/pMTrailerResponse.ts
@@ -595,6 +596,8 @@ model/serviceTypeResponse.ts
 model/setNewPasswordCommand.ts
 model/sevenDaysHosFeedbackResponse.ts
 model/sevenDaysHosReviewResponse.ts
+model/shipperAverageWaitingTimeChartResponse.ts
+model/shipperAverageWaitingTimeResponse.ts
 model/shipperContactGroupResponse.ts
 model/shipperContactResponse.ts
 model/shipperContactShortResponse.ts
@@ -637,6 +640,7 @@ model/terminalResponse.ts
 model/terminalResponsePagination.ts
 model/testResponse.ts
 model/timeOnly.ts
+model/timeSpan.ts
 model/tireSizeResponse.ts
 model/titleModalResponse.ts
 model/titleResponse.ts

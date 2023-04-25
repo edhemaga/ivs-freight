@@ -238,6 +238,7 @@
         *ngIf="
             capsLockOn &&
             _inputConfig.type === 'password' &&
+            focusInput &&
             !_inputConfig.isDisabled
         "
         class="password-capslock"
@@ -701,6 +702,7 @@
     <svg-icon
         *ngIf="
             _inputConfig?.dropdownImageInput?.svg &&
+            !_inputConfig?.hideAllItemsInInputDropdown &&
             !(!_inputConfig.dropdownImageInput?.withText && focusInput) &&
             !(
                 ['truck', 'trailer'].includes(
@@ -731,6 +733,7 @@
     <img
         *ngIf="
             _inputConfig?.dropdownImageInput?.image &&
+            !_inputConfig?.hideAllItemsInInputDropdown &&
             _inputConfig?.dropdownImageInput?.url &&
             !_inputConfig?.dropdownImageInput?.nameInitialsInsteadUrl
         "
@@ -743,6 +746,7 @@
     <div
         *ngIf="
             _inputConfig?.dropdownImageInput?.nameInitialsInsteadUrl &&
+            !_inputConfig?.hideAllItemsInInputDropdown &&
             !(!_inputConfig.dropdownImageInput?.withText && focusInput)
         "
         class="no-profile-image dropdown-selected-image name-initials-instead-url"
@@ -1107,6 +1111,7 @@
                 _inputConfig?.dropdownImageInput?.template === 'color',
             'dropdown-input-image-user':
                 _inputConfig?.dropdownImageInput?.withText &&
+                !_inputConfig?.hideAllItemsInInputDropdown &&
                 _inputConfig?.dropdownImageInput?.template === 'user' &&
                 (_inputConfig.selectedDropdown ||
                     (_inputConfig.placeholder && focusInput) ||

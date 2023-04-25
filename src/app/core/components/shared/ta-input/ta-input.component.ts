@@ -574,7 +574,7 @@ export class TaInputComponent
     public onKeydown(event) {
         if (event) {
             this.capsLockOn =
-                event?.getModifierState('CapsLock') || event?.shiftKey;
+                event?.getModifierState?.('CapsLock') || event?.shiftKey;
         }
 
         if (this._inputConfig.priceSeparator) {
@@ -2074,6 +2074,7 @@ export class TaInputComponent
     setSpanSelection(element) {
         let range, selection;
 
+        console.log(element);
         if (window.getSelection && document.createRange) {
             selection = window.getSelection();
             range = document.createRange();

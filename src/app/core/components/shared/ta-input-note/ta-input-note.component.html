@@ -17,6 +17,7 @@
                 [popoverNote]="false"
                 [selectedEditor]="noteRef?.nativeElement"
                 [isVisibleArrow]="isVisibleArrow"
+                (stopBlurRemoveTimeout)="stopBlurRemoveTimeout()"
             ></app-ta-note-container>
         </div>
         <div class="note_upper_hold" *ngIf="isVisibleArrow">
@@ -50,6 +51,7 @@
             class="note-textarea"
             [class.details_textarea]="noteType == 'details-card'"
             contenteditable="true"
+            spellcheck="false"
             (input)="changeValue($event.target.innerHTML)"
             (focus)="checkFocus($event)"
             (blur)="prepareForTextRange()"

@@ -9,7 +9,9 @@
 
     
     .ta-upload-dropzone {
-        height: 194px;
+        height: 186px;
+        width: calc(100% - 10px);
+        margin: 0px 6px;
     }
 
     .documents_holder {
@@ -28,6 +30,8 @@
 
         .ta-upload-dropzone {
             height: 332px;
+            width: 100%;
+            margin: 0px;
         }
     }
 

@@ -26,8 +26,11 @@ export interface LiveTrackingItemLiteResponse {
     motionStatusPeriod?: string | null;
     type?: GpsType;
     updateTime?: string;
+    startDate?: string | null;
+    stopDate?: string | null;
     dateString?: string | null;
     companyId?: number | null;
+    unitType?: number | null;
     truckNumber?: string | null;
     trailerNumber?: string | null;
     driver?: string | null;

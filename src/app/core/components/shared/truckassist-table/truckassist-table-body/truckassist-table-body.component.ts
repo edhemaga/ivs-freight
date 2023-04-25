@@ -32,6 +32,7 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 import { TaNoteComponent } from '../../ta-note/ta-note.component';
 import { TaUploadFilesComponent } from '../../ta-upload-files/ta-upload-files.component';
 import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Titles()
 @Component({
@@ -95,7 +96,7 @@ export class TruckassistTableBodyComponent
     rowData: any;
     activeDescriptionDropdown: number = -1;
     descriptionTooltip: any;
-    descriptionPopoverOpen: boolean = false;
+    descriptionPopoverOpen: number = -1;
     pageHeight: number = window.innerHeight;
     activeAttachment: number = -1;
     activeMedia: number = -1;
@@ -107,6 +108,9 @@ export class TruckassistTableBodyComponent
     editInspectinDescriptionText: string = '';
     tableRowCounter: number = 0;
     renderInterval: any;
+    dropdownActions: any;
+    horizontalScrollPosition: number = 0;
+    viewDataLength: number = 0;
 
     constructor(
         private router: Router,
@@ -114,7 +118,8 @@ export class TruckassistTableBodyComponent
         private changeDetectorRef: ChangeDetectorRef,
         private sharedService: SharedService,
         private detailsDataService: DetailsDataService,
-        private filesService: FilesService
+        private filesService: FilesService,
+        private sanitizer: DomSanitizer
     ) {}
 
     // --------------------------------NgOnInit---------------------------------
@@ -123,6 +128,8 @@ export class TruckassistTableBodyComponent
         this.getSelectedTabTableData();
 
         this.viewDataEmpty = this.viewData.length ? false : true;
+
+        this.viewDataLength = this.viewData.length;
 
         // Get Table Sections(Pined, Not Pined, Actions)
         this.getTableSections();
@@ -217,6 +224,28 @@ export class TruckassistTableBodyComponent
 
                 this.renderOneByOne();
             }
+
+            // Reset Scroll And Elements In List
+            if (
+                this.showScrollSectionBorder &&
+                this.viewDataLength !== this.viewData.length
+            ) {
+                let resetSctoll = false;
+
+                document
+                    .querySelectorAll('#table-not-pined-scroll-container')
+                    .forEach((el) => {
+                        if (el.scrollLeft) {
+                            el.scrollLeft = 0;
+
+                            resetSctoll = true;
+                        }
+                    });
+
+                this.tableService.sendIsScrollReseting(resetSctoll);
+            }
+
+            this.viewDataLength = this.viewData.length;
 
             this.checkAttachmentUpdate();
         }
@@ -354,6 +383,8 @@ export class TruckassistTableBodyComponent
                 .forEach((el) => {
                     el.scrollLeft = scrollEvent.scrollPosition;
                 });
+
+            this.horizontalScrollPosition = scrollEvent.scrollPosition;
 
             this.tableService.sendScroll(scrollEvent.scrollPosition);
         } else if (
@@ -567,14 +598,69 @@ export class TruckassistTableBodyComponent
         if (tooltip.isOpen()) {
             tooltip.close();
         } else {
-            !row.tableDropdownContent?.hasContent
-                ? tooltip.open({ data: this.dropContent })
-                : tooltip.open({ data: row.tableDropdownContent });
+            if (row.tableDropdownContent?.hasContent) {
+                let actions = [...row.tableDropdownContent.content];
+
+                actions = actions.map((actions: any) => {
+                    if (actions?.isDropdown) {
+                        return {
+                            ...actions,
+                            isInnerDropActive: false,
+                        };
+                    }
+
+                    return actions;
+                });
+
+                this.dropdownActions = [...actions];
+
+                tooltip.open({ data: this.dropdownActions });
+            }
         }
 
         this.dropDownActive = tooltip.isOpen() ? row.id : -1;
         this.rowData = row;
         this.detailsDataService.setNewData(row);
+    }
+
+    // Set Click Event On Inner Dropdown
+    setInnerDropdownClickEvent() {
+        setTimeout(() => {
+            const innerDropdownContent = document.querySelectorAll(
+                '.inner-dropdown-action-title'
+            );
+
+            innerDropdownContent.forEach((content) => {
+                content.addEventListener('click', () => {
+                    this.dropdownActions.map((action: any) => {
+                        if (action.isInnerDropActive) {
+                            action.insideDropdownContent.map(
+                                (innerAction: any) => {
+                                    if (content.id === innerAction.title) {
+                                        this.onRemoveClickEventListener();
+
+                                        setTimeout(() => {
+                                            this.onDropAction(innerAction);
+                                        }, 100);
+                                    }
+                                }
+                            );
+                        }
+                    });
+                });
+            });
+        }, 100);
+    }
+
+    // Remove Click Event On Inner Dropdown
+    onRemoveClickEventListener() {
+        const innerDropdownContent = document.querySelectorAll(
+            '.inner-dropdown-action-title'
+        );
+
+        innerDropdownContent.forEach((content) => {
+            content.removeAllListeners('click');
+        });
     }
 
     // Toggle Status Dropdown
@@ -632,6 +718,43 @@ export class TruckassistTableBodyComponent
         }
 
         this.tooltip.close();
+    }
+
+    // On Show Inner Dropdown
+    onShowInnerDropdown(action) {
+        this.onRemoveClickEventListener();
+
+        let innerContent = '';
+
+        let newDropdownActions = [...this.dropdownActions];
+
+        newDropdownActions.map((actions) => {
+            if (
+                actions.isDropdown &&
+                actions.isInnerDropActive &&
+                actions.title !== action.title
+            ) {
+                actions.isInnerDropActive = false;
+                actions.innerDropElement = null;
+            }
+        });
+
+        this.dropdownActions = [...newDropdownActions];
+
+        if (action?.isDropdown && !action.isInnerDropActive) {
+            action.insideDropdownContent.map((content: any) => {
+                innerContent += `<div id="${content.title}" class="inner-dropdown-action-title">${content.title}</div>`;
+            });
+
+            action.innerDropElement =
+                this.sanitizer.bypassSecurityTrustHtml(innerContent);
+        }
+
+        action.isInnerDropActive = !action.isInnerDropActive;
+
+        if (action.isInnerDropActive) {
+            this.setInnerDropdownClickEvent();
+        }
     }
 
     // Only For User Table To Activate User
@@ -708,5 +831,6 @@ export class TruckassistTableBodyComponent
         this.tableService.sendRowsSelected([]);
         this.tableService.sendCurrentSetTableWidth(null);
         this.tableService.sendIsScrollShownig(false);
+        this.tableService.sendIsScrollReseting(true);
     }
 }

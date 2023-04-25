@@ -824,7 +824,7 @@
                                             }"
                                             class="description-container"
                                             [innerHtml]="
-                                                !descriptionPopoverOpen
+                                            descriptionPopoverOpen !== row.id
                                                     ? row[column.field]
                                                     : null
                                             "
@@ -840,10 +840,10 @@
                                             popoverClass="table-description-popover"
                                             triggers="manual"
                                             (hidden)="
-                                                descriptionPopoverOpen = false
+                                                descriptionPopoverOpen = -1
                                             "
                                             (shown)="
-                                                descriptionPopoverOpen = true
+                                                descriptionPopoverOpen = row.id
                                             "
                                         ></div>
                                     </div>
@@ -927,7 +927,7 @@
                                         <span
                                             *ngIf="
                                                 !row.isRepairOrder &&
-                                                !descriptionPopoverOpen
+                                                descriptionPopoverOpen !== row.id
                                             "
                                             class="table-total"
                                             [innerHtml]="
@@ -1841,7 +1841,8 @@
                             <div
                                 class="table-border-scroll-section table-border-left"
                                 [ngClass]="{
-                                    'table-border-left-show': showScrollSectionBorder
+                                    'table-border-left-show':
+                                        showScrollSectionBorder
                                 }"
                             ></div>
                         </div>
@@ -2413,7 +2414,7 @@
                                             }"
                                             class="description-container"
                                             [innerHtml]="
-                                                !descriptionPopoverOpen
+                                                descriptionPopoverOpen !== row.id
                                                     ? row[column.field]
                                                     : null
                                             "
@@ -2429,10 +2430,10 @@
                                             popoverClass="table-description-popover"
                                             triggers="manual"
                                             (hidden)="
-                                                descriptionPopoverOpen = false
+                                                descriptionPopoverOpen = -1
                                             "
                                             (shown)="
-                                                descriptionPopoverOpen = true
+                                                descriptionPopoverOpen = row.id
                                             "
                                         ></div>
                                     </div>
@@ -2665,7 +2666,7 @@ highlightingWords) : '' " -->
                                         <span
                                             *ngIf="
                                                 !row.isRepairOrder &&
-                                                !descriptionPopoverOpen
+                                                descriptionPopoverOpen !== row.id
                                             "
                                             class="table-total"
                                             [innerHtml]="
@@ -3728,7 +3729,7 @@ highlightingWords) : '' " -->
                                         <div
                                             #t2="ngbPopover"
                                             (click)="toggleDropdown(t2, row)"
-                                            [autoClose]="true"
+                                            [autoClose]="'outside'"
                                             [ngbPopover]="dropdownPopover"
                                             [placement]="'bottom-right'"
                                             class="table-dropdown-container"
@@ -3740,6 +3741,7 @@ highlightingWords) : '' " -->
                                             container="body"
                                             popoverClass="table-dropdown-popover"
                                             triggers="manual"
+                                            (hidden)="onRemoveClickEventListener()"
                                         >
                                             <svg-icon
                                                 [src]="
@@ -4248,33 +4250,26 @@ highlightingWords) : '' " -->
 
 <!-- DROPDOWN -->
 <ng-template #dropdownPopover let-data="data">
-    <!-- Old Dropdown (Delete After New Is Implemented On Every Table) -->
-    <div class="table-dropdown" *ngIf="!data.hasContent">
-        <div
-            (click)="onDropAction(action)"
-            *ngFor="let action of data"
-            class="table-dropdown-content"
-            [class]="action.class"
-        >
-            <div class="dropdown-content-icon">
-                <div [class]="action.contentType"></div>
-            </div>
-            <div class="dropdown-content-text">{{ action.title }}</div>
-        </div>
-    </div>
-
-    <!-- New Dropdown -->
     <div class="table-list-dropdown">
         <div
             class="table-list-dropdown-content-container"
-            *ngFor="let action of data.content"
+            [ngClass]="{
+                'table-list-dropdown-inner-dropdown-active': action?.isInnerDropActive
+            }"
+            *ngFor="let action of data"
         >
-            <!-- Regular Action -->
+            <!-- Action -->
             <div
                 class="table-list-dropdown-content"
-                (click)="onDropAction(action)"
+                (click)="
+                    !action?.isDropdown
+                        ? onDropAction(action)
+                        : onShowInnerDropdown(action)
+                "
                 [ngClass]="{
-                    'table-list-dropdown-content-muted': action.mutedStyle
+                    'table-list-dropdown-content-muted': action.mutedStyle,
+                    'table-list-dropdown-content-dropdown': action?.isDropdown,
+                    'table-list-dropdown-content-dropdown-active': action?.isInnerDropActive
                 }"
                 [ngStyle]="action.tableListDropdownContentStyle"
             >
@@ -4285,6 +4280,7 @@ highlightingWords) : '' " -->
                     *ngIf="action.svgUrl"
                     [class]="action.svgClass"
                     class="table-list-dropdown-content-icon"
+                    [ngClass]="{'inner-dropdown-open': action?.isInnerDropActive}"
                     [src]="action.svgUrl"
                     [svgStyle]="{
                         'width.px': action.svgStyle.width,
@@ -4293,7 +4289,14 @@ highlightingWords) : '' " -->
                 ></svg-icon>
             </div>
 
-            <!-- Regular Border -->
+            <!-- Inner Dropdown -->
+            <div
+                class="table-list-inner-dropdown"
+                [ngClass]="{'table-list-inner-dropdown-active': action?.isInnerDropActive}"
+                [innerHtml]="action?.innerDropElement ? action.innerDropElement : null"
+            ></div>
+
+            <!-- Border -->
             <div
                 class="table-list-dropdown-border-container"
                 *ngIf="action.hasBorder"

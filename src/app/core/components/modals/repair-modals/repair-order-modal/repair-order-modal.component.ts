@@ -142,6 +142,9 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
     public tags: any[] = [];
     private destroy$ = new Subject<void>();
 
+    //hide icon copy
+    public hideIconIndex = 0;
+
     constructor(
         private formBuilder: UntypedFormBuilder,
         private inputService: TaInputService,

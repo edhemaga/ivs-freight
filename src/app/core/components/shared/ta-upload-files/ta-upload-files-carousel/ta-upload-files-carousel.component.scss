@@ -4,6 +4,10 @@
     grid-template-columns: 1fr;
     grid-template-rows: 194px;
 
+    &.remove_pointers {
+        pointer-events: none !important;
+    }
+
     .ta-upload-files-carousel {
         position: relative;
         display: grid;
@@ -35,6 +39,10 @@
         top: 50%;
         transform: translateY(-50%);
         cursor: pointer;
+
+        &.remove_pointers {
+            pointer-events: none !important;
+        }
 
         &.show {
             display: flex !important;

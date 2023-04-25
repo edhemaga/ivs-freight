@@ -1048,7 +1048,8 @@
     }
 
     &.modals,
-    &.company-documents {
+    &.company-documents,
+    &.keep_open_modals {
         background-color: #eeeeee !important;
         .ta-upload-file-footer {
             opacity: 1;
@@ -1076,6 +1077,20 @@
 
         .ta-upload-file-tag {
             opacity: 1;
+        }
+    }
+
+    &.keep_open_modals {
+        background-color: #dadadada !important;
+        .ta-upload-file-footer {
+            .ta-upload-file-name {
+                transition: 0.1s all ease-in-out;
+                background-color: #eeeeee !important;
+
+                &:hover {
+                    background-color: #ffffff !important;
+                }
+            }
         }
     }
 

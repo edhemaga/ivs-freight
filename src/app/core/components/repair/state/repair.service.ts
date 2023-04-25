@@ -299,45 +299,45 @@ export class RepairTService implements OnDestroy {
                             this.shopStore.remove(({ id }) => id === data.id);
                             this.shopStore.add(shop);
 
-                            this.rDs.update((store) => {
-                                let ind;
-                                let minimalListIndex;
-                                let shopStored = JSON.parse(
-                                    JSON.stringify(store)
-                                );
+                            // this.rDs.update((store) => {
+                            //     let ind;
+                            //     let minimalListIndex;
+                            //     let shopStored = JSON.parse(
+                            //         JSON.stringify(store)
+                            //     );
 
-                                shopStored.repairShop.map(
-                                    (data: any, index: any) => {
-                                        if (data.id == shop.id) {
-                                            ind = index;
-                                        }
-                                    }
-                                );
+                            //     shopStored?.repairShop.map(
+                            //         (data: any, index: any) => {
+                            //             if (data.id == shop.id) {
+                            //                 ind = index;
+                            //             }
+                            //         }
+                            //     );
 
-                                shopStored.repairShopMinimal.pagination.data.map(
-                                    (data: any, index: any) => {
-                                        if (data.id == shop.id) {
-                                            minimalListIndex = index;
-                                            store.repairShopMinimal.pagination.data[
-                                                index
-                                            ]['name'] = shop.name;
-                                            store.repairShopMinimal.pagination.data[
-                                                index
-                                            ]['pinned'] = shop.pinned;
-                                            store.repairShopMinimal.pagination.data[
-                                                index
-                                            ]['status'] = shop.status;
-                                        }
-                                    }
-                                );
+                            //     shopStored?.repairShopMinimal?.pagination?.data.map(
+                            //         (data: any, index: any) => {
+                            //             if (data.id == shop.id) {
+                            //                 minimalListIndex = index;
+                            //                 store.repairShopMinimal.pagination.data[
+                            //                     index
+                            //                 ]['name'] = shop.name;
+                            //                 store.repairShopMinimal.pagination.data[
+                            //                     index
+                            //                 ]['pinned'] = shop.pinned;
+                            //                 store.repairShopMinimal.pagination.data[
+                            //                     index
+                            //                 ]['status'] = shop.status;
+                            //             }
+                            //         }
+                            //     );
 
-                                shopStored.repairShop[ind] = shop;
+                            //     shopStored.repairShop[ind] = shop;
 
-                                return {
-                                    ...store,
-                                    repairShop: [...shopStored.repairShop],
-                                };
-                            });
+                            //     return {
+                            //         ...store,
+                            //         repairShop: [...shopStored.repairShop],
+                            //     };
+                            // });
 
                             this.tableService.sendActionAnimation({
                                 animation: 'update',
@@ -545,6 +545,16 @@ export class RepairTService implements OnDestroy {
         shipperLat?: number,
         shipperDistance?: number,
         shipperStates?: Array<string>,
+        categoryIds?: Array<number>,
+        _long?: number,
+        lat?: number,
+        distance?: number,
+        costFrom?: number,
+        costTo?: number,
+        lastFrom?: number,
+        lastTo?: number,
+        ppgFrom?: number,
+        ppgTo?: number,
         pageIndex?: number,
         pageSize?: number,
         companyId?: number,
@@ -564,6 +574,16 @@ export class RepairTService implements OnDestroy {
             shipperLat,
             shipperDistance,
             shipperStates,
+            categoryIds,
+            _long,
+            lat,
+            distance,
+            costFrom,
+            costTo,
+            lastFrom,
+            lastTo,
+            ppgFrom,
+            ppgTo,
             pageIndex,
             pageSize,
             companyId,
@@ -579,6 +599,12 @@ export class RepairTService implements OnDestroy {
         northEastLongitude?: number,
         southWestLatitude?: number,
         southWestLongitude?: number,
+        categoryIds?: Array<number>,
+        _long?: number,
+        lat?: number,
+        distance?: number,
+        costFrom?: number,
+        costTo?: number,
         pageIndex?: number,
         pageSize?: number,
         companyId?: number,
@@ -592,6 +618,12 @@ export class RepairTService implements OnDestroy {
             northEastLongitude,
             southWestLatitude,
             southWestLongitude,
+            categoryIds,
+            _long,
+            lat,
+            distance,
+            costFrom,
+            costTo,
             pageIndex,
             pageSize,
             companyId,

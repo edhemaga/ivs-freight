@@ -7,6 +7,8 @@ import { MapService } from './../../../../../appcoretruckassist/api/map.service'
 import { CreateMapCommand } from './../../../../../appcoretruckassist/model/createMapCommand';
 import { MapResponse } from './../../../../../appcoretruckassist/model/mapResponse';
 import { tap } from 'rxjs';
+import { Router } from '@angular/router';
+import { DetailsDataService } from '../details-data/details-data.service';
 
 declare var google: any;
 
@@ -36,13 +38,16 @@ export class MapsService implements OnDestroy {
     mapFilterChange: Subject<any> = new Subject<any>();
     mapRatingChange: Subject<any> = new Subject<any>();
     searchResultsCountChange: Subject<any> = new Subject<any>();
+    markerUpdateChange: Subject<any> = new Subject<any>();
 
     private hubConnection: signalR.HubConnection;
     public statusChange = new Subject<any>();
 
     constructor(
         private mapService: MapService,
-        private notificationService: NotificationService
+        private notificationService: NotificationService,
+        private router: Router,
+        private detailsDataService: DetailsDataService,
     ) {
         this.sortCategoryChange
             .pipe(takeUntil(this.destroy$))
@@ -147,5 +152,213 @@ export class MapsService implements OnDestroy {
 
     addRating(item) {
         this.mapRatingChange.next(item);
+    }
+
+    getDropdownActions(data, type) {
+        var dropActions = {};
+
+        if (type == 'shipper') {
+            dropActions = [
+                {
+                    title: 'Edit',
+                    name: 'edit',
+                    svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
+                    show: true,
+                    iconName: 'edit',
+                    disabled: data.status == 0 || data.isClosed
+                },
+                {
+                    title: 'border',
+                },
+                {
+                    title: 'View Details',
+                    name: 'view-details',
+                    svg: 'assets/svg/truckassist-table/new-list-dropdown/Information.svg',
+                    show: true,
+                    iconName: 'view-details',
+                },
+                {
+                    title: 'Add Contact',
+                    name: 'Contact',
+                    svg: 'assets/svg/truckassist-table/customer/contact-column-avatar.svg',
+                    show: true,
+                    iconName: 'add-contact',
+                    disabled: data.status == 0 || data.isClosed
+                },
+                {
+                    title: 'Write Review',
+                    name: 'Review',
+                    svg: 'assets/svg/common/review-pen.svg',
+                    show: true,
+                    iconName: 'write-review',
+                    disabled: data.status == 0 || data.isClosed
+                },
+                {
+                    title: 'border',
+                },
+                {
+                    title: 'Share',
+                    name: 'share',
+                    svg: 'assets/svg/common/share-icon.svg',
+                    show: true,
+                    iconName: 'share',
+                },
+                {
+                    title: 'Print',
+                    name: 'print',
+                    svg: 'assets/svg/common/ic_fax.svg',
+                    show: true,
+                    iconName: 'print',
+                },
+                {
+                    title: 'border',
+                },
+                {
+                    title: data.status == 0 || data.isClosed ? 'Open Business' : 'Close Business',
+                    name: data.status == 0 || data.isClosed ? 'open-business' : 'close-business',
+                    svg: 'assets/svg/common/close-business-icon.svg',
+                    redIcon: data.status != 0 && !data.isClosed,
+                    greenIcon: data.status == 0 || data.isClosed,
+                    show: true,
+                    iconName: data.status == 0 || data.isClosed ? 'mark-as-done' : 'close-business',
+                },
+                {
+                    title: 'Delete',
+                    name: 'delete-item',
+                    svg: 'assets/svg/common/ic_trash_updated.svg',
+                    redIcon: true,
+                    show: true,
+                    iconName: 'delete',
+                },
+            ];
+        } else if (type == 'repairShop') {
+            dropActions = [
+                {
+                    title: 'Edit',
+                    name: 'edit',
+                    svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
+                    show: true,
+                    iconName: 'edit',
+                    disabled: data.status == 0 || data.isClosed
+                },
+                {
+                    title: 'border',
+                },
+                {
+                    title: 'View Details',
+                    name: 'view-details',
+                    svg: 'assets/svg/truckassist-table/new-list-dropdown/Information.svg',
+                    show: true,
+                    iconName: 'view-details',
+                },
+                {
+                    title: 'Add Bill',
+                    name: 'add-bill',
+                    svg: 'assets/svg/common/ic_plus.svg',
+                    show: true,
+                    blueIcon: true,
+                    iconName: 'ic_plus',
+                    disabled: data.status == 0 || data.isClosed
+                },
+                {
+                    title: data.pinned || data.favourite
+                        ? 'Remove from Favourite'
+                        : 'Move to Favourite',
+                    name: data.pinned || data.favourite ? 'remove-from-favourite' : 'move-to-favourite',
+                    svg: 'assets/svg/common/ic_star.svg',
+                    activate: true,
+                    blueIcon: data.pinned || data.favourite,
+                    show: true,
+                    iconName: 'ic_star',
+                    disabled: data.companyOwned || data.status == 0 || data.isClosed
+                },
+                {
+                    title: 'Write Review',
+                    name: 'write-review',
+                    svg: 'assets/svg/common/review-pen.svg',
+                    show: true,
+                    iconName: 'write-review',
+                    disabled: data.status == 0 || data.isClosed
+                },
+                {
+                    title: 'border',
+                },
+                {
+                    title: 'Share',
+                    name: 'share',
+                    svg: 'assets/svg/common/share-icon.svg',
+                    show: true,
+                    iconName: 'share',
+                },
+                {
+                    title: 'Print',
+                    name: 'print',
+                    svg: 'assets/svg/common/ic_fax.svg',
+                    show: true,
+                    iconName: 'print',
+                },
+                {
+                    title: 'border',
+                },
+                {
+                    title: data.status == 0 || data.isClosed ? 'Reopen Business' : 'Close Business',
+                    name: data.status == 0 || data.isClosed ? 'open-business' : 'close-business',
+                    svg: 'assets/svg/common/close-business-icon.svg',
+                    redIcon: data.status != 0 && !data.isClosed,
+                    greenIcon: data.status == 0 || data.isClosed,
+                    show: true,
+                    iconName: data.status == 0 || data.isClosed ? 'mark-as-done' : 'close-business',
+                },
+                {
+                    title: 'Delete',
+                    name: 'delete-item',
+                    type: 'truck',
+                    text: 'Are you sure you want to delete truck(s)?',
+                    svg: 'assets/svg/common/ic_trash_updated.svg',
+                    danger: true,
+                    show: true,
+                    redIcon: true,
+                    iconName: 'delete',
+                },
+            ];
+        }
+
+        return dropActions;
+    }
+
+    goToDetails(data, type) {
+        var linkStart = '';
+        var linkEnd = '';
+        var doesNotHaveRout = false;
+
+        if ( type == 'shipper' ) {
+            linkStart = '/list/customer/';
+            linkEnd = '/shipper-details';
+        } else if ( type == 'repairShop' ) {
+            linkStart = '/list/repair/';
+            linkEnd = '/shop-details';
+        } else if ( type == 'fuelStop' ) {
+            doesNotHaveRout = true;
+        } else if ( type == 'accident' ) {
+            doesNotHaveRout = true;
+        } else {
+            doesNotHaveRout = true;
+        }
+
+        if ( !doesNotHaveRout ) {
+            const link =
+                linkStart +
+                data['id'] +
+                linkEnd;
+
+            this.detailsDataService.setNewData(data);
+            this.selectedMarker(0);
+
+            this.router.navigate([link]);
+        }
+    }
+
+    markerUpdate(data) {
+        this.markerUpdateChange.next(data);
     }
 }

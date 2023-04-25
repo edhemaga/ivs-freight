@@ -17,7 +17,7 @@ import { ShipperState } from '../state/shipper-state/shipper.store';
 import { ShipperQuery } from '../state/shipper-state/shipper.query';
 import { ShipperTService } from '../state/shipper-state/shipper.service';
 import { GetBrokerListResponse, ShipperListResponse } from 'appcoretruckassist';
-import { Subject, takeUntil } from 'rxjs';
+import { forkJoin, Subject, takeUntil } from 'rxjs';
 import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
 import { NotificationService } from '../../../services/notification/notification.service';
 import { DetailsDataService } from '../../../services/details-data/details-data.service';
@@ -33,7 +33,7 @@ import { TaThousandSeparatorPipe } from '../../../pipes/taThousandSeparator.pipe
 import { ReviewsRatingService } from '../../../services/reviews-rating/reviewsRating.service';
 import { DatePipe } from '@angular/common';
 import { MapsService } from 'src/app/core/services/shared/maps.service';
-
+import { ShipperStore } from '../state/shipper-state/shipper.store';
 @Component({
     selector: 'app-customer-table',
     templateUrl: './customer-table.component.html',
@@ -59,6 +59,7 @@ export class CustomerTableComponent
     selectedTab = 'active';
     activeViewMode: string = 'List';
     resizeObserver: ResizeObserver;
+    inactiveTabClicked: boolean = false;
     backBrokerFilterQuery = {
         ban: null,
         dnu: null,
@@ -90,7 +91,6 @@ export class CustomerTableComponent
         searchTwo: undefined,
         searchThree: undefined,
     };
-
     mapListData = [];
 
     constructor(
@@ -106,7 +106,8 @@ export class CustomerTableComponent
         private DetailsDataService: DetailsDataService,
         private ref: ChangeDetectorRef,
         public datePipe: DatePipe,
-        private mapsService: MapsService
+        private mapsService: MapsService,
+        private shipperStore: ShipperStore
     ) {}
 
     ngOnInit(): void {
@@ -335,6 +336,8 @@ export class CustomerTableComponent
                 ? this.brokerQuery.getAll()
                 : [];
         } else {
+            this.inactiveTabClicked = true;
+
             this.shipper = this.shipperQuery.getAll().length
                 ? this.shipperQuery.getAll()
                 : [];
@@ -500,6 +503,58 @@ export class CustomerTableComponent
         };
     }
 
+    // Map Shipper Data
+    mapShipperData(data: any) {
+        return {
+            ...data,
+            isSelected: false,
+            tableAddress: data?.address?.address ? data.address.address : '',
+            tableLoads: 'NA',
+            tableAverageWatingTimePickup: data?.avgPickupTime
+                ? data.avgPickupTime
+                : '',
+            tableAverageWatingTimeDelivery: data?.avgDeliveryTime
+                ? data.avgDeliveryTime
+                : '',
+
+            tableAvailableHoursShipping:
+                data?.shippingFrom && data?.shippingTo
+                    ? data?.shippingFrom +
+                      ' Treba AM ili PM' +
+                      ' - ' +
+                      data?.shippingTo +
+                      ' Treba AM ili PM'
+                    : '',
+            tableAvailableHoursReceiving:
+                data?.receivingFrom && data?.receivingTo
+                    ? data?.receivingFrom +
+                      ' Treba AM ili PM' +
+                      ' - ' +
+                      data?.receivingTo +
+                      ' Treba AM ili PM'
+                    : '',
+            tableRaiting: {
+                hasLiked: data.currentCompanyUserRating === 1,
+                hasDislike: data.currentCompanyUserRating === -1,
+                likeCount: data?.upCount ? data.upCount : '0',
+                dislikeCount: data?.downCount ? data.downCount : '0',
+            },
+            tableContact: data?.shipperContacts?.length
+                ? data.shipperContacts.length
+                : 0,
+            tableAdded: data.createdAt
+                ? this.datePipe.transform(data.createdAt, 'MM/dd/yy')
+                : '',
+            tableEdited: 'NA', // data.updatedAt
+            //? this.datePipe.transform(data.updatedAt, 'MM/dd/yy')
+            //: '',
+            tableDropdownContent: {
+                hasContent: true,
+                content: this.getDropdownShipperContent(data),
+            },
+        };
+    }
+
     getDropdownBrokerContent(data: any) {
         return [
             {
@@ -642,57 +697,7 @@ export class CustomerTableComponent
             },
         ];
     }
-    // Map Shipper Data
-    mapShipperData(data: any) {
-        return {
-            ...data,
-            isSelected: false,
-            tableAddress: data?.address?.address ? data.address.address : '',
-            tableLoads: 'NA',
-            tableAverageWatingTimePickup: data?.avgPickupTime
-                ? data.avgPickupTime
-                : '',
-            tableAverageWatingTimeDelivery: data?.avgDeliveryTime
-                ? data.avgDeliveryTime
-                : '',
 
-            tableAvailableHoursShipping:
-                data?.shippingFrom && data?.shippingTo
-                    ? data?.shippingFrom +
-                      ' Treba AM ili PM' +
-                      ' - ' +
-                      data?.shippingTo +
-                      ' Treba AM ili PM'
-                    : '',
-            tableAvailableHoursReceiving:
-                data?.receivingFrom && data?.receivingTo
-                    ? data?.receivingFrom +
-                      ' Treba AM ili PM' +
-                      ' - ' +
-                      data?.receivingTo +
-                      ' Treba AM ili PM'
-                    : '',
-            tableRaiting: {
-                hasLiked: data.currentCompanyUserRating === 1,
-                hasDislike: data.currentCompanyUserRating === -1,
-                likeCount: data?.upCount ? data.upCount : '0',
-                dislikeCount: data?.downCount ? data.downCount : '0',
-            },
-            tableContact: data?.shipperContacts?.length
-                ? data.shipperContacts.length
-                : 0,
-            tableAdded: data.createdAt
-                ? this.datePipe.transform(data.createdAt, 'MM/dd/yy')
-                : '',
-            tableEdited: 'NA', // data.updatedAt
-            //? this.datePipe.transform(data.updatedAt, 'MM/dd/yy')
-            //: '',
-            tableDropdownContent: {
-                hasContent: true,
-                content: this.getDropdownShipperContent(data),
-            },
-        };
-    }
     getDropdownShipperContent(data: any) {
         return [
             {
@@ -793,6 +798,7 @@ export class CustomerTableComponent
             },
         ];
     }
+
     // Update Broker And Shipper Count
     updateDataCount() {
         const brokerShipperCount = JSON.parse(
@@ -941,9 +947,43 @@ export class CustomerTableComponent
             this.backBrokerFilterQuery.pageIndex = 1;
             this.backShipperFilterQuery.pageIndex = 1;
 
-            this.sendCustomerData();
+            if (this.selectedTab === 'inactive' && !this.inactiveTabClicked) {
+                this.shipperService;
+                forkJoin([
+                    this.shipperService.getShippersList(
+                        null,
+                        null,
+                        null,
+                        null,
+                        1,
+                        25
+                    ),
+                    this.tableService.getTableConfig(5),
+                ])
+                    .pipe(takeUntil(this.destroy$))
+                    .subscribe(([shipperPagination, tableConfig]) => {
+                        if (tableConfig) {
+                            const config = JSON.parse(tableConfig.config);
+
+                            localStorage.setItem(
+                                `table-${tableConfig.tableType}-Configuration`,
+                                JSON.stringify(config)
+                            );
+                        }
+
+                        this.shipperStore.set(
+                            shipperPagination.pagination.data
+                        );
+
+                        this.sendCustomerData();
+                    });
+            } else {
+                this.sendCustomerData();
+            }
         } else if (event.action === 'view-mode') {
             this.activeViewMode = event.mode;
+
+            this.tableOptions.toolbarActions.hideSearch = event.mode == 'Map';
         }
     }
 

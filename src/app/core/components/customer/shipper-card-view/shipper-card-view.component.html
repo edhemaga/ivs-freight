@@ -126,9 +126,10 @@
                     class="charts-template perfomance"
                     [class.p-0]="stackedBarChart.hoveringStatus"
                 >
-                    <div *ngIf="!stackedBarChart.hoveringStatus">
+                    <div [class.d-none]="stackedBarChart.hoveringStatus">
                         <app-ta-tab-switch
                             [tabs]="shipperTabs"
+                            (switchClicked)="changeShipperTabs($event)"
                             [type]="'type2-modal-popup'"
                         >
                         </app-ta-tab-switch>

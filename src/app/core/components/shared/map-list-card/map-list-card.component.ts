@@ -7,6 +7,7 @@ import {
     OnDestroy,
     ChangeDetectorRef,
     ElementRef,
+    ViewChild,
 } from '@angular/core';
 import { MapsService } from '../../../services/shared/maps.service';
 import { Subject, takeUntil } from 'rxjs';
@@ -20,6 +21,7 @@ import { DetailsDropdownComponent } from '../details-page-dropdown/details-dropd
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { ProfileImagesComponent } from '../profile-images/profile-images.component';
 import { formatDatePipe } from 'src/app/core/pipes/formatDate.pipe';
+import { DropDownService } from 'src/app/core/services/details-page/drop-down.service';
 
 @Component({
     selector: 'app-map-list-card',
@@ -54,19 +56,21 @@ export class MapListCardComponent implements OnInit, OnDestroy {
     @Input() item: any = {};
     @Input() index: any = {};
     @Input() type: string = '';
-    @Input() dropdownActions: any[] = [];
     @Output() clickedMarker: EventEmitter<any> = new EventEmitter<any>();
     @Output() bodyActions: EventEmitter<any> = new EventEmitter();
+    @ViewChild("detailsDropdown") detailsDropdown: any;
     public locationFilterOn: boolean = false;
     sortCategory: any = {};
     clickedOnDots: boolean = false;
+    dropdownActions: any = {};
 
     constructor(
         private mapsService: MapsService,
         private ref: ChangeDetectorRef,
         public elementRef: ElementRef,
         private detailsDataService: DetailsDataService,
-        private modalService: ModalService
+        private modalService: ModalService,
+        private dropdownService: DropDownService
     ) {}
 
     ngOnInit(): void {
@@ -78,11 +82,40 @@ export class MapListCardComponent implements OnInit, OnDestroy {
                 this.sortCategory = category;
             });
 
+        this.mapsService.markerUpdateChange
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((item) => {
+                if ( item.id == this.item.id ) {
+                    this.item = item;
+                    this.getDropdownActions();
+                }
+            });
+
         if (this.mapsService.selectedMarkerId) {
             this.isSelected = this.mapsService.selectedMarkerId == this.item.id;
             this.item.isSelected =
                 this.mapsService.selectedMarkerId == this.item.id;
         }
+
+        this.mapsService.selectedMarkerChange
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((id) => {
+                if ( id != this.item.id && this.detailsDropdown?.tooltip ) {
+                    this.detailsDropdown.dropDownActive = -1;
+                    this.detailsDropdown.tooltip.close();
+                }
+            });
+
+        this.mapsService.selectedMapListCardChange
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((id) => {
+                if ( id != this.item.id && this.detailsDropdown?.tooltip ) {
+                    this.detailsDropdown.dropDownActive = -1;
+                    this.detailsDropdown.tooltip.close();
+                }
+            });
+
+        this.getDropdownActions();
     }
 
     selectCard() {
@@ -100,35 +133,75 @@ export class MapListCardComponent implements OnInit, OnDestroy {
     }
 
     callBodyAction(action) {
-        if (action.type == 'delete' || action.type == 'delete-repair') {
-            var name =
-                this.type == 'repairShop'
-                    ? action.data.name
-                    : this.type == 'shipper'
-                    ? action.data.name
-                    : '';
+        // if (action.type == 'delete' || action.type == 'delete-repair') {
+        //     var name =
+        //         this.type == 'repairShop'
+        //             ? action.data.name
+        //             : this.type == 'shipper'
+        //             ? action.data.businessName
+        //             : '';
 
-            var shipperData = {
-                id: action.id,
-                type: 'delete-item',
-                data: {
-                    ...action.data,
-                    name: name,
-                },
-            };
+        //     var shipperData = {
+        //         id: action.id,
+        //         type: 'delete-item',
+        //         data: {
+        //             ...action.data,
+        //             name: name,
+        //         },
+        //     };
 
-            this.modalService.openModal(
-                ConfirmationModalComponent,
-                { size: 'small' },
-                {
-                    ...shipperData,
-                    template:
-                        this.type == 'repairShop' ? 'repair shop' : 'shipper',
-                    type: 'delete',
-                }
-            );
+        //     this.modalService.openModal(
+        //         ConfirmationModalComponent,
+        //         { size: 'small' },
+        //         {
+        //             ...shipperData,
+        //             template:
+        //                 this.type == 'repairShop' ? 'repair shop' : 'shipper',
+        //             type: 'delete',
+        //         }
+        //     );
+        // } else {
+        //     this.bodyActions.emit(action);
+        // }
+
+        if ( action.type == 'view-details' ) {
+            this.mapsService.goToDetails(this.item, this.type);
         } else {
-            this.bodyActions.emit(action);
+            if ( this.type == 'repairShop' ) {
+                if ( action.type == 'write-review' ){
+                    action.type = 'edit';
+                    action.openedTab = 'Review';
+                }
+        
+                console.log('---here---', action);
+                this.dropdownService.dropActionsHeaderRepair(
+                    action,
+                    this.item,
+                    action.id,
+                );
+            } else if ( this.type == 'shipper' ) {
+                console.log('---here---', action);
+                let eventType = '';
+                if ( action.type == 'Contact' || action.type == 'edit' || action.type == 'Review'){
+                    eventType = 'edit'
+                } else {
+                    eventType = action.type;
+                }
+
+                let eventObject = {
+                    data: undefined,
+                    id: action.id,
+                    type: eventType,
+                    openedTab: action.type,
+                }
+                setTimeout(() => {
+                    this.dropdownService.dropActionsHeaderShipperBroker(
+                        eventObject,
+                        this.item,
+                        'shipper'
+                    );
+                }, 100);
+            }
         }
     }
 
@@ -193,6 +266,10 @@ export class MapListCardComponent implements OnInit, OnDestroy {
             data: this.item,
             type: 'favorite',
         });
+    }
+
+    getDropdownActions() {
+        this.dropdownActions = this.mapsService.getDropdownActions(this.item, this.type);
     }
 
     ngOnDestroy(): void {

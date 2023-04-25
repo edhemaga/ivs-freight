@@ -25,6 +25,7 @@
         [customDetailsPageClass]="customClassName"
         (activeSlide)="currentSlide = $event"
         [slideWidth]="slideWidth"
+        (hoverArrowEmit)="hoverArrow($event)"
     >
         <div
             class="ta-upload-carousel-container"
@@ -32,6 +33,7 @@
         >
             <div>
                 <app-ta-upload-file
+                    #uploadedFiles
                     [file]="file"
                     [hasTagsDropdown]="hasTagsDropdown"
                     [isReview]="isReview"
@@ -48,6 +50,7 @@
                     [type]="type"
                     [categoryTag]="categoryTag"
                     [hasLandscapeOption]="hasLandscapeOption"
+                    (fileHover)="fileHover($event)"
                 ></app-ta-upload-file>
             </div>
         </div>
@@ -62,6 +65,7 @@
             [dropzoneClose]="true"
             [dropzoneFocus]="dropzoneFocus"
             (closeDropzone)="dropZoneClose()"
+            [customClassName]="customClassName"
         ></app-ta-upload-dropzone>
         <div
             class="ta-upload-carousel-container"
@@ -96,5 +100,8 @@
         [isRequired]="isRequired"
         [showRequired]="showRequired"
         [dropzoneFocus]="dropzoneFocus"
+        [customClassName]="customClassName"
+        [size]="size"
+        [filesLength]="files?.length ? files.length : 0"
     ></app-ta-upload-dropzone>
 </div>

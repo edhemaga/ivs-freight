@@ -6,10 +6,18 @@
     *ngIf="dropzoneFocus && windowDragOver"
 ></div>
 <div
-    class="ta-upload-dropzone"
+    class="ta-upload-dropzone {{ customClassName }}"
     *ngIf="!unSupporetedType"
     [class.required]="isRequired && showRequired && !textChangeOverModal"
     [class.dropzone_focused]="dropzoneFocus && windowDragOver"
+    [class.expand]="
+        dropZoneConfig.globalDropZone ||
+        (customClassName == 'company-documents' && windowDragOver)
+    "
+    [class.over_modal]="
+        textChangeOverModal ||
+        (customClassName == 'company-documents' && windowDragOver)
+    "
 >
     <svg-icon
         *ngIf="dropzoneClose && dropzoneFocus && !windowDragOver"
@@ -37,11 +45,10 @@
                 [ngClass]="{
                     'ta-upload-dropzone-text-big': dropZoneConfig.globalDropZone
                 }"
-            >
-                {{
-                    !textChangeOverModal
-                        ? 'DRAG FILES HERE'
-                        : "DROP IT LIKE IT'S HOT"
+                >{{
+                    filesLength > 1 && size == 'medium'
+                        ? 'DRAG FILES'
+                        : 'DRAG FILES HERE'
                 }}
                 <span
                     class="required"
@@ -56,11 +63,7 @@
                     'ta-upload-dropzone-text-big': dropZoneConfig.globalDropZone
                 }"
             >
-                {{
-                    !textChangeOverModal
-                        ? 'DRAG MEDIA HERE'
-                        : "DROP IT LIKE IT'S HOT"
-                }}
+                DRAG MEDIA HERE
             </span>
             <!-- IMAGE -->
             <span
@@ -69,11 +72,7 @@
                     'ta-upload-dropzone-text-big': dropZoneConfig.globalDropZone
                 }"
             >
-                {{
-                    !textChangeOverModal
-                        ? 'DRAG IMAGE HERE'
-                        : "DROP IT LIKE IT'S HOT"
-                }}
+                DRAG IMAGE HERE
             </span>
             <span
                 *ngIf="!dropZoneConfig.globalDropZone"

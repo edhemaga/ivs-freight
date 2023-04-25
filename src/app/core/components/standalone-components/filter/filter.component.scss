@@ -34,7 +34,7 @@
 
 .user-icon {
     position: relative;
-    width: 26px;
+    min-width: 26px;
     height: 26px;
     display: flex;
     justify-content: center;
@@ -42,6 +42,42 @@
 
     border-radius: 2px;
     cursor: pointer;
+
+
+    .main-icon-holder{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        .filters-selected-value-holder{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0px 7px;
+            width: 10px;
+            font-weight: 700;
+            font-size: 11px;
+            line-height: 13px;
+            color: #FFFFFF;
+
+            
+            &.conf-icon-holder{
+                svg {
+                    height: 9.27px;
+                    width: 12px;     
+                    path{
+                        
+                    }
+                    
+                }
+            }
+            
+            &.clear-filter-icon{
+                display: none;
+            }
+
+        }
+    }
 
     svg-icon {
         svg {
@@ -52,7 +88,7 @@
     }
 
     &:hover {
-        background-color: #42424220;
+        background-color: #eeeeee;
 
         .main-icon-holder {
             svg-icon {
@@ -76,20 +112,20 @@
     }
 
     &.active-options {
-        background-color: #42424220;
+        background-color: #424242;
 
         .main-icon-holder {
             svg-icon {
                 svg {
                     path {
-                        fill: #424242 !important;
+                        fill: #FFFFFF70 !important;
                     }
                 }
             }
         }
 
         &.filter-active-colors {
-            background-color: #536bc220 !important;
+            //background-color: #536bc220 !important;
 
             .active-filter-num {
                 background-color: #536bc2 !important;
@@ -99,16 +135,30 @@
         .clear-filter {
             display: none !important;
         }
+
+        &:hover{
+            .main-icon-holder {
+                svg-icon {
+                    svg {
+                        path {
+                            fill: #FFFFFF !important;
+                        }
+                    }
+                }
+            }
+        }
     }
 
     &.filter-active-colors {
-        background-color: #3074d320;
+        background-color: #3074D3;
 
         .main-icon-holder {
+            padding-left: 5px;
+
             svg-icon {
                 svg {
                     path {
-                        fill: #3074d3 !important;
+                        fill: #FFFFFF70 !important;
                     }
                 }
             }
@@ -163,17 +213,52 @@
             }
         }
 
-        &:hover {
-            background-color: #3074d3 !important;
-            transition: 0.2s all;
-            .main-icon-holder {
-                svg-icon {
+        .main-icon-holder {
+            svg-icon {
+                &:hover{
                     svg {
                         path {
                             fill: #ffffff !important;
                         }
+                    } 
+                }
+            }
+        }
+
+        &:hover {
+            background-color: #255BB9 !important;
+            transition: 0.2s all;
+            .main-icon-holder {
+               
+                .filters-selected-value-holder{
+                    display: none;
+                    &.clear-filter-icon{
+                        display: flex;
+                        height: 10px;
+                        width: 10px;
+                            
+                        svg {
+                            
+                            path{
+                                height: 10px;
+                                width: 10px;
+                            }
+                            
+                        }
+
+                        &:hover{
+                            
+                                .filter-active-colors{
+                                    background-color: #EF5350 !important;
+                                }
+                                
+                            
+                            
+                        }
+
                     }
                 }
+                
             }
 
             .active-filter-num {
@@ -200,7 +285,7 @@
     position: relative;
     left: -8px;
     width: 260px;
-    padding: 7px 6px 6px 6px;
+    padding: 7px 8px 6px 8px;
     border-radius: 3px;
     background-color: #2f2f2f;
     box-shadow: 0 0 4px #00000026;
@@ -280,7 +365,7 @@
             font-size: 14px;
             font-weight: 800;
             color: #ffffff;
-            padding-left: 2px;
+            padding: 0px 4px;
             box-sizing: border-box;
 
             &.counter-padd-title {
@@ -614,13 +699,18 @@
         }
 
         .selected-user-frame {
+
             position: relative;
-            width: 100%;
-            height: 26px;
-            border-radius: 2px;
             display: flex;
             align-items: center;
+            
+            width: 100%;
+            height: 26px;
+            padding-right: 8px;
             padding-left: 30px;
+            border-radius: 2px;
+            
+            
             box-sizing: border-box;
             font-size: 14px;
             font-weight: 700;
@@ -630,7 +720,7 @@
             user-select: none;
 
             .selected-icon {
-                position: absolute;
+                //position: absolute;
                 width: 18px;
                 height: 18px;
                 display: flex;
@@ -653,7 +743,7 @@
             }
 
             .icon-delete {
-                position: absolute;
+                //position: absolute;
                 width: 21px;
                 height: 23px;
                 border-radius: 1px;
@@ -755,6 +845,10 @@
 
             .user-main-holder {
                 width: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding-right: 6px;
                 transition: all 0.2s linear;
                 //animation: itemAnimation 0.3s;
                 &:hover {
@@ -847,10 +941,10 @@
         user-select: none;
 
         .button-clear {
-            width: 121px;
+            width: 120px;
             height: 28px;
             border-radius: 2px;
-            background-color: rgb(108 108 108 / 20%);
+            background-color: #424242;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -872,16 +966,16 @@
         }
 
         .button-set {
-            width: 121px;
+            width: 120px;
             height: 28px;
             border-radius: 2px;
-            background-color: rgb(108 108 108 / 20%);
+            background-color: #424242;
             display: flex;
             justify-content: center;
             align-items: center;
             font-size: 14px;
             font-weight: 700;
-            color: #6c6c6c;
+            color: #919191;
             line-height: 28px;
 
             &.active {
@@ -1015,7 +1109,7 @@
                 width: 42px;
 
                 path {
-                    fill: #dadada;
+                    fill: #919191;
                 }
             }
         }
@@ -1136,11 +1230,11 @@
     .buttons-holder {
         padding: 0px;
         .button-clear {
-            width: 141px;
+            width: 140px;
         }
 
         .button-set {
-            width: 141px;
+            width: 140px;
         }
     }
 
@@ -1357,11 +1451,11 @@
     .buttons-holder {
         padding: 0px;
         .button-clear {
-            width: 141px;
+            width: 140px;
         }
 
         .button-set {
-            width: 141px;
+            width: 140px;
         }
     }
 
@@ -1433,7 +1527,7 @@
 }
 
 .location-filter {
-    padding: 10px 6px 6px 6px;
+    padding: 10px 8px 6px 8px;
     width: 300px;
 
     .bottom-border-margin {
@@ -1444,16 +1538,42 @@
         padding: 0px;
     }
     .button-clear {
-        width: 141px !important;
+        width: 140px !important;
     }
 
     .button-set {
-        width: 141px !important;
+        width: 140px !important;
     }   
 
     .areaFilterHolder{
-        padding: 6px 0px;
+        padding: 6px 4px;
         width: 100%;
+
+        .tab-switch-holder{
+
+            &.type2-modal-popup {
+                background-color: #1D1D1D;
+
+                .tab-switch-items-holder {
+                    &.active {
+                        div{
+                            color: #FFFFFF !important;    
+                        }
+                        
+                    }
+        
+                    &:hover:not(.active) {
+                        //background-color: #f3f3f3;
+                        color: #AAAAAA;
+                    }
+                }
+
+                .slide-active-holder {
+                    background-color: #424242 !important;
+                }
+            }
+            
+        }
     }
 
     .area-all-holder{
@@ -1461,6 +1581,7 @@
         flex-wrap: wrap;
         flex-direction: row;
         width: 100%;
+        padding: 0px 4px;
         overflow: hidden;
 
         .main-part-holder{
@@ -1487,7 +1608,8 @@
         }
 
         &.location-slider-middle-padding {
-            padding-top: 12px;
+            padding-top: 22px;
+            padding-bottom: 8px;
             overflow: hidden !important;
             .ta-ngx-slider,
             .custom-slider-commission {
@@ -1495,60 +1617,92 @@
             }
         }
 
-        .ta-ngx-slider,
-        .custom-slider-commission {
-            margin-top: 8px;
-            margin-bottom: 8px;
+        .range-new-value-holder{
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+        }
 
-            .ngx-slider {
-                height: 6px;
+        .range-text{
+            padding-left: 6px;
+            padding-right: 12px;
+            font-weight: 400;
+            font-size: 14px;
+            line-height: 17px;
+            color: #FFFFFF;
+        }
 
-                .ngx-slider-pointer {
-                    width: 58px;
-                    height: 24px;
-                    box-shadow: none !important;
-                    border: none !important;
-                    outline: none !important;
+        .range-flex-holder{
+            width: 100%;
+
+
+            .ta-ngx-slider,
+            .custom-slider-commission {
+                margin-top: 8px;
+                margin-bottom: 8px;
+
+
+                .custom-slider-text {
+                    margin-bottom: 0px !important;
                 }
 
-                .ngx-slider-selection {
-                    background-color: #6c6c6c !important;
-                }
+                .ngx-slider {
+                    height: 6px;
 
-                .ngx-slider-bubble {
-                    position: absolute;
-                    top: -9.5px;
-                    width: 58px;
-                    height: 24px;
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-
-                    color: #6c6c6c !important;
-                    font-size: 12px !important;
-
-                    background-color: #ffffff;
-                    font-weight: bold !important;
-
-                    border-radius: 2px;
-                    box-shadow: 0 0 4px rgb(0 0 0 / 16%) !important;
-                    z-index: 1;
-                    cursor: pointer;
-
-                    &::after {
-                        padding-left: 2px;
-                        content: 'mi';
+                    .ngx-slider-bar {
+                        border-radius: 4px;
+                        background: #424242 !important;
                     }
-                }
 
-                .ngx-slider-combined {
-                    //display: none !important;
-                    opacity: 0 !important;
-                    width: 0px !important;
-                    padding: 0px !important;
+                    .ngx-slider-pointer {
+                        width: 58px;
+                        height: 24px;
+                        box-shadow: none !important;
+                        border: none !important;
+                        outline: none !important;
+                    }
+
+                    .ngx-slider-selection {
+                        background-color: #255BB9 !important;
+                    }
+
+                    .ngx-slider-bubble {
+                        position: absolute;
+                        top: -9.5px;
+                        width: 58px;
+                        height: 24px;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+
+                        color: #FFFFFF !important;
+                        font-size: 12px !important;
+
+                        background-color: #6C6C6C;
+                        font-weight: bold !important;
+
+                        border-radius: 2px;
+                        box-shadow: 0 0 4px rgb(0 0 0 / 16%) !important;
+                        z-index: 1;
+                        cursor: pointer;
+
+                        &::after {
+                            padding-left: 2px;
+                            content: 'mi';
+                        }
+                    }
+
+                    .ngx-slider-combined {
+                        //display: none !important;
+                        opacity: 0 !important;
+                        width: 0px !important;
+                        padding: 0px !important;
+                    }
                 }
             }
         }
+
+        
 
         &.slider-two-holder {
             padding-top: 22px;
@@ -1876,16 +2030,16 @@
         user-select: none;
 
         .button-clear {
-            width: 121px;
+            width: 120px;
             height: 28px;
             border-radius: 2px;
-            background-color: rgb(108 108 108 / 20%);
+            background-color: #424242;
             display: flex;
             justify-content: center;
             align-items: center;
             font-size: 14px;
             font-weight: 600;
-            color: #6c6c6c;
+            color: #919191;
             line-height: 28px;
 
             &.active {
@@ -1902,16 +2056,16 @@
         }
 
         .button-set {
-            width: 121px;
+            width: 120px;
             height: 28px;
             border-radius: 2px;
-            background-color: rgb(108 108 108 / 20%);
+            background-color: #424242;
             display: flex;
             justify-content: center;
             align-items: center;
             font-size: 14px;
             font-weight: 700;
-            color: #6c6c6c;
+            color: #919191;
             line-height: 28px;
 
             &.active {
@@ -2272,7 +2426,7 @@
         user-select: none;
 
         .filter-button-clear {
-            width: 121px;
+            width: 120px;
             height: 28px;
             border-radius: 2px;
             background-color: #f3f3f3;
@@ -2281,7 +2435,7 @@
             align-items: center;
             font-size: 14px;
             font-weight: 700;
-            color: #aaaaaa;
+            color: #919191;
             line-height: 32px;
 
             &.active {
@@ -2296,7 +2450,7 @@
         }
 
         .filter-button-set {
-            width: 121px;
+            width: 120px;
             height: 28px;
             border-radius: 2px;
             background-color: #f3f3f3;
@@ -2305,7 +2459,7 @@
             align-items: center;
             font-size: 14px;
             font-weight: 700;
-            color: #aaaaaa;
+            color: #919191;
             line-height: 32px;
 
             &.active {
@@ -2344,4 +2498,29 @@
         }
     }
     //animation: filterOpacityAnimation 0.1s !important;
+}
+
+
+.counter-holder{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5px 4.5px;
+
+    font-weight: 500;
+    font-size: 11px;
+    line-height: 13px;
+    color: #CCCCCC;
+    
+    background-color: #CCCCCC20;
+    border-radius: 100%;
+
+    &.activeCounter{
+        background-color: #6F9EE020;
+        color: #6F9EE0;
+    }
+}
+
+.counterMargin{
+    margin-left: 8px;
 }
