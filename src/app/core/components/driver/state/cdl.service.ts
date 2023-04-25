@@ -14,6 +14,7 @@ import { DriversItemStore } from './driver-details-state/driver-details.store';
 import { DriverTService } from './driver.service';
 import { RenewCdlCommand } from '../../../../../../appcoretruckassist/model/renewCdlCommand';
 import { FormDataService } from 'src/app/core/services/formData/form-data.service';
+import { DriversInactiveStore } from './driver-inactive-state/driver-inactive.store';
 
 @Injectable({
     providedIn: 'root',
@@ -24,6 +25,7 @@ export class CdlTService implements OnDestroy {
         private cdlService: CdlService,
         private driverService: DriverTService,
         private driverActiveStore: DriversActiveStore,
+        private driverInactiveStore: DriversInactiveStore,
         private tableService: TruckassistTableService,
         private driverItemStore: DriversItemStore,
         private notificationService: NotificationService,
@@ -59,10 +61,16 @@ export class CdlTService implements OnDestroy {
                                 // Update Driver Store
                                 if (data.tableActiveTab === 'active') {
                                     this.driverActiveStore.remove(
-                                        ({ id }) => id === data.id
+                                        ({ id }) => id === data.driverId
                                     );
 
                                     this.driverActiveStore.add(driver);
+                                } else if (data.tableActiveTab === 'inactive') {
+                                    this.driverInactiveStore.remove(
+                                        ({ id }) => id === data.driverId
+                                    );
+
+                                    this.driverInactiveStore.add(driver);
                                 }
 
                                 // Send Update Data To Table
