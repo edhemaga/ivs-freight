@@ -574,7 +574,7 @@ export class TaInputComponent
     public onKeydown(event) {
         if (event) {
             this.capsLockOn =
-                event?.getModifierState('CapsLock') || event?.shiftKey;
+                event?.getModifierState?.('CapsLock') || event?.shiftKey;
         }
 
         if (this._inputConfig.priceSeparator) {
