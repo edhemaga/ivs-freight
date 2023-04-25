@@ -90,6 +90,10 @@ export class RegisterCompanyComponent implements OnInit, OnDestroy {
     }
 
     private passwordsNotSame(): void {
+        const passwordControl = this.registerCompanyForm.get(
+            ConstantString.PASSWORD
+        );
+
         const confirmPasswordControl = this.registerCompanyForm.get(
             ConstantString.CONFIRM_PASSWORD
         );
@@ -98,18 +102,35 @@ export class RegisterCompanyComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe((value) => {
                 if (
-                    value?.toLowerCase() ===
-                        this.registerCompanyForm
-                            .get(ConstantString.PASSWORD)
-                            .value?.toLowerCase() &&
+                    passwordControl.value &&
                     value &&
-                    confirmPasswordControl.value
+                    value?.toLowerCase() ===
+                        passwordControl.value?.toLowerCase()
                 ) {
                     confirmPasswordControl.setErrors(null);
+
+                    passwordControl.setErrors(null);
                 } else {
                     confirmPasswordControl.setErrors({
                         invalid: true,
                     });
+                }
+            });
+
+        passwordControl.valueChanges
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((value) => {
+                if (
+                    confirmPasswordControl.value &&
+                    value &&
+                    value?.toLowerCase() !==
+                        confirmPasswordControl.value?.toLowerCase()
+                ) {
+                    passwordControl.setErrors({
+                        invalid: true,
+                    });
+                } else {
+                    confirmPasswordControl.setErrors(null);
                 }
             });
     }
