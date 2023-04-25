@@ -12,6 +12,9 @@ import { DriversItemStore } from './driver-details-state/driver-details.store';
 import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
 import { DriversDetailsListStore } from './driver-details-list-state/driver-details-list.store';
 import { FormDataService } from 'src/app/core/services/formData/form-data.service';
+import { DriversActiveQuery } from './driver-active-state/driver-active.query';
+import { DriversInactiveStore } from './driver-inactive-state/driver-inactive.store';
+import { DriversInactiveQuery } from './driver-inactive-state/driver-inactive.query';
 
 @Injectable({
     providedIn: 'root',
@@ -21,40 +24,82 @@ export class TestTService implements OnDestroy {
     constructor(
         private drugService: TestService,
         private driverService: DriverTService,
-        private driverStore: DriversActiveStore,
+        private driverActiveStore: DriversActiveStore,
+        private driverActiveQuery: DriversActiveQuery,
+        private driverInactiveStore: DriversInactiveStore,
+        private driverInactiveQuery: DriversInactiveQuery,
         private tableService: TruckassistTableService,
         private driverItemStore: DriversItemStore,
         private dlStore: DriversDetailsListStore,
         private formDataService: FormDataService
     ) {}
 
-    /* Observable<CreateTestResponse> */
+    // Add Test
     public addTest(data: any): Observable<any> {
         this.formDataService.extractFormDataFromFunction(data);
         return this.drugService.apiTestPost().pipe(
-            tap((res: any) => {
-                let driverId = this.driverItemStore.getValue().ids[0];
+            tap(() => {
+                if (data?.driverId) {
+                    let driverById = this.driverService
+                        .getDriverById(data.driverId)
+                        .subscribe({
+                            next: (driver: any) => {
+                                let driverInStore = null;
 
-                const dr = this.driverItemStore.getValue();
-                const driverData = JSON.parse(JSON.stringify(dr.entities));
-                let newData = driverData[driverId];
+                                // Get Driver From Store
+                                if (data.tableActiveTab === 'active') {
+                                    driverInStore =
+                                        this.driverActiveQuery.getEntity(
+                                            data.driverId
+                                        );
+                                } else if (data.tableActiveTab === 'inactive') {
+                                    driverInStore =
+                                        this.driverInactiveQuery.getEntity(
+                                            data.driverId
+                                        );
+                                }
 
-                let testApi = this.drugService.apiTestListGet(driverId).subscribe({
-                    next: (resp: any) => {
-                        newData.tests = resp;
+                                // Update Driver Data
+                                driver = {
+                                    ...driver,
+                                    fullName:
+                                        driver.firstName +
+                                        ' ' +
+                                        driver.lastName,
+                                    cdlNumber: driverInStore?.cdlNumber
+                                        ? driverInStore.cdlNumber
+                                        : null,
+                                    fileCount: driver?.filesCountForList
+                                        ? driver.filesCountForList
+                                        : 0,
+                                };
 
-                        this.tableService.sendActionAnimation({
-                            animation: 'update',
-                            data: newData,
-                            id: newData.id,
+                                // Update Driver Store
+                                if (data.tableActiveTab === 'active') {
+                                    this.driverActiveStore.remove(
+                                        ({ id }) => id === data.driverId
+                                    );
+
+                                    this.driverActiveStore.add(driver);
+                                } else if (data.tableActiveTab === 'inactive') {
+                                    this.driverInactiveStore.remove(
+                                        ({ id }) => id === data.driverId
+                                    );
+
+                                    this.driverInactiveStore.add(driver);
+                                }
+
+                                // Send Update Data To Table
+                                this.tableService.sendActionAnimation({
+                                    animation: 'update',
+                                    data: driver,
+                                    id: driver.id,
+                                });
+
+                                driverById.unsubscribe();
+                            },
                         });
-
-                        this.dlStore.add(newData);
-                        this.driverItemStore.set([newData]);
-
-                        testApi.unsubscribe();
-                    },
-                });
+                }
             })
         );
     }
@@ -68,29 +113,26 @@ export class TestTService implements OnDestroy {
                 const driverData = JSON.parse(JSON.stringify(dr.entities));
                 let newData = driverData[driverId];
 
-                
                 let testApi = this.drugService.apiTestIdGet(res.id).subscribe({
                     next: (resp: any) => {
-
-                       
                         newData.tests.map((reg: any, index: any) => {
-                            if ( reg.id == resp.id ) {
-                                newData.tests[index] = resp;  
+                            if (reg.id == resp.id) {
+                                newData.tests[index] = resp;
                             }
-                        })
+                        });
 
                         this.tableService.sendActionAnimation({
                             animation: 'update',
                             data: newData,
                             id: newData.id,
                         });
-                        
+
                         this.dlStore.add(newData);
                         this.driverItemStore.set([newData]);
-                      
+
                         testApi.unsubscribe();
                     },
-                });  
+                });
             })
         );
     }
@@ -105,10 +147,10 @@ export class TestTService implements OnDestroy {
 
                 let indexNum;
                 newData.tests.map((reg: any, index: any) => {
-                    if ( reg.id == id ) {
+                    if (reg.id == id) {
                         indexNum = index;
                     }
-                })
+                });
 
                 newData.tests.splice(indexNum, 1);
 
@@ -117,9 +159,9 @@ export class TestTService implements OnDestroy {
                     data: newData,
                     id: newData.id,
                 });
-                
+
                 this.dlStore.add(newData);
-                this.driverItemStore.set([newData]);  
+                this.driverItemStore.set([newData]);
             })
         );
     }

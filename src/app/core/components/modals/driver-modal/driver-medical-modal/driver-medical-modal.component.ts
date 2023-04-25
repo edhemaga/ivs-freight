@@ -234,6 +234,7 @@ export class DriverMedicalModalComponent implements OnInit, OnDestroy {
                 documents.push(item.realFile);
             }
         });
+
         const newData: any = {
             driverId: this.selectedDriver
                 ? this.selectedDriver.id
@@ -241,6 +242,7 @@ export class DriverMedicalModalComponent implements OnInit, OnDestroy {
             issueDate: convertDateToBackend(issueDate),
             expDate: convertDateToBackend(expDate),
             note: note,
+            tableActiveTab: this.editData.tableActiveTab,
             files: documents,
         };
 
