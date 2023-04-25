@@ -282,11 +282,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 }
                 // On Update Driver
                 else if (res.animation === 'update') {
-                    console.log('Table Update For Driver');
-
                     const updatedDriver = this.mapDriverData(res.data);
-
-                    console.log(updatedDriver);
 
                     this.viewData = this.viewData.map((driver: any) => {
                         if (driver.id === res.id) {
@@ -296,9 +292,6 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
                         return driver;
                     });
-
-                    console.log('View Data');
-                    console.log(this.viewData);
 
                     const inetval = setInterval(() => {
                         this.viewData = closeAnimationAction(
@@ -511,8 +504,6 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     ? this.mapApplicantsData(data)
                     : this.mapDriverData(data);
             });
-
-            console.log(this.viewData);
         } else {
             this.viewData = [];
         }
@@ -1319,13 +1310,13 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 {
                     size: 'small',
                 },
-                { ...event }
+                { ...event, tableActiveTab: this.selectedTab }
             );
         } else if (event.type === 'new-mvr') {
             this.modalService.openModal(
                 DriverMvrModalComponent,
                 { size: 'small' },
-                { ...event }
+                { ...event, tableActiveTab: this.selectedTab }
             );
         } else if (event.type === 'new-drug') {
             this.modalService.openModal(
@@ -1333,7 +1324,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 {
                     size: 'small',
                 },
-                { ...event }
+                { ...event, tableActiveTab: this.selectedTab }
             );
         } else if (event.type === 'activate-item') {
             this.modalService.openModal(

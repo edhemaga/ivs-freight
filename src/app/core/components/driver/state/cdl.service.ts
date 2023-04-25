@@ -2,7 +2,6 @@ import { Injectable, OnDestroy } from '@angular/core';
 import {
     CdlResponse,
     CdlService,
-    CreateResponse,
     GetCdlModalResponse,
 } from 'appcoretruckassist';
 import { Observable, Subject, tap } from 'rxjs';
@@ -287,9 +286,6 @@ export class CdlTService implements OnDestroy {
                 /*
                 let cdlApi = this.cdlService.apiCdlIdGet(res.id).subscribe({
                     next: (resp: any) => {
-
-                        console.log('---data---', data);
-                        console.log('---res---', res);
 
                         newData.cdls.map((reg: any, index: any) => {
                             if (reg.id == resp.id) {
