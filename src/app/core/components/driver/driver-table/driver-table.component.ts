@@ -282,7 +282,11 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 }
                 // On Update Driver
                 else if (res.animation === 'update') {
+                    console.log('Table Update For Driver');
+
                     const updatedDriver = this.mapDriverData(res.data);
+
+                    console.log(updatedDriver);
 
                     this.viewData = this.viewData.map((driver: any) => {
                         if (driver.id === res.id) {
@@ -292,6 +296,9 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
                         return driver;
                     });
+
+                    console.log('View Data');
+                    console.log(this.viewData);
 
                     const inetval = setInterval(() => {
                         this.viewData = closeAnimationAction(
@@ -412,6 +419,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
         const driverInactiveData =
             this.selectedTab === 'inactive' ? this.getTabData('inactive') : [];
+
         this.tableData = [
             {
                 title: 'Applicants',
@@ -503,6 +511,8 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     ? this.mapApplicantsData(data)
                     : this.mapDriverData(data);
             });
+
+            console.log(this.viewData);
         } else {
             this.viewData = [];
         }
@@ -1301,7 +1311,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
             this.modalService.openModal(
                 DriverCdlModalComponent,
                 { size: 'small' },
-                { ...event }
+                { ...event, tableActiveTab: this.selectedTab }
             );
         } else if (event.type === 'new-medical') {
             this.modalService.openModal(

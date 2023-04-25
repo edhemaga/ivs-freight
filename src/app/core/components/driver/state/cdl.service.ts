@@ -23,7 +23,7 @@ export class CdlTService implements OnDestroy {
     constructor(
         private cdlService: CdlService,
         private driverService: DriverTService,
-        private driverStore: DriversActiveStore,
+        private driverActiveStore: DriversActiveStore,
         private tableService: TruckassistTableService,
         private driverItemStore: DriversItemStore,
         private notificationService: NotificationService,
@@ -31,58 +31,51 @@ export class CdlTService implements OnDestroy {
         private formDataService: FormDataService
     ) {}
 
-    /* Observable<CreateCdlResponse> */
-    public addCdl(data: /* CreateCdlCommand */ any): Observable<any> {
+    // Add Cdl
+    public addCdl(data: any): Observable<any> {
         this.formDataService.extractFormDataFromFunction(data);
         return this.cdlService.apiCdlPost().pipe(
-            tap((res: CreateResponse) => {
-                let driverId = data.driverId
-                    ? data.driverId
-                    : this.driverItemStore.getValue().ids[0];
-                const dr = this.driverItemStore.getValue();
-                const driverData = JSON.parse(JSON.stringify(dr.entities));
-                let newData = driverData[driverId];
+            tap(() => {
+                if (data?.driverId) {
+                    let driverById = this.driverService
+                        .getDriverById(data.driverId)
+                        .subscribe({
+                            next: (driver: any) => {
+                                // Update Driver Data
+                                driver = {
+                                    ...driver,
+                                    fullName:
+                                        driver.firstName +
+                                        ' ' +
+                                        driver.lastName,
+                                    cdlNumber: data?.cdlNumber
+                                        ? data.cdlNumber
+                                        : null,
+                                    fileCount: driver?.filesCountForList
+                                        ? driver.filesCountForList
+                                        : 0,
+                                };
 
-                // get all cdls on driver, sorted by backend side
-                let allCdls = this.cdlService
-                    .apiCdlListGet(driverId)
-                    .subscribe({
-                        next: (resp: any) => {
-                            newData.cdls = resp;
+                                // Update Driver Store
+                                if (data.tableActiveTab === 'active') {
+                                    this.driverActiveStore.remove(
+                                        ({ id }) => id === data.id
+                                    );
 
-                            this.tableService.sendActionAnimation({
-                                animation: 'update',
-                                data: newData,
-                                id: newData.id,
-                            });
+                                    this.driverActiveStore.add(driver);
+                                }
 
-                            this.dlStore.add(newData);
-                            this.driverItemStore.set([newData]);
+                                // Send Update Data To Table
+                                this.tableService.sendActionAnimation({
+                                    animation: 'update',
+                                    data: driver,
+                                    id: driver.id,
+                                });
 
-                            allCdls.unsubscribe();
-                        },
-                    });
-
-                // get added cdl
-                /*
-                let cdlApi = this.cdlService.apiCdlIdGet(res.id).subscribe({
-                    next: (resp: any) => {
-                        newData.cdls.push(resp);
-
-                        this.tableService.sendActionAnimation({
-                            animation: 'update',
-                            data: newData,
-                            id: newData.id,
+                                driverById.unsubscribe();
+                            },
                         });
-
-                        this.dlStore.add(newData);
-                        this.driverItemStore.set([newData]);
-
-                        cdlApi.unsubscribe();
-                    },
-                });
-
-                */
+                }
             })
         );
     }
