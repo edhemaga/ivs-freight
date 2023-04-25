@@ -36,7 +36,7 @@ import { SelectedMode } from '../../state/enum/selected-mode.enum';
 export class MvrAuthorizationComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
 
-    public selectedMode: string = SelectedMode.APPLICANT;
+    public selectedMode: string = SelectedMode.REVIEW;
 
     public isValidLoad: boolean;
 
@@ -167,6 +167,7 @@ export class MvrAuthorizationComponent implements OnInit, OnDestroy {
             signature,
             files,
             id,
+            filesReviewMessage,
         } = stepValues;
 
         this.mvrAuthId = id;
@@ -202,21 +203,41 @@ export class MvrAuthorizationComponent implements OnInit, OnDestroy {
                 this.stepHasReviewValues = true;
 
                 for (let i = 0; i < stepValues.files.length; i++) {
-                    const fileReview = stepValues.files[i].review;
+                    const isFileValid = stepValues.files[i].review.isValid;
 
                     this.openAnnotationArray[0].lineInputs = [
                         ...this.openAnnotationArray[0].lineInputs,
-                        !fileReview,
+                        !isFileValid,
                     ];
                 }
 
-                const lineInputItems = this.openAnnotationArray[0].lineInputs;
+                const filesLineInputItems =
+                    this.openAnnotationArray[0].lineInputs;
                 const isAnyInputInLineIncorrect =
-                    anyInputInLineIncorrect(lineInputItems);
+                    anyInputInLineIncorrect(filesLineInputItems);
 
-                if (isAnyInputInLineIncorrect) {
+                if (isAnyInputInLineIncorrect && !filesReviewMessage) {
                     this.openAnnotationArray[0].displayAnnotationButton = true;
                 }
+
+                if (isAnyInputInLineIncorrect && filesReviewMessage) {
+                    this.openAnnotationArray[0].displayAnnotationTextArea =
+                        true;
+                }
+
+                const inputFieldsArray = JSON.stringify(
+                    this.openAnnotationArray[0].lineInputs
+                );
+
+                if (inputFieldsArray.includes('true')) {
+                    this.hasIncorrectFields = true;
+                } else {
+                    this.hasIncorrectFields = false;
+                }
+
+                this.mvrAuthorizationForm.patchValue({
+                    firstRowReview: filesReviewMessage,
+                });
             }
         }
     }
@@ -374,6 +395,12 @@ export class MvrAuthorizationComponent implements OnInit, OnDestroy {
                 selectedInputsLine.displayAnnotationButton = false;
                 selectedInputsLine.displayAnnotationTextArea = false;
             }
+
+            if (!isAnyInputInLineIncorrect) {
+                this.mvrAuthorizationForm
+                    .get('firstRowReview')
+                    .patchValue(null);
+            }
         }
 
         const inputFieldsArray = JSON.stringify(
@@ -526,18 +553,14 @@ export class MvrAuthorizationComponent implements OnInit, OnDestroy {
     public onSubmitReview(): void {
         const saveData: CreateMvrAuthReviewCommand = {
             applicantId: this.applicantId,
-            filesReview: this.documents.length
-                ? this.documents.map((item, index) => {
-                      return {
-                          storageId: item.fileId,
-                          isValid:
-                              !this.openAnnotationArray[0].lineInputs[index],
-                          message:
-                              this.mvrAuthorizationForm.get('firstRowReview')
-                                  .value,
-                      };
-                  })
-                : [],
+            filesReview: this.documents.map((item, index) => {
+                return {
+                    storageId: item.fileId,
+                    isValid: !this.openAnnotationArray[0].lineInputs[index],
+                };
+            }),
+            filesReviewMessage:
+                this.mvrAuthorizationForm.get('firstRowReview').value,
         };
 
         const selectMatchingBackendMethod = () => {

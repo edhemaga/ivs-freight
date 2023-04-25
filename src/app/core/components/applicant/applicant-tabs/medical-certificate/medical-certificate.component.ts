@@ -36,7 +36,7 @@ import {
 export class MedicalCertificateComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
 
-    public selectedMode: string = SelectedMode.APPLICANT;
+    public selectedMode: string = SelectedMode.REVIEW;
 
     public isValidLoad: boolean;
 
@@ -150,22 +150,61 @@ export class MedicalCertificateComponent implements OnInit, OnDestroy {
             if (stepValues.files[0].review) {
                 this.stepHasReviewValues = true;
 
+                const {
+                    isIssueDateValid,
+                    isExpireDateValid,
+                    dateMessage,
+                    filesReviewMessage,
+                } = stepValues.medicalCertificateReview;
+
+                this.openAnnotationArray[0] = {
+                    ...this.openAnnotationArray[0],
+                    lineInputs: [!isIssueDateValid, !isExpireDateValid],
+                    displayAnnotationButton:
+                        (!isIssueDateValid || !isExpireDateValid) &&
+                        !dateMessage
+                            ? true
+                            : false,
+                    displayAnnotationTextArea: dateMessage ? true : false,
+                };
+
                 for (let i = 0; i < stepValues.files.length; i++) {
-                    const fileReview = stepValues.files[i].review;
+                    const isFileValid = stepValues.files[i].review.isValid;
 
                     this.openAnnotationArray[1].lineInputs = [
                         ...this.openAnnotationArray[1].lineInputs,
-                        !fileReview,
+                        !isFileValid,
                     ];
                 }
 
-                const lineInputItems = this.openAnnotationArray[1].lineInputs;
+                const filesLineInputItems =
+                    this.openAnnotationArray[1].lineInputs;
                 const isAnyInputInLineIncorrect =
-                    anyInputInLineIncorrect(lineInputItems);
+                    anyInputInLineIncorrect(filesLineInputItems);
 
-                if (isAnyInputInLineIncorrect) {
+                if (isAnyInputInLineIncorrect && !filesReviewMessage) {
                     this.openAnnotationArray[1].displayAnnotationButton = true;
                 }
+
+                if (isAnyInputInLineIncorrect && filesReviewMessage) {
+                    this.openAnnotationArray[1].displayAnnotationTextArea =
+                        true;
+                }
+
+                const inputFieldsArray = JSON.stringify(
+                    this.openAnnotationArray.map((item) => item.lineInputs)
+                );
+
+                if (inputFieldsArray.includes('true')) {
+                    this.hasIncorrectFields = true;
+                } else {
+                    this.hasIncorrectFields = false;
+                }
+
+                this.medicalCertificateForm.patchValue({
+                    firstRowReview: dateMessage,
+                    secondRowReview: filesReviewMessage,
+                });
             }
         }
     }
@@ -329,7 +368,7 @@ export class MedicalCertificateComponent implements OnInit, OnDestroy {
             }
         });
 
-        const saveData: any = {
+        const saveData = {
             applicantId: this.applicantId,
             issueDate: convertDateToBackend(fromDate),
             expireDate: convertDateToBackend(toDate),
@@ -402,11 +441,10 @@ export class MedicalCertificateComponent implements OnInit, OnDestroy {
                 return {
                     storageId: item.fileId,
                     isValid: !this.openAnnotationArray[1].lineInputs[index],
-                    message:
-                        this.medicalCertificateForm.get('secondRowReview')
-                            .value,
                 };
             }),
+            filesReviewMessage:
+                this.medicalCertificateForm.get('secondRowReview').value,
         };
 
         const selectMatchingBackendMethod = () => {

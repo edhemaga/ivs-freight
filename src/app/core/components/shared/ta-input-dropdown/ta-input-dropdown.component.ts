@@ -119,7 +119,6 @@ export class TaInputDropdownComponent
         };
         this._activeItem = value;
 
-        console.log('name: ', this.inputConfig.name);
         // With address
         if (
             this.inputConfig.name &&

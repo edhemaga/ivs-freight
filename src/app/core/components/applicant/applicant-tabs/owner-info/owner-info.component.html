@@ -307,9 +307,6 @@
                                                 [placeholderType]="
                                                     'longAddress'
                                                 "
-                                                [activeAddress]="
-                                                    selectedAddress
-                                                "
                                                 (selectedAddress)="
                                                     handleInputSelect(
                                                         $event,
@@ -1143,7 +1140,7 @@
                                                     [feedbackText]="
                                                         selectedMode ===
                                                             'FEEDBACK_MODE' &&
-                                                        ''
+                                                        stepFeedbackValues?.trailerModelMessage
                                                     "
                                                     (annotationBtnClickEvent)="
                                                         selectedMode ===
@@ -1299,7 +1296,7 @@
                                                     [feedbackText]="
                                                         selectedMode ===
                                                             'FEEDBACK_MODE' &&
-                                                        ''
+                                                        stepFeedbackValues?.trailerYearMessage
                                                     "
                                                     (annotationBtnClickEvent)="
                                                         selectedMode ===
