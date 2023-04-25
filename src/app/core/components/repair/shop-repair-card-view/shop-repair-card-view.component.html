@@ -28,6 +28,7 @@
 
                 <app-ta-copy
                     [copyValue]="repairShopCardViewData?.phone"
+                    [textColor]="'#2f2f2f'"
                 ></app-ta-copy>
             </div>
             <div
@@ -40,6 +41,7 @@
                 ></svg-icon>
                 <app-ta-copy
                     [copyValue]="repairShopCardViewData?.email"
+                    [textColor]="'#2f2f2f'"
                 ></app-ta-copy>
             </div>
             <div class="repair-information-item address-cont" *ngIf="repairShopCardViewData?.address?.address">
@@ -50,6 +52,7 @@
 
                 <app-ta-copy
                     [copyValue]="repairShopCardViewData?.address?.address"
+                    [textColor]="'#2f2f2f'"
                 ></app-ta-copy>
             </div>
         </div>
@@ -69,7 +72,7 @@
                 }"
             >
                 <div
-                    class="working-hours-container"
+                    class="working-hours-container more-padding-working-hours-cont"
                     *ngIf="repairShopCardViewData?.openHours"
                 >
                     <div

@@ -69,7 +69,8 @@ p {
         height: 32px;
         max-width: none;
         p {
-            color: #919191;
+            color: #424242;
+            
             font-size: 26px;
             font-weight: 900;
             margin-left: 8px !important;
@@ -87,7 +88,7 @@ p {
     border-radius: 3px;
     .header-name {
         margin: 0;
-        color: #919191;
+        color: #2f2f2f;
         font-size: 14px;
         font-weight: 800;
         padding-right: 4px;
@@ -103,7 +104,7 @@ p {
             .date-repair {
                 font-size: 14px;
                 font-weight: 500;
-                color: #919191;
+                color: #2f2f2f;
                 padding-right: 6px;
                 &::-moz-selection {
                     color: #919191;
@@ -252,9 +253,14 @@ svg {
 }
 .header-arrow {
     svg {
+        
+        rect{
+            fill: #6c6c6c;
+        }
+
         &:hover {
             rect {
-                fill: #6c6c6c;
+                fill: #2F2F2F;
             }
         }
     }

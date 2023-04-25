@@ -157,7 +157,9 @@ $transition: all 0.3s ease-in-out;
         .repaier-headers {
             font-size: 14px;
             font-weight: $font-bold;
-            color: $color-gray;
+            
+            color: #2f2f2f;
+            //color: $color-gray;
 
             &::-moz-selection {
                 color: $color-gray;
@@ -168,13 +170,19 @@ $transition: all 0.3s ease-in-out;
                 background: rgb(183, 183, 183, 0.2);
             }
         }
+
+        &.repair-details-header-columns{
+            grid-template-columns: 84px 64px 64px 227px 40px;
+        }
+
     }
     .repair-items {
         // padding: 0 6px;
         .unit {
             font-size: $font-size14;
             font-weight: $font-bold;
-            color: $color-gray-dark;
+            //color: $color-gray-dark;
+            color: #2f2f2f;
             line-height: 17px;
             display: flex;
             align-items: center;
@@ -218,7 +226,8 @@ $transition: all 0.3s ease-in-out;
         .date-description {
             font-size: $font-size14;
             font-weight: 400;
-            color: $color-gray-dark;
+            //color: $color-gray-dark;
+            color: #2f2f2f;
             max-width: 294px;
             overflow: hidden;
             line-height: 19px;
@@ -227,7 +236,8 @@ $transition: all 0.3s ease-in-out;
         .date {
             font-size: $font-size14;
             font-weight: 400;
-            color: $color-gray-dark;
+            //color: $color-gray-dark;
+            color: #2f2f2f;
             white-space: nowrap;
             display: flex;
             align-items: center;

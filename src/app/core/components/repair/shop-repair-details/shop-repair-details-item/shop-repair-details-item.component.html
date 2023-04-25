@@ -9,10 +9,10 @@
         </div>
         <div *ngSwitchCase="'repair'">
             <div class="repair-container" *ngIf="repairListData?.length">
-                <div class="repair-header">
-                    <span class="repaier-headers">UNIT</span>
+                <div class="repair-header repair-details-header-columns">
+                    <span class="repaier-headers">INVOICE</span>
                     <span class="repaier-headers">DATE</span>
-                    <span class="repaier-headers">INV.#</span>
+                    <span class="repaier-headers">UNIT</span>
                     <span class="repaier-headers">DESCRIPTION</span>
                     <span class="repaier-headers last-value-align">COST</span>
                 </div>
@@ -32,7 +32,7 @@
                     >
                         <div class="repair-items">
                             <div
-                                class="items-header"
+                                class="items-header repair-item-column"
                                 [ngClass]="{
                                     'open-items-body':
                                         showRepairItems[repairs?.id] &&
@@ -42,23 +42,17 @@
                                         repairs.repairType.name != 'Bill'
                                 }"
                             >
-                                <span class="unit">{{
-                                    repairs?.trailer?.trailerNumber
-                                        ? repairs.trailer.trailerNumber
-                                        : repairs.truck.truckNumber
-                                }}</span>
-                                <span class="date">{{
-                                    repairs.date
-                                        ? (repairs.date | formatDateP)
-                                        : (repairs.createdAt | formatDateP)
-                                }}</span>
-                                <span class="date"
-                                    ><span
+
+                                <span class="date">
+                                    <span
                                         class="inv"
                                         *ngIf="repairs.repairType.name == 'Bill'"
-                                        >{{ repairs.invoice ? repairs.invoice : '' }}</span
-                                    ></span
-                                >
+                                    >
+                                        {{ repairs.invoice ? repairs.invoice : '' }}
+                                    </span>
+                                </span>
+
+                                
                                 <div
                                     *ngIf="repairs.repairType.name != 'Bill'"
                                     class="no-invoice"
@@ -69,6 +63,26 @@
                                     ></svg-icon>
                                     <span class="date-order">Order</span>
                                 </div>
+
+                               
+                                
+                                
+                                
+                                <span class="date">{{
+                                    repairs.date
+                                        ? (repairs.date | formatDateP)
+                                        : (repairs.createdAt | formatDateP)
+                                }}</span>
+                                
+                                
+                                <span class="unit">{{
+                                    repairs?.trailer?.trailerNumber
+                                        ? repairs.trailer.trailerNumber
+                                        : repairs.truck.truckNumber
+                                }}</span>
+
+
+
                                 <span class="date-description">
                                     <span
                                         class="item-desc"
@@ -90,9 +104,11 @@
                                     >
                                 </span>
 
-                                <span *ngIf="repairs?.total" class="cost">{{
-                                    repairs.total | formatCurrency
-                                }}</span>
+
+                                <span *ngIf="repairs?.total" class="cost">
+                                    {{repairs.total | formatCurrency}}
+                                </span>
+
                                 <div
                                     (click)="
                                         finishOrder(repairs.id, repairs, $event)
@@ -102,6 +118,7 @@
                                 >
                                     Finish Order
                                 </div>
+
                                 <div
                                     class="dots-vertical"
                                     [ngClass]="{
@@ -122,7 +139,12 @@
                                     >
                                     </app-details-page-dropdown>
                                 </div>
+
+
+
                             </div>
+
+
                         </div>
                         <div
                             *ngIf="repairs?.items?.length"

@@ -302,7 +302,7 @@ p {
                     .value-name {
                         font-size: 14px !important;
                         font-weight: 400 !important;
-                        color: #6c6c6c;
+                        color: #2f2f2f;
                     }
                     &:not(:first-child) {
                         .value-name:before {
@@ -314,7 +314,7 @@ p {
         }
         .card-item-name {
             font-size: 11px;
-            color: #6c6c6c;
+            color: #2f2f2f;
             font-weight: $font-bold;
             height: 15px;
             margin-bottom: 2px;
@@ -330,7 +330,7 @@ p {
         .card-item-value {
             font-size: $font-size14;
             font-weight: 400;
-            color: #6c6c6c;
+            color: #2F2F2F;
             white-space: nowrap;
             height: 18px;
             &::-moz-selection {
@@ -367,31 +367,31 @@ p {
             .restriction-name {
                 font-size: 11px;
                 font-weight: $font-bold;
-                color: #6c6c6c;
+                color: #2f2f2f;
                 height: 15px;
                 &::-moz-selection {
-                    color: #6c6c6c;
+                    color: #2f2f2f;
                     background: rgb(108, 108, 108, 0.2);
                 }
                 &::selection {
-                    color: #6c6c6c;
+                    color: #2f2f2f;
                     background: rgb(108, 108, 108, 0.2);
                 }
             }
             .span-value {
                 &::-moz-selection {
-                    color: #6c6c6c !important;
+                    color: #2f2f2f !important;
                     background: rgb(108, 108, 108, 0.2) !important;
                 }
                 &::selection {
-                    color: #6c6c6c !important;
+                    color: #2f2f2f !important;
                     background: rgb(108, 108, 108, 0.2) !important;
                 }
             }
             .restriction-item-value {
                 font-size: $font-size14;
                 font-weight: 400;
-                color: #6c6c6c;
+                color: #2f2f2f;
                 height: 18px;
                 white-space: nowrap;
                 margin-bottom: 2px;
@@ -468,7 +468,7 @@ p {
             order: -1 !important;
             display: flex !important;
             justify-content: space-between !important;
-            color: #6c6c6c !important;
+            color: #2f2f2f !important; 
 
             .progress-text {
                 margin: 2px 0px !important;
@@ -1161,7 +1161,7 @@ p {
     }
 
     .counter-text{
-        padding: 0px 8px !important;
+        padding: 0px 0px 0px 8px !important;
     }
 
     .card-row-progress{
@@ -1200,6 +1200,41 @@ p {
     .card-restriction-endorsment
     {
         column-gap: 20px !important;
+    }
+
+    .counter-holder-all{
+        //margin-right: 0px !important;
+    }
+
+    .request-header-container{
+        display: none !important;
+        width: 26px;
+
+        &.icon-request-holder{
+            display: flex !important;
+            width: 26px !important;
+            height: 26px !important;
+            
+            background-color: #ffffff !important;
+
+            svg {
+                path{
+                    fill: #3074D3;
+                }
+            }
+
+            &:hover {
+
+                background-color: #3074D3 !important;
+
+            svg {
+                path{
+                    fill: #ffffff;
+                }
+            }
+
+            }
+        }
     }
 
 }
@@ -1312,37 +1347,6 @@ p {
     .card-restriction-endorsment
     {
         column-gap: 12px !important;
-    }
-
-    .request-header-container{
-        display: none !important;
-        width: 26px;
-
-        &.icon-request-holder{
-            display: flex !important;
-            width: 26px !important;
-            height: 26px !important;
-            
-            background-color: #ffffff !important;
-
-            svg {
-                path{
-                    fill: #3074D3;
-                }
-            }
-
-            &:hover {
-
-                background-color: #3074D3 !important;
-
-            svg {
-                path{
-                    fill: #ffffff;
-                }
-            }
-
-            }
-        }
     }
 
     .card-body-cdl {

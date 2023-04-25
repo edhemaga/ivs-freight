@@ -28,7 +28,10 @@
                         src="assets/svg/common/ic_phone.svg"
                     ></svg-icon>
                 </span>
-                <app-ta-copy [copyValue]="broker?.phone"></app-ta-copy>
+                <app-ta-copy 
+                    [copyValue]="broker?.phone" 
+                    [textColor]="'#2f2f2f'"
+                ></app-ta-copy>
             </div>
             <div *ngIf="broker.email" class="repair-information-item">
                 <span
@@ -43,7 +46,10 @@
                         src="assets/svg/common/ic_email.svg"
                     ></svg-icon>
                 </span>
-                <app-ta-copy [copyValue]="broker?.email"></app-ta-copy>
+                <app-ta-copy 
+                    [copyValue]="broker?.email"
+                    [textColor]="'#2f2f2f'"    
+                ></app-ta-copy>
             </div>
             <div class="repair-information-item address-cont">
                 <svg-icon
@@ -56,6 +62,7 @@
                             ? broker.mainAddress.address
                             : broker?.billingAddress?.address
                     "
+                    [textColor]="'#2f2f2f'"
                 ></app-ta-copy>
             </div>
         </div>

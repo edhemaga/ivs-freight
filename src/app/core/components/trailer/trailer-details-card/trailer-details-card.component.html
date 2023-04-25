@@ -84,6 +84,7 @@
                     <app-ta-copy
                         [textFontSize]="'18px'"
                         [copyValue]="trailer?.vin"
+                        [textColor]="'#2f2f2f'"
                     >
                     </app-ta-copy>
                 </div>
@@ -287,6 +288,7 @@
                             ></svg-icon>
                             <app-ta-copy
                                 [copyValue]="trailer?.owner?.phone"
+                                [textColor]="'#2f2f2f'"
                             >
                             </app-ta-copy>
                         </div>
@@ -297,6 +299,7 @@
                             ></svg-icon>
                             <app-ta-copy
                                 [copyValue]="trailer?.owner?.email"
+                                [textColor]="'#2f2f2f'"
                             >
                             </app-ta-copy>
                         </div>
@@ -307,6 +310,7 @@
                             <p class="information-value">
                                 <app-ta-copy
                                     [copyValue]="trailer?.owner?.address?.address"
+                                    [textColor]="'#2f2f2f'"
                                 >
                                 </app-ta-copy>
                             </p>
@@ -438,6 +442,7 @@
                                                     reg.issueDate | formatDateP
                                                 "
                                                 [expiresSettings]="'details'"
+                                                [darkText]="true"
                                             >
                                             </app-truckassist-progress-expiration>
                                         </div>
@@ -517,6 +522,7 @@
                                                     fhwa.issueDate | formatDateP
                                                 "
                                                 [expiresSettings]="'details'"
+                                                [darkText]="true"
                                             >
                                             </app-truckassist-progress-expiration>
                                         </div>
@@ -622,6 +628,7 @@
                                                         | formatDateP
                                                 "
                                                 [expiresSettings]="'details'"
+                                                [darkText]="true"
                                             >
                                             </app-truckassist-progress-expiration>
                                         </div>

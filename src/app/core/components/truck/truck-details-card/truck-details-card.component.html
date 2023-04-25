@@ -92,6 +92,7 @@
                         <app-ta-copy
                             [textFontSize]="'18px'"
                             [copyValue]="truck.vin"
+                            [textColor]="'#2f2f2f'"
                         >
                         </app-ta-copy>
                     </div>
@@ -442,7 +443,7 @@
                             src="assets/svg/common/ic_phone.svg"
                         ></svg-icon>
 
-                        <app-ta-copy [copyValue]="truck?.owner?.phone">
+                        <app-ta-copy [copyValue]="truck?.owner?.phone" [textColor]="'#2f2f2f'">
                         </app-ta-copy>
                     </div>
                     <div class="owner-items">
@@ -450,7 +451,7 @@
                             class="icons-details"
                             src="assets/svg/common/ic_email.svg"
                         ></svg-icon>
-                        <app-ta-copy [copyValue]="truck?.owner?.email">
+                        <app-ta-copy [copyValue]="truck?.owner?.email" [textColor]="'#2f2f2f'">
                         </app-ta-copy>
                     </div>
                     <div class="owner-items">
@@ -460,6 +461,7 @@
                         <p class="information-value">
                             <app-ta-copy
                                 [copyValue]="truck?.owner?.address?.address"
+                                [textColor]="'#2f2f2f'"
                             ></app-ta-copy>
                         </p>
                     </div>
@@ -740,6 +742,7 @@
                                                     reg.issueDate | formatDateP
                                                 "
                                                 [expiresSettings]="'details'"
+                                                [darkText]="true"
                                             >
                                             </app-truckassist-progress-expiration>
                                         </div>
@@ -816,6 +819,7 @@
                                                     fhwa.issueDate | formatDateP
                                                 "
                                                 [expiresSettings]="'details'"
+                                                [darkText]="true"
                                             >
                                             </app-truckassist-progress-expiration>
                                         </div>
@@ -908,6 +912,7 @@
                                                         | formatDateP
                                                 "
                                                 [expiresSettings]="'details'"
+                                                [darkText]="true"
                                             >
                                             </app-truckassist-progress-expiration>
                                         </div>
