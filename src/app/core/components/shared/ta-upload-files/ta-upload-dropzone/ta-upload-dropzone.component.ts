@@ -152,6 +152,15 @@ export class TaUploadDropzoneComponent {
         }
     }
 
+    @HostListener('window:drop', ['$event'])
+    onWindowDrop(event: any): void {
+        event.preventDefault();
+        event.stopPropagation();
+        this.onDropBackground.emit({ action: 'drop', value: false });
+        this.textChangeOverModal = false;
+        this.windowDragOver = false;
+    }
+
     public async onFileUpload(files: FileList) {
         await this.addFiles(files);
         this.files = [];
