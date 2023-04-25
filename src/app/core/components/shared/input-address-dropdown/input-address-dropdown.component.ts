@@ -308,6 +308,7 @@ export class InputAddressDropdownComponent
                     this.currentAddressData = null;
                     this.addresList = [];
                 }
+                this.inputDropdown?.popoverRef?.close();
                 break;
             }
             default: {
@@ -399,12 +400,9 @@ export class InputAddressDropdownComponent
     }
 
     checkAddressValidation(address) {
-        const regex =
-            /\b(?:avenue|ave|boulevard|plaza|broadway|blvd|circle|ct|drive|dr|lane|ln|parkway|pkwy|place|pl|road|rd|square|st|street|trl|way)\b/i;
-
         const streetNum = /\d.*\d/;
 
-        return regex.test(address) && streetNum.test(address) ? true : false;
+        return streetNum.test(address) ? true : false;
     }
 
     ngOnDestroy(): void {
