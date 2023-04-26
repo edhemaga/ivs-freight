@@ -412,6 +412,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
         const driverInactiveData =
             this.selectedTab === 'inactive' ? this.getTabData('inactive') : [];
+
         this.tableData = [
             {
                 title: 'Applicants',
@@ -813,7 +814,6 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 ],
                 hasBorder: true,
             },
-
             {
                 title: 'Share',
                 name: 'share',
@@ -839,14 +839,16 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 hasBorder: true,
             },
             {
-                title: 'Deactivate',
+                title:
+                    this.selectedTab === 'active' ? 'Deactivate' : 'Activate',
                 name: 'activate-item',
                 svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Deactivate.svg',
                 svgStyle: {
                     width: 18,
                     height: 18,
                 },
-                svgClass: 'delete',
+                svgClass:
+                    this.selectedTab === 'active' ? 'deactivate' : 'activate',
                 tableListDropdownContentStyle: {
                     'margin-bottom.px': 4,
                 },
@@ -1300,7 +1302,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
             this.modalService.openModal(
                 DriverCdlModalComponent,
                 { size: 'small' },
-                { ...event }
+                { ...event, tableActiveTab: this.selectedTab }
             );
         } else if (event.type === 'new-medical') {
             this.modalService.openModal(
@@ -1308,13 +1310,13 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 {
                     size: 'small',
                 },
-                { ...event }
+                { ...event, tableActiveTab: this.selectedTab }
             );
         } else if (event.type === 'new-mvr') {
             this.modalService.openModal(
                 DriverMvrModalComponent,
                 { size: 'small' },
-                { ...event }
+                { ...event, tableActiveTab: this.selectedTab }
             );
         } else if (event.type === 'new-drug') {
             this.modalService.openModal(
@@ -1322,7 +1324,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 {
                     size: 'small',
                 },
-                { ...event }
+                { ...event, tableActiveTab: this.selectedTab }
             );
         } else if (event.type === 'activate-item') {
             this.modalService.openModal(

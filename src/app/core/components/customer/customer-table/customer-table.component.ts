@@ -91,7 +91,6 @@ export class CustomerTableComponent
         searchTwo: undefined,
         searchThree: undefined,
     };
-
     mapListData = [];
 
     constructor(

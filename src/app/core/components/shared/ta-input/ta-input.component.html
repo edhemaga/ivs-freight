@@ -238,6 +238,7 @@
         *ngIf="
             capsLockOn &&
             _inputConfig.type === 'password' &&
+            focusInput &&
             !_inputConfig.isDisabled
         "
         class="password-capslock"
