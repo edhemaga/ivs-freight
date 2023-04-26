@@ -69,7 +69,6 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (res: Confirmation) => {
-                    console.log('---res---', res);
                     switch (res.type) {
                         case 'delete': {
                             if (res.template === 'broker') {
