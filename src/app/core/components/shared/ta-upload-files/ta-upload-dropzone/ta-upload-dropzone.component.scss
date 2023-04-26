@@ -153,6 +153,21 @@
                 font-weight: 700;
             }
         }
+
+        &.small {
+            flex-direction: column;
+
+            .ta-upload-dropzone-text {
+                margin-left: 0px;
+            }
+
+            .ta-upload-dropzone-area {
+                svg {
+                    width: 79px;
+                    height: 74px;
+                }
+            }
+        }
     }
 
     input[type='file'] {

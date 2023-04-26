@@ -49,6 +49,7 @@ export class TaUploadFilesComponent implements OnInit {
     @Input() hasTagsDropdown: boolean = false;
     @Input() hasNumberOfPages: boolean = false;
     @Input() size: string = 'small'; // small | medium | large
+    @Input() modalSize: string;
     @Input() hasCarouselBottomTabs: boolean;
     @Input() tags: any[] = [];
     @Input() type: string; // modal | table | details | todo
