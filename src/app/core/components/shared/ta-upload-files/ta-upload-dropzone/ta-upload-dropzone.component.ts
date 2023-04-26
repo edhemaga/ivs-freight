@@ -55,6 +55,7 @@ export class TaUploadDropzoneComponent {
 
     @Input() customClassName: string;
     @Input() size: string;
+    @Input() modalSize: string;
     @Input() filesLength: number = 0;
 
     @Input() disableUnsupportedPreview: boolean = false; // only for modals upload
