@@ -1,7 +1,7 @@
 <div class="repair-component">
     <div [ngSwitch]="repairShopItem.template">
         <!---------------------------- GENERAL TEMPLATE ----------------------------->
-        <div *ngSwitchCase="'general'">
+        <div *ngSwitchCase="'general'" class="repair-general-holder">
             <app-shop-repair-card-view
                 [repairShopCardViewData]="repairShopItem?.data"
             >
@@ -255,9 +255,11 @@
                 <div class="repair-vehicle-header">
                     <span class="repaier-headers">UNIT</span>
                     <span class="repaier-headers">TYPE</span>
-                    <svg-icon
-                        src="assets/svg/common/ic_key-repair.svg"
-                    ></svg-icon>
+                    <span class="repair-svg-holder">
+                        <svg-icon
+                            src="assets/svg/common/ic_key-repair.svg"
+                        ></svg-icon>
+                    </span>
                     <span class="repaier-headers last-value-align">COST</span>
                 </div>
                 <div class="divider"></div>

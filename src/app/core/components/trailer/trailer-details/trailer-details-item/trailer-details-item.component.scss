@@ -25,7 +25,8 @@ app-trailer-details-item {
             .firm-name {
                 font-size: $font-size18;
                 font-weight: $font-medium;
-                color: $color-gray-dark;
+                //color: $color-gray-dark;
+                color: #2f2f2f;
                 height: 19px;
                 &::-moz-selection {
                     color: $color-gray-dark;

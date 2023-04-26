@@ -21,18 +21,18 @@ app-truck-details {
             .amount {
                 font-size: $font-size18 !important;
                 font-weight: $font-medium !important;
-                color: #6c6c6c !important;
+                color: #2f2f2f !important;
             }
             .payment {
                 font-size: $font-size18 !important;
                 font-weight: 500 !important;
-                color: #6c6c6c !important;
+                color: #2f2f2f !important;
             }
             .purchase-template-item {
                 .purchase-template-item-name {
                     font-size: $font-size12;
                     font-weight: $font-semibold;
-                    color: #6c6c6c;
+                    color: #2f2f2f;
                     &::-moz-selection {
                         color: $color-gray-dark;
                         background: rgb(108, 108, 108, 0.2);
@@ -45,12 +45,13 @@ app-truck-details {
                 .purchase-template-item-value {
                     font-size: $font-size14;
                     font-weight: 400;
+                    color: #2f2f2f;
                     &::-moz-selection {
-                        color: $color-gray-dark;
+                        color: #2f2f2f;
                         background: rgb(108, 108, 108, 0.2);
                     }
                     &::selection {
-                        color: $color-gray-dark;
+                        color: #2f2f2f;
                         background: rgb(108, 108, 108, 0.2);
                     }
                 }

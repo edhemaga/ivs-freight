@@ -269,7 +269,7 @@ p {
 
             &.inactive-assignTo-value{
                 padding-left: 6px;
-                color: #B7B7B7;
+                color: #2f2f2f;
                 line-height: 34px;
             }
 
@@ -342,7 +342,7 @@ p {
                 background: rgb(108, 108, 108, 0.2);
             }
             &:hover {
-                color: #3c3c3c;
+                color: #2f2f2f;
             }
         }
         .card-row-issued {
@@ -353,7 +353,7 @@ p {
         }
         .card-row-endor {
             display: grid;
-            grid-template-columns: 141px 141px;
+            grid-template-columns: 50% 50%;
             column-gap: 21px;
             margin-bottom: 4px;
         }
@@ -492,13 +492,13 @@ p {
             .p-status {
                 font-size: $font-size14;
                 font-weight: 700;
-                color: #919191;
+                color: #2f2f2f;
                 &::-moz-selection {
-                    color: #919191;
+                    color: #2f2f2f;
                     background: rgb(145, 145, 145, 0.2);
                 }
                 &::selection {
-                    color: #919191;
+                    color: #2f2f2f;
                     background: rgb(145, 145, 145, 0.2);
                 }
                 .note-textarea {
@@ -656,7 +656,7 @@ p {
             p {
                 font-size: 14px;
                 font-weight: 400;
-                color: #6c6c6c;
+                color: #2f2f2f;
                 white-space: nowrap;
                 &::-moz-selection {
                     color: $color-gray-dark;
@@ -776,7 +776,7 @@ p {
             p {
                 font-size: 18px;
                 font-weight: 500;
-                color: #6c6c6c;
+                color: #2f2f2f;
                 &::-moz-selection {
                     color: $color-gray-dark;
                     background: rgb(108, 108, 108, 0.2);
@@ -794,7 +794,7 @@ p {
             }
             svg {
                 path {
-                    fill: #aaaaaa;
+                    fill: #424242;
                     object-fit: fill;
                 }
                 rect {
@@ -811,7 +811,7 @@ p {
             align-items: center;
             p {
                 font-size: 18px;
-                color: #6c6c6c;
+                color: #2f2f2f;
                 font-weight: 400;
             }
         }
@@ -820,7 +820,7 @@ p {
             margin-bottom: 14px;
             p {
                 font-size: 14px !important;
-                color: #6c6c6c;
+                color: #2f2f2f;
                 font-weight: 400;
                 position: relative;
                 bottom: -1px;
@@ -874,7 +874,8 @@ p {
         .common-template-item-name {
             font-size: $font-size12;
             font-weight: $font-semibold;
-            color: $color-gray-dark;
+            //color: $color-gray-dark;
+            color: #2f2f2f;
 
             &::-moz-selection {
                 color: $color-gray-dark;
@@ -889,7 +890,8 @@ p {
         .common-template-item-value {
             font-size: $font-size14;
             font-weight: 400;
-            color: $color-gray-dark;
+            //color: $color-gray-dark;
+            color: #2F2F2F;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -970,13 +972,14 @@ p {
     font-size: 14px;
     font-weight: 400;
     //padding: 0 10px;
-    color: #b7b7b7;
+    //color: #b7b7b7;
+    color: #919191;
     &::-moz-selection {
-        color: #b7b7b7;
+        color: #919191;
         background: rgb(183, 183, 183, 0.2);
     }
     &::selection {
-        color: #b7b7b7;
+        color: #919191;
         background: rgb(183, 183, 183, 0.2);
     }
 }
@@ -992,29 +995,30 @@ p {
         flex-direction: column;
         align-items: flex-start;
         .mileage-template-item-name {
-            color: $color-gray-dark;
+            //color: $color-gray-dark;
+            color: #2F2F2F;
             font-size: 11px;
             font-weight: 700;
             &::-moz-selection {
-                color: $color-gray-dark;
+                color: #2F2F2F;
                 background: rgb(108, 108, 108, 0.2);
             }
             &::selection {
-                color: $color-gray-dark;
+                color: #2F2F2F;
                 background: rgb(108, 108, 108, 0.2);
             }
         }
         .mileage-template-item-value {
-            color: $color-gray-dark;
+            color: #2F2F2F;
             font-size: 18px;
             font-weight: 500;
             margin-top: -3px;
             &::-moz-selection {
-                color: $color-gray-dark;
+                color: #2f2f2f;
                 background: rgb(108, 108, 108, 0.2);
             }
             &::selection {
-                color: $color-gray-dark;
+                color: #2F2F2F;
                 background: rgb(108, 108, 108, 0.2);
             }
         }
@@ -1160,6 +1164,28 @@ p {
         width: 300px;
     }
 
+
+    .repair-details-container{
+        grid-template-columns: 440px 712px 320px 260px !important;
+    }
+
+    .repair-details-cmp{
+        grid-template-columns: 440px 712px 320px 260px !important;
+    }
+
+    
+    .repair-container {
+       width: 712px !important; 
+    }
+
+    .repaired-vehicle-container{
+        width: 320px !important;
+    }
+
+    .likes-count-container{
+        width: 260px;
+    }
+    
     .counter-text{
         padding: 0px 0px 0px 8px !important;
     }
@@ -1175,7 +1201,48 @@ p {
     .card-restriction-endorsment{
         grid-template-columns: 110px 115px !important;
     }
+
+    .restriction-item-value {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
 }
+
+@media (max-width: 1850px) {
+
+    .repair-details-container{
+        grid-template-columns: 430px 702px 310px 250px !important;
+    }
+
+    .repair-details-cmp{
+        grid-template-columns: 430px 702px 310px 250px !important;
+    }
+
+    .repair-general-holder{
+        width: 430px;
+    }
+    
+    .repair-container {
+       width: 702px !important; 
+    }
+
+    .repaired-vehicle-container{
+        width: 310px !important;
+    }
+
+    .likes-count-container{
+        width: 250px;
+    }
+
+    .repair-component {
+        .repair-cards {
+            width: 430px !important;
+        }
+    } 
+    
+
+}    
 
 @media (max-width: 1820px) {
     .card-restriction-endorsment{
@@ -1239,6 +1306,10 @@ p {
 
 }
 
+.boldSanVin{
+    font-weight: 800;
+}
+
 @media (max-width: 1700px) {
     .details-container-items {
         display: grid;
@@ -1281,7 +1352,7 @@ p {
     }
 
     .details-header-wrapper-switcher {
-        grid-template-columns: 350px 53px !important;
+        grid-template-columns: 330px 53px !important;
     }
 
     .restriction-item-value {
@@ -1329,7 +1400,7 @@ p {
 
     .details-container-items {
         display: grid;
-        grid-template-columns: 360px repeat(4, 237px);
+        grid-template-columns: 360px repeat(4, 260px);
     }
 
     .details-component .details-cards {
@@ -1341,7 +1412,7 @@ p {
     }
 
     .card-width {
-        width: 237px;
+        width: 260px;
     }
 
     .card-restriction-endorsment
@@ -1358,7 +1429,49 @@ p {
     .reason-span{
         display: none;
     }
+
+    .details-header-wrapper-switcher {
+        grid-template-columns: 290px 53px !important;
+    }
+
+    .assignTo {
+        grid-template-columns: 162px 162px;
+    }
 }
+
+@media (max-width: 1540px) {
+
+    .details-container-items {
+        display: grid;
+        grid-template-columns: 360px repeat(4, 250px);
+    }
+
+    .card-width {
+        width: 250px;
+    }
+}
+
+@media (max-width: 1500px) {
+
+    .details-container-items {
+        display: grid;
+        grid-template-columns: 360px repeat(4, 237px);
+    }
+
+    .card-width {
+        width: 237px;
+    }
+    /*
+    .card-row-endor {
+        grid-template-columns: 100px 100px !important;
+    } */
+
+    .restriction-item-value{
+        
+    }
+    
+}
+
 
 
 /*

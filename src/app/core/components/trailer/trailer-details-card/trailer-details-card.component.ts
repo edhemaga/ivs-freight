@@ -241,6 +241,19 @@ export class TrailerDetailsCardComponent
         this.ownerCardOpened = mod;
     }
 
+    getLastSixChars(mod){
+        var lastSixChars = mod;
+
+        if ( mod.length > 6 ) {
+            lastSixChars = mod.slice(-6);
+
+            let stringLength = mod.length;
+            let firsNum = stringLength - 6;
+            lastSixChars = [mod.slice(0, firsNum), mod.slice(-6)];
+        }
+        return lastSixChars;
+    }
+
     ngOnDestroy(): void {
         this.destroy$.next();
         this.destroy$.complete();

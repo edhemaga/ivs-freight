@@ -76,7 +76,8 @@ app-shop-repair-details-item {
 
             .open-time {
                 font-size: $font-size18;
-                color: $color-gray-dark;
+                //color: $color-gray-dark;
+                color: #2f2f2f;
                 height: 18px;
                 position: relative;
                 bottom: 2px;
@@ -94,7 +95,8 @@ app-shop-repair-details-item {
         .open-header {
             font-size: $font-size12;
             font-weight: $font-semibold;
-            color: $color-gray-dark;
+            color: #2f2f2f;
+            //color: $color-gray-dark;
             padding-right: 4px;
             &::-moz-selection {
                 color: $color-gray-dark;
@@ -113,7 +115,7 @@ app-shop-repair-details-item {
         .open-working-days-value {
             font-size: 14px;
             font-weight: 400;
-            color: #6c6c6c;
+            color: #2f2f2f;
             height: 18px;
             &::-moz-selection {
                 color: $color-gray-dark;

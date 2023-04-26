@@ -83,8 +83,10 @@
                     ></svg-icon>
                     <app-ta-copy
                         [textFontSize]="'18px'"
-                        [copyValue]="trailer?.vin"
+                        [copyValue]="getLastSixChars(trailer?.vin)"
                         [textColor]="'#2f2f2f'"
+                        [boldText]="true"
+                        [arrayText]=" trailer?.vin.length > 6 ? true : false"
                     >
                     </app-ta-copy>
                 </div>

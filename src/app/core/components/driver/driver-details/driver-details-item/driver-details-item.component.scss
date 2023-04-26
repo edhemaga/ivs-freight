@@ -70,13 +70,13 @@
         .purchase-template-item-name {
             font-size: $font-size12;
             font-weight: $font-semibold;
-            color: #6c6c6c;
+            color: #2f2f2f;
             &::-moz-selection {
-                color: #6c6c6c;
+                color: #2f2f2f;
                 background: rgb(108, 108, 108, 0.2);
             }
             &::selection {
-                color: #6c6c6c;
+                color: #2f2f2f;
                 background: rgb(108, 108, 108, 0.2);
             }
         }
@@ -85,12 +85,13 @@
             font-weight: 400;
             overflow: hidden;
             text-overflow: ellipsis;
+            color: #2f2f2f;
             &::-moz-selection {
-                color: #6c6c6c;
+                color: #2f2f2f;
                 background: rgb(108, 108, 108, 0.2);
             }
             &::selection {
-                color: #6c6c6c;
+                color: #2f2f2f;
                 background: rgb(108, 108, 108, 0.2);
             }
         }
