@@ -468,6 +468,7 @@
                                         ? column.expandedMarginRight + 'px'
                                         : column.marginRight + 'px'
                                 }"
+                                (click)="sortByColumn(column)"
                             >
                                 {{ column.title }}
                             </div>

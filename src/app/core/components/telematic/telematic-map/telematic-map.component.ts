@@ -24,6 +24,7 @@ import { TruckListResponse, TrailerListResponse } from 'appcoretruckassist';
 import { DomSanitizer } from '@angular/platform-browser';
 import { CompanyTOfficeService } from '../../settings/settings-location/settings-office/state/company-office.service';
 import { DetailsDataService } from '../../../services/details-data/details-data.service';
+import { UnitType } from '../../../../../../appcoretruckassist/model/unitType';
 
 @Component({
     selector: 'app-telematic-map',
@@ -112,6 +113,8 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
     allTrailerUnits: any[] = [];
     selectedTruckUnit: any = {};
     selectedTrailerUnit: any = {};
+    sortColumn: any = {};
+    sortDirection: any = 'asc';
 
     columns: any[] = [
         {
@@ -427,6 +430,7 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
                 this.filterAssignedDevices();
                 this.getTrucks();
                 this.getTrailers();
+                this.findLinkedDevices();
             });
     }
 
@@ -1532,6 +1536,47 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
         console.log('assignUnitFromMarker item', item);
         this.showHideUnassigned(true);
         this.showTruckDropdown(item);
+    }
+
+    sortByColumn(column) {
+        console.log('sortByColumn column', column);
+        this.sortColumn = column;
+        this.sortDirection = this.sortDirection == 'asc' ? 'desc' : 'asc';
+        this.filteredAssignedDevices.sort((a, b) => {
+            if ( this.sortDirection == 'asc' ) {
+                if(a[column.value] < b[column.value]) { return 1; }
+                if(a[column.value] > b[column.value]) { return -1; }
+                return 0;
+            } else {
+                if(a[column.value] < b[column.value]) { return -1; }
+                if(a[column.value] > b[column.value]) { return 1; }
+                return 0;
+            }
+        });
+    }
+
+    findLinkedDevices() {
+        this.filteredAssignedDevices.map((device) => {
+            let linkedDevice = this.filteredAssignedDevices.find(
+                (device2) =>
+                    device.truckNumber === device2.truckNumber &&
+                    device.trailerNumber === device2.trailerNumber &&
+                    device.deviceId != device2.deviceId
+            );
+
+            console.log('linkedDevice', linkedDevice);
+
+            if ( linkedDevice ) {
+                if ( device.unitType == 1 ) {
+                    device.linkedDevice = true;
+                } else {
+                    device.linkedDevice = true;
+                    device.hideLinkedDevice = true;
+                }
+                
+                console.log('found linkedDevice');
+            }
+        });
     }
 
     ngOnDestroy(): void {

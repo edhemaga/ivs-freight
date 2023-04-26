@@ -757,6 +757,7 @@
 .column-container {
     transition: all 0.2s ease-in-out;
     overflow: hidden;
+    cursor: pointer;
 
     &.no-data-text,
     .no-data-text {
