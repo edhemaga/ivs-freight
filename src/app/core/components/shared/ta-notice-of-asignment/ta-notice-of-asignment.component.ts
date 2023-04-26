@@ -35,7 +35,7 @@ import { TaInputDropdownComponent } from '../ta-input-dropdown/ta-input-dropdown
         SafeHtmlPipe,
         AngularSvgIconModule,
         ReactiveFormsModule,
-        TaInputDropdownComponent
+        TaInputDropdownComponent,
     ],
 })
 export class TaNoticeOfAsignmentComponent
@@ -50,6 +50,7 @@ export class TaNoticeOfAsignmentComponent
     selectedFontSize = 14;
     activeFont: any = { id: 3, name: 'Default', showName: 'Default' };
     activeFontSize: any;
+    isBlured: boolean = true;
 
     fontSizeList: any[] = [
         {
@@ -200,6 +201,7 @@ export class TaNoticeOfAsignmentComponent
                 document.execCommand(action, false, `${color}px`);
             }
         } else {
+            this.selectedColorName = color;
             setTimeout(() => {
                 this.focusElement();
                 setTimeout(() => {
@@ -211,9 +213,11 @@ export class TaNoticeOfAsignmentComponent
             });
         }
 
-        setTimeout(()=>{
-            this.getSuperControl.patchValue(this.noticeRef.nativeElement.innerHTML);
-        }, 500)
+        setTimeout(() => {
+            this.getSuperControl.patchValue(
+                this.noticeRef.nativeElement.innerHTML
+            );
+        }, 500);
     }
 
     focusElement(): void {
@@ -254,11 +258,19 @@ export class TaNoticeOfAsignmentComponent
     }
 
     blurElement() {
-        this.selectionTaken = window.getSelection();
-        if (this.selectionTaken.rangeCount && this.selectionTaken.getRangeAt) {
-            this.range = this.selectionTaken.getRangeAt(0);
-            this.selectionTaken.removeAllRanges();
-            this.selectionTaken.addRange(this.range);
+        this.isBlured = !this.isBlured;
+
+        if (!this.isBlured) {
+            this.selectionTaken = window.getSelection();
+            if (
+                this.selectionTaken.rangeCount &&
+                this.selectionTaken.getRangeAt
+            ) {
+                this.range = this.selectionTaken.getRangeAt(0);
+                this.selectionTaken.removeAllRanges();
+                this.selectionTaken.addRange(this.range);
+                this.noticeRef.nativeElement.blur();
+            }
         }
     }
 
