@@ -265,18 +265,18 @@ $transition: all 0.3s ease-in-out;
         .cost {
             font-size: $font-size14;
             font-weight: $font-semibold;
-            color: $color-gray-dark;
+            color: #2f2f2f;
             text-align: right;
             line-height: 18px;
             display: flex;
             justify-content: flex-end;
             align-items: end;
             &::-moz-selection {
-                color: $color-gray-dark;
+                color: #2f2f2f;
                 background: rgb(183, 183, 183, 0.2);
             }
             &::selection {
-                color: $color-gray-dark;
+                color: #2f2f2f;
                 background: rgb(183, 183, 183, 0.2);
             }
         }
@@ -354,43 +354,43 @@ $transition: all 0.3s ease-in-out;
             .unit {
                 font-size: $font-size14;
                 font-weight: $font-bold;
-                color: $color-gray-dark;
+                color: #2f2f2f;
                 height: 18px;
                 &::-moz-selection {
-                    color: $color-gray-dark;
+                    color: #2f2f2f;
                     background: rgb(183, 183, 183, 0.2);
                 }
                 &::selection {
-                    color: $color-gray-dark;
+                    color: #2f2f2f;
                     background: rgb(183, 183, 183, 0.2);
                 }
             }
             .date {
                 font-size: $font-size14;
                 font-weight: 400;
-                color: $color-gray-dark;
+                color: #2f2f2f;
                 height: 18px;
                 &::-moz-selection {
-                    color: $color-gray-dark;
+                    color: #2f2f2f;
                     background: rgb(183, 183, 183, 0.2);
                 }
                 &::selection {
-                    color: $color-gray-dark;
+                    color: #2f2f2f;
                     background: rgb(183, 183, 183, 0.2);
                 }
             }
             .cost {
                 font-size: $font-size14;
                 font-weight: $font-semibold;
-                color: $color-gray-dark;
+                color: #2f2f2f;
                 height: 18px;
                 text-align: right;
                 &::-moz-selection {
-                    color: $color-gray-dark;
+                    color: #2f2f2f;
                     background: rgb(183, 183, 183, 0.2);
                 }
                 &::selection {
-                    color: $color-gray-dark;
+                    color: #2f2f2f;
                     background: rgb(183, 183, 183, 0.2);
                 }
             }

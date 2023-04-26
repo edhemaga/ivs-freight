@@ -1186,6 +1186,36 @@ p {
         width: 260px;
     }
     
+    .repaired-vehicle-container .repair-vehicle-header {
+        grid-template-columns: 37px 55px 50px 46px !important;
+    }
+
+    .repair-items-vehicle{
+        .items-vehicle{
+            grid-template-columns: 50px 79px 52px 66px !important;
+        }
+    }
+    
+    app-shop-repair-details-item {
+        .finish-order-cont {
+            .repair-items {
+                .items-header {
+                  
+                    &.repair-item-column{
+
+                        &.responsiveHolderRepair{
+                            grid-template-columns: 85px 35px 110px 95px 325px !important;
+                        }
+                        
+                    }
+        
+                }
+            }
+        }
+    }
+    
+    
+
     .counter-text{
         padding: 0px 0px 0px 8px !important;
     }
@@ -1241,6 +1271,23 @@ p {
         }
     } 
     
+    app-shop-repair-details-item {
+        .finish-order-cont {
+            .repair-items {
+                .items-header {
+                  
+                    &.repair-item-column{
+
+                        &.responsiveHolderRepair{
+                            grid-template-columns: 85px 35px 110px 95px 315px !important;
+                        }
+                        
+                    }
+        
+                }
+            }
+        }
+    }
 
 }    
 
