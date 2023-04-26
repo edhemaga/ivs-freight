@@ -29,6 +29,9 @@
         for="pdf"
         class="ta-upload-dropzone-label"
         [class.required]="isRequired && showRequired && !textChangeOverModal"
+        [ngClass]="{
+            small: size == 'medium' && filesLength > 1 && modalSize == 'small'
+        }"
     >
         <svg-icon
             class="ta-upload-dropzone-area"

@@ -36,50 +36,50 @@
     }
 
     &-small {
-        grid-template-columns: 168px 1fr;
+        grid-template-columns: 164px 1fr;
         grid-template-rows: 194px;
-        -moz-column-gap: 12px;
-        column-gap: 12px;
+        -moz-column-gap: 6px;
+        column-gap: 6px;
         transition: all 0.3s ease-in-out;
     }
 
     &-medium-file {
-        grid-template-columns: 168px 1fr;
+        grid-template-columns: 164px 1fr;
         grid-template-rows: 194px;
-        -moz-column-gap: 12px;
-        column-gap: 12px;
+        -moz-column-gap: 6px;
+        column-gap: 6px;
         transition: all 0.3s ease-in-out;
     }
 
     &-medium-files {
-        grid-template-columns: 348px 1fr;
+        grid-template-columns: 344px 1fr;
         grid-template-rows: 194px;
-        -moz-column-gap: 12px;
-        column-gap: 12px;
+        -moz-column-gap: 6px;
+        column-gap: 6px;
         transition: all 0.3s ease-in-out;
     }
 
     &-large-file {
-        grid-template-columns: 168px 1fr;
+        grid-template-columns: 164px 1fr;
         grid-template-rows: 194px;
-        -moz-column-gap: 12px;
-        column-gap: 12px;
+        -moz-column-gap: 6px;
+        column-gap: 6px;
         transition: all 0.3s ease-in-out;
     }
 
     &-large-twofiles {
-        grid-template-columns: 348px 1fr;
+        grid-template-columns: 344px 1fr;
         grid-template-rows: 194px;
-        -moz-column-gap: 12px;
-        column-gap: 12px;
+        -moz-column-gap: 6px;
+        column-gap: 6px;
         transition: all 0.3s ease-in-out;
     }
 
     &-large-threefiles {
-        grid-template-columns: 528px 1fr;
+        grid-template-columns: 524px 1fr;
         grid-template-rows: 194px;
-        -moz-column-gap: 12px;
-        column-gap: 12px;
+        -moz-column-gap: 6px;
+        column-gap: 6px;
         transition: all 0.3s ease-in-out;
     }
 
