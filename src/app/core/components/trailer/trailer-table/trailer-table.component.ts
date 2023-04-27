@@ -416,6 +416,9 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
             tableLicencePlateDetailST: 'NA',
             tableLicencePlateDetailExpiration: {
                 expirationDays: data?.registrationExpirationDays
+                    ? data.registrationExpirationDays
+                    : null,
+                expirationDaysText: data?.registrationExpirationDays
                     ? this.thousandSeparator.transform(
                           data.registrationExpirationDays
                       )
@@ -431,6 +434,9 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 : '',
             tableFHWAInspectionExpiration: {
                 expirationDays: data?.inspectionExpirationDays
+                    ? data.inspectionExpirationDays
+                    : null,
+                expirationDaysText: data?.inspectionExpirationDays
                     ? this.thousandSeparator.transform(
                           data.inspectionExpirationDays
                       )

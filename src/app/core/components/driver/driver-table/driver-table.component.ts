@@ -504,6 +504,8 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     ? this.mapApplicantsData(data)
                     : this.mapDriverData(data);
             });
+
+            console.log(this.viewData);
         } else {
             this.viewData = [];
         }
@@ -562,7 +564,10 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
             tableCdlDetailEndorsment: 'NA',
             tableCdlDetailRestriction: 'NA',
             tableCdlDetailExpiration: {
-                expirationDays: data?.cdlExpirationDays
+                expirationDays: data?.cdlExpirationDays || data?.cdlExpirationDays === 0
+                    ? data.cdlExpirationDays
+                    : null,
+                expirationDaysText: data?.cdlExpirationDays
                     ? this.thousandSeparator.transform(data.cdlExpirationDays)
                     : null,
                 percentage:
@@ -576,6 +581,9 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
             tableTestDetailsResult: 'NA',
             tableMedicalData: {
                 expirationDays: data?.medicalExpirationDays
+                    ? data.medicalExpirationDays
+                    : null,
+                expirationDaysText: data?.medicalExpirationDays
                     ? this.thousandSeparator.transform(
                           data.medicalExpirationDays
                       )
@@ -587,6 +595,9 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
             },
             tableMvrDetailsExpiration: {
                 expirationDays: data?.mvrExpirationDays
+                    ? data.mvrExpirationDays
+                    : null,
+                expirationDaysText: data?.mvrExpirationDays
                     ? this.thousandSeparator.transform(data.mvrExpirationDays)
                     : null,
                 percentage:
