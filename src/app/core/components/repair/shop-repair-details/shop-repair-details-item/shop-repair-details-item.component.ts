@@ -32,6 +32,7 @@ import { TruckassistTableService } from '../../../../services/truckassist-table/
 })
 export class ShopRepairDetailsItemComponent implements OnInit, OnChanges {
     @Input() repairShopItem: RepairShopResponse | any = null;
+    @Input() customClass: string | any = '';
     public repairListData: any;
     public repairedVehicleListData: any;
     public data;

@@ -353,6 +353,7 @@ export class ShopRepairDetailsComponent implements OnInit, OnDestroy {
                 repairOpen: data?.openHoursToday === 'Closed' ? false : true,
                 length: this.repairsDataLength,
                 customText: 'Date',
+                hasDateArrow: true,
                 total: data?.cost ? data.cost : 0,
                 icons: [
                     {
@@ -389,15 +390,16 @@ export class ShopRepairDetailsComponent implements OnInit, OnDestroy {
                 length: this.repairedDataLength,
                 hide: true,
                 customText: 'Repairs',
+                hasDateArrow: true,
                 data: data,
                 repairOpen: data?.openHoursToday === 'Closed' ? false : true,
             },
             {
                 id: 3,
-                nameDefault: 'Review',
+                nameDefault: 'Review & Rating',
                 template: 'review',
                 length: data?.reviews?.length ? data.reviews.length : 0,
-                customText: 'Date',
+                hasDateArrow: false,
                 hide: false,
                 data: data,
                 repairOpen: data?.openHoursToday === 'Closed' ? false : true,

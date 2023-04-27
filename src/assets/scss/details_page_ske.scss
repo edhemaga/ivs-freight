@@ -1150,6 +1150,9 @@ p {
     
 }
 
+.boldSanVin{
+    font-weight: 800;
+}
 
 /* responsive start */
 
@@ -1173,6 +1176,9 @@ p {
         grid-template-columns: 440px 712px 320px 260px !important;
     }
 
+    .responsiveHolderRepair{
+        grid-template-columns: 125px 109px 95px 179px 145px !important;
+    }
     
     .repair-container {
        width: 712px !important; 
@@ -1266,6 +1272,7 @@ p {
     }
 
     .repair-component {
+        height: max-content;
         .repair-cards {
             width: 430px !important;
         }
@@ -1289,11 +1296,88 @@ p {
         }
     }
 
+    .responsiveHolderRepair{
+        grid-template-columns: 125px 109px 95px 179px 137px !important;
+    }
+
+    .repair-items-vehicle{
+        .items-vehicle{
+            grid-template-columns: 50px 88px 37px 66px !important;
+        }
+    }
+
+    .repaired-vehicle-container .repair-vehicle-header {
+        grid-template-columns: 37px 55px 40px 46px !important;
+    }
+
 }    
 
 @media (max-width: 1820px) {
     .card-restriction-endorsment{
         column-gap: 30px !important;
+    }
+
+
+    .repair-details-container{
+        grid-template-columns: 420px 692px 300px 240px !important;
+    }
+
+    .repair-details-cmp{
+        grid-template-columns: 420px 692px 300px 240px !important;
+    }
+
+    .repair-general-holder{
+        width: 420px;
+    }
+    
+    .repair-container {
+       width: 692px !important; 
+    }
+
+    .repaired-vehicle-container{
+        width: 300px !important;
+    }
+
+    .likes-count-container{
+        width: 240px;
+    }
+
+    .repair-component {
+        .repair-cards {
+            width: 420px !important;
+        }
+    } 
+    
+    app-shop-repair-details-item {
+        .finish-order-cont {
+            .repair-items {
+                .items-header {
+                  
+                    &.repair-item-column{
+
+                        &.responsiveHolderRepair{
+                            grid-template-columns: 85px 35px 100px 95px 315px !important;
+                        }
+                        
+                    }
+        
+                }
+            }
+        }
+    }
+
+    .responsiveHolderRepair{
+        grid-template-columns: 125px 99px 95px 179px 137px !important
+    }
+
+    .repair-items-vehicle{
+        .items-vehicle{
+            grid-template-columns: 50px 88px 27px 66px !important;
+        }
+    }
+
+    .repaired-vehicle-container .repair-vehicle-header {
+        grid-template-columns: 37px 55px 29px 46px !important;
     }
 }    
 
@@ -1307,17 +1391,8 @@ p {
         width: 280px;
     }
 
-    .card-row-progress{
-        //width: 88%; 
-    }
-
-    .card-restriction-endorsment
-    {
+    .card-restriction-endorsment{
         column-gap: 20px !important;
-    }
-
-    .counter-holder-all{
-        //margin-right: 0px !important;
     }
 
     .request-header-container{
@@ -1351,10 +1426,137 @@ p {
         }
     }
 
+    .repair-details-container{
+        grid-template-columns: 475px 760px 410px 0px !important;
+    }
+
+
+    .repair-general-holder{
+        width: 475px;
+    }
+
+    .repair-container {
+        width: 760px !important; 
+     }
+ 
+     .repaired-vehicle-container{
+         width: 410px !important;
+         max-width: 410px !important;
+     }
+ 
+     .likes-count-container{
+         width: 0px;
+     }
+
+     .details-header-wrapper-reapirShop{
+        max-width: 475px !important;
+     }
+
+     .repair-component {
+        .repair-cards {
+            width: 475px !important;
+        }
+    }
+
+    .repair-details-cmp{
+        grid-template-columns: 475px 760px 410px 0px !important;
+        .repair-component{
+            column-gap: 0px;
+            height: 40px;
+            &.vehicleHolder{
+                grid-row: 1 !important;
+                grid-column: 3 !important;
+                height: fit-content;
+            }
+        
+            &.reviewShopHolder{
+                grid-row: 2 !important;
+                grid-column: 3 !important;
+                width: 410px !important;
+            }
+
+        }
+
+        .review-container {
+            width: 410px !important;
+            max-width: 410px !important;
+        }
+
+        .likes-count-container{
+            display: flex;
+            justify-content: center;
+            width: 410px !important;
+            max-width: 410px !important;
+        }
+    }
 }
 
-.boldSanVin{
-    font-weight: 800;
+@media (max-width: 1760px) {
+
+    .repair-details-container{
+        grid-template-columns: 455px 740px 390px 0px !important;
+    }
+
+
+    .repair-general-holder{
+        width: 455px;
+    }
+
+    .repair-container {
+        width: 740px !important; 
+     }
+ 
+     .repaired-vehicle-container{
+         width: 390px !important;
+         max-width: 390px !important;
+     }
+ 
+     .likes-count-container{
+         width: 0px;
+     }
+
+     .details-header-wrapper-reapirShop{
+        max-width: 455px !important;
+     }
+
+     .repair-component {
+        .repair-cards {
+            width: 455px !important;
+        }
+    }
+
+    .repair-details-cmp{
+        grid-template-columns: 455px 740px 390px 0px !important;
+        .repair-component{
+            column-gap: 0px;
+            height: 40px;
+            &.vehicleHolder{
+                grid-row: 1 !important;
+                grid-column: 3 !important;
+                height: fit-content;
+            }
+        
+            &.reviewShopHolder{
+                grid-row: 2 !important;
+                grid-column: 3 !important;
+                width: 410px !important;
+            }
+
+        }
+
+        .review-container {
+            width: 390px !important;
+            max-width: 390px !important;
+        }
+
+        .likes-count-container{
+            display: flex;
+            justify-content: center;
+            width: 390px !important;
+            max-width: 390px !important;
+        }
+    }
+
 }
 
 @media (max-width: 1700px) {
@@ -1365,10 +1567,6 @@ p {
     
     .card-width {
         width: 270px;
-    }
-
-    .card-row-progress{
-        //width: 95%; 
     }
 
     .cards-item-wrapper-1{
@@ -1382,6 +1580,29 @@ p {
     .details-header-wrapper-switcher {
         grid-template-columns: 350px 53px !important;
     }
+
+    .repair-details-container{
+        grid-template-columns: 400px 740px 390px 0px !important;
+    }
+
+    .repair-general-holder{
+        width: 400px;
+    }
+
+    .details-header-wrapper-reapirShop{
+        max-width: 400px !important;
+     }
+
+     .repair-component {
+        .repair-cards {
+            width: 400px !important;
+        }
+    }
+
+    .repair-details-cmp{
+        grid-template-columns: 400px 740px 390px 0px !important;
+    }
+
 }
 
 @media (max-width: 1700px) {
@@ -1417,6 +1638,48 @@ p {
     }
 }
 
+@media (max-width: 1640px) {
+
+
+    .repair-details-container{
+        grid-template-columns: 400px 720px 370px 0px !important;
+    }
+
+    .repair-container {
+        width: 720px !important; 
+     }
+ 
+     .repaired-vehicle-container{
+         width: 370px !important;
+         max-width: 370px !important;
+     }
+ 
+     .repair-details-cmp{
+        grid-template-columns: 400px 720px 370px 0px !important;
+        .repair-component{
+            
+            &.reviewShopHolder{
+                grid-row: 2 !important;
+                grid-column: 3 !important;
+                width: 370px !important;
+            }
+
+        }
+
+        .review-container {
+            width: 370px !important;
+            max-width: 370px !important;
+        }
+
+        .likes-count-container{
+            width: 370px !important;
+            max-width: 370px !important;
+        }
+    }
+
+
+}
+
 @media (max-width: 1610px) {
 
     .details-container-items {
@@ -1440,6 +1703,51 @@ p {
     .assignTo{
         grid-template-columns: 175px 175px;
     }
+
+
+
+    .repair-details-container{
+        grid-template-columns: 380px 710px 350px 0px !important;
+    }
+
+    .repair-container {
+        width: 710px !important; 
+     }
+ 
+     .repaired-vehicle-container{
+         width: 350px !important;
+         max-width: 350px !important;
+     }
+ 
+     .repair-details-cmp{
+        grid-template-columns: 380px 710px 350px 0px !important;
+        .repair-component{
+            
+            &.reviewShopHolder{
+                grid-row: 2 !important;
+                grid-column: 3 !important;
+                width: 350px !important;
+            }
+
+        }
+
+        .review-container {
+            width: 350px !important;
+            max-width: 350px !important;
+        }
+
+        .likes-count-container{
+            width: 350px !important;
+            max-width: 350px !important;
+        }
+    }
+
+    .repair-component { 
+        .repair-cards {
+            width: 380px !important;
+        }
+    }
+
 }    
 
 
@@ -1484,6 +1792,21 @@ p {
     .assignTo {
         grid-template-columns: 162px 162px;
     }
+
+    .repair-details-container{
+        grid-template-columns: 360px 710px 350px 0px !important;
+    }
+
+    .repair-details-cmp{
+        grid-template-columns: 360px 710px 350px 0px !important;
+    }
+
+    .repair-component { 
+        .repair-cards {
+            width: 360px !important;
+        }
+    }
+
 }
 
 @media (max-width: 1540px) {
@@ -1496,6 +1819,64 @@ p {
     .card-width {
         width: 250px;
     }
+
+    .repair-details-container{
+        grid-template-columns: 360px 700px 272px 0px !important;
+    }
+
+    .repair-details-cmp{
+        grid-template-columns: 360px 700px 272px 0px !important;
+    }
+
+
+    .repair-container {
+        width: 700px !important; 
+     }
+ 
+     .repaired-vehicle-container{
+         width: 272 !important;
+         max-width: 272px !important;
+     }
+ 
+     .repair-details-cmp{
+        grid-template-columns: 360px 700px 272px 0px !important;
+        .repair-component{
+            
+            &.reviewShopHolder{
+                width: 272px !important;
+            }
+
+        }
+
+        .review-container {
+            width: 272px !important;
+            max-width: 272px !important;
+        }
+
+        .likes-count-container{
+            width: 272px !important;
+            max-width: 272px !important;
+        }
+    }
+
+    .repair-component { 
+        .repair-cards {
+            width: 360px !important;
+        }
+    }
+
+    .repaired-vehicle-container{ 
+        .repair-vehicle-header {
+            grid-template-columns: 35px 40px 25px 35px !important;
+        }
+    }
+
+    .repair-items-vehicle { 
+        .items-vehicle {
+            grid-template-columns: 45px 68px 27px 66px !important;
+        }
+    }
+
 }
 
 @media (max-width: 1500px) {

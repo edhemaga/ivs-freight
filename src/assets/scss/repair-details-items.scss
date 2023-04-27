@@ -173,7 +173,7 @@ $transition: all 0.3s ease-in-out;
         }
 
         &.repair-details-header-columns{
-            grid-template-columns: 84px 64px 64px 227px 40px;
+            grid-template-columns: 84px 64px 42px 242px 40px;
         }
 
     }
@@ -200,7 +200,11 @@ $transition: all 0.3s ease-in-out;
             padding: 0 4px;
             padding-left: 4px;
             display: grid;
-            grid-template-columns: 82px 86px 86px 311px 108px;
+            //grid-template-columns: 82px 86px 86px 311px 108px;            
+            grid-template-columns: 125px 120px 95px 190px 145px;
+
+            //grid-template-columns: 86px 35px 120px 100px 330px !important;
+
             cursor: pointer;
             align-content: center;
             grid-auto-flow: column;
