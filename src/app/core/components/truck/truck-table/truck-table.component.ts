@@ -26,6 +26,7 @@ import { getTruckColumnDefinition } from '../../../../../assets/utils/settings/t
 import { DatePipe } from '@angular/common';
 import { TruckInactiveStore } from '../state/truck-inactive-state/truck-inactive.store';
 import { Data } from '../../shared/model/dashboard';
+import { toString } from '@ng-bootstrap/ng-bootstrap/util/util';
 @Component({
     selector: 'app-truck-table',
     templateUrl: './truck-table.component.html',
@@ -391,6 +392,8 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
             this.viewData = this.viewData.map((data) => {
                 return this.mapTruckData(data);
             });
+
+            console.log(this.viewData);
         } else {
             this.viewData = [];
         }
@@ -400,6 +403,10 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
         return {
             ...data,
             truckTypeIcon: data.truckType.logoName,
+            tableVin: {
+                regularText: data?.vin ? data.vin.substr(0, data.vin.length - 6) : '',
+                boldText: data?.vin ? data.vin.substr(data.vin.length - 6) : '',
+            },
             truckTypeClass: data.truckType.logoName.replace('.svg', ''),
             textMake: data?.truckMake?.name ? data.truckMake.name : '',
             textModel: data?.model ? data.model : '',

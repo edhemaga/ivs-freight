@@ -86,6 +86,31 @@
                                         </div>
                                     </div>
 
+                                    <!-- VIN COLUMN -->
+                                    <div
+                                        class="td-content"
+                                        *ngIf="column.ngTemplate === 'vin'"
+                                        [ngStyle]="{
+                                            width: column.width + 'px',
+                                            'min-width.px': column?.minWidth
+                                                ? column.minWidth
+                                                : 'unset'
+                                        }"
+                                    >
+                                        <div class="vin-container">
+                                            {{
+                                                row[column.field]
+                                                    .regularText
+                                            }}
+                                            <span class="vin-bold">
+                                                {{
+                                                    row[column.field]
+                                                        .boldText
+                                                }}
+                                            </span>
+                                        </div>
+                                    </div>
+
                                     <!-- CHECKBOX TEMPLATE -->
                                     <div
                                         *ngIf="column.ngTemplate === 'checkbox'"
@@ -1889,6 +1914,31 @@
                                     >
                                         <div class="no-template">
                                             NO TEMPLATE
+                                        </div>
+                                    </div>
+
+                                    <!-- VIN COLUMN -->
+                                    <div
+                                        class="td-content"
+                                        *ngIf="column.ngTemplate === 'vin'"
+                                        [ngStyle]="{
+                                            width: column.width + 'px',
+                                            'min-width.px': column?.minWidth
+                                                ? column.minWidth
+                                                : 'unset'
+                                        }"
+                                    >
+                                        <div class="vin-container">
+                                            {{
+                                                row[column.field]
+                                                    .regularText
+                                            }}
+                                            <span class="vin-bold">
+                                                {{
+                                                    row[column.field]
+                                                        .boldText
+                                                }}
+                                            </span>
                                         </div>
                                     </div>
 

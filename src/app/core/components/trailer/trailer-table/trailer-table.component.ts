@@ -381,6 +381,12 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
             ...data,
             isSelected: false,
             tableTrailerTypeIcon: data.trailerType.logoName,
+            tableVin: {
+                regularText: data?.vin
+                    ? data.vin.substr(0, data.vin.length - 6)
+                    : '',
+                boldText: data?.vin ? data.vin.substr(data.vin.length - 6) : '',
+            },
             tableTrailerTypeClass: data.trailerType.logoName.replace(
                 '.svg',
                 ''
