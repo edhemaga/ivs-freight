@@ -49,6 +49,7 @@ export class TaUploadFilesComponent implements OnInit {
     @Input() hasTagsDropdown: boolean = false;
     @Input() hasNumberOfPages: boolean = false;
     @Input() size: string = 'small'; // small | medium | large
+    @Input() modalSize: string;
     @Input() hasCarouselBottomTabs: boolean;
     @Input() tags: any[] = [];
     @Input() type: string; // modal | table | details | todo
@@ -222,19 +223,20 @@ export class TaUploadFilesComponent implements OnInit {
     }
 
     public onUploadFiles(data: { files: UploadFile[]; action: string }) {
+        const uploadedFiles = [...data.files];
         switch (data.action) {
             case 'add': {
-                data.files.map((files, i) => {
+                uploadedFiles.map((files, i) => {
                     for (var a = 0; a < this.files.length; a++) {
                         if (
                             files.realFile?.name == this.files[a].realFile?.name
                         ) {
-                            data.files.splice(i);
+                            uploadedFiles.splice(i);
                         }
                     }
                 });
 
-                data.files.map((file) => {
+                uploadedFiles.map((file) => {
                     let setName = '';
                     const name = file.realFile?.name.split('');
                     name.map((item, i) => {
@@ -246,7 +248,7 @@ export class TaUploadFilesComponent implements OnInit {
                 });
                 const oldFiles = this.files.length ? this.files : [];
 
-                this.files = [...oldFiles, ...data.files];
+                this.files = [...oldFiles, ...uploadedFiles];
                 this.onFileEvent.emit({ files: this.files, action: 'add' });
                 const slideTo =
                     this.modalCarousel?.customClass == 'large'

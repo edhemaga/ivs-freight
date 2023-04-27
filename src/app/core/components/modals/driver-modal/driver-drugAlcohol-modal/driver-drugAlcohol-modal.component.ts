@@ -330,6 +330,7 @@ export class DriverDrugAlcoholModalComponent implements OnInit, OnDestroy {
             testReasonId: this.selectedReasonType.id,
             testType: this.selectedTestType.id,
             result: this.selectedTestResult ? this.selectedTestResult.id : null,
+            tableActiveTab: this.editData.tableActiveTab,
             note: note,
             files: documents,
         };

@@ -55,6 +55,7 @@ export class TaUploadDropzoneComponent {
 
     @Input() customClassName: string;
     @Input() size: string;
+    @Input() modalSize: string;
     @Input() filesLength: number = 0;
 
     @Input() disableUnsupportedPreview: boolean = false; // only for modals upload
@@ -150,6 +151,15 @@ export class TaUploadDropzoneComponent {
                 this.onDropBackground.emit({ action: 'dragover', value: true });
             }
         }
+    }
+
+    @HostListener('window:drop', ['$event'])
+    onWindowDrop(event: any): void {
+        event.preventDefault();
+        event.stopPropagation();
+        this.onDropBackground.emit({ action: 'drop', value: false });
+        this.textChangeOverModal = false;
+        this.windowDragOver = false;
     }
 
     public async onFileUpload(files: FileList) {
