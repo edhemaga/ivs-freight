@@ -66,36 +66,37 @@
 
         <!-- REVIEW AND FEEDBACK -->
 
-        <div
-            class="review-feedback-container"
+        <ng-container
             *ngIf="
                 (selectedMode === 'REVIEW_MODE' ||
                     selectedMode === 'FEEDBACK_MODE') &&
                 !isReviewingCard
             "
         >
-            <app-applicant-review-feedback
-                formControlName="firstRowReview"
-                [displayAnnotationButton]="
-                    selectedMode === 'REVIEW_MODE' &&
-                    openAnnotationArray[15].displayAnnotationButton
-                "
-                [displayAnnotationTextArea]="
-                    selectedMode === 'REVIEW_MODE' &&
-                    openAnnotationArray[15].displayAnnotationTextArea
-                "
-                [lineIndex]="15"
-                [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
-                [feedbackText]="
-                    selectedMode === 'FEEDBACK_MODE' &&
-                    stepFeedbackValues?.emergencyContactMessage
-                "
-                (annotationBtnClickEvent)="
-                    selectedMode === 'REVIEW_MODE' &&
-                        getAnnotationBtnClickValue($event)
-                "
-            ></app-applicant-review-feedback>
-        </div>
+            <div class="review-feedback-container">
+                <app-applicant-review-feedback
+                    formControlName="firstRowReview"
+                    [displayAnnotationButton]="
+                        selectedMode === 'REVIEW_MODE' &&
+                        openAnnotationArray[15].displayAnnotationButton
+                    "
+                    [displayAnnotationTextArea]="
+                        selectedMode === 'REVIEW_MODE' &&
+                        openAnnotationArray[15].displayAnnotationTextArea
+                    "
+                    [lineIndex]="15"
+                    [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
+                    [feedbackText]="
+                        selectedMode === 'FEEDBACK_MODE' &&
+                        stepFeedbackValues?.emergencyContactMessage
+                    "
+                    (annotationBtnClickEvent)="
+                        selectedMode === 'REVIEW_MODE' &&
+                            getAnnotationBtnClickValue($event)
+                    "
+                ></app-applicant-review-feedback>
+            </div>
+        </ng-container>
     </div>
 
     <!-- BTN -->
@@ -104,7 +105,7 @@
         <ng-container *ngIf="selectedMode === 'APPLICANT_MODE' && !isEditing">
             <app-applicant-add-save-btn
                 [addBtn]="true"
-                [btnText]="'Add Second Emergency Contact'"
+                [btnText]="'Add  Emergency Contact'"
                 [disabledValue]="contactForm.invalid"
                 (clickValueEmitter)="onGetBtnClickValue($event)"
             ></app-applicant-add-save-btn>

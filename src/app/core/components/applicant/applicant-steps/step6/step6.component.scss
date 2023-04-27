@@ -22,18 +22,18 @@
 
     .step-subtitle {
         height: 18px;
-        color: $bw6-2;
+        color: $ta-black-2;
         font-size: 14px;
-        margin-bottom: 12px !important;
+        margin-bottom: 22px !important;
 
         &::-moz-selection {
-            color: $bw6-2;
-            background: rgb(108, 108, 108, 0.2);
+            color: $ta-black-2;
+            background: rgb(47, 47, 47, 0.2);
         }
 
         &::selection {
-            color: $bw6-2;
-            background: rgb(108, 108, 108, 0.2);
+            color: $ta-black-2;
+            background: rgb(47, 47, 47, 0.2);
         }
     }
 
@@ -67,6 +67,11 @@
             }
         }
 
+        .grade-disabled-before-selected {
+            background: $ta-light-grey-5;
+            color: $ta-blue-7;
+        }
+
         .grade-required {
             background: $ta-red-6;
             color: $ta-red-2;
@@ -82,72 +87,32 @@
             color: $white !important;
         }
 
-        .grade-hovered {
-            background: $ta-blue-6;
-            color: $ta-blue-5;
+        .grade-hovered,
+        .grade-disabled-selected {
+            background: $ta-blue-6 !important;
+            color: $ta-blue-5 !important;
         }
 
         .grade-selected {
             background: $ta-blue-5;
             color: $white;
         }
-
-        .all-before-selected {
-            background: $ta-blue-5;
-            color: $white;
-        }
-
-        .grade-review {
-            background: $ta-light-blue !important;
-            color: $white !important;
-        }
-
-        .feedback-review {
-            background: $ta-blue-3 !important;
-            color: $white !important;
-        }
     }
 
-    .college-title {
-        font-size: 14px;
-        color: $bw6-2;
-        height: 18px;
-        margin-bottom: 12px !important;
+    .school-college-title {
+        font-size: 11px;
+        color: $bw5;
+        line-height: 18px;
+        margin-bottom: 4px !important;
 
         &::-moz-selection {
-            color: $bw6-2;
-            background: rgb(108, 108, 108, 0.2);
+            color: $bw5;
+            background: rgb(145, 145, 145, 0.2);
         }
 
         &::selection {
-            color: $bw6-2;
-            background: rgb(108, 108, 108, 0.2);
-        }
-    }
-
-    .required-container {
-        margin-top: 6px;
-
-        .required {
-            font-size: 11px;
-            color: $ta-red-2;
-            visibility: hidden;
-            opacity: 0;
-
-            &::-moz-selection {
-                color: $ta-red-2;
-                background: rgb(239, 83, 80, 0.2);
-            }
-
-            &::selection {
-                color: $ta-red-2;
-                background: rgb(239, 83, 80, 0.2);
-            }
-        }
-
-        .required-active {
-            visibility: visible;
-            opacity: 1;
+            color: $bw5;
+            background: rgb(145, 145, 145, 0.2);
         }
     }
 
@@ -155,6 +120,8 @@
         .top-questions-container,
         .bottom-questions-container {
             width: 616px;
+            padding-bottom: 6px;
+            border-bottom: 0.1px solid $bw-9;
 
             .line-container {
                 position: relative;
@@ -172,24 +139,24 @@
                 width: 616px;
                 margin-bottom: 8px;
 
-                &:last-child {
-                    margin-bottom: 0;
+                &:last-of-type {
+                    margin-bottom: 0 !important;
                 }
 
                 .title-box {
                     .question-title {
-                        color: $bw6-2;
+                        color: $ta-black-2;
                         font-size: 14px;
                         line-height: 18px;
 
                         &::-moz-selection {
-                            color: $bw6-2;
-                            background: rgb(108, 108, 108, 0.2);
+                            color: $ta-black-2;
+                            background: rgb(47, 47, 47, 0.2);
                         }
 
                         &::selection {
-                            color: $bw6-2;
-                            background: rgb(108, 108, 108, 0.2);
+                            color: $ta-black-2;
+                            background: rgb(47, 47, 47, 0.2);
                         }
 
                         .required-star {
@@ -302,20 +269,21 @@
         }
 
         .contact-form {
-            margin-top: 10px;
+            margin-top: 8px;
 
             .contact-title {
                 font-size: 14px;
-                color: $bw6-2;
+                line-height: 18px;
+                color: $ta-black-2;
 
                 &::-moz-selection {
-                    color: $bw6-2;
-                    background: rgb(108, 108, 108, 0.2);
+                    color: $ta-black-2;
+                    background: rgb(47, 47, 47, 0.2);
                 }
 
                 &::selection {
-                    color: $bw6-2;
-                    background: rgb(108, 108, 108, 0.2);
+                    color: $ta-black-2;
+                    background: rgb(47, 47, 47, 0.2);
                 }
             }
 

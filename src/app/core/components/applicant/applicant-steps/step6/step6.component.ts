@@ -9,7 +9,11 @@ import {
     QueryList,
     ViewChildren,
 } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import {
+    UntypedFormBuilder,
+    UntypedFormGroup,
+    Validators,
+} from '@angular/forms';
 import { Router } from '@angular/router';
 
 import {
@@ -146,6 +150,7 @@ export class Step6Component implements OnInit, OnDestroy, AfterContentChecked {
     public selectedCollegeGrade: number = -1;
 
     public highlightGrade: number = -1;
+    public highlightCollegeGrade: number = -1;
 
     public isEditing: boolean = false;
     public isReviewingCard: boolean = false;
@@ -179,7 +184,7 @@ export class Step6Component implements OnInit, OnDestroy, AfterContentChecked {
             ],
         },
         {
-            title: 'Other training?',
+            title: 'Have you received any other training?',
             formControlName: 'otherTraining',
             formControlNameExplain: 'otherTrainingExplain',
             answerChoices: [
@@ -339,7 +344,7 @@ export class Step6Component implements OnInit, OnDestroy, AfterContentChecked {
 
         this.getStepValuesFromStore();
     }
-    ž;
+
     ngAfterContentChecked(): void {
         this.changeDetectorRef.detectChanges();
     }
@@ -1453,10 +1458,7 @@ export class Step6Component implements OnInit, OnDestroy, AfterContentChecked {
 
     public onStepAction(event: any): void {
         if (event.action === 'next-step') {
-            if (
-                this.selectedMode === SelectedMode.APPLICANT ||
-                this.selectedMode === SelectedMode.FEEDBACK
-            ) {
+            if (this.selectedMode !== SelectedMode.REVIEW) {
                 this.onSubmit();
             }
 
