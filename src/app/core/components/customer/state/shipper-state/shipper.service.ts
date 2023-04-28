@@ -487,7 +487,7 @@ export class ShipperTService implements OnDestroy {
     }
 
 
-    public changeShipperStatus(id: any){
+    public changeShipperStatus(id: number){
         return this.shipperService.apiShipperStatusIdPut(id)
             .pipe(takeUntil(this.destroy$))
             .subscribe({

@@ -332,11 +332,7 @@ export class ShopRepairDetailsComponent implements OnInit, OnDestroy {
             this.togglerWorkTime = true;
         }
 
-        if (data?.status){
-            this.businessOpen = true;
-        }else {
-            this.businessOpen = false; 
-        }
+        this.businessOpen = data?.status ? true : false;
 
         this.shopRepairConfig = [
             {

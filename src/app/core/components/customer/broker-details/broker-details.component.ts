@@ -186,13 +186,9 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
         this.initTableOptions(data);
         //calling api every time data is loaded
         //this.getBrokerById(data.id);
-       
-        if (data?.status){
-            this.businessOpen = true;
-        }else {
-            this.businessOpen = false; 
-        }    
-
+        
+        this.businessOpen = data?.status ? true : false;    
+        
         let totalCost;
         this.DetailsDataService.setNewData(data);
         if (data?.loads?.length) {

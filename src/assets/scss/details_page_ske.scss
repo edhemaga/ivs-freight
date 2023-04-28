@@ -1160,11 +1160,11 @@ p {
 
     .details-container-items {
         display: grid;
-        grid-template-columns: 440px repeat(4, 300px);
+        grid-template-columns: 440px repeat(4, 320px);
     }
 
     .card-width {
-        width: 300px;
+        width: 320px;
     }
 
 
@@ -1243,6 +1243,40 @@ p {
         text-overflow: ellipsis;
         white-space: nowrap;
     }
+
+
+    app-shipper-details, app-broker-details{
+        .load{
+            width: 712px !important;
+        }
+
+        .contact{
+            width: 320px !important;
+
+            .contact-wrapper{
+                width: 320px !important;;
+            }
+        }
+
+        .likes-count-container {
+            width: 260px !important;;
+        }
+        
+        .review-container{
+            width: 260px !important;;
+        }
+    }
+}
+
+@media (max-width: 1870px) {
+    .details-container-items {
+        display: grid;
+        grid-template-columns: 440px repeat(4, 300px);
+    }
+
+    .card-width {
+        width: 300px;
+    }
 }
 
 @media (max-width: 1850px) {
@@ -1308,6 +1342,49 @@ p {
 
     .repaired-vehicle-container .repair-vehicle-header {
         grid-template-columns: 37px 55px 40px 46px !important;
+    }
+
+    app-shipper-details, app-broker-details{
+
+        .details-header-wrapper{
+            width: 430px !important;;
+
+            .details-header-wrapper-switcher{
+                grid-template-columns: 360px 53px !important;;
+            }
+        }
+
+        .load{
+            width: 702px !important;;
+        }
+
+        .contact{
+            width: 310px !important;;
+
+            .contact-wrapper{
+                width: 310px !important;;
+            }
+        }
+
+        .likes-count-container {
+            width: 250px !important;;
+        }
+        
+        .review-container{
+            width: 250px !important;;
+        }
+
+        .credit-perctange{
+            width: 407px !important;
+        }
+    }
+
+    app-shop-repair-details{
+
+        .details-header-wrapper-switcher{
+            grid-template-columns: 360px 53px !important; 
+        }
+
     }
 
 }    
@@ -1378,6 +1455,49 @@ p {
 
     .repaired-vehicle-container .repair-vehicle-header {
         grid-template-columns: 37px 55px 29px 46px !important;
+    }
+
+    app-shipper-details, app-broker-details{
+
+        .details-header-wrapper{
+            width: 420px !important;
+
+            .details-header-wrapper-switcher{
+                grid-template-columns: 348px 53px !important;;
+            }
+        }
+
+        .load{
+            width: 692px !important;;
+        }
+
+        .contact{
+            width: 300px !important;;
+
+            .contact-wrapper{
+                width: 300px !important;;
+            }
+        }
+
+        .likes-count-container {
+            width: 240px !important;;
+        }
+        
+        .review-container{
+            width: 240px !important;;
+        }
+
+        .credit-perctange{
+            width: 396px !important;
+        }
+    }
+
+    app-shop-repair-details{
+
+        .details-header-wrapper-switcher{
+            grid-template-columns: 350px 53px !important; 
+        }
+
     }
 }    
 
@@ -1489,6 +1609,79 @@ p {
             max-width: 410px !important;
         }
     }
+
+    .purchase-template {
+        display: grid;
+        grid-template-columns: repeat(2, 50%) !important;
+    }
+
+
+    app-shipper-details, app-broker-details{
+
+        .toolbar-general-cmp{
+            max-width: 475px !important;
+        }
+
+        .details-header-wrapper{
+            width: 475px !important;;
+            max-width: 475px !important;;
+            .details-header-wrapper-switcher{
+                grid-template-columns: 403px 53px !important;;
+            }
+        }
+
+        .load{
+            width: 760px !important;;
+        }
+
+        .contact{
+            width: 410px !important;;
+
+            .contact-wrapper{
+                width: 410px !important;;
+            }
+        }
+
+        .likes-count-container {
+            width: 410px !important;;
+        }
+        
+        .review-container{
+            width: 410px !important;;
+        }
+
+        .credit-perctange{
+            width: 450px !important;
+        }
+
+        /*
+        .repair-component{
+            column-gap: 0px;
+            height: 40px;
+            &.contactGridHolder{
+                grid-row: 1 !important;
+                grid-column: 2 !important;
+                height: fit-content;
+            }
+        
+            &.reviewGridHolder{
+                grid-row: 2 !important;
+                grid-column: 2 !important;
+                width: 410px !important;
+            }
+
+        }
+        */
+    }
+
+    app-shop-repair-details{
+
+        .details-header-wrapper-switcher{
+            grid-template-columns: 404px 53px !important; 
+        }
+
+    }
+
 }
 
 @media (max-width: 1760px) {
@@ -1557,6 +1750,53 @@ p {
         }
     }
 
+    app-shipper-details, app-broker-details{
+
+        .toolbar-general-cmp{
+            max-width: 455px !important;
+        }
+
+        .details-header-wrapper{
+            width: 455px !important;;
+            max-width: 455px !important;;
+            .details-header-wrapper-switcher{
+                grid-template-columns: 382px 53px !important;;
+            }
+        }
+
+        .load{
+            width: 740px !important;;
+        }
+
+        .contact{
+            width: 390px !important;;
+
+            .contact-wrapper{
+                width: 390px !important;;
+            }
+        }
+
+        .likes-count-container {
+            width: 390px !important;;
+        }
+        
+        .review-container{
+            width: 390px !important;;
+        }
+
+        .credit-perctange{
+            width: 430px !important;
+        }
+    }
+
+    app-shop-repair-details{
+
+        .details-header-wrapper-switcher{
+            grid-template-columns: 385px 53px !important; 
+        }
+
+    }
+
 }
 
 @media (max-width: 1700px) {
@@ -1603,9 +1843,46 @@ p {
         grid-template-columns: 400px 740px 390px 0px !important;
     }
 
-}
+    .longText{
+        display: none !important;
+    }
 
-@media (max-width: 1700px) {
+    .shortText{
+        display: block !important;
+    }
+
+    .owner-history-container {
+        .status-container{
+            
+                .item-wrapper {
+                    grid-template-columns: 85px 105px 92px !important;
+                }
+        
+        }        
+    }
+
+    .employment-history-container{
+        .status-items {
+            .item-wrapper {
+                grid-template-columns: 72px 137px 70px !important;
+            }
+        }
+    }
+
+    app-shipper-details, app-broker-details{
+
+        .details-header-wrapper{
+            width: 400px !important;;
+            .details-header-wrapper-switcher{
+                grid-template-columns: 330px 53px !important;;
+            }
+        }
+
+        .credit-perctange{
+            width: 377px !important;
+        }
+    }
+
     .details-container-items {
         display: grid;
         grid-template-columns: 400px repeat(4, 270px);
@@ -1635,6 +1912,14 @@ p {
 
     .assignTo{
         grid-template-columns: 185px 185px;
+    }
+
+    app-shop-repair-details{
+
+        .details-header-wrapper-switcher{
+            grid-template-columns: 330px 53px !important; 
+        }
+
     }
 }
 
@@ -1677,6 +1962,28 @@ p {
         }
     }
 
+    app-shipper-details, app-broker-details{
+
+        .load{
+            width: 720px !important;;
+        }
+
+        .contact{
+            width: 370px !important;;
+
+            .contact-wrapper{
+                width: 370px !important;;
+            }
+        }
+
+        .likes-count-container {
+            width: 370px !important;;
+        }
+        
+        .review-container{
+            width: 370px !important;;
+        }
+    }
 
 }
 
@@ -1748,8 +2055,82 @@ p {
         }
     }
 
-}    
+    .owner-history-container {
+        .status-container{
+            
+                .item-wrapper {
+                    grid-template-columns: 85px 86px 92px !important
+                }
+        
+        }        
+    }
 
+    .mileage-template {
+        grid-template-columns: 112px 112px 111px;
+    }
+
+    .employment-history-container{
+        .status-items {
+            .item-wrapper {
+                grid-template-columns: 72px 114px 70px !important;
+            }
+        }
+    }
+
+
+    app-shipper-card-view {
+        .hours-template {
+            grid-template-columns: 150px 150px !important;
+        }
+    }
+
+    app-shipper-details, app-broker-details{
+
+        .toolbar-general-cmp{
+            max-width: 455px !important;
+        }
+
+        .details-header-wrapper{
+            width: 380px !important;;
+            .details-header-wrapper-switcher{
+                grid-template-columns: 310px 53px !important;;
+            }
+        }
+
+        .load{
+            width: 710px !important;;
+        }
+
+        .contact{
+            width: 350px !important;;
+
+            .contact-wrapper{
+                width: 350px !important;;
+            }
+        }
+
+        .likes-count-container {
+            width: 350px !important;;
+        }
+        
+        .review-container{
+            width: 350px !important;;
+        }
+
+        .credit-perctange{
+            width: 356px !important;
+        }
+    }
+
+    app-shop-repair-details{
+
+        .details-header-wrapper-switcher{
+            grid-template-columns: 309px 53px !important; 
+        }
+
+    }
+
+}    
 
 @media (max-width: 1590px) {
 
@@ -1807,6 +2188,71 @@ p {
         }
     }
 
+    .owner-history-container {
+        .status-container{
+            
+                .item-wrapper {
+                    grid-template-columns: 85px 91px 70px !important;
+                }
+        
+        }        
+    }
+
+    .employment-history-container{
+        .status-items {
+            .item-wrapper {
+                grid-template-columns: 72px 95px 70px !important;
+            }
+        }
+    }
+
+    app-shipper-card-view {
+        .hours-template {
+            grid-template-columns: 140px 140px !important;
+        }
+    }
+
+    app-shipper-details, app-broker-details{
+
+        .details-header-wrapper{
+            width: 360px !important;;
+            .details-header-wrapper-switcher{
+                grid-template-columns: 290px 53px !important;
+            }
+        }
+
+        .load{
+            width: 710px !important;;
+        }
+
+        .contact{
+            width: 350px !important;;
+
+            .contact-wrapper{
+                width: 350px !important;;
+            }
+        }
+
+        .likes-count-container {
+            width: 350px !important;;
+        }
+        
+        .review-container{
+            width: 350px !important;;
+        }
+
+        .credit-perctange{
+            width: 336px !important;
+        }
+    }
+
+    app-shop-repair-details{
+
+        .details-header-wrapper-switcher{
+            grid-template-columns: 290px 53px !important; 
+        }
+
+    }
 }
 
 @media (max-width: 1540px) {
@@ -1874,6 +2320,36 @@ p {
     .repair-items-vehicle { 
         .items-vehicle {
             grid-template-columns: 45px 68px 27px 66px !important;
+        }
+    }
+
+    app-shipper-details, app-broker-details{
+
+        .details-header-wrapper{
+            width: 360px !important;;
+            .details-header-wrapper-switcher{
+                grid-template-columns: 289px 53px !important;;
+            }
+        }
+
+        .load{
+            width: 700px !important;;
+        }
+
+        .contact{
+            width: 272px !important;;
+
+            .contact-wrapper{
+                width: 272px !important;;
+            }
+        }
+
+        .likes-count-container {
+            width: 272px !important;;
+        }
+        
+        .review-container{
+            width: 272px !important;;
         }
     }
 

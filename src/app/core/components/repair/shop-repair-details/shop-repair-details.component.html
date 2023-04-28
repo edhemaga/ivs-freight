@@ -23,8 +23,7 @@
             [pmFilter]="true"
             [categoryFilter]="true"
             [moneyFilter]="true"
-            [repairHeader]="true"
-            [repairHeader]="item.nameDefault == 'Repair' ? true : false"
+            [repairHeader]="item.nameDefault == 'Repair'"
             (dropActions)="dropActionRepair($event)"
             (openModalAction)="onModalAction($event)"
         >

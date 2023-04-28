@@ -141,11 +141,7 @@ export class ShipperDetailsComponent implements OnInit, OnDestroy {
             (shipper) => shipper.id === data.id
         );
 
-        if (data?.status){
-            this.businessOpen = true;
-        }else {
-            this.businessOpen = false; 
-        }
+        this.businessOpen = data?.status ? true : false;
 
         // calling api every time
         //this.getShipperById(data.id);
@@ -219,7 +215,7 @@ export class ShipperDetailsComponent implements OnInit, OnDestroy {
         this.shipperId = data?.id ? data.id : null;
 
     }
-    public deleteShipperById(id: any) {
+    public deleteShipperById(id: number) {
         let last = this.shipperList.at(-1);
         if (
             last.id ===
@@ -388,7 +384,7 @@ export class ShipperDetailsComponent implements OnInit, OnDestroy {
         return item.id;
     }
 
-    public changeShipperStatus(id: any){
+    public changeShipperStatus(id: number){
         this.shipperService.changeShipperStatus(id);
     
     }
