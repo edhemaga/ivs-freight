@@ -396,6 +396,15 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     sendDriverData() {
+        const tableView = JSON.parse(
+            localStorage.getItem(`Driver-table-view`)
+        );
+        
+        if(tableView){
+            this.selectedTab = tableView.tabSelected
+            this.activeViewMode = tableView.viewMode
+        }
+
         this.initTableOptions();
 
         const driverCount = JSON.parse(
@@ -504,7 +513,6 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     ? this.mapApplicantsData(data)
                     : this.mapDriverData(data);
             });
-
         } else {
             this.viewData = [];
         }
@@ -563,9 +571,10 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
             tableCdlDetailEndorsment: 'NA',
             tableCdlDetailRestriction: 'NA',
             tableCdlDetailExpiration: {
-                expirationDays: data?.cdlExpirationDays || data?.cdlExpirationDays === 0
-                    ? data.cdlExpirationDays
-                    : null,
+                expirationDays:
+                    data?.cdlExpirationDays || data?.cdlExpirationDays === 0
+                        ? data.cdlExpirationDays
+                        : null,
                 expirationDaysText: data?.cdlExpirationDays
                     ? this.thousandSeparator.transform(data.cdlExpirationDays)
                     : null,

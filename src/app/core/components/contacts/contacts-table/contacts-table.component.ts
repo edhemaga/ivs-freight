@@ -274,6 +274,15 @@ export class ContactsTableComponent
 
     // Send Contact Data
     sendContactData() {
+        const tableView = JSON.parse(
+            localStorage.getItem(`Contact-table-view`)
+        );
+        
+        if(tableView){
+            this.selectedTab = tableView.tabSelected
+            this.activeViewMode = tableView.viewMode
+        }
+
         this.mapingIndex = 0;
 
         this.initTableOptions();

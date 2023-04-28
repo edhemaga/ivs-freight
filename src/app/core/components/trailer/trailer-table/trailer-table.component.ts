@@ -308,6 +308,15 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     sendTrailerData() {
+        const tableView = JSON.parse(
+            localStorage.getItem(`Trailer-table-view`)
+        );
+        
+        if(tableView){
+            this.selectedTab = tableView.tabSelected
+            this.activeViewMode = tableView.viewMode
+        }
+
         this.initTableOptions();
 
         const trailerCount = JSON.parse(

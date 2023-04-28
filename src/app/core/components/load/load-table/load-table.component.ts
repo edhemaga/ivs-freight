@@ -342,6 +342,15 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     sendLoadData() {
+        const tableView = JSON.parse(
+            localStorage.getItem(`Load-table-view`)
+        );
+        
+        if(tableView){
+            this.selectedTab = tableView.tabSelected
+            this.activeViewMode = tableView.viewMode
+        }
+
         this.initTableOptions();
 
         const loadCount = JSON.parse(localStorage.getItem('loadTableCount'));

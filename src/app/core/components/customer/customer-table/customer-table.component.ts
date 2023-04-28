@@ -323,6 +323,15 @@ export class CustomerTableComponent
     }
 
     sendCustomerData() {
+        const tableView = JSON.parse(
+            localStorage.getItem(`Customer-table-view`)
+        );
+        
+        if(tableView){
+            this.selectedTab = tableView.tabSelected
+            this.activeViewMode = tableView.viewMode
+        }
+
         this.initTableOptions();
 
         this.checkActiveViewMode();

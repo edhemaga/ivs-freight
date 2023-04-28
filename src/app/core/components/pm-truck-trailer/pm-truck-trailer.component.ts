@@ -89,6 +89,15 @@ export class PmTruckTrailerComponent implements OnInit {
     }
 
     sendPMData() {
+        const tableView = JSON.parse(
+            localStorage.getItem(`PM-table-view`)
+        );
+        
+        if(tableView){
+            this.selectedTab = tableView.tabSelected
+            this.activeViewMode = tableView.viewMode
+        }
+
         this.initTableOptions();
 
         this.tableData = [

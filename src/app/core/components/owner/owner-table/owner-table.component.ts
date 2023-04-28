@@ -347,6 +347,15 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     sendOwnerData() {
+        const tableView = JSON.parse(
+            localStorage.getItem(`Owner-table-view`)
+        );
+        
+        if(tableView){
+            this.selectedTab = tableView.tabSelected
+            this.activeViewMode = tableView.viewMode
+        }
+
         this.initTableOptions();
 
         const ownerCount = JSON.parse(localStorage.getItem('ownerTableCount'));

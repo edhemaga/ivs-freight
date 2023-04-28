@@ -115,6 +115,7 @@ export class TruckassistTableToolbarComponent
     showResetOption: boolean;
     tableReseting: boolean;
     selectedViewMode: string;
+    selectedTableData: any = {};
 
     // tableTypes = [
     //     { configType: 'LOAD_TEMPLATE', id: 1 },DONE
@@ -268,6 +269,8 @@ export class TruckassistTableToolbarComponent
             : true;
 
         this.tableConfigurationType = td.tableConfiguration;
+
+        this.selectedTableData = td;
     }
 
     // Get Selected View Mode
@@ -404,6 +407,14 @@ export class TruckassistTableToolbarComponent
             this.tableService.sendSelectOrDeselect('deselect');
         }
 
+        localStorage.setItem(
+            `${this.selectedTableData.gridNameTitle}-table-view`,
+            JSON.stringify({
+                tabSelected: selectedTabData.field,
+                viewMode: this.selectedViewMode,
+            })
+        );
+
         this.toolBarAction.emit({
             action: 'tab-selected',
             tabData: selectedTabData,
@@ -439,6 +450,14 @@ export class TruckassistTableToolbarComponent
             action: 'view-mode',
             mode: modeView.mode,
         });
+
+        localStorage.setItem(
+            `${this.selectedTableData.gridNameTitle}-table-view`,
+            JSON.stringify({
+                tabSelected: this.selectedTab,
+                viewMode: this.selectedViewMode,
+            })
+        );
 
         this.isMapShowning = modeView.mode === 'Map';
     }

@@ -352,6 +352,15 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
 
     // Send Repair Data
     sendRepairData() {
+        const tableView = JSON.parse(
+            localStorage.getItem(`Repair-table-view`)
+        );
+        
+        if(tableView){
+            this.selectedTab = tableView.tabSelected
+            this.activeViewMode = tableView.viewMode
+        }
+
         this.initTableOptions();
 
         this.checkActiveViewMode();

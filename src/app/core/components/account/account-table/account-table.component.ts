@@ -260,6 +260,15 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     sendAccountData() {
+        const tableView = JSON.parse(
+            localStorage.getItem(`Account-table-view`)
+        );
+        
+        if(tableView){
+            this.selectedTab = tableView.tabSelected
+            this.activeViewMode = tableView.viewMode
+        }
+
         this.initTableOptions();
 
         const accontCount = JSON.parse(

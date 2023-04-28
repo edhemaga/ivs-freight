@@ -262,6 +262,15 @@ export class ViolationTableComponent
 
     // Send Roadside Inspection
     sendViolationData() {
+        const tableView = JSON.parse(
+            localStorage.getItem(`Roadside Inspection-table-view`)
+        );
+        
+        if(tableView){
+            this.selectedTab = tableView.tabSelected
+            this.activeViewMode = tableView.viewMode
+        }
+
         this.initTableOptions();
 
         const roadsideCount = JSON.parse(

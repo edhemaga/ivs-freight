@@ -312,6 +312,15 @@ export class AccidentTableComponent
     }
 
     sendAccidentData() {
+        const tableView = JSON.parse(
+            localStorage.getItem(`Accident-table-view`)
+        );
+        
+        if(tableView){
+            this.selectedTab = tableView.tabSelected
+            this.activeViewMode = tableView.viewMode
+        }
+
         this.initTableOptions();
 
         const accidentCount = JSON.parse(

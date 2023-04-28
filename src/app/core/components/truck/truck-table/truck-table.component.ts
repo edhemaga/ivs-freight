@@ -333,6 +333,15 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     sendTruckData() {
+        const tableView = JSON.parse(
+            localStorage.getItem(`Truck-table-view`)
+        );
+        
+        if(tableView){
+            this.selectedTab = tableView.tabSelected
+            this.activeViewMode = tableView.viewMode
+        }
+
         this.initTableOptions();
 
         const truckCount = JSON.parse(localStorage.getItem('truckTableCount'));
