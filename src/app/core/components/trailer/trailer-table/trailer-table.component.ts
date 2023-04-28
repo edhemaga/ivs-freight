@@ -725,6 +725,8 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
         switch (event.type) {
             case 'show-more': {
+                this.backFilterQuery.active =
+                    this.selectedTab === 'active' ? 1 : 0;
                 this.backFilterQuery.pageIndex++;
 
                 this.trailerBackFilter(this.backFilterQuery, true);

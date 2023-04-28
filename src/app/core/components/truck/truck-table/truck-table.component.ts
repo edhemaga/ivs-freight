@@ -779,6 +779,8 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
         switch (event.type) {
             case 'show-more': {
+                this.backFilterQuery.active =
+                    this.selectedTab === 'active' ? 1 : 0;
                 this.backFilterQuery.pageIndex++;
                 this.truckBackFilter(this.backFilterQuery, true);
                 break;

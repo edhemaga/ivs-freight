@@ -396,13 +396,11 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     sendDriverData() {
-        const tableView = JSON.parse(
-            localStorage.getItem(`Driver-table-view`)
-        );
-        
-        if(tableView){
-            this.selectedTab = tableView.tabSelected
-            this.activeViewMode = tableView.viewMode
+        const tableView = JSON.parse(localStorage.getItem(`Driver-table-view`));
+
+        if (tableView) {
+            this.selectedTab = tableView.tabSelected;
+            this.activeViewMode = tableView.viewMode;
         }
 
         this.initTableOptions();
@@ -1291,6 +1289,8 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
                 this.applicantBackFilter(this.applicantBackFilterQuery, true);
             } else {
+                this.driverBackFilterQuery.active =
+                    this.selectedTab === 'active' ? 1 : 0;
                 this.driverBackFilterQuery.pageIndex++;
 
                 this.driverBackFilter(this.driverBackFilterQuery, true);

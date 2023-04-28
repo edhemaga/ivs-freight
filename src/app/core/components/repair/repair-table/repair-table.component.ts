@@ -352,13 +352,11 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
 
     // Send Repair Data
     sendRepairData() {
-        const tableView = JSON.parse(
-            localStorage.getItem(`Repair-table-view`)
-        );
-        
-        if(tableView){
-            this.selectedTab = tableView.tabSelected
-            this.activeViewMode = tableView.viewMode
+        const tableView = JSON.parse(localStorage.getItem(`Repair-table-view`));
+
+        if (tableView) {
+            this.selectedTab = tableView.tabSelected;
+            this.activeViewMode = tableView.viewMode;
         }
 
         this.initTableOptions();
@@ -952,7 +950,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
 
                         this.sendRepairData();
                     });
-            } 
+            }
             // Repair Shop Api Call
             else if (
                 this.selectedTab === 'repair-shop' &&
@@ -1020,7 +1018,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
             }
         } else if (event.action === 'view-mode') {
             this.activeViewMode = event.mode;
-            
+
             this.tableOptions.toolbarActions.hideSearch = event.mode == 'Map';
         }
     }
@@ -1051,6 +1049,11 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
     onTableBodyActions(event: any) {
         // Show More
         if (event.type === 'show-more') {
+            if (this.selectedTab !== 'repair-shop') {
+                this.backFilterQuery.unitType =
+                    this.selectedTab === 'active' ? 1 : 2;
+            }
+            
             this.selectedTab !== 'repair-shop'
                 ? this.backFilterQuery.pageIndex++
                 : this.shopFilterQuery.pageIndex++;

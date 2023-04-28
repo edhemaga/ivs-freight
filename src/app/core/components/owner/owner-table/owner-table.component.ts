@@ -647,6 +647,7 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
     onTableHeadActions(event: any) {
         if (event.action === 'sort') {
             if (event.direction) {
+                this.backFilterQuery.active = this.selectedTab === 'active' ? 1 : 0;
                 this.backFilterQuery.pageIndex = 1;
                 this.backFilterQuery.sort = event.direction;
 
@@ -659,6 +660,7 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     onTableBodyActions(event: any) {
         if (event.type === 'show-more') {
+            this.backFilterQuery.active = this.selectedTab === 'active' ? 1 : 0;
             this.backFilterQuery.pageIndex++;
 
             this.ownerBackFilter(this.backFilterQuery, true);

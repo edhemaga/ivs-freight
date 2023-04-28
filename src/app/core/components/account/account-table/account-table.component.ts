@@ -533,7 +533,7 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
         } else if (event.action === 'tab-selected') {
             this.selectedTab = event.tabData.field;
 
-            this.backFilterQuery.pageIndex = 1;
+            this.backFilterQuery.pageIndex = 1; 
 
             this.setAccountData(event.tabData);
         } else if (event.action === 'view-mode') {

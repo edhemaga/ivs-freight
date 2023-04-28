@@ -1007,7 +1007,7 @@ export class CustomerTableComponent
 
                     this.brokerBackFilter(this.backBrokerFilterQuery);
                 } else {
-                    this.backShipperFilterQuery.sort = event.direction;
+                    this.backShipperFilterQuery.sort = event.direction; 
 
                     this.backShipperFilterQuery.pageIndex = 1;
 

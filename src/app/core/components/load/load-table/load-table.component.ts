@@ -342,13 +342,11 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     sendLoadData() {
-        const tableView = JSON.parse(
-            localStorage.getItem(`Load-table-view`)
-        );
-        
-        if(tableView){
-            this.selectedTab = tableView.tabSelected
-            this.activeViewMode = tableView.viewMode
+        const tableView = JSON.parse(localStorage.getItem(`Load-table-view`));
+
+        if (tableView) {
+            this.selectedTab = tableView.tabSelected;
+            this.activeViewMode = tableView.viewMode;
         }
 
         this.initTableOptions();
@@ -765,6 +763,14 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
     onTableHeadActions(event: any) {
         if (event.action === 'sort') {
             if (event.direction) {
+                this.backLoadFilterQuery.statusType =
+                this.selectedTab === 'template'
+                    ? undefined
+                    : this.selectedTab === 'active'
+                    ? 2
+                    : this.selectedTab === 'closed'
+                    ? 3
+                    : 1;
                 this.backLoadFilterQuery.pageIndex = 1;
                 this.backLoadFilterQuery.sort = event.direction;
 
@@ -777,6 +783,14 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     onTableBodyActions(event: any) {
         if (event.type === 'show-more') {
+            this.backLoadFilterQuery.statusType =
+                this.selectedTab === 'template'
+                    ? undefined
+                    : this.selectedTab === 'active'
+                    ? 2
+                    : this.selectedTab === 'closed'
+                    ? 3
+                    : 1;
             this.backLoadFilterQuery.pageIndex++;
             this.loadBackFilter(this.backLoadFilterQuery, true);
         } else if (event.type === 'edit') {

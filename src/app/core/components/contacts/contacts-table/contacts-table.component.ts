@@ -565,7 +565,7 @@ export class ContactsTableComponent
         } else if (event.action === 'tab-selected') {
             this.mapingIndex = 0;
 
-            this.selectedTab = event.tabData.field;
+            this.selectedTab = event.tabData.field; 
 
             this.backFilterQuery.pageIndex = 1;
 
