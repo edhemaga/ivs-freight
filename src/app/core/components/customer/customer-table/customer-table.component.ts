@@ -434,13 +434,13 @@ export class CustomerTableComponent
         if (td.data.length) {
             this.viewData = td.data;
 
-            this.mapListData = JSON.parse(JSON.stringify(this.viewData));
-
             this.viewData = this.viewData.map((data: any) => {
                 return this.selectedTab === 'active'
                     ? this.mapBrokerData(data)
                     : this.mapShipperData(data);
             });
+
+            this.mapListData = JSON.parse(JSON.stringify(this.viewData));
         } else {
             this.viewData = [];
         }

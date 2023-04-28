@@ -280,9 +280,7 @@ export class TruckassistTableToolbarComponent
                 if (viewMode.active) {
                     this.selectedViewMode = viewMode.name;
 
-                    if (this.selectedViewMode !== 'Map' && this.isMapShowning) {
-                        this.isMapShowning = false;
-                    }
+                    this.isMapShowning = viewMode.name === 'Map';
                 }
             });
         }

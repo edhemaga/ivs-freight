@@ -502,8 +502,6 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
         if (td.data.length) {
             this.viewData = td.data;
 
-            this.mapListData = JSON.parse(JSON.stringify(this.viewData));
-
             this.viewData = this.viewData.map((data: any, index: number) => {
                 if (
                     this.selectedTab === 'active' ||
@@ -514,6 +512,8 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                     return this.mapShopData(data);
                 }
             });
+
+            this.mapListData = JSON.parse(JSON.stringify(this.viewData));
         } else {
             this.viewData = [];
         }
