@@ -2,10 +2,12 @@ import { NoticeService } from 'src/app/core/services/shared/notice.service';
 import {
     Component,
     ElementRef,
+    EventEmitter,
     HostListener,
     Input,
     OnDestroy,
     OnInit,
+    Output,
     Self,
     ViewChild,
 } from '@angular/core';
@@ -41,6 +43,7 @@ import { TaInputDropdownComponent } from '../ta-input-dropdown/ta-input-dropdown
 export class TaNoticeOfAsignmentComponent
     implements OnInit, ControlValueAccessor, OnDestroy
 {
+    @Output() noticeFocus = new EventEmitter<any>();
     @Input() sidebarWidth: any;
     range: any;
     @Input() settings: any;
@@ -222,6 +225,10 @@ export class TaNoticeOfAsignmentComponent
     }
 
     focusElement(): void {
+        if (this.isBlured) {
+            this.noticeFocus.emit(false);
+        }
+        
         if (this.noticeRef) {
             this.noticeRef.nativeElement.focus();
         }
@@ -260,7 +267,7 @@ export class TaNoticeOfAsignmentComponent
 
     blurElement() {
         this.isBlured = !this.isBlured;
-
+        this.noticeFocus.emit(this.isBlured);
         if (!this.isBlured) {
             this.selectionTaken = window.getSelection();
             if (
