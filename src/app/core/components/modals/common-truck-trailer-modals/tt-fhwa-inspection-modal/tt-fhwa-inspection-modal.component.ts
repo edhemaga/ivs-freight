@@ -210,6 +210,7 @@ export class TtFhwaInspectionModalComponent implements OnInit, OnDestroy {
                 this.editData.modal === 'trailer'
                     ? this.editData.id
                     : undefined,
+            tabSelected: this.editData.tabSelected,
             files: documents,
         };
         this.commonTruckTrailerService

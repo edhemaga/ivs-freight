@@ -14,7 +14,12 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 @Component({
     selector: 'app-carrier-search',
     standalone: true,
-    imports: [CommonModule, AngularSvgIconModule, FormsModule, ReactiveFormsModule],
+    imports: [
+        CommonModule,
+        AngularSvgIconModule,
+        FormsModule,
+        ReactiveFormsModule,
+    ],
     templateUrl: './carrier-search.component.html',
     styleUrls: ['./carrier-search.component.scss'],
 })
@@ -26,6 +31,7 @@ export class CarrierSearchComponent implements OnInit, OnChanges, OnDestroy {
     searchText = '';
     searchIsActive: boolean = false;
     typingTimeout: any;
+    chipToDelete: number = -1;
 
     constructor(private tableService: TruckassistTableService) {}
 
@@ -148,9 +154,30 @@ export class CarrierSearchComponent implements OnInit, OnChanges, OnDestroy {
         });
     }
 
+    // On Delete All Chips
+    deleteAllChips() {
+        this.chips = [];
+        this.chipToDelete = -1;
+
+        if (this.openSearch) {
+            setTimeout(() => {
+                document.getElementById('table-search').focus();
+            }, 100);
+        }
+
+        this.tableService.sendCurrentSearchTableData({
+            isChipDelete: true,
+            search: this.searchText?.length >= 3 ? this.searchText : undefined,
+            addToQuery: this.getChipQuery(this.chips.length),
+            querys: ['searchOne', 'searchTwo', 'searchThree'],
+            chips: this.chips,
+            searchType: this.searchType,
+        });
+    }
+
     // Get Chip Color
     getChipColor(index: number) {
-        const chipsColors = ['#4DB6A2', '#BA68C8', '#FFB74D'];
+        const chipsColors = ['26A690', 'AB47BC', 'FFA726'];
 
         return chipsColors[index];
     }

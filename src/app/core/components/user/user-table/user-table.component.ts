@@ -329,6 +329,15 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     // Send User Data
     sendUserData() {
+        const tableView = JSON.parse(
+            localStorage.getItem(`User-table-view`)
+        );
+        
+        if(tableView){
+            this.selectedTab = tableView.tabSelected
+            this.activeViewMode = tableView.viewMode
+        }
+
         this.initTableOptions();
 
         const userCount = JSON.parse(localStorage.getItem('userTableCount'));

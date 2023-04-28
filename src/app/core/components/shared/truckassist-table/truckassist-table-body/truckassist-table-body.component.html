@@ -86,6 +86,31 @@
                                         </div>
                                     </div>
 
+                                    <!-- VIN COLUMN -->
+                                    <div
+                                        class="td-content"
+                                        *ngIf="column.ngTemplate === 'vin'"
+                                        [ngStyle]="{
+                                            width: column.width + 'px',
+                                            'min-width.px': column?.minWidth
+                                                ? column.minWidth
+                                                : 'unset'
+                                        }"
+                                    >
+                                        <div class="vin-container">
+                                            {{
+                                                row[column.field]
+                                                    .regularText
+                                            }}
+                                            <span class="vin-bold">
+                                                {{
+                                                    row[column.field]
+                                                        .boldText
+                                                }}
+                                            </span>
+                                        </div>
+                                    </div>
+
                                     <!-- CHECKBOX TEMPLATE -->
                                     <div
                                         *ngIf="column.ngTemplate === 'checkbox'"
@@ -1468,8 +1493,9 @@
                                             class="table-progress-cotnainer"
                                             *ngIf="
                                                 row[column.field]
-                                                    ?.expirationDays ||
-                                                row[column.field].percentage
+                                                    ?.expirationDays !== null &&
+                                                row[column.field].percentage !==
+                                                    null
                                             "
                                         >
                                             <!-- Progres Bar  -->
@@ -1557,9 +1583,9 @@
                                                         .expirationDays > 0
                                                         ? 'in ' +
                                                           row[column.field]
-                                                              .expirationDays +
+                                                              .expirationDaysText +
                                                           ' days'
-                                                        : 'a few hours'
+                                                        : 'Expires in a few hours'
                                                 }}
                                             </div>
 
@@ -1577,9 +1603,12 @@
                                             >
                                                 {{
                                                     row[column.field]
-                                                        .expirationDays
+                                                        .expirationDays > 0
+                                                        ? row[column.field]
+                                                              .expirationDaysText +
+                                                          ' days ago'
+                                                        : 'Expired for few hours'
                                                 }}
-                                                days ago
                                             </div>
                                         </div>
                                     </div>
@@ -1885,6 +1914,31 @@
                                     >
                                         <div class="no-template">
                                             NO TEMPLATE
+                                        </div>
+                                    </div>
+
+                                    <!-- VIN COLUMN -->
+                                    <div
+                                        class="td-content"
+                                        *ngIf="column.ngTemplate === 'vin'"
+                                        [ngStyle]="{
+                                            width: column.width + 'px',
+                                            'min-width.px': column?.minWidth
+                                                ? column.minWidth
+                                                : 'unset'
+                                        }"
+                                    >
+                                        <div class="vin-container">
+                                            {{
+                                                row[column.field]
+                                                    .regularText
+                                            }}
+                                            <span class="vin-bold">
+                                                {{
+                                                    row[column.field]
+                                                        .boldText
+                                                }}
+                                            </span>
                                         </div>
                                     </div>
 
@@ -3081,8 +3135,9 @@ highlightingWords) : '' " -->
                                             class="table-progress-cotnainer"
                                             *ngIf="
                                                 row[column.field]
-                                                    ?.expirationDays ||
-                                                row[column.field].percentage
+                                                    ?.expirationDays !== null &&
+                                                row[column.field].percentage !==
+                                                    null
                                             "
                                         >
                                             <!-- Progres Bar  -->
@@ -3170,9 +3225,9 @@ highlightingWords) : '' " -->
                                                         .expirationDays > 0
                                                         ? 'in ' +
                                                           row[column.field]
-                                                              .expirationDays +
+                                                              .expirationDaysText +
                                                           ' days'
-                                                        : 'a few hours'
+                                                        : 'Expires in a few hours'
                                                 }}
                                             </div>
 
@@ -3190,9 +3245,12 @@ highlightingWords) : '' " -->
                                             >
                                                 {{
                                                     row[column.field]
-                                                        .expirationDays
+                                                        .expirationDays > 0
+                                                        ? row[column.field]
+                                                              .expirationDaysText +
+                                                          ' days ago'
+                                                        : 'Expired for few hours'
                                                 }}
-                                                days ago
                                             </div>
                                         </div>
                                     </div>

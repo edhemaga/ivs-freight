@@ -7,6 +7,7 @@
         display: flex;
 
         .icon-container {
+            margin-left: 2px;
             width: 26px;
             height: 26px;
             display: flex;
@@ -78,7 +79,6 @@
             min-width: 57px;
             height: 26px;
             border-radius: 3px;
-            color: #ffffff;
             font-size: 14px;
             font-weight: 600;
             padding: 7px 8px;
@@ -88,6 +88,9 @@
             position: relative;
 
             &:hover {
+                color: white;
+                transition: 0.25s;
+
                 .delete-chip {
                     opacity: 1;
                     transition: 0.25s;
@@ -113,6 +116,7 @@
                     background: #ef5350;
                     transition: 0.25s;
                 }
+
                 svg-icon {
                     display: flex;
                     svg {
@@ -123,13 +127,74 @@
                 }
             }
         }
+
+        .first-chip-style {
+            background: #26a69020;
+            color: #26a690;
+
+            &:hover {
+                background: #26a690;
+                transition: 0.25s;
+            }
+        }
+
+        .second-chip-style {
+            background: #ab47bc20;
+            color: #ab47bc;
+
+            &:hover {
+                background: #ab47bc;
+                transition: 0.25s;
+            }
+        }
+
+        .third-chip-style {
+            background: #ffa72620;
+            color: #ffa726;
+
+            &:hover {
+                background: #ffa726;
+                transition: 0.25s;
+            }
+        }
+
+        .delete-chip-style {
+            background: #ef5350 !important;
+            transition: 0.25s;
+        }
+
+        .delete-all-schips {
+            cursor: pointer;
+            width: 26px;
+            height: 26px;
+            border-radius: 1px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            svg {
+                display: flex;
+            }
+
+            &:hover {
+                background: #f4433620;
+                transition: 0.25s;
+
+                svg {
+                    path {
+                        fill: #f44336;
+                        transition: 0.25s;
+                    }
+                }
+            }
+        }
     }
 }
 
 /* NG Class */
 .search-input-active {
-    background: #6c6c6c !important;
-    border-radius: 3px;
+    background: #1d1d1d !important;
+    border-radius: 2px;
     transition: background 0.25s !important;
 
     .icon-container {
@@ -153,8 +218,23 @@
         }
     }
 
+    .icon-border{
+        width: 1px;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        margin-right: 4px;
+
+        .inner-border{
+            width: 100%;
+            height: 14px;
+            background: #CCCCCC40;
+        }
+    }
+
+
     .search-input {
-        width: 125px !important;
+        width: 147px !important;
         transition: 0.25s;
     }
 }
