@@ -199,7 +199,6 @@ export class TaNoticeOfAsignmentComponent
             } else {
                 this.focusElement();
                 const fontSize = color+'px';
-                console.log(fontSize, 'FONTSIZE 111')
                 document.execCommand(action, false, fontSize);
             }
         } else {
