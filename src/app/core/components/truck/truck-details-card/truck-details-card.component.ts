@@ -124,6 +124,7 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
         defaultType: 'bar',
         chartWidth: '417',
         chartHeight: '130',
+        hasValue: false,
         dataLabels: [
             '',
             'NOV',
@@ -180,6 +181,7 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
         defaultType: 'bar',
         chartWidth: '417',
         chartHeight: '130',
+        hasValue: false,
         dataLabels: [
             '',
             'NOV',
@@ -236,6 +238,7 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
         defaultType: 'bar',
         chartWidth: '417',
         chartHeight: '130',
+        hasValue: false,
         dataLabels: [
             '',
             'NOV',
@@ -848,6 +851,16 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
                 ? item.revenue
                 : 0;
         }
+
+        let hasValue = false;
+
+        legend.map((leg)=>{
+            if (leg.value > 0) {
+                hasValue = true;
+            }
+        });
+
+        config.hasValue = hasValue;
 
         let fuelCost = [],
             repairCost = [],
