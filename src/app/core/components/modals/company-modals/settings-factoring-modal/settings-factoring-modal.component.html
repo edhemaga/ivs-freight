@@ -7,6 +7,7 @@
     [editData]="editData"
     [editName]="editData?.id"
     [isModalValid]="factoringForm.valid && isFormDirty"
+    [isBluredNotice]="isBluredNotice"
     (action)="onModalAction($event)"
 >
     <form
@@ -111,6 +112,7 @@
                             ? factoringForm.get('noticeOfAssigment').value
                             : ''
                     "
+                    (noticeFocus)="onNoticeFocus($event)"
                 ></app-ta-notice-of-asignment>
             </div>
         </app-ta-custom-card>

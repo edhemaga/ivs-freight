@@ -470,7 +470,7 @@
                 class="item-cards"
                 [cardName]="'Expenses'"
                 [bodyTemplate]="'card'"
-                [isCardOpen]="true"
+                [isCardOpen]="stackedBarChartConfig?.hasValue"
                 [customClass]="'detailsPadding'"
             >
                 <div
@@ -501,7 +501,7 @@
                 [tooltipName]="'View in Modal'"
                 [bodyTemplate]="'card'"
                 [cardName]="'Fuel Consumption'"
-                [isCardOpen]="true"
+                [isCardOpen]="payrollChartConfig?.hasValue"
                 [hasHeaderSvg]="'assets/svg/common/arrow_top_right.svg'"
                 class="item-cards"
                 [customClass]="'detailsPadding'"
@@ -535,7 +535,7 @@
                 [bodyTemplate]="'card'"
                 [hasHeaderSvg]="'assets/svg/common/arrow_top_right.svg'"
                 class="item-cards"
-                [isCardOpen]="true"
+                [isCardOpen]="revenueChartConfig?.hasValue"
                 [customClass]="'detailsPadding'"
             >
                 <div
