@@ -42,21 +42,30 @@
                         class="company-icons"
                         src="assets/svg/common/ic_phone.svg"
                     ></svg-icon>
-                    <app-ta-copy [copyValue]="item?.phone"> </app-ta-copy>
+                    <app-ta-copy 
+                        [copyValue]="item?.phone"
+                        [textColor]="'#2f2f2f'"
+                    > </app-ta-copy>
                 </div>
                 <div *ngIf="item.email" class="single-item">
                     <svg-icon
                         class="company-icons"
                         src="assets/svg/common/ic_email.svg"
                     ></svg-icon>
-                    <app-ta-copy [copyValue]="item?.email"> </app-ta-copy>
+                    <app-ta-copy 
+                        [copyValue]="item?.email"
+                        [textColor]="'#2f2f2f'"    
+                    > </app-ta-copy>
                 </div>
                 <div *ngIf="item.address.address" class="single-item">
                     <svg-icon
                         class="company-icons"
                         src="assets/svg/truckassist-table/location-icon.svg"
                     ></svg-icon>
-                    <app-ta-copy [copyValue]="item?.address?.address"> </app-ta-copy>
+                    <app-ta-copy 
+                        [copyValue]="item?.address?.address"
+                        [textColor]="'#2f2f2f'"
+                    > </app-ta-copy>
                 </div>
             </div>
             <app-ta-custom-card
@@ -77,7 +86,7 @@
                             class="company-icons"
                             src="assets/svg/common/ic_phone.svg"
                         ></svg-icon>
-                        <app-ta-copy [copyValue]="dep?.phone"> </app-ta-copy>
+                        <app-ta-copy [copyValue]="dep?.phone" [textColor]="'#2f2f2f'"> </app-ta-copy>
                     </div>
                     <div class="office-template-item">
                         <svg-icon
@@ -93,7 +102,7 @@
                             class="company-icons"
                             src="assets/svg/common/ic_email.svg"
                         ></svg-icon>
-                        <app-ta-copy [copyValue]="dep?.email"> </app-ta-copy>
+                        <app-ta-copy [copyValue]="dep?.email" [textColor]="'#2f2f2f'"> </app-ta-copy>
                     </div>
                 </div>
             </app-ta-custom-card>
@@ -104,6 +113,7 @@
                     [startDate]="'03/12/2023'"
                     [expiresSettings]="'settings-parking'"
                     [customText]="generateTextForProgressBar(item)"
+                    [darkText]="true"
                 ></app-truckassist-progress-expiration>
             </div>
         </app-ta-re-card>

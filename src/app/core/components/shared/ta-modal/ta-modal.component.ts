@@ -110,6 +110,7 @@ export class TaModalComponent implements OnInit, OnDestroy {
     @Input() mapSettingsModal: boolean = false;
     @Input() mapRouteModal: boolean = false;
     @Input() resetMapVisibility: boolean = false;
+    @Input() showCounter: boolean = false; 
     // -----------------
 
     @Input() specificCaseModalName: boolean;

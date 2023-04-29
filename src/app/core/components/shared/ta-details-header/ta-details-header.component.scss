@@ -7,6 +7,7 @@ p {
 .counter-text {
     display: flex;
     align-items: center;
+    padding: 0px 12px;
     
 }
 .has-counter-header {
@@ -17,7 +18,7 @@ p {
 
 .counter-holder-all{
     display: flex;
-    padding: 4px 0px 4px 4px;
+    //padding: 4px 0px 4px 4px;
     margin-right: 4px;
 
     &.brokerLoadDrop{
@@ -68,7 +69,8 @@ p {
         height: 32px;
         max-width: none;
         p {
-            color: #919191;
+            color: #424242;
+            
             font-size: 26px;
             font-weight: 900;
             margin-left: 8px !important;
@@ -86,10 +88,10 @@ p {
     border-radius: 3px;
     .header-name {
         margin: 0;
-        color: #919191;
+        color: #2f2f2f;
         font-size: 14px;
         font-weight: 800;
-        padding-right: 12px;
+        padding-right: 4px;
         line-height: 17px;
     }
     .header-plus-button {
@@ -102,7 +104,7 @@ p {
             .date-repair {
                 font-size: 14px;
                 font-weight: 500;
-                color: #919191;
+                color: #2f2f2f;
                 padding-right: 6px;
                 &::-moz-selection {
                     color: #919191;
@@ -160,7 +162,7 @@ p {
     border-radius: 1px;
     height: 24px;
     width: 2px;
-    border-left: 2px solid #f3f3f3;
+    border-left: 2px solid #dadada;
 }
 svg {
     &:hover {
@@ -178,11 +180,11 @@ svg {
     cursor: pointer;
     svg {
         path {
-            fill: #6d82c7;
+            fill: #3074D3;
         }
     }
     &:hover {
-        background-color: #6d82c7;
+        background-color: #3074D3;
         border-radius: 2px;
         svg {
             path {
@@ -251,9 +253,14 @@ svg {
 }
 .header-arrow {
     svg {
+        
+        rect{
+            fill: #6c6c6c;
+        }
+
         &:hover {
             rect {
-                fill: #6c6c6c;
+                fill: #2F2F2F;
             }
         }
     }
@@ -266,11 +273,11 @@ svg {
     width: 86px;
     height: 24px;
     color: #ffffff;
-    background-color: #6d82c7;
+    background-color: #3074D3;
     border-radius: 2px;
     font-size: 14px;
     font-weight: 800;
-    line-height: 15px;
+    line-height: 18px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -284,6 +291,11 @@ svg {
     user-select: none;
     &:hover {
         background-color: #536bc2;
+    }
+
+
+    &.icon-request-holder{
+        display: none;
     }
 }
 .danger-svg {

@@ -10,7 +10,9 @@ import { TruckTypeService,
     FuelService, 
     StateService, 
     DepartmentService, 
-    LoadService } from 'appcoretruckassist';
+    LoadService, 
+    TruckService,
+    TrailerService } from 'appcoretruckassist';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { co } from '@fullcalendar/core/internal-common';
 
@@ -28,7 +30,9 @@ export class FilterStateService implements OnDestroy {
         private fuelService: FuelService,
         private stateService: StateService,
         private departmentService: DepartmentService,
-        private loadService: LoadService
+        private loadService: LoadService,
+        private truckService: TruckService,
+        private trailerService: TrailerService
     ) {}
 
     // get() {
@@ -189,6 +193,39 @@ export class FilterStateService implements OnDestroy {
                 },
             });
         }
+    }
+
+    public getTruckData(){    
+        const truckList = this.truckService.apiTruckFilterGet()
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: (data: any) => {
+                    this.tableService.sendActionAnimation({
+                        animation: 'truck-list-update',
+                        data: data,
+                        id: null,
+                    }); 
+                    truckList.unsubscribe();
+                },
+            });
+            
+        
+    }
+
+    public getTrailerData(){
+        const trailerList = this.trailerService.apiTrailerFilterGet()
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: (data: any) => {
+                    this.tableService.sendActionAnimation({
+                        animation: 'trailer-list-update',
+                        data: data,
+                        id: null,
+                    }); 
+                    trailerList.unsubscribe();
+                },
+            });
+
     }
 
     ngOnDestroy(): void {

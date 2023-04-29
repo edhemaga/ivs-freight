@@ -931,4 +931,17 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
         chart.saveValues = JSON.parse(JSON.stringify(legend));
         chart.legendAttributes = JSON.parse(JSON.stringify(legend));
     }
+
+    getLastSixChars(mod){
+        var lastSixChars = mod;
+
+        if ( mod.length > 6 ) {
+            lastSixChars = mod.slice(-6);
+
+            let stringLength = mod.length;
+            let firsNum = stringLength - 6;
+            lastSixChars = [mod.slice(0, firsNum), mod.slice(-6)];
+        }
+        return lastSixChars;
+    }
 }

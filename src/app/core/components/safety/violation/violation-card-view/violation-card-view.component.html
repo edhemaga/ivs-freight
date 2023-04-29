@@ -118,7 +118,10 @@
                     </div>
                     <div class="violation-card-items">
                         <span class="name">Badge No.</span>
-                        <app-ta-copy [copyValue]="violationCardData?.badgeNo">
+                        <app-ta-copy 
+                            [copyValue]="violationCardData?.badgeNo"
+                            [textColor]="'#2f2f2f'"
+                        >
                         </app-ta-copy>
                     </div>
                 </div>
@@ -139,16 +142,20 @@
                             class="driver"
                             src="assets/svg/common/ic_phone.svg"
                         ></svg-icon>
-                        <app-ta-copy [copyValue]="violationCardData?.phone">
-                        </app-ta-copy>
+                        <app-ta-copy 
+                            [copyValue]="violationCardData?.phone"
+                            [textColor]="'#2f2f2f'"    
+                        ></app-ta-copy>
                     </div>
                     <div class="violation-driver-item">
                         <svg-icon
                             class="driver"
                             src="assets/svg/common/ic_fax.svg"
                         ></svg-icon>
-                        <app-ta-copy [copyValue]="'(123) 333-1344'">
-                        </app-ta-copy>
+                        <app-ta-copy 
+                            [copyValue]="'(123) 333-1344'"
+                            [textColor]="'#2f2f2f'"    
+                        ></app-ta-copy>
                     </div>
                 </div>
             </app-ta-custom-card>
@@ -204,6 +211,7 @@
                         <span class="name">BoL</span>
                         <app-ta-copy
                             [copyValue]="violationCardData?.boL"
+                            [textColor]="'#2f2f2f'"
                         ></app-ta-copy>
                     </div>
                     <div class="violation-card-items">

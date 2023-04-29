@@ -1,5 +1,10 @@
-<div class="repair-component">
-    <div *ngFor="let shipperData of shipper; trackBy: identity">
+<div class="repair-component" >
+    <div 
+        *ngFor="let shipperData of shipper; trackBy: identity"
+        class="repair-component" 
+        [class.contactGridHolder]="shipperData.nameDefault === 'Contact'"
+        [class.reviewGridHolder]="shipperData.nameDefault === 'Review'"
+        >
         <div [ngSwitch]="shipperData?.template">
             <div *ngSwitchCase="'general'">
                 <app-shipper-card-view [shipper]="shipperData?.data">

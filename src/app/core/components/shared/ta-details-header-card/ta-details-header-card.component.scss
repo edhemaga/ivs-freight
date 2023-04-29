@@ -121,7 +121,7 @@ $border-radius: 3px;
             p {
                 font-size: $font-size14;
                 font-weight: 400;
-                color: #6c6c6c;
+                color: #2f2f2f;
             }
         }
         svg {
@@ -207,7 +207,7 @@ $border-radius: 3px;
         // font-style: italic;
         white-space: nowrap;
         line-height: 24px;
-        color: #6c6c6c;
+        color: #2f2f2f;
         cursor: pointer;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -268,7 +268,7 @@ $border-radius: 3px;
     background-color: transparent;
     cursor: default;
     .current-active-name {
-        color: #6c6c6c !important;
+        color: #2f2f2f !important;
         &:hover {
             color: #ff0000 !important;
             cursor: default;
