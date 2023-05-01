@@ -1347,11 +1347,17 @@
                                                 : 'unset'
                                         }"
                                     >
-                                        <span class="table-text">{{
-                                            row[column.field]
-                                                ? row[column.field]
-                                                : ''
-                                        }}</span>
+                                        <span
+                                            class="table-text"
+                                            [innerHtml]="
+                                                row[column.field]
+                                                    ? (row[column.field]
+                                                      | tableHighlightSearchText
+                                                          : this
+                                                                .chipsForHighlight)
+                                                    : ''
+                                            "
+                                        ></span>
                                     </div>
 
                                     <!-- SEMI BOLD TEXT COLUMN -->
@@ -2990,15 +2996,11 @@ highlightingWords) : '' " -->
                                                 row[column.field]
                                                     ? (row[column.field]
                                                       | tableHighlightSearchText
-                                                          : this.chipsForHighlight)
+                                                          : this
+                                                                .chipsForHighlight)
                                                     : ''
                                             "
-                                            >{{
-                                                row[column.field]
-                                                    ? row[column.field]
-                                                    : ''
-                                            }}</span
-                                        >
+                                        ></span>
                                     </div>
 
                                     <!-- SEMI BOLD TEXT COLUMN -->

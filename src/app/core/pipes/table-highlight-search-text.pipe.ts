@@ -1,5 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { toString } from '@ng-bootstrap/ng-bootstrap/util/util';
 
 @Pipe({
     name: 'tableHighlightSearchText',
@@ -13,7 +14,9 @@ export class TableHighlightSearchTextPipe implements PipeTransform {
             return text;
         }
 
-        let newText = text;
+        let newText = text.toString();
+
+        console.log(newText);
 
         // Map All Chips
         chips.forEach((chip, index) => {
