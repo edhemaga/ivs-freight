@@ -678,16 +678,18 @@ export class TruckassistTableBodyComponent
     }
 
     // Show Description Dropdown
-    onShowDescriptionDropdown(popup: any, row: any, column: any) {
-        this.descriptionTooltip = popup;
+    onShowDescriptionDropdown(popup: any, row: any) {
+        if (row.descriptionItems.length > 1) {
+            this.descriptionTooltip = popup;
 
-        if (popup.isOpen()) {
-            popup.close();
-        } else {
-            popup.open({ data: row });
+            if (popup.isOpen()) {
+                popup.close();
+            } else {
+                popup.open({ data: row });
+            }
+
+            this.activeDescriptionDropdown = popup.isOpen() ? row.id : -1;
         }
-
-        this.activeDescriptionDropdown = popup.isOpen() ? row.id : -1;
     }
 
     // Dropdown Actions
