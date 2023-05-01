@@ -101,7 +101,7 @@ export class CarrierSearchComponent implements OnInit, OnChanges, OnDestroy {
 
     // On Enter Action
     onEnter() {
-        if (this.chips.length < 3) {
+        if (this.chips.length < 3 && !this.checkChips()) {
             this.chips.push({
                 searchText: this.searchText,
                 color: this.getChipColor(this.chips.length),
@@ -119,6 +119,19 @@ export class CarrierSearchComponent implements OnInit, OnChanges, OnDestroy {
             this.searchText = '';
             this.searchIsActive = false;
         }
+    }
+
+    // Check If Chips Already Have Search Text
+    checkChips(): boolean {
+        let hasSearchText = false;
+
+        this.chips.map((chip) => {
+            if (chip.searchText === this.searchText) {
+                hasSearchText = true;
+            }
+        });
+
+        return hasSearchText;
     }
 
     // On Delete Chip
