@@ -98,15 +98,9 @@
                                         }"
                                     >
                                         <div class="vin-container">
-                                            {{
-                                                row[column.field]
-                                                    .regularText
-                                            }}
+                                            {{ row[column.field].regularText }}
                                             <span class="vin-bold">
-                                                {{
-                                                    row[column.field]
-                                                        .boldText
-                                                }}
+                                                {{ row[column.field].boldText }}
                                             </span>
                                         </div>
                                     </div>
@@ -1929,15 +1923,9 @@
                                         }"
                                     >
                                         <div class="vin-container">
-                                            {{
-                                                row[column.field]
-                                                    .regularText
-                                            }}
+                                            {{ row[column.field].regularText }}
                                             <span class="vin-bold">
-                                                {{
-                                                    row[column.field]
-                                                        .boldText
-                                                }}
+                                                {{ row[column.field].boldText }}
                                             </span>
                                         </div>
                                     </div>
@@ -2996,11 +2984,21 @@ highlightingWords) : '' " -->
                                                 : 'unset'
                                         }"
                                     >
-                                        <span class="table-text">{{
-                                            row[column.field]
-                                                ? row[column.field]
-                                                : ''
-                                        }}</span>
+                                        <span
+                                            class="table-text"
+                                            [innerHtml]="
+                                                row[column.field]
+                                                    ? (row[column.field]
+                                                      | tableHighlightSearchText
+                                                          : this.chipsForHighlight)
+                                                    : ''
+                                            "
+                                            >{{
+                                                row[column.field]
+                                                    ? row[column.field]
+                                                    : ''
+                                            }}</span
+                                        >
                                     </div>
 
                                     <!-- SEMI BOLD TEXT COLUMN -->
