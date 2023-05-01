@@ -98,15 +98,9 @@
                                         }"
                                     >
                                         <div class="vin-container">
-                                            {{
-                                                row[column.field]
-                                                    .regularText
-                                            }}
+                                            {{ row[column.field].regularText }}
                                             <span class="vin-bold">
-                                                {{
-                                                    row[column.field]
-                                                        .boldText
-                                                }}
+                                                {{ row[column.field].boldText }}
                                             </span>
                                         </div>
                                     </div>
@@ -527,6 +521,14 @@
                                                         ?.doesNotHaveRout
                                             }"
                                             class="table-avatar-name"
+                                            [innerHtml]="
+                                                row[column.field]
+                                                    ? (row[column.field]
+                                                      | tableHighlightSearchText
+                                                          : this
+                                                                .chipsForHighlight)
+                                                    : ''
+                                            "
                                             >{{ row[column.field] }}</span
                                         >
                                     </div>
@@ -1353,11 +1355,17 @@
                                                 : 'unset'
                                         }"
                                     >
-                                        <span class="table-text">{{
-                                            row[column.field]
-                                                ? row[column.field]
-                                                : ''
-                                        }}</span>
+                                        <span
+                                            class="table-text"
+                                            [innerHtml]="
+                                                row[column.field]
+                                                    ? (row[column.field]
+                                                      | tableHighlightSearchText
+                                                          : this
+                                                                .chipsForHighlight)
+                                                    : ''
+                                            "
+                                        ></span>
                                     </div>
 
                                     <!-- SEMI BOLD TEXT COLUMN -->
@@ -1469,13 +1477,15 @@
                                         <div
                                             *ngIf="row[column.field]"
                                             class="table-state"
-                                        >
-                                            {{
+                                            [innerHtml]="
                                                 row[column.field]
-                                                    ? row[column.field]
+                                                    ? (row[column.field]
+                                                      | tableHighlightSearchText
+                                                          : this
+                                                                .chipsForHighlight)
                                                     : ''
-                                            }}
-                                        </div>
+                                            "
+                                        ></div>
                                     </div>
 
                                     <!-- PROGRESS COLUMN -->
@@ -1577,17 +1587,20 @@
                                                     row[column.field]
                                                         .percentage < 100
                                                 "
-                                            >
-                                                {{
+                                                [innerHtml]="
                                                     row[column.field]
                                                         .expirationDays > 0
-                                                        ? 'in ' +
-                                                          row[column.field]
-                                                              .expirationDaysText +
-                                                          ' days'
-                                                        : 'Expires today'
-                                                }}
-                                            </div>
+                                                        ? ('in ' +
+                                                              row[column.field]
+                                                                  .expirationDaysText +
+                                                              ' days'
+                                                          | tableHighlightSearchText
+                                                              : chipsForHighlight)
+                                                        : ('Expires today'
+                                                          | tableHighlightSearchText
+                                                              : chipsForHighlight)
+                                                "
+                                            ></div>
 
                                             <!-- Progres Text Expired-->
                                             <div
@@ -1600,16 +1613,19 @@
                                                     !row[column.field]
                                                         .percentage
                                                 "
-                                            >
-                                                {{
+                                                [innerHtml]="
                                                     row[column.field]
                                                         .expirationDays > 0
-                                                        ? row[column.field]
+                                                        ? (row[column.field]
                                                               .expirationDaysText +
-                                                          ' days ago'
-                                                        : 'Expired today'
-                                                }}
-                                            </div>
+                                                              ' days ago'
+                                                          | tableHighlightSearchText
+                                                              : chipsForHighlight)
+                                                        : ('Expired today'
+                                                          | tableHighlightSearchText
+                                                              : chipsForHighlight)
+                                                "
+                                            ></div>
                                         </div>
                                     </div>
 
@@ -1917,6 +1933,7 @@
                                         </div>
                                     </div>
 
+                                    <!-- ! Highlight Ne Moze na ovaj template -->
                                     <!-- VIN COLUMN -->
                                     <div
                                         class="td-content"
@@ -1929,15 +1946,9 @@
                                         }"
                                     >
                                         <div class="vin-container">
-                                            {{
-                                                row[column.field]
-                                                    .regularText
-                                            }}
+                                            {{ row[column.field].regularText }}
                                             <span class="vin-bold">
-                                                {{
-                                                    row[column.field]
-                                                        .boldText
-                                                }}
+                                                {{ row[column.field].boldText }}
                                             </span>
                                         </div>
                                     </div>
@@ -2274,7 +2285,15 @@
                                                         ?.doesNotHaveRout
                                             }"
                                             class="table-avatar-name"
-                                            >{{ row[column.field] }}</span
+                                            [innerHtml]="
+                                                row[column.field]
+                                                    ? (row[column.field]
+                                                      | tableHighlightSearchText
+                                                          : this
+                                                                .chipsForHighlight)
+                                                    : ''
+                                            "
+                                            ></span
                                         >
                                     </div>
 
@@ -2996,11 +3015,17 @@ highlightingWords) : '' " -->
                                                 : 'unset'
                                         }"
                                     >
-                                        <span class="table-text">{{
-                                            row[column.field]
-                                                ? row[column.field]
-                                                : ''
-                                        }}</span>
+                                        <span
+                                            class="table-text"
+                                            [innerHtml]="
+                                                row[column.field]
+                                                    ? (row[column.field]
+                                                      | tableHighlightSearchText
+                                                          : this
+                                                                .chipsForHighlight)
+                                                    : ''
+                                            "
+                                        ></span>
                                     </div>
 
                                     <!-- SEMI BOLD TEXT COLUMN -->
@@ -3111,13 +3136,15 @@ highlightingWords) : '' " -->
                                         <div
                                             *ngIf="row[column.field]"
                                             class="table-state"
-                                        >
-                                            {{
+                                            [innerHtml]="
                                                 row[column.field]
-                                                    ? row[column.field]
+                                                    ? (row[column.field]
+                                                      | tableHighlightSearchText
+                                                          : this
+                                                                .chipsForHighlight)
                                                     : ''
-                                            }}
-                                        </div>
+                                            "
+                                        ></div>
                                     </div>
 
                                     <!-- PROGRESS COLUMN -->
@@ -3219,17 +3246,20 @@ highlightingWords) : '' " -->
                                                     row[column.field]
                                                         .percentage < 100
                                                 "
-                                            >
-                                                {{
+                                                [innerHtml]="
                                                     row[column.field]
                                                         .expirationDays > 0
-                                                        ? 'in ' +
-                                                          row[column.field]
-                                                              .expirationDaysText +
-                                                          ' days'
-                                                        : 'Expires today'
-                                                }}
-                                            </div>
+                                                        ? ('in ' +
+                                                              row[column.field]
+                                                                  .expirationDaysText +
+                                                              ' days'
+                                                          | tableHighlightSearchText
+                                                              : chipsForHighlight)
+                                                        : ('Expires today'
+                                                          | tableHighlightSearchText
+                                                              : chipsForHighlight)
+                                                "
+                                            ></div>
 
                                             <!-- Progres Text Expired-->
                                             <div
@@ -3242,16 +3272,19 @@ highlightingWords) : '' " -->
                                                     !row[column.field]
                                                         .percentage
                                                 "
-                                            >
-                                                {{
+                                                [innerHtml]="
                                                     row[column.field]
                                                         .expirationDays > 0
-                                                        ? row[column.field]
+                                                        ? (row[column.field]
                                                               .expirationDaysText +
-                                                          ' days ago'
-                                                        : 'Expired today'
-                                                }}
-                                            </div>
+                                                              ' days ago'
+                                                          | tableHighlightSearchText
+                                                              : chipsForHighlight)
+                                                        : ('Expired today'
+                                                          | tableHighlightSearchText
+                                                              : chipsForHighlight)
+                                                "
+                                            ></div>
                                         </div>
                                     </div>
 

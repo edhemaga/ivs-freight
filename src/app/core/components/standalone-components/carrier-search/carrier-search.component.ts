@@ -32,6 +32,7 @@ export class CarrierSearchComponent implements OnInit, OnChanges, OnDestroy {
     searchIsActive: boolean = false;
     typingTimeout: any;
     chipToDelete: number = -1;
+    chipsForHighlightSearch = [];
 
     constructor(private tableService: TruckassistTableService) {}
 
@@ -80,6 +81,8 @@ export class CarrierSearchComponent implements OnInit, OnChanges, OnDestroy {
                 if (this.searchText.length >= 3) {
                     this.searchIsActive = true;
 
+                    this.sendHighlightSearchOnTyping();
+
                     this.tableService.sendCurrentSearchTableData({
                         chip: searchNumber,
                         search: this.searchText,
@@ -87,6 +90,8 @@ export class CarrierSearchComponent implements OnInit, OnChanges, OnDestroy {
                     });
                 } else if (this.searchIsActive && this.searchText.length < 3) {
                     this.searchIsActive = false;
+
+                    this.sendHighlightSearchOnEnter();
 
                     this.tableService.sendCurrentSearchTableData({
                         chip: searchNumber,
@@ -101,7 +106,7 @@ export class CarrierSearchComponent implements OnInit, OnChanges, OnDestroy {
 
     // On Enter Action
     onEnter() {
-        if (this.chips.length < 3) {
+        if (this.chips.length < 3 && !this.checkChips()) {
             this.chips.push({
                 searchText: this.searchText,
                 color: this.getChipColor(this.chips.length),
@@ -109,6 +114,10 @@ export class CarrierSearchComponent implements OnInit, OnChanges, OnDestroy {
                 query: this.getChipQuery(this.chips.length),
             });
 
+            // Send Chips For Highlight Search To Table
+            this.sendHighlightSearchOnEnter();
+
+            // Send Current Table Search
             this.tableService.sendCurrentSearchTableData({
                 chipAdded: true,
                 search: this.searchText,
@@ -116,14 +125,61 @@ export class CarrierSearchComponent implements OnInit, OnChanges, OnDestroy {
                 searchType: this.searchType,
             });
 
+            this.chipToDelete = -1;
             this.searchText = '';
             this.searchIsActive = false;
         }
     }
 
+    // Send Chips For Highlight Search On Typing
+    sendHighlightSearchOnTyping(){
+        this.chipsForHighlightSearch = [];
+
+        this.chips.map((chip) => {
+            this.chipsForHighlightSearch.push(chip.searchText);
+        });
+
+        if (this.chips.length <= 2) {
+            this.chipsForHighlightSearch.push(this.searchText);
+        }
+
+        this.tableService.sendChipsForHighlightSearchToTable(
+            this.chipsForHighlightSearch
+        );
+    }
+
+    // Send Chips For Highlight Search On Enter
+    sendHighlightSearchOnEnter() {
+        this.chipsForHighlightSearch = [];
+
+        this.chips.map((chip) => {
+            this.chipsForHighlightSearch.push(chip.searchText);
+        });
+
+        this.tableService.sendChipsForHighlightSearchToTable(
+            this.chipsForHighlightSearch
+        );
+    }
+
+    // Check If Chips Already Have Search Text
+    checkChips(): boolean {
+        let hasSearchText = false;
+
+        this.chips.map((chip) => {
+            if (chip.searchText === this.searchText) {
+                hasSearchText = true;
+            }
+        });
+
+        return hasSearchText;
+    }
+
     // On Delete Chip
     onDeleteChip(index: number) {
         this.chips.splice(index, 1);
+
+        // Send Chips For Highlight Search To Table
+        this.sendHighlightSearchOnEnter();
 
         if (this.chips.length) {
             this.chips = this.chips.map((chip, i) => {
@@ -158,6 +214,8 @@ export class CarrierSearchComponent implements OnInit, OnChanges, OnDestroy {
     deleteAllChips() {
         this.chips = [];
         this.chipToDelete = -1;
+
+        this.tableService.sendChipsForHighlightSearchToTable([]);
 
         if (this.openSearch) {
             setTimeout(() => {
