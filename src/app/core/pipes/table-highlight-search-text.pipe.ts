@@ -16,8 +16,6 @@ export class TableHighlightSearchTextPipe implements PipeTransform {
 
         let newText = text.toString();
 
-        console.log(newText);
-
         // Map All Chips
         chips.forEach((chip, index) => {
             let pattern = chip.replace(
