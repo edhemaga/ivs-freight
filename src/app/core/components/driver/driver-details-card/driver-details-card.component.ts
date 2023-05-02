@@ -579,7 +579,6 @@ export class DriverDetailsCardComponent
         }
         switch (action) {
             case 'CDL': {
-                console.log('--here-----')
                 this.modalService.openModal(
                     DriverCdlModalComponent,
                     { size: 'small' },

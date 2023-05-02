@@ -33,6 +33,7 @@ import { TaNoteComponent } from '../../ta-note/ta-note.component';
 import { TaUploadFilesComponent } from '../../ta-upload-files/ta-upload-files.component';
 import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 import { DomSanitizer } from '@angular/platform-browser';
+import { TableHighlightSearchTextPipe } from 'src/app/core/pipes/table-highlight-search-text.pipe';
 
 @Titles()
 @Component({
@@ -50,6 +51,7 @@ import { DomSanitizer } from '@angular/platform-browser';
         TaNoteComponent,
         TaUploadFilesComponent,
         NgbPopoverModule,
+        TableHighlightSearchTextPipe,
     ],
     providers: [
         {
@@ -111,6 +113,7 @@ export class TruckassistTableBodyComponent
     dropdownActions: any;
     horizontalScrollPosition: number = 0;
     viewDataLength: number = 0;
+    chipsForHighlight: string[] = [];
 
     constructor(
         private router: Router,
@@ -194,6 +197,13 @@ export class TruckassistTableBodyComponent
                 if (reset) {
                     this.mySelection = [];
                 }
+            });
+
+        // Chips For Highlight Search
+        this.tableService.currentChipsForHighlightSearchToTable
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((chips: string[]) => {
+                this.chipsForHighlight = chips.length ? chips : [];
             });
 
         // Scrolling Virtual Container
@@ -678,16 +688,18 @@ export class TruckassistTableBodyComponent
     }
 
     // Show Description Dropdown
-    onShowDescriptionDropdown(popup: any, row: any, column: any) {
-        this.descriptionTooltip = popup;
+    onShowDescriptionDropdown(popup: any, row: any) {
+        if (row.descriptionItems.length > 1) {
+            this.descriptionTooltip = popup;
 
-        if (popup.isOpen()) {
-            popup.close();
-        } else {
-            popup.open({ data: row });
+            if (popup.isOpen()) {
+                popup.close();
+            } else {
+                popup.open({ data: row });
+            }
+
+            this.activeDescriptionDropdown = popup.isOpen() ? row.id : -1;
         }
-
-        this.activeDescriptionDropdown = popup.isOpen() ? row.id : -1;
     }
 
     // Dropdown Actions
@@ -832,5 +844,6 @@ export class TruckassistTableBodyComponent
         this.tableService.sendCurrentSetTableWidth(null);
         this.tableService.sendIsScrollShownig(false);
         this.tableService.sendIsScrollReseting(true);
+        this.tableService.sendChipsForHighlightSearchToTable([]);
     }
 }

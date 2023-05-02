@@ -18,18 +18,23 @@
             }"
         >
             <span 
-                *ngIf="!accountCompany" 
+                *ngIf="!accountCompany && !arrayText" 
                 class="copy-text"
+                [class.boldVinSpan]="boldText"
                 >{{
                 hasEye
                     ? (copyValue | hideAccount: 'account':isVisible)
                     : copyValue
             }}</span>
-            <span *ngIf="accountCompany" class="copy-text">{{
+            <span *ngIf="accountCompany  && !arrayText" 
+                class="copy-text"
+                [class.boldVinSpan]="boldText"
+            >{{
                 hasEye
                     ? (copyValue | hidePassword: 'account':isVisible)
                     : copyValue
             }}</span>
+            <span *ngIf="arrayText" >{{copyValue[0]}}<span class="boldVinSpan">{{copyValue[1]}}</span> </span>
         </div>
         <div 
             class="app-icon-copy"

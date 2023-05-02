@@ -110,6 +110,7 @@ export class TaModalComponent implements OnInit, OnDestroy {
     @Input() mapSettingsModal: boolean = false;
     @Input() mapRouteModal: boolean = false;
     @Input() resetMapVisibility: boolean = false;
+    @Input() showCounter: boolean = false; 
     // -----------------
 
     @Input() specificCaseModalName: boolean;
@@ -125,6 +126,8 @@ export class TaModalComponent implements OnInit, OnDestroy {
 
     @Input() tabChange: any;
     @Input() tabChangePosition: string = 'left'; // left/right
+
+    @Input() isBluredNotice: boolean = true;
 
     @Output() action: EventEmitter<{
         action: string;
@@ -217,7 +220,9 @@ export class TaModalComponent implements OnInit, OnDestroy {
     @HostListener('body:dragenter', ['$event'])
     onWindowDragEnter(event: any): void {
         event.preventDefault();
-        const startPointClassToDragOver = event.toElement.classList.contains("custom-scrollbar-holder");
+        const startPointClassToDragOver = event.toElement.classList.contains(
+            'custom-scrollbar-holder'
+        );
         if (startPointClassToDragOver) {
             if (this.dropZoneCounter < 1 && !this.isLeaveZone) {
                 this.dropZoneCounter++;
@@ -501,7 +506,11 @@ export class TaModalComponent implements OnInit, OnDestroy {
     }
 
     public onKeyUp(ev: any) {
-        if (ev.keyCode === 13 && !ev.target.closest('.application-dropdown')) {
+        if (
+            ev.keyCode === 13 &&
+            !ev.target.closest('.application-dropdown') &&
+            this.isBluredNotice
+        ) {
             this.action.emit({ action: 'save', bool: false });
         }
     }

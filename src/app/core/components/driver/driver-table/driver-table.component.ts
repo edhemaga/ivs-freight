@@ -396,6 +396,13 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     sendDriverData() {
+        const tableView = JSON.parse(localStorage.getItem(`Driver-table-view`));
+
+        if (tableView) {
+            this.selectedTab = tableView.tabSelected;
+            this.activeViewMode = tableView.viewMode;
+        }
+
         this.initTableOptions();
 
         const driverCount = JSON.parse(
@@ -412,6 +419,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
         const driverInactiveData =
             this.selectedTab === 'inactive' ? this.getTabData('inactive') : [];
+
         this.tableData = [
             {
                 title: 'Applicants',
@@ -561,7 +569,11 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
             tableCdlDetailEndorsment: 'NA',
             tableCdlDetailRestriction: 'NA',
             tableCdlDetailExpiration: {
-                expirationDays: data?.cdlExpirationDays
+                expirationDays:
+                    data?.cdlExpirationDays || data?.cdlExpirationDays === 0
+                        ? data.cdlExpirationDays
+                        : null,
+                expirationDaysText: data?.cdlExpirationDays
                     ? this.thousandSeparator.transform(data.cdlExpirationDays)
                     : null,
                 percentage:
@@ -575,6 +587,9 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
             tableTestDetailsResult: 'NA',
             tableMedicalData: {
                 expirationDays: data?.medicalExpirationDays
+                    ? data.medicalExpirationDays
+                    : null,
+                expirationDaysText: data?.medicalExpirationDays
                     ? this.thousandSeparator.transform(
                           data.medicalExpirationDays
                       )
@@ -586,6 +601,9 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
             },
             tableMvrDetailsExpiration: {
                 expirationDays: data?.mvrExpirationDays
+                    ? data.mvrExpirationDays
+                    : null,
+                expirationDaysText: data?.mvrExpirationDays
                     ? this.thousandSeparator.transform(data.mvrExpirationDays)
                     : null,
                 percentage:
@@ -1271,6 +1289,8 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
                 this.applicantBackFilter(this.applicantBackFilterQuery, true);
             } else {
+                this.driverBackFilterQuery.active =
+                    this.selectedTab === 'active' ? 1 : 0;
                 this.driverBackFilterQuery.pageIndex++;
 
                 this.driverBackFilter(this.driverBackFilterQuery, true);
@@ -1301,7 +1321,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
             this.modalService.openModal(
                 DriverCdlModalComponent,
                 { size: 'small' },
-                { ...event }
+                { ...event, tableActiveTab: this.selectedTab }
             );
         } else if (event.type === 'new-medical') {
             this.modalService.openModal(
@@ -1309,13 +1329,13 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 {
                     size: 'small',
                 },
-                { ...event }
+                { ...event, tableActiveTab: this.selectedTab }
             );
         } else if (event.type === 'new-mvr') {
             this.modalService.openModal(
                 DriverMvrModalComponent,
                 { size: 'small' },
-                { ...event }
+                { ...event, tableActiveTab: this.selectedTab }
             );
         } else if (event.type === 'new-drug') {
             this.modalService.openModal(
@@ -1323,7 +1343,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 {
                     size: 'small',
                 },
-                { ...event }
+                { ...event, tableActiveTab: this.selectedTab }
             );
         } else if (event.type === 'activate-item') {
             this.modalService.openModal(

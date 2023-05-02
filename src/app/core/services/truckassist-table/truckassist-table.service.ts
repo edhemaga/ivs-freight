@@ -69,6 +69,10 @@ export class TruckassistTableService {
     private searchTableData = new BehaviorSubject<any>(null);
     public currentSearchTableData = this.searchTableData.asObservable();
 
+    /* Send Chips For Highlight Search To Table */
+    private chipsForHighlightSearchToTable = new BehaviorSubject<string[]>([]);
+    public currentChipsForHighlightSearchToTable = this.chipsForHighlightSearchToTable.asObservable();
+
     /* Set Filter */
     private setTableFilter = new BehaviorSubject<any>(null);
     public currentSetTableFilter = this.setTableFilter.asObservable();
@@ -123,6 +127,11 @@ export class TruckassistTableService {
     /*  Search  */
     public sendCurrentSearchTableData(search: any) {
         this.searchTableData.next(search);
+    }
+
+    /* Send Chips For Highlight Search To Table */
+    public sendChipsForHighlightSearchToTable(chip: string[]){
+        this.chipsForHighlightSearchToTable.next(chip);
     }
 
     /*  Switch Select  */

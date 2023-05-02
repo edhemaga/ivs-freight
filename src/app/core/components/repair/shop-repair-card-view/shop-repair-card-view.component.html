@@ -17,6 +17,7 @@
                 : false
         "
         [haveDropSVG]="repairShopCardViewData?.pinned ?  true : false"
+        [repairHeader]="true"
         [customPinnedSvg]="repairShopCardViewData?.pinned ?  'assets/svg/common/ic_star.svg' : ''"
     >
         <div class="repair-information-wrapper">
@@ -28,6 +29,7 @@
 
                 <app-ta-copy
                     [copyValue]="repairShopCardViewData?.phone"
+                    [textColor]="'#2f2f2f'"
                 ></app-ta-copy>
             </div>
             <div
@@ -40,6 +42,7 @@
                 ></svg-icon>
                 <app-ta-copy
                     [copyValue]="repairShopCardViewData?.email"
+                    [textColor]="'#2f2f2f'"
                 ></app-ta-copy>
             </div>
             <div class="repair-information-item address-cont" *ngIf="repairShopCardViewData?.address?.address">
@@ -50,6 +53,7 @@
 
                 <app-ta-copy
                     [copyValue]="repairShopCardViewData?.address?.address"
+                    [textColor]="'#2f2f2f'"
                 ></app-ta-copy>
             </div>
         </div>
@@ -69,7 +73,7 @@
                 }"
             >
                 <div
-                    class="working-hours-container"
+                    class="working-hours-container more-padding-working-hours-cont"
                     *ngIf="repairShopCardViewData?.openHours"
                 >
                     <div
@@ -242,7 +246,7 @@
             <app-ta-custom-card
                 [bodyTemplate]="'card'"
                 [cardName]="'Repair Expenses'"
-                [isCardOpen]="true"
+                [isCardOpen]="barChartConfig?.hasValue"
                 [tooltipName]="'View in Modal'"
                 [hasHeaderSvg]="'assets/svg/common/arrow_top_right.svg'"
                 [animationMarginParams]="{

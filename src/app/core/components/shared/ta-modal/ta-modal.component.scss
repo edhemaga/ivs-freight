@@ -98,8 +98,15 @@
     &.modal-container-XS {
         width: 360px;
 
+        //new design
+        //width: 390px;
+        //padding: 0px 12px;
+
         .divider {
             width: 335px;
+
+            //new design
+            //width: 268px;
         }
 
         .confirmation-modal-body {
@@ -175,7 +182,11 @@
         content: '';
         border-radius: 1px;
         background-color: #f3f3f3;
+        
         margin: 0 auto;
+        //new design
+        //margin-left: 12px;
+
     }
 
     .modal-spinner {

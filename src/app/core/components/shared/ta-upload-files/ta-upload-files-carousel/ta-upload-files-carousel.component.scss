@@ -102,6 +102,10 @@
 
         .ta-upload-files-carousel {
             grid-template-rows: 194px;
+
+            .multiple-slider {
+                gap: 8px !important;
+            }
         }
     }
 

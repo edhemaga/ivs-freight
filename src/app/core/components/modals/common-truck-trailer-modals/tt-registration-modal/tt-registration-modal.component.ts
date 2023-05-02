@@ -235,11 +235,12 @@ export class TtRegistrationModalComponent implements OnInit, OnDestroy {
                     : undefined,
             truckId:
                 this.editData.modal === 'truck' ? this.editData.id : undefined,
+            tabSelected: this.editData.tabSelected,
             files: documents,
         };
 
         this.commonTruckTrailerService
-            .addRegistration(newData, this.editData.tabSelected)
+            .addRegistration(newData)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {

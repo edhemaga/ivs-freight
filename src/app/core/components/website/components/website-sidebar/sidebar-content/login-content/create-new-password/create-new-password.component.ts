@@ -75,7 +75,11 @@ export class CreateNewPasswordComponent implements OnInit, OnDestroy {
             });
     }
 
-    public passwordsNotSame(): void {
+    private passwordsNotSame(): void {
+        const passwordControl = this.createNewPasswordForm.get(
+            ConstantString.PASSWORD
+        );
+
         const confirmPasswordControl = this.createNewPasswordForm.get(
             ConstantString.CONFIRM_PASSWORD
         );
@@ -84,18 +88,35 @@ export class CreateNewPasswordComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe((value) => {
                 if (
-                    value?.toLowerCase() ===
-                        this.createNewPasswordForm
-                            .get(ConstantString.PASSWORD)
-                            .value?.toLowerCase() &&
+                    passwordControl.value &&
                     value &&
-                    confirmPasswordControl.value
+                    value?.toLowerCase() ===
+                        passwordControl.value?.toLowerCase()
                 ) {
                     confirmPasswordControl.setErrors(null);
+
+                    passwordControl.setErrors(null);
                 } else {
                     confirmPasswordControl.setErrors({
                         invalid: true,
                     });
+                }
+            });
+
+        passwordControl.valueChanges
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((value) => {
+                if (
+                    confirmPasswordControl.value &&
+                    value &&
+                    value?.toLowerCase() !==
+                        confirmPasswordControl.value?.toLowerCase()
+                ) {
+                    passwordControl.setErrors({
+                        invalid: true,
+                    });
+                } else {
+                    confirmPasswordControl.setErrors(null);
                 }
             });
     }

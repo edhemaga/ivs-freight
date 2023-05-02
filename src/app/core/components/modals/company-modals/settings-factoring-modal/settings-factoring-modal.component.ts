@@ -65,6 +65,8 @@ export class SettingsFactoringModalComponent implements OnInit, OnDestroy {
 
     public disableCardAnimation: boolean = false;
 
+    public isBluredNotice: boolean = true;
+
     noticeValue: any = '';
     range: any;
     selectedEditor: HTMLAnchorElement;
@@ -247,6 +249,10 @@ export class SettingsFactoringModalComponent implements OnInit, OnDestroy {
         setTimeout(() => {
             this.disableCardAnimation = false;
         }, 1000);
+    }
+
+    public onNoticeFocus(val: boolean) {
+        this.isBluredNotice = val;
     }
 
     ngOnDestroy(): void {

@@ -14,6 +14,7 @@ import { formatDatePipe } from 'src/app/core/pipes/formatDate.pipe';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { TaInputDropdownComponent } from '../../shared/ta-input-dropdown/ta-input-dropdown.component';
 import { ProfileImagesComponent } from '../../shared/profile-images/profile-images.component';
+import { convertDateFromBackend } from '../../../utils/methods.calculations';
 
 export interface Confirmation {
     template: string; // examples: driver, broker, shipper, cdl.....
@@ -97,6 +98,10 @@ export class ConfirmationModalComponent implements OnInit {
         if (action === 'cdl') {
             this.selectedCdl = event;
         }
+    }
+
+    public formatDate(mod){
+        return convertDateFromBackend(mod);
     }
 
     public identity = (index: number, _: any): number => index;

@@ -323,6 +323,15 @@ export class CustomerTableComponent
     }
 
     sendCustomerData() {
+        const tableView = JSON.parse(
+            localStorage.getItem(`Customer-table-view`)
+        );
+        
+        if(tableView){
+            this.selectedTab = tableView.tabSelected
+            this.activeViewMode = tableView.viewMode
+        }
+
         this.initTableOptions();
 
         this.checkActiveViewMode();
@@ -425,13 +434,13 @@ export class CustomerTableComponent
         if (td.data.length) {
             this.viewData = td.data;
 
-            this.mapListData = JSON.parse(JSON.stringify(this.viewData));
-
             this.viewData = this.viewData.map((data: any) => {
                 return this.selectedTab === 'active'
                     ? this.mapBrokerData(data)
                     : this.mapShipperData(data);
             });
+
+            this.mapListData = JSON.parse(JSON.stringify(this.viewData));
         } else {
             this.viewData = [];
         }
@@ -998,7 +1007,7 @@ export class CustomerTableComponent
 
                     this.brokerBackFilter(this.backBrokerFilterQuery);
                 } else {
-                    this.backShipperFilterQuery.sort = event.direction;
+                    this.backShipperFilterQuery.sort = event.direction; 
 
                     this.backShipperFilterQuery.pageIndex = 1;
 

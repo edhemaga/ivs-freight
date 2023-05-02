@@ -7,6 +7,7 @@
         [searchInputName]="'Search Shipper'"
         [dateChecked]="'5 days ago'"
         [options]="shipperDropdowns"
+        [currentName]="shipper.businessName"
         (selectValue)="onSelectedShipper($event)"
         (changeEvent)="onChangeShipper($event)"
     >
@@ -24,7 +25,10 @@
                         src="assets/svg/common/ic_phone.svg"
                     ></svg-icon>
                 </span>
-                <app-ta-copy [copyValue]="shipper?.phone"></app-ta-copy>
+                <app-ta-copy 
+                    [copyValue]="shipper?.phone"
+                    [textColor]="'#2f2f2f'"    
+                ></app-ta-copy>
             </div>
             <div class="repair-information-item" *ngIf="shipper?.email">
                 <span
@@ -39,7 +43,10 @@
                         src="assets/svg/common/ic_email.svg"
                     ></svg-icon>
                 </span>
-                <app-ta-copy [copyValue]="shipper?.email"></app-ta-copy>
+                <app-ta-copy 
+                    [copyValue]="shipper?.email"
+                    [textColor]="'#2f2f2f'"    
+                ></app-ta-copy>
             </div>
             <div class="repair-information-item address-cont" *ngIf="shipper?.address?.address">
                 <svg-icon
@@ -48,6 +55,7 @@
                 ></svg-icon>
                 <app-ta-copy
                     [copyValue]="shipper?.address?.address"
+                    [textColor]="'#2f2f2f'"
                 ></app-ta-copy>
             </div>
         </div>
@@ -115,7 +123,7 @@
                 [cardName]="'Average Waiting Time'"
                 [tooltipName]="'View in Modal'"
                 [hasHeaderSvg]="'assets/svg/common/arrow_top_right.svg'"
-                [isCardOpen]="true"
+                [isCardOpen]="stackedBarChartConfig?.hasValue"
                 [animationMarginParams]="{
                     marginTop: '0px',
                     marginBottom: '10px'

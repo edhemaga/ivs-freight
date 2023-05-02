@@ -33,6 +33,8 @@ export class TaCopyComponent implements OnInit {
     @Input() hasEye: boolean = false;
     @Input() leftSideIcon: boolean = false;
     // @Input() marginCopyIcons: string = '6px';
+    @Input() arrayText: boolean = false;
+    @Input() boldText: boolean = false;
     @Input() accountCompany: boolean;
     @Output() showHideEye = new EventEmitter<any>();
     public textCopied: boolean;
@@ -44,6 +46,9 @@ export class TaCopyComponent implements OnInit {
     /* To copy any Text */
     public copyText(val: any) {
         this.textCopied = true;
+        if ( this.arrayText ) {
+            val = this.copyValue[0] + this.copyValue[1];
+        }
         this.clipboar.copy(val);
     }
 

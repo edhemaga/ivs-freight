@@ -2,10 +2,12 @@ import { NoticeService } from 'src/app/core/services/shared/notice.service';
 import {
     Component,
     ElementRef,
+    EventEmitter,
     HostListener,
     Input,
     OnDestroy,
     OnInit,
+    Output,
     Self,
     ViewChild,
 } from '@angular/core';
@@ -35,12 +37,13 @@ import { TaInputDropdownComponent } from '../ta-input-dropdown/ta-input-dropdown
         SafeHtmlPipe,
         AngularSvgIconModule,
         ReactiveFormsModule,
-        TaInputDropdownComponent
+        TaInputDropdownComponent,
     ],
 })
 export class TaNoticeOfAsignmentComponent
     implements OnInit, ControlValueAccessor, OnDestroy
 {
+    @Output() noticeFocus = new EventEmitter<any>();
     @Input() sidebarWidth: any;
     range: any;
     @Input() settings: any;
@@ -50,6 +53,7 @@ export class TaNoticeOfAsignmentComponent
     selectedFontSize = 14;
     activeFont: any = { id: 3, name: 'Default', showName: 'Default' };
     activeFontSize: any;
+    isBlured: boolean = true;
 
     fontSizeList: any[] = [
         {
@@ -197,9 +201,11 @@ export class TaNoticeOfAsignmentComponent
                 }
             } else {
                 this.focusElement();
-                document.execCommand(action, false, `${color}px`);
+                const fontSize = color+'px';
+                document.execCommand(action, false, fontSize);
             }
         } else {
+            this.selectedColorName = color;
             setTimeout(() => {
                 this.focusElement();
                 setTimeout(() => {
@@ -211,12 +217,18 @@ export class TaNoticeOfAsignmentComponent
             });
         }
 
-        setTimeout(()=>{
-            this.getSuperControl.patchValue(this.noticeRef.nativeElement.innerHTML);
-        }, 500)
+        setTimeout(() => {
+            this.getSuperControl.patchValue(
+                this.noticeRef.nativeElement.innerHTML
+            );
+        }, 500);
     }
 
     focusElement(): void {
+        if (this.isBlured) {
+            this.noticeFocus.emit(false);
+        }
+        
         if (this.noticeRef) {
             this.noticeRef.nativeElement.focus();
         }
@@ -254,11 +266,19 @@ export class TaNoticeOfAsignmentComponent
     }
 
     blurElement() {
-        this.selectionTaken = window.getSelection();
-        if (this.selectionTaken.rangeCount && this.selectionTaken.getRangeAt) {
-            this.range = this.selectionTaken.getRangeAt(0);
-            this.selectionTaken.removeAllRanges();
-            this.selectionTaken.addRange(this.range);
+        this.isBlured = !this.isBlured;
+        this.noticeFocus.emit(this.isBlured);
+        if (!this.isBlured) {
+            this.selectionTaken = window.getSelection();
+            if (
+                this.selectionTaken.rangeCount &&
+                this.selectionTaken.getRangeAt
+            ) {
+                this.range = this.selectionTaken.getRangeAt(0);
+                this.selectionTaken.removeAllRanges();
+                this.selectionTaken.addRange(this.range);
+                this.noticeRef.nativeElement.blur();
+            }
         }
     }
 

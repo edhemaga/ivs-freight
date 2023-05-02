@@ -410,6 +410,59 @@ export class TruckTService implements OnDestroy {
         return this.truckService.apiTruckRevenueGet(id, chartType);
     }
 
+    public changeActiveStatus(truckId: any){
+
+        return this.truckService.apiTruckStatusIdPut(truckId)
+        .pipe(takeUntil(this.destroy$))
+        .subscribe({
+            next: (res: any) => {
+                let storedTruckData = {
+                    ...this.truckItem?.getValue()?.entities[truckId],
+                };
+
+                const subTruck = this.getTruckById(truckId)
+                    .pipe(takeUntil(this.destroy$))
+                    .subscribe({
+                        next: (truck: any) => {
+                            this.truckActiveStore.remove(
+                                ({ id }) => id === truckId
+                            );
+
+                            this.truckMinimalStore.remove(
+                                ({ id }) => id === truckId
+                            );
+
+                            truck.registrations = storedTruckData.registrations;
+                            truck.titles = storedTruckData.titles;
+                            truck.inspections = storedTruckData.inspections;
+
+                            truck = {
+                                ...truck,
+                                fileCount: truck?.filesCountForList
+                                    ? truck.filesCountForList
+                                    : 0,
+                            };
+
+                            this.truckMinimalStore.add(truck);
+                            this.tdlStore.add(truck);
+                            this.truckItem.set([truck]);
+
+                            this.tableService.sendActionAnimation({
+                                animation: 'update',
+                                data: truck,
+                                id: truck.id,
+                            });
+
+                            subTruck.unsubscribe();
+                        },
+                    });
+            }
+            
+        });
+
+
+    }
+
     ngOnDestroy(): void {
         this.destroy$.next();
         this.destroy$.complete();

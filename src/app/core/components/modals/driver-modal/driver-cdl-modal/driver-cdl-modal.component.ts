@@ -465,6 +465,9 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
                 ? this.selectedEndorsments.map((item) => item.id)
                 : [],
             note: note,
+            tableActiveTab: this.editData?.tableActiveTab
+                ? this.editData.tableActiveTab
+                : null,
             files: [this.documents[0]?.realFile],
         };
 

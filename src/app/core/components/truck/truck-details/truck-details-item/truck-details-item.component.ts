@@ -107,7 +107,6 @@ export class TruckDetailsItemComponent implements OnInit, OnDestroy, OnChanges {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (res: any) => {
-                    console.log('--here----', res);
                     switch (res.type) {
                         case 'delete': {
                             if (res.template === 'registration') {
