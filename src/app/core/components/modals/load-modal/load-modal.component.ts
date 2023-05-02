@@ -2576,7 +2576,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                         };
                     });
 
-                    const initialDispatcher = this.labelsDispatcher.find(
+                    let initialDispatcher = this.labelsDispatcher.find(
                         (item) =>
                             item?.name ===
                             this.companyUser?.firstName?.concat(
@@ -2584,6 +2584,9 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                                 this.companyUser?.lastName
                             )
                     );
+
+                    // OVO TREBA PROVERITI, JA SAM USER KOJI JE POZVAN U OVU KOMPANIJU I JA SE NE NALAZIM UNUTAR DISPATCHER LISTE A OVDE SE TRAZI UNUTAR DISPATCHER LISTE KO JE COMPANY OWNER PA PUCA
+                    if( !initialDispatcher ) initialDispatcher = this.labelsDispatcher[0];
 
                     this.loadForm
                         .get('dispatcherId')
