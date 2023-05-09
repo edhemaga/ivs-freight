@@ -86,9 +86,9 @@ export function getTruckColumnDefinition() {
             class: 'type-icon',
         },
         {
-            ngTemplate: 'text',
+            ngTemplate: 'vin',
             title: 'VIN',
-            field: 'vin',
+            field: 'tableVin',
             name: 'VIN',
             sortName: 'vin',
             isPined: false,

@@ -25,6 +25,8 @@ import {
 import { getTruckColumnDefinition } from '../../../../../assets/utils/settings/truck-columns';
 import { DatePipe } from '@angular/common';
 import { TruckInactiveStore } from '../state/truck-inactive-state/truck-inactive.store';
+import { Data } from '../../shared/model/dashboard';
+import { toString } from '@ng-bootstrap/ng-bootstrap/util/util';
 @Component({
     selector: 'app-truck-table',
     templateUrl: './truck-table.component.html',
@@ -331,6 +333,15 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     sendTruckData() {
+        const tableView = JSON.parse(
+            localStorage.getItem(`Truck-table-view`)
+        );
+        
+        if(tableView){
+            this.selectedTab = tableView.tabSelected
+            this.activeViewMode = tableView.viewMode
+        }
+
         this.initTableOptions();
 
         const truckCount = JSON.parse(localStorage.getItem('truckTableCount'));
@@ -401,6 +412,10 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
         return {
             ...data,
             truckTypeIcon: data.truckType.logoName,
+            tableVin: {
+                regularText: data?.vin ? data.vin.substr(0, data.vin.length - 6) : '',
+                boldText: data?.vin ? data.vin.substr(data.vin.length - 6) : '',
+            },
             truckTypeClass: data.truckType.logoName.replace('.svg', ''),
             textMake: data?.truckMake?.name ? data.truckMake.name : '',
             textModel: data?.model ? data.model : '',
@@ -472,6 +487,9 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
             tableLicencePlateDetailST: 'NA',
             tableLicencePlateDetailExpiration: {
                 expirationDays: data?.registrationExpirationDays
+                    ? data.registrationExpirationDays
+                    : null,
+                expirationDaysText: data?.registrationExpirationDays
                     ? this.thousandSeparator.transform(
                           data.registrationExpirationDays
                       )
@@ -487,6 +505,9 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 : '',
             tableFhwaInspectionExpiration: {
                 expirationDays: data?.inspectionExpirationDays
+                    ? data.inspectionExpirationDays
+                    : null,
+                expirationDaysText: data?.inspectionExpirationDays
                     ? this.thousandSeparator.transform(
                           data.inspectionExpirationDays
                       )
@@ -601,14 +622,16 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 hasBorder: true,
             },
             {
-                title: this.selectedTab === 'active' ? 'Deactivate' : 'Activate',
+                title:
+                    this.selectedTab === 'active' ? 'Deactivate' : 'Activate',
                 name: 'activate-item',
                 svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Deactivate.svg',
                 svgStyle: {
                     width: 18,
                     height: 18,
                 },
-                svgClass: this.selectedTab === 'active' ? 'deactivate' : 'activate',
+                svgClass:
+                    this.selectedTab === 'active' ? 'deactivate' : 'activate',
                 tableListDropdownContentStyle: {
                     'margin-bottom.px': 4,
                 },
@@ -699,7 +722,7 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
         // Open Modal
         if (event.action === 'open-modal') {
             this.modalService.openModal(TruckModalComponent, { size: 'small' });
-        } 
+        }
         // Select Tab
         else if (event.action === 'tab-selected') {
             this.selectedTab = event.tabData.field;
@@ -722,7 +745,7 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
             } else {
                 this.sendTruckData();
             }
-        } 
+        }
         // Change View Mode
         else if (event.action === 'view-mode') {
             this.activeViewMode = event.mode;
@@ -756,6 +779,8 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
         switch (event.type) {
             case 'show-more': {
+                this.backFilterQuery.active =
+                    this.selectedTab === 'active' ? 1 : 0;
                 this.backFilterQuery.pageIndex++;
                 this.truckBackFilter(this.backFilterQuery, true);
                 break;

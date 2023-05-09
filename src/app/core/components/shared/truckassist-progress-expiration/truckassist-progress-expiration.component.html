@@ -18,7 +18,10 @@
         ></div>
     </div>
 
-    <div class="table-progress-panel">
+    <div 
+        class="table-progress-panel"
+        [class.dark-text]="darkText"
+        >
         <!-- EXPIRES IN -->
         <span
             *ngIf="

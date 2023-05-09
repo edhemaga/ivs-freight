@@ -23,9 +23,9 @@
         flex-direction: column;
     }
     .header {
-        font-size: 12px;
-        font-weight: 600;
-        color: #6c6c6c;
+        font-size: 11px;
+        font-weight: 700;
+        color: #2f2f2f;
         &::-moz-selection {
             color: $color-gray-dark;
             background: rgb(183, 183, 183, 0.2);
@@ -36,9 +36,10 @@
         }
     }
     .value {
-        font-size: 12px;
+        font-size: 14px;
         font-weight: 400;
-        color: #6c6c6c;
+        line-height: 18px;
+        color: #2f2f2f;
         &::-moz-selection {
             color: $color-gray-dark;
             background: rgb(183, 183, 183, 0.2);
@@ -89,7 +90,7 @@
         .header-name {
             font-size: 14px;
             font-weight: 600;
-            color: #6c6c6c;
+            color: #2f2f2f;
             &::-moz-selection {
                 color: $color-gray-dark;
                 background: rgb(183, 183, 183, 0.2);
@@ -102,7 +103,7 @@
         .value-ageing {
             font-size: 28px;
             font-weight: 600;
-            color: #6c6c6c;
+            color: #2f2f2f;
             line-height: 28px;
             &::-moz-selection {
                 color: $color-gray-dark;

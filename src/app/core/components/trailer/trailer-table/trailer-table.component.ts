@@ -117,7 +117,6 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
                             c.title ===
                             response.columns[response.event.index].title
                         ) {
-                            console.log('Radi resize');
                             c.width = response.event.width;
                         }
 
@@ -309,6 +308,15 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     sendTrailerData() {
+        const tableView = JSON.parse(
+            localStorage.getItem(`Trailer-table-view`)
+        );
+        
+        if(tableView){
+            this.selectedTab = tableView.tabSelected
+            this.activeViewMode = tableView.viewMode
+        }
+
         this.initTableOptions();
 
         const trailerCount = JSON.parse(
@@ -382,6 +390,12 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
             ...data,
             isSelected: false,
             tableTrailerTypeIcon: data.trailerType.logoName,
+            tableVin: {
+                regularText: data?.vin
+                    ? data.vin.substr(0, data.vin.length - 6)
+                    : '',
+                boldText: data?.vin ? data.vin.substr(data.vin.length - 6) : '',
+            },
             tableTrailerTypeClass: data.trailerType.logoName.replace(
                 '.svg',
                 ''
@@ -416,6 +430,9 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
             tableLicencePlateDetailST: 'NA',
             tableLicencePlateDetailExpiration: {
                 expirationDays: data?.registrationExpirationDays
+                    ? data.registrationExpirationDays
+                    : null,
+                expirationDaysText: data?.registrationExpirationDays
                     ? this.thousandSeparator.transform(
                           data.registrationExpirationDays
                       )
@@ -431,6 +448,9 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 : '',
             tableFHWAInspectionExpiration: {
                 expirationDays: data?.inspectionExpirationDays
+                    ? data.inspectionExpirationDays
+                    : null,
+                expirationDaysText: data?.inspectionExpirationDays
                     ? this.thousandSeparator.transform(
                           data.inspectionExpirationDays
                       )
@@ -705,6 +725,8 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
         switch (event.type) {
             case 'show-more': {
+                this.backFilterQuery.active =
+                    this.selectedTab === 'active' ? 1 : 0;
                 this.backFilterQuery.pageIndex++;
 
                 this.trailerBackFilter(this.backFilterQuery, true);

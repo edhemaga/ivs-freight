@@ -53,8 +53,11 @@
                         <span
                             *ngIf="isCardOpen || haveHeaderText || forcedOpen"
                             class="open-name disable-selection"
+                            [class.openedTitle]="isCardOpen"
                             >
-                                <span *ngIf="!hasCopyIcon">{{ cardNameCommon }}</span>
+                                <span *ngIf="!hasCopyIcon"
+                                [class.openedTitle]="isCardOpen"
+                                >{{ cardNameCommon }}</span>
                                 <span 
                                     *ngIf="hasCopyIcon" 
                                     ngbTooltip
@@ -90,7 +93,8 @@
                         </span>
                         <span *ngIf="cardSecondResult" 
                             class="second-name resultHolder"
-                            [class.positiveResult]="cardSecondResult == 'Positive' ">
+                            [class.positiveResult]="cardSecondResult == 'Positive' "
+                            [class.openedCardResults]="isCardOpen">
                             {{ cardSecondResult }}
                         </span>
                         <span *ngIf="cardSecondName && !isCardOpen && !forcedOpen" class="second-name reason-span">

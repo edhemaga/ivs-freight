@@ -11,9 +11,9 @@
             [customText]="item.customText"
             [statusInactive]="item.hide"
             [arrayIcons]="item.icons"
-            [hasDateArrow]="true"
-            [showRepairHeaderOpen]="true"
-            [repairIsOpen]="businessOpen"
+            [hasDateArrow]=" item.hasDateArrow ? true : false"
+            [showClosedBadge]="true"
+            [businessOpen]="businessOpen"
             [totalCost]="item.total"
             [optionsId]="repairShopId"
             [mainData]="item"
@@ -23,6 +23,7 @@
             [pmFilter]="true"
             [categoryFilter]="true"
             [moneyFilter]="true"
+            [repairHeader]="item.nameDefault == 'Repair'"
             (dropActions)="dropActionRepair($event)"
             (openModalAction)="onModalAction($event)"
         >
@@ -30,8 +31,13 @@
     </div>
     <div class="repair-details-cmp">
         <app-shop-repair-details-item
+            class="repair-component"
+            
             *ngFor="let item of shopRepairConfig; trackBy: identity"
+            [class.vehicleHolder]="item.nameDefault === 'Repaired Vehicle'"
+            [class.reviewShopHolder]="item.nameDefault === 'Review & Rating'"
             [repairShopItem]="item"
+            [customClass]=" item.nameDefault === 'Repaired Vehicle' ? 'vehicleHolder' : '' || item.nameDefault === 'Review & Rating' ? 'reviewShopHolder' : '' "
         >
         </app-shop-repair-details-item>
     </div>

@@ -76,7 +76,8 @@ app-shop-repair-details-item {
 
             .open-time {
                 font-size: $font-size18;
-                color: $color-gray-dark;
+                //color: $color-gray-dark;
+                color: #2f2f2f;
                 height: 18px;
                 position: relative;
                 bottom: 2px;
@@ -94,7 +95,8 @@ app-shop-repair-details-item {
         .open-header {
             font-size: $font-size12;
             font-weight: $font-semibold;
-            color: $color-gray-dark;
+            color: #2f2f2f;
+            //color: $color-gray-dark;
             padding-right: 4px;
             &::-moz-selection {
                 color: $color-gray-dark;
@@ -113,7 +115,7 @@ app-shop-repair-details-item {
         .open-working-days-value {
             font-size: 14px;
             font-weight: 400;
-            color: #6c6c6c;
+            color: #2f2f2f;
             height: 18px;
             &::-moz-selection {
                 color: $color-gray-dark;
@@ -126,6 +128,10 @@ app-shop-repair-details-item {
         }
         .sunday {
             margin-top: 12px;
+        }
+
+        &.more-padding-working-hours-cont{
+            padding: 0px 4px;
         }
     }
 
@@ -267,26 +273,29 @@ app-shop-repair-details-item {
 
     .service-container {
         padding: 0 4px;
-        display: grid;
+        display: grid; 
         justify-content: space-between;
-        grid-template-columns: 32px 32px 32px 32px;
-        column-gap: 78px;
+        grid-template-columns: 80px 80px 80px 80px;
+        //grid-template-columns: 1fr 1fr 1fr 1fr;
+        column-gap: 0px;
         row-gap: 13px;
+        
         .service-item {
             display: flex;
-            flex-direction: column;
+            flex-direction: row;
             align-items: center;
             svg {
-                width: 32px;
-                height: 32px;
+                width: 16px;
+                height: 16px;
                 path {
-                    fill: #aaaaaa;
+                    fill: #919191;
                 }
             }
             .service-type {
                 font-size: 12px;
                 font-weight: $font-semibold;
-                color: #6c6c6c;
+                color: #2f2f2f;
+                padding-left: 6.9px;
                 &::-moz-selection {
                     color: $color-gray-dark;
                     background: rgb(108, 108, 108, 0.2);
@@ -304,7 +313,7 @@ app-shop-repair-details-item {
         align-items: center;
         overflow: hidden;
         text-overflow: ellipsis;
-        color: #6c6c6c;
+        color: #2f2f2f;
         &::-moz-selection {
             color: $color-gray-dark;
             background: rgb(108, 108, 108, 0.2);
@@ -351,7 +360,7 @@ app-shop-repair-details-item {
     .button-wrapper-shop {
         position: relative;
         display: flex;
-        left: -91px;
+        left: -95px;
         background-color: #6d82c7;
         color: #ffffff;
         cursor: pointer;
@@ -377,7 +386,7 @@ app-shop-repair-details-item {
                 background-color: #fff3e0;
                 margin-bottom: 0px !important;
                 margin-top: 2px !important;
-                padding: 6px 4px;
+                padding: 7px 8px !important;
                 padding-left: 10px;
                 border-radius: 2px;
                 grid-template-columns: 82px 86px 86px 0 415px !important;
@@ -385,6 +394,11 @@ app-shop-repair-details-item {
                     background-color: #FFECD1 !important;
                     margin-bottom: 0px !important;
                 }
+
+                &.repair-item-column{
+                    grid-template-columns: 86px 35px 120px 100px 330px !important;
+                }
+
             }
         }
         .unit {
@@ -400,13 +414,13 @@ app-shop-repair-details-item {
     }
     .cross-out {
         text-decoration: line-through;
-        color: #b7b7b7 !important;
+        color: #CCCCCC !important;
         &::-moz-selection {
-            color: #b7b7b7 !important;
+            color: #CCCCCC !important;
             background: rgb(183, 183, 183, 0.2) !important;
         }
         &::selection {
-            color: #b7b7b7 !important;
+            color: #CCCCCC !important;
             background: rgb(183, 183, 183, 0.2) !important;
         }
     }
@@ -423,7 +437,7 @@ app-shop-repair-details-item {
         .date-order {
             font-size: 14px;
             font-weight: 400;
-            color: #6c6c6c;
+            color: #2f2f2f;
             margin-left: 4px;
             &::-moz-selection {
                 color: $color-gray-dark;
@@ -475,16 +489,16 @@ app-shop-repair-details-item {
     padding-left: 10px !important;
     border-radius: 2px;
     .unit {
-        color: #3c3c3c !important;
+        color: #2f2f2f !important;
     }
     .date {
-        color: #3c3c3c !important;
+        color: #2f2f2f !important;
     }
     .item-desc {
-        color: #3c3c3c !important;
+        color: #2f2f2f !important;
     }
     .cost {
-        color: #3c3c3c !important;
+        color: #2f2f2f !important;
     }
 }
 .repair-items-body-wrapper {

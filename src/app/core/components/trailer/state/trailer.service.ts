@@ -277,6 +277,7 @@ export class TrailerTService implements OnDestroy {
         trailerId: number,
         getIndex?: boolean
     ): Observable<TrailerResponse> {
+        
         this.trailerMinimalQuery
             .selectAll()
             .pipe(takeUntil(this.destroy$))
@@ -296,7 +297,6 @@ export class TrailerTService implements OnDestroy {
             }
             this.trailerId = this.trailerList[this.currentIndex].id;
         }
-
         return this.trailerService.apiTrailerIdGet(trailerId);
     }
 
@@ -344,10 +344,12 @@ export class TrailerTService implements OnDestroy {
             .apiTrailerStatusIdPut(trailerId, 'response')
             .pipe(
                 tap(() => {
+                    console.log('-----here-----')
                     const subTrailer = this.getTrailerById(trailerId)
                         .pipe(takeUntil(this.destroy$))
                         .subscribe({
                             next: (trailer: any) => {
+                                console.log('---here-----')
                                 /* Get Table Tab Count */
                                 const trailerCount = JSON.parse(
                                     localStorage.getItem('trailerTableCount')
@@ -421,6 +423,58 @@ export class TrailerTService implements OnDestroy {
     public getTrailerDropdowns(): Observable<GetTrailerModalResponse> {
         return this.trailerService.apiTrailerModalGet();
     }
+
+
+    public changeActiveStatus(trailerId: any){
+        return this.trailerService.apiTrailerStatusIdPut(trailerId)
+        .pipe(takeUntil(this.destroy$))
+        .subscribe({
+            next: (res: any) => {
+
+                let storedTrailerData = {
+                    ...this.trailerItemStore?.getValue()?.entities[trailerId],
+                };
+                const subTrailer = this.getTrailerById(trailerId)
+                    .pipe(takeUntil(this.destroy$))
+                    .subscribe({
+                        next: (trailer: any) => {
+                            this.trailerActiveStore.remove(
+                                ({ id }) => id === trailerId
+                            );
+
+                            this.trailerMinimalStore.remove(
+                                ({ id }) => id === trailerId
+                            );
+
+                            trailer.registrations =
+                                storedTrailerData.registrations;
+                            trailer.titles = storedTrailerData.titles;
+                            trailer.inspections = storedTrailerData.inspections;
+
+                            trailer = {
+                                ...trailer,
+                                fileCount: trailer?.filesCountForList
+                                    ? trailer.filesCountForList
+                                    : 0,
+                            };
+
+                            this.trailerActiveStore.add(trailer);
+                            this.trailerMinimalStore.add(trailer);
+                            this.tadl.replace(trailer.id, trailer);
+                            this.tableService.sendActionAnimation({
+                                animation: 'update',
+                                data: trailer,
+                                id: trailer.id,
+                            });
+
+                            subTrailer.unsubscribe();
+                        },
+                    });
+            }
+            
+        });
+    }
+
     ngOnDestroy(): void {
         this.destroy$.next();
         this.destroy$.complete();

@@ -260,6 +260,15 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     sendAccountData() {
+        const tableView = JSON.parse(
+            localStorage.getItem(`Account-table-view`)
+        );
+        
+        if(tableView){
+            this.selectedTab = tableView.tabSelected
+            this.activeViewMode = tableView.viewMode
+        }
+
         this.initTableOptions();
 
         const accontCount = JSON.parse(
@@ -524,7 +533,7 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
         } else if (event.action === 'tab-selected') {
             this.selectedTab = event.tabData.field;
 
-            this.backFilterQuery.pageIndex = 1;
+            this.backFilterQuery.pageIndex = 1; 
 
             this.setAccountData(event.tabData);
         } else if (event.action === 'view-mode') {

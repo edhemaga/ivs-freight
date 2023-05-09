@@ -34,6 +34,7 @@ export class TrailerDetailsComponent implements OnInit, OnDestroy {
     public trailerList: any = this.trailerMinimalQuery.getAll();
     public currentIndex: number = 0;
     public newTrailerId: number;
+    public trailerConfData: any;
     constructor(
         private activated_route: ActivatedRoute,
         private modalService: ModalService,
@@ -92,11 +93,8 @@ export class TrailerDetailsComponent implements OnInit, OnDestroy {
                             }
                             break;
                         }
-                        case 'activate': {
-                            this.changeTrailerStatus(res?.id);
-                            break;
-                        }
-                        case 'deactivate': {
+                        case 'activate': 
+                            case 'deactivate':{
                             this.changeTrailerStatus(res?.id);
                             break;
                         }
@@ -150,6 +148,7 @@ export class TrailerDetailsComponent implements OnInit, OnDestroy {
 
     trailerConf(data: any) {
         this.DetailsDataService.setNewData(data);
+        this.trailerConfData = data;
         this.trailerDetailsConfig = [
             {
                 id: 0,
@@ -323,16 +322,21 @@ export class TrailerDetailsComponent implements OnInit, OnDestroy {
             });
     }
     public changeTrailerStatus(id: number) {
-        let status = this.trailerObject.status == 0 ? 'inactive' : 'active';
+        this.trailerService.changeActiveStatus(id);
+        /*
+        let trailerData = this.trailerObject ? this.trailerObject : this.trailerConfData;
+        let status = trailerData == 0 ? 'inactive' : 'active';
         this.trailerService
             .changeTrailerStatus(id, status)
             .pipe(takeUntil(this.destroy$))
             .subscribe();
+        */
     }
     public onTrailerActions(event: any) {
+        let trailerData = this.trailerObject ? this.trailerObject : this.trailerConfData;
         this.dropService.dropActionHeaderTruck(
             event,
-            this.trailerObject,
+            trailerData,
             null,
             event.id
         );

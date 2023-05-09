@@ -25,6 +25,7 @@
     [specificCaseModalName]="editData.modalHeader"
     [customClass]="'modal-container-XS'"
     [bottomDivider]="true"
+    [showCounter]="true"
     [headerSvg]="
         editData?.type === 'multiple delete' ? 'delete' : editData?.type
     "
@@ -32,57 +33,7 @@
     (confirmationAction)="onModalAction($event)"
 >
     <div origin class="confirmation-modal">
-        <!-- Rating Header -->
-        <p
-            *ngIf="editData.rating && editData?.type === 'delete'"
-            class="confirmation-header"
-        >
-            Are you sure you want to delete rating for this
-            {{ editData?.template }}?
-        </p>
-
-        <!-- Info Header -->
-        <p
-            *ngIf="editData.subTypeStatus && editData?.type === 'info'"
-            class="confirmation-header"
-        >
-            Are you sure you want to {{ editData?.subTypeStatus }} this
-            {{ editData?.template }}
-            {{ editData?.subTypeStatus === 'move' ? 'to' : 'from' }}
-            {{
-                editData?.subType === 'archive'
-                    ? 'archive'
-                    : editData?.subType === 'dnu'
-                    ? 'do not use list'
-                    : editData?.subType === 'favorite' ? 'favorite list' : 'ban list'
-            }}?
-        </p>
-
-        <!-- Normal Header -->
-        <div
-            *ngIf="
-                !editData.rating &&
-                !editData.subTypeStatus &&
-                editData.subType !== 'cdl void'
-            "
-            class="confirmation-header"
-        >
-            Are you sure you want to
-            {{
-                editData?.type === 'info'
-                    ? editData?.subType
-                    : editData?.type === 'multiple delete'
-                    ? 'delete' + ' ' + editData.array.length
-                    : editData.type
-            }}
-            {{ editData?.type === 'multiple delete' ? null : 'this' }}
-            {{
-                editData?.type === 'multiple delete'
-                    ? editData?.template + 's'
-                    : editData?.template
-            }}?
-        </div>
-
+        
         <!-- Renew CDL -->
         <p
             *ngIf="
@@ -90,7 +41,7 @@
                 editData?.type === 'info' &&
                 editData.template === 'cdl'
             "
-            class="confirmation-header"
+            class="confirmation-header confirmation-text-1"
         >
             <span class="renew-cdl-person-name">{{
                 editData.data.data?.firstName?.concat(
@@ -135,10 +86,20 @@
                 *ngIf="['driver', 'owner'].includes(editData?.template)"
                 class="confirmation-info"
             >
-                <p class="confirmation-text-1">{{ editData?.data?.name }}</p>
+                <p class="confirmation-text-1 large-text-1">
+                    {{ editData?.data?.name }}
+                    <span *ngIf="editData?.data?.status == 0" class="inactive-icon-holder">
+                        <svg-icon
+                            src="assets/svg/common/confirmation/ic_confirmation_activate.svg"
+                        ></svg-icon>
+                    </span>
+                </p>
+                <p class="confirmation-text-2 large-text-2">{{formatDate(editData?.dateOfBirth)}}</p>
+                <!--
                 <p class="confirmation-text-2">
                     SSN: {{ editData?.data?.ssn }}
                 </p>
+                -->
             </div>
             <!-- Truck, Trailer -->
             <div
@@ -320,10 +281,21 @@
                     *ngIf="['driver', 'owner'].includes(editData?.template)"
                     class="confirmation-info"
                 >
-                    <p class="confirmation-text-1">{{ item?.data?.name }}</p>
+                    <p class="confirmation-text-1 large-text-1">
+                        {{ item?.data?.name }}
+                        <span *ngIf="item?.data?.status == 0" class="inactive-icon-holder">
+                            <svg-icon
+                                src="assets/svg/common/confirmation/ic_confirmation_activate.svg"
+                            ></svg-icon>
+                        </span>
+                    </p>
+                    <p class="confirmation-text-2 large-text-2">{{formatDate(item?.data?.dateOfBirth)}}</p>
+                    
+                    <!--
                     <p class="confirmation-text-2">
                         SSN: {{ item?.data?.ssn }}
                     </p>
+                    -->
                 </div>
                 <!-- Truck, Trailer -->
                 <div
@@ -353,5 +325,57 @@
                 </div>
             </div>
         </div>
+
+        <!-- Rating Header -->
+        <p
+            *ngIf="editData.rating && editData?.type === 'delete'"
+            class="confirmation-header confirmation-text-1"
+        >
+            Are you sure you want to delete rating for this
+            {{ editData?.template }}?
+        </p>
+
+        <!-- Info Header -->
+        <p
+            *ngIf="editData.subTypeStatus && editData?.type === 'info'"
+            class="confirmation-header confirmation-text-1"
+        >
+            Are you sure you want to {{ editData?.subTypeStatus }} this
+            {{ editData?.template }}
+            {{ editData?.subTypeStatus === 'move' ? 'to' : 'from' }}
+            {{
+                editData?.subType === 'archive'
+                    ? 'archive'
+                    : editData?.subType === 'dnu'
+                    ? 'do not use list'
+                    : editData?.subType === 'favorite' ? 'favorite list' : 'ban list'
+            }}?
+        </p>
+
+        <!-- Normal Header -->
+        <div
+            *ngIf="
+                !editData.rating &&
+                !editData.subTypeStatus &&
+                editData.subType !== 'cdl void'
+            "
+            class="confirmation-header confirmation-text-1"
+        >
+            Are you sure you want to
+            {{
+                editData?.type === 'info'
+                    ? editData?.subType
+                    : editData?.type === 'multiple delete'
+                    ? 'delete' + ' ' + editData.array.length
+                    : editData.type
+            }}
+            {{ editData?.type === 'multiple delete' ? null : 'this' }}
+            {{
+                editData?.type === 'multiple delete'
+                    ? editData?.template + 's'
+                    : editData?.template
+            }}?
+        </div>
+
     </div>
 </app-ta-modal>

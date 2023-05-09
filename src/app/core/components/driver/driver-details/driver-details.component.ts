@@ -239,7 +239,7 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
             },
             {
                 id: 2,
-                name: 'Drug & Alcohol Test',
+                name: 'Drug & Alcohol',
                 template: 'drug-alcohol',
                 req: true,
                 status: this.statusDriver,
@@ -375,7 +375,7 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
                         { subName: 'CDL', actionName: 'CDL' },
                         {
                             subName: 'Test (Drug, Alcohol)',
-                            actionName: 'Drug & Alcohol Test',
+                            actionName: 'Drug & Alcohol',
                         },
                         { subName: 'Medical Exam', actionName: 'Medical' },
                         { subName: 'MVR', actionName: 'MVR' },
@@ -394,7 +394,7 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
                         { subName: 'Medical Exam', actionName: 'Medical' },
                         {
                             subName: 'Test (Drug, Alcohol)',
-                            actionName: 'Drug & Alcohol Test',
+                            actionName: 'Drug & Alcohol',
                         },
                         { subName: 'MVR', actionName: 'MVR' },
                     ],

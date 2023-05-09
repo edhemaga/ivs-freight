@@ -37,6 +37,7 @@
                                     [copyValue]="
                                         violation?.data?.driver_LicenceNo
                                     "
+                                    [textColor]="'#2f2f2f'"
                                 ></app-ta-copy>
                             </div>
                             <div class="violation-card-items">
@@ -80,6 +81,7 @@
                                     [copyValue]="
                                         violation?.data?.coDriver_LicenceNo
                                     "
+                                    [textColor]="'#2f2f2f'"
                                 ></app-ta-copy>
                             </div>
                             <div class="violation-card-items">
@@ -136,6 +138,7 @@
                                 <span class="name">Vin</span>
                                 <app-ta-copy
                                     [copyValue]="violation?.data?.truck_VIN"
+                                    [textColor]="'#2f2f2f'"
                                 ></app-ta-copy>
                             </div>
                             <div class="violation-card-items">
@@ -193,6 +196,7 @@
                                 <span class="name">Vin</span>
                                 <app-ta-copy
                                     [copyValue]="violation?.data?.trailer_VIN"
+                                    [textColor]="'#2f2f2f'"
                                 ></app-ta-copy>
                             </div>
                             <div class="violation-card-items">
@@ -533,6 +537,7 @@
                         [expireDate]="'02/09/24'"
                         [startDate]="'01/12/22'"
                         [expiresSettings]="'details'"
+                        [darkText]="true"
                     >
                     </app-truckassist-progress-expiration>
                 </div>

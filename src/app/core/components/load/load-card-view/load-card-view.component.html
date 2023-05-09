@@ -6,6 +6,7 @@
         [cardDetailsDate]="load.dateCreated | formatDateP"
         [searchInputName]="'Search Load'"
         [options]="loadDropdowns"
+        [currentName]="'Invoice ' + load.loadNumber"
         (selectValue)="onSelectLoad($event)"
         (changeEvent)="onChangeLoad($event)"
         [haveDropSVG]="true"

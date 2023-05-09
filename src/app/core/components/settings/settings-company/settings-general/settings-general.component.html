@@ -202,6 +202,7 @@
                     <p class="basic-data-value">
                         <app-ta-copy
                             [copyValue]="companyData?.address?.address"
+                            [textColor]="'#2f2f2f'"
                         >
                         </app-ta-copy>
                     </p>
@@ -211,8 +212,10 @@
                         class="basic-data-svg"
                         src="assets/svg/common/ic_phone.svg"
                     ></svg-icon>
-                    <app-ta-copy [copyValue]="companyData?.phone">
-                    </app-ta-copy>
+                    <app-ta-copy 
+                        [copyValue]="companyData?.phone"
+                        [textColor]="'#2f2f2f'"
+                    ></app-ta-copy>
                 </div>
 
                 <div class="basic-data" *ngIf="companyData?.email">
@@ -220,7 +223,10 @@
                         class="basic-data-svg"
                         src="assets/svg/common/ic_email.svg"
                     ></svg-icon>
-                    <app-ta-copy [copyValue]="companyData?.email">
+                    <app-ta-copy 
+                        [copyValue]="companyData?.email"
+                        [textColor]="'#2f2f2f'"
+                    >
                     </app-ta-copy>
                 </div>
 
@@ -229,7 +235,10 @@
                         class="basic-data-svg"
                         src="assets/svg/common/ic_fax.svg"
                     ></svg-icon>
-                    <app-ta-copy [copyValue]="companyData?.fax"> </app-ta-copy>
+                    <app-ta-copy 
+                        [copyValue]="companyData?.fax"
+                        [textColor]="'#2f2f2f'"
+                    ></app-ta-copy>
                 </div>
                 <div class="basic-data" *ngIf="companyData?.webUrl">
                     <svg-icon
@@ -414,12 +423,18 @@
                     <span class="body-value-department">{{
                         department.department.name
                     }}</span>
-                    <app-ta-copy [copyValue]="department?.phone"> </app-ta-copy>
+                    <app-ta-copy 
+                        [copyValue]="department?.phone"
+                        [textColor]="'#2f2f2f'"
+                    ></app-ta-copy>
 
                     <span class="body-value">{{
                         department.extensionPhone
                     }}</span>
-                    <app-ta-copy [copyValue]="department?.email"> </app-ta-copy>
+                    <app-ta-copy 
+                        [copyValue]="department?.email"
+                        [textColor]="'#2f2f2f'"
+                    ></app-ta-copy>
                 </div>
             </app-ta-custom-card>
             <app-ta-custom-card
@@ -451,7 +466,10 @@
                     </div>
                     <div class="additional-template-item">
                         <p class="additional-template-value-name">Routing</p>
-                        <app-ta-copy [copyValue]="bank?.routing"> </app-ta-copy>
+                        <app-ta-copy 
+                            [copyValue]="bank?.routing"
+                            [textColor]="'#2f2f2f'"
+                        > </app-ta-copy>
                     </div>
                     <div class="additional-template-item">
                         <p class="additional-template-value-name">Account</p>

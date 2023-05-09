@@ -486,6 +486,49 @@ export class ShipperTService implements OnDestroy {
         return this.shipperService.apiShipperAveragewaitingtimeGet(id, chartType);
     }
 
+
+    public changeShipperStatus(id: number){
+        return this.shipperService.apiShipperStatusIdPut(id)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: (res: any) => {
+                    let shipperId = id;
+                    let shipperData = {
+                        ...this.ShipperItemStore?.getValue()?.entities[shipperId],
+                    };
+
+                    const subShipper = this.getShipperById(id)
+                    .pipe(takeUntil(this.destroy$))
+                    .subscribe({
+                        next: (shipper: any) => {
+                            this.shipperStore.remove(
+                                ({ id }) => id === shipperId
+                            );
+                            this.shipperMinimalStore.remove(
+                                ({ id }) => id === shipperId
+                            );
+
+                            shipper.loadStops = shipperData.loadStops;
+
+                            this.shipperStore.add(shipper);
+                            this.shipperMinimalStore.add(shipper);
+                            this.sListStore.update(shipper.id, shipper);
+                            this.tableService.sendActionAnimation({
+                                animation: 'update',
+                                tab: 'shipper',
+                                data: shipper,
+                                id: shipper.id,
+                            });
+
+                            subShipper.unsubscribe();
+                        },
+                    });
+                }
+                
+            });
+          
+    }
+
     ngOnDestroy(): void {
         this.destroy$.next();
         this.destroy$.complete();
