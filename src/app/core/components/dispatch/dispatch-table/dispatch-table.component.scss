@@ -41,6 +41,7 @@
             color: #2f2f2f;
             font-size: 14px;
             font-weight: 700;
+            user-select: none;
 
             &::selection,
             ::selection {
@@ -872,6 +873,7 @@
                     }
 
                     &:not(.truck-field):not(.trailer-field):not(.driver-field) {
+                        pointer-events: none;
                         .padding-inside {
                             &:after {
                                 content: '';
