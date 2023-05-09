@@ -355,6 +355,7 @@
                                     </div>
                                     <div class="driver-buttons">
                                         <span
+                                            *ngIf="driverHover.txt != 'email'"
                                             [class.only_active_icon]="
                                                 driverCopy.indx == rowIndex &&
                                                 driverCopy.txt != 'phone'
@@ -520,8 +521,8 @@
                                 (click)="changeDriverVacation(item)"
                                 [mainTooltip]="
                                     item.driver.vacation
-                                        ? 'Remove Vacation'
-                                        : 'Put on Vacation'
+                                        ? 'Remove from Vacation'
+                                        : 'Send to Vacation'
                                 "
                                 [tooltipBackground]="
                                     item.driver.vacation ? '#EF5350' : '#2F2F2F'

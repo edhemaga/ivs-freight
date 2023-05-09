@@ -171,7 +171,7 @@
                             display: flex;
                             &.truck-trailer-image {
                                 display: none;
-                                padding-left: 6px;
+                                padding-left: 8px;
                                 path {
                                     fill: #fff;
                                 }
@@ -271,6 +271,13 @@
                                     }
                                 }
                             }
+                        }
+
+                        .copy_divs {
+                            white-space: nowrap;
+                            overflow: hidden;
+                            text-overflow: ellipsis;
+                            width: calc(100% - 22px);
                         }
 
                         .location-field {
@@ -447,7 +454,7 @@
                             }
                             &:hover {
                                 cursor: pointer;
-                                width: 4000px;
+                                width: 86px;
                                 background-color: #ef5350;
                                 border-radius: 2px;
                                 transition: all 0.3s;
@@ -455,7 +462,7 @@
                                 &::after {
                                     content: 'REMOVE';
                                     position: absolute;
-                                    font-size: 9px;
+                                    font-size: 11px;
                                     font-weight: 700;
                                     left: 6px;
                                     color: #fff;
@@ -923,7 +930,7 @@
 
             &.truck-filed,
             &.trailer-field {
-                width: 100px;
+                width: 120px;
             }
 
             &.taken-field {
