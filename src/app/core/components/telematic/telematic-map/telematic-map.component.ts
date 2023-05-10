@@ -214,7 +214,7 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
             iconInsteadOfText: true,
             iconUrl: 'assets/svg/common/telematics/ic_ignition.svg',
             value: 'ignition',
-            placeholderText: 'ON',
+            placeholderText: ' ',
             menuTitle: 'Ignition',
             hidden: true,
             showInExpand: true,
@@ -252,7 +252,7 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
             width: 92,
             marginRight: 22,
             value: 'dispatchStatus',
-            placeholderText: 'LOADED',
+            placeholderText: ' ',
             boldText: true,
             menuTitle: 'Dispatch Status',
             hidden: true,
@@ -457,7 +457,7 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
                         data.coordinates = data.coordinates.replace('-', '');
                     }
 
-                    if (index == 0) data.unitType = 2;
+                    //if (index == 0) data.unitType = 2;
                 });
 
                 this.gpsUnassignedData = gpsData.data;
@@ -494,6 +494,7 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
                     this.trailerDevicesList.length > 0 ? true : false;
 
                 this.filterUnassignedDevices();
+                this.findLinkedDevices();
             });
     }
 
@@ -529,6 +530,8 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
                 } else {
                     this.driverLocations[driverIndex] = deviceData;
                 }
+
+                this.mapsService.markerUpdate(deviceData);
 
                 if (assignedDevice) {
                     let gpsAssignedIndex = this.gpsAssignedData.findIndex(
@@ -643,6 +646,7 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
 
                 this.getTrucks();
                 this.getTrailers();
+                this.findLinkedDevices();
             });
     }
 
@@ -1477,11 +1481,7 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
 
         // moving - distance = 5km, stopped - distance = 50m
 
-        if (distance < 50) {
-            console.log('calculateDistanceBetweenDevices device1', device1);
-            console.log('calculateDistanceBetweenDevices device2', device2);
-            console.log('calculateDistanceBetweenDevices distance', distance);
-        }
+        return distance;
     }
 
     showHideAllDevices() {
@@ -1556,7 +1556,9 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
     }
 
     findLinkedDevices() {
-        this.filteredAssignedDevices.map((device) => {
+        if ( !this.filteredAssignedDevices.length || !this.filteredUnassignedDevices.length ) return;
+
+        this.filteredAssignedDevices.map((device, index) => {
             let linkedDevice = this.filteredAssignedDevices.find(
                 (device2) =>
                     device.truckNumber === device2.truckNumber &&
@@ -1564,17 +1566,58 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
                     device.deviceId != device2.deviceId
             );
 
-            console.log('linkedDevice', linkedDevice);
-
             if ( linkedDevice ) {
                 if ( device.unitType == 1 ) {
                     device.linkedDevice = true;
-                } else {
-                    device.linkedDevice = true;
-                    device.hideLinkedDevice = true;
+                    device.trailerDeviceId = linkedDevice.deviceId;
+
+                    const distance = this.calculateDistanceBetweenDevices(device, linkedDevice);
+
+                    const hideMarker = (device.motionStatus == 'MOTION' && distance <= 5000) || (device.motionStatus !== 'MOTION' && distance <= 50);
+
+                    linkedDevice.linkedDevice = true;
+                    linkedDevice.hideLinkedDevice = true;
+                    linkedDevice.truckDeviceId = device.deviceId;
+
+                    let marker1 = this.driverLocations.find(
+                        (marker) => device.deviceId == marker.deviceId
+                    );
+
+                    let marker2 = this.driverLocations.find(
+                        (marker2) => linkedDevice.deviceId == marker2.deviceId
+                    );
+
+                    marker1.linkedDevice = true;
+                    marker1.trailerDeviceId = marker2.deviceId;
+                    marker2.linkedDevice = true;
+                    marker2.truckDeviceId = marker1.deviceId;
+
+                    if ( hideMarker ) {
+                        marker2.hideLinkedDevice = true;
+                    }
+
+                    let gpsAssignedIndex = this.gpsAssignedData.findIndex(
+                        (device3) => device3.deviceId === device.deviceId
+                    );
+
+                    if (gpsAssignedIndex > -1) {
+                        this.gpsAssignedData[gpsAssignedIndex].linkedDevice = true;
+                        this.gpsAssignedData[gpsAssignedIndex].trailerDeviceId = marker2.deviceId;
+                    }
+
+                    let gpsAssignedIndex2 = this.gpsAssignedData.findIndex(
+                        (device4) => device4.deviceId === linkedDevice.deviceId
+                    );
+
+                    if (gpsAssignedIndex2 > -1) {
+                        this.gpsAssignedData[gpsAssignedIndex2].linkedDevice = true;
+                        this.gpsAssignedData[gpsAssignedIndex2].hideLinkedDevice = true;
+                        this.gpsAssignedData[gpsAssignedIndex].truckDeviceId = marker1.deviceId;
+                    }
+
+                    this.mapsService.markerUpdate(device);
+                    this.mapsService.markerUpdate(linkedDevice);
                 }
-                
-                console.log('found linkedDevice');
             }
         });
     }

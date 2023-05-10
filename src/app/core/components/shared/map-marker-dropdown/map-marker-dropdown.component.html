@@ -324,11 +324,11 @@
                     </div>
 
                     <div class="marker-like-text mg-top-6">
-                        {{ item?.truckNumber ? 'Device ID' : 'No GPS Device' }}
+                        {{ (item?.truckNumber || item?.truckDeviceId) ? 'Device ID' : 'No GPS Device' }}
                         <span
                             class="marker-bold-text"
-                            *ngIf="item?.truckNumber"
-                            >{{ item?.deviceId }}</span
+                            *ngIf="item?.truckNumber || item?.truckDeviceId"
+                            >{{ item?.truckDeviceId ? item.truckDeviceId : item?.deviceId }}</span
                         >
                     </div>
                 </div>
@@ -347,14 +347,14 @@
 
                     <div class="marker-like-text mg-top-6">
                         {{
-                            item?.trailerNumber && !item?.truckNumber
+                            (item?.trailerNumber || item?.trailerDeviceId)
                                 ? 'Device ID'
                                 : 'No GPS Device'
                         }}
                         <span
                             class="marker-bold-text"
-                            *ngIf="item?.trailerNumber && !item?.truckNumber"
-                            >{{ item?.deviceId }}</span
+                            *ngIf="item?.trailerNumber || item?.trailerDeviceId"
+                            >{{ item?.trailerDeviceId ? item.trailerDeviceId : item?.deviceId }}</span
                         >
                     </div>
                 </div>

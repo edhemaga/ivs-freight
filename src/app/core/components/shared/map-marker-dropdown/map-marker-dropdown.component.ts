@@ -97,9 +97,10 @@ export class MapMarkerDropdownComponent implements OnInit {
         this.mapsService.markerUpdateChange
             .pipe(takeUntil(this.destroy$))
             .subscribe((item) => {
-                if ( item.id == this.item.id ) {
+                if ( (item.id != null && (item.id == this.item.id)) || (item.deviceId != null && (item.deviceId == this.item.deviceId)) ) {
                     this.item = item;
                     this.getDropdownActions();
+                    this.ref.detectChanges();
                 }
             });
 

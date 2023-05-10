@@ -758,6 +758,7 @@
     transition: all 0.2s ease-in-out;
     overflow: hidden;
     cursor: pointer;
+    max-height: 26px;
 
     &.no-data-text,
     .no-data-text {
@@ -825,4 +826,15 @@
 .motion-tooltip {
     position: relative;
     top: 5px;
+}
+
+.link-icon {
+    display: flex;
+    align-items: center;
+    margin-right: 6px;
+
+    svg {
+        width: 10px;
+        height: 10px;
+    }
 }

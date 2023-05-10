@@ -56,6 +56,7 @@
                             [class.hide-marker]="location.hidden"
                             (click)="markerClick(location)"
                             (mousewheel)="markerZoom($event, location)"
+                            [class.hide-marker]="location.hideLinkedDevice"
                         >
                             <svg-icon
                                 *ngIf="location.motionStatus == 'MOTION'"
@@ -510,6 +511,7 @@
                     "
                 >
                     <div
+                        *ngIf="!location.hideLinkedDevice"
                         class="gps-list-row"
                         (click)="
                             location.hidden
@@ -533,7 +535,11 @@
                                         *ngIf="!column.iconInsteadOfValue"
                                         class="column-container column-text marker-like-text"
                                         [ngClass]="{
-                                            'd-flex': column.showMotionIcon,
+                                            'd-flex':
+                                                column.showMotionIcon ||
+                                                (column.name == 'trailer' &&
+                                                    location.trailerNumber &&
+                                                    location.linkedDevice),
                                             'marker-bold-text':
                                                 column.boldText &&
                                                 !(
@@ -627,6 +633,16 @@
                                                         : '',
                                                 'margin-right': '4px'
                                             }"
+                                        >
+                                        </svg-icon>
+                                        <svg-icon
+                                            *ngIf="
+                                                column.name == 'trailer' &&
+                                                location.trailerNumber &&
+                                                location.linkedDevice
+                                            "
+                                            class="link-icon"
+                                            src="assets/svg/common/ic_hyperlink.svg"
                                         >
                                         </svg-icon>
                                         <app-gps-progressbar
