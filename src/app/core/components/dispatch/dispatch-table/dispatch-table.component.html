@@ -67,6 +67,7 @@
                             >
                                 <div class="text">Add</div>
                                 <svg-icon
+                                    *ngIf="!isDrag"
                                     [src]="
                                         'assets/svg/truckassist-table/dropdown/content/add.svg'
                                     "
@@ -173,6 +174,7 @@
                             (cdkDragStarted)="
                                 cdkDragStartedTrailer($event, rowIndex)
                             "
+                            (cdkDragEnded)="dragEnd()"
                             [cdkDragDisabled]="__isBoardLocked || !item.trailer"
                             cdkDragLockAxis="y"
                             [cdkDragPreviewClass]="
@@ -313,6 +315,7 @@
                             (cdkDragStarted)="
                                 cdkDragStartedDriver($event, rowIndex)
                             "
+                            (cdkDragEnded)="dragEnd()"
                             [cdkDragDisabled]="__isBoardLocked || !item.driver"
                             cdkDragLockAxis="y"
                             [cdkDragPreviewClass]="'trailer_3074D3'"
@@ -337,6 +340,7 @@
                                 >
                                     <div class="text">Add</div>
                                     <svg-icon
+                                        *ngIf="!isDrag"
                                         [src]="
                                             'assets/svg/truckassist-table/dropdown/content/add.svg'
                                         "
@@ -355,6 +359,7 @@
                                     </div>
                                     <div class="driver-buttons">
                                         <span
+                                            *ngIf="driverHover.txt != 'email'"
                                             [class.only_active_icon]="
                                                 driverCopy.indx == rowIndex &&
                                                 driverCopy.txt != 'phone'
@@ -520,8 +525,8 @@
                                 (click)="changeDriverVacation(item)"
                                 [mainTooltip]="
                                     item.driver.vacation
-                                        ? 'Remove Vacation'
-                                        : 'Put on Vacation'
+                                        ? 'Remove from Vacation'
+                                        : 'Send to Vacation'
                                 "
                                 [tooltipBackground]="
                                     item.driver.vacation ? '#EF5350' : '#2F2F2F'
@@ -820,6 +825,7 @@
                                 (click)="showParkingDropdown(rowIndex)"
                             >
                                 <svg-icon
+                                    *ngIf="!isDrag"
                                     src="assets/svg/dispatchboard/parking.svg"
                                 >
                                 </svg-icon>
@@ -938,6 +944,7 @@
                             >
                                 <div class="text">Add</div>
                                 <svg-icon
+                                    *ngIf="!isDrag"
                                     [src]="
                                         'assets/svg/truckassist-table/dropdown/content/add.svg'
                                     "
@@ -1014,6 +1021,7 @@
                                 >
                                     <div class="text">Add</div>
                                     <svg-icon
+                                        *ngIf="!isDrag"
                                         [src]="
                                             'assets/svg/truckassist-table/dropdown/content/add.svg'
                                         "
@@ -1088,6 +1096,7 @@
                                 >
                                     <div class="text">Add</div>
                                     <svg-icon
+                                        *ngIf="!isDrag"
                                         [src]="
                                             'assets/svg/truckassist-table/dropdown/content/add.svg'
                                         "
