@@ -255,6 +255,17 @@
 
             .legend-description-text {
                 font-weight: 600;
+
+                div {
+                    &::-moz-selection {
+                        color: #2f2f2f;
+                        background: #2f2f2f33;
+                    }
+                    &::selection {
+                        color: #2f2f2f;
+                        background: #2f2f2f33;
+                    }
+                }
             }
         }
     }
@@ -292,6 +303,7 @@
     display: flex;
     align-items: center;
     height: 36px;
+    user-select: none;
 }
 
 .legend-arrow {
@@ -373,10 +385,10 @@
 
 .gps-list-scroll {
     overflow: auto;
-    max-height: calc(100vh - 336px); //calc( 100vh - 156px );
+    max-height: calc( 100vh - 156px );  //calc(100vh - 336px)
 
     &.trailer-list {
-        max-height: 161px;
+        //max-height: 161px;
     }
 }
 
@@ -745,6 +757,8 @@
 .column-container {
     transition: all 0.2s ease-in-out;
     overflow: hidden;
+    cursor: pointer;
+    max-height: 26px;
 
     &.no-data-text,
     .no-data-text {
@@ -812,4 +826,15 @@
 .motion-tooltip {
     position: relative;
     top: 5px;
+}
+
+.link-icon {
+    display: flex;
+    align-items: center;
+    margin-right: 6px;
+
+    svg {
+        width: 10px;
+        height: 10px;
+    }
 }
