@@ -261,13 +261,13 @@ export class MapsService implements OnDestroy {
                     disabled: data.status == 0 || data.isClosed
                 },
                 {
-                    title: data.pinned || data.favourite
+                    title: data.favourite
                         ? 'Remove from Favourite'
                         : 'Move to Favourite',
-                    name: data.pinned || data.favourite ? 'remove-from-favourite' : 'move-to-favourite',
+                    name: data.favourite ? 'remove-from-favourite' : 'move-to-favourite',
                     svg: 'assets/svg/common/ic_star.svg',
                     activate: true,
-                    blueIcon: data.pinned || data.favourite,
+                    blueIcon: data.favourite,
                     show: true,
                     iconName: 'ic_star',
                     disabled: data.companyOwned || data.status == 0 || data.isClosed
