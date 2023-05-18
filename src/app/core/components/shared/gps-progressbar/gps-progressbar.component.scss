@@ -33,6 +33,16 @@
 
                 user-select: none;
 
+                &::-moz-selection {
+                    color: #919191;
+                    background: #91919120;
+                }
+
+                &::selection {
+                    color: #919191;
+                    background: #91919120;
+                }
+
                 &.mileages {
                     font-weight: 600;
                 }
@@ -112,6 +122,16 @@
             font-weight: 900;
             font-size: 11px;
             line-height: 11px;
+
+            &::-moz-selection {
+                color: #919191;
+                background: #91919120;
+            }
+
+            &::selection {
+                color: #919191;
+                background: #91919120;
+            }
         }
 
         .moving_time {
@@ -119,6 +139,16 @@
             font-weight: 500;
             font-size: 11px;
             line-height: 11px;
+
+            &::-moz-selection {
+                color: #919191;
+                background: #91919120;
+            }
+
+            &::selection {
+                color: #919191;
+                background: #91919120;
+            }
         }
     }
 }
@@ -173,6 +203,16 @@
                     font-weight: 900;
                     font-size: 11px;
                     line-height: 11px;
+
+                    &::-moz-selection {
+                        color: #919191;
+                        background: #91919120;
+                    }
+
+                    &::selection {
+                        color: #919191;
+                        background: #91919120;
+                    }
                 }
 
                 .moving_time {
@@ -180,6 +220,16 @@
                     font-weight: 500;
                     font-size: 11px;
                     line-height: 11px;
+
+                    &::-moz-selection {
+                        color: #919191;
+                        background: #91919120;
+                    }
+
+                    &::selection {
+                        color: #919191;
+                        background: #91919120;
+                    }
                 }
             }
         }
@@ -304,6 +354,16 @@
                                     font-weight: 700;
                                     line-height: 18px;
                                     color: #919191;
+
+                                    &::-moz-selection {
+                                        color: #919191;
+                                        background: #91919120;
+                                    }
+            
+                                    &::selection {
+                                        color: #919191;
+                                        background: #91919120;
+                                    }
                                 }
 
                                 .progress_time {
@@ -313,6 +373,16 @@
                                     font-size: 11px;
                                     line-height: 13px;
                                     color: #ffffff;
+
+                                    &::-moz-selection {
+                                        color: #919191;
+                                        background: #91919120;
+                                    }
+            
+                                    &::selection {
+                                        color: #919191;
+                                        background: #91919120;
+                                    }
                                 }
                             }
                         }
@@ -333,6 +403,16 @@
                                 line-height: 17px;
                                 font-weight: 700;
                                 font-size: 14px;
+
+                                &::-moz-selection {
+                                    color: #919191;
+                                    background: #91919120;
+                                }
+        
+                                &::selection {
+                                    color: #919191;
+                                    background: #91919120;
+                                }
                             }
                         }
                     }
@@ -366,6 +446,16 @@
                     font-size: 11px;
                     line-height: 14px;
                     font-weight: 700;
+
+                    &::-moz-selection {
+                        color: #919191;
+                        background: #91919120;
+                    }
+
+                    &::selection {
+                        color: #919191;
+                        background: #91919120;
+                    }
                 }
 
                 .gps_complete_text_info {
@@ -373,6 +463,16 @@
                     font-size: 11px;
                     line-height: 14px;
                     font-weight: 700;
+
+                    &::-moz-selection {
+                        color: #919191;
+                        background: #91919120;
+                    }
+
+                    &::selection {
+                        color: #919191;
+                        background: #91919120;
+                    }
                 }
             }
 
@@ -385,6 +485,16 @@
                     font-size: 14px;
                     line-height: 18px;
                     font-weight: 700;
+
+                    &::-moz-selection {
+                        color: #919191;
+                        background: #91919120;
+                    }
+
+                    &::selection {
+                        color: #919191;
+                        background: #91919120;
+                    }
                 }
 
                 .gps_complete_text_info {
@@ -392,6 +502,16 @@
                     font-size: 14px;
                     line-height: 18px;
                     font-weight: 700;
+
+                    &::-moz-selection {
+                        color: #919191;
+                        background: #91919120;
+                    }
+
+                    &::selection {
+                        color: #919191;
+                        background: #91919120;
+                    }
                 }
             }
         }

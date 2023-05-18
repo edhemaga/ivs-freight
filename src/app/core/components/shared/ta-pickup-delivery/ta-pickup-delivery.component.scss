@@ -56,6 +56,16 @@
                                 font-size: 14px;
                                 font-weight: 700;
                                 line-height: 18px;
+
+                                &::-moz-selection {
+                                    color: #919191;
+                                    background: #91919120;
+                                }
+        
+                                &::selection {
+                                    color: #919191;
+                                    background: #91919120;
+                                }
                             }
 
                             .load_shuffle {
@@ -82,6 +92,16 @@
                             white-space: nowrap;
                             overflow: hidden;
                             text-overflow: ellipsis;
+
+                            &::-moz-selection {
+                                color: #919191;
+                                background: #91919120;
+                            }
+    
+                            &::selection {
+                                color: #919191;
+                                background: #91919120;
+                            }
                         }
                     }
                 }
@@ -153,6 +173,16 @@
                         font-size: 14px;
                         line-height: 18px;
                         font-weight: 700;
+
+                        &::-moz-selection {
+                            color: #919191;
+                            background: #91919120;
+                        }
+
+                        &::selection {
+                            color: #919191;
+                            background: #91919120;
+                        }
                     }
 
                     .load_shuffle {
@@ -177,6 +207,16 @@
                     font-size: 14px;
                     line-height: 18px;
                     font-weight: 700;
+
+                    &::-moz-selection {
+                        color: #919191;
+                        background: #91919120;
+                    }
+
+                    &::selection {
+                        color: #919191;
+                        background: #91919120;
+                    }
                 }
             }
 
@@ -194,6 +234,26 @@
 
                     span {
                         color: #ffffff;
+
+                        &::-moz-selection {
+                            color: #919191;
+                            background: #91919120;
+                        }
+
+                        &::selection {
+                            color: #919191;
+                            background: #91919120;
+                        }
+                    }
+
+                    &::-moz-selection {
+                        color: #919191;
+                        background: #91919120;
+                    }
+
+                    &::selection {
+                        color: #919191;
+                        background: #91919120;
                     }
                 }
 
@@ -201,6 +261,16 @@
                     color: #ffffff;
                     font-size: 14px;
                     line-height: 18px;
+
+                    &::-moz-selection {
+                        color: #919191;
+                        background: #91919120;
+                    }
+
+                    &::selection {
+                        color: #919191;
+                        background: #91919120;
+                    }
                 }
             }
 
@@ -218,6 +288,26 @@
 
                     span {
                         color: #ffffff;
+
+                        &::-moz-selection {
+                            color: #919191;
+                            background: #91919120;
+                        }
+
+                        &::selection {
+                            color: #919191;
+                            background: #91919120;
+                        }
+                    }
+
+                    &::-moz-selection {
+                        color: #919191;
+                        background: #91919120;
+                    }
+
+                    &::selection {
+                        color: #919191;
+                        background: #91919120;
                     }
                 }
 
@@ -272,6 +362,16 @@
                         &.weight {
                             color: rgba(255, 255, 255, 0.4);
                         }
+
+                        &::-moz-selection {
+                            color: #919191;
+                            background: #91919120;
+                        }
+
+                        &::selection {
+                            color: #919191;
+                            background: #91919120;
+                        }
                     }
                 }
             }
@@ -287,6 +387,16 @@
                     color: #ffffff;
 
                     margin-bottom: 3px;
+
+                    &::-moz-selection {
+                        color: #919191;
+                        background: #91919120;
+                    }
+
+                    &::selection {
+                        color: #919191;
+                        background: #91919120;
+                    }
                 }
 
                 .driver_message {
@@ -296,6 +406,16 @@
                     line-height: 13px;
 
                     color: #ffffff;
+
+                    &::-moz-selection {
+                        color: #919191;
+                        background: #91919120;
+                    }
+
+                    &::selection {
+                        color: #919191;
+                        background: #91919120;
+                    }
                 }
             }
         }
@@ -353,6 +473,16 @@
                 font-weight: 800;
                 line-height: 18px;
                 color: #ffffff;
+
+                &::-moz-selection {
+                    color: #919191;
+                    background: #91919120;
+                }
+
+                &::selection {
+                    color: #919191;
+                    background: #91919120;
+                }
             }
         }
 
@@ -362,6 +492,16 @@
                 line-height: 11px;
                 font-weight: 700;
                 color: #ffffff;
+
+                &::-moz-selection {
+                    color: #919191;
+                    background: #91919120;
+                }
+
+                &::selection {
+                    color: #919191;
+                    background: #91919120;
+                }
             }
 
             .pickup_time {
@@ -369,6 +509,16 @@
                 line-height: 11px;
                 font-weight: 700;
                 color: #919191;
+
+                &::-moz-selection {
+                    color: #919191;
+                    background: #91919120;
+                }
+
+                &::selection {
+                    color: #919191;
+                    background: #91919120;
+                }
             }
         }
     }
