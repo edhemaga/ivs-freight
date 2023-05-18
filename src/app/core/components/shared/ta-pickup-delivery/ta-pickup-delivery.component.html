@@ -1,81 +1,75 @@
 <div class="main_pickup_container" [ngStyle]="{ width: customWidth + 'px' }">
-    <!--<div class="no_load">NO ACTIVE OR PENDING LOAD</div>-->
-    <div class="load_holder" *ngIf="!showDetails">
-        <div class="load_main_hold">
-            <div class="load_title_hold">
-                <div class="load_number_hold">
-                    <div class="load_number">107</div>
-                    <div class="load_shuffle">
-                        <svg-icon src="assets/svg/common/ic_shuffle.svg">
-                        </svg-icon>
-                    </div>
-                </div>
-                <div class="load_name">KSKA FREIGHT, INCOMING</div>
-            </div>
-            <div class="load_info_hold">
-                <div class="pickup_hold">
-                    <div class="counter_hold">
-                        <div class="counter">2</div>
-                    </div>
-                    <div class="pickup_info_hold">
-                        <div class="pickup_address">Phoenix, AZ</div>
-                        <div class="pickup_time">05/09/21 05:30 PM</div>
-                    </div>
-                </div>
-                <div class="pickup_hold">
-                    <div class="counter_hold delivery">
-                        <div class="counter">2</div>
-                    </div>
-                    <div class="pickup_info_hold">
-                        <div class="pickup_address">Phoenix, AZ</div>
-                        <div class="pickup_time">05/09/21 05:30 PM</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="load_arrow" (click)="extendLoadInfo()" *ngIf="!showDetails">
-            <svg-icon
-                src="assets\svg\common\pickup-delivery-arrow.svg"
-            ></svg-icon>
-        </div>
+    <div class="no_load" *ngIf="!loadInfo?.length">
+        NO ACTIVE OR PENDING LOAD
     </div>
-    <div class="load_holder" *ngIf="!showDetails">
-        <div class="load_main_hold">
-            <div class="load_title_hold">
-                <div class="load_number_hold">
-                    <div class="load_number">107</div>
-                    <div class="load_shuffle">
-                        <svg-icon src="assets/svg/common/ic_shuffle.svg">
-                        </svg-icon>
+    <div class="load_info_holder" *ngIf="!showDetails && loadInfo?.length">
+        <div
+            class="load_info_inner"
+            *ngFor="let load of loadInfo; let i = index"
+        >
+            <div class="load_holder">
+                <div class="load_main_hold">
+                    <div class="load_title_hold">
+                        <div class="load_number_hold">
+                            <div class="load_number">{{ load.number }}</div>
+                            <div class="load_shuffle">
+                                <svg-icon
+                                    src="assets/svg/common/ic_shuffle.svg"
+                                >
+                                </svg-icon>
+                            </div>
+                        </div>
+                        <div class="load_name">{{ load.name }}</div>
+                    </div>
+                    <div class="load_info_hold">
+                        <div class="pickup_hold">
+                            <div class="counter_hold">
+                                <div class="counter">
+                                    {{ load.pickup.count }}
+                                </div>
+                            </div>
+                            <div class="pickup_info_hold">
+                                <div class="pickup_address">
+                                    {{ load.pickup.address }}
+                                </div>
+                                <div class="pickup_time">
+                                    {{ load.pickup.time }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="pickup_hold">
+                            <div class="counter_hold delivery">
+                                <div class="counter">
+                                    {{ load.delivery.count }}
+                                </div>
+                            </div>
+                            <div class="pickup_info_hold">
+                                <div class="pickup_address">
+                                    {{ load.delivery.address }}
+                                </div>
+                                <div class="pickup_time">
+                                    {{ load.delivery.time }}
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="load_name">KSKA FREIGHT, INCOMING</div>
+                <div
+                    class="load_arrow"
+                    (click)="extendLoadInfo(load)"
+                    *ngIf="!showDetails"
+                >
+                    <svg-icon
+                        src="assets\svg\common\pickup-delivery-arrow.svg"
+                    ></svg-icon>
+                </div>
             </div>
-            <div class="load_info_hold">
-                <div class="pickup_hold">
-                    <div class="counter_hold">
-                        <div class="counter">2</div>
-                    </div>
-                    <div class="pickup_info_hold">
-                        <div class="pickup_address">Phoenix, AZ</div>
-                        <div class="pickup_time">05/09/21 05:30 PM</div>
-                    </div>
-                </div>
-                <div class="pickup_hold">
-                    <div class="counter_hold delivery">
-                        <div class="counter">2</div>
-                    </div>
-                    <div class="pickup_info_hold">
-                        <div class="pickup_address">Phoenix, AZ</div>
-                        <div class="pickup_time">05/09/21 05:30 PM</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="load_arrow" (click)="extendLoadInfo()" *ngIf="!showDetails">
-            <svg-icon
-                src="assets\svg\common\pickup-delivery-arrow.svg"
-            ></svg-icon>
+            <div
+                class="load_border"
+                [class.d-none]="
+                    (i == 0 && loadInfo.length == 1) || i == loadInfo.length - 1
+                "
+            ></div>
         </div>
     </div>
     <div class="load_details" *ngIf="showDetails">
@@ -95,20 +89,32 @@
                 <div class="load_info_hold">
                     <div class="pickup_hold">
                         <div class="counter_hold">
-                            <div class="counter">2</div>
+                            <div class="counter">
+                                {{ currentLoad.pickup.count }}
+                            </div>
                         </div>
                         <div class="pickup_info_hold">
-                            <div class="pickup_address">Phoenix, AZ</div>
-                            <div class="pickup_time">05/09/21 05:30 PM</div>
+                            <div class="pickup_address">
+                                {{ currentLoad.pickup.address }}
+                            </div>
+                            <div class="pickup_time">
+                                {{ currentLoad.pickup.time }}
+                            </div>
                         </div>
                     </div>
                     <div class="pickup_hold">
                         <div class="counter_hold delivery">
-                            <div class="counter">2</div>
+                            <div class="counter">
+                                {{ currentLoad.delivery.count }}
+                            </div>
                         </div>
                         <div class="pickup_info_hold">
-                            <div class="pickup_address">Phoenix, AZ</div>
-                            <div class="pickup_time">05/09/21 05:30 PM</div>
+                            <div class="pickup_address">
+                                {{ currentLoad.delivery.address }}
+                            </div>
+                            <div class="pickup_time">
+                                {{ currentLoad.delivery.time }}
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -118,21 +124,28 @@
         <div class="pickup_details_hold">
             <div class="pickup_details_load_hold">
                 <div class="pickup_details_load_inner">
-                    <div class="pickup_details_load">Load 107</div>
+                    <div class="pickup_details_load">
+                        Load {{ currentLoad.number }}
+                    </div>
                     <div class="load_shuffle">
                         <svg-icon src="assets/svg/common/ic_shuffle.svg">
                         </svg-icon>
                     </div>
                 </div>
-                <div class="pickup_ammount">$1,235.00</div>
+                <div class="pickup_ammount">{{ currentLoad.ammount }}</div>
             </div>
             <div class="pickup_ref_hold">
-                <div class="pickup_ref">Ref. <span>3578895</span></div>
-                <div class="pickup_ammount">568.3 mi</div>
+                <div class="pickup_ref">
+                    Ref. <span>{{ currentLoad.ref }}</span>
+                </div>
+                <div class="pickup_ammount">{{ currentLoad.miles }}</div>
             </div>
-            <div class="broker_contact_hold">
+            <div
+                class="broker_contact_hold"
+                *ngFor="let contact of currentLoad.contacts"
+            >
                 <div class="broker_contact">
-                    Broker <span>RIM MOLDING</span>
+                    {{ contact.type }} <span>{{ contact.name }}</span>
                 </div>
                 <div class="broker_info">
                     <div class="broker_cellphone">
@@ -147,22 +160,27 @@
                     </div>
                 </div>
             </div>
-            <div class="broker_contact_hold">
-                <div class="broker_contact">
-                    Contact <span>Angelo Trotter</span>
-                </div>
-                <div class="broker_info">
-                    <div class="broker_cellphone">
+            <div class="load_goods_holder">
+                <div class="goods_info">
+                    <div class="goods_icon">
                         <svg-icon
-                            src="assets/svg/common/ic_phone.svg"
+                            src="assets/svg/common/goods_type.svg"
                         ></svg-icon>
                     </div>
-                    <div class="broker_email">
+                    <div class="goods_name">{{currentLoad.container.name}}</div>
+                </div>
+                <div class="goods_info">
+                    .<div class="goods_icon">
                         <svg-icon
-                            src="assets/svg/common/ic_email.svg"
+                            src="assets/svg/common/weight_icon.svg"
                         ></svg-icon>
                     </div>
+                    <div class="goods_name">{{currentLoad.container.weight}}</div>
                 </div>
+            </div>
+            <div class="driver_message_hold" *ngIf="currentLoad.message">
+                <div class="driver_message_title">Driver Message</div>
+                <div class="driver_message">{{currentLoad.message}}</div>
             </div>
         </div>
     </div>

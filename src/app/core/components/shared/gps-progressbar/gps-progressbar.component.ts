@@ -3,23 +3,31 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { Component, Input, OnInit } from '@angular/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { MapsComponent } from '../maps/maps.component';
 
 @Component({
     selector: 'app-gps-progressbar',
     templateUrl: './gps-progressbar.component.html',
     styleUrls: ['./gps-progressbar.component.scss'],
     standalone: true,
-    imports: [CommonModule, FormsModule, AngularSvgIconModule, ReactiveFormsModule, NgbModule],
+    imports: [
+        CommonModule,
+        FormsModule,
+        AngularSvgIconModule,
+        ReactiveFormsModule,
+        NgbModule,
+        MapsComponent
+    ],
 })
 export class GpsProgressbarComponent implements OnInit {
     constructor() {}
     @Input() isDropdown: boolean = false;
 
-    currentPosition: number = 50;
+    currentPosition: number = 30;
     mileageInfo: string = '226.3 mi';
     currentStop: any = {
         type: 'currentStop',
-        position: 50,
+        position: 30,
         location: 'Philadelphia, PA',
         mileage: '',
     };
@@ -31,30 +39,21 @@ export class GpsProgressbarComponent implements OnInit {
             position: 0,
             location: 'Overland Park, KS',
             mileage: '305.7 mi ago',
-        },
-        {
-            type: 'pickup',
-            position: 10,
-            location: 'Chicago, IL',
-            mileage: '225.6 mi ago',
+            time: '05/09/21 04:00 PM'
         },
         {
             type: 'pickup',
             position: 40,
-            location: 'Los Angeles, CA',
-            mileage: '50.7 mi ago',
-        },
-        {
-            type: 'delivery',
-            position: 60,
-            location: 'New York, NY',
-            mileage: 'in 20.8 mi',
+            location: 'Chicago, IL',
+            mileage: '225.6 mi ago',
+            time: '05/09/21 07:00 PM'
         },
         {
             type: 'delivery',
             position: 100,
-            location: 'Miami, FL',
-            mileage: 'in 202.4 mi',
+            location: 'Los Angeles, CA',
+            mileage: '50.7 mi ago',
+            time: '05/09/21 11:00 PM'
         },
     ];
 

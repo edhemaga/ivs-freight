@@ -126,7 +126,7 @@
 .main_dropdown_holder {
     display: flex;
     width: 494px;
-    height: 282px;
+    //height: 282px;
     background-color: #2f2f2f;
     border-radius: 3px;
     overflow: hidden;
@@ -148,7 +148,7 @@
             border-radius: 2px;
 
             &:hover {
-                background-color: #1D1D1D;
+                background-color: #1d1d1d;
             }
 
             .gps-progress-img {
@@ -193,38 +193,160 @@
         }
 
         .gps_progress_hold {
-            height: 200px;
-            padding-top: 9px;
+            //height: 200px;
+            padding: 9px 0px;
 
-            .progress_inner {
-                .progress_header {
-                    display: flex;
-                    .progress_header_inside {
+            .gps_progress_hold_inner {
+                position: relative;
+                min-height: 191px;
+                overflow-y: auto;
+
+                display: flex;
+                flex-direction: column;
+                //height: 100%;
+                justify-content: space-between;
+                align-items: flex-start;
+
+                .progress_line {
+                    position: absolute;
+                    left: 16px;
+
+                    height: 100%;
+                    width: 2px;
+
+                    background-color: #cccccc33;
+
+                    .progress_inner_line {
+                        width: 2px;
+                        height: 30%;
+
+                        background-color: #cccccc;
+                    }
+
+                    .progress_moving_dot {
+                        position: absolute;
+                        left: -6px;
+                        top: calc(30% - 7px);
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+
+                        width: 14px;
+                        height: 14px;
+
+                        background-color: #6F9EE0;
+                        border-radius: 100%;
+
+                        z-index: 3;
+
+                        .moving_dot_inner {
+                            width: 6px;
+                            height: 6px;
+    
+                            background-color: #ffffff;
+                            border-radius: 100%;
+                        }
+                    }
+                }
+
+                .progress_inner {
+                    width: 100%;
+                    padding: 4px 8px 5px 10px;
+                    border-radius: 1px;
+
+                    .progress_header {
                         display: flex;
                         align-items: center;
-                        flex: 1;
-                        .progress_icon {
-                            svg-icon {
-                                svg {
-                                    display: flex;
-                                    width: 14px;
-                                    height: 14px;
+
+                        .progress_header_inside {
+                            display: flex;
+                            flex: 1;
+                            .progress_icon {
+                                display: flex;
+                                justify-content: center;
+                                align-items: center;
+
+                                height: 14px;
+                                width: 14px;
+                                margin-top: 2px;
+
+                                background-color: #2f2f2f;
+                                z-index: 2;
+
+                                svg-icon {
+                                    svg {
+                                        display: flex;
+                                        width: 14px;
+                                        height: 14px;
+
+                                        path {
+                                            fill: #919191;
+                                        }
+                                    }
+                                }
+
+                                .progress_dot {
+                                    width: 6px;
+                                    height: 6px;
+
+                                    border-radius: 100%;
+                                    background-color: #4db6a2;
+                                }
+                            }
+
+                            .progress_info_hold {
+                                display: flex;
+                                flex-direction: column;
+                                margin-left: 8px;
+
+                                .progress_name {
+                                    font-size: 14px;
+                                    font-weight: 700;
+                                    line-height: 18px;
+                                    color: #919191;
+                                }
+
+                                .progress_time {
+                                    margin-top: 3px;
+
+                                    font-weight: 400;
+                                    font-size: 11px;
+                                    line-height: 13px;
+                                    color: #ffffff;
                                 }
                             }
                         }
 
-                        .progress_name {
-                            margin-left: 8px;
+                        .progress_type {
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
 
-                            font-size: 14px;
-                            font-weight: 700;
-                            line-height: 18px;
-                            color: #919191;
+                            height: 22px;
+                            width: 22px;
+
+                            background-color: #aaaaaa;
+                            border-radius: 100%;
+
+                            .progress_number {
+                                color: #fff;
+                                line-height: 17px;
+                                font-weight: 700;
+                                font-size: 14px;
+                            }
                         }
                     }
 
-                    .progress_type {
-                        
+                    &:hover {
+                        background-color: #1d1d1d;
+
+                        .progress_header {
+                            .progress_header_inside {
+                                .progress_icon {
+                                    background-color: #1d1d1d;
+                                }
+                            }
+                        }
                     }
                 }
             }

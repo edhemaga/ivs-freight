@@ -87,18 +87,83 @@
             </div>
             <div class="gps_info_border"></div>
             <div class="gps_progress_hold">
-                <div class="progress_inner" *ngFor="let stop of gpsProgress">
-                    <div class="progress_header">
-                        <div class="progress_header_inside">
-                            <div class="progress_icon">
-                                <svg-icon
-                                    src="/assets/svg/applicant/check.svg"
-                                ></svg-icon>
-                            </div>
-                            <div class="progress_name">{{ stop.location }}</div>
+                <div class="gps_progress_hold_inner">
+                    <div class="progress_line">
+                        <div
+                            class="progress_inner_line"
+                            [ngStyle]="{
+                                height: currentPosition + '%'
+                            }"
+                        ></div>
+                        <div
+                            class="progress_moving_dot"
+                            [style.top]="'calc(' + currentPosition + '% - 7px)'"
+                        >
+                            <div class="moving_dot_inner"></div>
                         </div>
-                        <div class="progress_type">
-                            <div class="progress_number">0</div>
+                    </div>
+                    <div
+                        class="progress_inner"
+                        *ngFor="let stop of gpsProgress"
+                    >
+                        <div class="progress_header">
+                            <div class="progress_header_inside">
+                                <div
+                                    class="progress_icon"
+                                    [ngClass]="{
+                                        pickup_future:
+                                            currentPosition < stop.position &&
+                                            stop.type == 'pickup'
+                                    }"
+                                >
+                                    <svg-icon
+                                        *ngIf="currentPosition > stop.position"
+                                        src="/assets/svg/applicant/check.svg"
+                                    ></svg-icon>
+                                    <div
+                                        class="progress_dot"
+                                        *ngIf="currentPosition < stop.position"
+                                        [ngStyle]="{
+                                            backgroundColor:
+                                                stop.type == 'pickup'
+                                                    ? '#4DB6A2'
+                                                    : '#E57373'
+                                        }"
+                                    ></div>
+                                </div>
+                                <div class="progress_info_hold">
+                                    <div
+                                        class="progress_name"
+                                        [ngStyle]="{
+                                            color:
+                                                currentPosition < stop.position
+                                                    ? '#ffffff'
+                                                    : '#919191'
+                                        }"
+                                    >
+                                        {{ stop.location }}
+                                    </div>
+                                    <div
+                                        class="progress_time"
+                                        *ngIf="currentPosition < stop.position"
+                                    >
+                                        {{ stop.time }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div
+                                class="progress_type"
+                                [ngStyle]="{
+                                    backgroundColor:
+                                        currentPosition > stop.position
+                                            ? '#AAAAAA'
+                                            : stop.type == 'pickup'
+                                            ? '#4DB6A2'
+                                            : '#E57373'
+                                }"
+                            >
+                                <div class="progress_number">0</div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -110,7 +175,7 @@
                     <div class="gps_complete_text_info">TOTAL</div>
                 </div>
                 <div class="gps_complete_second_row">
-                    <div class="gps_complete_text">6%</div>
+                    <div class="gps_complete_text">{{ currentPosition }}%</div>
                     <div class="gps_complete_text_info">452.0 mi</div>
                 </div>
             </div>
