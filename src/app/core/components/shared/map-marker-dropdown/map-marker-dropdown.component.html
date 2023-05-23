@@ -27,7 +27,7 @@
                         >- {{ item?.store }}</ng-container
                     >
                 </div>
-                <span *ngIf="item?.pinned || item?.favourite">
+                <span *ngIf="item?.favourite">
                     <svg-icon
                         class="favorite-svg active"
                         src="assets/svg/detail-cards/favorite.svg"
@@ -1071,7 +1071,7 @@
             <span class="cluster-list-name">{{ item2.name }}</span>
 
             <svg-icon
-                *ngIf="item2?.pinned || item2?.favourite"
+                *ngIf="item2?.favourite"
                 class="favorite-svg active"
                 src="assets/svg/detail-cards/favorite.svg"
                 [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"

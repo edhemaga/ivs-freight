@@ -890,6 +890,8 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
                                 ? data.downCount
                                 : '0',
                         };
+
+                        data.favourite = data.pinned != null ? data.pinned : false;
                     });
 
                     mapListData.changedSort = changedSearchOrSort;
@@ -1396,6 +1398,8 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
                         dislikeCount: res?.downCount ? res.downCount : '0',
                     };
 
+                    newData.favourite = newData.pinned != null ? newData.pinned : false;
+
                     if (index > -1) {
                         this.viewData[index] = {
                             ...this.viewData[index],
@@ -1579,6 +1583,8 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
                             likeCount: res?.upCount ? res.upCount : '0',
                             dislikeCount: res?.downCount ? res.downCount : '0',
                         };
+                        
+                        cluster.detailedInfo.favourite = cluster.detailedInfo.pinned != null ? cluster.detailedInfo.pinned : false;
 
                         this.clusterDetailedInfo = cluster.detailedInfo;
                         this.mapsService.selectedMarker(
