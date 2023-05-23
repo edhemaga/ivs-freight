@@ -188,6 +188,7 @@
 
                         <div
                             class="marker-dropdown"
+                            *ngIf="mapType != 'routing'"
                             [ngClass]="{
                                 'show-marker-dropdown marker-dropdown-animation':
                                     latlong?.isSelected && latlong.showMarker
@@ -411,6 +412,7 @@
 
                         <div
                             class="marker-dropdown cluster-dropdown"
+                            *ngIf="mapType != 'routing'"
                             [ngClass]="{
                                 'show-marker-dropdown marker-dropdown-animation':
                                     cluster?.isSelected,

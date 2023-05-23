@@ -21,7 +21,7 @@
                 <th class="empty"></th>
                 <th class="empty"></th>
                 <th>LAST LOCATION</th>
-                <th class="text-center">STATUS</th>
+                <th class="text-center p-0">STATUS</th>
                 <th class="pick-delivery">
                     <div>PICKUP</div>
                     <div>DELIVERY</div>
@@ -892,6 +892,7 @@
                                 [noteWidth]="213"
                                 [parentWidth]="'.note-field'"
                                 [type]="'dark'"
+                                [isDispatch]="true"
                                 (saveNoteValue)="saveNoteValue($event)"
                             >
                             </app-ta-note>

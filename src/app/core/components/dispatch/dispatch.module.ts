@@ -21,6 +21,7 @@ import { TaStatusSwitchComponent } from '../shared/ta-status-switch/ta-status-sw
 import { GpsProgressbarComponent } from '../shared/gps-progressbar/gps-progressbar.component';
 import { TaNoteComponent } from '../shared/ta-note/ta-note.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { TaPickupDeliveryComponent } from '../shared/ta-pickup-delivery/ta-pickup-delivery.component';
 
 @NgModule({
   declarations: [
@@ -47,7 +48,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     InputAddressDropdownComponent,
     TaStatusSwitchComponent,
     GpsProgressbarComponent,
-    TaNoteComponent
+    TaNoteComponent,
+    TaPickupDeliveryComponent
   ]
 })
 export class DispatchModule { }
