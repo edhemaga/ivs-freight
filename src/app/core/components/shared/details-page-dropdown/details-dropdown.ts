@@ -24,6 +24,7 @@ import { FormsModule } from '@angular/forms';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgZone } from '@angular/core';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
     selector: 'app-details-page-dropdown',
@@ -83,6 +84,8 @@ import { NgZone } from '@angular/core';
     ],
 })
 export class DetailsDropdownComponent implements OnInit, OnChanges, OnDestroy {
+    private destroy$ = new Subject<void>();
+    
     @Input() options: any;
     @Input() id: number;
     @Input() customClassDropDown: string;
@@ -112,7 +115,16 @@ export class DetailsDropdownComponent implements OnInit, OnChanges, OnDestroy {
         }
     }
 
-    ngOnInit(): void {}
+    ngOnInit(): void {
+        this.DetailsDataService.dropdownOpenedChange
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((tooltip) => {
+                if ( this.tooltip && this.tooltip._ngbPopoverWindowId != tooltip._ngbPopoverWindowId ) {
+                    this.tooltip.close();
+                    this.dropDownActive = -1;
+                }
+            });
+    }
 
     toggleDropdown(tooltip: any) {
         this.ngZone.run(() => {
@@ -124,6 +136,7 @@ export class DetailsDropdownComponent implements OnInit, OnChanges, OnDestroy {
                 if (this.data) {
                     this.DetailsDataService.setNewData(this.data);
                 }
+                this.DetailsDataService.dropdownOpened(this.tooltip);
             }
 
             this.dropDownActive = tooltip.isOpen() ? this.id : -1;

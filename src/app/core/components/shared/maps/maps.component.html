@@ -64,7 +64,7 @@
                             ? 'assets/svg/common/ic_marker_closed_big.svg'
                             : latlong?.status == 0 || latlong?.isClosed
                             ? 'assets/svg/common/ic_marker_closed.svg'
-                            : latlong?.pinned || latlong?.favourite
+                            : latlong?.favourite
                             ? 'assets/svg/common/ic_marker_favorite.svg'
                             : latlong?.isSelected
                             ? 'assets/svg/common/ic_marker_selected.svg'
@@ -103,7 +103,6 @@
                                 }"
                                 *ngIf="
                                     latlong.status != 0 && !latlong.isClosed &&
-                                    !latlong.pinned &&
                                     !latlong.favourite
                                 "
                             ></svg-icon>
@@ -122,7 +121,7 @@
                                     'selected-marker': latlong.isSelected,
                                     'fuel-marker': mapType == 'fuelStop'
                                 }"
-                                *ngIf="(latlong.pinned || latlong.favourite) && latlong.status != 0 && !latlong.isClosed"
+                                *ngIf="latlong.favourite && latlong.status != 0 && !latlong.isClosed"
                             ></svg-icon>
                             <div
                                 [ngClass]="{
