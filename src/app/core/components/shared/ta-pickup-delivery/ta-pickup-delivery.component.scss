@@ -4,83 +4,119 @@
     background-color: #2f2f2f;
     border-radius: 3px;
 
-    .load_holder {
-        display: flex;
-        align-items: center;
-
+    .load_info_holder {
         width: 100%;
-        padding: 4px;
-        border-radius: 2px;
 
-        &:hover {
-            background-color: #1d1d1d;
-        }
+        .load_info_inner {
+            width: 100%;
 
-        .load_main_hold {
-            flex: 1;
-
-            &.hide {
-                animation-duration: 10s;
-                animation-timing-function: ease;
-                animation-delay: 1.5s;
-                animation-iteration-count: infinite;
-                animation-direction: normal;
-                animation-play-state: running;
-                animation-name: arrows_animation;
+            .load_border {
+                height: 1px;
+                width: 100%;
+                margin: 4px 0px;
+                background-color: #424242;
+                border-radius: 1px;
             }
 
-            .load_title_hold {
+            .load_holder {
                 display: flex;
-                margin-bottom: 10px;
+                align-items: center;
 
-                .load_number_hold {
-                    display: flex;
-                    width: 50%;
-                    min-width: 50%;
-                    .load_number {
-                        color: #ffffff;
-                        font-size: 14px;
-                        font-weight: 700;
-                        line-height: 18px;
+                width: 100%;
+                padding: 4px;
+                border-radius: 2px;
+
+                &:hover {
+                    background-color: #1d1d1d;
+                }
+
+                .load_main_hold {
+                    flex: 1;
+
+                    &.hide {
+                        animation-duration: 10s;
+                        animation-timing-function: ease;
+                        animation-delay: 1.5s;
+                        animation-iteration-count: infinite;
+                        animation-direction: normal;
+                        animation-play-state: running;
+                        animation-name: arrows_animation;
                     }
 
-                    .load_shuffle {
+                    .load_title_hold {
                         display: flex;
-                        align-items: center;
-                        margin-left: 6px;
-                        width: 14px;
-                        height: 18px;
+                        margin-bottom: 10px;
 
-                        svg-icon {
-                            svg {
+                        .load_number_hold {
+                            display: flex;
+                            width: 50%;
+                            min-width: 50%;
+                            .load_number {
+                                color: #ffffff;
+                                font-size: 14px;
+                                font-weight: 700;
+                                line-height: 18px;
+
+                                &::-moz-selection {
+                                    color: #919191;
+                                    background: #91919120;
+                                }
+        
+                                &::selection {
+                                    color: #919191;
+                                    background: #91919120;
+                                }
+                            }
+
+                            .load_shuffle {
                                 display: flex;
+                                align-items: center;
+                                margin-left: 6px;
                                 width: 14px;
-                                height: 14px;
+                                height: 18px;
+
+                                svg-icon {
+                                    svg {
+                                        display: flex;
+                                        width: 14px;
+                                        height: 14px;
+                                    }
+                                }
+                            }
+                        }
+
+                        .load_name {
+                            color: #ffffff;
+                            font-size: 14px;
+                            line-height: 18px;
+                            white-space: nowrap;
+                            overflow: hidden;
+                            text-overflow: ellipsis;
+
+                            &::-moz-selection {
+                                color: #919191;
+                                background: #91919120;
+                            }
+    
+                            &::selection {
+                                color: #919191;
+                                background: #91919120;
                             }
                         }
                     }
                 }
 
-                .load_name {
-                    color: #ffffff;
-                    font-size: 14px;
-                    line-height: 18px;
-                    white-space: nowrap;
-                    overflow: hidden;
-                    text-overflow: ellipsis;
-                }
-            }
-        }
-
-        .load_arrow {
-            transform: scaleX(-1);
-            margin-left: 6px;
-            cursor: pointer;
-            svg-icon {
-                svg {
-                    display: flex;
-                    width: 12px;
-                    height: 12px;
+                .load_arrow {
+                    transform: scaleX(-1);
+                    margin-left: 6px;
+                    cursor: pointer;
+                    svg-icon {
+                        svg {
+                            display: flex;
+                            width: 12px;
+                            height: 12px;
+                        }
+                    }
                 }
             }
         }
@@ -99,7 +135,7 @@
 
                 width: 22px;
                 height: 22px;
-                
+
                 margin-right: 4px;
                 cursor: pointer;
 
@@ -110,7 +146,7 @@
                     svg-icon {
                         svg {
                             display: flex;
-                            
+
                             path {
                                 fill: #2f2f2f;
                             }
@@ -137,6 +173,16 @@
                         font-size: 14px;
                         line-height: 18px;
                         font-weight: 700;
+
+                        &::-moz-selection {
+                            color: #919191;
+                            background: #91919120;
+                        }
+
+                        &::selection {
+                            color: #919191;
+                            background: #91919120;
+                        }
                     }
 
                     .load_shuffle {
@@ -161,6 +207,16 @@
                     font-size: 14px;
                     line-height: 18px;
                     font-weight: 700;
+
+                    &::-moz-selection {
+                        color: #919191;
+                        background: #91919120;
+                    }
+
+                    &::selection {
+                        color: #919191;
+                        background: #91919120;
+                    }
                 }
             }
 
@@ -178,6 +234,26 @@
 
                     span {
                         color: #ffffff;
+
+                        &::-moz-selection {
+                            color: #919191;
+                            background: #91919120;
+                        }
+
+                        &::selection {
+                            color: #919191;
+                            background: #91919120;
+                        }
+                    }
+
+                    &::-moz-selection {
+                        color: #919191;
+                        background: #91919120;
+                    }
+
+                    &::selection {
+                        color: #919191;
+                        background: #91919120;
                     }
                 }
 
@@ -185,6 +261,16 @@
                     color: #ffffff;
                     font-size: 14px;
                     line-height: 18px;
+
+                    &::-moz-selection {
+                        color: #919191;
+                        background: #91919120;
+                    }
+
+                    &::selection {
+                        color: #919191;
+                        background: #91919120;
+                    }
                 }
             }
 
@@ -202,6 +288,26 @@
 
                     span {
                         color: #ffffff;
+
+                        &::-moz-selection {
+                            color: #919191;
+                            background: #91919120;
+                        }
+
+                        &::selection {
+                            color: #919191;
+                            background: #91919120;
+                        }
+                    }
+
+                    &::-moz-selection {
+                        color: #919191;
+                        background: #91919120;
+                    }
+
+                    &::selection {
+                        color: #919191;
+                        background: #91919120;
                     }
                 }
 
@@ -219,6 +325,96 @@
                                 height: 18px;
                             }
                         }
+                    }
+                }
+            }
+
+            .load_goods_holder {
+                display: flex;
+                align-items: center;
+
+                margin-top: 19px;
+
+                .goods_info {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+
+                    margin-right: 22px;
+
+                    .goods_icon {
+                        svg-icon {
+                            svg {
+                                display: flex;
+                                width: 14px;
+                                height: 14px;
+                            }
+                        }
+                    }
+                    .goods_name {
+                        margin-left: 4px;
+
+                        font-weight: 400;
+                        font-size: 11px;
+                        line-height: 13px;
+                        color: #ffffff;
+
+                        &.weight {
+                            color: rgba(255, 255, 255, 0.4);
+                        }
+
+                        &::-moz-selection {
+                            color: #919191;
+                            background: #91919120;
+                        }
+
+                        &::selection {
+                            color: #919191;
+                            background: #91919120;
+                        }
+                    }
+                }
+            }
+
+            .driver_message_hold {
+                margin-top: 18px;
+
+                .driver_message_title {
+                    font-style: normal;
+                    font-weight: 700;
+                    font-size: 11px;
+                    line-height: 13px;
+                    color: #ffffff;
+
+                    margin-bottom: 3px;
+
+                    &::-moz-selection {
+                        color: #919191;
+                        background: #91919120;
+                    }
+
+                    &::selection {
+                        color: #919191;
+                        background: #91919120;
+                    }
+                }
+
+                .driver_message {
+                    font-style: normal;
+                    font-weight: 400;
+                    font-size: 11px;
+                    line-height: 13px;
+
+                    color: #ffffff;
+
+                    &::-moz-selection {
+                        color: #919191;
+                        background: #91919120;
+                    }
+
+                    &::selection {
+                        color: #919191;
+                        background: #91919120;
                     }
                 }
             }
@@ -277,6 +473,16 @@
                 font-weight: 800;
                 line-height: 18px;
                 color: #ffffff;
+
+                &::-moz-selection {
+                    color: #919191;
+                    background: #91919120;
+                }
+
+                &::selection {
+                    color: #919191;
+                    background: #91919120;
+                }
             }
         }
 
@@ -286,6 +492,16 @@
                 line-height: 11px;
                 font-weight: 700;
                 color: #ffffff;
+
+                &::-moz-selection {
+                    color: #919191;
+                    background: #91919120;
+                }
+
+                &::selection {
+                    color: #919191;
+                    background: #91919120;
+                }
             }
 
             .pickup_time {
@@ -293,6 +509,16 @@
                 line-height: 11px;
                 font-weight: 700;
                 color: #919191;
+
+                &::-moz-selection {
+                    color: #919191;
+                    background: #91919120;
+                }
+
+                &::selection {
+                    color: #919191;
+                    background: #91919120;
+                }
             }
         }
     }

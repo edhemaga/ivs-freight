@@ -1029,6 +1029,14 @@
     }
 }
 
+.gps_dropdown_popover {
+    .popover-body {
+        position: relative;
+        top: -4px;
+        right: -10px;
+    }
+}
+
 .tags_popover_vertical {
     background-color: transparent !important;
     .popover-body {
@@ -1597,7 +1605,7 @@
 .pickup-delivery-popover {
     .popover-body {
         position: relative;
-        bottom: 30px;
+        bottom: 38px;
         left: -12px;
     }
 }

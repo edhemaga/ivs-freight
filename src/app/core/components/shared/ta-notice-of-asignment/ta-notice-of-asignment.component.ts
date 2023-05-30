@@ -201,7 +201,15 @@ export class TaNoticeOfAsignmentComponent
                 }
             } else {
                 this.focusElement();
-                const fontSize = color+'px';
+                const fontSize =
+                    color == '11'
+                        ? '1'
+                        : color == '14'
+                        ? '2'
+                        : color == '17'
+                        ? '4'
+                        : '5';
+                console.log(fontSize, color, 'fontsize');
                 document.execCommand(action, false, fontSize);
             }
         } else {
@@ -228,7 +236,7 @@ export class TaNoticeOfAsignmentComponent
         if (this.isBlured) {
             this.noticeFocus.emit(false);
         }
-        
+
         if (this.noticeRef) {
             this.noticeRef.nativeElement.focus();
         }
@@ -246,6 +254,14 @@ export class TaNoticeOfAsignmentComponent
                 this.selectedColorName = findedColor;
             }, 200);
             this.selectedPaternColor = document.queryCommandValue('ForeColor');
+            this.activeFont =
+                document.queryCommandValue('FontSize') == '1'
+                    ? this.fontSizeList[3]
+                    : document.queryCommandValue('FontSize') == '4'
+                    ? this.fontSizeList[1]
+                    : document.queryCommandValue('FontSize') == '5'
+                    ? this.fontSizeList[0]
+                    : this.fontSizeList[2];
         }
 
         if (this.defaultColorSet) {

@@ -484,6 +484,10 @@
         }
     }
 
+    &.dispatch {
+        left: 2px;
+    }
+
     &.closed_note_hold {
         position: relative;
         top: -8px;
