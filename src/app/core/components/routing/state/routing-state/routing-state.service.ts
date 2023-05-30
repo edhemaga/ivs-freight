@@ -12,7 +12,7 @@ import {
     RouteResponse,
     UpdateRouteCommand,
 } from 'appcoretruckassist';
-import { takeUntil, Subject, Observable, tap, BehaviorSubject, of } from 'rxjs';
+import { takeUntil, Subject, Observable, tap, BehaviorSubject } from 'rxjs';
 import { MapResponse } from '../../../../../../../appcoretruckassist/model/mapResponse';
 import { NotificationService } from '../../../../services/notification/notification.service';
 
@@ -142,6 +142,7 @@ export class RoutingStateService implements OnDestroy {
                     .pipe(takeUntil(this.destroy$))
                     .subscribe({
                         next: (route: RouteResponse | any) => {
+                            this.routingStateStore.add(route);
                             // this.shipperStore.add(shipper);
                             // this.shipperMinimalStore.add(shipper);
                             // const brokerShipperCount = JSON.parse(
@@ -188,6 +189,8 @@ export class RoutingStateService implements OnDestroy {
                     .pipe(takeUntil(this.destroy$))
                     .subscribe({
                         next: (route: RouteResponse | any) => {
+                            this.routingStateStore.remove(({ id }) => id === route.id);
+                            this.routingStateStore.add(route);
                             // this.trailerActiveStore.remove(({ id }) => id === data.id);
 
                             // this.trailerActiveStore.add(trailer);
@@ -216,6 +219,7 @@ export class RoutingStateService implements OnDestroy {
     deleteRouteById(routeId: number): Observable<any> {
         return this.routeService.apiRouteIdDelete(routeId).pipe(
             tap(() => {
+                this.routingStateStore.remove(({ id }) => id === routeId);
                 // this.shipperStore.remove(({ id }) => id === shipperId);
                 // this.shipperMinimalStore.remove(({ id }) => id === shipperId);
                 // this.sListStore.remove(({ id }) => id === shipperId);
