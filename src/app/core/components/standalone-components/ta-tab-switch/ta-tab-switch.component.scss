@@ -32,9 +32,6 @@ $tab-colors: '26A690', 'EF5350', '3074D3';
                 border-radius: 100%;
 
                 .counter-number {
-                    position: relative;
-                    left: 0.5px;
-
                     font-size: 11px;
                     color: #424242;
                 }
@@ -47,6 +44,9 @@ $tab-colors: '26A690', 'EF5350', '3074D3';
             .tab-switch-text {
                 .tab-switch-name {
                     text-transform: uppercase !important;
+                    font-weight: 700;
+                    font-size: 11px;
+                    line-height: 13px;
                 }
             }
         }
