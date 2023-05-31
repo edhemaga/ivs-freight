@@ -100,6 +100,31 @@ export class TaNoticeOfAsignmentComponent
         fontSize: true,
     };
 
+    alignOptions: any = [
+        {
+            name: 'justifyLeft',
+            value: false,
+            image: 'assets/svg/common/align-left-icon.svg',
+        },
+        {
+            name: 'justifyCenter',
+            value: false,
+            image: 'assets/svg/common/align-center-icon.svg',
+        },
+        {
+            name: 'justifyRight',
+            value: false,
+            image: 'assets/svg/common/align-right-icon.svg',
+        },
+        {
+            name: 'justifyFull',
+            value: false,
+            image: 'assets/svg/common/align-full-icon.svg',
+        },
+    ];
+
+    activeAlignment: string;
+
     selectionTaken: any;
 
     showCollorPattern: boolean;
@@ -188,16 +213,47 @@ export class TaNoticeOfAsignmentComponent
         if (action !== 'foreColor') {
             if (action != 'fontSize') {
                 this.showCollorPattern = false;
-                this.activeOptions[action] = !this.activeOptions[action];
-                if (!this.activeOptions[action]) {
-                    if (this.value.replace('<br>', '') == '') {
-                        this.selectionTaken.removeAllRanges();
+                if (
+                    action == 'justifyLeft' ||
+                    action == 'justifyRight' ||
+                    action == 'justifyCenter' ||
+                    action == 'justifyFull'
+                ) {
+                    this.activeAlignment = action;
+                    let checkAlign = true;
+                    this.alignOptions.map((align) => {
+                        if (align.name != action) {
+                            align.value = false;
+                        }
+                        else {
+                            align.value = !align.value;
+                            checkAlign = align.value;
+                        }
+                    });
+
+                    if (!checkAlign) {
+                        if (this.value.replace('<br>', '') == '') {
+                            this.selectionTaken.removeAllRanges();
+                        }
+                        document.execCommand('styleWithCSS', false, 'false');
+                        document.execCommand(action, false, null);
+                    } else {
+                        this.focusElement();
+                        document.execCommand(action, false, null);
                     }
-                    document.execCommand('styleWithCSS', false, 'false');
-                    document.execCommand(action, false, null);
                 } else {
-                    this.focusElement();
-                    document.execCommand(action, false, null);
+                    this.activeOptions[action] = !this.activeOptions[action];
+
+                    if (!this.activeOptions[action]) {
+                        if (this.value.replace('<br>', '') == '') {
+                            this.selectionTaken.removeAllRanges();
+                        }
+                        document.execCommand('styleWithCSS', false, 'false');
+                        document.execCommand(action, false, null);
+                    } else {
+                        this.focusElement();
+                        document.execCommand(action, false, null);
+                    }
                 }
             } else {
                 this.focusElement();
@@ -263,6 +319,10 @@ export class TaNoticeOfAsignmentComponent
                     ? this.fontSizeList[0]
                     : this.fontSizeList[2];
         }
+
+        this.alignOptions.map((align)=>{
+            align.value = document.queryCommandState(align.name);
+        });
 
         if (this.defaultColorSet) {
             this.customSelectColor.map((col, indx) => {
