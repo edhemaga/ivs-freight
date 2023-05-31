@@ -647,8 +647,19 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
                         ...res.data,
                     };
 
-                    this.tableData[this.selectedMapIndex].routes[routeIndex] =
-                        combinedRoute;
+                    this.tableData[this.selectedMapIndex].routes[routeIndex] = {
+                        ...combinedRoute,
+                    };
+
+                    this.tableData[this.selectedMapIndex].routes[
+                        routeIndex
+                    ].stops = JSON.parse(
+                        JSON.stringify([
+                            ...this.tableData[this.selectedMapIndex].routes[
+                                routeIndex
+                            ].stops,
+                        ])
+                    );
 
                     this.tableData[this.selectedMapIndex].routes[
                         routeIndex
@@ -659,6 +670,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
                             stop.address.stateShortName +
                             ' ' +
                             (stop.address.zipCode ? stop.address.zipCode : '');
+
                         stop.lat = stop.latitude;
                         stop.long = stop.longitude;
                     });
@@ -3418,7 +3430,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
         const oldRoutes = this.tableData[mapIndex].routes
             ? [...this.tableData[mapIndex].routes]
             : [];
-            
+
         this.tableData[mapIndex].routes = [];
 
         var routesArr = routes;
@@ -3497,16 +3509,22 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
     setData() {
         const stateData = this.routingQuery.getAll();
 
-        const mapListData = stateData.filter((item: any) => item.type === 'map');
-        const routesData = stateData.filter((item: any) => item.type === 'route');
+        const mapListData = stateData.filter(
+            (item: any) => item.type === 'map'
+        );
+        const routesData = stateData.filter(
+            (item: any) => item.type === 'route'
+        );
 
         this.mapList = mapListData;
         this.initTableOptions();
 
         this.mapList.map((item) => {
-            const routes = routesData.filter((item2: any) => item.mapId == item2.mapId);
+            const routes = routesData.filter(
+                (item2: any) => item.mapId == item2.mapId
+            );
 
-            if ( routes?.length ) {
+            if (routes?.length) {
                 this.setRoutingData(routes, item.id);
             } else {
                 this.getRouteList(item.id, 1, 8);

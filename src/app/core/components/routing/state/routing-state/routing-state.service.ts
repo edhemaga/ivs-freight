@@ -188,9 +188,34 @@ export class RoutingStateService implements OnDestroy {
                 const subMap = this.getRouteById(data.id)
                     .pipe(takeUntil(this.destroy$))
                     .subscribe({
-                        next: (route: RouteResponse | any) => {
-                            this.routingStateStore.remove(({ id }) => id === route.id);
-                            this.routingStateStore.add(route);
+                        next: (updatedRoute: RouteResponse | any) => {
+                            const route = {...updatedRoute};
+                            const storeRoutes: any = this.routingStateStore.getValue().entities;
+
+                            var mapId;
+                            Object.keys(storeRoutes).forEach((key: any) => {
+                                if ( storeRoutes[key].id == route.id && storeRoutes[key].type == 'route' ) {
+                                    mapId = storeRoutes[key].mapId;
+                                }
+                            });
+
+                            route.stops = [...route.stops];
+
+                            route.stops.map((stop) => {
+                                stop.cityAddress =
+                                    stop.address.city +
+                                    ', ' +
+                                    stop.address.stateShortName +
+                                    ' ' +
+                                    (stop.address.zipCode ? stop.address.zipCode : '');
+
+                                stop.lat = stop.latitude; 
+                                stop.long = stop.longitude;
+                            });
+
+                            const routeData = {...route, type: 'route', mapId: mapId, fakeId: parseInt([2, route.id].join(''))};
+                            this.routingStateStore.update(routeData.fakeId, routeData);
+                            
                             // this.trailerActiveStore.remove(({ id }) => id === data.id);
 
                             // this.trailerActiveStore.add(trailer);
@@ -203,7 +228,7 @@ export class RoutingStateService implements OnDestroy {
 
                             this.sendUpdatedData({
                                 type: 'edit-route',
-                                data: route,
+                                data: routeData,
                                 id: route.id,
                             });
 
