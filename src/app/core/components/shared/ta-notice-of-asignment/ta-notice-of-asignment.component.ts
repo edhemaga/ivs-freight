@@ -66,19 +66,19 @@ export class TaNoticeOfAsignmentComponent
             id: 2,
             name: 'Medium',
             showName: 'Medium',
-            additionalText: 17,
+            additionalText: 18,
         },
         {
             id: 3,
             name: 'Default',
             showName: 'Default',
-            additionalText: 14,
+            additionalText: 13,
         },
         {
             id: 4,
             name: 'Small',
             showName: 'Small',
-            additionalText: 11,
+            additionalText: 10,
         },
     ];
 
@@ -258,14 +258,13 @@ export class TaNoticeOfAsignmentComponent
             } else {
                 this.focusElement();
                 const fontSize =
-                    color == '11'
+                    color == '10'
                         ? '1'
-                        : color == '14'
+                        : color == '13'
                         ? '2'
-                        : color == '17'
+                        : color == '18'
                         ? '4'
                         : '5';
-                console.log(fontSize, color, 'fontsize');
                 document.execCommand(action, false, fontSize);
             }
         } else {
