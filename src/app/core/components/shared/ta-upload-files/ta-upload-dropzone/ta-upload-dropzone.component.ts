@@ -191,6 +191,8 @@ export class TaUploadDropzoneComponent {
                 this.dropZoneConfig.dropZoneAvailableFiles
                     .split(',')
                     .map((item) => item.split('/')[1]);
+            fileNameArray[fileNameArray.length - 1] =
+                fileNameArray[fileNameArray.length - 1].toLowerCase();
 
             if (
                 !this.supportedExtensions.includes(

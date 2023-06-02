@@ -439,7 +439,33 @@
     font-size: 13px;
     color: #3C3C3C;
 
+    cursor: text;
     overflow: auto;
+
+    &::-webkit-input-placeholder {
+        color: #dadada !important;
+    }
+
+    &::-moz-placeholder {
+        color: #dadada !important;
+    }
+
+    &:-ms-input-placeholder {
+        color: #dadada !important;
+    }
+
+    &::-ms-input-placeholder {
+        color: #dadada !important;
+    }
+
+    &::placeholder {
+        color: #dadada !important;
+    }
+
+    &:empty:before {
+        content: attr(placeholder);
+        color: #aaaaaa;
+    }
 
     &::-moz-selection {
         color: $bw6-2;
