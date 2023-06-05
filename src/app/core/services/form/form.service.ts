@@ -24,19 +24,21 @@ export class FormService implements OnDestroy {
         form: UntypedFormGroup,
         debounceTimeProp: number = 1000
     ) {
+        this.originalValue = form.value;
         // When the form loads, changes are made for each control separately
         // and it is hard to determine when it has actually finished initializing,
         // To solve it, we keep updating the original value, until the form goes
         // dirty. When it does, we no longer update the original value.
-        form.statusChanges
-            .pipe(first(), distinctUntilChanged(), takeUntil(this.destroy$))
-            .subscribe(() => {
-                if (!this.initForm) {
-                    this.originalValue = form.value;
-                    this.initForm = true;
-                    this.formValueChange$.next(false);
-                }
-            });
+        // form.statusChanges
+        //     .pipe(first(), distinctUntilChanged(), takeUntil(this.destroy$))
+        //     .subscribe(() => {
+        //         console.log("IS THIS INIT ");
+        //         if (!this.initForm) {
+        //             this.originalValue = form.value;
+        //             this.initForm = true;
+        //             this.formValueChange$.next(false);
+        //         }
+        //     });
         // // Every time the form changes, we compare it with the original value.
         // // If it is different, we emit a value to the Subject (if one was provided)
         // // If it is the same, we emit a value to the Subject (if one was provided), or
@@ -44,7 +46,7 @@ export class FormService implements OnDestroy {
         form.valueChanges
             .pipe(skip(1), distinctUntilChanged(), takeUntil(this.destroy$))
             .subscribe(() => {
-                if (this.initForm) {
+               // if (this.initForm) {
                     let current_value = form.value;
 
                     if (
@@ -55,7 +57,7 @@ export class FormService implements OnDestroy {
                     } else {
                         this.formValueChange$.next(false);
                     }
-                }
+              //  }
             });
     }
 
