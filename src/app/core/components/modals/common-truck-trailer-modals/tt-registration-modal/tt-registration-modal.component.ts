@@ -90,13 +90,6 @@ export class TtRegistrationModalComponent implements OnInit, OnDestroy {
             note: [null],
             files: [null],
         });
-
-        this.formService.checkFormChange(this.registrationForm);
-        this.formService.formValueChange$
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((isFormChange: boolean) => {
-                this.isFormDirty = isFormChange;
-            });
     }
 
     public onModalAction(data: { action: string; bool: boolean }) {
@@ -331,6 +324,7 @@ export class TtRegistrationModalComponent implements OnInit, OnDestroy {
                             );
                         }
                     }
+                    this.startFormChanges();
                 },
                 error: () => {},
             });
@@ -343,6 +337,15 @@ export class TtRegistrationModalComponent implements OnInit, OnDestroy {
             this.registrationForm.get('expDate'),
             this.registrationExpirationDate ? true : false
         );
+    }
+
+    private startFormChanges() {
+        this.formService.checkFormChange(this.registrationForm);
+        this.formService.formValueChange$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((isFormChange: boolean) => {
+                this.isFormDirty = isFormChange;
+            });
     }
 
     ngOnDestroy(): void {

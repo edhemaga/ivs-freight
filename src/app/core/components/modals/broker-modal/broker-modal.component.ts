@@ -273,12 +273,6 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
             'email',
             this.destroy$
         );
-        this.formService.checkFormChange(this.brokerForm);
-        this.formService.formValueChange$
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((isFormChange: boolean) => {
-                this.isFormDirty = isFormChange;
-            });
     }
 
     public tabChange(event: any): void {
@@ -855,6 +849,8 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                                 name: 'Review',
                             });
                             this.ratingChanges();
+                        } else {
+                            this.startFormChanges();
                         }
                     }
 
@@ -1341,6 +1337,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                               }
                     );
 
+                    this.startFormChanges();
                     setTimeout(() => {
                         this.disableCardAnimation = false;
                     }, 1000);
@@ -1766,6 +1763,15 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                     error: () => {},
                 });
         }
+    }
+
+    private startFormChanges() {
+        this.formService.checkFormChange(this.brokerForm);
+        this.formService.formValueChange$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((isFormChange: boolean) => {
+                this.isFormDirty = isFormChange;
+            });
     }
 
     ngOnDestroy(): void {
