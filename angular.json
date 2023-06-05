@@ -115,13 +115,7 @@
                             "browserTarget": "carrierassist-fe:build:development"
                         }
                     },
-                    "defaultConfiguration": "development",
-                    "options": {
-                        "browserTarget": "app:build",
-                        "ssl": true,
-                        "sslKey": "localhost-key.pem",
-                        "sslCert": "localhost.pem"
-                    }
+                    "defaultConfiguration": "development"
                 },
                 "extract-i18n": {
                     "builder": "@angular-devkit/build-angular:extract-i18n",

@@ -1,7 +1,12 @@
 import { Subject, takeUntil, skip } from 'rxjs';
 import { Injectable, OnDestroy } from '@angular/core';
 import { UntypedFormGroup } from '@angular/forms';
-import { debounceTime, distinctUntilChanged, first } from 'rxjs/operators';
+import {
+    debounceTime,
+    delay,
+    distinctUntilChanged,
+    first,
+} from 'rxjs/operators';
 import { diff } from 'deep-object-diff';
 
 @Injectable({
@@ -24,12 +29,7 @@ export class FormService implements OnDestroy {
         // To solve it, we keep updating the original value, until the form goes
         // dirty. When it does, we no longer update the original value.
         form.statusChanges
-            .pipe(
-                debounceTime(debounceTimeProp),
-                first(),
-                distinctUntilChanged(),
-                takeUntil(this.destroy$)
-            )
+            .pipe(first(), distinctUntilChanged(), takeUntil(this.destroy$))
             .subscribe(() => {
                 if (!this.initForm) {
                     this.originalValue = form.value;
