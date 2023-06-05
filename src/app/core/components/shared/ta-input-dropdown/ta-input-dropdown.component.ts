@@ -131,13 +131,15 @@ export class TaInputDropdownComponent
                 );
             }
 
-            this.clearTimeoutDropdown = setTimeout(() => {
-                this.inputConfig = {
-                    ...this.inputConfig,
-                    blackInput: false,
-                };
-                this.cdRef.detectChanges();
-            }, 150);
+            if (!this.inputConfig.hideColorValidations) {
+                this.clearTimeoutDropdown = setTimeout(() => {
+                    this.inputConfig = {
+                        ...this.inputConfig,
+                        blackInput: false,
+                    };
+                    this.cdRef.detectChanges();
+                }, 150);
+            }
         }
         // Without address
         else {
@@ -151,10 +153,12 @@ export class TaInputDropdownComponent
                             : null
                     );
 
-                    this.inputConfig = {
-                        ...this.inputConfig,
-                        blackInput: false,
-                    };
+                    if (!this.inputConfig.hideColorValidations) {
+                        this.inputConfig = {
+                            ...this.inputConfig,
+                            blackInput: false,
+                        };
+                    }
                     this.cdRef.detectChanges();
                 }, 150);
             }
@@ -660,7 +664,9 @@ export class TaInputDropdownComponent
                 this.getSuperControl.setErrors(null);
                 this.inputConfig.dropdownLabelNew = false;
                 this.inputConfig.commands.active = false;
-                this.inputConfig.blackInput = false;
+                if (!this.inputConfig.hideColorValidations) {
+                    this.inputConfig.blackInput = false;
+                }
                 this.inputRef.focusInput = false;
                 this.inputRef.editInputMode = false;
                 this.inputRef.input.nativeElement.blur();
@@ -879,7 +885,9 @@ export class TaInputDropdownComponent
                 this.getSuperControl.setErrors(null);
                 this.inputConfig.dropdownLabelNew = false;
                 this.inputConfig.commands.active = false;
-                this.inputConfig.blackInput = false;
+                if (!this.inputConfig.hideColorValidations) {
+                    this.inputConfig.blackInput = false;
+                }
                 this.inputRef.focusInput = false;
                 this.inputRef.editInputMode = false;
                 this.inputRef.input.nativeElement.blur();

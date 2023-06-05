@@ -86,13 +86,6 @@ export class TtTitleModalComponent implements OnInit, OnDestroy {
             note: [null],
             files: [null],
         });
-
-        this.formService.checkFormChange(this.ttTitleForm);
-        this.formService.formValueChange$
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((isFormChange: boolean) => {
-                this.isFormDirty = isFormChange;
-            });
     }
 
     public onModalAction(data: { action: string; bool: boolean }) {
@@ -312,8 +305,19 @@ export class TtTitleModalComponent implements OnInit, OnDestroy {
                             payload: this.editData.data,
                         };
                     }
+
+                    this.startFormChanges();
                 },
                 error: () => {},
+            });
+    }
+
+    private startFormChanges() {
+        this.formService.checkFormChange(this.ttTitleForm);
+        this.formService.formValueChange$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((isFormChange: boolean) => {
+                this.isFormDirty = isFormChange;
             });
     }
 

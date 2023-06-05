@@ -112,13 +112,6 @@ export class DriverDrugAlcoholModalComponent implements OnInit, OnDestroy {
             note: [null],
             files: [null],
         });
-
-        this.formService.checkFormChange(this.drugForm);
-        this.formService.formValueChange$
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((isFormChange: boolean) => {
-                this.isFormDirty = isFormChange;
-            });
     }
 
     public onModalAction(data: { action: string; bool: boolean }) {
@@ -182,6 +175,7 @@ export class DriverDrugAlcoholModalComponent implements OnInit, OnDestroy {
                     this.testResults = res.testResults;
 
                     if (this.editData) {
+                        this.startFormChanges();
                         this.disableCardAnimation = true;
                         this.getDriverById(this.editData.id);
                         if (this.editData.type === 'edit-drug') {
@@ -271,6 +265,15 @@ export class DriverDrugAlcoholModalComponent implements OnInit, OnDestroy {
                 break;
             }
         }
+    }
+
+    private startFormChanges() {
+        this.formService.checkFormChange(this.drugForm);
+        this.formService.formValueChange$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((isFormChange: boolean) => {
+                this.isFormDirty = isFormChange;
+            });
     }
 
     public updateTest() {
@@ -386,6 +389,7 @@ export class DriverDrugAlcoholModalComponent implements OnInit, OnDestroy {
                     }
                     setTimeout(() => {
                         this.disableCardAnimation = false;
+                        this.startFormChanges();
                     }, 1000);
                 },
                 error: () => {},

@@ -86,6 +86,9 @@ export class DriverMedicalModalComponent implements OnInit, OnDestroy {
 
             if (this.editData.type === 'edit-medical') {
                 this.getMedicalById(this.editData.file_id);
+                this.startFormChanges();
+            } else {
+                this.startFormChanges();
             }
         } else {
             this.getListOfDrivers();
@@ -101,13 +104,6 @@ export class DriverMedicalModalComponent implements OnInit, OnDestroy {
             note: [null],
             files: [null],
         });
-
-        this.formService.checkFormChange(this.medicalForm);
-        this.formService.formValueChange$
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((isFormChange: boolean) => {
-                this.isFormDirty = isFormChange;
-            });
     }
 
     private getDriverById(id: number) {
@@ -284,6 +280,7 @@ export class DriverMedicalModalComponent implements OnInit, OnDestroy {
 
                     this.documents = res.files ? (res.files as any) : [];
                     setTimeout(() => {
+                        this.startFormChanges();
                         this.disableCardAnimation = false;
                     }, 1000);
                 },
@@ -322,6 +319,15 @@ export class DriverMedicalModalComponent implements OnInit, OnDestroy {
                     });
                 },
                 error: () => {},
+            });
+    }
+
+    private startFormChanges() {
+        this.formService.checkFormChange(this.medicalForm);
+        this.formService.formValueChange$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((isFormChange: boolean) => {
+                this.isFormDirty = isFormChange;
             });
     }
 

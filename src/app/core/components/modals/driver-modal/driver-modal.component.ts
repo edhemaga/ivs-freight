@@ -818,14 +818,6 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             'email',
             this.destroy$
         );
-
-        this.formService.checkFormChange(this.driverForm);
-
-        this.formService.formValueChange$
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((isFormChange: boolean) => {
-                this.isFormDirty = isFormChange;
-            });
     }
 
     private createOffDutyLocation(data?: {
@@ -1208,6 +1200,8 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                     if (this.editData) {
                         this.disableCardAnimation = true;
                         this.getDriverById(this.editData.id);
+                    } else {
+                        this.startFormChanges();
                     }
                 },
                 error: () => {},
@@ -2194,6 +2188,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                                 res.address;
                         }
                     }
+                    this.startFormChanges();
                     setTimeout(() => {
                         this.disableCardAnimation = false;
                     }, 1000);
@@ -2262,6 +2257,15 @@ export class DriverModalComponent implements OnInit, OnDestroy {
         if (tags.length) {
             this.tagsService.updateTag({ tags: tags }).subscribe();
         }
+    }
+
+    private startFormChanges() {
+        this.formService.checkFormChange(this.driverForm);
+        this.formService.formValueChange$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((isFormChange: boolean) => {
+                this.isFormDirty = isFormChange;
+            });
     }
 
     ngOnDestroy(): void {
