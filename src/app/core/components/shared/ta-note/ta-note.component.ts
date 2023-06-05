@@ -105,6 +105,7 @@ export class TaNoteComponent implements OnInit, OnDestroy {
     @Input() openedAll: any;
     @Input() entityId: number = 0;
     @Input() entityType: string;
+    @Input() isDispatch: boolean = false;
     leaveThisOpened: boolean;
     selectionTaken: any;
     range: any;
@@ -139,7 +140,7 @@ export class TaNoteComponent implements OnInit, OnDestroy {
                 const parentWidth = this.elRef.nativeElement
                     .closest(this.parentWidth)
                     .getBoundingClientRect();
-                this._parentWidth = parentWidth.width;
+                this._parentWidth = this.isDispatch ? parentWidth.width - 2 : parentWidth.width;
                 this.ref.detectChanges();
             }, 1000);
         }

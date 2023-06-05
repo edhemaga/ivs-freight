@@ -1,7 +1,9 @@
 <div class="tab-switch-holder {{ type }}">
     <div
         *ngFor="let item of tabs; let indx = index"
-        class="tab-switch-items-holder {{item.color ? 'tab-switch-' + item.color : ''}}"
+        class="tab-switch-items-holder {{
+            item.color ? 'tab-switch-' + item.color : ''
+        }}"
         [class.active]="indx == indexSwitch"
         (click)="switchTab($event, indx, item)"
         #popoverHolder
@@ -10,10 +12,12 @@
         [class.disabled]="item.disabled"
         [isDisabled]="!item.custom"
     >
-        <div class="tab-switch-text"  mainContent style="pointer-events: none">
-            {{ item.name }}
+        <div class="tab-switch-text" mainContent style="pointer-events: none">
+            <div class="tab-switch-name">{{ item.name }}</div>
+            <div class="tab-counter" *ngIf="item.counter">
+                <div class="counter-number">{{ item.counter }}</div>
+            </div>
         </div>
-        <div class="tab-counter" *ngIf="item.counter">{{item.counter}}</div>
         <div popoverContent>
             <div class="custom-popover-holder">
                 <div
@@ -79,7 +83,7 @@
         </div>
     </div>
     <div
-        class="slide-active-holder {{type}}"
+        class="slide-active-holder {{ type }}"
         [ngStyle]="{
             width: hoverStyle.width + 'px',
             left: hoverStyle.x + 'px'

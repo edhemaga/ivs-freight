@@ -6,7 +6,7 @@
         <div class="title-container">
             <div class="d-flex" [ngStyle]="{ overflow: 'hidden' }">
                 <app-profile-images
-                    *ngIf="type == 'gps'"
+                    *ngIf="type == 'gps' && item.driver"
                     [indx]="1"
                     [size]="'small'"
                     [type]="'driver'"
@@ -18,7 +18,8 @@
                     (click)="goToDetails()"
                     [ngClass]="{
                         'has-details-page':
-                            type == 'shipper' || type == 'repairShop'
+                            type == 'shipper' || type == 'repairShop',
+                        'device-id-text': type == 'gps' && !item.driver
                     }"
                 >
                     {{ title }}
@@ -26,7 +27,7 @@
                         >- {{ item?.store }}</ng-container
                     >
                 </div>
-                <span *ngIf="item?.pinned || item?.favourite">
+                <span *ngIf="item?.favourite">
                     <svg-icon
                         class="favorite-svg active"
                         src="assets/svg/detail-cards/favorite.svg"
@@ -35,6 +36,7 @@
                 </span>
             </div>
             <div
+                *ngIf="dropdownActions"
                 class="show-more"
                 (click)="showMoreOptions()"
                 [ngClass]="
@@ -303,12 +305,12 @@
         </div>
     </div>
     <div
-        class="marker-divider"
+        class="marker-divider title-divider"
         *ngIf="type != 'gps' || (type == 'gps' && title)"
     ></div>
-    <div class="marker-info-container-all">
+    <div [ngClass]="{ 'marker-info-container-all': type != 'gps' }">
         <div *ngIf="type == 'gps'">
-            <div>
+            <div *ngIf="item?.truckNumber || item?.trailerNumber" class="mg-left-4">
                 <div class="marker-dual-info-container">
                     <div class="marker-info-container">
                         <svg-icon
@@ -322,11 +324,11 @@
                     </div>
 
                     <div class="marker-like-text mg-top-6">
-                        {{ item?.truckNumber ? 'Device ID' : 'No GPS Device' }}
+                        {{ (item?.truckNumber || item?.truckDeviceId) ? 'Device ID' : 'No GPS Device' }}
                         <span
                             class="marker-bold-text"
-                            *ngIf="item?.truckNumber"
-                            >{{ item?.deviceId }}</span
+                            *ngIf="item?.truckNumber || item?.truckDeviceId"
+                            >{{ item?.truckDeviceId ? item.truckDeviceId : item?.deviceId }}</span
                         >
                     </div>
                 </div>
@@ -345,20 +347,20 @@
 
                     <div class="marker-like-text mg-top-6">
                         {{
-                            item?.trailerNumber && !item?.truckNumber
+                            (item?.trailerNumber || item?.trailerDeviceId)
                                 ? 'Device ID'
                                 : 'No GPS Device'
                         }}
                         <span
                             class="marker-bold-text"
-                            *ngIf="item?.trailerNumber && !item?.truckNumber"
-                            >{{ item?.deviceId }}</span
+                            *ngIf="item?.trailerNumber || item?.trailerDeviceId"
+                            >{{ item?.trailerDeviceId ? item.trailerDeviceId : item?.deviceId }}</span
                         >
                     </div>
                 </div>
             </div>
-            <div class="marker-divider"></div>
-            <div class="marker-info-container">
+            <div class="marker-divider gps-divider" *ngIf="item?.truckNumber || item?.trailerNumber"></div>
+            <div class="marker-info-container mg-left-4">
                 <div
                     class="marker-dual-info-container"
                     *ngIf="item?.motionStatus"
@@ -403,76 +405,83 @@
                     </div>
                 </div>
             </div>
-            <div class="marker-divider"></div>
-            <div class="mg-left-4">
-                <div class="marker-dual-info-container">
-                    <div class="marker-info-container">
-                        <div>
-                            <svg-icon
-                                class="marker-info-svg"
-                                src="assets/svg/common/repair-pm/ic_ac_compressor.svg"
-                                [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
-                            ></svg-icon>
+            <div class="marker-divider gps-divider"></div>
+            <div [ngClass]="{ 'mg-bottom-8': !item?.loadNumber }">
+                <div class="mg-left-4">
+                    <div class="marker-dual-info-container" *ngIf="item?.speed">
+                        <div class="marker-info-container">
+                            <div>
+                                <svg-icon
+                                    class="marker-info-svg"
+                                    src="assets/svg/common/repair-pm/ic_ac_compressor.svg"
+                                    [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
+                                ></svg-icon>
+                            </div>
+                            <span class="marker-info-text"
+                                >Speed
+                                <span class="marker-bold-text"
+                                    >{{ item?.speed }} mph</span
+                                ></span
+                            >
                         </div>
-                        <span class="marker-info-text"
-                            >Speed
-                            <span class="marker-bold-text"
-                                >{{ item?.speed }} mph</span
-                            ></span
-                        >
+                    </div>
+                    <div class="marker-dual-info-container">
+                        <div class="marker-info-container">
+                            <div>
+                                <svg-icon
+                                    class="marker-info-svg"
+                                    src="assets/svg/common/telematics/ic_ignition.svg"
+                                    [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
+                                ></svg-icon>
+                            </div>
+                            <span class="marker-info-text"
+                                >Ignition
+                                <span class="marker-bold-text">{{
+                                    item?.ignition ? 'ON' : 'OFF'
+                                }}</span></span
+                            >
+                        </div>
                     </div>
                 </div>
-                <div class="marker-dual-info-container">
-                    <div class="marker-info-container">
-                        <div>
-                            <svg-icon
-                                class="marker-info-svg"
-                                src="assets/svg/common/telematics/ic_ignition.svg"
-                                [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
-                            ></svg-icon>
-                        </div>
-                        <span class="marker-info-text"
-                            >Ignition
-                            <span class="marker-bold-text">{{
-                                item?.ignition ? 'ON' : 'OFF'
-                            }}</span></span
-                        >
+                <div class="marker-info-container mg-left-4" *ngIf="item?.location">
+                    <div>
+                        <svg-icon
+                            class="marker-info-svg"
+                            src="assets/svg/common/ic_address.svg"
+                            [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
+                        ></svg-icon>
+                    </div>
+                    <div class="marker-info-text">
+                        {{ item?.location }}
+                    </div>
+                </div>
+                <div
+                    class="marker-info-container mg-left-4"
+                    *ngIf="item?.coordinates"
+                >
+                    <div>
+                        <svg-icon
+                            class="marker-info-svg"
+                            src="assets/svg/common/telematics/ic_coordinates.svg"
+                            [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
+                        ></svg-icon>
+                    </div>
+                    <div class="marker-info-text">
+                        {{ item?.coordinates }}
                     </div>
                 </div>
             </div>
-            <div class="marker-info-container mg-left-4" *ngIf="item?.location">
-                <div>
-                    <svg-icon
-                        class="marker-info-svg"
-                        src="assets/svg/common/ic_address.svg"
-                        [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
-                    ></svg-icon>
-                </div>
-                <div class="marker-info-text">
-                    {{ item?.location }}
-                </div>
-            </div>
-            <div
-                class="marker-info-container mg-left-4"
-                *ngIf="item?.coordinates"
-            >
-                <div>
-                    <svg-icon
-                        class="marker-info-svg"
-                        src="assets/svg/common/telematics/ic_coordinates.svg"
-                        [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
-                    ></svg-icon>
-                </div>
-                <div class="marker-info-text">
-                    {{ item?.coordinates }}
-                </div>
-            </div>
-            <div *ngIf="item?.loadNumber" class="marker-divider"></div>
+            <div *ngIf="item?.loadNumber || (!item.truckNumber && !item.trailerNumber)" class="marker-divider gps-divider"></div>
             <div *ngIf="item?.loadNumber">
                 <div class="marker-title" [ngStyle]="{ 'margin-bottom': '15px' }">
                     Load <span class="blue-text">{{ item.loadNumber }}</span>
                 </div>
-                <app-gps-progressbar></app-gps-progressbar>
+                <!--<app-gps-progressbar></app-gps-progressbar>-->
+            </div>
+            <div *ngIf="!item.truckNumber && !item.trailerNumber">
+                <div class="assign-button" (click)="assignUnit()">
+                    <div class="assign-text">Assign Unit</div>
+                </div>
             </div>
         </div>
         <div
@@ -1062,7 +1071,7 @@
             <span class="cluster-list-name">{{ item2.name }}</span>
 
             <svg-icon
-                *ngIf="item2?.pinned || item2?.favourite"
+                *ngIf="item2?.favourite"
                 class="favorite-svg active"
                 src="assets/svg/detail-cards/favorite.svg"
                 [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"

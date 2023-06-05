@@ -61,6 +61,7 @@
         class="kendo-editor-note-wrapper"
         [class.opened_all_hold]="openedAll"
         [class.closed_note_hold]="!openedAll && noteOpened"
+        [class.dispatch]="isDispatch"
     >
         <div
             [class.expanded]="isExpanded"

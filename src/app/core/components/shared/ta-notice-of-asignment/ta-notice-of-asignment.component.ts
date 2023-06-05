@@ -66,19 +66,19 @@ export class TaNoticeOfAsignmentComponent
             id: 2,
             name: 'Medium',
             showName: 'Medium',
-            additionalText: 17,
+            additionalText: 18,
         },
         {
             id: 3,
             name: 'Default',
             showName: 'Default',
-            additionalText: 14,
+            additionalText: 13,
         },
         {
             id: 4,
             name: 'Small',
             showName: 'Small',
-            additionalText: 11,
+            additionalText: 10,
         },
     ];
 
@@ -99,6 +99,31 @@ export class TaNoticeOfAsignmentComponent
         strikeThrough: false,
         fontSize: true,
     };
+
+    alignOptions: any = [
+        {
+            name: 'justifyLeft',
+            value: false,
+            image: 'assets/svg/common/align-left-icon.svg',
+        },
+        {
+            name: 'justifyCenter',
+            value: false,
+            image: 'assets/svg/common/align-center-icon.svg',
+        },
+        {
+            name: 'justifyRight',
+            value: false,
+            image: 'assets/svg/common/align-right-icon.svg',
+        },
+        {
+            name: 'justifyFull',
+            value: false,
+            image: 'assets/svg/common/align-full-icon.svg',
+        },
+    ];
+
+    activeAlignment: string;
 
     selectionTaken: any;
 
@@ -188,20 +213,58 @@ export class TaNoticeOfAsignmentComponent
         if (action !== 'foreColor') {
             if (action != 'fontSize') {
                 this.showCollorPattern = false;
-                this.activeOptions[action] = !this.activeOptions[action];
-                if (!this.activeOptions[action]) {
-                    if (this.value.replace('<br>', '') == '') {
-                        this.selectionTaken.removeAllRanges();
+                if (
+                    action == 'justifyLeft' ||
+                    action == 'justifyRight' ||
+                    action == 'justifyCenter' ||
+                    action == 'justifyFull'
+                ) {
+                    this.activeAlignment = action;
+                    let checkAlign = true;
+                    this.alignOptions.map((align) => {
+                        if (align.name != action) {
+                            align.value = false;
+                        }
+                        else {
+                            align.value = !align.value;
+                            checkAlign = align.value;
+                        }
+                    });
+
+                    if (!checkAlign) {
+                        if (this.value.replace('<br>', '') == '') {
+                            this.selectionTaken.removeAllRanges();
+                        }
+                        document.execCommand('styleWithCSS', false, 'false');
+                        document.execCommand(action, false, null);
+                    } else {
+                        this.focusElement();
+                        document.execCommand(action, false, null);
                     }
-                    document.execCommand('styleWithCSS', false, 'false');
-                    document.execCommand(action, false, null);
                 } else {
-                    this.focusElement();
-                    document.execCommand(action, false, null);
+                    this.activeOptions[action] = !this.activeOptions[action];
+
+                    if (!this.activeOptions[action]) {
+                        if (this.value.replace('<br>', '') == '') {
+                            this.selectionTaken.removeAllRanges();
+                        }
+                        document.execCommand('styleWithCSS', false, 'false');
+                        document.execCommand(action, false, null);
+                    } else {
+                        this.focusElement();
+                        document.execCommand(action, false, null);
+                    }
                 }
             } else {
                 this.focusElement();
-                const fontSize = color+'px';
+                const fontSize =
+                    color == '10'
+                        ? '1'
+                        : color == '13'
+                        ? '2'
+                        : color == '18'
+                        ? '4'
+                        : '5';
                 document.execCommand(action, false, fontSize);
             }
         } else {
@@ -228,7 +291,7 @@ export class TaNoticeOfAsignmentComponent
         if (this.isBlured) {
             this.noticeFocus.emit(false);
         }
-        
+
         if (this.noticeRef) {
             this.noticeRef.nativeElement.focus();
         }
@@ -246,7 +309,19 @@ export class TaNoticeOfAsignmentComponent
                 this.selectedColorName = findedColor;
             }, 200);
             this.selectedPaternColor = document.queryCommandValue('ForeColor');
+            this.activeFont =
+                document.queryCommandValue('FontSize') == '1'
+                    ? this.fontSizeList[3]
+                    : document.queryCommandValue('FontSize') == '4'
+                    ? this.fontSizeList[1]
+                    : document.queryCommandValue('FontSize') == '5'
+                    ? this.fontSizeList[0]
+                    : this.fontSizeList[2];
         }
+
+        this.alignOptions.map((align)=>{
+            align.value = document.queryCommandState(align.name);
+        });
 
         if (this.defaultColorSet) {
             this.customSelectColor.map((col, indx) => {

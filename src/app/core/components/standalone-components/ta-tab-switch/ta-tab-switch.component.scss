@@ -15,6 +15,44 @@ $tab-colors: '26A690', 'EF5350', '3074D3';
     line-height: 32px;
 
     .tab-switch-items-holder {
+        .tab-switch-text {
+            display: flex;
+            align-items: center;
+
+            .tab-counter {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+
+                height: 14px;
+                width: 14px;
+                margin-left: 4px;
+
+                background-color: #aaaaaa;
+                border-radius: 100%;
+
+                .counter-number {
+                    font-size: 11px;
+                    color: #424242;
+                }
+            }
+        }
+    }
+
+    &.dark {
+        .tab-switch-items-holder {
+            .tab-switch-text {
+                .tab-switch-name {
+                    text-transform: uppercase !important;
+                    font-weight: 700;
+                    font-size: 11px;
+                    line-height: 13px;
+                }
+            }
+        }
+    }
+
+    .tab-switch-items-holder {
         position: relative;
         flex: 1 auto;
         height: 32px;
@@ -33,17 +71,35 @@ $tab-colors: '26A690', 'EF5350', '3074D3';
 
         &.active {
             color: #6c6c6c;
+
+            .tab-switch-text {
+                .tab-counter {
+                    background-color: #ffffff !important;
+
+                    .counter-number {
+                        color: #424242 !important;
+                    }
+                }
+            }
         }
 
         &:hover:not(.active) {
             color: #919191;
+
+            .tab-switch-text {
+                .tab-counter {
+                    background-color: #919191 !important;
+                }
+            }
         }
 
         &.disabled {
             pointer-events: none !important;
 
             .tab-switch-text {
-                color: #aaaaaa33;
+                .tab-switch-name {
+                    color: #aaaaaa33;
+                }
             }
         }
     }
@@ -98,9 +154,11 @@ $tab-colors: '26A690', 'EF5350', '3074D3';
         padding: 4px;
 
         .tab-switch-text {
-            font-size: 11px;
-            font-weight: 700;
-            text-transform: uppercase;
+            .tab-switch-name {
+                font-size: 11px;
+                font-weight: 700;
+                text-transform: uppercase;
+            }
         }
 
         .tab-switch-items-holder {
@@ -299,7 +357,13 @@ $tab-colors: '26A690', 'EF5350', '3074D3';
             background-color: unquote('#' + $col + '33') !important;
         }
         .tab-switch-text {
-            color: unquote('#' + $col) !important;
+            .tab-switch-name {
+                color: unquote('#' + $col) !important;
+            }
+
+            .tab-counter {
+                background-color: unquote('#' + $col) !important;
+            }
         }
     }
 }

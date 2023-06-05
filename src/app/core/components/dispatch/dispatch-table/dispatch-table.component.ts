@@ -163,6 +163,8 @@ export class DispatchTableComponent implements OnInit {
         maxLimit: new Date().getHours() * 60 + new Date().getMinutes(),
     };
 
+    isDrag: boolean = false;
+
     constructor(
         private dss: DispatcherStoreService,
         private chd: ChangeDetectorRef,
@@ -701,10 +703,16 @@ export class DispatchTableComponent implements OnInit {
 
     cdkDragStartedTrailer(event, indx) {
         this.startIndexTrailer = indx;
+        this.isDrag = true;
     }
 
     cdkDragStartedDriver(event, indx) {
         this.startIndexDriver = indx;
+        this.isDrag = true;
+    }
+
+    dragEnd() {
+        this.isDrag = false;
     }
 
     showPickupDelivery(popup: any) {
