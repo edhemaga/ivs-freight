@@ -86,7 +86,6 @@ export class DriverMedicalModalComponent implements OnInit, OnDestroy {
 
             if (this.editData.type === 'edit-medical') {
                 this.getMedicalById(this.editData.file_id);
-                this.startFormChanges();
             } else {
                 this.startFormChanges();
             }
