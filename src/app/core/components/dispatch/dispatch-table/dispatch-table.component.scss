@@ -565,8 +565,6 @@
 
                 &.addNew {
                     background-color: #f7f7f7;
-                    border-bottom-left-radius: 0px !important;
-                    border-bottom-right-radius: 0px !important;
 
                     .text {
                         color: #2f2f2f !important;
@@ -575,8 +573,6 @@
                     &:hover {
                         cursor: pointer;
                         background-color: #3074d3;
-                        border-bottom-left-radius: 0px !important;
-                        border-bottom-right-radius: 0px !important;
 
                         .text {
                             color: #fff !important;
