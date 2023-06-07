@@ -24,7 +24,8 @@ import { TruckListResponse, TrailerListResponse } from 'appcoretruckassist';
 import { DomSanitizer } from '@angular/platform-browser';
 import { CompanyTOfficeService } from '../../settings/settings-location/settings-office/state/company-office.service';
 import { DetailsDataService } from '../../../services/details-data/details-data.service';
-import { UnitType } from '../../../../../../appcoretruckassist/model/unitType';
+import { TelematicStateQuery } from '../state/telematic-state.query';
+import { TelematicStateStore } from '../state/telematic-state.store';
 
 @Component({
     selector: 'app-telematic-map',
@@ -326,15 +327,16 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
         private sanitizer: DomSanitizer,
         private ref: ChangeDetectorRef,
         private companyOfficeService: CompanyTOfficeService,
-        private detailsDataService: DetailsDataService
+        private detailsDataService: DetailsDataService,
+        private telematicQuery: TelematicStateQuery,
+        private telematicStore: TelematicStateStore
     ) {}
 
     ngOnInit(): void {
         this.telematicService.startGpsConnection();
         this.addGpsListener();
 
-        this.getGpsData();
-        this.getUnassignedGpsData();
+        this.getStoreData();
 
         this.createSearchForm();
         this.initColumnsForm();
@@ -440,7 +442,7 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe((gpsData: any) => {
                 console.log('getUnassignedGpsData', gpsData);
-                gpsData.data.map((data, index) => {
+                gpsData.data.map((data) => {
                     data.speed = Math.round(data.speed);
                     data.motionStatus =
                         data.motionStatus === 1
@@ -1558,7 +1560,7 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
     findLinkedDevices() {
         if ( !this.filteredAssignedDevices.length || !this.filteredUnassignedDevices.length ) return;
 
-        this.filteredAssignedDevices.map((device, index) => {
+        this.filteredAssignedDevices.map((device) => {
             let linkedDevice = this.filteredAssignedDevices.find(
                 (device2) =>
                     device.truckNumber === device2.truckNumber &&
@@ -1620,6 +1622,93 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
                 }
             }
         });
+    }
+
+    getStoreData() {
+        const stateData: any = this.telematicQuery.getAll();
+        const gpsData: any = JSON.parse(JSON.stringify(stateData[0]));
+        const gpsUnassignedData: any = JSON.parse(JSON.stringify(stateData[1]));
+
+        gpsData.data.map((data) => {
+            data.speed = Math.round(data.speed);
+            data.motionStatus =
+                data.motionStatus === 1
+                    ? 'MOTION'
+                    : data.motionStatus === 2
+                    ? 'SHORT_STOP'
+                    : data.motionStatus === 3
+                    ? 'EXTENDED_STOP'
+                    : data.motionStatus === 4 || data.motionStatus === 5 // 5 == offline
+                    ? 'PARKING'
+                    : data.motionStatus;
+
+            if (data.coordinates) {
+                data.coordinates = data.coordinates.replace('-', '');
+            }
+        });
+
+        this.gpsAssignedData = gpsData.data;
+
+        gpsUnassignedData.data.map((data) => {
+            data.speed = Math.round(data.speed);
+            data.motionStatus =
+                data.motionStatus === 1
+                    ? 'MOTION'
+                    : data.motionStatus === 2
+                    ? 'SHORT_STOP'
+                    : data.motionStatus === 3
+                    ? 'EXTENDED_STOP'
+                    : data.motionStatus === 4 || data.motionStatus === 5 // 5 == offline
+                    ? 'PARKING'
+                    : data.motionStatus;
+
+            if (data.coordinates) {
+                data.coordinates = data.coordinates.replace('-', '');
+            }
+        });
+
+        this.gpsUnassignedData = gpsUnassignedData.data;
+
+        var devicesArr = this.gpsUnassignedData.map((device) => {
+            return {
+                id: device.deviceId,
+                name: device.deviceId,
+                unitType: device.unitType,
+            };
+        });
+
+        var trailerArr = devicesArr.filter(
+            (device) => device.unitType === 2
+        );
+
+        var truckArr = devicesArr.filter(
+            (device) => !device.unitType || device.unitType === 1
+        );
+
+        this.trailerDevicesList = [
+            ...this.trailerDevicesList,
+            ...trailerArr,
+        ];
+        this.gpsDevicesList = [...this.gpsDevicesList, ...truckArr];
+
+        this.hasTrailerDevices =
+            this.trailerDevicesList.length > 0 ? true : false;
+
+            
+        this.driverLocations = [
+            ...this.driverLocations,
+            ...gpsData.data,
+            ...gpsUnassignedData.data,
+        ];
+
+        this.tableData[0].length = this.driverLocations.length;
+
+        this.initDeviceFields();
+        this.filterAssignedDevices();
+        this.filterUnassignedDevices();
+        this.getTrucks();
+        this.getTrailers();
+        this.findLinkedDevices();
     }
 
     ngOnDestroy(): void {
