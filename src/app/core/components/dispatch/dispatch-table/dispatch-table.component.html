@@ -50,6 +50,9 @@
                             !item.truck && truckList.length && !__isBoardLocked
                         "
                         [class.filled]="item.truck"
+                        [class.default]="
+                            !item.truck && !truckList.length && !__isBoardLocked
+                        "
                     >
                         <div
                             class="padding-inside"
@@ -103,7 +106,11 @@
                                         item.truck.truckNumber
                                     }}</span>
                                     <div
-                                        *ngIf="item.truck && !__isBoardLocked"
+                                        *ngIf="
+                                            item.truck &&
+                                            !__isBoardLocked &&
+                                            !isDrag
+                                        "
                                         class="remove-item"
                                         (click)="removeTruck(rowIndex)"
                                     >
@@ -155,6 +162,12 @@
                             !__isBoardLocked
                         "
                         [class.filled]="item.trailer"
+                        [class.default]="
+                            !item.trailer &&
+                            !trailerList.length &&
+                            !__isBoardLocked
+                        "
+                        [class.isDragging]="isDrag && draggingType == 'trailer'"
                         cdkDropList
                         [cdkDropListSortPredicate]="trailerPositionPrediction"
                         (cdkDropListDropped)="dropTrailer($event, rowIndex)"
@@ -184,6 +197,7 @@
                                         : item.trailer?.trailerType?.id)
                             "
                             cdkDragPreviewContainer="parent"
+                            cdkDragBoundary=".dispatch-table table tbody"
                         >
                             <div
                                 *cdkDragPlaceholder
@@ -205,6 +219,7 @@
                                 >
                                     <div class="text">Add</div>
                                     <svg-icon
+                                        *ngIf="!isDrag"
                                         [src]="
                                             'assets/svg/truckassist-table/dropdown/content/add.svg'
                                         "
@@ -245,6 +260,7 @@
                                             item.trailer.trailerNumber
                                         }}</span>
                                         <div
+                                            *ngIf="!isDrag"
                                             class="remove-item"
                                             (click)="removeTrailer(rowIndex)"
                                         >
@@ -297,6 +313,12 @@
                             !__isBoardLocked
                         "
                         [class.filled]="item.driver"
+                        [class.default]="
+                            !item.driver &&
+                            !driverList.length &&
+                            !__isBoardLocked
+                        "
+                        [class.isDragging]="isDrag && draggingType == 'driver'"
                         cdkDropList
                         (cdkDropListDropped)="dropDriver($event, rowIndex)"
                         id="{{ rowIndex | cdkid : gridIndex : 'driver' }}"
@@ -320,6 +342,7 @@
                             cdkDragLockAxis="y"
                             [cdkDragPreviewClass]="'trailer_3074D3'"
                             cdkDragPreviewContainer="parent"
+                            cdkDragBoundary=".dispatch-table table tbody"
                         >
                             <div
                                 *cdkDragPlaceholder
@@ -471,6 +494,7 @@
                                         ></svg-icon>
                                     </span>
                                     <div
+                                        *ngIf="!isDrag"
                                         class="remove-item driver-remove-item"
                                         (click)="removeDriver(rowIndex)"
                                     >

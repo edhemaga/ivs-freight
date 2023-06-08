@@ -802,7 +802,11 @@ export class TaInputDropdownComponent
         this.multiselectItems.splice(index, 1);
 
         if (!this.multiselectItems.length) {
-            this.inputConfig.multiSelectDropdownActive = null;
+            this.inputConfig = {
+                ...this.inputConfig,
+                multiSelectDropdownActive: null,
+            };
+
             this.lastActiveMultiselectItem = null;
             this.inputConfig.label = this.multiSelectLabel;
         } else {
@@ -820,7 +824,11 @@ export class TaInputDropdownComponent
 
     public deleteAllMultiSelectItems(currentLabel?: string) {
         this.multiselectItems = [];
-        this.inputConfig.multiSelectDropdownActive = null;
+        this.inputConfig = {
+            ...this.inputConfig,
+            multiSelectDropdownActive: null,
+        };
+
         this.inputConfig.label = currentLabel
             ? currentLabel
             : this.multiSelectLabel;
