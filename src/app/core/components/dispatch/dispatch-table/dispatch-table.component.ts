@@ -56,6 +56,7 @@ export class DispatchTableComponent implements OnInit {
     startIndexTrailer: number;
     startIndexDriver: number;
     savedTruckData: any = null;
+    draggingType: string = '';
 
     @Input() set smallList(value) {
         const newTruckList = JSON.parse(JSON.stringify(value.trucks));
@@ -704,15 +705,18 @@ export class DispatchTableComponent implements OnInit {
     cdkDragStartedTrailer(event, indx) {
         this.startIndexTrailer = indx;
         this.isDrag = true;
+        this.draggingType = 'trailer';
     }
 
     cdkDragStartedDriver(event, indx) {
         this.startIndexDriver = indx;
         this.isDrag = true;
+        this.draggingType = 'driver';
     }
 
     dragEnd() {
         this.isDrag = false;
+        this.draggingType = '';
     }
 
     showPickupDelivery(popup: any) {
