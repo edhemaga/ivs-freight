@@ -146,13 +146,6 @@ export class ProfileUpdateModalComponent implements OnInit, OnDestroy {
             'email',
             this.destroy$
         );
-
-        this.formService.checkFormChange(this.profileUserForm);
-        this.formService.formValueChange$
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((isFormChange: boolean) => {
-                this.isFormDirty = isFormChange;
-            });
     }
 
     public tabChange(event: any): void {
@@ -323,6 +316,7 @@ export class ProfileUpdateModalComponent implements OnInit, OnDestroy {
                     });
                     this.selectedAddress = res.address;
                     setTimeout(() => {
+                        this.startFormChanges();
                         this.disableCardAnimation = false;
                     }, 1000);
                 },
@@ -380,6 +374,15 @@ export class ProfileUpdateModalComponent implements OnInit, OnDestroy {
                         close: false,
                     });
                 },
+            });
+    }
+
+    private startFormChanges() {
+        this.formService.checkFormChange(this.profileUserForm);
+        this.formService.formValueChange$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((isFormChange: boolean) => {
+                this.isFormDirty = isFormChange;
             });
     }
 

@@ -186,13 +186,6 @@ export class SettingsInsurancePolicyModalComponent
             'email',
             this.destroy$
         );
-
-        this.formService.checkFormChange(this.insurancePolicyForm);
-        this.formService.formValueChange$
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((isFormChange: boolean) => {
-                this.isFormDirty = isFormChange;
-            });
     }
 
     public onModalAction(data: { action: string; bool: boolean }) {
@@ -435,6 +428,8 @@ export class SettingsInsurancePolicyModalComponent
                     if (this.editData.type === 'edit') {
                         this.disableCardAnimation = true;
                         this.editInsurancePolicyById(this.editData.company);
+                    } else {
+                        this.startFormChanges();
                     }
                 },
                 error: () => {},
@@ -1179,8 +1174,18 @@ export class SettingsInsurancePolicyModalComponent
             }
         }
         setTimeout(() => {
+            this.startFormChanges();
             this.disableCardAnimation = false;
         }, 1000);
+    }
+
+    private startFormChanges() {
+        this.formService.checkFormChange(this.insurancePolicyForm);
+        this.formService.formValueChange$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((isFormChange: boolean) => {
+                this.isFormDirty = isFormChange;
+            });
     }
 
     ngOnDestroy(): void {

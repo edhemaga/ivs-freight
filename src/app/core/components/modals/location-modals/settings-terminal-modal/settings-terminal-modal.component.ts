@@ -227,13 +227,6 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
             'email',
             this.destroy$
         );
-
-        this.formService.checkFormChange(this.terminalForm);
-        this.formService.formValueChange$
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((isFormChange: boolean) => {
-                this.isFormDirty = isFormChange;
-            });
     }
 
     public tabChange(event: any): void {
@@ -678,6 +671,10 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
                     if (res.warehouseExtPhone) {
                         this.isWarehousePhoneExtExist = true;
                     }
+
+                    setTimeout(() => {
+                        this.startFormChanges();
+                    }, 1000);
                 },
                 error: () => {},
             });
@@ -695,9 +692,20 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
 
                     if (this.editData?.type === 'edit') {
                         this.editTerminalById(this.editData.id);
+                    } else {
+                        this.startFormChanges();
                     }
                 },
                 error: () => {},
+            });
+    }
+
+    private startFormChanges() {
+        this.formService.checkFormChange(this.terminalForm);
+        this.formService.formValueChange$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((isFormChange: boolean) => {
+                this.isFormDirty = isFormChange;
             });
     }
 

@@ -72,7 +72,7 @@ import { TaTabSwitchComponent } from '../../standalone-components/ta-tab-switch/
                     transform: 'scale(1)',
                 })
             ),
-            transition('closed => open', animate(200)),
+            transition('closed => open', animate(100)),
         ]),
     ],
     host: {

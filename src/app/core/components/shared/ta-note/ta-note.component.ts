@@ -3,6 +3,7 @@ import {
     Component,
     ElementRef,
     EventEmitter,
+    HostListener,
     Input,
     OnDestroy,
     OnInit,
@@ -127,6 +128,13 @@ export class TaNoteComponent implements OnInit, OnDestroy {
         this.checkNoteImage(this.note);
     }
 
+    @HostListener('window:resize', ['$event'])
+    onWindowResize(event: Event) {
+        if(this.isDispatch) {
+            this.setNoteParentWidth();
+        }
+    }
+
     ngAfterViewInit(): void {
         this.value = this.note;
         this.setNoteParentWidth();
@@ -140,7 +148,9 @@ export class TaNoteComponent implements OnInit, OnDestroy {
                 const parentWidth = this.elRef.nativeElement
                     .closest(this.parentWidth)
                     .getBoundingClientRect();
-                this._parentWidth = this.isDispatch ? parentWidth.width - 2 : parentWidth.width;
+                this._parentWidth = this.isDispatch
+                    ? parentWidth.width - 2
+                    : parentWidth.width;
                 this.ref.detectChanges();
             }, 1000);
         }

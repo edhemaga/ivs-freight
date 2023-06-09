@@ -108,13 +108,6 @@ export class AccountModalComponent implements OnInit, OnDestroy {
             'url',
             this.destroy$
         );
-
-        this.formService.checkFormChange(this.accountForm);
-        this.formService.formValueChange$
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((isFormChange: boolean) => {
-                this.isFormDirty = isFormChange && !this.disabledFormValidation;
-            });
     }
 
     public onModalAction(data: { action: string; bool: boolean }) {
@@ -188,6 +181,8 @@ export class AccountModalComponent implements OnInit, OnDestroy {
 
                     if (this.editData) {
                         this.editCompanyAccount(this.editData.id);
+                    } else {
+                        this.startFormChanges();
                     }
                 },
             });
@@ -222,6 +217,7 @@ export class AccountModalComponent implements OnInit, OnDestroy {
                         note: res.note,
                     });
                     this.selectedAccountLabel = res.companyAccountLabel;
+                    this.startFormChanges();
                 },
                 error: () => {},
             });
@@ -417,6 +413,15 @@ export class AccountModalComponent implements OnInit, OnDestroy {
 
     public companyAccountLabelMode(event: boolean) {
         this.disabledFormValidation = event;
+    }
+
+    private startFormChanges() {
+        this.formService.checkFormChange(this.accountForm);
+        this.formService.formValueChange$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((isFormChange: boolean) => {
+                this.isFormDirty = isFormChange;
+            });
     }
 
     ngOnDestroy(): void {

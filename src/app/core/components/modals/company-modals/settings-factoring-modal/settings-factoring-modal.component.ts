@@ -93,6 +93,8 @@ export class SettingsFactoringModalComponent implements OnInit, OnDestroy {
         if (this.editData.type === 'edit') {
             this.disableCardAnimation = true;
             this.editFactoringCompany(this.editData.company);
+        } else {
+            this.startFormChanges();
         }
     }
 
@@ -112,13 +114,6 @@ export class SettingsFactoringModalComponent implements OnInit, OnDestroy {
             'email',
             this.destroy$
         );
-
-        this.formService.checkFormChange(this.factoringForm);
-        this.formService.formValueChange$
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((isFormChange: boolean) => {
-                this.isFormDirty = isFormChange;
-            });
     }
 
     public onHandleAddress(event: {
@@ -247,12 +242,22 @@ export class SettingsFactoringModalComponent implements OnInit, OnDestroy {
         });
 
         setTimeout(() => {
+            this.startFormChanges();
             this.disableCardAnimation = false;
         }, 1000);
     }
 
     public onNoticeFocus(val: boolean) {
         this.isBluredNotice = val;
+    }
+
+    private startFormChanges() {
+        this.formService.checkFormChange(this.factoringForm);
+        this.formService.formValueChange$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((isFormChange: boolean) => {
+                this.isFormDirty = isFormChange;
+            });
     }
 
     ngOnDestroy(): void {
