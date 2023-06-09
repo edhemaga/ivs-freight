@@ -146,13 +146,6 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
         if (this.editData?.type !== 'edit') {
             this.addFuelItems({ check: true, action: null });
         }
-
-        this.formService.checkFormChange(this.fuelForm);
-        this.formService.formValueChange$
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((isFormChange: boolean) => {
-                this.isFormDirty = isFormChange;
-            });
     }
 
     public onModalAction(data: { action: string; bool: boolean }) {
@@ -581,6 +574,7 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
                     }
 
                     setTimeout(() => {
+                        this.startFormChanges();
                         this.disableCardAnimation = false;
                     }, 1000);
                 },
@@ -599,6 +593,8 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
                     if (this.editData?.type === 'edit') {
                         this.disableCardAnimation = true;
                         this.getFuelById(this.editData.id);
+                    } else {
+                        this.startFormChanges();
                     }
                 },
                 error: () => {},
@@ -761,6 +757,15 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
                 };
             });
         }
+    }
+
+    private startFormChanges() {
+        this.formService.checkFormChange(this.fuelForm);
+        this.formService.formValueChange$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((isFormChange: boolean) => {
+                this.isFormDirty = isFormChange;
+            });
     }
 
     ngOnDestroy(): void {

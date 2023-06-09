@@ -456,14 +456,6 @@ export class UserModalComponent implements OnInit, OnDestroy {
             note: [null],
         });
 
-        this.formService.checkFormChange(this.userForm);
-
-        this.formService.formValueChange$
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((isFormChange: boolean) => {
-                this.isFormDirty = isFormChange;
-            });
-
         this.inputService.customInputValidator(
             this.userForm.get('personalEmail'),
             'email',
@@ -900,6 +892,7 @@ export class UserModalComponent implements OnInit, OnDestroy {
 
                     this.isPhoneExtExist = !!res.extensionPhone;
                     setTimeout(() => {
+                        this.startFormChanges();
                         this.disableCardAnimation = false;
                     }, 1000);
                 },
@@ -941,9 +934,20 @@ export class UserModalComponent implements OnInit, OnDestroy {
                     if (this.editData) {
                         this.disableCardAnimation = true;
                         this.getUserById(this.editData.id);
+                    } else {
+                        this.startFormChanges();
                     }
                 },
                 error: () => {},
+            });
+    }
+
+    private startFormChanges() {
+        this.formService.checkFormChange(this.userForm);
+        this.formService.formValueChange$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((isFormChange: boolean) => {
+                this.isFormDirty = isFormChange;
             });
     }
 

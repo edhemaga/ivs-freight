@@ -143,13 +143,6 @@ export class SettingsRepairshopModalComponent implements OnInit, OnDestroy {
             'email',
             this.destroy$
         );
-
-        this.formService.checkFormChange(this.repairShopForm);
-        this.formService.formValueChange$
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((isFormChange: boolean) => {
-                this.isFormDirty = isFormChange;
-            });
     }
 
     public tabChange(event: any): void {
@@ -420,6 +413,7 @@ export class SettingsRepairshopModalComponent implements OnInit, OnDestroy {
                     }
 
                     setTimeout(() => {
+                        this.startFormChanges();
                         this.disableCardAnimation = false;
                     }, 1000);
                 },
@@ -452,9 +446,20 @@ export class SettingsRepairshopModalComponent implements OnInit, OnDestroy {
                     if (this.editData?.type === 'edit') {
                         this.disableCardAnimation = true;
                         this.editRepairShopById(this.editData.id);
+                    } else {
+                        this.startFormChanges();
                     }
                 },
                 error: () => {},
+            });
+    }
+
+    private startFormChanges() {
+        this.formService.checkFormChange(this.repairShopForm);
+        this.formService.formValueChange$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((isFormChange: boolean) => {
+                this.isFormDirty = isFormChange;
             });
     }
 

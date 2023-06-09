@@ -162,13 +162,6 @@ export class ContactModalComponent implements OnInit, OnDestroy {
             avatar: [null],
             note: [null],
         });
-
-        this.formService.checkFormChange(this.contactForm);
-        this.formService.formValueChange$
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((isFormChange: boolean) => {
-                this.isFormDirty = isFormChange;
-            });
     }
 
     public onModalAction(data: { action: string; bool: boolean }) {
@@ -374,6 +367,8 @@ export class ContactModalComponent implements OnInit, OnDestroy {
                     if (this.editData) {
                         this.disableCardAnimation = true;
                         this.getCompanyContactById(this.editData.id);
+                    } else {
+                        this.startFormChanges();
                     }
                 },
                 error: () => {},
@@ -440,6 +435,7 @@ export class ContactModalComponent implements OnInit, OnDestroy {
                     this.selectedAddress = res.address;
                     // TODO: shared departments label selected
                     setTimeout(() => {
+                        this.startFormChanges();
                         this.disableCardAnimation = false;
                     }, 1000);
                 },
@@ -723,6 +719,15 @@ export class ContactModalComponent implements OnInit, OnDestroy {
 
     public companyContactLabelMode(event: boolean) {
         this.disabledFormValidation = event;
+    }
+
+    private startFormChanges() {
+        this.formService.checkFormChange(this.contactForm);
+        this.formService.formValueChange$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((isFormChange: boolean) => {
+                this.isFormDirty = isFormChange;
+            });
     }
 
     ngOnDestroy(): void {

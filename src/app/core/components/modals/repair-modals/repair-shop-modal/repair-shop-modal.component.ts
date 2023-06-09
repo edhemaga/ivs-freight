@@ -608,13 +608,6 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             'email',
             this.destroy$
         );
-
-        this.formService.checkFormChange(this.repairShopForm);
-        this.formService.formValueChange$
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((isFormChange: boolean) => {
-                this.isFormDirty = isFormChange;
-            });
     }
 
     private createOpenHour(
@@ -877,6 +870,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
                     }
 
                     setTimeout(() => {
+                        this.startFormChanges();
                         this.disableCardAnimation = false;
                     }, 1000);
                 },
@@ -1230,6 +1224,8 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
                         });
                         this.editRepairShopById(this.editData.id);
                         this.ratingChanges();
+                    } else {
+                        this.startFormChanges();
                     }
 
                     if (
@@ -1386,6 +1382,15 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             .updateReview(review)
             .pipe(takeUntil(this.destroy$))
             .subscribe();
+    }
+
+    private startFormChanges() {
+        this.formService.checkFormChange(this.repairShopForm);
+        this.formService.formValueChange$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((isFormChange: boolean) => {
+                this.isFormDirty = isFormChange;
+            });
     }
 
     ngOnDestroy(): void {

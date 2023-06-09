@@ -127,6 +127,8 @@ export class AccidentModalComponent implements OnInit, OnDestroy {
         if (this.editData) {
             this.disableCardAnimation = true;
             this.editAccidentById(this.editData.id);
+        } else {
+            this.startFormChanges();
         }
     }
 
@@ -181,13 +183,6 @@ export class AccidentModalComponent implements OnInit, OnDestroy {
             files: [null],
             medies: [null],
         });
-
-        this.formService.checkFormChange(this.accidentForm);
-        this.formService.formValueChange$
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((isFormChange: boolean) => {
-                this.isFormDirty = isFormChange;
-            });
     }
 
     public tabChange(event: any): void {
@@ -381,6 +376,7 @@ export class AccidentModalComponent implements OnInit, OnDestroy {
                     //   }),
                     // ]
                     setTimeout(() => {
+                        this.startFormChanges();
                         this.disableCardAnimation = false;
                     }, 1000);
                 },
@@ -495,6 +491,15 @@ export class AccidentModalComponent implements OnInit, OnDestroy {
                 break;
             }
         }
+    }
+
+    private startFormChanges() {
+        this.formService.checkFormChange(this.accidentForm);
+        this.formService.formValueChange$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((isFormChange: boolean) => {
+                this.isFormDirty = isFormChange;
+            });
     }
 
     ngOnDestroy(): void {
