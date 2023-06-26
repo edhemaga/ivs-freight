@@ -106,6 +106,7 @@
                     : activeItemColor
                 : null
         "
+        [template]="_template"
         (blurInput)="onBlurInput($event)"
         (clear)="onClearInputEvent($event)"
         (commandEvent)="commandEvent($event)"
@@ -120,6 +121,7 @@
     <div
         *ngIf="inputConfig?.mergeDropdownBodyWithInput"
         class="dropdown-options-divider {{ inputConfig.dropdownWidthClass }}"
+        [class.dispatch_dropdown]="_template == 'svgtext-dispatch-template'"
     ></div>
     <div
         (scroll)="onScrollDropdown($event.target)"
@@ -139,7 +141,9 @@
             'dropdown-options-fuel-franchise': _template === 'fuel-franchise',
             'merge-dropdown-body-with-input':
                 inputConfig?.mergeDropdownBodyWithInput,
-            'no-result-container': _options[0]?.name === 'No Results'
+            'no-result-container': _options[0]?.name === 'No Results',
+            'svgtext-dispatch-template':
+                _template == 'svgtext-dispatch-template'
         }"
         class="dropdown-options  {{ inputConfig.dropdownWidthClass }}"
     >
@@ -295,6 +299,120 @@
                     ></div>
                 </div>
             </div>
+            <!-------------------------------------------Dispatch dropdown-------------------------------------------->
+
+            <div *ngSwitchCase="'svgtext-dispatch-template'">
+                <div
+                    (click)="onActiveItem(option)"
+                    *ngFor="let option of _options; trackBy: identity"
+                    [ngClass]="{
+                        disabled: option?.disabled,
+                        'no-result':
+                            _options.length === 1 &&
+                            _options[0].name === 'No Results',
+                        'add-new': option.name === 'ADD NEW',
+                        active: option.id === _activeItem?.id,
+                        'all-assigned':
+                            option.name.toLowerCase() === 'all assigned',
+                        trailerContainer: option.name === 'Container',
+                        lowboyrgn: option.name === 'Low Boy / RGN'
+                    }"
+                    class="dropdown-option svg-text-template {{
+                        option?.subFolder
+                    }} {{
+                        option.name.trim().replace(' ', '').toLowerCase()
+                    }} {{ inputConfig.customClass }}"
+                >
+                    <svg-icon
+                        *ngIf="!option?.isDriver"
+                        [ngClass]="{
+                            active: option.id === _activeItem?.id,
+                            'no-svg': !option?.logoName,
+                            'hazardous-svg':
+                                option?.logoName?.includes('hazardous'),
+                            'truck-trailer-logo':
+                                inputConfig?.customClass ===
+                                'truck-trailer-dropdown'
+                        }"
+                        [src]="
+                            option?.logoName
+                                | taSvg : option?.folder : option?.subFolder
+                        "
+                        class="svgtext-template-logo {{
+                            option.name.trim().replace(' ', '').toLowerCase()
+                        }}"
+                    ></svg-icon>
+                    <img
+                        *ngIf="option.logoName && option?.isDriver"
+                        [alt]="option.name"
+                        [ngClass]="{
+                            active: option.id === _activeItem?.id
+                        }"
+                        [src]="
+                            this.imageBase64Service.sanitizer(option.logoName)
+                        "
+                        [ngStyle]="{ 'margin-right': '6px' }"
+                        class="svg-template-logo"
+                    />
+                    <div
+                        *ngIf="!option.logoName && option?.isDriver"
+                        class="no-profile-image"
+                        [ngStyle]="{ 'margin-right': '6px' }"
+                    >
+                        <app-profile-images
+                            [indx]="0"
+                            [name]="option.name"
+                            [size]="'small'"
+                            [type]="'user'"
+                        >
+                        </app-profile-images>
+                    </div>
+                    <!-- Text -->
+                    <div
+                        [innerHtml]="
+                            option?.number
+                                ? (option.number
+                                  | taHighlight
+                                      : [
+                                            {
+                                                index: 45632,
+                                                text: getSuperControl.value
+                                            }
+                                        ])
+                                : (option.name
+                                  | taHighlight
+                                      : [
+                                            {
+                                                index: 45632,
+                                                text: getSuperControl.value
+                                            }
+                                        ])
+                        "
+                        [ngClass]="{
+                            'truck-text': option?.subFolder === 'trucks',
+                            'flex-1': option?.additionalText
+                        }"
+                        class="svgtext-template-text"
+                    ></div>
+
+                    <!-- Additional Text -->
+                    <div
+                        *ngIf="option?.additionalText"
+                        [innerHtml]="
+                            option.additionalText
+                                | taHighlight
+                                    : [
+                                          {
+                                              index: 45632,
+                                              text: getSuperControl.value
+                                          }
+                                      ]
+                        "
+                        class="svgtext-template-text additional-text"
+                    ></div>
+                </div>
+            </div>
+
             <!--------------------------- Details template (truck, trailer... details-pages)  --------------------------->
             <div *ngSwitchCase="'details-template'">
                 <div
