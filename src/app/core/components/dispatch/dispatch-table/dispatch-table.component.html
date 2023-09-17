@@ -44,16 +44,7 @@
                 cdkDragBoundary=".dispatch-table"
             >
                 <td class="truck-field" cdkDragHandle>
-                    <div
-                        class="main_inside"
-                        [class.addNew]="
-                            !item.truck && truckList.length && !__isBoardLocked
-                        "
-                        [class.filled]="item.truck"
-                        [class.default]="
-                            !item.truck && !truckList.length && !__isBoardLocked
-                        "
-                    >
+                    <div class="main_inside addNew" [class.filled]="item.truck">
                         <div
                             class="padding-inside"
                             *ngIf="openedTruckDropdown != rowIndex"
@@ -62,7 +53,6 @@
                                 *ngIf="
                                     openedTruckDropdown != rowIndex &&
                                     !item.truck &&
-                                    truckList.length &&
                                     !__isBoardLocked
                                 "
                                 class="add_new"
@@ -127,7 +117,7 @@
                         <app-ta-input-dropdown
                             *ngIf="openedTruckDropdown == rowIndex"
                             [formControl]="truckFormControll"
-                            [template]="'svgtext-template'"
+                            [template]="'svgtext-dispatch-template'"
                             [inputConfig]="{
                                 name: 'Input Dropdown',
                                 type: 'text',
@@ -147,7 +137,7 @@
                             }"
                             [options]="truckList"
                             [canAddNew]="true"
-                            [canOpenModal]="true"
+                            [canAddNew]="truckList?.length ? false : true"
                             [activeItem]="null"
                             (selectedItem)="addTruck($event)"
                         ></app-ta-input-dropdown>
@@ -156,18 +146,12 @@
                 <td class="trailer-field">
                     <div
                         class="main_inside"
-                        [class.addNew]="
-                            !item.trailer &&
-                            trailerList.length &&
-                            !__isBoardLocked
-                        "
+                        [class.addNew]="!item.trailer && !__isBoardLocked"
                         [class.filled]="item.trailer"
-                        [class.default]="
-                            !item.trailer &&
-                            !trailerList.length &&
-                            !__isBoardLocked
-                        "
                         [class.isDragging]="isDrag && draggingType == 'trailer'"
+                        [class.dropdownActive]="
+                            openedTrailerDropdown == rowIndex
+                        "
                         cdkDropList
                         [cdkDropListSortPredicate]="trailerPositionPrediction"
                         (cdkDropListDropped)="dropTrailer($event, rowIndex)"
@@ -212,7 +196,6 @@
                                     *ngIf="
                                         openedTrailerDropdown != rowIndex &&
                                         !item.trailer &&
-                                        trailerList.length &&
                                         !__isBoardLocked
                                     "
                                     (click)="showTrailerDropdown(rowIndex)"
@@ -277,7 +260,7 @@
                             <app-ta-input-dropdown
                                 *ngIf="openedTrailerDropdown == rowIndex"
                                 [formControl]="truckFormControll"
-                                [template]="'svgtext-template'"
+                                [template]="'svgtext-dispatch-template'"
                                 [inputConfig]="{
                                     name: 'Input Dropdown',
                                     type: 'text',
@@ -296,7 +279,7 @@
                                     mergeDropdownBodyWithInput: true
                                 }"
                                 [options]="trailerList"
-                                [canAddNew]="true"
+                                [canAddNew]="trailerList?.length ? false : true"
                                 [canOpenModal]="true"
                                 [activeItem]="null"
                                 (selectedItem)="addTrailer($event)"
@@ -954,16 +937,13 @@
 
             <tr *ngIf="!__isBoardLocked">
                 <td class="truck-field">
-                    <div class="main_inside" [class.addNew]="truckList.length">
+                    <div class="main_inside addNew">
                         <div
                             class="padding-inside"
                             *ngIf="openedTruckDropdown != -2"
                         >
                             <div
-                                *ngIf="
-                                    openedTruckDropdown != -2 &&
-                                    truckList.length
-                                "
+                                *ngIf="openedTruckDropdown != -2"
                                 class="add_new"
                                 (click)="showTruckDropdown(-2)"
                             >
@@ -984,7 +964,7 @@
                         <app-ta-input-dropdown
                             *ngIf="openedTruckDropdown == -2"
                             [formControl]="truckFormControll"
-                            [template]="'svgtext-template'"
+                            [template]="'svgtext-dispatch-template'"
                             [inputConfig]="{
                                 name: 'Input Dropdown',
                                 type: 'text',
@@ -1004,7 +984,7 @@
                             }"
                             [options]="truckList"
                             [activeItem]="null"
-                            [canAddNew]="true"
+                            [canAddNew]="truckList?.length ? false : true"
                             [canOpenModal]="true"
                             (selectedItem)="addTruck($event)"
                         ></app-ta-input-dropdown>
@@ -1012,8 +992,7 @@
                 </td>
                 <td class="trailer-field">
                     <div
-                        class="main_inside"
-                        [class.addNew]="trailerList.length"
+                        class="main_inside addNew"
                         cdkDropList
                         [cdkDropListSortPredicate]="trailerPositionPrediction"
                         (cdkDropListDropped)="dropTrailer($event, -1)"
@@ -1026,6 +1005,7 @@
                                     : gridIndex
                                     : 'trailer'
                         "
+                        [class.dropdownActive]="openedTrailerDropdown == -2"
                     >
                         <div class="drag-hold-between">
                             <div
@@ -1034,10 +1014,7 @@
                             ></div>
                             <div
                                 class="padding-inside"
-                                *ngIf="
-                                    openedTrailerDropdown != -2 &&
-                                    trailerList.length
-                                "
+                                *ngIf="openedTrailerDropdown != -2"
                             >
                                 <div
                                     class="add_new"
@@ -1061,7 +1038,7 @@
                             <app-ta-input-dropdown
                                 *ngIf="openedTrailerDropdown == -2"
                                 [formControl]="truckFormControll"
-                                [template]="'svgtext-template'"
+                                [template]="'svgtext-dispatch-template'"
                                 [inputConfig]="{
                                     name: 'Input Dropdown',
                                     type: 'text',
@@ -1080,7 +1057,7 @@
                                 }"
                                 [options]="trailerList"
                                 [activeItem]="null"
-                                [canAddNew]="true"
+                                [canAddNew]="trailerList?.length ? false : true"
                                 [canOpenModal]="true"
                                 (selectedItem)="addTrailer($event)"
                             ></app-ta-input-dropdown>

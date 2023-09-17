@@ -160,6 +160,18 @@
         ></svg-icon>
     </div>
 
+    <!-- Input Clear for dispatch dropdown -->
+    <div
+        *ngIf="template == 'svgtext-dispatch-template'"
+        class="input-clear-dispatch"
+        position="top"
+        (click)="clearInput($event)"
+    >
+        <svg-icon
+            [src]="'assets/svg/common/ic_x.svg'"
+            class="input-clear-dispatch-icon"
+        ></svg-icon>
+    </div>
     <!-- Input Pen -->
     <div
         *ngIf="
@@ -1129,7 +1141,8 @@
                 focusInput,
             'cursor-on-right-side': _inputConfig?.inputCursorOnRightSide,
             'merge-dropdown-body-with-input':
-                _inputConfig.mergeDropdownBodyWithInput
+                _inputConfig.mergeDropdownBodyWithInput,
+            'dispatch-dropdown': template == 'svgtext-dispatch-template'
         }"
         (keypress)="onKeypress($event)"
         (keydown)="onKeydown($event)"

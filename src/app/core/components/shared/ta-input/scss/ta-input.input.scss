@@ -655,6 +655,10 @@
         background-color: $default-focus-input !important;
         color: $default-focus-content !important;
     }
+
+    &.dispatch-dropdown {
+        background-color: #2f2f2f !important;
+    }
 }
 
 //------------------------- Input Number Hide Arrows -------------------------

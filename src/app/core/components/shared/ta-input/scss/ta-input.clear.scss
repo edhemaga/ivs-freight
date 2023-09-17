@@ -314,3 +314,45 @@
         }
     }
 }
+
+.input-clear-dispatch {
+    position: absolute;
+    right: 0px;
+    top: 47%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    width: 26px;
+    height: 26px;
+
+    transform: translateY(-50%);
+    border-radius: 1px;
+    z-index: 10;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+
+    svg-icon {
+        svg {
+            display: flex;
+            width: 12px !important;
+            height: 12px !important;
+
+            path {
+                fill: #aaaaaa;
+            }
+        }
+    }
+
+    &:hover {
+        background-color: #1d1d1d;
+
+        svg-icon {
+            svg {
+                path {
+                    fill: #dadada;
+                }
+            }
+        }
+    }
+}
