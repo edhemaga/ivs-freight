@@ -278,6 +278,32 @@
             font-weight: 700;
             color: #ef5350;
         }
+
+        &.status-template-pending{
+            svg-icon{
+                svg{
+                    path{
+                        fill: #919191;
+                    }
+                }
+            }
+            span{
+                color: #424242;
+            }
+        }
+
+        &.status-template-ready{
+            svg-icon{
+                svg{
+                    path{
+                        fill: #26A690;
+                    }
+                }
+            }
+            span{
+                color: #26A690;
+            }
+        }
     }
 
     .bold-normal-template {

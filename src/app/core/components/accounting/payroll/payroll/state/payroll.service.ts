@@ -50,12 +50,12 @@ export class PayrollStoreService {
     set payrollList(data) {
         let payrollData = [];
         Object.keys(data).map((item) => {
-            if (this.payrollData[item]) {
+            if (data[item] && this.payrollData[item]) {
                 payrollData.push({
                     title: this.payrollData[item].title,
                     short_title: this.payrollData[item].short_title,
-                    data: data[item].data,
-                    count: data[item].count,
+                    data: data[item].pagination.data,
+                    count: data[item].pagination.count,
                     tableSettings: this.getTableDefinitions(
                         this.payrollData[item].title
                     ),
@@ -63,6 +63,7 @@ export class PayrollStoreService {
             }
         });
 
+        console.log("WHAT IS DATA", payrollData);
         this.payrollStore.set({ ...payrollData }); // NEVEROVATNO ALI SAMO OVAKO RADI :)
     }
 

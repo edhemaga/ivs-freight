@@ -692,6 +692,8 @@
                                 [statusMainIndex]="rowIndex"
                                 [statusTypes]="'dispatch'"
                                 [withStatusAgo]="true"
+                                [pickupCount]="item.activeLoad?.pickupCount" 
+                                [deliveryCount]="item.activeLoad?.deliveryCount"
                                 [possibleNextStatuses]="
                                     item.possibleNextStatuses
                                 "
