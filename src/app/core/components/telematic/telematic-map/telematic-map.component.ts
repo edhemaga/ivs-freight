@@ -154,7 +154,6 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
             width: 66,
             marginRight: 22,
             value: 'trailerNumber',
-            //showMotionIcon: true,
             boldText: true,
             manageWidth: 53,
             manageMarginRight: 9,
@@ -458,8 +457,6 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
                     if (data.coordinates) {
                         data.coordinates = data.coordinates.replace('-', '');
                     }
-
-                    //if (index == 0) data.unitType = 2;
                 });
 
                 this.gpsUnassignedData = gpsData.data;
