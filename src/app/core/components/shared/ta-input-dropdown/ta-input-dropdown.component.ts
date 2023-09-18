@@ -80,6 +80,7 @@ export class TaInputDropdownComponent
 
     // different templates for body rendering
     public _template: string = null;
+    _canAddNew: boolean;
     @Input() set template(value: string) {
         this._template = value;
         if (value === 'details-template' && this.isDetailsPages) {
@@ -101,7 +102,9 @@ export class TaInputDropdownComponent
 
     @Input() multiselectTemplate: string;
     @Input() inputConfig: ITaInput;
-    @Input() canAddNew: boolean; // ADD NEW item in options
+    @Input() set canAddNew(value: boolean) {
+        this._canAddNew = value;
+    } // ADD NEW item in options
     @Input() canOpenModal: boolean; // open modal with ADD NEW button
 
     // sort-template for different options
@@ -182,17 +185,19 @@ export class TaInputDropdownComponent
                 break;
             }
             default: {
-                if (
-                    this.canAddNew &&
-                    !this._options.find((item) => item.id === 7655)
-                ) {
-                    this._options.unshift({
-                        id: 7655,
-                        name: 'ADD NEW',
-                    });
-                }
+                setTimeout(() => {
+                    if (
+                        this._canAddNew &&
+                        !this._options.find((item) => item.id === 7655)
+                    ) {
+                        this._options.unshift({
+                            id: 7655,
+                            name: 'ADD NEW',
+                        });
+                    }
 
-                this.originalOptions = this._options;
+                    this.originalOptions = this._options;
+                }, 100);
                 break;
             }
         }

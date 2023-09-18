@@ -104,6 +104,7 @@ export class TaInputComponent
 
     @Input() incorrectValue: boolean;
     @Input() selectedDropdownLabelColor: any;
+    @Input() template: string;
 
     public _inputConfig: ITaInput = null;
     @Input() set inputConfig(config: ITaInput) {
