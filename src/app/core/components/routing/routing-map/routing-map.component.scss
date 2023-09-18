@@ -186,11 +186,16 @@
     pointer-events: all;
     cursor: pointer;
     user-select: auto;
+    opacity: 0.85;
 
     z-index: 1;
 
     .cdk-drop-list-dragging .selected-route {
         opacity: 0.2;
+    }
+
+    &:hover, &.route-in-focus {
+        opacity: 1;
     }
 
     &:last-child {

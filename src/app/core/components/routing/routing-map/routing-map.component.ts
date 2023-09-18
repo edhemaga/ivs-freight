@@ -572,6 +572,8 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
 
     editStopForm!: UntypedFormGroup;
 
+    previousFocusedRouteId: number | any = null;
+
     constructor(
         private mapsService: MapsService,
         private formBuilder: UntypedFormBuilder,
@@ -1837,10 +1839,13 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
                     if (route.isFocused) {
                         this.focusedRouteIndex = i;
 
-                        if (this.routeHiddenPolylines[route.id])
+                        if (this.routeHiddenPolylines[route.id] && this.previousFocusedRouteId != route.id) {
                             this.zoomToObject(
                                 this.routeHiddenPolylines[route.id]
                             );
+
+                            this.previousFocusedRouteId = route.id;
+                        }
                     } else {
                         this.focusedRouteIndex = null;
 
@@ -3085,8 +3090,10 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
 
                     this.routePolylines[route.id].setMap(this.agmMap);
                     this.routeHiddenPolylines[route.id].setMap(this.agmMap);
-                    if (zoomToRoute)
+                    if (zoomToRoute && this.previousFocusedRouteId != route.id) {
                         this.zoomToObject(this.routeHiddenPolylines[route.id]);
+                        this.previousFocusedRouteId = route.id;
+                    }
                 },
                 error: () => {
                     console.log('decodeRouteShape error');
