@@ -9,15 +9,15 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { PayrollPaymentShortResponse } from './payrollPaymentShortResponse';
+import { PayrollBonusDeductionResponse } from './payrollBonusDeductionResponse';
 import { EnumValue } from './enumValue';
 import { DriverShortResponse } from './driverShortResponse';
-import { PayrollDeductionResponse } from './payrollDeductionResponse';
-import { PayrollPaymentResponse } from './payrollPaymentResponse';
-import { LoadShortResponse } from './loadShortResponse';
-import { PayrollCreditResponse } from './payrollCreditResponse';
+import { PayrollDeadlineShortResponse } from './payrollDeadlineShortResponse';
+import { PayrollMilesShortResponse } from './payrollMilesShortResponse';
 
 
-export interface PayrollDriverCommissionResponse { 
+export interface PayrollResponse { 
     id?: number;
     driver?: DriverShortResponse;
     payrollNumber?: string | null;
@@ -25,20 +25,17 @@ export interface PayrollDriverCommissionResponse {
     closedDate?: string | null;
     paidDate?: string | null;
     status?: EnumValue;
-    mileageAmount?: number;
+    miles?: PayrollMilesShortResponse;
+    summary?: PayrollPaymentShortResponse;
+    bonusDeduction?: PayrollBonusDeductionResponse;
+    bonusAmount?: number;
     salaryAmount?: number;
     creditAmount?: number;
     deductionAmount?: number;
-    revenueAmount?: number;
     totalAmount?: number;
+    payDeadline?: PayrollDeadlineShortResponse;
+    stopsCount?: number;
     loadsCount?: number;
-    additionalDays?: number | null;
-    previousLoad?: LoadShortResponse;
-    lastLoad?: LoadShortResponse;
-    stops?: Array<LoadShortResponse> | null;
-    credits?: Array<PayrollCreditResponse> | null;
-    deductions?: Array<PayrollDeductionResponse> | null;
-    payments?: Array<PayrollPaymentResponse> | null;
     createdAt?: string;
     updatedAt?: string;
 }

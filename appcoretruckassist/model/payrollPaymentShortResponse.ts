@@ -9,12 +9,11 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { EnumValue } from './enumValue';
 
 
-export interface DispatchStatusResponse { 
-    statusValue?: EnumValue;
-    statusString?: string | null;
-    statusCheckInNumber?: string | null;
+export interface PayrollPaymentShortResponse { 
+    amount?: number;
+    salary?: number;
+    total?: number;
 }
 

@@ -66,6 +66,9 @@ export interface DriverResponse {
     mvrExpirationDays?: number | null;
     cdlExpirationDays?: number | null;
     medicalExpirationDays?: number | null;
+    mvrExpirationHours?: number | null;
+    cdlExpirationHours?: number | null;
+    medicalExpirationHours?: number | null;
     mvrPercentage?: number | null;
     cdlPercentage?: number | null;
     medicalPercentage?: number | null;

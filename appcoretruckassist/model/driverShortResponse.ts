@@ -54,6 +54,9 @@ export interface DriverShortResponse {
     licenseStateShortName?: string | null;
     hired?: string | null;
     mvrExpirationDays?: number | null;
+    mvrExpirationHours?: number | null;
+    cdlExpirationHours?: number | null;
+    medicalExpirationHours?: number | null;
     cdlExpirationDays?: number | null;
     medicalExpirationDays?: number | null;
     mvrPercentage?: number | null;

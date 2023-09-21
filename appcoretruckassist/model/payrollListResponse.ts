@@ -11,11 +11,11 @@
  */
 import { PayrollDriverCommissionResponsePagination } from './payrollDriverCommissionResponsePagination';
 import { PayrollOwnerResponsePagination } from './payrollOwnerResponsePagination';
-import { PayrollDriverMileageResponsePagination } from './payrollDriverMileageResponsePagination';
+import { PayrollMainListResponse } from './payrollMainListResponse';
 
 
 export interface PayrollListResponse { 
-    payrollDriverMileages?: PayrollDriverMileageResponsePagination;
+    payrollDriverMileages?: PayrollMainListResponse;
     payrollDriverCommissions?: PayrollDriverCommissionResponsePagination;
     payrollOwners?: PayrollOwnerResponsePagination;
     payrollDriverMileagesCount?: number;

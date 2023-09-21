@@ -9,12 +9,13 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { EnumValue } from './enumValue';
 
 
-export interface DispatchStatusResponse { 
-    statusValue?: EnumValue;
-    statusString?: string | null;
-    statusCheckInNumber?: string | null;
-}
+export type PayrollDeadlinePeriod = 'Pending' | 'Ready' | 'Past';
+
+export const PayrollDeadlinePeriod = {
+    Pending: 'Pending' as PayrollDeadlinePeriod,
+    Ready: 'Ready' as PayrollDeadlinePeriod,
+    Past: 'Past' as PayrollDeadlinePeriod
+};
 

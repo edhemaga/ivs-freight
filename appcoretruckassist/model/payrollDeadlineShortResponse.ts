@@ -9,12 +9,11 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { EnumValue } from './enumValue';
+import { PayrollDeadlinePeriod } from './payrollDeadlinePeriod';
 
 
-export interface DispatchStatusResponse { 
-    statusValue?: EnumValue;
-    statusString?: string | null;
-    statusCheckInNumber?: string | null;
+export interface PayrollDeadlineShortResponse { 
+    numberOfDays?: number;
+    period?: PayrollDeadlinePeriod;
 }
 
