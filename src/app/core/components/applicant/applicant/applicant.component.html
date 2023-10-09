@@ -84,7 +84,11 @@
                     </div>
                 </div>
 
-                <router-outlet></router-outlet>
+                <main [@animRoutes]="animationState">
+                    <router-outlet
+                        (activate)="handleRouteAnimationActivate()"
+                    ></router-outlet>
+                </main>
             </div>
 
             <app-applicant-footer [mode]="selectedMode"></app-applicant-footer>

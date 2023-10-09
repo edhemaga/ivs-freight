@@ -57,4 +57,6 @@ export enum InputSwitchActions {
     TRAILER_COLOR = 'TRAILER-COLOR',
 
     SWITCH = 'SWITCH',
+
+    ROUTE_INDEX = 'routeIdx',
 }

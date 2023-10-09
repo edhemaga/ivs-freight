@@ -22,57 +22,93 @@ const routes: Routes = [
             {
                 path: '1',
                 component: Step1Component,
-                data: { title: 'Personal Info', depth: 1 },
+                data: {
+                    title: 'Personal Info',
+                    depth: 1,
+                    routeIdx: 0,
+                },
             },
             {
                 path: '2',
                 component: Step2Component,
-                data: { title: 'Work experience', depth: 2 },
+                data: {
+                    title: 'Work experience',
+                    depth: 2,
+                    routeIdx: 1,
+                },
             },
             {
                 path: '3',
                 component: Step3Component,
-                data: { title: 'CDL Information', depth: 3 },
+                data: {
+                    title: 'CDL Information',
+                    depth: 3,
+                    routeIdx: 2,
+                },
             },
             {
                 path: '4',
                 component: Step4Component,
-                data: { title: 'Accident records', depth: 4 },
+                data: {
+                    title: 'Accident records',
+                    depth: 4,
+                    routeIdx: 3,
+                },
             },
             {
                 path: '5',
                 component: Step5Component,
-                data: { title: 'Traffic violations', depth: 5 },
+                data: {
+                    title: 'Traffic violations',
+                    depth: 5,
+                    routeIdx: 4,
+                },
             },
             {
                 path: '6',
                 component: Step6Component,
-                data: { title: 'Education', depth: 6 },
+                data: { title: 'Education', depth: 6, routeIdx: 5 },
             },
             {
                 path: '7',
                 component: Step7Component,
-                data: { title: '7 Days HOS', depth: 7 },
+                data: { title: '7 Days HOS', depth: 7, routeIdx: 6 },
             },
             {
                 path: '8',
                 component: Step8Component,
-                data: { title: 'Drug & Alcohol statement', depth: 8 },
+                data: {
+                    title: 'Drug & Alcohol statement',
+                    depth: 8,
+                    routeIdx: 7,
+                },
             },
             {
                 path: '9',
                 component: Step9Component,
-                data: { title: 'Driver rights', depth: 9 },
+                data: {
+                    title: 'Driver rights',
+                    depth: 9,
+                    routeIdx: 8,
+                },
             },
             {
                 path: '10',
                 component: Step10Component,
-                data: { title: 'Disclosure & release', depth: 10 },
+                data: {
+                    title: 'Disclosure & release',
+                    depth: 10,
+                    routeIdx: 9,
+                },
             },
             {
                 path: '11',
                 component: Step11Component,
-                data: { title: 'Authorization', depth: 11 },
+                data: {
+                    title: 'Authorization',
+                    depth: 11,
+                    routeIdx: 10,
+                },
             },
             { path: '**', redirectTo: '1', pathMatch: 'full' },
         ],
