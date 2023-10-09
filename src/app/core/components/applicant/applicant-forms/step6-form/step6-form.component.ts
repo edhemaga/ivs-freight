@@ -11,7 +11,11 @@ import {
     Output,
     SimpleChanges,
 } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import {
+    UntypedFormBuilder,
+    UntypedFormGroup,
+    Validators,
+} from '@angular/forms';
 
 import {
     distinctUntilChanged,
@@ -51,6 +55,7 @@ export class Step6FormComponent
     @Input() markFormInvalid?: boolean;
     @Input() isReviewingCard: boolean;
     @Input() stepFeedbackValues?: any;
+    @Input() contactsLength?: number;
 
     @Output() formValuesEmitter = new EventEmitter<any>();
     @Output() cancelFormEditingEmitter = new EventEmitter<any>();
@@ -111,6 +116,10 @@ export class Step6FormComponent
 
     ngOnInit(): void {
         this.createForm();
+    }
+
+    asd() {
+        console.log(this.contactForm);
     }
 
     ngAfterViewInit(): void {
@@ -266,7 +275,6 @@ export class Step6FormComponent
                 const {
                     id,
                     reviewId,
-                    isEditingContact,
                     emergencyContactReview,
                     ...previousFormValues
                 } = this.formValuesToPatch;
@@ -305,7 +313,6 @@ export class Step6FormComponent
 
         const saveData: ContactModel = {
             ...contactForm,
-            isEditingContact: false,
         };
 
         this.formValuesEmitter.emit(saveData);
@@ -327,7 +334,6 @@ export class Step6FormComponent
 
         const saveData: ContactModel = {
             ...contactForm,
-            isEditingContact: false,
         };
 
         this.saveFormEditingEmitter.emit(saveData);

@@ -275,6 +275,7 @@
                 font-size: 14px;
                 line-height: 18px;
                 color: $ta-black-2;
+                margin-bottom: 26px;
 
                 &::-moz-selection {
                     color: $ta-black-2;
@@ -288,6 +289,99 @@
             }
 
             .contacts-view-container {
+                width: 616px;
+
+                .title-container {
+                    width: 100%;
+                    margin-bottom: 4px;
+                    padding-left: 40px;
+
+                    .name-title-box,
+                    .phone-title-box,
+                    .relationship-title-box {
+                        p {
+                            color: $bw5;
+                            font-size: 11px;
+
+                            &::-moz-selection {
+                                color: $bw5;
+                                background: rgb(145, 145, 145, 0.2);
+                            }
+
+                            &::selection {
+                                color: $bw5;
+                                background: rgb(145, 145, 145, 0.2);
+                            }
+
+                            span {
+                                color: $progress-danger;
+
+                                &::-moz-selection {
+                                    color: $bw5;
+                                    background: rgb(145, 145, 145, 0.2);
+                                }
+
+                                &::selection {
+                                    color: $bw5;
+                                    background: rgb(145, 145, 145, 0.2);
+                                }
+                            }
+                        }
+
+                        &.name-title-box {
+                            width: 44px;
+                            margin-right: 187px;
+                        }
+
+                        &.phone-title-box {
+                            width: 51px;
+                            margin-right: 96px;
+                        }
+
+                        &.relationship-title-box {
+                            width: 94px;
+                        }
+                    }
+                }
+
+                .contact-info-container {
+                    width: 100%;
+                    height: 34px;
+                    padding: 4px 10px;
+                    border-radius: 2px;
+                    margin-bottom: 4px;
+
+                    &.filled-valid {
+                        background: $ta-blue-10;
+                    }
+
+                    &.filled-invalid {
+                        background: $ta-red-7;
+                    }
+
+                    .group {
+                        margin-right: 4px;
+                    }
+
+                    .name-group {
+                        width: 200px;
+                    }
+
+                    .phone-group {
+                        width: 170px;
+                    }
+
+                    .relationship-group {
+                        width: 170px;
+                    }
+
+                    .delete-btn-group {
+                        width: 26px;
+                    }
+                }
+            }
+
+            /* .contacts-view-container {
                 width: 616px;
                 margin-bottom: 32px;
 
@@ -536,7 +630,7 @@
                         }
                     }
                 }
-            }
+            } */
         }
     }
 }

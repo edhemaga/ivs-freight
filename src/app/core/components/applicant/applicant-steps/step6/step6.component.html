@@ -633,18 +633,131 @@
         <!-- CONTACT -->
 
         <form class="contact-form">
-            <h3
-                class="contact-title text-center ta-font-bold"
-                [ngStyle]="{
-                    'margin-bottom': contactsArray.length ? '22px' : '26px'
-                }"
-            >
+            <h3 class="contact-title text-center ta-font-bold">
                 In case of emergency, contact:
             </h3>
 
             <!-- CREATED CONTACT DATA -->
 
-            <ng-container *ngIf="contactsArray?.length">
+            <ng-container *ngIf="contacts?.length">
+                <div
+                    class="d-flex flex-column justify-content-center contacts-view-container"
+                    [formGroup]="contactForm"
+                >
+                    <div class="d-flex flex-column">
+                        <div class="d-flex align-items-center title-container">
+                            <div
+                                class="d-flex align-items-center name-title-box"
+                            >
+                                <p class="m-0 ta-font-semi-bold">
+                                    NAME <span>*</span>
+                                </p>
+                            </div>
+
+                            <div
+                                class="d-flex align-items-center phone-title-box"
+                            >
+                                <p class="m-0 ta-font-semi-bold">
+                                    PHONE <span>*</span>
+                                </p>
+                            </div>
+
+                            <div
+                                class="d-flex align-items-center relationship-title-box"
+                            >
+                                <p class="m-0 ta-font-semi-bold">
+                                    RELATIONSHIP <span>*</span>
+                                </p>
+                            </div>
+                        </div>
+
+                        <ng-container
+                            *ngFor="
+                                let contact of contacts?.controls;
+                                let i = index;
+                                trackBy: trackByIdentity
+                            "
+                            formArrayName="contacts"
+                        >
+                            <div
+                                class="d-flex align-items-center contact-info-container"
+                                [formGroupName]="i"
+                                [ngClass]="{
+                                    'filled-valid': contacts?.controls[i].valid,
+                                    'filled-invalid':
+                                        contacts?.controls[i].invalid
+                                }"
+                            >
+                                <div class="group name-group">
+                                    <app-ta-input
+                                        formControlName="name"
+                                        [inputConfig]="{
+                                            name: 'Emergency Name',
+                                            type: 'text',
+                                            label: 'Name',
+                                            placeholderInsteadOfLabel: true,
+                                            isRequired: true,
+                                            textTransform: 'capitalize',
+                                            minLength: 2,
+                                            maxLength: 24,
+                                            hideErrorMessage: true,
+                                            hideRequiredCheck: true
+                                        }"
+                                    ></app-ta-input>
+                                </div>
+
+                                <div class="group phone-group">
+                                    <app-ta-input
+                                        formControlName="phone"
+                                        [inputConfig]="{
+                                            name: 'Phone',
+                                            type: 'text',
+                                            label: 'Phone',
+                                            placeholderInsteadOfLabel: true,
+                                            isRequired: true,
+                                            placeholderIcon: 'phone',
+                                            mask: '(000) 000-0000',
+                                            maxLength: 14,
+                                            hideErrorMessage: true
+                                        }"
+                                    ></app-ta-input>
+                                </div>
+
+                                <div class="group relationship-group">
+                                    <app-ta-input
+                                        formControlName="relationship"
+                                        [inputConfig]="{
+                                            name: 'Relationship',
+                                            type: 'text',
+                                            label: 'Relationship',
+                                            placeholderInsteadOfLabel: true,
+                                            textTransform: 'capitalize',
+                                            minLength: 2,
+                                            maxLength: 24,
+                                            isRequired: true,
+                                            hideErrorMessage: true,
+                                            hideRequiredCheck: true
+                                        }"
+                                    ></app-ta-input>
+                                </div>
+
+                                <div class="delete-btn-group">
+                                    <app-applicant-delete-btn
+                                        [filledValid]="
+                                            contacts?.controls[i].valid
+                                        "
+                                        [filledInvalid]="
+                                            contacts?.controls[i].invalid
+                                        "
+                                    ></app-applicant-delete-btn>
+                                </div>
+                            </div>
+                        </ng-container>
+                    </div>
+                </div>
+            </ng-container>
+
+            <!--  <ng-container *ngIf="contactsArray?.length">
                 <div
                     class="d-flex flex-column justify-content-center contacts-view-container"
                     [formGroup]="contactForm"
@@ -897,7 +1010,7 @@
                                         </div>
                                     </div>
 
-                                    <!-- REVIEW AND FEEDBACK -->
+                                    REVIEW AND FEEDBACK 
 
                                     <ng-container
                                         *ngIf="
@@ -994,7 +1107,7 @@
                         </div>
                     </ng-container>
                 </div>
-            </ng-container>
+            </ng-container> -->
 
             <ng-container
                 *ngIf="
@@ -1002,26 +1115,23 @@
                     (selectedMode === 'REVIEW_MODE' && !isReviewingCard)
                 "
             >
-                <div class="d-flex">
-                    <app-step6-form
-                        [mode]="selectedMode"
-                        [isEditing]="isEditing"
-                        [markFormInvalid]="markFormInvalid"
-                        [formValuesToPatch]="formValuesToPatch"
-                        [isReviewingCard]="isReviewingCard"
-                        [stepFeedbackValues]="feedbackValuesToPatch"
-                        (formValuesEmitter)="getContactFormValues($event)"
-                        (formStatusEmitter)="onGetFormStatus($event)"
-                        (markInvalidEmitter)="onMarkInvalidEmit($event)"
-                        (lastFormValuesEmitter)="onGetLastFormValues($event)"
-                        (hasIncorrectFieldsEmitter)="
-                            onHasIncorrectFields($event)
-                        "
-                        (openAnnotationArrayValuesEmitter)="
-                            onGetOpenAnnotationArrayValues($event)
-                        "
-                    ></app-step6-form>
-                </div>
+                <app-step6-form
+                    [mode]="selectedMode"
+                    [isEditing]="isEditing"
+                    [markFormInvalid]="markFormInvalid"
+                    [formValuesToPatch]="formValuesToPatch"
+                    [isReviewingCard]="isReviewingCard"
+                    [stepFeedbackValues]="feedbackValuesToPatch"
+                    [contactsLength]="contacts?.length"
+                    (formValuesEmitter)="getContactFormValues($event)"
+                    (formStatusEmitter)="onGetFormStatus($event)"
+                    (markInvalidEmitter)="onMarkInvalidEmit($event)"
+                    (lastFormValuesEmitter)="onGetLastFormValues($event)"
+                    (hasIncorrectFieldsEmitter)="onHasIncorrectFields($event)"
+                    (openAnnotationArrayValuesEmitter)="
+                        onGetOpenAnnotationArrayValues($event)
+                    "
+                ></app-step6-form>
             </ng-container>
         </form>
     </div>

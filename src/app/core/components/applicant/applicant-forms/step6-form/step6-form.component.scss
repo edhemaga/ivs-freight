@@ -24,12 +24,47 @@
 
     .name-group {
         width: 210px;
-        margin-bottom: 22px;
     }
 
     .phone-group,
     .relationship-group {
         width: 191px;
-        margin-bottom: 22px;
+    }
+
+    .inputs-with-background {
+        width: 100%;
+        height: 34px;
+        padding: 4px 10px;
+        background: $bw2;
+        border-radius: 2px;
+
+        &.filled-valid {
+            background: $ta-blue-10;
+        }
+
+        &.filled-invalid {
+            background: $ta-red-7;
+        }
+
+        .group {
+            margin-right: 4px;
+        }
+
+        .name-group {
+            width: 200px;
+        }
+
+        .phone-group,
+        .relationship-group {
+            width: 170px;
+        }
+
+        .delete-btn-group {
+            width: 26px;
+        }
+    }
+
+    .btn-container {
+        margin-top: 22px;
     }
 }

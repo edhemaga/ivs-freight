@@ -27,6 +27,7 @@ import { ApplicantEndScreenComponent } from './applicant-end-screen/applicant-en
 import { ApplicantNextBackBtnComponent } from './applicant-next-back-btn/applicant-next-back-btn.component';
 import { ApplicantAddSaveBtnComponent } from './applicant-add-save-btn/applicant-add-save-btn.component';
 import { ApplicantReviewFeedbackComponent } from './applicant-review-feedback/applicant-review-feedback.component';
+import { ApplicantDeleteBtnComponent } from './applicant-delete-btn/applicant-delete-btn.component';
 
 import { Step1Component } from './applicant-steps/step1/step1.component';
 import { Step2Component } from './applicant-steps/step2/step2.component';
@@ -68,6 +69,7 @@ import { TaUploadFilesComponent } from '../shared/ta-upload-files/ta-upload-file
         ApplicantWelcomeScreenComponent,
         ApplicantEndScreenComponent,
         ApplicantReviewFeedbackComponent,
+        ApplicantDeleteBtnComponent,
 
         Step1Component,
         Step2Component,

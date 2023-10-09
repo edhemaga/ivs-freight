@@ -1,0 +1,76 @@
+@import 'src/theme/variables.scss';
+
+.delete-btn-container {
+    width: 26px;
+    height: 26px;
+    border-radius: 2px;
+    padding: 4px;
+    transition: background 0.2s ease-in-out;
+
+    &:hover {
+        background: $white;
+
+        .delete-icon {
+            svg {
+                path {
+                    fill: $ta-black;
+                }
+            }
+        }
+    }
+
+    &.filled-valid {
+        &:hover {
+            background: $white-2;
+        }
+
+        .delete-icon {
+            svg {
+                path {
+                    fill: $ta-blue-7;
+                }
+            }
+
+            &:hover {
+                svg {
+                    path {
+                        fill: $ta-blue-5;
+                    }
+                }
+            }
+        }
+    }
+
+    &.filled-invalid {
+        &:hover {
+            background: $white-2;
+        }
+
+        .delete-icon {
+            svg {
+                path {
+                    fill: $ta-red;
+                }
+            }
+
+            &:hover {
+                svg {
+                    path {
+                        fill: $ta-red-2;
+                    }
+                }
+            }
+        }
+    }
+
+    .delete-icon {
+        cursor: pointer;
+
+        svg {
+            path {
+                fill: $bw5;
+                transition: fill 0.2s ease-in-out;
+            }
+        }
+    }
+}
