@@ -149,13 +149,6 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
             'email',
             this.destroy$
         );
-
-        this.formService.checkFormChange(this.officeForm);
-        this.formService.formValueChange$
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((isFormChange: boolean) => {
-                this.isFormDirty = isFormChange;
-            });
     }
 
     public tabChange(event: any): void {
@@ -528,6 +521,7 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
                         };
                     }
                     setTimeout(() => {
+                        this.startFormChanges();
                         this.disableCardAnimation = false;
                     }, 1000);
                 },
@@ -549,6 +543,8 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
                     if (this.editData?.type === 'edit') {
                         this.disableCardAnimation = true;
                         this.editCompanyOfficeById(this.editData.id);
+                    } else {
+                        this.startFormChanges();
                     }
                 },
                 error: () => {},
@@ -557,6 +553,15 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
 
     public onScrollingBrokerContacts(event: any) {
         this.isDepartmentCardsScrolling = event.target.scrollLeft > 1;
+    }
+
+    private startFormChanges() {
+        this.formService.checkFormChange(this.officeForm);
+        this.formService.formValueChange$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((isFormChange: boolean) => {
+                this.isFormDirty = isFormChange;
+            });
     }
 
     ngOnDestroy(): void {

@@ -27,6 +27,7 @@ api/fuel.service.ts
 api/geolocation.service.ts
 api/inspection.service.ts
 api/integration.service.ts
+api/listCounter.service.ts
 api/load.service.ts
 api/map.service.ts
 api/medical.service.ts
@@ -194,6 +195,7 @@ model/contactEmailResponse.ts
 model/contactEmailType.ts
 model/contactPhoneResponse.ts
 model/contactPhoneType.ts
+model/counterResponse.ts
 model/countryType.ts
 model/createAccidentItemCommand.ts
 model/createAccidentItemReviewCommand.ts
@@ -507,6 +509,7 @@ model/parkingSlotType.ts
 model/passwordResponse.ts
 model/patchNoteCommand.ts
 model/payPeriod.ts
+model/payrollBonusDeductionResponse.ts
 model/payrollBonusDescriptionAutocompleteResponse.ts
 model/payrollBonusModalResponse.ts
 model/payrollBonusResponse.ts
@@ -514,6 +517,8 @@ model/payrollCreditDescriptionAutocompleteResponse.ts
 model/payrollCreditModalResponse.ts
 model/payrollCreditResponse.ts
 model/payrollCreditType.ts
+model/payrollDeadlinePeriod.ts
+model/payrollDeadlineShortResponse.ts
 model/payrollDeductionDescriptionAutocompleteResponse.ts
 model/payrollDeductionModalResponse.ts
 model/payrollDeductionRecurringType.ts
@@ -522,8 +527,9 @@ model/payrollDeductionType.ts
 model/payrollDriverCommissionResponse.ts
 model/payrollDriverCommissionResponsePagination.ts
 model/payrollDriverMileageResponse.ts
-model/payrollDriverMileageResponsePagination.ts
 model/payrollListResponse.ts
+model/payrollMainListResponse.ts
+model/payrollMilesShortResponse.ts
 model/payrollMinimalListResponse.ts
 model/payrollMinimalResponse.ts
 model/payrollMinimalResponsePagination.ts
@@ -531,7 +537,10 @@ model/payrollOwnerResponse.ts
 model/payrollOwnerResponsePagination.ts
 model/payrollPaymentCommand.ts
 model/payrollPaymentResponse.ts
+model/payrollPaymentShortResponse.ts
 model/payrollPaymentType.ts
+model/payrollResponse.ts
+model/payrollResponsePagination.ts
 model/perMileEntity.ts
 model/personalInfoFeedbackResponse.ts
 model/poBoxEntity.ts

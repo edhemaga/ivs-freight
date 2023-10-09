@@ -188,7 +188,7 @@ export class ShopRepairDetailsComponent implements OnInit, OnDestroy {
                 },
                 {
                     title: 'Add Bill',
-                    name: 'add-bill',
+                    name: 'Repair',
                     svg: 'assets/svg/common/ic_plus.svg',
                     show: true,
                     blueIcon: true,
@@ -332,11 +332,7 @@ export class ShopRepairDetailsComponent implements OnInit, OnDestroy {
             this.togglerWorkTime = true;
         }
 
-        if (data?.status){
-            this.businessOpen = true;
-        }else {
-            this.businessOpen = false; 
-        }
+        this.businessOpen = data?.status ? true : false;
 
         this.shopRepairConfig = [
             {
@@ -353,6 +349,7 @@ export class ShopRepairDetailsComponent implements OnInit, OnDestroy {
                 repairOpen: data?.openHoursToday === 'Closed' ? false : true,
                 length: this.repairsDataLength,
                 customText: 'Date',
+                hasDateArrow: true,
                 total: data?.cost ? data.cost : 0,
                 icons: [
                     {
@@ -389,15 +386,16 @@ export class ShopRepairDetailsComponent implements OnInit, OnDestroy {
                 length: this.repairedDataLength,
                 hide: true,
                 customText: 'Repairs',
+                hasDateArrow: true,
                 data: data,
                 repairOpen: data?.openHoursToday === 'Closed' ? false : true,
             },
             {
                 id: 3,
-                nameDefault: 'Review',
+                nameDefault: 'Review & Rating',
                 template: 'review',
                 length: data?.reviews?.length ? data.reviews.length : 0,
-                customText: 'Date',
+                hasDateArrow: false,
                 hide: false,
                 data: data,
                 repairOpen: data?.openHoursToday === 'Closed' ? false : true,

@@ -436,6 +436,35 @@ export class BrokerTService implements OnDestroy {
         );
     }
 
+    public changeBrokerStatus(brokerId: any){
+        return this.brokerService.apiBrokerStatusIdPut(brokerId)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: (res: any) => {
+                    const subBroker = this.getBrokerById(brokerId).subscribe({
+                        next: (broker: BrokerResponse | any) => {
+                            this.brokerStore.remove(({ id }) => id === brokerId);
+                            this.brokerMinimalStore.remove(
+                                ({ id }) => id === brokerId
+                            );
+                            this.brokerStore.add(broker);
+                            this.brokerMinimalStore.add(broker);
+                            this.bls.replace(broker.id, broker);
+                            this.tableService.sendActionAnimation({
+                                animation: 'update',
+                                tab: 'broker',
+                                data: broker,
+                                id: broker.id,
+                            });
+    
+                            subBroker.unsubscribe();
+                        },
+                    });
+                }
+                
+            });
+    }
+
     ngOnDestroy(): void {
         this.destroy$.next();
         this.destroy$.complete();

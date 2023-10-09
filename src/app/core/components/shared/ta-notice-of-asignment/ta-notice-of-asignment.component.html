@@ -11,7 +11,8 @@
                 isDropdown: true,
                 dropdownWidthClass: 'w-col-134',
                 hideClear: true,
-                blackInput: true
+                blackInput: true,
+                hideColorValidations: true
             }"
             [options]="fontSizeList"
             [activeItem]="activeFont"
@@ -52,41 +53,14 @@
         class="wysiwyg-text-transform-buttons d-flex"
     >
         <div class="text-align-buttons d-flex">
-            <div
-                (click)="executeEditor('justifyLeft')"
-                [class.active]="activeOptions.justifyLeft"
-                class="align-buttons"
-            >
-                <svg-icon
-                    src="assets/svg/common/align-left-icon.svg"
-                ></svg-icon>
-            </div>
-            <div
-                (click)="executeEditor('justifyCenter')"
-                [class.active]="activeOptions.justifyCenter"
-                class="align-buttons"
-            >
-                <svg-icon
-                    src="assets/svg/common/align-center-icon.svg"
-                ></svg-icon>
-            </div>
-            <div
-                (click)="executeEditor('justifyRight')"
-                [class.active]="activeOptions.justifyRight"
-                class="align-buttons"
-            >
-                <svg-icon
-                    src="assets/svg/common/align-right-icon.svg"
-                ></svg-icon>
-            </div>
-            <div
-                (click)="executeEditor('justifyFull')"
-                [class.active]="activeOptions.justifyFull"
-                class="align-buttons"
-            >
-                <svg-icon
-                    src="assets/svg/common/align-full-icon.svg"
-                ></svg-icon>
+            <div *ngFor="let align of alignOptions">
+                <div
+                    (click)="executeEditor(align.name)"
+                    [class.active]="align.value"
+                    class="align-buttons"
+                >
+                    <svg-icon src="{{ align.image }}"></svg-icon>
+                </div>
             </div>
         </div>
         <div *ngIf="settings.textIndent" class="paragraph-buttons d-flex">
@@ -152,6 +126,7 @@
         (keyup)="updateNoteMain($event)"
         [innerHTML]="shownValue | safeHtml"
         class="notice_editor"
+        placeholder="Write a notice..."
         contenteditable
         spellcheck="false"
     ></div>

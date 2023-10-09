@@ -44,7 +44,7 @@ export const miles_driver_open_loads = [
     },
     {
         field: "SUBTOTAL",
-        data_field: "subtotalAmount",
+        data_field: "subtotal",
         template: "semibold-normal-template",
         highlighted: true,
         isCurrency: true,
@@ -97,7 +97,7 @@ export const miles_driver_open_loads_resizable = [
     },
     {
         field: "Subtotal",
-        data_field: "subtotalAmount",
+        data_field: "subtotal",
         template: "bold-normal-template",
         highlighted: true,
         colspan: 1,

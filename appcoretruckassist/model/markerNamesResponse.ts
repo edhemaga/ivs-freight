@@ -15,6 +15,7 @@ export interface MarkerNamesResponse {
     id?: number;
     name?: string | null;
     favourite?: boolean;
+    isClosed?: boolean;
     pricePerGallon?: number | null;
 }
 

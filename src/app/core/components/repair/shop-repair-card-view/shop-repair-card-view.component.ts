@@ -89,6 +89,7 @@ export class ShopRepairCardViewComponent
         defaultType: 'bar',
         chartWidth: '417',
         chartHeight: '130',
+        hasValue: false,
         offset: true,
         allowAnimation: true,
         animationOnlyOnLoad: true,
@@ -112,13 +113,13 @@ export class ShopRepairCardViewComponent
     public barChartLegend: any[] = [
         {
             title: 'Repair',
-            value: 46755,
+            value: 0,
             image: 'assets/svg/common/round_yellow.svg',
             elementId: 1,
         },
         {
             title: 'Cost',
-            value: 36854,
+            value: 0,
             image: 'assets/svg/common/round_blue.svg',
             prefix: '$',
             elementId: 0,
@@ -223,7 +224,7 @@ export class ShopRepairCardViewComponent
                             id: item.id,
                             name: item.name,
                             status: item.status,
-                            svg:  item.pinned ? 'ic_star.svg' : '',
+                            svg: item.pinned ? 'ic_star.svg' : '',
                             folder: 'common',
                             active:
                                 item.id ===
@@ -241,7 +242,7 @@ export class ShopRepairCardViewComponent
     }
 
     public onSelectedShop(event: any) {
-        if ( event && event.id !== +this.act_route.snapshot.params['id']) {
+        if (event && event.id !== +this.act_route.snapshot.params['id']) {
             this.shopsDropdowns = this.shopsDropdowns.map((item) => {
                 return {
                     id: item.id,
@@ -361,6 +362,19 @@ export class ShopRepairCardViewComponent
                 this.barChartConfig.chartValues = [item.repair, item.cost];
                 this.barChartLegend[0].value = item.repair;
                 this.barChartLegend[1].value = item.cost;
+
+                let hasValue = false;
+
+                this.barChartLegend.map((leg) => {
+                    if (leg.value > 0) {
+                        hasValue = true;
+                    }
+                });
+
+                this.barChartConfig.hasValue = hasValue;
+
+                this.cdRef.detectChanges();
+
                 let milesPerGallon = [],
                     costPerGallon = [],
                     labels = [],

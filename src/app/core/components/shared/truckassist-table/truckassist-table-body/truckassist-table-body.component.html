@@ -86,6 +86,25 @@
                                         </div>
                                     </div>
 
+                                    <!-- VIN COLUMN -->
+                                    <div
+                                        class="td-content"
+                                        *ngIf="column.ngTemplate === 'vin'"
+                                        [ngStyle]="{
+                                            width: column.width + 'px',
+                                            'min-width.px': column?.minWidth
+                                                ? column.minWidth
+                                                : 'unset'
+                                        }"
+                                    >
+                                        <div class="vin-container">
+                                            {{ row[column.field].regularText }}
+                                            <span class="vin-bold">
+                                                {{ row[column.field].boldText }}
+                                            </span>
+                                        </div>
+                                    </div>
+
                                     <!-- CHECKBOX TEMPLATE -->
                                     <div
                                         *ngIf="column.ngTemplate === 'checkbox'"
@@ -502,6 +521,14 @@
                                                         ?.doesNotHaveRout
                                             }"
                                             class="table-avatar-name"
+                                            [innerHtml]="
+                                                row[column.field]
+                                                    ? (row[column.field]
+                                                      | tableHighlightSearchText
+                                                          : this
+                                                                .chipsForHighlight)
+                                                    : ''
+                                            "
                                             >{{ row[column.field] }}</span
                                         >
                                     </div>
@@ -1328,11 +1355,17 @@
                                                 : 'unset'
                                         }"
                                     >
-                                        <span class="table-text">{{
-                                            row[column.field]
-                                                ? row[column.field]
-                                                : ''
-                                        }}</span>
+                                        <span
+                                            class="table-text"
+                                            [innerHtml]="
+                                                row[column.field]
+                                                    ? (row[column.field]
+                                                      | tableHighlightSearchText
+                                                          : this
+                                                                .chipsForHighlight)
+                                                    : ''
+                                            "
+                                        ></span>
                                     </div>
 
                                     <!-- SEMI BOLD TEXT COLUMN -->
@@ -1444,13 +1477,15 @@
                                         <div
                                             *ngIf="row[column.field]"
                                             class="table-state"
-                                        >
-                                            {{
+                                            [innerHtml]="
                                                 row[column.field]
-                                                    ? row[column.field]
+                                                    ? (row[column.field]
+                                                      | tableHighlightSearchText
+                                                          : this
+                                                                .chipsForHighlight)
                                                     : ''
-                                            }}
-                                        </div>
+                                            "
+                                        ></div>
                                     </div>
 
                                     <!-- PROGRESS COLUMN -->
@@ -1468,8 +1503,9 @@
                                             class="table-progress-cotnainer"
                                             *ngIf="
                                                 row[column.field]
-                                                    ?.expirationDays ||
-                                                row[column.field].percentage
+                                                    ?.expirationDays !== null &&
+                                                row[column.field].percentage !==
+                                                    null
                                             "
                                         >
                                             <!-- Progres Bar  -->
@@ -1551,17 +1587,20 @@
                                                     row[column.field]
                                                         .percentage < 100
                                                 "
-                                            >
-                                                {{
+                                                [innerHtml]="
                                                     row[column.field]
                                                         .expirationDays > 0
-                                                        ? 'in ' +
-                                                          row[column.field]
-                                                              .expirationDays +
-                                                          ' days'
-                                                        : 'a few hours'
-                                                }}
-                                            </div>
+                                                        ? ('in ' +
+                                                              row[column.field]
+                                                                  .expirationDaysText +
+                                                              ' days'
+                                                          | tableHighlightSearchText
+                                                              : chipsForHighlight)
+                                                        : ('Expires today'
+                                                          | tableHighlightSearchText
+                                                              : chipsForHighlight)
+                                                "
+                                            ></div>
 
                                             <!-- Progres Text Expired-->
                                             <div
@@ -1574,13 +1613,19 @@
                                                     !row[column.field]
                                                         .percentage
                                                 "
-                                            >
-                                                {{
+                                                [innerHtml]="
                                                     row[column.field]
-                                                        .expirationDays
-                                                }}
-                                                days ago
-                                            </div>
+                                                        .expirationDays > 0
+                                                        ? (row[column.field]
+                                                              .expirationDaysText +
+                                                              ' days ago'
+                                                          | tableHighlightSearchText
+                                                              : chipsForHighlight)
+                                                        : ('Expired today'
+                                                          | tableHighlightSearchText
+                                                              : chipsForHighlight)
+                                                "
+                                            ></div>
                                         </div>
                                     </div>
 
@@ -1885,6 +1930,26 @@
                                     >
                                         <div class="no-template">
                                             NO TEMPLATE
+                                        </div>
+                                    </div>
+
+                                    <!-- ! Highlight Ne Moze na ovaj template -->
+                                    <!-- VIN COLUMN -->
+                                    <div
+                                        class="td-content"
+                                        *ngIf="column.ngTemplate === 'vin'"
+                                        [ngStyle]="{
+                                            width: column.width + 'px',
+                                            'min-width.px': column?.minWidth
+                                                ? column.minWidth
+                                                : 'unset'
+                                        }"
+                                    >
+                                        <div class="vin-container">
+                                            {{ row[column.field].regularText }}
+                                            <span class="vin-bold">
+                                                {{ row[column.field].boldText }}
+                                            </span>
                                         </div>
                                     </div>
 
@@ -2220,7 +2285,15 @@
                                                         ?.doesNotHaveRout
                                             }"
                                             class="table-avatar-name"
-                                            >{{ row[column.field] }}</span
+                                            [innerHtml]="
+                                                row[column.field]
+                                                    ? (row[column.field]
+                                                      | tableHighlightSearchText
+                                                          : this
+                                                                .chipsForHighlight)
+                                                    : ''
+                                            "
+                                            ></span
                                         >
                                     </div>
 
@@ -2942,11 +3015,17 @@ highlightingWords) : '' " -->
                                                 : 'unset'
                                         }"
                                     >
-                                        <span class="table-text">{{
-                                            row[column.field]
-                                                ? row[column.field]
-                                                : ''
-                                        }}</span>
+                                        <span
+                                            class="table-text"
+                                            [innerHtml]="
+                                                row[column.field]
+                                                    ? (row[column.field]
+                                                      | tableHighlightSearchText
+                                                          : this
+                                                                .chipsForHighlight)
+                                                    : ''
+                                            "
+                                        ></span>
                                     </div>
 
                                     <!-- SEMI BOLD TEXT COLUMN -->
@@ -3057,13 +3136,15 @@ highlightingWords) : '' " -->
                                         <div
                                             *ngIf="row[column.field]"
                                             class="table-state"
-                                        >
-                                            {{
+                                            [innerHtml]="
                                                 row[column.field]
-                                                    ? row[column.field]
+                                                    ? (row[column.field]
+                                                      | tableHighlightSearchText
+                                                          : this
+                                                                .chipsForHighlight)
                                                     : ''
-                                            }}
-                                        </div>
+                                            "
+                                        ></div>
                                     </div>
 
                                     <!-- PROGRESS COLUMN -->
@@ -3081,8 +3162,9 @@ highlightingWords) : '' " -->
                                             class="table-progress-cotnainer"
                                             *ngIf="
                                                 row[column.field]
-                                                    ?.expirationDays ||
-                                                row[column.field].percentage
+                                                    ?.expirationDays !== null &&
+                                                row[column.field].percentage !==
+                                                    null
                                             "
                                         >
                                             <!-- Progres Bar  -->
@@ -3164,17 +3246,20 @@ highlightingWords) : '' " -->
                                                     row[column.field]
                                                         .percentage < 100
                                                 "
-                                            >
-                                                {{
+                                                [innerHtml]="
                                                     row[column.field]
                                                         .expirationDays > 0
-                                                        ? 'in ' +
-                                                          row[column.field]
-                                                              .expirationDays +
-                                                          ' days'
-                                                        : 'a few hours'
-                                                }}
-                                            </div>
+                                                        ? ('in ' +
+                                                              row[column.field]
+                                                                  .expirationDaysText +
+                                                              ' days'
+                                                          | tableHighlightSearchText
+                                                              : chipsForHighlight)
+                                                        : ('Expires today'
+                                                          | tableHighlightSearchText
+                                                              : chipsForHighlight)
+                                                "
+                                            ></div>
 
                                             <!-- Progres Text Expired-->
                                             <div
@@ -3187,13 +3272,19 @@ highlightingWords) : '' " -->
                                                     !row[column.field]
                                                         .percentage
                                                 "
-                                            >
-                                                {{
+                                                [innerHtml]="
                                                     row[column.field]
-                                                        .expirationDays
-                                                }}
-                                                days ago
-                                            </div>
+                                                        .expirationDays > 0
+                                                        ? (row[column.field]
+                                                              .expirationDaysText +
+                                                              ' days ago'
+                                                          | tableHighlightSearchText
+                                                              : chipsForHighlight)
+                                                        : ('Expired today'
+                                                          | tableHighlightSearchText
+                                                              : chipsForHighlight)
+                                                "
+                                            ></div>
                                         </div>
                                     </div>
 

@@ -27,6 +27,7 @@ import { FuelService } from './api/fuel.service';
 import { GeolocationService } from './api/geolocation.service';
 import { InspectionService } from './api/inspection.service';
 import { IntegrationService } from './api/integration.service';
+import { ListCounterService } from './api/listCounter.service';
 import { LoadService } from './api/load.service';
 import { MapService } from './api/map.service';
 import { MedicalService } from './api/medical.service';

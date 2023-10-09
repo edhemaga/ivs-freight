@@ -425,6 +425,7 @@ export class DropDownService {
                 name: dataObject?.businessName,
             },
         };
+        
         if (event.type === 'edit' && name === 'shipper') {
             this.modalService.openModal(
                 ShipperModalComponent,
@@ -509,7 +510,29 @@ export class DropDownService {
                     image: false,
                 }
             );
-        }
+        } else if ( ( event.type == 'close-business' || event.type == 'open-business' ) && name == 'shipper') {
+            this.modalService.openModal(
+                ConfirmationModalComponent,
+                { size: 'small' },
+                {
+                    ...mappedEvent,
+                    template: 'Shipper',
+                    type: event.type == 'open-business' ? 'activate' : 'deactivate',
+                    image: false,
+                }
+            );
+        } else if ( ( event.type == 'close-business' || event.type == 'open-business' ) && name == 'broker') {
+            this.modalService.openModal(
+                ConfirmationModalComponent,
+                { size: 'small' },
+                {
+                    ...mappedEvent,
+                    template: 'Broker',
+                    type: event.type == 'open-business' ? 'activate' : 'deactivate',
+                    image: false,
+                }
+            );
+        } 
     }
     public dropActionHeaderTruck(
         event: any,

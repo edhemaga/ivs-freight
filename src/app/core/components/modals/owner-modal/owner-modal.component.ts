@@ -154,13 +154,6 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
             'email',
             this.destroy$
         );
-
-        this.formService.checkFormChange(this.ownerForm);
-        this.formService.formValueChange$
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((isFormChange: boolean) => {
-                this.isFormDirty = isFormChange;
-            });
     }
 
     public tabChange(event: any): void {
@@ -641,6 +634,8 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
                     this.tabChange(
                         this.tabs.find((item) => item.id === res.ownerType.id)
                     );
+
+                    this.startFormChanges();
                 },
                 error: () => {},
             });
@@ -656,9 +651,20 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
 
                     if (this.editData?.id) {
                         this.editOwnerById(this.editData.id);
+                    } else {
+                        this.startFormChanges();
                     }
                 },
                 error: () => {},
+            });
+    }
+
+    private startFormChanges() {
+        this.formService.checkFormChange(this.ownerForm);
+        this.formService.formValueChange$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((isFormChange: boolean) => {
+                this.isFormDirty = isFormChange;
             });
     }
 

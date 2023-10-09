@@ -80,6 +80,7 @@ export class TaInputDropdownComponent
 
     // different templates for body rendering
     public _template: string = null;
+    _canAddNew: boolean;
     @Input() set template(value: string) {
         this._template = value;
         if (value === 'details-template' && this.isDetailsPages) {
@@ -101,7 +102,9 @@ export class TaInputDropdownComponent
 
     @Input() multiselectTemplate: string;
     @Input() inputConfig: ITaInput;
-    @Input() canAddNew: boolean; // ADD NEW item in options
+    @Input() set canAddNew(value: boolean) {
+        this._canAddNew = value;
+    } // ADD NEW item in options
     @Input() canOpenModal: boolean; // open modal with ADD NEW button
 
     // sort-template for different options
@@ -131,13 +134,15 @@ export class TaInputDropdownComponent
                 );
             }
 
-            this.clearTimeoutDropdown = setTimeout(() => {
-                this.inputConfig = {
-                    ...this.inputConfig,
-                    blackInput: false,
-                };
-                this.cdRef.detectChanges();
-            }, 150);
+            if (!this.inputConfig.hideColorValidations) {
+                this.clearTimeoutDropdown = setTimeout(() => {
+                    this.inputConfig = {
+                        ...this.inputConfig,
+                        blackInput: false,
+                    };
+                    this.cdRef.detectChanges();
+                }, 150);
+            }
         }
         // Without address
         else {
@@ -151,10 +156,12 @@ export class TaInputDropdownComponent
                             : null
                     );
 
-                    this.inputConfig = {
-                        ...this.inputConfig,
-                        blackInput: false,
-                    };
+                    if (!this.inputConfig.hideColorValidations) {
+                        this.inputConfig = {
+                            ...this.inputConfig,
+                            blackInput: false,
+                        };
+                    }
                     this.cdRef.detectChanges();
                 }, 150);
             }
@@ -178,17 +185,19 @@ export class TaInputDropdownComponent
                 break;
             }
             default: {
-                if (
-                    this.canAddNew &&
-                    !this._options.find((item) => item.id === 7655)
-                ) {
-                    this._options.unshift({
-                        id: 7655,
-                        name: 'ADD NEW',
-                    });
-                }
+                setTimeout(() => {
+                    if (
+                        this._canAddNew &&
+                        !this._options.find((item) => item.id === 7655)
+                    ) {
+                        this._options.unshift({
+                            id: 7655,
+                            name: 'ADD NEW',
+                        });
+                    }
 
-                this.originalOptions = this._options;
+                    this.originalOptions = this._options;
+                }, 100);
                 break;
             }
         }
@@ -660,7 +669,9 @@ export class TaInputDropdownComponent
                 this.getSuperControl.setErrors(null);
                 this.inputConfig.dropdownLabelNew = false;
                 this.inputConfig.commands.active = false;
-                this.inputConfig.blackInput = false;
+                if (!this.inputConfig.hideColorValidations) {
+                    this.inputConfig.blackInput = false;
+                }
                 this.inputRef.focusInput = false;
                 this.inputRef.editInputMode = false;
                 this.inputRef.input.nativeElement.blur();
@@ -796,7 +807,11 @@ export class TaInputDropdownComponent
         this.multiselectItems.splice(index, 1);
 
         if (!this.multiselectItems.length) {
-            this.inputConfig.multiSelectDropdownActive = null;
+            this.inputConfig = {
+                ...this.inputConfig,
+                multiSelectDropdownActive: null,
+            };
+
             this.lastActiveMultiselectItem = null;
             this.inputConfig.label = this.multiSelectLabel;
         } else {
@@ -814,7 +829,11 @@ export class TaInputDropdownComponent
 
     public deleteAllMultiSelectItems(currentLabel?: string) {
         this.multiselectItems = [];
-        this.inputConfig.multiSelectDropdownActive = null;
+        this.inputConfig = {
+            ...this.inputConfig,
+            multiSelectDropdownActive: null,
+        };
+
         this.inputConfig.label = currentLabel
             ? currentLabel
             : this.multiSelectLabel;
@@ -879,7 +898,9 @@ export class TaInputDropdownComponent
                 this.getSuperControl.setErrors(null);
                 this.inputConfig.dropdownLabelNew = false;
                 this.inputConfig.commands.active = false;
-                this.inputConfig.blackInput = false;
+                if (!this.inputConfig.hideColorValidations) {
+                    this.inputConfig.blackInput = false;
+                }
                 this.inputRef.focusInput = false;
                 this.inputRef.editInputMode = false;
                 this.inputRef.input.nativeElement.blur();

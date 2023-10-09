@@ -1,4 +1,6 @@
-<div class="details-header-wrapper">
+<div class="details-header-wrapper"
+    [class.details-header-wrapper-reapirShop]="repairHeader"
+>
     <div class="details-header-wrapper-switcher">
         <div class="inactive-icon-input">
             <div
@@ -10,10 +12,15 @@
                 [mainTooltip]="options.length > 1 ? searchInputName : ''"
                 position="top"
                 [tooltipBackground]="options.length > 1 ? '#6C6C6C' : '#eeeeee'"
-            >
+            >   
+                <!-- header name with pipe-->
+                <!--
                 <p class="current-active-name">
                     {{ (options | detailActiveItem).name }}
                 </p>
+                -->
+                <!-- header name new -->
+                <p class="current-active-name"> {{currentName}}</p>
                 <span
                     ngbTooltip
                     [mainTooltip]="searchName"

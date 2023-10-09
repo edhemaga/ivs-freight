@@ -56,6 +56,7 @@ export class DispatchTableComponent implements OnInit {
     startIndexTrailer: number;
     startIndexDriver: number;
     savedTruckData: any = null;
+    draggingType: string = '';
 
     @Input() set smallList(value) {
         const newTruckList = JSON.parse(JSON.stringify(value.trucks));
@@ -163,6 +164,8 @@ export class DispatchTableComponent implements OnInit {
         maxLimit: new Date().getHours() * 60 + new Date().getMinutes(),
     };
 
+    isDrag: boolean = false;
+
     constructor(
         private dss: DispatcherStoreService,
         private chd: ChangeDetectorRef,
@@ -260,6 +263,8 @@ export class DispatchTableComponent implements OnInit {
     }
 
     handleInputSelect(e: any) {
+        console.log("WHAT IS ADDRESS", e);
+       // return;
         if (e.valid) {
             this.updateOrAddDispatchBoardAndSend(
                 'location',
@@ -277,7 +282,7 @@ export class DispatchTableComponent implements OnInit {
             this.showAddAddressField = -1;
             this.savedTruckData = null;
             this.chd.detectChanges();
-        }, 1000);
+        }, 3000);
     }
 
     addDriver(e) {
@@ -561,13 +566,15 @@ export class DispatchTableComponent implements OnInit {
     // CDL DRAG AND DROP
 
     dropList(event) {
-        moveItemInArray(
-            this.dData.dispatches,
-            event.previousIndex,
-            event.currentIndex
-        );
+        console.log(event.previousIndex, event.currentIndex);
+        console.log(this.dData.dispatches[event.previousIndex].order);
+        console.log(this.dData.dispatches[event.currentIndex].order);
+
+        const firstOrder = this.dData.dispatches[event.previousIndex].order;
+        const secondOrder = this.dData.dispatches[event.currentIndex].order;
 
         this.__change_in_proggress = true;
+
         this.dss
             .reorderDispatchboard({
                 dispatchBoardId: this.dData.id,
@@ -590,9 +597,19 @@ export class DispatchTableComponent implements OnInit {
                 })
             )
             .subscribe((res) => {
+                this.dData.dispatches[event.currentIndex].order =
+                    this.dData.dispatches[event.previousIndex].order;
+                this.dData.dispatches[event.previousIndex].order =
+                    this.dData.dispatches[event.currentIndex].order;
                 this.__change_in_proggress = false;
                 this.chd.detectChanges();
             });
+
+        moveItemInArray(
+            this.dData.dispatches,
+            event.previousIndex,
+            event.currentIndex
+        );
     }
 
     dropTrailer(event, finalIndx) {
@@ -701,10 +718,19 @@ export class DispatchTableComponent implements OnInit {
 
     cdkDragStartedTrailer(event, indx) {
         this.startIndexTrailer = indx;
+        this.isDrag = true;
+        this.draggingType = 'trailer';
     }
 
     cdkDragStartedDriver(event, indx) {
         this.startIndexDriver = indx;
+        this.isDrag = true;
+        this.draggingType = 'driver';
+    }
+
+    dragEnd() {
+        this.isDrag = false;
+        this.draggingType = '';
     }
 
     showPickupDelivery(popup: any) {

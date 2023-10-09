@@ -197,13 +197,6 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
             'email',
             this.destroy$
         );
-
-        this.formService.checkFormChange(this.shipperForm);
-        this.formService.formValueChange$
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((isFormChange: boolean) => {
-                this.isFormDirty = isFormChange;
-            });
     }
 
     public onModalAction(data: { action: string; bool: boolean }) {
@@ -901,6 +894,7 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
                         currentCompanyUserRating: res.currentCompanyUserRating,
                     });
 
+                    this.startFormChanges();
                     setTimeout(() => {
                         this.disableCardAnimation = false;
                     }, 1000);
@@ -942,6 +936,8 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
                                 name: 'Review',
                             });
                             this.ratingChanges();
+                        } else {
+                            this.startFormChanges();
                         }
                     }
 
@@ -1068,6 +1064,15 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
                 break;
             }
         }
+    }
+
+    private startFormChanges() {
+        this.formService.checkFormChange(this.shipperForm);
+        this.formService.formValueChange$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((isFormChange: boolean) => {
+                this.isFormDirty = isFormChange;
+            });
     }
 
     ngOnDestroy(): void {

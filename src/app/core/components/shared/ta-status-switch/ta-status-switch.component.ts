@@ -48,6 +48,9 @@ export class TaStatusSwitchComponent implements OnInit {
     @Input() nextStopType: IDispatchModel;
     @Input() currentStopType: IDispatchModel;
     @Input() dispatchboardId: number;
+    @Input() pickupCount: number;
+    @Input() deliveryCount: number;
+
     @Input() statusDate: Date = new Date();
     private destroy$ = new Subject<void>();
     @Input() statusLoadCount: number = 0;

@@ -5,7 +5,7 @@ import { RoutingState } from './routing-state.model';
 export interface RoutingStateState extends EntityState<RoutingState> {}
 
 @Injectable({ providedIn: 'root' })
-@StoreConfig({ name: 'routing-state' })
+@StoreConfig({ name: 'routing-state', idKey: 'fakeId' })
 export class RoutingStateStore extends EntityStore<
     RoutingStateState,
     RoutingState

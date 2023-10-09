@@ -528,7 +528,8 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
                     return;
                 }
 
-                if (this.editData.type.includes('edit-company')) {
+                console.log("PRESS ON EDDIT", this.editData);
+                if (this.editData.type.includes('edit-company') || this.editData.type.includes('payroll-tab')) {
                     this.updateCompany();
                     this.modalService.setModalSpinner({
                         action: null,

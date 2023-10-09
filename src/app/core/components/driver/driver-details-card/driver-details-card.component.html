@@ -15,6 +15,7 @@
         [hasArrow]="hideArrow"
         [optionsDrop]="dropData"
         [haveDropSVG]="true"
+        [currentName]="driver.firstName + ' ' + driver.lastName"
         (dropActions)="onDriverActions($event)"
     >
         <div class="driver-container">
@@ -42,6 +43,7 @@
                         <app-ta-copy
                             [textFontSize]="'18px'"
                             [copyValue]="driver?.ssn"
+                            [textColor]="'#2f2f2f'"
                         >
                         </app-ta-copy>
                     </div>
@@ -50,14 +52,20 @@
                             class="information-svg"
                             src="assets/svg/common/ic_phone.svg"
                         ></svg-icon>
-                        <app-ta-copy [copyValue]="driver?.phone"> </app-ta-copy>
+                        <app-ta-copy 
+                            [copyValue]="driver?.phone"
+                            [textColor]="'#2f2f2f'"
+                        > </app-ta-copy>
                     </div>
                     <div class="information-item">
                         <svg-icon
                             class="information-svg"
                             src="assets/svg/common/ic_email.svg"
                         ></svg-icon>
-                        <app-ta-copy [copyValue]="driver?.email"> </app-ta-copy>
+                        <app-ta-copy 
+                            [copyValue]="driver?.email"
+                            [textColor]="'#2f2f2f'"    
+                        > </app-ta-copy>
                     </div>
                 </div>
             </div>
@@ -484,7 +492,10 @@
                     <div class="purchase-template-item second-name">
                         <div class="purchase-template-item-name">EIN</div>
                         <div class="purchase-icon-copy">
-                            <app-ta-copy [copyValue]="driver.owner.ssnEin">
+                            <app-ta-copy 
+                                [copyValue]="driver.owner.ssnEin"
+                                [textColor]="'#2f2f2f'"
+                            >
                             </app-ta-copy>
                         </div>
                     </div>
@@ -657,8 +668,10 @@
                     <div class="purchase-template-item">
                         <div class="purchase-template-item-name">Routing</div>
                         <div class="purchase-icon-copy">
-                            <app-ta-copy [copyValue]="driver?.routing">
-                            </app-ta-copy>
+                            <app-ta-copy 
+                                [copyValue]="driver?.routing"
+                                [textColor]="'#2f2f2f'"
+                            ></app-ta-copy>
                         </div>
                     </div>
                     <div class="purchase-template-item second-name">
@@ -671,6 +684,7 @@
                                         !isAccountVisibleDriver
                                 "
                                 [copyValue]="driver?.account"
+                                [textColor]="'#2f2f2f'"
                             >
                             </app-ta-copy>
                         </div>
@@ -722,6 +736,7 @@
                         <div class="purchase-icon-copy">
                             <app-ta-copy
                                 [copyValue]="driver.emergencyContactPhone"
+                                [textColor]="'#2f2f2f'"
                             >
                             </app-ta-copy>
                         </div>
@@ -952,6 +967,7 @@
                                                 "
                                                 [expiresSettings]="'details'"
                                                 [customText]="'Exp. in'"
+                                                [darkText]="true"
                                             >
                                             </app-truckassist-progress-expiration>
                                         </div>
@@ -1215,6 +1231,7 @@
                                                     med?.issueDate | formatDateP
                                                 "
                                                 [expiresSettings]="'details'"
+                                                [darkText]="true"
                                             >
                                             </app-truckassist-progress-expiration>
                                         </div>
@@ -1346,6 +1363,7 @@
                                                     mvr?.expDate | formatDateP
                                                 "
                                                 [expiresSettings]="'details'"
+                                                [darkText]="true"
                                             >
                                             </app-truckassist-progress-expiration>
                                         </div>

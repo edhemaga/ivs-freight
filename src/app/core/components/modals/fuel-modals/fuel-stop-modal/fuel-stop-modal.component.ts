@@ -116,13 +116,6 @@ export class FuelStopModalComponent implements OnInit, OnDestroy {
             note: [null],
             files: [null],
         });
-
-        this.formService.checkFormChange(this.fuelStopForm);
-        this.formService.formValueChange$
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((isFormChange: boolean) => {
-                this.isFormDirty = isFormChange;
-            });
     }
 
     public onModalAction(data: { action: string; bool: boolean }) {
@@ -469,6 +462,7 @@ export class FuelStopModalComponent implements OnInit, OnDestroy {
                     }
 
                     setTimeout(() => {
+                        this.startFormChanges();
                         this.disableCardAnimation = false;
                     }, 1000);
                 },
@@ -499,9 +493,20 @@ export class FuelStopModalComponent implements OnInit, OnDestroy {
                     if (this.editData?.type === 'edit') {
                         this.disableCardAnimation = true;
                         this.getFuelStopById(this.editData.id);
+                    } else {
+                        this.startFormChanges();
                     }
                 },
                 error: () => {},
+            });
+    }
+
+    private startFormChanges() {
+        this.formService.checkFormChange(this.fuelStopForm);
+        this.formService.formValueChange$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((isFormChange: boolean) => {
+                this.isFormDirty = isFormChange;
             });
     }
 

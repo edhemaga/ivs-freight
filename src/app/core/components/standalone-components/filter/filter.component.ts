@@ -314,6 +314,29 @@ export class FilterComponent implements OnInit, AfterViewInit {
     @ViewChild('t2') t2: any;
     @ViewChild('mainFilter') mainFilter: any;
 
+    labelArray: any[] = [
+        {
+            id: 1,
+            name: 'Test test test',
+            color: '#ff0000'
+        },
+        {
+            id: 2,
+            name: 'Test asdadasd',
+            color: '#ff1234'
+        },
+        {
+            id: 3,
+            name: 'Test dddd eeee',
+            color: '#ff4442'
+        },
+        {
+            id: 4,
+            name: 'Test ttttt tttttt',
+            color: '#ff5858'
+        }
+    ]
+
     unselectedUser: any[] = [
         {
             name: 'Aleksandar Djordjevic',
@@ -1413,27 +1436,27 @@ export class FilterComponent implements OnInit, AfterViewInit {
     ) {}
 
     ngOnInit(): void {
-
+        //console.log('---type', this.type)
         if (this.type === 'truckTypeFilter') {
-            this.getTruckType();
+            this.getBackendData(this.type);
         } else if (this.type === 'trailerTypeFilter') {
-            this.getTrailerType();
+            this.getBackendData(this.type);
         } else if (this.type === 'categoryRepairFilter') {
-            this.getRepairCategory();
+            this.getBackendData(this.type);
         } else if ( this.type === 'categoryFuelFilter' ) {
-            this.getFuelCategory();
+            this.getBackendData(this.type);
         } else if ( this.type === 'stateFilter' ) {
-            this.getStateData();
+            this.getBackendData(this.type);
         } else if ( this.type === 'departmentFilter' ) {
-            this.getDepartmentData();
+            this.getBackendData(this.type);
         } else if ( this.type === 'userFilter' ) {
-            this.getDispatchData();
+            this.getBackendData(this.type);
         } else if ( this.type === 'pmFilter' ) {
-            if ( this.pmSubtype === 'truck' ) {
-                this.getPmData('truck');
-            } else {
-                this.getPmData('trailer');
-            }
+            this.getBackendData(this.type, this.pmSubtype);
+        } else if ( this.type === 'truckFilter' ) {
+            this.getBackendData(this.type);
+        } else if ( this.type === 'trailerFilter' ) {
+            this.getBackendData(this.type);
         }
 
         if (this.type == 'timeFilter') {
@@ -2007,6 +2030,36 @@ export class FilterComponent implements OnInit, AfterViewInit {
 
                         this.pmFilterArray = newData;
                     }
+                } else if ( this.type === 'userFilter' ) {
+                    if ( res.animation == 'dispatch-data-update' ) {
+                        let newData = res.data.pagination.data.map(
+                            (type: any, index: number) => {
+                                type['name'] = type.fullName;
+                                return type;
+                            }
+                        );
+
+                        this.unselectedUser = newData;
+                    }
+                    
+                } else if ( this.type === 'truckFilter' ) {
+                    if ( res.animation === 'truck-list-update' ) {
+                        let newData = res.data.pagination.data.map(
+                            (type: any, index: number) => {
+                                type['name'] = type.truckNumber;
+                                return type;
+                            }
+                        );
+                        this.truckArray = newData;
+                    }
+                } else if ( this.type === 'trailerFilter' ) {
+                    let newData = res.data.pagination.data.map(
+                        (type: any, index: number) => {
+                            type['name'] = type.trailerNumber;
+                            return type;
+                        }
+                    );
+                    this.trailerArray = newData;
                 }
             });
     }
@@ -2053,6 +2106,8 @@ export class FilterComponent implements OnInit, AfterViewInit {
             } else {
                 mainArray = this.usaStates;
             }
+        } else if ( this.type == 'labelFilter' ) {
+            mainArray = this.labelArray;
         }
 
         mainArray[indx].isSelected = true;
@@ -2187,6 +2242,13 @@ export class FilterComponent implements OnInit, AfterViewInit {
                     }
                 });
             }
+        }
+        else if ( this.type == 'labelFilter' ) {
+            this.labelArray.map((item) => {
+                if (item.id == id) {
+                    item.isSelected = false;
+                }
+            });
         }
         this.checkFilterActiveValue();
     }
@@ -3124,35 +3186,59 @@ export class FilterComponent implements OnInit, AfterViewInit {
         this.areaFilterSelected = event.name;
     }
 
-    public getTruckType() {
-        this.filterService.getTruckType();
+    public getBackendData(type: any, subType?: any){
+        
+        switch (this.type) {
+            case 'truckTypeFilter' : 
+                {
+                    this.filterService.getTruckType();
+                    break;
+                }
+            case 'trailerTypeFilter' : 
+                {
+                    this.filterService.getTrailerType();
+                    break;
+                }
+            case 'categoryRepairFilter' : 
+                {
+                    this.filterService.getRepairCategory();
+                    break;
+                }
+            case 'categoryFuelFilter' : 
+                {
+                    this.filterService.getFuelCategory();
+                    break; 
+                } 
+            case 'stateFilter' : 
+                {
+                    this.filterService.getStateData();
+                } 
+            case 'departmentFilter' :
+                {
+                    this.filterService.getDepartmentData();
+                    break;
+                }
+            case 'userFilter' :
+                {
+                    this.filterService.getDispatchData();
+                    break;
+                }
+            case 'truckFilter' :
+                {
+                    this.filterService.getTruckData();
+                    break;
+                }         
+            case 'trailerFilter' : 
+                {
+                    this.filterService.getTrailerData();
+                    break;
+                } 
+            case 'pmFilter' : 
+                {
+                    this.filterService.getPmData(subType);
+                    break;
+                }                     
+        }
     }
 
-    public getTrailerType() {
-        this.filterService.getTrailerType();
-    }
-
-    public getRepairCategory() {
-        this.filterService.getRepairCategory();
-    }
-
-    public getFuelCategory(){
-        this.filterService.getFuelCategory();
-    }
-
-    public getStateData() {
-        this.filterService.getStateData();
-    }
-
-    public getDepartmentData(){
-        this.filterService.getDepartmentData();
-    }
-
-    public getDispatchData(){
-        this.filterService.getDispatchData();
-    }
-
-    public getPmData(mod){
-        this.filterService.getPmData(mod);
-    }
 }

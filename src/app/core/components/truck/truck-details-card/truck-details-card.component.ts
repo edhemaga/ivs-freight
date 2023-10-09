@@ -124,6 +124,7 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
         defaultType: 'bar',
         chartWidth: '417',
         chartHeight: '130',
+        hasValue: false,
         dataLabels: [
             '',
             'NOV',
@@ -180,6 +181,7 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
         defaultType: 'bar',
         chartWidth: '417',
         chartHeight: '130',
+        hasValue: false,
         dataLabels: [
             '',
             'NOV',
@@ -236,6 +238,7 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
         defaultType: 'bar',
         chartWidth: '417',
         chartHeight: '130',
+        hasValue: false,
         dataLabels: [
             '',
             'NOV',
@@ -849,6 +852,16 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
                 : 0;
         }
 
+        let hasValue = false;
+
+        legend.map((leg)=>{
+            if (leg.value > 0) {
+                hasValue = true;
+            }
+        });
+
+        config.hasValue = hasValue;
+
         let fuelCost = [],
             repairCost = [],
             labels = [],
@@ -917,5 +930,18 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
         chart.updateChartData(hideAnimation);
         chart.saveValues = JSON.parse(JSON.stringify(legend));
         chart.legendAttributes = JSON.parse(JSON.stringify(legend));
+    }
+
+    getLastSixChars(mod){
+        var lastSixChars = mod;
+
+        if ( mod.length > 6 ) {
+            lastSixChars = mod.slice(-6);
+
+            let stringLength = mod.length;
+            let firsNum = stringLength - 6;
+            lastSixChars = [mod.slice(0, firsNum), mod.slice(-6)];
+        }
+        return lastSixChars;
     }
 }

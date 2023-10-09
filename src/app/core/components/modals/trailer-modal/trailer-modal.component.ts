@@ -191,14 +191,6 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
             fhwaExp: [null, Validators.required],
             files: [null],
         });
-
-        this.formService.checkFormChange(this.trailerForm);
-
-        this.formService.formValueChange$
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((isFormChange: boolean) => {
-                this.isFormDirty = isFormChange;
-            });
     }
 
     private isCompanyOwned() {
@@ -377,6 +369,8 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
                     if (this.editData?.id) {
                         this.skipVinDecocerEdit = true;
                         this.editTrailerById(this.editData.id);
+                    } else {
+                        this.startFormChanges();
                     }
                 },
                 error: () => {},
@@ -775,6 +769,10 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
                         name: 'deactivate',
                         status: this.trailerStatus,
                     });
+
+                    setTimeout(() => {
+                        this.startFormChanges();
+                    }, 1000);
                 },
                 error: () => {},
             });
@@ -932,6 +930,15 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
                     },
                 });
         }
+    }
+
+    private startFormChanges() {
+        this.formService.checkFormChange(this.trailerForm);
+        this.formService.formValueChange$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((isFormChange: boolean) => {
+                this.isFormDirty = isFormChange;
+            });
     }
 
     ngOnDestroy(): void {

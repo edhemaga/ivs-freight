@@ -90,13 +90,6 @@ export class TtRegistrationModalComponent implements OnInit, OnDestroy {
             note: [null],
             files: [null],
         });
-
-        this.formService.checkFormChange(this.registrationForm);
-        this.formService.formValueChange$
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((isFormChange: boolean) => {
-                this.isFormDirty = isFormChange;
-            });
     }
 
     public onModalAction(data: { action: string; bool: boolean }) {
@@ -235,11 +228,12 @@ export class TtRegistrationModalComponent implements OnInit, OnDestroy {
                     : undefined,
             truckId:
                 this.editData.modal === 'truck' ? this.editData.id : undefined,
+            tabSelected: this.editData.tabSelected,
             files: documents,
         };
 
         this.commonTruckTrailerService
-            .addRegistration(newData, this.editData.tabSelected)
+            .addRegistration(newData)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
@@ -330,6 +324,7 @@ export class TtRegistrationModalComponent implements OnInit, OnDestroy {
                             );
                         }
                     }
+                    this.startFormChanges();
                 },
                 error: () => {},
             });
@@ -342,6 +337,15 @@ export class TtRegistrationModalComponent implements OnInit, OnDestroy {
             this.registrationForm.get('expDate'),
             this.registrationExpirationDate ? true : false
         );
+    }
+
+    private startFormChanges() {
+        this.formService.checkFormChange(this.registrationForm);
+        this.formService.formValueChange$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((isFormChange: boolean) => {
+                this.isFormDirty = isFormChange;
+            });
     }
 
     ngOnDestroy(): void {

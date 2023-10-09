@@ -715,13 +715,13 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
                     if (activeTrailer) {
                         this.actionTitle =
                             this.toastrType == 'toast-error'
-                                ? 'DEACTIVE'
-                                : 'DEACTIVATED';
+                                ? 'ACTIVE'
+                                : 'ACTIVATED';
                     } else {
                         this.actionTitle =
                             this.toastrType == 'toast-error'
-                                ? 'ACTIVE'
-                                : 'ACTIVATED';
+                                ? 'DEACTIVE'
+                                : 'DEACTIVATED';
                     }
 
                     if (this.toastrType != 'toast-error') {
@@ -768,13 +768,13 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
                     if (activeTruck) {
                         this.actionTitle =
                             this.toastrType == 'toast-error'
-                                ? 'DEACTIVE'
-                                : 'DEACTIVATED';
+                                ? 'ACTIVE'
+                                : 'ACTIVATED';
                     } else {
                         this.actionTitle =
                             this.toastrType == 'toast-error'
-                                ? 'ACTIVE'
-                                : 'ACTIVATED';
+                                ? 'DEACTIVE'
+                                : 'DEACTIVATED';
                     }
 
                     if (this.toastrType != 'toast-error') {

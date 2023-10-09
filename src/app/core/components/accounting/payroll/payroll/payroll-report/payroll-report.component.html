@@ -158,16 +158,16 @@
             <div class="payroll-report-money-value">
                 <div
                     class="payroll-report-money-item d-flex"
-                    *ngIf="reportMainData.loadPayAmmount !== undefined"
+                    *ngIf="reportMainData.milesPay !== undefined"
                 >
                     <div class="payroll-report-money-item-left d-flex">
                         <svg-icon
                             [src]="'assets/svg/payroll/equal.svg'"
                         ></svg-icon>
-                        <div class="sal-info">Load Pay</div>
+                        <div class="sal-info">Mi Pay</div>
                     </div>
                     <div class="payroll-report-money-item-right">
-                        {{ reportMainData.loadPayAmmount | currency : 'USD' }}
+                        {{ reportMainData.milesPay | currency : 'USD' }}
                     </div>
                 </div>
                 <div

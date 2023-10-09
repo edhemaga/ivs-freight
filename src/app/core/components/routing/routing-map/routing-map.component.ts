@@ -36,6 +36,7 @@ import { GetMapListResponse, GetRouteListResponse } from 'appcoretruckassist';
 import { DetailsDataService } from '../../../services/details-data/details-data.service';
 import { NotificationService } from '../../../services/notification/notification.service';
 import { TaThousandSeparatorPipe } from '../../../pipes/taThousandSeparator.pipe';
+import { RoutingStateQuery } from '../state/routing-state/routing-state.query';
 
 declare var google: any;
 declare const geoXML3: any;
@@ -571,6 +572,8 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
 
     editStopForm!: UntypedFormGroup;
 
+    previousFocusedRouteId: number | any = null;
+
     constructor(
         private mapsService: MapsService,
         private formBuilder: UntypedFormBuilder,
@@ -580,7 +583,8 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
         private routingService: RoutingStateService,
         private DetailsDataService: DetailsDataService,
         private notificationService: NotificationService,
-        private thousandSeparator: TaThousandSeparatorPipe
+        private thousandSeparator: TaThousandSeparatorPipe,
+        private routingQuery: RoutingStateQuery
     ) {}
 
     ngOnInit(): void {
@@ -592,10 +596,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
             address: [null, [...addressValidation]],
         });
 
-        var companyUserId = JSON.parse(
-            localStorage.getItem('user')
-        ).companyUserId;
-        this.getMapList(companyUserId, 1, 4);
+        this.setData();
 
         this.tableData[this.selectedMapIndex].routes.map((item) => {
             this.calculateRouteWidth(item);
@@ -648,8 +649,19 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
                         ...res.data,
                     };
 
-                    this.tableData[this.selectedMapIndex].routes[routeIndex] =
-                        combinedRoute;
+                    this.tableData[this.selectedMapIndex].routes[routeIndex] = {
+                        ...combinedRoute,
+                    };
+
+                    this.tableData[this.selectedMapIndex].routes[
+                        routeIndex
+                    ].stops = JSON.parse(
+                        JSON.stringify([
+                            ...this.tableData[this.selectedMapIndex].routes[
+                                routeIndex
+                            ].stops,
+                        ])
+                    );
 
                     this.tableData[this.selectedMapIndex].routes[
                         routeIndex
@@ -660,6 +672,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
                             stop.address.stateShortName +
                             ' ' +
                             (stop.address.zipCode ? stop.address.zipCode : '');
+
                         stop.lat = stop.latitude;
                         stop.long = stop.longitude;
                     });
@@ -697,11 +710,6 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
                     );
                 }
             });
-    }
-
-    ngOnDestroy(): void {
-        this.destroy$.next();
-        this.destroy$.complete();
     }
 
     initAddressFields() {
@@ -1117,9 +1125,8 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
 
     getMapInstance(map) {
         this.agmMap = map;
-        var mainthis = this;
 
-        mainthis.placesService = new google.maps.places.PlacesService(map);
+        this.placesService = new google.maps.places.PlacesService(map);
 
         this.trafficLayer = new google.maps.TrafficLayer();
 
@@ -1142,43 +1149,37 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
         }
 
         map.addListener('click', (e) => {
-            if (mainthis.stopJustAdded) {
-                mainthis.stopJustAdded = false;
+            if (this.stopJustAdded) {
+                this.stopJustAdded = false;
                 return false;
             }
 
-            if (mainthis.stopPickerLocation.lat) {
-                mainthis.addNewStop(e.domEvent, true);
+            if (this.stopPickerLocation.lat) {
+                this.addNewStop(e.domEvent, true);
             }
 
             if (
-                mainthis.focusedRouteIndex != null &&
-                mainthis.focusedStopIndex == null &&
-                !mainthis.stopPickerActive
+                this.focusedRouteIndex != null &&
+                this.focusedStopIndex == null &&
+                !this.stopPickerActive
             ) {
-                mainthis.focusRoute(mainthis.focusedRouteIndex);
+                this.focusRoute(this.focusedRouteIndex);
             }
 
-            if (
-                !mainthis.stopPickerActive &&
-                mainthis.focusedStopIndex != null
-            ) {
-                mainthis.focusStop(
+            if (!this.stopPickerActive && this.focusedStopIndex != null) {
+                this.focusStop(
                     e.domEvent,
-                    mainthis.focusedRouteIndex,
-                    mainthis.focusedStopIndex
+                    this.focusedRouteIndex,
+                    this.focusedStopIndex
                 );
             }
 
-            if (
-                mainthis.focusedRouteIndex != null &&
-                mainthis.stopPickerActive
-            ) {
-                mainthis.geocoder.geocode(
+            if (this.focusedRouteIndex != null && this.stopPickerActive) {
+                this.geocoder.geocode(
                     {
                         latLng: e.latLng,
                     },
-                    function (results, status) {
+                    (results, status) => {
                         if (status == google.maps.GeocoderStatus.OK) {
                             var sortedResults = results.sort((a, b) => {
                                 return (
@@ -1236,9 +1237,8 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
                                 }
 
                                 var validCountries =
-                                    mainthis.tableData[
-                                        mainthis.selectedMapIndex
-                                    ].borderType == 'open'
+                                    this.tableData[this.selectedMapIndex]
+                                        .borderType == 'open'
                                         ? ['US', 'CA']
                                         : ['US'];
 
@@ -1248,7 +1248,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
                                     address.city &&
                                     address.zipCode
                                 ) {
-                                    mainthis.stopPickerLocation = {
+                                    this.stopPickerLocation = {
                                         address: address,
                                         cityAddress:
                                             address.city +
@@ -1259,14 +1259,14 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
                                         lat: result.geometry.location.lat(),
                                         long: result.geometry.location.lng(),
                                         empty:
-                                            mainthis.addressFlag == 'Empty'
+                                            this.addressFlag == 'Empty'
                                                 ? true
                                                 : false,
                                     };
 
-                                    mainthis.stopPickerAnimation();
+                                    this.stopPickerAnimation();
 
-                                    mainthis.ref.detectChanges();
+                                    this.ref.detectChanges();
                                 }
                             }
                         }
@@ -1712,8 +1712,9 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
                 '[data-id="' + id + '"]'
             ) as HTMLElement;
 
-            var stopAddressElements =
-                routeElement.querySelectorAll('.route-card-row') as NodeListOf<HTMLElement>;
+            var stopAddressElements = routeElement.querySelectorAll(
+                '.route-card-row'
+            ) as NodeListOf<HTMLElement>;
 
             stopAddressElements.forEach((item: HTMLElement, index) => {
                 if (item.classList.contains('cdk-drag')) {
@@ -1838,10 +1839,13 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
                     if (route.isFocused) {
                         this.focusedRouteIndex = i;
 
-                        if (this.routeHiddenPolylines[route.id])
+                        if (this.routeHiddenPolylines[route.id] && this.previousFocusedRouteId != route.id) {
                             this.zoomToObject(
                                 this.routeHiddenPolylines[route.id]
                             );
+
+                            this.previousFocusedRouteId = route.id;
+                        }
                     } else {
                         this.focusedRouteIndex = null;
 
@@ -2823,8 +2827,9 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
     }
 
     stopPickerAnimation(hide?) {
-        let stopPickerElement: HTMLElement =
-            document.querySelector('.stop-picker-icon') as HTMLElement;
+        let stopPickerElement: HTMLElement = document.querySelector(
+            '.stop-picker-icon'
+        ) as HTMLElement;
 
         var animationClass = hide
             ? 'stop-picker-marker-animation-backwards'
@@ -2977,92 +2982,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
             )
             .pipe(takeUntil(this.destroy$))
             .subscribe((routes: GetRouteListResponse) => {
-                const mapIndex = this.tableData.findIndex((item) => {
-                    return item.id === mapId;
-                });
-
-                const oldRoutes = this.tableData[mapIndex].routes
-                    ? [...this.tableData[mapIndex].routes]
-                    : [];
-                console.log('getRouteList mapIndex', mapIndex);
-                console.log('getRouteList tableData', this.tableData);
-                this.tableData[mapIndex].routes = [];
-
-                var routesArr = routes.pagination.data;
-                routesArr.map((route, index) => {
-                    var stopsArr: any[] = [];
-                    route.stops.map((stop) => {
-                        var stopObj = {
-                            id: stop.id,
-                            address: stop.address,
-                            cityAddress:
-                                stop.address.city +
-                                ', ' +
-                                stop.address.stateShortName +
-                                ' ' +
-                                (stop.address.zipCode
-                                    ? stop.address.zipCode
-                                    : ''),
-                            lat: stop.latitude,
-                            long: stop.longitude,
-                            leg: stop.leg,
-                            total: stop.total,
-                            orderNumber: stop.orderNumber,
-                            shape: stop.shape ? stop.shape : '',
-                        };
-
-                        stopsArr.push(stopObj);
-                    });
-
-                    var oldRoute = oldRoutes.find(
-                        (route2) => route.id == route2.id
-                    );
-
-                    const routeOrderNumber = oldRoute?.orderNumber
-                        ? oldRoute.orderNumber
-                        : index + 1;
-
-                    var newRoute = {
-                        id: route.id,
-                        name: route.name,
-                        hidden: false,
-                        expanded: false,
-                        routeType: 'Practical',
-                        truckId: '',
-                        stopTime: '',
-                        mpg: '',
-                        fuelPrice: '',
-                        shape: '',
-                        stops: stopsArr,
-                        color: this.findRouteColor(),
-                        isFocused: this.focusedRouteIndex == index,
-                        orderNumber: routeOrderNumber,
-                    };
-
-                    this.tableData[mapIndex].routes.splice(
-                        routeOrderNumber - 1,
-                        0,
-                        newRoute
-                    );
-                });
-
-                if (this.selectedMapIndex == mapIndex) {
-                    this.tableData[mapIndex].routes.map((item, routeIndex) => {
-                        this.calculateRouteWidth(item);
-                        if (item.stops?.length > 1) {
-                            this.decodeRouteShape(item, routeIndex);
-                        } else {
-                            this.showHideRouteLine(item, true);
-                        }
-                    });
-                }
-
-                this.tableData[mapIndex].length =
-                    this.tableData[mapIndex].routes.length;
-
-                this.mapToolbar.getSelectedTabTableData();
-
-                this.initAddressFields();
+                this.setRoutingData(routes.pagination.data, mapId);
             });
     }
 
@@ -3170,8 +3090,10 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
 
                     this.routePolylines[route.id].setMap(this.agmMap);
                     this.routeHiddenPolylines[route.id].setMap(this.agmMap);
-                    if (zoomToRoute)
+                    if (zoomToRoute && this.previousFocusedRouteId != route.id) {
                         this.zoomToObject(this.routeHiddenPolylines[route.id]);
+                        this.previousFocusedRouteId = route.id;
+                    }
                 },
                 error: () => {
                     console.log('decodeRouteShape error');
@@ -3271,19 +3193,17 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
     }
 
     addPolylineListeners(routeId) {
-        var mainthis = this;
-
         google.maps.event.addListener(
             this.routeHiddenPolylines[routeId],
             'click',
             () => {
-                const routeLineIndex = mainthis.tableData[
-                    mainthis.selectedMapIndex
+                const routeLineIndex = this.tableData[
+                    this.selectedMapIndex
                 ].routes.findIndex((item) => {
                     return item.id === routeId;
                 });
 
-                mainthis.focusRoute(routeLineIndex);
+                this.focusRoute(routeLineIndex);
             }
         );
 
@@ -3291,15 +3211,15 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
             this.routeHiddenPolylines[routeId],
             'mouseover',
             () => {
-                var route = mainthis.tableData[
-                    mainthis.selectedMapIndex
-                ].routes.find((item) => {
-                    return item.id === routeId;
-                });
+                var route = this.tableData[this.selectedMapIndex].routes.find(
+                    (item) => {
+                        return item.id === routeId;
+                    }
+                );
 
-                mainthis.hoveredRouteId = route.id;
+                this.hoveredRouteId = route.id;
 
-                mainthis.focusPolyline(route, true);
+                this.focusPolyline(route, true);
             }
         );
 
@@ -3307,20 +3227,20 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
             this.routeHiddenPolylines[routeId],
             'mouseout',
             () => {
-                var route = mainthis.tableData[
-                    mainthis.selectedMapIndex
-                ].routes.find((item) => {
-                    return item.id === routeId;
-                });
+                var route = this.tableData[this.selectedMapIndex].routes.find(
+                    (item) => {
+                        return item.id === routeId;
+                    }
+                );
 
                 var hoveredStop = route.stops.find((stop) => {
                     return stop.hovered;
                 });
 
-                mainthis.hoveredRouteId = null;
+                this.hoveredRouteId = null;
 
                 if (!hoveredStop) {
-                    mainthis.focusPolyline(route, false);
+                    this.focusPolyline(route, false);
                 }
             }
         );
@@ -3507,5 +3427,120 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
             bounds.extend(points[n]);
         }
         this.agmMap.fitBounds(bounds);
+    }
+
+    setRoutingData(routes, mapId) {
+        const mapIndex = this.tableData.findIndex((item) => {
+            return item.id === mapId;
+        });
+
+        const oldRoutes = this.tableData[mapIndex].routes
+            ? [...this.tableData[mapIndex].routes]
+            : [];
+
+        this.tableData[mapIndex].routes = [];
+
+        var routesArr = routes;
+        routesArr.map((route, index) => {
+            var stopsArr: any[] = [];
+            route.stops.map((stop) => {
+                var stopObj = {
+                    id: stop.id,
+                    address: stop.address,
+                    cityAddress:
+                        stop.address.city +
+                        ', ' +
+                        stop.address.stateShortName +
+                        ' ' +
+                        (stop.address.zipCode ? stop.address.zipCode : ''),
+                    lat: stop.latitude,
+                    long: stop.longitude,
+                    leg: stop.leg,
+                    total: stop.total,
+                    orderNumber: stop.orderNumber,
+                    shape: stop.shape ? stop.shape : '',
+                };
+
+                stopsArr.push(stopObj);
+            });
+
+            var oldRoute = oldRoutes.find((route2) => route.id == route2.id);
+
+            const routeOrderNumber = oldRoute?.orderNumber
+                ? oldRoute.orderNumber
+                : index + 1;
+
+            var newRoute = {
+                id: route.id,
+                name: route.name,
+                hidden: false,
+                expanded: false,
+                routeType: 'Practical',
+                truckId: '',
+                stopTime: '',
+                mpg: '',
+                fuelPrice: '',
+                shape: '',
+                stops: stopsArr,
+                color: this.findRouteColor(),
+                isFocused: this.focusedRouteIndex == index,
+                orderNumber: routeOrderNumber,
+            };
+
+            this.tableData[mapIndex].routes.splice(
+                routeOrderNumber - 1,
+                0,
+                newRoute
+            );
+        });
+
+        if (this.selectedMapIndex == mapIndex) {
+            this.tableData[mapIndex].routes.map((item, routeIndex) => {
+                this.calculateRouteWidth(item);
+                if (item.stops?.length > 1) {
+                    this.decodeRouteShape(item, routeIndex);
+                } else {
+                    this.showHideRouteLine(item, true);
+                }
+            });
+        }
+
+        this.tableData[mapIndex].length =
+            this.tableData[mapIndex].routes.length;
+
+        this.mapToolbar.getSelectedTabTableData();
+
+        this.initAddressFields();
+    }
+
+    setData() {
+        const stateData = this.routingQuery.getAll();
+
+        const mapListData = stateData.filter(
+            (item: any) => item.type === 'map'
+        );
+        const routesData = stateData.filter(
+            (item: any) => item.type === 'route'
+        );
+
+        this.mapList = mapListData;
+        this.initTableOptions();
+
+        this.mapList.map((item) => {
+            const routes = routesData.filter(
+                (item2: any) => item.mapId == item2.mapId
+            );
+
+            if (routes?.length) {
+                this.setRoutingData(routes, item.id);
+            } else {
+                this.getRouteList(item.id, 1, 8);
+            }
+        });
+    }
+
+    ngOnDestroy(): void {
+        this.destroy$.next();
+        this.destroy$.complete();
     }
 }

@@ -47,8 +47,10 @@ export interface TrailerShortResponse {
     fhwaExp?: number;
     inspectionPercentage?: number | null;
     inspectionExpirationDays?: number | null;
+    inspectionExpirationHours?: number | null;
     registrationPercentage?: number | null;
     registrationExpirationDays?: number | null;
+    registrationExpirationHours?: number | null;
     fileCount?: number | null;
     createdAt?: string;
     updatedAt?: string;

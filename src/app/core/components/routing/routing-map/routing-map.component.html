@@ -53,7 +53,8 @@
                         (cdkDragMoved)="moved($event)"
                         [ngClass]="{
                             'route-hidden': route.hidden,
-                            'expanded-card': route.expanded
+                            'expanded-card': route.expanded,
+                            'route-in-focus': route.isFocused
                         }"
                         [ngStyle]="{
                             width: route.width ? route.width : '312px',

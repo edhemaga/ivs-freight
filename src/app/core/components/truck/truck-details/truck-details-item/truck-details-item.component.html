@@ -62,6 +62,7 @@
                                             formatDate(reg.issueDate)
                                         "
                                         [expiresSettings]="'details'"
+                                        [darkText]="true"
                                     >
                                     </app-truckassist-progress-expiration>
                                 </div>
@@ -188,6 +189,7 @@
                                             formatDate(fhwa.issueDate)
                                         "
                                         [expiresSettings]="'details'"
+                                        [darkText]="true"
                                     >
                                     </app-truckassist-progress-expiration>
                                 </div>
@@ -295,6 +297,7 @@
                     [stateTooltipName]="title.state.stateName"
                     [shortName]="title.state.stateShortName"
                     [weeklyWidth]="'28'"
+                    [haveHeaderText]="true"
                 >
                     <div class="cards-container">
                         <div class="card-body-cdl">
@@ -457,7 +460,8 @@
                         <div class="purchase-template">
                             <div class="purchase-template-item">
                                 <div class="purchase-template-item-name">
-                                    Payment Amount
+                                    <span class="longText">Payment Amount</span>
+                                    <span class="shortText">Pay Amount</span>
                                 </div>
                                 <div
                                     class="purchase-template-item-value amount"

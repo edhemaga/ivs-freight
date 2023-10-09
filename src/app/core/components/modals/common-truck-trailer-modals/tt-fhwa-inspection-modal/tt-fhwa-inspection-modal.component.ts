@@ -73,6 +73,8 @@ export class TtFhwaInspectionModalComponent implements OnInit, OnDestroy {
         if (this.editData.type === 'edit-inspection') {
             this.disableCardAnimation = true;
             this.editInspectionById();
+        } else {
+            this.startFormChanges();
         }
 
         if (this.editData && this.editData?.data) {
@@ -89,13 +91,6 @@ export class TtFhwaInspectionModalComponent implements OnInit, OnDestroy {
             note: [null],
             files: [null],
         });
-
-        this.formService.checkFormChange(this.fhwaInspectionForm);
-        this.formService.formValueChange$
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((isFormChange: boolean) => {
-                this.isFormDirty = isFormChange;
-            });
     }
 
     public onModalAction(data: { action: string; bool: boolean }) {
@@ -147,6 +142,7 @@ export class TtFhwaInspectionModalComponent implements OnInit, OnDestroy {
                     this.documents = res.files;
                     setTimeout(() => {
                         this.disableCardAnimation = false;
+                        this.startFormChanges();
                     }, 1000);
                 },
                 error: () => {},
@@ -210,6 +206,7 @@ export class TtFhwaInspectionModalComponent implements OnInit, OnDestroy {
                 this.editData.modal === 'trailer'
                     ? this.editData.id
                     : undefined,
+            tabSelected: this.editData.tabSelected,
             files: documents,
         };
         this.commonTruckTrailerService
@@ -259,6 +256,15 @@ export class TtFhwaInspectionModalComponent implements OnInit, OnDestroy {
                 break;
             }
         }
+    }
+
+    private startFormChanges() {
+        this.formService.checkFormChange(this.fhwaInspectionForm);
+        this.formService.formValueChange$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((isFormChange: boolean) => {
+                this.isFormDirty = isFormChange;
+            });
     }
 
     ngOnDestroy(): void {

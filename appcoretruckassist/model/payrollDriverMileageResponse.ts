@@ -27,7 +27,10 @@ export interface PayrollDriverMileageResponse {
     paidDate?: string | null;
     status?: EnumValue;
     mileageAmount?: number;
+    mileageEmpty?: number;
+    mileageLoaded?: number;
     bonusAmount?: number;
+    milesPay?: number;
     salaryAmount?: number;
     creditAmount?: number;
     deductionAmount?: number;

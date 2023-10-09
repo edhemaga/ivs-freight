@@ -19,6 +19,10 @@
                     width: unquote($i - 8 + 'px');
                 }
             }
+
+            &.dispatch_dropdown {
+                top: -4px;
+            }
         }
         // ---------------------------------------- DROPDOWN ----------------------------------------
         .dropdown-options {
@@ -1244,6 +1248,11 @@
             &.merge-dropdown-body-with-input {
                 border-radius: 0 0 2px 2px !important;
                 left: -4px !important;
+            }
+
+            // Dispatch Dropdown
+            &.svgtext-dispatch-template {
+                top: -4px;
             }
         }
     }

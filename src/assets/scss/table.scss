@@ -10,6 +10,37 @@
         }
     }
 
+    // SEARCH HIGHLIGHT
+    .table-highlight-text-0 {
+        color: #26a690;
+        background: #26a69020;
+
+        &::selection {
+            color: #26a690;
+            background: #26a69020;
+        }
+    }
+
+    .table-highlight-text-1 {
+        color: #ab47bc;
+        background: #ab47bc20;
+
+        &::selection {
+            color: #ab47bc;
+            background: #ab47bc20;
+        }
+    }
+
+    .table-highlight-text-2 {
+        color: #ffa726;
+        background: #ffa72620;
+
+        &::selection {
+            color: #ffa726;
+            background: #ffa72620;
+        }
+    }
+
     // DESCRIPTION
     .description-container {
         .description-dot-container {

@@ -107,13 +107,6 @@ export class DriverMvrModalComponent implements OnInit, OnDestroy {
             note: [null],
             files: [null],
         });
-
-        this.formService.checkFormChange(this.mvrForm);
-        this.formService.formValueChange$
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((isFormChange: boolean) => {
-                this.isFormDirty = isFormChange;
-            });
     }
 
     private getDriverById(id: number) {
@@ -316,6 +309,7 @@ export class DriverMvrModalComponent implements OnInit, OnDestroy {
                     };
                     this.documents = res.files ? (res.files as any) : [];
                     setTimeout(() => {
+                        this.startFormChanges();
                         this.disableCardAnimation = false;
                     }, 1000);
                 },
@@ -342,6 +336,7 @@ export class DriverMvrModalComponent implements OnInit, OnDestroy {
                             .get('cdlId')
                             .patchValue(this.selectedCdl.name);
                     }
+                    this.startFormChanges();
                 },
                 error: () => {},
             });
@@ -361,6 +356,15 @@ export class DriverMvrModalComponent implements OnInit, OnDestroy {
                     });
                 },
                 error: () => {},
+            });
+    }
+
+    private startFormChanges() {
+        this.formService.checkFormChange(this.mvrForm);
+        this.formService.formValueChange$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((isFormChange: boolean) => {
+                this.isFormDirty = isFormChange;
             });
     }
 

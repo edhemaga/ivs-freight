@@ -50,6 +50,8 @@ import { DispatcherResolverService } from './core/components/dispatch/state/disp
 import { UnderConstructionComponent } from './core/components/under-construction/under-construction.component';
 import { HideContentGuard } from './core/guards/hideContent.guard';
 import { ApplicantGuard } from './core/guards/applicant.guard';
+import { RoutingResolver } from './core/components/routing/state/routing-state/routing-state.resolver';
+import { TelematicResolver } from './core/components/telematic/state/telematic-state.resolver';
 
 const routes: Routes = [
     /* WEBSITE */
@@ -273,6 +275,9 @@ const routes: Routes = [
                 (m) => m.RoutingModule
             ),
         canActivate: [AuthGuard],
+        resolve: {
+            routing: RoutingResolver
+        },
     },
     {
         path: 'report',
@@ -306,6 +311,9 @@ const routes: Routes = [
                 (m) => m.TelematicModule
             ),
         canActivate: [AuthGuard],
+        resolve: {
+            routing: TelematicResolver
+        },
     },
     {
         path: 'tools/calendar',

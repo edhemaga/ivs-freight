@@ -29,6 +29,7 @@ export interface PayrollDriverCommissionResponse {
     salaryAmount?: number;
     creditAmount?: number;
     deductionAmount?: number;
+    revenueAmount?: number;
     totalAmount?: number;
     loadsCount?: number;
     additionalDays?: number | null;

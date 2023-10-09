@@ -52,7 +52,10 @@
                             class="company-icons"
                             src="assets/svg/common/ic_phone.svg"
                         ></svg-icon>
-                        <app-ta-copy [copyValue]="insurance?.phone">
+                        <app-ta-copy 
+                            [copyValue]="insurance?.phone"
+                            [textColor]="'#2f2f2f'"
+                        >
                         </app-ta-copy>
                     </div>
                     <div *ngIf="insurance.email" class="single-item">
@@ -60,7 +63,10 @@
                             class="company-icons"
                             src="assets/svg/common/ic_email.svg"
                         ></svg-icon>
-                        <app-ta-copy [copyValue]="insurance?.email">
+                        <app-ta-copy 
+                            [copyValue]="insurance?.email"
+                            [textColor]="'#2f2f2f'"
+                        >
                         </app-ta-copy>
                     </div>
                     <div *ngIf="insurance.address.address" class="single-item">
@@ -389,6 +395,7 @@
                         [expireDate]="insurance.expires | formatDateP"
                         [startDate]="insurance.issued | formatDateP"
                         [expiresSettings]="'settings-insurance-policy'"
+                        [darkText]="true"
                     ></app-truckassist-progress-expiration>
                 </div>
                 <div

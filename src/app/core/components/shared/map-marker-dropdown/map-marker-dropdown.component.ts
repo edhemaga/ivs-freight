@@ -61,6 +61,7 @@ export class MapMarkerDropdownComponent implements OnInit {
     @Output() bodyActions: EventEmitter<any> = new EventEmitter();
     @Output() showClusterItemInfo: EventEmitter<any> = new EventEmitter();
     @Output() loadMoreData: EventEmitter<any> = new EventEmitter();
+    @Output() assignUnitToDevice: EventEmitter<any> = new EventEmitter();
     @ViewChild("detailsDropdown") detailsDropdown: any;
 
     public dropdownActions: any = [];
@@ -96,9 +97,10 @@ export class MapMarkerDropdownComponent implements OnInit {
         this.mapsService.markerUpdateChange
             .pipe(takeUntil(this.destroy$))
             .subscribe((item) => {
-                if ( item.id == this.item.id ) {
+                if ( (item.id != null && (item.id == this.item.id)) || (item.deviceId != null && (item.deviceId == this.item.deviceId)) ) {
                     this.item = item;
                     this.getDropdownActions();
+                    this.ref.detectChanges();
                 }
             });
 
@@ -255,5 +257,9 @@ export class MapMarkerDropdownComponent implements OnInit {
             this.item,
             this.type
         );
+    }
+
+    assignUnit() {
+        this.assignUnitToDevice.emit(this.item);
     }
 }

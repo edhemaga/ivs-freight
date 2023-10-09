@@ -66,6 +66,7 @@ export class ShipperCardViewComponent implements OnInit, OnChanges, OnDestroy {
         defaultType: 'bar',
         chartWidth: '417',
         chartHeight: '130',
+        hasValue: false,
         dataLabels: [
             '',
             'NOV',
@@ -295,8 +296,6 @@ export class ShipperCardViewComponent implements OnInit, OnChanges, OnDestroy {
             .getShipperChart(id, chartType)
             .pipe(takeUntil(this.destroy$))
             .subscribe((item) => {
-                console.log(item, 'item');
-
                 let avgPickupTime = this.convertTimeSpanToMinutes(
                         item.avgPickupTime
                     ),
@@ -310,6 +309,13 @@ export class ShipperCardViewComponent implements OnInit, OnChanges, OnDestroy {
                 ];
                 this.stackedBarChartLegend[0].value = avgPickupTime;
                 this.stackedBarChartLegend[1].value = avgDeliveryTime;
+                let hasValue = false;
+                this.stackedBarChartLegend.map((leg) => {
+                    if (leg.value > 0) {
+                        hasValue = true;
+                    }
+                });
+                this.stackedBarChartConfig.hasValue = hasValue;
                 let milesPerGallon = [],
                     costPerGallon = [],
                     labels = [],

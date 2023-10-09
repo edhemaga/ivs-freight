@@ -127,4 +127,5 @@ export interface ITaInput {
 
     // DateTime Picker
     isFromDate?: boolean;
+    hideColorValidations?: boolean; // regular color for inputs, no blue validation
 }

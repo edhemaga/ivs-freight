@@ -193,13 +193,6 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
             'email',
             this.destroy$
         );
-
-        this.formService.checkFormChange(this.parkingForm);
-        this.formService.formValueChange$
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((isFormChange: boolean) => {
-                this.isFormDirty = isFormChange;
-            });
     }
 
     public tabChange(event: any, action?: string): void {
@@ -569,6 +562,7 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
                     }
 
                     setTimeout(() => {
+                        this.startFormChanges();
                         this.disableCardAnimation = false;
                     }, 1000);
                 },
@@ -589,9 +583,20 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
                     if (this.editData?.type === 'edit') {
                         this.disableCardAnimation = true;
                         this.editCompanyParkingById(this.editData.id);
+                    } else {
+                        this.startFormChanges();
                     }
                 },
                 error: () => {},
+            });
+    }
+
+    private startFormChanges() {
+        this.formService.checkFormChange(this.parkingForm);
+        this.formService.formValueChange$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((isFormChange: boolean) => {
+                this.isFormDirty = isFormChange;
             });
     }
 

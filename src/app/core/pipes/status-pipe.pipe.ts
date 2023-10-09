@@ -27,7 +27,7 @@ export class StatusPipePipe implements PipeTransform {
     transform(status_id: number, nextPossibleStatus: IDispatchModel): unknown {
         if (status_id === 11) {
             return `${
-                nextPossibleStatus.name == 'Pickup'
+                nextPossibleStatus?.name == 'Pickup'
                     ? STATUS_COLORS[status_id]
                     : STATUS_COLORS['-1']
             }`;

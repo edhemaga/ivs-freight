@@ -15,5 +15,6 @@ import { EnumValue } from './enumValue';
 export interface DispatchStatusResponse { 
     statusValue?: EnumValue;
     statusString?: string | null;
+    statusCheckInNumber?: string | null;
 }
 

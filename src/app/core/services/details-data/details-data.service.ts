@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
 
 @Injectable({
     providedIn: 'root',
@@ -7,6 +7,7 @@ import { BehaviorSubject } from 'rxjs';
 export class DetailsDataService {
     private leftSideMenuStatus = new BehaviorSubject<boolean>(false);
     public leftSideMenuChanges = this.leftSideMenuStatus.asObservable();
+    public dropdownOpenedChange: Subject<any> = new Subject<any>();
 
     public mainData: any;
     public cardMainTitle: any;
@@ -19,7 +20,7 @@ export class DetailsDataService {
     constructor() {}
 
     setNewData(newData) {
-        this.mainData = newData;
+        this.mainData = {...newData};
     }
 
     public updateLeftMenuStatus(leftSideMenuStatus: boolean) {
@@ -70,5 +71,9 @@ export class DetailsDataService {
 
     setUnitValue(mod) {
         this.unitValue = mod;
+    }
+
+    dropdownOpened(data) {
+        this.dropdownOpenedChange.next(data);
     }
 }

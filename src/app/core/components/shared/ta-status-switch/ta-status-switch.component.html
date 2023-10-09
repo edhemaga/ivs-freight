@@ -13,14 +13,22 @@
     >
         <div
             class="status_change_wrapper status-color-{{
-                status.statusValue.id | statusPipe: currentStopType
+                status.statusValue.id | statusPipe : currentStopType
             }}"
         >
-            <div
-                [class.withAgo]="withStatusAgo"
-                class="switch_statuses"
-            >
+            <div [class.withAgo]="withStatusAgo" class="switch_statuses">
                 {{ status.statusString }}
+                
+                <span
+                    *ngIf="currentStopType?.name == 'Pickup' && pickupCount > 1"
+                    >&nbsp;{{" " + status.statusCheckInNumber}}</span
+                >
+                <span
+                    *ngIf="
+                        currentStopType?.name == 'Delivery' && deliveryCount > 1
+                    "
+                    >&nbsp;{{" " + status.statusCheckInNumber}}</span
+                >
                 <span *ngIf="withStatusAgo" class="time_ago">{{
                     statusAgo
                 }}</span>
@@ -33,7 +41,7 @@
     <div class="ta_status_main_holder hoverItem">
         <div
             [class.active]="openedStatus == statusMainIndex"
-            [ngStyle]="{ top: '-4px' }"
+            [ngStyle]="{ top: '4px' }"
             class="status_change_wrapper popover-wraper"
         >
             <div
@@ -42,9 +50,8 @@
                 [class.active]="
                     data.id == changeIndex && openedStatus == statusMainIndex
                 "
-                
                 class="switch_statuses status-popover-item-{{
-                    item.statusValue.id | statusPipe: nextStopType
+                    item.statusValue.id | statusPipe : nextStopType
                 }}"
             >
                 <div *ngIf="item.load_repear" class="load-repear-item">L</div>

@@ -138,7 +138,7 @@ p {
     position: relative;
     left: -3px;
     display: grid;
-    grid-template-columns: 202px 202px;
+    grid-template-columns: 204px 204px;
     column-gap: 12px;
     padding: 0 0px;
     .assignTo-vehicle {
@@ -269,7 +269,7 @@ p {
 
             &.inactive-assignTo-value{
                 padding-left: 6px;
-                color: #B7B7B7;
+                color: #2f2f2f;
                 line-height: 34px;
             }
 
@@ -302,7 +302,7 @@ p {
                     .value-name {
                         font-size: 14px !important;
                         font-weight: 400 !important;
-                        color: #6c6c6c;
+                        color: #2f2f2f;
                     }
                     &:not(:first-child) {
                         .value-name:before {
@@ -314,7 +314,7 @@ p {
         }
         .card-item-name {
             font-size: 11px;
-            color: #6c6c6c;
+            color: #2f2f2f;
             font-weight: $font-bold;
             height: 15px;
             margin-bottom: 2px;
@@ -330,7 +330,7 @@ p {
         .card-item-value {
             font-size: $font-size14;
             font-weight: 400;
-            color: #6c6c6c;
+            color: #2F2F2F;
             white-space: nowrap;
             height: 18px;
             &::-moz-selection {
@@ -342,7 +342,7 @@ p {
                 background: rgb(108, 108, 108, 0.2);
             }
             &:hover {
-                color: #3c3c3c;
+                color: #2f2f2f;
             }
         }
         .card-row-issued {
@@ -353,7 +353,7 @@ p {
         }
         .card-row-endor {
             display: grid;
-            grid-template-columns: 141px 141px;
+            grid-template-columns: 50% 50%;
             column-gap: 21px;
             margin-bottom: 4px;
         }
@@ -367,31 +367,31 @@ p {
             .restriction-name {
                 font-size: 11px;
                 font-weight: $font-bold;
-                color: #6c6c6c;
+                color: #2f2f2f;
                 height: 15px;
                 &::-moz-selection {
-                    color: #6c6c6c;
+                    color: #2f2f2f;
                     background: rgb(108, 108, 108, 0.2);
                 }
                 &::selection {
-                    color: #6c6c6c;
+                    color: #2f2f2f;
                     background: rgb(108, 108, 108, 0.2);
                 }
             }
             .span-value {
                 &::-moz-selection {
-                    color: #6c6c6c !important;
+                    color: #2f2f2f !important;
                     background: rgb(108, 108, 108, 0.2) !important;
                 }
                 &::selection {
-                    color: #6c6c6c !important;
+                    color: #2f2f2f !important;
                     background: rgb(108, 108, 108, 0.2) !important;
                 }
             }
             .restriction-item-value {
                 font-size: $font-size14;
                 font-weight: 400;
-                color: #6c6c6c;
+                color: #2f2f2f;
                 height: 18px;
                 white-space: nowrap;
                 margin-bottom: 2px;
@@ -468,7 +468,7 @@ p {
             order: -1 !important;
             display: flex !important;
             justify-content: space-between !important;
-            color: #6c6c6c !important;
+            color: #2f2f2f !important; 
 
             .progress-text {
                 margin: 2px 0px !important;
@@ -492,13 +492,13 @@ p {
             .p-status {
                 font-size: $font-size14;
                 font-weight: 700;
-                color: #919191;
+                color: #2f2f2f;
                 &::-moz-selection {
-                    color: #919191;
+                    color: #2f2f2f;
                     background: rgb(145, 145, 145, 0.2);
                 }
                 &::selection {
-                    color: #919191;
+                    color: #2f2f2f;
                     background: rgb(145, 145, 145, 0.2);
                 }
                 .note-textarea {
@@ -656,7 +656,7 @@ p {
             p {
                 font-size: 14px;
                 font-weight: 400;
-                color: #6c6c6c;
+                color: #2f2f2f;
                 white-space: nowrap;
                 &::-moz-selection {
                     color: $color-gray-dark;
@@ -776,7 +776,7 @@ p {
             p {
                 font-size: 18px;
                 font-weight: 500;
-                color: #6c6c6c;
+                color: #2f2f2f;
                 &::-moz-selection {
                     color: $color-gray-dark;
                     background: rgb(108, 108, 108, 0.2);
@@ -794,7 +794,7 @@ p {
             }
             svg {
                 path {
-                    fill: #aaaaaa;
+                    fill: #424242;
                     object-fit: fill;
                 }
                 rect {
@@ -811,7 +811,7 @@ p {
             align-items: center;
             p {
                 font-size: 18px;
-                color: #6c6c6c;
+                color: #2f2f2f;
                 font-weight: 400;
             }
         }
@@ -820,7 +820,7 @@ p {
             margin-bottom: 14px;
             p {
                 font-size: 14px !important;
-                color: #6c6c6c;
+                color: #2f2f2f;
                 font-weight: 400;
                 position: relative;
                 bottom: -1px;
@@ -874,7 +874,8 @@ p {
         .common-template-item-name {
             font-size: $font-size12;
             font-weight: $font-semibold;
-            color: $color-gray-dark;
+            //color: $color-gray-dark;
+            color: #2f2f2f;
 
             &::-moz-selection {
                 color: $color-gray-dark;
@@ -889,7 +890,8 @@ p {
         .common-template-item-value {
             font-size: $font-size14;
             font-weight: 400;
-            color: $color-gray-dark;
+            //color: $color-gray-dark;
+            color: #2F2F2F;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -970,13 +972,14 @@ p {
     font-size: 14px;
     font-weight: 400;
     //padding: 0 10px;
-    color: #b7b7b7;
+    //color: #b7b7b7;
+    color: #919191;
     &::-moz-selection {
-        color: #b7b7b7;
+        color: #919191;
         background: rgb(183, 183, 183, 0.2);
     }
     &::selection {
-        color: #b7b7b7;
+        color: #919191;
         background: rgb(183, 183, 183, 0.2);
     }
 }
@@ -992,29 +995,30 @@ p {
         flex-direction: column;
         align-items: flex-start;
         .mileage-template-item-name {
-            color: $color-gray-dark;
+            //color: $color-gray-dark;
+            color: #2F2F2F;
             font-size: 11px;
             font-weight: 700;
             &::-moz-selection {
-                color: $color-gray-dark;
+                color: #2F2F2F;
                 background: rgb(108, 108, 108, 0.2);
             }
             &::selection {
-                color: $color-gray-dark;
+                color: #2F2F2F;
                 background: rgb(108, 108, 108, 0.2);
             }
         }
         .mileage-template-item-value {
-            color: $color-gray-dark;
+            color: #2F2F2F;
             font-size: 18px;
             font-weight: 500;
             margin-top: -3px;
             &::-moz-selection {
-                color: $color-gray-dark;
+                color: #2f2f2f;
                 background: rgb(108, 108, 108, 0.2);
             }
             &::selection {
-                color: $color-gray-dark;
+                color: #2F2F2F;
                 background: rgb(108, 108, 108, 0.2);
             }
         }
@@ -1145,3 +1149,1278 @@ p {
     }
     
 }
+
+.boldSanVin{
+    font-weight: 800;
+}
+
+/* responsive start */
+
+@media (max-width: 1910px) {
+
+    .details-container-items {
+        display: grid;
+        grid-template-columns: 440px repeat(4, 320px);
+    }
+
+    .card-width {
+        width: 320px;
+    }
+
+
+    .repair-details-container{
+        grid-template-columns: 440px 712px 320px 260px !important;
+    }
+
+    .repair-details-cmp{
+        grid-template-columns: 440px 712px 320px 260px !important;
+    }
+
+    .responsiveHolderRepair{
+        grid-template-columns: 125px 109px 95px 179px 145px !important;
+    }
+    
+    .repair-container {
+       width: 712px !important; 
+    }
+
+    .repaired-vehicle-container{
+        width: 320px !important;
+    }
+
+    .likes-count-container{
+        width: 260px;
+    }
+    
+    .repaired-vehicle-container .repair-vehicle-header {
+        grid-template-columns: 37px 55px 50px 46px !important;
+    }
+
+    .repair-items-vehicle{
+        .items-vehicle{
+            grid-template-columns: 50px 79px 52px 66px !important;
+        }
+    }
+    
+    app-shop-repair-details-item {
+        .finish-order-cont {
+            .repair-items {
+                .items-header {
+                  
+                    &.repair-item-column{
+
+                        &.responsiveHolderRepair{
+                            grid-template-columns: 85px 35px 110px 95px 325px !important;
+                        }
+                        
+                    }
+        
+                }
+            }
+        }
+    }
+    
+    
+
+    .counter-text{
+        padding: 0px 0px 0px 8px !important;
+    }
+
+    .card-row-progress{
+        //width: 95%; 
+    }
+
+    .reason-span{
+        display: none;
+    }
+
+    .card-restriction-endorsment{
+        grid-template-columns: 110px 115px !important;
+    }
+
+    .restriction-item-value {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+
+    app-shipper-details, app-broker-details{
+        .load{
+            width: 712px !important;
+        }
+
+        .contact{
+            width: 320px !important;
+
+            .contact-wrapper{
+                width: 320px !important;;
+            }
+        }
+
+        .likes-count-container {
+            width: 260px !important;;
+        }
+        
+        .review-container{
+            width: 260px !important;;
+        }
+    }
+}
+
+@media (max-width: 1870px) {
+    .details-container-items {
+        display: grid;
+        grid-template-columns: 440px repeat(4, 300px);
+    }
+
+    .card-width {
+        width: 300px;
+    }
+}
+
+@media (max-width: 1850px) {
+
+    .repair-details-container{
+        grid-template-columns: 430px 702px 310px 250px !important;
+    }
+
+    .repair-details-cmp{
+        grid-template-columns: 430px 702px 310px 250px !important;
+    }
+
+    .repair-general-holder{
+        width: 430px;
+    }
+    
+    .repair-container {
+       width: 702px !important; 
+    }
+
+    .repaired-vehicle-container{
+        width: 310px !important;
+    }
+
+    .likes-count-container{
+        width: 250px;
+    }
+
+    .repair-component {
+        height: max-content;
+        .repair-cards {
+            width: 430px !important;
+        }
+    } 
+    
+    app-shop-repair-details-item {
+        .finish-order-cont {
+            .repair-items {
+                .items-header {
+                  
+                    &.repair-item-column{
+
+                        &.responsiveHolderRepair{
+                            grid-template-columns: 85px 35px 110px 95px 315px !important;
+                        }
+                        
+                    }
+        
+                }
+            }
+        }
+    }
+
+    .responsiveHolderRepair{
+        grid-template-columns: 125px 109px 95px 179px 137px !important;
+    }
+
+    .repair-items-vehicle{
+        .items-vehicle{
+            grid-template-columns: 50px 88px 37px 66px !important;
+        }
+    }
+
+    .repaired-vehicle-container .repair-vehicle-header {
+        grid-template-columns: 37px 55px 40px 46px !important;
+    }
+
+    app-shipper-details, app-broker-details{
+
+        .details-header-wrapper{
+            width: 430px !important;;
+
+            .details-header-wrapper-switcher{
+                grid-template-columns: 360px 53px !important;;
+            }
+        }
+
+        .load{
+            width: 702px !important;;
+        }
+
+        .contact{
+            width: 310px !important;;
+
+            .contact-wrapper{
+                width: 310px !important;;
+            }
+        }
+
+        .likes-count-container {
+            width: 250px !important;;
+        }
+        
+        .review-container{
+            width: 250px !important;;
+        }
+
+        .credit-perctange{
+            width: 407px !important;
+        }
+    }
+
+    app-shop-repair-details{
+
+        .details-header-wrapper-switcher{
+            grid-template-columns: 360px 53px !important; 
+        }
+
+    }
+
+}    
+
+@media (max-width: 1820px) {
+    .card-restriction-endorsment{
+        column-gap: 30px !important;
+    }
+
+
+    .repair-details-container{
+        grid-template-columns: 420px 692px 300px 240px !important;
+    }
+
+    .repair-details-cmp{
+        grid-template-columns: 420px 692px 300px 240px !important;
+    }
+
+    .repair-general-holder{
+        width: 420px;
+    }
+    
+    .repair-container {
+       width: 692px !important; 
+    }
+
+    .repaired-vehicle-container{
+        width: 300px !important;
+    }
+
+    .likes-count-container{
+        width: 240px;
+    }
+
+    .repair-component {
+        .repair-cards {
+            width: 420px !important;
+        }
+    } 
+    
+    app-shop-repair-details-item {
+        .finish-order-cont {
+            .repair-items {
+                .items-header {
+                  
+                    &.repair-item-column{
+
+                        &.responsiveHolderRepair{
+                            grid-template-columns: 85px 35px 100px 95px 315px !important;
+                        }
+                        
+                    }
+        
+                }
+            }
+        }
+    }
+
+    .responsiveHolderRepair{
+        grid-template-columns: 125px 99px 95px 179px 137px !important
+    }
+
+    .repair-items-vehicle{
+        .items-vehicle{
+            grid-template-columns: 50px 88px 27px 66px !important;
+        }
+    }
+
+    .repaired-vehicle-container .repair-vehicle-header {
+        grid-template-columns: 37px 55px 29px 46px !important;
+    }
+
+    app-shipper-details, app-broker-details{
+
+        .details-header-wrapper{
+            width: 420px !important;
+
+            .details-header-wrapper-switcher{
+                grid-template-columns: 348px 53px !important;;
+            }
+        }
+
+        .load{
+            width: 692px !important;;
+        }
+
+        .contact{
+            width: 300px !important;;
+
+            .contact-wrapper{
+                width: 300px !important;;
+            }
+        }
+
+        .likes-count-container {
+            width: 240px !important;;
+        }
+        
+        .review-container{
+            width: 240px !important;;
+        }
+
+        .credit-perctange{
+            width: 396px !important;
+        }
+    }
+
+    app-shop-repair-details{
+
+        .details-header-wrapper-switcher{
+            grid-template-columns: 350px 53px !important; 
+        }
+
+    }
+}    
+
+@media (max-width: 1780px) {
+    .details-container-items {
+        display: grid;
+        grid-template-columns: 440px repeat(4, 280px);
+    }
+
+    .card-width {
+        width: 280px;
+    }
+
+    .card-restriction-endorsment{
+        column-gap: 20px !important;
+    }
+
+    .request-header-container{
+        display: none !important;
+        width: 26px;
+
+        &.icon-request-holder{
+            display: flex !important;
+            width: 26px !important;
+            height: 26px !important;
+            
+            background-color: #ffffff !important;
+
+            svg {
+                path{
+                    fill: #3074D3;
+                }
+            }
+
+            &:hover {
+
+                background-color: #3074D3 !important;
+
+            svg {
+                path{
+                    fill: #ffffff;
+                }
+            }
+
+            }
+        }
+    }
+
+    .repair-details-container{
+        grid-template-columns: 475px 760px 410px 0px !important;
+    }
+
+
+    .repair-general-holder{
+        width: 475px;
+    }
+
+    .repair-container {
+        width: 760px !important; 
+     }
+ 
+     .repaired-vehicle-container{
+         width: 410px !important;
+         max-width: 410px !important;
+     }
+ 
+     .likes-count-container{
+         width: 0px;
+     }
+
+     .details-header-wrapper-reapirShop{
+        max-width: 475px !important;
+     }
+
+     .repair-component {
+        .repair-cards {
+            width: 475px !important;
+        }
+    }
+
+    .repair-details-cmp{
+        grid-template-columns: 475px 760px 410px 0px !important;
+        .repair-component{
+            column-gap: 0px;
+            height: 40px;
+            &.vehicleHolder{
+                grid-row: 1 !important;
+                grid-column: 3 !important;
+                height: fit-content;
+            }
+        
+            &.reviewShopHolder{
+                grid-row: 2 !important;
+                grid-column: 3 !important;
+                width: 410px !important;
+            }
+
+        }
+
+        .review-container {
+            width: 410px !important;
+            max-width: 410px !important;
+        }
+
+        .likes-count-container{
+            display: flex;
+            justify-content: center;
+            width: 410px !important;
+            max-width: 410px !important;
+        }
+    }
+
+    .purchase-template {
+        display: grid;
+        grid-template-columns: repeat(2, 50%) !important;
+    }
+
+
+    app-shipper-details, app-broker-details{
+
+        .toolbar-general-cmp{
+            max-width: 475px !important;
+        }
+
+        .details-header-wrapper{
+            width: 475px !important;;
+            max-width: 475px !important;;
+            .details-header-wrapper-switcher{
+                grid-template-columns: 403px 53px !important;;
+            }
+        }
+
+        .load{
+            width: 760px !important;;
+        }
+
+        .contact{
+            width: 410px !important;;
+
+            .contact-wrapper{
+                width: 410px !important;;
+            }
+        }
+
+        .likes-count-container {
+            width: 410px !important;;
+        }
+        
+        .review-container{
+            width: 410px !important;;
+        }
+
+        .credit-perctange{
+            width: 450px !important;
+        }
+
+        /*
+        .repair-component{
+            column-gap: 0px;
+            height: 40px;
+            &.contactGridHolder{
+                grid-row: 1 !important;
+                grid-column: 2 !important;
+                height: fit-content;
+            }
+        
+            &.reviewGridHolder{
+                grid-row: 2 !important;
+                grid-column: 2 !important;
+                width: 410px !important;
+            }
+
+        }
+        */
+    }
+
+    app-shop-repair-details{
+
+        .details-header-wrapper-switcher{
+            grid-template-columns: 404px 53px !important; 
+        }
+
+    }
+
+}
+
+@media (max-width: 1760px) {
+
+    .repair-details-container{
+        grid-template-columns: 455px 740px 390px 0px !important;
+    }
+
+
+    .repair-general-holder{
+        width: 455px;
+    }
+
+    .repair-container {
+        width: 740px !important; 
+     }
+ 
+     .repaired-vehicle-container{
+         width: 390px !important;
+         max-width: 390px !important;
+     }
+ 
+     .likes-count-container{
+         width: 0px;
+     }
+
+     .details-header-wrapper-reapirShop{
+        max-width: 455px !important;
+     }
+
+     .repair-component {
+        .repair-cards {
+            width: 455px !important;
+        }
+    }
+
+    .repair-details-cmp{
+        grid-template-columns: 455px 740px 390px 0px !important;
+        .repair-component{
+            column-gap: 0px;
+            height: 40px;
+            &.vehicleHolder{
+                grid-row: 1 !important;
+                grid-column: 3 !important;
+                height: fit-content;
+            }
+        
+            &.reviewShopHolder{
+                grid-row: 2 !important;
+                grid-column: 3 !important;
+                width: 410px !important;
+            }
+
+        }
+
+        .review-container {
+            width: 390px !important;
+            max-width: 390px !important;
+        }
+
+        .likes-count-container{
+            display: flex;
+            justify-content: center;
+            width: 390px !important;
+            max-width: 390px !important;
+        }
+    }
+
+    app-shipper-details, app-broker-details{
+
+        .toolbar-general-cmp{
+            max-width: 455px !important;
+        }
+
+        .details-header-wrapper{
+            width: 455px !important;;
+            max-width: 455px !important;;
+            .details-header-wrapper-switcher{
+                grid-template-columns: 382px 53px !important;;
+            }
+        }
+
+        .load{
+            width: 740px !important;;
+        }
+
+        .contact{
+            width: 390px !important;;
+
+            .contact-wrapper{
+                width: 390px !important;;
+            }
+        }
+
+        .likes-count-container {
+            width: 390px !important;;
+        }
+        
+        .review-container{
+            width: 390px !important;;
+        }
+
+        .credit-perctange{
+            width: 430px !important;
+        }
+    }
+
+    app-shop-repair-details{
+
+        .details-header-wrapper-switcher{
+            grid-template-columns: 385px 53px !important; 
+        }
+
+    }
+
+}
+
+@media (max-width: 1700px) {
+    .details-container-items {
+        display: grid;
+        grid-template-columns: 420px repeat(4, 270px);
+    }
+    
+    .card-width {
+        width: 270px;
+    }
+
+    .cards-item-wrapper-1{
+        width: 420px;
+    }
+
+    .details-component .details-cards {
+        width: 420px; 
+    }
+
+    .details-header-wrapper-switcher {
+        grid-template-columns: 350px 53px !important;
+    }
+
+    .repair-details-container{
+        grid-template-columns: 400px 740px 390px 0px !important;
+    }
+
+    .repair-general-holder{
+        width: 400px;
+    }
+
+    .details-header-wrapper-reapirShop{
+        max-width: 400px !important;
+     }
+
+     .repair-component {
+        .repair-cards {
+            width: 400px !important;
+        }
+    }
+
+    .repair-details-cmp{
+        grid-template-columns: 400px 740px 390px 0px !important;
+    }
+
+    .longText{
+        display: none !important;
+    }
+
+    .shortText{
+        display: block !important;
+    }
+
+    .owner-history-container {
+        .status-container{
+            
+                .item-wrapper {
+                    grid-template-columns: 85px 105px 92px !important;
+                }
+        
+        }        
+    }
+
+    .employment-history-container{
+        .status-items {
+            .item-wrapper {
+                grid-template-columns: 72px 137px 70px !important;
+            }
+        }
+    }
+
+    app-shipper-details, app-broker-details{
+
+        .details-header-wrapper{
+            width: 400px !important;;
+            .details-header-wrapper-switcher{
+                grid-template-columns: 330px 53px !important;;
+            }
+        }
+
+        .credit-perctange{
+            width: 377px !important;
+        }
+    }
+
+    .details-container-items {
+        display: grid;
+        grid-template-columns: 400px repeat(4, 270px);
+    }
+
+    .details-component .details-cards {
+        width: 400px; 
+    }
+
+    .cards-item-wrapper-1{
+        width: 400px;
+    }
+
+    .details-header-wrapper-switcher {
+        grid-template-columns: 330px 53px !important;
+    }
+
+    .restriction-item-value {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .card-restriction-endorsment{
+        grid-template-columns: 110px 120px !important;
+    }
+
+    .assignTo{
+        grid-template-columns: 185px 185px;
+    }
+
+    app-shop-repair-details{
+
+        .details-header-wrapper-switcher{
+            grid-template-columns: 330px 53px !important; 
+        }
+
+    }
+}
+
+@media (max-width: 1640px) {
+
+
+    .repair-details-container{
+        grid-template-columns: 400px 720px 370px 0px !important;
+    }
+
+    .repair-container {
+        width: 720px !important; 
+     }
+ 
+     .repaired-vehicle-container{
+         width: 370px !important;
+         max-width: 370px !important;
+     }
+ 
+     .repair-details-cmp{
+        grid-template-columns: 400px 720px 370px 0px !important;
+        .repair-component{
+            
+            &.reviewShopHolder{
+                grid-row: 2 !important;
+                grid-column: 3 !important;
+                width: 370px !important;
+            }
+
+        }
+
+        .review-container {
+            width: 370px !important;
+            max-width: 370px !important;
+        }
+
+        .likes-count-container{
+            width: 370px !important;
+            max-width: 370px !important;
+        }
+    }
+
+    app-shipper-details, app-broker-details{
+
+        .load{
+            width: 720px !important;;
+        }
+
+        .contact{
+            width: 370px !important;;
+
+            .contact-wrapper{
+                width: 370px !important;;
+            }
+        }
+
+        .likes-count-container {
+            width: 370px !important;;
+        }
+        
+        .review-container{
+            width: 370px !important;;
+        }
+    }
+
+}
+
+@media (max-width: 1610px) {
+
+    .details-container-items {
+        display: grid;
+        grid-template-columns: 380px repeat(4, 270px);
+    }
+
+    .details-component .details-cards {
+        width: 380px; 
+    }
+
+    .cards-item-wrapper-1{
+        width: 380px;
+    }
+
+    .details-header-wrapper-switcher {
+        grid-template-columns: 308px 53px !important;
+    }
+
+
+    .assignTo{
+        grid-template-columns: 175px 175px;
+    }
+
+
+
+    .repair-details-container{
+        grid-template-columns: 380px 710px 350px 0px !important;
+    }
+
+    .repair-container {
+        width: 710px !important; 
+     }
+ 
+     .repaired-vehicle-container{
+         width: 350px !important;
+         max-width: 350px !important;
+     }
+ 
+     .repair-details-cmp{
+        grid-template-columns: 380px 710px 350px 0px !important;
+        .repair-component{
+            
+            &.reviewShopHolder{
+                grid-row: 2 !important;
+                grid-column: 3 !important;
+                width: 350px !important;
+            }
+
+        }
+
+        .review-container {
+            width: 350px !important;
+            max-width: 350px !important;
+        }
+
+        .likes-count-container{
+            width: 350px !important;
+            max-width: 350px !important;
+        }
+    }
+
+    .repair-component { 
+        .repair-cards {
+            width: 380px !important;
+        }
+    }
+
+    .owner-history-container {
+        .status-container{
+            
+                .item-wrapper {
+                    grid-template-columns: 85px 86px 92px !important
+                }
+        
+        }        
+    }
+
+    .mileage-template {
+        grid-template-columns: 112px 112px 111px;
+    }
+
+    .employment-history-container{
+        .status-items {
+            .item-wrapper {
+                grid-template-columns: 72px 114px 70px !important;
+            }
+        }
+    }
+
+
+    app-shipper-card-view {
+        .hours-template {
+            grid-template-columns: 150px 150px !important;
+        }
+    }
+
+    app-shipper-details, app-broker-details{
+
+        .toolbar-general-cmp{
+            max-width: 455px !important;
+        }
+
+        .details-header-wrapper{
+            width: 380px !important;;
+            .details-header-wrapper-switcher{
+                grid-template-columns: 310px 53px !important;;
+            }
+        }
+
+        .load{
+            width: 710px !important;;
+        }
+
+        .contact{
+            width: 350px !important;;
+
+            .contact-wrapper{
+                width: 350px !important;;
+            }
+        }
+
+        .likes-count-container {
+            width: 350px !important;;
+        }
+        
+        .review-container{
+            width: 350px !important;;
+        }
+
+        .credit-perctange{
+            width: 356px !important;
+        }
+    }
+
+    app-shop-repair-details{
+
+        .details-header-wrapper-switcher{
+            grid-template-columns: 309px 53px !important; 
+        }
+
+    }
+
+}    
+
+@media (max-width: 1590px) {
+
+    .details-container-items {
+        display: grid;
+        grid-template-columns: 360px repeat(4, 260px);
+    }
+
+    .details-component .details-cards {
+        width: 360px; 
+    }
+
+    .cards-item-wrapper-1{
+        width: 360px;
+    }
+
+    .card-width {
+        width: 260px;
+    }
+
+    .card-restriction-endorsment
+    {
+        column-gap: 12px !important;
+    }
+
+    .card-body-cdl {
+        .card-restriction-endorsment {
+            grid-template-columns: 110px 95px !important;
+        }
+    }
+
+    .reason-span{
+        display: none;
+    }
+
+    .details-header-wrapper-switcher {
+        grid-template-columns: 290px 53px !important;
+    }
+
+    .assignTo {
+        grid-template-columns: 162px 162px;
+    }
+
+    .repair-details-container{
+        grid-template-columns: 360px 710px 350px 0px !important;
+    }
+
+    .repair-details-cmp{
+        grid-template-columns: 360px 710px 350px 0px !important;
+    }
+
+    .repair-component { 
+        .repair-cards {
+            width: 360px !important;
+        }
+    }
+
+    .owner-history-container {
+        .status-container{
+            
+                .item-wrapper {
+                    grid-template-columns: 85px 91px 70px !important;
+                }
+        
+        }        
+    }
+
+    .employment-history-container{
+        .status-items {
+            .item-wrapper {
+                grid-template-columns: 72px 95px 70px !important;
+            }
+        }
+    }
+
+    app-shipper-card-view {
+        .hours-template {
+            grid-template-columns: 140px 140px !important;
+        }
+    }
+
+    app-shipper-details, app-broker-details{
+
+        .details-header-wrapper{
+            width: 360px !important;;
+            .details-header-wrapper-switcher{
+                grid-template-columns: 290px 53px !important;
+            }
+        }
+
+        .load{
+            width: 710px !important;;
+        }
+
+        .contact{
+            width: 350px !important;;
+
+            .contact-wrapper{
+                width: 350px !important;;
+            }
+        }
+
+        .likes-count-container {
+            width: 350px !important;;
+        }
+        
+        .review-container{
+            width: 350px !important;;
+        }
+
+        .credit-perctange{
+            width: 336px !important;
+        }
+    }
+
+    app-shop-repair-details{
+
+        .details-header-wrapper-switcher{
+            grid-template-columns: 290px 53px !important; 
+        }
+
+    }
+}
+
+@media (max-width: 1540px) {
+
+    .details-container-items {
+        display: grid;
+        grid-template-columns: 360px repeat(4, 250px);
+    }
+
+    .card-width {
+        width: 250px;
+    }
+
+    .repair-details-container{
+        grid-template-columns: 360px 700px 272px 0px !important;
+    }
+
+    .repair-details-cmp{
+        grid-template-columns: 360px 700px 272px 0px !important;
+    }
+
+
+    .repair-container {
+        width: 700px !important; 
+     }
+ 
+     .repaired-vehicle-container{
+         width: 272 !important;
+         max-width: 272px !important;
+     }
+ 
+     .repair-details-cmp{
+        grid-template-columns: 360px 700px 272px 0px !important;
+        .repair-component{
+            
+            &.reviewShopHolder{
+                width: 272px !important;
+            }
+
+        }
+
+        .review-container {
+            width: 272px !important;
+            max-width: 272px !important;
+        }
+
+        .likes-count-container{
+            width: 272px !important;
+            max-width: 272px !important;
+        }
+    }
+
+    .repair-component { 
+        .repair-cards {
+            width: 360px !important;
+        }
+    }
+
+    .repaired-vehicle-container{ 
+        .repair-vehicle-header {
+            grid-template-columns: 35px 40px 25px 35px !important;
+        }
+    }
+
+    .repair-items-vehicle { 
+        .items-vehicle {
+            grid-template-columns: 45px 68px 27px 66px !important;
+        }
+    }
+
+    app-shipper-details, app-broker-details{
+
+        .details-header-wrapper{
+            width: 360px !important;;
+            .details-header-wrapper-switcher{
+                grid-template-columns: 289px 53px !important;;
+            }
+        }
+
+        .load{
+            width: 700px !important;;
+        }
+
+        .contact{
+            width: 272px !important;;
+
+            .contact-wrapper{
+                width: 272px !important;;
+            }
+        }
+
+        .likes-count-container {
+            width: 272px !important;;
+        }
+        
+        .review-container{
+            width: 272px !important;;
+        }
+    }
+
+}
+
+@media (max-width: 1500px) {
+
+    .details-container-items {
+        display: grid;
+        grid-template-columns: 360px repeat(4, 237px);
+    }
+
+    .card-width {
+        width: 237px;
+    }
+    /*
+    .card-row-endor {
+        grid-template-columns: 100px 100px !important;
+    } */
+
+    .restriction-item-value{
+        
+    }
+    
+}
+
+
+
+/*
+@media (min-width: 1300px) {  
+    .details-container-items {
+        display: grid;
+        grid-template-columns: 440px repeat(4, 237px);
+    }
+    
+    .card-width {
+        width: 237px;
+    }
+
+    .counter-text{
+        padding: 0px 7px !important;
+    }
+
+    .request-header-container{
+        display: none !important;
+        width: 26px;
+
+        &.icon-request-holder{
+            display: flex !important;
+            width: 26px !important;
+            height: 26px !important;
+            
+            background-color: #ffffff !important;
+
+            svg {
+                path{
+                    fill: #3074D3;
+                }
+            }
+
+            &:hover {
+
+                background-color: #3074D3 !important;
+
+            svg {
+                path{
+                    fill: #ffffff;
+                }
+            }
+
+            }
+        }
+    }
+} */

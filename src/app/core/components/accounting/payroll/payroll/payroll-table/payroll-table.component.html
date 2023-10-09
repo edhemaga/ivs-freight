@@ -68,11 +68,54 @@
                                     class="table-hold-box {{ h.justifyClass }}"
                                     *ngSwitchCase="'status-template'"
                                 >
-                                    <div class="status-template d-flex">
+                                    <div
+                                        class="status-template d-flex"
+                                        [ngClass]="{
+                                            'status-template-pending':
+                                                tr.payDeadline.period ==
+                                                'Pending',
+                                            'status-template-ready':
+                                                tr.payDeadline.period ==
+                                                'Ready'
+                                        }"
+                                    >
                                         <svg-icon
+                                            *ngIf="
+                                                tr.payDeadline.period == 'Past'
+                                            "
                                             src="assets/svg/common/ic_danger.svg"
                                         ></svg-icon>
-                                        <span>444 DAYS</span>
+                                        <svg-icon
+                                            *ngIf="
+                                                tr.payDeadline.period == 'Ready'
+                                            "
+                                            src="assets/svg/applicant/confirm-circle.svg"
+                                        ></svg-icon>
+                                        <svg-icon
+                                            *ngIf="
+                                                tr.payDeadline.period == 'Pending'
+                                            "
+                                            src="assets/svg/common/ic_clock_white.svg"
+                                        ></svg-icon>
+                                        <span
+                                            *ngIf="
+                                                tr.payDeadline.period ==
+                                                    'Past' ||
+                                                tr.payDeadline.period ==
+                                                    'Pending'
+                                            "
+                                            ><span>{{
+                                                tr.payDeadline.numberOfDays
+                                            }}</span>
+                                            DAYS</span
+                                        >
+                                        <span
+                                            *ngIf="
+                                                tr.payDeadline.period == 'Ready'
+                                            "
+                                        >
+                                            READY
+                                        </span>
                                     </div>
                                 </div>
 

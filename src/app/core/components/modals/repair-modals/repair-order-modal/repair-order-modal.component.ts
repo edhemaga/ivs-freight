@@ -779,13 +779,6 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
             files: [null],
             tags: [null],
         });
-
-        this.formService.checkFormChange(this.repairOrderForm);
-        this.formService.formValueChange$
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((isFormChange: boolean) => {
-                this.isFormDirty = isFormChange;
-            });
     }
 
     private createItems(data?: {
@@ -903,6 +896,8 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                     if (this.editData?.type?.includes('edit')) {
                         this.disableCardAnimation = true;
                         this.editRepairById(this.editData.id);
+                    } else {
+                        this.startFormChanges();
                     }
 
                     // Repair Modal opened from repair shop details
@@ -1487,7 +1482,9 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                             this.selectedPMIndex = res.items.length;
                         }
                     }
+                
                     setTimeout(() => {
+                        this.startFormChanges();
                         this.disableCardAnimation = false;
                     }, 1000);
                 },
@@ -1526,5 +1523,14 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                         : null,
             };
         });
+    }
+
+    private startFormChanges() {
+        this.formService.checkFormChange(this.repairOrderForm);
+        this.formService.formValueChange$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((isFormChange: boolean) => {
+                this.isFormDirty = isFormChange;
+            });
     }
 }

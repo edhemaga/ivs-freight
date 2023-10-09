@@ -125,13 +125,6 @@ export class TaskModalComponent implements OnInit, OnDestroy {
             'url',
             this.destroy$
         );
-
-        this.formService.checkFormChange(this.taskForm);
-        this.formService.formValueChange$
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((isFormChange: boolean) => {
-                this.isFormDirty = isFormChange;
-            });
     }
 
     public onModalAction(data: { action: string; bool: boolean }) {
@@ -493,6 +486,7 @@ export class TaskModalComponent implements OnInit, OnDestroy {
                     this.taskStatus = res.status;
                     this.documents = res.files ? (res.files as any) : [];
                     setTimeout(() => {
+                        this.startFormChanges();
                         this.disableCardAnimation = false;
                     }, 1000);
                 },
@@ -519,6 +513,8 @@ export class TaskModalComponent implements OnInit, OnDestroy {
                     if (this.editData?.type === 'edit') {
                         this.disableCardAnimation = true;
                         this.editTask(this.editData.id);
+                    } else {
+                        this.startFormChanges();
                     }
                 },
                 error: () => {},
@@ -573,6 +569,15 @@ export class TaskModalComponent implements OnInit, OnDestroy {
                 break;
             }
         }
+    }
+
+    private startFormChanges() {
+        this.formService.checkFormChange(this.taskForm);
+        this.formService.formValueChange$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((isFormChange: boolean) => {
+                this.isFormDirty = isFormChange;
+            });
     }
 
     ngOnDestroy(): void {

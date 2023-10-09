@@ -120,13 +120,6 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
             note: [null],
             files: [null],
         });
-
-        this.formService.checkFormChange(this.cdlForm);
-        this.formService.formValueChange$
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((isFormChange: boolean) => {
-                this.isFormDirty = isFormChange;
-            });
     }
 
     public onModalAction(data: { action: string; bool: boolean }) {
@@ -240,14 +233,23 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
                     if (this.editData.type === 'edit-licence') {
                         this.disableCardAnimation = true;
                         this.getCdlById(this.editData.file_id);
-                    }
-
-                    if (this.editData.type === 'renew-licence') {
+                    } else if (this.editData.type === 'renew-licence') {
                         this.disableCardAnimation = true;
                         this.populateCdlFormOnRenew(this.editData.renewData.id);
+                    } else {
+                        this.startFormChanges();
                     }
                 },
                 error: () => {},
+            });
+    }
+
+    private startFormChanges() {
+        this.formService.checkFormChange(this.cdlForm);
+        this.formService.formValueChange$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((isFormChange: boolean) => {
+                this.isFormDirty = isFormChange;
             });
     }
 
@@ -320,6 +322,7 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
                     };
                     setTimeout(() => {
                         this.disableCardAnimation = false;
+                        this.startFormChanges();
                     }, 1000);
                 },
                 error: () => {},
@@ -383,6 +386,7 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
                     };
                     setTimeout(() => {
                         this.disableCardAnimation = false;
+                        this.startFormChanges();
                     }, 1000);
                 },
                 error: () => {},
