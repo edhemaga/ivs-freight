@@ -16,6 +16,7 @@ import { DriverShortResponse } from './driverShortResponse';
 import { PayrollDeductionResponse } from './payrollDeductionResponse';
 import { PayrollPaymentResponse } from './payrollPaymentResponse';
 import { PayrollCreditResponse } from './payrollCreditResponse';
+import { PayrollDeadlineShortResponse } from './payrollDeadlineShortResponse';
 
 
 export interface PayrollDriverMileageResponse { 
@@ -29,8 +30,10 @@ export interface PayrollDriverMileageResponse {
     mileageAmount?: number;
     mileageEmpty?: number;
     mileageLoaded?: number;
-    bonusAmount?: number;
+    emptyMilesPay?: number;
+    loadedMilesPay?: number;
     milesPay?: number;
+    bonusAmount?: number;
     salaryAmount?: number;
     creditAmount?: number;
     deductionAmount?: number;
@@ -38,6 +41,7 @@ export interface PayrollDriverMileageResponse {
     stopsCount?: number;
     loadsCount?: number;
     additionalDays?: number | null;
+    payDeadline?: PayrollDeadlineShortResponse;
     previousMilesStop?: MilesStopPayrollResponse;
     lastMilesStop?: MilesStopPayrollResponse;
     stops?: Array<MilesStopPayrollResponse> | null;
