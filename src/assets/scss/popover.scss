@@ -167,7 +167,7 @@
                 }
 
                 // Content Dropdown Active
-                .table-list-dropdown-content-dropdown-active{
+                .table-list-dropdown-content-dropdown-active {
                     .table-list-dropdown-content-text {
                         font-weight: 700 !important;
                     }
@@ -192,8 +192,8 @@
             }
 
             // Inner Dropdown Active
-            .table-list-dropdown-inner-dropdown-active{
-                background: #AAAAAA10;
+            .table-list-dropdown-inner-dropdown-active {
+                background: #aaaaaa10;
                 border-radius: 2px;
 
                 transition: 0.25s;
@@ -1499,96 +1499,74 @@
     }
 }
 
-.toptenpopovermain {
-    margin-top: 8px;
+.top-rated-popover-main {
+    margin-top: 4px;
 
-    &.pickuppopovermain {
+    &.pickup-popover-main {
         width: 146px;
         height: 234px;
-
-        .top-ten-popover-holder {
-            width: 146px;
-            height: 234px;
-        }
     }
 
-    .top-ten-popover-holder {
-        width: 165px;
-        height: 266px;
-        border-radius: 2px;
-        background-color: #fff;
+    .top-rated-popover-container {
+        width: 155px;
+        border-radius: 3px;
+        background: $ta-black-2;
         box-shadow: 0 0 4px rgb(0 0 0 / 15%);
-        padding: 5px 4px;
-        box-sizing: border-box;
+        padding: 8px 4px;
         display: flex;
-        justify-content: flex-start;
-        align-items: flex-start;
         flex-direction: column;
-        overflow: auto;
-        -ms-overflow-style: none;
-        scrollbar-width: none;
+
+        user-select: none;
         -webkit-user-select: none;
         -moz-user-select: none;
         -ms-user-select: none;
-        user-select: none;
 
-        .top-ten-popover-items-holder {
+        .top-rated-popover-item {
             position: relative;
-            width: 100%;
-            height: 28px;
-            padding: 5px 8px;
-            box-sizing: border-box;
-            border-radius: 2px;
             display: flex;
-            justify-content: flex-start;
             align-items: center;
-            font-size: 14px;
-            font-weight: 700;
-            color: #6c6c6c;
-            margin: 2px 0px;
-            line-height: 28px;
+            padding: 4px 6px;
+            margin-bottom: 2px;
+            cursor: pointer;
 
-            .popover-icon-holder {
+            &:last-child {
+                margin-bottom: 0;
+            }
+
+            &:hover:not(.active) {
+                background: $ta-white-2;
+            }
+
+            &.active {
+                p {
+                    font-weight: 700;
+                }
+
+                .popover-icon-container {
+                    display: flex;
+                }
+            }
+
+            p {
+                font-size: 14px;
+                line-height: 18px;
+                color: $white;
+            }
+
+            .popover-icon-container {
                 position: absolute;
-                width: 14px;
-                height: 14px;
-                display: none;
-                justify-content: center;
-                align-items: center;
                 top: 5px;
                 right: 8px;
+                display: none;
 
                 svg-icon {
                     svg {
-                        display: flex;
-                        width: 12.74px;
-                        height: 9.85px;
-
                         path {
-                            fill: #97a8dc;
+                            fill: $ta-blue-13;
                         }
                     }
                 }
             }
-
-            &:hover:not(.active) {
-                cursor: pointer;
-                background-color: #f3f3f3;
-                color: #3c3c3c;
-            }
-
-            &.active {
-                color: #536bc2;
-                cursor: pointer;
-
-                .popover-icon-holder {
-                    display: flex;
-                }
-            }
-        }
-
-        &::-webkit-scrollbar {
-            display: none;
         }
     }
 }

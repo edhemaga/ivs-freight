@@ -71,6 +71,7 @@ export interface ITaInput {
         labels: string[]; // ['Driver', 'Truck #', 'Trailer #']
         customClass: string;
     };
+    removeInputBackground?: boolean;
 
     // ***************** Input Actions (confirm-cancel buttons) *****************
     commands?: {

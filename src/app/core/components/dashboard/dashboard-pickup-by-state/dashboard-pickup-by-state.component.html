@@ -7,7 +7,7 @@
                 #t3="ngbPopover"
                 [ngbPopover]="topTenPopover"
                 [placement]="['bottom']"
-                [popoverClass]="'toptenpopovermain pickuppopovermain'"
+                [popoverClass]="'top-rated-popover-main pickup-popover-main'"
                 autoClose="outside"
                 [container]="'body'"
                 [ngClass]="{ 'active-options': t3?.isOpen() }"
@@ -214,7 +214,7 @@
 </div>
 
 <ng-template #topTenPopover let-data="data">
-    <div class="top-ten-popover-holder">
+    <div class="top-rated-popover-holder">
         <div
             *ngFor="let item of popoverState; let indx = index"
             class="top-ten-popover-items-holder"

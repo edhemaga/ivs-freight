@@ -1,48 +1,58 @@
-import { DashboardRoutingModule } from './dashboard-routing.module';
 import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
+
+// modules
+import { DashboardRoutingModule } from './dashboard-routing.module';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { AngularSvgIconModule } from 'angular-svg-icon';
+import { ChartsModule } from 'ng2-charts';
+import { AgmCoreModule } from '@agm/core';
+
+// components
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { DashboardPerformanceComponent } from './dashboard-performance/dashboard-performance.component';
-import { DashboardTopDriverComponent } from './dashboard-top-driver/dashboard-top-driver.component';
+import { DashboardTopRatedComponent } from './dashboard-top-rated/dashboard-top-rated.component';
 import { DashboardPickupByStateComponent } from './dashboard-pickup-by-state/dashboard-pickup-by-state.component';
 import { DashboardMapComponent } from './dashboard-map/dashboard-map.component';
 import { DashboardStateTrackingComponent } from './dashboard-state-tracking/dashboard-state-tracking.component';
 import { DashboardStateUsaComponent } from './dashboard-state-tracking/dashboard-state-usa/dashboard-state-usa.component';
 import { CarrierSearchComponent } from '../standalone-components/carrier-search/carrier-search.component';
-import { SlickCarouselModule } from 'ngx-slick-carousel';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { AngularSvgIconModule } from 'angular-svg-icon';
-import { ChartsModule } from 'ng2-charts';
 import { TaChartComponent } from '../standalone-components/ta-chart/ta-chart.component';
-import { AgmCoreModule } from '@agm/core';
 import { TaTabSwitchComponent } from '../standalone-components/ta-tab-switch/ta-tab-switch.component';
 import { AppTooltipComponent } from '../standalone-components/app-tooltip/app-tooltip.component';
 import { TaSpinnerComponent } from '../shared/ta-spinner/ta-spinner.component';
+import { TaInputDropdownComponent } from '../shared/ta-input-dropdown/ta-input-dropdown.component';
+import { CarrierSearchTwoComponent } from '../standalone-components/carrier-search-two/carrier-search-two.component';
+
 @NgModule({
     declarations: [
         DashboardComponent,
         DashboardPerformanceComponent,
-        DashboardTopDriverComponent,
+        DashboardTopRatedComponent,
         DashboardPickupByStateComponent,
         DashboardMapComponent,
         DashboardStateTrackingComponent,
         DashboardStateUsaComponent,
     ],
     imports: [
+        // modules
         CommonModule,
         DashboardRoutingModule,
         ReactiveFormsModule,
-        CarrierSearchComponent,
-        SlickCarouselModule,
-        AngularSvgIconModule,
         NgbModule,
         ChartsModule,
-        TaChartComponent,
         AgmCoreModule,
+        AngularSvgIconModule,
+
+        // components
+        CarrierSearchComponent,
+        TaChartComponent,
         TaTabSwitchComponent,
         AppTooltipComponent,
-        TaSpinnerComponent
+        TaSpinnerComponent,
+        TaInputDropdownComponent,
+        CarrierSearchTwoComponent,
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })

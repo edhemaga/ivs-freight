@@ -1,4 +1,4 @@
-import { IDashboard } from './dashboard.model';
+import { IDashboard } from '../models/dashboard.model';
 
 import { Injectable } from '@angular/core';
 import { EntityState, EntityStore, StoreConfig } from '@datorama/akita';
