@@ -102,7 +102,6 @@ $th-start-date: #b93636;
 $trash-icon-color: #ff5d5d;
 
 //Applicant
-
 $confirm: #24c1a1;
 $ta-light-grey: #e5e5e5;
 $ta-light-grey-2: #aaaaaa;
@@ -140,11 +139,18 @@ $ta-black: #424242;
 $ta-black-2: #2f2f2f;
 
 // Authentication
-
 $ta-blue: #536bc2;
 $ta-light-blue: #6d82c7;
 $ta-gray-01: #f3f3f3;
 $ta-gray-02: #e5e5e5;
+
+// Dashboard
+$ta-blue-13: #6692f1;
+$ta-blue-14: #3b73ed;
+$ta-blue-15: #0b49d1;
+$ta-white-2: #ffffff1a;
+$ta-white-3: #ffffffb3;
+$ta-black-3: #1d1d1d;
 
 // mixins
 @mixin border($direction, $width: 1px, $style: solid, $color: $gray-300) {

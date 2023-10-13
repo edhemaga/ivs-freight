@@ -1,0 +1,253 @@
+@import '../../../../../theme/variables.scss';
+
+.search-container {
+    width: 100%;
+    border-radius: 3px;
+    transition: background 0.3s ease;
+
+    &.active {
+        background: $ta-black-3;
+
+        .icon-container {
+            background: $ta-black-3;
+
+            &:hover {
+                background: $ta-black-3;
+
+                .search-icon {
+                    svg {
+                        path {
+                            fill: $ta-light-grey-6;
+                        }
+                    }
+                }
+            }
+
+            .search-icon {
+                svg {
+                    path {
+                        fill: $ta-light-grey-6;
+                    }
+                }
+            }
+        }
+
+        .input-container {
+            width: 100%;
+
+            input {
+                border-left: 1px solid $ta-light-grey-6;
+            }
+        }
+    }
+
+    &.confirmed {
+        background: $ta-blue-14;
+
+        &:hover {
+            background: $ta-blue-15;
+
+            .icon-container {
+                background: $ta-blue-15;
+
+                &:hover {
+                    background: $ta-blue-15;
+                }
+            }
+        }
+
+        .icon-container {
+            background: $ta-blue-14;
+
+            &:hover {
+                background: $ta-blue-14;
+
+                .search-icon {
+                    svg {
+                        path {
+                            fill: $ta-white-3;
+                        }
+                    }
+                }
+            }
+
+            .search-icon {
+                svg {
+                    path {
+                        fill: $ta-white-3;
+                    }
+                }
+            }
+        }
+
+        .input-container {
+            input {
+                font-weight: 600;
+            }
+
+            .btn-container {
+                .clear-icon {
+                    &:hover {
+                        transform: unset;
+
+                        svg {
+                            rect {
+                                fill: transparent;
+                            }
+
+                            path {
+                                fill: $white;
+                            }
+                        }
+                    }
+
+                    svg {
+                        rect {
+                            fill: transparent;
+                        }
+
+                        path {
+                            fill: $ta-white-3;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    &.focused {
+        background: $ta-black-3 !important;
+
+        .icon-container {
+            background: $ta-black-3 !important;
+        }
+
+        .input-container {
+            .btn-container {
+                .clear-icon {
+                    &:hover {
+                        transform: scale(1.2);
+
+                        svg {
+                            rect {
+                                fill: $white;
+                            }
+
+                            path {
+                                fill: $ta-black-3;
+                            }
+                        }
+                    }
+
+                    svg {
+                        rect {
+                            fill: $ta-white-3;
+                        }
+
+                        path {
+                            fill: $ta-black-3;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    /* Icon */
+    .icon-container {
+        padding: 4px 5px;
+        border-radius: 3px;
+        cursor: pointer;
+        transition: background 0.3s ease;
+
+        &:hover {
+            background: $bw2;
+
+            .search-icon {
+                svg {
+                    path {
+                        fill: $ta-black;
+                    }
+                }
+            }
+        }
+
+        .search-icon {
+            svg {
+                path {
+                    transition: fill 0.3s ease;
+                    fill: $bw5;
+                }
+            }
+        }
+    }
+
+    /* Input */
+    .input-container {
+        width: 0;
+        transition: width 0.3s ease;
+
+        input {
+            width: 100%;
+            border: none;
+            outline: none;
+            background: transparent;
+            padding: 0 0 0 5px;
+            font-size: 14px;
+            line-height: 18px;
+            text-transform: capitalize;
+            color: $white;
+
+            &::-moz-selection {
+                color: $white;
+                background: rgb(255, 255, 255, 0.2);
+            }
+
+            &::selection {
+                color: $white;
+                background: rgb(255, 255, 255, 0.2);
+            }
+
+            &::placeholder {
+                color: $bw5;
+            }
+        }
+
+        .btn-container {
+            padding: 0 5px;
+
+            .confirm-icon,
+            .clear-icon {
+                cursor: pointer;
+                line-height: 0;
+                transition: transform 0.3s ease;
+
+                &:hover {
+                    transform: scale(1.2);
+
+                    svg {
+                        rect {
+                            fill: $white;
+                        }
+                    }
+                }
+
+                svg {
+                    rect {
+                        transition: fill 0.3s ease;
+                        fill: $ta-white-3;
+                    }
+
+                    path {
+                        transition: fill 0.3s ease;
+                        fill: $ta-black-3;
+                    }
+                }
+
+                &.confirm-icon {
+                    margin-right: 4px;
+                }
+            }
+        }
+    }
+}

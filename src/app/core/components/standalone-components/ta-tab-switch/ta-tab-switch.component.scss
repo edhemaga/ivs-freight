@@ -14,6 +14,10 @@ $tab-colors: '26A690', 'EF5350', '3074D3';
     user-select: none;
     line-height: 32px;
 
+    &.disable-height {
+        height: unset;
+    }
+
     .tab-switch-items-holder {
         .tab-switch-text {
             display: flex;
@@ -70,7 +74,7 @@ $tab-colors: '26A690', 'EF5350', '3074D3';
         cursor: pointer;
 
         &.active {
-            color: #6c6c6c;
+            color: #424242;
 
             .tab-switch-text {
                 .tab-counter {

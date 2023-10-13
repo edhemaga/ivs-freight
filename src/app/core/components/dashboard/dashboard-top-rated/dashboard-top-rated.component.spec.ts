@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DashboardTopDriverComponent } from './dashboard-top-driver.component';
+import { DashboardTopRatedComponent } from './dashboard-top-rated.component';
 
 describe('DashboardTopDriverComponent', () => {
-    let component: DashboardTopDriverComponent;
-    let fixture: ComponentFixture<DashboardTopDriverComponent>;
+    let component: DashboardTopRatedComponent;
+    let fixture: ComponentFixture<DashboardTopRatedComponent>;
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
-            declarations: [DashboardTopDriverComponent],
+            declarations: [DashboardTopRatedComponent],
         }).compileComponents();
     });
 
     beforeEach(() => {
-        fixture = TestBed.createComponent(DashboardTopDriverComponent);
+        fixture = TestBed.createComponent(DashboardTopRatedComponent);
         component = fixture.componentInstance;
         fixture.detectChanges();
     });

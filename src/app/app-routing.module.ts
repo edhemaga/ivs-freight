@@ -1,4 +1,4 @@
-import { DashboardResolverService } from './core/components/dashboard/state/dashboard-resolver.service';
+import { DashboardResolverService } from './core/components/dashboard/state/services/dashboard-resolver.service';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from './core/guards/authentication.guard';

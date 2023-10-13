@@ -267,6 +267,7 @@ model/createWorkExperienceCommand.ts
 model/createWorkExperienceItemCommand.ts
 model/createWorkExperienceItemReviewCommand.ts
 model/createWorkExperienceReviewCommand.ts
+model/dashboardTopReportType.ts
 model/dayOfWeek.ts
 model/deleteMultipleApplicationsCommand.ts
 model/departmentContactResponse.ts
@@ -400,6 +401,7 @@ model/integrationListResponse.ts
 model/integrationModalResponse.ts
 model/integrationProviderResponse.ts
 model/integrationProviderResponsePagination.ts
+model/intervalResponse.ts
 model/inviteEmployerResponse.ts
 model/invitePreviousEmployerCommand.ts
 model/invoiceAgeingResponse.ts
@@ -639,6 +641,7 @@ model/statusSetMultipleDriverCommand.ts
 model/statusSetMultipleShipperCommand.ts
 model/stopResponse.ts
 model/stopResponsePagination.ts
+model/subintervalType.ts
 model/switchDispatchCommand.ts
 model/switchDispatchesCommand.ts
 model/tableConfigResponse.ts
@@ -648,6 +651,7 @@ model/terminalListResponse.ts
 model/terminalResponse.ts
 model/terminalResponsePagination.ts
 model/testResponse.ts
+model/timeInterval.ts
 model/timeOnly.ts
 model/timeSpan.ts
 model/tireSizeResponse.ts
@@ -659,6 +663,9 @@ model/todoResponse.ts
 model/todoResponsePagination.ts
 model/todoStatus.ts
 model/todoUserResponse.ts
+model/topRepairShopListResponse.ts
+model/topRepairShopResponse.ts
+model/topRepairShopResponsePagination.ts
 model/trafficViolationFeedbackResponse.ts
 model/trafficViolationItemResponse.ts
 model/trafficViolationItemReviewResponse.ts

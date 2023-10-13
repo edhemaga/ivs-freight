@@ -103,6 +103,38 @@
         }
     }
 
+    &.input-remove-background {
+        &:hover {
+            .input-control {
+                background: transparent !important;
+            }
+        }
+
+        .input-control {
+            background: transparent;
+            color: $default-removed-background-text;
+            font-weight: 700;
+
+            &.focus,
+            &.focus:hover {
+                background: $default-removed-background-input-focus !important;
+                color: $default-removed-background-input-focus-text !important;
+            }
+
+            &.focus::placeholder {
+                color: $default-removed-background-input-focus-text !important;
+            }
+        }
+
+        .input-dropdown-arrow {
+            svg {
+                path {
+                    fill: $default-removed-background-arrow !important;
+                }
+            }
+        }
+    }
+
     &.invalid-filled-focus-out {
         &:hover {
             transition: all 0.3s ease-in-out;
