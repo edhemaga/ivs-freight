@@ -6,7 +6,6 @@
     border-radius: 3px;
 
     /* Header */
-
     &-header {
         margin-bottom: 4px;
 
@@ -17,6 +16,16 @@
                 color: $ta-black;
                 font-size: 26px;
                 line-height: 32px;
+
+                &::-moz-selection {
+                    color: $ta-black;
+                    background: rgb(66, 66, 66, 0.2);
+                }
+
+                &::selection {
+                    color: $ta-black;
+                    background: rgb(66, 66, 66, 0.2);
+                }
             }
         }
 
@@ -149,6 +158,171 @@
                     width: 76px;
                 }
             }
+        }
+    }
+
+    /* Body */
+    .dashboard-top-rated-body {
+        &-up {
+            display: grid;
+            grid-template-columns: 1fr 1px 1fr;
+            grid-gap: 4px;
+            padding: 0 10px;
+
+            ::-webkit-scrollbar:vertical {
+                -webkit-appearance: none;
+                width: 4px;
+            }
+
+            /* List */
+            &-list {
+                height: 360px;
+                overflow: hidden;
+                padding-right: 12px;
+
+                &.showing-more {
+                    padding-top: 120px;
+                    overflow: scroll;
+                }
+
+                .top-rated-item {
+                    padding: 4px;
+                    margin-bottom: 8px;
+
+                    &-left {
+                        display: grid;
+                        grid-template-columns: 18px 10px 1fr;
+
+                        .top-rated-item-number-box {
+                            margin-right: 14px;
+
+                            p {
+                                font-size: 14px;
+                                line-height: 18px;
+                                color: $bw5;
+
+                                &::-moz-selection {
+                                    color: $ta-black;
+                                    background: rgb(145, 145, 145, 0.2);
+                                }
+
+                                &::selection {
+                                    color: $ta-black;
+                                    background: rgb(145, 145, 145, 0.2);
+                                }
+                            }
+                        }
+
+                        .top-rated-item-color-box {
+                            width: 10px;
+                            height: 10px;
+                            border-radius: 50%;
+                            background: blue;
+                        }
+
+                        .top-rated-item-name-box {
+                            margin-left: 8px;
+
+                            p {
+                                font-size: 14px;
+                                line-height: 18px;
+                                color: $ta-black;
+
+                                &::-moz-selection {
+                                    color: $ta-black;
+                                    background: rgb(66, 66, 66, 0.2);
+                                }
+
+                                &::selection {
+                                    color: $ta-black;
+                                    background: rgb(66, 66, 66, 0.2);
+                                }
+                            }
+                        }
+                    }
+
+                    &-right {
+                        .top-rated-item-first-tab-box,
+                        .top-rated-item-second-tab-box {
+                            p {
+                                font-size: 14px;
+                                line-height: 18px;
+                                color: $ta-black;
+
+                                &::-moz-selection {
+                                    color: $ta-black;
+                                    background: rgb(66, 66, 66, 0.2);
+                                }
+
+                                &::selection {
+                                    color: $ta-black;
+                                    background: rgb(66, 66, 66, 0.2);
+                                }
+                            }
+
+                            &.top-rated-item-first-tab-box {
+                                margin-right: 10px;
+                            }
+                        }
+                    }
+                }
+            }
+
+            /* Show More */
+            .show-more-container {
+                padding-bottom: 4px;
+
+                &-left {
+                    p {
+                        font-size: 11px;
+                        line-height: 14px;
+                        color: $bw6-2;
+
+                        &::-moz-selection {
+                            color: $ta-black;
+                            background: rgb(108, 108, 108, 0.2);
+                        }
+
+                        &::selection {
+                            color: $ta-black;
+                            background: rgb(108, 108, 108, 0.2);
+                        }
+                    }
+                }
+
+                &-right {
+                    .show-more-btn {
+                        outline: none;
+                        border: none;
+                        font-size: 11px;
+                        line-height: 14px;
+                        background: transparent;
+                        color: $ta-black;
+                        transition: color 0.3s ease;
+
+                        &:hover {
+                            color: $ta-blue-14;
+                        }
+
+                        &::-moz-selection {
+                            color: $ta-black;
+                            background: rgb(145, 145, 145, 0.2);
+                        }
+
+                        &::selection {
+                            color: $ta-black;
+                            background: rgb(145, 145, 145, 0.2);
+                        }
+                    }
+                }
+            }
+
+            /* Border */
+            &-border {
+                background: $ta-light-grey-6;
+            }
+
+            /* Doughnut Chart */
         }
     }
 }

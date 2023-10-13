@@ -14,6 +14,7 @@ import { ConstantStringEnum } from '../state/enum/constant-string.enum';
 import { TopRatedDropdownItem } from '../state/models/top-rated-dropdown-item.model';
 import { TopRatedTab } from '../state/models/top-rated-tab.model';
 import { DropdownListItem } from '../state/models/dropdown-list-item.model';
+import { TopRatedListItem } from '../state/models/top-rated-list-item.model';
 
 @Component({
     selector: 'app-dashboard-top-rated',
@@ -25,6 +26,90 @@ export class DashboardTopRatedComponent implements OnInit, AfterViewInit {
 
     public topRatedForm: UntypedFormGroup;
     public topRatedTitle: string = ConstantStringEnum.DRIVER;
+    public topRatedList: TopRatedListItem[] = [
+        {
+            id: 1,
+            name: 'Denis Rodman',
+            firstTabValue: '152,324.5',
+            secondTabValue: '8.53',
+        },
+        {
+            id: 2,
+            name: 'Sasa Djordjevic',
+            firstTabValue: '148,456.5',
+            secondTabValue: '8.43',
+        },
+        {
+            id: 3,
+            name: 'Nicolas Drozlibrew',
+            firstTabValue: '124,421.1',
+            secondTabValue: '7.35',
+        },
+        {
+            id: 4,
+            name: 'Samuel Lioton',
+            firstTabValue: '114,489.3',
+            secondTabValue: '7.23',
+        },
+        {
+            id: 5,
+            name: 'Angelo Trotter',
+            firstTabValue: '96,561.3',
+            secondTabValue: '6.87',
+        },
+        {
+            id: 6,
+            name: 'Stan Tolbert',
+            firstTabValue: '84,156.6',
+            secondTabValue: '4.07',
+        },
+        {
+            id: 7,
+            name: 'Michael Scott',
+            firstTabValue: '64,156.2',
+            secondTabValue: '3.52',
+        },
+        {
+            id: 8,
+            name: 'Toby Flanders',
+            firstTabValue: '42,158.8',
+            secondTabValue: '3.43',
+        },
+        {
+            id: 9,
+            name: 'Sasuke Uchica',
+            firstTabValue: '35,891.6',
+            secondTabValue: '2.96',
+        },
+        {
+            id: 10,
+            name: 'Peter Simpson',
+            firstTabValue: '18,175.4',
+            secondTabValue: '2.12',
+        },
+        {
+            id: 11,
+            name: 'Jure Guvo',
+            firstTabValue: '12,133.4',
+            secondTabValue: '1.12',
+        },
+        {
+            id: 12,
+            name: 'Jure Guvo1',
+            firstTabValue: '12,133.4',
+            secondTabValue: '1.12',
+        },
+        {
+            id: 12,
+            name: 'Jure Guvo2',
+            firstTabValue: '12,133.4',
+            secondTabValue: '1.12',
+        },
+    ];
+
+    // show more
+    public topRatedListSliceEnd: number = 10;
+    public isShowingMore: boolean = false;
 
     // tabs
     public topRatedTabs: TopRatedTab[] = [];
@@ -45,69 +130,6 @@ export class DashboardTopRatedComponent implements OnInit, AfterViewInit {
     @ViewChild('doughnutChart', { static: false }) public doughnutChart: any;
     @ViewChild('topDriverBarChart', { static: false })
     public topDriverBarChart: any;
-
-    public topRatedList: any[] = [
-        {
-            id: 1,
-            name: 'Denis Rodman',
-            price: '$123.45K',
-            percent: '8.53%',
-        },
-        {
-            id: 2,
-            name: 'Sasa Djordjevic',
-            price: '$102.34K',
-            percent: '8.43%',
-        },
-        {
-            id: 3,
-            name: 'Nicolas Drozlibrew',
-            price: '$95.15K',
-            percent: '7.35%',
-        },
-        {
-            id: 4,
-            name: 'Samuel Lioton',
-            price: '$93.52K',
-            percent: '7.23%',
-        },
-        {
-            id: 5,
-            name: 'Angelo Trotter',
-            price: '$89.35K',
-            percent: '6.87%',
-        },
-        {
-            id: 6,
-            name: 'Stan Tolbert',
-            price: '$75.23K',
-            percent: '4.07%',
-        },
-        {
-            id: 7,
-            name: 'Michael Scott',
-            price: '$67.52K',
-            percent: '3.52%',
-        },
-        {
-            id: 8,
-            name: 'Toby Flanders',
-            price: '$65.25K',
-            percent: '3.43%',
-        },
-        {
-            id: 9,
-            name: 'Sasuke Uchica',
-            price: '$35.04K',
-            percent: '2.96%',
-        },
-        {
-            id: 10,
-            name: 'Peter Simpson',
-            price: '$26.23K',
-            percent: '2.12%',
-        },
-    ];
 
     public selectedDrivers: any[] = [];
 
@@ -172,7 +194,7 @@ export class DashboardTopRatedComponent implements OnInit, AfterViewInit {
         startGridBackgroundFromZero: true,
         dataMaxRows: 4,
         hasHoverData: true,
-        hasPercentage: true,
+        hassecondTabValueage: true,
         allowAnimation: true,
         offset: true,
         tooltipOffset: { min: 105, max: 279 },
@@ -374,6 +396,12 @@ export class DashboardTopRatedComponent implements OnInit, AfterViewInit {
         }
     }
 
+    public handleShowMoreClick(): void {
+        this.isShowingMore = true;
+
+        this.topRatedListSliceEnd = this.topRatedList.length;
+    }
+
     ////////////////////////////////////////////////////////////////
 
     changeTopTen(item) {
@@ -515,7 +543,7 @@ export class DashboardTopRatedComponent implements OnInit, AfterViewInit {
             this.setChartData(this.selectedDrivers, true);
         }
 
-        this.topRatedList.push(item);
+        /*   this.topRatedList.push(item);
         let allDrivers = [...this.topRatedList];
         let activeDrivers = allDrivers.filter(
             (driver) => driver.active == true
@@ -529,7 +557,7 @@ export class DashboardTopRatedComponent implements OnInit, AfterViewInit {
         inactiveDrivers.map((driver) => {
             this.topRatedList.push(driver);
         });
-
+ */
         this.savedColors.unshift(this.compareColor[item.id]);
         this.savedHoverColors.unshift(this.compareHoverColor[item.id]);
         if (this.selectedDrivers?.length == 0) {
@@ -601,13 +629,13 @@ export class DashboardTopRatedComponent implements OnInit, AfterViewInit {
         this.topDriverBarChart.updateTime(this.currentSwitchTab, period);
     }
 
-    ////////////////// ne treb vjerovatno
+    ////////////////// ne treba vjerovatno
 
     clearSelected() {
-        this.topRatedList.map((driver) => {
+        /*   this.topRatedList.map((driver) => {
             driver.acive = false;
         });
-
+ */
         this.savedColors = [...this.chartColors];
         this.savedHoverColors = [...this.chartHoverColors];
 

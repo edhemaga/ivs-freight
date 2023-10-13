@@ -1,4 +1,6 @@
 <div class="d-flex flex-column justify-content-center dashboard-top-rated">
+    <!-- Header -->
+
     <div
         class="d-flex align-items-center justify-content-between dashboard-top-rated-header"
     >
@@ -7,7 +9,9 @@
             <!-- Title -->
 
             <div class="dashboard-top-rated-header-title">
-                <p class="m-0 ta-font-black">Top {{ topRatedTitle }} (67)</p>
+                <p class="m-0 ta-font-black">
+                    Top {{ topRatedTitle }} ({{ topRatedList.length }})
+                </p>
             </div>
 
             <!-- Dropdown -->
@@ -152,6 +156,117 @@
                     "
                 ></app-ta-input-dropdown>
             </div>
+        </div>
+    </div>
+
+    <!-- Body-->
+
+    <div
+        class="d-flex flex-column justify-content-center dashboard-top-rated-body"
+    >
+        <!-- Body Up -->
+
+        <div class="dashboard-top-rated-body-up">
+            <!-- Top Rated List -->
+
+            <div
+                class="d-flex flex-column justify-content-center dashboard-top-rated-body-up-list"
+                [ngClass]="{ 'showing-more': isShowingMore }"
+            >
+                <ng-container
+                    *ngFor="
+                        let topRatedItem of topRatedList
+                            | slice : 0 : topRatedListSliceEnd;
+                        let i = index;
+                        trackBy: trackByIdentity
+                    "
+                >
+                    <div
+                        class="d-flex align-items-center justify-content-between top-rated-item"
+                    >
+                        <div class="align-items-center top-rated-item-left">
+                            <div
+                                class="d-flex align-items-center justify-content-center top-rated-item-number-box"
+                            >
+                                <p class="m-0 ta-font-semi-bold">
+                                    {{ i + 1 }}
+                                </p>
+                            </div>
+
+                            <div
+                                class="d-flex align-items-center justify-content-center top-rated-item-color-box"
+                            ></div>
+
+                            <div
+                                class="d-flex align-items-center top-rated-item-name-box"
+                            >
+                                <p class="m-0 ta-font-extra-bold">
+                                    {{ topRatedItem.name }}
+                                </p>
+                            </div>
+                        </div>
+
+                        <div
+                            class="d-flex align-items-center top-rated-item-right"
+                        >
+                            <div
+                                class="d-flex align-items-center top-rated-item-first-tab-box"
+                            >
+                                <p class="m-0">
+                                    {{ topRatedItem.firstTabValue }}
+                                </p>
+                            </div>
+
+                            <div
+                                class="d-flex align-items-center top-rated-item-second-tab-box"
+                            >
+                                <p class="m-0 ta-font-semi-bold">
+                                    {{ topRatedItem.secondTabValue }}%
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </ng-container>
+
+                <!-- Show More -->
+
+                <div
+                    class="d-flex align-items-center justify-content-between show-more-container"
+                >
+                    <div
+                        class="d-flex align-items-center show-more-container-left"
+                    >
+                        <p class="m-0 ta-font-semi-bold">
+                            {{
+                                topRatedList.length <= 10
+                                    ? topRatedList.length
+                                    : '10'
+                            }}
+                            OF {{ topRatedList.length }}
+                        </p>
+                    </div>
+
+                    <ng-container *ngIf="topRatedList.length > 10">
+                        <div
+                            class="d-flex align-items-center show-more-container-right"
+                        >
+                            <button
+                                type="button"
+                                class="ta-font-bold show-more-btn"
+                                (click)="handleShowMoreClick()"
+                            >
+                                SHOW MORE
+                            </button>
+                        </div>
+                    </ng-container>
+                </div>
+            </div>
+
+            <!-- Border -->
+
+            <div class="dashboard-top-rated-body-up-border"></div>
+
+            <!-- Doughnut Chart -->
         </div>
     </div>
 </div>

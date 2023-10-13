@@ -6,6 +6,7 @@ export class DashboardTopRatedConstants {
     static TOP_RATED_DROPDOWN_DATA: TopRatedDropdownItem[] = [
         {
             name: 'DISPATCHER',
+            active: false,
             tab1: 'Load',
             tab2: 'Revenue',
         },
@@ -17,31 +18,37 @@ export class DashboardTopRatedConstants {
         },
         {
             name: 'TRUCK',
+            active: false,
             tab1: 'Mileage',
             tab2: 'Revenue',
         },
         {
             name: 'BROKER',
+            active: false,
             tab1: 'Load',
             tab2: 'Revenue',
         },
         {
             name: 'SHIPPER',
+            active: false,
             tab1: 'Load',
             tab2: 'Revenue',
         },
         {
             name: 'OWNER',
+            active: false,
             tab1: 'Load',
             tab2: 'Revenue',
         },
         {
             name: 'REPAIR SHOP',
+            active: false,
             tab1: 'Visit',
             tab2: 'Cost',
         },
         {
             name: 'FUEL STOP',
+            active: false,
             tab1: 'Visit',
             tab2: 'Cost',
         },
