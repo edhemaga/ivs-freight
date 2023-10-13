@@ -13,8 +13,10 @@
 
 export interface MedicalCertificateReviewResponse { 
     id?: number;
-    isFileValid?: boolean;
-    fileMessage?: string | null;
+    isIssueDateValid?: boolean;
+    isExpireDateValid?: boolean;
+    dateMessage?: string | null;
+    filesReviewMessage?: string | null;
     medicalCertificateId?: number;
 }
 

@@ -12,7 +12,11 @@
             (currentPage | blockedContent) ? 'login-page' : 'content-page'
         }}"
     >
-        <router-outlet></router-outlet>
+        <main [@animRoutes]="animationState">
+            <router-outlet
+                (activate)="handleRouteAnimationActivate()"
+            ></router-outlet>
+        </main>
 
         <div
             *ngIf="showScrollButton && currentPage !== 'login'"

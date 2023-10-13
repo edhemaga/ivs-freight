@@ -9,7 +9,12 @@ import {
     QueryList,
     ViewChildren,
 } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import {
+    UntypedFormArray,
+    UntypedFormBuilder,
+    UntypedFormGroup,
+    Validators,
+} from '@angular/forms';
 import { Router } from '@angular/router';
 
 import {
@@ -29,6 +34,11 @@ import {
     isAnyValueInArrayFalse,
     isEveryValueInArrayTrue,
 } from '../../state/utils/utils';
+
+import {
+    name2_24Validation,
+    phoneFaxRegex,
+} from '../../../shared/ta-input/ta-input.regex-validations';
 
 import {
     convertDateFromBackend,
@@ -139,13 +149,13 @@ export class Step6Component implements OnInit, OnDestroy, AfterContentChecked {
     public collegeGrades: string[] = ['1', '2', '3', '4'];
     public displayGradeRequiredNote: boolean = false;
 
-    public helperIndex: number = 2;
     public selectedContactIndex: number;
 
     public selectedGrade: number = -1;
     public selectedCollegeGrade: number = -1;
 
     public highlightGrade: number = -1;
+    public highlightCollegeGrade: number = -1;
 
     public isEditing: boolean = false;
     public isReviewingCard: boolean = false;
@@ -179,7 +189,7 @@ export class Step6Component implements OnInit, OnDestroy, AfterContentChecked {
             ],
         },
         {
-            title: 'Other training?',
+            title: 'Have you received any other training?',
             formControlName: 'otherTraining',
             formControlNameExplain: 'otherTrainingExplain',
             answerChoices: [
@@ -338,8 +348,18 @@ export class Step6Component implements OnInit, OnDestroy, AfterContentChecked {
         this.createForm();
 
         this.getStepValuesFromStore();
+
+        /*     this.contacts.push(this.createContact());
+
+        const laddAddedContact = this.contacts.at(this.contacts.length - 1);
+
+        laddAddedContact.patchValue({
+            name: 'aaa',
+            phone: '(222) 222-2222',
+            relationship: 'bbb',
+        }); */
     }
-    ž;
+
     ngAfterContentChecked(): void {
         this.changeDetectorRef.detectChanges();
     }
@@ -368,6 +388,8 @@ export class Step6Component implements OnInit, OnDestroy, AfterContentChecked {
         });
 
         this.contactForm = this.formBuilder.group({
+            contacts: this.formBuilder.array([]),
+
             cardReview1: [null],
             cardReview2: [null],
             cardReview3: [null],
@@ -430,7 +452,6 @@ export class Step6Component implements OnInit, OnDestroy, AfterContentChecked {
                 return {
                     id: item.id,
                     reviewId: item.emergencyContactReview?.id,
-                    isEditingContact: false,
                     name: item.name,
                     phone: item.phone,
                     relationship: item.relationship,
@@ -444,7 +465,6 @@ export class Step6Component implements OnInit, OnDestroy, AfterContentChecked {
         const filteredLastItemInContactsArray = {
             id: lastItemInContactsArray.id,
             reviewId: lastItemInContactsArray.emergencyContactReview?.id,
-            isEditingContact: false,
             name: lastItemInContactsArray.name,
             phone: lastItemInContactsArray.phone,
             relationship: lastItemInContactsArray.relationship,
@@ -883,18 +903,13 @@ export class Step6Component implements OnInit, OnDestroy, AfterContentChecked {
     public onEditContact(index: number): void {
         if (this.isEditing) {
             this.isEditing = false;
-            this.contactsArray[this.selectedContactIndex].isEditingContact =
-                false;
 
-            this.helperIndex = 2;
             this.selectedContactIndex = -1;
         }
 
-        this.helperIndex = index;
         this.selectedContactIndex = index;
 
         this.isEditing = true;
-        this.contactsArray[index].isEditingContact = true;
 
         const selectedContact = this.contactsArray[index];
 
@@ -917,18 +932,27 @@ export class Step6Component implements OnInit, OnDestroy, AfterContentChecked {
     }
 
     public getContactFormValues(event: any): void {
-        this.contactsArray = [...this.contactsArray, event];
+        this.contacts.push(this.createContact());
+
+        const laddAddedContact = this.contacts.at(this.contacts.length - 1);
+
+        laddAddedContact.patchValue({
+            name: event.name,
+            phone: event.phone,
+            relationship: event.relationship,
+        });
 
         if (this.lastContactCard.id) {
-            this.contactsArray[this.contactsArray.length - 1].id =
-                this.lastContactCard.id;
+            laddAddedContact.patchValue({
+                id: this.lastContactCard.id,
+            });
 
             this.lastContactCard.id = null;
         } else {
-            this.contactsArray[this.contactsArray.length - 1].id = null;
+            laddAddedContact.patchValue({
+                id: null,
+            });
         }
-
-        this.helperIndex = 2;
 
         const firstEmptyObjectInList = this.openAnnotationArray.find(
             (item) => Object.keys(item).length === 0
@@ -948,9 +972,7 @@ export class Step6Component implements OnInit, OnDestroy, AfterContentChecked {
 
     public cancelContactEditing(_: any): void {
         this.isEditing = false;
-        this.contactsArray[this.selectedContactIndex].isEditingContact = false;
 
-        this.helperIndex = 2;
         this.selectedContactIndex = -1;
 
         this.formValuesToPatch = this.previousFormValuesOnEdit;
@@ -965,14 +987,12 @@ export class Step6Component implements OnInit, OnDestroy, AfterContentChecked {
 
     public saveEditedContact(event: any): void {
         this.isEditing = false;
-        this.contactsArray[this.selectedContactIndex].isEditingContact = false;
 
         this.contactsArray[this.selectedContactIndex] = {
             ...this.contactsArray[this.selectedContactIndex],
             ...event,
         };
 
-        this.helperIndex = 2;
         this.selectedContactIndex = -1;
 
         this.formValuesToPatch = this.previousFormValuesOnEdit;
@@ -1027,8 +1047,6 @@ export class Step6Component implements OnInit, OnDestroy, AfterContentChecked {
     public onGetCardOpenAnnotationArrayValues(event: any): void {
         this.isReviewingCard = false;
 
-        this.contactsArray[this.selectedContactIndex].isEditingContact = false;
-
         this.contactsArray[this.selectedContactIndex].emergencyContactReview = {
             isNameValid: !event[0].lineInputs[0],
             isPhoneValid: !event[0].lineInputs[1],
@@ -1062,7 +1080,6 @@ export class Step6Component implements OnInit, OnDestroy, AfterContentChecked {
             this.hasIncorrectFields = false;
         }
 
-        this.helperIndex = 2;
         this.selectedContactIndex = -1;
 
         this.previousFormValuesOnReview.emergencyContactReview = {
@@ -1076,9 +1093,6 @@ export class Step6Component implements OnInit, OnDestroy, AfterContentChecked {
     public cancelContactReview(_: any): void {
         this.isReviewingCard = false;
 
-        this.contactsArray[this.selectedContactIndex].isEditingContact = false;
-
-        this.helperIndex = 2;
         this.selectedContactIndex = -1;
 
         this.previousFormValuesOnReview.emergencyContactReview = {
@@ -1229,10 +1243,7 @@ export class Step6Component implements OnInit, OnDestroy, AfterContentChecked {
             return;
         }
 
-        this.helperIndex = index;
         this.selectedContactIndex = index;
-
-        this.contactsArray[index].isEditingContact = true;
 
         this.isReviewingCard = true;
 
@@ -1453,10 +1464,7 @@ export class Step6Component implements OnInit, OnDestroy, AfterContentChecked {
 
     public onStepAction(event: any): void {
         if (event.action === 'next-step') {
-            if (
-                this.selectedMode === SelectedMode.APPLICANT ||
-                this.selectedMode === SelectedMode.FEEDBACK
-            ) {
+            if (this.selectedMode !== SelectedMode.REVIEW) {
                 this.onSubmit();
             }
 
@@ -1835,5 +1843,19 @@ export class Step6Component implements OnInit, OnDestroy, AfterContentChecked {
     ngOnDestroy(): void {
         this.destroy$.next();
         this.destroy$.complete();
+    }
+
+    public createContact(): UntypedFormGroup {
+        return this.formBuilder.group({
+            id: null,
+            name: [null, [Validators.required, ...name2_24Validation]],
+            phone: [null, [Validators.required, phoneFaxRegex]],
+            relationship: [null, [Validators.required, ...name2_24Validation]],
+            emergencyContactReview: null,
+        });
+    }
+
+    public get contacts(): UntypedFormArray {
+        return this.contactForm.get('contacts') as UntypedFormArray;
     }
 }

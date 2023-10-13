@@ -1,4 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { transition, trigger } from '@angular/animations';
 
 import { Subject, takeUntil } from 'rxjs';
 
@@ -9,18 +11,32 @@ import {
 
 import { ApplicantQuery } from '../state/store/applicant.query';
 
+import {
+    slideLeft,
+    slideRight,
+} from '../state/animations/applicant-route.animation';
+
 import { INavigation } from '../state/model/navigation.model';
 import { SelectedMode } from '../state/enum/selected-mode.enum';
+import { InputSwitchActions } from '../state/enum/input-switch-actions.enum';
 
 @Component({
     selector: 'app-applicant',
     templateUrl: './applicant.component.html',
     styleUrls: ['./applicant.component.scss'],
+    animations: [
+        trigger('animRoutes', [
+            transition(':increment', slideRight),
+            transition(':decrement', slideLeft),
+        ]),
+    ],
 })
 export class ApplicantComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
 
-    public selectedMode = SelectedMode.REVIEW;
+    public selectedMode = SelectedMode.APPLICANT;
+
+    public animationState: number = 0;
 
     public menuItems: INavigation[] = [
         {
@@ -126,7 +142,10 @@ export class ApplicantComponent implements OnInit, OnDestroy {
         { id: 10, hasIncorrectAnswer: false, sentToReview: false },
     ];
 
-    constructor(private applicantQuery: ApplicantQuery) {}
+    constructor(
+        private applicantQuery: ApplicantQuery,
+        private route: ActivatedRoute
+    ) {}
 
     ngOnInit(): void {
         this.getStepValuesFromStore();
@@ -724,6 +743,11 @@ export class ApplicantComponent implements OnInit, OnDestroy {
                     );
                 }
             });
+    }
+
+    public handleRouteAnimationActivate() {
+        this.animationState =
+            this.route.firstChild.snapshot.data[InputSwitchActions.ROUTE_INDEX];
     }
 
     ngOnDestroy(): void {

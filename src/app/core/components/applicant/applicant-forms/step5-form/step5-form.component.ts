@@ -14,7 +14,11 @@ import {
 
 import moment from 'moment';
 
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import {
+    UntypedFormBuilder,
+    UntypedFormGroup,
+    Validators,
+} from '@angular/forms';
 
 import {
     Subscription,
@@ -43,7 +47,6 @@ import { InputSwitchActions } from '../../state/enum/input-switch-actions.enum';
 import { SelectedMode } from '../../state/enum/selected-mode.enum';
 import { ViolationModel } from '../../state/model/violations.model';
 import {
-    AddressEntity,
     ApplicantModalResponse,
     TruckTypeResponse,
 } from 'appcoretruckassist/model/models';
@@ -84,10 +87,7 @@ export class Step5FormComponent
 
     public isViolationEdited: boolean;
 
-    public editingCardAddress: any;
-
     public selectedVehicleType: any = null;
-    public selectedAddress: AddressEntity = null;
 
     public vehicleType: TruckTypeResponse[] = [];
 
@@ -150,8 +150,6 @@ export class Step5FormComponent
                     takeUntil(this.destroy$)
                 )
                 .subscribe((res) => {
-                    res.location = this.selectedAddress;
-
                     this.lastFormValuesEmitter.emit(res);
                 });
         }
@@ -279,13 +277,11 @@ export class Step5FormComponent
         this.violationsForm.patchValue({
             date: formValue?.date,
             vehicleType: formValue?.vehicleType,
-            location: formValue?.location ? formValue?.location?.address : null,
+            location: formValue?.location,
             description: formValue?.description,
         });
 
         setTimeout(() => {
-            this.selectedAddress = formValue.location;
-
             this.selectedVehicleType = this.vehicleType.find(
                 (item) => item.name === formValue.vehicleType
             );
@@ -305,27 +301,17 @@ export class Step5FormComponent
                     reviewId,
                     vehicleTypeLogoName,
                     date,
-                    location,
                     isEditingViolation,
                     trafficViolationItemReview,
                     ...previousFormValues
                 } = this.formValuesToPatch;
 
-                previousFormValues.location = location?.address;
                 previousFormValues.date = moment(new Date(date)).format(
                     'MM/DD/YY'
                 );
 
-                this.editingCardAddress = location;
-
-                const {
-                    firstRowReview,
-                    secondRowReview,
-                    location: newLocation,
-                    ...newFormValues
-                } = updatedFormValues;
-
-                newFormValues.location = newLocation?.address;
+                const { firstRowReview, secondRowReview, ...newFormValues } =
+                    updatedFormValues;
 
                 if (isFormValueEqual(previousFormValues, newFormValues)) {
                     this.isViolationEdited = false;
@@ -335,25 +321,8 @@ export class Step5FormComponent
             });
     }
 
-    public handleInputSelect(event: any, action: string): void {
-        switch (action) {
-            case InputSwitchActions.TRUCK_TYPE:
-                this.selectedVehicleType = event;
-
-                break;
-            case InputSwitchActions.ADDRESS:
-                this.selectedAddress = event.address;
-
-                if (!event.valid) {
-                    this.violationsForm
-                        .get('location')
-                        .setErrors({ invalid: true });
-                }
-
-                break;
-            default:
-                break;
-        }
+    public handleInputSelect(event: any): void {
+        this.selectedVehicleType = event;
     }
 
     public onAddViolation(): void {
@@ -362,14 +331,8 @@ export class Step5FormComponent
             return;
         }
 
-        const { location, firstRowReview, secondRowReview, ...violationsForm } =
+        const { firstRowReview, secondRowReview, ...violationsForm } =
             this.violationsForm.value;
-
-        const selectedAddress = {
-            ...this.selectedAddress,
-            addressUnit: '',
-            county: '',
-        };
 
         const saveData: ViolationModel = {
             ...violationsForm,
@@ -377,12 +340,10 @@ export class Step5FormComponent
             vehicleTypeLogoName: this.vehicleType.find(
                 (item) => item.name === violationsForm.vehicleType
             ).logoName,
-            location: selectedAddress,
         };
 
         this.formValuesEmitter.emit(saveData);
 
-        this.selectedAddress = null;
         this.selectedVehicleType = null;
 
         this.formService.resetForm(this.violationsForm);
@@ -412,21 +373,12 @@ export class Step5FormComponent
         const { firstRowReview, secondRowReview, ...violationsForm } =
             this.violationsForm.value;
 
-        const selectedAddress = {
-            ...this.selectedAddress,
-            addressUnit: '',
-            county: '',
-        };
-
         const saveData: ViolationModel = {
             ...violationsForm,
             isEditingViolation: false,
             vehicleTypeLogoName: this.vehicleType.find(
                 (item) => item.name === violationsForm.vehicleType
             ).logoName,
-            location: this.selectedAddress
-                ? selectedAddress
-                : this.editingCardAddress,
         };
 
         this.saveFormEditingEmitter.emit(saveData);

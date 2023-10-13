@@ -433,6 +433,9 @@ const routes: Routes = [
                 (m) => m.ApplicantModule
             ),
         resolve: { applicant: ApplicantResolver },
+        data: {
+            routeIdx: 0,
+        },
     },
     {
         path: 'owner-info/:id',
@@ -442,6 +445,9 @@ const routes: Routes = [
             ).then((m) => m.OwnerInfoModule),
         canActivate: [ApplicantGuard],
         resolve: { applicant: ApplicantResolver },
+        data: {
+            routeIdx: 1,
+        },
     },
     {
         path: 'medical-certificate/:id',
@@ -451,6 +457,9 @@ const routes: Routes = [
             ).then((m) => m.MedicalCertificateModule),
         canActivate: [ApplicantGuard],
         resolve: { applicant: ApplicantResolver },
+        data: {
+            routeIdx: 2,
+        },
     },
     {
         path: 'mvr-authorization/:id',
@@ -460,6 +469,9 @@ const routes: Routes = [
             ).then((m) => m.MvrAuthorizationModule),
         canActivate: [ApplicantGuard],
         resolve: { applicant: ApplicantResolver },
+        data: {
+            routeIdx: 3,
+        },
     },
     {
         path: 'psp-authorization/:id',
@@ -468,6 +480,9 @@ const routes: Routes = [
                 './core/components/applicant/applicant-tabs/psp-authorization/psp-authorization.module'
             ).then((m) => m.PspAuthorizationModule),
         canActivate: [ApplicantGuard],
+        data: {
+            routeIdx: 4,
+        },
     },
     {
         path: 'sph/:id',
@@ -476,6 +491,9 @@ const routes: Routes = [
                 './core/components/applicant/applicant-tabs/sph/sph.module'
             ).then((m) => m.SphModule),
         canActivate: [ApplicantGuard],
+        data: {
+            routeIdx: 5,
+        },
     },
     {
         path: 'sph-form',
@@ -498,6 +516,9 @@ const routes: Routes = [
                 './core/components/applicant/applicant-tabs/hos-rules/hos-rules.module'
             ).then((m) => m.HosRulesModule),
         canActivate: [ApplicantGuard],
+        data: {
+            routeIdx: 6,
+        },
     },
     {
         path: 'applicant/end',

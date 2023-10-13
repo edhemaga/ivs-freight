@@ -14,6 +14,5 @@
 export interface FileReviewCommand { 
     storageId?: number;
     isValid?: boolean;
-    message?: string | null;
 }
 

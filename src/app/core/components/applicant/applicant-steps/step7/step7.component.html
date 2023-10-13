@@ -372,7 +372,7 @@
                         class="d-flex align-items-center justify-content-between"
                     >
                         <div
-                            class="d-flex flex-column"
+                            class="d-flex align-items-center"
                             [ngClass]="['title-box' + i, 'title-box']"
                         >
                             <p
@@ -385,17 +385,17 @@
                             >
                                 {{ question.title }}
                                 <span class="required-star">*</span>
-                            </p>
 
-                            <p
-                                class="m-0 ta-font-semi-bold required"
-                                [ngClass]="{
-                                    'required-active':
-                                        displayRadioRequiredNoteArray[i]
-                                            .displayRadioRequiredNote
-                                }"
-                            >
-                                Required
+                                <span
+                                    class="m-0 ta-font-semi-bold required"
+                                    [ngClass]="{
+                                        'required-active':
+                                            displayRadioRequiredNoteArray[i]
+                                                .displayRadioRequiredNote
+                                    }"
+                                >
+                                    Required
+                                </span>
                             </p>
                         </div>
 

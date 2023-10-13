@@ -1,5 +1,14 @@
 <div class="d-flex flex-column step-form" [formGroup]="contactForm">
-    <div class="d-flex line-container">
+    <button (click)="asd()">A</button>
+    <div
+        class="d-flex line-container"
+        [ngClass]="{
+            'inputs-with-background': contactsLength,
+            'filled-valid': contactForm.valid,
+            'filled-invalid':
+                contactForm.invalid && contactForm.pristine
+        }"
+    >
         <div class="group name-group">
             <app-ta-input
                 formControlName="name"
@@ -7,10 +16,13 @@
                     name: 'Emergency Name',
                     type: 'text',
                     label: 'Name',
+                    placeholderInsteadOfLabel: contactsLength,
                     isRequired: true,
                     textTransform: 'capitalize',
                     minLength: 2,
                     maxLength: 24,
+                    hideRequiredCheck: contactsLength,
+                    hideErrorMessage: contactsLength,
                     isDisabled:
                         selectedMode === 'REVIEW_MODE' ||
                         (selectedMode === 'FEEDBACK_MODE' &&
@@ -21,6 +33,7 @@
                 (incorrectEvent)="incorrectInput($event, 0, 15)"
             ></app-ta-input>
         </div>
+
         <div class="group phone-group">
             <app-ta-input
                 formControlName="phone"
@@ -28,10 +41,13 @@
                     name: 'Phone',
                     type: 'text',
                     label: 'Phone',
+                    placeholderInsteadOfLabel: contactsLength,
                     isRequired: true,
                     placeholderIcon: 'phone',
                     mask: '(000) 000-0000',
                     maxLength: 14,
+                    hideRequiredCheck: contactsLength,
+                    hideErrorMessage: contactsLength,
                     isDisabled:
                         selectedMode === 'REVIEW_MODE' ||
                         (selectedMode === 'FEEDBACK_MODE' &&
@@ -42,6 +58,7 @@
                 (incorrectEvent)="incorrectInput($event, 1, 15)"
             ></app-ta-input>
         </div>
+
         <div class="group relationship-group">
             <app-ta-input
                 formControlName="relationship"
@@ -49,10 +66,13 @@
                     name: 'Relationship',
                     type: 'text',
                     label: 'Relationship',
+                    placeholderInsteadOfLabel: contactsLength,
+                    hideErrorMessage: contactsLength,
                     textTransform: 'capitalize',
                     minLength: 2,
                     maxLength: 24,
                     isRequired: true,
+                    hideRequiredCheck: contactsLength,
                     isDisabled:
                         selectedMode === 'REVIEW_MODE' ||
                         (selectedMode === 'FEEDBACK_MODE' &&
@@ -64,47 +84,56 @@
             ></app-ta-input>
         </div>
 
+        <ng-container *ngIf="contactsLength">
+            <div class="delete-btn-group">
+                <app-applicant-delete-btn
+                    [filledValid]="contactForm.valid"
+                ></app-applicant-delete-btn>
+            </div>
+        </ng-container>
+
         <!-- REVIEW AND FEEDBACK -->
 
-        <div
-            class="review-feedback-container"
+        <ng-container
             *ngIf="
                 (selectedMode === 'REVIEW_MODE' ||
                     selectedMode === 'FEEDBACK_MODE') &&
                 !isReviewingCard
             "
         >
-            <app-applicant-review-feedback
-                formControlName="firstRowReview"
-                [displayAnnotationButton]="
-                    selectedMode === 'REVIEW_MODE' &&
-                    openAnnotationArray[15].displayAnnotationButton
-                "
-                [displayAnnotationTextArea]="
-                    selectedMode === 'REVIEW_MODE' &&
-                    openAnnotationArray[15].displayAnnotationTextArea
-                "
-                [lineIndex]="15"
-                [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
-                [feedbackText]="
-                    selectedMode === 'FEEDBACK_MODE' &&
-                    stepFeedbackValues?.emergencyContactMessage
-                "
-                (annotationBtnClickEvent)="
-                    selectedMode === 'REVIEW_MODE' &&
-                        getAnnotationBtnClickValue($event)
-                "
-            ></app-applicant-review-feedback>
-        </div>
+            <div class="review-feedback-container">
+                <app-applicant-review-feedback
+                    formControlName="firstRowReview"
+                    [displayAnnotationButton]="
+                        selectedMode === 'REVIEW_MODE' &&
+                        openAnnotationArray[15].displayAnnotationButton
+                    "
+                    [displayAnnotationTextArea]="
+                        selectedMode === 'REVIEW_MODE' &&
+                        openAnnotationArray[15].displayAnnotationTextArea
+                    "
+                    [lineIndex]="15"
+                    [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
+                    [feedbackText]="
+                        selectedMode === 'FEEDBACK_MODE' &&
+                        stepFeedbackValues?.emergencyContactMessage
+                    "
+                    (annotationBtnClickEvent)="
+                        selectedMode === 'REVIEW_MODE' &&
+                            getAnnotationBtnClickValue($event)
+                    "
+                ></app-applicant-review-feedback>
+            </div>
+        </ng-container>
     </div>
 
     <!-- BTN -->
 
-    <div class="d-flex align-items-center justify-content-center">
+    <div class="d-flex align-items-center justify-content-center btn-container">
         <ng-container *ngIf="selectedMode === 'APPLICANT_MODE' && !isEditing">
             <app-applicant-add-save-btn
                 [addBtn]="true"
-                [btnText]="'Add Second Emergency Contact'"
+                [btnText]="'Add  Emergency Contact'"
                 [disabledValue]="contactForm.invalid"
                 (clickValueEmitter)="onGetBtnClickValue($event)"
             ></app-applicant-add-save-btn>

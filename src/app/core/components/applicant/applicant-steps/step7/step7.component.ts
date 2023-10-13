@@ -5,7 +5,12 @@ import {
     QueryList,
     ViewChildren,
 } from '@angular/core';
-import { UntypedFormArray, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import {
+    UntypedFormArray,
+    UntypedFormBuilder,
+    UntypedFormGroup,
+    Validators,
+} from '@angular/forms';
 import { Router } from '@angular/router';
 
 import {
@@ -268,7 +273,9 @@ export class Step7Component implements OnInit, OnDestroy {
             releasedDate,
             location,
             workingForAnotherEmployer,
+            workingForAnotherEmployerDescription,
             intendToWorkForAnotherEmployer,
+            intendToWorkForAnotherEmployerDescription,
             certifyInformation,
             sevenDaysHosReview,
         } = stepValues;
@@ -349,7 +356,10 @@ export class Step7Component implements OnInit, OnDestroy {
             startDate: convertDateFromBackend(releasedDate),
             address: location.address,
             anotherEmployer: workingForAnotherEmployer,
+            anotherEmployerExplain: workingForAnotherEmployerDescription,
             intendToWorkAnotherEmployer: intendToWorkForAnotherEmployer,
+            intendToWorkAnotherEmployerExplain:
+                intendToWorkForAnotherEmployerDescription,
             isValidAnotherEmployer: certifyInformation,
         });
 
@@ -428,63 +438,6 @@ export class Step7Component implements OnInit, OnDestroy {
                 break;
         }
     }
-
-    /*  
-        if (selectedCheckbox.label === 'YES') {
-           
-
-            this.inputService.changeValidators(
-                this.educationForm.get(selectedExplainFormControlName)
-            );
-
-            if (selectedCheckbox.index === 2) {
-                this.inputService.changeValidators(
-                    this.educationForm.get(selectedExplainFormControlName),
-                    false
-                );
-            }
-
-            if (selectedCheckbox.index === 3) {
-                this.inputService.changeValidators(
-                    this.educationForm.get('driverForCompanyBeforeExplain')
-                );
-
-                this.inputService.changeValidators(
-                    this.educationForm.get('driverForCompanyToExplain')
-                );
-            }
-        } else {
-         
-
-            this.inputService.changeValidators(
-                this.educationForm.get(selectedExplainFormControlName),
-                false
-            );
-
-            if (selectedCheckbox.index === 2) {
-                this.inputService.changeValidators(
-                    this.educationForm.get(selectedExplainFormControlName),
-                    false
-                );
-            }
-
-            if (selectedCheckbox.index === 3) {
-                this.inputService.changeValidators(
-                    this.educationForm.get('driverForCompanyBeforeExplain'),
-                    false
-                );
-
-                this.inputService.changeValidators(
-                    this.educationForm.get('driverForCompanyToExplain'),
-                    false
-                );
-
-                this.educationForm.patchValue({
-                    driverForCompanyBeforeExplain: null,
-                    driverForCompanyToExplain: null,
-                });
-            }
-        } */
 
     public handleInputSelect(event: any, action: string): void {
         switch (action) {
@@ -743,7 +696,9 @@ export class Step7Component implements OnInit, OnDestroy {
             isValidHos,
             startDate,
             anotherEmployer,
+            anotherEmployerExplain,
             intendToWorkAnotherEmployer,
+            intendToWorkAnotherEmployerExplain,
             isValidAnotherEmployer,
         } = this.sevenDaysHosForm.value;
 
@@ -814,6 +769,9 @@ export class Step7Component implements OnInit, OnDestroy {
             releasedDate: convertDateToBackend(startDate),
             location: selectedAddress,
             workingForAnotherEmployer: anotherEmployer,
+            workingForAnotherEmployerDescription: anotherEmployerExplain,
+            intendToWorkForAnotherEmployerDescription:
+                intendToWorkAnotherEmployerExplain,
             intendToWorkForAnotherEmployer: intendToWorkAnotherEmployer,
             certifyInformation: isValidAnotherEmployer,
         };
@@ -860,8 +818,12 @@ export class Step7Component implements OnInit, OnDestroy {
                                     location: saveData.location,
                                     workingForAnotherEmployer:
                                         saveData.workingForAnotherEmployer,
+                                    workingForAnotherEmployerDescription:
+                                        saveData.workingForAnotherEmployerDescription,
                                     intendToWorkForAnotherEmployer:
                                         saveData.intendToWorkForAnotherEmployer,
+                                    intendToWorkForAnotherEmployerDescription:
+                                        saveData.intendToWorkForAnotherEmployerDescription,
                                     certifyInformation:
                                         saveData.certifyInformation,
                                 },

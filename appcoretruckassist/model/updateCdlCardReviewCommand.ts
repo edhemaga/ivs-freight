@@ -16,6 +16,7 @@ export interface UpdateCdlCardReviewCommand {
     isIssueDateValid?: boolean;
     isExpireDateValid?: boolean;
     dateMessage?: string | null;
+    filesReviewMessage?: string | null;
     filesReview?: Array<FileReviewCommand> | null;
     applicantId?: number;
 }

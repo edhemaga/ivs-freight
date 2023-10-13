@@ -232,15 +232,11 @@
                                                     ngbTooltip
                                                     [mainTooltip]="
                                                         violation.location
-                                                            .address
                                                     "
                                                     tooltipBackground="#2F2F2F"
                                                     position="bottom-left"
                                                 >
-                                                    {{
-                                                        violation.location
-                                                            .address
-                                                    }}
+                                                    {{ violation.location }}
                                                 </p>
                                             </div>
                                         </div>
@@ -254,7 +250,7 @@
                                                 <svg-icon
                                                     class="truck-icon"
                                                     [src]="
-                                                        'assets/svg/truckassist-table/truck/' +
+                                                        'assets/svg/common/trucks/' +
                                                         violation.vehicleTypeLogoName
                                                     "
                                                     [svgStyle]="{

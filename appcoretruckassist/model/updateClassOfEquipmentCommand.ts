@@ -13,6 +13,8 @@
 
 export interface UpdateClassOfEquipmentCommand { 
     id?: number | null;
+    cfrPart?: boolean | null;
+    fmcsa?: boolean | null;
     vehicleTypeId?: number;
     trailerTypeId?: number | null;
     trailerLengthId?: number | null;

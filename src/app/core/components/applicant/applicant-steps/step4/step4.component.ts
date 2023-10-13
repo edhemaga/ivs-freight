@@ -169,8 +169,6 @@ export class Step4Component implements OnInit, OnDestroy, AfterContentChecked {
                         reviewId: item.accidentItemReview?.id,
                         isEditingAccident: false,
                         location: item.location,
-                        // accidentState: item.location.state,
-                        // accidentStateShort: item.location.stateShortName,
                         date: convertDateFromBackend(item.date).replace(
                             /-/g,
                             '/'
@@ -192,9 +190,6 @@ export class Step4Component implements OnInit, OnDestroy, AfterContentChecked {
                 reviewId: lastItemInAccidentArray.accidentItemReview?.id,
                 isEditingAccident: false,
                 location: lastItemInAccidentArray.location,
-                // accidentState: lastItemInAccidentArray.location.state,
-                // accidentStateShort:
-                //     lastItemInAccidentArray.location.stateShortName,
                 date: convertDateFromBackend(
                     lastItemInAccidentArray.date
                 ).replace(/-/g, '/'),
@@ -772,7 +767,7 @@ export class Step4Component implements OnInit, OnDestroy, AfterContentChecked {
 
                         if (keyName === 'location') {
                             o['location'] = JSON.stringify({
-                                location: this.stepValues[i].location.address,
+                                location: this.stepValues[i].location,
                             });
                         }
 
@@ -808,9 +803,8 @@ export class Step4Component implements OnInit, OnDestroy, AfterContentChecked {
                                             i ===
                                             this.stepFeedbackValues.length - 1
                                                 ? this.lastAccidentCard.location
-                                                      ?.address
-                                                : this.accidentArray[i].location
-                                                      .address,
+                                                : this.accidentArray[i]
+                                                      .location,
                                     });
                                 }
 
