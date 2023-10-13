@@ -11,37 +11,33 @@
             [ngStyle]="{ padding: isEditing ? '0 4px 0 4px' : 0 }"
         >
             <div
-                class="group location-group"
+                class="group"
                 [ngStyle]="{
                     width: isEditing ? '433px' : '445px',
                     'margin-right': isEditing ? '8px' : '12px'
                 }"
             >
-                <app-input-address-dropdown
+                <app-ta-input
                     formControlName="location"
                     [inputConfig]="{
                         name: 'Address',
                         type: 'text',
                         label: 'Location',
+                        minLength: 12,
+                        maxLength: 256,
                         isRequired: true,
                         placeholderIcon: 'address',
-                        textTransform: 'capitalize',
-                        dropdownWidthClass: 'w-col-445',
-                        minLength: 6,
-                        maxLength: 256,
                         isDisabled:
                             selectedMode === 'REVIEW_MODE' ||
                             (selectedMode === 'FEEDBACK_MODE' &&
                                 stepFeedbackValues?.isLocationValid),
                         incorrectInput: selectedMode === 'REVIEW_MODE'
                     }"
-                    [placeholderType]="'shortAddress'"
-                    [activeAddress]="selectedAddress"
                     [incorrectValue]="openAnnotationArray[10].lineInputs[0]"
                     (incorrectEvent)="incorrectInput($event, 0, 10)"
-                    (selectedAddress)="handleInputSelect($event, 'ADDRESS')"
-                ></app-input-address-dropdown>
+                ></app-ta-input>
             </div>
+
             <div class="group date-group">
                 <app-ta-input
                     formControlName="date"

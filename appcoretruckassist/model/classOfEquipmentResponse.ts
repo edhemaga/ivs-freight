@@ -16,6 +16,8 @@ import { TruckTypeResponse } from './truckTypeResponse';
 
 export interface ClassOfEquipmentResponse { 
     id?: number;
+    cfrPart?: boolean | null;
+    fmcsa?: boolean | null;
     vehicleType?: TruckTypeResponse;
     trailerType?: TrailerTypeResponse;
     trailerLength?: TrailerLengthResponse;

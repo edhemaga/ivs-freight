@@ -13,21 +13,29 @@
             width: 130px;
 
             /* &.disabled {
-        pointer-events: none !important;
-      } */
+                pointer-events: none !important;
+
+                .step-text {
+                    -webkit-user-select: none !important;
+                    -moz-user-select: none !important;
+                    -ms-user-select: none !important;
+                    user-select: none !important;
+                }
+            } */
 
             .bullet {
                 position: relative;
                 height: 42px;
                 width: 42px;
-                background: $ta-light-grey-2;
+                background: $ta-light-grey-5;
                 border-radius: 3px;
                 cursor: pointer;
                 transition: background 0.3s ease-in-out;
 
                 p {
-                    font-size: 27px;
-                    color: $white;
+                    font-size: 28px;
+                    line-height: 34px;
+                    color: $ta-light-grey-2;
                     display: inline-flex;
                     visibility: visible;
                     opacity: 1;
@@ -38,10 +46,6 @@
                     -moz-user-select: none !important;
                     -ms-user-select: none !important;
                     user-select: none !important;
-                }
-
-                &:hover {
-                    background: $bw6-2;
                 }
             }
 
@@ -84,7 +88,8 @@
             .bullet-2 + .step-text,
             .bullet-3 + .step-text,
             .bullet-4 + .step-text,
-            .bullet-5 + .step-text {
+            .bullet-5 + .step-text,
+            .bullet-10 + .step-text {
                 width: 78px;
             }
 
@@ -104,7 +109,7 @@
                 right: -90px;
                 width: 67px;
                 margin: 0 12px;
-                height: 2px;
+                height: 1px;
                 background: $bw-9;
             }
 
@@ -124,8 +129,8 @@
                 visibility: hidden;
                 opacity: 1;
                 vertical-align: middle;
-                width: 20px;
-                height: 14.29px;
+                width: 23.67px;
+                height: 18.29px;
                 background: url(/assets/svg/applicant/check.svg);
                 background-size: cover;
                 transition: visibility 0.3s ease-in-out,
@@ -137,51 +142,30 @@
                 user-select: none !important;
             }
 
-            &.step-active {
-                pointer-events: none !important;
-
-                .bullet {
-                    background: $ta-blue-5 !important;
-                }
-
-                .step-text {
-                    color: $ta-blue-9 !important;
-
-                    &::-moz-selection {
-                        color: $ta-blue-9;
-                        background: rgb(37, 91, 185, 0.2);
-                    }
-
-                    &::selection {
-                        color: $ta-blue-9;
-                        background: rgb(37, 91, 185, 0.2);
-                    }
-                }
-            }
-
+            &.step-active,
             &.step-active-review {
                 pointer-events: none !important;
 
                 .bullet {
-                    background: $bw6-2 !important;
-
-                    &::before {
-                        display: none !important;
-                        visibility: hidden !important;
-                        opacity: 0 !important;
-                    }
+                    background: $ta-blue-5 !important;
 
                     p {
-                        display: inline-flex !important;
-                        visibility: visible !important;
-                        opacity: 1 !important;
+                        color: $white !important;
                     }
                 }
 
                 .step-text {
-                    visibility: visible !important;
-                    opacity: 1 !important;
-                    color: $bw6-2 !important;
+                    color: $ta-blue-5 !important;
+
+                    &::-moz-selection {
+                        color: $ta-blue-5;
+                        background: rgb(37, 91, 185, 0.2);
+                    }
+
+                    &::selection {
+                        color: $ta-blue-5;
+                        background: rgb(37, 91, 185, 0.2);
+                    }
                 }
             }
 
@@ -189,7 +173,7 @@
                 pointer-events: none !important;
 
                 .bullet {
-                    background: $ta-red-2 !important;
+                    background: $ta-red !important;
 
                     &::before {
                         display: none !important;
@@ -201,13 +185,14 @@
                         display: inline-flex !important;
                         visibility: visible !important;
                         opacity: 1 !important;
+                        color: $white;
                     }
                 }
 
                 .step-text {
                     visibility: visible !important;
                     opacity: 1 !important;
-                    color: $ta-red-2 !important;
+                    color: $ta-red !important;
                 }
             }
 
@@ -263,8 +248,10 @@
                 }
             }
 
-            &.completed-step {
-                &.step-active {
+            &.completed-step,
+            &.completed-step-review {
+                &.step-active,
+                &.step-active-review {
                     .bullet {
                         background: $ta-blue-5;
 
@@ -289,7 +276,7 @@
                 }
 
                 .bullet {
-                    background: $ta-blue-7;
+                    background: $ta-blue-10;
 
                     &::before {
                         display: inline-block;
@@ -304,7 +291,7 @@
                     }
 
                     &:hover {
-                        background: $ta-blue-5;
+                        background: $ta-blue-11;
 
                         &::before {
                             display: none;
@@ -316,58 +303,14 @@
                             display: inline-flex;
                             visibility: visible;
                             opacity: 1;
+                            color: $ta-blue-5;
                         }
                     }
 
                     &:hover + .step-text {
                         visibility: visible;
                         opacity: 1;
-                        color: $ta-blue-9;
-                    }
-                }
-
-                .step-text {
-                    visibility: hidden;
-                    opacity: 0;
-                }
-            }
-
-            &.completed-step-review {
-                .bullet {
-                    background: $bw4;
-
-                    &::before {
-                        display: inline-block;
-                        visibility: visible;
-                        opacity: 1;
-                    }
-
-                    p {
-                        display: none;
-                        visibility: hidden;
-                        opacity: 0;
-                    }
-
-                    &:hover {
-                        background: $bw5;
-
-                        &::before {
-                            display: none;
-                            visibility: hidden;
-                            opacity: 0;
-                        }
-
-                        p {
-                            display: inline-flex;
-                            visibility: visible;
-                            opacity: 1;
-                        }
-                    }
-
-                    &:hover + .step-text {
-                        visibility: visible;
-                        opacity: 1;
-                        color: $bw5;
+                        color: $ta-blue-5;
                     }
                 }
 
@@ -379,13 +322,13 @@
 
             &.completed-step-review-incorrect {
                 .bullet {
-                    background: $ta-red-4;
+                    background: $ta-red-7;
 
                     &::before {
                         background: url(/assets/svg/applicant/invalid-review-x.svg);
                         background-repeat: no-repeat;
-                        width: 20px;
-                        height: 20px;
+                        width: 18px;
+                        height: 18px;
                         display: inline-block;
                         visibility: visible;
                         opacity: 1;
@@ -398,7 +341,7 @@
                     }
 
                     &:hover {
-                        background: $ta-red;
+                        background: $ta-red-9;
 
                         &::before {
                             display: none;
@@ -410,6 +353,7 @@
                             display: inline-flex;
                             visibility: visible;
                             opacity: 1;
+                            color: $ta-red;
                         }
                     }
 

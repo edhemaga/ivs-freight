@@ -7,7 +7,11 @@ import {
     OnDestroy,
     OnInit,
 } from '@angular/core';
-import { UntypedFormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
+import {
+    UntypedFormGroup,
+    UntypedFormBuilder,
+    Validators,
+} from '@angular/forms';
 import { Router } from '@angular/router';
 
 import { Subject, takeUntil } from 'rxjs';
@@ -857,7 +861,7 @@ export class Step5Component implements OnInit, OnDestroy, AfterContentChecked {
 
                         if (keyName === 'location') {
                             o['location'] = JSON.stringify({
-                                location: this.stepValues[i].location.address,
+                                location: this.stepValues[i].location,
                             });
                         }
 
@@ -893,9 +897,9 @@ export class Step5Component implements OnInit, OnDestroy, AfterContentChecked {
                                             i ===
                                             this.stepFeedbackValues.length - 1
                                                 ? this.lastViolationsCard
-                                                      .location?.address
+                                                      .location
                                                 : this.violationsArray[i]
-                                                      .location.address,
+                                                      .location,
                                     });
                                 }
 

@@ -26,8 +26,6 @@ export interface WorkExperienceItemResponse {
     email?: string | null;
     address?: AddressEntity;
     isDrivingPosition?: boolean;
-    cfrPart?: boolean;
-    fmcsa?: boolean;
     reasonForLeaving?: EnumValue;
     accountForPeriodBetween?: string | null;
     classesOfEquipment?: Array<ClassOfEquipmentResponse> | null;

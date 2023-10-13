@@ -64,37 +64,33 @@
                     }"
                     [activeItem]="selectedVehicleType"
                     [options]="vehicleType"
-                    (selectedItem)="handleInputSelect($event, 'TRUCK-TYPE')"
+                    (selectedItem)="handleInputSelect($event)"
                 ></app-ta-input-dropdown>
             </div>
+
             <div
-                class="group location-group"
+                class="group"
                 [ngStyle]="{ width: isEditing ? '234px' : '242px' }"
             >
-                <app-input-address-dropdown
+                <app-ta-input
                     formControlName="location"
                     [inputConfig]="{
                         name: 'Address',
                         type: 'text',
                         label: 'Location',
-                        isRequired: true,
-                        placeholderIcon: 'address',
-                        textTransform: 'capitalize',
-                        dropdownWidthClass: 'w-col-242',
                         minLength: 12,
                         maxLength: 256,
+                        isRequired: true,
+                        placeholderIcon: 'address',
                         isDisabled:
                             selectedMode === 'REVIEW_MODE' ||
                             (selectedMode === 'FEEDBACK_MODE' &&
                                 stepFeedbackValues?.isLocationValid),
                         incorrectInput: selectedMode === 'REVIEW_MODE'
                     }"
-                    [placeholderType]="'shortAddress'"
-                    [activeAddress]="selectedAddress"
                     [incorrectValue]="openAnnotationArray[10].lineInputs[2]"
                     (incorrectEvent)="incorrectInput($event, 2, 10)"
-                    (selectedAddress)="handleInputSelect($event, 'ADDRESS')"
-                ></app-input-address-dropdown>
+                ></app-ta-input>
             </div>
 
             <!-- REVIEW AND FEEDBACK -->

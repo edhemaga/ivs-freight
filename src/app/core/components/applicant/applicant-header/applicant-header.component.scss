@@ -11,30 +11,53 @@
             margin-bottom: 0;
 
             .tab {
-                margin-right: 14px;
+                margin-right: 21px;
+
+                &:last-child {
+                    margin-right: 0;
+                }
+
+                a {
+                    padding: 8px;
+                    border-radius: 3px;
+                    text-decoration: none;
+                    font-size: 16px;
+                    line-height: 20px;
+                    color: $ta-light-grey-2;
+                    transition: background 0.3s ease-in-out,
+                        color 0.3s ease-in-out;
+
+                    -webkit-user-select: none !important;
+                    -moz-user-select: none !important;
+                    -ms-user-select: none !important;
+                    user-select: none !important;
+
+                    .nav-icon {
+                        margin-right: 5px;
+                        position: relative;
+                        bottom: 2px;
+
+                        svg {
+                            path {
+                                fill: $ta-light-grey-6;
+                            }
+                        }
+                    }
+                }
+
+                /*   &.disabled {
+                    pointer-events: none !important;
+                } */
 
                 &.tab-active {
                     a {
-                        color: $ta-blue-5 !important;
-                        background: $ta-blue-6 !important;
+                        color: $white !important;
+                        background: $ta-blue-5 !important;
 
                         .nav-icon {
                             svg {
                                 path {
-                                    fill: $ta-blue-7 !important;
-                                }
-                            }
-                        }
-
-                        &:hover {
-                            color: $ta-blue-5 !important;
-                            background: $ta-blue-6 !important;
-
-                            .nav-icon {
-                                svg {
-                                    path {
-                                        fill: $ta-blue-5 !important;
-                                    }
+                                    fill: $white !important;
                                 }
                             }
                         }
@@ -43,26 +66,13 @@
 
                 &.tab-active-review-incorrect {
                     a {
-                        color: $ta-red-2 !important;
-                        background: $ta-light-grey-4 !important;
+                        color: $white !important;
+                        background: $ta-red !important;
 
                         .nav-icon {
                             svg {
                                 path {
-                                    fill: $ta-red !important;
-                                }
-                            }
-                        }
-
-                        &:hover {
-                            color: $ta-red-2 !important;
-                            background: $ta-light-grey-4 !important;
-
-                            .nav-icon {
-                                svg {
-                                    path {
-                                        fill: $ta-red !important;
-                                    }
+                                    fill: $white !important;
                                 }
                             }
                         }
@@ -99,25 +109,25 @@
 
                 &.completed-tab {
                     a {
-                        color: $ta-blue-7;
+                        color: $ta-blue-5;
                         background: transparent;
 
                         .nav-icon {
                             svg {
                                 path {
-                                    fill: $ta-blue-8;
+                                    fill: $ta-blue-5;
                                 }
                             }
                         }
 
                         &:hover {
                             color: $ta-blue-5;
-                            background: $bw2;
+                            background: $ta-blue-6;
 
                             .nav-icon {
                                 svg {
                                     path {
-                                        fill: $ta-blue-7;
+                                        fill: $ta-blue-5;
                                     }
                                 }
                             }
@@ -127,28 +137,19 @@
 
                 &.reviewed-incorrect-answer {
                     a {
-                        color: $ta-red-4;
+                        color: $ta-red;
                         background: transparent;
 
                         .nav-icon {
                             svg {
                                 path {
-                                    fill: $ta-red-5;
+                                    fill: $ta-red;
                                 }
                             }
                         }
 
                         &:hover {
-                            color: $ta-red-4;
-                            background: $ta-light-grey-4;
-
-                            .nav-icon {
-                                svg {
-                                    path {
-                                        fill: $ta-red-5;
-                                    }
-                                }
-                            }
+                            background: $ta-red-7;
                         }
                     }
                 }
@@ -175,47 +176,6 @@
                                     path {
                                         fill: $ta-red-2;
                                     }
-                                }
-                            }
-                        }
-                    }
-                }
-
-                a {
-                    height: 28px;
-                    padding: 4px 8px;
-                    border-radius: 2px;
-                    text-decoration: none;
-                    font-size: 14px;
-                    line-height: 20px;
-                    color: $ta-black;
-                    transition: background 0.3s ease-in-out,
-                        color 0.3s ease-in-out;
-
-                    -webkit-user-select: none !important;
-                    -moz-user-select: none !important;
-                    -ms-user-select: none !important;
-                    user-select: none !important;
-
-                    .nav-icon {
-                        margin-right: 8px;
-
-                        svg {
-                            path {
-                                fill: $bw5;
-                            }
-                        }
-                    }
-
-                    &:hover {
-                        color: $ta-light-grey-3;
-                        background: $bw2;
-
-                        .nav-icon {
-                            svg {
-                                path {
-                                    transition: fill 0.3s ease-in-out;
-                                    fill: $bw5;
                                 }
                             }
                         }

@@ -5,10 +5,12 @@ $trailer_colors: 'FF5454', '6D82C7', '56AB62', '3C3C3C', '6FDFE4', 'F89A3D',
     '1E9DF3', '59A5A5', 'A468FF', 'A34CB8', '4A9A4F', 'F3D542', '3074D3';
 $truck_colors: '97D568', 'FFB74D', 'E57373', '68C3FF', 'BA68C8', '59A5A5',
     '415FC1';
-$dispatch-status-colors: '919191', '008496', '6C6C6C', 'F276EF', 'FF9800', '3074D3', '62B264', 'FF9800', 'D80300', '26A690';
+$dispatch-status-colors: '919191', '008496', '6C6C6C', 'F276EF', 'FF9800',
+    '3074D3', '62B264', 'FF9800', 'D80300', '26A690';
 
 // Color variables
 $white: #ffffff;
+$white-2: #ffffff66;
 $black: #000000;
 $primary: #536bc2;
 $primary-light: #7690be;
@@ -130,6 +132,7 @@ $ta-red-5: #ffcdd2;
 $ta-red-6: #ef535033;
 $ta-red-7: #e5737333;
 $ta-red-8: #ef53504d;
+$ta-red-9: #e5737366;
 $ta-review-green: #4db6a2;
 $ta-review-green-2: #26a690;
 $ta-review-green-3: #00967e;
