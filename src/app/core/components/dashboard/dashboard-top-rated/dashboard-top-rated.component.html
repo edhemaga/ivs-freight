@@ -71,7 +71,13 @@
             </div>
 
             <div class="dashboard-top-rated-header-border"></div>
+        </div>
 
+        <!-- Right Side -->
+        <div
+            class="d-flex align-items-center dashboard-top-rated-header-right-side-container"
+            [formGroup]="topRatedForm"
+        >
             <!-- Search -->
 
             <div class="dashboard-top-rated-header-search">
@@ -80,83 +86,94 @@
                     (searchValueEmitter)="handleSearchValue($event)"
                 ></app-carrier-search-two>
             </div>
-        </div>
 
-        <!-- Right Side -->
-        <div class="d-flex align-items-center" [formGroup]="topRatedForm">
-            <div
-                class="dropdown-left-container"
-                [ngClass]="{
-                    'dropdown-left-w-1': selectedMainPeriod.name === 'Today',
-                    'dropdown-left-w-2':
-                        selectedMainPeriod.name === 'Week-to-Date',
-                    'dropdown-left-w-3':
-                        selectedMainPeriod.name === 'Month-to-Date',
-                    'dropdown-left-w-4':
-                        selectedMainPeriod.name === 'Year-to-Date',
-                    'dropdown-left-w-5': selectedMainPeriod.name === 'All Time',
-                    'dropdown-left-w-6': selectedMainPeriod.name === 'Custom'
-                }"
-            >
-                <app-ta-input-dropdown
-                    formControlName="dropdownLeft"
-                    [inputConfig]="{
-                        name: 'Input Dropdown',
-                        type: 'text',
-                        isDropdown: true,
-                        hideClear: true,
-                        hideColorValidations: true,
-                        removeInputBackground: true,
-                        dropdownWidthClass: 'w-col-157'
-                    }"
-                    [options]="mainPeriodDropdownList"
-                    [activeItem]="selectedMainPeriod"
-                    (selectedItem)="
-                        handleInputSelect($event, 'MAIN_PERIOD_DROPDOWN')
-                    "
-                ></app-ta-input-dropdown>
-            </div>
-
-            <div class="dashboard-top-rated-header-border"></div>
+            <!-- Dropdowns -->
 
             <div
-                class="dropdown-right-container"
-                [ngClass]="{
-                    'dropdown-right-w-1': selectedSubPeriod.name === 'Hourly',
-                    'dropdown-right-w-2':
-                        selectedSubPeriod.name === '3 Hours' ||
-                        selectedSubPeriod.name === '6 Hours',
-                    'dropdown-right-w-3':
-                        selectedSubPeriod.name === 'Semi-Daily',
-                    'dropdown-right-w-4': selectedSubPeriod.name === 'Daily',
-                    'dropdown-right-w-5': selectedSubPeriod.name === 'Weekly',
-                    'dropdown-right-w-6':
-                        selectedSubPeriod.name === 'Bi-Weekly',
-                    'dropdown-right-w-7':
-                        selectedSubPeriod.name === 'Semi-Monthly',
-                    'dropdown-right-w-8': selectedSubPeriod.name === 'Monthly',
-                    'dropdown-right-w-9':
-                        selectedSubPeriod.name === 'Quarterly',
-                    'dropdown-right-w-10': selectedSubPeriod.name === 'Yearly'
-                }"
+                class="d-flex align-items-center dashboard-top-rated-header-dropdown"
             >
-                <app-ta-input-dropdown
-                    formControlName="dropdownRight"
-                    [inputConfig]="{
-                        name: 'Input Dropdown',
-                        type: 'text',
-                        isDropdown: true,
-                        hideClear: true,
-                        hideColorValidations: true,
-                        removeInputBackground: true,
-                        dropdownWidthClass: 'w-col-157'
+                <div
+                    class="dropdown-left-container"
+                    [ngClass]="{
+                        'dropdown-left-w-1':
+                            selectedMainPeriod.name === 'Today',
+                        'dropdown-left-w-2':
+                            selectedMainPeriod.name === 'Week-to-Date',
+                        'dropdown-left-w-3':
+                            selectedMainPeriod.name === 'Month-to-Date',
+                        'dropdown-left-w-4':
+                            selectedMainPeriod.name === 'Year-to-Date',
+                        'dropdown-left-w-5':
+                            selectedMainPeriod.name === 'All Time',
+                        'dropdown-left-w-6':
+                            selectedMainPeriod.name === 'Custom'
                     }"
-                    [options]="subPeriodDropdownList"
-                    [activeItem]="selectedSubPeriod"
-                    (selectedItem)="
-                        handleInputSelect($event, 'SUB_PERIOD_DROPDOWN')
-                    "
-                ></app-ta-input-dropdown>
+                >
+                    <app-ta-input-dropdown
+                        formControlName="dropdownLeft"
+                        [inputConfig]="{
+                            name: 'Input Dropdown',
+                            type: 'text',
+                            isDropdown: true,
+                            hideClear: true,
+                            hideColorValidations: true,
+                            removeInputBackground: true,
+                            dropdownWidthClass: 'w-col-157'
+                        }"
+                        [options]="mainPeriodDropdownList"
+                        [activeItem]="selectedMainPeriod"
+                        (selectedItem)="
+                            handleInputSelect($event, 'MAIN_PERIOD_DROPDOWN')
+                        "
+                    ></app-ta-input-dropdown>
+                </div>
+
+                <div class="dashboard-top-rated-header-border"></div>
+
+                <div
+                    class="dropdown-right-container"
+                    [ngClass]="{
+                        'dropdown-right-w-1':
+                            selectedSubPeriod.name === 'Hourly',
+                        'dropdown-right-w-2':
+                            selectedSubPeriod.name === '3 Hours' ||
+                            selectedSubPeriod.name === '6 Hours',
+                        'dropdown-right-w-3':
+                            selectedSubPeriod.name === 'Semi-Daily',
+                        'dropdown-right-w-4':
+                            selectedSubPeriod.name === 'Daily',
+                        'dropdown-right-w-5':
+                            selectedSubPeriod.name === 'Weekly',
+                        'dropdown-right-w-6':
+                            selectedSubPeriod.name === 'Bi-Weekly',
+                        'dropdown-right-w-7':
+                            selectedSubPeriod.name === 'Semi-Monthly',
+                        'dropdown-right-w-8':
+                            selectedSubPeriod.name === 'Monthly',
+                        'dropdown-right-w-9':
+                            selectedSubPeriod.name === 'Quarterly',
+                        'dropdown-right-w-10':
+                            selectedSubPeriod.name === 'Yearly'
+                    }"
+                >
+                    <app-ta-input-dropdown
+                        formControlName="dropdownRight"
+                        [inputConfig]="{
+                            name: 'Input Dropdown',
+                            type: 'text',
+                            isDropdown: true,
+                            hideClear: true,
+                            hideColorValidations: true,
+                            removeInputBackground: true,
+                            dropdownWidthClass: 'w-col-157'
+                        }"
+                        [options]="subPeriodDropdownList"
+                        [activeItem]="selectedSubPeriod"
+                        (selectedItem)="
+                            handleInputSelect($event, 'SUB_PERIOD_DROPDOWN')
+                        "
+                    ></app-ta-input-dropdown>
+                </div>
             </div>
         </div>
     </div>
@@ -172,7 +189,7 @@
             <!-- Top Rated List -->
 
             <div
-                class="d-flex flex-column justify-content-center dashboard-top-rated-body-up-list"
+                class="d-flex flex-column dashboard-top-rated-body-up-list"
                 [ngClass]="{ 'show-more': isShowingMore }"
             >
                 <ng-container
@@ -244,16 +261,14 @@
                             <div
                                 class="d-flex align-items-center top-rated-item-first-tab-box"
                             >
-                                <p class="m-0">
-                                    {{ topRatedListItem.firstTabValue }}
-                                </p>
+                                <p class="m-0">${{ topRatedListItem.value }}</p>
                             </div>
 
                             <div
                                 class="d-flex align-items-center top-rated-item-second-tab-box"
                             >
                                 <p class="m-0 ta-font-semi-bold">
-                                    {{ topRatedListItem.secondTabValue }}%
+                                    {{ topRatedListItem.percent }}%
                                 </p>
                             </div>
                         </div>
@@ -270,9 +285,9 @@
                     >
                         <p class="m-0 ta-font-semi-bold">
                             {{
-                                topRatedList.length <= 10
-                                    ? topRatedList.length
-                                    : '10'
+                                !isShowingMore && topRatedList.length > 10
+                                    ? '10'
+                                    : topRatedList.length
                             }}
                             OF {{ topRatedList.length }}
                         </p>
@@ -287,7 +302,7 @@
                                 class="ta-font-bold show-more-btn"
                                 (click)="handleShowMoreClick()"
                             >
-                                SHOW MORE
+                                {{ isShowingMore ? 'SHOW LESS' : 'SHOW MORE' }}
                             </button>
                         </div>
                     </ng-container>
@@ -301,7 +316,7 @@
             <!-- Doughnut Chart -->
 
             <div
-                class="d-flex align-items-center justify-content-center dashboard-top-rated-body-up-doughnut-chart"
+                class="d-flex justify-content-center align-items-center dashboard-top-rated-body-up-doughnut-chart"
             >
                 <app-ta-chart
                     #doughnutChart

@@ -11,19 +11,22 @@ import { AgmCoreModule } from '@agm/core';
 
 // components
 import { DashboardComponent } from './dashboard/dashboard.component';
-import { DashboardPerformanceComponent } from './dashboard-performance/dashboard-performance.component';
 import { DashboardTopRatedComponent } from './dashboard-top-rated/dashboard-top-rated.component';
+
+import { TaTabSwitchComponent } from '../standalone-components/ta-tab-switch/ta-tab-switch.component';
+import { TaInputDropdownComponent } from '../shared/ta-input-dropdown/ta-input-dropdown.component';
+import { CarrierSearchTwoComponent } from '../standalone-components/carrier-search-two/carrier-search-two.component';
+
+import { DashboardPerformanceComponent } from './dashboard-performance/dashboard-performance.component';
 import { DashboardPickupByStateComponent } from './dashboard-pickup-by-state/dashboard-pickup-by-state.component';
 import { DashboardMapComponent } from './dashboard-map/dashboard-map.component';
 import { DashboardStateTrackingComponent } from './dashboard-state-tracking/dashboard-state-tracking.component';
 import { DashboardStateUsaComponent } from './dashboard-state-tracking/dashboard-state-usa/dashboard-state-usa.component';
+
 import { CarrierSearchComponent } from '../standalone-components/carrier-search/carrier-search.component';
 import { TaChartComponent } from '../standalone-components/ta-chart/ta-chart.component';
-import { TaTabSwitchComponent } from '../standalone-components/ta-tab-switch/ta-tab-switch.component';
 import { AppTooltipComponent } from '../standalone-components/app-tooltip/app-tooltip.component';
 import { TaSpinnerComponent } from '../shared/ta-spinner/ta-spinner.component';
-import { TaInputDropdownComponent } from '../shared/ta-input-dropdown/ta-input-dropdown.component';
-import { CarrierSearchTwoComponent } from '../standalone-components/carrier-search-two/carrier-search-two.component';
 
 @NgModule({
     declarations: [

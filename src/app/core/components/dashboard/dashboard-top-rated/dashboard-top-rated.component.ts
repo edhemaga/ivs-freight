@@ -37,92 +37,92 @@ export class DashboardTopRatedComponent implements OnInit, AfterViewInit {
         {
             id: 1,
             name: 'Denis Rodman',
-            firstTabValue: '152,324.5',
-            secondTabValue: '8.53',
+            value: '152,324.5',
+            percent: '8.53',
             isSelected: false,
         },
         {
             id: 2,
             name: 'Sasa Djordjevic',
-            firstTabValue: '148,456.5',
-            secondTabValue: '8.43',
+            value: '148,456.5',
+            percent: '8.43',
             isSelected: false,
         },
         {
             id: 3,
             name: 'Nicolas Drozlibrew',
-            firstTabValue: '124,421.1',
-            secondTabValue: '7.35',
+            value: '124,421.1',
+            percent: '7.35',
             isSelected: false,
         },
         {
             id: 4,
             name: 'Samuel Lioton',
-            firstTabValue: '114,489.3',
-            secondTabValue: '7.23',
+            value: '114,489.3',
+            percent: '7.23',
             isSelected: false,
         },
         {
             id: 5,
             name: 'Angelo Trotter',
-            firstTabValue: '96,561.3',
-            secondTabValue: '6.87',
+            value: '96,561.3',
+            percent: '6.87',
             isSelected: false,
         },
         {
             id: 6,
             name: 'Stan Tolbert',
-            firstTabValue: '84,156.6',
-            secondTabValue: '4.07',
+            value: '84,156.6',
+            percent: '4.07',
             isSelected: false,
         },
         {
             id: 7,
             name: 'Michael Scott',
-            firstTabValue: '64,156.2',
-            secondTabValue: '3.52',
+            value: '64,156.2',
+            percent: '3.52',
             isSelected: false,
         },
         {
             id: 8,
             name: 'Toby Flanders',
-            firstTabValue: '42,158.8',
-            secondTabValue: '3.43',
+            value: '42,158.8',
+            percent: '3.43',
             isSelected: false,
         },
         {
             id: 9,
             name: 'Sasuke Uchica',
-            firstTabValue: '35,891.6',
-            secondTabValue: '2.96',
+            value: '35,891.6',
+            percent: '2.96',
             isSelected: false,
         },
         {
             id: 10,
             name: 'Peter Simpson',
-            firstTabValue: '18,175.4',
-            secondTabValue: '2.12',
+            value: '18,175.4',
+            percent: '2.12',
             isSelected: false,
         },
         {
             id: 11,
             name: 'Jure Guvo',
-            firstTabValue: '12,133.4',
-            secondTabValue: '1.12',
+            value: '12,133.4',
+            percent: '1.12',
             isSelected: false,
         },
         {
             id: 12,
             name: 'Jure Guvo1',
-            firstTabValue: '12,133.4',
-            secondTabValue: '1.12',
+            value: '12,133.4',
+            percent: '1.12',
             isSelected: false,
         },
         {
             id: 13,
             name: 'Jure Guvo2',
-            firstTabValue: '12,133.4',
-            secondTabValue: '1.12',
+            value: '12,133.4',
+            percent: '1.12',
             isSelected: false,
         },
     ];
@@ -453,9 +453,21 @@ export class DashboardTopRatedComponent implements OnInit, AfterViewInit {
     }
 
     public handleShowMoreClick(): void {
-        this.isShowingMore = true;
+        if (!this.isShowingMore) {
+            this.isShowingMore = true;
 
-        this.topRatedListSliceEnd = this.topRatedList.length;
+            this.topRatedListSliceEnd = this.topRatedList.length;
+
+            return;
+        }
+
+        if (this.isShowingMore) {
+            this.isShowingMore = false;
+
+            this.topRatedListSliceEnd = 10;
+
+            return;
+        }
     }
 
     public handleAddSelectedClick(
@@ -494,19 +506,15 @@ export class DashboardTopRatedComponent implements OnInit, AfterViewInit {
     ): void {
         event.stopPropagation();
 
+        this.topRatedList.splice(topRatedListItemIndex, 1);
+        this.topRatedList.splice(topRatedListItem.id - 1, 0, topRatedListItem);
+
         topRatedListItem.isSelected = false;
+
+        this.topRatedList = ArrayHelper.sorPartOfArray(this.topRatedList);
 
         this.selectedTopRatedList = this.selectedTopRatedList.filter(
             (topRatedItem) => topRatedItem.id !== topRatedListItem.id
-        );
-
-        this.topRatedList.splice(topRatedListItemIndex, 1);
-
-        this.topRatedList.splice(topRatedListItem.id - 1, 0, topRatedListItem);
-
-        this.topRatedList = ArrayHelper.sortArrayFromIndex(
-            this.topRatedList,
-            topRatedListItem.id - 1
         );
     }
 

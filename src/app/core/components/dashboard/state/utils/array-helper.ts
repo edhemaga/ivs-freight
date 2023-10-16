@@ -1,25 +1,17 @@
 import { TopRatedListItem } from '../models/top-rated-list-item.model';
 
 export class ArrayHelper {
-    static sortArrayFromIndex(arr: TopRatedListItem[], startIndex: number) {
-        // Handle invalid startIndex
-        if (startIndex < 0 || startIndex >= arr.length) {
-            return arr;
-        }
+    static sorPartOfArray(arr: TopRatedListItem[]) {
+        // Slice the array into two parts: selected and not selected
+        const beforeStart = arr.filter((item) => item.isSelected);
+        const toSort = arr.filter((item) => !item.isSelected);
 
-        // Create a sub-array starting from the desired index
-        const subArray = arr.slice(startIndex);
+        // Sort the toSort portion of the array
+        toSort.sort((a: TopRatedListItem, b: TopRatedListItem) => a.id - b.id);
 
-        // Sort the sub-array
-        subArray.sort(
-            (a: TopRatedListItem, b: TopRatedListItem) => a.id - b.id
-        );
+        // Concatenate the sorted portion back
+        const sortedArray = beforeStart.concat(toSort);
 
-        // Replace the sorted sub-array in the original array
-        for (let i = startIndex, j = 0; i < arr.length; i++, j++) {
-            arr[i] = subArray[j];
-        }
-
-        return arr;
+        return sortedArray;
     }
 }

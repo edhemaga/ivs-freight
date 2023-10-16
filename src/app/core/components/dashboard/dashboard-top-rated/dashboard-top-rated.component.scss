@@ -33,7 +33,7 @@
             outline: none;
             background: none;
             border: none;
-            margin-right: 28px;
+            margin-right: 6px;
 
             &.active {
                 svg-icon {
@@ -80,82 +80,96 @@
             background-color: $ta-light-grey-6;
         }
 
-        &-search {
-            max-width: 200px;
-            margin-left: 7px;
-        }
+        &-right-side-container {
+            position: relative;
+            flex-grow: 1;
 
-        .dropdown-left-container,
-        .dropdown-right-container {
-            &.dropdown-left-container {
-                margin-right: 4px;
-
-                &.dropdown-left-w-1 {
-                    width: 77px;
-                }
-
-                &.dropdown-left-w-2 {
-                    width: 135px;
-                }
-
-                &.dropdown-left-w-3 {
-                    width: 140px;
-                }
-
-                &.dropdown-left-w-4 {
-                    width: 125px;
-                }
-
-                &.dropdown-left-w-5 {
-                    width: 92px;
-                }
-
-                &.dropdown-left-w-6 {
-                    width: 88px;
-                }
+            .dashboard-top-rated-header-search {
+                position: absolute;
+                left: 0;
+                z-index: 2;
+                max-width: 200px;
+                margin-left: 7px;
             }
 
-            &.dropdown-right-container {
-                margin-left: 4px;
+            .dashboard-top-rated-header-dropdown {
+                position: absolute;
+                right: 0;
+                z-index: 1;
 
-                &.dropdown-right-w-1 {
-                    width: 82px;
-                }
+                .dropdown-left-container,
+                .dropdown-right-container {
+                    &.dropdown-left-container {
+                        margin-right: 4px;
 
-                &.dropdown-right-w-2 {
-                    width: 89px;
-                }
+                        &.dropdown-left-w-1 {
+                            width: 77px;
+                        }
 
-                &.dropdown-right-w-3 {
-                    width: 111px;
-                }
+                        &.dropdown-left-w-2 {
+                            width: 135px;
+                        }
 
-                &.dropdown-right-w-4 {
-                    width: 70px;
-                }
+                        &.dropdown-left-w-3 {
+                            width: 140px;
+                        }
 
-                &.dropdown-right-w-5 {
-                    width: 87px;
-                }
+                        &.dropdown-left-w-4 {
+                            width: 125px;
+                        }
 
-                &.dropdown-right-w-6 {
-                    width: 107px;
-                }
+                        &.dropdown-left-w-5 {
+                            width: 92px;
+                        }
 
-                &.dropdown-right-w-7 {
-                    width: 135px;
-                }
+                        &.dropdown-left-w-6 {
+                            width: 88px;
+                        }
+                    }
 
-                &.dropdown-right-w-8 {
-                    width: 94px;
-                }
+                    &.dropdown-right-container {
+                        margin-left: 4px;
 
-                &.dropdown-right-w-9 {
-                    width: 101px;
-                }
+                        &.dropdown-right-w-1 {
+                            width: 82px;
+                        }
 
-                &.dropdown-right-w-10 {
-                    width: 76px;
+                        &.dropdown-right-w-2 {
+                            width: 89px;
+                        }
+
+                        &.dropdown-right-w-3 {
+                            width: 111px;
+                        }
+
+                        &.dropdown-right-w-4 {
+                            width: 70px;
+                        }
+
+                        &.dropdown-right-w-5 {
+                            width: 87px;
+                        }
+
+                        &.dropdown-right-w-6 {
+                            width: 107px;
+                        }
+
+                        &.dropdown-right-w-7 {
+                            width: 135px;
+                        }
+
+                        &.dropdown-right-w-8 {
+                            width: 94px;
+                        }
+
+                        &.dropdown-right-w-9 {
+                            width: 101px;
+                        }
+
+                        &.dropdown-right-w-10 {
+                            width: 76px;
+                        }
+                    }
                 }
             }
         }
@@ -169,7 +183,6 @@
             grid-gap: 4px;
 
             ::-webkit-scrollbar:vertical {
-                -webkit-appearance: none;
                 width: 4px;
             }
 
@@ -180,7 +193,6 @@
                 padding-right: 12px;
 
                 &.show-more {
-                    padding-top: 120px;
                     overflow: scroll;
                 }
 
@@ -190,7 +202,6 @@
                     border-radius: 2px;
                     cursor: pointer;
                     transition: background 0.3s ease;
-                    z-index: 1;
 
                     &:hover {
                         background: $bw2;
