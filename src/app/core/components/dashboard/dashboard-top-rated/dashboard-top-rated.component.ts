@@ -422,6 +422,36 @@ export class DashboardTopRatedComponent implements OnInit, AfterViewInit {
         }
     }
 
+    public handleSwitchTopRatedClick(
+        topRatedDropdownItem: TopRatedDropdownItem
+    ): void {
+        const topRatedTabsToDisplay = [
+            {
+                name: topRatedDropdownItem.tab1,
+            },
+            {
+                name: topRatedDropdownItem.tab2,
+                checked: true,
+            },
+        ];
+
+        this.topRatedTabs = topRatedTabsToDisplay;
+        this.topRatedTitle = topRatedDropdownItem.name;
+
+        this.topRatedDropdownList.find(
+            (topRatedDropdownItem) => topRatedDropdownItem.isActive
+        ).isActive = false;
+
+        topRatedDropdownItem.isActive = true;
+
+        this.popover.close();
+
+        /* 
+        this.topDriverBarChart.animationDuration = 0;
+        this.topDriverBarChart.setChartOptions();
+       */
+    }
+
     public handleShowMoreClick(): void {
         this.isShowingMore = true;
 
@@ -482,32 +512,8 @@ export class DashboardTopRatedComponent implements OnInit, AfterViewInit {
 
     ////////////////////////////////////////////////////////////////
 
-    changeTopTen(item) {
-        const newSwitchValue = [
-            {
-                name: item.tab1,
-                checked: true,
-            },
-            {
-                name: item.tab2,
-            },
-        ];
-        this.topRatedTabs = newSwitchValue;
-
-        this.topRatedTitle = item.name;
-        /* this.topRatedSearchOptions.gridNameTitle = item.name; */
-        this.topDriverBarChart.animationDuration = 0;
-        this.topDriverBarChart.setChartOptions();
-        this.topRatedDropdownList.map((item) => {
-            item.active = false;
-            return item;
-        });
-        item.active = true;
-        this.popover.close();
-    }
-
-    changeDriverSwitchTabs(ev, useLast?) {
-        const switchData = useLast ? this.currentSwitchTab : ev['name']; //currently no data for milage/revnue so insert last chosen
+    public handleSwitchTabClick(event, useLast?) {
+        const switchData = useLast ? this.currentSwitchTab : event['name']; //currently no data for milage/revnue so insert last chosen
         this.timePeriod.changeTimePeriod(switchData);
         this.currentSwitchTab = switchData;
         if (switchData == 'Custom') {

@@ -20,7 +20,7 @@
                 class="dashboard-top-rated-header-arrow-btn"
                 #popover="ngbPopover"
                 autoClose="outside"
-                [ngbPopover]="topPopover"
+                [ngbPopover]="topRatedPopover"
                 [popoverClass]="'top-rated-popover-main'"
                 [placement]="['bottom']"
                 [container]="'body'"
@@ -32,18 +32,20 @@
                 ></svg-icon>
             </button>
 
-            <ng-template #topPopover>
+            <ng-template #topRatedPopover>
                 <div class="top-rated-popover-container">
                     <div
                         *ngFor="
-                            let item of topRatedDropdownList;
+                            let topRatedDropdownItem of topRatedDropdownList;
                             trackBy: trackByIdentity
                         "
                         class="top-rated-popover-item"
-                        [ngClass]="{ active: item.active }"
-                        (click)="changeTopTen(item)"
+                        [ngClass]="{ active: topRatedDropdownItem.isActive }"
+                        (click)="
+                            handleSwitchTopRatedClick(topRatedDropdownItem)
+                        "
                     >
-                        <p class="m-0">{{ item.name }}</p>
+                        <p class="m-0">{{ topRatedDropdownItem.name }}</p>
 
                         <div class="popover-icon-container">
                             <svg-icon
@@ -63,7 +65,7 @@
                 <app-ta-tab-switch
                     [tabs]="topRatedTabs"
                     [disableHeight]="true"
-                    (switchClicked)="changeDriverSwitchTabs($event, true)"
+                    (switchClicked)="handleSwitchTabClick($event)"
                 >
                 </app-ta-tab-switch>
             </div>
@@ -297,6 +299,18 @@
             <div class="dashboard-top-rated-body-up-border"></div>
 
             <!-- Doughnut Chart -->
+
+            <div
+                class="d-flex align-items-center justify-content-center dashboard-top-rated-body-up-doughnut-chart"
+            >
+                <app-ta-chart
+                    #doughnutChart
+                    [chartConfig]="chartConfig"
+                    [axesProperties]="chartAxes"
+                    [legendAttributes]="{}"
+                >
+                </app-ta-chart>
+            </div>
         </div>
     </div>
 </div>
@@ -307,132 +321,8 @@
             <div class="d-flex align-items-center">
                 <div
                     class="dashboard_top_driver_list"
-                    [ngClass]="{
-                        medium_scale:
-                            this.searchDashboardOptions.gridNameTitle ==
-                                'Driver' ||
-                            this.searchDashboardOptions.gridNameTitle ==
-                                'Dispatcher',
-                        small_scale:
-                            this.searchDashboardOptions.gridNameTitle == 'Truck'
-                    }"
                 >
-                    <div class="dashboard-top-driver-body-list-holder">
-                        <div
-                            *ngFor="let item of topRatedList; let indx = index"
-                            class="dashboard-top-driver-body-list-items-holder"
-                            (mouseenter)="hoverDriver(indx)"
-                            (mouseleave)="removeDriverHover()"
-                            (click)="selectCompare($event, item, indx)"
-                        >
-                            <div
-                                class="dashboard-top-driver-body-list-items top-compare-{{
-                                    compareColor[item.id]
-                                }}"
-                            >
-                                <div
-                                    class="dashboard-top-driver-body-list-frame list-name-holder"
-                                >
-                                    <div
-                                        class="dashboard-top-driver-body-list-id"
-                                    >
-                                        {{ item.id }}
-                                    </div>
-
-                                    <div
-                                        class="dashboard-top-driver-body-list-remove"
-                                        (click)="
-                                            removeDriverFromList(
-                                                $event,
-                                                indx,
-                                                item
-                                            )
-                                        "
-                                    >
-                                        <svg-icon
-                                            src="assets/svg/truckassist-table/x.svg"
-                                        ></svg-icon>
-                                    </div>
-
-                                    <div
-                                        class="dashboard-top-driver-body-list-circle top-ten-{{
-                                            circleColor[indx]
-                                        }}-color"
-                                    ></div>
-
-                                    <div
-                                        class="dashboard-top-driver-body-list-name"
-                                    >
-                                        {{ item.name }}
-                                    </div>
-                                </div>
-
-                                <div
-                                    class="dashboard-top-driver-body-list-frame"
-                                >
-                                    <div
-                                        class="dashboard-top-driver-body-list-price"
-                                    >
-                                        {{ item.price }}
-                                    </div>
-
-                                    <div
-                                        class="dashboard-top-driver-body-list-percent"
-                                    >
-                                        {{ item.percent }}
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div
-                                class="dashboard-top-driver-body-list-border"
-                                [class.list_line_hidden]="
-                                    !compareColor[item.id]
-                                "
-                            ></div>
-                        </div>
-
-                        <div
-                            class="driver_empty_state_holder"
-                            *ngIf="!topRatedList.length"
-                        >
-                            <div class="main_empty_state_holder">
-                                <div class="empty_state_title">
-                                    {{
-                                        this.searchDashboardOptions
-                                            .gridNameTitle
-                                    }}
-                                    list is empty
-                                </div>
-
-                                <div class="empty_state_title_bottom">
-                                    Please add
-                                    {{
-                                        this.searchDashboardOptions.gridNameTitle.toLowerCase() +
-                                            's'
-                                    }}
-                                </div>
-
-                                <div class="empty_state_image">
-                                    <svg-icon
-                                        src="assets/svg/common/dashboard_empty_state.svg"
-                                    ></svg-icon>
-                                </div>
-
-                                <div class="empty_add_button">
-                                    <div class="add_text">
-                                        Add
-                                        {{
-                                            this.searchDashboardOptions
-                                                .gridNameTitle
-                                        }}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
+                       
                 <div class="doughnut_chart_main_holder">
                     <div class="doughnut_chart_holder">
                         <app-ta-chart
@@ -493,20 +383,4 @@
         </div>
     </div>
 </div>
-
-<ng-template #topTenPopover let-data="data">
-    <div class="top-ten-popover-holder">
-        <div
-            *ngFor="let item of topRatedDropdown; let indx = index"
-            class="top-ten-popover-items-holder"
-            [ngClass]="{ active: item.active }"
-            (click)="changeTopTen(item)"
-        >
-            {{ item.name.toUpperCase() }}
-            <div class="popover-icon-holder">
-                <svg-icon src="assets/svg/common/ic_confirm.svg"></svg-icon>
-            </div>
-        </div>
-    </div>
-</ng-template>
  -->

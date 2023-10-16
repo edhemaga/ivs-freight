@@ -1500,8 +1500,6 @@
 }
 
 .top-rated-popover-main {
-    margin-top: 4px;
-
     &.pickup-popover-main {
         width: 146px;
         height: 234px;
@@ -1527,6 +1525,7 @@
             align-items: center;
             padding: 4px 6px;
             margin-bottom: 2px;
+            text-transform: uppercase;
             cursor: pointer;
 
             &:last-child {
