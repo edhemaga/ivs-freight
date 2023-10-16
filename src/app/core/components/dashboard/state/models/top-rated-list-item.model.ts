@@ -3,4 +3,5 @@ export interface TopRatedListItem {
     name: string;
     firstTabValue: string;
     secondTabValue: string;
+    isSelected: boolean;
 }

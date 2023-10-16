@@ -167,7 +167,6 @@
             display: grid;
             grid-template-columns: 1fr 1px 1fr;
             grid-gap: 4px;
-            padding: 0 10px;
 
             ::-webkit-scrollbar:vertical {
                 -webkit-appearance: none;
@@ -176,18 +175,68 @@
 
             /* List */
             &-list {
-                height: 360px;
+                height: 415px;
                 overflow: hidden;
                 padding-right: 12px;
 
-                &.showing-more {
+                &.show-more {
                     padding-top: 120px;
                     overflow: scroll;
                 }
 
                 .top-rated-item {
-                    padding: 4px;
-                    margin-bottom: 8px;
+                    padding: 8px 12px;
+                    margin-bottom: 4px;
+                    border-radius: 2px;
+                    cursor: pointer;
+                    transition: background 0.3s ease;
+                    z-index: 1;
+
+                    &:hover {
+                        background: $bw2;
+                    }
+
+                    &.selected {
+                        &:hover {
+                            .top-rated-item-number-box {
+                                p {
+                                    display: none;
+                                }
+
+                                .close-icon {
+                                    display: flex;
+                                }
+                            }
+                        }
+
+                        .top-rated-item-number-box {
+                            p {
+                                color: $ta-white-3;
+                            }
+                        }
+
+                        .top-rated-item-color-box {
+                            background: $ta-white-3 !important;
+                        }
+
+                        .top-rated-item-name-box,
+                        .top-rated-item-first-tab-box,
+                        .top-rated-item-second-tab-box {
+                            p {
+                                color: $white;
+
+                                &::-moz-selection {
+                                    color: $white;
+                                    background: rgb(255, 255, 255, 0.2);
+                                }
+
+                                &::selection {
+                                    color: $white;
+                                    background: rgb(255, 255, 255, 0.2);
+                                }
+                            }
+                        }
+                    }
 
                     &-left {
                         display: grid;
@@ -211,13 +260,23 @@
                                     background: rgb(145, 145, 145, 0.2);
                                 }
                             }
+
+                            .close-icon {
+                                display: none;
+
+                                svg {
+                                    path {
+                                        fill: $ta-white-3;
+                                    }
+                                }
+                            }
                         }
 
                         .top-rated-item-color-box {
                             width: 10px;
                             height: 10px;
                             border-radius: 50%;
-                            background: blue;
+                            background: $ta-light-grey-6;
                         }
 
                         .top-rated-item-name-box {
@@ -270,7 +329,7 @@
 
             /* Show More */
             .show-more-container {
-                padding-bottom: 4px;
+                padding: 0 8px 4px 8px;
 
                 &-left {
                     p {

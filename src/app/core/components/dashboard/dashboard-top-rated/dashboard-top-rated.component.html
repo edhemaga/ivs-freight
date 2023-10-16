@@ -171,11 +171,11 @@
 
             <div
                 class="d-flex flex-column justify-content-center dashboard-top-rated-body-up-list"
-                [ngClass]="{ 'showing-more': isShowingMore }"
+                [ngClass]="{ 'show-more': isShowingMore }"
             >
                 <ng-container
                     *ngFor="
-                        let topRatedItem of topRatedList
+                        let topRatedListItem of topRatedList
                             | slice : 0 : topRatedListSliceEnd;
                         let i = index;
                         trackBy: trackByIdentity
@@ -183,25 +183,55 @@
                 >
                     <div
                         class="d-flex align-items-center justify-content-between top-rated-item"
+                        [ngStyle]="
+                            i <= 9 &&
+                            topRatedListItem.isSelected && {
+                                background: mainColorsPallete[i].code
+                            }
+                        "
+                        [ngClass]="{
+                            selected: i <= 9 && topRatedListItem.isSelected
+                        }"
+                        (click)="handleAddSelectedClick(topRatedListItem, i)"
                     >
                         <div class="align-items-center top-rated-item-left">
                             <div
                                 class="d-flex align-items-center justify-content-center top-rated-item-number-box"
                             >
                                 <p class="m-0 ta-font-semi-bold">
-                                    {{ i + 1 }}
+                                    {{ topRatedListItem.id }}
                                 </p>
+
+                                <svg-icon
+                                    class="close-icon"
+                                    [src]="'assets/svg/applicant/close-x.svg'"
+                                    [svgStyle]="{
+                                        'width.px': 18,
+                                        'height.px': 18
+                                    }"
+                                    (click)="
+                                        handleRemoveSelectedClick(
+                                            $event,
+                                            topRatedListItem,
+                                            i
+                                        )
+                                    "
+                                ></svg-icon>
                             </div>
 
                             <div
                                 class="d-flex align-items-center justify-content-center top-rated-item-color-box"
+                                [ngStyle]="{
+                                    background:
+                                        i <= 9 && mainColorsPallete[i].code
+                                }"
                             ></div>
 
                             <div
                                 class="d-flex align-items-center top-rated-item-name-box"
                             >
                                 <p class="m-0 ta-font-extra-bold">
-                                    {{ topRatedItem.name }}
+                                    {{ topRatedListItem.name }}
                                 </p>
                             </div>
                         </div>
@@ -213,7 +243,7 @@
                                 class="d-flex align-items-center top-rated-item-first-tab-box"
                             >
                                 <p class="m-0">
-                                    {{ topRatedItem.firstTabValue }}
+                                    {{ topRatedListItem.firstTabValue }}
                                 </p>
                             </div>
 
@@ -221,7 +251,7 @@
                                 class="d-flex align-items-center top-rated-item-second-tab-box"
                             >
                                 <p class="m-0 ta-font-semi-bold">
-                                    {{ topRatedItem.secondTabValue }}%
+                                    {{ topRatedListItem.secondTabValue }}%
                                 </p>
                             </div>
                         </div>

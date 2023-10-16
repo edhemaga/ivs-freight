@@ -6,6 +6,10 @@ import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
 
 // constants
 import { DashboardTopRatedConstants } from '../state/utils/dashboard-top-rated.constants';
+import { DashboardColors } from '../state/utils/dashboard-colors.constants';
+
+// helper
+import { ArrayHelper } from '../state/utils/array-helper';
 
 // enum
 import { ConstantStringEnum } from '../state/enum/constant-string.enum';
@@ -15,6 +19,7 @@ import { TopRatedDropdownItem } from '../state/models/top-rated-dropdown-item.mo
 import { TopRatedTab } from '../state/models/top-rated-tab.model';
 import { DropdownListItem } from '../state/models/dropdown-list-item.model';
 import { TopRatedListItem } from '../state/models/top-rated-list-item.model';
+import { MainColorsPallete } from '../state/models/main-colors-pallete.model';
 
 @Component({
     selector: 'app-dashboard-top-rated',
@@ -26,86 +31,102 @@ export class DashboardTopRatedComponent implements OnInit, AfterViewInit {
 
     public topRatedForm: UntypedFormGroup;
     public topRatedTitle: string = ConstantStringEnum.DRIVER;
+
+    // list
     public topRatedList: TopRatedListItem[] = [
         {
             id: 1,
             name: 'Denis Rodman',
             firstTabValue: '152,324.5',
             secondTabValue: '8.53',
+            isSelected: false,
         },
         {
             id: 2,
             name: 'Sasa Djordjevic',
             firstTabValue: '148,456.5',
             secondTabValue: '8.43',
+            isSelected: false,
         },
         {
             id: 3,
             name: 'Nicolas Drozlibrew',
             firstTabValue: '124,421.1',
             secondTabValue: '7.35',
+            isSelected: false,
         },
         {
             id: 4,
             name: 'Samuel Lioton',
             firstTabValue: '114,489.3',
             secondTabValue: '7.23',
+            isSelected: false,
         },
         {
             id: 5,
             name: 'Angelo Trotter',
             firstTabValue: '96,561.3',
             secondTabValue: '6.87',
+            isSelected: false,
         },
         {
             id: 6,
             name: 'Stan Tolbert',
             firstTabValue: '84,156.6',
             secondTabValue: '4.07',
+            isSelected: false,
         },
         {
             id: 7,
             name: 'Michael Scott',
             firstTabValue: '64,156.2',
             secondTabValue: '3.52',
+            isSelected: false,
         },
         {
             id: 8,
             name: 'Toby Flanders',
             firstTabValue: '42,158.8',
             secondTabValue: '3.43',
+            isSelected: false,
         },
         {
             id: 9,
             name: 'Sasuke Uchica',
             firstTabValue: '35,891.6',
             secondTabValue: '2.96',
+            isSelected: false,
         },
         {
             id: 10,
             name: 'Peter Simpson',
             firstTabValue: '18,175.4',
             secondTabValue: '2.12',
+            isSelected: false,
         },
         {
             id: 11,
             name: 'Jure Guvo',
             firstTabValue: '12,133.4',
             secondTabValue: '1.12',
+            isSelected: false,
         },
         {
             id: 12,
             name: 'Jure Guvo1',
             firstTabValue: '12,133.4',
             secondTabValue: '1.12',
+            isSelected: false,
         },
         {
-            id: 12,
+            id: 13,
             name: 'Jure Guvo2',
             firstTabValue: '12,133.4',
             secondTabValue: '1.12',
+            isSelected: false,
         },
     ];
+    public selectedTopRatedList: TopRatedListItem[] = [];
 
     // show more
     public topRatedListSliceEnd: number = 10;
@@ -124,6 +145,9 @@ export class DashboardTopRatedComponent implements OnInit, AfterViewInit {
         DashboardTopRatedConstants.MAIN_PERIOD_DROPDOWN_DATA[4];
     public selectedSubPeriod: DropdownListItem =
         DashboardTopRatedConstants.SUB_PERIOD_DROPDOWN_DATA[8];
+
+    // colors
+    public mainColorsPallete: MainColorsPallete[] = [];
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -307,6 +331,8 @@ export class DashboardTopRatedComponent implements OnInit, AfterViewInit {
             DashboardTopRatedConstants.MAIN_PERIOD_DROPDOWN_DATA;
         this.subPeriodDropdownList =
             DashboardTopRatedConstants.SUB_PERIOD_DROPDOWN_DATA;
+
+        this.mainColorsPallete = DashboardColors.MAIN_COLORS_PALLETE;
     }
 
     public handleSearchValue(searchValue: string): void {
@@ -400,6 +426,58 @@ export class DashboardTopRatedComponent implements OnInit, AfterViewInit {
         this.isShowingMore = true;
 
         this.topRatedListSliceEnd = this.topRatedList.length;
+    }
+
+    public handleAddSelectedClick(
+        topRatedListItem: TopRatedListItem,
+        topRatedListItemIndex: number
+    ): void {
+        const maxTopRatedItemsSelected = 5;
+
+        if (
+            topRatedListItem.isSelected ||
+            this.selectedTopRatedList.length === maxTopRatedItemsSelected
+        ) {
+            return;
+        }
+
+        topRatedListItem.isSelected = true;
+
+        this.selectedTopRatedList = [
+            ...this.selectedTopRatedList,
+            topRatedListItem,
+        ];
+
+        this.topRatedList.splice(topRatedListItemIndex, 1);
+
+        this.topRatedList.splice(
+            this.selectedTopRatedList.length - 1,
+            0,
+            topRatedListItem
+        );
+    }
+
+    public handleRemoveSelectedClick(
+        event: Event,
+        topRatedListItem: TopRatedListItem,
+        topRatedListItemIndex: number
+    ): void {
+        event.stopPropagation();
+
+        topRatedListItem.isSelected = false;
+
+        this.selectedTopRatedList = this.selectedTopRatedList.filter(
+            (topRatedItem) => topRatedItem.id !== topRatedListItem.id
+        );
+
+        this.topRatedList.splice(topRatedListItemIndex, 1);
+
+        this.topRatedList.splice(topRatedListItem.id - 1, 0, topRatedListItem);
+
+        this.topRatedList = ArrayHelper.sortArrayFromIndex(
+            this.topRatedList,
+            topRatedListItem.id - 1
+        );
     }
 
     ////////////////////////////////////////////////////////////////
@@ -525,6 +603,22 @@ export class DashboardTopRatedComponent implements OnInit, AfterViewInit {
         }
     }
 
+    updateBarChart(selectedStates: any) {
+        let dataSend = [
+            60000, 100000, 95000, 47000, 80000, 120000, 90000, 60000, 100000,
+            95000, 47000, 80000, 120000, 90000, 60000, 100000, 95000, 47000,
+            80000, 120000, 90000, 60000, 50000, 100000, 120000,
+        ];
+        if (this.topDriverBarChart) {
+            this.topDriverBarChart.updateMuiliBar(
+                selectedStates,
+                dataSend,
+                this.compareColor,
+                this.compareHoverColor
+            );
+        }
+    }
+
     removeDriverFromList(e: Event, indx, item) {
         e.stopPropagation();
         item.active = false;
@@ -607,22 +701,6 @@ export class DashboardTopRatedComponent implements OnInit, AfterViewInit {
     removeDriverHover() {
         this.doughnutChart.hoverDoughnut(null);
         this.topDriverBarChart.hoverBarChart(null);
-    }
-
-    updateBarChart(selectedStates: any) {
-        let dataSend = [
-            60000, 100000, 95000, 47000, 80000, 120000, 90000, 60000, 100000,
-            95000, 47000, 80000, 120000, 90000, 60000, 100000, 95000, 47000,
-            80000, 120000, 90000, 60000, 50000, 100000, 120000,
-        ];
-        if (this.topDriverBarChart) {
-            this.topDriverBarChart.updateMuiliBar(
-                selectedStates,
-                dataSend,
-                this.compareColor,
-                this.compareHoverColor
-            );
-        }
     }
 
     selectTimePeriod(period) {
