@@ -12,5 +12,6 @@ export class DashboardColors {
         { color: 'green', code: '#77bf56' },
         { color: 'pink', code: '#e668a0' },
         { color: 'brown', code: '#a08266' },
+        { color: 'grey', code: '#cccccc' },
     ];
 }

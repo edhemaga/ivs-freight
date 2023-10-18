@@ -1,7 +1,7 @@
 export interface TopRatedListItem {
     id: number;
     name: string;
-    value: string;
-    percent: string;
+    value: number;
+    percent: number;
     isSelected: boolean;
 }

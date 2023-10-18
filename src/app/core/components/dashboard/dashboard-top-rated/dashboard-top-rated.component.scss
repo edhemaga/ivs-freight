@@ -249,6 +249,24 @@
                         }
                     }
 
+                    &.not-selected {
+                        .top-rated-item-second-tab-box {
+                            p {
+                                color: $ta-light-grey-2;
+
+                                &::-moz-selection {
+                                    color: $ta-light-grey-2;
+                                    background: rgb(170, 170, 170, 0.2);
+                                }
+
+                                &::selection {
+                                    color: $ta-light-grey-2;
+                                    background: rgb(170, 170, 170, 0.2);
+                                }
+                            }
+                        }
+                    }
+
                     &-left {
                         display: grid;
                         grid-template-columns: 18px 10px 1fr;
@@ -287,7 +305,6 @@
                             width: 10px;
                             height: 10px;
                             border-radius: 50%;
-                            background: $ta-light-grey-6;
                         }
 
                         .top-rated-item-name-box {
@@ -332,6 +349,10 @@
 
                             &.top-rated-item-first-tab-box {
                                 margin-right: 10px;
+                            }
+
+                            &.top-rated-item-second-tab-box {
+                                width: 50px;
                             }
                         }
                     }
@@ -390,10 +411,6 @@
             /* Border */
             &-border {
                 background: $ta-light-grey-6;
-            }
-
-            /* Doughnut Chart */
-            &-doughnut-chart {
             }
         }
     }

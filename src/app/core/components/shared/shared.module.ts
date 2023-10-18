@@ -29,14 +29,12 @@ import { AgmSnazzyInfoWindowModule } from '@agm/snazzy-info-window';
 import { ObserversModule } from '@angular/cdk/observers';
 import { CarouselModule } from 'ngx-owl-carousel-o';
 
-
 @NgModule({
-    declarations: [
-    ],
+    declarations: [],
     imports: [
         CommonModule,
         FormsModule,
-       
+
         NgSelectModule,
         NgbModule,
         RouterModule,
@@ -77,7 +75,7 @@ import { CarouselModule } from 'ngx-owl-carousel-o';
         NgxSliderModule,
         PdfViewerModule,
         AgmSnazzyInfoWindowModule,
-        AgmDirectionModule
+        AgmDirectionModule,
     ],
     providers: [],
     schemas: [CUSTOM_ELEMENTS_SCHEMA],

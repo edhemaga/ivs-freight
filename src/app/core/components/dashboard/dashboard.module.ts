@@ -6,7 +6,6 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { DashboardRoutingModule } from './dashboard-routing.module';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AngularSvgIconModule } from 'angular-svg-icon';
-import { ChartsModule } from 'ng2-charts';
 import { AgmCoreModule } from '@agm/core';
 
 // components
@@ -44,7 +43,6 @@ import { TaSpinnerComponent } from '../shared/ta-spinner/ta-spinner.component';
         DashboardRoutingModule,
         ReactiveFormsModule,
         NgbModule,
-        ChartsModule,
         AgmCoreModule,
         AngularSvgIconModule,
 

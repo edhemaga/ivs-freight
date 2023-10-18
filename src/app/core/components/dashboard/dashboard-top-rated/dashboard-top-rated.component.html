@@ -110,7 +110,7 @@
                     }"
                 >
                     <app-ta-input-dropdown
-                        formControlName="dropdownLeft"
+                        formControlName="mainPeriod"
                         [inputConfig]="{
                             name: 'Input Dropdown',
                             type: 'text',
@@ -157,7 +157,7 @@
                     }"
                 >
                     <app-ta-input-dropdown
-                        formControlName="dropdownRight"
+                        formControlName="subPeriod"
                         [inputConfig]="{
                             name: 'Input Dropdown',
                             type: 'text',
@@ -209,7 +209,10 @@
                             }
                         "
                         [ngClass]="{
-                            selected: i <= 9 && topRatedListItem.isSelected
+                            selected: i <= 9 && topRatedListItem.isSelected,
+                            'not-selected':
+                                this.selectedTopRatedList.length &&
+                                !topRatedListItem.isSelected
                         }"
                         (click)="handleAddSelectedClick(topRatedListItem, i)"
                     >
@@ -242,7 +245,14 @@
                                 class="d-flex align-items-center justify-content-center top-rated-item-color-box"
                                 [ngStyle]="{
                                     background:
-                                        i <= 9 && mainColorsPallete[i].code
+                                        (this.topRatedList.length <= 10 &&
+                                            i <= 2) ||
+                                        (topRatedList.length > 10 &&
+                                            topRatedList.length <= 30 &&
+                                            i <= 4) ||
+                                        (topRatedList.length >= 30 && i <= 9)
+                                            ? mainColorsPallete[i].code
+                                            : mainColorsPallete[10].code
                                 }"
                             ></div>
 
@@ -265,10 +275,14 @@
                             </div>
 
                             <div
-                                class="d-flex align-items-center top-rated-item-second-tab-box"
+                                class="d-flex align-items-center justify-content-end top-rated-item-second-tab-box"
                             >
                                 <p class="m-0 ta-font-semi-bold">
-                                    {{ topRatedListItem.percent }}%
+                                    {{
+                                        topRatedListItem.isSelected
+                                            ? topRatedListSelectedPercentage
+                                            : topRatedListItem.percent
+                                    }}%
                                 </p>
                             </div>
                         </div>
@@ -320,8 +334,8 @@
             >
                 <app-ta-chart
                     #doughnutChart
-                    [chartConfig]="chartConfig"
-                    [axesProperties]="chartAxes"
+                    [chartConfig]="doughnutChartConfig"
+                    [axesProperties]="{}"
                     [legendAttributes]="{}"
                 >
                 </app-ta-chart>
