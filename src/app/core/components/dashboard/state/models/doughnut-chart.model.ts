@@ -17,6 +17,14 @@ export interface ChartInitProperties {
     percent?: string;
 }
 
+export interface DoughnutChartPercentage {
+    filterdDataValues: number[];
+    topTenPercentage: number;
+    topTenValue: number;
+    otherPercentage: number;
+    otherValue: number;
+}
+
 export interface DoughnutChart extends Chart {
     chartInnitProperties: ChartInitProperties[];
     selectedDrivers: TopRatedListItem[];

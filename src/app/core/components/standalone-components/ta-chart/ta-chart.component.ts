@@ -8,6 +8,8 @@ import {
     HostListener,
     Output,
     EventEmitter,
+    SimpleChanges,
+    OnChanges,
 } from '@angular/core';
 import { Chart, ChartDataSets, ChartOptions, ChartType } from 'chart.js';
 import { ChartsModule } from 'ng2-charts';
@@ -33,7 +35,7 @@ import { NFormatterPipe } from '../../../pipes/n-formatter.pipe';
         NFormatterPipe,
     ],
 })
-export class TaChartComponent implements OnInit {
+export class TaChartComponent implements OnInit, OnChanges {
     @Input() chartConfig: any;
     @Input() axesProperties: any;
     @Input() legendAttributes: any;
@@ -113,6 +115,15 @@ export class TaChartComponent implements OnInit {
         Chart.pluginService.register(namedChartAnnotation);
         this.setChartOptions();
         this.setChartData();
+    }
+
+    ngOnChanges(changes: SimpleChanges) {
+        if (this.chart) {
+            this.chart.chart.config.data.datasets[0] =
+                changes.chartConfig.currentValue.dataProperties[0].defaultConfig;
+
+            this.driversList = changes.chartConfig.currentValue.driversList;
+        }
     }
 
     setHoverAnnotation(value: any, config?: any) {

@@ -2,9 +2,9 @@ export enum ConstantChartStringEnum {
     SELECTED = ' SELECTED',
     ALL_OTHERS = 'ALL OTHERS',
 
-    TOP_3 = 'Top 3',
-    TOP_5 = 'Top 5',
-    TOP_10 = 'Top 10',
+    TOP_3 = 'TOP 3',
+    TOP_5 = 'TOP 5',
+    TOP_10 = 'TOP 10',
 
     PERCENTAGE_SIGN = '%',
     DOLLAR_SIGN = '$',
