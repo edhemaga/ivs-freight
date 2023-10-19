@@ -78,6 +78,7 @@
                 text-transform: uppercase;
                 border-radius: 3px;
                 user-select: none;
+                cursor: pointer;
 
                 &.active {
                     background-color: #3074d3;
@@ -86,6 +87,20 @@
                     text-transform: none;
                 }
             }
+        }
+
+        .payroll-pay-button{
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid #DADADA;
+
+            .report-buttons {
+                padding: 0;
+                .report-button {
+                    height: 32px;
+                }
+            }
+           
         }
 
         .border-item {
@@ -192,6 +207,27 @@
                     color: #424242;
                 }
             }
+
+            &.status-template-past{
+                background-color: #ef53501a;
+
+                svg-icon {
+                    svg {
+                        path {
+                            fill: #ef5350;
+                        }
+                    }
+                }
+
+                .payroll-report-status-text {
+                    color: #ef5350;
+    
+                    &::selection {
+                        background-color: #ef535033;
+                        color: #ef5350;
+                    }
+                }
+            }
         }
 
         .payroll-report-money-value {
@@ -288,6 +324,7 @@
             margin-top: 6px;
             .report-count-item-load-left {
                 align-items: center;
+                margin-right: 16px;
                 .count {
                     width: 28px;
                     height: 26px;
@@ -312,6 +349,24 @@
                     &::selection {
                         background-color: #3074d333;
                         color: #3074d3;
+                    }
+                }
+
+                &.normal{
+                    .count{
+                        color: #424242;
+                        background-color: #EEEEEE;
+                    }
+
+                    .title {
+                        font-size: 16px;
+                        color: #424242;
+                        font-weight: 700;
+    
+                        &::selection {
+                            background-color: #42424233;
+                            color: #424242;
+                        }
                     }
                 }
             }

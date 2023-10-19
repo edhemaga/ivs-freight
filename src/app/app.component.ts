@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { filter, map, mergeMap } from 'rxjs';
@@ -50,6 +50,10 @@ export class AppComponent implements OnInit {
             });
 
         // Logout
+    }
+
+    public testFnc() {
+        console.log("TESTTTTTT");
     }
 
     /**

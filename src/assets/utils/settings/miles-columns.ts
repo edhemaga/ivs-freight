@@ -73,7 +73,7 @@ export function getMilesColumnsDefinition() {
             disabled: false,
             export: true,
             resizable: true,
-            svgUrl: 'assets/svg/truckassist-table/truck/',
+            svgUrl: 'assets/svg/common/trucks/',
             classField: 'truckTypeClass',
             svgDimensions: {
                 width: 42,

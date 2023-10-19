@@ -15,6 +15,7 @@ import { TruckassistTableToolbarComponent } from '../shared/truckassist-table/tr
 import { TaInputComponent } from '../shared/ta-input/ta-input.component';
 import { ProfileImagesComponent } from '../shared/profile-images/profile-images.component';
 import { TaCustomCardComponent } from '../shared/ta-custom-card/ta-custom-card.component';
+import { PayrollRowBorderTablePipe } from './payroll/payroll/pipe/payroll-row-border.pipe';
 
 @NgModule({
     declarations: [
@@ -22,6 +23,7 @@ import { TaCustomCardComponent } from '../shared/ta-custom-card/ta-custom-card.c
         PayrollComponent,
         AccountingPayrollComponent,
         PayrollTableComponent,
+        PayrollRowBorderTablePipe,
         PayrollTablePipe,
         PayrollReportComponent,
         PayrollSmallTablesComponent

@@ -42,6 +42,7 @@
                     [cdkDragDisabled]="true"
                     cdkDragPreviewContainer="parent"
                     cdkDragBoundary=".payroll-table-main"
+                    [ngStyle]="{ 'border-color': (tr | payrollrowbordertablepipe : _tableData : rowIndex : 'border') ? '#eeeeee' : 'transparent' }"
                 >
                     <ng-container *ngFor="let h of tableSettings">
                         <td
@@ -72,46 +73,46 @@
                                         class="status-template d-flex"
                                         [ngClass]="{
                                             'status-template-pending':
-                                                tr.payDeadline.period ==
+                                                tr.payDeadline?.period ==
                                                 'Pending',
                                             'status-template-ready':
-                                                tr.payDeadline.period ==
-                                                'Ready'
+                                                tr.payDeadline?.period == 'Ready'
                                         }"
                                     >
                                         <svg-icon
                                             *ngIf="
-                                                tr.payDeadline.period == 'Past'
+                                                tr.payDeadline?.period == 'Past'
                                             "
                                             src="assets/svg/common/ic_danger.svg"
                                         ></svg-icon>
                                         <svg-icon
                                             *ngIf="
-                                                tr.payDeadline.period == 'Ready'
+                                                tr.payDeadline?.period == 'Ready'
                                             "
                                             src="assets/svg/applicant/confirm-circle.svg"
                                         ></svg-icon>
                                         <svg-icon
                                             *ngIf="
-                                                tr.payDeadline.period == 'Pending'
+                                                tr.payDeadline?.period ==
+                                                'Pending'
                                             "
                                             src="assets/svg/common/ic_clock_white.svg"
                                         ></svg-icon>
                                         <span
                                             *ngIf="
-                                                tr.payDeadline.period ==
+                                                tr.payDeadline?.period ==
                                                     'Past' ||
-                                                tr.payDeadline.period ==
+                                                tr.payDeadline?.period ==
                                                     'Pending'
                                             "
                                             ><span>{{
-                                                tr.payDeadline.numberOfDays
+                                                tr.payDeadline?.numberOfDays
                                             }}</span>
                                             DAYS</span
                                         >
                                         <span
                                             *ngIf="
-                                                tr.payDeadline.period == 'Ready'
+                                                tr.payDeadline?.period == 'Ready'
                                             "
                                         >
                                             READY
@@ -147,9 +148,20 @@
                                         [class.delivery-box]="
                                             tr.type.name == 'Delivery'
                                         "
+                                        [class.repear-box]="
+                                            tr.type.name == 'Repair'
+                                        "
+                                        [class.deadheading-box]="
+                                            tr.type.name == 'Parking' ||
+                                            tr.type.name == 'DeadHead'
+                                        "
                                     >
                                         <svg-icon
-                                            *ngIf="tr.order < 9"
+                                            *ngIf="
+                                                tr.order < 9 &&
+                                                (tr.type.name == 'Delivery' ||
+                                                    tr.type.name == 'Pickup')
+                                            "
                                             src="
                                             assets/svg/svg_numbers/olddash/svg_num_box_{{
                                                 tr.order
@@ -157,7 +169,28 @@
                                         "
                                         ></svg-icon>
                                         <svg-icon
-                                            *ngIf="tr.order > 9"
+                                            *ngIf="
+                                                tr.type.name == 'Parking' ||
+                                                tr.type.name == 'DeadHead'
+                                            "
+                                            src="
+                                            assets/svg/svg_numbers/deadhead.svg
+                                        "
+                                        ></svg-icon>
+                                        <svg-icon
+                                            *ngIf="
+                                                tr.type.name == 'Repair'
+                                            "
+                                            src="
+                                            assets/svg/svg_numbers/repear.svg
+                                        "
+                                        ></svg-icon>
+                                        <svg-icon
+                                            *ngIf="
+                                                tr.order > 9 &&
+                                                (tr.type.name == 'Delivery' ||
+                                                    tr.type.name == 'Pickup')
+                                            "
                                             src="assets/svg/svg_numbers/svg_num_over.svg
                                     "
                                         ></svg-icon>

@@ -24,32 +24,66 @@ export class PayrollTableComponent implements OnInit {
 
     @Input() expandedTable: boolean;
 
+    @Input() tableType: "none" | "report" = "none";
+
     _tableData: any[] = [];
     @Input() set tableData(value) {
         if (this.tableSettingsResizable) {
-            const tableSettingsValue = [...value].reduce(
-                (tbrez, item) => {
-                    this.tableSettingsResizable.map((data) => {
-                        if (data.data_field) {
-                            if (!tbrez[data.data_field])
-                                tbrez[data.data_field] = 0;
-                            tbrez[data.data_field] += item[data.data_field]
-                                ? item[data.data_field]
-                                : 0;
-                        }
-                        return data;
-                    });
+            if (this.tableType != "report") {
+                const tableSettingsValue = [...value].reduce(
+                    (tbrez, item) => {
+                        this.tableSettingsResizable.map((data) => {
+                            if (data.data_field) {
+                                if (!tbrez[data.data_field])
+                                    tbrez[data.data_field] = 0;
+                                tbrez[data.data_field] += item[data.data_field]
+                                    ? item[data.data_field]
+                                    : 0;
+                            }
+                            return data;
+                        });
 
-                    return tbrez;
-                },
-                { reorderItem: true }
-            );
+                        return tbrez;
+                    },
+                    { reorderItem: true }
+                );
 
-            value.push(tableSettingsValue);
+                value.push(tableSettingsValue);
+            }
         }
 
         this._tableData = value;
     }
+
+
+    @Input() set data(value) {
+        
+        if (this.tableType == "report" && value.stops) {
+            
+            const openPayrollIdIndex = this._tableData.map(item => item.payrollId).lastIndexOf(value.id);
+            let resizableItem = { reorderItem: true };
+            this.tableSettingsResizable.map(
+                (data) => {
+                    if (data.data_field) {
+                        resizableItem[data.data_field] = value[data.data_field]
+                            ? value[data.data_field]
+                            : 0;
+                    }
+                    return data;
+                }
+            );
+
+
+            console.log(this._tableData);
+            const newData = [
+                ...this._tableData.slice(0, openPayrollIdIndex +1),
+                resizableItem,
+                ...this._tableData.slice(openPayrollIdIndex+1)
+            ];
+            this._tableData = newData;
+        }
+    }
+
     constructor() {}
 
     ngOnInit(): void {}
