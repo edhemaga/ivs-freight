@@ -1,0 +1,63 @@
+<div
+    class="d-flex align-items-center search-container"
+    [ngClass]="{
+        active: displaySearch,
+        confirmed: isValueConfirmed,
+        focused: isValueConfirmed && isInputFocused
+    }"
+>
+    <!-- Icon -->
+    <div
+        class="icon-container"
+        [ngbTooltip]="displaySearch ? null : 'Search'"
+        placement="bottom"
+        (click)="toggleSearch()"
+    >
+        <svg-icon
+            class="search-icon"
+            [src]="'assets/svg/truckassist-search/new-search-icon.svg'"
+            [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
+        ></svg-icon>
+    </div>
+
+    <!-- Input -->
+    <div class="d-flex align-items-center input-container">
+        <input
+            #searchInput
+            type="text"
+            spellcheck="false"
+            [placeholder]="placeHolderText ? 'Find ' + placeHolderText : 'Find'"
+            (focus)="handleSearchFocus(true)"
+            (blur)="handleSearchFocus(false)"
+        />
+
+        <div
+            class="d-flex align-items-center btn-container"
+            *ngIf="displaySearch"
+        >
+            <ng-container *ngIf="!isValueConfirmed">
+                <svg-icon
+                    class="confirm-icon"
+                    ngbTooltip="Confirm"
+                    placement="bottom"
+                    [src]="'assets/svg/ic_spec-confirm.svg'"
+                    [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
+                    (click)="handleConfirmClick()"
+                ></svg-icon>
+            </ng-container>
+
+            <svg-icon
+                class="clear-icon"
+                ngbTooltip="Clear"
+                placement="bottom"
+                [src]="
+                    isValueConfirmed
+                        ? 'assets/svg/applicant/close-x.svg'
+                        : 'assets/svg/ic_x.svg'
+                "
+                [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
+                (click)="handleClearClick()"
+            ></svg-icon>
+        </div>
+    </div>
+</div>

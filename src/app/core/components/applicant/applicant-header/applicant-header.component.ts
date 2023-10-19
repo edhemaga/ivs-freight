@@ -219,6 +219,83 @@ export class ApplicantHeaderComponent implements OnInit, OnChanges {
                                 };
                             }
 
+                            if (index === 2) {
+                                let hasIncorrectValue: boolean;
+                                let filteredMedicalCertReview = [];
+                                let filesHaveIncorrectValue: boolean;
+
+                                const medicalCertReview =
+                                    res?.medicalCertificate
+                                        ?.medicalCertificateReview;
+
+                                if (medicalCertReview) {
+                                    hasIncorrectValue =
+                                        isAnyPropertyInObjectFalse(
+                                            medicalCertReview
+                                        );
+                                }
+
+                                const medicalCertItems =
+                                    res?.medicalCertificate?.files;
+
+                                const medicalCertReviewItems =
+                                    medicalCertItems?.map(
+                                        (item) => item?.review
+                                    );
+
+                                if (medicalCertReviewItems) {
+                                    if (medicalCertReviewItems[0]) {
+                                        let incorrectValuesArray = [];
+
+                                        for (
+                                            let i = 0;
+                                            i < medicalCertReviewItems?.length;
+                                            i++
+                                        ) {
+                                            const filteredItem =
+                                                medicalCertReviewItems[i];
+
+                                            filteredMedicalCertReview = [
+                                                ...filteredMedicalCertReview,
+                                                filteredItem,
+                                            ];
+
+                                            const objectHasIncorrectValue =
+                                                isAnyPropertyInObjectFalse(
+                                                    filteredItem
+                                                );
+
+                                            incorrectValuesArray = [
+                                                ...incorrectValuesArray,
+                                                objectHasIncorrectValue,
+                                            ];
+                                        }
+
+                                        if (
+                                            isAnyValueInArrayTrue(
+                                                incorrectValuesArray
+                                            )
+                                        ) {
+                                            filesHaveIncorrectValue = true;
+                                        } else {
+                                            filesHaveIncorrectValue = false;
+                                        }
+                                    }
+                                }
+
+                                return {
+                                    ...item,
+                                    isReviewed:
+                                        medicalCertReviewItems &&
+                                        medicalCertReviewItems[0]
+                                            ? true
+                                            : false,
+                                    hasIncorrectAnswer:
+                                        hasIncorrectValue ||
+                                        filesHaveIncorrectValue,
+                                };
+                            }
+
                             if (index === 3) {
                                 const mvrAuthItems = res?.mvrAuth?.files;
 

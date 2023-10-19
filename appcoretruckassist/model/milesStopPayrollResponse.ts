@@ -24,10 +24,11 @@ export interface MilesStopPayrollResponse {
     totalMiles?: number;
     travelHours?: number;
     travelMinutes?: number;
+    payrollId?: number | null;
+    loadId?: number | null;
     dateTimeFrom?: string;
     dateTimeTo?: string | null;
     duration?: { [key: string]: number; } | null;
-    subtotalAmount?: number;
     subtotal?: number;
     createdAt?: string;
     updatedAt?: string;

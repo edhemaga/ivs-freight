@@ -1,20 +1,34 @@
-import { Component, HostListener, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { transition, trigger } from '@angular/animations';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { filter, map, mergeMap } from 'rxjs';
 import { scrollButtonAnimation } from './app.component.animation';
 import { StaticInjectorService } from './core/utils/application.decorators';
 
+import {
+    slideLeft,
+    slideRight,
+} from './core/components/applicant/state/animations/applicant-route.animation';
+
 @Component({
     selector: 'app-root',
     templateUrl: './app.component.html',
     styleUrls: ['./app.component.scss'],
-    animations: [scrollButtonAnimation('scrollButtonAnimation')],
+    animations: [
+        scrollButtonAnimation('scrollButtonAnimation'),
+        trigger('animRoutes', [
+            transition(':increment', slideRight),
+            transition(':decrement', slideLeft),
+        ]),
+    ],
 })
 export class AppComponent implements OnInit {
     public showScrollButton = false;
 
     public currentPage: string = 'login';
+
+    public animationState: number = 0;
 
     constructor(
         private router: Router,
@@ -61,5 +75,10 @@ export class AppComponent implements OnInit {
      */
     public top() {
         window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    public handleRouteAnimationActivate(): void {
+        this.animationState =
+            this.activatedRoute.firstChild.snapshot.data['routeIdx'];
     }
 }

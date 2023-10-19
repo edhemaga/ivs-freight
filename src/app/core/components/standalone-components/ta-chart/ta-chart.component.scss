@@ -278,25 +278,25 @@
             margin-bottom: 22px;
 
             .chart_label {
-                font-size: 28px;
+                font-size: 18px;
                 font-weight: 700;
-                color: $bw6-2;
-                line-height: 34px;
+                color: $ta-black;
+                line-height: 24px;
             }
 
             .chart_value {
                 margin-bottom: 4px;
-                font-size: 18px;
-                line-height: 22px;
-                font-weight: 600;
-                color: $bw6-2;
+                font-size: 14px;
+                line-height: 18px;
+                font-weight: 700;
+                color: $ta-black;
             }
 
             .chart_data_name {
                 font-size: 11px;
                 line-height: 14px;
                 font-weight: 700;
-                color: $bw4;
+                color: $ta-light-grey-2;
             }
         }
     }

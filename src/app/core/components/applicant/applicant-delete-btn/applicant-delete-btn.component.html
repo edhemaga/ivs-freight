@@ -1,0 +1,16 @@
+<div
+    class="d-flex justify-content-center align-items-center delete-btn-container"
+    [ngClass]="{ 'filled-valid': filledValid, 'filled-invalid': filledInvalid }"
+>
+    <div
+        ngbTooltip
+        mainTooltip="Clear"
+        tooltipBackground="#2F2F2F"
+        position="top"
+    >
+        <svg-icon
+            class="delete-icon"
+            src="assets/svg/truckassist-table/dropdown/content/delete.svg"
+        ></svg-icon>
+    </div>
+</div>

@@ -64,7 +64,6 @@ import { BankResponse } from 'appcoretruckassist/model/bankResponse';
 import {
     AddressEntity,
     CreateResponse,
-    // UpdatePersonalInfoCommand,
     PersonalInfoFeedbackResponse,
     ApplicantResponse,
     ApplicantModalResponse,
@@ -423,10 +422,10 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
             firstName: [null, [Validators.required, ...firstNameValidation]],
             lastName: [null, [Validators.required, ...lastNameValidation]],
             dateOfBirth: [null, Validators.required],
-            phone: [null, [Validators.required, phoneFaxRegex]],
-            email: [null],
-            previousAddresses: this.formBuilder.array([]),
             ssn: [null, [Validators.required, ssnNumberRegex]],
+            phone: [null, [Validators.required, phoneFaxRegex]],
+            previousAddresses: this.formBuilder.array([]),
+
             bankId: [null, [...bankValidation]],
             accountNumber: [null, accountBankValidation],
             routingNumber: [null, routingBankValidation],
@@ -459,12 +458,6 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
             questionReview6: [null],
             questionReview7: [null],
         });
-
-        this.inputService.customInputValidator(
-            this.personalInfoForm.get('email'),
-            'email',
-            this.destroy$
-        );
     }
 
     public getStepValuesFromStore(): void {
@@ -477,8 +470,6 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
 
                 if (res.personalInfo) {
                     this.patchStepValues(res.personalInfo);
-
-                    this.stepHasValues = true;
                 }
             });
     }
@@ -489,11 +480,10 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
             firstName,
             lastName,
             doB,
+            ssn,
             phone,
-            email,
             previousAddresses,
             address,
-            ssn,
             bank,
             bankName,
             accountNumber,
@@ -514,173 +504,13 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
         } = stepValues;
 
         this.personalInfoForm.patchValue({
-            isAgreement: isAgreed,
             firstName,
             lastName,
-            dateOfBirth: doB ? convertDateFromBackend(doB) : null,
             phone,
-            email,
-            ssn,
-            bankId: bankName ? bankName : null,
-            accountNumber,
-            routingNumber,
-            usCitizen,
-            legalWork,
-            anotherName,
-            inMilitary,
-            felony,
-            misdemeanor,
-            drunkDriving,
-            anotherNameExplain: anotherNameDescription,
-            inMilitaryExplain: inMilitaryDescription,
-            felonyExplain: felonyDescription,
-            misdemeanorExplain: misdemeanorDescription,
-            drunkDrivingExplain: drunkDrivingDescription,
         });
 
-        let bankId: any = null;
+        /* ADDRESSES */
 
-        if (bank) {
-            const { id: bankNumberId } = bank;
-
-            bankId = bankNumberId;
-
-            this.isBankSelected = true;
-        }
-
-        setTimeout(() => {
-            this.selectedBank = this.banksDropdownList.find(
-                (item) => item.id === bankId
-            );
-            const isAgreementValue =
-                this.personalInfoForm.get('isAgreement').value;
-
-            if (isAgreementValue) {
-                if (usCitizen) {
-                    this.personalInfoRadios[0].buttons[0].checked = true;
-                } else {
-                    this.personalInfoRadios[0].buttons[1].checked = true;
-
-                    if (legalWork === null) {
-                        this.personalInfoRadios[0].buttons[0].checked = false;
-                        this.personalInfoRadios[0].buttons[1].checked = false;
-                    }
-                }
-
-                if (legalWork) {
-                    this.personalInfoRadios[1].buttons[0].checked = true;
-                } else {
-                    this.personalInfoRadios[1].buttons[1].checked = true;
-
-                    if (legalWork === null) {
-                        this.personalInfoRadios[1].buttons[0].checked = false;
-                        this.personalInfoRadios[1].buttons[1].checked = false;
-                    }
-                }
-
-                if (anotherName) {
-                    this.personalInfoRadios[2].buttons[0].checked = true;
-
-                    this.inputService.changeValidators(
-                        this.personalInfoForm.get('anotherNameExplain')
-                    );
-                } else {
-                    this.personalInfoRadios[2].buttons[1].checked = true;
-
-                    if (anotherName === null) {
-                        this.personalInfoRadios[2].buttons[0].checked = false;
-                        this.personalInfoRadios[2].buttons[1].checked = false;
-                    }
-
-                    this.inputService.changeValidators(
-                        this.personalInfoForm.get('anotherNameExplain'),
-                        false
-                    );
-                }
-
-                if (inMilitary) {
-                    this.personalInfoRadios[3].buttons[0].checked = true;
-
-                    this.inputService.changeValidators(
-                        this.personalInfoForm.get('inMilitaryExplain')
-                    );
-                } else {
-                    this.personalInfoRadios[3].buttons[1].checked = true;
-
-                    if (inMilitary === null) {
-                        this.personalInfoRadios[3].buttons[0].checked = false;
-                        this.personalInfoRadios[3].buttons[1].checked = false;
-                    }
-
-                    this.inputService.changeValidators(
-                        this.personalInfoForm.get('inMilitaryExplain'),
-                        false
-                    );
-                }
-
-                if (felony) {
-                    this.personalInfoRadios[4].buttons[0].checked = true;
-
-                    this.inputService.changeValidators(
-                        this.personalInfoForm.get('felonyExplain')
-                    );
-                } else {
-                    this.personalInfoRadios[4].buttons[1].checked = true;
-
-                    if (felony === null) {
-                        this.personalInfoRadios[4].buttons[0].checked = false;
-                        this.personalInfoRadios[4].buttons[1].checked = false;
-                    }
-
-                    this.inputService.changeValidators(
-                        this.personalInfoForm.get('felonyExplain'),
-                        false
-                    );
-                }
-
-                if (misdemeanor) {
-                    this.personalInfoRadios[5].buttons[0].checked = true;
-
-                    this.inputService.changeValidators(
-                        this.personalInfoForm.get('misdemeanorExplain')
-                    );
-                } else {
-                    this.personalInfoRadios[5].buttons[1].checked = true;
-
-                    if (misdemeanor === null) {
-                        this.personalInfoRadios[5].buttons[0].checked = false;
-                        this.personalInfoRadios[5].buttons[1].checked = false;
-                    }
-
-                    this.inputService.changeValidators(
-                        this.personalInfoForm.get('misdemeanorExplain'),
-                        false
-                    );
-                }
-
-                if (drunkDriving) {
-                    this.personalInfoRadios[6].buttons[0].checked = true;
-
-                    this.inputService.changeValidators(
-                        this.personalInfoForm.get('drunkDrivingExplain')
-                    );
-                } else {
-                    this.personalInfoRadios[6].buttons[1].checked = true;
-
-                    if (drunkDriving === null) {
-                        this.personalInfoRadios[6].buttons[0].checked = false;
-                        this.personalInfoRadios[6].buttons[1].checked = false;
-                    }
-
-                    this.inputService.changeValidators(
-                        this.personalInfoForm.get('drunkDrivingExplain'),
-                        false
-                    );
-                }
-            }
-        }, 150);
-
-        this.stepValues = stepValues;
         this.previousAddressesId = previousAddresses.map(
             (item: any) => item.id
         );
@@ -841,7 +671,194 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
             this.previousAddresses.removeAt(i + 1);
         }
 
-        this.isLastAddedPreviousAddressValid = true;
+        if (ssn) {
+            this.stepValues = stepValues;
+
+            this.stepHasValues = true;
+
+            this.isLastAddedPreviousAddressValid = true;
+
+            this.personalInfoForm.patchValue({
+                isAgreement: isAgreed,
+                dateOfBirth: doB ? convertDateFromBackend(doB) : null,
+                ssn,
+                bankId: bankName ? bankName : null,
+                accountNumber,
+                routingNumber,
+                usCitizen,
+                legalWork,
+                anotherName,
+                inMilitary,
+                felony,
+                misdemeanor,
+                drunkDriving,
+                anotherNameExplain: anotherNameDescription,
+                inMilitaryExplain: inMilitaryDescription,
+                felonyExplain: felonyDescription,
+                misdemeanorExplain: misdemeanorDescription,
+                drunkDrivingExplain: drunkDrivingDescription,
+            });
+
+            /* BANKS */
+
+            let bankId: any = null;
+
+            if (bank) {
+                const { id: bankNumberId } = bank;
+
+                bankId = bankNumberId;
+
+                this.isBankSelected = true;
+            }
+
+            /* RADIOS */
+
+            setTimeout(() => {
+                this.selectedBank = this.banksDropdownList.find(
+                    (item) => item.id === bankId
+                );
+                const isAgreementValue =
+                    this.personalInfoForm.get('isAgreement').value;
+
+                if (isAgreementValue) {
+                    if (usCitizen) {
+                        this.personalInfoRadios[0].buttons[0].checked = true;
+                    } else {
+                        this.personalInfoRadios[0].buttons[1].checked = true;
+
+                        if (legalWork === null) {
+                            this.personalInfoRadios[0].buttons[0].checked =
+                                false;
+                            this.personalInfoRadios[0].buttons[1].checked =
+                                false;
+                        }
+                    }
+
+                    if (legalWork) {
+                        this.personalInfoRadios[1].buttons[0].checked = true;
+                    } else {
+                        this.personalInfoRadios[1].buttons[1].checked = true;
+
+                        if (legalWork === null) {
+                            this.personalInfoRadios[1].buttons[0].checked =
+                                false;
+                            this.personalInfoRadios[1].buttons[1].checked =
+                                false;
+                        }
+                    }
+
+                    if (anotherName) {
+                        this.personalInfoRadios[2].buttons[0].checked = true;
+
+                        this.inputService.changeValidators(
+                            this.personalInfoForm.get('anotherNameExplain')
+                        );
+                    } else {
+                        this.personalInfoRadios[2].buttons[1].checked = true;
+
+                        if (anotherName === null) {
+                            this.personalInfoRadios[2].buttons[0].checked =
+                                false;
+                            this.personalInfoRadios[2].buttons[1].checked =
+                                false;
+                        }
+
+                        this.inputService.changeValidators(
+                            this.personalInfoForm.get('anotherNameExplain'),
+                            false
+                        );
+                    }
+
+                    if (inMilitary) {
+                        this.personalInfoRadios[3].buttons[0].checked = true;
+
+                        this.inputService.changeValidators(
+                            this.personalInfoForm.get('inMilitaryExplain')
+                        );
+                    } else {
+                        this.personalInfoRadios[3].buttons[1].checked = true;
+
+                        if (inMilitary === null) {
+                            this.personalInfoRadios[3].buttons[0].checked =
+                                false;
+                            this.personalInfoRadios[3].buttons[1].checked =
+                                false;
+                        }
+
+                        this.inputService.changeValidators(
+                            this.personalInfoForm.get('inMilitaryExplain'),
+                            false
+                        );
+                    }
+
+                    if (felony) {
+                        this.personalInfoRadios[4].buttons[0].checked = true;
+
+                        this.inputService.changeValidators(
+                            this.personalInfoForm.get('felonyExplain')
+                        );
+                    } else {
+                        this.personalInfoRadios[4].buttons[1].checked = true;
+
+                        if (felony === null) {
+                            this.personalInfoRadios[4].buttons[0].checked =
+                                false;
+                            this.personalInfoRadios[4].buttons[1].checked =
+                                false;
+                        }
+
+                        this.inputService.changeValidators(
+                            this.personalInfoForm.get('felonyExplain'),
+                            false
+                        );
+                    }
+
+                    if (misdemeanor) {
+                        this.personalInfoRadios[5].buttons[0].checked = true;
+
+                        this.inputService.changeValidators(
+                            this.personalInfoForm.get('misdemeanorExplain')
+                        );
+                    } else {
+                        this.personalInfoRadios[5].buttons[1].checked = true;
+
+                        if (misdemeanor === null) {
+                            this.personalInfoRadios[5].buttons[0].checked =
+                                false;
+                            this.personalInfoRadios[5].buttons[1].checked =
+                                false;
+                        }
+
+                        this.inputService.changeValidators(
+                            this.personalInfoForm.get('misdemeanorExplain'),
+                            false
+                        );
+                    }
+
+                    if (drunkDriving) {
+                        this.personalInfoRadios[6].buttons[0].checked = true;
+
+                        this.inputService.changeValidators(
+                            this.personalInfoForm.get('drunkDrivingExplain')
+                        );
+                    } else {
+                        this.personalInfoRadios[6].buttons[1].checked = true;
+
+                        if (drunkDriving === null) {
+                            this.personalInfoRadios[6].buttons[0].checked =
+                                false;
+                            this.personalInfoRadios[6].buttons[1].checked =
+                                false;
+                        }
+
+                        this.inputService.changeValidators(
+                            this.personalInfoForm.get('drunkDrivingExplain'),
+                            false
+                        );
+                    }
+                }
+            }, 150);
+        }
 
         if (this.selectedMode === SelectedMode.REVIEW) {
             if (personalInfoReview) {
@@ -1764,10 +1781,7 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
 
     public onStepAction(event: any): void {
         if (event.action === 'next-step') {
-            if (
-                this.selectedMode === SelectedMode.APPLICANT ||
-                this.selectedMode === SelectedMode.FEEDBACK
-            ) {
+            if (this.selectedMode !== SelectedMode.REVIEW) {
                 this.onSubmit();
             }
 
@@ -1795,9 +1809,9 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
             questionReview4,
             questionReview5,
             questionReview6,
+            questionReview7,
             isAgreement,
             dateOfBirth,
-            email,
             previousAddresses,
             bankId,
             usCitizen,
@@ -1876,15 +1890,51 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
                 };
             });
 
+        let lastActiveAddress =
+            this.selectedAddresses[this.selectedAddresses.length - 1];
+
+        lastActiveAddress = {
+            addressCity: lastActiveAddress.city,
+            addressState: lastActiveAddress.state,
+            addressCounty: lastActiveAddress.county,
+            addressAddress: lastActiveAddress.address,
+            addressStreet: lastActiveAddress.street,
+            addressStreetNumber: lastActiveAddress.streetNumber,
+            addressCountry: lastActiveAddress.country,
+            addressZipCode: lastActiveAddress.zipCode,
+            addressStateShortName: lastActiveAddress.stateShortName,
+            addressAddressUnit: lastActiveAddress.addressUnit,
+        };
+
         const stepPreviousAddresses = this.stepValues?.previousAddresses;
 
-        const saveData: any /*UpdatePersonalInfoCommand*/ = {
+        const storePreviousAddresses = this.selectedAddresses
+            .filter((_, index) => index !== this.selectedAddresses.length - 1)
+            .map((item, index) => {
+                return {
+                    ...((this.stepHasValues ||
+                        this.selectedMode === SelectedMode.FEEDBACK) && {
+                        id: stepPreviousAddresses[index]?.id,
+                        previousAddressReview:
+                            stepPreviousAddresses[index]?.previousAddressReview,
+                    }),
+                    address: item,
+                };
+            });
+
+        let documents = [];
+        this.documents.map((item) => {
+            if (item.realFile) {
+                documents.push(item.realFile);
+            }
+        });
+
+        const saveData = {
             ...personalInfoForm,
             applicantId: this.applicantId,
-            doB: convertDateToBackend(dateOfBirth),
             isAgreed: isAgreement,
-            address: this.selectedAddresses[this.selectedAddresses.length - 1],
-            bankId: this.selectedBank ? this.selectedBank.id : null,
+            doB: convertDateToBackend(dateOfBirth),
+            address: lastActiveAddress,
             previousAddresses:
                 this.selectedAddresses.length <= 1
                     ? []
@@ -1913,6 +1963,7 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
                                   },
                               };
                           }),
+            bankId: this.selectedBank ? this.selectedBank.id : null,
             usCitizen,
             legalWork,
             anotherName,
@@ -1925,21 +1976,11 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
             misdemeanorDescription: misdemeanorExplain,
             drunkDriving,
             drunkDrivingDescription: drunkDrivingExplain,
+            files: documents,
         };
 
-        const storePreviousAddresses = this.selectedAddresses
-            .filter((_, index) => index !== this.selectedAddresses.length - 1)
-            .map((item, index) => {
-                return {
-                    ...((this.stepHasValues ||
-                        this.selectedMode === SelectedMode.FEEDBACK) && {
-                        id: stepPreviousAddresses[index]?.id,
-                        previousAddressReview:
-                            stepPreviousAddresses[index]?.previousAddressReview,
-                    }),
-                    address: item,
-                };
-            });
+        console.log('address', this.selectedAddresses);
+        console.log('saveData', saveData);
 
         const selectMatchingBackendMethod = () => {
             if (

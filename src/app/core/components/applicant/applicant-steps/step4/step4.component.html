@@ -43,7 +43,7 @@
                 >
                     <div class="align-items-center title-container">
                         <div class="align-items-center date-state-title-box">
-                            <p class="m-0 ta-font-bold">STATE & DATE</p>
+                            <p class="m-0 ta-font-bold">DATE & LOCATION</p>
                         </div>
 
                         <div class="align-items-center statistics-title-box">
@@ -89,18 +89,12 @@
                                                 style="max-width: 126px"
                                                 ngbTooltip
                                                 [mainTooltip]="
-                                                    accident.accidentState +
-                                                    ' ' +
-                                                    '(' +
-                                                    accident.accidentStateShort +
-                                                    ')'
+                                                    accident.location
                                                 "
                                                 tooltipBackground="#2F2F2F"
                                                 position="bottom-left"
                                             >
-                                                {{ accident.accidentState }} ({{
-                                                    accident.accidentStateShort
-                                                }})
+                                                {{ accident.location }}
                                             </p>
                                         </div>
 

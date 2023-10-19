@@ -1,11 +1,22 @@
+/* MODULES */
+
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
 
 import { ApplicantRoutingModule } from './applicant-routing.module';
 
+import { SharedModule } from '../shared/shared.module';
+
 import { AngularSignaturePadModule } from '@almothafar/angular-signature-pad';
+
+/* PIPES */
+
+import { SumArraysPipe } from '../../pipes/sum-arrays.pipe';
+
+/* COMPONENTS */
 
 import { ApplicantComponent } from './applicant/applicant.component';
 import { ApplicantHeaderComponent } from './applicant-header/applicant-header.component';
@@ -16,6 +27,7 @@ import { ApplicantEndScreenComponent } from './applicant-end-screen/applicant-en
 import { ApplicantNextBackBtnComponent } from './applicant-next-back-btn/applicant-next-back-btn.component';
 import { ApplicantAddSaveBtnComponent } from './applicant-add-save-btn/applicant-add-save-btn.component';
 import { ApplicantReviewFeedbackComponent } from './applicant-review-feedback/applicant-review-feedback.component';
+import { ApplicantDeleteBtnComponent } from './applicant-delete-btn/applicant-delete-btn.component';
 
 import { Step1Component } from './applicant-steps/step1/step1.component';
 import { Step2Component } from './applicant-steps/step2/step2.component';
@@ -35,17 +47,16 @@ import { Step4FormComponent } from './applicant-forms/step4-form/step4-form.comp
 import { Step3FormComponent } from './applicant-forms/step3-form/step3-form.component';
 import { Step2FormComponent } from './applicant-forms/step2-form/step2-form.component';
 
-import { SharedModule } from '../shared/shared.module';
+/* IMPORT COMPONENTS */
+
 import { AppTooltipComponent } from '../standalone-components/app-tooltip/app-tooltip.component';
 import { TaCheckboxComponent } from '../shared/ta-checkbox/ta-checkbox.component';
 import { TaInputRadiobuttonsComponent } from '../shared/ta-input-radiobuttons/ta-input-radiobuttons.component';
 import { InputAddressDropdownComponent } from '../shared/input-address-dropdown/input-address-dropdown.component';
 import { TaInputComponent } from '../shared/ta-input/ta-input.component';
-import { SumArraysPipe } from '../../pipes/sum-arrays.pipe';
 import { TaInputDropdownComponent } from '../shared/ta-input-dropdown/ta-input-dropdown.component';
 import { TaInputArrowsComponent } from '../shared/ta-input-arrows/ta-input-arrows.component';
-import { RouterModule } from '@angular/router';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { TaUploadFilesComponent } from '../shared/ta-upload-files/ta-upload-files.component';
 
 @NgModule({
     declarations: [
@@ -58,6 +69,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
         ApplicantWelcomeScreenComponent,
         ApplicantEndScreenComponent,
         ApplicantReviewFeedbackComponent,
+        ApplicantDeleteBtnComponent,
 
         Step1Component,
         Step2Component,
@@ -78,23 +90,31 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
         Step2FormComponent,
     ],
     imports: [
+        /* MODULES */
+
+        ApplicantRoutingModule,
         CommonModule,
         HttpClientModule,
-        ApplicantRoutingModule,
+        RouterModule,
         FormsModule,
         ReactiveFormsModule,
         SharedModule,
         AngularSignaturePadModule,
-        NgbModule,
+
+        /* COMPONENTS */
+
         AppTooltipComponent,
+        InputAddressDropdownComponent,
         TaCheckboxComponent,
         TaInputRadiobuttonsComponent,
-        InputAddressDropdownComponent,
         TaInputComponent,
-        SumArraysPipe,
         TaInputDropdownComponent,
         TaInputArrowsComponent,
-        RouterModule
+        TaUploadFilesComponent,
+
+        /* PIPES */
+
+        SumArraysPipe,
     ],
     exports: [
         ApplicantNextBackBtnComponent,

@@ -1,4 +1,10 @@
-import { Component, OnInit, ViewChild, OnChanges, SimpleChanges, Input } from '@angular/core';
+import {
+    Component,
+    OnInit,
+    ViewChild,
+    OnChanges,
+    SimpleChanges,
+} from '@angular/core';
 import { Titles } from 'src/app/core/utils/application.decorators';
 
 @Titles()
@@ -12,7 +18,6 @@ export class DashboardPerformanceComponent implements OnInit, OnChanges {
     @ViewChild('bottomChart', { static: false }) public bottomChart: any;
     @ViewChild('timePeriod', { static: false }) public timePeriod: any;
     @ViewChild('t2') t2: any;
-    @Input() title: string;
 
     dashboardSwitchTabs: any[] = [];
 

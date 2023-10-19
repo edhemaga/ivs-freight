@@ -18,7 +18,7 @@
     .step-title {
         color: $ta-blue-5;
         font-size: 32px;
-        height: 39px;
+        line-height: 40px;
 
         &::-moz-selection {
             color: $ta-blue-5;
@@ -31,13 +31,20 @@
         }
     }
 
-    .top-section {
-        margin: 12px auto 0 auto;
+    .top-section,
+    .bottom-section {
+        &.top-section {
+            margin: 22px auto 0 auto;
+        }
+
+        &.bottom-section {
+            margin: 0 auto;
+        }
 
         p {
             color: $ta-black-2;
             font-size: 14px;
-            line-height: 22px;
+            line-height: 18px;
 
             &::-moz-selection {
                 color: $ta-black-2;
@@ -59,44 +66,6 @@
         margin: 22px auto 12px auto;
     }
 
-    .bottom-section {
-        margin: 0 auto;
-
-        p {
-            margin-top: 12px !important;
-            font-size: 14px;
-            line-height: 18px;
-
-            &::-moz-selection {
-                color: $ta-black-2;
-                background: rgb(47, 47, 47, 0.2);
-            }
-
-            &::selection {
-                color: $ta-black-2;
-                background: rgb(47, 47, 47, 0.2);
-            }
-
-            &:nth-child(1) {
-                margin-top: 0 !important;
-            }
-        }
-
-        &.agreement-no-value {
-            p {
-                &::-moz-selection {
-                    color: $bw5;
-                    background: rgb(145, 145, 145, 0.2);
-                }
-
-                &::selection {
-                    color: $bw5;
-                    background: rgb(145, 145, 145, 0.2);
-                }
-            }
-        }
-    }
-
     .form-section {
         margin-top: 36px;
 
@@ -116,9 +85,12 @@
             margin-bottom: 32px;
             width: 616px;
 
-            &:nth-child(3),
-            &:nth-child(5) {
+            &:nth-child(3) {
                 margin-bottom: 22px;
+            }
+
+            &:nth-child(4) {
+                margin-bottom: 36px;
             }
 
             .group {
@@ -130,53 +102,32 @@
                 }
             }
 
-            .first-name-group {
-                width: 215px;
-            }
-
+            .first-name-group,
             .last-name-group {
-                width: 227px;
+                width: 302px;
             }
 
             .date-group {
-                width: 150px;
-                margin-right: 0 !important;
+                width: 170px;
             }
 
+            .ssn-group,
             .phone-group {
-                width: 229px;
-            }
-
-            .email-group {
-                width: 375px;
-                margin-right: 0 !important;
+                width: 211px;
             }
 
             .address-group {
-                width: 480px;
+                width: 440px;
             }
 
             .address-unit-group {
-                width: 124px;
-                margin-right: 0 !important;
+                width: 164px;
             }
 
-            .ssn-group {
-                width: 187px;
-            }
-
-            .bank-group {
-                width: 416px;
-                margin-right: 0 !important;
-            }
-
-            .account-number-group {
-                width: 380px;
-            }
-
+            .bank-group,
+            .account-number-group,
             .routing-number-group {
-                width: 224px;
-                margin-right: 0 !important;
+                width: 197.33px;
             }
         }
 
@@ -581,7 +532,7 @@
         margin-bottom: 20px;
 
         .question-container {
-            margin-bottom: 8px;
+            margin-bottom: 10px;
             position: relative;
 
             &:last-child {
@@ -600,6 +551,7 @@
                 color: $ta-red-2;
                 visibility: hidden;
                 opacity: 0;
+                margin-left: 6px !important;
 
                 &::-moz-selection {
                     color: $ta-red-2;
@@ -695,8 +647,8 @@
     .files-section {
         h4 {
             font-size: 14px;
-            line-height: 22px;
-            margin-bottom: 22px !important;
+            line-height: 18px;
+            margin-bottom: 12px !important;
 
             &::-moz-selection {
                 color: $ta-black-2;
@@ -707,53 +659,39 @@
                 color: $ta-black-2;
                 background: rgb(47, 47, 47, 0.2);
             }
-
-            span {
-                &::-moz-selection {
-                    color: $ta-black-2;
-                    background: rgb(47, 47, 47, 0.2);
-                }
-
-                &::selection {
-                    color: $ta-black-2;
-                    background: rgb(47, 47, 47, 0.2);
-                }
-            }
         }
 
         .files-container {
             width: 616px;
 
             .files-header {
-                border-top: 0.2px solid $ta-light-grey-4;
+                border-top: 0.2px solid $bw-9;
                 border-radius: 1px;
                 margin-bottom: 9px;
-                padding-top: 5px;
-                height: 24px;
+                padding-top: 10px;
 
-                .counter-container {
-                    border-radius: 2px;
-                    background: $ta-light-grey-4;
-                    width: 24px;
-                    height: 24px;
+                p {
+                    font-size: 14px;
+                    color: $ta-black-2;
+                    line-height: 18px;
+                    margin-right: 6px !important;
 
-                    p {
-                        font-size: 14px;
-                        color: $bw6-2;
-
-                        -webkit-user-select: none !important;
-                        -moz-user-select: none !important;
-                        -ms-user-select: none !important;
-                        user-select: none !important;
-                    }
+                    -webkit-user-select: none !important;
+                    -moz-user-select: none !important;
+                    -ms-user-select: none !important;
+                    user-select: none !important;
                 }
 
-                .document-title-container {
-                    .documents-title {
-                        height: 18px;
-                        font-size: 14px;
-                        color: $bw6-2;
-                        margin-left: 4px !important;
+                .counter-container {
+                    border-radius: 60px;
+                    background: $ta-black;
+                    width: 18px;
+                    height: 18px;
+
+                    p {
+                        font-size: 11px;
+                        color: $white;
+                        margin-right: 0 !important;
 
                         -webkit-user-select: none !important;
                         -moz-user-select: none !important;
