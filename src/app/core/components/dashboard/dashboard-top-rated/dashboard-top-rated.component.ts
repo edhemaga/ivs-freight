@@ -1,20 +1,34 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 
+// services
+import { DashboardService } from '../state/services/dashboard.service';
+
 // bootstrap
 import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
 
 // constants
 import { DashboardTopRatedConstants } from '../state/utils/dashboard-top-rated.constants';
+import { DashboardColors } from '../state/utils/dashboard-colors.constants';
+
+// helpers
+import { ArrayHelper } from '../state/utils/array-helper';
 
 // enum
 import { ConstantStringEnum } from '../state/enum/constant-string.enum';
+import { ConstantChartStringEnum } from '../state/enum/constant-chart-string.enum';
 
 // models
 import { TopRatedDropdownItem } from '../state/models/top-rated-dropdown-item.model';
 import { TopRatedTab } from '../state/models/top-rated-tab.model';
 import { DropdownListItem } from '../state/models/dropdown-list-item.model';
 import { TopRatedListItem } from '../state/models/top-rated-list-item.model';
+import { MainColorsPallete } from '../state/models/main-colors-pallete.model';
+import {
+    ChartInitProperties,
+    DoughnutChart,
+    DoughnutChartConfig,
+} from '../state/models/doughnut-chart.model';
 
 @Component({
     selector: 'app-dashboard-top-rated',
@@ -23,89 +37,107 @@ import { TopRatedListItem } from '../state/models/top-rated-list-item.model';
 })
 export class DashboardTopRatedComponent implements OnInit, AfterViewInit {
     @ViewChild('popover') public popover: NgbPopover;
+    @ViewChild('doughnutChart') public doughnutChart: DoughnutChart;
 
     public topRatedForm: UntypedFormGroup;
     public topRatedTitle: string = ConstantStringEnum.DRIVER;
+
+    // list
     public topRatedList: TopRatedListItem[] = [
         {
             id: 1,
             name: 'Denis Rodman',
-            firstTabValue: '152,324.5',
-            secondTabValue: '8.53',
+            value: 152324.5,
+            percent: 8.53,
+            isSelected: false,
         },
         {
             id: 2,
             name: 'Sasa Djordjevic',
-            firstTabValue: '148,456.5',
-            secondTabValue: '8.43',
+            value: 148456.5,
+            percent: 8.43,
+            isSelected: false,
         },
         {
             id: 3,
             name: 'Nicolas Drozlibrew',
-            firstTabValue: '124,421.1',
-            secondTabValue: '7.35',
+            value: 125654.3,
+            percent: 7.35,
+            isSelected: false,
         },
         {
             id: 4,
             name: 'Samuel Lioton',
-            firstTabValue: '114,489.3',
-            secondTabValue: '7.23',
+            value: 114489.8,
+            percent: 7.23,
+            isSelected: false,
         },
         {
             id: 5,
             name: 'Angelo Trotter',
-            firstTabValue: '96,561.3',
-            secondTabValue: '6.87',
+            value: 95561.4,
+            percent: 6.87,
+            isSelected: false,
         },
         {
             id: 6,
             name: 'Stan Tolbert',
-            firstTabValue: '84,156.6',
-            secondTabValue: '4.07',
+            value: 84156.6,
+            percent: 4.07,
+            isSelected: false,
         },
         {
             id: 7,
             name: 'Michael Scott',
-            firstTabValue: '64,156.2',
-            secondTabValue: '3.52',
+            value: 65156.2,
+            percent: 3.52,
+            isSelected: false,
         },
         {
             id: 8,
             name: 'Toby Flanders',
-            firstTabValue: '42,158.8',
-            secondTabValue: '3.43',
+            value: 42158.8,
+            percent: 3.43,
+            isSelected: false,
         },
         {
             id: 9,
             name: 'Sasuke Uchica',
-            firstTabValue: '35,891.6',
-            secondTabValue: '2.96',
+            value: 35891.6,
+            percent: 2.96,
+            isSelected: false,
         },
         {
             id: 10,
             name: 'Peter Simpson',
-            firstTabValue: '18,175.4',
-            secondTabValue: '2.12',
-        },
+            value: 18185.5,
+            percent: 2.12,
+            isSelected: false,
+        } /* 
         {
             id: 11,
             name: 'Jure Guvo',
-            firstTabValue: '12,133.4',
-            secondTabValue: '1.12',
+            value: 12133.4,
+            percent: 1.12,
+            isSelected: false,
         },
         {
             id: 12,
             name: 'Jure Guvo1',
-            firstTabValue: '12,133.4',
-            secondTabValue: '1.12',
+            value: 12133.4,
+            percent: 1.12,
+            isSelected: false,
         },
         {
-            id: 12,
+            id: 13,
             name: 'Jure Guvo2',
-            firstTabValue: '12,133.4',
-            secondTabValue: '1.12',
-        },
+            value: 12133.4,
+            percent: 1.12,
+            isSelected: false,
+        }, */,
     ];
+    public selectedTopRatedList: TopRatedListItem[] = [];
+    public topRatedListSelectedPercentage: number = 100;
 
     // show more
     public topRatedListSliceEnd: number = 10;
@@ -125,11 +157,15 @@ export class DashboardTopRatedComponent implements OnInit, AfterViewInit {
     public selectedSubPeriod: DropdownListItem =
         DashboardTopRatedConstants.SUB_PERIOD_DROPDOWN_DATA[8];
 
+    // colors
+    public mainColorsPallete: MainColorsPallete[] = [];
+
+    // charts
+    public doughnutChartConfig: DoughnutChartConfig;
+
     /////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    @ViewChild('doughnutChart', { static: false }) public doughnutChart: any;
-    @ViewChild('topDriverBarChart', { static: false })
-    public topDriverBarChart: any;
+    @ViewChild('topDriverBarChart') public topDriverBarChart: any;
 
     public selectedDrivers: any[] = [];
 
@@ -137,7 +173,6 @@ export class DashboardTopRatedComponent implements OnInit, AfterViewInit {
     private currentSwitchTab: string = 'All Time';
 
     // chart
-    public chartConfig: object = {};
     public barChartConfig: object = {
         dataProperties: [
             {
@@ -241,22 +276,8 @@ export class DashboardTopRatedComponent implements OnInit, AfterViewInit {
             showGridLines: false,
         },
     };
-    public chartAxes: object = {};
 
     // colors
-    public circleColor: any[] = [
-        '8A9AEF',
-        'FDB46B',
-        'F27B8E',
-        '6DC089',
-        'A574C3',
-        '73D0F1',
-        'FFD54F',
-        'BDE08E',
-        'F69FF3',
-        'A1887F',
-        'CCCCCC',
-    ];
     public compareColor: any = {};
     private chartColors: any[] = [];
     private savedColors: any[] = [];
@@ -276,22 +297,37 @@ export class DashboardTopRatedComponent implements OnInit, AfterViewInit {
     private savedHoverColors: any[] = [];
     private chartHoverColors: any[] = [];
 
-    constructor(private formBuilder: UntypedFormBuilder) {}
+    public circleColor: any[] = [
+        /* mainPalleteColors */ '8A9AEF',
+        'FDB46B',
+        'F27B8E',
+        '6DC089',
+        'A574C3',
+        '73D0F1',
+        'FFD54F',
+        'BDE08E',
+        'F69FF3',
+        'A1887F',
+        'CCCCCC',
+    ];
+
+    constructor(
+        private formBuilder: UntypedFormBuilder,
+        private dashboardService: DashboardService
+    ) {}
 
     ngOnInit(): void {
         this.createForm();
 
         this.getConstantData();
 
-        /////////////////////////////////////////////////////
-
-        this.setChartData(this.topRatedList);
+        this.setDoughnutChartData(this.topRatedList);
     }
 
     private createForm(): void {
         this.topRatedForm = this.formBuilder.group({
-            dropdownLeft: [null],
-            dropdownRight: [null],
+            mainPeriod: [null],
+            subPeriod: [null],
         });
     }
 
@@ -307,18 +343,25 @@ export class DashboardTopRatedComponent implements OnInit, AfterViewInit {
             DashboardTopRatedConstants.MAIN_PERIOD_DROPDOWN_DATA;
         this.subPeriodDropdownList =
             DashboardTopRatedConstants.SUB_PERIOD_DROPDOWN_DATA;
+
+        this.mainColorsPallete = DashboardColors.MAIN_COLORS_PALLETE;
     }
 
     public handleSearchValue(searchValue: string): void {
         console.log(searchValue);
     }
 
-    public handleInputSelect(event: DropdownListItem, action: string): void {
+    public handleInputSelect(
+        dropdownListItem: DropdownListItem,
+        action: string
+    ): void {
         if (action === ConstantStringEnum.MAIN_PERIOD_DROPDOWN) {
-            this.selectedMainPeriod = event;
+            this.selectedMainPeriod = dropdownListItem;
 
-            switch (event.name) {
+            switch (dropdownListItem.name) {
                 case ConstantStringEnum.TODAY:
+                    const TODAY_SUB_PERIOD_ID = [1, 2, 3];
+
                     this.subPeriodDropdownList =
                         DashboardTopRatedConstants.SUB_PERIOD_DROPDOWN_DATA.filter(
                             (period) => {
@@ -326,15 +369,13 @@ export class DashboardTopRatedComponent implements OnInit, AfterViewInit {
                                     this.selectedSubPeriod = period;
                                 }
 
-                                return (
-                                    period.id === 1 ||
-                                    period.id === 2 ||
-                                    period.id === 3
-                                );
+                                return TODAY_SUB_PERIOD_ID.includes(period.id);
                             }
                         );
                     break;
                 case ConstantStringEnum.WEEK_TO_DATE:
+                    const WTD_SUB_PERIOD_ID = [3, 4, 5];
+
                     this.subPeriodDropdownList =
                         DashboardTopRatedConstants.SUB_PERIOD_DROPDOWN_DATA.filter(
                             (period) => {
@@ -342,15 +383,13 @@ export class DashboardTopRatedComponent implements OnInit, AfterViewInit {
                                     this.selectedSubPeriod = period;
                                 }
 
-                                return (
-                                    period.id === 3 ||
-                                    period.id === 4 ||
-                                    period.id === 5
-                                );
+                                return WTD_SUB_PERIOD_ID.includes(period.id);
                             }
                         );
                     break;
                 case ConstantStringEnum.MONTH_TO_DATE:
+                    const MTD_SUB_PERIOD_ID = [5, 6, 7];
+
                     this.subPeriodDropdownList =
                         DashboardTopRatedConstants.SUB_PERIOD_DROPDOWN_DATA.filter(
                             (period) => {
@@ -358,15 +397,13 @@ export class DashboardTopRatedComponent implements OnInit, AfterViewInit {
                                     this.selectedSubPeriod = period;
                                 }
 
-                                return (
-                                    period.id === 5 ||
-                                    period.id === 6 ||
-                                    period.id === 7
-                                );
+                                return MTD_SUB_PERIOD_ID.includes(period.id);
                             }
                         );
                     break;
                 case ConstantStringEnum.YEAR_TO_DATE:
+                    const YTD_SUB_PERIOD_ID = [5, 6, 7];
+
                     this.subPeriodDropdownList =
                         DashboardTopRatedConstants.SUB_PERIOD_DROPDOWN_DATA.filter(
                             (period) => {
@@ -374,11 +411,7 @@ export class DashboardTopRatedComponent implements OnInit, AfterViewInit {
                                     this.selectedSubPeriod = period;
                                 }
 
-                                return (
-                                    period.id === 6 ||
-                                    period.id === 8 ||
-                                    period.id === 9
-                                );
+                                return YTD_SUB_PERIOD_ID.includes(period.id);
                             }
                         );
                     break;
@@ -392,44 +425,321 @@ export class DashboardTopRatedComponent implements OnInit, AfterViewInit {
         }
 
         if (action === ConstantStringEnum.SUB_PERIOD_DROPDOWN) {
-            this.selectedSubPeriod = event;
+            this.selectedSubPeriod = dropdownListItem;
         }
     }
 
-    public handleShowMoreClick(): void {
-        this.isShowingMore = true;
+    public handleSwitchTopRatedClick(
+        topRatedDropdownItem: TopRatedDropdownItem
+    ): void {
+        const topRatedTabsToDisplay = [
+            {
+                name: topRatedDropdownItem.tab1,
+                checked: false,
+            },
+            {
+                name: topRatedDropdownItem.tab2,
+                checked: true,
+            },
+        ];
 
-        this.topRatedListSliceEnd = this.topRatedList.length;
+        this.topRatedTabs = topRatedTabsToDisplay;
+        this.topRatedTitle = topRatedDropdownItem.name;
+
+        this.topRatedDropdownList.find(
+            (topRatedDropdownItem) => topRatedDropdownItem.isActive
+        ).isActive = false;
+
+        topRatedDropdownItem.isActive = true;
+
+        this.popover.close();
+    }
+
+    public handleShowMoreClick(): void {
+        if (!this.isShowingMore) {
+            this.isShowingMore = true;
+
+            this.topRatedListSliceEnd = this.topRatedList.length;
+
+            return;
+        }
+
+        if (this.isShowingMore) {
+            this.isShowingMore = false;
+
+            this.topRatedListSliceEnd = 10;
+
+            return;
+        }
+    }
+
+    public handleAddSelectedClick(
+        topRatedListItem: TopRatedListItem,
+        topRatedListItemIndex: number
+    ): void {
+        const maxTopRatedItemsSelected = 5;
+
+        if (
+            topRatedListItem.isSelected ||
+            this.selectedTopRatedList.length === maxTopRatedItemsSelected
+        ) {
+            return;
+        }
+
+        topRatedListItem.isSelected = true;
+
+        this.selectedTopRatedList = [
+            ...this.selectedTopRatedList,
+            topRatedListItem,
+        ];
+
+        this.topRatedList.splice(topRatedListItemIndex, 1);
+
+        this.topRatedList.splice(
+            this.selectedTopRatedList.length - 1,
+            0,
+            topRatedListItem
+        );
+
+        this.topRatedListSelectedPercentage = +(
+            100 / this.selectedTopRatedList.length
+        ).toFixed(2);
+
+        this.setDoughnutChartData(this.selectedTopRatedList, true);
+    }
+
+    public handleRemoveSelectedClick(
+        event: Event,
+        topRatedListItem: TopRatedListItem,
+        topRatedListItemIndex: number
+    ): void {
+        event.stopPropagation();
+
+        this.topRatedList.splice(topRatedListItemIndex, 1);
+        this.topRatedList.splice(topRatedListItem.id - 1, 0, topRatedListItem);
+
+        topRatedListItem.isSelected = false;
+
+        this.topRatedList = ArrayHelper.sorPartOfArray(this.topRatedList);
+
+        this.selectedTopRatedList = this.selectedTopRatedList.filter(
+            (topRatedItem) => topRatedItem.id !== topRatedListItem.id
+        );
+
+        this.topRatedListSelectedPercentage = +(
+            100 / this.selectedTopRatedList.length
+        ).toFixed(2);
+
+        if (this.selectedTopRatedList.length) {
+            this.setDoughnutChartData(this.selectedTopRatedList, true);
+        } else {
+            this.setDoughnutChartData(this.topRatedList);
+        }
+    }
+
+    private setDoughnutChartConfig(
+        dataValues: number[],
+        dataColors: string[],
+        chartCenterStats: ChartInitProperties[],
+        topRatedList: TopRatedListItem[]
+    ): void {
+        this.doughnutChartConfig = {
+            dataProperties: [
+                {
+                    defaultConfig: {
+                        type: ConstantChartStringEnum.DOUGHNUT,
+                        data: dataValues,
+                        backgroundColor: dataColors,
+                        borderColor:
+                            ConstantChartStringEnum.DOUGHNUT_COLOR_WHITE,
+                        hoverBackgroundColor: [
+                            ConstantChartStringEnum.DOUGHNUT_COLOR_WHITE,
+                        ],
+                        hoverBorderColor:
+                            ConstantChartStringEnum.DOUGHNUT_COLOR_WHITE,
+                    },
+                },
+            ],
+            chartInnitProperties: chartCenterStats,
+            showLegend: true,
+            chartValues: [2, 2],
+            defaultType: ConstantChartStringEnum.DOUGHNUT,
+            type: ConstantChartStringEnum.DOUGHNUT,
+            chartWidth: ConstantChartStringEnum.DOUGHNUT_1800_DIMENSION,
+            chartHeight: ConstantChartStringEnum.DOUGHNUT_1800_DIMENSION,
+            removeChartMargin: true,
+            dataLabels: [],
+            driversList: topRatedList,
+            allowAnimation: true,
+            noChartImage: ConstantChartStringEnum.NO_CHART_IMG,
+            dontUseResponsive: true,
+        };
+
+        if (this.doughnutChart) {
+            this.doughnutChart.chartInnitProperties = chartCenterStats;
+            this.doughnutChart.chartUpdated(dataValues);
+        }
+    }
+
+    private setDoughnutChartData(
+        topRatedList: TopRatedListItem[],
+        topRatedListItemSelected?: boolean
+    ): void {
+        let dataValues: number[] = [];
+        let dataColors: string[] = this.mainColorsPallete.map(
+            (color) => color.code
+        );
+
+        let topTenPercentage = 0;
+        let otherPercentage = 0;
+
+        let topTenValue = 0;
+        let otherValue = 0;
+
+        let chartCenterStats: ChartInitProperties[] = [];
+
+        let filteredTopRatedList: TopRatedListItem[] = [];
+        let filteredOtherList: TopRatedListItem[] = [];
+
+        filteredTopRatedList = topRatedList.filter((item, index) => index <= 2);
+        filteredOtherList = topRatedList.filter((item, index) => index > 2);
+
+        console.log('filteredTopRatedList', filteredTopRatedList);
+        console.log('filteredOtherList', filteredOtherList);
+
+        dataValues = topRatedList.map((topRatedItem, index) => {
+            if (this.topRatedList.length <= 10) {
+                if (index <= 2) {
+                    topTenPercentage += topRatedItem.percent;
+                    topTenValue += topRatedItem.value;
+                } else {
+                    otherPercentage += topRatedItem.percent;
+                    otherValue += topRatedItem.value;
+                }
+            }
+
+            if (topRatedList.length > 10 && topRatedList.length <= 30) {
+                if (index <= 4) {
+                    topTenPercentage += topRatedItem.percent;
+                    topTenValue += topRatedItem.value;
+                } else {
+                    otherPercentage += topRatedItem.percent;
+                    otherValue += topRatedItem.value;
+                }
+            }
+
+            if (topRatedList.length >= 30) {
+                if (index <= 9) {
+                    topTenPercentage += topRatedItem.percent;
+                    topTenValue += topRatedItem.value;
+                } else {
+                    otherPercentage += topRatedItem.percent;
+                    otherValue += topRatedItem.value;
+                }
+            }
+
+            return +topRatedItem.percent;
+        });
+
+        if (topRatedListItemSelected) {
+            const topTenCenterStatsName =
+                this.selectedTopRatedList.length === 1
+                    ? topRatedList[0].name
+                    : topRatedList.length + ConstantChartStringEnum.SELECTED;
+
+            const topTenValueToString = topTenValue.toString();
+
+            chartCenterStats = [
+                {
+                    value:
+                        ConstantChartStringEnum.DOLLAR_SIGN +
+                        topTenValueToString +
+                        ConstantChartStringEnum.THOUSAND_SIGN,
+                    name: topTenCenterStatsName,
+                },
+            ];
+        } else {
+            topTenPercentage = +topTenPercentage.toFixed(2);
+            otherPercentage = +otherPercentage.toFixed(2);
+
+            dataValues = [...dataValues, otherPercentage];
+
+            const topTenCenterStatsName =
+                topRatedList.length <= 10
+                    ? ConstantChartStringEnum.TOP_3
+                    : topRatedList.length > 10 && topRatedList.length <= 30
+                    ? ConstantChartStringEnum.TOP_5
+                    : ConstantChartStringEnum.TOP_10;
+
+            chartCenterStats = [
+                {
+                    percent:
+                        topTenPercentage +
+                        ConstantChartStringEnum.PERCENTAGE_SIGN,
+                    value:
+                        ConstantChartStringEnum.DOLLAR_SIGN +
+                        topTenValue +
+                        ConstantChartStringEnum.THOUSAND_SIGN,
+                    name: topTenCenterStatsName,
+                },
+                {
+                    percent:
+                        otherPercentage +
+                        ConstantChartStringEnum.PERCENTAGE_SIGN,
+                    value:
+                        ConstantChartStringEnum.DOLLAR_SIGN +
+                        otherValue +
+                        ConstantChartStringEnum.THOUSAND_SIGN,
+                    name: ConstantChartStringEnum.ALL_OTHERS,
+                },
+            ];
+        }
+
+        /*  if (topRatedListItemSelected) {
+            filteredTopRatedList = [
+                topRatedList[0],
+                topRatedList[1],
+                topRatedList[2],
+            ];
+
+            dataValues = dataValues.filter(
+                (item, index) =>
+                    index === 0 ||
+                    index === 1 ||
+                    index === 2 ||
+                    index === 3 ||
+                    index === 4
+            );
+        } else {
+            filteredTopRatedList = [
+                topRatedList[0],
+                topRatedList[1],
+                topRatedList[2],
+            ];
+
+            dataValues = dataValues.filter(
+                (item, index) =>
+                    index === 0 || index === 1 || index === 2 || index === 10
+            );
+
+            dataColors = dataColors.filter(
+                (item, index) =>
+                    index === 0 || index === 1 || index === 2 || index === 10
+            );
+        } */
+
+        this.setDoughnutChartConfig(
+            dataValues,
+            dataColors,
+            chartCenterStats,
+            topRatedList
+        );
     }
 
     ////////////////////////////////////////////////////////////////
 
-    changeTopTen(item) {
-        const newSwitchValue = [
-            {
-                name: item.tab1,
-                checked: true,
-            },
-            {
-                name: item.tab2,
-            },
-        ];
-        this.topRatedTabs = newSwitchValue;
-
-        this.topRatedTitle = item.name;
-        /* this.topRatedSearchOptions.gridNameTitle = item.name; */
-        this.topDriverBarChart.animationDuration = 0;
-        this.topDriverBarChart.setChartOptions();
-        this.topRatedDropdownList.map((item) => {
-            item.active = false;
-            return item;
-        });
-        item.active = true;
-        this.popover.close();
-    }
-
-    changeDriverSwitchTabs(ev, useLast?) {
-        const switchData = useLast ? this.currentSwitchTab : ev['name']; //currently no data for milage/revnue so insert last chosen
+    public handleSwitchTabClick(event, useLast?) {
+        const switchData = useLast ? this.currentSwitchTab : event['name']; //currently no data for milage/revnue so insert last chosen
         this.timePeriod.changeTimePeriod(switchData);
         this.currentSwitchTab = switchData;
         if (switchData == 'Custom') {
@@ -439,175 +749,6 @@ export class DashboardTopRatedComponent implements OnInit, AfterViewInit {
     }
 
     ///////////////////////////////////////////////////////
-
-    setChartData(drivers, selectedDrivers?) {
-        var dataValues = [];
-        var dataColors = [];
-        var topTenPercentage = 0;
-
-        drivers.map((item) => {
-            dataValues.push(parseFloat(item.percent));
-            topTenPercentage = topTenPercentage + parseFloat(item.percent);
-        });
-
-        topTenPercentage = parseFloat(topTenPercentage.toFixed(2));
-        var otherPercent = 100 - topTenPercentage;
-        otherPercent = parseFloat(otherPercent.toFixed(2));
-
-        if (!selectedDrivers) {
-            dataValues.push(otherPercent);
-        }
-
-        this.circleColor.map((item) => {
-            var color = '#' + item;
-            dataColors.push(color);
-        });
-
-        if (this.circleColor?.length) {
-            this.chartColors = this.circleColor;
-            this.chartHoverColors = this.hoverCircleColor;
-        }
-
-        let chartProp = [];
-
-        if (selectedDrivers) {
-            chartProp = [
-                {
-                    name: drivers.length + ' SELECTED',
-                    percent: '$773.08K',
-                },
-            ];
-        } else {
-            chartProp = [
-                {
-                    name: 'TOP ' + drivers.length,
-                    value: '$773.08K',
-                    percent: topTenPercentage + '%',
-                },
-                {
-                    name: 'ALL OTHERS',
-                    value: '$623.56K',
-                    percent: otherPercent + '%',
-                },
-            ];
-        }
-
-        this.chartConfig = {
-            dataProperties: [
-                {
-                    defaultConfig: {
-                        type: 'doughnut',
-                        data: dataValues,
-                        backgroundColor: dataColors,
-                        borderColor: '#fff',
-                        hoverBackgroundColor: ['#596FE8'],
-                        hoverBorderColor: '#fff',
-                    },
-                },
-            ],
-            chartInnitProperties: chartProp,
-            showLegend: true,
-            chartValues: [2, 2],
-            defaultType: 'doughnut',
-            chartWidth: '322',
-            chartHeight: '322',
-            removeChartMargin: true,
-            dataLabels: [],
-            driversList: drivers,
-            allowAnimation: true,
-            noChartImage: 'assets/svg/common/no_data_pay.svg',
-            dontUseResponsive: true,
-        };
-
-        if (this.doughnutChart) {
-            this.doughnutChart.chartInnitProperties = chartProp;
-            this.doughnutChart.chartUpdated(dataValues);
-        }
-    }
-
-    removeDriverFromList(e: Event, indx, item) {
-        e.stopPropagation();
-        item.active = false;
-        this.topRatedList.splice(indx, 1);
-        let showDefault = false;
-        if (this.selectedDrivers?.length == 1) {
-            showDefault = true;
-        }
-        this.topDriverBarChart.removeMultiBarData(
-            this.selectedDrivers[indx],
-            showDefault
-        );
-        this.selectedDrivers.splice(indx, 1);
-        this.topDriverBarChart.selectedDrivers = this.selectedDrivers;
-        if (this.selectedDrivers?.length) {
-            this.setChartData(this.selectedDrivers, true);
-        }
-
-        /*   this.topRatedList.push(item);
-        let allDrivers = [...this.topRatedList];
-        let activeDrivers = allDrivers.filter(
-            (driver) => driver.active == true
-        );
-        this.topRatedList = activeDrivers;
-        let inactiveDrivers = allDrivers
-            .filter((driver) => !driver.active)
-            .sort((a, b) => {
-                return a.id - b.id;
-            });
-        inactiveDrivers.map((driver) => {
-            this.topRatedList.push(driver);
-        });
- */
-        this.savedColors.unshift(this.compareColor[item.id]);
-        this.savedHoverColors.unshift(this.compareHoverColor[item.id]);
-        if (this.selectedDrivers?.length == 0) {
-            this.setChartData(this.topRatedList);
-        }
-        delete this.compareColor[item.id];
-        delete this.compareHoverColor[item.id];
-    }
-
-    selectCompare(e, item, indx) {
-        const itemId: any = item.id;
-        if (!(itemId in this.compareColor)) {
-            if (!this.savedColors.length) {
-                this.savedColors = [...this.circleColor];
-                this.circleColor = [];
-                this.savedHoverColors = [...this.hoverCircleColor];
-                this.hoverCircleColor = [];
-            }
-
-            item.active = true;
-
-            const firstInArray = this.savedColors.shift();
-            const firstInArrayHover = this.savedHoverColors.shift();
-
-            const objectSize = Object.keys(this.compareColor).length;
-            this.compareColor[item.id] = firstInArray;
-            this.compareHoverColor[item.id] = firstInArrayHover;
-            this.selectedDrivers.push(this.topRatedList[indx]);
-            this.doughnutChart.selectedDrivers = this.selectedDrivers;
-            this.topDriverBarChart.selectedDrivers = this.selectedDrivers;
-            this.topRatedList.splice(indx, 1);
-            this.setChartData(this.selectedDrivers, true);
-            this.updateBarChart(this.selectedDrivers);
-            this.topRatedList.splice(objectSize, 0, item);
-
-            this.hoverDriver(indx);
-        } else {
-            this.removeDriverFromList(e, indx, item);
-        }
-    }
-
-    hoverDriver(index: any) {
-        this.doughnutChart.hoverDoughnut(index, 'number');
-        this.topDriverBarChart.hoverBarChart(this.selectedDrivers[index]);
-    }
-
-    removeDriverHover() {
-        this.doughnutChart.hoverDoughnut(null);
-        this.topDriverBarChart.hoverBarChart(null);
-    }
 
     updateBarChart(selectedStates: any) {
         let dataSend = [
@@ -625,17 +766,9 @@ export class DashboardTopRatedComponent implements OnInit, AfterViewInit {
         }
     }
 
-    selectTimePeriod(period) {
-        this.topDriverBarChart.updateTime(this.currentSwitchTab, period);
-    }
-
     ////////////////// ne treba vjerovatno
 
     clearSelected() {
-        /*   this.topRatedList.map((driver) => {
-            driver.acive = false;
-        });
- */
         this.savedColors = [...this.chartColors];
         this.savedHoverColors = [...this.chartHoverColors];
 
@@ -643,7 +776,7 @@ export class DashboardTopRatedComponent implements OnInit, AfterViewInit {
             return a.id - b.id;
         });
 
-        this.setChartData(this.topRatedList, false);
+        this.setDoughnutChartData(this.topRatedList, false);
         this.compareColor = [];
         this.compareHoverColor = [];
 
@@ -657,6 +790,25 @@ export class DashboardTopRatedComponent implements OnInit, AfterViewInit {
         this.removeDriverHover();
     }
 
+    hoverDriver(index: any) {
+        this.doughnutChart.hoverDoughnut(index, 'number');
+        this.topDriverBarChart.hoverBarChart(this.selectedDrivers[index]);
+    }
+
+    removeDriverHover() {
+        this.doughnutChart.hoverDoughnut(null);
+        this.topDriverBarChart.hoverBarChart(null);
+    }
+
+    saveCustomRange(ev) {
+        this.timePeriod.changeCustomTime(ev);
+        this.topDriverBarChart.updateTime('Custom Set', ev);
+    }
+
+    selectTimePeriod(period) {
+        this.topDriverBarChart.updateTime(this.currentSwitchTab, period);
+    }
+
     /* <app-ta-time-period
                     #timePeriod
                     (selectTimePeriod)="selectTimePeriod($event)"
@@ -664,10 +816,7 @@ export class DashboardTopRatedComponent implements OnInit, AfterViewInit {
                 </app-ta-time-period> */
     @ViewChild('timePeriod', { static: false }) public timePeriod: any;
     @ViewChild('tabSwitch', { static: false }) public tabSwitch: any;
-    saveCustomRange(ev) {
-        this.timePeriod.changeCustomTime(ev);
-        this.topDriverBarChart.updateTime('Custom Set', ev);
-    }
+
     ngAfterViewInit(): void {
         if (this.timePeriod && this.timePeriod.changeTimePeriod) {
             this.timePeriod?.changeTimePeriod('All Time');

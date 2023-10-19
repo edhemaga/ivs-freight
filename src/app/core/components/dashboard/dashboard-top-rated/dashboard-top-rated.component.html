@@ -20,7 +20,7 @@
                 class="dashboard-top-rated-header-arrow-btn"
                 #popover="ngbPopover"
                 autoClose="outside"
-                [ngbPopover]="topPopover"
+                [ngbPopover]="topRatedPopover"
                 [popoverClass]="'top-rated-popover-main'"
                 [placement]="['bottom']"
                 [container]="'body'"
@@ -32,18 +32,20 @@
                 ></svg-icon>
             </button>
 
-            <ng-template #topPopover>
+            <ng-template #topRatedPopover>
                 <div class="top-rated-popover-container">
                     <div
                         *ngFor="
-                            let item of topRatedDropdownList;
+                            let topRatedDropdownItem of topRatedDropdownList;
                             trackBy: trackByIdentity
                         "
                         class="top-rated-popover-item"
-                        [ngClass]="{ active: item.active }"
-                        (click)="changeTopTen(item)"
+                        [ngClass]="{ active: topRatedDropdownItem.isActive }"
+                        (click)="
+                            handleSwitchTopRatedClick(topRatedDropdownItem)
+                        "
                     >
-                        <p class="m-0">{{ item.name }}</p>
+                        <p class="m-0">{{ topRatedDropdownItem.name }}</p>
 
                         <div class="popover-icon-container">
                             <svg-icon
@@ -63,13 +65,19 @@
                 <app-ta-tab-switch
                     [tabs]="topRatedTabs"
                     [disableHeight]="true"
-                    (switchClicked)="changeDriverSwitchTabs($event, true)"
+                    (switchClicked)="handleSwitchTabClick($event)"
                 >
                 </app-ta-tab-switch>
             </div>
 
             <div class="dashboard-top-rated-header-border"></div>
+        </div>
 
+        <!-- Right Side -->
+        <div
+            class="d-flex align-items-center dashboard-top-rated-header-right-side-container"
+            [formGroup]="topRatedForm"
+        >
             <!-- Search -->
 
             <div class="dashboard-top-rated-header-search">
@@ -78,83 +86,94 @@
                     (searchValueEmitter)="handleSearchValue($event)"
                 ></app-carrier-search-two>
             </div>
-        </div>
 
-        <!-- Right Side -->
-        <div class="d-flex align-items-center" [formGroup]="topRatedForm">
-            <div
-                class="dropdown-left-container"
-                [ngClass]="{
-                    'dropdown-left-w-1': selectedMainPeriod.name === 'Today',
-                    'dropdown-left-w-2':
-                        selectedMainPeriod.name === 'Week-to-Date',
-                    'dropdown-left-w-3':
-                        selectedMainPeriod.name === 'Month-to-Date',
-                    'dropdown-left-w-4':
-                        selectedMainPeriod.name === 'Year-to-Date',
-                    'dropdown-left-w-5': selectedMainPeriod.name === 'All Time',
-                    'dropdown-left-w-6': selectedMainPeriod.name === 'Custom'
-                }"
-            >
-                <app-ta-input-dropdown
-                    formControlName="dropdownLeft"
-                    [inputConfig]="{
-                        name: 'Input Dropdown',
-                        type: 'text',
-                        isDropdown: true,
-                        hideClear: true,
-                        hideColorValidations: true,
-                        removeInputBackground: true,
-                        dropdownWidthClass: 'w-col-157'
-                    }"
-                    [options]="mainPeriodDropdownList"
-                    [activeItem]="selectedMainPeriod"
-                    (selectedItem)="
-                        handleInputSelect($event, 'MAIN_PERIOD_DROPDOWN')
-                    "
-                ></app-ta-input-dropdown>
-            </div>
-
-            <div class="dashboard-top-rated-header-border"></div>
+            <!-- Dropdowns -->
 
             <div
-                class="dropdown-right-container"
-                [ngClass]="{
-                    'dropdown-right-w-1': selectedSubPeriod.name === 'Hourly',
-                    'dropdown-right-w-2':
-                        selectedSubPeriod.name === '3 Hours' ||
-                        selectedSubPeriod.name === '6 Hours',
-                    'dropdown-right-w-3':
-                        selectedSubPeriod.name === 'Semi-Daily',
-                    'dropdown-right-w-4': selectedSubPeriod.name === 'Daily',
-                    'dropdown-right-w-5': selectedSubPeriod.name === 'Weekly',
-                    'dropdown-right-w-6':
-                        selectedSubPeriod.name === 'Bi-Weekly',
-                    'dropdown-right-w-7':
-                        selectedSubPeriod.name === 'Semi-Monthly',
-                    'dropdown-right-w-8': selectedSubPeriod.name === 'Monthly',
-                    'dropdown-right-w-9':
-                        selectedSubPeriod.name === 'Quarterly',
-                    'dropdown-right-w-10': selectedSubPeriod.name === 'Yearly'
-                }"
+                class="d-flex align-items-center dashboard-top-rated-header-dropdown"
             >
-                <app-ta-input-dropdown
-                    formControlName="dropdownRight"
-                    [inputConfig]="{
-                        name: 'Input Dropdown',
-                        type: 'text',
-                        isDropdown: true,
-                        hideClear: true,
-                        hideColorValidations: true,
-                        removeInputBackground: true,
-                        dropdownWidthClass: 'w-col-157'
+                <div
+                    class="dropdown-left-container"
+                    [ngClass]="{
+                        'dropdown-left-w-1':
+                            selectedMainPeriod.name === 'Today',
+                        'dropdown-left-w-2':
+                            selectedMainPeriod.name === 'Week-to-Date',
+                        'dropdown-left-w-3':
+                            selectedMainPeriod.name === 'Month-to-Date',
+                        'dropdown-left-w-4':
+                            selectedMainPeriod.name === 'Year-to-Date',
+                        'dropdown-left-w-5':
+                            selectedMainPeriod.name === 'All Time',
+                        'dropdown-left-w-6':
+                            selectedMainPeriod.name === 'Custom'
                     }"
-                    [options]="subPeriodDropdownList"
-                    [activeItem]="selectedSubPeriod"
-                    (selectedItem)="
-                        handleInputSelect($event, 'SUB_PERIOD_DROPDOWN')
-                    "
-                ></app-ta-input-dropdown>
+                >
+                    <app-ta-input-dropdown
+                        formControlName="mainPeriod"
+                        [inputConfig]="{
+                            name: 'Input Dropdown',
+                            type: 'text',
+                            isDropdown: true,
+                            hideClear: true,
+                            hideColorValidations: true,
+                            removeInputBackground: true,
+                            dropdownWidthClass: 'w-col-157'
+                        }"
+                        [options]="mainPeriodDropdownList"
+                        [activeItem]="selectedMainPeriod"
+                        (selectedItem)="
+                            handleInputSelect($event, 'MAIN_PERIOD_DROPDOWN')
+                        "
+                    ></app-ta-input-dropdown>
+                </div>
+
+                <div class="dashboard-top-rated-header-border"></div>
+
+                <div
+                    class="dropdown-right-container"
+                    [ngClass]="{
+                        'dropdown-right-w-1':
+                            selectedSubPeriod.name === 'Hourly',
+                        'dropdown-right-w-2':
+                            selectedSubPeriod.name === '3 Hours' ||
+                            selectedSubPeriod.name === '6 Hours',
+                        'dropdown-right-w-3':
+                            selectedSubPeriod.name === 'Semi-Daily',
+                        'dropdown-right-w-4':
+                            selectedSubPeriod.name === 'Daily',
+                        'dropdown-right-w-5':
+                            selectedSubPeriod.name === 'Weekly',
+                        'dropdown-right-w-6':
+                            selectedSubPeriod.name === 'Bi-Weekly',
+                        'dropdown-right-w-7':
+                            selectedSubPeriod.name === 'Semi-Monthly',
+                        'dropdown-right-w-8':
+                            selectedSubPeriod.name === 'Monthly',
+                        'dropdown-right-w-9':
+                            selectedSubPeriod.name === 'Quarterly',
+                        'dropdown-right-w-10':
+                            selectedSubPeriod.name === 'Yearly'
+                    }"
+                >
+                    <app-ta-input-dropdown
+                        formControlName="subPeriod"
+                        [inputConfig]="{
+                            name: 'Input Dropdown',
+                            type: 'text',
+                            isDropdown: true,
+                            hideClear: true,
+                            hideColorValidations: true,
+                            removeInputBackground: true,
+                            dropdownWidthClass: 'w-col-157'
+                        }"
+                        [options]="subPeriodDropdownList"
+                        [activeItem]="selectedSubPeriod"
+                        (selectedItem)="
+                            handleInputSelect($event, 'SUB_PERIOD_DROPDOWN')
+                        "
+                    ></app-ta-input-dropdown>
+                </div>
             </div>
         </div>
     </div>
@@ -170,12 +189,12 @@
             <!-- Top Rated List -->
 
             <div
-                class="d-flex flex-column justify-content-center dashboard-top-rated-body-up-list"
-                [ngClass]="{ 'showing-more': isShowingMore }"
+                class="d-flex flex-column dashboard-top-rated-body-up-list"
+                [ngClass]="{ 'show-more': isShowingMore }"
             >
                 <ng-container
                     *ngFor="
-                        let topRatedItem of topRatedList
+                        let topRatedListItem of topRatedList
                             | slice : 0 : topRatedListSliceEnd;
                         let i = index;
                         trackBy: trackByIdentity
@@ -183,25 +202,65 @@
                 >
                     <div
                         class="d-flex align-items-center justify-content-between top-rated-item"
+                        [ngStyle]="
+                            i <= 9 &&
+                            topRatedListItem.isSelected && {
+                                background: mainColorsPallete[i].code
+                            }
+                        "
+                        [ngClass]="{
+                            selected: i <= 9 && topRatedListItem.isSelected,
+                            'not-selected':
+                                this.selectedTopRatedList.length &&
+                                !topRatedListItem.isSelected
+                        }"
+                        (click)="handleAddSelectedClick(topRatedListItem, i)"
                     >
                         <div class="align-items-center top-rated-item-left">
                             <div
                                 class="d-flex align-items-center justify-content-center top-rated-item-number-box"
                             >
                                 <p class="m-0 ta-font-semi-bold">
-                                    {{ i + 1 }}
+                                    {{ topRatedListItem.id }}
                                 </p>
+
+                                <svg-icon
+                                    class="close-icon"
+                                    [src]="'assets/svg/applicant/close-x.svg'"
+                                    [svgStyle]="{
+                                        'width.px': 18,
+                                        'height.px': 18
+                                    }"
+                                    (click)="
+                                        handleRemoveSelectedClick(
+                                            $event,
+                                            topRatedListItem,
+                                            i
+                                        )
+                                    "
+                                ></svg-icon>
                             </div>
 
                             <div
                                 class="d-flex align-items-center justify-content-center top-rated-item-color-box"
+                                [ngStyle]="{
+                                    background:
+                                        (this.topRatedList.length <= 10 &&
+                                            i <= 2) ||
+                                        (topRatedList.length > 10 &&
+                                            topRatedList.length <= 30 &&
+                                            i <= 4) ||
+                                        (topRatedList.length >= 30 && i <= 9)
+                                            ? mainColorsPallete[i].code
+                                            : mainColorsPallete[10].code
+                                }"
                             ></div>
 
                             <div
                                 class="d-flex align-items-center top-rated-item-name-box"
                             >
                                 <p class="m-0 ta-font-extra-bold">
-                                    {{ topRatedItem.name }}
+                                    {{ topRatedListItem.name }}
                                 </p>
                             </div>
                         </div>
@@ -212,16 +271,18 @@
                             <div
                                 class="d-flex align-items-center top-rated-item-first-tab-box"
                             >
-                                <p class="m-0">
-                                    {{ topRatedItem.firstTabValue }}
-                                </p>
+                                <p class="m-0">${{ topRatedListItem.value }}</p>
                             </div>
 
                             <div
-                                class="d-flex align-items-center top-rated-item-second-tab-box"
+                                class="d-flex align-items-center justify-content-end top-rated-item-second-tab-box"
                             >
                                 <p class="m-0 ta-font-semi-bold">
-                                    {{ topRatedItem.secondTabValue }}%
+                                    {{
+                                        topRatedListItem.isSelected
+                                            ? topRatedListSelectedPercentage
+                                            : topRatedListItem.percent
+                                    }}%
                                 </p>
                             </div>
                         </div>
@@ -238,9 +299,9 @@
                     >
                         <p class="m-0 ta-font-semi-bold">
                             {{
-                                topRatedList.length <= 10
-                                    ? topRatedList.length
-                                    : '10'
+                                !isShowingMore && topRatedList.length > 10
+                                    ? '10'
+                                    : topRatedList.length
                             }}
                             OF {{ topRatedList.length }}
                         </p>
@@ -255,7 +316,7 @@
                                 class="ta-font-bold show-more-btn"
                                 (click)="handleShowMoreClick()"
                             >
-                                SHOW MORE
+                                {{ isShowingMore ? 'SHOW LESS' : 'SHOW MORE' }}
                             </button>
                         </div>
                     </ng-container>
@@ -267,6 +328,18 @@
             <div class="dashboard-top-rated-body-up-border"></div>
 
             <!-- Doughnut Chart -->
+
+            <div
+                class="d-flex justify-content-center align-items-center dashboard-top-rated-body-up-doughnut-chart"
+            >
+                <app-ta-chart
+                    #doughnutChart
+                    [chartConfig]="doughnutChartConfig"
+                    [axesProperties]="{}"
+                    [legendAttributes]="{}"
+                >
+                </app-ta-chart>
+            </div>
         </div>
     </div>
 </div>
@@ -277,132 +350,8 @@
             <div class="d-flex align-items-center">
                 <div
                     class="dashboard_top_driver_list"
-                    [ngClass]="{
-                        medium_scale:
-                            this.searchDashboardOptions.gridNameTitle ==
-                                'Driver' ||
-                            this.searchDashboardOptions.gridNameTitle ==
-                                'Dispatcher',
-                        small_scale:
-                            this.searchDashboardOptions.gridNameTitle == 'Truck'
-                    }"
                 >
-                    <div class="dashboard-top-driver-body-list-holder">
-                        <div
-                            *ngFor="let item of topRatedList; let indx = index"
-                            class="dashboard-top-driver-body-list-items-holder"
-                            (mouseenter)="hoverDriver(indx)"
-                            (mouseleave)="removeDriverHover()"
-                            (click)="selectCompare($event, item, indx)"
-                        >
-                            <div
-                                class="dashboard-top-driver-body-list-items top-compare-{{
-                                    compareColor[item.id]
-                                }}"
-                            >
-                                <div
-                                    class="dashboard-top-driver-body-list-frame list-name-holder"
-                                >
-                                    <div
-                                        class="dashboard-top-driver-body-list-id"
-                                    >
-                                        {{ item.id }}
-                                    </div>
-
-                                    <div
-                                        class="dashboard-top-driver-body-list-remove"
-                                        (click)="
-                                            removeDriverFromList(
-                                                $event,
-                                                indx,
-                                                item
-                                            )
-                                        "
-                                    >
-                                        <svg-icon
-                                            src="assets/svg/truckassist-table/x.svg"
-                                        ></svg-icon>
-                                    </div>
-
-                                    <div
-                                        class="dashboard-top-driver-body-list-circle top-ten-{{
-                                            circleColor[indx]
-                                        }}-color"
-                                    ></div>
-
-                                    <div
-                                        class="dashboard-top-driver-body-list-name"
-                                    >
-                                        {{ item.name }}
-                                    </div>
-                                </div>
-
-                                <div
-                                    class="dashboard-top-driver-body-list-frame"
-                                >
-                                    <div
-                                        class="dashboard-top-driver-body-list-price"
-                                    >
-                                        {{ item.price }}
-                                    </div>
-
-                                    <div
-                                        class="dashboard-top-driver-body-list-percent"
-                                    >
-                                        {{ item.percent }}
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div
-                                class="dashboard-top-driver-body-list-border"
-                                [class.list_line_hidden]="
-                                    !compareColor[item.id]
-                                "
-                            ></div>
-                        </div>
-
-                        <div
-                            class="driver_empty_state_holder"
-                            *ngIf="!topRatedList.length"
-                        >
-                            <div class="main_empty_state_holder">
-                                <div class="empty_state_title">
-                                    {{
-                                        this.searchDashboardOptions
-                                            .gridNameTitle
-                                    }}
-                                    list is empty
-                                </div>
-
-                                <div class="empty_state_title_bottom">
-                                    Please add
-                                    {{
-                                        this.searchDashboardOptions.gridNameTitle.toLowerCase() +
-                                            's'
-                                    }}
-                                </div>
-
-                                <div class="empty_state_image">
-                                    <svg-icon
-                                        src="assets/svg/common/dashboard_empty_state.svg"
-                                    ></svg-icon>
-                                </div>
-
-                                <div class="empty_add_button">
-                                    <div class="add_text">
-                                        Add
-                                        {{
-                                            this.searchDashboardOptions
-                                                .gridNameTitle
-                                        }}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
+                       
                 <div class="doughnut_chart_main_holder">
                     <div class="doughnut_chart_holder">
                         <app-ta-chart
@@ -463,20 +412,4 @@
         </div>
     </div>
 </div>
-
-<ng-template #topTenPopover let-data="data">
-    <div class="top-ten-popover-holder">
-        <div
-            *ngFor="let item of topRatedDropdown; let indx = index"
-            class="top-ten-popover-items-holder"
-            [ngClass]="{ active: item.active }"
-            (click)="changeTopTen(item)"
-        >
-            {{ item.name.toUpperCase() }}
-            <div class="popover-icon-holder">
-                <svg-icon src="assets/svg/common/ic_confirm.svg"></svg-icon>
-            </div>
-        </div>
-    </div>
-</ng-template>
  -->

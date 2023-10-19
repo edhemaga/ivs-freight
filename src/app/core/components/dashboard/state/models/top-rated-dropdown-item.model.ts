@@ -1,6 +1,6 @@
 export interface TopRatedDropdownItem {
     name: string;
-    active: boolean;
+    isActive: boolean;
     tab1: string;
     tab2: string;
 }

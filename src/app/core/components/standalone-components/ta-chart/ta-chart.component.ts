@@ -31,7 +31,6 @@ import { NFormatterPipe } from '../../../pipes/n-formatter.pipe';
         FormsModule,
         ChartsModule,
         NFormatterPipe,
-        
     ],
 })
 export class TaChartComponent implements OnInit {
@@ -480,7 +479,7 @@ export class TaChartComponent implements OnInit {
     }
 
     setChartData() {
-        this.chartConfig['dataProperties'].map((item, indx) => {
+        this.chartConfig['dataProperties'].map((item) => {
             const currentChartConfig = item['defaultConfig'];
 
             if (item['defaultConfig']['hasGradiendBackground']) {
@@ -495,6 +494,8 @@ export class TaChartComponent implements OnInit {
             this.doughnutChartLegend = this.chartConfig['showLegend'];
             this.lineChartType = this.chartConfig['defaultType'];
             this.lineChartLabels = this.chartConfig['dataLabels'];
+
+            this.selectedDrivers = this.chartConfig.driversList;
 
             this.chartWidth = this.chartConfig['chartWidth'];
             this.chartHeight = this.chartConfig['chartHeight'];
@@ -530,19 +531,19 @@ export class TaChartComponent implements OnInit {
         this.lineChartPlugins = [
             {
                 afterLayout: (chart) => {
-                    const ctx = chart.chart.ctx;
+                    const ctx = chart?.chart?.ctx;
                     const canvas = chart.chart.canvas;
 
                     let dataset = chart.data.datasets;
 
                     dataset.map((item, p) => {
-                        let gradientStroke = ctx.createLinearGradient(
+                        let gradientStroke = ctx?.createLinearGradient(
                             0,
                             0,
                             0,
                             canvas.height
                         );
-                        let gradientStroke2 = ctx.createLinearGradient(
+                        let gradientStroke2 = ctx?.createLinearGradient(
                             0,
                             0,
                             0,
@@ -571,7 +572,7 @@ export class TaChartComponent implements OnInit {
                                     this.chartConfig['annotation']
                                 );
 
-                                const gradientFill = ctx.createLinearGradient(
+                                const gradientFill = ctx?.createLinearGradient(
                                     0,
                                     0,
                                     0,
@@ -770,6 +771,7 @@ export class TaChartComponent implements OnInit {
         if (dataIndex == dataLength - 1) {
             showOthers = true;
         }
+
         this.chart.chart.config.data.datasets[0].data.map((item, i) => {
             if (i == dataIndex || elements == null) {
                 let color =
@@ -791,31 +793,34 @@ export class TaChartComponent implements OnInit {
         if (driverDetails) {
             this.chartInnitProperties = [
                 {
+                    percent: driverDetails.percent + '%',
+                    value: '$' + driverDetails.value + 'K',
                     name: driverDetails.name,
-                    value: driverDetails.price,
-                    percent: driverDetails.percent,
                 },
             ];
         } else {
+            const anySelected = this.selectedDrivers.some(
+                (item) => item.isSelected
+            );
+
             if (!showOthers) {
-                this.chartInnitProperties = this.saveChartProperties;
+                if (anySelected) {
+                    this.chartInnitProperties = [
+                        {
+                            value: this.chartConfig.chartInnitProperties[0]
+                                .value,
+                            name: this.chartConfig.chartInnitProperties[0].name,
+                        },
+                    ];
+                } else {
+                    this.chartInnitProperties = this.saveChartProperties;
+                }
             } else {
                 let innitProp = [];
                 innitProp.push(this.saveChartProperties[1]);
                 this.chartInnitProperties = innitProp;
             }
         }
-
-        if (elements == null && this.selectedDrivers?.length) {
-            this.chartInnitProperties = [
-                {
-                    name: this.selectedDrivers.length + ' SELECTED',
-                    percent: '$773.08K',
-                    value: '',
-                },
-            ];
-        }
-        this.ref.detectChanges();
     }
 
     updateHoverData(value: number) {
