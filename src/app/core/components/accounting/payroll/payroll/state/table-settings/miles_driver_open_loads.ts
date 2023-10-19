@@ -79,25 +79,28 @@ export const miles_driver_open_loads_resizable = [
     },
     {
         field: "Loaded",
-        data_field: "loadedMiles",
+        data_field: "loadedMilesPay",
         template: "semibold-normal-template",
+        isCurrency: true,
         colspan: 1
     },
     {
         field: "Empty",
-        data_field: "emptyMiles",
+        data_field: "emptyMilesPay",
         template: "semibold-normal-template",
+        isCurrency: true,
         colspan: 1
     },
     {
         field: "Miles",
-        data_field: "totalMiles",
+        data_field: "milesPay",
         template: "semibold-normal-template",
+        isCurrency: true,
         colspan: 1
     },
     {
         field: "Subtotal",
-        data_field: "subtotal",
+        data_field: "milesPay",
         template: "bold-normal-template",
         highlighted: true,
         colspan: 1,

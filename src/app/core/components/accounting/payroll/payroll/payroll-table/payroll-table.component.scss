@@ -115,6 +115,25 @@
                                         }
                                     }
                                 }
+                                &.deadheading-box {
+                                    svg-icon {
+                                        svg {
+                                            rect {
+                                                fill: #424242;
+                                            }
+                                        }
+                                    }
+                                }
+
+                                &.repear-box{
+                                    svg-icon {
+                                        svg {
+                                            rect {
+                                                fill: #FFA726;
+                                            }
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
@@ -189,7 +208,7 @@
             tbody {
                 tr {
                     &.reorder-row {
-                        border-top: 2px solid #eeeeee;
+                        border-top: 2px solid #FFF;
                     }
 
                     td {

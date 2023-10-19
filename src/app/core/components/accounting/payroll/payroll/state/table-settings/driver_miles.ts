@@ -43,18 +43,21 @@ export const driver_miles_table_settings = [
         textAbove: "SUMMARY",
         template: "normal-template",
         data_field: "summary.amount",
-        hideNotExpanded: true
+        hideNotExpanded: true,
+        isCurrency: true
     },
     {
         field: "SALARY",
         template: "normal-template",
         data_field: "summary.salary",
-        hideNotExpanded: true
+        hideNotExpanded: true,
+        isCurrency: true
     },
     {
         field: "TOTAL",
         template: "bold-normal-template",
-        data_field: "summary.total"
+        data_field: "summary.total",
+        isCurrency: true,
     },
     {
         field: "STATUS",

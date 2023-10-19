@@ -12,7 +12,7 @@ export class PayrollTablePipe implements PipeTransform {
 
     transform(data, field, index) {
         if (field.isIndexIncrement) {
-            return index + 1;
+            return index;
         }
         if (field.data_title) {
             return field.field;
@@ -29,9 +29,14 @@ export class PayrollTablePipe implements PipeTransform {
                 return '';
             }
             deepObject.map((item) => {
-                if (item in returnValue) {
-                    returnValue = returnValue[item];
+                if( item && returnValue){
+                    if (item in returnValue) {
+                        if( returnValue[item] )
+                        returnValue = returnValue[item];
+                        else returnValue = 0
+                    }
                 }
+               
             });
 
             if (field.isDate) {
