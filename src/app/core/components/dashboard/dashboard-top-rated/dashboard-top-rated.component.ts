@@ -28,6 +28,7 @@ import {
     ChartInitProperties,
     DoughnutChart,
     DoughnutChartConfig,
+    DoughnutChartPercentage,
 } from '../state/models/doughnut-chart.model';
 
 @Component({
@@ -113,28 +114,28 @@ export class DashboardTopRatedComponent implements OnInit, AfterViewInit {
             value: 18185.5,
             percent: 2.12,
             isSelected: false,
-        } /* 
+        },
         {
             id: 11,
             name: 'Jure Guvo',
-            value: 12133.4,
-            percent: 1.12,
+            value: 18185.5,
+            percent: 2.12,
             isSelected: false,
         },
         {
             id: 12,
-            name: 'Jure Guvo1',
-            value: 12133.4,
-            percent: 1.12,
+            name: 'Jure Guvo 1',
+            value: 18185.5,
+            percent: 2.12,
             isSelected: false,
         },
         {
             id: 13,
-            name: 'Jure Guvo2',
-            value: 12133.4,
-            percent: 1.12,
+            name: 'Jure Guvo 2',
+            value: 18185.5,
+            percent: 2.12,
             isSelected: false,
-        }, */,
+        },
     ];
     public selectedTopRatedList: TopRatedListItem[] = [];
     public topRatedListSelectedPercentage: number = 100;
@@ -581,65 +582,15 @@ export class DashboardTopRatedComponent implements OnInit, AfterViewInit {
         }
     }
 
-    private setDoughnutChartData(
+    private setDoughnutChartCenterStats(
+        topRatedListItemSelected: boolean,
         topRatedList: TopRatedListItem[],
-        topRatedListItemSelected?: boolean
-    ): void {
-        let dataValues: number[] = [];
-        let dataColors: string[] = this.mainColorsPallete.map(
-            (color) => color.code
-        );
-
-        let topTenPercentage = 0;
-        let otherPercentage = 0;
-
-        let topTenValue = 0;
-        let otherValue = 0;
-
+        topTenValue: number,
+        otherValue?: number,
+        topTenPercentage?: number,
+        otherPercentage?: number
+    ): ChartInitProperties[] {
         let chartCenterStats: ChartInitProperties[] = [];
-
-        let filteredTopRatedList: TopRatedListItem[] = [];
-        let filteredOtherList: TopRatedListItem[] = [];
-
-        filteredTopRatedList = topRatedList.filter((item, index) => index <= 2);
-        filteredOtherList = topRatedList.filter((item, index) => index > 2);
-
-        console.log('filteredTopRatedList', filteredTopRatedList);
-        console.log('filteredOtherList', filteredOtherList);
-
-        dataValues = topRatedList.map((topRatedItem, index) => {
-            if (this.topRatedList.length <= 10) {
-                if (index <= 2) {
-                    topTenPercentage += topRatedItem.percent;
-                    topTenValue += topRatedItem.value;
-                } else {
-                    otherPercentage += topRatedItem.percent;
-                    otherValue += topRatedItem.value;
-                }
-            }
-
-            if (topRatedList.length > 10 && topRatedList.length <= 30) {
-                if (index <= 4) {
-                    topTenPercentage += topRatedItem.percent;
-                    topTenValue += topRatedItem.value;
-                } else {
-                    otherPercentage += topRatedItem.percent;
-                    otherValue += topRatedItem.value;
-                }
-            }
-
-            if (topRatedList.length >= 30) {
-                if (index <= 9) {
-                    topTenPercentage += topRatedItem.percent;
-                    topTenValue += topRatedItem.value;
-                } else {
-                    otherPercentage += topRatedItem.percent;
-                    otherValue += topRatedItem.value;
-                }
-            }
-
-            return +topRatedItem.percent;
-        });
 
         if (topRatedListItemSelected) {
             const topTenCenterStatsName =
@@ -659,17 +610,18 @@ export class DashboardTopRatedComponent implements OnInit, AfterViewInit {
                 },
             ];
         } else {
-            topTenPercentage = +topTenPercentage.toFixed(2);
-            otherPercentage = +otherPercentage.toFixed(2);
-
-            dataValues = [...dataValues, otherPercentage];
-
             const topTenCenterStatsName =
                 topRatedList.length <= 10
                     ? ConstantChartStringEnum.TOP_3
                     : topRatedList.length > 10 && topRatedList.length <= 30
                     ? ConstantChartStringEnum.TOP_5
                     : ConstantChartStringEnum.TOP_10;
+
+            topTenPercentage = +topTenPercentage.toFixed(2);
+            otherPercentage = +otherPercentage.toFixed(2);
+
+            topTenValue = +topTenValue.toFixed(2);
+            otherValue = +otherValue.toFixed(2);
 
             chartCenterStats = [
                 {
@@ -695,38 +647,150 @@ export class DashboardTopRatedComponent implements OnInit, AfterViewInit {
             ];
         }
 
-        /*  if (topRatedListItemSelected) {
-            filteredTopRatedList = [
-                topRatedList[0],
-                topRatedList[1],
-                topRatedList[2],
-            ];
+        return chartCenterStats;
+    }
 
-            dataValues = dataValues.filter(
-                (item, index) =>
-                    index === 0 ||
-                    index === 1 ||
-                    index === 2 ||
-                    index === 3 ||
-                    index === 4
+    private setDoughnutChartValueAndColor(
+        dataValues: number[],
+        dataColors: string[],
+        topRatedList: TopRatedListItem[]
+    ): TopRatedListItem[] {
+        let filteredTopRatedList: TopRatedListItem[] = [];
+
+        if (this.topRatedList.length <= 10) {
+            dataValues.splice(3, 7);
+            dataColors.splice(3, 7);
+
+            filteredTopRatedList = topRatedList.filter(
+                (_, index) => index <= 2
+            );
+        }
+
+        if (topRatedList.length > 10 && topRatedList.length <= 30) {
+            dataValues.splice(5);
+            dataColors.splice(5, 5);
+
+            filteredTopRatedList = topRatedList.filter(
+                (_, index) => index <= 4
+            );
+        }
+
+        if (topRatedList.length >= 30) {
+            dataValues.splice(10);
+
+            filteredTopRatedList = topRatedList.filter(
+                (_, index) => index <= 9
+            );
+        }
+
+        return filteredTopRatedList;
+    }
+
+    private setDoughnutChartPercentage(
+        topRatedList: TopRatedListItem[],
+        topRatedListItemSelected: boolean
+    ): DoughnutChartPercentage {
+        let topTenPercentage = 0;
+        let otherPercentage = 0;
+
+        let topTenValue = 0;
+        let otherValue = 0;
+
+        const filterdDataValues = topRatedList.map((topRatedItem, index) => {
+            if (!topRatedListItemSelected) {
+                if (this.topRatedList.length <= 10) {
+                    if (index <= 2) {
+                        topTenPercentage += topRatedItem.percent;
+                        topTenValue += topRatedItem.value;
+                    } else {
+                        otherPercentage += topRatedItem.percent;
+                        otherValue += topRatedItem.value;
+                    }
+                }
+
+                if (topRatedList.length > 10 && topRatedList.length <= 30) {
+                    if (index <= 4) {
+                        topTenPercentage += topRatedItem.percent;
+                        topTenValue += topRatedItem.value;
+                    } else {
+                        otherPercentage += topRatedItem.percent;
+                        otherValue += topRatedItem.value;
+                    }
+                }
+
+                if (topRatedList.length >= 30) {
+                    if (index <= 9) {
+                        topTenPercentage += topRatedItem.percent;
+                        topTenValue += topRatedItem.value;
+                    } else {
+                        otherPercentage += topRatedItem.percent;
+                        otherValue += topRatedItem.value;
+                    }
+                }
+            } else {
+                topTenValue += topRatedItem.value;
+            }
+
+            return +topRatedItem.percent;
+        });
+
+        return {
+            filterdDataValues,
+            topTenPercentage,
+            topTenValue,
+            otherPercentage,
+            otherValue,
+        };
+    }
+
+    private setDoughnutChartData(
+        topRatedList: TopRatedListItem[],
+        topRatedListItemSelected?: boolean
+    ): void {
+        let dataValues: number[] = [];
+        let dataColors: string[] = this.mainColorsPallete.map(
+            (color) => color.code
+        );
+
+        let chartCenterStats: ChartInitProperties[] = [];
+
+        const {
+            filterdDataValues,
+            topTenPercentage,
+            topTenValue,
+            otherPercentage,
+            otherValue,
+        } = this.setDoughnutChartPercentage(
+            topRatedList,
+            topRatedListItemSelected
+        );
+
+        dataValues = [...filterdDataValues];
+
+        if (topRatedListItemSelected) {
+            chartCenterStats = this.setDoughnutChartCenterStats(
+                topRatedListItemSelected,
+                topRatedList,
+                topTenValue
             );
         } else {
-            filteredTopRatedList = [
-                topRatedList[0],
-                topRatedList[1],
-                topRatedList[2],
-            ];
-
-            dataValues = dataValues.filter(
-                (item, index) =>
-                    index === 0 || index === 1 || index === 2 || index === 10
+            chartCenterStats = this.setDoughnutChartCenterStats(
+                topRatedListItemSelected,
+                topRatedList,
+                topTenValue,
+                otherValue,
+                topTenPercentage,
+                otherPercentage
             );
 
-            dataColors = dataColors.filter(
-                (item, index) =>
-                    index === 0 || index === 1 || index === 2 || index === 10
+            topRatedList = this.setDoughnutChartValueAndColor(
+                dataValues,
+                dataColors,
+                topRatedList
             );
-        } */
+
+            dataValues = [...dataValues, otherPercentage];
+        }
 
         this.setDoughnutChartConfig(
             dataValues,
