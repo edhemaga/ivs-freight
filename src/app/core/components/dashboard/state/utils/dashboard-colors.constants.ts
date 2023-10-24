@@ -1,4 +1,7 @@
-import { MainColorsPallete } from '../models/main-colors-pallete.model';
+import {
+    MainColorsPallete,
+    SecondaryColorsPallete,
+} from '../models/colors-pallete.model';
 
 export class DashboardColors {
     static MAIN_COLORS_PALLETE: MainColorsPallete[] = [
@@ -13,5 +16,13 @@ export class DashboardColors {
         { color: 'pink', code: '#e668a0' },
         { color: 'brown', code: '#a08266' },
         { color: 'grey', code: '#cccccc' },
+    ];
+
+    static SECONDARY_COLORS_PALLETE: SecondaryColorsPallete[] = [
+        { code: '#92b1f5' },
+        { code: '#fbc88b' },
+        { code: '#ed9292' },
+        { code: '#86c9c3' },
+        { code: '#c999f4' },
     ];
 }

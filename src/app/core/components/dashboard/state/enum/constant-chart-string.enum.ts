@@ -11,6 +11,7 @@ export enum ConstantChartStringEnum {
     THOUSAND_SIGN = 'K',
 
     DOUGHNUT = 'doughnut',
+    NUMBER = 'number',
 
     DOUGHNUT_1800_DIMENSION = '350',
 

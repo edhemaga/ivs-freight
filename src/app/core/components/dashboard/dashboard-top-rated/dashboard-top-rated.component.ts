@@ -23,13 +23,21 @@ import { TopRatedDropdownItem } from '../state/models/top-rated-dropdown-item.mo
 import { TopRatedTab } from '../state/models/top-rated-tab.model';
 import { DropdownListItem } from '../state/models/dropdown-list-item.model';
 import { TopRatedListItem } from '../state/models/top-rated-list-item.model';
-import { MainColorsPallete } from '../state/models/main-colors-pallete.model';
+import {
+    MainColorsPallete,
+    SecondaryColorsPallete,
+} from '../state/models/colors-pallete.model';
 import {
     ChartInitProperties,
     DoughnutChart,
     DoughnutChartConfig,
     DoughnutChartPercentage,
 } from '../state/models/doughnut-chart.model';
+import {
+    BarChart,
+    BarChartAxes,
+    BarChartConfig,
+} from '../state/models/bar-chart.model';
 
 @Component({
     selector: 'app-dashboard-top-rated',
@@ -39,6 +47,7 @@ import {
 export class DashboardTopRatedComponent implements OnInit, AfterViewInit {
     @ViewChild('popover') public popover: NgbPopover;
     @ViewChild('doughnutChart') public doughnutChart: DoughnutChart;
+    @ViewChild('barChart') public barChart: BarChart;
 
     public topRatedForm: UntypedFormGroup;
     public topRatedTitle: string = ConstantStringEnum.DRIVER;
@@ -115,27 +124,6 @@ export class DashboardTopRatedComponent implements OnInit, AfterViewInit {
             percent: 2.12,
             isSelected: false,
         },
-        {
-            id: 11,
-            name: 'Jure Guvo',
-            value: 18185.5,
-            percent: 2.12,
-            isSelected: false,
-        },
-        {
-            id: 12,
-            name: 'Jure Guvo 1',
-            value: 18185.5,
-            percent: 2.12,
-            isSelected: false,
-        },
-        {
-            id: 13,
-            name: 'Jure Guvo 2',
-            value: 18185.5,
-            percent: 2.12,
-            isSelected: false,
-        },
     ];
     public selectedTopRatedList: TopRatedListItem[] = [];
     public topRatedListSelectedPercentage: number = 100;
@@ -160,157 +148,17 @@ export class DashboardTopRatedComponent implements OnInit, AfterViewInit {
 
     // colors
     public mainColorsPallete: MainColorsPallete[] = [];
+    public secondaryColorsPallete: SecondaryColorsPallete[] = [];
 
     // charts
     public doughnutChartConfig: DoughnutChartConfig;
+    public barChartConfig: BarChartConfig;
+    public barChartAxes: BarChartAxes;
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    @ViewChild('topDriverBarChart') public topDriverBarChart: any;
-
-    public selectedDrivers: any[] = [];
-
     // tabs
     private currentSwitchTab: string = 'All Time';
-
-    // chart
-    public barChartConfig: object = {
-        dataProperties: [
-            {
-                defaultConfig: {
-                    type: 'bar',
-                    data: [
-                        90000, 70000, 25000, 13000, 28000, 80000, 120000, 70000,
-                        40000, 50000, 25000, 13000, 28000, 80000, 120000, 70000,
-                        40000, 50000, 25000, 13000, 28000, 80000, 120000, 70000,
-                        50000, 28000, 80000, 120000, 70000, 50000, 28000, 80000,
-                        120000, 70000, 50000, 28000, 80000, 120000, 70000,
-                        50000, 28000, 80000, 120000, 70000, 50000, 28000, 80000,
-                        120000, 70000, 50000,
-                    ],
-                    yAxisID: 'y-axis-0',
-                    backgroundColor: '#919191',
-                    borderColor: '#919191',
-                    hoverBackgroundColor: '#6C6C6C',
-                    hoverBorderColor: '#707070',
-                    label: 'Top 10',
-                    id: 'top10',
-                },
-            },
-            {
-                defaultConfig: {
-                    type: 'bar',
-                    data: [
-                        60000, 100000, 95000, 47000, 80000, 120000, 90000,
-                        60000, 100000, 95000, 47000, 80000, 120000, 90000,
-                        60000, 100000, 95000, 47000, 80000, 120000, 90000,
-                        60000, 50000, 100000, 120000, 90000, 60000, 50000,
-                        100000, 120000, 90000, 60000, 50000, 100000, 120000,
-                        90000, 60000, 50000, 100000, 120000, 90000, 60000,
-                        50000, 100000, 120000, 90000, 60000, 50000, 100000,
-                        120000,
-                    ],
-                    yAxisID: 'y-axis-0',
-                    backgroundColor: '#CCCCCC',
-                    borderColor: '#CCCCCC',
-                    hoverBackgroundColor: '#AAAAAA',
-                    hoverBorderColor: '#707070',
-                    label: 'All Others',
-                    id: 'allOthers',
-                },
-            },
-        ],
-        showLegend: false,
-        chartValues: [2, 2],
-        defaultType: 'bar',
-        chartWidth: '750',
-        chartHeight: '290',
-        removeChartMargin: true,
-        gridHoverBackground: true,
-        startGridBackgroundFromZero: true,
-        dataMaxRows: 4,
-        hasHoverData: true,
-        hassecondTabValueage: true,
-        allowAnimation: true,
-        offset: true,
-        tooltipOffset: { min: 105, max: 279 },
-        dataLabels: [
-            'MAR',
-            '',
-            'MAY',
-            '',
-            'JUL',
-            '',
-            'SEP',
-            '',
-            'NOV',
-            '',
-            '2024',
-            '',
-            'MAR',
-            '',
-            'MAY',
-            '',
-            'JUL',
-            '',
-            'SEP',
-            '',
-            'NOV',
-            '',
-            '2025',
-            '',
-            'MAR',
-        ],
-        noChartImage: 'assets/svg/common/no_data_pay.svg',
-    };
-    public barAxes: object = {
-        verticalLeftAxes: {
-            visible: true,
-            minValue: 0,
-            maxValue: 120000,
-            stepSize: 30000,
-            showGridLines: true,
-        },
-        horizontalAxes: {
-            visible: true,
-            position: 'bottom',
-            showGridLines: false,
-        },
-    };
-
-    // colors
-    public compareColor: any = {};
-    private chartColors: any[] = [];
-    private savedColors: any[] = [];
-    private compareHoverColor: any = {};
-    private hoverCircleColor: any[] = [
-        '596FE8',
-        'FD952D',
-        'ED445E',
-        '2FA558',
-        '7F39AA',
-        '38BDEB',
-        'FFCA28',
-        'A2D35F',
-        'F276EF',
-        '8D6E63',
-    ];
-    private savedHoverColors: any[] = [];
-    private chartHoverColors: any[] = [];
-
-    public circleColor: any[] = [
-        /* mainPalleteColors */ '8A9AEF',
-        'FDB46B',
-        'F27B8E',
-        '6DC089',
-        'A574C3',
-        '73D0F1',
-        'FFD54F',
-        'BDE08E',
-        'F69FF3',
-        'A1887F',
-        'CCCCCC',
-    ];
 
     constructor(
         private formBuilder: UntypedFormBuilder,
@@ -323,6 +171,8 @@ export class DashboardTopRatedComponent implements OnInit, AfterViewInit {
         this.getConstantData();
 
         this.setDoughnutChartData(this.topRatedList);
+
+        this.setBarChartConfigAndAxes();
     }
 
     private createForm(): void {
@@ -346,6 +196,7 @@ export class DashboardTopRatedComponent implements OnInit, AfterViewInit {
             DashboardTopRatedConstants.SUB_PERIOD_DROPDOWN_DATA;
 
         this.mainColorsPallete = DashboardColors.MAIN_COLORS_PALLETE;
+        this.secondaryColorsPallete = DashboardColors.SECONDARY_COLORS_PALLETE;
     }
 
     public handleSearchValue(searchValue: string): void {
@@ -507,6 +358,8 @@ export class DashboardTopRatedComponent implements OnInit, AfterViewInit {
         ).toFixed(2);
 
         this.setDoughnutChartData(this.selectedTopRatedList, true);
+
+        this.setBarChartData(this.selectedTopRatedList);
     }
 
     public handleRemoveSelectedClick(
@@ -535,6 +388,24 @@ export class DashboardTopRatedComponent implements OnInit, AfterViewInit {
             this.setDoughnutChartData(this.selectedTopRatedList, true);
         } else {
             this.setDoughnutChartData(this.topRatedList);
+        }
+
+        this.setBarChartData(this.selectedTopRatedList, true, topRatedListItem);
+    }
+
+    public handleHoverSelected(
+        index: number,
+        removeHover: boolean = false
+    ): void {
+        if (!removeHover) {
+            this.doughnutChart.hoverDoughnut(
+                index,
+                ConstantChartStringEnum.NUMBER
+            );
+            this.barChart.hoverBarChart(this.selectedTopRatedList[index]);
+        } else {
+            this.doughnutChart.hoverDoughnut(null);
+            this.barChart.hoverBarChart(null);
         }
     }
 
@@ -800,6 +671,155 @@ export class DashboardTopRatedComponent implements OnInit, AfterViewInit {
         );
     }
 
+    private setBarChartConfigAndAxes(): void {
+        this.barChartConfig = {
+            dataProperties: [
+                {
+                    defaultConfig: {
+                        type: 'bar',
+                        data: [
+                            90000, 70000, 25000, 13000, 28000, 80000, 120000,
+                            70000, 40000, 50000, 25000, 13000, 28000, 80000,
+                            120000, 70000, 40000, 50000, 25000, 13000, 28000,
+                            80000, 120000, 70000, 50000,
+                        ],
+                        yAxisID: 'y-axis-0',
+                        backgroundColor: '#AAAAAA',
+                        borderColor: '#919191',
+                        hoverBackgroundColor: '#AAAAAA',
+                        hoverBorderColor: '#AAAAAA',
+                        label: 'Top 10',
+                        id: 'top10',
+                    },
+                },
+                {
+                    defaultConfig: {
+                        type: 'bar',
+                        data: [
+                            60000, 100000, 95000, 47000, 80000, 120000, 90000,
+                            60000, 100000, 95000, 47000, 80000, 120000, 90000,
+                            60000, 100000, 95000, 47000, 80000, 120000, 90000,
+                            60000, 50000, 100000, 120000,
+                        ],
+                        yAxisID: 'y-axis-0',
+                        backgroundColor: '#DADADA',
+                        borderColor: '#CCCCCC',
+                        hoverBackgroundColor: '#DADADA',
+                        hoverBorderColor: '#DADADA',
+                        label: 'All Others',
+                        id: 'allOthers',
+                    },
+                },
+            ],
+            showLegend: false,
+            chartValues: [2, 2],
+            defaultType: 'bar',
+            chartWidth: '750',
+            chartHeight: '200',
+            removeChartMargin: true,
+            gridHoverBackground: true,
+            startGridBackgroundFromZero: true,
+            dataMaxRows: 4,
+            hasHoverData: true,
+            hassecondTabValueage: true,
+            allowAnimation: true,
+            offset: true,
+            tooltipOffset: { min: 105, max: 279 },
+            dataLabels: [
+                'MAR',
+                '',
+                'MAY',
+                '',
+                'JUL',
+                '',
+                'SEP',
+                '',
+                'NOV',
+                '',
+                '2024',
+                '',
+                'MAR',
+                '',
+                'MAY',
+                '',
+                'JUL',
+                '',
+                'SEP',
+                '',
+                'NOV',
+                '',
+                '2025',
+                '',
+                'MAR',
+            ],
+            noChartImage: 'assets/svg/common/no_data_pay.svg',
+        };
+
+        // Bar Axes
+        this.barChartAxes = {
+            verticalLeftAxes: {
+                visible: true,
+                minValue: 0,
+                maxValue: 120000,
+                stepSize: 30000,
+                showGridLines: true,
+            },
+            horizontalAxes: {
+                visible: true,
+                position: 'bottom',
+                showGridLines: false,
+            },
+        };
+    }
+
+    private setBarChartData(
+        topRatedList: TopRatedListItem[],
+        removingData?: boolean,
+        topRatedListItem?: TopRatedListItem
+    ): void {
+        if (!removingData) {
+            let dataSend = [
+                60000, 100000, 95000, 47000, 80000, 120000, 90000, 60000,
+                100000, 95000, 47000, 80000, 120000, 90000, 60000, 100000,
+                95000, 47000, 80000, 120000, 90000, 60000, 50000, 100000,
+                120000,
+            ];
+
+            let selectedColors: string[] = [];
+            let selectedHoverColors: string[] = [];
+
+            for (let i = 0; i < topRatedList.length; i++) {
+                selectedColors = [
+                    ...selectedColors,
+                    this.secondaryColorsPallete[i].code,
+                ];
+                selectedHoverColors = [
+                    ...selectedHoverColors,
+                    this.mainColorsPallete[i].code,
+                ];
+            }
+
+            if (this.barChart) {
+                this.barChart.updateMuiliBar(
+                    topRatedList,
+                    dataSend,
+                    selectedColors,
+                    selectedHoverColors
+                );
+            }
+
+            /* this.setBarChartConfig() */
+        } else {
+            const displayChartDefaultValue =
+                this.selectedTopRatedList.length === 0;
+
+            this.barChart.removeMultiBarData(
+                topRatedListItem,
+                displayChartDefaultValue
+            );
+        }
+    }
+
     ////////////////////////////////////////////////////////////////
 
     public handleSwitchTabClick(event, useLast?) {
@@ -809,68 +829,18 @@ export class DashboardTopRatedComponent implements OnInit, AfterViewInit {
         if (switchData == 'Custom') {
             return false;
         }
-        this.topDriverBarChart.updateTime(switchData);
+        this.barChart.updateTime(switchData);
     }
 
     ///////////////////////////////////////////////////////
 
-    updateBarChart(selectedStates: any) {
-        let dataSend = [
-            60000, 100000, 95000, 47000, 80000, 120000, 90000, 60000, 100000,
-            95000, 47000, 80000, 120000, 90000, 60000, 100000, 95000, 47000,
-            80000, 120000, 90000, 60000, 50000, 100000, 120000,
-        ];
-        if (this.topDriverBarChart) {
-            this.topDriverBarChart.updateMuiliBar(
-                selectedStates,
-                dataSend,
-                this.compareColor,
-                this.compareHoverColor
-            );
-        }
-    }
-
-    ////////////////// ne treba vjerovatno
-
-    clearSelected() {
-        this.savedColors = [...this.chartColors];
-        this.savedHoverColors = [...this.chartHoverColors];
-
-        this.topRatedList.sort((a, b) => {
-            return a.id - b.id;
-        });
-
-        this.setDoughnutChartData(this.topRatedList, false);
-        this.compareColor = [];
-        this.compareHoverColor = [];
-
-        this.selectedDrivers.map((item) => {
-            this.topDriverBarChart.removeMultiBarData(item, true);
-        });
-
-        this.selectedDrivers = [];
-        this.topDriverBarChart.selectedDrivers = this.selectedDrivers;
-        this.doughnutChart.selectedDrivers = this.selectedDrivers;
-        this.removeDriverHover();
-    }
-
-    hoverDriver(index: any) {
-        this.doughnutChart.hoverDoughnut(index, 'number');
-        this.topDriverBarChart.hoverBarChart(this.selectedDrivers[index]);
-    }
-
-    removeDriverHover() {
-        this.doughnutChart.hoverDoughnut(null);
-        this.topDriverBarChart.hoverBarChart(null);
+    selectTimePeriod(period) {
+        this.barChart.updateTime(this.currentSwitchTab, period);
     }
 
     saveCustomRange(ev) {
         this.timePeriod.changeCustomTime(ev);
-        this.topDriverBarChart.updateTime('Custom Set', ev);
-    }
-
-    selectTimePeriod(period) {
-        this.topDriverBarChart.updateTime(this.currentSwitchTab, period);
+        this.barChart.updateTime('Custom Set', ev);
     }
 
     /* <app-ta-time-period

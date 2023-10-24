@@ -5,10 +5,13 @@ import { TopRatedListItem } from './top-rated-list-item.model';
 interface ChartDefaultConfig {
     type: string;
     data: number[];
-    backgroundColor: string[];
-    borderColor: string;
-    hoverBackgroundColor: string[];
+    backgroundColor: string | string[];
+    borderColor: string | string;
+    hoverBackgroundColor: string | string[];
     hoverBorderColor: string;
+    yAxisID?: string;
+    label?: string;
+    id?: string;
 }
 
 export interface ChartInitProperties {
@@ -25,16 +28,9 @@ export interface DoughnutChartPercentage {
     otherValue: number;
 }
 
-export interface DoughnutChart extends Chart {
-    chartInnitProperties: ChartInitProperties[];
-    selectedDrivers: TopRatedListItem[];
-    chartUpdated: (data: number[]) => void;
-    hoverDoughnut: (elements: number, type?: string) => void;
-}
-
 export interface DoughnutChartConfig extends ChartConfiguration {
     dataProperties: { defaultConfig: ChartDefaultConfig }[];
-    chartInnitProperties: ChartInitProperties[];
+    chartInnitProperties?: ChartInitProperties[];
     showLegend: boolean;
     chartValues: number[];
     defaultType: string;
@@ -42,8 +38,16 @@ export interface DoughnutChartConfig extends ChartConfiguration {
     chartHeight: string;
     removeChartMargin: boolean;
     dataLabels: string[];
-    driversList: TopRatedListItem[];
+    driversList?: TopRatedListItem[];
     allowAnimation: boolean;
     noChartImage: string;
-    dontUseResponsive: boolean;
+    dontUseResponsive?: boolean;
+}
+
+export interface DoughnutChart extends Chart {
+    chartInnitProperties: ChartInitProperties[];
+    selectedDrivers: TopRatedListItem[];
+
+    chartUpdated: (data: number[]) => void;
+    hoverDoughnut: (elements: number, type?: string) => void;
 }
