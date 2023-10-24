@@ -167,7 +167,7 @@ export class MvrAuthorizationComponent implements OnInit, OnDestroy {
             signature,
             files,
             id,
-            filesReviewMessage,
+            /*          filesReviewMessage, */
         } = stepValues;
 
         this.mvrAuthId = id;
@@ -216,14 +216,14 @@ export class MvrAuthorizationComponent implements OnInit, OnDestroy {
                 const isAnyInputInLineIncorrect =
                     anyInputInLineIncorrect(filesLineInputItems);
 
-                if (isAnyInputInLineIncorrect && !filesReviewMessage) {
+                /*     if (isAnyInputInLineIncorrect && !filesReviewMessage) {
                     this.openAnnotationArray[0].displayAnnotationButton = true;
                 }
 
                 if (isAnyInputInLineIncorrect && filesReviewMessage) {
                     this.openAnnotationArray[0].displayAnnotationTextArea =
                         true;
-                }
+                } */
 
                 const inputFieldsArray = JSON.stringify(
                     this.openAnnotationArray[0].lineInputs
@@ -235,9 +235,9 @@ export class MvrAuthorizationComponent implements OnInit, OnDestroy {
                     this.hasIncorrectFields = false;
                 }
 
-                this.mvrAuthorizationForm.patchValue({
+                /*   this.mvrAuthorizationForm.patchValue({
                     firstRowReview: filesReviewMessage,
-                });
+                }); */
             }
         }
     }
@@ -559,8 +559,8 @@ export class MvrAuthorizationComponent implements OnInit, OnDestroy {
                     isValid: !this.openAnnotationArray[0].lineInputs[index],
                 };
             }),
-            filesReviewMessage:
-                this.mvrAuthorizationForm.get('firstRowReview').value,
+            /*    filesReviewMessage:
+                this.mvrAuthorizationForm.get('firstRowReview').value, */
         };
 
         const selectMatchingBackendMethod = () => {

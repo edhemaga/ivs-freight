@@ -422,7 +422,7 @@ export class OwnerInfoComponent implements OnInit, OnDestroy {
                     isAddressValid,
                     isAddressUnitValid,
                     isAccountValid,
-                    accountMessage,
+                    /*  accountMessage, */
                     addressMessage,
                     isTruckVinValid,
                     truckVinMessage,
@@ -432,9 +432,9 @@ export class OwnerInfoComponent implements OnInit, OnDestroy {
                     isTrailerVinValid,
                     trailerVinMessage,
                     isTrailerModelValid,
-                    trailerModelMessage,
+                    /*   trailerModelMessage, */
                     isTrailerYearValid,
-                    trailerYearMessage,
+                    /*      trailerYearMessage, */
                 } = stepValues.review;
 
                 this.stepHasReviewValues = true;
@@ -475,9 +475,9 @@ export class OwnerInfoComponent implements OnInit, OnDestroy {
                 this.openAnnotationArray[3] = {
                     ...this.openAnnotationArray[3],
                     lineInputs: [!isAccountValid],
-                    displayAnnotationButton:
+                    /*   displayAnnotationButton:
                         !isAccountValid && !accountMessage ? true : false,
-                    displayAnnotationTextArea: accountMessage ? true : false,
+                    displayAnnotationTextArea: accountMessage ? true : false, */
                 };
                 this.openAnnotationArray[4] = {
                     ...this.openAnnotationArray[4],
@@ -508,24 +508,24 @@ export class OwnerInfoComponent implements OnInit, OnDestroy {
                 this.openAnnotationArray[7] = {
                     ...this.openAnnotationArray[7],
                     lineInputs: [!isTrailerModelValid],
-                    displayAnnotationButton:
+                    /*   displayAnnotationButton:
                         !isTrailerModelValid && !trailerModelMessage
                             ? true
                             : false,
                     displayAnnotationTextArea: trailerModelMessage
                         ? true
-                        : false,
+                        : false, */
                 };
                 this.openAnnotationArray[8] = {
                     ...this.openAnnotationArray[8],
                     lineInputs: [!isTrailerYearValid],
-                    displayAnnotationButton:
+                    /*   displayAnnotationButton:
                         !isTrailerYearValid && !trailerYearMessage
                             ? true
                             : false,
                     displayAnnotationTextArea: trailerYearMessage
                         ? true
-                        : false,
+                        : false, */
                 };
 
                 const inputFieldsArray = JSON.stringify(
@@ -542,12 +542,12 @@ export class OwnerInfoComponent implements OnInit, OnDestroy {
                     firstRowReview: businessNameEinMessage,
                     secondRowReview: contactMessage,
                     thirdRowReview: addressMessage,
-                    fourthRowReview: accountMessage,
+                    /*             fourthRowReview: accountMessage, */
                     fifthRowReview: truckVinMessage,
                     sixthRowReview: truckModelYearMessage,
                     seventhRowReview: trailerVinMessage,
-                    eightRowReview: trailerModelMessage,
-                    ninthRowReview: trailerYearMessage,
+                    /*           eightRowReview: trailerModelMessage,
+                    ninthRowReview: trailerYearMessage, */
                 });
             }
         }
@@ -1875,7 +1875,7 @@ export class OwnerInfoComponent implements OnInit, OnDestroy {
             isAddressUnitValid: !this.openAnnotationArray[2].lineInputs[1],
             addressMessage: thirdRowReview,
             isAccountValid: !this.openAnnotationArray[3].lineInputs[0],
-            accountMessage: fourthRowReview,
+            /*   accountMessage: fourthRowReview, */
             isTruckVinValid: !this.openAnnotationArray[4].lineInputs[0],
             truckVinMessage: fifthRowReview,
             isTruckModelValid: !this.openAnnotationArray[5].lineInputs[0],
@@ -1884,9 +1884,9 @@ export class OwnerInfoComponent implements OnInit, OnDestroy {
             isTrailerVinValid: !this.openAnnotationArray[6].lineInputs[0],
             trailerVinMessage: seventhRowReview,
             isTrailerModelValid: !this.openAnnotationArray[7].lineInputs[0],
-            trailerModelMessage: eightRowReview,
+            /*           trailerModelMessage: eightRowReview, */
             isTrailerYearValid: !this.openAnnotationArray[8].lineInputs[0],
-            trailerYearMessage: ninthRowReview,
+            /*      trailerYearMessage: ninthRowReview, */
         };
 
         const selectMatchingBackendMethod = () => {

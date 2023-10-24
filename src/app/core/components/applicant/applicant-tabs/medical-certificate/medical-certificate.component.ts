@@ -150,7 +150,7 @@ export class MedicalCertificateComponent implements OnInit, OnDestroy {
             if (stepValues.files[0].review) {
                 this.stepHasReviewValues = true;
 
-                const {
+                /*    const {
                     isIssueDateValid,
                     isExpireDateValid,
                     dateMessage,
@@ -166,7 +166,7 @@ export class MedicalCertificateComponent implements OnInit, OnDestroy {
                             ? true
                             : false,
                     displayAnnotationTextArea: dateMessage ? true : false,
-                };
+                }; */
 
                 for (let i = 0; i < stepValues.files.length; i++) {
                     const isFileValid = stepValues.files[i].review.isValid;
@@ -182,14 +182,14 @@ export class MedicalCertificateComponent implements OnInit, OnDestroy {
                 const isAnyInputInLineIncorrect =
                     anyInputInLineIncorrect(filesLineInputItems);
 
-                if (isAnyInputInLineIncorrect && !filesReviewMessage) {
+                /*    if (isAnyInputInLineIncorrect && !filesReviewMessage) {
                     this.openAnnotationArray[1].displayAnnotationButton = true;
                 }
 
                 if (isAnyInputInLineIncorrect && filesReviewMessage) {
                     this.openAnnotationArray[1].displayAnnotationTextArea =
                         true;
-                }
+                } */
 
                 const inputFieldsArray = JSON.stringify(
                     this.openAnnotationArray.map((item) => item.lineInputs)
@@ -201,10 +201,10 @@ export class MedicalCertificateComponent implements OnInit, OnDestroy {
                     this.hasIncorrectFields = false;
                 }
 
-                this.medicalCertificateForm.patchValue({
+                /*    this.medicalCertificateForm.patchValue({
                     firstRowReview: dateMessage,
                     secondRowReview: filesReviewMessage,
-                });
+                }); */
             }
         }
     }
@@ -443,8 +443,8 @@ export class MedicalCertificateComponent implements OnInit, OnDestroy {
                     isValid: !this.openAnnotationArray[1].lineInputs[index],
                 };
             }),
-            filesReviewMessage:
-                this.medicalCertificateForm.get('secondRowReview').value,
+            /*   filesReviewMessage:
+                this.medicalCertificateForm.get('secondRowReview').value, */
         };
 
         const selectMatchingBackendMethod = () => {
