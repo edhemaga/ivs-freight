@@ -23,7 +23,8 @@ export interface CompanyOwnerInfoReviewResponse {
     isAddressUnitValid?: boolean;
     addressMessage?: string | null;
     isAccountValid?: boolean;
-    accountMessage?: string | null;
+    isRoutingValid?: boolean;
+    accountRoutingMessage?: string | null;
     isTruckVinValid?: boolean;
     truckVinMessage?: string | null;
     isTruckModelValid?: boolean;
@@ -33,8 +34,7 @@ export interface CompanyOwnerInfoReviewResponse {
     trailerVinMessage?: string | null;
     isTrailerModelValid?: boolean | null;
     isTrailerYearValid?: boolean | null;
-    trailerModelMessage?: string | null;
-    trailerYearMessage?: string | null;
+    trailerModelYearMessage?: string | null;
     companyOwnerInfoId?: number;
 }
 

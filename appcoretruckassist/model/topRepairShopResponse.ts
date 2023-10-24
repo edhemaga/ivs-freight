@@ -9,7 +9,7 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { IntervalResponse } from './intervalResponse';
+import { RepairShopIntervalResponse } from './repairShopIntervalResponse';
 
 
 export interface TopRepairShopResponse { 
@@ -19,6 +19,6 @@ export interface TopRepairShopResponse {
     cost?: number | null;
     visitPercentage?: number | null;
     costPercentage?: number | null;
-    intervals?: Array<IntervalResponse> | null;
+    intervals?: Array<RepairShopIntervalResponse> | null;
 }
 
