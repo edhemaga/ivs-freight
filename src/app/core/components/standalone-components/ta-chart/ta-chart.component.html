@@ -65,12 +65,13 @@
                         indx + 1 < chartInnitProperties.length ? '30px' : '0px'
                 }"
             >
-                <div class="chart_label">{{ item.percent }}</div>
-                <div class="chart_value">{{ item.value }}</div>
-                <div class="chart_data_name">{{ item.name }}</div>
+                <div class="chart_label">{{ item?.percent }}</div>
+                <div class="chart_value">{{ item?.value }}</div>
+                <div class="chart_data_name">{{ item?.name }}</div>
             </div>
         </div>
     </div>
+
     <div
         class="hover_data_holder"
         (mouseenter)="showHoverData = false"
@@ -95,7 +96,7 @@
                         : 'center'
             }"
         >
-            JANUARY, 2024
+            JANUARY, 2024 asdasdas
         </div>
         <div class="hover_data_border_line"></div>
 
@@ -134,6 +135,7 @@
             </div>
         </div>
     </div>
+
     <canvas
         *ngIf="!noChartData"
         baseChart

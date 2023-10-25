@@ -125,6 +125,10 @@
                         &.dropdown-left-w-6 {
                             width: 88px;
                         }
+
+                        &.dropdown-left-w-7 {
+                            width: 150px;
+                        }
                     }
 
                     &.dropdown-right-container {
@@ -190,7 +194,7 @@
 
             /* List */
             &-list {
-                height: 415px;
+                height: 400px;
                 overflow: hidden;
                 padding-right: 12px;
 

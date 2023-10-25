@@ -124,7 +124,14 @@ export class TaChartComponent implements OnInit, OnChanges {
             this.chart.chart.config.data.datasets[0] =
                 changes.chartConfig.currentValue.dataProperties[0].defaultConfig;
 
+            if (changes.chartConfig.currentValue.dataProperties.length > 1) {
+                this.chart.chart.config.data.datasets[1] =
+                    changes.chartConfig.currentValue.dataProperties[1]?.defaultConfig;
+            }
+
             this.driversList = changes.chartConfig.currentValue.driversList;
+            this.saveChartProperties =
+                changes.chartConfig.currentValue.chartInnitProperties;
         }
     }
 
@@ -803,8 +810,8 @@ export class TaChartComponent implements OnInit, OnChanges {
         if (driverDetails) {
             this.chartInnitProperties = [
                 {
-                    percent: driverDetails.percent + '%',
-                    value: '$' + driverDetails.value + 'K',
+                    percent: driverDetails.percent,
+                    value: driverDetails.value,
                     name: driverDetails.name,
                 },
             ];
@@ -833,6 +840,10 @@ export class TaChartComponent implements OnInit, OnChanges {
         }
 
         this.animationDuration = 1000;
+
+        setTimeout(() => {
+            this.ref.detectChanges();
+        }, 100);
     }
 
     updateHoverData(value: number) {
@@ -1122,7 +1133,6 @@ export class TaChartComponent implements OnInit, OnChanges {
         this.hoveringStatus = true;
         this.chartHovered.emit(true);
         const canvas = this.chart.chart.canvas;
-        const ctx = this.chart.chart.ctx;
 
         let xPoint1 = 0;
         let xPoint2 = 0;
@@ -1135,6 +1145,7 @@ export class TaChartComponent implements OnInit, OnChanges {
                 xPoint1 = xAxis['_gridLineItems'][1]['x1'];
                 xPoint2 = xAxis['_gridLineItems'][0]['x2'];
                 const elWidth = xPoint1 - xPoint2;
+
                 if (this.axesProperties?.horizontalAxes?.showGridLines) {
                     xAxis['_gridLineItems'].map((item, i) => {
                         if (i && i != xAxis['_gridLineItems'].length - 1) {
@@ -1200,9 +1211,6 @@ export class TaChartComponent implements OnInit, OnChanges {
         });
 
         this.showHoverData = true;
-        setTimeout(() => {
-            this.ref.detectChanges();
-        });
     }
 
     chartHoverOut() {

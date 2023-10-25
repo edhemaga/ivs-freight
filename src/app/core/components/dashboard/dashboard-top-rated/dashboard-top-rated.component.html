@@ -106,7 +106,9 @@
                         'dropdown-left-w-5':
                             selectedMainPeriod.name === 'All Time',
                         'dropdown-left-w-6':
-                            selectedMainPeriod.name === 'Custom'
+                            selectedMainPeriod.name === 'Custom',
+                        'dropdown-left-w-7':
+                            selectedMainPeriod.name === 'Quartal-to-Date'
                     }"
                 >
                     <app-ta-input-dropdown
@@ -216,11 +218,11 @@
                         }"
                         (click)="handleAddSelectedClick(topRatedListItem, i)"
                         (mouseenter)="
-                            selectedTopRatedList.length &&
+                            topRatedListItem.isSelected &&
                                 handleHoverSelected(i)
                         "
                         (mouseleave)="
-                            selectedTopRatedList.length &&
+                            topRatedListItem.isSelected &&
                                 handleHoverSelected(i, true)
                         "
                     >
@@ -279,7 +281,25 @@
                             <div
                                 class="d-flex align-items-center top-rated-item-first-tab-box"
                             >
-                                <p class="m-0">${{ topRatedListItem.value }}</p>
+                                <p class="m-0">
+                                    {{
+                                        topRatedTitle === 'Repair Shop' &&
+                                        currentActiveTab.name === 'Cost'
+                                            ? '$'
+                                            : ''
+                                    }}
+                                </p>
+                                <p class="m-0">
+                                    {{ topRatedListItem.value }}
+                                </p>
+                                <p class="m-0">
+                                    {{
+                                        topRatedTitle === 'Repair Shop' &&
+                                        currentActiveTab.name === 'Cost'
+                                            ? 'K'
+                                            : ''
+                                    }}
+                                </p>
                             </div>
 
                             <div

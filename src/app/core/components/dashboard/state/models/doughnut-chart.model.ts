@@ -28,6 +28,13 @@ export interface DoughnutChartPercentage {
     otherValue: number;
 }
 
+export interface DoughnutChartSigns {
+    filteredTopTenPercentage?: string;
+    filteredTopTenValue: string;
+    filteredOtherPercentage?: string;
+    filteredOtherValue?: string;
+}
+
 export interface DoughnutChartConfig extends ChartConfiguration {
     dataProperties: { defaultConfig: ChartDefaultConfig }[];
     chartInnitProperties?: ChartInitProperties[];

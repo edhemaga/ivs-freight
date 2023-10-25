@@ -26,6 +26,14 @@ export interface BarChartAxes {
     };
 }
 
+export interface BarChartValues {
+    defaultBarValues: {
+        topRatedBarValues: number[];
+        otherBarValues: number[];
+    };
+    selectedBarValues: number[][];
+}
+
 export interface BarChart extends Chart {
     updateTime: (currentTab: string, period?: string) => void;
     updateMuiliBar: (
