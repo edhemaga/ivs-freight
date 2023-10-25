@@ -498,17 +498,6 @@ export class DashboardTopRatedComponent
                 this.selectedSubPeriod.name
             ) as SubintervalType;
 
-        const topRatedArgumentsData = [
-            selectedTab,
-            null,
-            null,
-            null,
-            selectedMainPeriod,
-            null,
-            null,
-            selectedSubPeriod,
-        ] as const;
-
         this.barChartValues = {
             defaultBarValues: {
                 topRatedBarValues: [],
@@ -523,12 +512,12 @@ export class DashboardTopRatedComponent
 
         switch (this.topRatedTitle) {
             case ConstantStringEnum.BROKER:
-                this.dashboardService
+                /*   this.dashboardService
                     .getTopRatedBroker(...topRatedArgumentsData)
                     .pipe(takeUntil(this.destroy$))
                     .subscribe((brokerData) => {
                         console.log('brokerData', brokerData);
-                    });
+                    }); */
                 break;
             case ConstantStringEnum.SHIPPER:
                 /*   this.dashboardService
@@ -541,104 +530,124 @@ export class DashboardTopRatedComponent
                     }); */
                 break;
             case ConstantStringEnum.REPAIR_SHOP:
-                this.dashboardService
-                    .getTopRatedRepairShop(...topRatedArgumentsData)
-                    .pipe(takeUntil(this.destroy$))
-                    .subscribe((repairShopData) => {
-                        // top rated list and single selection data
-                        this.topRatedList = repairShopData.pagination.data.map(
-                            (repairShop) => {
-                                const filteredIntervals =
-                                    repairShop.intervals.map((interval) => {
-                                        return this.currentActiveTab.name ===
-                                            ConstantStringEnum.VISIT
-                                            ? interval.count
-                                            : interval.cost;
-                                    });
-
-                                this.barChartValues = {
-                                    ...this.barChartValues,
-                                    selectedBarValues: [
-                                        ...this.barChartValues
-                                            .selectedBarValues,
-                                        filteredIntervals,
-                                    ],
-                                };
-
-                                return {
-                                    id: repairShop.id,
-                                    name: repairShop.name,
-                                    value:
-                                        selectedTab === ConstantStringEnum.VISIT
-                                            ? repairShop.visit.toString()
-                                            : repairShop.cost.toString(),
-                                    percent:
-                                        selectedTab === ConstantStringEnum.VISIT
-                                            ? repairShop.visitPercentage.toString()
-                                            : repairShop.costPercentage.toString(),
-                                    isSelected: false,
-                                };
-                            }
-                        );
-
-                        // top rated intervals
-                        repairShopData.topTenRepairShops.map((repairShop) => {
-                            this.barChartValues = {
-                                ...this.barChartValues,
-                                defaultBarValues: {
-                                    ...this.barChartValues?.defaultBarValues,
-                                    topRatedBarValues:
-                                        this.currentActiveTab.name ===
-                                        ConstantStringEnum.VISIT
-                                            ? [
-                                                  ...this.barChartValues
-                                                      ?.defaultBarValues
-                                                      .topRatedBarValues,
-                                                  repairShop.count,
-                                              ]
-                                            : [
-                                                  ...this.barChartValues
-                                                      ?.defaultBarValues
-                                                      .topRatedBarValues,
-                                                  repairShop.cost,
-                                              ],
-                                },
-                            };
-                        });
-
-                        // other intervals
-                        repairShopData.allOther.map((repairShop) => {
-                            this.barChartValues = {
-                                ...this.barChartValues,
-                                defaultBarValues: {
-                                    ...this.barChartValues?.defaultBarValues,
-                                    otherBarValues:
-                                        this.currentActiveTab.name ===
-                                        ConstantStringEnum.VISIT
-                                            ? [
-                                                  ...this.barChartValues
-                                                      ?.defaultBarValues
-                                                      .otherBarValues,
-                                                  repairShop.count,
-                                              ]
-                                            : [
-                                                  ...this.barChartValues
-                                                      ?.defaultBarValues
-                                                      .otherBarValues,
-                                                  repairShop.cost,
-                                              ],
-                                },
-                            };
-                        });
-
-                        this.setDoughnutChartData(this.topRatedList);
-                        this.setBarChartConfigAndAxes(this.barChartValues);
-                    });
-
+                this.getTopRatedRepairShopListData(
+                    selectedTab,
+                    selectedMainPeriod,
+                    selectedSubPeriod
+                );
                 break;
             default:
                 break;
         }
+    }
+
+    private getTopRatedRepairShopListData(
+        selectedTab: DashboardTopReportType,
+        selectedMainPeriod: TimeInterval,
+        selectedSubPeriod: SubintervalType
+    ): void {
+        const topRatedArgumentsData = [
+            selectedTab,
+            null,
+            null,
+            null,
+            selectedMainPeriod,
+            null,
+            null,
+            selectedSubPeriod,
+        ] as const;
+
+        this.dashboardService
+            .getTopRatedRepairShop(...topRatedArgumentsData)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((repairShopData) => {
+                // top rated list and single selection data
+                this.topRatedList = repairShopData.pagination.data.map(
+                    (repairShop) => {
+                        const filteredIntervals = repairShop.intervals.map(
+                            (interval) => {
+                                return this.currentActiveTab.name ===
+                                    ConstantStringEnum.VISIT
+                                    ? interval.count
+                                    : interval.cost;
+                            }
+                        );
+
+                        this.barChartValues = {
+                            ...this.barChartValues,
+                            selectedBarValues: [
+                                ...this.barChartValues.selectedBarValues,
+                                filteredIntervals,
+                            ],
+                        };
+
+                        return {
+                            id: repairShop.id,
+                            name: repairShop.name,
+                            value:
+                                selectedTab === ConstantStringEnum.VISIT
+                                    ? repairShop.visit.toString()
+                                    : repairShop.cost.toString(),
+                            percent:
+                                selectedTab === ConstantStringEnum.VISIT
+                                    ? repairShop.visitPercentage.toString()
+                                    : repairShop.costPercentage.toString(),
+                            isSelected: false,
+                        };
+                    }
+                );
+
+                // top rated intervals
+                repairShopData.topTenRepairShops.map((repairShop) => {
+                    this.barChartValues = {
+                        ...this.barChartValues,
+                        defaultBarValues: {
+                            ...this.barChartValues?.defaultBarValues,
+                            topRatedBarValues:
+                                this.currentActiveTab.name ===
+                                ConstantStringEnum.VISIT
+                                    ? [
+                                          ...this.barChartValues
+                                              ?.defaultBarValues
+                                              .topRatedBarValues,
+                                          repairShop.count,
+                                      ]
+                                    : [
+                                          ...this.barChartValues
+                                              ?.defaultBarValues
+                                              .topRatedBarValues,
+                                          repairShop.cost,
+                                      ],
+                        },
+                    };
+                });
+
+                // other intervals
+                repairShopData.allOther.map((repairShop) => {
+                    this.barChartValues = {
+                        ...this.barChartValues,
+                        defaultBarValues: {
+                            ...this.barChartValues?.defaultBarValues,
+                            otherBarValues:
+                                this.currentActiveTab.name ===
+                                ConstantStringEnum.VISIT
+                                    ? [
+                                          ...this.barChartValues
+                                              ?.defaultBarValues.otherBarValues,
+                                          repairShop.count,
+                                      ]
+                                    : [
+                                          ...this.barChartValues
+                                              ?.defaultBarValues.otherBarValues,
+                                          repairShop.cost,
+                                      ],
+                        },
+                    };
+                });
+
+                this.setDoughnutChartData(this.topRatedList);
+                this.setBarChartConfigAndAxes(this.barChartValues);
+            });
     }
 
     private setDoughnutChartCenterStats(
