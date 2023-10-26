@@ -273,9 +273,9 @@ export class Step7Component implements OnInit, OnDestroy {
             releasedDate,
             location,
             workingForAnotherEmployer,
-            workingForAnotherEmployerDescription,
+            /* workingForAnotherEmployerDescription, */
             intendToWorkForAnotherEmployer,
-            intendToWorkForAnotherEmployerDescription,
+            /*  intendToWorkForAnotherEmployerDescription, */
             certifyInformation,
             sevenDaysHosReview,
         } = stepValues;
@@ -356,10 +356,10 @@ export class Step7Component implements OnInit, OnDestroy {
             startDate: convertDateFromBackend(releasedDate),
             address: location.address,
             anotherEmployer: workingForAnotherEmployer,
-            anotherEmployerExplain: workingForAnotherEmployerDescription,
+            /*   anotherEmployerExplain: workingForAnotherEmployerDescription, */
             intendToWorkAnotherEmployer: intendToWorkForAnotherEmployer,
-            intendToWorkAnotherEmployerExplain:
-                intendToWorkForAnotherEmployerDescription,
+            /*     intendToWorkAnotherEmployerExplain:
+                intendToWorkForAnotherEmployerDescription, */
             isValidAnotherEmployer: certifyInformation,
         });
 
@@ -769,9 +769,9 @@ export class Step7Component implements OnInit, OnDestroy {
             releasedDate: convertDateToBackend(startDate),
             location: selectedAddress,
             workingForAnotherEmployer: anotherEmployer,
-            workingForAnotherEmployerDescription: anotherEmployerExplain,
-            intendToWorkForAnotherEmployerDescription:
-                intendToWorkAnotherEmployerExplain,
+            /*    workingForAnotherEmployerDescription: anotherEmployerExplain, */
+            /*       intendToWorkForAnotherEmployerDescription:
+                intendToWorkAnotherEmployerExplain, */
             intendToWorkForAnotherEmployer: intendToWorkAnotherEmployer,
             certifyInformation: isValidAnotherEmployer,
         };
@@ -818,12 +818,12 @@ export class Step7Component implements OnInit, OnDestroy {
                                     location: saveData.location,
                                     workingForAnotherEmployer:
                                         saveData.workingForAnotherEmployer,
-                                    workingForAnotherEmployerDescription:
-                                        saveData.workingForAnotherEmployerDescription,
+                                    /*   workingForAnotherEmployerDescription:
+                                        saveData.workingForAnotherEmployerDescription, */
                                     intendToWorkForAnotherEmployer:
                                         saveData.intendToWorkForAnotherEmployer,
-                                    intendToWorkForAnotherEmployerDescription:
-                                        saveData.intendToWorkForAnotherEmployerDescription,
+                                    /* intendToWorkForAnotherEmployerDescription:
+                                        saveData.intendToWorkForAnotherEmployerDescription, */
                                     certifyInformation:
                                         saveData.certifyInformation,
                                 },

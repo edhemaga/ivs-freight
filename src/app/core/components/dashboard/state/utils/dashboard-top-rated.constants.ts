@@ -57,10 +57,11 @@ export class DashboardTopRatedConstants {
     static TOP_RATED_TABS: TopRatedTab[] = [
         {
             name: 'Mileage',
+            checked: true,
         },
         {
             name: 'Revenue',
-            checked: true,
+            checked: false,
         },
     ];
 
@@ -79,14 +80,18 @@ export class DashboardTopRatedConstants {
         },
         {
             id: 4,
-            name: 'Year-to-Date',
+            name: 'Quartal-to-Date',
         },
         {
             id: 5,
-            name: 'All Time',
+            name: 'Year-to-Date',
         },
         {
             id: 6,
+            name: 'All Time',
+        },
+        {
+            id: 7,
             name: 'Custom',
         },
     ];

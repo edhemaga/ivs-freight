@@ -10,10 +10,13 @@
  * Do not edit the class manually.
  */
 import { TopRepairShopResponsePagination } from './topRepairShopResponsePagination';
+import { RepairShopIntervalResponse } from './repairShopIntervalResponse';
 
 
 export interface TopRepairShopListResponse { 
     pagination?: TopRepairShopResponsePagination;
+    topTenRepairShops?: Array<RepairShopIntervalResponse> | null;
+    allOther?: Array<RepairShopIntervalResponse> | null;
     totalCost?: number | null;
     totalVisit?: number | null;
 }

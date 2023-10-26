@@ -11,10 +11,12 @@
  */
 
 
-export type DashboardTopReportType = 'Cost' | 'Visit';
+export type DashboardTopReportType = 'Cost' | 'Visit' | 'Load' | 'Revenue';
 
 export const DashboardTopReportType = {
     Cost: 'Cost' as DashboardTopReportType,
-    Visit: 'Visit' as DashboardTopReportType
+    Visit: 'Visit' as DashboardTopReportType,
+    Load: 'Load' as DashboardTopReportType,
+    Revenue: 'Revenue' as DashboardTopReportType
 };
 

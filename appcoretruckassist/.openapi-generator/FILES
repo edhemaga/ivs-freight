@@ -67,6 +67,10 @@ encoder.ts
 git_push.sh
 index.ts
 model/acceptApplicationCommand.ts
+model/accidentByStateListResponse.ts
+model/accidentByStateResponse.ts
+model/accidentByStateResponsePagination.ts
+model/accidentIntervalResponse.ts
 model/accidentItemResponse.ts
 model/accidentItemReviewResponse.ts
 model/accidentListResponse.ts
@@ -120,6 +124,7 @@ model/brokerContactShortResponse.ts
 model/brokerFilterListResponse.ts
 model/brokerFilterResponse.ts
 model/brokerFilterResponsePagination.ts
+model/brokerIntervalResponse.ts
 model/brokerInvoiceAgeingResponse.ts
 model/brokerLoadModalResponse.ts
 model/brokerLoadsResponse.ts
@@ -130,6 +135,7 @@ model/brokerModalResponse.ts
 model/brokerResponse.ts
 model/brokerResponsePagination.ts
 model/brokerShortResponse.ts
+model/byStateReportType.ts
 model/cdlCardFeedbackResponse.ts
 model/cdlCardReviewResponse.ts
 model/cdlEndorsementResponse.ts
@@ -245,7 +251,9 @@ model/createPayrollBonusCommand.ts
 model/createPayrollCreditCommand.ts
 model/createPayrollDeductionCommand.ts
 model/createPayrollPaymentCommand.ts
+model/createPersonalInfoCommand.ts
 model/createPersonalInfoReviewCommand.ts
+model/createPreviousAddressCommand.ts
 model/createPreviousAddressReviewCommand.ts
 model/createPreviousEmployerAccidentHistoryCommand.ts
 model/createPreviousEmployerDrugAndAlcoholCommand.ts
@@ -257,6 +265,7 @@ model/createRouteCommand.ts
 model/createSevenDaysHosCommand.ts
 model/createSevenDaysHosReviewCommand.ts
 model/createSphReviewCommand.ts
+model/createSsnReviewCommand.ts
 model/createTerminalCommand.ts
 model/createTrafficViolationCommand.ts
 model/createTrafficViolationItemCommand.ts
@@ -401,7 +410,6 @@ model/integrationListResponse.ts
 model/integrationModalResponse.ts
 model/integrationProviderResponse.ts
 model/integrationProviderResponsePagination.ts
-model/intervalResponse.ts
 model/inviteEmployerResponse.ts
 model/invitePreviousEmployerCommand.ts
 model/invoiceAgeingResponse.ts
@@ -545,6 +553,10 @@ model/payrollResponse.ts
 model/payrollResponsePagination.ts
 model/perMileEntity.ts
 model/personalInfoFeedbackResponse.ts
+model/pickupDeliveryByStateListResponse.ts
+model/pickupDeliveryByStateResponse.ts
+model/pickupDeliveryByStateResponsePagination.ts
+model/pickupDeliveryIntervalResponse.ts
 model/poBoxEntity.ts
 model/preferredLoadType.ts
 model/previousEmployerAccidentHistoryItemCommand.ts
@@ -562,6 +574,9 @@ model/renewCdlCommand.ts
 model/reorderDispatchCommand.ts
 model/reorderDispatchesCommand.ts
 model/repairAutocompleteDescriptionResponse.ts
+model/repairByStateListResponse.ts
+model/repairByStateResponse.ts
+model/repairByStateResponsePagination.ts
 model/repairCategoryFilterResponse.ts
 model/repairItemResponse.ts
 model/repairListResponse.ts
@@ -572,6 +587,7 @@ model/repairServiceTypeResponse.ts
 model/repairShopContactResponse.ts
 model/repairShopExpensesChartResponse.ts
 model/repairShopExpensesResponse.ts
+model/repairShopIntervalResponse.ts
 model/repairShopListResponse.ts
 model/repairShopMinimalListResponse.ts
 model/repairShopMinimalResponse.ts
@@ -612,6 +628,7 @@ model/shipperAverageWaitingTimeResponse.ts
 model/shipperContactGroupResponse.ts
 model/shipperContactResponse.ts
 model/shipperContactShortResponse.ts
+model/shipperIntervalResponse.ts
 model/shipperListResponse.ts
 model/shipperLoadDetailsResponse.ts
 model/shipperLoadDetailsResponsePagination.ts
@@ -634,6 +651,7 @@ model/sphDrugAndAlcoholResponse.ts
 model/sphFeedbackResponse.ts
 model/sphPreviousEmployerProspectResponse.ts
 model/splitLoadResponse.ts
+model/ssnFeedbackResponse.ts
 model/stateResponse.ts
 model/statusSetMultipleBrokerCommand.ts
 model/statusSetMultipleCompanyUserCommand.ts
@@ -663,9 +681,15 @@ model/todoResponse.ts
 model/todoResponsePagination.ts
 model/todoStatus.ts
 model/todoUserResponse.ts
+model/topBrokersListResponse.ts
+model/topBrokersResponse.ts
+model/topBrokersResponsePagination.ts
 model/topRepairShopListResponse.ts
 model/topRepairShopResponse.ts
 model/topRepairShopResponsePagination.ts
+model/topShipperListResponse.ts
+model/topShipperResponse.ts
+model/topShipperResponsePagination.ts
 model/trafficViolationFeedbackResponse.ts
 model/trafficViolationItemResponse.ts
 model/trafficViolationItemReviewResponse.ts
@@ -776,7 +800,9 @@ model/updatePayrollDeductionCommand.ts
 model/updatePayrollDriverCommissionLastLoadCommand.ts
 model/updatePayrollDriverMileageLastStopCommand.ts
 model/updatePayrollOwnerLastLoadCommand.ts
+model/updatePersonalInfoCommand.ts
 model/updatePersonalInfoReviewCommand.ts
+model/updatePreviousAddressCommand.ts
 model/updatePreviousAddressReviewCommand.ts
 model/updatePreviousEmployerAccidentHistoryCommand.ts
 model/updatePreviousEmployerDrugAndAlcoholCommand.ts
@@ -786,6 +812,7 @@ model/updateRouteCommand.ts
 model/updateSevenDaysHosCommand.ts
 model/updateSevenDaysHosReviewCommand.ts
 model/updateSphCommand.ts
+model/updateSsnReviewCommand.ts
 model/updateStopCommand.ts
 model/updateTableConfigCommand.ts
 model/updateTerminalCommand.ts
@@ -811,7 +838,11 @@ model/verifyOwnerCommand.ts
 model/verifyPreviousEmployerCommand.ts
 model/verifyUserCommand.ts
 model/vinDecodeResponse.ts
+model/violationByStateListResponse.ts
+model/violationByStateResponse.ts
+model/violationByStateResponsePagination.ts
 model/violationCategoryResponse.ts
+model/violationIntervalResponse.ts
 model/violationResponse.ts
 model/weatherDataResponse.ts
 model/weatherDaysResponse.ts

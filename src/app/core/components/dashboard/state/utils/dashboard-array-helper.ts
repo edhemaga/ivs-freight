@@ -1,6 +1,6 @@
 import { TopRatedListItem } from '../models/top-rated-list-item.model';
 
-export class ArrayHelper {
+export class DashboardArrayHelper {
     static sorPartOfArray(arr: TopRatedListItem[]) {
         // Slice the array into two parts: selected and not selected
         const beforeStart = arr.filter((item) => item.isSelected);

@@ -104,6 +104,8 @@ export class TaChartComponent implements OnInit, OnChanges {
         'DECEMBER',
     ];
     hoverDateTitle: string = '';
+    public selectedColors: string[];
+    public selectedHoverColors: string[];
 
     constructor(private ref: ChangeDetectorRef) {}
 
@@ -122,7 +124,18 @@ export class TaChartComponent implements OnInit, OnChanges {
             this.chart.chart.config.data.datasets[0] =
                 changes.chartConfig.currentValue.dataProperties[0].defaultConfig;
 
+            if (changes.chartConfig.currentValue.dataProperties.length > 1) {
+                this.chart.chart.config.data.datasets[1] =
+                    changes.chartConfig.currentValue.dataProperties[1]?.defaultConfig;
+            }
+
             this.driversList = changes.chartConfig.currentValue.driversList;
+            this.saveChartProperties =
+                changes.chartConfig.currentValue.chartInnitProperties;
+
+            this.lineChartLabels = changes.chartConfig.currentValue.dataLabels;
+
+            this.setChartOptions();
         }
     }
 
@@ -273,11 +286,7 @@ export class TaChartComponent implements OnInit, OnChanges {
                             : false,
                         position: 'left',
                         gridLines: {
-                            display: this.axesProperties['verticalLeftAxes']
-                                ? this.axesProperties['verticalLeftAxes'][
-                                      'showGridLines'
-                                  ]
-                                : true,
+                            display: false,
                             drawBorder: false,
                             borderDash: [2, 3],
                             color: '#DADADA',
@@ -477,7 +486,7 @@ export class TaChartComponent implements OnInit, OnChanges {
                                     : '#AAAAAA',
                             fontSize: 11,
                             fontFamily: 'Montserrat',
-                            fontStyle: 'bold',
+                            fontStyle: '500',
                             autoSkip: true,
                             autoSkipPadding: 12,
                             maxRotation: 0,
@@ -779,7 +788,7 @@ export class TaChartComponent implements OnInit, OnChanges {
 
         let dataLength = this.chart.chart.config.data.datasets[0].data.length;
 
-        if (dataIndex == dataLength - 1) {
+        if (dataIndex >= dataLength - 1) {
             showOthers = true;
         }
 
@@ -787,6 +796,7 @@ export class TaChartComponent implements OnInit, OnChanges {
             if (i == dataIndex || elements == null) {
                 let color =
                     this.chart.chart.config.data.datasets[0].backgroundColor[i];
+
                 let colorProp = color;
                 this.chart.chart.config.data.datasets[0].backgroundColor[i] =
                     colorProp.slice(0, 7);
@@ -804,8 +814,8 @@ export class TaChartComponent implements OnInit, OnChanges {
         if (driverDetails) {
             this.chartInnitProperties = [
                 {
-                    percent: driverDetails.percent + '%',
-                    value: '$' + driverDetails.value + 'K',
+                    percent: driverDetails.percent,
+                    value: driverDetails.value,
                     name: driverDetails.name,
                 },
             ];
@@ -832,6 +842,12 @@ export class TaChartComponent implements OnInit, OnChanges {
                 this.chartInnitProperties = innitProp;
             }
         }
+
+        this.animationDuration = 1000;
+
+        setTimeout(() => {
+            this.ref.detectChanges();
+        }, 100);
     }
 
     updateHoverData(value: number) {
@@ -883,12 +899,14 @@ export class TaChartComponent implements OnInit, OnChanges {
         colors: any[],
         hoverColors: any[]
     ) {
+        this.animationDuration = 1000;
+
         let updateData = [];
         selectedStates.map((item, i) => {
             let dataArray = {
-                backgroundColor: '#' + colors[item['id']],
-                borderColor: '#' + colors[item['id']],
-                hoverBackgroundColor: '#' + hoverColors[item['id']],
+                backgroundColor: colors[i],
+                borderColor: colors[i],
+                hoverBackgroundColor: hoverColors[i],
                 data: data,
                 label: item['name'],
                 type: 'bar',
@@ -898,6 +916,9 @@ export class TaChartComponent implements OnInit, OnChanges {
 
             updateData.push(dataArray);
         });
+
+        this.selectedColors = [...colors];
+        this.selectedHoverColors = [...hoverColors];
 
         this.updateMultiBarDataInsert(updateData);
     }
@@ -922,6 +943,8 @@ export class TaChartComponent implements OnInit, OnChanges {
     }
 
     removeMultiBarData(removedData: any[], showDefault?: boolean) {
+        this.animationDuration = 1000;
+
         this.chart.chart.config.data.datasets.map((ch, a) => {
             if (ch['id'] == removedData['id']) {
                 this.chart.chart.config.data.datasets.splice(a, 1);
@@ -931,11 +954,24 @@ export class TaChartComponent implements OnInit, OnChanges {
                 ch.hidden = false;
             }
         });
+
         this.setChartOptions();
+
+        for (let i = 2; i < this.chart.chart.config.data.datasets.length; i++) {
+            this.chart.chart.config.data.datasets[i].backgroundColor =
+                this.selectedColors[i - 2];
+
+            this.chart.chart.config.data.datasets[i].borderColor =
+                this.selectedColors[i - 2];
+
+            this.chart.chart.config.data.datasets[i].hoverBackgroundColor =
+                this.selectedHoverColors[i - 2];
+        }
     }
 
     hoverBarChart(hoveredData: any) {
         this.animationDuration = 0;
+
         this.chart.chart.config.data.datasets.map((item, i) => {
             if (hoveredData == null || item['id'] == hoveredData['id']) {
                 let color = item.backgroundColor;
@@ -947,6 +983,7 @@ export class TaChartComponent implements OnInit, OnChanges {
                 item.backgroundColor = colorProp.slice(0, 9);
             }
         });
+
         this.setChartOptions();
     }
 
@@ -1100,7 +1137,6 @@ export class TaChartComponent implements OnInit, OnChanges {
         this.hoveringStatus = true;
         this.chartHovered.emit(true);
         const canvas = this.chart.chart.canvas;
-        const ctx = this.chart.chart.ctx;
 
         let xPoint1 = 0;
         let xPoint2 = 0;
@@ -1113,6 +1149,7 @@ export class TaChartComponent implements OnInit, OnChanges {
                 xPoint1 = xAxis['_gridLineItems'][1]['x1'];
                 xPoint2 = xAxis['_gridLineItems'][0]['x2'];
                 const elWidth = xPoint1 - xPoint2;
+
                 if (this.axesProperties?.horizontalAxes?.showGridLines) {
                     xAxis['_gridLineItems'].map((item, i) => {
                         if (i && i != xAxis['_gridLineItems'].length - 1) {
@@ -1178,9 +1215,6 @@ export class TaChartComponent implements OnInit, OnChanges {
         });
 
         this.showHoverData = true;
-        setTimeout(() => {
-            this.ref.detectChanges();
-        });
     }
 
     chartHoverOut() {

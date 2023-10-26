@@ -19,19 +19,35 @@ import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
 // @ts-ignore
+import { AccidentByStateListResponse } from '../model/accidentByStateListResponse';
+// @ts-ignore
+import { ByStateReportType } from '../model/byStateReportType';
+// @ts-ignore
 import { DashboardTopReportType } from '../model/dashboardTopReportType';
 // @ts-ignore
 import { GpsType } from '../model/gpsType';
 // @ts-ignore
 import { LiveTrackingLiteResponse } from '../model/liveTrackingLiteResponse';
 // @ts-ignore
+import { LoadStopType } from '../model/loadStopType';
+// @ts-ignore
+import { PickupDeliveryByStateListResponse } from '../model/pickupDeliveryByStateListResponse';
+// @ts-ignore
 import { ProblemDetails } from '../model/problemDetails';
+// @ts-ignore
+import { RepairByStateListResponse } from '../model/repairByStateListResponse';
 // @ts-ignore
 import { SubintervalType } from '../model/subintervalType';
 // @ts-ignore
 import { TimeInterval } from '../model/timeInterval';
 // @ts-ignore
+import { TopBrokersListResponse } from '../model/topBrokersListResponse';
+// @ts-ignore
 import { TopRepairShopListResponse } from '../model/topRepairShopListResponse';
+// @ts-ignore
+import { TopShipperListResponse } from '../model/topShipperListResponse';
+// @ts-ignore
+import { ViolationByStateListResponse } from '../model/violationByStateListResponse';
 
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
@@ -101,6 +117,332 @@ export class DashboardService {
             throw Error("key may not be null if value is not object or array");
         }
         return httpParams;
+    }
+
+    /**
+     * @param reportType 
+     * @param searchTerms 
+     * @param pageIndex 
+     * @param pageSize 
+     * @param timeInterval 
+     * @param startDate 
+     * @param endDate 
+     * @param subintervalType 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public apiDashboardAccidentbystateGet(reportType?: ByStateReportType, searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, timeInterval?: TimeInterval, startDate?: string, endDate?: string, subintervalType?: SubintervalType, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<AccidentByStateListResponse>;
+    public apiDashboardAccidentbystateGet(reportType?: ByStateReportType, searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, timeInterval?: TimeInterval, startDate?: string, endDate?: string, subintervalType?: SubintervalType, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<AccidentByStateListResponse>>;
+    public apiDashboardAccidentbystateGet(reportType?: ByStateReportType, searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, timeInterval?: TimeInterval, startDate?: string, endDate?: string, subintervalType?: SubintervalType, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<AccidentByStateListResponse>>;
+    public apiDashboardAccidentbystateGet(reportType?: ByStateReportType, searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, timeInterval?: TimeInterval, startDate?: string, endDate?: string, subintervalType?: SubintervalType, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+        if (reportType !== undefined && reportType !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>reportType, 'ReportType');
+        }
+        if (searchTerms) {
+            searchTerms.forEach((element) => {
+                localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+                  <any>element, 'SearchTerms');
+            })
+        }
+        if (pageIndex !== undefined && pageIndex !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>pageIndex, 'PageIndex');
+        }
+        if (pageSize !== undefined && pageSize !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>pageSize, 'PageSize');
+        }
+        if (timeInterval !== undefined && timeInterval !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>timeInterval, 'TimeInterval');
+        }
+        if (startDate !== undefined && startDate !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>startDate, 'StartDate');
+        }
+        if (endDate !== undefined && endDate !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>endDate, 'EndDate');
+        }
+        if (subintervalType !== undefined && subintervalType !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>subintervalType, 'SubintervalType');
+        }
+
+        let localVarHeaders = this.defaultHeaders;
+
+        let localVarCredential: string | undefined;
+        // authentication (bearer) required
+        localVarCredential = this.configuration.lookupCredential('bearer');
+        if (localVarCredential) {
+            localVarHeaders = localVarHeaders.set('Authorization', 'Bearer ' + localVarCredential);
+        }
+
+        let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (localVarHttpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'text/plain',
+                'application/json',
+                'text/json'
+            ];
+            localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+        let localVarHttpContext: HttpContext | undefined = options && options.context;
+        if (localVarHttpContext === undefined) {
+            localVarHttpContext = new HttpContext();
+        }
+
+
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
+        }
+
+        let localVarPath = `/api/dashboard/accidentbystate`;
+        return this.httpClient.request<AccidentByStateListResponse>('get', `${this.configuration.basePath}${localVarPath}`,
+            {
+                context: localVarHttpContext,
+                params: localVarQueryParameters,
+                responseType: <any>responseType_,
+                withCredentials: this.configuration.withCredentials,
+                headers: localVarHeaders,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * @param loadStopType 
+     * @param reportType 
+     * @param searchTerms 
+     * @param pageIndex 
+     * @param pageSize 
+     * @param timeInterval 
+     * @param startDate 
+     * @param endDate 
+     * @param subintervalType 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public apiDashboardPickupdeliverybystateGet(loadStopType?: LoadStopType, reportType?: ByStateReportType, searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, timeInterval?: TimeInterval, startDate?: string, endDate?: string, subintervalType?: SubintervalType, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<PickupDeliveryByStateListResponse>;
+    public apiDashboardPickupdeliverybystateGet(loadStopType?: LoadStopType, reportType?: ByStateReportType, searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, timeInterval?: TimeInterval, startDate?: string, endDate?: string, subintervalType?: SubintervalType, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<PickupDeliveryByStateListResponse>>;
+    public apiDashboardPickupdeliverybystateGet(loadStopType?: LoadStopType, reportType?: ByStateReportType, searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, timeInterval?: TimeInterval, startDate?: string, endDate?: string, subintervalType?: SubintervalType, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<PickupDeliveryByStateListResponse>>;
+    public apiDashboardPickupdeliverybystateGet(loadStopType?: LoadStopType, reportType?: ByStateReportType, searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, timeInterval?: TimeInterval, startDate?: string, endDate?: string, subintervalType?: SubintervalType, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+        if (loadStopType !== undefined && loadStopType !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>loadStopType, 'LoadStopType');
+        }
+        if (reportType !== undefined && reportType !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>reportType, 'ReportType');
+        }
+        if (searchTerms) {
+            searchTerms.forEach((element) => {
+                localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+                  <any>element, 'SearchTerms');
+            })
+        }
+        if (pageIndex !== undefined && pageIndex !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>pageIndex, 'PageIndex');
+        }
+        if (pageSize !== undefined && pageSize !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>pageSize, 'PageSize');
+        }
+        if (timeInterval !== undefined && timeInterval !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>timeInterval, 'TimeInterval');
+        }
+        if (startDate !== undefined && startDate !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>startDate, 'StartDate');
+        }
+        if (endDate !== undefined && endDate !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>endDate, 'EndDate');
+        }
+        if (subintervalType !== undefined && subintervalType !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>subintervalType, 'SubintervalType');
+        }
+
+        let localVarHeaders = this.defaultHeaders;
+
+        let localVarCredential: string | undefined;
+        // authentication (bearer) required
+        localVarCredential = this.configuration.lookupCredential('bearer');
+        if (localVarCredential) {
+            localVarHeaders = localVarHeaders.set('Authorization', 'Bearer ' + localVarCredential);
+        }
+
+        let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (localVarHttpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'text/plain',
+                'application/json',
+                'text/json'
+            ];
+            localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+        let localVarHttpContext: HttpContext | undefined = options && options.context;
+        if (localVarHttpContext === undefined) {
+            localVarHttpContext = new HttpContext();
+        }
+
+
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
+        }
+
+        let localVarPath = `/api/dashboard/pickupdeliverybystate`;
+        return this.httpClient.request<PickupDeliveryByStateListResponse>('get', `${this.configuration.basePath}${localVarPath}`,
+            {
+                context: localVarHttpContext,
+                params: localVarQueryParameters,
+                responseType: <any>responseType_,
+                withCredentials: this.configuration.withCredentials,
+                headers: localVarHeaders,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * @param reportType 
+     * @param searchTerms 
+     * @param pageIndex 
+     * @param pageSize 
+     * @param timeInterval 
+     * @param startDate 
+     * @param endDate 
+     * @param subintervalType 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public apiDashboardRepairbystateGet(reportType?: ByStateReportType, searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, timeInterval?: TimeInterval, startDate?: string, endDate?: string, subintervalType?: SubintervalType, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<RepairByStateListResponse>;
+    public apiDashboardRepairbystateGet(reportType?: ByStateReportType, searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, timeInterval?: TimeInterval, startDate?: string, endDate?: string, subintervalType?: SubintervalType, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<RepairByStateListResponse>>;
+    public apiDashboardRepairbystateGet(reportType?: ByStateReportType, searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, timeInterval?: TimeInterval, startDate?: string, endDate?: string, subintervalType?: SubintervalType, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<RepairByStateListResponse>>;
+    public apiDashboardRepairbystateGet(reportType?: ByStateReportType, searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, timeInterval?: TimeInterval, startDate?: string, endDate?: string, subintervalType?: SubintervalType, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+        if (reportType !== undefined && reportType !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>reportType, 'ReportType');
+        }
+        if (searchTerms) {
+            searchTerms.forEach((element) => {
+                localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+                  <any>element, 'SearchTerms');
+            })
+        }
+        if (pageIndex !== undefined && pageIndex !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>pageIndex, 'PageIndex');
+        }
+        if (pageSize !== undefined && pageSize !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>pageSize, 'PageSize');
+        }
+        if (timeInterval !== undefined && timeInterval !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>timeInterval, 'TimeInterval');
+        }
+        if (startDate !== undefined && startDate !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>startDate, 'StartDate');
+        }
+        if (endDate !== undefined && endDate !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>endDate, 'EndDate');
+        }
+        if (subintervalType !== undefined && subintervalType !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>subintervalType, 'SubintervalType');
+        }
+
+        let localVarHeaders = this.defaultHeaders;
+
+        let localVarCredential: string | undefined;
+        // authentication (bearer) required
+        localVarCredential = this.configuration.lookupCredential('bearer');
+        if (localVarCredential) {
+            localVarHeaders = localVarHeaders.set('Authorization', 'Bearer ' + localVarCredential);
+        }
+
+        let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (localVarHttpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'text/plain',
+                'application/json',
+                'text/json'
+            ];
+            localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+        let localVarHttpContext: HttpContext | undefined = options && options.context;
+        if (localVarHttpContext === undefined) {
+            localVarHttpContext = new HttpContext();
+        }
+
+
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
+        }
+
+        let localVarPath = `/api/dashboard/repairbystate`;
+        return this.httpClient.request<RepairByStateListResponse>('get', `${this.configuration.basePath}${localVarPath}`,
+            {
+                context: localVarHttpContext,
+                params: localVarQueryParameters,
+                responseType: <any>responseType_,
+                withCredentials: this.configuration.withCredentials,
+                headers: localVarHeaders,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
     }
 
     /**
@@ -230,6 +572,113 @@ export class DashboardService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
+    public apiDashboardTopbrokersGet(reportType?: DashboardTopReportType, searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, timeInterval?: TimeInterval, startDate?: string, endDate?: string, subintervalType?: SubintervalType, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<TopBrokersListResponse>;
+    public apiDashboardTopbrokersGet(reportType?: DashboardTopReportType, searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, timeInterval?: TimeInterval, startDate?: string, endDate?: string, subintervalType?: SubintervalType, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<TopBrokersListResponse>>;
+    public apiDashboardTopbrokersGet(reportType?: DashboardTopReportType, searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, timeInterval?: TimeInterval, startDate?: string, endDate?: string, subintervalType?: SubintervalType, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<TopBrokersListResponse>>;
+    public apiDashboardTopbrokersGet(reportType?: DashboardTopReportType, searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, timeInterval?: TimeInterval, startDate?: string, endDate?: string, subintervalType?: SubintervalType, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+        if (reportType !== undefined && reportType !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>reportType, 'ReportType');
+        }
+        if (searchTerms) {
+            searchTerms.forEach((element) => {
+                localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+                  <any>element, 'SearchTerms');
+            })
+        }
+        if (pageIndex !== undefined && pageIndex !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>pageIndex, 'PageIndex');
+        }
+        if (pageSize !== undefined && pageSize !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>pageSize, 'PageSize');
+        }
+        if (timeInterval !== undefined && timeInterval !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>timeInterval, 'TimeInterval');
+        }
+        if (startDate !== undefined && startDate !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>startDate, 'StartDate');
+        }
+        if (endDate !== undefined && endDate !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>endDate, 'EndDate');
+        }
+        if (subintervalType !== undefined && subintervalType !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>subintervalType, 'SubintervalType');
+        }
+
+        let localVarHeaders = this.defaultHeaders;
+
+        let localVarCredential: string | undefined;
+        // authentication (bearer) required
+        localVarCredential = this.configuration.lookupCredential('bearer');
+        if (localVarCredential) {
+            localVarHeaders = localVarHeaders.set('Authorization', 'Bearer ' + localVarCredential);
+        }
+
+        let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (localVarHttpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'text/plain',
+                'application/json',
+                'text/json'
+            ];
+            localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+        let localVarHttpContext: HttpContext | undefined = options && options.context;
+        if (localVarHttpContext === undefined) {
+            localVarHttpContext = new HttpContext();
+        }
+
+
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
+        }
+
+        let localVarPath = `/api/dashboard/topbrokers`;
+        return this.httpClient.request<TopBrokersListResponse>('get', `${this.configuration.basePath}${localVarPath}`,
+            {
+                context: localVarHttpContext,
+                params: localVarQueryParameters,
+                responseType: <any>responseType_,
+                withCredentials: this.configuration.withCredentials,
+                headers: localVarHeaders,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * @param reportType 
+     * @param searchTerms 
+     * @param pageIndex 
+     * @param pageSize 
+     * @param timeInterval 
+     * @param startDate 
+     * @param endDate 
+     * @param subintervalType 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
     public apiDashboardToprepairshopGet(reportType?: DashboardTopReportType, searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, timeInterval?: TimeInterval, startDate?: string, endDate?: string, subintervalType?: SubintervalType, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<TopRepairShopListResponse>;
     public apiDashboardToprepairshopGet(reportType?: DashboardTopReportType, searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, timeInterval?: TimeInterval, startDate?: string, endDate?: string, subintervalType?: SubintervalType, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<TopRepairShopListResponse>>;
     public apiDashboardToprepairshopGet(reportType?: DashboardTopReportType, searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, timeInterval?: TimeInterval, startDate?: string, endDate?: string, subintervalType?: SubintervalType, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<TopRepairShopListResponse>>;
@@ -313,6 +762,215 @@ export class DashboardService {
 
         let localVarPath = `/api/dashboard/toprepairshop`;
         return this.httpClient.request<TopRepairShopListResponse>('get', `${this.configuration.basePath}${localVarPath}`,
+            {
+                context: localVarHttpContext,
+                params: localVarQueryParameters,
+                responseType: <any>responseType_,
+                withCredentials: this.configuration.withCredentials,
+                headers: localVarHeaders,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * @param searchTerms 
+     * @param pageIndex 
+     * @param pageSize 
+     * @param timeInterval 
+     * @param startDate 
+     * @param endDate 
+     * @param subintervalType 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public apiDashboardTopshippersGet(searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, timeInterval?: TimeInterval, startDate?: string, endDate?: string, subintervalType?: SubintervalType, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<TopShipperListResponse>;
+    public apiDashboardTopshippersGet(searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, timeInterval?: TimeInterval, startDate?: string, endDate?: string, subintervalType?: SubintervalType, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<TopShipperListResponse>>;
+    public apiDashboardTopshippersGet(searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, timeInterval?: TimeInterval, startDate?: string, endDate?: string, subintervalType?: SubintervalType, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<TopShipperListResponse>>;
+    public apiDashboardTopshippersGet(searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, timeInterval?: TimeInterval, startDate?: string, endDate?: string, subintervalType?: SubintervalType, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+        if (searchTerms) {
+            searchTerms.forEach((element) => {
+                localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+                  <any>element, 'SearchTerms');
+            })
+        }
+        if (pageIndex !== undefined && pageIndex !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>pageIndex, 'PageIndex');
+        }
+        if (pageSize !== undefined && pageSize !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>pageSize, 'PageSize');
+        }
+        if (timeInterval !== undefined && timeInterval !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>timeInterval, 'TimeInterval');
+        }
+        if (startDate !== undefined && startDate !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>startDate, 'StartDate');
+        }
+        if (endDate !== undefined && endDate !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>endDate, 'EndDate');
+        }
+        if (subintervalType !== undefined && subintervalType !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>subintervalType, 'SubintervalType');
+        }
+
+        let localVarHeaders = this.defaultHeaders;
+
+        let localVarCredential: string | undefined;
+        // authentication (bearer) required
+        localVarCredential = this.configuration.lookupCredential('bearer');
+        if (localVarCredential) {
+            localVarHeaders = localVarHeaders.set('Authorization', 'Bearer ' + localVarCredential);
+        }
+
+        let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (localVarHttpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'text/plain',
+                'application/json',
+                'text/json'
+            ];
+            localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+        let localVarHttpContext: HttpContext | undefined = options && options.context;
+        if (localVarHttpContext === undefined) {
+            localVarHttpContext = new HttpContext();
+        }
+
+
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
+        }
+
+        let localVarPath = `/api/dashboard/topshippers`;
+        return this.httpClient.request<TopShipperListResponse>('get', `${this.configuration.basePath}${localVarPath}`,
+            {
+                context: localVarHttpContext,
+                params: localVarQueryParameters,
+                responseType: <any>responseType_,
+                withCredentials: this.configuration.withCredentials,
+                headers: localVarHeaders,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * @param reportType 
+     * @param searchTerms 
+     * @param pageIndex 
+     * @param pageSize 
+     * @param timeInterval 
+     * @param startDate 
+     * @param endDate 
+     * @param subintervalType 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public apiDashboardViolationbystateGet(reportType?: ByStateReportType, searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, timeInterval?: TimeInterval, startDate?: string, endDate?: string, subintervalType?: SubintervalType, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<ViolationByStateListResponse>;
+    public apiDashboardViolationbystateGet(reportType?: ByStateReportType, searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, timeInterval?: TimeInterval, startDate?: string, endDate?: string, subintervalType?: SubintervalType, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<ViolationByStateListResponse>>;
+    public apiDashboardViolationbystateGet(reportType?: ByStateReportType, searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, timeInterval?: TimeInterval, startDate?: string, endDate?: string, subintervalType?: SubintervalType, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<ViolationByStateListResponse>>;
+    public apiDashboardViolationbystateGet(reportType?: ByStateReportType, searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, timeInterval?: TimeInterval, startDate?: string, endDate?: string, subintervalType?: SubintervalType, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+        if (reportType !== undefined && reportType !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>reportType, 'ReportType');
+        }
+        if (searchTerms) {
+            searchTerms.forEach((element) => {
+                localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+                  <any>element, 'SearchTerms');
+            })
+        }
+        if (pageIndex !== undefined && pageIndex !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>pageIndex, 'PageIndex');
+        }
+        if (pageSize !== undefined && pageSize !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>pageSize, 'PageSize');
+        }
+        if (timeInterval !== undefined && timeInterval !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>timeInterval, 'TimeInterval');
+        }
+        if (startDate !== undefined && startDate !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>startDate, 'StartDate');
+        }
+        if (endDate !== undefined && endDate !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>endDate, 'EndDate');
+        }
+        if (subintervalType !== undefined && subintervalType !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>subintervalType, 'SubintervalType');
+        }
+
+        let localVarHeaders = this.defaultHeaders;
+
+        let localVarCredential: string | undefined;
+        // authentication (bearer) required
+        localVarCredential = this.configuration.lookupCredential('bearer');
+        if (localVarCredential) {
+            localVarHeaders = localVarHeaders.set('Authorization', 'Bearer ' + localVarCredential);
+        }
+
+        let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (localVarHttpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'text/plain',
+                'application/json',
+                'text/json'
+            ];
+            localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+        let localVarHttpContext: HttpContext | undefined = options && options.context;
+        if (localVarHttpContext === undefined) {
+            localVarHttpContext = new HttpContext();
+        }
+
+
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
+        }
+
+        let localVarPath = `/api/dashboard/violationbystate`;
+        return this.httpClient.request<ViolationByStateListResponse>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 params: localVarQueryParameters,

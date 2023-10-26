@@ -13,7 +13,6 @@ import { FileReviewCommand } from './fileReviewCommand';
 
 
 export interface UpdateMvrAuthReviewCommand { 
-    filesReviewMessage?: string | null;
     filesReview?: Array<FileReviewCommand> | null;
     applicantId?: number;
 }
