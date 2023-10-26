@@ -173,6 +173,7 @@ export class DashboardTopRatedComponent
     public doughnutChartConfig: DoughnutChartConfig;
     public barChartConfig: BarChartConfig;
     public barChartAxes: BarChartAxes;
+    private barChartLabels: string[] = [];
     private barChartValues: BarChartValues = {
         defaultBarValues: {
             topRatedBarValues: [],
@@ -573,13 +574,10 @@ export class DashboardTopRatedComponent
                             }
                         );
 
-                        this.barChartValues = {
-                            ...this.barChartValues,
-                            selectedBarValues: [
-                                ...this.barChartValues.selectedBarValues,
-                                filteredIntervals,
-                            ],
-                        };
+                        this.barChartValues.selectedBarValues = [
+                            ...this.barChartValues.selectedBarValues,
+                            filteredIntervals,
+                        ];
 
                         return {
                             id: repairShop.id,
@@ -597,51 +595,28 @@ export class DashboardTopRatedComponent
                     }
                 );
 
-                // top rated intervals
-                repairShopData.topTenRepairShops.map((repairShop) => {
-                    this.barChartValues = {
-                        ...this.barChartValues,
-                        defaultBarValues: {
-                            ...this.barChartValues?.defaultBarValues,
-                            topRatedBarValues:
-                                selectedTab === ConstantStringEnum.VISIT
-                                    ? [
-                                          ...this.barChartValues
-                                              ?.defaultBarValues
-                                              .topRatedBarValues,
-                                          repairShop.count,
-                                      ]
-                                    : [
-                                          ...this.barChartValues
-                                              ?.defaultBarValues
-                                              .topRatedBarValues,
-                                          repairShop.cost,
-                                      ],
-                        },
-                    };
-                });
+                for (
+                    let i = 0;
+                    i < repairShopData.topTenRepairShops.length;
+                    i++
+                ) {
+                    // top rated intervals
+                    this.barChartValues.defaultBarValues.topRatedBarValues = [
+                        ...this.barChartValues.defaultBarValues
+                            .topRatedBarValues,
+                        selectedTab === ConstantStringEnum.VISIT
+                            ? repairShopData.topTenRepairShops[i].count
+                            : repairShopData.topTenRepairShops[i].cost,
+                    ];
 
-                // other intervals
-                repairShopData.allOther.map((repairShop) => {
-                    this.barChartValues = {
-                        ...this.barChartValues,
-                        defaultBarValues: {
-                            ...this.barChartValues?.defaultBarValues,
-                            otherBarValues:
-                                selectedTab === ConstantStringEnum.VISIT
-                                    ? [
-                                          ...this.barChartValues
-                                              ?.defaultBarValues.otherBarValues,
-                                          repairShop.count,
-                                      ]
-                                    : [
-                                          ...this.barChartValues
-                                              ?.defaultBarValues.otherBarValues,
-                                          repairShop.cost,
-                                      ],
-                        },
-                    };
-                });
+                    // other intervals
+                    this.barChartValues.defaultBarValues.otherBarValues = [
+                        ...this.barChartValues.defaultBarValues.otherBarValues,
+                        selectedTab === ConstantStringEnum.VISIT
+                            ? repairShopData.allOther[i].count
+                            : repairShopData.allOther[i].cost,
+                    ];
+                }
 
                 this.setDoughnutChartData(this.topRatedList);
                 this.setBarChartConfigAndAxes(this.barChartValues);
@@ -1066,33 +1041,35 @@ export class DashboardTopRatedComponent
             allowAnimation: true,
             offset: true,
             tooltipOffset: { min: 105, max: 279 },
-            dataLabels: [
-                'MAR',
-                '',
-                'MAY',
-                '',
-                'JUL',
-                '',
-                'SEP',
-                '',
-                'NOV',
-                '',
-                '2024',
-                '',
-                'MAR',
-                '',
-                'MAY',
-                '',
-                'JUL',
-                '',
-                'SEP',
-                '',
-                'NOV',
-                '',
-                '2025',
-                '',
-                'MAR',
-            ],
+            dataLabels: this.barChartLabels.length
+                ? this.barChartLabels
+                : [
+                      'MAR',
+                      '',
+                      'MAY',
+                      '',
+                      'JUL',
+                      '',
+                      'SEP',
+                      '',
+                      'NOV',
+                      '',
+                      '2024',
+                      '',
+                      'MAR',
+                      '',
+                      'MAY',
+                      '',
+                      'JUL',
+                      '',
+                      'SEP',
+                      '',
+                      'NOV',
+                      '',
+                      '2025',
+                      '',
+                      'MAR',
+                  ],
             noChartImage: ConstantChartStringEnum.NO_CHART_IMG,
         };
 
