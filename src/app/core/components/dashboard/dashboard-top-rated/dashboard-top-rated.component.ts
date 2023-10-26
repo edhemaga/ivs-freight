@@ -561,13 +561,13 @@ export class DashboardTopRatedComponent
             .getTopRatedRepairShop(...topRatedArgumentsData)
             .pipe(takeUntil(this.destroy$))
             .subscribe((repairShopData) => {
+                console.log('repairShopData', repairShopData);
                 // top rated list and single selection data
                 this.topRatedList = repairShopData.pagination.data.map(
                     (repairShop) => {
                         const filteredIntervals = repairShop.intervals.map(
                             (interval) => {
-                                return this.currentActiveTab.name ===
-                                    ConstantStringEnum.VISIT
+                                return selectedTab === ConstantStringEnum.VISIT
                                     ? interval.count
                                     : interval.cost;
                             }
@@ -604,8 +604,7 @@ export class DashboardTopRatedComponent
                         defaultBarValues: {
                             ...this.barChartValues?.defaultBarValues,
                             topRatedBarValues:
-                                this.currentActiveTab.name ===
-                                ConstantStringEnum.VISIT
+                                selectedTab === ConstantStringEnum.VISIT
                                     ? [
                                           ...this.barChartValues
                                               ?.defaultBarValues
@@ -629,8 +628,7 @@ export class DashboardTopRatedComponent
                         defaultBarValues: {
                             ...this.barChartValues?.defaultBarValues,
                             otherBarValues:
-                                this.currentActiveTab.name ===
-                                ConstantStringEnum.VISIT
+                                selectedTab === ConstantStringEnum.VISIT
                                     ? [
                                           ...this.barChartValues
                                               ?.defaultBarValues.otherBarValues,
@@ -1011,6 +1009,7 @@ export class DashboardTopRatedComponent
     }
 
     private setBarChartConfigAndAxes(barChartValues?: BarChartValues): void {
+        console.log('barChartValues', barChartValues);
         this.barChartConfig = {
             dataProperties: [
                 {
@@ -1097,12 +1096,17 @@ export class DashboardTopRatedComponent
             noChartImage: ConstantChartStringEnum.NO_CHART_IMG,
         };
 
+        // bar max value
+        const barChartMaxValue = +this.topRatedList[0].value;
+
         // bar axes
         this.barChartAxes = {
             verticalLeftAxes: {
                 visible: true,
                 minValue: 0,
-                maxValue: 100,
+                maxValue: barChartValues?.defaultBarValues?.topRatedBarValues
+                    ? barChartMaxValue
+                    : 200,
                 stepSize: 10,
                 showGridLines: true,
             },

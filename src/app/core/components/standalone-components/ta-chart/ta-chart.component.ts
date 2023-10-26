@@ -132,6 +132,8 @@ export class TaChartComponent implements OnInit, OnChanges {
             this.driversList = changes.chartConfig.currentValue.driversList;
             this.saveChartProperties =
                 changes.chartConfig.currentValue.chartInnitProperties;
+
+            this.setChartOptions();
         }
     }
 
