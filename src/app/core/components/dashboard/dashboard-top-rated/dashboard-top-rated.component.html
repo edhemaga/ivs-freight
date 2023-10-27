@@ -64,7 +64,7 @@
             >
                 <app-ta-tab-switch
                     [tabs]="topRatedTabs"
-                    [disableHeight]="true"
+                    [dashboardHeight]="true"
                     (switchClicked)="handleSwitchTabClick($event)"
                 >
                 </app-ta-tab-switch>
@@ -357,7 +357,9 @@
 
             <!-- Doughnut Chart -->
 
-            <div class="d-flex justify-content-center align-items-center">
+            <div
+                class="d-flex justify-content-center align-items-center dashboard-top-rated-body-up-doughnut-chart-container"
+            >
                 <app-ta-chart
                     #doughnutChart
                     [chartConfig]="doughnutChartConfig"
@@ -365,6 +367,23 @@
                     [legendAttributes]="{}"
                 >
                 </app-ta-chart>
+
+                <!-- Custom Period Range -->
+
+                <!--   clickOutsideElement
+                        (clickOutsideEmitter)="
+                            handleOutsideCustomPeriodRangeClick()
+                        " -->
+
+                <ng-container *ngIf="isDisplayingCustomPeriodRange">
+                    <div class="custom-period-range-container">
+                        <app-ta-custom-period-range
+                            (customPeriodRangeValuesEmitter)="
+                                handleSetCustomPeriodRangeClick($event)
+                            "
+                        ></app-ta-custom-period-range>
+                    </div>
+                </ng-container>
             </div>
         </div>
 

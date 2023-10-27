@@ -2,7 +2,7 @@
 
 .input-custom-group {
     display: block;
-    position: relative;
+    position: relative; // DateTime Dark
 
     // DateTime
     &.datetimeclass {
@@ -43,6 +43,38 @@
 
         &.inactive-filled {
             background-color: $inactive-filled-input;
+        }
+
+        // DateTime Dark
+        &.dark {
+            &:not(.invalid-focus-out-filled),
+            &:not(.valid-focus-in),
+            &:not(.valid-focus-out),
+            &:not(.valid-focus-out-filled),
+            &:not(.invalid-focus-in),
+            &:not(.invalid-focus-out-empty) {
+                background-color: $datetime-dark-default;
+
+                &:hover {
+                    background-color: $datetime-dark-default;
+                }
+            }
+
+            &.valid-focus-out-filled {
+                background-color: red;
+
+                &:hover {
+                    background-color: $valid-input-hover;
+                }
+            }
+
+            &.inactive-empty {
+                background-color: $inactive-empty-input;
+            }
+
+            &.inactive-filled {
+                background-color: $inactive-filled-input;
+            }
         }
     }
 

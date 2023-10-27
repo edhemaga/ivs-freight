@@ -14,8 +14,8 @@ $tab-colors: '26A690', 'EF5350', '3074D3';
     user-select: none;
     line-height: 32px;
 
-    &.disable-height {
-        height: unset;
+    &.dashboard-height {
+        height: 38px;
     }
 
     .tab-switch-items-holder {

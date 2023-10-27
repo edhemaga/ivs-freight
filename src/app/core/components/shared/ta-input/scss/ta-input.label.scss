@@ -6,7 +6,7 @@
     left: 6px;
     font-size: 14px;
     line-height: 18px;
-    color: $default-label;
+    color: red;
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
@@ -255,5 +255,9 @@
     //------------------------- Custom class -------------------------
     &.regular {
         font-weight: 400;
+    }
+
+    &.datetimeclass.dark {
+        color: $datetime-dark-label-default;
     }
 }

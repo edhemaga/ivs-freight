@@ -29,7 +29,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-           // z-index: -1;
+            // z-index: -1;
             width: 0px;
         }
 
@@ -40,13 +40,13 @@
             color: $valid-focus-content;
         }
 
-        & div::selection{
+        & div::selection {
             background-color: $valid-focus-content-background-selection;
             color: $valid-focus-content;
         }
     }
 
-    &::selection{
+    &::selection {
         background-color: transparent !important;
         color: $valid-focus-content;
     }
@@ -90,6 +90,15 @@
         span .border-picker {
             color: $valid-content !important;
             user-select: none;
+        }
+    }
+
+    &.dark.valid-focus-out-filled {
+        background: #3b73ed33 !important;
+
+        span,
+        span .border-picker {
+            color: white !important;
         }
     }
 

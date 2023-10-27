@@ -35,4 +35,7 @@ export enum ConstantStringEnum {
     SMD = 'SemiDaily',
     SML = 'SemiMonthly',
     BWL = 'BiWeekly',
+
+    CLICK = 'click',
+    CLASS_DROPDOWN_OPTION = 'dropdown-option',
 }

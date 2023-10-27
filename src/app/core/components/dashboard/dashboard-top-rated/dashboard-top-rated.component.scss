@@ -418,6 +418,20 @@
             &-border {
                 background: $ta-light-grey-6;
             }
+
+            &-doughnut-chart-container {
+                position: relative;
+                z-index: 1;
+
+                /* Custom Period Container */
+                .custom-period-range-container {
+                    position: absolute;
+                    top: -2px;
+                    right: -106px;
+                    width: 300px;
+                    z-index: 2;
+                }
+            }
         }
 
         /* Body Down */

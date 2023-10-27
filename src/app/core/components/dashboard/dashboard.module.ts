@@ -8,6 +8,9 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { AgmCoreModule } from '@agm/core';
 
+// directives
+import { ClickOutsideCustomRangeDirective } from './state/directives/click-outside-custom-range.directive';
+
 // components
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { DashboardTopRatedComponent } from './dashboard-top-rated/dashboard-top-rated.component';
@@ -15,6 +18,7 @@ import { DashboardTopRatedComponent } from './dashboard-top-rated/dashboard-top-
 import { TaTabSwitchComponent } from '../standalone-components/ta-tab-switch/ta-tab-switch.component';
 import { TaInputDropdownComponent } from '../shared/ta-input-dropdown/ta-input-dropdown.component';
 import { CarrierSearchTwoComponent } from '../standalone-components/carrier-search-two/carrier-search-two.component';
+import { TaCustomPeriodRangeComponent } from '../standalone-components/ta-custom-period-range/ta-custom-period-range.component';
 
 import { DashboardPerformanceComponent } from './dashboard-performance/dashboard-performance.component';
 import { DashboardPickupByStateComponent } from './dashboard-pickup-by-state/dashboard-pickup-by-state.component';
@@ -36,6 +40,9 @@ import { TaSpinnerComponent } from '../shared/ta-spinner/ta-spinner.component';
         DashboardMapComponent,
         DashboardStateTrackingComponent,
         DashboardStateUsaComponent,
+
+        // directives
+        ClickOutsideCustomRangeDirective,
     ],
     imports: [
         // modules
@@ -54,6 +61,7 @@ import { TaSpinnerComponent } from '../shared/ta-spinner/ta-spinner.component';
         TaSpinnerComponent,
         TaInputDropdownComponent,
         CarrierSearchTwoComponent,
+        TaCustomPeriodRangeComponent,
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })

@@ -1,13 +1,6 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 
 import { Observable } from 'rxjs';
-
-import { environment } from '../../../../../../environments/environment';
-
-import { DashboardStore } from '../store/dashboard.store';
-
-import { SharedService } from '../../../../services/shared/shared.service';
 
 import {
     DashboardService as DashboardBackendService,
@@ -19,12 +12,7 @@ import {
 
 @Injectable({ providedIn: 'root' })
 export class DashboardService {
-    constructor(
-        private dashboardStore: DashboardStore,
-        private http: HttpClient,
-        private sharedService: SharedService,
-        private dashboardService: DashboardBackendService
-    ) {}
+    constructor(private dashboardService: DashboardBackendService) {}
 
     // Dashboard - Top Rated
     public getTopRatedBroker(
@@ -90,32 +78,5 @@ export class DashboardService {
             endDate,
             subintervalType
         );
-    }
-
-    ////////////////////////////////////////////////////////////////////
-
-    addStats() {
-        this.http.get(environment.API_ENDPOINT + 'dashboard/totals').subscribe(
-            (response: any) => {
-                this.dashboardStore.update((store) => ({
-                    ...store,
-                    statistic: response,
-                }));
-            },
-            () => {
-                this.sharedService.handleServerError();
-            }
-        );
-    }
-
-    getDashboardStats() {
-        return this.http.get(environment.API_ENDPOINT + 'dashboard/totals');
-    }
-
-    set dashStats(response) {
-        this.dashboardStore.update((store) => ({
-            ...store,
-            statistic: response,
-        }));
     }
 }

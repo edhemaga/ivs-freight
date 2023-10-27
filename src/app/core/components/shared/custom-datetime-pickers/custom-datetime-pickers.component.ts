@@ -20,11 +20,7 @@ import { FormsModule } from '@angular/forms';
     templateUrl: './custom-datetime-pickers.component.html',
     styleUrls: ['./custom-datetime-pickers.component.scss'],
     standalone: true,
-    imports: [
-                CommonModule, 
-                FormsModule,
-                DateCalendarsComponent
-    ]
+    imports: [CommonModule, FormsModule, DateCalendarsComponent],
 })
 export class CustomDatetimePickersComponent implements OnInit {
     @Input() dateTime: Date;
@@ -45,7 +41,7 @@ export class CustomDatetimePickersComponent implements OnInit {
     currentMonth: any = new Date().getMonth();
     currentDay: any = new Date().getDate();
     listPreview: any = 'full_list';
-    timeMinutes: any = ["00", "15", "30", "45"]
+    timeMinutes: any = ['00', '15', '30', '45'];
     monthArray: any = new Array(12).fill(0).map((_, indx) => indx + 1);
     monthDayList: any = new Array(31).fill(0).map((_, indx) => indx + 1);
     yearsList: any = new Array(100)
@@ -121,9 +117,13 @@ export class CustomDatetimePickersComponent implements OnInit {
     }
 
     public setTimeValue() {
-        const dateInputArray = moment(this.dateTime).format('H/mm/A').split('/');
+        const dateInputArray = moment(this.dateTime)
+            .format('H/mm/A')
+            .split('/');
         this.scrollTypes.hourScroll = dateInputArray[0];
-        this.scrollTypes.minutesScroll = this.timeMinutes.indexOf(dateInputArray[1]); 
+        this.scrollTypes.minutesScroll = this.timeMinutes.indexOf(
+            dateInputArray[1]
+        );
         this.scrollTypes.pmAmScroll = dateInputArray[2] == 'AM' ? 0 : 1;
     }
 
@@ -158,14 +158,7 @@ export class CustomDatetimePickersComponent implements OnInit {
                 isNaN(this.outputType[4])
                     ? null
                     : `${this.outputType[0]}/${this.outputType[2]}/${this.outputType[4]}`;
-            console.log('THIS IS CROLLLL');
-            console.log(date);
 
-            console.log(
-                `${
-                    this.dateTime.getMonth() + 1
-                }/${this.dateTime.getDate()}/${this.dateTime.getFullYear()}`
-            );
             this.calendarService.scrollToDate.next(
                 `${
                     this.dateTime.getMonth() + 1
@@ -183,7 +176,6 @@ export class CustomDatetimePickersComponent implements OnInit {
         this.selectedDateTime = this.createStringFromOutput();
 
         let currentDate = moment().format('MM/DD/YYYY');
-        console.log(currentDate + ' ' + this.selectedDateTime);
 
         this.calendarService.dateChanged.next(
             new Date(currentDate + ' ' + this.selectedDateTime)

@@ -1,0 +1,67 @@
+<div class="d-flex flex-column custom-period-range">
+    <!-- Header -->
+
+    <div class="d-flex align-items-center custom-period-range-header">
+        <p class="m-0 ta-font-extra-bold">CUSTOM RANGE</p>
+    </div>
+
+    <!-- Form -->
+
+    <div
+        class="d-flex align-items-center custom-period-range-form"
+        [formGroup]="customPeriodRangeForm"
+    >
+        <div class="custom-period-range-form-input">
+            <app-ta-input
+                formControlName="fromDate"
+                [inputConfig]="{
+                    name: 'datepicker',
+                    type: 'text',
+                    label: 'From',
+                    isDropdown: true,
+                    placeholderIcon: 'date',
+                    isRequired: true,
+                    customClass: 'datetimeclass dark'
+                }"
+            ></app-ta-input>
+        </div>
+        <div class="custom-period-range-form-input">
+            <app-ta-input
+                formControlName="toDate"
+                [inputConfig]="{
+                    name: 'datepicker',
+                    type: 'text',
+                    label: 'To',
+                    isDropdown: true,
+                    placeholderIcon: 'date',
+                    isRequired: true,
+                    customClass: 'datetimeclass dark'
+                }"
+            ></app-ta-input>
+        </div>
+    </div>
+
+    <!-- Buttons -->
+
+    <div class="d-flex align-items-center custom-period-range-buttons">
+        <button
+            class="custom-period-range-buttons-btn"
+            type="button"
+            [disabled]="customPeriodRangeForm.invalid"
+            [ngClass]="{ disabled: customPeriodRangeForm.invalid }"
+            (click)="handleClearAllOrSetClick()"
+        >
+            <p class="m-0 ta-font-extra-bold">CLEAR ALL</p>
+        </button>
+
+        <button
+            class="custom-period-range-buttons-btn"
+            type="button"
+            [disabled]="customPeriodRangeForm.invalid"
+            [ngClass]="{ disabled: customPeriodRangeForm.invalid }"
+            (click)="handleClearAllOrSetClick(false)"
+        >
+            <p class="m-0 ta-font-extra-bold">SET</p>
+        </button>
+    </div>
+</div>

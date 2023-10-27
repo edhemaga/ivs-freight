@@ -1,10 +1,4 @@
-import {
-    AfterViewInit,
-    Component,
-    OnDestroy,
-    OnInit,
-    ViewChild,
-} from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 
 import { Subject, takeUntil } from 'rxjs';
@@ -54,15 +48,14 @@ import {
     SubintervalType,
     TimeInterval,
 } from 'appcoretruckassist';
+import { CustomPeriodRange } from '../state/models/custom-period-range.model';
 
 @Component({
     selector: 'app-dashboard-top-rated',
     templateUrl: './dashboard-top-rated.component.html',
     styleUrls: ['./dashboard-top-rated.component.scss'],
 })
-export class DashboardTopRatedComponent
-    implements OnInit, OnDestroy, AfterViewInit
-{
+export class DashboardTopRatedComponent implements OnInit, OnDestroy {
     @ViewChild('popover') public popover: NgbPopover;
     @ViewChild('doughnutChart') public doughnutChart: DoughnutChart;
     @ViewChild('barChart') public barChart: BarChart;
@@ -165,9 +158,11 @@ export class DashboardTopRatedComponent
     public selectedMainPeriod: DropdownListItem;
     public selectedSubPeriod: DropdownListItem;
 
+    public isDisplayingCustomPeriodRange: boolean = false;
+
     // colors
     public mainColorsPallete: MainColorsPallete[] = [];
-    public secondaryColorsPallete: SecondaryColorsPallete[] = [];
+    private secondaryColorsPallete: SecondaryColorsPallete[] = [];
 
     // charts
     public doughnutChartConfig: DoughnutChartConfig;
@@ -181,11 +176,6 @@ export class DashboardTopRatedComponent
         },
         selectedBarValues: [],
     };
-
-    /////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    // tabs
-    private currentSwitchTab: string = 'All Time';
 
     constructor(
         private formBuilder: UntypedFormBuilder,
@@ -241,6 +231,10 @@ export class DashboardTopRatedComponent
     ): void {
         if (action === ConstantStringEnum.MAIN_PERIOD_DROPDOWN) {
             this.selectedMainPeriod = dropdownListItem;
+
+            if (this.isDisplayingCustomPeriodRange) {
+                this.isDisplayingCustomPeriodRange = false;
+            }
 
             switch (dropdownListItem.name) {
                 case ConstantStringEnum.TODAY:
@@ -316,6 +310,8 @@ export class DashboardTopRatedComponent
                 case ConstantStringEnum.ALL_TIME:
                     break;
                 case ConstantStringEnum.CUSTOM:
+                    this.isDisplayingCustomPeriodRange = true;
+
                     break;
                 default:
                     break;
@@ -326,7 +322,9 @@ export class DashboardTopRatedComponent
             this.selectedSubPeriod = dropdownListItem;
         }
 
-        this.getTopRatedListData();
+        if (dropdownListItem.name !== ConstantStringEnum.CUSTOM) {
+            this.getTopRatedListData();
+        }
     }
 
     public handleSwitchTopRatedClick(
@@ -358,7 +356,7 @@ export class DashboardTopRatedComponent
         this.popover.close();
     }
 
-    public handleSwitchTabClick(activeTab: TopRatedTab /* , useLast? */): void {
+    public handleSwitchTabClick(activeTab: TopRatedTab): void {
         if (this.currentActiveTab?.name === activeTab.name) {
             return;
         }
@@ -366,14 +364,6 @@ export class DashboardTopRatedComponent
         this.currentActiveTab = activeTab;
 
         this.getTopRatedListData();
-
-        /*   const switchData = useLast ? this.currentSwitchTab : event['name']; //currently no data for milage/revnue so insert last chosen
-        this.timePeriod.changeTimePeriod(switchData);
-        this.currentSwitchTab = switchData;
-        if (switchData == 'Custom') {
-            return false;
-        }
-        this.barChart.updateTime(switchData); */
     }
 
     public handleShowMoreClick(): void {
@@ -392,6 +382,17 @@ export class DashboardTopRatedComponent
 
             return;
         }
+    }
+
+    public handleSetCustomPeriodRangeClick(
+        customPeriodRange: CustomPeriodRange
+    ): void {
+        this.isDisplayingCustomPeriodRange = false;
+        console.log(customPeriodRange);
+    }
+
+    public handleOutsideCustomPeriodRangeClick() {
+        this.isDisplayingCustomPeriodRange = false;
     }
 
     public handleAddSelectedClick(
@@ -1141,30 +1142,5 @@ export class DashboardTopRatedComponent
     ngOnDestroy(): void {
         this.destroy$.next();
         this.destroy$.complete();
-    }
-
-    ///////////////////////////////////////////////////////
-
-    selectTimePeriod(period) {
-        this.barChart.updateTime(this.currentSwitchTab, period);
-    }
-
-    saveCustomRange(ev) {
-        this.timePeriod.changeCustomTime(ev);
-        this.barChart.updateTime('Custom Set', ev);
-    }
-
-    /* <app-ta-time-period
-                    #timePeriod
-                    (selectTimePeriod)="selectTimePeriod($event)"
-                >
-                </app-ta-time-period> */
-    @ViewChild('timePeriod', { static: false }) public timePeriod: any;
-    @ViewChild('tabSwitch', { static: false }) public tabSwitch: any;
-
-    ngAfterViewInit(): void {
-        if (this.timePeriod && this.timePeriod.changeTimePeriod) {
-            this.timePeriod?.changeTimePeriod('All Time');
-        }
     }
 }

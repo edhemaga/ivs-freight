@@ -60,7 +60,7 @@ export interface ITaInput {
         isLoading?: boolean;
     };
     addressFlag?: string; // added text in right corner and this flag will be disabled clear button, invalid danger mark
-    customClass?: string; // - 'datetimeclass' -> date/time pickers
+    customClass?: string; // - 'datetimeclass' -> date/time pickers, 'datetimeclass dark -> date/time pickers dark
 
     // ***************** Multiple Inputs & Labels *****************
     multipleInputValues?: {
